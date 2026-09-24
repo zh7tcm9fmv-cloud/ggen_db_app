@@ -17512,16 +17512,32 @@ def _roadmap_ui_asset_base():
 
 @app.route('/roadmap/assets/<path:filename>')
 def roadmap_calendar_asset(filename):
-    """Serve calendar notice art from the local CDN checkout (IS_LOCAL / pre-push)."""
+    """Serve calendar notice art from the local CDN checkout (IS_LOCAL / pre-push).
+
+    ``display/<hash>.webp`` = popup-sized variants (~1100px); fall back to full-res
+    hash at the folder root when display is missing.
+    """
     name = (filename or '').replace('\\', '/').lstrip('/')
     if not name or '..' in name.split('/'):
         return ('', 404)
-    base = name.split('/')[-1]
+    parts = [p for p in name.split('/') if p]
+    if not parts or len(parts) > 2:
+        return ('', 404)
+    sub = parts[0] if len(parts) == 2 else ''
+    base = parts[-1]
+    if sub and sub != 'display':
+        return ('', 404)
     if not re.match(r'^[A-Za-z0-9._-]+$', base):
         return ('', 404)
     for root in _roadmap_local_asset_dirs():
-        cand = root / base
         try:
+            if sub == 'display':
+                disp = root / 'display' / base
+                if disp.is_file():
+                    r = make_response(send_from_directory(str(root / 'display'), base))
+                    r.headers['Cache-Control'] = 'public, max-age=31536000, immutable'
+                    return r
+            cand = root / base
             if cand.is_file():
                 r = make_response(send_from_directory(str(root), base))
                 # Content-addressed hashes — long cache OK (dev + CDN parity).

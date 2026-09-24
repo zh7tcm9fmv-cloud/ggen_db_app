@@ -519,6 +519,27 @@ function tRoleFilter(roleId){const m=ROLE_LABELS[S.lang]||ROLE_LABELS.EN;return 
 const S={lang:'EN',languages:[],currentTab:'characters',listView:{characters:'grid',units:'grid',supporters:'grid',stages:'grid',modifications:'grid'},characters:{page:1,sort:'rarity',dir:'desc',q:'',sortPriority:[]},units:{page:1,sort:'rarity',dir:'desc',q:'',sortPriority:[]},supporters:{page:1,sort:'rarity',dir:'desc',q:''},stages:{page:1,q:'',difficultyFilter:'ALL',sort:'stage_number',dir:'asc',source:'eternal',challengeSeries:'ALL'},modifications:{page:1,sort:'rarity',dir:'desc',q:'',effectFilter:'ALL'},_modEffectFilterIcons:null,ft:null,currentDetailData:null,currentDetailType:null,conditionalPassiveActive:false,pilotConditionalPassiveActive:false,pilotCondCharData:null,_pilotCondCharFetchId:null,_pilotCondCharInflight:null,pilotCondStackCount:0,unitCondStackCount:0,unitHpAtkTierIndex:0,unitDamageTakenDefStacks:0,charSuperchargedExTier:0,spActive:false,sspActive:false,_tagRarityFilter:'ALL',_tagAcqFilter:'ALL',_tagTargetType:'unit',_tagModalMode:'tags',_seriesModalSid:'',_seriesModalName:'',_currentTagStr:'',_currentTagOp:'and',currentLbTier:3,currentWeaponLevels:{},stageMapExpanded:false,stageMapZoom:1,stageMapAutoFit:true,stageMapReinforcementOnly:false,stageMapSpawnOrderVisible:false,stageMapBuffAreasVisible:true,compareList:[],compareData:[],compareType:'unit',_cmpPickerCache:[],cmpSpActive:false,cmpSspActive:false,cmpCpActive:false,cmpPepActive:false,cmpPepCharById:{},cmpLbByUnit:{},cmpMobilePickMode:false,listCharSp:false,listUnitSp:false,listUnitSsp:false,listCharCond:false,listUnitCond:false,listUnitPilotCond:false,listSelectedUnitId:null,listCharSource:'ALL',listUnitSource:'ALL',listMsyUnitSource:'ALL',listCharLineage:[],listCharSeries:[],listCharSkills:[],listCharAbilities:[],listUnitLineage:[],listUnitSeries:[],listUnitAbilities:[],listMsyUnitSeries:[],listMsyUnitLineage:[],listUnitTerrain:[],listUnitWeaponDebuff:[],listUnitWeaponRange:[],listUnitWeaponRangeNonMap:[],listUnitWeaponRangeNonMapSspExOnly:false,listUnitMapWeapon:false,listUnitMapWeaponRange:[],listUnitMechanism:[],listSuppLineage:[],listModLineage:[],browseCombCharLineage:'and',browseCombUnitLineage:'and',browseCombSuppLineage:'and',browseCombModLineage:'and',browseCombCharSeries:'or',browseCombUnitSeries:'or',browseCombMsyUnitSeries:'or',browseCombMsyUnitLineage:'and',browseCombCharSkill:'and',browseCombUnitAbil:'and',browseCombCharTrait:'and',browseCombTerrain:'and',browseCombWb:'and',browseCombWr:'and',browseCombWrNm:'and',browseCombMapWr:'and',browseCombMech:'and',listGridVariant:{characters:2,units:2},weaponDebuffPresentKeys:null,terrainPresentTokens:null,weaponRangeSspExPresent:null,weaponRangeNonMapPresent:null,mechanismPresentRows:null,lrCacheKey:null,lrCacheData:null,btCacheKey:null,btCacheData:null,btBannerSortDir:'desc',_browsePrimed:{},dc:{atkUnit:null,atkChar:null,atkUnitData:null,atkCharData:null,defNpc:null,defUnitData:null,defCharData:null,defLbTier:3,npcList:[],wpnIdx:0,wpnLv:0,lbTier:3,distance:1,terrain:0,mpLevel:'medium',defending:false,shield:false,optionParts:[],supporters:[],debuffs:[],unitStatMode:'normal',charStatMode:'normal',unitCondPassive:false,charCondPassive:false,dcSuperchargedExTier:0,masterLeagueBuff:false,grandOffensiveBuff:false,squadCondPct:0,squadCondAtkPct:0,squadCondDefPct:0,bigRangZeonSquadBuff:false,defNpcMapBonusesOn:true,_applicableOptionRows:null,_applicableSupporterRows:null},tb:null,_dcPickerType:null,_dcPickerCache:[],_searchRecallObs:null,_suspendRarityItemChange:false,ranking:{mode:'units',viewMode:'list',sortChar:'Ranged',sortUnit:'HP',dirChar:'desc',dirUnit:'desc',pageChar:1,pageUnit:1},listRankCharSource:'ALL',listRankUnitSource:'ALL',listRankCharLineage:[],listRankCharSeries:[],listRankCharSkills:[],listRankCharAbilities:[],listRankUnitLineage:[],listRankUnitSeries:[],listRankUnitAbilities:[],listRankUnitTerrain:[],listRankUnitWeaponDebuff:[],listRankUnitWeaponRange:[],listRankUnitWeaponRangeNonMap:[],listRankUnitWeaponRangeNonMapSspExOnly:false,listRankUnitMapWeapon:false,listRankUnitMapWeaponRange:[],listRankUnitMechanism:[],listRankCharSp:false,listRankCharCond:false,listRankUnitSp:false,listRankUnitSsp:false,listRankUnitCond:false,listRankUnitPilotCond:false,browseCombRankCharLineage:'and',browseCombRankUnitLineage:'and',browseCombRankCharSeries:'or',browseCombRankUnitSeries:'or',browseCombRankCharSkill:'and',browseCombRankUnitAbil:'and',browseCombRankCharTrait:'and',browseCombRankTerrain:'and',browseCombRankWb:'and',browseCombRankWr:'and',browseCombRankWrNm:'and',browseCombRankMapWr:'and',browseCombRankMech:'and'};
 window.S=S;
 function primeBrowseTabIfNeeded(tab){reloadBrowseTab(tab)}
+function browseTabLooksEmpty(tab){
+const map={characters:{table:'charTable',grid:'charGrid'},units:{table:'unitTable',grid:'unitGrid'},supporters:{table:'suppTable',grid:'suppGrid'},stages:{table:'stageTable',grid:'stageGrid'},modifications:{table:'modTable',grid:'modGrid'}};
+const m=map[tab];if(!m)return false;
+try{
+const tb=document.getElementById(m.table);
+const body=tb&&tb.tBodies&&tb.tBodies[0];
+if(body&&body.children&&body.children.length)return false;
+const gw=document.getElementById(m.grid);
+if(gw&&gw.querySelector&&gw.querySelector('.list-grid-card'))return false;
+}catch(_){}
+return true;
+}
+function ensureBrowseTabPainted(tab){
+const browseTabs={characters:1,units:1,supporters:1,stages:1,modifications:1};
+if(!browseTabs[tab])return;
+applyListViewVisibility(tab);
+bindSearchRecallObserver();
+updateScrollTopFabVisibility();
+const need=!(S._browsePrimed&&S._browsePrimed[tab])||browseTabLooksEmpty(tab);
+if(need){if(!S._browsePrimed)S._browsePrimed={};S._browsePrimed[tab]=1;primeBrowseTabIfNeeded(tab)}
+}
 function reloadBrowseTab(tab){const browseTabs={characters:1,units:1,supporters:1,stages:1,modifications:1};if(!browseTabs[tab])return;if(tab==='characters')loadCharacters(S.characters.page||1);else if(tab==='units')loadUnits(S.units.page||1);else if(tab==='supporters')loadSupporters(S.supporters.page||1);else if(tab==='stages')loadStages(S.stages.page||1);else if(tab==='modifications')loadModifications(S.modifications.page||1)}
 function prefetchBrowseTabsAfterCharacters(){if(S._browsePrefetchDone)return;S._browsePrefetchDone=1;const go=()=>{if(S.currentTab!=='characters')return;const qEl=document.getElementById('charFilter');if(qEl&&String(qEl.value||'').trim())return;if(!S._browsePrimed)S._browsePrimed={};if(!S._browsePrimed.units){S._browsePrimed.units=1;void loadUnits(1)}};if(window.requestIdleCallback)requestIdleCallback(go,{timeout:15000});else setTimeout(go,8000)}
 /** Nav flares / votes / what's-new after browse first paint — do not race /api/characters. */
@@ -3482,12 +3503,12 @@ if(parsed&&parsed.kind==='e_simulator'){closeModalDomOnly();if((S.stages.source|
 if(parsed&&parsed.kind==='main_tab'){closeModalDomOnly();if(parsed.tab==='gacha_sim'){S.gachaSimGashaId=String(parsed.gashaId||'').trim();try{const q=new URLSearchParams(location.search);const qg=q.get('gasha')||q.get('gasha_id');if(!S.gachaSimGashaId&&qg)S.gachaSimGashaId=String(qg).trim()}catch(_){}}if(parsed.tab==='stages'&&(S.stages.source||'')==='e_simulator'){S.stages.source='eternal';if(window.ESimulator)ESimulator.hide()}
 /* Closing a detail modal back to the same browse tab must not reload the list.
    Cold load of /c (default tab already characters) still needs a first paint. */
-if(S.currentTab===parsed.tab){if(parsed.tab==='gacha_sim'){void loadGachaSim();return true}applyListViewVisibility(parsed.tab);bindSearchRecallObserver();updateScrollTopFabVisibility();const browseTabs={characters:1,units:1,supporters:1,stages:1,modifications:1};if(browseTabs[parsed.tab]&&!(S._browsePrimed&&S._browsePrimed[parsed.tab])){if(!S._browsePrimed)S._browsePrimed={};S._browsePrimed[parsed.tab]=1;primeBrowseTabIfNeeded(parsed.tab)}return true}
+if(S.currentTab===parsed.tab){if(parsed.tab==='gacha_sim'){void loadGachaSim();return true}ensureBrowseTabPainted(parsed.tab);return true}
 switchTab(parsed.tab,{skipHistory:true,fromPopstate:!!opts.fromPopstate});return true}
 if(parsed&&parsed.kind==='option_part'){switchTab('modifications',{skipHistory:true,fromPopstate:!!opts.fromPopstate});if(!opts.fromPopstate)_markDetailCloseBackToStandaloneReferrer();openDetail('option_part',parsed.id,{skipHistory:true});if(!opts.fromPopstate)try{window.scrollTo(0,0)}catch(_){}return true}
-if(parsed&&parsed.kind==='roadmap'){openRoadmapCalendar({skipHistory:true});return true}
+if(parsed&&parsed.kind==='roadmap'){openRoadmapCalendar({skipHistory:true});try{const _warm=()=>{if(!(S._browsePrimed&&S._browsePrimed.characters)||browseTabLooksEmpty('characters')){if(!S._browsePrimed)S._browsePrimed={};S._browsePrimed.characters=1;primeBrowseTabIfNeeded('characters')}};if(window.requestIdleCallback)requestIdleCallback(_warm,{timeout:2500});else setTimeout(_warm,400)}catch(_rmWarm){}return true}
 if(parsed&&parsed.kind==='detail'){const t=parsed.type,id=parsed.id;switchTab(_detailTabForType(t),{skipHistory:true,fromPopstate:!!opts.fromPopstate});/* Cold /u|/s|/c/:id from standalone /tm — close/Esc must history.back() to Tag Matrix, not replace to /u|/s. */if(!opts.fromPopstate)_markDetailCloseBackToStandaloneReferrer();openDetail(t,id,{skipHistory:true});return true}
-if(!parsed){closeModalDomOnly();if(S.currentTab!=='characters')switchTab('characters',{skipHistory:true,fromPopstate:!!opts.fromPopstate})}
+if(!parsed){closeModalDomOnly();if(S.currentTab!=='characters')switchTab('characters',{skipHistory:true,fromPopstate:!!opts.fromPopstate});else ensureBrowseTabPainted('characters')}
 return false;
 }
 function initBrowseHistory(){
@@ -4150,6 +4171,7 @@ if(_historyIsDetailPath(location.pathname)||(history.state&&history.state.ggenDe
 let browsePath=S.currentTab==='ranking'?'/rk':(MAIN_TAB_PATH_SHORT[S.currentTab]||'/');
 if(S.currentTab==='stages')browsePath=stagesBrowsePathForSource(S.stages.source||'eternal');
 replaceHistoryToBrowsePath(browsePath);
+try{const _bt={characters:1,units:1,supporters:1,stages:1,modifications:1};ensureBrowseTabPainted(_bt[S.currentTab]?S.currentTab:'characters')}catch(_rmPaint){}
 }
 }
 function closeModalOverlay(e){if(e.target===e.currentTarget)closeModal()}

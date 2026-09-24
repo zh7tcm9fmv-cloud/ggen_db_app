@@ -1,6 +1,6 @@
 {
   "gasha_id": "2609400505",
-  "lang": "EN",
+  "lang": "HK",
   "logo_resource_id": "gasha_logo_2609400505",
   "appeal_banner_id": "2609400101",
   "gasha_movie_setting_id": "1000000003",
@@ -69,7 +69,7 @@
     "URU": [
       {
         "id": "1001003050",
-        "name": "Zeong (EX)",
+        "name": "自護號 (EX)",
         "role": "Attack",
         "art": "unit_portraits/ub_g0010u03050.webp",
         "charArt": "portraits/cb_g0010c01800.webp",
@@ -82,7 +82,7 @@
       },
       {
         "id": "1003000250",
-        "name": "Char's Zaku II (THE ORIGIN) (EX)",
+        "name": "馬沙專用渣古Ⅱ (THE ORIGIN版)(EX)",
         "role": "Attack",
         "art": "unit_portraits/ub_g0030u00250.webp",
         "charArt": "portraits/cb_g0030c00100.webp",
@@ -95,7 +95,7 @@
       },
       {
         "id": "1009000550",
-        "name": "Big-Rang (EX)",
+        "name": "比格‧朗格 (EX)",
         "role": "Support",
         "art": "unit_portraits/ub_g0090u00550.webp",
         "charArt": "portraits/cb_g0090c00100.webp",
@@ -108,7 +108,7 @@
       },
       {
         "id": "1013000850",
-        "name": "Gouf Custom (EX)",
+        "name": "老虎特裝型 (EX)",
         "role": "Durability",
         "art": "unit_portraits/ub_g0130u00850.webp",
         "charArt": "portraits/cb_g0130c01100.webp",
@@ -121,7 +121,7 @@
       },
       {
         "id": "1017000950",
-        "name": "Kampfer (EX)",
+        "name": "京寶梵 (EX)",
         "role": "Attack",
         "art": "unit_portraits/ub_g0170u00950.webp",
         "charArt": "portraits/cb_g0170c00400.webp",
@@ -134,7 +134,7 @@
       },
       {
         "id": "1022000150",
-        "name": "Blue Destiny Unit-1 (EX)",
+        "name": "蒼藍命運1號機 (EX)",
         "role": "Attack",
         "art": "unit_portraits/ub_g0220u00150.webp",
         "charArt": "portraits/cb_g0220c00100.webp",
@@ -147,7 +147,7 @@
       },
       {
         "id": "1031000150",
-        "name": "Gundam Full Armor (Thunderbolt) (EX)",
+        "name": "全裝甲型高達 (雷霆戰線版) (EX)",
         "role": "Durability",
         "art": "unit_portraits/ub_g0310u00150.webp",
         "charArt": "portraits/cb_g0310c00100.webp",
@@ -160,7 +160,7 @@
       },
       {
         "id": "1031000350",
-        "name": "Psycho Zaku (EX)",
+        "name": "重渣古 (EX)",
         "role": "Support",
         "art": "unit_portraits/ub_g0310u00350.webp",
         "charArt": "portraits/cb_g0310c00601.webp",
@@ -173,7 +173,7 @@
       },
       {
         "id": "1031001250",
-        "name": "Atlas Gundam (EX)",
+        "name": "阿特拉斯高達 (EX)",
         "role": "Attack",
         "art": "unit_portraits/ub_g0310u01250.webp",
         "charArt": "portraits/cb_g0310c00102.webp",
@@ -186,7 +186,7 @@
       },
       {
         "id": "1060001850",
-        "name": "Neue Ziel (EX)",
+        "name": "露維‧捷露 (EX)",
         "role": "Attack",
         "art": "unit_portraits/ub_g0600u01850.webp",
         "charArt": "portraits/cb_g0600c01503.webp",
@@ -199,7 +199,7 @@
       },
       {
         "id": "1080003250",
-        "name": "The-O (EX)",
+        "name": "The‧O (EX)",
         "role": "Support",
         "art": "unit_portraits/ub_g0800u03250.webp",
         "charArt": "portraits/cb_g0800c02700.webp",
@@ -212,7 +212,7 @@
       },
       {
         "id": "1095000350",
-        "name": "Full Armor ZZ Gundam (EX)",
+        "name": "全裝甲型ZZ高達 (EX)",
         "role": "Durability",
         "art": "unit_portraits/ub_g0950u00350.webp",
         "charArt": "portraits/cb_g0950c00100.webp",
@@ -225,7 +225,7 @@
       },
       {
         "id": "1114000450",
-        "name": "Nu Gundam (Double Fin Funnels) (EX)",
+        "name": "ν高達(雙翼狀感應砲裝備型) (EX)",
         "role": "Durability",
         "art": "unit_portraits/ub_g1140u00450.webp",
         "charArt": "portraits/cb_g1100c00103.webp",
@@ -238,7 +238,7 @@
       },
       {
         "id": "1125001250",
-        "name": "Sinanju (EX)",
+        "name": "新安州 (EX)",
         "role": "Support",
         "art": "unit_portraits/ub_g1250u01250.webp",
         "charArt": "portraits/cb_g1250c00302.webp",
@@ -251,7 +251,7 @@
       },
       {
         "id": "1150000250",
-        "name": "Penelope (EX)",
+        "name": "潘尼洛普 (EX)",
         "role": "Durability",
         "art": "unit_portraits/ub_g1500u00250.webp",
         "charArt": "portraits/cb_g1500c00201.webp",
@@ -264,7 +264,7 @@
       },
       {
         "id": "1155000250",
-        "name": "Gundam F90 A.D.S. Type (EX)",
+        "name": "高達F90 (A.D.S.混合裝備時) (EX)",
         "role": "Support",
         "art": "unit_portraits/ub_g1550u00250.webp",
         "charArt": "portraits/cb_g1550c00101.webp",
@@ -277,7 +277,7 @@
       },
       {
         "id": "1162000150",
-        "name": "Gundam F91 (EX)",
+        "name": "高達F91 (EX)",
         "role": "Durability",
         "art": "unit_portraits/ub_g1620u00150.webp",
         "charArt": "portraits/cb_g1620c00100.webp",
@@ -290,7 +290,7 @@
       },
       {
         "id": "1200001350",
-        "name": "Master Gundam (EX)",
+        "name": "宗師高達 (EX)",
         "role": "Attack",
         "art": "unit_portraits/ub_g2000u01350.webp",
         "charArt": "portraits/cb_g2000c01200.webp",
@@ -303,7 +303,7 @@
       },
       {
         "id": "1219000250",
-        "name": "Gundam Deathscythe Hell (EW) (EX)",
+        "name": "地獄死神高達 (EW版) (EX)",
         "role": "Durability",
         "art": "unit_portraits/ub_g2190u00250.webp",
         "charArt": "portraits/cb_g2190c00201.webp",
@@ -316,7 +316,7 @@
       },
       {
         "id": "1219000350",
-        "name": "Tallgeese III (EX)",
+        "name": "多魯基斯Ⅲ (EX)",
         "role": "Support",
         "art": "unit_portraits/ub_g2190u00350.webp",
         "charArt": "portraits/cb_g2190c00700.webp",
@@ -329,7 +329,7 @@
       },
       {
         "id": "1230003950",
-        "name": "Gundam Virsago Chest Break (EX)",
+        "name": "華沙哥破壞者高達 (EX)",
         "role": "Support",
         "art": "unit_portraits/ub_g2300u03950.webp",
         "charArt": "portraits/cb_g2300c01301.webp",
@@ -342,7 +342,7 @@
       },
       {
         "id": "1300004450",
-        "name": "Justice Gundam (EX)",
+        "name": "正義高達 (EX)",
         "role": "Durability",
         "art": "unit_portraits/ub_g3000u04450.webp",
         "charArt": "portraits/cb_g3000c01701.webp",
@@ -355,7 +355,7 @@
       },
       {
         "id": "1300004650",
-        "name": "Providence Gundam (EX)",
+        "name": "天意高達 (EX)",
         "role": "Support",
         "art": "unit_portraits/ub_g3000u04650.webp",
         "charArt": "portraits/cb_g3000c01801.webp",
@@ -368,7 +368,7 @@
       },
       {
         "id": "1305000350",
-        "name": "Gundam Astray Gold Frame Amatsu Mina (EX)",
+        "name": "迷惘高達金色機 天蜜娜 (EX)",
         "role": "Durability",
         "art": "unit_portraits/ub_g3050u00350.webp",
         "charArt": "portraits/cb_g3050c01400.webp",
@@ -381,7 +381,7 @@
       },
       {
         "id": "1330000350",
-        "name": "Force Impulse Gundam (EX)",
+        "name": "強攻型衝擊高達 (EX)",
         "role": "Support",
         "art": "unit_portraits/ub_g3300u00350.webp",
         "charArt": "portraits/cb_g3300c00101.webp",
@@ -394,7 +394,7 @@
       },
       {
         "id": "1330002850",
-        "name": "Infinite Justice Gundam (EX)",
+        "name": "無限正義高達 (EX)",
         "role": "Attack",
         "art": "unit_portraits/ub_g3300u02850.webp",
         "charArt": "portraits/cb_g3300c01804.webp",
@@ -407,7 +407,7 @@
       },
       {
         "id": "1336000150",
-        "name": "Strike Noir Gundam (EX)",
+        "name": "漆黑突擊高達 (EX)",
         "role": "Support",
         "art": "unit_portraits/ub_g3360u00150.webp",
         "charArt": "portraits/cb_g3360c00100.webp",
@@ -420,7 +420,7 @@
       },
       {
         "id": "1400000150",
-        "name": "Gundam AGE-1 Normal (EX)",
+        "name": "高達AGE-1 基本型 (EX)",
         "role": "Attack",
         "art": "unit_portraits/ub_g4000u00150.webp",
         "charArt": "portraits/cb_g4000c00100.webp",
@@ -433,7 +433,7 @@
       },
       {
         "id": "1430004850",
-        "name": "Gundam Kimaris Vidar (EX)",
+        "name": "高達錫蒙力維度爾 (EX)",
         "role": "Durability",
         "art": "unit_portraits/ub_g4300u04850.webp",
         "charArt": "portraits/cb_g4300c02602.webp",
@@ -446,7 +446,7 @@
       },
       {
         "id": "1431000550",
-        "name": "Gundam Astaroth Rinascimento (EX)",
+        "name": "高達亞斯塔錄重生型 (EX)",
         "role": "Support",
         "art": "unit_portraits/ub_g4310u00550.webp",
         "charArt": "portraits/cb_g4310c00100.webp",
@@ -459,7 +459,7 @@
       },
       {
         "id": "1501001650",
-        "name": "Gundam Aerial Rebuild (EX)",
+        "name": "風靈高達 (改修型) (EX)",
         "role": "Durability",
         "art": "unit_portraits/ub_g5010u01650.webp",
         "charArt": "portraits/cb_g5010c00103.webp",
@@ -472,7 +472,7 @@
       },
       {
         "id": "1501002450",
-        "name": "Gundam Pharact (Season 2) (EX)",
+        "name": "鐵騎高達(Season2規格) (EX)",
         "role": "Support",
         "art": "unit_portraits/ub_g5010u02450.webp",
         "charArt": "portraits/cb_g5010c02901.webp",
@@ -485,7 +485,7 @@
       },
       {
         "id": "1604000150",
-        "name": "Build Strike Gundam (Full Package) (EX)",
+        "name": "創建突擊高達全裝備型 (EX)",
         "role": "Support",
         "art": "unit_portraits/ub_g6040u00150.webp",
         "charArt": "portraits/cb_g6040c00100.webp",
@@ -498,7 +498,7 @@
       },
       {
         "id": "1725000150",
-        "name": "Liu Bei Unicorn Gundam (EX)",
+        "name": "劉備獨角獸高達 (EX)",
         "role": "Attack",
         "art": "unit_portraits/ub_g7250u00150.webp",
         "charArt": "",
@@ -511,7 +511,7 @@
       },
       {
         "id": "1850000650",
-        "name": "Halphas Gundam (EX)",
+        "name": "哈帕斯高達 (EX)",
         "role": "Support",
         "art": "unit_portraits/ub_g8500u00650.webp",
         "charArt": "portraits/cb_g8500c03600.webp",
@@ -524,7 +524,7 @@
       },
       {
         "id": "1850001350",
-        "name": "Psycho Haro (EX)",
+        "name": "精神感應哈囉 (EX)",
         "role": "Attack",
         "art": "unit_portraits/ub_g8500u01350.webp",
         "charArt": "portraits/cb_g8500c03900.webp",
@@ -537,7 +537,7 @@
       },
       {
         "id": "1850001650",
-        "name": "Great Zeong (EX)",
+        "name": "偉大‧自護號 (EX)",
         "role": "Support",
         "art": "unit_portraits/ub_g8500u01650.webp",
         "charArt": "portraits/cb_g8500c01501.webp",
@@ -552,7 +552,7 @@
     "URS": [
       {
         "id": "1001000150",
-        "name": "Bright Noa & White Base",
+        "name": "布拉度‧諾亞＆白色基地",
         "role": "",
         "art": "Supporters/sb_g0010s00100.webp",
         "charArt": "",
@@ -562,7 +562,7 @@
       },
       {
         "id": "1001000250",
-        "name": "Fraw Bow & White Base",
+        "name": "花拉‧寶＆白色基地",
         "role": "",
         "art": "Supporters/sb_g0010s00200.webp",
         "charArt": "",
@@ -572,7 +572,7 @@
       },
       {
         "id": "1001000750",
-        "name": "Lalah Sune & Zanzibar",
+        "name": "娜娜‧絲＆桑吉巴爾",
         "role": "",
         "art": "Supporters/sb_g0010s00700.webp",
         "charArt": "",
@@ -582,7 +582,7 @@
       },
       {
         "id": "1013000150",
-        "name": "Eledore Mathis & Hover Truck",
+        "name": "艾歷多亞‧馬契斯＆氣墊艇",
         "role": "",
         "art": "Supporters/sb_g0130s00100.webp",
         "charArt": "",
@@ -592,7 +592,7 @@
       },
       {
         "id": "1031000150",
-        "name": "Claudia Peer & Beehive",
+        "name": "古蘿迪亞‧貝爾＆蜂巢號",
         "role": "",
         "art": "Supporters/sb_g0310s00100.webp",
         "charArt": "",
@@ -602,7 +602,7 @@
       },
       {
         "id": "1031000250",
-        "name": "Vincent Pike & Spartan",
+        "name": "雲遜‧派克＆斯巴達號",
         "role": "",
         "art": "Supporters/sb_g0310s00200.webp",
         "charArt": "",
@@ -612,7 +612,7 @@
       },
       {
         "id": "1060000150",
-        "name": "Eyphar Sinapus & Albion",
+        "name": "艾帕‧史納斯＆阿爾比昂",
         "role": "",
         "art": "Supporters/sb_g0600s00100.webp",
         "charArt": "",
@@ -622,7 +622,7 @@
       },
       {
         "id": "1060000250",
-        "name": "Cima Garahau & Lili Marleen",
+        "name": "絲瑪‧加拉豪＆莉莉‧瑪爾聯",
         "role": "",
         "art": "Supporters/sb_g0600s00200.webp",
         "charArt": "",
@@ -632,7 +632,7 @@
       },
       {
         "id": "1080000150",
-        "name": "Fa Yuiry & Argama",
+        "name": "花‧園麗＆阿卡馬",
         "role": "",
         "art": "Supporters/sb_g0800s00100.webp",
         "charArt": "",
@@ -642,7 +642,7 @@
       },
       {
         "id": "1080000250",
-        "name": "Henken Bekkener & Radish",
+        "name": "漢肯‧貝克納＆拉迪修",
         "role": "",
         "art": "Supporters/sb_g0800s00200.webp",
         "charArt": "",
@@ -652,7 +652,7 @@
       },
       {
         "id": "1080000550",
-        "name": "Beltorchika Irma & Audhumla",
+        "name": "貝托蒂嘉‧伊露瑪＆歐姆拉",
         "role": "",
         "art": "Supporters/sb_g0800s00500.webp",
         "charArt": "",
@@ -662,7 +662,7 @@
       },
       {
         "id": "1095000150",
-        "name": "Beecha Oleg & Nahel Argama",
+        "name": "比查‧歐雷格＆擬‧阿卡馬",
         "role": "",
         "art": "Supporters/sb_g0950s00100.webp",
         "charArt": "",
@@ -672,7 +672,7 @@
       },
       {
         "id": "1095000350",
-        "name": "Glemy Toto & Sandra",
+        "name": "古利明‧托舵＆桑多拉",
         "role": "",
         "art": "Supporters/sb_g0950s00300.webp",
         "charArt": "",
@@ -682,7 +682,7 @@
       },
       {
         "id": "1110000350",
-        "name": "Nanai Miguel & Rewloola",
+        "name": "娜奈·米格爾＆略儒拉",
         "role": "",
         "art": "Supporters/sb_g1100s00300.webp",
         "charArt": "",
@@ -692,7 +692,7 @@
       },
       {
         "id": "1125000450",
-        "name": "Mineva Lao Zabi & Garencieres",
+        "name": "米奈芭‧拉歐‧薩比 ＆ 葛蘭雪",
         "role": "",
         "art": "Supporters/sb_g1250s00400.webp",
         "charArt": "",
@@ -702,7 +702,7 @@
       },
       {
         "id": "1144000150",
-        "name": "Zoltan Akkanen & Gulltoppr",
+        "name": "佐爾頓‧阿卡寧＆古爾托普",
         "role": "",
         "art": "Supporters/sb_g1440s00100.webp",
         "charArt": "",
@@ -712,7 +712,7 @@
       },
       {
         "id": "1150000150",
-        "name": "Gigi Andalucia & Haunzen Flight 356",
+        "name": "琪琪‧安達露西亞＆豪澤恩號航班356",
         "role": "",
         "art": "Supporters/sb_g1500s00100.webp",
         "charArt": "",
@@ -722,7 +722,7 @@
       },
       {
         "id": "1200000150",
-        "name": "Rain Mikamura & Bud Carrier",
+        "name": "莉英‧米加姆拉＆苞型運輸艇",
         "role": "",
         "art": "Supporters/sb_g2000s00100.webp",
         "charArt": "",
@@ -732,7 +732,7 @@
       },
       {
         "id": "1200000350",
-        "name": "Kyoji Kasshu & Dark Gundam (Second Form)",
+        "name": "京治‧卡遜＆魔鬼高達 (第2型態)",
         "role": "",
         "art": "Supporters/sb_g2000s00300.webp",
         "charArt": "",
@@ -742,7 +742,7 @@
       },
       {
         "id": "1210000150",
-        "name": "Relena Darlian & Peacemillion",
+        "name": "莉莉娜‧德利安＆卑斯米利昂",
         "role": "",
         "art": "Supporters/sb_g2100s00100.webp",
         "charArt": "",
@@ -752,7 +752,7 @@
       },
       {
         "id": "1210000350",
-        "name": "Lucrezia Noin & Supersonic Transporter",
+        "name": "露洛莉亞‧奈＆超音速運輸機",
         "role": "",
         "art": "Supporters/sb_g2100s00300.webp",
         "charArt": "",
@@ -762,7 +762,7 @@
       },
       {
         "id": "1230000150",
-        "name": "Tiffa Adill & Freeden",
+        "name": "荻花‧安迪爾＆自由號",
         "role": "",
         "art": "Supporters/sb_g2300s00100.webp",
         "charArt": "",
@@ -772,7 +772,7 @@
       },
       {
         "id": "1230000350",
-        "name": "Jamil Neate & Freeden II",
+        "name": "舒文‧尼特＆自由號Ⅱ",
         "role": "",
         "art": "Supporters/sb_g2300s00300.webp",
         "charArt": "",
@@ -782,7 +782,7 @@
       },
       {
         "id": "1300000150",
-        "name": "Murrue Ramius & Archangel",
+        "name": "瑪露‧拉美雅斯＆大天使號",
         "role": "",
         "art": "Supporters/sb_g3000s00100.webp",
         "charArt": "",
@@ -792,7 +792,7 @@
       },
       {
         "id": "1300000550",
-        "name": "Andrew Waldfeld & Eternal",
+        "name": "安德列‧包撲菲杜＆永恆號",
         "role": "",
         "art": "Supporters/sb_g3000s00500.webp",
         "charArt": "",
@@ -802,7 +802,7 @@
       },
       {
         "id": "1300000650",
-        "name": "Multa Azrael & Dominion",
+        "name": "穆達‧阿茲萊爾＆主天使號",
         "role": "",
         "art": "Supporters/sb_g3000s00600.webp",
         "charArt": "",
@@ -812,7 +812,7 @@
       },
       {
         "id": "1305000250",
-        "name": "Kazahana Azure & Laurasia Class",
+        "name": "風花‧亞哲＆勞亞級",
         "role": "",
         "art": "Supporters/sb_g3050s00200.webp",
         "charArt": "",
@@ -822,7 +822,7 @@
       },
       {
         "id": "1330000450",
-        "name": "Cagalli Yula Athha & Kusanagi",
+        "name": "卡嘉蓮‧尤拉‧亞斯巴＆草薙號",
         "role": "",
         "art": "Supporters/sb_g3300s00400.webp",
         "charArt": "",
@@ -832,7 +832,7 @@
       },
       {
         "id": "1370000150",
-        "name": "Sumeragi Lee Noriega & Ptolemaios",
+        "name": "皇‧李‧諾瑞加＆托勒密號",
         "role": "",
         "art": "Supporters/sb_g3700s00100.webp",
         "charArt": "",
@@ -842,7 +842,7 @@
       },
       {
         "id": "1370000450",
-        "name": "Marina Ismail & Ptolemaios 2",
+        "name": "瑪莉娜‧伊斯梅爾＆托勒密號Ⅱ型",
         "role": "",
         "art": "Supporters/sb_g3700s00400.webp",
         "charArt": "",
@@ -852,7 +852,7 @@
       },
       {
         "id": "1400000150",
-        "name": "Grodek Ainoa & Diva",
+        "name": "庫爾迪克‧艾諾亞＆歌姬號",
         "role": "",
         "art": "Supporters/sb_g4000s00100.webp",
         "charArt": "",
@@ -862,7 +862,7 @@
       },
       {
         "id": "1430000150",
-        "name": "Orga Itsuka & Isaribi",
+        "name": "澳加‧伊祖卡＆漁火",
         "role": "",
         "art": "Supporters/sb_g4300s00100.webp",
         "charArt": "",
@@ -872,7 +872,7 @@
       },
       {
         "id": "1430000350",
-        "name": "Kudelia Aina Bernstein & Isaribi",
+        "name": "古荻利亞‧藍那‧伯恩斯坦＆漁火",
         "role": "",
         "art": "Supporters/sb_g4300s00300.webp",
         "charArt": "",
@@ -882,7 +882,7 @@
       },
       {
         "id": "1430000450",
-        "name": "Rustal Elion & Skipjack-class Warship",
+        "name": "拉斯達爾‧艾利安＆鰹魚級戰艦",
         "role": "",
         "art": "Supporters/sb_g4300s00400.webp",
         "charArt": "",
@@ -892,7 +892,7 @@
       },
       {
         "id": "1430000550",
-        "name": "Atra Mixta & Hotarubi",
+        "name": "亞多娜‧米古斯達＆螢火",
         "role": "",
         "art": "Supporters/sb_g4300s00500.webp",
         "charArt": "",
@@ -902,7 +902,7 @@
       },
       {
         "id": "1501000150",
-        "name": "Miorine Rembran & Academy Ship",
+        "name": "米奧莉奈‧連布蘭＆學園艦",
         "role": "",
         "art": "Supporters/sb_g5010s00100.webp",
         "charArt": "",
@@ -912,7 +912,7 @@
       },
       {
         "id": "1501000450",
-        "name": "Prospera & Quiet Zero",
+        "name": "普洛斯佩拉＆靜寂‧零",
         "role": "",
         "art": "Supporters/sb_g5010s00400.webp",
         "charArt": "",
@@ -922,7 +922,7 @@
       },
       {
         "id": "1705000150",
-        "name": "Knight Amuro & Pegasus White Base",
+        "name": "騎士阿寶＆飛馬白色基地",
         "role": "",
         "art": "Supporters/sb_g7050s00100.webp",
         "charArt": "",
@@ -934,7 +934,7 @@
     "SSRU": [
       {
         "id": "1001001610",
-        "name": "Char's Gelgoog",
+        "name": "馬沙專用蓋古克",
         "role": "Attack",
         "art": "unit_portraits/ub_g0010u01600.webp",
         "charArt": "",
@@ -947,7 +947,7 @@
       },
       {
         "id": "1003000310",
-        "name": "Gundam Unit 2 Early Type",
+        "name": "高達2號機前期型",
         "role": "Durability",
         "art": "unit_portraits/ub_g0030u00300.webp",
         "charArt": "",
@@ -960,7 +960,7 @@
       },
       {
         "id": "1005000210",
-        "name": "Heavy Gundam",
+        "name": "重裝型高達",
         "role": "Attack",
         "art": "unit_portraits/ub_g0050u00200.webp",
         "charArt": "",
@@ -973,7 +973,7 @@
       },
       {
         "id": "1007000410",
-        "name": "Dozle Zabi's Zaku II",
+        "name": "渣古Ⅱ (多茲爾‧薩比專用機)",
         "role": "Attack",
         "art": "unit_portraits/ub_g0070u00400.webp",
         "charArt": "portraits/cb_g0010c04800.webp",
@@ -986,7 +986,7 @@
       },
       {
         "id": "1007000710",
-        "name": "Johnny Ridden's Gelgoog High Mobility Type",
+        "name": "高機動型蓋古克 (尊尼‧萊登專用機)",
         "role": "Support",
         "art": "unit_portraits/ub_g0070u00700.webp",
         "charArt": "portraits/cb_g0070c00200.webp",
@@ -999,7 +999,7 @@
       },
       {
         "id": "1009000110",
-        "name": "Zudah Unit 1",
+        "name": "積達 (1號機)",
         "role": "Support",
         "art": "unit_portraits/ub_g0090u00100.webp",
         "charArt": "portraits/cb_g0090c00900.webp",
@@ -1012,7 +1012,7 @@
       },
       {
         "id": "1009000210",
-        "name": "Hildolfr",
+        "name": "戰狼",
         "role": "Attack",
         "art": "unit_portraits/ub_g0090u00200.webp",
         "charArt": "portraits/cb_g0090c00800.webp",
@@ -1025,7 +1025,7 @@
       },
       {
         "id": "1009000510",
-        "name": "Big-Rang",
+        "name": "比格‧朗格",
         "role": "Durability",
         "art": "unit_portraits/ub_g0090u00500.webp",
         "charArt": "",
@@ -1038,7 +1038,7 @@
       },
       {
         "id": "1017000110",
-        "name": "Gundam NT-1",
+        "name": "高達NT-1",
         "role": "Attack",
         "art": "unit_portraits/ub_g0170u00100.webp",
         "charArt": "",
@@ -1051,7 +1051,7 @@
       },
       {
         "id": "1017000510",
-        "name": "GM Sniper II",
+        "name": "吉姆狙擊型Ⅱ",
         "role": "Support",
         "art": "unit_portraits/ub_g0170u00500.webp",
         "charArt": "",
@@ -1064,7 +1064,7 @@
       },
       {
         "id": "1017000610",
-        "name": "Zaku II FZ",
+        "name": "渣古Ⅱ改",
         "role": "Durability",
         "art": "unit_portraits/ub_g0170u00600.webp",
         "charArt": "",
@@ -1077,7 +1077,7 @@
       },
       {
         "id": "1017001210",
-        "name": "Prototype Kampfer",
+        "name": "京寶梵原型機",
         "role": "Attack",
         "art": "unit_portraits/ub_g0170u01200.webp",
         "charArt": "",
@@ -1090,7 +1090,7 @@
       },
       {
         "id": "1021000110",
-        "name": "Gundam Pixy",
+        "name": "妖精高達",
         "role": "Attack",
         "art": "unit_portraits/ub_g0210u00100.webp",
         "charArt": "portraits/cb_g0210c00100.webp",
@@ -1103,7 +1103,7 @@
       },
       {
         "id": "1021000210",
-        "name": "Efreet",
+        "name": "伊夫利特",
         "role": "Support",
         "art": "unit_portraits/ub_g0210u00200.webp",
         "charArt": "portraits/cb_g0210c00200.webp",
@@ -1116,7 +1116,7 @@
       },
       {
         "id": "1022000210",
-        "name": "Blue Destiny Unit-1 [EXAM]",
+        "name": "蒼藍命運1號機【EXAM】",
         "role": "Attack",
         "art": "unit_portraits/ub_g0220u00200.webp",
         "charArt": "",
@@ -1129,7 +1129,7 @@
       },
       {
         "id": "1029000210",
-        "name": "Pale Rider (Ground Heavy Equipment Type)",
+        "name": "蒼白騎士 (陸戰重裝規格)",
         "role": "Support",
         "art": "unit_portraits/ub_g0290u00200.webp",
         "charArt": "",
@@ -1142,7 +1142,7 @@
       },
       {
         "id": "1044000410",
-        "name": "Efreet Nacht",
+        "name": "伊夫利特夜戰型",
         "role": "Attack",
         "art": "unit_portraits/ub_g0440u00400.webp",
         "charArt": "",
@@ -1155,7 +1155,7 @@
       },
       {
         "id": "1055000610",
-        "name": "Gundam(GQ)",
+        "name": "白色高達(GQ)",
         "role": "Durability",
         "art": "unit_portraits/ub_g0550u00600.webp",
         "charArt": "portraits/cb_g0550c00300.webp",
@@ -1168,7 +1168,7 @@
       },
       {
         "id": "1060001410",
-        "name": "Gelgoog Marine Commander Type",
+        "name": "蓋古克M (指揮官機)",
         "role": "Attack",
         "art": "unit_portraits/ub_g0600u01400.webp",
         "charArt": "",
@@ -1181,7 +1181,7 @@
       },
       {
         "id": "1060002110",
-        "name": "Anavel Gato's Gelgoog",
+        "name": "蓋古克 (亞納比路‧賈圖專用)",
         "role": "Attack",
         "art": "unit_portraits/ub_g0600u02100.webp",
         "charArt": "",
@@ -1194,7 +1194,7 @@
       },
       {
         "id": "1063000110",
-        "name": "Gundam GP01 (Chobham Armor)",
+        "name": "高達試作1號機 (喬巴姆裝甲裝備)",
         "role": "Durability",
         "art": "unit_portraits/ub_g0630u00100.webp",
         "charArt": "",
@@ -1207,7 +1207,7 @@
       },
       {
         "id": "1067000110",
-        "name": "Gundam GP00",
+        "name": "高達試作0號機",
         "role": "Durability",
         "art": "unit_portraits/ub_g0670u00100.webp",
         "charArt": "",
@@ -1220,7 +1220,7 @@
       },
       {
         "id": "1070000210",
-        "name": "Gundam TR-1 \"Hazel-Rah\"",
+        "name": "高達TR-1 [海茲勒]",
         "role": "Attack",
         "art": "unit_portraits/ub_g0700u00200.webp",
         "charArt": "",
@@ -1233,7 +1233,7 @@
       },
       {
         "id": "1070000510",
-        "name": "Gaplant TR-5 \"Hrairoo\" Unit 1",
+        "name": "卡博羅TR-5 [弗萊爾] 1號機",
         "role": "Attack",
         "art": "unit_portraits/ub_g0700u00500.webp",
         "charArt": "",
@@ -1246,7 +1246,7 @@
       },
       {
         "id": "1082000110",
-        "name": "Zero-Shiki",
+        "name": "零式",
         "role": "Support",
         "art": "unit_portraits/ub_g0820u00100.webp",
         "charArt": "",
@@ -1259,7 +1259,7 @@
       },
       {
         "id": "1083000510",
-        "name": "Gundam Mk-III",
+        "name": "高達Mk-Ⅲ",
         "role": "Durability",
         "art": "unit_portraits/ub_g0830u00500.webp",
         "charArt": "",
@@ -1272,7 +1272,7 @@
       },
       {
         "id": "1084000110",
-        "name": "Zeta Gundam III",
+        "name": "Z高達3號機",
         "role": "Support",
         "art": "unit_portraits/ub_g0840u00100.webp",
         "charArt": "",
@@ -1285,7 +1285,7 @@
       },
       {
         "id": "1085000110",
-        "name": "S Gundam",
+        "name": "S高達",
         "role": "Attack",
         "art": "unit_portraits/ub_g0850u00100.webp",
         "charArt": "",
@@ -1298,7 +1298,7 @@
       },
       {
         "id": "1085000310",
-        "name": "Xeku Eins",
+        "name": "賽克‧艾因",
         "role": "Support",
         "art": "unit_portraits/ub_g0850u00300.webp",
         "charArt": "",
@@ -1324,7 +1324,7 @@
       },
       {
         "id": "1085001010",
-        "name": "Gundam Mk-V",
+        "name": "高達Mk-Ⅴ",
         "role": "Attack",
         "art": "unit_portraits/ub_g0850u01000.webp",
         "charArt": "",
@@ -1337,7 +1337,7 @@
       },
       {
         "id": "1085001110",
-        "name": "Xeku Zwei",
+        "name": "賽克‧茲瓦",
         "role": "Support",
         "art": "unit_portraits/ub_g0850u01100.webp",
         "charArt": "",
@@ -1350,7 +1350,7 @@
       },
       {
         "id": "1085001210",
-        "name": "Z'od-iacok",
+        "name": "梭迪‧亞克",
         "role": "Attack",
         "art": "unit_portraits/ub_g0850u01200.webp",
         "charArt": "",
@@ -1363,7 +1363,7 @@
       },
       {
         "id": "1095003110",
-        "name": "Doven Wolf (Commander Type)",
+        "name": "達希魯夫(指揮官機)",
         "role": "Durability",
         "art": "unit_portraits/ub_g0950u03100.webp",
         "charArt": "portraits/cb_g0950c03500.webp",
@@ -1376,7 +1376,7 @@
       },
       {
         "id": "1098000310",
-        "name": "Shin Matsunaga's Zaku II",
+        "name": "渣古Ⅱ (真‧松永機)",
         "role": "Durability",
         "art": "unit_portraits/ub_g0980u00300.webp",
         "charArt": "portraits/cb_g0070c00100.webp",
@@ -1389,7 +1389,7 @@
       },
       {
         "id": "1098000610",
-        "name": "Gouf Vijayanta",
+        "name": "老虎勝利型",
         "role": "Attack",
         "art": "unit_portraits/ub_g0980u00600.webp",
         "charArt": "",
@@ -1402,7 +1402,7 @@
       },
       {
         "id": "1099000110",
-        "name": "Johnny Ridden's Gelgoog Custom High Mobility Type",
+        "name": "高機動型蓋古克改 (尊尼‧萊登專用機)",
         "role": "Durability",
         "art": "unit_portraits/ub_g0990u00100.webp",
         "charArt": "portraits/cb_g0990c00100.webp",
@@ -1415,7 +1415,7 @@
       },
       {
         "id": "1099000210",
-        "name": "Ingrid 0's Gaplant",
+        "name": "卡博羅 (茵格麗０機)",
         "role": "Support",
         "art": "unit_portraits/ub_g0990u00200.webp",
         "charArt": "",
@@ -1428,7 +1428,7 @@
       },
       {
         "id": "1101000110",
-        "name": "D Gundam First",
+        "name": "D高達1號機",
         "role": "Durability",
         "art": "unit_portraits/ub_g1010u00100.webp",
         "charArt": "",
@@ -1441,7 +1441,7 @@
       },
       {
         "id": "1110000810",
-        "name": "Rezin Schnyder's Geara Doga",
+        "name": "基拉‧德卡(莉芝‧舒麗達專用機)",
         "role": "Attack",
         "art": "unit_portraits/ub_g1100u00800.webp",
         "charArt": "portraits/cb_g1100c00900.webp",
@@ -1454,7 +1454,7 @@
       },
       {
         "id": "1125000510",
-        "name": "ReZEL (Commander Type)",
+        "name": "里歇爾(隊長機)",
         "role": "Support",
         "art": "unit_portraits/ub_g1250u00500.webp",
         "charArt": "",
@@ -1467,7 +1467,7 @@
       },
       {
         "id": "1125003310",
-        "name": "Angelo Sauper's Geara Zulu",
+        "name": "基拉‧祖魯(安傑羅‧梭裴專用機)",
         "role": "Attack",
         "art": "unit_portraits/ub_g1250u03300.webp",
         "charArt": "portraits/cb_g1250c00900.webp",
@@ -1480,7 +1480,7 @@
       },
       {
         "id": "1125005110",
-        "name": "Jegan (ECOAS Type)",
+        "name": "積根(ECOAS規格)",
         "role": "Durability",
         "art": "unit_portraits/ub_g1250u05100.webp",
         "charArt": "portraits/cb_g1250c01100.webp",
@@ -1493,7 +1493,7 @@
       },
       {
         "id": "1144001110",
-        "name": "Geara Zulu (Ellic)",
+        "name": "基拉‧祖魯 (艾利克機)",
         "role": "Support",
         "art": "unit_portraits/ub_g1440u01100.webp",
         "charArt": "portraits/cb_g1440c00300.webp",
@@ -1506,7 +1506,7 @@
       },
       {
         "id": "1150000410",
-        "name": "Messer Type-F Naked (Commander Type)",
+        "name": "梅薩F型裸裝（指揮官機）",
         "role": "Support",
         "art": "unit_portraits/ub_g1500u00400.webp",
         "charArt": "",
@@ -1519,7 +1519,7 @@
       },
       {
         "id": "1155000110",
-        "name": "Gundam F90",
+        "name": "高達F90",
         "role": "Attack",
         "art": "unit_portraits/ub_g1550u00100.webp",
         "charArt": "portraits/cb_g1550c00100.webp",
@@ -1532,7 +1532,7 @@
       },
       {
         "id": "1155000610",
-        "name": "Gundam F90 Unit 2",
+        "name": "高達F90 2號機",
         "role": "Support",
         "art": "unit_portraits/ub_g1550u00600.webp",
         "charArt": "portraits/cb_g1550c00200.webp",
@@ -1545,7 +1545,7 @@
       },
       {
         "id": "1159000110",
-        "name": "RF Gelgoog (Charles Rochester)",
+        "name": "RF蓋古克 (夏爾‧羅徹斯特機)",
         "role": "Attack",
         "art": "unit_portraits/ub_g1590u00100.webp",
         "charArt": "portraits/cb_g1590c00100.webp",
@@ -1558,7 +1558,7 @@
       },
       {
         "id": "1162001310",
-        "name": "Berga-Giros (Black Vanguard)",
+        "name": "貝爾格‧基羅斯 (黑色部隊規格)",
         "role": "Support",
         "art": "unit_portraits/ub_g1620u01300.webp",
         "charArt": "",
@@ -1571,7 +1571,7 @@
       },
       {
         "id": "1162001510",
-        "name": "Dahgi-Iris (Earth Federation Forces)",
+        "name": "達基‧伊斯 (地球聯邦軍規格)",
         "role": "Durability",
         "art": "unit_portraits/ub_g1620u01500.webp",
         "charArt": "portraits/cb_g1620c00500.webp",
@@ -1584,7 +1584,7 @@
       },
       {
         "id": "1175000110",
-        "name": "Victory Gundam",
+        "name": "V高達",
         "role": "Attack",
         "art": "unit_portraits/ub_g1750u00100.webp",
         "charArt": "",
@@ -1597,7 +1597,7 @@
       },
       {
         "id": "1200000410",
-        "name": "Gundam Maxter (Super Mode)",
+        "name": "美國之星高達 (超級模式)",
         "role": "Durability",
         "art": "unit_portraits/ub_g2000u00400.webp",
         "charArt": "portraits/cb_g2000c00204.webp",
@@ -1610,7 +1610,7 @@
       },
       {
         "id": "1200000610",
-        "name": "Gundam Rose (Super Mode)",
+        "name": "玫瑰高達 (超級模式)",
         "role": "Durability",
         "art": "unit_portraits/ub_g2000u00600.webp",
         "charArt": "portraits/cb_g2000c00403.webp",
@@ -1623,7 +1623,7 @@
       },
       {
         "id": "1200000810",
-        "name": "Dragon Gundam (Super Mode)",
+        "name": "飛龍高達 (超級模式)",
         "role": "Attack",
         "art": "unit_portraits/ub_g2000u00800.webp",
         "charArt": "portraits/cb_g2000c00304.webp",
@@ -1636,7 +1636,7 @@
       },
       {
         "id": "1200001010",
-        "name": "Bolt Gundam (Super Mode)",
+        "name": "金剛石高達 (超級模式)",
         "role": "Support",
         "art": "unit_portraits/ub_g2000u01000.webp",
         "charArt": "portraits/cb_g2000c00504.webp",
@@ -1649,7 +1649,7 @@
       },
       {
         "id": "1200002210",
-        "name": "Dark Gundam (Ultimate Gundam)",
+        "name": "魔鬼高達 (終極高達)",
         "role": "Durability",
         "art": "unit_portraits/ub_g2000u02200.webp",
         "charArt": "",
@@ -1662,7 +1662,7 @@
       },
       {
         "id": "1217000110",
-        "name": "Gundam Geminass 01",
+        "name": "高達傑姆納斯01",
         "role": "Attack",
         "art": "unit_portraits/ub_g2170u00100.webp",
         "charArt": "",
@@ -1675,7 +1675,7 @@
       },
       {
         "id": "1217000310",
-        "name": "Gundam Geminass 02",
+        "name": "高達傑姆納斯02",
         "role": "Durability",
         "art": "unit_portraits/ub_g2170u00300.webp",
         "charArt": "portraits/cb_g2170c00200.webp",
@@ -1688,7 +1688,7 @@
       },
       {
         "id": "1217000510",
-        "name": "Vayeate Suivant",
+        "name": "拜葉特‧休潘",
         "role": "Attack",
         "art": "unit_portraits/ub_g2170u00500.webp",
         "charArt": "portraits/cb_g2170c00300.webp",
@@ -1701,7 +1701,7 @@
       },
       {
         "id": "1230001910",
-        "name": "Jenice Ennil Custom",
+        "name": "積尼斯 (艾妮露特裝型)",
         "role": "Attack",
         "art": "unit_portraits/ub_g2300u01900.webp",
         "charArt": "portraits/cb_g2300c01100.webp",
@@ -1714,7 +1714,7 @@
       },
       {
         "id": "1230004510",
-        "name": "Lancerow Dawell's Crouda",
+        "name": "克魯達 (蘭斯洛‧達威爾専用機)",
         "role": "Durability",
         "art": "unit_portraits/ub_g2300u04500.webp",
         "charArt": "portraits/cb_g2300c02601.webp",
@@ -1727,7 +1727,7 @@
       },
       {
         "id": "1230005510",
-        "name": "G-Falcon Airmaster",
+        "name": "G獵鷹空王",
         "role": "Support",
         "art": "unit_portraits/ub_g2300u05500.webp",
         "charArt": "portraits/cb_g2300c00301.webp",
@@ -1740,7 +1740,7 @@
       },
       {
         "id": "1230005610",
-        "name": "G-Falcon Leopard",
+        "name": "G獵鷹斑豹",
         "role": "Attack",
         "art": "unit_portraits/ub_g2300u05600.webp",
         "charArt": "portraits/cb_g2300c00401.webp",
@@ -1753,7 +1753,7 @@
       },
       {
         "id": "1240000110",
-        "name": "Turn A Gundam",
+        "name": "逆A高達",
         "role": "Support",
         "art": "unit_portraits/ub_g2400u00100.webp",
         "charArt": "",
@@ -1766,7 +1766,7 @@
       },
       {
         "id": "1240001110",
-        "name": "WaDom",
+        "name": "沃多姆",
         "role": "Attack",
         "art": "unit_portraits/ub_g2400u01100.webp",
         "charArt": "portraits/cb_g2400c01900.webp",
@@ -1779,7 +1779,7 @@
       },
       {
         "id": "1300002810",
-        "name": "GuAIZ Commander Type",
+        "name": "基捷 (指揮官機)",
         "role": "Attack",
         "art": "unit_portraits/ub_g3000u02800.webp",
         "charArt": "",
@@ -1792,7 +1792,7 @@
       },
       {
         "id": "1304000110",
-        "name": "Strike Rouge IWSP",
+        "name": "突擊高達‧紅 (I.W.S.P.裝備)",
         "role": "Support",
         "art": "unit_portraits/ub_g3040u00100.webp",
         "charArt": "portraits/cb_g3000c03401.webp",
@@ -1805,7 +1805,7 @@
       },
       {
         "id": "1304001210",
-        "name": "Sword Calamity Gundam",
+        "name": "巨劍型瘟神高達",
         "role": "Attack",
         "art": "unit_portraits/ub_g3040u01200.webp",
         "charArt": "portraits/cb_g3040c00200.webp",
@@ -1818,7 +1818,7 @@
       },
       {
         "id": "1306000110",
-        "name": "Regenerate Gundam",
+        "name": "重生高達",
         "role": "Attack",
         "art": "unit_portraits/ub_g3060u00100.webp",
         "charArt": "",
@@ -1831,7 +1831,7 @@
       },
       {
         "id": "1306000310",
-        "name": "Gundam Astray Red Frame \"Powered Red\"",
+        "name": "迷惘高達紅色機 高出力型",
         "role": "Attack",
         "art": "unit_portraits/ub_g3060u00300.webp",
         "charArt": "",
@@ -1844,7 +1844,7 @@
       },
       {
         "id": "1307000310",
-        "name": "Gundam Astray Blue Frame Second L Lohengrin Launcher",
+        "name": "迷惘高達藍色機 二型L (羅安格林發射器)",
         "role": "Support",
         "art": "unit_portraits/ub_g3070u00300.webp",
         "charArt": "",
@@ -1857,7 +1857,7 @@
       },
       {
         "id": "1307000410",
-        "name": "Gundam Astray Red Frame Flight Unit",
+        "name": "迷惘高達紅色機 (飛行組件)",
         "role": "Durability",
         "art": "unit_portraits/ub_g3070u00400.webp",
         "charArt": "portraits/cb_g3050c00100.webp",
@@ -1870,7 +1870,7 @@
       },
       {
         "id": "1308000710",
-        "name": "Gundam Astray Blue Frame Second G Sniper Pack",
+        "name": "迷惘高達藍色機 二型G (狙擊背包)",
         "role": "Attack",
         "art": "unit_portraits/ub_g3080u00700.webp",
         "charArt": "",
@@ -1883,7 +1883,7 @@
       },
       {
         "id": "1330003110",
-        "name": "Gunner ZAKU Warrior (Lunamaria Hawke)",
+        "name": "槍擊渣古戰士 (露娜瑪利亞‧賀古專用機)",
         "role": "Support",
         "art": "unit_portraits/ub_g3300u03100.webp",
         "charArt": "portraits/cb_g3300c00400.webp",
@@ -1896,7 +1896,7 @@
       },
       {
         "id": "1330003210",
-        "name": "Gunner ZAKU Warrior (Dearka Elthman)",
+        "name": "槍擊渣古戰士 (迪亞加‧艾士文專用機)",
         "role": "Support",
         "art": "unit_portraits/ub_g3300u03200.webp",
         "charArt": "",
@@ -1909,7 +1909,7 @@
       },
       {
         "id": "1330003610",
-        "name": "Blaze ZAKU Phantom (Rey Za Burrel)",
+        "name": "烈火渣古幻影 (尼爾‧乍‧巴里路專用機)",
         "role": "Durability",
         "art": "unit_portraits/ub_g3300u03600.webp",
         "charArt": "portraits/cb_g3300c00500.webp",
@@ -1922,7 +1922,7 @@
       },
       {
         "id": "1330003710",
-        "name": "Slash ZAKU Phantom (Yzak Joule)",
+        "name": "閃擊渣古幻影 (伊撒古‧尊路專用機)",
         "role": "Attack",
         "art": "unit_portraits/ub_g3300u03700.webp",
         "charArt": "",
@@ -1935,7 +1935,7 @@
       },
       {
         "id": "1330004910",
-        "name": "Windam (Neo Roanoke)",
+        "name": "偉達 (尼奧‧羅洛古專用機)",
         "role": "Durability",
         "art": "unit_portraits/ub_g3300u04900.webp",
         "charArt": "",
@@ -1948,7 +1948,7 @@
       },
       {
         "id": "1330005310",
-        "name": "GOUF Ignited (Heine Westenfluss)",
+        "name": "烈焰老虎 (海涅‧西川專用)",
         "role": "Attack",
         "art": "unit_portraits/ub_g3300u05300.webp",
         "charArt": "",
@@ -1961,7 +1961,7 @@
       },
       {
         "id": "1330006010",
-        "name": "Blaze ZAKU Phantom (Dearka Elthman)",
+        "name": "烈火渣古幻影 (迪亞加‧艾士文專用機)",
         "role": "Support",
         "art": "unit_portraits/ub_g3300u06000.webp",
         "charArt": "portraits/cb_g3300c01000.webp",
@@ -1974,7 +1974,7 @@
       },
       {
         "id": "1330006110",
-        "name": "GOUF Ignited (Yzak Joule)",
+        "name": "烈焰老虎 (伊撒古‧尊路專用)",
         "role": "Attack",
         "art": "unit_portraits/ub_g3300u06100.webp",
         "charArt": "portraits/cb_g3300c00900.webp",
@@ -1987,7 +1987,7 @@
       },
       {
         "id": "1330006510",
-        "name": "Gaia Gundam (Andrew Waldfeld)",
+        "name": "大地高達 (安德列‧包撲菲杜專用機)",
         "role": "Durability",
         "art": "unit_portraits/ub_g3300u06500.webp",
         "charArt": "portraits/cb_g3300c02200.webp",
@@ -2000,7 +2000,7 @@
       },
       {
         "id": "1350000110",
-        "name": "Rising Freedom Gundam",
+        "name": "飛昇自由高達",
         "role": "Support",
         "art": "unit_portraits/ub_g3500u00100.webp",
         "charArt": "",
@@ -2013,7 +2013,7 @@
       },
       {
         "id": "1370009810",
-        "name": "Tieren All-Region Type",
+        "name": "鐵人全領域對應型",
         "role": "Durability",
         "art": "unit_portraits/ub_g3700u09800.webp",
         "charArt": "portraits/cb_g3700c04200.webp",
@@ -2026,7 +2026,7 @@
       },
       {
         "id": "1370010410",
-        "name": "Gadessa (Hilling)",
+        "name": "加迪沙 (曉寧機)",
         "role": "Attack",
         "art": "unit_portraits/ub_g3700u10400.webp",
         "charArt": "",
@@ -2039,7 +2039,7 @@
       },
       {
         "id": "1370010610",
-        "name": "Gaddess",
+        "name": "加迪斯",
         "role": "Support",
         "art": "unit_portraits/ub_g3700u10600.webp",
         "charArt": "portraits/cb_g3700c04100.webp",
@@ -2052,7 +2052,7 @@
       },
       {
         "id": "1375000210",
-        "name": "Gundam Rasiel",
+        "name": "秘天使高達",
         "role": "Support",
         "art": "unit_portraits/ub_g3750u00200.webp",
         "charArt": "portraits/cb_g3750c00300.webp",
@@ -2065,7 +2065,7 @@
       },
       {
         "id": "1375000410",
-        "name": "Gundam Plutone",
+        "name": "審判女神高達",
         "role": "Attack",
         "art": "unit_portraits/ub_g3750u00400.webp",
         "charArt": "portraits/cb_g3750c00100.webp",
@@ -2078,7 +2078,7 @@
       },
       {
         "id": "1378000110",
-        "name": "1.5 Gundam",
+        "name": "1.5高達",
         "role": "Durability",
         "art": "unit_portraits/ub_g3780u00100.webp",
         "charArt": "portraits/cb_g3780c00100.webp",
@@ -2091,7 +2091,7 @@
       },
       {
         "id": "1379000510",
-        "name": "Advanced GN-X",
+        "name": "進階型GN-X",
         "role": "Support",
         "art": "unit_portraits/ub_g3790u00500.webp",
         "charArt": "portraits/cb_g3790c00200.webp",
@@ -2104,7 +2104,7 @@
       },
       {
         "id": "1379000610",
-        "name": "Superbia GN-X",
+        "name": "卓越型GN-X",
         "role": "Durability",
         "art": "unit_portraits/ub_g3790u00600.webp",
         "charArt": "",
@@ -2117,7 +2117,7 @@
       },
       {
         "id": "1400000110",
-        "name": "Gundam AGE-1 Normal",
+        "name": "高達AGE-1 基本型",
         "role": "Support",
         "art": "unit_portraits/ub_g4000u00100.webp",
         "charArt": "",
@@ -2130,7 +2130,7 @@
       },
       {
         "id": "1400003810",
-        "name": "Farsia",
+        "name": "法老西亞",
         "role": "Durability",
         "art": "unit_portraits/ub_g4000u03800.webp",
         "charArt": "portraits/cb_g4000c00201.webp",
@@ -2143,7 +2143,7 @@
       },
       {
         "id": "1400008110",
-        "name": "Gundam AGE-1 Flat",
+        "name": "高達AGE-1 素體型",
         "role": "Support",
         "art": "unit_portraits/ub_g4000u08100.webp",
         "charArt": "portraits/cb_g4000c02101.webp",
@@ -2156,7 +2156,7 @@
       },
       {
         "id": "1401000110",
-        "name": "Gundam AGE-1 Swordia",
+        "name": "高達AGE-1 巨劍型",
         "role": "Durability",
         "art": "unit_portraits/ub_g4010u00100.webp",
         "charArt": "",
@@ -2169,7 +2169,7 @@
       },
       {
         "id": "1408000110",
-        "name": "Gundam AGE-1 Razor",
+        "name": "高達AGE-1 剃刀型",
         "role": "Attack",
         "art": "unit_portraits/ub_g4080u00100.webp",
         "charArt": "",
@@ -2182,7 +2182,7 @@
       },
       {
         "id": "1408000410",
-        "name": "Adele Starks",
+        "name": "亞德魯 強裝型",
         "role": "Attack",
         "art": "unit_portraits/ub_g4080u00400.webp",
         "charArt": "portraits/cb_g4000c02200.webp",
@@ -2195,7 +2195,7 @@
       },
       {
         "id": "1420000110",
-        "name": "G-Self",
+        "name": "G-自我",
         "role": "Attack",
         "art": "unit_portraits/ub_g4200u00100.webp",
         "charArt": "",
@@ -2208,7 +2208,7 @@
       },
       {
         "id": "1420004710",
-        "name": "Barara's Mack Knife",
+        "name": "馬克刀 (芭拉娜機)",
         "role": "Support",
         "art": "unit_portraits/ub_g4200u04700.webp",
         "charArt": "",
@@ -2221,7 +2221,7 @@
       },
       {
         "id": "1430001110",
-        "name": "Hyakuren (Amida)",
+        "name": "百鍊 (亞米達機)",
         "role": "Attack",
         "art": "unit_portraits/ub_g4300u01100.webp",
         "charArt": "portraits/cb_g4300c02000.webp",
@@ -2234,7 +2234,7 @@
       },
       {
         "id": "1430002310",
-        "name": "Graze Ritter (Instructor/Duel Type)",
+        "name": "古尼捷‧烈達 (指揮官機/決鬥規格)",
         "role": "Durability",
         "art": "unit_portraits/ub_g4300u02300.webp",
         "charArt": "portraits/cb_g4300c03101.webp",
@@ -2247,7 +2247,7 @@
       },
       {
         "id": "1430004110",
-        "name": "Shiden (Orga)",
+        "name": "獅電 (澳加機)",
         "role": "Attack",
         "art": "unit_portraits/ub_g4300u04100.webp",
         "charArt": "",
@@ -2260,7 +2260,7 @@
       },
       {
         "id": "1430005310",
-        "name": "Reginlaze (Julieta)",
+        "name": "雷金尼捷 (茱莉雅達機)",
         "role": "Durability",
         "art": "unit_portraits/ub_g4300u05300.webp",
         "charArt": "portraits/cb_g4300c05400.webp",
@@ -2273,7 +2273,7 @@
       },
       {
         "id": "1430005410",
-        "name": "Reginlaze (Iok)",
+        "name": "雷金尼捷 (伊奧克機)",
         "role": "Support",
         "art": "unit_portraits/ub_g4300u05400.webp",
         "charArt": "portraits/cb_g4300c05001.webp",
@@ -2286,7 +2286,7 @@
       },
       {
         "id": "1431000110",
-        "name": "Gundam Astaroth",
+        "name": "高達亞斯塔錄",
         "role": "Attack",
         "art": "unit_portraits/ub_g4310u00100.webp",
         "charArt": "",
@@ -2299,7 +2299,7 @@
       },
       {
         "id": "1431001310",
-        "name": "Gundam Astaroth Origin",
+        "name": "高達亞斯塔錄原型",
         "role": "Durability",
         "art": "unit_portraits/ub_g4310u01300.webp",
         "charArt": "",
@@ -2312,7 +2312,7 @@
       },
       {
         "id": "1431001710",
-        "name": "Gundam Dantalion Half Cowl-T",
+        "name": "高達但他林 (半罩型T)",
         "role": "Attack",
         "art": "unit_portraits/ub_g4310u01700.webp",
         "charArt": "portraits/cb_g4310c01000.webp",
@@ -2325,7 +2325,7 @@
       },
       {
         "id": "1431001810",
-        "name": "Gundam Gremory",
+        "name": "高達格莫瑞",
         "role": "Support",
         "art": "unit_portraits/ub_g4310u01800.webp",
         "charArt": "portraits/cb_g4310c01200.webp",
@@ -2338,7 +2338,7 @@
       },
       {
         "id": "1501003010",
-        "name": "Gundam Lfrith Thorn (Using Gundvölva)",
+        "name": "索恩魔靈高達(鋼沃爾凡使用時)",
         "role": "Durability",
         "art": "unit_portraits/ub_g5010u03000.webp",
         "charArt": "portraits/cb_g5010c02001.webp",
@@ -2351,7 +2351,7 @@
       },
       {
         "id": "1501003310",
-        "name": "Gundam Lfrith Ur (Using Gundvölva)",
+        "name": "烏爾魔靈高達(鋼沃爾凡使用時)",
         "role": "Attack",
         "art": "unit_portraits/ub_g5010u03300.webp",
         "charArt": "portraits/cb_g5010c01901.webp",
@@ -2364,7 +2364,7 @@
       },
       {
         "id": "1501003910",
-        "name": "Guel's Dilanza (Final Battle)",
+        "name": "迪蘭扎 古爾專用機(最終決戰時)",
         "role": "Support",
         "art": "unit_portraits/ub_g5010u03900.webp",
         "charArt": "portraits/cb_g5010c00302.webp",
@@ -2377,7 +2377,7 @@
       },
       {
         "id": "1600000110",
-        "name": "Beginning Gundam",
+        "name": "初始高達",
         "role": "Attack",
         "art": "unit_portraits/ub_g6000u00100.webp",
         "charArt": "portraits/cb_g6000c00100.webp",
@@ -2390,7 +2390,7 @@
       },
       {
         "id": "1600000210",
-        "name": "Beaggai",
+        "name": "熊霸",
         "role": "Support",
         "art": "unit_portraits/ub_g6000u00200.webp",
         "charArt": "portraits/cb_g6000c00200.webp",
@@ -2403,7 +2403,7 @@
       },
       {
         "id": "1650000110",
-        "name": "Red Warrior",
+        "name": "紅戰士",
         "role": "Attack",
         "art": "unit_portraits/ub_g6500u00100.webp",
         "charArt": "",
@@ -2416,7 +2416,7 @@
       },
       {
         "id": "1705001510",
-        "name": "Knight Sazabi",
+        "name": "騎士沙煞比",
         "role": "Durability",
         "art": "unit_portraits/ub_g7050u01500.webp",
         "charArt": "",
@@ -2429,7 +2429,7 @@
       },
       {
         "id": "1750000110",
-        "name": "Zeta Gundam III B Type",
+        "name": "Z高達3號機B型",
         "role": "Durability",
         "art": "unit_portraits/ub_g7500u00100.webp",
         "charArt": "",
@@ -2442,7 +2442,7 @@
       },
       {
         "id": "1764000110",
-        "name": "Gundam Mk-II Prototype unit 0",
+        "name": "高達Mk-Ⅱ試作0號機",
         "role": "Support",
         "art": "unit_portraits/ub_g7640u00100.webp",
         "charArt": "portraits/cb_g7640c00100.webp",
@@ -2455,7 +2455,7 @@
       },
       {
         "id": "1764000310",
-        "name": "Gyan K",
+        "name": "強人K",
         "role": "Attack",
         "art": "unit_portraits/ub_g7640u00300.webp",
         "charArt": "",
@@ -2468,7 +2468,7 @@
       },
       {
         "id": "1850000610",
-        "name": "Halphas Gundam",
+        "name": "哈帕斯高達",
         "role": "Attack",
         "art": "unit_portraits/ub_g8500u00600.webp",
         "charArt": "",
@@ -2481,7 +2481,7 @@
       },
       {
         "id": "1850001210",
-        "name": "Haro",
+        "name": "哈囉",
         "role": "Durability",
         "art": "unit_portraits/ub_g8500u01200.webp",
         "charArt": "",
@@ -2494,7 +2494,7 @@
       },
       {
         "id": "1850002410",
-        "name": "Gundam Ez8 High Mobility Custom",
+        "name": "高達Ez8高機動型",
         "role": "Support",
         "art": "unit_portraits/ub_g8500u02400.webp",
         "charArt": "",
@@ -2507,7 +2507,7 @@
       },
       {
         "id": "1850002510",
-        "name": "Gundam Ez8 Heavy Armed Custom",
+        "name": "高達Ez8重武裝型",
         "role": "Durability",
         "art": "unit_portraits/ub_g8500u02500.webp",
         "charArt": "",
@@ -2520,7 +2520,7 @@
       },
       {
         "id": "1850005310",
-        "name": "Neue Ziel II",
+        "name": "露維‧捷露Ⅱ",
         "role": "Durability",
         "art": "unit_portraits/ub_g8500u05300.webp",
         "charArt": "",
@@ -2535,7 +2535,7 @@
     "SSRS": [
       {
         "id": "1001000450",
-        "name": "Dren & Musai",
+        "name": "多連＆姆賽",
         "role": "",
         "art": "Supporters/sb_g0010s00400.webp",
         "charArt": "",
@@ -2545,7 +2545,7 @@
       },
       {
         "id": "1001000550",
-        "name": "Kycilia Zabi & Gwazine",
+        "name": "基西莉亞‧薩比＆格瓦金",
         "role": "",
         "art": "Supporters/sb_g0010s00500.webp",
         "charArt": "",
@@ -2555,7 +2555,7 @@
       },
       {
         "id": "1001000650",
-        "name": "Gihren Zabi & A BAOA QU",
+        "name": "基連‧薩比＆阿‧巴瓦‧空",
         "role": "",
         "art": "Supporters/sb_g0010s00600.webp",
         "charArt": "",
@@ -2565,7 +2565,7 @@
       },
       {
         "id": "1022000150",
-        "name": "Morline Kitamura & Medea",
+        "name": "瑪寧‧基特姆拉 ＆ 米迪亞",
         "role": "",
         "art": "Supporters/sb_g0220s00100.webp",
         "charArt": "",
@@ -2575,7 +2575,7 @@
       },
       {
         "id": "1080000450",
-        "name": "Ben Wooder & Sudley",
+        "name": "賓‧伍德＆舒德里",
         "role": "",
         "art": "Supporters/sb_g0800s00400.webp",
         "charArt": "",
@@ -2585,7 +2585,7 @@
       },
       {
         "id": "1095000250",
-        "name": "Gottn Goh & Endra",
+        "name": "哥頓‧高＆安多拉",
         "role": "",
         "art": "Supporters/sb_g0950s00200.webp",
         "charArt": "",
@@ -2595,7 +2595,7 @@
       },
       {
         "id": "1095000450",
-        "name": "Emary Ounce & La Vie en Rose",
+        "name": "艾瑪莉‧歐斯＆玫瑰人生號",
         "role": "",
         "art": "Supporters/sb_g0950s00400.webp",
         "charArt": "",
@@ -2605,7 +2605,7 @@
       },
       {
         "id": "1110000250",
-        "name": "Chan Agi & Ra Cailum",
+        "name": "珍‧亞姬＆拉‧格林",
         "role": "",
         "art": "Supporters/sb_g1100s00200.webp",
         "charArt": "",
@@ -2615,7 +2615,7 @@
       },
       {
         "id": "1125000150",
-        "name": "Suberoa Zinnerman & Garencieres",
+        "name": "斯貝洛亞‧辛尼曼＆葛蘭雪",
         "role": "",
         "art": "Supporters/sb_g1250s00100.webp",
         "charArt": "",
@@ -2625,7 +2625,7 @@
       },
       {
         "id": "1125000350",
-        "name": "Hill Dawson & Rewloola (Sleeves)",
+        "name": "希爾‧道森＆略儒拉 (帶袖的)",
         "role": "",
         "art": "Supporters/sb_g1250s00300.webp",
         "charArt": "",
@@ -2635,7 +2635,7 @@
       },
       {
         "id": "1162000250",
-        "name": "Leahlee Edaberry & Space Ark",
+        "name": "莉亞麗·艾利博瑞＆太空方舟號",
         "role": "",
         "art": "Supporters/sb_g1620s00200.webp",
         "charArt": "",
@@ -2645,7 +2645,7 @@
       },
       {
         "id": "1200000250",
-        "name": "Nastasha Zabigov & Gorby II",
+        "name": "娜塔莎‧薩比可夫＆戈爾比Ⅱ",
         "role": "",
         "art": "Supporters/sb_g2000s00200.webp",
         "charArt": "",
@@ -2655,7 +2655,7 @@
       },
       {
         "id": "1210000250",
-        "name": "Lady Une & Bulge",
+        "name": "莉蒂‧安＆巴爾茲",
         "role": "",
         "art": "Supporters/sb_g2100s00200.webp",
         "charArt": "",
@@ -2665,7 +2665,7 @@
       },
       {
         "id": "1230000250",
-        "name": "Sara Tyrell & Freeden",
+        "name": "莎拉‧泰尼爾＆自由號",
         "role": "",
         "art": "Supporters/sb_g2300s00200.webp",
         "charArt": "",
@@ -2675,7 +2675,7 @@
       },
       {
         "id": "1300000250",
-        "name": "Frederick Ades & Vesalius",
+        "name": "菲特列‧阿迪斯＆維薩里號",
         "role": "",
         "art": "Supporters/sb_g3000s00200.webp",
         "charArt": "",
@@ -2685,7 +2685,7 @@
       },
       {
         "id": "1300000350",
-        "name": "Natarle Badgiruel & Dominion",
+        "name": "娜達爾‧巴吉露爾＆主天使號",
         "role": "",
         "art": "Supporters/sb_g3000s00300.webp",
         "charArt": "",
@@ -2695,7 +2695,7 @@
       },
       {
         "id": "1305000150",
-        "name": "Captain GG & ReHOME",
+        "name": "GG船長＆新‧荷姆",
         "role": "",
         "art": "Supporters/sb_g3050s00100.webp",
         "charArt": "",
@@ -2705,7 +2705,7 @@
       },
       {
         "id": "1305000350",
-        "name": "Professor & ReHOME",
+        "name": "教授＆新‧荷姆",
         "role": "",
         "art": "Supporters/sb_g3050s00300.webp",
         "charArt": "",
@@ -2715,7 +2715,7 @@
       },
       {
         "id": "1330000150",
-        "name": "Meyrin Hawke & Minerva",
+        "name": "美玲‧賀古＆智慧女神號",
         "role": "",
         "art": "Supporters/sb_g3300s00100.webp",
         "charArt": "",
@@ -2725,7 +2725,7 @@
       },
       {
         "id": "1336000150",
-        "name": "Selene McGriff & Troya Station",
+        "name": "瑟蕾妮‧麥格瑞夫＆特洛伊太空站",
         "role": "",
         "art": "Supporters/sb_g3360s00100.webp",
         "charArt": "",
@@ -2735,7 +2735,7 @@
       },
       {
         "id": "1370000250",
-        "name": "Kati Mannequin & Virginia",
+        "name": "卡蒂‧馬涅欽＆維珍尼亞級",
         "role": "",
         "art": "Supporters/sb_g3700s00200.webp",
         "charArt": "",
@@ -2745,7 +2745,7 @@
       },
       {
         "id": "1400000250",
-        "name": "Desil Galette & Fa Bose",
+        "name": "德席爾‧加列特＆梵保哲",
         "role": "",
         "art": "Supporters/sb_g4000s00200.webp",
         "charArt": "",
@@ -2755,7 +2755,7 @@
       },
       {
         "id": "1430000250",
-        "name": "Naze Turbine & Hammerhead",
+        "name": "名瀨‧他賓＆鎚頭鯊",
         "role": "",
         "art": "Supporters/sb_g4300s00200.webp",
         "charArt": "",
@@ -2765,7 +2765,7 @@
       },
       {
         "id": "1431000150",
-        "name": "Liarina Morugaton & Biscoe-class Cruiser",
+        "name": "莉雅麗娜‧摩加頓＆比斯科級巡洋艦",
         "role": "",
         "art": "Supporters/sb_g4310s00100.webp",
         "charArt": "",
@@ -2775,7 +2775,7 @@
       },
       {
         "id": "1501000250",
-        "name": "Kenanji Avery & Ulysses",
+        "name": "凱納治‧艾貝里＆尤利西斯",
         "role": "",
         "art": "Supporters/sb_g5010s00200.webp",
         "charArt": "",
@@ -2787,7 +2787,7 @@
     "SR": [
       {
         "id": "1001001110",
-        "name": "Char's Zaku II",
+        "name": "馬沙專用渣古Ⅱ",
         "role": "Durability",
         "art": "unit_portraits/ub_g0010u01100.webp",
         "charArt": "",
@@ -2800,7 +2800,7 @@
       },
       {
         "id": "1001002110",
-        "name": "Char's Z'Gok",
+        "name": "馬沙專用魔蟹",
         "role": "Attack",
         "art": "unit_portraits/ub_g0010u02100.webp",
         "charArt": "",
@@ -2813,7 +2813,7 @@
       },
       {
         "id": "1003000110",
-        "name": "Char's Zaku I",
+        "name": "馬沙專用渣古Ⅰ",
         "role": "Durability",
         "art": "unit_portraits/ub_g0030u00100.webp",
         "charArt": "",
@@ -2826,7 +2826,7 @@
       },
       {
         "id": "1005000110",
-        "name": "GM Interceptor Custom",
+        "name": "吉姆王牌駕駛特裝型",
         "role": "Durability",
         "art": "unit_portraits/ub_g0050u00100.webp",
         "charArt": "",
@@ -2839,7 +2839,7 @@
       },
       {
         "id": "1007000310",
-        "name": "GM Sniper Custom",
+        "name": "吉姆狙擊特裝型",
         "role": "Support",
         "art": "unit_portraits/ub_g0070u00300.webp",
         "charArt": "",
@@ -2852,7 +2852,7 @@
       },
       {
         "id": "1007000510",
-        "name": "Johnny Ridden's Zaku II High Mobility Type",
+        "name": "高機動型渣古Ⅱ(尊尼‧萊登專用機)",
         "role": "Durability",
         "art": "unit_portraits/ub_g0070u00500.webp",
         "charArt": "",
@@ -2865,7 +2865,7 @@
       },
       {
         "id": "1008000210",
-        "name": "Galbaldy Alpha",
+        "name": "哥邦迪α",
         "role": "Attack",
         "art": "unit_portraits/ub_g0080u00200.webp",
         "charArt": "",
@@ -2878,7 +2878,7 @@
       },
       {
         "id": "1009000310",
-        "name": "Jormungand",
+        "name": "大蛇",
         "role": "Support",
         "art": "unit_portraits/ub_g0090u00300.webp",
         "charArt": "",
@@ -2891,7 +2891,7 @@
       },
       {
         "id": "1009000410",
-        "name": "Zudah",
+        "name": "積達",
         "role": "Support",
         "art": "unit_portraits/ub_g0090u00400.webp",
         "charArt": "portraits/cb_g0090c00200.webp",
@@ -2904,7 +2904,7 @@
       },
       {
         "id": "1009000710",
-        "name": "Ze'Gok",
+        "name": "傑卡克",
         "role": "Support",
         "art": "unit_portraits/ub_g0090u00700.webp",
         "charArt": "",
@@ -2917,7 +2917,7 @@
       },
       {
         "id": "1009000810",
-        "name": "Herbert Von Kuspen's Gelgoog",
+        "name": "蓋古克 (赫伯特‧馮‧卡斯班專用)",
         "role": "Attack",
         "art": "unit_portraits/ub_g0090u00800.webp",
         "charArt": "",
@@ -2930,7 +2930,7 @@
       },
       {
         "id": "1012000110",
-        "name": "Guntank Ground Assault Type",
+        "name": "陸戰強襲型太空坦克",
         "role": "Attack",
         "art": "unit_portraits/ub_g0120u00100.webp",
         "charArt": "",
@@ -2943,7 +2943,7 @@
       },
       {
         "id": "1013000110",
-        "name": "Gundam Ground Type (The 08th MS Team)",
+        "name": "陸戰型高達 (第08MS小隊)",
         "role": "Support",
         "art": "unit_portraits/ub_g0130u00100.webp",
         "charArt": "",
@@ -2956,7 +2956,7 @@
       },
       {
         "id": "1013000210",
-        "name": "Gundam Ground Type (GM Head)",
+        "name": "陸戰型高達 (吉姆頭)",
         "role": "Attack",
         "art": "unit_portraits/ub_g0130u00200.webp",
         "charArt": "",
@@ -2969,7 +2969,7 @@
       },
       {
         "id": "1013000510",
-        "name": "GM Sniper",
+        "name": "吉姆狙擊型",
         "role": "Support",
         "art": "unit_portraits/ub_g0130u00500.webp",
         "charArt": "",
@@ -2982,7 +2982,7 @@
       },
       {
         "id": "1023000110",
-        "name": "GM Dominance",
+        "name": "吉姆優越型",
         "role": "Attack",
         "art": "unit_portraits/ub_g0230u00100.webp",
         "charArt": "",
@@ -2995,7 +2995,7 @@
       },
       {
         "id": "1026000110",
-        "name": "Gundam Ground Type",
+        "name": "陸戰型高達",
         "role": "Durability",
         "art": "unit_portraits/ub_g0260u00100.webp",
         "charArt": "",
@@ -3008,7 +3008,7 @@
       },
       {
         "id": "1029002110",
-        "name": "Bishop",
+        "name": "主教",
         "role": "Attack",
         "art": "unit_portraits/ub_g0290u02100.webp",
         "charArt": "",
@@ -3021,7 +3021,7 @@
       },
       {
         "id": "1060002010",
-        "name": "Neuen Bitter's Zaku II F2",
+        "name": "渣古ⅡF2型 (諾恩‧比達機)",
         "role": "Durability",
         "art": "unit_portraits/ub_g0600u02000.webp",
         "charArt": "",
@@ -3034,7 +3034,7 @@
       },
       {
         "id": "1070000110",
-        "name": "Gundam TR-1 \"Hazel\"",
+        "name": "高達TR-1 [海茲爾]",
         "role": "Attack",
         "art": "unit_portraits/ub_g0700u00100.webp",
         "charArt": "",
@@ -3047,7 +3047,7 @@
       },
       {
         "id": "1070000310",
-        "name": "Prototype Asshimar TR-3 \"Kehaar\"",
+        "name": "試作亞斯曼TR-3 [基哈爾]",
         "role": "Support",
         "art": "unit_portraits/ub_g0700u00300.webp",
         "charArt": "",
@@ -3060,7 +3060,7 @@
       },
       {
         "id": "1081000110",
-        "name": "Haman Karn's Gaza C",
+        "name": "加煞C (哈曼‧嘉專用機)",
         "role": "Attack",
         "art": "unit_portraits/ub_g0810u00100.webp",
         "charArt": "",
@@ -3073,7 +3073,7 @@
       },
       {
         "id": "1083000310",
-        "name": "Zeta Gundam Mass Production Type",
+        "name": "量產型Z高達",
         "role": "Durability",
         "art": "unit_portraits/ub_g0830u00300.webp",
         "charArt": "",
@@ -3086,7 +3086,7 @@
       },
       {
         "id": "1085001310",
-        "name": "Zeta Plus C1",
+        "name": "Z PLUS C1型",
         "role": "Support",
         "art": "unit_portraits/ub_g0850u01300.webp",
         "charArt": "",
@@ -3099,7 +3099,7 @@
       },
       {
         "id": "1085001710",
-        "name": "Nouvelle GM III",
+        "name": "新式吉姆Ⅲ",
         "role": "Durability",
         "art": "unit_portraits/ub_g0850u01700.webp",
         "charArt": "",
@@ -3112,7 +3112,7 @@
       },
       {
         "id": "1095001510",
-        "name": "Bawoo Mass Production Type",
+        "name": "量產型龍飛",
         "role": "Attack",
         "art": "unit_portraits/ub_g0950u01500.webp",
         "charArt": "",
@@ -3125,7 +3125,7 @@
       },
       {
         "id": "1095002910",
-        "name": "Qubeley Mass Production Type (Glemy)",
+        "name": "量產型卡碧尼 (古利明軍規格)",
         "role": "Support",
         "art": "unit_portraits/ub_g0950u02900.webp",
         "charArt": "",
@@ -3138,7 +3138,7 @@
       },
       {
         "id": "1098000110",
-        "name": "GM Night Seeker",
+        "name": "吉姆夜襲型",
         "role": "Attack",
         "art": "unit_portraits/ub_g0980u00100.webp",
         "charArt": "",
@@ -3151,7 +3151,7 @@
       },
       {
         "id": "1098000210",
-        "name": "GM Interceptor Custom (Fellow Booster Equipped)",
+        "name": "吉姆王牌駕駛特裝型 (夥伴式推進器裝備)",
         "role": "Durability",
         "art": "unit_portraits/ub_g0980u00200.webp",
         "charArt": "",
@@ -3164,7 +3164,7 @@
       },
       {
         "id": "1098000510",
-        "name": "Anavel Gato's Zaku II High Mobility Type",
+        "name": "高機動型渣古Ⅱ (亞納比路‧賈圖專用)",
         "role": "Attack",
         "art": "unit_portraits/ub_g0980u00500.webp",
         "charArt": "",
@@ -3177,7 +3177,7 @@
       },
       {
         "id": "1133001310",
-        "name": "Full Frontal's Geara Doga",
+        "name": "基拉‧德卡(弗爾‧伏朗托專用機)",
         "role": "Attack",
         "art": "unit_portraits/ub_g1330u01300.webp",
         "charArt": "",
@@ -3190,7 +3190,7 @@
       },
       {
         "id": "1133001410",
-        "name": "Angelo Sauper's Geara Doga",
+        "name": "基拉‧德卡(安傑羅‧梭裴專用機)",
         "role": "Support",
         "art": "unit_portraits/ub_g1330u01400.webp",
         "charArt": "",
@@ -3203,7 +3203,7 @@
       },
       {
         "id": "1162001010",
-        "name": "Den'an-Gei (Black Vanguard)",
+        "name": "迪拿‧奇 (黑色部隊規格)",
         "role": "Attack",
         "art": "unit_portraits/ub_g1620u01000.webp",
         "charArt": "",
@@ -3216,7 +3216,7 @@
       },
       {
         "id": "1166000510",
-        "name": "Batara",
+        "name": "巴塔拉",
         "role": "Support",
         "art": "unit_portraits/ub_g1660u00500.webp",
         "charArt": "",
@@ -3229,7 +3229,7 @@
       },
       {
         "id": "1175000410",
-        "name": "Jamesgun",
+        "name": "占士姆",
         "role": "Attack",
         "art": "unit_portraits/ub_g1750u00400.webp",
         "charArt": "",
@@ -3242,7 +3242,7 @@
       },
       {
         "id": "1175000510",
-        "name": "Javelin",
+        "name": "札比連",
         "role": "Support",
         "art": "unit_portraits/ub_g1750u00500.webp",
         "charArt": "",
@@ -3255,7 +3255,7 @@
       },
       {
         "id": "1175000910",
-        "name": "Gedlav",
+        "name": "基托拉夫",
         "role": "Attack",
         "art": "unit_portraits/ub_g1750u00900.webp",
         "charArt": "",
@@ -3268,7 +3268,7 @@
       },
       {
         "id": "1210002010",
-        "name": "Noin's Aries",
+        "name": "航空力士 (奈機)",
         "role": "Support",
         "art": "unit_portraits/ub_g2100u02000.webp",
         "charArt": "",
@@ -3281,7 +3281,7 @@
       },
       {
         "id": "1210003110",
-        "name": "Taurus (White Fang)",
+        "name": "特拉士 (白色獠牙規格)",
         "role": "Attack",
         "art": "unit_portraits/ub_g2100u03100.webp",
         "charArt": "",
@@ -3294,7 +3294,7 @@
       },
       {
         "id": "1230001410",
-        "name": "Daughtress Command",
+        "name": "多托列斯指揮型",
         "role": "Durability",
         "art": "unit_portraits/ub_g2300u01400.webp",
         "charArt": "",
@@ -3307,7 +3307,7 @@
       },
       {
         "id": "1230002310",
-        "name": "Septem Custom",
+        "name": "瑟普頓改",
         "role": "Support",
         "art": "unit_portraits/ub_g2300u02300.webp",
         "charArt": "",
@@ -3320,7 +3320,7 @@
       },
       {
         "id": "1230002610",
-        "name": "Octape Custom",
+        "name": "奧古度‧艾普改",
         "role": "Attack",
         "art": "unit_portraits/ub_g2300u02600.webp",
         "charArt": "",
@@ -3333,7 +3333,7 @@
       },
       {
         "id": "1230004910",
-        "name": "Gundam Leopard (Underwater Type)",
+        "name": "斑豹高達（水中規格）",
         "role": "Support",
         "art": "unit_portraits/ub_g2300u04900.webp",
         "charArt": "",
@@ -3346,7 +3346,7 @@
       },
       {
         "id": "1240001010",
-        "name": "Armadillo",
+        "name": "犰狳",
         "role": "Support",
         "art": "unit_portraits/ub_g2400u01000.webp",
         "charArt": "",
@@ -3359,7 +3359,7 @@
       },
       {
         "id": "1305000810",
-        "name": "Gundam Astray Gold Frame Amatsu (Incomplete)",
+        "name": "迷惘高達金色機 天 (未完成)",
         "role": "Attack",
         "art": "unit_portraits/ub_g3050u00800.webp",
         "charArt": "",
@@ -3372,7 +3372,7 @@
       },
       {
         "id": "1307000110",
-        "name": "Gundam Astray Blue Frame Full Weapons",
+        "name": "迷惘高達藍色機 (全武裝)",
         "role": "Attack",
         "art": "unit_portraits/ub_g3070u00100.webp",
         "charArt": "",
@@ -3385,7 +3385,7 @@
       },
       {
         "id": "1307000210",
-        "name": "Gundam Astray Blue Frame Scale System",
+        "name": "迷惘高達藍色機 (鱗形推進系統)",
         "role": "Support",
         "art": "unit_portraits/ub_g3070u00200.webp",
         "charArt": "",
@@ -3398,7 +3398,7 @@
       },
       {
         "id": "1330005710",
-        "name": "Murasame (Andrew Waldfeld)",
+        "name": "姆拉沙美 (安德列‧包撲菲杜專用機)",
         "role": "Support",
         "art": "unit_portraits/ub_g3300u05700.webp",
         "charArt": "",
@@ -3411,7 +3411,7 @@
       },
       {
         "id": "1370001710",
-        "name": "GN Arms Type-E",
+        "name": "GN武裝戰機 Type-E",
         "role": "Attack",
         "art": "unit_portraits/ub_g3700u01700.webp",
         "charArt": "",
@@ -3424,7 +3424,7 @@
       },
       {
         "id": "1370001810",
-        "name": "GN Arms Type-D",
+        "name": "GN武裝戰機 Type-D",
         "role": "Durability",
         "art": "unit_portraits/ub_g3700u01800.webp",
         "charArt": "",
@@ -3437,7 +3437,7 @@
       },
       {
         "id": "1370002510",
-        "name": "Tieren Space Commander Type",
+        "name": "鐵人宇宙型 (指揮官機)",
         "role": "Durability",
         "art": "unit_portraits/ub_g3700u02500.webp",
         "charArt": "",
@@ -3450,7 +3450,7 @@
       },
       {
         "id": "1370002710",
-        "name": "Tieren High Mobility Type-B Commander Type",
+        "name": "鐵人高機動B型 (指揮官機)",
         "role": "Attack",
         "art": "unit_portraits/ub_g3700u02700.webp",
         "charArt": "",
@@ -3463,7 +3463,7 @@
       },
       {
         "id": "1370003610",
-        "name": "Union Flag Orbit Package (Orbit Flag)",
+        "name": "聯邦布勒軌道用外裝 (太空工作型布勒)",
         "role": "Durability",
         "art": "unit_portraits/ub_g3700u03600.webp",
         "charArt": "",
@@ -3476,7 +3476,7 @@
       },
       {
         "id": "1370003710",
-        "name": "Union Flag Ground Heavy Armor Type (Shell Flag)",
+        "name": "聯邦布勒陸戰重裝甲型 (裝甲型布勒)",
         "role": "Durability",
         "art": "unit_portraits/ub_g3700u03700.webp",
         "charArt": "",
@@ -3489,7 +3489,7 @@
       },
       {
         "id": "1370004010",
-        "name": "AEU Enact Commander Type",
+        "name": "AEU依拉古頓 (指揮官機)",
         "role": "Support",
         "art": "unit_portraits/ub_g3700u04000.webp",
         "charArt": "",
@@ -3502,7 +3502,7 @@
       },
       {
         "id": "1370007410",
-        "name": "0 Raiser",
+        "name": "0強化戰機",
         "role": "Support",
         "art": "unit_portraits/ub_g3700u07400.webp",
         "charArt": "",
@@ -3515,7 +3515,7 @@
       },
       {
         "id": "1370007510",
-        "name": "Union Realdo Space Type (Katharon Colors)",
+        "name": "聯邦維度宇宙型 (卡達隆配色)",
         "role": "Durability",
         "art": "unit_portraits/ub_g3700u07500.webp",
         "charArt": "",
@@ -3528,7 +3528,7 @@
       },
       {
         "id": "1370007610",
-        "name": "AEU Enact Space Type (Katharon Colors)",
+        "name": "AEU依拉古頓宇宙型 (卡達隆配色)",
         "role": "Support",
         "art": "unit_portraits/ub_g3700u07600.webp",
         "charArt": "",
@@ -3541,7 +3541,7 @@
       },
       {
         "id": "1370009710",
-        "name": "Tieren Space Type (Katharon Colors)",
+        "name": "鐵人宇宙型 (卡達隆配色)",
         "role": "Attack",
         "art": "unit_portraits/ub_g3700u09700.webp",
         "charArt": "",
@@ -3554,7 +3554,7 @@
       },
       {
         "id": "1375000310",
-        "name": "Tieren Kyitwo",
+        "name": "鐵人‧槴子",
         "role": "Durability",
         "art": "unit_portraits/ub_g3750u00300.webp",
         "charArt": "",
@@ -3567,7 +3567,7 @@
       },
       {
         "id": "1400001710",
-        "name": "Adele (Diva Colors)",
+        "name": "亞德魯 (歌姬號配色)",
         "role": "Attack",
         "art": "unit_portraits/ub_g4000u01700.webp",
         "charArt": "",
@@ -3580,7 +3580,7 @@
       },
       {
         "id": "1400002810",
-        "name": "Elmeda",
+        "name": "艾梅達",
         "role": "Durability",
         "art": "unit_portraits/ub_g4000u02800.webp",
         "charArt": "",
@@ -3593,7 +3593,7 @@
       },
       {
         "id": "1400002910",
-        "name": "Gala",
+        "name": "迦拿",
         "role": "Attack",
         "art": "unit_portraits/ub_g4000u02900.webp",
         "charArt": "",
@@ -3606,7 +3606,7 @@
       },
       {
         "id": "1400003010",
-        "name": "Xeno",
+        "name": "哲諾",
         "role": "Support",
         "art": "unit_portraits/ub_g4000u03000.webp",
         "charArt": "",
@@ -3619,7 +3619,7 @@
       },
       {
         "id": "1400003110",
-        "name": "Zila",
+        "name": "茲拿",
         "role": "Support",
         "art": "unit_portraits/ub_g4000u03100.webp",
         "charArt": "",
@@ -3632,7 +3632,7 @@
       },
       {
         "id": "1400003310",
-        "name": "Shaldoll M",
+        "name": "沙魯多魯M",
         "role": "Attack",
         "art": "unit_portraits/ub_g4000u03300.webp",
         "charArt": "",
@@ -3645,7 +3645,7 @@
       },
       {
         "id": "1400004210",
-        "name": "Desperado",
+        "name": "迪斯柏拉杜",
         "role": "Durability",
         "art": "unit_portraits/ub_g4000u04200.webp",
         "charArt": "",
@@ -3658,7 +3658,7 @@
       },
       {
         "id": "1400007310",
-        "name": "Dorado L",
+        "name": "多拉德L",
         "role": "Durability",
         "art": "unit_portraits/ub_g4000u07300.webp",
         "charArt": "",
@@ -3671,7 +3671,7 @@
       },
       {
         "id": "1420001810",
-        "name": "Elf Bullock (Mask Custom)",
+        "name": "艾爾夫‧布魯克 (假面專用機)",
         "role": "Attack",
         "art": "unit_portraits/ub_g4200u01800.webp",
         "charArt": "",
@@ -3684,7 +3684,7 @@
       },
       {
         "id": "1420004910",
-        "name": "Rockpie's Moran",
+        "name": "莫蘭 (洛克帕專用機)",
         "role": "Durability",
         "art": "unit_portraits/ub_g4200u04900.webp",
         "charArt": "",
@@ -3697,7 +3697,7 @@
       },
       {
         "id": "1420005310",
-        "name": "Montero (Mass Production Type)",
+        "name": "蒙特羅 (量產型)",
         "role": "Support",
         "art": "unit_portraits/ub_g4200u05300.webp",
         "charArt": "",
@@ -3710,7 +3710,7 @@
       },
       {
         "id": "1420005810",
-        "name": "Recksnow",
+        "name": "雷克斯諾",
         "role": "Support",
         "art": "unit_portraits/ub_g4200u05800.webp",
         "charArt": "",
@@ -3723,7 +3723,7 @@
       },
       {
         "id": "1420005910",
-        "name": "Moran & Alincato",
+        "name": "莫蘭＆亞里卡特",
         "role": "Support",
         "art": "unit_portraits/ub_g4200u05900.webp",
         "charArt": "",
@@ -3736,7 +3736,7 @@
       },
       {
         "id": "1430001610",
-        "name": "Graze Space Type",
+        "name": "古尼捷 (宇宙型)",
         "role": "Support",
         "art": "unit_portraits/ub_g4300u01600.webp",
         "charArt": "",
@@ -3749,7 +3749,7 @@
       },
       {
         "id": "1430001810",
-        "name": "Graze (Edmonton Colors)",
+        "name": "古尼捷 (艾德蒙頓配色)",
         "role": "Durability",
         "art": "unit_portraits/ub_g4300u01800.webp",
         "charArt": "",
@@ -3762,7 +3762,7 @@
       },
       {
         "id": "1430002210",
-        "name": "Graze Ritter Commander Type",
+        "name": "古尼捷‧烈達 (指揮官機)",
         "role": "Support",
         "art": "unit_portraits/ub_g4300u02200.webp",
         "charArt": "",
@@ -3775,7 +3775,7 @@
       },
       {
         "id": "1430004910",
-        "name": "Graze (Dainsleif Team, Arianrhod Fleet)",
+        "name": "古尼捷 (丹因斯尼夫隊規格/阿麗安蘿德艦隊所屬機)",
         "role": "Support",
         "art": "unit_portraits/ub_g4300u04900.webp",
         "charArt": "",
@@ -3788,7 +3788,7 @@
       },
       {
         "id": "1430005010",
-        "name": "Graze (Iok)",
+        "name": "古尼捷 (伊奧克機)",
         "role": "Attack",
         "art": "unit_portraits/ub_g4300u05000.webp",
         "charArt": "",
@@ -3801,7 +3801,7 @@
       },
       {
         "id": "1430005910",
-        "name": "Hugo (Twins/Older Brother)",
+        "name": "雨果 (雙胞胎機/哥)",
         "role": "Support",
         "art": "unit_portraits/ub_g4300u05900.webp",
         "charArt": "",
@@ -3814,7 +3814,7 @@
       },
       {
         "id": "1430006010",
-        "name": "Hugo (Twins/Younger Brother)",
+        "name": "雨果 (雙胞胎機/弟)",
         "role": "Durability",
         "art": "unit_portraits/ub_g4300u06000.webp",
         "charArt": "",
@@ -3827,7 +3827,7 @@
       },
       {
         "id": "1430007610",
-        "name": "Graze Ritter (McGillis)",
+        "name": "古尼捷‧烈達 (麥基利斯機)",
         "role": "Attack",
         "art": "unit_portraits/ub_g4300u07600.webp",
         "charArt": "",
@@ -3840,7 +3840,7 @@
       },
       {
         "id": "1431000410",
-        "name": "Hakuri Rodi (Yuhana)",
+        "name": "哈古利‧羅迪 (尤漢娜機)",
         "role": "Durability",
         "art": "unit_portraits/ub_g4310u00400.webp",
         "charArt": "",
@@ -3853,7 +3853,7 @@
       },
       {
         "id": "1431001910",
-        "name": "Oltlinde",
+        "name": "奧特琳德",
         "role": "Attack",
         "art": "unit_portraits/ub_g4310u01900.webp",
         "charArt": "",
@@ -3866,7 +3866,7 @@
       },
       {
         "id": "1501001710",
-        "name": "Desultor",
+        "name": "德魯斯特",
         "role": "Support",
         "art": "unit_portraits/ub_g5010u01700.webp",
         "charArt": "",
@@ -3879,7 +3879,7 @@
       },
       {
         "id": "1760000110",
-        "name": "Tornado Gundam",
+        "name": "旋風高達",
         "role": "Durability",
         "art": "unit_portraits/ub_g7600u00100.webp",
         "charArt": "",
@@ -3892,7 +3892,7 @@
       },
       {
         "id": "1771000110",
-        "name": "Striker Custom (Bonds of the Battlefield)",
+        "name": "特裝型打擊型吉姆 (戰場之絆版)",
         "role": "Attack",
         "art": "unit_portraits/ub_g7710u00100.webp",
         "charArt": "",
@@ -3905,7 +3905,7 @@
       },
       {
         "id": "1771000210",
-        "name": "GM Guard Custom",
+        "name": "吉姆防衛特裝型",
         "role": "Attack",
         "art": "unit_portraits/ub_g7710u00200.webp",
         "charArt": "",
@@ -3918,7 +3918,7 @@
       },
       {
         "id": "1779000110",
-        "name": "Extreme Gundam",
+        "name": "極限高達",
         "role": "Attack",
         "art": "unit_portraits/ub_g7790u00100.webp",
         "charArt": "",
@@ -3931,7 +3931,7 @@
       },
       {
         "id": "1850000310",
-        "name": "Phoenix Zero",
+        "name": "鳳凰零式",
         "role": "Attack",
         "art": "unit_portraits/ub_g8500u00300.webp",
         "charArt": "",
@@ -3944,7 +3944,7 @@
       },
       {
         "id": "1850002110",
-        "name": "Prototype Newtype-Use GM Juggler",
+        "name": "NT試驗用吉姆欺敵型",
         "role": "Attack",
         "art": "unit_portraits/ub_g8500u02100.webp",
         "charArt": "",
@@ -3957,7 +3957,7 @@
       },
       {
         "id": "1850002910",
-        "name": "Dom Gross Beil",
+        "name": "大魔大刀型",
         "role": "Attack",
         "art": "unit_portraits/ub_g8500u02900.webp",
         "charArt": "",
@@ -3970,7 +3970,7 @@
       },
       {
         "id": "1850003010",
-        "name": "Dom Bein Nichts",
+        "name": "大魔無腿型",
         "role": "Support",
         "art": "unit_portraits/ub_g8500u03000.webp",
         "charArt": "",
@@ -3985,7 +3985,7 @@
     "R": [
       {
         "id": "1001000410",
-        "name": "Core Fighter",
+        "name": "核心戰機",
         "role": "Attack",
         "art": "unit_portraits/ub_g0010u00400.webp",
         "charArt": "",
@@ -3998,7 +3998,7 @@
       },
       {
         "id": "1001000610",
-        "name": "GM",
+        "name": "吉姆",
         "role": "Attack",
         "art": "unit_portraits/ub_g0010u00600.webp",
         "charArt": "",
@@ -4011,7 +4011,7 @@
       },
       {
         "id": "1001000710",
-        "name": "Ball",
+        "name": "鐵球",
         "role": "Attack",
         "art": "unit_portraits/ub_g0010u00700.webp",
         "charArt": "",
@@ -4024,7 +4024,7 @@
       },
       {
         "id": "1001000810",
-        "name": "Zaku I",
+        "name": "渣古Ⅰ",
         "role": "Support",
         "art": "unit_portraits/ub_g0010u00800.webp",
         "charArt": "",
@@ -4037,7 +4037,7 @@
       },
       {
         "id": "1001000910",
-        "name": "Zaku II",
+        "name": "渣古Ⅱ",
         "role": "Support",
         "art": "unit_portraits/ub_g0010u00900.webp",
         "charArt": "",
@@ -4050,7 +4050,7 @@
       },
       {
         "id": "1001003110",
-        "name": "Magella-Attack",
+        "name": "馬傑拉戰車",
         "role": "Durability",
         "art": "unit_portraits/ub_g0010u03100.webp",
         "charArt": "",
@@ -4063,7 +4063,7 @@
       },
       {
         "id": "1001003410",
-        "name": "Garma Zabi's Dopp",
+        "name": "多普戰機 (加曼‧薩比專用)",
         "role": "Attack",
         "art": "unit_portraits/ub_g0010u03400.webp",
         "charArt": "",
@@ -4076,7 +4076,7 @@
       },
       {
         "id": "1001003710",
-        "name": "Gattle",
+        "name": "卡托爾",
         "role": "Attack",
         "art": "unit_portraits/ub_g0010u03700.webp",
         "charArt": "",
@@ -4089,7 +4089,7 @@
       },
       {
         "id": "1008000110",
-        "name": "Gigan",
+        "name": "蓋剛",
         "role": "Support",
         "art": "unit_portraits/ub_g0080u00100.webp",
         "charArt": "",
@@ -4102,7 +4102,7 @@
       },
       {
         "id": "1009000610",
-        "name": "Oggo",
+        "name": "歐格",
         "role": "Attack",
         "art": "unit_portraits/ub_g0090u00600.webp",
         "charArt": "",
@@ -4115,7 +4115,7 @@
       },
       {
         "id": "1011000110",
-        "name": "GM Camouf",
+        "name": "格姆偽裝型",
         "role": "Durability",
         "art": "unit_portraits/ub_g0110u00100.webp",
         "charArt": "",
@@ -4128,7 +4128,7 @@
       },
       {
         "id": "1013000610",
-        "name": "GM Early Type",
+        "name": "初期型吉姆",
         "role": "Durability",
         "art": "unit_portraits/ub_g0130u00600.webp",
         "charArt": "",
@@ -4141,7 +4141,7 @@
       },
       {
         "id": "1013000710",
-        "name": "Ball Type K",
+        "name": "鐵球K型",
         "role": "Attack",
         "art": "unit_portraits/ub_g0130u00700.webp",
         "charArt": "",
@@ -4154,7 +4154,7 @@
       },
       {
         "id": "1013001410",
-        "name": "GM Ground Type",
+        "name": "吉姆陸戰型",
         "role": "Support",
         "art": "unit_portraits/ub_g0130u01400.webp",
         "charArt": "",
@@ -4167,7 +4167,7 @@
       },
       {
         "id": "1013001510",
-        "name": "Guntank Mass Production Type",
+        "name": "量產型太空坦克",
         "role": "Support",
         "art": "unit_portraits/ub_g0130u01500.webp",
         "charArt": "",
@@ -4180,7 +4180,7 @@
       },
       {
         "id": "1017000310",
-        "name": "Guncannon Mass Production Type",
+        "name": "量產型鐳射大砲",
         "role": "Support",
         "art": "unit_portraits/ub_g0170u00300.webp",
         "charArt": "",
@@ -4193,7 +4193,7 @@
       },
       {
         "id": "1017000410",
-        "name": "GM Command",
+        "name": "吉姆指揮官用型",
         "role": "Durability",
         "art": "unit_portraits/ub_g0170u00400.webp",
         "charArt": "",
@@ -4206,7 +4206,7 @@
       },
       {
         "id": "1069000210",
-        "name": "GM Canard",
+        "name": "鴨式吉姆",
         "role": "Support",
         "art": "unit_portraits/ub_g0690u00200.webp",
         "charArt": "",
@@ -4219,7 +4219,7 @@
       },
       {
         "id": "1080001110",
-        "name": "Rick Dias",
+        "name": "力奇‧戴亞",
         "role": "Support",
         "art": "unit_portraits/ub_g0800u01100.webp",
         "charArt": "",
@@ -4232,7 +4232,7 @@
       },
       {
         "id": "1080001310",
-        "name": "Nemo",
+        "name": "雷姆",
         "role": "Attack",
         "art": "unit_portraits/ub_g0800u01300.webp",
         "charArt": "",
@@ -4245,7 +4245,7 @@
       },
       {
         "id": "1080001410",
-        "name": "GM II (AEUG)",
+        "name": "吉姆Ⅱ (奧干規格)",
         "role": "Attack",
         "art": "unit_portraits/ub_g0800u01400.webp",
         "charArt": "",
@@ -4258,7 +4258,7 @@
       },
       {
         "id": "1080001510",
-        "name": "GM II (EFSF)",
+        "name": "吉姆Ⅱ (地球聯邦軍規格)",
         "role": "Durability",
         "art": "unit_portraits/ub_g0800u01500.webp",
         "charArt": "",
@@ -4271,7 +4271,7 @@
       },
       {
         "id": "1080001610",
-        "name": "Hizack (Titans)",
+        "name": "高渣古 (泰坦斯規格)",
         "role": "Attack",
         "art": "unit_portraits/ub_g0800u01600.webp",
         "charArt": "",
@@ -4284,7 +4284,7 @@
       },
       {
         "id": "1080001710",
-        "name": "Hizack (EFSF)",
+        "name": "高渣古 (地球聯邦軍規格)",
         "role": "Support",
         "art": "unit_portraits/ub_g0800u01700.webp",
         "charArt": "",
@@ -4297,7 +4297,7 @@
       },
       {
         "id": "1080001810",
-        "name": "Hizack Custom",
+        "name": "高渣古改良型",
         "role": "Durability",
         "art": "unit_portraits/ub_g0800u01800.webp",
         "charArt": "",
@@ -4310,7 +4310,7 @@
       },
       {
         "id": "1080001910",
-        "name": "Marasai",
+        "name": "姆歷沙",
         "role": "Support",
         "art": "unit_portraits/ub_g0800u01900.webp",
         "charArt": "",
@@ -4323,7 +4323,7 @@
       },
       {
         "id": "1080002010",
-        "name": "Barzam",
+        "name": "巴煞",
         "role": "Support",
         "art": "unit_portraits/ub_g0800u02000.webp",
         "charArt": "",
@@ -4336,7 +4336,7 @@
       },
       {
         "id": "1080003310",
-        "name": "Galbaldy Beta",
+        "name": "哥邦迪β",
         "role": "Attack",
         "art": "unit_portraits/ub_g0800u03300.webp",
         "charArt": "",
@@ -4349,7 +4349,7 @@
       },
       {
         "id": "1083000610",
-        "name": "Nemo III",
+        "name": "雷姆Ⅲ",
         "role": "Attack",
         "art": "unit_portraits/ub_g0830u00600.webp",
         "charArt": "",
@@ -4362,7 +4362,7 @@
       },
       {
         "id": "1085001810",
-        "name": "Nero",
+        "name": "尼洛",
         "role": "Support",
         "art": "unit_portraits/ub_g0850u01800.webp",
         "charArt": "",
@@ -4375,7 +4375,7 @@
       },
       {
         "id": "1085001910",
-        "name": "Gaza E",
+        "name": "加煞E",
         "role": "Attack",
         "art": "unit_portraits/ub_g0850u01900.webp",
         "charArt": "",
@@ -4388,7 +4388,7 @@
       },
       {
         "id": "1095000410",
-        "name": "GM III",
+        "name": "吉姆Ⅲ",
         "role": "Durability",
         "art": "unit_portraits/ub_g0950u00400.webp",
         "charArt": "",
@@ -4401,7 +4401,7 @@
       },
       {
         "id": "1095000510",
-        "name": "Gaza D",
+        "name": "加煞D",
         "role": "Support",
         "art": "unit_portraits/ub_g0950u00500.webp",
         "charArt": "",
@@ -4414,7 +4414,7 @@
       },
       {
         "id": "1095000910",
-        "name": "Galluss J",
+        "name": "札斯J",
         "role": "Attack",
         "art": "unit_portraits/ub_g0950u00900.webp",
         "charArt": "",
@@ -4427,7 +4427,7 @@
       },
       {
         "id": "1095001010",
-        "name": "Zssa",
+        "name": "瑞莎",
         "role": "Durability",
         "art": "unit_portraits/ub_g0950u01000.webp",
         "charArt": "",
@@ -4440,7 +4440,7 @@
       },
       {
         "id": "1095003510",
-        "name": "Dwadge",
+        "name": "多華茲",
         "role": "Attack",
         "art": "unit_portraits/ub_g0950u03500.webp",
         "charArt": "",
@@ -4453,7 +4453,7 @@
       },
       {
         "id": "1095003810",
-        "name": "Geze",
+        "name": "基積",
         "role": "Attack",
         "art": "unit_portraits/ub_g0950u03800.webp",
         "charArt": "",
@@ -4466,7 +4466,7 @@
       },
       {
         "id": "1095003910",
-        "name": "Yazan Gable's Geze",
+        "name": "基積(日札‧基保機)",
         "role": "Support",
         "art": "unit_portraits/ub_g0950u03900.webp",
         "charArt": "",
@@ -4479,7 +4479,7 @@
       },
       {
         "id": "1095004010",
-        "name": "Capule",
+        "name": "卡普爾",
         "role": "Attack",
         "art": "unit_portraits/ub_g0950u04000.webp",
         "charArt": "",
@@ -4492,7 +4492,7 @@
       },
       {
         "id": "1095004110",
-        "name": "Catl",
+        "name": "凱多爾",
         "role": "Support",
         "art": "unit_portraits/ub_g0950u04100.webp",
         "charArt": "",
@@ -4505,7 +4505,7 @@
       },
       {
         "id": "1095004410",
-        "name": "EWAC Zack",
+        "name": "偵察型渣古",
         "role": "Attack",
         "art": "unit_portraits/ub_g0950u04400.webp",
         "charArt": "",
@@ -4518,7 +4518,7 @@
       },
       {
         "id": "1200001710",
-        "name": "Dark Army",
+        "name": "死亡軍團",
         "role": "Durability",
         "art": "unit_portraits/ub_g2000u01700.webp",
         "charArt": "",
@@ -4531,7 +4531,7 @@
       },
       {
         "id": "1200003310",
-        "name": "Cushing",
+        "name": "卡星",
         "role": "Attack",
         "art": "unit_portraits/ub_g2000u03300.webp",
         "charArt": "",
@@ -4544,7 +4544,7 @@
       },
       {
         "id": "1200003410",
-        "name": "Nobusshi",
+        "name": "洛布席",
         "role": "Durability",
         "art": "unit_portraits/ub_g2000u03400.webp",
         "charArt": "",
@@ -4557,7 +4557,7 @@
       },
       {
         "id": "1200003510",
-        "name": "Hurricane Gundam",
+        "name": "風車高達",
         "role": "Attack",
         "art": "unit_portraits/ub_g2000u03500.webp",
         "charArt": "",
@@ -4570,7 +4570,7 @@
       },
       {
         "id": "1210001310",
-        "name": "Leo",
+        "name": "力傲",
         "role": "Attack",
         "art": "unit_portraits/ub_g2100u01300.webp",
         "charArt": "",
@@ -4583,7 +4583,7 @@
       },
       {
         "id": "1210001410",
-        "name": "Leo Space Type",
+        "name": "力傲 (宇宙規格)",
         "role": "Durability",
         "art": "unit_portraits/ub_g2100u01400.webp",
         "charArt": "",
@@ -4596,7 +4596,7 @@
       },
       {
         "id": "1210001510",
-        "name": "Leo Ground Type (OZ)",
+        "name": "力傲 (OZ地上規格)",
         "role": "Durability",
         "art": "unit_portraits/ub_g2100u01500.webp",
         "charArt": "",
@@ -4609,7 +4609,7 @@
       },
       {
         "id": "1210001610",
-        "name": "Leo Space Type (OZ)",
+        "name": "力傲 (OZ宇宙規格)",
         "role": "Support",
         "art": "unit_portraits/ub_g2100u01600.webp",
         "charArt": "",
@@ -4622,7 +4622,7 @@
       },
       {
         "id": "1210001710",
-        "name": "Leo Ground Type Shoulder-Mounted Cannon",
+        "name": "力傲 (肩部加農砲裝備)",
         "role": "Support",
         "art": "unit_portraits/ub_g2100u01700.webp",
         "charArt": "",
@@ -4635,7 +4635,7 @@
       },
       {
         "id": "1210001810",
-        "name": "Tragos",
+        "name": "多拉哥士",
         "role": "Attack",
         "art": "unit_portraits/ub_g2100u01800.webp",
         "charArt": "",
@@ -4648,7 +4648,7 @@
       },
       {
         "id": "1230001210",
-        "name": "Daughtress",
+        "name": "多托列斯",
         "role": "Attack",
         "art": "unit_portraits/ub_g2300u01200.webp",
         "charArt": "",
@@ -4661,7 +4661,7 @@
       },
       {
         "id": "1230001310",
-        "name": "Daughtress Weapon",
+        "name": "多托列斯武裝型",
         "role": "Attack",
         "art": "unit_portraits/ub_g2300u01300.webp",
         "charArt": "",
@@ -4674,7 +4674,7 @@
       },
       {
         "id": "1230001710",
-        "name": "Jenice",
+        "name": "積尼斯",
         "role": "Attack",
         "art": "unit_portraits/ub_g2300u01700.webp",
         "charArt": "",
@@ -4687,7 +4687,7 @@
       },
       {
         "id": "1230001810",
-        "name": "Jenice Custom Ground Battle Type",
+        "name": "積尼斯改",
         "role": "Support",
         "art": "unit_portraits/ub_g2300u01800.webp",
         "charArt": "",
@@ -4700,7 +4700,7 @@
       },
       {
         "id": "1230002110",
-        "name": "Juracg",
+        "name": "祖拉格",
         "role": "Support",
         "art": "unit_portraits/ub_g2300u02100.webp",
         "charArt": "",
@@ -4713,7 +4713,7 @@
       },
       {
         "id": "1230002910",
-        "name": "Pyron",
+        "name": "帕隆",
         "role": "Durability",
         "art": "unit_portraits/ub_g2300u02900.webp",
         "charArt": "",
@@ -4726,7 +4726,7 @@
       },
       {
         "id": "1230003510",
-        "name": "Estardoth",
+        "name": "艾斯達托斯",
         "role": "Attack",
         "art": "unit_portraits/ub_g2300u03500.webp",
         "charArt": "",
@@ -4739,7 +4739,7 @@
       },
       {
         "id": "1300001710",
-        "name": "Strike Dagger",
+        "name": "突擊達加",
         "role": "Support",
         "art": "unit_portraits/ub_g3000u01700.webp",
         "charArt": "",
@@ -4752,7 +4752,7 @@
       },
       {
         "id": "1300002110",
-        "name": "ZuOOT",
+        "name": "渣烏度",
         "role": "Attack",
         "art": "unit_portraits/ub_g3000u02100.webp",
         "charArt": "",
@@ -4765,7 +4765,7 @@
       },
       {
         "id": "1300002210",
-        "name": "GINN",
+        "name": "捷武",
         "role": "Attack",
         "art": "unit_portraits/ub_g3000u02200.webp",
         "charArt": "",
@@ -4778,7 +4778,7 @@
       },
       {
         "id": "1300002310",
-        "name": "GINN Heavy Ion Cannon \"M69 Barrus Modified\"",
+        "name": "捷武 (M69象式改‧特火重粒子砲裝備)",
         "role": "Support",
         "art": "unit_portraits/ub_g3000u02300.webp",
         "charArt": "",
@@ -4791,7 +4791,7 @@
       },
       {
         "id": "1300002410",
-        "name": "GINN D-Type",
+        "name": "捷武 (D裝備)",
         "role": "Support",
         "art": "unit_portraits/ub_g3000u02400.webp",
         "charArt": "",
@@ -4804,7 +4804,7 @@
       },
       {
         "id": "1300003210",
-        "name": "Skygrasper",
+        "name": "空中霸王",
         "role": "Attack",
         "art": "unit_portraits/ub_g3000u03200.webp",
         "charArt": "",
@@ -4817,7 +4817,7 @@
       },
       {
         "id": "1300003910",
-        "name": "Moebius Linear Gun",
+        "name": "米別斯 (線性砲裝備)",
         "role": "Support",
         "art": "unit_portraits/ub_g3000u03900.webp",
         "charArt": "",
@@ -4830,7 +4830,7 @@
       },
       {
         "id": "1305000610",
-        "name": "Gundam Astray Gold Frame (One Arm)",
+        "name": "迷惘高達金色機 (獨臂)",
         "role": "Attack",
         "art": "unit_portraits/ub_g3050u00600.webp",
         "charArt": "",
@@ -4843,7 +4843,7 @@
       },
       {
         "id": "1370002310",
-        "name": "Tieren Ground Type",
+        "name": "鐵人地上型",
         "role": "Attack",
         "art": "unit_portraits/ub_g3700u02300.webp",
         "charArt": "",
@@ -4856,7 +4856,7 @@
       },
       {
         "id": "1370002410",
-        "name": "Tieren Space Type",
+        "name": "鐵人宇宙型",
         "role": "Durability",
         "art": "unit_portraits/ub_g3700u02400.webp",
         "charArt": "",
@@ -4869,7 +4869,7 @@
       },
       {
         "id": "1370002810",
-        "name": "Tieren High Mobility Type",
+        "name": "鐵人高機動型",
         "role": "Support",
         "art": "unit_portraits/ub_g3700u02800.webp",
         "charArt": "",
@@ -4882,7 +4882,7 @@
       },
       {
         "id": "1370003110",
-        "name": "Anf",
+        "name": "闇虎",
         "role": "Attack",
         "art": "unit_portraits/ub_g3700u03100.webp",
         "charArt": "",
@@ -4895,7 +4895,7 @@
       },
       {
         "id": "1370003810",
-        "name": "AEU Enact",
+        "name": "AEU依拉古頓",
         "role": "Durability",
         "art": "unit_portraits/ub_g3700u03800.webp",
         "charArt": "",
@@ -4908,7 +4908,7 @@
       },
       {
         "id": "1370004910",
-        "name": "Union Flag",
+        "name": "聯邦布勒",
         "role": "Attack",
         "art": "unit_portraits/ub_g3700u04900.webp",
         "charArt": "",
@@ -4921,7 +4921,7 @@
       },
       {
         "id": "1370005210",
-        "name": "Union Realdo",
+        "name": "聯邦維度",
         "role": "Support",
         "art": "unit_portraits/ub_g3700u05200.webp",
         "charArt": "",
@@ -4934,7 +4934,7 @@
       },
       {
         "id": "1370005410",
-        "name": "AEU Hellion",
+        "name": "AEU凱里昂",
         "role": "Support",
         "art": "unit_portraits/ub_g3700u05400.webp",
         "charArt": "",
@@ -4947,7 +4947,7 @@
       },
       {
         "id": "1420005710",
-        "name": "Recten (Instructor Type)",
+        "name": "雷克汀 (教官機)",
         "role": "Durability",
         "art": "unit_portraits/ub_g4200u05700.webp",
         "charArt": "",
@@ -4960,7 +4960,7 @@
       },
       {
         "id": "1430001410",
-        "name": "Graze",
+        "name": "古尼捷",
         "role": "Durability",
         "art": "unit_portraits/ub_g4300u01400.webp",
         "charArt": "",
@@ -4973,7 +4973,7 @@
       },
       {
         "id": "1430002910",
-        "name": "Man Rodi",
+        "name": "曼‧羅迪",
         "role": "Attack",
         "art": "unit_portraits/ub_g4300u02900.webp",
         "charArt": "",
@@ -4986,7 +4986,7 @@
       },
       {
         "id": "1430003110",
-        "name": "New Mobile Worker (Tekkadan)",
+        "name": "鐵華團機動工兵 (新型)",
         "role": "Attack",
         "art": "unit_portraits/ub_g4300u03100.webp",
         "charArt": "",
@@ -4999,7 +4999,7 @@
       },
       {
         "id": "1430003310",
-        "name": "Mobile Worker Rear Support Type (Gjallarhorn)",
+        "name": "加拉爾號角機動工兵 (後方支援裝備)",
         "role": "Support",
         "art": "unit_portraits/ub_g4300u03300.webp",
         "charArt": "",
@@ -5012,7 +5012,7 @@
       },
       {
         "id": "1430005610",
-        "name": "Hugo JPT Trust Type",
+        "name": "雨果 (JPT信託規格)",
         "role": "Support",
         "art": "unit_portraits/ub_g4300u05600.webp",
         "charArt": "",
@@ -5025,7 +5025,7 @@
       },
       {
         "id": "1430005710",
-        "name": "Man Rodi JPT Trust Type",
+        "name": "曼‧羅迪 (JPT信託規格)",
         "role": "Durability",
         "art": "unit_portraits/ub_g4300u05700.webp",
         "charArt": "",
@@ -5038,7 +5038,7 @@
       },
       {
         "id": "1430006210",
-        "name": "Garm Rodi Commander Type",
+        "name": "加姆‧羅迪 (指揮官機)",
         "role": "Attack",
         "art": "unit_portraits/ub_g4300u06200.webp",
         "charArt": "",
@@ -5051,7 +5051,7 @@
       },
       {
         "id": "1501001010",
-        "name": "Demi Trainer",
+        "name": "學園訓練機",
         "role": "Durability",
         "art": "unit_portraits/ub_g5010u01000.webp",
         "charArt": "",
@@ -5064,7 +5064,7 @@
       },
       {
         "id": "1763000110",
-        "name": "Zanny",
+        "name": "薩尼",
         "role": "Support",
         "art": "unit_portraits/ub_g7630u00100.webp",
         "charArt": "",

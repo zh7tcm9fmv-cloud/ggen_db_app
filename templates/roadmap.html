@@ -523,6 +523,15 @@
     if (/^https?:\/\//i.test(name) || String(name).startsWith('/')) return String(name);
     return ASSET_BASE + String(name).replace(/^\.\//, '');
   }
+  /** Popup slides: prefer display/ (~1100px) then full-res hash. Charts stay full-res. */
+  function popAssetUrl(name) {
+    if (!name) return '';
+    if (/^https?:\/\//i.test(name) || String(name).startsWith('/')) return String(name);
+    const webp = webpName(String(name)).replace(/^\.\//, '');
+    const base = (ASSET_BASE || '').replace(/\/?$/, '/');
+    if (!base) return webp;
+    return base + 'display/' + webp;
+  }
   function uiAssetUrl(name) {
     if (!name) return '';
     if (/^https?:\/\//i.test(name) || String(name).startsWith('/')) return String(name);
@@ -593,15 +602,22 @@
       .replace(/&/g, '&amp;').replace(/</g, '&lt;')
       .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
-  /* WebP-first (CDN ~5× smaller than PNG). PNG only on decode/404 failure. */
+  /* WebP-first. Popups try display/ then full WebP then PNG. Charts use full-res only. */
   function imgTag(src, opts) {
     opts = opts || {};
     const webp = webpName(src);
     const png = pngFallback(webp);
     const prio = opts.priority ? ' fetchpriority="high"' : '';
     const loading = opts.priority ? 'eager' : 'lazy';
-    return '<img src="' + assetUrl(webp) + '" alt="" loading="' + loading + '" decoding="async"' + prio +
-      ' onerror="this.onerror=null;this.src=\'' + assetUrl(png) + '\'">';
+    const useDisplay = !!opts.display;
+    const primary = useDisplay ? popAssetUrl(webp) : assetUrl(webp);
+    const full = assetUrl(webp);
+    const pngUrl = assetUrl(png);
+    const onerr = useDisplay
+      ? 'this.onerror=function(){this.onerror=null;this.src=\'' + pngUrl + '\'};this.src=\'' + full + '\';'
+      : 'this.onerror=null;this.src=\'' + pngUrl + '\';';
+    return '<img src="' + primary + '" alt="" loading="' + loading + '" decoding="async"' + prio +
+      ' onerror="' + onerr + '">';
   }
 
   const warmCache = new Map();
@@ -632,7 +648,10 @@
   function warmEvent(ev) {
     const names = assetNamesForEvent(ev).slice(0, 2);
     names.forEach(function (name) {
-      warmUrl(assetUrl(webpName(name)));
+      const webp = webpName(name);
+      warmUrl(popAssetUrl(webp)).then(function (im) {
+        if (!im) warmUrl(assetUrl(webp));
+      });
     });
   }
   function isBannerAspect(w, h) {
@@ -683,23 +702,43 @@
     }
   }
   let slideIndex = 0;
-  function setSlide(i) {
-    const slides = pop.querySelectorAll('.pop-viewer .slide');
-    if (!slides.length) return;
-    slideIndex = (i + slides.length) % slides.length;
-    slides.forEach(function (s, n) {
-      s.classList.toggle('is-active', n === slideIndex);
-    });
+  let slideSrcList = [];
+  function paintActiveSlide() {
+    const img = pop.querySelector('.pop-viewer .slide img');
+    if (!img || !slideSrcList.length) return;
+    const src = slideSrcList[slideIndex];
+    const webp = webpName(src);
+    img.onerror = function () {
+      img.onerror = function () {
+        img.onerror = null;
+        img.src = assetUrl(pngFallback(webp));
+      };
+      img.src = assetUrl(webp);
+    };
+    img.src = popAssetUrl(webp);
+    img.loading = 'eager';
+    img.fetchPriority = 'high';
     const counter = pop.querySelector('.pop-counter');
     if (counter) {
-      counter.hidden = slides.length < 2;
-      counter.textContent = (slideIndex + 1) + ' / ' + slides.length;
+      counter.hidden = slideSrcList.length < 2;
+      counter.textContent = (slideIndex + 1) + ' / ' + slideSrcList.length;
     }
     const prev = pop.querySelector('#popPrev');
     const next = pop.querySelector('#popNext');
-    if (prev) prev.hidden = slides.length < 2;
-    if (next) next.hidden = slides.length < 2;
+    if (prev) prev.hidden = slideSrcList.length < 2;
+    if (next) next.hidden = slideSrcList.length < 2;
     layoutPopMediaFromDom();
+    /* Prefetch neighbors only (display size). */
+    [slideIndex + 1, slideIndex - 1].forEach(function (n) {
+      if (n < 0 || n >= slideSrcList.length) return;
+      const w = webpName(slideSrcList[n]);
+      warmUrl(popAssetUrl(w));
+    });
+  }
+  function setSlide(i) {
+    if (!slideSrcList.length) return;
+    slideIndex = (i + slideSrcList.length) % slideSrcList.length;
+    paintActiveSlide();
   }
   function placeHotspots() {
     stage.querySelectorAll('.hotspot, .hotspot-badge').forEach(function (el) { el.remove(); });
@@ -777,6 +816,8 @@
       pop.hidden = true;
       pop.setAttribute('aria-hidden', 'true');
       pop.innerHTML = '';
+      slideSrcList = [];
+      slideIndex = 0;
       scrim.hidden = true;
       scrim.setAttribute('aria-hidden', 'true');
     }, 280);
@@ -820,15 +861,17 @@
     const titleInSlides = !!(titleImg && slideSrcs.indexOf(titleImg) >= 0);
     const showStripBanner = !!(titleImg && galleryImgs.length && !titleInSlides);
     const titleFig = showStripBanner
-      ? '<figure class="item title-art" aria-label="' + label + '">' + imgTag(titleImg, { priority: true }) + '</figure>'
+      ? '<figure class="item title-art" aria-label="' + label + '">' + imgTag(titleImg, { priority: true, display: true }) + '</figure>'
       : '';
     if (titleImg && galleryImgs.length && !titleInSlides) {
       /* Full-page titles used to vanish (strip hidden). Keep strip; classify may promote. */
     }
-    const slidesHtml = slideSrcs.map(function (src, i) {
-      return '<figure class="item slide' + (i === 0 ? ' is-active' : '') + '">' +
-        imgTag(src, { priority: i === 0 }) + '</figure>';
-    }).join('');
+    /* One slide node only — swap src on nav (never mount 5–7×1920 WebPs at once). */
+    slideSrcList = slideSrcs.slice();
+    slideIndex = 0;
+    const slidesHtml = slideSrcs.length
+      ? '<figure class="item slide is-active">' + imgTag(slideSrcs[0], { priority: true, display: true }) + '</figure>'
+      : '';
     const viewer = slideSrcs.length
       ? '<div class="pop-viewer">' +
         slidesHtml +
@@ -868,13 +911,6 @@
 
     function finishOpen() {
       setSlide(0);
-      layoutPopMediaFromDom();
-      /* Prefetch next slide only — keep first paint snappy for multi-image notices. */
-      const slides = pop.querySelectorAll('.pop-viewer .slide img');
-      if (slides.length > 1) {
-        const next = slides[1];
-        if (next && next.src) warmUrl(next.src);
-      }
     }
     const strip = pop.querySelector('.title-art');
     /* Only wait on visible first media — do not block open on lazy gallery slides. */
