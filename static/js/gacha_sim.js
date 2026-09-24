@@ -535,6 +535,12 @@ window.GgenGachaSim = (function () {
     return !!(poolMeta && poolMeta.bulk_mode && primaryPullN() >= 20);
   }
 
+  function shouldHideOnceButton() {
+    if (isBulkTicketPool()) return true;
+    /* While pool JSON is loading for a banner deep-link, don't flash Use 1 time. */
+    return !!(poolMeta && poolMeta.source === "pending" && poolMeta.gasha_id);
+  }
+
   function guaranteeTailN() {
     var t = Number(poolMeta && poolMeta.guarantee_tail);
     if (t > 0) return t;
@@ -551,18 +557,31 @@ window.GgenGachaSim = (function () {
   function syncPullButtons() {
     var one = document.getElementById("one");
     var ten = document.getElementById("ten");
+    var again = document.getElementById("again");
     var bulk = isBulkTicketPool();
+    var hideOne = shouldHideOnceButton();
+    var spent = bulk && !!sim.bulkSpent;
     var n = primaryPullN();
     if (one) {
-      one.hidden = !!bulk;
-      one.setAttribute("aria-hidden", bulk ? "true" : "false");
-      if (!bulk) one.innerHTML = "<small>" + pullButtonLabel(1) + "</small>";
+      one.hidden = !!hideOne;
+      one.setAttribute("aria-hidden", hideOne ? "true" : "false");
+      one.style.display = hideOne ? "none" : "";
+      if (!hideOne) one.innerHTML = "<small>" + pullButtonLabel(1) + "</small>";
     }
     if (ten) {
       ten.hidden = false;
       ten.setAttribute("aria-hidden", "false");
+      ten.style.display = "";
       ten.classList.toggle("pull--bulk", !!bulk);
+      ten.classList.toggle("pull--spent", !!spent);
+      ten.disabled = !!spent;
       ten.innerHTML = "<small>" + pullButtonLabel(bulk ? n : 10) + "</small>";
+      ten.title = spent ? tt("gs_pull_limit_spent") : "";
+    }
+    if (again) {
+      again.disabled = !!spent;
+      again.classList.toggle("is-spent", !!spent);
+      again.title = spent ? tt("gs_pull_limit_spent") : "";
     }
   }
 
@@ -659,7 +678,17 @@ window.GgenGachaSim = (function () {
   function loadPublishedPool(gashaId) {
     var gid = String(gashaId || resolveGashaId() || "").trim();
     var lang = uiLang();
-    poolMeta = { gasha_id: gid, source: "pending", lang: lang, logo: poolMeta.logo || "" };
+    poolMeta = {
+      gasha_id: gid,
+      source: "pending",
+      lang: lang,
+      logo: poolMeta.logo || "",
+      bulk_mode: !!(poolMeta && poolMeta.bulk_mode),
+      display_pull_n: Number(poolMeta && poolMeta.display_pull_n) || 0,
+      gasha_movie_setting_id: (poolMeta && poolMeta.gasha_movie_setting_id) || "",
+      gasha_movie_setting: (poolMeta && poolMeta.gasha_movie_setting) || null
+    };
+    try { syncPullButtons(); } catch (eP) {}
     var langQ = "&lang=" + encodeURIComponent(lang);
     var urls = [];
     if (gid) urls.push("/api/gacha_sim/pool?gasha_id=" + encodeURIComponent(gid) + langQ);
@@ -709,7 +738,8 @@ window.GgenGachaSim = (function () {
       draws: [],
       firstPickupAt: {},
       simOwned: {},
-      tierCounts: { ur: 0, ssr: 0, sr: 0, r: 0 }
+      tierCounts: { ur: 0, ssr: 0, sr: 0, r: 0 },
+      bulkSpent: false
     };
   }
 
@@ -761,13 +791,25 @@ window.GgenGachaSim = (function () {
               sr: Number(o.tierCounts.sr) || 0,
               r: Number(o.tierCounts.r) || 0
             }
-          : { ur: 0, ssr: 0, sr: 0, r: 0 }
+          : { ur: 0, ssr: 0, sr: 0, r: 0 },
+        bulkSpent: !!o.bulkSpent
       };
     } catch (e) {
       return emptySim();
     }
   }
   var sim = loadSim();
+  /* Anniversary 47-ticket pools: recover once-only lock from prior multi history. */
+  (function recoverBulkSpent() {
+    if (sim.bulkSpent) return;
+    var hist = sim.history || [];
+    for (var i = 0; i < hist.length; i++) {
+      if (hist[i] && Number(hist[i].n) >= 20) {
+        sim.bulkSpent = true;
+        return;
+      }
+    }
+  })();
   /* Reconcile owned set from every prior draw (not only cards that once got New). */
   (function rebuildOwnedFromDraws() {
     var owned = {};
@@ -789,7 +831,8 @@ window.GgenGachaSim = (function () {
         draws: (sim.draws || []).slice(0, DRAW_CAP),
         firstPickupAt: sim.firstPickupAt,
         simOwned: sim.simOwned,
-        tierCounts: sim.tierCounts
+        tierCounts: sim.tierCounts,
+        bulkSpent: !!sim.bulkSpent
       }));
     } catch (e) {}
   }
@@ -1380,6 +1423,7 @@ window.GgenGachaSim = (function () {
     syncPtsUi();
     saveSim();
     renderSession();
+    try { syncPullButtons(); } catch (eR) {}
     hideCardHover();
     hideUrAcqPop();
   };
@@ -1527,11 +1571,18 @@ window.GgenGachaSim = (function () {
   }
 
   async function play(n) {
+    if (isBulkTicketPool() && n >= 20 && sim.bulkSpent) {
+      try { syncPullButtons(); } catch (e0) {}
+      return;
+    }
     var id = ++runId;
     skip = false;
     lastN = n;
     var rows = roll(n);
     lastRows = rows;
+    if (isBulkTicketPool() && n >= 20) {
+      sim.bulkSpent = true;
+    }
     var firstNames = rows.filter(function (r) { return r.isNew; }).map(function (r) { return r.name || r.id; });
     sim.pulls += n;
     if (!sim.tierCounts) sim.tierCounts = { ur: 0, ssr: 0, sr: 0, r: 0 };
@@ -1571,6 +1622,7 @@ window.GgenGachaSim = (function () {
     pts = pts + n;
     syncPtsUi();
     saveSim();
+    try { syncPullButtons(); } catch (eSp) {}
     renderSession();
     var best = bestOf(rows);
     var hasUr = rows.some(function (r) { return r.rarity === "ur"; });
@@ -2079,9 +2131,11 @@ window.GgenGachaSim = (function () {
 
   document.getElementById("one").onclick = function () { play(1); };
   document.getElementById("ten").onclick = function () {
+    if (isBulkTicketPool() && sim.bulkSpent) return;
     play(isBulkTicketPool() ? primaryPullN() : 10);
   };
   document.getElementById("again").onclick = function () {
+    if (isBulkTicketPool() && sim.bulkSpent) return;
     play(lastN || (isBulkTicketPool() ? primaryPullN() : 10));
   };
   document.getElementById("shareStrip").onclick = function () { shareCurrentPullCollections(); };

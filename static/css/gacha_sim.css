@@ -867,6 +867,11 @@
     justify-content: center;
     box-sizing: border-box;
   }
+  /* display:inline-flex above beats UA [hidden] — force hide for pull buttons */
+  .gacha-sim-root .btn-designline[hidden],
+  .gacha-sim-root .pull[hidden] {
+    display: none !important;
+  }
   .btn-designline:hover {
     filter: drop-shadow(0 0 10px rgba(80, 190, 255, 0.55)) brightness(1.08);
   }
@@ -1097,6 +1102,21 @@
   }
   .pull.pull--bulk {
     min-width: min(220px, 48vw);
+  }
+  .pull.pull--spent,
+  .pull.pull--spent:hover,
+  .pull.pull--spent:active {
+    opacity: 0.45;
+    cursor: not-allowed;
+    filter: grayscale(0.45) brightness(0.85);
+    pointer-events: none;
+  }
+  .results-actions .again.is-spent,
+  .results-actions .again.is-spent:hover {
+    opacity: 0.45;
+    cursor: not-allowed;
+    filter: grayscale(0.4);
+    pointer-events: none;
   }
   /*
    * Shared unit-height slot: unit + supporter share the same vertical midline
