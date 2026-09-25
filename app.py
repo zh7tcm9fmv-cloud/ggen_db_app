@@ -6195,6 +6195,7 @@ def is_ex_ability(name):
 # ═══════════════════════════════════════════════════════
 
 _api_cache = {}
+_api_cache_lock = threading.RLock()
 # Keep modest — stage/unit detail dicts are large; uncapped growth balloons RSS.
 _CACHE_MAX_SIZE = int(os.environ.get('API_CACHE_MAX_SIZE', '200') or '200')
 # First-paint browse keys must survive DC/TB floods (per-unit option_parts / supporter detail).
@@ -6228,20 +6229,26 @@ def _api_cache_key_pinned(cache_key):
 
 
 def get_cached_response(cache_key):
-    return _api_cache.get(cache_key)
+    with _api_cache_lock:
+        return _api_cache.get(cache_key)
+
 
 def set_cached_response(cache_key, data):
-    if cache_key in _api_cache:
+    """Store API payload; evict unpinned keys when full (thread-safe vs concurrent workers)."""
+    with _api_cache_lock:
+        if cache_key in _api_cache:
+            _api_cache[cache_key] = data
+            return
+        if len(_api_cache) >= _CACHE_MAX_SIZE:
+            evict_n = max(20, _CACHE_MAX_SIZE // 5)
+            # Snapshot keys — never iterate the live dict (other threads mutate under GIL races).
+            keys = list(_api_cache.keys())
+            victims = [k for k in keys if not _api_cache_key_pinned(k)]
+            if not victims:
+                victims = keys
+            for k in victims[:evict_n]:
+                _api_cache.pop(k, None)
         _api_cache[cache_key] = data
-        return
-    if len(_api_cache) >= _CACHE_MAX_SIZE:
-        evict_n = max(20, _CACHE_MAX_SIZE // 5)
-        victims = [k for k in _api_cache if not _api_cache_key_pinned(k)]
-        if not victims:
-            victims = list(_api_cache.keys())
-        for k in victims[:evict_n]:
-            _api_cache.pop(k, None)
-    _api_cache[cache_key] = data
 
 # HTTP ETag / browser cache for stable JSON APIs (O(1) tag from cache_key — no body hash).
 _API_ETAG_ENABLED = os.environ.get('API_ETAG_ENABLED', '1').strip().lower() not in ('0', 'false', 'no', 'off')

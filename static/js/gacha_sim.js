@@ -1312,38 +1312,13 @@ window.GgenGachaSim = (function () {
         pullsLine = (tt("gs_share_pull_size") || "{n}-pull").replace(/\{n\}/g, String(st.total));
       }
     }
-    var unitLine = (tt("gs_share_ur_units") || "UR Units: {names}")
-      .replace(/\{names\}/g, formatUrNameList(st.unitNames));
+    /* Names omitted — X compose runs out of space once rates + hashtags + quote URL are in. */
     var lines = [head, rateLine];
     if (pullsLine) lines.push(pullsLine);
     lines.push("");
-    lines.push(unitLine);
-    if (st.hasSupp) {
-      lines.push((tt("gs_share_ur_supp") || "UR Supporters: {names}")
-        .replace(/\{names\}/g, formatUrNameList(st.suppNames)));
-    }
-    lines.push("");
     lines.push(shareHashtags());
     lines.push(url);
-    var text = lines.join("\n");
-    /* Keep intent payloads reasonably short for X compose. */
-    if (text.length > 460) {
-      var unitShort = formatUrNameList(st.unitNames, 6);
-      var suppShort = formatUrNameList(st.suppNames, 4);
-      text = [
-        head,
-        rateLine,
-        pullsLine,
-        "",
-        (tt("gs_share_ur_units") || "UR Units: {names}").replace(/\{names\}/g, unitShort)
-      ].filter(Boolean).join("\n");
-      if (st.hasSupp) {
-        text += "\n" + (tt("gs_share_ur_supp") || "UR Supporters: {names}")
-          .replace(/\{names\}/g, suppShort);
-      }
-      text += "\n\n" + shareHashtags() + "\n" + url;
-    }
-    return text;
+    return lines.join("\n");
   }
 
   function syncShareXButtons() {
