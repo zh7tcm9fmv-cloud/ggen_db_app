@@ -396,6 +396,10 @@ def build(gasha_id: str, lang: str = "EN") -> dict:
         # Timeline / CDN convention when master LogoResourceId is blank
         logo = f"gasha_logo_{gasha_id}"
     appeal_id = str(g.get("AppealBannerId") or "").strip()
+    gasha_lang = {str(r["id"]): r["value"] for r in _load("m_gasha.json", lang_dir)}
+    gasha_lang_en = {str(r["id"]): r["value"] for r in _load("m_gasha.json", en_lang_dir)}
+    name_lid = str(g.get("NameLanguageId") or "")
+    gasha_name = (gasha_lang.get(name_lid) or gasha_lang_en.get(name_lid) or "").strip()
     movie_setting_id = str(g.get("GashaMovieSettingId") or "").strip()
     if movie_setting_id in ("", "0"):
         movie_setting_id = ""
@@ -439,6 +443,7 @@ def build(gasha_id: str, lang: str = "EN") -> dict:
 
     return {
         "gasha_id": str(gasha_id),
+        "name": gasha_name,
         "lang": lang,
         "logo_resource_id": logo,
         "appeal_banner_id": appeal_id,

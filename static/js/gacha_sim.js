@@ -58,6 +58,9 @@ window.GgenGachaSim = (function () {
     return gid ? base + "/" + encodeURIComponent(gid) : base;
   }
 
+  /* Owner promo tweet — Share to X opens as a quote of this status. */
+  var GS_SHARE_QUOTE_TWEET_URL = "https://x.com/Mikew00911/status/2103358880449458340";
+
   function onTabShown() {
     var gid = resolveGashaId();
     if (gid && window.S) S.gachaSimGashaId = gid;
@@ -161,6 +164,7 @@ window.GgenGachaSim = (function () {
     if (sessSave) sessSave.innerHTML = "<small>" + tt("gs_save") + "</small><b>" + tt("gs_session_btn") + "</b>";
     var sessReset = document.getElementById("sessReset");
     if (sessReset) sessReset.innerHTML = "<small>" + tt("gs_reset") + "</small><b>" + tt("gs_session_btn") + "</b>";
+    try { applyShareXBtnLabels(); } catch (eShareLbl) {}
     var unitsLbl = document.getElementById("sessStatsUnitsLbl");
     if (unitsLbl) unitsLbl.textContent = tt("tab_unit");
     var suppLbl = root.querySelector(".session-stats-pane--supp .session-stats-label");
@@ -633,6 +637,7 @@ window.GgenGachaSim = (function () {
     if (!logo && data.gasha_id) logo = "gasha_logo_" + data.gasha_id;
     poolMeta = {
       gasha_id: data.gasha_id || "",
+      name: data.name || "",
       source: source || "json",
       lang: uiLang(),
       logo: logo || "",
@@ -719,6 +724,7 @@ window.GgenGachaSim = (function () {
     var lang = uiLang();
     poolMeta = {
       gasha_id: gid,
+      name: (poolMeta && poolMeta.name) || "",
       source: "pending",
       lang: lang,
       logo: poolMeta.logo || "",
@@ -1140,6 +1146,238 @@ window.GgenGachaSim = (function () {
     return { unit: unit, supp: supp };
   }
 
+  var GS_X_LOGO_SVG =
+    '<svg class="gs-x-logo" viewBox="0 0 24 24" width="13" height="13" aria-hidden="true" focusable="false">' +
+    '<path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>' +
+    "</svg>";
+  var GS_SHARE_HASHTAGS_BASE = "#ジージェネエターナル #GGETユニット組立シミュレーター";
+
+  /** Pool-specific share tags — e.g. 47-ticket anniversary → #47連 (not only 2609400505). */
+  function shareHashtags() {
+    var tags = GS_SHARE_HASHTAGS_BASE;
+    var n = 0;
+    try {
+      n = Number(poolMeta && poolMeta.display_pull_n) || 0;
+    } catch (e) {}
+    if (!(n > 0)) {
+      try {
+        if (isBulkTicketPool()) n = primaryPullN() || 0;
+      } catch (e2) {}
+    }
+    /* Bulk / multi-ticket assemblies (20+): add #{n}連 */
+    if (n >= 20) {
+      var multi = "#" + n + "連";
+      if (tags.indexOf(multi) < 0) tags += " " + multi;
+    }
+    return tags;
+  }
+
+  function fmtSharePct(n, total) {
+    if (!(total > 0)) return "—";
+    return ((n / total) * 100).toFixed(1) + "%";
+  }
+
+  /** Aggregate UR names (×N for dupes), ordered by count then name. */
+  function aggregateUrNames(cards, kind) {
+    var map = {};
+    (cards || []).forEach(function (c) {
+      if (!c || c.rarity !== "ur") return;
+      var isSupp = c.kind === "supp";
+      if (kind === "unit" && isSupp) return;
+      if (kind === "supp" && !isSupp) return;
+      var id = String(c.id || "").trim();
+      var name = resolvePoolName(id) || String(c.name || "").trim() || id || "?";
+      var key = id || ("name:" + name);
+      if (!map[key]) map[key] = { name: name, count: 0 };
+      map[key].count += 1;
+      if (name && map[key].name === "?") map[key].name = name;
+    });
+    return Object.keys(map)
+      .map(function (k) { return map[k]; })
+      .sort(function (a, b) {
+        if (b.count !== a.count) return b.count - a.count;
+        return String(a.name).localeCompare(String(b.name));
+      });
+  }
+
+  function formatUrNameList(rows, maxNames) {
+    maxNames = maxNames == null ? 12 : maxNames;
+    if (!rows || !rows.length) return tt("gs_share_none") || "—";
+    var shown = rows.slice(0, maxNames).map(function (r) {
+      return r.count > 1 ? (r.name + " ×" + r.count) : r.name;
+    });
+    var extra = rows.length - shown.length;
+    var s = shown.join(" · ");
+    if (extra > 0) s += " · +" + extra;
+    return s;
+  }
+
+  function urShareStatsFromCards(cards) {
+    var list = Array.isArray(cards) ? cards : [];
+    var unitUr = 0;
+    var suppUr = 0;
+    var total = 0;
+    var hasSuppKind = false;
+    list.forEach(function (c) {
+      if (!c) return;
+      total += 1;
+      if (c.kind === "supp") hasSuppKind = true;
+      if (c.rarity === "ur") {
+        if (c.kind === "supp") suppUr += 1;
+        else unitUr += 1;
+      }
+    });
+    var totalUr = unitUr + suppUr;
+    return {
+      total: total,
+      totalUr: totalUr,
+      unitUr: unitUr,
+      suppUr: suppUr,
+      hasSupp: hasSuppKind || suppUr > 0,
+      totalUrPct: fmtSharePct(totalUr, total),
+      unitUrPct: fmtSharePct(unitUr, total),
+      suppUrPct: fmtSharePct(suppUr, total),
+      unitNames: aggregateUrNames(list, "unit"),
+      suppNames: aggregateUrNames(list, "supp")
+    };
+  }
+
+  function resolveShareBannerName() {
+    var raw = "";
+    try {
+      if (poolMeta && poolMeta.name) raw = String(poolMeta.name || "").trim();
+    } catch (e0) {}
+    if (!raw) {
+      try {
+        var gid = resolveGashaId() || (poolMeta && poolMeta.gasha_id) || "";
+        var bans = (window.S && S.btCacheData && S.btCacheData.banners) || [];
+        for (var i = 0; i < bans.length; i++) {
+          if (String(bans[i].gasha_id) === String(gid) && bans[i].name) {
+            raw = String(bans[i].name || "").trim();
+            break;
+          }
+        }
+      } catch (e1) {}
+    }
+    if (!raw) return "";
+    /* Short share label: drop parentheticals + trailing "Unit Assembly" / locale equivalents. */
+    var s = raw.replace(/\s*\([^)]*\)/g, "").trim();
+    s = s.replace(/\bAnniv\.?/gi, "Anniversary");
+    s = s.replace(/\s+(Unit Assembly|ユニット組立|機體補給).*$/i, "").trim();
+    s = s.replace(/\s+/g, " ").replace(/[.\s]+$/g, "").trim();
+    return s || raw;
+  }
+
+  function buildGachaShareText(scope) {
+    var cards = scope === "result"
+      ? (lastRows && lastRows.length ? lastRows : [])
+      : (sim.draws || []);
+    var st = urShareStatsFromCards(cards);
+    if (!(st.total > 0)) return "";
+    var url = exportPageUrl();
+    var head = scope === "result"
+      ? (tt("gs_share_head_result") || "GGET Unit Assembly — this pull")
+      : (tt("gs_share_head_session") || "GGET Unit Assembly — session");
+    var rateLine;
+    if (st.hasSupp) {
+      rateLine = (tt("gs_share_rate_split") ||
+        "Total UR {total_pct}% ({ur}/{n}) · Units {unit_pct}% · Supporters {supp_pct}%")
+        .replace(/\{total_pct\}/g, st.totalUrPct)
+        .replace(/\{ur\}/g, String(st.totalUr))
+        .replace(/\{n\}/g, String(st.total))
+        .replace(/\{unit_pct\}/g, st.unitUrPct)
+        .replace(/\{supp_pct\}/g, st.suppUrPct);
+    } else {
+      rateLine = (tt("gs_share_rate") || "Total UR {total_pct}% ({ur}/{n})")
+        .replace(/\{total_pct\}/g, st.totalUrPct)
+        .replace(/\{ur\}/g, String(st.totalUr))
+        .replace(/\{n\}/g, String(st.total));
+    }
+    var banner = resolveShareBannerName();
+    var pullsLine = "";
+    if (scope === "session" && sim.pulls > 0) {
+      if (banner) {
+        pullsLine = (tt("gs_share_pulls_named") || "{banner} {n} pulls")
+          .replace(/\{banner\}/g, banner)
+          .replace(/\{n\}/g, String(sim.pulls));
+      } else {
+        pullsLine = (tt("gs_share_pulls") || "{n} pulls").replace(/\{n\}/g, String(sim.pulls));
+      }
+    } else if (scope === "result" && st.total > 0) {
+      if (banner) {
+        pullsLine = (tt("gs_share_pull_size_named") || "{banner} {n}-pull")
+          .replace(/\{banner\}/g, banner)
+          .replace(/\{n\}/g, String(st.total));
+      } else {
+        pullsLine = (tt("gs_share_pull_size") || "{n}-pull").replace(/\{n\}/g, String(st.total));
+      }
+    }
+    var unitLine = (tt("gs_share_ur_units") || "UR Units: {names}")
+      .replace(/\{names\}/g, formatUrNameList(st.unitNames));
+    var lines = [head, rateLine];
+    if (pullsLine) lines.push(pullsLine);
+    lines.push("");
+    lines.push(unitLine);
+    if (st.hasSupp) {
+      lines.push((tt("gs_share_ur_supp") || "UR Supporters: {names}")
+        .replace(/\{names\}/g, formatUrNameList(st.suppNames)));
+    }
+    lines.push("");
+    lines.push(shareHashtags());
+    lines.push(url);
+    var text = lines.join("\n");
+    /* Keep intent payloads reasonably short for X compose. */
+    if (text.length > 460) {
+      var unitShort = formatUrNameList(st.unitNames, 6);
+      var suppShort = formatUrNameList(st.suppNames, 4);
+      text = [
+        head,
+        rateLine,
+        pullsLine,
+        "",
+        (tt("gs_share_ur_units") || "UR Units: {names}").replace(/\{names\}/g, unitShort)
+      ].filter(Boolean).join("\n");
+      if (st.hasSupp) {
+        text += "\n" + (tt("gs_share_ur_supp") || "UR Supporters: {names}")
+          .replace(/\{names\}/g, suppShort);
+      }
+      text += "\n\n" + shareHashtags() + "\n" + url;
+    }
+    return text;
+  }
+
+  function syncShareXButtons() {
+    var sessBtn = document.getElementById("sessShareX");
+    if (sessBtn) sessBtn.disabled = !(sim.draws && sim.draws.length);
+    var resBtn = document.getElementById("resultShareX");
+    if (resBtn) resBtn.disabled = !(lastRows && lastRows.length);
+  }
+
+  function applyShareXBtnLabels() {
+    var sess = document.getElementById("sessShareX");
+    if (sess) {
+      sess.innerHTML = "<small>" + tt("gs_share") + "</small><b><span class=\"gs-share-to-pair\">" +
+        tt("gs_share_to_x_short") + GS_X_LOGO_SVG + "</span></b>";
+      sess.title = tt("gs_share_session_title") || "Share session UR rates on X";
+      sess.setAttribute("aria-label", tt("gs_share_session_aria") || "Share session to X");
+    }
+    var res = document.getElementById("resultShareX");
+    if (res) {
+      res.innerHTML = (tt("gs_share_to_x") || "Share to {x}").split("{x}").join(GS_X_LOGO_SVG);
+      res.title = tt("gs_share_result_title") || "Share this pull’s UR rates on X";
+      res.setAttribute("aria-label", tt("gs_share_result_aria") || "Share this pull to X");
+    }
+  }
+
+  function shareGachaOnX(scope) {
+    var text = buildGachaShareText(scope);
+    if (!text) return;
+    /* `url` = status link → X compose opens as a Quote of that post; pool link stays in text. */
+    var intent = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(text) +
+      "&url=" + encodeURIComponent(GS_SHARE_QUOTE_TWEET_URL);
+    window.open(intent, "_blank", "noopener,noreferrer");
+  }
+
   /* Aggregate UR draws by id — duplicates become x2 / x3… */
   function aggregateUrAcquisitions(kind) {
     var map = {};
@@ -1460,6 +1698,7 @@ window.GgenGachaSim = (function () {
       el.title = tt(gsPreferTapReveal() ? "gs_ur_acq_hint_tap" : "gs_ur_acq_hint");
       if (!el.hasAttribute("aria-expanded")) el.setAttribute("aria-expanded", "false");
     });
+    try { syncShareXButtons(); } catch (eSx) {}
   }
   renderSession();
 
@@ -1626,6 +1865,7 @@ window.GgenGachaSim = (function () {
     lastN = n;
     var rows = roll(n);
     lastRows = rows;
+    try { syncShareXButtons(); } catch (eRows) {}
     if (isBulkTicketPool() && n >= 20) {
       sim.bulkSpent = true;
     }
@@ -2308,6 +2548,11 @@ window.GgenGachaSim = (function () {
   document.getElementById("shareStrip").onclick = function () { shareCurrentPullCollections(); };
   var sessSaveBtn = document.getElementById("sessSave");
   if (sessSaveBtn) sessSaveBtn.onclick = function () { shareSessionCollections(); };
+  var sessShareXBtn = document.getElementById("sessShareX");
+  if (sessShareXBtn) sessShareXBtn.onclick = function () { shareGachaOnX("session"); };
+  var resultShareXBtn = document.getElementById("resultShareX");
+  if (resultShareXBtn) resultShareXBtn.onclick = function () { shareGachaOnX("result"); };
+  try { applyShareXBtnLabels(); syncShareXButtons(); } catch (eShareInit) {}
   document.getElementById("skip").onclick = function () {
     skip = true;
     clearTimeout(timer);

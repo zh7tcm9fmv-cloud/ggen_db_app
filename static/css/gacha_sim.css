@@ -186,6 +186,34 @@
     line-height: 1;
     color: #fff;
   }
+  .btn-designline--share-x {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .btn-designline--session.btn-designline--share-x b {
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+  }
+  .btn-designline--session.btn-designline--share-x .gs-share-to-pair {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    line-height: 1;
+  }
+  /* Nudge only the X mark up (TO stays put). */
+  .btn-designline--share-x .gs-x-logo {
+    display: block;
+    flex: 0 0 auto;
+    position: relative;
+    top: -3px;
+  }
+  .btn-designline--share-x:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
   .session-pickup {
     margin: 10px 0 0;
     padding: 8px 10px;
