@@ -58,9 +58,6 @@ window.GgenGachaSim = (function () {
     return gid ? base + "/" + encodeURIComponent(gid) : base;
   }
 
-  /* Owner promo tweet — Share to X opens as a quote of this status. */
-  var GS_SHARE_QUOTE_TWEET_URL = "https://x.com/Mikew00911/status/2103358880449458340";
-
   function onTabShown() {
     var gid = resolveGashaId();
     if (gid && window.S) S.gachaSimGashaId = gid;
@@ -1174,7 +1171,8 @@ window.GgenGachaSim = (function () {
 
   function fmtSharePct(n, total) {
     if (!(total > 0)) return "—";
-    return ((n / total) * 100).toFixed(1) + "%";
+    /* Number only — templates already append "%". */
+    return ((n / total) * 100).toFixed(1);
   }
 
   /** Aggregate UR names (×N for dupes), ordered by count then name. */
@@ -1259,13 +1257,38 @@ window.GgenGachaSim = (function () {
         }
       } catch (e1) {}
     }
-    if (!raw) return "";
-    /* Short share label: drop parentheticals + trailing "Unit Assembly" / locale equivalents. */
-    var s = raw.replace(/\s*\([^)]*\)/g, "").trim();
-    s = s.replace(/\bAnniv\.?/gi, "Anniversary");
-    s = s.replace(/\s+(Unit Assembly|ユニット組立|機體補給).*$/i, "").trim();
-    s = s.replace(/\s+/g, " ").replace(/[.\s]+$/g, "").trim();
-    return s || raw;
+    return raw;
+  }
+
+  async function ensureShareBannerName() {
+    if (resolveShareBannerName()) return;
+    var gid = "";
+    try {
+      gid = resolveGashaId() || (poolMeta && poolMeta.gasha_id) || "";
+    } catch (e) {}
+    if (!gid) return;
+    try {
+      var r = await fetch(
+        "/api/banner_timeline?lang=" + encodeURIComponent(uiLang()) + "&sv=share_name",
+        { credentials: "same-origin", cache: "no-store" }
+      );
+      if (!r.ok) return;
+      var d = await r.json();
+      var bans = (d && d.banners) || [];
+      for (var i = 0; i < bans.length; i++) {
+        if (String(bans[i].gasha_id) === String(gid) && bans[i].name) {
+          if (!poolMeta) poolMeta = {};
+          poolMeta.name = String(bans[i].name || "").trim();
+          try {
+            if (window.S) {
+              if (!S.btCacheData) S.btCacheData = d;
+              else if (!S.btCacheData.banners) S.btCacheData.banners = bans;
+            }
+          } catch (e2) {}
+          return;
+        }
+      }
+    } catch (e3) {}
   }
 
   function buildGachaShareText(scope) {
@@ -1295,24 +1318,13 @@ window.GgenGachaSim = (function () {
     }
     var banner = resolveShareBannerName();
     var pullsLine = "";
-    if (scope === "session" && sim.pulls > 0) {
-      if (banner) {
-        pullsLine = (tt("gs_share_pulls_named") || "{banner} {n} pulls")
-          .replace(/\{banner\}/g, banner)
-          .replace(/\{n\}/g, String(sim.pulls));
-      } else {
-        pullsLine = (tt("gs_share_pulls") || "{n} pulls").replace(/\{n\}/g, String(sim.pulls));
-      }
+    if (banner) {
+      pullsLine = banner;
+    } else if (scope === "session" && sim.pulls > 0) {
+      pullsLine = (tt("gs_share_pulls") || "{n} pulls").replace(/\{n\}/g, String(sim.pulls));
     } else if (scope === "result" && st.total > 0) {
-      if (banner) {
-        pullsLine = (tt("gs_share_pull_size_named") || "{banner} {n}-pull")
-          .replace(/\{banner\}/g, banner)
-          .replace(/\{n\}/g, String(st.total));
-      } else {
-        pullsLine = (tt("gs_share_pull_size") || "{n}-pull").replace(/\{n\}/g, String(st.total));
-      }
+      pullsLine = (tt("gs_share_pull_size") || "{n}-pull").replace(/\{n\}/g, String(st.total));
     }
-    /* Names omitted — X compose runs out of space once rates + hashtags + quote URL are in. */
     var lines = [head, rateLine];
     if (pullsLine) lines.push(pullsLine);
     lines.push("");
@@ -1344,12 +1356,11 @@ window.GgenGachaSim = (function () {
     }
   }
 
-  function shareGachaOnX(scope) {
+  async function shareGachaOnX(scope) {
+    try { await ensureShareBannerName(); } catch (eName) {}
     var text = buildGachaShareText(scope);
     if (!text) return;
-    /* `url` = status link → X compose opens as a Quote of that post; pool link stays in text. */
-    var intent = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(text) +
-      "&url=" + encodeURIComponent(GS_SHARE_QUOTE_TWEET_URL);
+    var intent = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(text);
     window.open(intent, "_blank", "noopener,noreferrer");
   }
 
