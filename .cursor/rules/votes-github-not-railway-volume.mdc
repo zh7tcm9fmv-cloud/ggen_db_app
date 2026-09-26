@@ -1,0 +1,24 @@
+---
+description: Banner/SPI/collections votes use GitHub — not a Railway volume
+alwaysApply: true
+---
+
+# Votes persistence — GitHub, not Railway volume
+
+Owner lesson (**Sep 2026**): agent wrongly treated `/data/banner_pool_votes.json` as a paid Railway volume. Durable store is **GitHub**; volume is intentionally **not** used (cost).
+
+## Hard rule
+
+1. **Do not** assume Railway Volume for banner votes, SPI votes, collections census/share, or similar runtime ballots.
+2. **Source of truth** = GitHub branch `banner-votes-data` (token `GGEN_BANNER_VOTES_GITHUB_TOKEN`). Debounced push + SIGTERM flush. Logs like `GitHub snapshot (debounced, …)` mean sync is working.
+3. **Local file** = ephemeral working cache only (`data/persistent/…` under the app, or a path from `GGEN_*_PATH` / `GGEN_PERSISTENT_DIR` / `RAILWAY_VOLUME_MOUNT_PATH` **only when that env is actually set**).
+4. **Never** reintroduce hardcoded probes for bare `/data/banner_pool_votes.json` (or `/data/persistent/…`) just because `RAILWAY_ENVIRONMENT` is set. That is not a volume mount and caused Extra-data races + cost confusion.
+5. Path resolution must match SPI: volume path **only** if `GGEN_PERSISTENT_DIR` or `RAILWAY_VOLUME_MOUNT_PATH` is set; else `app_dir/data/persistent/…`.
+
+## Extra data / corrupt JSON
+
+`Error loading … Extra data` on the local votes cache = multi-worker race writing the same file (concatenated JSON), **not** “volume is broken.” Fix with merge repair + cross-process lock + unique `.tmp.{pid}.{ns}` — same class as SPI file lock. Durable recovery still comes from GitHub hydrate.
+
+## Docs
+
+See `data/persistent/README.md` (Railway vars, `shutdown` sync mode, branch workflow). Collections/feedback sections already say **no Railway volume**.

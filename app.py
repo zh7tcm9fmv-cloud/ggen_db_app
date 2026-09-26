@@ -29609,25 +29609,23 @@ def _path_is_writable_dir(path):
 
 
 def _resolve_banner_pool_votes_file():
-    """Votes must live on a persistent volume (Railway) or custom path — not the deploy tree."""
+    """
+    Local working copy for banner votes (ephemeral on Railway without a volume).
+    Durable source of truth is GitHub (banner-votes-data) — same as SPI votes.
+    Only use a volume path when GGEN_PERSISTENT_DIR / RAILWAY_VOLUME_MOUNT_PATH is set;
+    do not probe bare /data/ (that is not a paid volume and caused confusing Extra-data races).
+    """
     custom = (os.environ.get('GGEN_BANNER_VOTES_PATH') or '').strip()
     if custom:
         return os.path.abspath(custom)
-    candidates = []
-    vol = (os.environ.get('RAILWAY_VOLUME_MOUNT_PATH') or '').strip()
+    vol = (os.environ.get('GGEN_PERSISTENT_DIR') or os.environ.get('RAILWAY_VOLUME_MOUNT_PATH') or '').strip()
     if vol:
-        candidates.append(os.path.join(vol, 'banner_pool_votes.json'))
-    if os.environ.get('RAILWAY_ENVIRONMENT') or os.environ.get('RAILWAY_PROJECT_ID'):
-        candidates.append('/data/banner_pool_votes.json')
-        candidates.append('/data/persistent/banner_pool_votes.json')
-    candidates.append(os.path.join(_DEFAULT_PERSISTENT_VOTES_DIR, 'banner_pool_votes.json'))
-    for path in candidates:
+        path = os.path.join(vol, 'banner_pool_votes.json')
         parent = os.path.dirname(path) or '.'
         if _path_is_writable_dir(parent):
-            if path != candidates[-1]:
-                print(f'banner_pool_votes: using persistent path {path}')
+            print(f'banner_pool_votes: using volume path {path}')
             return path
-    return candidates[-1]
+    return os.path.join(_DEFAULT_PERSISTENT_VOTES_DIR, 'banner_pool_votes.json')
 
 
 def _banner_pool_votes_github_repo():
@@ -30190,9 +30188,9 @@ def _banner_pool_votes_hydrate_from_remote(*, force=False):
     """Merge GitHub / raw URL / bundled repo snapshot into the local cache file."""
     global _BANNER_VOTES_LAST_REMOTE_PULL
     now = time.time()
-    local = load_json(BANNER_POOL_VOTES_FILE)
+    local = _banner_pool_votes_read_path(BANNER_POOL_VOTES_FILE)
     if not isinstance(local, dict):
-        local = load_json(BANNER_POOL_VOTES_BACKUP_FILE)
+        local = _banner_pool_votes_read_path(BANNER_POOL_VOTES_BACKUP_FILE)
     if not force:
         elapsed = now - _BANNER_VOTES_LAST_REMOTE_PULL
         if elapsed < _BANNER_VOTES_HYDRATE_INTERVAL_SEC:
@@ -30215,19 +30213,14 @@ def _banner_pool_votes_hydrate_from_remote(*, force=False):
                 print(f'banner_pool_votes: import URL fetch failed: {e}')
     merged = _banner_pool_votes_merge_snapshots(
         local,
-        load_json(BANNER_POOL_VOTES_BACKUP_FILE),
+        _banner_pool_votes_read_path(BANNER_POOL_VOTES_BACKUP_FILE),
         _banner_pool_votes_bundled_snapshot(),
         remote,
         raw_snap,
     )
     if _banner_pool_votes_is_richer(merged, local or {}):
         try:
-            os.makedirs(os.path.dirname(BANNER_POOL_VOTES_FILE), exist_ok=True)
-            tmp = BANNER_POOL_VOTES_FILE + '.tmp'
-            with open(tmp, 'w', encoding='utf-8') as f:
-                json.dump(merged, f, ensure_ascii=False, indent=2)
-                f.write('\n')
-            os.replace(tmp, BANNER_POOL_VOTES_FILE)
+            _banner_pool_votes_atomic_write(BANNER_POOL_VOTES_FILE, merged, update_backup=True)
             print(f'banner_pool_votes: hydrated ({_banner_pool_votes_vote_count(merged)} vote count)')
         except OSError as e:
             print(f'banner_pool_votes: hydrate write failed: {e}')
@@ -30242,9 +30235,9 @@ def _banner_pool_votes_push_from_disk(*, reason='async', force=False):
         since_push = time.time() - _BANNER_VOTES_LAST_ASYNC_PUSH
         if since_push < _BANNER_VOTES_PUSH_DEBOUNCE_SEC:
             return False
-    data = load_json(BANNER_POOL_VOTES_FILE)
+    data = _banner_pool_votes_read_path(BANNER_POOL_VOTES_FILE)
     if not isinstance(data, dict):
-        data = load_json(BANNER_POOL_VOTES_BACKUP_FILE)
+        data = _banner_pool_votes_read_path(BANNER_POOL_VOTES_BACKUP_FILE)
     remote = _banner_pool_votes_fetch_github() if _banner_pool_votes_use_github_api() else None
     if isinstance(remote, dict):
         data = _banner_pool_votes_merge_snapshots(data, remote)
@@ -30429,18 +30422,131 @@ def _banner_pool_votes_has_data(data):
     return bool(data.get('ballots'))
 
 
+def _json_decode_all_objects(text):
+    """Parse one or more back-to-back JSON values (recovers 'Extra data' corruption)."""
+    dec = json.JSONDecoder()
+    objs = []
+    idx = 0
+    n = len(text or '')
+    while idx < n:
+        while idx < n and text[idx].isspace():
+            idx += 1
+        if idx >= n:
+            break
+        obj, end = dec.raw_decode(text, idx)
+        objs.append(obj)
+        idx = end
+    return objs
+
+
+def _banner_pool_votes_lock_path():
+    return BANNER_POOL_VOTES_FILE + '.lock'
+
+
+def _banner_pool_votes_atomic_write(path, data, *, update_backup=True):
+    """Atomic write under cross-process lock (gunicorn multi-worker local cache)."""
+    if not path:
+        return False
+    parent = os.path.dirname(path) or '.'
+    os.makedirs(parent, exist_ok=True)
+    lock = _SpiVotesFileLock(_banner_pool_votes_lock_path(), timeout=12.0)
+    with lock:
+        if update_backup and os.path.isfile(path):
+            prev = None
+            try:
+                with open(path, 'r', encoding='utf-8') as f:
+                    prev_text = f.read()
+                try:
+                    prev = json.loads(prev_text)
+                except json.JSONDecodeError:
+                    try:
+                        objs = _json_decode_all_objects(prev_text)
+                        dicts = [o for o in objs if isinstance(o, dict)]
+                        prev = _banner_pool_votes_merge_snapshots(*dicts) if dicts else None
+                    except json.JSONDecodeError:
+                        prev = None
+            except OSError:
+                prev = None
+            if _banner_pool_votes_has_data(prev):
+                try:
+                    shutil.copy2(path, path + '.bak')
+                except OSError:
+                    pass
+        tmp = f'{path}.tmp.{os.getpid()}.{time.time_ns()}'
+        try:
+            with open(tmp, 'w', encoding='utf-8') as f:
+                json.dump(data, f, ensure_ascii=False, indent=2)
+                f.write('\n')
+            os.replace(tmp, path)
+        except OSError:
+            try:
+                if os.path.isfile(tmp):
+                    os.remove(tmp)
+            except OSError:
+                pass
+            raise
+    return True
+
+
+def _banner_pool_votes_read_path(path):
+    """
+    Load a votes snapshot. If the file has concatenated JSON documents
+    (json.loads Extra data — classic multi-worker race on the local cache),
+    merge all objects and rewrite a clean file once.
+    """
+    if not path or not os.path.isfile(path):
+        return None
+    try:
+        with open(path, 'r', encoding='utf-8') as f:
+            text = f.read()
+    except OSError as e:
+        print(f'banner_pool_votes: read failed {path}: {e}')
+        return None
+    if not (text or '').strip():
+        return None
+    try:
+        data = json.loads(text)
+        return data if isinstance(data, dict) else None
+    except json.JSONDecodeError as e:
+        if 'Extra data' not in str(e):
+            print(f'Error loading {path}: {e}')
+            return None
+        try:
+            objs = _json_decode_all_objects(text)
+        except json.JSONDecodeError as e2:
+            print(f'Error loading {path}: {e2}')
+            return None
+        dicts = [o for o in objs if isinstance(o, dict)]
+        if not dicts:
+            print(f'Error loading {path}: Extra data with no dict objects')
+            return None
+        merged = _banner_pool_votes_merge_snapshots(*dicts) if len(dicts) > 1 else dicts[0]
+        n = _banner_pool_votes_vote_count(merged) if isinstance(merged, dict) else 0
+        print(
+            f'banner_pool_votes: repaired concatenated JSON at {path} '
+            f'({len(dicts)} objects → {n} vote count)'
+        )
+        if isinstance(merged, dict):
+            try:
+                _banner_pool_votes_atomic_write(path, merged, update_backup=False)
+            except Exception as wr:
+                print(f'banner_pool_votes: repair rewrite failed: {wr}')
+            return merged
+        return None
+
+
 def _banner_pool_votes_try_restore_from_backup():
     """If the live file was wiped (deploy/accident) but .bak has votes, restore once."""
     try:
         if os.path.isfile(BANNER_POOL_VOTES_FILE) and os.path.getsize(BANNER_POOL_VOTES_FILE) > 10:
-            live = load_json(BANNER_POOL_VOTES_FILE)
+            live = _banner_pool_votes_read_path(BANNER_POOL_VOTES_FILE)
             if _banner_pool_votes_has_data(live):
                 return
     except OSError:
         pass
     if not os.path.isfile(BANNER_POOL_VOTES_BACKUP_FILE):
         return
-    bak = load_json(BANNER_POOL_VOTES_BACKUP_FILE)
+    bak = _banner_pool_votes_read_path(BANNER_POOL_VOTES_BACKUP_FILE)
     if not _banner_pool_votes_has_data(bak):
         return
     try:
@@ -30461,7 +30567,7 @@ def _banner_pool_votes_migrate():
         pass
     legacy = _LEGACY_BANNER_POOL_VOTES_FILE
     if os.path.isfile(legacy) and os.path.normcase(legacy) != os.path.normcase(target):
-        leg = load_json(legacy)
+        leg = _banner_pool_votes_read_path(legacy)
         if _banner_pool_votes_has_data(leg):
             try:
                 os.makedirs(os.path.dirname(target), exist_ok=True)
@@ -30540,9 +30646,9 @@ def _banner_pool_votes_load(*, hydrate=False):
         except Exception as e:
             # Never 500 /api/banner_timeline/votes because GitHub truncated a body.
             print(f'banner_pool_votes: hydrate failed (serving local): {e}')
-    raw = load_json(BANNER_POOL_VOTES_FILE)
+    raw = _banner_pool_votes_read_path(BANNER_POOL_VOTES_FILE)
     if not isinstance(raw, dict):
-        raw = load_json(BANNER_POOL_VOTES_BACKUP_FILE)
+        raw = _banner_pool_votes_read_path(BANNER_POOL_VOTES_BACKUP_FILE)
     if not isinstance(raw, dict):
         raw = {}
     data = _banner_pool_votes_merge_snapshots(raw, _banner_pool_votes_bundled_snapshot())
@@ -30575,24 +30681,18 @@ def _banner_pool_votes_load(*, hydrate=False):
 
 
 def _banner_pool_votes_save(data, *, allow_clear=False):
-    """Persist votes atomically; keep .bak of last non-empty file (never auto-clear totals)."""
+    """Persist votes atomically under file lock; keep .bak of last non-empty file."""
     if not allow_clear and not _banner_pool_votes_has_data(data):
         for path in (BANNER_POOL_VOTES_FILE, BANNER_POOL_VOTES_BACKUP_FILE):
-            prev = load_json(path)
+            prev = _banner_pool_votes_read_path(path)
             if _banner_pool_votes_has_data(prev):
                 print('banner_pool_votes: refused to overwrite stored votes with empty data')
                 return
-    os.makedirs(os.path.dirname(BANNER_POOL_VOTES_FILE), exist_ok=True)
-    if os.path.isfile(BANNER_POOL_VOTES_FILE) and _banner_pool_votes_has_data(load_json(BANNER_POOL_VOTES_FILE)):
-        try:
-            shutil.copy2(BANNER_POOL_VOTES_FILE, BANNER_POOL_VOTES_BACKUP_FILE)
-        except OSError:
-            pass
-    tmp = BANNER_POOL_VOTES_FILE + '.tmp'
-    with open(tmp, 'w', encoding='utf-8') as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
-        f.write('\n')
-    os.replace(tmp, BANNER_POOL_VOTES_FILE)
+    try:
+        _banner_pool_votes_atomic_write(BANNER_POOL_VOTES_FILE, data, update_backup=True)
+    except OSError as e:
+        print(f'banner_pool_votes: save failed: {e}')
+        return
     _banner_pool_votes_after_save(data)
 
 
@@ -30665,9 +30765,9 @@ def api_banner_timeline_votes():
         data = _banner_pool_votes_load(hydrate=True)
     except Exception as e:
         print(f'banner_pool_votes: votes API load failed: {e}')
-        data = load_json(BANNER_POOL_VOTES_FILE)
+        data = _banner_pool_votes_read_path(BANNER_POOL_VOTES_FILE)
         if not isinstance(data, dict):
-            data = load_json(BANNER_POOL_VOTES_BACKUP_FILE)
+            data = _banner_pool_votes_read_path(BANNER_POOL_VOTES_BACKUP_FILE)
         if not isinstance(data, dict):
             data = {'totals': {}, 'ballots': {}}
     totals = data.get('totals') or {}
