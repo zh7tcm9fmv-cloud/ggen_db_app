@@ -4,10 +4,30 @@
 
   var RUBBER = 0.32;
   var SNAP_MS = 520;
+  /* Hide scrollbar thumb as soon as scrolling stops (owner: not always-on). */
+  var SCROLLBAR_HIDE_MS = 140;
   var reduced = false;
   try {
     reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   } catch (e) {}
+
+  function initOverlayScrollbars() {
+    var root = document.documentElement;
+    if (!root || root.dataset.ggenScrollbar === '1') return;
+    root.dataset.ggenScrollbar = '1';
+    root.classList.add('ggen-scrollbar-ready');
+    var hideTimer = 0;
+    function onScroll() {
+      root.classList.add('is-scrolling');
+      if (hideTimer) window.clearTimeout(hideTimer);
+      hideTimer = window.setTimeout(function () {
+        hideTimer = 0;
+        root.classList.remove('is-scrolling');
+      }, SCROLLBAR_HIDE_MS);
+    }
+    document.addEventListener('scroll', onScroll, { passive: true, capture: true });
+  }
+  initOverlayScrollbars();
 
   function clamp01(n) {
     return n < 0 ? 0 : n > 1 ? 1 : n;

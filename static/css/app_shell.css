@@ -17,6 +17,14 @@ button,a,.nav-tab,.page-btn,.role-filter-btn,.role-filter-dd-btn,.rarity-filter-
 body{font-family:var(--font-body);background:var(--bg-primary);color:var(--text-primary);line-height:1.6;min-height:100vh;min-height:100dvh;overflow-x:visible;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 button,input,select,textarea,optgroup{font-family:inherit}
 ::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-track{background:var(--bg-primary)}::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:4px}::-webkit-scrollbar-thumb:hover{background:var(--accent-blue)}
+/* Overlay scrollbars: hidden until scroll (JS sets .ggen-scrollbar-ready + .is-scrolling). No-JS keeps always-on bars above. */
+html.ggen-scrollbar-ready{scrollbar-width:thin;scrollbar-color:transparent transparent}
+html.ggen-scrollbar-ready.is-scrolling{scrollbar-color:var(--border-color) transparent}
+html.ggen-scrollbar-ready:not(.is-scrolling) ::-webkit-scrollbar-track{background:transparent}
+html.ggen-scrollbar-ready:not(.is-scrolling) ::-webkit-scrollbar-thumb{background:transparent}
+html.ggen-scrollbar-ready.is-scrolling ::-webkit-scrollbar-track{background:transparent}
+html.ggen-scrollbar-ready.is-scrolling ::-webkit-scrollbar-thumb{background:var(--border-color)}
+html.ggen-scrollbar-ready.is-scrolling ::-webkit-scrollbar-thumb:hover{background:var(--accent-blue)}
 .bg-pattern{position:fixed;inset:0;z-index:-1;pointer-events:none;background-color:var(--bg-primary);background-image:radial-gradient(ellipse at 18% 16%,rgba(0,212,255,0.055) 0%,transparent 52%),radial-gradient(ellipse at 82% 78%,rgba(201,169,98,0.045) 0%,transparent 50%)}
 .app-header{background-color:#111827;background-image:linear-gradient(180deg,#111827,#0a0e17);border-bottom:1px solid var(--border-color);position:sticky;top:0;z-index:100;isolation:isolate;box-shadow:var(--shadow-surface-drop)}
 .header-inner{max-width:1600px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px}
