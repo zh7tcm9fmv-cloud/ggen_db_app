@@ -1694,6 +1694,10 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .modal-content.char-detail:not(.detail-ranking-view) .header-stats-wrapper .lb-icon-btn img,.modal-content.unit-detail:not(.detail-ranking-view) .header-stats-wrapper .lb-icon-btn img{width:14px;height:14px}
 .modal-content.char-detail:not(.detail-ranking-view) .header-stats-wrapper .lb-icon-btn.active,.modal-content.unit-detail:not(.detail-ranking-view) .header-stats-wrapper .lb-icon-btn.active{box-shadow:none}
 .modal-content.char-detail:not(.detail-ranking-view) .header-stats-wrapper .lb-icon-btn:last-child.active,.modal-content.unit-detail:not(.detail-ranking-view) .header-stats-wrapper .lb-icon-btn:last-child.active{border-top-right-radius:var(--radius-sm);border-bottom-right-radius:var(--radius-sm)}
+/* Match desktop stage:portrait ratio (232/300). Mobile portrait is ~132px — keep stage smaller than art. */
+.modal-content.unit-detail:not(.detail-ranking-view) .unit-model-stage{
+  --stage:calc(min(132px,36vw) * 232 / 300);
+}
 }
 @media(max-width:480px){
 .modal-content.char-detail:not(.detail-ranking-view) .detail-header,.modal-content.unit-detail:not(.detail-ranking-view) .detail-header{padding-left:12px!important;padding-right:12px!important}
