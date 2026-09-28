@@ -626,19 +626,28 @@
     object-fit: contain;
     filter: drop-shadow(0 1px 2px rgba(0,0,0,0.65));
   }
+  /* Trial: in-game–style .icoNew (brown plate / yellow NEW). Inside frame, upper-right. */
   .gc-new {
-    position: absolute; right: 2%; top: 3%;
-    z-index: 7;
-    /* Scale with card width so mobile/landscape shrinks don't leave an oversized badge */
-    padding: calc(var(--gc-w) * 0.009) calc(var(--gc-w) * 0.032) calc(var(--gc-w) * 0.012);
-    background: linear-gradient(180deg, #ffe27a, #f0a010);
-    color: #c41828;
-    font-weight: 800;
-    font-size: clamp(6px, calc(var(--gc-w) * 0.042), 10px);
+    position: absolute;
+    top: 3.5%;
+    right: 4.5%;
+    left: auto;
+    bottom: auto;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: calc(var(--gc-w) * 0.012) calc(var(--gc-w) * 0.03) calc(var(--gc-w) * 0.016);
+    background: rgba(115, 50, 17, 0.8);
+    border: solid 1px #d97a36;
+    box-shadow: 0 0 0.3rem #d97a36, 0 0 0.3rem #d97a36;
+    color: #f8f57b;
+    font-weight: 700;
+    font-size: clamp(7px, calc(var(--gc-w) * 0.055), 12px);
     letter-spacing: 0.02em;
     line-height: 1.1;
-    clip-path: polygon(0 0, 100% 0, 100% 70%, 86% 100%, 0 100%);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.45);
+    text-decoration: none;
+    pointer-events: none;
   }
   /* NEW character — Square base + por + frame; face clipped inside HUD */
   .gc-pilot {
