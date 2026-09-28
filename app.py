@@ -542,6 +542,17 @@ def _parse_koma_resource_id(item):
     return '' if kid in ('', '0') else kid
 
 
+def _unit_koma_model_public_path(koma_resource_id):
+    """In-game model sprite under images/ogk — files are ogk_{KomaResourceId}.webp."""
+    kid = str(koma_resource_id or '').strip()
+    if not kid or kid == '0':
+        return ''
+    stem = kid if kid.startswith('ogk_') else f'ogk_{kid}'
+    if stem.lower().endswith('.webp'):
+        stem = stem[:-5]
+    return f'/static/images/ogk/{stem}.webp'
+
+
 def create_unit_weapon_lb_movie_map(d):
     """Map unit id -> UnitBattleMovieId from the weapon-50 (max-LB EX) weapon row."""
     lookup = {}
@@ -32360,6 +32371,12 @@ def get_unit(unit_id):
         _unit_combat_count_atk = _collect_unit_combat_count_atk_meta(ac)
         _unit_damage_taken_def = _collect_unit_damage_taken_def_meta(ac)
         result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'skills': skills, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'ability_passive_crit_dmg_pct': ability_passive_crit_dmg_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'has_cond_weapon_range': _has_cond_weapon_range, 'has_pilot_cond_passive': _has_pilot_cond, 'cp_weapon_range_mods': _cp_wpn_range_mods, 'pilot_weapon_effect_bonuses': _pilot_wpn_fx, 'pilot_tag_weapon_stat_bonuses': _pilot_tag_wpn, 'pilot_en_cost_reduction_pct': _pilot_en_red, 'weapon_en_cost_increase_pct': {'sp': en_cost_inc_b[0], 'ssp': en_cost_inc_sspb[0], 'sp_cond': en_cost_inc_c[0], 'ssp_cond': en_cost_inc_sspc[0]}, 'is_large': il, 'occupied_area_id': safe_int(info.get('occupied_area_id'), 1), 'is_sd': _is_sd_unit, 'recommend_character': recommend_character, 'body_type': info.get('body_type', '1'), 'is_limited_time': unit_id in LIMITED_TIME_UNIT_IDS, 'is_schedule_shell': is_shell, 'main_unit_id': _muid, 'is_transform_alternate': unit_id != _muid, 'limit_break_movie_id': _lb_movie_id, 'gacha_pull_movie_id': _gacha_pull_movie_id}
+        _koma_id = info.get('koma_resource_id') or ''
+        _koma_path = _unit_koma_model_public_path(_koma_id)
+        if _koma_id:
+            result['koma_resource_id'] = _koma_id
+        if _koma_path:
+            result['koma_model'] = _koma_path
         if _unit_hp_atk_tiers:
             result['unit_hp_atk_tiers'] = _unit_hp_atk_tiers
         if _unit_combat_count_atk:
