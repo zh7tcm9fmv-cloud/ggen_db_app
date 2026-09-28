@@ -3743,16 +3743,22 @@ im.src=u;
 if(im.complete)done();
 });
 }
-/** Prefetch unit stage layers (koma+ped+fx) and wait — hover path so they reveal together on open. */
+/** Prefetch unit stage layers. Koma first so it wins CDN vs heavy rarity FX (~500KB). */
 function warmUnitModelStageAssets(d){
 if(!d)return Promise.resolve();
-const paths=[];
 const koma=d.koma_model||unitKomaModelPath(d);
-if(koma)paths.push(koma);
 const layers=unitModelPedestalLayers(d.rarity);
-if(layers){if(layers.pedestal)paths.push(layers.pedestal);if(layers.effect)paths.push(layers.effect)}
-if(!paths.length)return Promise.resolve();
-return Promise.all(paths.map(warmPathDetailImgAwait));
+const rest=[];
+if(layers){if(layers.pedestal)rest.push(layers.pedestal);if(layers.effect)rest.push(layers.effect)}
+return (koma?warmPathDetailImgAwait(koma):Promise.resolve()).then(()=>rest.length?Promise.all(rest.map(warmPathDetailImgAwait)):undefined);
+}
+/** Idle-warm small pedestal plates only (not ~500KB FX) once units browse is in play. */
+let _unitStagePedsIdleWarmed=false;
+function scheduleIdleWarmUnitStagePeds(){
+if(_unitStagePedsIdleWarmed)return;
+_unitStagePedsIdleWarmed=true;
+const run=()=>{['UR','SSR','SR','R','N'].forEach(r=>{const L=unitModelPedestalLayers(r);if(L&&L.pedestal)warmPathDetailImg(L.pedestal)})};
+if(typeof requestIdleCallback==='function')requestIdleCallback(run,{timeout:2500});else setTimeout(run,800);
 }
 /** Reveal ped+fx+koma only when every stage img has settled (avoids ped/fx flashing first). */
 function unitModelStageImgSettled(img){
@@ -3780,25 +3786,29 @@ setTimeout(()=>{if(stage.isConnected)stage.classList.add('is-ready')},2800);
 function warmDetailImagesFromPayload(type,d){
 if(!d||d.error)return;
 /* Perf bar: warm list thum (often cached) then portrait; keep budget low.
-   Unit stage (koma+ped+fx) is above-fold — warm immediately after portrait, before skill icons. */
+   Unit: koma+ped with portrait; defer heavy FX one tick so portrait/koma win first CDN RTT. */
 let n=0;
-const maxU=type==='unit'?15:12;
+const maxU=type==='unit'?14:12;
 const add=(p)=>{if(n>=maxU||!p)return;warmPathDetailImg(p);n++};
 add(d.thum);
 add(d.portrait);
 if(type==='unit'){
+scheduleIdleWarmUnitStagePeds();
 add(d.koma_model||unitKomaModelPath(d));
 const layers=unitModelPedestalLayers(d.rarity);
-if(layers){add(layers.pedestal);if(layers.effect)add(layers.effect)}
+if(layers){
+add(layers.pedestal);
+if(layers.effect){const fx=layers.effect;setTimeout(()=>{warmPathDetailImg(fx)},0)}
+}
 }
 add(d.rarity_icon);add(d.role_icon);add(d.acquisition_icon);
-(d.special_icons||[]).slice(0,4).forEach(add);
+(d.special_icons||[]).slice(0,3).forEach(add);
 if(d.recommend_unit)add(d.recommend_unit.thum);
 if(d.recommend_character)add(d.recommend_character.thum);
-for(const sk of (d.skills||[]).slice(0,4)){if(n>=maxU)break;add(sk.icon)}
-for(const ab of (d.abilities||[]).slice(0,4)){if(n>=maxU)break;add(ab.icon)}
+for(const sk of (d.skills||[]).slice(0,3)){if(n>=maxU)break;add(sk.icon)}
+for(const ab of (d.abilities||[]).slice(0,3)){if(n>=maxU)break;add(ab.icon)}
 if(type==='unit'){
-for(const w of (d.weapons||[]).slice(0,4)){if(n>=maxU)break;add(w.icon)}
+for(const w of (d.weapons||[]).slice(0,3)){if(n>=maxU)break;add(w.icon)}
 }
 if(type==='stage'&&d.map_data&&Array.isArray(d.map_data.units)){
 for(const u of d.map_data.units.slice(0,6)){if(n>=maxU)break;add(u.thum||u.portrait)}
@@ -3998,7 +4008,7 @@ function scheduleDetailPrefetchFromIntent(type,id){
 if(type!=='character'&&type!=='unit'&&type!=='supporter'&&type!=='stage'&&type!=='option_part'&&type!=='profile_title'&&type!=='item')return;
 clearTimeout(_detailPrefetchHoverTimer);
 /* Prefetch detail JSON (warms full portrait URL) — no fake thumb substitute. */
-_detailPrefetchHoverTimer=setTimeout(()=>{fetchDetailPayload(type,id,{}).then(d=>{if(type==='unit'&&d)return warmUnitModelStageAssets(d)}).catch(()=>{})},40);
+_detailPrefetchHoverTimer=setTimeout(()=>{if(type==='unit')scheduleIdleWarmUnitStagePeds();fetchDetailPayload(type,id,{}).then(d=>{if(type==='unit'&&d)return warmUnitModelStageAssets(d)}).catch(()=>{})},40);
 }
 function onDetailPrefetchIntentEvent(ev){
 const el=ev.target&&ev.target.closest&&ev.target.closest('[data-detail-type][data-detail-id]:not(.ml-reward-chip--clickable):not(.detail-clickable-item)');
@@ -4326,7 +4336,7 @@ function renderRecommendUnitCard(d){const ctx=d&&d.detail_npc_context;if(ctx&&ct
 function renderLimitedTimeBanner(d,kind,opts){if(!d||!d.is_limited_time)return'';const o=opts||{};const size=o.size||'detail';const wrapCls=o.wrapClass?(' '+String(o.wrapClass).trim()):'';const label=t('limited_label');return`<div class="detail-limited-banner-wrap${wrapCls}">${limitedUrBadgeHtml(label,{size,loading:'eager',lazy:false})}</div>`}
 function unitKomaModelPath(d){const raw=String((d&&(d.koma_model||d.koma_resource_id))||'').trim();if(!raw)return'';if(raw.startsWith('/static/')||raw.startsWith('http'))return raw;const stem=raw.replace(/\.webp$/i,'').replace(/^ogk_/i,'');return stem?`/static/images/ogk/ogk_${stem}.webp`:''}
 function unitModelPedestalLayers(rarity){const r=String(rarity||'N').toUpperCase();const ui='/static/images/UI/';/* Event UI assets (CDN). Display sizes match UR spiral (~410) — do NOT use native 721px for area FX (overblown vs koma). Ped smaller so model reads larger. */const FX_DISP=410,PED_DISP=190;const map={UR:{pedestal:ui+'UI_Event_image_Pedestal_L_Lastboss.webp',effect:ui+'UI_Event_image_Pedestal_Effect_Spiral.webp',fxW:FX_DISP,pedW:PED_DISP},SSR:{pedestal:ui+'UI_Event_image_Pedestal_M_Boss.webp',effect:ui+'UI_Event_image_Pedestal_Enemy_Boss_Area_ScoreAttack.webp',fxW:FX_DISP,pedW:PED_DISP},SR:{pedestal:ui+'UI_Event_image_Pedestal_M_EnemyS.webp',effect:ui+'UI_Event_image_Pedestal_Enemy_Boss_Area_2.webp',fxW:FX_DISP,pedW:PED_DISP},R:{pedestal:ui+'UI_Event_image_Pedestal_M_EnemyM.webp',effect:ui+'UI_Event_image_Pedestal_Enemy_Boss_Area_1.webp',fxW:FX_DISP,pedW:PED_DISP},N:{pedestal:ui+'UI_Event_image_Pedestal_M_Disable.webp',effect:'',fxW:0,pedW:PED_DISP}};return map[r]||map.N}
-function renderUnitModelStage(d){const modelPath=unitKomaModelPath(d);if(!modelPath)return'';const rar=String((d&&d.rarity)||'N').toUpperCase();const pedKey=['UR','SSR','SR','R','N'].includes(rar)?rar:'N';const layers=unitModelPedestalLayers(pedKey);const alt=esc(d&&d.name?d.name:'');const style=`style="--fx-w:${layers.fxW||410};--ped-w:${layers.pedW||190}"`;const settled=' onload="unitModelStageImgSettled(this)" onerror="unitModelStageImgSettled(this)"';/* Eager + high: above-fold. Pending until all layers settle so ped/fx never flash alone. */const effect=layers.effect?`<img class="unit-model-stage-effect" src="${imgUrl(layers.effect)}" alt="" width="${layers.fxW||410}" height="${layers.fxW||410}" loading="eager" decoding="async" fetchpriority="high"${settled}>`:'';return`<div class="unit-model-stage" data-rarity="${escAttr(pedKey)}" ${style} aria-label="${escAttr(t('unit_model_stage')||'In-game model')}">${effect}<img class="unit-model-stage-pedestal" src="${imgUrl(layers.pedestal)}" alt="" width="190" height="127" loading="eager" decoding="async" fetchpriority="high"${settled}><img class="unit-model-stage-koma" src="${imgUrl(modelPath)}" alt="${alt}" width="512" height="512" loading="eager" decoding="async" fetchpriority="high"${settled}></div>`}
+function renderUnitModelStage(d){const modelPath=unitKomaModelPath(d);if(!modelPath)return'';const rar=String((d&&d.rarity)||'N').toUpperCase();const pedKey=['UR','SSR','SR','R','N'].includes(rar)?rar:'N';const layers=unitModelPedestalLayers(pedKey);const alt=esc(d&&d.name?d.name:'');const style=`style="--fx-w:${layers.fxW||410};--ped-w:${layers.pedW||190}"`;const settled=' onload="unitModelStageImgSettled(this)" onerror="unitModelStageImgSettled(this)"';/* Koma alone gets high priority — ped/fx must not outrank portrait. Reveal waits for all. */const effect=layers.effect?`<img class="unit-model-stage-effect" src="${imgUrl(layers.effect)}" alt="" width="${layers.fxW||410}" height="${layers.fxW||410}" loading="eager" decoding="async"${settled}>`:'';return`<div class="unit-model-stage" data-rarity="${escAttr(pedKey)}" ${style} aria-label="${escAttr(t('unit_model_stage')||'In-game model')}">${effect}<img class="unit-model-stage-pedestal" src="${imgUrl(layers.pedestal)}" alt="" width="190" height="127" loading="eager" decoding="async"${settled}><img class="unit-model-stage-koma" src="${imgUrl(modelPath)}" alt="${alt}" width="512" height="512" loading="eager" decoding="async" fetchpriority="high"${settled}></div>`}
 function renderDetailRankingToggle(d,type){if(!(d&&d.ranking_available&&(type==='character'||type==='unit'))||d.detail_npc_context)return'';const on=!!S.detailRankingOverlay;const ttl=on?'Hide ranking':'Show ranking';return`<button type="button" class="detail-rank-toggle-btn${on?' active':''}" title="${escAttr(ttl)}" aria-label="${escAttr(ttl)}" onclick="toggleDetailRankingOverlay()"><img class="detail-rank-toggle-icon" src="${imgUrl('/static/images/UI/UI_Home_Campaign_Image_01.webp')}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'"></button>`}
 function renderDetailRankToggleSlotHtml(d,type){if(!(d&&d.ranking_available&&(type==='character'||type==='unit'))||d.detail_npc_context)return'';const btn=renderDetailRankingToggle(d,type);return btn?`<div class="detail-rank-toggle-slot" id="detailRankToggleSlot">${btn}</div>`:''}
 function toggleDetailRankingOverlay(){if(!S.currentDetailData||!(S.currentDetailType==='character'||S.currentDetailType==='unit')||!S.currentDetailData.ranking_available)return;S.detailRankingOverlay=!S.detailRankingOverlay;const b=document.querySelector('#detailRankToggleSlot .detail-rank-toggle-btn');if(b)b.classList.toggle('active',!!S.detailRankingOverlay);updateDetailDynamicSections(S.currentDetailType)}
