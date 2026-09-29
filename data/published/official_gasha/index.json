@@ -498,7 +498,7 @@
         },
         {
           "gasha_id": 2608500301,
-          "name": "New Unit Featured Unit Assembly",
+          "name": "",
           "file": "gasha_proportion_2608500301_2.json",
           "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2608500301"
         },
@@ -513,6 +513,12 @@
           "name": "Featured Unit Assembly (9/17/2026 JST)",
           "file": "gasha_proportion_2609300501_2.json",
           "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2609300501"
+        },
+        {
+          "gasha_id": 2609400505,
+          "name": "1.5th Anniv. Unit Assembly (Up to 47 Free Pulls) (2 UR or more Units Guaranteed)",
+          "file": "gasha_proportion_2609400505_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2609400505"
         }
       ]
     },
@@ -1013,7 +1019,7 @@
         },
         {
           "gasha_id": 2608500301,
-          "name": "新ユニット追加！ピックアップガシャ",
+          "name": "",
           "file": "gasha_proportion_2608500301_1.json",
           "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2608500301"
         },
@@ -1028,6 +1034,12 @@
           "name": "ピックアップガシャ(2026/9/17)",
           "file": "gasha_proportion_2609300501_1.json",
           "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2609300501"
+        },
+        {
+          "gasha_id": 2609400505,
+          "name": "1.5thアニバーサリー最大47連無料ガシャ（URユニット2体以上確定）",
+          "file": "gasha_proportion_2609400505_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2609400505"
         }
       ]
     },
@@ -1528,7 +1540,7 @@
         },
         {
           "gasha_id": 2608500301,
-          "name": "追加新單位！精選機體補給",
+          "name": "",
           "file": "gasha_proportion_2608500301_3.json",
           "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2608500301"
         },
@@ -1543,6 +1555,12 @@
           "name": "精選機體補給（2026/9/17 JST）",
           "file": "gasha_proportion_2609300501_3.json",
           "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2609300501"
+        },
+        {
+          "gasha_id": 2609400505,
+          "name": "1.5th Anniversary 最多47連免費機體補給（保證獲得2架以上UR單位）",
+          "file": "gasha_proportion_2609400505_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2609400505"
         }
       ]
     },
@@ -2043,7 +2061,7 @@
         },
         {
           "gasha_id": 2608500301,
-          "name": "追加新單位！精選機體補給",
+          "name": "",
           "file": "gasha_proportion_2608500301_4.json",
           "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2608500301"
         },
@@ -2058,6 +2076,12 @@
           "name": "精選機體補給（17/9/2026 JST）",
           "file": "gasha_proportion_2609300501_4.json",
           "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2609300501"
+        },
+        {
+          "gasha_id": 2609400505,
+          "name": "1.5th Anniversary 最多47連免費機體補給（保證獲得2架以上UR單位）",
+          "file": "gasha_proportion_2609400505_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2609400505"
         }
       ]
     }
