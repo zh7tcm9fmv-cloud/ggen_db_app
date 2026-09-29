@@ -45,40 +45,37 @@ def _por_y_of(row: dict) -> str:
     return POR_Y_BY_HEIGHT.get(str(row.get("BromideHeightIndex") or "0"), "14%")
 
 
-def _limited_unit_ids() -> set[str]:
-    """Parse app.py LIMITED_TIME_UNIT_IDS (same source as live /u limited badge)."""
-    import re
-
-    text = (ROOT / "app.py").read_text(encoding="utf-8")
-    m = re.search(r"LIMITED_TIME_UNIT_IDS\s*=\s*frozenset\(\{([^}]*)\}", text, re.S)
-    if not m:
+def _limited_ids_from_gasha_content(reward_type_index: int) -> set[str]:
+    """Official limited ids from m_gasha_content_detail.IsLimitedTime (3=unit, 21=supporter)."""
+    path = ROOT / "data" / "EN" / "master" / "m_gasha_content_detail.json"
+    if not path.is_file():
         return set()
-    return set(re.findall(r"'(\d+)'", m.group(1)))
+    rows = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(rows, list):
+        rows = rows.get("Rows") or rows.get("rows") or []
+    want = str(reward_type_index)
+    out: set[str] = set()
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        if row.get("IsLimitedTime") not in (True, 1, "1", "true", "True"):
+            continue
+        if str(row.get("RewardTypeIndex") or "") != want:
+            continue
+        rid = str(row.get("RewardTargetId") or "0")
+        if rid and rid != "0":
+            out.add(rid)
+    return out
+
+
+def _limited_unit_ids() -> set[str]:
+    """Same source as live /u limited badge (m_gasha_content_detail.IsLimitedTime)."""
+    return _limited_ids_from_gasha_content(3)
 
 
 def _limited_supporter_ids() -> set[str]:
-    """Limited pickup supporters — prefer live API is_limited_time; fallback snapshot."""
-    import urllib.request
-
-    fallback = {
-        "1110000150",
-        "1125000250",
-        "1162000150",
-        "1300000450",
-        "1330000250",
-        "1370000550",
-    }
-    try:
-        with urllib.request.urlopen(
-            "https://ggendb.up.railway.app/api/supporters?lang=EN&per_page=500",
-            timeout=12,
-        ) as resp:
-            data = json.loads(resp.read().decode("utf-8"))
-        rows = data.get("rows") or []
-        got = {str(x.get("id")) for x in rows if x.get("is_limited_time")}
-        return got or fallback
-    except Exception:
-        return fallback
+    """Same source as live supporter limited badge (IsLimitedTime rt 21)."""
+    return _limited_ids_from_gasha_content(21)
 
 
 def _rarity_of(row: dict) -> str:
