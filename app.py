@@ -4213,8 +4213,32 @@ def _supporter_is_limited_pickup_by_leader_skill(sid, leader_text_map):
     return True
 
 
+def _compute_limited_time_ids_from_gasha_content(reward_type_index):
+    """Official limited-time ids from m_gasha_content_detail.IsLimitedTime (rt 3=unit, 21=supporter)."""
+    want = normalize_id(reward_type_index)
+    out = set()
+    for row in extract_data_list(gasha_content_detail_data or []):
+        if not isinstance(row, dict):
+            continue
+        flag = row.get('IsLimitedTime')
+        if flag is None:
+            flag = row.get('isLimitedTime')
+        if flag not in (True, 1, '1', 'true', 'True'):
+            continue
+        rt = normalize_id(row.get('RewardTypeIndex') or row.get('rewardTypeIndex'))
+        if rt != want:
+            continue
+        rid = normalize_id(row.get('RewardTargetId') or row.get('rewardTargetId'))
+        if rid and rid != '0':
+            out.add(rid)
+    return frozenset(out)
+
+
 def _compute_limited_time_supporter_ids():
-    """Limited pickup supporters: tier-3 leader skill buff is 44% on one tag (standard UR cap)."""
+    """Limited pickup supporters: prefer official IsLimitedTime; fallback to 44% leader heuristic."""
+    official = _compute_limited_time_ids_from_gasha_content(21)
+    if official:
+        return official
     raw = load_json(os.path.join(LANG_PATHS['EN']['lang'], 'm_supporter_leader_skill_content.json'))
     text_map = create_lang_text_map(raw) if raw else {}
     out = set()
@@ -11001,24 +11025,8 @@ unit_skill_set_lookup = create_unit_skill_set_lookup(unit_skill_set_content_data
 unit_skill_trait_by_skill = create_unit_skill_trait_by_skill_lookup(unit_skill_trait_master_data) if unit_skill_trait_master_data else {}
 unit_info_map = create_unit_info_map(unit_master_data); unit_stat_map = create_unit_status_map(unit_status_data)
 limit_break_item_unit_map = create_limit_break_item_unit_map(unit_master_data) if unit_master_data else {}
-LIMITED_TIME_UNIT_IDS = frozenset({
-    '1150000150', '1095002550', '1200003950', '1330000750', '1114000150', '1501002250', '1430003450',
-    '1080000150', '1085000450', '1330000150', '1339000150', '1400000550', '1230003850', '1125001450', '1125001150',
-    '1060000550', '1060000450', '1705000550', '1060000350',
-    '1219000150', '1370005950',
-    # Narrative pickup: RecommendCharacterId 1144000102
-    '1144000550',
-    # Nightingale (EX): RecommendCharacterId 1110000202
-    '1114000250',
-    # F91 pickup: RecommendCharacterId 1162000102
-    '1163000150',
-    # Altron Gundam (EW) (EX): RecommendCharacterId 1219000501 (Chang Wufei (EW))
-    '1219000650',
-    # SD linked Unit Assembly pickup (linked CharacterId 1705002900)
-    '1705002050',
-    # Full Armor Hyaku-Shiki Kai (EX) pickup: RecommendCharacterId 1080000203 (Quattro Bajeena)
-    '1115000350',
-})
+# Official limited-time units from m_gasha_content_detail.IsLimitedTime (RewardTypeIndex 3).
+LIMITED_TIME_UNIT_IDS = _compute_limited_time_ids_from_gasha_content(3)
 
 
 def _compute_limited_time_character_ids():
@@ -11035,9 +11043,8 @@ def _compute_limited_time_character_ids():
 
 LIMITED_TIME_CHARACTER_IDS = frozenset(_compute_limited_time_character_ids()) | frozenset(
     normalize_id(x) for x in (
+        # SD limited units often omit RecommendCharacterId (0); keep linked character marked.
         '1705000200',
-        # F91 pickup pilot (1163000150 → 1162000102)
-        '1162000102',
     )
 )
 LIMITED_TIME_SUPPORTER_IDS = _compute_limited_time_supporter_ids()
