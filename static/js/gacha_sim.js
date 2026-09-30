@@ -77,7 +77,9 @@ window.GgenGachaSim = (function () {
       var l = document.createElement("link");
       l.id = "gachaSimTekoFont";
       l.rel = "stylesheet";
-      l.href = "https://fonts.googleapis.com/css2?family=Teko:wght@500;600;700&display=swap";
+      var v = "";
+      try { v = String(window.__GGEN_APP_JS_VERSION__ || ""); } catch (e2) {}
+      l.href = "/static/css/ggen_teko.css" + (v ? "?v=" + encodeURIComponent(v) : "");
       l.media = "print";
       l.onload = function () { this.media = "all"; };
       document.head.appendChild(l);

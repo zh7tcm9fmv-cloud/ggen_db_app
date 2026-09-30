@@ -1,0 +1,22 @@
+/* Self-hosted Teko for 1.5 Special Design (same-origin allowlist — no Google Fonts). */
+@font-face{
+  font-family:'Teko';
+  src:url('/static/font/Teko-SemiBold.ttf') format('truetype');
+  font-weight:500;
+  font-style:normal;
+  font-display:swap;
+}
+@font-face{
+  font-family:'Teko';
+  src:url('/static/font/Teko-SemiBold.ttf') format('truetype');
+  font-weight:600;
+  font-style:normal;
+  font-display:swap;
+}
+@font-face{
+  font-family:'Teko';
+  src:url('/static/font/Teko-Bold.ttf') format('truetype');
+  font-weight:700;
+  font-style:normal;
+  font-display:swap;
+}

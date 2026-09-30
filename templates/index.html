@@ -101,7 +101,7 @@ window.__ggenLoadGtm=function(){
       var l=document.createElement('link');
       l.id='ggen15Fonts';
       l.rel='stylesheet';
-      l.href='https://fonts.googleapis.com/css2?family=Teko:wght@500;600;700&display=swap';
+      l.href='{{ url_for('static', filename='css/ggen_teko.css') }}?v={{ app_js_version }}';
       l.media='print';
       l.onload=function(){this.media='all'};
       document.head.appendChild(l);

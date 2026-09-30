@@ -232,6 +232,7 @@ def _app_js_bundle_version_tag():
         ('css', 'collections.css'),
         ('css', 'collections_15.css'),
         ('css', 'ggen_15.css'),
+        ('css', 'ggen_teko.css'),
         ('css', 'tag_matrix.css'),
         ('css', 'tag_matrix_15.css'),
         ('css', 'debuff_matrix.css'),
@@ -30779,8 +30780,12 @@ def _bt_vote_mine_for_voter(ballots, voter_id):
 
 @app.route('/api/banner_timeline/votes')
 def api_banner_timeline_votes():
+    # Serve local cache by default — boot already hydrates from GitHub.
+    # Re-hydrate only when empty so /tl votes never block a worker on GitHub (20s+).
     try:
-        data = _banner_pool_votes_load(hydrate=True)
+        data = _banner_pool_votes_load(hydrate=False)
+        if not _banner_pool_votes_has_data(data):
+            data = _banner_pool_votes_load(hydrate=True)
     except Exception as e:
         print(f'banner_pool_votes: votes API load failed: {e}')
         data = _banner_pool_votes_read_path(BANNER_POOL_VOTES_FILE)

@@ -638,9 +638,11 @@ def main():
             ]
             # Full catalog: always --resume.
             # Incremental / --force+--unit: first attempt re-sims selected units;
-            # later attempts --resume so checkpointed units are not re-done after a crash.
+            # later attempts --resume (no --force) so checkpointed units are kept.
             force_selected = bool(args.force and args.unit)
-            if args.force:
+            # Re-passing --force on attempt 2+ drops the just-saved --unit rows from
+            # the merge base, so --resume always sees them as "remaining" forever.
+            if args.force and attempt == 1:
                 child.append('--force')
             if args.resume or attempt > 1 or (
                 not args.incremental and not force_selected
@@ -694,6 +696,31 @@ def main():
                     print(
                         f'Build exited 0 but only {covered}/{target} incremental units '
                         f'(cache {done_n}, +{skip_n} skips) — restarting'
+                    )
+                elif args.unit:
+                    # Explicit --unit builds must not require full-catalog coverage
+                    # (that made --loop restart forever at ~1418/1441).
+                    A = msy._app()
+                    target_ids = [A.normalize_id(u) for u in args.unit if A.normalize_id(u)]
+                    done_ids = {
+                        A.normalize_id((g.get('unit') or {}).get('id'))
+                        for g in groups
+                    }
+                    skips = _load_permanent_skips()
+                    covered = sum(
+                        1 for u in target_ids
+                        if u in done_ids or u in skips
+                    )
+                    total = len(target_ids)
+                    if covered >= total:
+                        print(
+                            f'BSP explicit complete: {covered}/{total} selected '
+                            f'(+{skip_n} permanent skips; cache {done_n})'
+                        )
+                        return
+                    print(
+                        f'Build exited 0 but only {covered}/{total} explicit units '
+                        f'(+{skip_n} permanent skips; cache {done_n}) — restarting'
                     )
                 else:
                     all_ids = msy._msy_rankable_unit_ids(args.lang)
