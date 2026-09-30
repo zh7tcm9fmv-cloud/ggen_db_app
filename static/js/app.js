@@ -15350,10 +15350,10 @@ ${lsHtml}
 async function _dcFetchAllListRows(base,extra,listQ){
 const qv=listQ!==undefined&&listQ!==null?String(listQ):'';
 const extraS=String(extra||'');
-/* One-shot bulk for rarity=ALL picker/autofit lists (option_parts / supporters support ranking_bulk). */
-const useBulk=/(^|&)rarity=ALL(&|$)/.test(extraS)||extraS.indexOf('rarity=ALL')>=0;
-const pp=useBulk?5000:100;
-const bulkQ=useBulk?'&ranking_bulk=1':'';
+/* Bulk only for small catalogs (supporters ~90). Full OP catalog ~700 — paging 100 is lighter on the worker than one 5000-row jsonify. */
+const suppBulk=base.indexOf('/api/supporters')>=0&&(/(^|&)rarity=ALL(&|$)/.test(extraS)||extraS.indexOf('rarity=ALL')>=0);
+const pp=suppBulk?500:100;
+const bulkQ=suppBulk?'&ranking_bulk=1':'';
 const rows=[];let page=1;let totalPages=1;
 do{
 const r=await fetch(`${base}?lang=${S.lang}&page=${page}&per_page=${pp}&sort=rarity&dir=desc&q=${encodeURIComponent(qv)}&${extra}${bulkQ}`);

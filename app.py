@@ -17489,8 +17489,8 @@ def health_check():
         rss_mb = None
     try:
         import meta_synergy_rank as _msr_h
-        # Soft trim refillable MSY/BSP caches when RSS is high (no worker recycle).
-        if rss_mb is not None:
+        # Soft trim is opt-in (RSS_TRIM_ENABLED=1). Default off — /health runs often on Railway.
+        if rss_mb is not None and getattr(_msr_h, '_RSS_TRIM_ENABLED', False):
             trim_info = _msr_h.trim_runtime_caches_for_rss(rss_mb=rss_mb)
             if trim_info:
                 mem['rss_trim'] = trim_info

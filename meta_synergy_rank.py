@@ -1915,9 +1915,9 @@ _char_pair_cache = {}
 # atomic: two threads can pop(next(iter(cache))) the same key → KeyError.
 _bounded_cache_lock = threading.Lock()
 # Hard caps — unbounded pair cache can grow toward tens of GB under Meta Synergy / BSP traffic.
-# Railway steady-state (~3GB RSS) is mostly master LANG×4 + browse rows; keep pair cache modest.
+# Keep a large warm pair cache: aggressive trim + a low max made Top 10 / MSY colder (Sep 2026).
 _UNIT_WEAPON_CACHE_MAX = max(256, min(8192, int(os.environ.get('MSY_UNIT_WEAPON_CACHE_MAX', '2048') or '2048')))
-_CHAR_PAIR_CACHE_MAX = max(1024, min(200000, int(os.environ.get('MSY_CHAR_PAIR_CACHE_MAX', '12000') or '12000')))
+_CHAR_PAIR_CACHE_MAX = max(1024, min(200000, int(os.environ.get('MSY_CHAR_PAIR_CACHE_MAX', '50000') or '50000')))
 _rankings_result_cache = {}
 _rankings_browse_payload_cache = {}
 _MSY_BROWSE_PAYLOAD_CACHE_TTL = max(15, min(300, int(os.environ.get('MSY_BROWSE_CACHE_TTL', '60') or '60')))
@@ -1958,15 +1958,17 @@ _BSP_PUBLISHED_MEMORY_LOCK = threading.Lock()
 _BSP_PUBLISHED_INDEX = {}  # cache_key -> {uid: True}
 # Steady-state RAM: avoid holding the ~500MB published catalog. Serve units from
 # gzip shards with a small LRU (Top 10 stays snappy; Railway RSS stays low).
-_BSP_GROUP_LRU_MAX = max(16, min(256, int(os.environ.get('BSP_GROUP_LRU_MAX', '48') or '48')))
+_BSP_GROUP_LRU_MAX = max(16, min(256, int(os.environ.get('BSP_GROUP_LRU_MAX', '64') or '64')))
 _BSP_GROUP_LRU = OrderedDict()  # (cache_key_tuple, uid) -> group
 _BSP_GROUP_LRU_LOCK = threading.Lock()
 _BSP_SHARD_ENSURE_LOCKS = {}
 _BSP_SHARD_ENSURE_GUARD = threading.Lock()
+# Opt-in only: trimming on every Railway /health while rss≈3GB thrashed MSY/BSP caches.
 _RSS_TRIM_LOCK = threading.Lock()
 _RSS_TRIM_LAST_MONO = 0.0
-_RSS_TRIM_MIN_INTERVAL_SEC = max(30.0, float(os.environ.get('RSS_TRIM_MIN_INTERVAL_SEC', '90') or '90'))
-_RSS_TRIM_MB = max(1200.0, float(os.environ.get('RSS_TRIM_MB', '2600') or '2600'))
+_RSS_TRIM_MIN_INTERVAL_SEC = max(30.0, float(os.environ.get('RSS_TRIM_MIN_INTERVAL_SEC', '300') or '300'))
+_RSS_TRIM_MB = max(1200.0, float(os.environ.get('RSS_TRIM_MB', '4500') or '4500'))
+_RSS_TRIM_ENABLED = os.environ.get('RSS_TRIM_ENABLED', '').strip().lower() in ('1', 'true', 'yes')
 SHINN_EX_CHAR_ID = '1330000103'
 _MSY_BUILD_WORKERS = max(1, min(8, int(os.environ.get('MSY_BUILD_WORKERS', '6') or '6')))
 _MSY_USE_PROCESS_BUILD = os.environ.get('MSY_USE_PROCESS_BUILD', '').strip().lower() in ('1', 'true', 'yes')
@@ -2250,10 +2252,12 @@ def _trim_bounded_cache_to(cache, keep):
 def trim_runtime_caches_for_rss(*, rss_mb=None, force=False):
     """Drop refillable MSY/BSP caches when process RSS is high.
 
-    Does not unload master LANG/browse rows (feature-critical). Pair totals and
-    BSP group shards refill on demand — same answers, less RAM under pressure.
+    Disabled by default (RSS_TRIM_ENABLED=1 to opt in). Trimming from /health while
+    steady RSS sits ~3GB was thrashing pair/BSP caches and made pages colder.
     """
     global _RSS_TRIM_LAST_MONO
+    if not force and not _RSS_TRIM_ENABLED:
+        return None
     now = time.monotonic()
     if not force and (now - _RSS_TRIM_LAST_MONO) < _RSS_TRIM_MIN_INTERVAL_SEC:
         return None
