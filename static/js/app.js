@@ -3760,13 +3760,25 @@ _unitStagePedsIdleWarmed=true;
 const run=()=>{['UR','SSR','SR','R','N'].forEach(r=>{const L=unitModelPedestalLayers(r);if(L&&L.pedestal)warmPathDetailImg(L.pedestal)})};
 if(typeof requestIdleCallback==='function')requestIdleCallback(run,{timeout:2500});else setTimeout(run,800);
 }
+/** Map koma natural size onto the 512-canvas stage math (tight crops otherwise look oversized). */
+function unitModelStageSyncKomaScale(img){
+if(!img||!img.classList||!img.classList.contains('unit-model-stage-koma'))return;
+const stage=img.closest?img.closest('.unit-model-stage'):null;
+if(!stage)return;
+const nw=img.naturalWidth|0,nh=img.naturalHeight|0;
+if(nw<1||nh<1)return;
+stage.style.setProperty('--koma-nat-w',String(nw));
+stage.style.setProperty('--koma-nat-h',String(nh));
+}
 /** Reveal ped+fx+koma only when every stage img has settled (avoids ped/fx flashing first). */
 function unitModelStageImgSettled(img){
+unitModelStageSyncKomaScale(img);
 const stage=img&&img.closest?img.closest('.unit-model-stage'):null;
 if(!stage||stage.classList.contains('is-ready'))return;
 const imgs=stage.querySelectorAll('img');
 for(let i=0;i<imgs.length;i++){
 if(!imgs[i].complete)return;
+unitModelStageSyncKomaScale(imgs[i]);
 }
 stage.classList.add('is-ready');
 }
@@ -3777,6 +3789,7 @@ const imgs=stage.querySelectorAll('img');
 if(!imgs.length){stage.classList.add('is-ready');return;}
 const tick=()=>unitModelStageImgSettled(imgs[0]);
 imgs.forEach(im=>{
+unitModelStageSyncKomaScale(im);
 if(im.complete)tick();
 else{im.addEventListener('load',tick,{once:true});im.addEventListener('error',tick,{once:true})}
 });

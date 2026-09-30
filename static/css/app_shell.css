@@ -1628,10 +1628,13 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .unit-model-stage-pedestal{z-index:2}
 .unit-model-stage-koma{
   z-index:3;
-  left:0;
-  width:100cqw;
-  height:100cqw;
-  top:var(--compose-lift);
+  /* Size vs 512 canvas: tight-crop ogk (new V batch etc.) use --koma-nat-* from JS so they
+     don't fill the stage like a full 512 plate. Defaults keep legacy 512 art unchanged. */
+  left:50cqw;
+  top:calc(var(--compose-lift) + 50cqw);
+  width:calc(var(--koma-nat-w, 512) / var(--koma-px) * 100cqw);
+  height:calc(var(--koma-nat-h, 512) / var(--koma-px) * 100cqw);
+  transform:translate(-50%, -50%);
   /* Single drop-shadow — multi-layer filters are costly on mobile GPUs */
   filter:drop-shadow(0 6px 12px rgba(0,0,0,.55));
 }
