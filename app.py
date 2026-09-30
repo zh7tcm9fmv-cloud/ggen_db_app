@@ -6243,6 +6243,7 @@ _API_CACHE_PIN_PREFIXES = (
     'tag_matrix_v5_',
     'tag_matrix_v6_',
     'tag_matrix_v7_',
+    'tag_matrix_v8_',
     'debuff_matrix_v1_',
     'debuff_matrix_v2_',
     'debuff_matrix_v3_',
@@ -6256,6 +6257,7 @@ _API_CACHE_PIN_PREFIXES = (
     'debuff_matrix_v11_',
     'debuff_matrix_v12_',
     'debuff_matrix_v13_',
+    'debuff_matrix_v14_',
 )
 
 
@@ -18592,9 +18594,10 @@ _TAG_MATRIX_SPEC = (
     ('six', '1091'),   # Ace Unit / 王牌機
     ('six', '1092'),   # Commander Type / 指揮官機
     ('six', '1094'),   # Newtype Machine / 新人類專用機
-    # New Major — Shippujinrai / Tenacious
+    # New Major — Shippujinrai / Tenacious / Heavy Hitter
     ('new', '1132'),
     ('new', '1133'),
+    ('new', '1134'),
     # Other notable (not exclusive “X大”)
     ('other', '1011'),  # Psycommu / 腦波傳導
     ('other', '1006'),  # Rival / 勁敵
@@ -18826,7 +18829,7 @@ def api_tag_matrix():
     """One-shot board for /tm: major + Other-Series rows × supports + units by role."""
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-        ck = f'tag_matrix_v7_{lc}_{lr_schedule_cache_key_fragment()}'
+        ck = f'tag_matrix_v8_{lc}_{lr_schedule_cache_key_fragment()}'
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=False)
@@ -19390,7 +19393,7 @@ def api_debuff_matrix():
     """Tag rows (Four/Six/New/…) × supporters + units by Inflict debuff — same left axis as /tm."""
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-        ck = f'debuff_matrix_v13_{lc}_{lr_schedule_cache_key_fragment()}'
+        ck = f'debuff_matrix_v14_{lc}_{lr_schedule_cache_key_fragment()}'
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=False)
@@ -29623,7 +29626,10 @@ _PUBLISHED_BANNER_POOL_VOTES_FILE = os.path.join(app_dir, 'data', 'published', '
 _BANNER_VOTES_GITHUB_SHA = None
 _BANNER_VOTES_LAST_REMOTE_PULL = 0.0
 _BANNER_VOTES_GITHUB_PUSH_LOCK = threading.Lock()
-_BANNER_VOTES_HYDRATE_INTERVAL_SEC = 300.0
+_BANNER_VOTES_HYDRATE_INTERVAL_SEC = max(
+    20.0,
+    float(os.environ.get('GGEN_BANNER_VOTES_HYDRATE_INTERVAL_SEC', '45') or '45'),
+)
 _BANNER_VOTES_SHUTDOWN_REGISTERED = False
 _BANNER_VOTES_SHUTDOWN_SYNC_DONE = False
 _BANNER_VOTES_LAST_PUSHED_COUNT = -1
@@ -30239,9 +30245,9 @@ def _banner_pool_votes_hydrate_from_remote(*, force=False):
         local = _banner_pool_votes_read_path(BANNER_POOL_VOTES_BACKUP_FILE)
     if not force:
         elapsed = now - _BANNER_VOTES_LAST_REMOTE_PULL
+        # Throttle only — do NOT skip for 15min just because local already has some
+        # data. That left Railway multi-worker /tl votes invisible on peer workers.
         if elapsed < _BANNER_VOTES_HYDRATE_INTERVAL_SEC:
-            return
-        if _banner_pool_votes_has_data(local) and elapsed < 900.0:
             return
     _BANNER_VOTES_LAST_REMOTE_PULL = now
     try:
@@ -30264,7 +30270,19 @@ def _banner_pool_votes_hydrate_from_remote(*, force=False):
         remote,
         raw_snap,
     )
-    if _banner_pool_votes_is_richer(merged, local or {}):
+    # Write when richer OR when any ballot differs (peer IP votes / toggles).
+    local_ballots = (local or {}).get('ballots') if isinstance(local, dict) else None
+    merged_ballots = (merged or {}).get('ballots') if isinstance(merged, dict) else None
+    ballots_differ = (
+        isinstance(merged_ballots, dict)
+        and isinstance(local_ballots, dict)
+        and merged_ballots != local_ballots
+    ) or (
+        isinstance(merged_ballots, dict)
+        and not isinstance(local_ballots, dict)
+        and bool(merged_ballots)
+    )
+    if _banner_pool_votes_is_richer(merged, local or {}) or ballots_differ:
         try:
             _banner_pool_votes_atomic_write(BANNER_POOL_VOTES_FILE, merged, update_backup=True)
             print(f'banner_pool_votes: hydrated ({_banner_pool_votes_vote_count(merged)} vote count)')
@@ -30807,12 +30825,10 @@ def _bt_vote_mine_for_voter(ballots, voter_id):
 
 @app.route('/api/banner_timeline/votes')
 def api_banner_timeline_votes():
-    # Serve local cache by default — boot already hydrates from GitHub.
-    # Re-hydrate only when empty so /tl votes never block a worker on GitHub (20s+).
+    # Throttled GitHub hydrate (see _BANNER_VOTES_HYDRATE_INTERVAL_SEC) so multi-worker
+    # Railway nodes pick up peer ballots without blocking every /tl paint on a cold fetch.
     try:
-        data = _banner_pool_votes_load(hydrate=False)
-        if not _banner_pool_votes_has_data(data):
-            data = _banner_pool_votes_load(hydrate=True)
+        data = _banner_pool_votes_load(hydrate=True)
     except Exception as e:
         print(f'banner_pool_votes: votes API load failed: {e}')
         data = _banner_pool_votes_read_path(BANNER_POOL_VOTES_FILE)
@@ -30846,6 +30862,11 @@ def api_banner_timeline_vote():
         return jsonify({'error': 'voter_ip_required'}), 403
     if not _bt_vote_gasha_allowed(gasha_id) or not _bt_vote_banner_enabled(gasha_id):
         return jsonify({'error': 'voting_disabled'}), 403
+    # Merge GitHub before mutating so this worker does not clobber peer votes on push.
+    try:
+        _banner_pool_votes_hydrate_from_remote(force=True)
+    except Exception as e:
+        print(f'banner_pool_votes: pre-vote hydrate failed: {e}')
     data = _banner_pool_votes_load(hydrate=False)
     totals = data['totals']
     g_tot = totals.setdefault(gasha_id, {})

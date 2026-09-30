@@ -11,7 +11,7 @@
   var debuffDefs = [];
   var loadSeq = 0;
   var EAGER_THUMB_BUDGET = 24;
-  var API_SV = 13;
+  var API_SV = 14;
   var itemByKey = Object.create(null);
   var hoverPortalEl = null;
   var hoverPortalKey = null;
@@ -175,6 +175,7 @@
     '1094': ['newtype', 'newtype machine', '新人類'],
     '1132': ['shippu', 'shippujinrai', 'gale', '疾風迅雷', '疾風'],
     '1133': ['tenacious', 'fukutsu', '不屈', '不撓不屈', '不屈不撓'],
+    '1134': ['heavy hitter', 'heavyhitter', 'juugeki', '重撃', '重擊'],
     '1011': ['psycommu', 'brainwave', '腦波', 'サイコミュ'],
     '1006': ['rival', '勁敵', 'ライバル'],
     '1004': ['monoeye', 'mono-eye', '單眼', 'モノアイ']
