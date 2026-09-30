@@ -61,7 +61,6 @@
     if (!enable) {
       if (link) {
         link.disabled = true;
-        link.media = 'print';
       }
       return;
     }
@@ -70,10 +69,6 @@
       link.id = TEKO_LINK_ID;
       link.rel = 'stylesheet';
       link.href = tekoCssHref();
-      link.media = 'print';
-      link.onload = function () {
-        this.media = 'all';
-      };
       document.head.appendChild(link);
     } else if (
       link.href &&
@@ -83,7 +78,6 @@
       link.href = tekoCssHref();
     }
     link.disabled = false;
-    link.media = 'all';
   }
 
   function langCode() {

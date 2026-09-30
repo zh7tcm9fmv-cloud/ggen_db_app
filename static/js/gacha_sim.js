@@ -80,8 +80,6 @@ window.GgenGachaSim = (function () {
       var v = "";
       try { v = String(window.__GGEN_APP_JS_VERSION__ || ""); } catch (e2) {}
       l.href = "/static/css/ggen_teko.css" + (v ? "?v=" + encodeURIComponent(v) : "");
-      l.media = "print";
-      l.onload = function () { this.media = "all"; };
       document.head.appendChild(l);
     } catch (e) {}
   }

@@ -71,18 +71,32 @@ window.__ggenLoadGtm=function(){
 {% endif %}
 <script>
 (function(){
-  /* Perf: preload tiny Roboto only. Multi-MB brand/CJK faces inject after idle (see _defer_brand_fonts). */
+  /* Perf: preload tiny Roboto + Teko (~150KB) when 1.5 is preferred — avoids font-display swap flash.
+     Multi-MB brand/CJK faces still inject after idle (see _defer_brand_fonts). */
   var v={{ app_js_version|tojson }};
-  var link=document.createElement('link');
-  link.rel='preload';link.as='font';link.type='font/ttf';link.crossOrigin='anonymous';
-  link.href='/static/font/roboto_medium_numbers.ttf?v='+encodeURIComponent(v);
-  document.head.appendChild(link);
+  function preloadFont(href, type){
+    var link=document.createElement('link');
+    link.rel='preload';link.as='font';link.type=type||'font/ttf';link.crossOrigin='anonymous';
+    link.href=href;
+    document.head.appendChild(link);
+  }
+  preloadFont('/static/font/roboto_medium_numbers.ttf?v='+encodeURIComponent(v));
+  try{
+    var params=new URLSearchParams(location.search||'');
+    var q=params.get('design')||params.get('mock');
+    var stored='';
+    try{stored=localStorage.getItem('ggen_design_15')||localStorage.getItem('ggen_units_mock15')||''}catch(_){}
+    var on=q==='15'?true:q==='classic'?false:(stored==='0'?false:true);
+    if(on){
+      preloadFont('/static/font/Teko-SemiBold.ttf?v='+encodeURIComponent(v));
+    }
+  }catch(_){}
 })();
 </script>
 <style>
 /* Prefer CDN emblem without putting url() in a CSS variable (breaks Dark Reader / similar). */
 .brand-title-row::before{background-image:url('{% if image_cdn %}{{ image_cdn }}/images/UI/brand-emblem-panel.webp{% else %}/static/images/UI/brand-emblem-panel.webp{% endif %}')}
-@font-face{font-family:'RobotoMediumNumbers';src:url('/static/font/roboto_medium_numbers.ttf?v={{ app_js_version }}') format('truetype');font-weight:normal;font-style:normal;font-display:swap}
+@font-face{font-family:'RobotoMediumNumbers';src:url('/static/font/roboto_medium_numbers.ttf?v={{ app_js_version }}') format('truetype');font-weight:normal;font-style:normal;font-display:optional}
 </style>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/app_shell_bundle.min.css') }}?v={{ app_js_version }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/ggen_15.css') }}?v={{ app_js_version }}">
@@ -102,8 +116,7 @@ window.__ggenLoadGtm=function(){
       l.id='ggen15Fonts';
       l.rel='stylesheet';
       l.href='{{ url_for('static', filename='css/ggen_teko.css') }}?v={{ app_js_version }}';
-      l.media='print';
-      l.onload=function(){this.media='all'};
+      /* media=all + optional faces: no print→all flash once fonts are preloaded above */
       document.head.appendChild(l);
     }
   }catch(_){}

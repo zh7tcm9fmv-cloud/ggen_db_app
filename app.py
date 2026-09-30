@@ -9163,8 +9163,17 @@ def _extract_stat_percent_char_cjk(text):
 
 def extract_stat_percent_char(text, full_detail_text=None, char_id=None):
     bonuses = {}; tl = text.lower()
-    for kw in ['when piloting','when supporting','when executing','if vigor']:
-        if kw in tl: return bonuses
+    # Gate-only lines ("When piloting units from specified series,") carry into the next
+    # sentence via _add_char_trait_pct_to_buckets. Skip them here — but do NOT bail when the
+    # same sentence also has a pilot dossier % (Oxford-comma lists like Newtype (V)).
+    _pilot_stat_alt = r'(?:Defense|Reaction|Awaken|Melee|Ranged|Range)'
+    _has_pilot_pct = bool(re.search(
+        rf'(?:increase|decreas|reduc)\w*.*\b{_pilot_stat_alt}\b.*\d+\s*%',
+        tl, re.IGNORECASE))
+    if not _has_pilot_pct:
+        for kw in ['when piloting', 'when supporting', 'when executing', 'if vigor']:
+            if kw in tl:
+                return bonuses
     # MS combat lines use abbreviated ATK/DEF (word boundary so pilot "own Defense" is not skipped).
     if re.search(r'\bown\s+atk\b', tl) or re.search(r'\bown\s+attack\b', tl):
         return bonuses
@@ -9182,6 +9191,24 @@ def extract_stat_percent_char(text, full_detail_text=None, char_id=None):
                 continue
             n = raw.title()
             bonuses[n] = bonuses.get(n, 0) + p
+        return bonuses
+    # N-stat list: "increase own Ranged, Melee, and Reaction by 15%" (Newtype (V) etc.).
+    # Prefer this over the 1–2-stat pattern so Oxford commas are not left unmatched.
+    m_list = re.search(
+        rf"Increases?\s+(?:own\s+)?({_pilot_stat_alt}(?:\s*,\s*{_pilot_stat_alt})+(?:\s*,?\s+and\s+{_pilot_stat_alt})?)\s+by\s*(\d+)%",
+        text, re.IGNORECASE)
+    if m_list:
+        p = int(m_list.group(2))
+        chunk = m_list.group(1)
+        # "Ranged, Melee, and Reaction" → normalize ", and"/" and" then split commas
+        chunk_norm = re.sub(r'\s*,?\s+and\s+', ',', chunk, flags=re.IGNORECASE)
+        parts = [raw.strip() for raw in chunk_norm.split(',') if raw.strip()]
+        for raw in parts:
+            u = raw.title().upper()
+            if u == 'RANGE':
+                bonuses['Ranged'] = bonuses.get('Ranged', 0) + p
+            elif u in ('MELEE', 'RANGED', 'DEFENSE', 'REACTION', 'AWAKEN'):
+                bonuses[raw.title()] = bonuses.get(raw.title(), 0) + p
         return bonuses
     # "Increase" alone matches only the 7-letter prefix of "increases", leaving a stray "s" — use Increases?
     m = re.search(r"Increases? (?:own )?(Melee|Ranged|Range|Defense|Reaction|Awaken|ATK|DEF)(?: and (Melee|Ranged|Range|Defense|Reaction|Awaken|ATK|DEF))? by\s*(\d+)%", text, re.IGNORECASE)
