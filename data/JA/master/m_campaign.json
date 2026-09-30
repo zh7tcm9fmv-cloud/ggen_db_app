@@ -5126,6 +5126,17 @@
     "CampaignTargetUserTypeTargetId": 0
   },
   {
+    "Id": 126095001,
+    "TargetUserTypeIndex": 1,
+    "CampaignTargetSetId": 126095001,
+    "CampaignEffectId": 126092001,
+    "ScheduleId": 2609502102,
+    "SortOrder": 1,
+    "DescriptionLanguageId": 250200000126095001,
+    "CampaignTargetUserTypeIndex": 1,
+    "CampaignTargetUserTypeTargetId": 0
+  },
+  {
     "Id": 260140001,
     "TargetUserTypeIndex": 1,
     "CampaignTargetSetId": 260140001,

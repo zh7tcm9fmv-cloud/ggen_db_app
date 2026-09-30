@@ -1742,6 +1742,32 @@
     "TargetCharacterRoleTypeIndex": 0
   },
   {
+    "Id": 390280401,
+    "TargetLineageId": 0,
+    "TargetUnitRoleTypeIndex": 0,
+    "TraitTypeIndex": 9,
+    "TraitValue": 20,
+    "ResourceId": "trait_10090101",
+    "NameLanguageId": 141300000390280401,
+    "DescriptionLanguageId": 141400000390280401,
+    "BuffLabelColorTypeIndex": 3,
+    "IsDisplayUpDown": false,
+    "TargetCharacterRoleTypeIndex": 0
+  },
+  {
+    "Id": 390280402,
+    "TargetLineageId": 0,
+    "TargetUnitRoleTypeIndex": 0,
+    "TraitTypeIndex": 15,
+    "TraitValue": 20,
+    "ResourceId": "trait_10020501",
+    "NameLanguageId": 141300000390280402,
+    "DescriptionLanguageId": 141400000390280402,
+    "BuffLabelColorTypeIndex": 3,
+    "IsDisplayUpDown": false,
+    "TargetCharacterRoleTypeIndex": 0
+  },
+  {
     "Id": 900000001,
     "TargetLineageId": 0,
     "TargetUnitRoleTypeIndex": 0,

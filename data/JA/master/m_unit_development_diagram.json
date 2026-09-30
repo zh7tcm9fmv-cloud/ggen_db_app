@@ -484,6 +484,39 @@
     "ReleaseConditionDevelopmentDiagramId": 150101
   },
   {
+    "Id": 175001,
+    "UnitDevelopmentSeriesId": 1750,
+    "BackgroundResourceId": "ui_developtree_tabbanner_01",
+    "LogoResourceId": "",
+    "NameLanguageId": 210100000000175001,
+    "ScheduleId": 2609501801,
+    "SortOrder": 1,
+    "IsUltimateDevelopmentDiagram": false,
+    "ReleaseConditionDevelopmentDiagramId": 0
+  },
+  {
+    "Id": 175002,
+    "UnitDevelopmentSeriesId": 1750,
+    "BackgroundResourceId": "ui_developtree_tabbanner_02",
+    "LogoResourceId": "",
+    "NameLanguageId": 210100000000175002,
+    "ScheduleId": 2609501801,
+    "SortOrder": 2,
+    "IsUltimateDevelopmentDiagram": false,
+    "ReleaseConditionDevelopmentDiagramId": 0
+  },
+  {
+    "Id": 175003,
+    "UnitDevelopmentSeriesId": 1750,
+    "BackgroundResourceId": "ui_developtree_tabbanner_05",
+    "LogoResourceId": "",
+    "NameLanguageId": 210100000000175003,
+    "ScheduleId": 2609501801,
+    "SortOrder": 3,
+    "IsUltimateDevelopmentDiagram": true,
+    "ReleaseConditionDevelopmentDiagramId": 175001
+  },
+  {
     "Id": 201301,
     "UnitDevelopmentSeriesId": 130,
     "BackgroundResourceId": "ui_developtree_tabbanner_01",

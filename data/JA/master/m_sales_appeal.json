@@ -938,7 +938,7 @@
   {
     "Id": 2603600205,
     "DisplayConditionSetId": 99082603600002,
-    "ScheduleId": 2603609906,
+    "ScheduleId": 2609509906,
     "IsInfiniteDisplay": false,
     "SalesAppealDisplaySourceSetId": 2603600205,
     "TransitionId": 42260350000001,
@@ -1399,9 +1399,48 @@
     "TransitionId": 0,
     "SalesAppealTargetTypeIndex": 3,
     "TargetId": 0,
-    "Priority": 20,
+    "Priority": 18,
     "ShouldTransition": false,
     "ContentImageResourceId": "2609400802"
+  },
+  {
+    "Id": 2609500201,
+    "DisplayConditionSetId": 18001226095001,
+    "ScheduleId": 2609502003,
+    "IsInfiniteDisplay": false,
+    "SalesAppealDisplaySourceSetId": 2609500201,
+    "TransitionId": 46000226095001,
+    "SalesAppealTargetTypeIndex": 1,
+    "TargetId": 0,
+    "Priority": 1,
+    "ShouldTransition": true,
+    "ContentImageResourceId": "2609500201"
+  },
+  {
+    "Id": 2609500202,
+    "DisplayConditionSetId": 18001226095002,
+    "ScheduleId": 2609502002,
+    "IsInfiniteDisplay": false,
+    "SalesAppealDisplaySourceSetId": 2609500202,
+    "TransitionId": 46000226095002,
+    "SalesAppealTargetTypeIndex": 1,
+    "TargetId": 0,
+    "Priority": 22,
+    "ShouldTransition": true,
+    "ContentImageResourceId": "2609500202"
+  },
+  {
+    "Id": 2609500601,
+    "DisplayConditionSetId": 20990001010000,
+    "ScheduleId": 2609502601,
+    "IsInfiniteDisplay": false,
+    "SalesAppealDisplaySourceSetId": 2609500601,
+    "TransitionId": 48000099000118,
+    "SalesAppealTargetTypeIndex": 1,
+    "TargetId": 0,
+    "Priority": 25,
+    "ShouldTransition": true,
+    "ContentImageResourceId": "99000118"
   },
   {
     "Id": 35260730040301,

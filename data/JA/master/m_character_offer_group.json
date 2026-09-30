@@ -198,6 +198,33 @@
     "CharacterOfferGroupSetId": 1162000600
   },
   {
+    "CharacterId": 1175000100,
+    "ReleaseScenarioStageId": 17500104,
+    "BeforeCharacterOfferMessageSetListId": 11175000100,
+    "AfterCharacterOfferMessageSetListId": 21175000100,
+    "BackgroundResourceId": "bg_req_00152",
+    "ScheduleId": 2609509902,
+    "CharacterOfferGroupSetId": 1175000100
+  },
+  {
+    "CharacterId": 1175000501,
+    "ReleaseScenarioStageId": 17502002,
+    "BeforeCharacterOfferMessageSetListId": 11175000501,
+    "AfterCharacterOfferMessageSetListId": 21175000501,
+    "BackgroundResourceId": "bg_req_04400",
+    "ScheduleId": 2609509902,
+    "CharacterOfferGroupSetId": 1175000501
+  },
+  {
+    "CharacterId": 1175003401,
+    "ReleaseScenarioStageId": 17501103,
+    "BeforeCharacterOfferMessageSetListId": 11175003401,
+    "AfterCharacterOfferMessageSetListId": 21175003401,
+    "BackgroundResourceId": "bg_req_00152",
+    "ScheduleId": 2609509902,
+    "CharacterOfferGroupSetId": 1175003401
+  },
+  {
     "CharacterId": 1200000101,
     "ReleaseScenarioStageId": 20000104,
     "BeforeCharacterOfferMessageSetListId": 11200000101,

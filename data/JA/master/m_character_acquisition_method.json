@@ -430,6 +430,21 @@
     "TargetId": 2609300501
   },
   {
+    "CharacterId": 1001000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1001000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1001000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1001000101,
     "AcquisitionMethodTypeIndex": 18,
     "TargetId": 1001000101
@@ -763,6 +778,31 @@
     "CharacterId": 1001001800,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1001001800,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1001001800,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1001001800,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1001001800,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1001001800,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1001001801,
@@ -1240,6 +1280,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1001004800,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1001004800,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1001004800,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1001004800,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1001004800,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1001005000,
     "AcquisitionMethodTypeIndex": 18,
     "TargetId": 1001005000
@@ -1625,6 +1690,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1003000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1003000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1003000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1003000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1003000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1007000100,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -2050,6 +2140,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1007000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1007000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1007000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1007000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1007000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1007000200,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -2475,6 +2590,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1007000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1007000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1007000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1007000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1007000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1009000100,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2601200302
@@ -2673,6 +2813,31 @@
     "CharacterId": 1009000100,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1009000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1009000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1009000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1009000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1009000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1009000800,
@@ -3100,6 +3265,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1009000800,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1009000800,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1009000800,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1009000800,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1009000800,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1009000900,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -3523,6 +3713,31 @@
     "CharacterId": 1009000900,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1009000900,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1009000900,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1009000900,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1009000900,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1009000900,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1009001000,
@@ -3960,6 +4175,21 @@
     "TargetId": 2609300501
   },
   {
+    "CharacterId": 1013000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1013000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1013000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1013000101,
     "AcquisitionMethodTypeIndex": 19,
     "TargetId": 200011
@@ -4128,6 +4358,31 @@
     "CharacterId": 1013001100,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1013001100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1013001100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1013001100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1013001100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1013001100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1013001101,
@@ -4373,6 +4628,31 @@
     "CharacterId": 1017000400,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1017000400,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1017000400,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1017000400,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1017000400,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1017000400,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1017000401,
@@ -4815,6 +5095,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1021000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1021000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1021000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1021000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1021000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1021000101,
     "AcquisitionMethodTypeIndex": 18,
     "TargetId": 1021000101
@@ -5245,6 +5550,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1021000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1021000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1021000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1021000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1021000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1021000201,
     "AcquisitionMethodTypeIndex": 18,
     "TargetId": 1021000201
@@ -5533,6 +5863,31 @@
     "CharacterId": 1022000100,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1022000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1022000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1022000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1022000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1022000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1022000101,
@@ -5915,6 +6270,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1031000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1031000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1031000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1031000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1031000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1031000101,
     "AcquisitionMethodTypeIndex": 19,
     "TargetId": 200001
@@ -6018,6 +6398,31 @@
     "CharacterId": 1031000102,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1031000102,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1031000102,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1031000102,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1031000102,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1031000102,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1031000103,
@@ -6388,6 +6793,31 @@
     "CharacterId": 1031000601,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1031000601,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1031000601,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1031000601,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1031000601,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1031000601,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1031000603,
@@ -6803,6 +7233,31 @@
     "CharacterId": 1060001503,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1060001503,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1060001503,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1060001503,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1060001503,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1060001503,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1060001504,
@@ -7250,6 +7705,21 @@
     "TargetId": 2609300501
   },
   {
+    "CharacterId": 1068000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1068000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1068000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1069000100,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -7673,6 +8143,21 @@
     "CharacterId": 1069000100,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609300501
+  },
+  {
+    "CharacterId": 1069000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1069000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1069000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1080000100,
@@ -8130,6 +8615,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1080002700,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1080002700,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1080002700,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1080002700,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1080002700,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1080002701,
     "AcquisitionMethodTypeIndex": 18,
     "TargetId": 1080002701
@@ -8493,6 +9003,31 @@
     "CharacterId": 1095000100,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1095000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1095000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1095000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1095000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1095000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1095000101,
@@ -8980,6 +9515,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1095003500,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1095003500,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1095003500,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1095003500,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1095003500,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1095004300,
     "AcquisitionMethodTypeIndex": 18,
     "TargetId": 1095004300
@@ -9410,6 +9970,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1099000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1099000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1099000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1099000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1099000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1101000100,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2608500301
@@ -9423,6 +10008,21 @@
     "CharacterId": 1101000100,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609300501
+  },
+  {
+    "CharacterId": 1101000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1101000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1101000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1110000100,
@@ -9850,6 +10450,21 @@
     "TargetId": 2609300501
   },
   {
+    "CharacterId": 1110000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1110000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1110000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1110000101,
     "AcquisitionMethodTypeIndex": 18,
     "TargetId": 1110000101
@@ -9863,6 +10478,11 @@
     "CharacterId": 1110000102,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2603600601
+  },
+  {
+    "CharacterId": 1110000102,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
   },
   {
     "CharacterId": 1110000103,
@@ -9945,6 +10565,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1110000103,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1110000103,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1110000103,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1110000103,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1110000103,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1110000200,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -10368,6 +11013,21 @@
     "CharacterId": 1110000200,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609300501
+  },
+  {
+    "CharacterId": 1110000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1110000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1110000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1110000201,
@@ -10758,6 +11418,31 @@
     "CharacterId": 1110000900,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1110000900,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1110000900,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1110000900,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1110000900,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1110000900,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1110000901,
@@ -11190,6 +11875,21 @@
     "TargetId": 2609300501
   },
   {
+    "CharacterId": 1125000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1125000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1125000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1125000101,
     "AcquisitionMethodTypeIndex": 18,
     "TargetId": 1125000101
@@ -11483,6 +12183,31 @@
     "CharacterId": 1125000302,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1125000302,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1125000302,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1125000302,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1125000302,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1125000302,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1125000900,
@@ -11793,6 +12518,31 @@
     "CharacterId": 1125000900,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1125000900,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1125000900,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1125000900,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1125000900,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1125000900,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1125000901,
@@ -12113,6 +12863,31 @@
     "CharacterId": 1125001100,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1125001100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1125001100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1125001100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1125001100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1125001100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1125001200,
@@ -12575,6 +13350,21 @@
     "TargetId": 2609300501
   },
   {
+    "CharacterId": 1144000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1144000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1144000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1144000102,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2604500301
@@ -12688,6 +13478,31 @@
     "CharacterId": 1144000300,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1144000300,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1144000300,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1144000300,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1144000300,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1144000300,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1144000301,
@@ -12943,6 +13758,31 @@
     "CharacterId": 1150000201,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1150000201,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1150000201,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1150000201,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1150000201,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1150000201,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1150000300,
@@ -13380,6 +14220,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1155000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1155000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1155000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1155000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1155000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1155000101,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2606500301
@@ -13433,6 +14298,31 @@
     "CharacterId": 1155000101,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1155000101,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1155000101,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1155000101,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1155000101,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1155000101,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1155000200,
@@ -13493,6 +14383,31 @@
     "CharacterId": 1155000200,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1155000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1155000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1155000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1155000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1155000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1155000300,
@@ -13563,6 +14478,31 @@
     "CharacterId": 1159000100,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1159000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1159000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1159000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1159000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1159000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1162000100,
@@ -13870,6 +14810,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1162000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1162000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1162000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1162000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1162000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1162000102,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2606500301
@@ -13943,6 +14908,31 @@
     "CharacterId": 1162000500,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1162000500,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1162000500,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1162000500,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1162000500,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1162000500,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1162000501,
@@ -14385,6 +15375,246 @@
     "TargetId": 2609300501
   },
   {
+    "CharacterId": 1166000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1166000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1166000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
+    "CharacterId": 1175000101,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1175000101,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
+    "CharacterId": 1175000201,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1175000201,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1175000201,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
+    "CharacterId": 1175000300,
+    "AcquisitionMethodTypeIndex": 18,
+    "TargetId": 1175000300
+  },
+  {
+    "CharacterId": 1175000400,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1175000400,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1175000400,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
+    "CharacterId": 1175000401,
+    "AcquisitionMethodTypeIndex": 18,
+    "TargetId": 1175000401
+  },
+  {
+    "CharacterId": 1175000500,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1175000500,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1175000500,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
+    "CharacterId": 1175000501,
+    "AcquisitionMethodTypeIndex": 18,
+    "TargetId": 1175000501
+  },
+  {
+    "CharacterId": 1175000600,
+    "AcquisitionMethodTypeIndex": 18,
+    "TargetId": 1175000600
+  },
+  {
+    "CharacterId": 1175000601,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1175000601,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
+    "CharacterId": 1175000700,
+    "AcquisitionMethodTypeIndex": 18,
+    "TargetId": 1175000700
+  },
+  {
+    "CharacterId": 1175000701,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1175000701,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1175000701,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
+    "CharacterId": 1175000800,
+    "AcquisitionMethodTypeIndex": 18,
+    "TargetId": 1175000800
+  },
+  {
+    "CharacterId": 1175000900,
+    "AcquisitionMethodTypeIndex": 18,
+    "TargetId": 1175000900
+  },
+  {
+    "CharacterId": 1175001000,
+    "AcquisitionMethodTypeIndex": 18,
+    "TargetId": 1175001000
+  },
+  {
+    "CharacterId": 1175001100,
+    "AcquisitionMethodTypeIndex": 18,
+    "TargetId": 1175001100
+  },
+  {
+    "CharacterId": 1175001200,
+    "AcquisitionMethodTypeIndex": 18,
+    "TargetId": 1175001200
+  },
+  {
+    "CharacterId": 1175001300,
+    "AcquisitionMethodTypeIndex": 18,
+    "TargetId": 1175001300
+  },
+  {
+    "CharacterId": 1175001400,
+    "AcquisitionMethodTypeIndex": 18,
+    "TargetId": 1175001400
+  },
+  {
+    "CharacterId": 1175001500,
+    "AcquisitionMethodTypeIndex": 18,
+    "TargetId": 1175001500
+  },
+  {
+    "CharacterId": 1175001600,
+    "AcquisitionMethodTypeIndex": 18,
+    "TargetId": 1175001600
+  },
+  {
+    "CharacterId": 1175001700,
+    "AcquisitionMethodTypeIndex": 18,
+    "TargetId": 1175001700
+  },
+  {
+    "CharacterId": 1175001800,
+    "AcquisitionMethodTypeIndex": 18,
+    "TargetId": 1175001800
+  },
+  {
+    "CharacterId": 1175001900,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1175001900,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1175001900,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
+    "CharacterId": 1175001901,
+    "AcquisitionMethodTypeIndex": 18,
+    "TargetId": 1175001901
+  },
+  {
+    "CharacterId": 1175002000,
+    "AcquisitionMethodTypeIndex": 18,
+    "TargetId": 1175002000
+  },
+  {
+    "CharacterId": 1175002100,
+    "AcquisitionMethodTypeIndex": 18,
+    "TargetId": 1175002100
+  },
+  {
+    "CharacterId": 1175002200,
+    "AcquisitionMethodTypeIndex": 18,
+    "TargetId": 1175002200
+  },
+  {
+    "CharacterId": 1175002300,
+    "AcquisitionMethodTypeIndex": 18,
+    "TargetId": 1175002300
+  },
+  {
+    "CharacterId": 1175002400,
+    "AcquisitionMethodTypeIndex": 18,
+    "TargetId": 1175002400
+  },
+  {
+    "CharacterId": 1175002500,
+    "AcquisitionMethodTypeIndex": 18,
+    "TargetId": 1175002500
+  },
+  {
+    "CharacterId": 1175002600,
+    "AcquisitionMethodTypeIndex": 18,
+    "TargetId": 1175002600
+  },
+  {
+    "CharacterId": 1175002700,
+    "AcquisitionMethodTypeIndex": 18,
+    "TargetId": 1175002700
+  },
+  {
+    "CharacterId": 1175002800,
+    "AcquisitionMethodTypeIndex": 18,
+    "TargetId": 1175002800
+  },
+  {
     "CharacterId": 1200000100,
     "AcquisitionMethodTypeIndex": 18,
     "TargetId": 1200000100
@@ -14398,6 +15628,11 @@
     "CharacterId": 1200000103,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2603600601
+  },
+  {
+    "CharacterId": 1200000103,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
   },
   {
     "CharacterId": 1200000200,
@@ -14715,6 +15950,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1200000204,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1200000204,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1200000204,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1200000204,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1200000204,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1200000300,
     "AcquisitionMethodTypeIndex": 18,
     "TargetId": 1200000300
@@ -15028,6 +16288,31 @@
     "CharacterId": 1200000304,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1200000304,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1200000304,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1200000304,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1200000304,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1200000304,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1200000400,
@@ -15345,6 +16630,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1200000403,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1200000403,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1200000403,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1200000403,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1200000403,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1200000500,
     "AcquisitionMethodTypeIndex": 18,
     "TargetId": 1200000500
@@ -15658,6 +16968,31 @@
     "CharacterId": 1200000504,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1200000504,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1200000504,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1200000504,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1200000504,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1200000504,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1200000600,
@@ -16008,6 +17343,31 @@
     "CharacterId": 1200001200,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1200001200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1200001200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1200001200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1200001200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1200001200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1200001202,
@@ -16505,6 +17865,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1217000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1217000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1217000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1217000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1217000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1217000300,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2506100302
@@ -16873,6 +18258,31 @@
     "CharacterId": 1217000300,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1217000300,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1217000300,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1217000300,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1217000300,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1217000300,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1219000101,
@@ -17250,6 +18660,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1219000201,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1219000201,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1219000201,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1219000201,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1219000201,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1219000300,
     "AcquisitionMethodTypeIndex": 18,
     "TargetId": 1219000300
@@ -17288,6 +18723,21 @@
     "CharacterId": 1219000301,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609300501
+  },
+  {
+    "CharacterId": 1219000301,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1219000301,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1219000301,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1219000400,
@@ -17438,6 +18888,31 @@
     "CharacterId": 1219000700,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1219000700,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1219000700,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1219000700,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1219000700,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1219000700,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1219000701,
@@ -17645,6 +19120,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1230000301,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1230000301,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1230000301,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1230000301,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1230000301,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1230000401,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2601500301
@@ -17823,6 +19323,31 @@
     "CharacterId": 1230000401,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1230000401,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1230000401,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1230000401,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1230000401,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1230000401,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1230000500,
@@ -18255,6 +19780,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1230001100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1230001100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1230001100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1230001100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1230001100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1230001200,
     "AcquisitionMethodTypeIndex": 18,
     "TargetId": 1230001200
@@ -18438,6 +19988,31 @@
     "CharacterId": 1230001301,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1230001301,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1230001301,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1230001301,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1230001301,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1230001301,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1230001400,
@@ -18633,6 +20208,31 @@
     "CharacterId": 1230002601,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1230002601,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1230002601,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1230002601,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1230002601,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1230002601,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1240001900,
@@ -19058,6 +20658,31 @@
     "CharacterId": 1240001900,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1240001900,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1240001900,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1240001900,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1240001900,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1240001900,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1300000100,
@@ -19490,6 +21115,21 @@
     "TargetId": 2609300501
   },
   {
+    "CharacterId": 1300000101,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1300000101,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1300000101,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1300000201,
     "AcquisitionMethodTypeIndex": 18,
     "TargetId": 1300000201
@@ -19905,6 +21545,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1300001701,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1300001701,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1300001701,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1300001701,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1300001701,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1300001800,
     "AcquisitionMethodTypeIndex": 18,
     "TargetId": 1300001800
@@ -20133,6 +21798,31 @@
     "CharacterId": 1300001801,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1300001801,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1300001801,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1300001801,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1300001801,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1300001801,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1300001900,
@@ -20568,6 +22258,31 @@
     "CharacterId": 1300003401,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1300003401,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1300003401,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1300003401,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1300003401,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1300003401,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1300003500,
@@ -21015,6 +22730,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1304000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1304000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1304000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1304000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1304000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1304000400,
     "AcquisitionMethodTypeIndex": 18,
     "TargetId": 1304000400
@@ -21213,6 +22953,31 @@
     "CharacterId": 1305001400,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1305001400,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1305001400,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1305001400,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1305001400,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1305001400,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1306000100,
@@ -21598,6 +23363,31 @@
     "CharacterId": 1330000101,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1330000101,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1330000101,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1330000101,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1330000101,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1330000101,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1330000103,
@@ -21990,6 +23780,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1330000400,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1330000400,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1330000400,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1330000400,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1330000400,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1330000500,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2506300301
@@ -22350,6 +24165,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1330000500,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1330000500,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1330000500,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1330000500,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1330000500,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1330000900,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2512400301
@@ -22555,6 +24395,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1330000900,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1330000900,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1330000900,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1330000900,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1330000900,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1330001000,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2512400301
@@ -22758,6 +24623,31 @@
     "CharacterId": 1330001000,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1330001000,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1330001000,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1330001000,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1330001000,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1330001000,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1330001101,
@@ -22863,6 +24753,31 @@
     "CharacterId": 1330001804,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1330001804,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1330001804,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1330001804,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1330001804,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1330001804,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1330001806,
@@ -23075,6 +24990,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1330002200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1330002200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1330002200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1330002200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1330002200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1330002400,
     "AcquisitionMethodTypeIndex": 18,
     "TargetId": 1330002400
@@ -23158,6 +25098,31 @@
     "CharacterId": 1336000100,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1336000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1336000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1336000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1336000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1336000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1336000101,
@@ -23620,6 +25585,21 @@
     "TargetId": 2609300501
   },
   {
+    "CharacterId": 1370000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1370000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1370000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1370000101,
     "AcquisitionMethodTypeIndex": 18,
     "TargetId": 1370000101
@@ -23690,6 +25670,21 @@
     "TargetId": 2609300501
   },
   {
+    "CharacterId": 1370003602,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1370003602,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1370003602,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1370003701,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2603600301
@@ -23708,6 +25703,21 @@
     "CharacterId": 1370004000,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609300501
+  },
+  {
+    "CharacterId": 1370004000,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1370004000,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1370004000,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1370004001,
@@ -23850,6 +25860,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1370004100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1370004100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1370004100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1370004100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1370004100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1370004200,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2603600301
@@ -23985,6 +26020,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1370004200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1370004200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1370004200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1370004200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1370004200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1370004300,
     "AcquisitionMethodTypeIndex": 18,
     "TargetId": 1370004300
@@ -24008,6 +26068,21 @@
     "CharacterId": 1370004501,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609300501
+  },
+  {
+    "CharacterId": 1370004501,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1370004501,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1370004501,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1370004600,
@@ -24480,6 +26555,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1375000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1375000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1375000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1375000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1375000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1375000300,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -24905,6 +27005,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1375000300,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1375000300,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1375000300,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1375000300,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1375000300,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1376000100,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609300302
@@ -24913,6 +27038,21 @@
     "CharacterId": 1376000100,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609300501
+  },
+  {
+    "CharacterId": 1376000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1376000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1376000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1376000301,
@@ -25370,6 +27510,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1378000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1378000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1378000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1378000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1378000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1379000200,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -25795,6 +27960,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1379000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1379000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1379000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1379000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1379000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1400000100,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2602400301
@@ -25948,6 +28138,31 @@
     "CharacterId": 1400000100,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1400000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1400000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1400000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1400000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1400000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1400000201,
@@ -26108,6 +28323,31 @@
     "CharacterId": 1400000201,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1400000201,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1400000201,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1400000201,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1400000201,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1400000201,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1400001400,
@@ -26310,6 +28550,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1400002101,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1400002101,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1400002101,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1400002101,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1400002101,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1400002200,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2602400301
@@ -26468,6 +28733,31 @@
     "CharacterId": 1400002200,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1400002200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1400002200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1400002200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1400002200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1400002200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1400002201,
@@ -26945,6 +29235,21 @@
     "TargetId": 2609300501
   },
   {
+    "CharacterId": 1430000105,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1430000105,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1430000105,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1430000109,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2510800301
@@ -26953,6 +29258,11 @@
     "CharacterId": 1430000109,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2603600601
+  },
+  {
+    "CharacterId": 1430000109,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
   },
   {
     "CharacterId": 1430000701,
@@ -27410,6 +29720,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1430002000,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1430002000,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1430002000,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1430002000,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1430002000,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1430002100,
     "AcquisitionMethodTypeIndex": 18,
     "TargetId": 1430002100
@@ -27623,6 +29958,31 @@
     "CharacterId": 1430002602,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1430002602,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1430002602,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1430002602,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1430002602,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1430002602,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1430002603,
@@ -28065,6 +30425,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1430003101,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1430003101,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1430003101,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1430003101,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1430003101,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1430003600,
     "AcquisitionMethodTypeIndex": 18,
     "TargetId": 1430003600
@@ -28355,6 +30740,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1430005001,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1430005001,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1430005001,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1430005001,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1430005001,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1430005200,
     "AcquisitionMethodTypeIndex": 18,
     "TargetId": 1430005200
@@ -28633,6 +31043,31 @@
     "CharacterId": 1430005400,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1430005400,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1430005400,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1430005400,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1430005400,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1430005400,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1430005401,
@@ -28968,6 +31403,31 @@
     "CharacterId": 1431000100,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1431000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1431000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1431000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1431000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1431000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1431000101,
@@ -29320,6 +31780,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1431001000,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1431001000,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1431001000,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1431001000,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1431001000,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1431001100,
     "AcquisitionMethodTypeIndex": 18,
     "TargetId": 1431001100
@@ -29643,6 +32128,31 @@
     "CharacterId": 1431001200,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1431001200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1431001200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1431001200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1431001200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1431001200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1501000100,
@@ -30075,6 +32585,21 @@
     "TargetId": 2609300501
   },
   {
+    "CharacterId": 1501000101,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1501000101,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1501000101,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1501000103,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2510800301
@@ -30345,6 +32870,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1501000103,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1501000103,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1501000103,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1501000103,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1501000103,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1501000104,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2512400301
@@ -30570,6 +33120,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1501000302,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1501000302,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1501000302,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1501000302,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1501000302,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1501000303,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2607300302
@@ -30613,6 +33188,21 @@
     "CharacterId": 1501000303,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609300501
+  },
+  {
+    "CharacterId": 1501000303,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1501000303,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1501000303,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1501000400,
@@ -30668,6 +33258,21 @@
     "CharacterId": 1501000502,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609300501
+  },
+  {
+    "CharacterId": 1501000502,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1501000502,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1501000502,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1501001300,
@@ -30905,6 +33510,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1501001901,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1501001901,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1501001901,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1501001901,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1501001901,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1501002000,
     "AcquisitionMethodTypeIndex": 18,
     "TargetId": 1501002000
@@ -31115,6 +33745,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1501002001,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1501002001,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1501002001,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1501002001,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1501002001,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1501002101,
     "AcquisitionMethodTypeIndex": 18,
     "TargetId": 1501002101
@@ -31255,6 +33910,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1501002901,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1501002901,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1501002901,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1501002901,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1501002901,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1600000100,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -31680,6 +34360,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1600000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1600000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1600000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1600000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1600000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1600000200,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -32103,6 +34808,31 @@
     "CharacterId": 1600000200,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1600000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1600000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1600000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1600000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1600000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1604000100,
@@ -32475,6 +35205,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1604000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1604000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1604000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1604000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1604000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1604000300,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2604300302
@@ -32528,6 +35283,21 @@
     "CharacterId": 1700000200,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609300501
+  },
+  {
+    "CharacterId": 1700000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1700000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1700000200,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1705000200,
@@ -32885,6 +35655,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1705001600,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1705001600,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1705001600,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1705001600,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1705001600,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1705002000,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2608200301
@@ -32915,6 +35710,21 @@
     "TargetId": 2609300501
   },
   {
+    "CharacterId": 1705002000,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1705002000,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1705002000,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1705002600,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2608200301
@@ -32945,6 +35755,21 @@
     "TargetId": 2609300501
   },
   {
+    "CharacterId": 1705002600,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1705002600,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1705002600,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1705002700,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2608200301
@@ -32973,6 +35798,21 @@
     "CharacterId": 1705002700,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609300501
+  },
+  {
+    "CharacterId": 1705002700,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1705002700,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1705002700,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1705002900,
@@ -33028,6 +35868,21 @@
     "CharacterId": 1705003400,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609300501
+  },
+  {
+    "CharacterId": 1705003400,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1705003400,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1705003400,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1709000100,
@@ -33373,6 +36228,31 @@
     "CharacterId": 1725000100,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1725000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1725000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1725000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1725000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1725000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1730000100,
@@ -33763,6 +36643,31 @@
     "CharacterId": 1764000100,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1764000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1764000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1764000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1764000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1764000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1850000100,
@@ -34190,6 +37095,21 @@
     "TargetId": 2609300501
   },
   {
+    "CharacterId": 1850000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1850000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1850000100,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1850000600,
     "AcquisitionMethodTypeIndex": 18,
     "TargetId": 1850000600
@@ -34323,6 +37243,31 @@
     "CharacterId": 1850001501,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1850001501,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1850001501,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1850001501,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1850001501,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1850001501,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   },
   {
     "CharacterId": 1850001600,
@@ -34510,6 +37455,31 @@
     "TargetId": 2609400505
   },
   {
+    "CharacterId": 1850003600,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1850003600,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1850003600,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1850003600,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1850003600,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
+  },
+  {
     "CharacterId": 1850003900,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2603200302
@@ -34653,5 +37623,30 @@
     "CharacterId": 1850003900,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609400505
+  },
+  {
+    "CharacterId": 1850003900,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500301
+  },
+  {
+    "CharacterId": 1850003900,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500304
+  },
+  {
+    "CharacterId": 1850003900,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500501
+  },
+  {
+    "CharacterId": 1850003900,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500502
+  },
+  {
+    "CharacterId": 1850003900,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2609500503
   }
 ]

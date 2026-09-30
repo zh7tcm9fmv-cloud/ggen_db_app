@@ -1,0 +1,72 @@
+[
+  {
+    "StageTrialFormationSetId": 1,
+    "ForceNumber": 1,
+    "SlotIndex": 1,
+    "MainWeaponId": 117500105001,
+    "Level": 5
+  },
+  {
+    "StageTrialFormationSetId": 1,
+    "ForceNumber": 1,
+    "SlotIndex": 1,
+    "MainWeaponId": 117500105003,
+    "Level": 5
+  },
+  {
+    "StageTrialFormationSetId": 1,
+    "ForceNumber": 1,
+    "SlotIndex": 1,
+    "MainWeaponId": 117500105004,
+    "Level": 5
+  },
+  {
+    "StageTrialFormationSetId": 1,
+    "ForceNumber": 1,
+    "SlotIndex": 1,
+    "MainWeaponId": 117500105005,
+    "Level": 5
+  },
+  {
+    "StageTrialFormationSetId": 1,
+    "ForceNumber": 1,
+    "SlotIndex": 1,
+    "MainWeaponId": 117500105006,
+    "Level": 5
+  },
+  {
+    "StageTrialFormationSetId": 2,
+    "ForceNumber": 1,
+    "SlotIndex": 1,
+    "MainWeaponId": 185000485001,
+    "Level": 5
+  },
+  {
+    "StageTrialFormationSetId": 2,
+    "ForceNumber": 1,
+    "SlotIndex": 1,
+    "MainWeaponId": 185000485002,
+    "Level": 5
+  },
+  {
+    "StageTrialFormationSetId": 2,
+    "ForceNumber": 1,
+    "SlotIndex": 1,
+    "MainWeaponId": 185000485003,
+    "Level": 5
+  },
+  {
+    "StageTrialFormationSetId": 2,
+    "ForceNumber": 1,
+    "SlotIndex": 1,
+    "MainWeaponId": 185000485004,
+    "Level": 5
+  },
+  {
+    "StageTrialFormationSetId": 2,
+    "ForceNumber": 1,
+    "SlotIndex": 1,
+    "MainWeaponId": 185000485005,
+    "Level": 5
+  }
+]

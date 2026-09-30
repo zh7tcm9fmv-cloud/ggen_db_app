@@ -1,0 +1,44 @@
+[
+  {
+    "Id": 2609500101,
+    "StepMissionId": 26095001,
+    "StepNumber": 1,
+    "AvailableScheduleId": 2609502701
+  },
+  {
+    "Id": 2609500102,
+    "StepMissionId": 26095001,
+    "StepNumber": 2,
+    "AvailableScheduleId": 2609502702
+  },
+  {
+    "Id": 2609500103,
+    "StepMissionId": 26095001,
+    "StepNumber": 3,
+    "AvailableScheduleId": 2609502703
+  },
+  {
+    "Id": 2609500104,
+    "StepMissionId": 26095001,
+    "StepNumber": 4,
+    "AvailableScheduleId": 2609502704
+  },
+  {
+    "Id": 2609500105,
+    "StepMissionId": 26095001,
+    "StepNumber": 5,
+    "AvailableScheduleId": 2609502705
+  },
+  {
+    "Id": 2609500106,
+    "StepMissionId": 26095001,
+    "StepNumber": 6,
+    "AvailableScheduleId": 2609502706
+  },
+  {
+    "Id": 2609500107,
+    "StepMissionId": 26095001,
+    "StepNumber": 7,
+    "AvailableScheduleId": 2609502707
+  }
+]
