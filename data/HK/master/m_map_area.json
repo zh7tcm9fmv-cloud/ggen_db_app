@@ -264,6 +264,28 @@
     "AreaUniqueName": "2"
   },
   {
+    "Id": 175001800302000001,
+    "MapStageId": 175001800302000000,
+    "GroupNumber": 0,
+    "TargetAreaTypeIndex": 2,
+    "AreaPositionTypeIndex": 2,
+    "CoordX": 18,
+    "CoordY": 19,
+    "CoordW": 1,
+    "CoordH": 1,
+    "IngameEventConditionParameterTypeIndex": 0,
+    "IngameEventConditionParameterValue": "",
+    "PinX": 18,
+    "PinY": 19,
+    "PinW": 1,
+    "PinH": 1,
+    "AreaArrivalTypeIndex": 0,
+    "UnitAreaSize": 0,
+    "IsDisplayPin": true,
+    "IsDisplayArea": true,
+    "AreaUniqueName": "1"
+  },
+  {
     "Id": 210000800202000001,
     "MapStageId": 210000800202000000,
     "GroupNumber": 0,

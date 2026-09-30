@@ -56,6 +56,14 @@
     "value": "Gouf Day"
   },
   {
+    "id": 130100000099000118,
+    "value": "V2 Assault Buster Gundam (EX) Special Stage"
+  },
+  {
+    "id": 130100000099000119,
+    "value": "Zanspine (EX) Special Stage"
+  },
+  {
     "id": 310200000099000101,
     "value": "September 2nd is Gouf Day!\nA special stage that can only be attempted during the event."
   },
@@ -110,5 +118,13 @@
   {
     "id": 310200000099000115,
     "value": "September 2nd is Gouf Day!\nA special stage that can only be attempted during the event."
+  },
+  {
+    "id": 310200000099000118,
+    "value": "A special stage that can only be attempted during the event."
+  },
+  {
+    "id": 310200000099000119,
+    "value": "A special stage that can only be attempted during the event."
   }
 ]

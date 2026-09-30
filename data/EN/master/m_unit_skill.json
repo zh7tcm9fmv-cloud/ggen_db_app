@@ -42,6 +42,20 @@
     "MultiTargetCount": 0
   },
   {
+    "Id": 117500105000,
+    "NameLanguageId": 141300117500105000,
+    "DescriptionLanguageId": 141400117500105000,
+    "ResourceId": "trait_11710101",
+    "StartEffectResourceId": "ef_mpc_0091_04_unitskill",
+    "ActiveEffectResourceId": "ef_mpc_0091_04_unitskill_loop",
+    "Duration": 1,
+    "UsageLimit": 1,
+    "MultiTargetTypeIndex": 0,
+    "MultiTargetRangeMin": 0,
+    "MultiTargetRangeMax": 0,
+    "MultiTargetCount": 0
+  },
+  {
     "Id": 137000595000,
     "NameLanguageId": 141300137000595000,
     "DescriptionLanguageId": 141400137000595000,

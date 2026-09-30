@@ -610,6 +610,16 @@
     "MissionGroupCategoryTypeIndex": 3
   },
   {
+    "Id": 2000100030,
+    "EventId": 0,
+    "MissionResetTypeIndex": 1,
+    "SortOrder": 5070,
+    "AvailableScheduleId": 2609501201,
+    "ReceivableScheduleId": 2609501201,
+    "TransitionId": 14000090520032,
+    "MissionGroupCategoryTypeIndex": 3
+  },
+  {
     "Id": 2000101001,
     "EventId": 0,
     "MissionResetTypeIndex": 1,
@@ -897,6 +907,16 @@
     "AvailableScheduleId": 2608501201,
     "ReceivableScheduleId": 2608501201,
     "TransitionId": 14000090520023,
+    "MissionGroupCategoryTypeIndex": 3
+  },
+  {
+    "Id": 2000101030,
+    "EventId": 0,
+    "MissionResetTypeIndex": 1,
+    "SortOrder": 5071,
+    "AvailableScheduleId": 2609501201,
+    "ReceivableScheduleId": 2609501201,
+    "TransitionId": 14000090520032,
     "MissionGroupCategoryTypeIndex": 3
   },
   {
@@ -6090,6 +6110,86 @@
     "MissionGroupCategoryTypeIndex": 2
   },
   {
+    "Id": 2609500411,
+    "EventId": 100019,
+    "MissionResetTypeIndex": 1,
+    "SortOrder": 11,
+    "AvailableScheduleId": 2609501001,
+    "ReceivableScheduleId": 2609501002,
+    "TransitionId": 34000090200024,
+    "MissionGroupCategoryTypeIndex": 0
+  },
+  {
+    "Id": 2609500412,
+    "EventId": 100019,
+    "MissionResetTypeIndex": 1,
+    "SortOrder": 12,
+    "AvailableScheduleId": 2609501001,
+    "ReceivableScheduleId": 2609501002,
+    "TransitionId": 34000090200024,
+    "MissionGroupCategoryTypeIndex": 0
+  },
+  {
+    "Id": 2609500413,
+    "EventId": 100019,
+    "MissionResetTypeIndex": 1,
+    "SortOrder": 13,
+    "AvailableScheduleId": 2609501001,
+    "ReceivableScheduleId": 2609501002,
+    "TransitionId": 34000090200024,
+    "MissionGroupCategoryTypeIndex": 0
+  },
+  {
+    "Id": 2609500414,
+    "EventId": 100019,
+    "MissionResetTypeIndex": 1,
+    "SortOrder": 14,
+    "AvailableScheduleId": 2609501001,
+    "ReceivableScheduleId": 2609501002,
+    "TransitionId": 34000090200024,
+    "MissionGroupCategoryTypeIndex": 0
+  },
+  {
+    "Id": 2609500415,
+    "EventId": 100019,
+    "MissionResetTypeIndex": 1,
+    "SortOrder": 15,
+    "AvailableScheduleId": 2609501001,
+    "ReceivableScheduleId": 2609501002,
+    "TransitionId": 34000090200024,
+    "MissionGroupCategoryTypeIndex": 0
+  },
+  {
+    "Id": 2609500416,
+    "EventId": 100019,
+    "MissionResetTypeIndex": 1,
+    "SortOrder": 16,
+    "AvailableScheduleId": 2609501001,
+    "ReceivableScheduleId": 2609501002,
+    "TransitionId": 34000090200024,
+    "MissionGroupCategoryTypeIndex": 0
+  },
+  {
+    "Id": 2609500417,
+    "EventId": 100019,
+    "MissionResetTypeIndex": 1,
+    "SortOrder": 17,
+    "AvailableScheduleId": 2609501001,
+    "ReceivableScheduleId": 2609501002,
+    "TransitionId": 34000090200024,
+    "MissionGroupCategoryTypeIndex": 0
+  },
+  {
+    "Id": 2609500418,
+    "EventId": 100019,
+    "MissionResetTypeIndex": 1,
+    "SortOrder": 18,
+    "AvailableScheduleId": 2609501001,
+    "ReceivableScheduleId": 2609501002,
+    "TransitionId": 34000090200024,
+    "MissionGroupCategoryTypeIndex": 0
+  },
+  {
     "Id": 3000102001,
     "EventId": 0,
     "MissionResetTypeIndex": 1,
@@ -7437,6 +7537,66 @@
     "AvailableScheduleId": 2606509901,
     "ReceivableScheduleId": 2606509901,
     "TransitionId": 39000000001620,
+    "MissionGroupCategoryTypeIndex": 1
+  },
+  {
+    "Id": 260950020001,
+    "EventId": 0,
+    "MissionResetTypeIndex": 1,
+    "SortOrder": 137,
+    "AvailableScheduleId": 2609509901,
+    "ReceivableScheduleId": 2609509901,
+    "TransitionId": 19000000001750,
+    "MissionGroupCategoryTypeIndex": 1
+  },
+  {
+    "Id": 260950020002,
+    "EventId": 0,
+    "MissionResetTypeIndex": 1,
+    "SortOrder": 138,
+    "AvailableScheduleId": 2609509901,
+    "ReceivableScheduleId": 2609509901,
+    "TransitionId": 19000000001750,
+    "MissionGroupCategoryTypeIndex": 1
+  },
+  {
+    "Id": 260950080001,
+    "EventId": 0,
+    "MissionResetTypeIndex": 1,
+    "SortOrder": 465,
+    "AvailableScheduleId": 2609509901,
+    "ReceivableScheduleId": 2609509901,
+    "TransitionId": 22000000000000,
+    "MissionGroupCategoryTypeIndex": 1
+  },
+  {
+    "Id": 260950080005,
+    "EventId": 0,
+    "MissionResetTypeIndex": 1,
+    "SortOrder": 466,
+    "AvailableScheduleId": 2609509901,
+    "ReceivableScheduleId": 2609509901,
+    "TransitionId": 22000000000000,
+    "MissionGroupCategoryTypeIndex": 1
+  },
+  {
+    "Id": 260950080009,
+    "EventId": 0,
+    "MissionResetTypeIndex": 1,
+    "SortOrder": 467,
+    "AvailableScheduleId": 2609509901,
+    "ReceivableScheduleId": 2609509901,
+    "TransitionId": 22000000000000,
+    "MissionGroupCategoryTypeIndex": 1
+  },
+  {
+    "Id": 260950090001,
+    "EventId": 0,
+    "MissionResetTypeIndex": 1,
+    "SortOrder": 218,
+    "AvailableScheduleId": 2609509901,
+    "ReceivableScheduleId": 2609509901,
+    "TransitionId": 39000000001750,
     "MissionGroupCategoryTypeIndex": 1
   }
 ]

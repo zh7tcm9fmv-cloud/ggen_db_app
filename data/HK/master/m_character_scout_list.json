@@ -777,6 +777,188 @@
     "ScheduleId": 2606509901
   },
   {
+    "CharacterId": 1175000300,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 17500902,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2609509901
+  },
+  {
+    "CharacterId": 1175000401,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 17502002,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2609509901
+  },
+  {
+    "CharacterId": 1175000501,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 17502002,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2609509901
+  },
+  {
+    "CharacterId": 1175000600,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 17501703,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2609509901
+  },
+  {
+    "CharacterId": 1175000700,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 17501803,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2609509901
+  },
+  {
+    "CharacterId": 1175000800,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 17501203,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2609509901
+  },
+  {
+    "CharacterId": 1175000900,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 17501003,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2609509901
+  },
+  {
+    "CharacterId": 1175001000,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 17500303,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2609509901
+  },
+  {
+    "CharacterId": 1175001100,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 17501103,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2609509901
+  },
+  {
+    "CharacterId": 1175001200,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 17502002,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2609509901
+  },
+  {
+    "CharacterId": 1175001300,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 17500804,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2609509901
+  },
+  {
+    "CharacterId": 1175001400,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 17500504,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2609509901
+  },
+  {
+    "CharacterId": 1175001500,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 17500403,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2609509901
+  },
+  {
+    "CharacterId": 1175001600,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 17500403,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2609509901
+  },
+  {
+    "CharacterId": 1175001700,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 17501902,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2609509901
+  },
+  {
+    "CharacterId": 1175001800,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 17501902,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2609509901
+  },
+  {
+    "CharacterId": 1175001901,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 17501503,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2609509901
+  },
+  {
+    "CharacterId": 1175002000,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 17501402,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2609509901
+  },
+  {
+    "CharacterId": 1175002100,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 17501503,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2609509901
+  },
+  {
+    "CharacterId": 1175002200,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 17501402,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2609509901
+  },
+  {
+    "CharacterId": 1175002300,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 17500203,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2609509901
+  },
+  {
+    "CharacterId": 1175002400,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 17501402,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2609509901
+  },
+  {
+    "CharacterId": 1175002500,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 17500704,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2609509901
+  },
+  {
+    "CharacterId": 1175002600,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 17501303,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2609509901
+  },
+  {
+    "CharacterId": 1175002700,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 17500504,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2609509901
+  },
+  {
+    "CharacterId": 1175002800,
+    "RegisterConditionTypeIndex": 2,
+    "TargetId": 17501203,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2609509901
+  },
+  {
     "CharacterId": 1200000100,
     "RegisterConditionTypeIndex": 2,
     "TargetId": 20000603,

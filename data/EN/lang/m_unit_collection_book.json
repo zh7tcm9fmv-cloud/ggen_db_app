@@ -1641,7 +1641,11 @@
   },
   {
     "id": 110200001175000100,
-    "value": "A general-purpose transformable and dockable mobile suit independently developed by League Militaire.\nIts weapons can be enhanced by combining its Core Fighter (middle section) with its Top Limb (upper section) and Bottom Limb (lower section).\nIn its mobile suit form, it's a high-performance machine surpassing BESPA's mobile suits."
+    "value": "A general-purpose transformable combining mobile suit independently developed by League Militaire.\nIts weapons can be enhanced by combining its Core Fighter (B-Parts) with its Top Limb (A-Parts) and Bottom Limb (C-Parts).\nIn its mobile suit form, it is a high-performance machine surpassing BESPA's mobile suits.\nThe parts were produced in various regions, and although its operation was designed to be easy enough for elementary students to operate, its maintainability was not very high.\nUsed as a symbol of the outgunned League Militaire, it struck fear into the pilots of the Zanscare Empire."
+  },
+  {
+    "id": 110200001175000300,
+    "value": "A general-purpose mobile suit independently developed by the League Militaire.\nA high-performance unit incomparable to the Jamesgun or Javelin, it became part of the primary force of the League Militaire, and was later deployed to cooperating Earth Federation Forces squadrons as well.\nFavored by the Shrike Team and others, it fought evenly with the mobile suit groups of the Zanscare Empire, which continuously deployed new models."
   },
   {
     "id": 110200001175000400,
@@ -1652,8 +1656,168 @@
     "value": "The primary general-purpose mobile suit of the Earth Federation Forces.\nIt is equipped with a shot lancer for combat inside colonies."
   },
   {
+    "id": 110200001175000600,
+    "value": "A ground-use transformable combining mobile suit developed by BESPA.\nCapable of separating into a helicopter-variant Top Terminal and Bottom Terminal, it was the first unit equipped with a beam rotor.\nIt is multifunctional and can handle various missions on Earth, but because its anti-mobile suit combat capabilities were poor, it was gradually pulled back to second-line status.\nMobilized in large numbers when burning down the city of Lagem and the special district of Woowig, it played an active role in building the Zanscare Empire's bridgehead."
+  },
+  {
+    "id": 110200001175000800,
+    "value": "A mass-produced mobile suit of the Zanscare Empire.\nIt was specifically developed for use in joint operations with the wheel-shaped Einerad support vehicle.\nThe mobile suit itself is smaller than conventional mobile suits, offering only average capabilities when operating individually.\nHowever, when combined with the Einerad, its offensive, defensive, and maneuvering capabilities improve dramatically, allowing it to outperform conventional mobile suits.\nThe Gedlav was deployed during the latter stages of the Zanscare War, in conjunction with the Motorrad Fleet's invasion of Earth, later becoming one of the empire's main mobile suits."
+  },
+  {
     "id": 110200001175000900,
     "value": "A small, general-purpose mobile suit developed by BESPA, it was designed to use the Einerad, but also boasts relatively high performance on its own and excels in group combat.\nBy deploying the beam shields equipped on its arms, it can cover the Einerad's blind spots, which enabled it to overrun the Macedonia colony and Tampico.\nDeveloped as a primary mobile suit to replace the Zoloat, several units were deployed by the Motorad Squadron and were the bane of the League Militaire's mobile suit squadrons."
+  },
+  {
+    "id": 110200001175001000,
+    "value": "Equipped with both Assault and Buster options simultaneously, this V2 Gundam boasts overwhelming offensive power and ironclad defense.\nDuring the battle of Angel Halo, it made a solitary charge through a heavy defensive perimeter to infiltrate the inner area once again.\nHowever, as it continued to fight countless mobile suits, its options were gradually destroyed, eventually reducing it to the V2 Assault Gundam."
+  },
+  {
+    "id": 110200001175001100,
+    "value": "A general-purpose prototype mobile suit developed by BESPA.\nIn addition to a long-range beam launcher, it is equipped with powerful melee weapons such as the beam tonfas, allowing it to fight in an all-around manner.\nFirst deployed into actual combat during the battle of Angel Halo, it fully demonstrated its performance coupled with its pilot's abilities.\nIt took part in destroying the main squads of the League Militaire, including the Shrike Team, and engaged in a desperate struggle with the V2 Gundam on the ascending Angel Halo."
+  },
+  {
+    "id": 110200001175001200,
+    "value": "A general-purpose mobile suit of the League Militaire.\nIt is a Victory Gundam fitted with an externally mounted Minovsky Drive unit.\nBeing the first combat-ready mobile suit to employ the Minovsky Drive as its propulsion system, the Second V boasts mobility far surpassing that of older models. While it retains the same separation, transformation, and coalescence mechanisms as the standard Victory Gundam, it can also be equipped with a variety of additional weapons—achieving a level of operational versatility that exceeds what one would expect from a prototype.\nIts firepower has been greatly enhanced by the addition of a mega beam cannon that is capable of firing high-energy beams, and it is equipped with a Minovsky shield that forms a beam barrier by launching shield bits at maximum output. As a result, the Second V's offensive and defensive capabilities have been greatly enhanced without sacrificing the characteristic versatility of the Victory Gundam.\nIt appears in the novel series as Uso's mobile suit, replacing the V2 Gundam. During the final battle at Angel Halo, the Second V engaged in a fierce battle against the Gottrlatan and Contio, and despite sustaining moderate damage, it managed to destroy both enemy units."
+  },
+  {
+    "id": 110200001175001300,
+    "value": "A general-purpose transformable combining mobile suit independently developed by the League Militaire.\nCreated as a commander-type version of the V-type, its head sensors have been improved, and the Shrike Team later transitioned to this model.\nSince its structure is almost identical to that of the V-type, it can share parts and options such as the Boots and Hangers.\nHowever, it could not use the V2-type equipment due to its low output.\nUsed as a symbol of the outgunned League Militaire, it demonstrated performance exceeding the Zanscare Empire's mobile suits and boasted a high survival rate."
+  },
+  {
+    "id": 110200001175001500,
+    "value": "A unit equipped with booster options for the V-type developed by the League Militaire.\nThe V-type's mobility, cruising range, and built-in firepower were significantly enhanced, making it a unit that rivaled the Zanscare Empire's space-use mobile suits.\nThe beam smartgun fortuitously discovered at Highland could overwhelm the Zanscare Empire's beam shield-equipped mobile suits with its firepower, so it became one of its standard equipment."
+  },
+  {
+    "id": 110200001175001700,
+    "value": "A unit equipping the Victory Gundam Hexa with an overhang cannon, its performance is almost identical to the V-Dash Gundam.\nIt was also a commander-type variant of the V-Dash Gundam, but perhaps because this unit was produced in greater numbers, it later came to be used by ordinary soldiers.\nUsed as a symbol of the outgunned League Militaire, it demonstrated performance surpassing the Zanscare Empire's mobile suits and boasted a high survival rate."
+  },
+  {
+    "id": 110200001175001900,
+    "value": "A general-purpose transformable combining mobile suit independently developed by the League Militaire.\nCentered around a new Core Fighter, its combat power could be enhanced by combining the Top Limb and Bottom Limb, allowing it to adapt to various circumstances in battle.\nThe first unit equipped with a Minovsky Drive, it could destroy massive beam sabers and mobile suit instruments by spreading its Wings of Light.\nThe outgunned League Militaire requested cooperation from lunar corporations and developed it in top secret, possessing enough performance to overturn the dramatic difference in military strength and turning the war situation in favor of the League Militaire."
+  },
+  {
+    "id": 110200001175002100,
+    "value": "A version of the V2 Gundam equipped with golden increased armor options across its entire body.\nAlthough its mobility and maneuverability are slightly reduced, it boasts an I-Field generator with extraordinary defensive capabilities and anti-beam armor. It nullified most beam attacks and decimated enemies using the VSBRs mounted on both sides of its waist.\nDuring the battle of Angel Halo, it successfully broke through the heavy defensive lines alone and infiltrated the inner area, but most of its options were destroyed by the relentless physical assaults of the Imperial Guard divisions."
+  },
+  {
+    "id": 110200001175002200,
+    "value": "This mobile suit is a V2 Gundam equipped with heavy armament options across its entire body.\nWhile its mobility and maneuverability are slightly reduced, it can obliterate numerous enemies by utilizing its mega beam cannon and spray beam pod, which boast extraordinary offensive power.\nDuring the battle of Angel Halo, it astonished the League Militaire members by single-handedly breaking through the Zanscare Empire's heavy defensive lines to infiltrate the inner area."
+  },
+  {
+    "id": 110200001175002300,
+    "value": "A unit equipping the Gun EZ with a booster pack, improving its mobility and thrust.\nBecause it could be converted relatively easily, most Gun EZs were sequentially made into this type, serving as the main force of the League Militaire, and were later deployed to cooperating Earth Federation Forces units as well.\nOn the Reinforce Junior, it was used as a substitute training machine, boarded by young beginners who later mastered it to the level of veteran pilots."
+  },
+  {
+    "id": 110200001175002400,
+    "value": "A space-use mobile suit developed by BESPA.\nThe first mass-produced unit by the Zanscare Empire forces, it has an established reputation for its combat capabilities in space.\nIts standard loadout includes new weapons such as the beam strings, and it can be fitted with options.\nMany were deployed to the Kailash Geary fleet, scattering the Earth Federation Forces' mobile suits stationed at Side 2, and it was used extensively until the battle of Angel Halo."
+  },
+  {
+    "id": 110200001175002500,
+    "value": "A mobile suit captured from the Zanscare Empire forces and repainted.\nIt was highly valued by the League Militaire, which severely lacked military strength, and ironically proved the stability of its performance.\nDuring the chaos surrounding the battle of Kailash Geary, it confused the Zanscare Empire's mobile suit forces through the use of color sheets."
+  },
+  {
+    "id": 110200001175002600,
+    "value": "A ground-use transformable combining mobile suit developed by BESPA.\nA dedicated unit for Cronicle Asher, who was called the \"second coming of Char,\" several details were improved, and depending on the pilot's skill, it could demonstrate power surpassing the Shokew.\nIt was used during the recapture of the Shokew and the reconnaissance of the League Militaire's factory in Colline, successfully carrying out its missions."
+  },
+  {
+    "id": 110200001175002800,
+    "value": "A general-purpose transformable mobile suit developed by BESPA.\nA unit equipped with a transformable mechanism based on the Zoloat, it possesses performance far surpassing the Zolo, and was deployed by performing atmospheric reentry under its own power from the Zanscare Empire homeland.\nIt was also used during the pursuit of the Camion Corps heading to Arti Gibraltar, cornering it several times, but faced desperate resistance, which resulted in the loss of many units.\nIt was also used as an escort unit for Cronicle Asher and others returning to the Zanscare Empire homeland, destroying the flagship of the Bagre squad engaging the Kailash Geary fleet and forcing them to surrender."
+  },
+  {
+    "id": 110200001175003000,
+    "value": "A general-purpose transformable mobile suit developed by BESPA.\nThe successor of the Tomliat, its stability in helicopter mode, mobility, and close-quarter combat potential in mobile suit mode have been improved. It was also capable of operational maneuvers using a Twinrad. It was first deployed into actual combat during Operation: Earth Clean.\nEven after the ceasefire agreement was signed, it was used when attacking the League Militaire's White Ark squad, playing an essential part among the team."
+  },
+  {
+    "id": 110200001175003200,
+    "value": "A general-purpose prototype mobile suit developed by BESPA.\nA test unit with significantly enhanced search capabilities, its maneuverability also surpassed the Shokew, but it was not mass-produced.\nIts armaments were also strengthened compared to the Zolo, but it lacked high-firepower weapons and had to rely on melee combat.\nIt located the League Militaire's hideout and engaged in an even battle with the Victory Gundam, which ended in mutual destruction."
+  },
+  {
+    "id": 110200001175003300,
+    "value": "A ground-use prototype mobile suit developed by BESPA.\nA unit brought in by the Arbeo Pippiniden squad, it can perform long-distance flights within the atmosphere while remaining in mobile suit mode, and its mid-air melee combat capabilities are also substantial.\nIt was equipped with so much beam firepower that it could not be compared to the Zolo.\nWhen pursuing the Camion Corps unit that entered Arti Gibraltar, it took down the Shrike Team that was protecting the Mass Driver.\nAfterward, it was destroyed during a close combat with the Victory Gundam."
+  },
+  {
+    "id": 110200001175003400,
+    "value": "A land-based mobile weapon of the Zanscare Empire.\nOne of the motorcycle-type weapons belonging to the Gadar Squad.\nArmed with a cannon and a gatling cannon, the A-Type Combat Bike serves as the main offensive force of the Gadar Squad.\nWhile it is much smaller than a typical mobile suit, it excels in off-road mobility and speed. When deployed in large numbers, it is more than capable of standing up to mobile suit enemies."
+  },
+  {
+    "id": 110200001175003500,
+    "value": "A land-based mobile weapon of the Zanscare Empire.\nOne of the motorcycle-type weapons belonging to the Gadar Squad.\nThe B-Type Combat Bike is armed with two rapid-fire autocannons and is primarily used for anti-personnel combat and striking unarmored targets."
+  },
+  {
+    "id": 110200001175003600,
+    "value": "A mobile suit used by the Zanscare Empire for ground combat.\nIt is a large motorcycle weapon belonging to the Gadar Squad, categorized as a mobile armor.\nWith a greater size than other motorcycle weapons, it is equipped with both a beam cannon and a Gatling Gun.\nSince it has two seats, it is often used by the commander to lead the squad.\nThe obtained through the operation of this unit is reflected in the development of two-wheeled warships."
+  },
+  {
+    "id": 110200001175003700,
+    "value": "A giant mobile armor developed by BESPA.\nA unit for battlefield observation and long-range support, it is equipped with a long-range beam more powerful than a beam rifle, and is armed in various places to handle close-quarter combat when needed.\nDue to its appearance, it was commonly called \"frying pan\" by the Camion Corps, who feared its firepower.\nIt engaged the Camion Corps near Point Kasarelia and Arti Gibraltar, constantly working to support the mobile suit squads."
+  },
+  {
+    "id": 110200001175003800,
+    "value": "A large transformable prototype mobile suit developed by BESPA.\nDespite its massive size, it boasts both agile maneuverability and overwhelming power, and was undergoing operational testing by Godwald Hein, known as the \"Man-Eating Tiger.\"\nHowever, it suffered an accident where it malfunctioned without demonstrating decent performance and drifted in space.\nIt was being readjusted during the battle of Kailash Geary but was not ready in time, ultimately serving in the rearguard for the retreating Kailash Geary fleet."
+  },
+  {
+    "id": 110200001175004000,
+    "value": "A transformable prototype amphibious mobile suit developed by BESPA.\nIt can transform between a cruising mode and a mobile suit mode underwater, and has high offensive power underwater, being equipped with torpedoes that allow it to handle anti-ship as well as mobile suit combat.\nAlthough an amphibious unit, it was deployed into actual combat with almost no underwater testing, resulting in poor airtightness and in flooding.\nWhen the Reinforce fleet headed for space, it launched a surprise attack from underwater, inflicting moderate damage to two towing ships before retreating."
+  },
+  {
+    "id": 110200001175004300,
+    "value": "A prototype giant mobile armor developed by BESPA, modeled after a dragon.\nThe container-like parts of its long, continuous torso can be separated and recombined.\nEven a block made of multiple gathered parts can attack on its own.\nIt possesses combat capabilities rivaling an entire company, capable of fighting multiple mobile suits evenly on its own.\nIt was used to intercept the League Militaire, who launched a surprise attack to stop Operation: Earth Clean, and was called a \"fake dragon.\"\nDeployed on Earth for actual combat testing underwater, it caused the collapse of the artificial marine city Underhook during its engagement with the Reinforce Junior.\nIts color schemes comprise a green unit used in space and an orange unit used on Earth."
+  },
+  {
+    "id": 110200001175004400,
+    "value": "A general-purpose mobile suit developed by BESPA.\nA unit converted from the Zoloat to be compatible with ground use, its head sensors and melee combat capabilities were both enhanced.\nIt could also use an Einerad, and gradually became the mass-produced unit replacing the Zoloat.\nMany were deployed to the Motorad fleet, greatly contributing to ravaging the North American continent during Operation: Earth Clean."
+  },
+  {
+    "id": 110200001175004500,
+    "value": "A general-purpose, mass-produced mobile suit of the Zanscare Empire.\nIt is an improved version of the Gedlav equipped with a dedicated, collapsible Einerad.\nThe Einerad can be folded and retracted into the back of the suit, resolving an operational drawback that plagued the Gedlav.\nWhile the Bruckeng's baseline performance is not particularly impressive, it nevertheless demonstrates strong combat performance due to its ability to freely deploy and stow its Einerad.\nAlthough it was originally developed for ground operations, a space-capable variant with enhanced verniers was later developed."
+  },
+  {
+    "id": 110200001175004600,
+    "value": "A general-purpose mobile suit developed by BESPA.\nIt is directly fitted with an Einerad section that could split into four rings to capture opponents.\nMany are deployed in the Motorad fleet.\nOnly prototype units could be deployed for Operation: Earth Clean, but from the battle of Angel Halo onward, it fully demonstrated its performance, tormenting the mixed forces of the League Militaire and the Earth Federation Forces in group combat induced by mass production."
+  },
+  {
+    "id": 110200001175004700,
+    "value": "A general-purpose prototype mobile suit developed by BESPA.\nA test unit aimed at data collection, it was highly versatile and accommodating, even for beginner pilots.\nIts shoulder beam gun could extend and retract like a wire beam cannon, possessing offensive power that surpassed the Zolo.\nDuring an engagement with the League Militaire, it accidentally fell into Uso Ewin's hands and overwhelmed the mobile suits of BESPA's Yellow Jackets."
+  },
+  {
+    "id": 110200001175004800,
+    "value": "A general-purpose mobile suit developed by BESPA.\nImproved based on the Shokew tested by the Yellow Jackets, it possessed offensive power surpassing the Zoloat.\nAlthough it disrupted the Ceremony of Grace and thwarted the initiative of escaping prisoners, its beam rifle attacks also caught the Zanscare Empire homeland in the crossfire.\nIt was later mass-produced and participated in the Operation: Earth Clean, but rarely had the opportunity to play an active role."
+  },
+  {
+    "id": 110200001175004900,
+    "value": "A customized Rig Shokew used by the Imperial Guard soldiers protecting Queen Maria Pure Armonia.\nThey carried out missions such as escorting the psychics sent to the Angel Halo and searching for intruders.\nThey sortied to intercept the White Ark squad when it infiltrated the Angel Halo's territory, but more than half were shot down by the V2 Gundam's outstanding combat power."
+  },
+  {
+    "id": 110200001175005000,
+    "value": "A space-use mobile suit developed by BESPA.\nEquipped with powerful weaponry all over its body, a single unit possesses offensive potential comparable to a company, but its mobility and movement capabilities were extremely low.\nAlthough a unit for city defense, it was used to train student soldiers due to a pilot shortage.\nPartly for this reason, it never demonstrated its true performance, with the entire squad abandoning its units and fleeing to the homeland after being overwhelmed by the Victory Gundam's tactics, or being repelled after sortieing to intercept an air raid on the homeland."
+  },
+  {
+    "id": 110200001175005100,
+    "value": "A space-use mobile suit developed by BESPA.\nDeveloped as the main space-use mobile suit succeeding the Zoloat, the prototype version had its beam shield generator in a different location.\nIts shot claw was capable of all-range attacks, and could be used not only as a beam cannon, but also as pincers or as a beam saber.\nFirst deployed into actual combat at the battle of Kailash Geary, it possessed enough offensive power to single-handedly inflict moderate damage to the Reinforce.\nOn the other hand, it demanded high piloting skills."
+  },
+  {
+    "id": 110200001175005200,
+    "value": "A general-purpose mobile suit developed by BESPA.\nA unit focused on close-quarter combat, it has Heat Rods built into both arms and excels at capturing enemy units in formation.\nIt was also capable of using an Einerad.\nBecause its maintenance was completed after the ceasefire agreement was signed, it was not made ready in time for Operation: Earth Clean, but it seems to have been deployed to some squadrons.\nUsed by rogue teams despite the ceasefire, it caused severe trouble to the mobile suit forces of the League Militaire and the Earth Federation Forces."
+  },
+  {
+    "id": 110200001175005300,
+    "value": "A Jabaco mobile suit riding aboard the Twinrad mobile support unit.\nIt is a locally modified mobile suit derived from the Einerad designed to enhance mobility on water. Its shape resembles a wheel rather than tires.\nIn addition to being able to glide across the water's surface, it can also transport two mobile suits.\nFurthermore, it can separate into left and right halves, with each half capable of independent operation.\nIt is also equipped with retractable blades along its outer circumference, enhancing its offensive capabilities."
+  },
+  {
+    "id": 110200001175005400,
+    "value": "An improved and strengthened mobile suit based on the Contio.\nEquipped with a more destructive shot claw and a variable beam launcher capable of inflicting massive damage on opponents in a single blow, it boasts the performance to destroy even battleship-class vessels.\nDuring the battle of Angel Halo, Cronicle Asher himself boarded it, taking down the Earth Federation Forces' Jeanne D'Arc and inflicting damage on mobile suit forces, achieving tremendous military results.\nHowever, because he fixated on launching a coordinated attack with the Gottrlatan against the V2 Gundam, he lost the unit when it was caught in the Angel Halo's ring before he could make full use of its original performance."
+  },
+  {
+    "id": 110200001175005500,
+    "value": "A Psycommu-compatible prototype mobile suit developed by BESPA.\nEquipped with a Psycommu using bells as a medium, it can constantly boost the pilot's morale.\nWith the high firepower of the Zanneck Cannon for ultra-long-range sniping, it plunged the League Militaire into terror and was called the \"one served on a plate.\"\nIt engulfed Lagem in a sea of fire from a geostationary orbit satellite and engaged the joint mobile suit forces of the League Militaire and the Earth Federation Forces gathering at Highland, causing massive damage, but was destroyed by numerous Boots attacks from the V2 Gundam."
+  },
+  {
+    "id": 110200001175005600,
+    "value": "A Psycommu-compatible prototype mobile suit developed by BESPA.\nEquipped with a Psycommu using bells as a medium, it is designed to constantly boost the pilot's morale.\nAdditionally, its multiple beam launcher comprising five tubes can be used like an all-range weapon.\nIt relentlessly pursued the V2 Buster Gundam infiltrating the Angel Halo, cornering it to the very brink, but was defeated by the coordinated attack of the White Ark squad."
+  },
+  {
+    "id": 110200001175005700,
+    "value": "A spider-shaped mobile worker of the Colony Public Corporation. Due to its creator's hobbies, it possesses power rivaling a mobile suit, and could move agilely on the colony's outer walls despite its appearance.\nTo sell it to the Zanscare Empire, it rescued a unit of student soldiers drifting in space, and together with them, engaged the Victory Gundam loitering around the homeland, fighting hard enough to corner it."
   },
   {
     "id": 110200001200000100,
@@ -4236,7 +4400,15 @@
     "value": "Newtypes in both the Federation Forces and the Space Revolutionary Army had become a crucial factor in the latter half of the 7th Space War, and the psychological impact they had on ordinary soldiers in particular was so severe that it could determine the outcome of battle.\nAs a result, eliminating enemy Newtypes could have greater ramifications than actual military gains.\nRecognizing this, the Federation Forces developed a Newtype-use mobile suit for eliminating Newtypes.\nIn order to achieve its special mission, no expense was spared in the pursuit of performance.\nIt comes equipped with a set of heat wires to defend against bit weapons, claw arms for close combat, and a sonic smash cannon for artillery combat, boasting formidable capabilities in any combat situation.\n"
   },
   {
+    "id": 110200001850004850,
+    "value": "A prototype mobile suit of the Zanscare Empire.\nThe Zanspine is an original unit from the G Generation series.\nDeveloped using Minovsky Drive technology seized from the League Militaire, this high-performance mobile suit was built under the direction of Tassilo Wago.\nMuch like the V2 Gundam, it is equipped with a Minovsky Drive unit, which not only grants it exceptional mobility but also enables it to launch attacks using its Wings of Light.\nThe Zanspine is also equipped with a \"tinkle bits\" psycommu weapons system that allows for wide-ranging attacks coupled with a disorienting effect generated by psychic waves.\nThe mobile suit's performance and standard weaponry are exceptionally robust, and its combat capabilities as a single unit are on par with—if not superior to—those of the V2.\nHowever, Tassilo died shortly after the prototype was completed, with the Zanscare War also coming to an end soon thereafter. As a result, this mobile suit never made its debut on the front lines.\nAccording to one theory, Tassilo had planned to make it a national symbol once he seized effective control of the empire."
+  },
+  {
     "id": 110200001850005300,
     "value": "Developed by Axis as a successor to the massive space attack mobile armor Neue Ziel, this machine is equipped with a psycommu system and painted in the red personal colors of Char Aznable, the \"Red Comet.\"\nLike the Neue Ziel, it has high-output thrusters and powerful powerful beam weapons all over its body, and is equipped with I-Field generators that protect it from beam attacks.\nIts fighting strength remains overwhelming, but its greatest feature is the ability to perform all-range attacks, using Newtype psycho-waves to remotely control its funnels via a psycommu system.\nThus, while the Neue Ziel can be used even by Oldtypes, this version was completed as a Newtype machine.\nUnfortunately, when development of this machine started at the beginning of the Gryps Conflict, Char had already left Axis to join the AEUG.\nTogether with its immense production cost, this rendered the project pointless."
+  },
+  {
+    "id": 110200001850005400,
+    "value": "A special mobile suit of the Zanscare Empire.\nThe Rig Ring was developed as a support unit mobile suit for the Angel Halo psycommu fortress.\nIts primary function is to resonate with, and amplify, the Angel Halo's psycho-waves.\nAs such, it is equipped with a compact ring-shaped psycommu that enables it to emit low-power psycho-waves even when operating independently.\nThe Rig Ring is also armed with a shot claw and a diffuse beam cannon, giving it significant combat capabilities as a mobile suit itself.\nAlthough its development proceeded in parallel with that of Angel Halo, a sudden shift in the state of the war rendered it obsolete, and development was subsequently halted."
   }
 ]

@@ -1,0 +1,18 @@
+[
+  {
+    "StageTrialFormationSetId": 1,
+    "ForceNumber": 1,
+    "SlotIndex": 1,
+    "CharacterId": 1175000101,
+    "Level": 100,
+    "IsSp": false
+  },
+  {
+    "StageTrialFormationSetId": 2,
+    "ForceNumber": 1,
+    "SlotIndex": 1,
+    "CharacterId": 1175000601,
+    "Level": 100,
+    "IsSp": false
+  }
+]

@@ -132,6 +132,12 @@
     "DamagedEffectId": "ef_mpd_0001_001_beamrifle"
   },
   {
+    "Id": 100052,
+    "WeaponEffectPrefabPairSetId": 100052,
+    "WeaponEffectId": "ef_mpa_0001_015_beamrifle",
+    "DamagedEffectId": "ef_mpd_0001_001_beamrifle"
+  },
+  {
     "Id": 110001,
     "WeaponEffectPrefabPairSetId": 110001,
     "WeaponEffectId": "ef_mpa_0002_001_beamcanon",
@@ -708,6 +714,12 @@
     "DamagedEffectId": "ef_mpd_0000_000_cmnshock"
   },
   {
+    "Id": 230006,
+    "WeaponEffectPrefabPairSetId": 230006,
+    "WeaponEffectId": "ef_mpa_0014_042_injection",
+    "DamagedEffectId": "ef_mpd_0000_006_cmnshock"
+  },
+  {
     "Id": 240001,
     "WeaponEffectPrefabPairSetId": 240001,
     "WeaponEffectId": "ef_mpa_0015_001_beamsaber",
@@ -820,6 +832,12 @@
     "WeaponEffectPrefabPairSetId": 240042,
     "WeaponEffectId": "ef_mpa_0015_015_beamsaber",
     "DamagedEffectId": "ef_mpd_0015_015_cmnslashhit"
+  },
+  {
+    "Id": 240043,
+    "WeaponEffectPrefabPairSetId": 240043,
+    "WeaponEffectId": "ef_mpa_0015_013_beamsaber",
+    "DamagedEffectId": "ef_mpd_0015_013_cmnslashhit"
   },
   {
     "Id": 250001,
@@ -975,6 +993,12 @@
     "Id": 270016,
     "WeaponEffectPrefabPairSetId": 270016,
     "WeaponEffectId": "ef_mpa_0020_008_stab_mercury",
+    "DamagedEffectId": "ef_mpd_0000_000_cmnhit"
+  },
+  {
+    "Id": 270017,
+    "WeaponEffectPrefabPairSetId": 270017,
+    "WeaponEffectId": "ef_mpa_0020_015_stab",
     "DamagedEffectId": "ef_mpd_0000_000_cmnhit"
   },
   {
@@ -2082,6 +2106,18 @@
     "DamagedEffectId": "ef_mpd_0000_000_cmnexplosionhit"
   },
   {
+    "Id": 290179,
+    "WeaponEffectPrefabPairSetId": 290179,
+    "WeaponEffectId": "ef_mpa_0023_000_beamcannon_gottrlatan",
+    "DamagedEffectId": "ef_mpd_0023_000_beamcannon_gottrlatan"
+  },
+  {
+    "Id": 290180,
+    "WeaponEffectPrefabPairSetId": 290180,
+    "WeaponEffectId": "ef_mpa_0023_000_beamshield_v2",
+    "DamagedEffectId": "ef_mpd_0023_000_beamshield_v2"
+  },
+  {
     "Id": 310001,
     "WeaponEffectPrefabPairSetId": 310001,
     "WeaponEffectId": "ef_mpa_0029_001_funnelbeam",
@@ -2200,6 +2236,12 @@
     "WeaponEffectPrefabPairSetId": 310056,
     "WeaponEffectId": "ef_mpa_0029_002_funnelbeam_netics",
     "DamagedEffectId": "ef_mpd_0029_002_funnelbeam_netics"
+  },
+  {
+    "Id": 310057,
+    "WeaponEffectPrefabPairSetId": 310057,
+    "WeaponEffectId": "ef_mpa_0029_015_funnelbeam",
+    "DamagedEffectId": "ef_mpd_0029_001_funnelbeam"
   },
   {
     "Id": 320006,
@@ -2964,6 +3006,24 @@
     "DamagedEffectId": "ef_mpd_0029_001_funnelbeam"
   },
   {
+    "Id": 340053,
+    "WeaponEffectPrefabPairSetId": 340053,
+    "WeaponEffectId": "ef_mpa_0024_003_funnel_zanspine",
+    "DamagedEffectId": "ef_mpd_0029_001_funnelbeam"
+  },
+  {
+    "Id": 340054,
+    "WeaponEffectPrefabPairSetId": 340054,
+    "WeaponEffectId": "ef_mpa_0024_015_funnel_rigcontio",
+    "DamagedEffectId": "ef_mpd_0029_001_funnelbeam"
+  },
+  {
+    "Id": 340055,
+    "WeaponEffectPrefabPairSetId": 340055,
+    "WeaponEffectId": "ef_mpa_0024_015_funnel_rigring",
+    "DamagedEffectId": "ef_mpd_0029_001_funnelbeam"
+  },
+  {
     "Id": 350001,
     "WeaponEffectPrefabPairSetId": 350001,
     "WeaponEffectId": "ef_mpa_0025_002_funnel_newtypeusegmjuggler",
@@ -3282,6 +3342,24 @@
     "DamagedEffectId": "ef_mpd_0029_001_funnelbeam"
   },
   {
+    "Id": 370012,
+    "WeaponEffectPrefabPairSetId": 370012,
+    "WeaponEffectId": "ef_mpa_0027_015_funnel_contio",
+    "DamagedEffectId": "ef_mpd_0000_000_cmnhit"
+  },
+  {
+    "Id": 370013,
+    "WeaponEffectPrefabPairSetId": 370013,
+    "WeaponEffectId": "ef_mpa_0027_015_funnel_rigring",
+    "DamagedEffectId": "ef_mpd_0027_015_funnel_rigring"
+  },
+  {
+    "Id": 370015,
+    "WeaponEffectPrefabPairSetId": 370015,
+    "WeaponEffectId": "ef_mpa_0027_000_funnel_doggorla",
+    "DamagedEffectId": "ef_mpd_0000_000_cmnhit"
+  },
+  {
     "Id": 380001,
     "WeaponEffectPrefabPairSetId": 380001,
     "WeaponEffectId": "ef_mpa_0028_006_funnel_psycogundammk2",
@@ -3444,10 +3522,34 @@
     "DamagedEffectId": "ef_mpd_0037_001_twinbeamrifle"
   },
   {
+    "Id": 470013,
+    "WeaponEffectPrefabPairSetId": 470013,
+    "WeaponEffectId": "ef_mpa_0037_015_twinbeamrifle",
+    "DamagedEffectId": "ef_mpd_0037_001_twinbeamrifle"
+  },
+  {
+    "Id": 470015,
+    "WeaponEffectPrefabPairSetId": 470015,
+    "WeaponEffectId": "ef_mpa_0037_002_twinbeamrifle_wide",
+    "DamagedEffectId": "ef_mpd_0037_001_twinbeamrifle_wide"
+  },
+  {
+    "Id": 470021,
+    "WeaponEffectPrefabPairSetId": 470021,
+    "WeaponEffectId": "ef_mpa_0037_015_twinbeamrifle_wide",
+    "DamagedEffectId": "ef_mpd_0037_001_twinbeamrifle_wide"
+  },
+  {
     "Id": 480002,
     "WeaponEffectPrefabPairSetId": 480002,
     "WeaponEffectId": "ef_mpa_0038_002_twinbeamcanon",
     "DamagedEffectId": "ef_mpd_0038_002_twinbeamcanon"
+  },
+  {
+    "Id": 480008,
+    "WeaponEffectPrefabPairSetId": 480008,
+    "WeaponEffectId": "ef_mpa_0038_015_twinbeamcanon",
+    "DamagedEffectId": "ef_mpd_0038_015_twinbeamcanon"
   },
   {
     "Id": 490006,
@@ -3741,6 +3843,12 @@
     "Id": 900070,
     "WeaponEffectPrefabPairSetId": 900070,
     "WeaponEffectId": "ef_mpw_050_01_antibeambomb",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900072,
+    "WeaponEffectPrefabPairSetId": 900072,
+    "WeaponEffectId": "ef_mpw_052_01_grading",
     "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
   },
   {
@@ -4575,6 +4683,90 @@
     "Id": 900223,
     "WeaponEffectPrefabPairSetId": 900223,
     "WeaponEffectId": "ef_mpw_008_03_sweepbeam_gn",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900224,
+    "WeaponEffectPrefabPairSetId": 900224,
+    "WeaponEffectId": "ef_mpw_109_01_shinewing",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900225,
+    "WeaponEffectPrefabPairSetId": 900225,
+    "WeaponEffectId": "ef_mpw_109_02_shinewing",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900226,
+    "WeaponEffectPrefabPairSetId": 900226,
+    "WeaponEffectId": "ef_mpw_109_03_shinewing",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900227,
+    "WeaponEffectPrefabPairSetId": 900227,
+    "WeaponEffectId": "ef_mpw_018_00_multipleburst_v2assault",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900228,
+    "WeaponEffectPrefabPairSetId": 900228,
+    "WeaponEffectId": "ef_mpw_086_02_twinvesper",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900229,
+    "WeaponEffectPrefabPairSetId": 900229,
+    "WeaponEffectId": "ef_mpw_052_02_grading",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900230,
+    "WeaponEffectPrefabPairSetId": 900230,
+    "WeaponEffectId": "ef_mpw_018_00_multipleburst_secondv",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900231,
+    "WeaponEffectPrefabPairSetId": 900231,
+    "WeaponEffectId": "ef_mpw_061_09_tackle",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900232,
+    "WeaponEffectPrefabPairSetId": 900232,
+    "WeaponEffectId": "ef_mpw_004_00_threelinemegabeam_gottrlatan",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900233,
+    "WeaponEffectPrefabPairSetId": 900233,
+    "WeaponEffectId": "ef_mpw_110_01_psychowave",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900234,
+    "WeaponEffectPrefabPairSetId": 900234,
+    "WeaponEffectId": "ef_mpw_004_13_threelinemegabeam",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900235,
+    "WeaponEffectPrefabPairSetId": 900235,
+    "WeaponEffectId": "ef_mpw_111_01_battleshipbomb",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900236,
+    "WeaponEffectPrefabPairSetId": 900236,
+    "WeaponEffectId": "ef_mpw_111_02_battleshipbomb",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900243,
+    "WeaponEffectPrefabPairSetId": 900243,
+    "WeaponEffectId": "ef_mpw_003_04_snipe",
     "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
   },
   {
@@ -9454,6 +9646,174 @@
     "WeaponEffectPrefabPairSetId": 80084,
     "WeaponEffectId": "ef_mpa_1000_000_finishslash_susanoo",
     "DamagedEffectId": "ef_mpd_1000_000_finishslash_susanoo"
+  },
+  {
+    "Id": 8008501,
+    "WeaponEffectPrefabPairSetId": 80085,
+    "WeaponEffectId": "ef_mpa_1000_000_wing_v2assault",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8008502,
+    "WeaponEffectPrefabPairSetId": 80085,
+    "WeaponEffectId": "ef_mpa_1000_000_pyramidshield_v2assault",
+    "DamagedEffectId": "ef_mpd_1000_000_pyramidshield_v2assault"
+  },
+  {
+    "Id": 8008503,
+    "WeaponEffectPrefabPairSetId": 80085,
+    "WeaponEffectId": "ef_mpa_1000_000_multiple_v2assault",
+    "DamagedEffectId": "ef_mpd_1000_000_multiple_v2assault"
+  },
+  {
+    "Id": 8008504,
+    "WeaponEffectPrefabPairSetId": 80085,
+    "WeaponEffectId": "ef_mpa_1000_000_finishbeam_v2assault",
+    "DamagedEffectId": "ef_mpd_1000_000_finishbeam_v2assault"
+  },
+  {
+    "Id": 8008505,
+    "WeaponEffectPrefabPairSetId": 80085,
+    "WeaponEffectId": "ef_mpa_1000_000_v2assault_se",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8008506,
+    "WeaponEffectPrefabPairSetId": 80085,
+    "WeaponEffectId": "ef_mpa_1000_000_null",
+    "DamagedEffectId": "ef_mpd_1000_000_null"
+  },
+  {
+    "Id": 8008601,
+    "WeaponEffectPrefabPairSetId": 80086,
+    "WeaponEffectId": "ef_mpa_1000_000_dash_zanspine",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8008602,
+    "WeaponEffectPrefabPairSetId": 80086,
+    "WeaponEffectId": "ef_mpa_1000_000_crossslash_zanspine",
+    "DamagedEffectId": "ef_mpd_1000_000_crossslash_zanspine"
+  },
+  {
+    "Id": 8008603,
+    "WeaponEffectPrefabPairSetId": 80086,
+    "WeaponEffectId": "ef_mpa_1000_000_slash_zanspine_ex1",
+    "DamagedEffectId": "ef_mpd_1000_000_slash_zanspine_ex1"
+  },
+  {
+    "Id": 8008604,
+    "WeaponEffectPrefabPairSetId": 80086,
+    "WeaponEffectId": "ef_mpa_1000_000_slash_zanspine_ex2",
+    "DamagedEffectId": "ef_mpd_1000_000_slash_zanspine_ex2"
+  },
+  {
+    "Id": 8008605,
+    "WeaponEffectPrefabPairSetId": 80086,
+    "WeaponEffectId": "ef_mpa_1000_000_slash_zanspine_ex3",
+    "DamagedEffectId": "ef_mpd_1000_000_slash_zanspine_ex3"
+  },
+  {
+    "Id": 8008606,
+    "WeaponEffectPrefabPairSetId": 80086,
+    "WeaponEffectId": "ef_mpa_1000_000_slash_zanspine_ex4",
+    "DamagedEffectId": "ef_mpd_1000_000_slash_zanspine_ex4"
+  },
+  {
+    "Id": 8008607,
+    "WeaponEffectPrefabPairSetId": 80086,
+    "WeaponEffectId": "ef_mpa_1000_000_spin_zanspine",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8008608,
+    "WeaponEffectPrefabPairSetId": 80086,
+    "WeaponEffectId": "ef_mpa_1000_000_spin_zanspine_null",
+    "DamagedEffectId": "ef_mpd_1000_000_spin_zanspine"
+  },
+  {
+    "Id": 8008609,
+    "WeaponEffectPrefabPairSetId": 80086,
+    "WeaponEffectId": "ef_mpa_1000_000_funnel_zanspine_ex1",
+    "DamagedEffectId": "ef_mpd_1000_000_funnel_zanspine_ex1"
+  },
+  {
+    "Id": 8008610,
+    "WeaponEffectPrefabPairSetId": 80086,
+    "WeaponEffectId": "ef_mpa_1000_000_funnel_zanspine_ex2_null",
+    "DamagedEffectId": "ef_mpd_1000_000_funnel_zanspine_ex2"
+  },
+  {
+    "Id": 8008611,
+    "WeaponEffectPrefabPairSetId": 80086,
+    "WeaponEffectId": "ef_mpa_1000_000_flare_zanspine_null",
+    "DamagedEffectId": "ef_mpd_1000_000_flare_zanspine"
+  },
+  {
+    "Id": 8008612,
+    "WeaponEffectPrefabPairSetId": 80086,
+    "WeaponEffectId": "ef_mpa_1000_000_raiserwing_zanspine",
+    "DamagedEffectId": "ef_mpd_1000_000_raiserwing_zanspine"
+  },
+  {
+    "Id": 8008701,
+    "WeaponEffectPrefabPairSetId": 80087,
+    "WeaponEffectId": "ef_mpa_1000_000_cannonbeam_gottrlatan",
+    "DamagedEffectId": "ef_mpd_1000_000_cannonbeam_gottrlatan"
+  },
+  {
+    "Id": 8008702,
+    "WeaponEffectPrefabPairSetId": 80087,
+    "WeaponEffectId": "ef_mpa_1000_000_missile_gottrlatan",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8008703,
+    "WeaponEffectPrefabPairSetId": 80087,
+    "WeaponEffectId": "ef_mpa_1000_000_beamsaber_gottrlatan_ex1",
+    "DamagedEffectId": "ef_mpd_1000_000_beamsaber_gottrlatan_ex1"
+  },
+  {
+    "Id": 8008704,
+    "WeaponEffectPrefabPairSetId": 80087,
+    "WeaponEffectId": "ef_mpa_1000_000_beamsaber_gottrlatan_ex2",
+    "DamagedEffectId": "ef_mpd_1000_000_beamsaber_gottrlatan_ex2"
+  },
+  {
+    "Id": 8008705,
+    "WeaponEffectPrefabPairSetId": 80087,
+    "WeaponEffectId": "ef_mpa_1000_000_kick_gottrlatan",
+    "DamagedEffectId": "ef_mpd_1000_000_kick_gottrlatan"
+  },
+  {
+    "Id": 8008706,
+    "WeaponEffectPrefabPairSetId": 80087,
+    "WeaponEffectId": "ef_mpa_1000_000_twinbeamsaber_gottrlatan",
+    "DamagedEffectId": "ef_mpd_1000_000_twinbeamsaber_gottrlatan"
+  },
+  {
+    "Id": 8008707,
+    "WeaponEffectPrefabPairSetId": 80087,
+    "WeaponEffectId": "ef_mpa_1000_000_beamsaber_gottrlatan_ex3",
+    "DamagedEffectId": "ef_mpd_1000_000_beamsaber_gottrlatan_ex3"
+  },
+  {
+    "Id": 8008708,
+    "WeaponEffectPrefabPairSetId": 80087,
+    "WeaponEffectId": "ef_mpa_1000_000_crossslash_gottrlatan",
+    "DamagedEffectId": "ef_mpd_1000_000_crossslash_gottrlatan"
+  },
+  {
+    "Id": 8008709,
+    "WeaponEffectPrefabPairSetId": 80087,
+    "WeaponEffectId": "ef_mpa_1000_000_spinslash_gottrlatan",
+    "DamagedEffectId": "ef_mpd_1000_000_spinslash_gottrlatan"
+  },
+  {
+    "Id": 8008710,
+    "WeaponEffectPrefabPairSetId": 80087,
+    "WeaponEffectId": "ef_mpa_1000_000_null",
+    "DamagedEffectId": "ef_mpd_1000_000_null"
   },
   {
     "Id": 99999990,

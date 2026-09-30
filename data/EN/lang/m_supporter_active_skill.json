@@ -152,6 +152,14 @@
     "value": "EN Restoration"
   },
   {
+    "id": 160400001175000150,
+    "value": "HP Restoration / Damage Reduction"
+  },
+  {
+    "id": 160400001175000250,
+    "value": "EN Restoration"
+  },
+  {
     "id": 160400001200000150,
     "value": "EN Restoration"
   },
@@ -508,6 +516,14 @@
     "value": "Allies in range:\nRestore EN by 40%"
   },
   {
+    "id": 160500001175000150,
+    "value": "Allies in range:\nRestore HP by 30%\nReduce damage taken by 15% (1 turn(s))"
+  },
+  {
+    "id": 160500001175000250,
+    "value": "Allies in range:\nRestore EN by 40%"
+  },
+  {
     "id": 160500001200000150,
     "value": "Allies in range:\nRestore EN by 50%"
   },
@@ -850,6 +866,10 @@
   {
     "id": 160900001162000150,
     "value": "I see I must remind you of your place!"
+  },
+  {
+    "id": 160900001175000150,
+    "value": "These jerks are relentless! I won't let them get any closer, though!"
   },
   {
     "id": 160900001200000150,

@@ -2208,8 +2208,32 @@
     "value": "(Range Condition) Increased ATK LV 1"
   },
   {
+    "id": 140100000101770200,
+    "value": "Advantage: Mobile Suit V Gundam LV 2"
+  },
+  {
+    "id": 140100000101770300,
+    "value": "Advantage: Mobile Suit V Gundam LV 3"
+  },
+  {
+    "id": 140100000101770400,
+    "value": "Advantage: Mobile Suit V Gundam LV 4"
+  },
+  {
     "id": 140100000101780200,
     "value": "(Cond: HP) Increased ATK LV 2"
+  },
+  {
+    "id": 140100000101800101,
+    "value": "(Cond: Vigor) Beam Weapons Max Range Up LV 1"
+  },
+  {
+    "id": 140100000101830101,
+    "value": "Chance Step Increase LV 1"
+  },
+  {
+    "id": 140100000101830102,
+    "value": "Chance Step Increase LV 1"
   },
   {
     "id": 140100000200010101,
@@ -5328,6 +5352,46 @@
     "value": "(Cond: Tag & Series) Support Defense LV 1"
   },
   {
+    "id": 140100000202950200,
+    "value": "Newtype (V) LV 2"
+  },
+  {
+    "id": 140100000202950300,
+    "value": "Newtype (V) LV 3"
+  },
+  {
+    "id": 140100000202950500,
+    "value": "Newtype (V) LV 5"
+  },
+  {
+    "id": 140100000202960101,
+    "value": "(Cond: Tag) Support Defense LV 1"
+  },
+  {
+    "id": 140100000202970101,
+    "value": "(Cond: Series) Chance Step Increase LV 1"
+  },
+  {
+    "id": 140100000202980101,
+    "value": "(Cond: Tag) Support Attack / Counter Support LV 1"
+  },
+  {
+    "id": 140100000202990101,
+    "value": "(Cond: Tag) Support Attack / Counter Support LV 1"
+  },
+  {
+    "id": 140100000203000100,
+    "value": "EX Character Ability"
+  },
+  {
+    "id": 140100000203010100,
+    "value": "EX Character Ability"
+  },
+  {
+    "id": 140100000203020100,
+    "value": "EX Character Ability"
+  },
+  {
     "id": 140100000300010101,
     "value": "Decreased ATK (1 turn(s)) LV 1"
   },
@@ -6398,6 +6462,10 @@
   {
     "id": 140100000300490150,
     "value": "Chance Step Increase"
+  },
+  {
+    "id": 140100000300520101,
+    "value": "Strike and Move LV 1"
   },
   {
     "id": 140100000310010101,
@@ -11056,6 +11124,66 @@
     "value": "Limiter OFF SSR (Fierce Enemy Assault)"
   },
   {
+    "id": 140100000406980101,
+    "value": "Limiter OFF SSR(Mobile Suit V Gundam)"
+  },
+  {
+    "id": 140100000406990100,
+    "value": "Limiter OFF SR(Fierce Enemy Assault)"
+  },
+  {
+    "id": 140100000407000100,
+    "value": "Reinforced Armor SSR(Fierce Enemy Assault)"
+  },
+  {
+    "id": 140100000407020100,
+    "value": "Heavyweight Defense Boost R(Mobile Suit V Gundam)"
+  },
+  {
+    "id": 140100000407030101,
+    "value": "Add-On Armor R(Mobile Suit V Gundam)"
+  },
+  {
+    "id": 140100000407040101,
+    "value": "Booster Parts SR(League Militaire)"
+  },
+  {
+    "id": 140100000407050101,
+    "value": "Limiter OFF SR(League Militaire)"
+  },
+  {
+    "id": 140100000407060101,
+    "value": "Reinforced Armor R(Mobile Suit V Gundam)"
+  },
+  {
+    "id": 140100000407070101,
+    "value": "Limiter OFF R(Mobile Suit V Gundam)"
+  },
+  {
+    "id": 140100000407080101,
+    "value": "Booster Parts SR(Zanscare Empire)"
+  },
+  {
+    "id": 140100000407090101,
+    "value": "Reinforced Armor SR(Zanscare Empire)"
+  },
+  {
+    "id": 140100000407100101,
+    "value": "Booster Parts R(Mobile Suit V Gundam)"
+  },
+  {
+    "id": 140100000407110100,
+    "value": "Heavyweight Attack Boost R(Mobile Suit V Gundam)"
+  },
+  {
+    "id": 140100000407120101,
+    "value": "Add-On Armor SR(League Militaire)"
+  },
+  {
+    "id": 140100000407130101,
+    "value": "Limiter OFF SR(Zanscare Empire)"
+  },
+  {
     "id": 140100000407140101,
     "value": "Add-On Armor SR(Mobile Suit Gundam 00F)"
   },
@@ -12490,6 +12618,62 @@
   {
     "id": 140100000511381001,
     "value": "Revival"
+  },
+  {
+    "id": 140100000511500101,
+    "value": "Decreased DEF (All Units)"
+  },
+  {
+    "id": 140100000511510101,
+    "value": "Decreased DEF (All Units)"
+  },
+  {
+    "id": 140100000511520101,
+    "value": "Decreased DEF (All Units)"
+  },
+  {
+    "id": 140100000511530101,
+    "value": "Decreased DEF"
+  },
+  {
+    "id": 140100000511540101,
+    "value": "Decreased DEF"
+  },
+  {
+    "id": 140100000511550101,
+    "value": "Decreased DEF"
+  },
+  {
+    "id": 140100000511560101,
+    "value": "(Cond: Defeat) Increased ATK & DEF"
+  },
+  {
+    "id": 140100000511560111,
+    "value": "(Cond: Defeat) Increased ATK"
+  },
+  {
+    "id": 140100000511560112,
+    "value": "(Cond: Defeat) Increased DEF"
+  },
+  {
+    "id": 140100000511560113,
+    "value": "(Cond: Defeat) Increased ATK"
+  },
+  {
+    "id": 140100000511560114,
+    "value": "(Cond: Defeat) Increased DEF"
+  },
+  {
+    "id": 140100000511560201,
+    "value": "(Cond: Defeat) Increased ATK & DEF"
+  },
+  {
+    "id": 140100000511570101,
+    "value": "(Cond: Defeat) Increased ATK & DEF"
+  },
+  {
+    "id": 140100000511570201,
+    "value": "(Cond: Defeat) Increased ATK & DEF"
   },
   {
     "id": 140100000530010100,
@@ -14442,6 +14626,30 @@
   {
     "id": 140100000612500101,
     "value": "Increased DEF"
+  },
+  {
+    "id": 140100000612550101,
+    "value": "(Cond: Defeat) Increased ATK & DEF"
+  },
+  {
+    "id": 140100000612550201,
+    "value": "(Cond: Defeat) Increased ATK & DEF"
+  },
+  {
+    "id": 140100000612560101,
+    "value": "(Cond: Defeat) Increased ATK & DEF"
+  },
+  {
+    "id": 140100000612560201,
+    "value": "(Cond: Defeat) Increased ATK & DEF"
+  },
+  {
+    "id": 140100000612570101,
+    "value": "(Cond: Character) Increased ATK"
+  },
+  {
+    "id": 140100000612580101,
+    "value": "Increased ATK"
   },
   {
     "id": 140100000699000101,

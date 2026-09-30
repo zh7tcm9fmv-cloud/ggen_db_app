@@ -577,9 +577,9 @@
     "NameLanguageId": 200100000000001750,
     "DescriptionLanguageId": 200200000000001750,
     "ResourceId": "series_1750",
-    "SortOrder": 13200,
+    "SortOrder": 370,
     "ScheduleId": 0,
-    "ScenarioStageSeriesId": 0,
+    "ScenarioStageSeriesId": 1750,
     "FilterNameLanguageId": 200300000000001750
   },
   {

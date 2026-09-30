@@ -108,6 +108,15 @@
     "ScheduleId": 2606509901
   },
   {
+    "Id": 2175000200,
+    "ReleaseConditionScenarioStageId": 17502002,
+    "SeriesId": 1750,
+    "NameLanguageId": 110100002175000200,
+    "ProfileLanguageId": 110200002175000200,
+    "ResourceId": "g1750w00200",
+    "ScheduleId": 2609509901
+  },
+  {
     "Id": 2230000400,
     "ReleaseConditionScenarioStageId": 23001903,
     "SeriesId": 2300,

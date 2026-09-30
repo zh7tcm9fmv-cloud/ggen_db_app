@@ -784,6 +784,62 @@
     "ScheduleId": 0
   },
   {
+    "Id": 17500101,
+    "UnitDevelopmentDiagramId": 175001,
+    "CompleteRate": 25,
+    "RewardSetId": 26000017500101,
+    "ScheduleId": 0
+  },
+  {
+    "Id": 17500102,
+    "UnitDevelopmentDiagramId": 175001,
+    "CompleteRate": 50,
+    "RewardSetId": 26000017500102,
+    "ScheduleId": 0
+  },
+  {
+    "Id": 17500103,
+    "UnitDevelopmentDiagramId": 175001,
+    "CompleteRate": 75,
+    "RewardSetId": 26000017500103,
+    "ScheduleId": 0
+  },
+  {
+    "Id": 17500104,
+    "UnitDevelopmentDiagramId": 175001,
+    "CompleteRate": 100,
+    "RewardSetId": 26000017500104,
+    "ScheduleId": 0
+  },
+  {
+    "Id": 17500201,
+    "UnitDevelopmentDiagramId": 175002,
+    "CompleteRate": 25,
+    "RewardSetId": 26000017500201,
+    "ScheduleId": 0
+  },
+  {
+    "Id": 17500202,
+    "UnitDevelopmentDiagramId": 175002,
+    "CompleteRate": 50,
+    "RewardSetId": 26000017500202,
+    "ScheduleId": 0
+  },
+  {
+    "Id": 17500203,
+    "UnitDevelopmentDiagramId": 175002,
+    "CompleteRate": 75,
+    "RewardSetId": 26000017500203,
+    "ScheduleId": 0
+  },
+  {
+    "Id": 17500204,
+    "UnitDevelopmentDiagramId": 175002,
+    "CompleteRate": 100,
+    "RewardSetId": 26000017500204,
+    "ScheduleId": 0
+  },
+  {
     "Id": 20130101,
     "UnitDevelopmentDiagramId": 201301,
     "CompleteRate": 25,

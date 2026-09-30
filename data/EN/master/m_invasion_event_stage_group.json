@@ -284,5 +284,18 @@
     "BromideInvasionTopMovePositionY": 0,
     "BromideInvasionTopScaleRatePercent": 0,
     "ExtendStageId": 90230023
+  },
+  {
+    "Id": 90200024,
+    "Priority": 240,
+    "UnitId": 1850005400,
+    "ScheduleId": 2609501003,
+    "BromideMovePositionX": 0,
+    "BromideMovePositionY": 0,
+    "BromideScaleRatePercent": 0,
+    "BromideInvasionTopMovePositionX": 0,
+    "BromideInvasionTopMovePositionY": 0,
+    "BromideInvasionTopScaleRatePercent": 0,
+    "ExtendStageId": 90230024
   }
 ]

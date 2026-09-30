@@ -133,5 +133,15 @@
     "GashaId": 2609300302,
     "FixCount": 50,
     "GashaContentSetId": 260930030203
+  },
+  {
+    "GashaId": 2609500301,
+    "FixCount": 100,
+    "GashaContentSetId": 260950030103
+  },
+  {
+    "GashaId": 2609500304,
+    "FixCount": 100,
+    "GashaContentSetId": 260950030403
   }
 ]

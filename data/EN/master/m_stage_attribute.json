@@ -1,0 +1,22 @@
+[
+  {
+    "Id": 9900011801,
+    "StageId": 99000118,
+    "StageAttributeTypeIndex": 3
+  },
+  {
+    "Id": 9900011802,
+    "StageId": 99000118,
+    "StageAttributeTypeIndex": 2
+  },
+  {
+    "Id": 9900011901,
+    "StageId": 99000119,
+    "StageAttributeTypeIndex": 3
+  },
+  {
+    "Id": 9900011902,
+    "StageId": 99000119,
+    "StageAttributeTypeIndex": 2
+  }
+]

@@ -12,6 +12,10 @@
     "value": "Unit Skills [Gundam F91 (Twin VSBR) (EX)]"
   },
   {
+    "id": 141300117500105000,
+    "value": "Unit Skills [V2 Assault Buster Gundam (EX)]"
+  },
+  {
     "id": 141300137000595000,
     "value": "Unit Skills [00 Raiser Final Battle Type (EX)]"
   },
@@ -26,6 +30,10 @@
   {
     "id": 141400116300015000,
     "value": "Grant Initial Damage Nullification effect (once per battle).\nIncrease own MOB by 10% until the above effect expires."
+  },
+  {
+    "id": 141400117500105000,
+    "value": "Increase own MP by 3 (1 time(s)).\nIncrease own MOV by 1 (1 time(s)).\nIncrease own MOB by 10% (1 turn(s)).\nWhen enemies attack with a beam weapon,\nreduce damage taken by 20% (1 turn(s)).\n(Once per battle)"
   },
   {
     "id": 141400137000595000,

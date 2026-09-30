@@ -5312,6 +5312,2242 @@
     "value": "Piercing"
   },
   {
+    "id": 140700000301020301,
+    "value": "Preemptive Strike"
+  },
+  {
+    "id": 140700000301020302,
+    "value": "Special Weapon Power Down (1 turn(s)) LV 3"
+  },
+  {
+    "id": 140700000301020401,
+    "value": "Preemptive Strike"
+  },
+  {
+    "id": 140700000301020402,
+    "value": "Special Weapon Power Down (1 turn(s)) LV 4"
+  },
+  {
+    "id": 140700000301020501,
+    "value": "Preemptive Strike"
+  },
+  {
+    "id": 140700000301020502,
+    "value": "Special Weapon Power Down (1 turn(s)) LV 5"
+  },
+  {
+    "id": 140700000301030101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301030102,
+    "value": "Decreased MP LV 1"
+  },
+  {
+    "id": 140700000301040201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301040202,
+    "value": "Decreased DEF (1 turn(s)) LV 2"
+  },
+  {
+    "id": 140700000301040203,
+    "value": "Chance Step Increase"
+  },
+  {
+    "id": 140700000301040301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301040302,
+    "value": "Decreased DEF (1 turn(s)) LV 3"
+  },
+  {
+    "id": 140700000301040303,
+    "value": "Chance Step Increase"
+  },
+  {
+    "id": 140700000301040401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301040402,
+    "value": "Decreased DEF (1 turn(s)) LV 4"
+  },
+  {
+    "id": 140700000301040403,
+    "value": "Chance Step Increase"
+  },
+  {
+    "id": 140700000301050101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301050102,
+    "value": "Decreased ATK (1 turn(s)) LV 1"
+  },
+  {
+    "id": 140700000301050103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301050201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301050202,
+    "value": "Decreased ATK (1 turn(s)) LV 2"
+  },
+  {
+    "id": 140700000301050203,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301050301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301050302,
+    "value": "Decreased ATK (1 turn(s)) LV 3"
+  },
+  {
+    "id": 140700000301050303,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301050401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301050402,
+    "value": "Decreased ATK (1 turn(s)) LV 4"
+  },
+  {
+    "id": 140700000301050403,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301050501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301050502,
+    "value": "Decreased ATK (1 turn(s)) LV 5"
+  },
+  {
+    "id": 140700000301050503,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301050601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301050602,
+    "value": "Decreased ATK (1 turn(s)) LV 6"
+  },
+  {
+    "id": 140700000301050603,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301050701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301050702,
+    "value": "Decreased ATK (1 turn(s)) LV 7"
+  },
+  {
+    "id": 140700000301050703,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301050801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301050802,
+    "value": "Decreased ATK (1 turn(s)) LV 8"
+  },
+  {
+    "id": 140700000301050803,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301050901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301050902,
+    "value": "Decreased ATK (1 turn(s)) LV 9"
+  },
+  {
+    "id": 140700000301050903,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301060101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301060102,
+    "value": "With More Remaining HP, Higher Weapon Power LV 1"
+  },
+  {
+    "id": 140700000301060103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301060201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301060202,
+    "value": "With More Remaining HP, Higher Weapon Power LV 2"
+  },
+  {
+    "id": 140700000301060203,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301060301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301060302,
+    "value": "With More Remaining HP, Higher Weapon Power LV 3"
+  },
+  {
+    "id": 140700000301060303,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301060401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301060402,
+    "value": "With More Remaining HP, Higher Weapon Power LV 4"
+  },
+  {
+    "id": 140700000301060403,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301060501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301060502,
+    "value": "With More Remaining HP, Higher Weapon Power LV 5"
+  },
+  {
+    "id": 140700000301060503,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301060601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301060602,
+    "value": "With More Remaining HP, Higher Weapon Power LV 6"
+  },
+  {
+    "id": 140700000301060603,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301060701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301060702,
+    "value": "With More Remaining HP, Higher Weapon Power LV 7"
+  },
+  {
+    "id": 140700000301060703,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301060801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301060802,
+    "value": "With More Remaining HP, Higher Weapon Power LV 8"
+  },
+  {
+    "id": 140700000301060803,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301060901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301060902,
+    "value": "With More Remaining HP, Higher Weapon Power LV 9"
+  },
+  {
+    "id": 140700000301060903,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301070101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301070102,
+    "value": "Increased Close Range Damage LV 1"
+  },
+  {
+    "id": 140700000301070103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301070201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301070202,
+    "value": "Increased Close Range Damage LV 2"
+  },
+  {
+    "id": 140700000301070203,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301070301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301070302,
+    "value": "Increased Close Range Damage LV 3"
+  },
+  {
+    "id": 140700000301070303,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301070401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301070402,
+    "value": "Increased Close Range Damage LV 4"
+  },
+  {
+    "id": 140700000301070403,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301070501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301070502,
+    "value": "Increased Close Range Damage LV 5"
+  },
+  {
+    "id": 140700000301070503,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301070601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301070602,
+    "value": "Increased Close Range Damage LV 6"
+  },
+  {
+    "id": 140700000301070603,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301070701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301070702,
+    "value": "Increased Close Range Damage LV 7"
+  },
+  {
+    "id": 140700000301070703,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301070801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301070802,
+    "value": "Increased Close Range Damage LV 8"
+  },
+  {
+    "id": 140700000301070803,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301070901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301070902,
+    "value": "Increased Close Range Damage LV 9"
+  },
+  {
+    "id": 140700000301070903,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301080101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301080102,
+    "value": "Decreased DEF (1 turn(s)) LV 1"
+  },
+  {
+    "id": 140700000301080103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301080201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301080202,
+    "value": "Decreased DEF (1 turn(s)) LV 2"
+  },
+  {
+    "id": 140700000301080203,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301080301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301080302,
+    "value": "Decreased DEF (1 turn(s)) LV 3"
+  },
+  {
+    "id": 140700000301080303,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301080401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301080402,
+    "value": "Decreased DEF (1 turn(s)) LV 4"
+  },
+  {
+    "id": 140700000301080403,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301080501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301080502,
+    "value": "Decreased DEF (1 turn(s)) LV 5"
+  },
+  {
+    "id": 140700000301080503,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301080601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301080602,
+    "value": "Decreased DEF (1 turn(s)) LV 6"
+  },
+  {
+    "id": 140700000301080603,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301080701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301080702,
+    "value": "Decreased DEF (1 turn(s)) LV 7"
+  },
+  {
+    "id": 140700000301080703,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301080801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301080802,
+    "value": "Decreased DEF (1 turn(s)) LV 8"
+  },
+  {
+    "id": 140700000301080803,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301080901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301080902,
+    "value": "Decreased DEF (1 turn(s)) LV 9"
+  },
+  {
+    "id": 140700000301080903,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301090101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301090102,
+    "value": "Increased Long Range Weapon Power LV 1"
+  },
+  {
+    "id": 140700000301090103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301090201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301090202,
+    "value": "Increased Long Range Weapon Power LV 2"
+  },
+  {
+    "id": 140700000301090203,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301090301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301090302,
+    "value": "Increased Long Range Weapon Power LV 3"
+  },
+  {
+    "id": 140700000301090303,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301090401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301090402,
+    "value": "Increased Long Range Weapon Power LV 4"
+  },
+  {
+    "id": 140700000301090403,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301090501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301090502,
+    "value": "Increased Long Range Weapon Power LV 5"
+  },
+  {
+    "id": 140700000301090503,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301090601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301090602,
+    "value": "Increased Long Range Weapon Power LV 6"
+  },
+  {
+    "id": 140700000301090603,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301090701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301090702,
+    "value": "Increased Long Range Weapon Power LV 7"
+  },
+  {
+    "id": 140700000301090703,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301090801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301090802,
+    "value": "Increased Long Range Weapon Power LV 8"
+  },
+  {
+    "id": 140700000301090803,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301090901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301090902,
+    "value": "Increased Long Range Weapon Power LV 9"
+  },
+  {
+    "id": 140700000301090903,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301100101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301100102,
+    "value": "Increased Critical Damage LV 1"
+  },
+  {
+    "id": 140700000301100103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301100201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301100202,
+    "value": "Increased Critical Damage LV 2"
+  },
+  {
+    "id": 140700000301100203,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301100301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301100302,
+    "value": "Increased Critical Damage LV 3"
+  },
+  {
+    "id": 140700000301100303,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301100401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301100402,
+    "value": "Increased Critical Damage LV 4"
+  },
+  {
+    "id": 140700000301100403,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301100501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301100502,
+    "value": "Increased Critical Damage LV 5"
+  },
+  {
+    "id": 140700000301100503,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301100601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301100602,
+    "value": "Increased Critical Damage LV 6"
+  },
+  {
+    "id": 140700000301100603,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301100701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301100702,
+    "value": "Increased Critical Damage LV 7"
+  },
+  {
+    "id": 140700000301100703,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301100801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301100802,
+    "value": "Increased Critical Damage LV 8"
+  },
+  {
+    "id": 140700000301100803,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301100901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301100902,
+    "value": "Increased Critical Damage LV 9"
+  },
+  {
+    "id": 140700000301100903,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301110901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301110902,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301120101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301120102,
+    "value": "With Less Remaining HP, Higher Weapon Power LV 1"
+  },
+  {
+    "id": 140700000301120103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301120201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301120202,
+    "value": "With Less Remaining HP, Higher Weapon Power LV 2"
+  },
+  {
+    "id": 140700000301120203,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301120301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301120302,
+    "value": "With Less Remaining HP, Higher Weapon Power LV 3"
+  },
+  {
+    "id": 140700000301120303,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301120401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301120402,
+    "value": "With Less Remaining HP, Higher Weapon Power LV 4"
+  },
+  {
+    "id": 140700000301120403,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301120501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301120502,
+    "value": "With Less Remaining HP, Higher Weapon Power LV 5"
+  },
+  {
+    "id": 140700000301120503,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301120601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301120602,
+    "value": "With Less Remaining HP, Higher Weapon Power LV 6"
+  },
+  {
+    "id": 140700000301120603,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301120701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301120702,
+    "value": "With Less Remaining HP, Higher Weapon Power LV 7"
+  },
+  {
+    "id": 140700000301120703,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301120801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301120802,
+    "value": "With Less Remaining HP, Higher Weapon Power LV 8"
+  },
+  {
+    "id": 140700000301120803,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301120901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301120902,
+    "value": "With Less Remaining HP, Higher Weapon Power LV 9"
+  },
+  {
+    "id": 140700000301120903,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301130101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301130102,
+    "value": "Increased Beam Damage Taken  (1 turn(s)) LV 1"
+  },
+  {
+    "id": 140700000301130103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301130201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301130202,
+    "value": "Increased Beam Damage Taken (1 turn(s)) LV 2"
+  },
+  {
+    "id": 140700000301130203,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301130301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301130302,
+    "value": "Increased Beam Damage Taken (1 turn(s)) LV 3"
+  },
+  {
+    "id": 140700000301130303,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301130401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301130402,
+    "value": "Increased Beam Damage Taken (1 turn(s)) LV 4"
+  },
+  {
+    "id": 140700000301130403,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301130501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301130502,
+    "value": "Increased Beam Damage Taken (1 turn(s)) LV 5"
+  },
+  {
+    "id": 140700000301130503,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301130601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301130602,
+    "value": "Increased Beam Damage Taken (1 turn(s)) LV 6"
+  },
+  {
+    "id": 140700000301130603,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301130701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301130702,
+    "value": "Increased Beam Damage Taken (1 turn(s)) LV 7"
+  },
+  {
+    "id": 140700000301130703,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301130801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301130802,
+    "value": "Increased Beam Damage Taken (1 turn(s)) LV 8"
+  },
+  {
+    "id": 140700000301130803,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301130901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301130902,
+    "value": "Increased Beam Damage Taken (1 turn(s)) LV 9"
+  },
+  {
+    "id": 140700000301130903,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301140101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301140102,
+    "value": "Increased Physical Damage Taken LV 1"
+  },
+  {
+    "id": 140700000301140103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301140201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301140202,
+    "value": "Increased Physical Damage Taken LV 2"
+  },
+  {
+    "id": 140700000301140203,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301140301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301140302,
+    "value": "Increased Physical Damage Taken LV 3"
+  },
+  {
+    "id": 140700000301140303,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301140401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301140402,
+    "value": "Increased Physical Damage Taken LV 4"
+  },
+  {
+    "id": 140700000301140403,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301140501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301140502,
+    "value": "Increased Physical Damage Taken LV 5"
+  },
+  {
+    "id": 140700000301140503,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301140601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301140602,
+    "value": "Increased Physical Damage Taken LV 6"
+  },
+  {
+    "id": 140700000301140603,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301140701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301140702,
+    "value": "Increased Physical Damage Taken LV 7"
+  },
+  {
+    "id": 140700000301140703,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301140801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301140802,
+    "value": "Increased Physical Damage Taken LV 8"
+  },
+  {
+    "id": 140700000301140803,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301140901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301140902,
+    "value": "Increased Physical Damage Taken LV 9"
+  },
+  {
+    "id": 140700000301140903,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301150101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301150102,
+    "value": "Increased Special Damage Taken LV 1"
+  },
+  {
+    "id": 140700000301150103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301150201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301150202,
+    "value": "Increased Special Damage Taken LV 2"
+  },
+  {
+    "id": 140700000301150203,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301150301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301150302,
+    "value": "Increased Special Damage Taken LV 3"
+  },
+  {
+    "id": 140700000301150303,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301150401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301150402,
+    "value": "Increased Special Damage Taken LV 4"
+  },
+  {
+    "id": 140700000301150403,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301150501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301150502,
+    "value": "Increased Special Damage Taken LV 5"
+  },
+  {
+    "id": 140700000301150503,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301150601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301150602,
+    "value": "Increased Special Damage Taken LV 6"
+  },
+  {
+    "id": 140700000301150603,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301150701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301150702,
+    "value": "Increased Special Damage Taken LV 7"
+  },
+  {
+    "id": 140700000301150703,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301150801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301150802,
+    "value": "Increased Special Damage Taken LV 8"
+  },
+  {
+    "id": 140700000301150803,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301150901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301150902,
+    "value": "Increased Special Damage Taken LV 9"
+  },
+  {
+    "id": 140700000301150903,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301160101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301160102,
+    "value": "Decreased MOB (1 turn(s)) LV 1"
+  },
+  {
+    "id": 140700000301160103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301160201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301160202,
+    "value": "Decreased MOB (1 turn(s)) LV 2"
+  },
+  {
+    "id": 140700000301160203,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301160301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301160302,
+    "value": "Decreased MOB (1 turn(s)) LV 3"
+  },
+  {
+    "id": 140700000301160303,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301160401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301160402,
+    "value": "Decreased MOB (1 turn(s)) LV 4"
+  },
+  {
+    "id": 140700000301160403,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301160501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301160502,
+    "value": "Decreased MOB (1 turn(s)) LV 5"
+  },
+  {
+    "id": 140700000301160503,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301160601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301160602,
+    "value": "Decreased MOB (1 turn(s)) LV 6"
+  },
+  {
+    "id": 140700000301160603,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301160701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301160702,
+    "value": "Decreased MOB (1 turn(s)) LV 7"
+  },
+  {
+    "id": 140700000301160703,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301160801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301160802,
+    "value": "Decreased MOB (1 turn(s)) LV 8"
+  },
+  {
+    "id": 140700000301160803,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301160901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301160902,
+    "value": "Decreased MOB (1 turn(s)) LV 9"
+  },
+  {
+    "id": 140700000301160903,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301170101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301170102,
+    "value": "Decreased ACC (1 turn(s)) LV 1"
+  },
+  {
+    "id": 140700000301170103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301170201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301170202,
+    "value": "Decreased ACC (1 turn(s)) LV 2"
+  },
+  {
+    "id": 140700000301170203,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301170301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301170302,
+    "value": "Decreased ACC (1 turn(s)) LV 3"
+  },
+  {
+    "id": 140700000301170303,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301170401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301170402,
+    "value": "Decreased ACC (1 turn(s)) LV 4"
+  },
+  {
+    "id": 140700000301170403,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301170501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301170502,
+    "value": "Decreased ACC (1 turn(s)) LV 5"
+  },
+  {
+    "id": 140700000301170503,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301170601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301170602,
+    "value": "Decreased ACC (1 turn(s)) LV 6"
+  },
+  {
+    "id": 140700000301170603,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301170701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301170702,
+    "value": "Decreased ACC (1 turn(s)) LV 7"
+  },
+  {
+    "id": 140700000301170703,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301170801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301170802,
+    "value": "Decreased ACC (1 turn(s)) LV 8"
+  },
+  {
+    "id": 140700000301170803,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301170901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301170902,
+    "value": "Decreased ACC (1 turn(s)) LV 9"
+  },
+  {
+    "id": 140700000301170903,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301180101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301180102,
+    "value": "Physical Weapon Power Down (1 turn(s)) LV 1"
+  },
+  {
+    "id": 140700000301180103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301180201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301180202,
+    "value": "Physical Weapon Power Down (1 turn(s)) LV 2"
+  },
+  {
+    "id": 140700000301180203,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301180301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301180302,
+    "value": "Physical Weapon Power Down (1 turn(s)) LV 3"
+  },
+  {
+    "id": 140700000301180303,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301180401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301180402,
+    "value": "Physical Weapon Power Down (1 turn(s)) LV 4"
+  },
+  {
+    "id": 140700000301180403,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301180501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301180502,
+    "value": "Physical Weapon Power Down (1 turn(s)) LV 5"
+  },
+  {
+    "id": 140700000301180503,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301180601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301180602,
+    "value": "Physical Weapon Power Down (1 turn(s)) LV 6"
+  },
+  {
+    "id": 140700000301180603,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301180701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301180702,
+    "value": "Physical Weapon Power Down (1 turn(s)) LV 7"
+  },
+  {
+    "id": 140700000301180703,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301180801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301180802,
+    "value": "Physical Weapon Power Down (1 turn(s)) LV 8"
+  },
+  {
+    "id": 140700000301180803,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301180901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301180902,
+    "value": "Physical Weapon Power Down (1 turn(s)) LV 9"
+  },
+  {
+    "id": 140700000301180903,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301190101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301190102,
+    "value": "Beam Weapon Power Down (1 turn(s)) LV 1"
+  },
+  {
+    "id": 140700000301190103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301190201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301190202,
+    "value": "Beam Weapon Power Down (1 turn(s)) LV 2"
+  },
+  {
+    "id": 140700000301190203,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301190301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301190302,
+    "value": "Beam Weapon Power Down (1 turn(s)) LV 3"
+  },
+  {
+    "id": 140700000301190303,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301190401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301190402,
+    "value": "Beam Weapon Power Down (1 turn(s)) LV 4"
+  },
+  {
+    "id": 140700000301190403,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301190501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301190502,
+    "value": "Beam Weapon Power Down (1 turn(s)) LV 5"
+  },
+  {
+    "id": 140700000301190503,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301190601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301190602,
+    "value": "Beam Weapon Power Down (1 turn(s)) LV 6"
+  },
+  {
+    "id": 140700000301190603,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301190701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301190702,
+    "value": "Beam Weapon Power Down (1 turn(s)) LV 7"
+  },
+  {
+    "id": 140700000301190703,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301190801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301190802,
+    "value": "Beam Weapon Power Down (1 turn(s)) LV 8"
+  },
+  {
+    "id": 140700000301190803,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301190901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301190902,
+    "value": "Beam Weapon Power Down (1 turn(s)) LV 9"
+  },
+  {
+    "id": 140700000301190903,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301200101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301200102,
+    "value": "Special Weapon Power Down (1 turn(s)) LV 1"
+  },
+  {
+    "id": 140700000301200103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301200201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301200202,
+    "value": "Special Weapon Power Down (1 turn(s)) LV 2"
+  },
+  {
+    "id": 140700000301200203,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301200301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301200302,
+    "value": "Special Weapon Power Down (1 turn(s)) LV 3"
+  },
+  {
+    "id": 140700000301200303,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301200401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301200402,
+    "value": "Special Weapon Power Down (1 turn(s)) LV 4"
+  },
+  {
+    "id": 140700000301200403,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301200501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301200502,
+    "value": "Special Weapon Power Down (1 turn(s)) LV 5"
+  },
+  {
+    "id": 140700000301200503,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301200601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301200602,
+    "value": "Special Weapon Power Down (1 turn(s)) LV 6"
+  },
+  {
+    "id": 140700000301200603,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301200701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301200702,
+    "value": "Special Weapon Power Down (1 turn(s)) LV 7"
+  },
+  {
+    "id": 140700000301200703,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301200801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301200802,
+    "value": "Special Weapon Power Down (1 turn(s)) LV 8"
+  },
+  {
+    "id": 140700000301200803,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301200901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301200902,
+    "value": "Special Weapon Power Down (1 turn(s)) LV 9"
+  },
+  {
+    "id": 140700000301200903,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301210101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301210102,
+    "value": "The higher own MP is, the greater Weapon Power increases (up to 5% increase) at the start of combat."
+  },
+  {
+    "id": 140700000301210103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301210201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301210202,
+    "value": "The higher own MP is, the greater Weapon Power increases (up to 7% increase) at the start of combat."
+  },
+  {
+    "id": 140700000301210203,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301210301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301210302,
+    "value": "The higher own MP is, the greater Weapon Power increases (up to 10% increase) at the start of combat."
+  },
+  {
+    "id": 140700000301210303,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301210401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301210402,
+    "value": "The higher own MP is, the greater Weapon Power increases (up to 12% increase) at the start of combat."
+  },
+  {
+    "id": 140700000301210403,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301210501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301210502,
+    "value": "The higher own MP is, the greater Weapon Power increases (up to 15% increase) at the start of combat."
+  },
+  {
+    "id": 140700000301210503,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301210601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301210602,
+    "value": "The higher own MP is, the greater Weapon Power increases (up to 17% increase) at the start of combat."
+  },
+  {
+    "id": 140700000301210603,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301210701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301210702,
+    "value": "The higher own MP is, the greater Weapon Power increases (up to 20% increase) at the start of combat."
+  },
+  {
+    "id": 140700000301210703,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301210801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301210802,
+    "value": "The higher own MP is, the greater Weapon Power increases (up to 22% increase) at the start of combat."
+  },
+  {
+    "id": 140700000301210803,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301210901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301210902,
+    "value": "The higher own MP is, the greater Weapon Power increases (up to 25% increase) at the start of combat."
+  },
+  {
+    "id": 140700000301210903,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301220101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301220102,
+    "value": "Immobilized"
+  },
+  {
+    "id": 140700000301220103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301230101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301230102,
+    "value": "MOV Down LV 1"
+  },
+  {
+    "id": 140700000301230103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301230201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301230202,
+    "value": "MOV Down LV 2"
+  },
+  {
+    "id": 140700000301230203,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301230301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301230302,
+    "value": "MOV Down LV 3"
+  },
+  {
+    "id": 140700000301230303,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301230401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301230402,
+    "value": "MOV Down LV 4"
+  },
+  {
+    "id": 140700000301230403,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301230501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301230502,
+    "value": "MOV Down LV 5"
+  },
+  {
+    "id": 140700000301230503,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301240101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301240102,
+    "value": "Decreased DEF (1 turn(s)) LV 1"
+  },
+  {
+    "id": 140700000301240103,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140700000301240104,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301240201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301240202,
+    "value": "Decreased DEF (1 turn(s)) LV 2"
+  },
+  {
+    "id": 140700000301240203,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140700000301240204,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301240301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301240302,
+    "value": "Decreased DEF (1 turn(s)) LV 3"
+  },
+  {
+    "id": 140700000301240303,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140700000301240304,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301240401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301240402,
+    "value": "Decreased DEF (1 turn(s)) LV 4"
+  },
+  {
+    "id": 140700000301240403,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140700000301240404,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301240501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301240502,
+    "value": "Decreased DEF (1 turn(s)) LV 5"
+  },
+  {
+    "id": 140700000301240503,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140700000301240504,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301240601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301240602,
+    "value": "Decreased DEF (1 turn(s)) LV 6"
+  },
+  {
+    "id": 140700000301240603,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140700000301240604,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301240701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301240702,
+    "value": "Decreased DEF (1 turn(s)) LV 7"
+  },
+  {
+    "id": 140700000301240703,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140700000301240704,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301240801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301240802,
+    "value": "Decreased DEF (1 turn(s)) LV 8"
+  },
+  {
+    "id": 140700000301240803,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140700000301240804,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301240901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301240902,
+    "value": "Decreased DEF (1 turn(s)) LV 9"
+  },
+  {
+    "id": 140700000301240903,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140700000301240904,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301250101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301250102,
+    "value": "HP Absorption LV 1"
+  },
+  {
+    "id": 140700000301250103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301250201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301250202,
+    "value": "HP Absorption LV 2"
+  },
+  {
+    "id": 140700000301250203,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301250301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301250302,
+    "value": "HP Absorption LV 3"
+  },
+  {
+    "id": 140700000301250303,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301250401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301250402,
+    "value": "HP Absorption LV 4"
+  },
+  {
+    "id": 140700000301250403,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301250501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301250502,
+    "value": "HP Absorption LV 5"
+  },
+  {
+    "id": 140700000301250503,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301250601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301250602,
+    "value": "HP Absorption LV 6"
+  },
+  {
+    "id": 140700000301250603,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301250701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301250702,
+    "value": "HP Absorption LV 7"
+  },
+  {
+    "id": 140700000301250703,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301250801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301250802,
+    "value": "HP Absorption LV 8"
+  },
+  {
+    "id": 140700000301250803,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301250901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301250902,
+    "value": "HP Absorption LV 9"
+  },
+  {
+    "id": 140700000301250903,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301260101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301260102,
+    "value": "Decreased MP LV 1"
+  },
+  {
+    "id": 140700000301260103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301260201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301260202,
+    "value": "Decreased MP LV 2"
+  },
+  {
+    "id": 140700000301260203,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301260301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301260302,
+    "value": "Decreased MP LV 3"
+  },
+  {
+    "id": 140700000301260303,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301260401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301260402,
+    "value": "Decreased MP LV 4"
+  },
+  {
+    "id": 140700000301260403,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301260501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301260502,
+    "value": "Decreased MP LV 5"
+  },
+  {
+    "id": 140700000301260503,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301260601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301260602,
+    "value": "Decreased MP LV 6"
+  },
+  {
+    "id": 140700000301260603,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301260701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301260702,
+    "value": "Decreased MP LV 7"
+  },
+  {
+    "id": 140700000301260703,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301260801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301260802,
+    "value": "Decreased MP LV 8"
+  },
+  {
+    "id": 140700000301260803,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140700000301260901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301260902,
+    "value": "Decreased MP LV 9"
+  },
+  {
+    "id": 140700000301260903,
+    "value": "Able to move after use"
+  },
+  {
     "id": 140700000310010101,
     "value": "Decreased ATK (1 turn(s)) LV 1"
   },
@@ -6714,6 +8950,14 @@
   {
     "id": 140700000310510902,
     "value": "Increased Physical Damage Effect Value Boost"
+  },
+  {
+    "id": 140700000310520901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000310520902,
+    "value": "Able to move after use"
   },
   {
     "id": 140700000320030101,
@@ -14412,6 +16656,2242 @@
     "value": "When this unit attacks enemies with the Gundam tag,\nreduce enemy's DEF by an additional 15% for this attack."
   },
   {
+    "id": 140800000301020301,
+    "value": "Preemptive Strike"
+  },
+  {
+    "id": 140800000301020302,
+    "value": "Inflict \"Decrease special weapon Power by 20%\" on enemies (1 turn(s))."
+  },
+  {
+    "id": 140800000301020401,
+    "value": "Preemptive Strike"
+  },
+  {
+    "id": 140800000301020402,
+    "value": "Inflict \"Decrease special weapon Power by 25%\" on enemies (1 turn(s))."
+  },
+  {
+    "id": 140800000301020501,
+    "value": "Preemptive Strike"
+  },
+  {
+    "id": 140800000301020502,
+    "value": "Inflict \"Decrease special weapon Power by 30%\" on enemies (1 turn(s))."
+  },
+  {
+    "id": 140800000301030101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301030102,
+    "value": "Decrease enemy MP by 1 on hit."
+  },
+  {
+    "id": 140800000301040201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301040202,
+    "value": "Inflict \"DEF Down 15%\" on enemies(1 turn(s))."
+  },
+  {
+    "id": 140800000301040203,
+    "value": "Activate by acquiring a Chance Step when an attack hits."
+  },
+  {
+    "id": 140800000301040301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301040302,
+    "value": "Inflict \"DEF Down 20%\" on enemies(1 turn(s))."
+  },
+  {
+    "id": 140800000301040303,
+    "value": "Activate by acquiring a Chance Step when an attack hits."
+  },
+  {
+    "id": 140800000301040401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301040402,
+    "value": "Inflict \"DEF Down 25%\" on enemies(1 turn(s))."
+  },
+  {
+    "id": 140800000301040403,
+    "value": "Activate by acquiring a Chance Step when an attack hits."
+  },
+  {
+    "id": 140800000301050101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301050102,
+    "value": "Inflict \"ATK Down 10%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301050103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301050201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301050202,
+    "value": "Inflict \"ATK Down 15%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301050203,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301050301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301050302,
+    "value": "Inflict \"ATK Down 20%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301050303,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301050401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301050402,
+    "value": "Inflict \"ATK Down 25%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301050403,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301050501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301050502,
+    "value": "Inflict \"ATK Down 30%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301050503,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301050601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301050602,
+    "value": "Inflict \"ATK Down 35%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301050603,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301050701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301050702,
+    "value": "Inflict \"ATK Down 40%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301050703,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301050801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301050802,
+    "value": "Inflict \"ATK Down 45%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301050803,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301050901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301050902,
+    "value": "Inflict \"ATK Down 50%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301050903,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301060101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301060102,
+    "value": "The higher your remaining HP is, the greater Weapon Power increases (up to 5%)."
+  },
+  {
+    "id": 140800000301060103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301060201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301060202,
+    "value": "The higher your remaining HP is, the greater Weapon Power increases (up to 7%)."
+  },
+  {
+    "id": 140800000301060203,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301060301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301060302,
+    "value": "The higher your remaining HP is, the greater Weapon Power increases (up to 10%)."
+  },
+  {
+    "id": 140800000301060303,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301060401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301060402,
+    "value": "The higher your remaining HP is, the greater Weapon Power increases (up to 12%)."
+  },
+  {
+    "id": 140800000301060403,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301060501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301060502,
+    "value": "The higher your remaining HP is, the greater Weapon Power increases (up to 15%)."
+  },
+  {
+    "id": 140800000301060503,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301060601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301060602,
+    "value": "The higher your remaining HP is, the greater Weapon Power increases (up to 17%)."
+  },
+  {
+    "id": 140800000301060603,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301060701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301060702,
+    "value": "The higher your remaining HP is, the greater Weapon Power increases (up to 20%)."
+  },
+  {
+    "id": 140800000301060703,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301060801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301060802,
+    "value": "The higher your remaining HP is, the greater Weapon Power increases (up to 22%)."
+  },
+  {
+    "id": 140800000301060803,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301060901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301060902,
+    "value": "The higher your remaining HP is, the greater Weapon Power increases (up to 25%)."
+  },
+  {
+    "id": 140800000301060903,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301070101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301070102,
+    "value": "The closer you are to the enemy, the greater Weapon Power increases (up to 5%)."
+  },
+  {
+    "id": 140800000301070103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301070201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301070202,
+    "value": "The closer you are to the enemy, the greater Weapon Power increases (up to 7%)."
+  },
+  {
+    "id": 140800000301070203,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301070301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301070302,
+    "value": "The closer you are to the enemy, the greater Weapon Power increases (up to 10%)."
+  },
+  {
+    "id": 140800000301070303,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301070401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301070402,
+    "value": "The closer you are to the enemy, the greater Weapon Power increases (up to 12%)."
+  },
+  {
+    "id": 140800000301070403,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301070501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301070502,
+    "value": "The closer you are to the enemy, the greater Weapon Power increases (up to 15%)."
+  },
+  {
+    "id": 140800000301070503,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301070601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301070602,
+    "value": "The closer you are to the enemy, the greater Weapon Power increases (up to 17%)."
+  },
+  {
+    "id": 140800000301070603,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301070701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301070702,
+    "value": "The closer you are to the enemy, the greater Weapon Power increases (up to 20%)."
+  },
+  {
+    "id": 140800000301070703,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301070801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301070802,
+    "value": "The closer you are to the enemy, the greater Weapon Power increases (up to 22%)."
+  },
+  {
+    "id": 140800000301070803,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301070901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301070902,
+    "value": "The closer you are to the enemy, the greater Weapon Power increases (up to 25%)."
+  },
+  {
+    "id": 140800000301070903,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301080101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301080102,
+    "value": "Inflict \"DEF Down 10%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301080103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301080201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301080202,
+    "value": "Inflict \"DEF Down 15%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301080203,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301080301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301080302,
+    "value": "Inflict \"DEF Down 20%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301080303,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301080401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301080402,
+    "value": "Inflict \"DEF Down 25%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301080403,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301080501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301080502,
+    "value": "Inflict \"DEF Down 30%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301080503,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301080601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301080602,
+    "value": "Inflict \"DEF Down 35%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301080603,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301080701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301080702,
+    "value": "Inflict \"DEF Down 40%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301080703,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301080801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301080802,
+    "value": "Inflict \"DEF Down 45%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301080803,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301080901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301080902,
+    "value": "Inflict \"DEF Down 50%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301080903,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301090101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301090102,
+    "value": "The farther you are from the enemy, the greater Weapon Power increases (up to 5%)."
+  },
+  {
+    "id": 140800000301090103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301090201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301090202,
+    "value": "The farther you are from the enemy, the greater Weapon Power increases (up to 7%)."
+  },
+  {
+    "id": 140800000301090203,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301090301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301090302,
+    "value": "The farther you are from the enemy, the greater Weapon Power increases (up to 10%)."
+  },
+  {
+    "id": 140800000301090303,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301090401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301090402,
+    "value": "The farther you are from the enemy, the greater Weapon Power increases (up to 12%)."
+  },
+  {
+    "id": 140800000301090403,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301090501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301090502,
+    "value": "The farther you are from the enemy, the greater Weapon Power increases (up to 15%)."
+  },
+  {
+    "id": 140800000301090503,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301090601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301090602,
+    "value": "The farther you are from the enemy, the greater Weapon Power increases (up to 17%)."
+  },
+  {
+    "id": 140800000301090603,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301090701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301090702,
+    "value": "The farther you are from the enemy, the greater Weapon Power increases (up to 20%)."
+  },
+  {
+    "id": 140800000301090703,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301090801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301090802,
+    "value": "The farther you are from the enemy, the greater Weapon Power increases (up to 22%)."
+  },
+  {
+    "id": 140800000301090803,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301090901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301090902,
+    "value": "The farther you are from the enemy, the greater Weapon Power increases (up to 25%)."
+  },
+  {
+    "id": 140800000301090903,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301100101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301100102,
+    "value": "Increase Critical Damage by 10%."
+  },
+  {
+    "id": 140800000301100103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301100201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301100202,
+    "value": "Increase Critical Damage by 15%."
+  },
+  {
+    "id": 140800000301100203,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301100301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301100302,
+    "value": "Increase Critical Damage by 20%."
+  },
+  {
+    "id": 140800000301100303,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301100401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301100402,
+    "value": "Increase Critical Damage by 25%."
+  },
+  {
+    "id": 140800000301100403,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301100501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301100502,
+    "value": "Increase Critical Damage by 30%."
+  },
+  {
+    "id": 140800000301100503,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301100601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301100602,
+    "value": "Increase Critical Damage by 35%."
+  },
+  {
+    "id": 140800000301100603,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301100701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301100702,
+    "value": "Increase Critical Damage by 40%."
+  },
+  {
+    "id": 140800000301100703,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301100801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301100802,
+    "value": "Increase Critical Damage by 45%."
+  },
+  {
+    "id": 140800000301100803,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301100901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301100902,
+    "value": "Increase Critical Damage by 50%."
+  },
+  {
+    "id": 140800000301100903,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301110901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301110902,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301120101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301120102,
+    "value": "The lower your remaining HP is, the greater Weapon Power increases (up to 5%)."
+  },
+  {
+    "id": 140800000301120103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301120201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301120202,
+    "value": "The lower your remaining HP is, the greater Weapon Power increases (up to 7%)."
+  },
+  {
+    "id": 140800000301120203,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301120301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301120302,
+    "value": "The lower your remaining HP is, the greater Weapon Power increases (up to 10%)."
+  },
+  {
+    "id": 140800000301120303,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301120401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301120402,
+    "value": "The lower your remaining HP is, the greater Weapon Power increases (up to 12%)."
+  },
+  {
+    "id": 140800000301120403,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301120501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301120502,
+    "value": "The lower your remaining HP is, the greater Weapon Power increases (up to 15%)."
+  },
+  {
+    "id": 140800000301120503,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301120601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301120602,
+    "value": "The lower your remaining HP is, the greater Weapon Power increases (up to 17%)."
+  },
+  {
+    "id": 140800000301120603,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301120701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301120702,
+    "value": "The lower your remaining HP is, the greater Weapon Power increases (up to 20%)."
+  },
+  {
+    "id": 140800000301120703,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301120801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301120802,
+    "value": "The lower your remaining HP is, the greater Weapon Power increases (up to 22%)."
+  },
+  {
+    "id": 140800000301120803,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301120901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301120902,
+    "value": "The lower your remaining HP is, the greater Weapon Power increases (up to 25%)."
+  },
+  {
+    "id": 140800000301120903,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301130101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301130102,
+    "value": "Inflict \"Damage Taken from Beam Weapons Up 10%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301130103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301130201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301130202,
+    "value": "Inflict \"Damage Taken from Beam Weapons Up 15%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301130203,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301130301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301130302,
+    "value": "Inflict \"Damage Taken from Beam Weapons Up 20%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301130303,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301130401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301130402,
+    "value": "Inflict \"Damage Taken from Beam Weapons Up 25%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301130403,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301130501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301130502,
+    "value": "Inflict \"Damage Taken from Beam Weapons Up 30%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301130503,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301130601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301130602,
+    "value": "Inflict \"Damage Taken from Beam Weapons Up 35%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301130603,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301130701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301130702,
+    "value": "Inflict \"Damage Taken from Beam Weapons Up 40%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301130703,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301130801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301130802,
+    "value": "Inflict \"Damage Taken from Beam Weapons Up 45%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301130803,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301130901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301130902,
+    "value": "Inflict \"Damage Taken from Beam Weapons Up 50%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301130903,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301140101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301140102,
+    "value": "Inflict \"Damage Taken from Physical Weapons Up 10%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301140103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301140201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301140202,
+    "value": "Inflict \"Damage Taken from Physical Weapons Up 15%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301140203,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301140301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301140302,
+    "value": "Inflict \"Damage Taken from Physical Weapons Up 20%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301140303,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301140401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301140402,
+    "value": "Inflict \"Damage Taken from Physical Weapons Up 25%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301140403,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301140501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301140502,
+    "value": "Inflict \"Damage Taken from Physical Weapons Up 30%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301140503,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301140601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301140602,
+    "value": "Inflict \"Damage Taken from Physical Weapons Up 35%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301140603,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301140701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301140702,
+    "value": "Inflict \"Damage Taken from Physical Weapons Up 40%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301140703,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301140801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301140802,
+    "value": "Inflict \"Damage Taken from Physical Weapons Up 45%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301140803,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301140901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301140902,
+    "value": "Inflict \"Damage Taken from Physical Weapons Up 50%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301140903,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301150101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301150102,
+    "value": "Inflict \"Damage Taken from Special Weapons Up 10%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301150103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301150201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301150202,
+    "value": "Inflict \"Damage Taken from Special Weapons Up 15%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301150203,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301150301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301150302,
+    "value": "Inflict \"Damage Taken from Special Weapons Up 20%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301150303,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301150401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301150402,
+    "value": "Inflict \"Damage Taken from Special Weapons Up 25%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301150403,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301150501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301150502,
+    "value": "Inflict \"Damage Taken from Special Weapons Up 30%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301150503,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301150601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301150602,
+    "value": "Inflict \"Damage Taken from Special Weapons Up 35%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301150603,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301150701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301150702,
+    "value": "Inflict \"Damage Taken from Special Weapons Up 40%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301150703,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301150801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301150802,
+    "value": "Inflict \"Damage Taken from Special Weapons Up 45%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301150803,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301150901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301150902,
+    "value": "Inflict \"Damage Taken from Special Weapons Up 50%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301150903,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301160101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301160102,
+    "value": "Inflict \"MOB Down 10%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301160103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301160201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301160202,
+    "value": "Inflict \"MOB Down 15%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301160203,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301160301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301160302,
+    "value": "Inflict \"MOB Down 20%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301160303,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301160401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301160402,
+    "value": "Inflict \"MOB Down 25%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301160403,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301160501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301160502,
+    "value": "Inflict \"MOB Down 30%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301160503,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301160601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301160602,
+    "value": "Inflict \"MOB Down 35%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301160603,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301160701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301160702,
+    "value": "Inflict \"MOB Down 40%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301160703,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301160801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301160802,
+    "value": "Inflict \"MOB Down 45%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301160803,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301160901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301160902,
+    "value": "Inflict \"MOB Down 50%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301160903,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301170101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301170102,
+    "value": "Inflict \"ACC Down 5%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301170103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301170201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301170202,
+    "value": "Inflict \"ACC Down 7%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301170203,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301170301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301170302,
+    "value": "Inflict \"ACC Down 10%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301170303,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301170401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301170402,
+    "value": "Inflict \"ACC Down 12%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301170403,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301170501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301170502,
+    "value": "Inflict \"ACC Down 15%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301170503,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301170601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301170602,
+    "value": "Inflict \"ACC Down 17%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301170603,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301170701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301170702,
+    "value": "Inflict \"ACC Down 20%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301170703,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301170801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301170802,
+    "value": "Inflict \"ACC Down 22%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301170803,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301170901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301170902,
+    "value": "Inflict \"ACC Down 25%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301170903,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301180101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301180102,
+    "value": "Inflict \"Decrease physical weapon Power by 10%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301180103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301180201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301180202,
+    "value": "Inflict \"Decrease physical weapon Power by 15%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301180203,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301180301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301180302,
+    "value": "Inflict \"Decrease physical weapon Power by 20%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301180303,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301180401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301180402,
+    "value": "Inflict \"Decrease physical weapon Power by 25%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301180403,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301180501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301180502,
+    "value": "Inflict \"Decrease physical weapon Power by 30%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301180503,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301180601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301180602,
+    "value": "Inflict \"Decrease physical weapon Power by 35%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301180603,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301180701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301180702,
+    "value": "Inflict \"Decrease physical weapon Power by 40%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301180703,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301180801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301180802,
+    "value": "Inflict \"Decrease physical weapon Power by 45%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301180803,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301180901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301180902,
+    "value": "Inflict \"Decrease physical weapon Power by 50%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301180903,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301190101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301190102,
+    "value": "Inflict \"Decrease beam weapon Power by 10%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301190103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301190201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301190202,
+    "value": "Inflict \"Decrease beam weapon Power by 15%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301190203,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301190301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301190302,
+    "value": "Inflict \"Decrease beam weapon Power by 20%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301190303,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301190401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301190402,
+    "value": "Inflict \"Decrease beam weapon Power by 25%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301190403,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301190501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301190502,
+    "value": "Inflict \"Decrease beam weapon Power by 30%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301190503,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301190601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301190602,
+    "value": "Inflict \"Decrease beam weapon Power by 35%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301190603,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301190701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301190702,
+    "value": "Inflict \"Decrease beam weapon Power by 40%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301190703,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301190801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301190802,
+    "value": "Inflict \"Decrease beam weapon Power by 45%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301190803,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301190901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301190902,
+    "value": "Inflict \"Decrease beam weapon Power by 50%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301190903,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301200101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301200102,
+    "value": "Inflict \"Decrease special weapon Power by 10%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301200103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301200201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301200202,
+    "value": "Inflict \"Decrease special weapon Power by 15%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301200203,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301200301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301200302,
+    "value": "Inflict \"Decrease special weapon Power by 20%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301200303,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301200401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301200402,
+    "value": "Inflict \"Decrease special weapon Power by 25%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301200403,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301200501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301200502,
+    "value": "Inflict \"Decrease special weapon Power by 30%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301200503,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301200601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301200602,
+    "value": "Inflict \"Decrease special weapon Power by 35%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301200603,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301200701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301200702,
+    "value": "Inflict \"Decrease special weapon Power by 40%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301200703,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301200801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301200802,
+    "value": "Inflict \"Decrease special weapon Power by 45%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301200803,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301200901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301200902,
+    "value": "Inflict \"Decrease special weapon Power by 50%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301200903,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301210101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301210102,
+    "value": "The higher own MP is, the greater Weapon Power increases (up to 5% increase) at the start of combat."
+  },
+  {
+    "id": 140800000301210103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301210201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301210202,
+    "value": "The higher own MP is, the greater Weapon Power increases (up to 7% increase) at the start of combat."
+  },
+  {
+    "id": 140800000301210203,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301210301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301210302,
+    "value": "The higher own MP is, the greater Weapon Power increases (up to 10% increase) at the start of combat."
+  },
+  {
+    "id": 140800000301210303,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301210401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301210402,
+    "value": "The higher own MP is, the greater Weapon Power increases (up to 12% increase) at the start of combat."
+  },
+  {
+    "id": 140800000301210403,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301210501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301210502,
+    "value": "The higher own MP is, the greater Weapon Power increases (up to 15% increase) at the start of combat."
+  },
+  {
+    "id": 140800000301210503,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301210601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301210602,
+    "value": "The higher own MP is, the greater Weapon Power increases (up to 17% increase) at the start of combat."
+  },
+  {
+    "id": 140800000301210603,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301210701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301210702,
+    "value": "The higher own MP is, the greater Weapon Power increases (up to 20% increase) at the start of combat."
+  },
+  {
+    "id": 140800000301210703,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301210801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301210802,
+    "value": "The higher own MP is, the greater Weapon Power increases (up to 22% increase) at the start of combat."
+  },
+  {
+    "id": 140800000301210803,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301210901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301210902,
+    "value": "The higher own MP is, the greater Weapon Power increases (up to 25% increase) at the start of combat."
+  },
+  {
+    "id": 140800000301210903,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301220101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301220102,
+    "value": "Inflicts Immobilized on the enemy (1 turn)"
+  },
+  {
+    "id": 140800000301220103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301230101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301230102,
+    "value": "Inflict \"MOV Down by 1\" on the enemy (1 turn)."
+  },
+  {
+    "id": 140800000301230103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301230201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301230202,
+    "value": "Inflict \"MOV Down by 2\" on the enemy (1 turn)."
+  },
+  {
+    "id": 140800000301230203,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301230301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301230302,
+    "value": "Inflict \"MOV Down by 3\" on the enemy (1 turn)."
+  },
+  {
+    "id": 140800000301230303,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301230401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301230402,
+    "value": "Inflict \"MOV Down by 4\" on the enemy (1 turn)."
+  },
+  {
+    "id": 140800000301230403,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301230501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301230502,
+    "value": "Inflict \"MOV Down by 5\" on the enemy (1 turn)."
+  },
+  {
+    "id": 140800000301230503,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301240101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301240102,
+    "value": "Inflict \"DEF Down 10%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301240103,
+    "value": "When engaging enemies that include Large Machine tag,\nadds 3% to the weapon effect value for Decreased DEF."
+  },
+  {
+    "id": 140800000301240104,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301240201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301240202,
+    "value": "Inflict \"DEF Down 15%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301240203,
+    "value": "When engaging enemies that include Large Machine tag,\nadds 3% to the weapon effect value for Decreased DEF."
+  },
+  {
+    "id": 140800000301240204,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301240301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301240302,
+    "value": "Inflict \"DEF Down 20%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301240303,
+    "value": "When engaging enemies that include Large Machine tag,\nadds 3% to the weapon effect value for Decreased DEF."
+  },
+  {
+    "id": 140800000301240304,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301240401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301240402,
+    "value": "Inflict \"DEF Down 25%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301240403,
+    "value": "When engaging enemies that include Large Machine tag,\nadds 3% to the weapon effect value for Decreased DEF."
+  },
+  {
+    "id": 140800000301240404,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301240501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301240502,
+    "value": "Inflict \"DEF Down 30%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301240503,
+    "value": "When engaging enemies that include Large Machine tag,\nadds 3% to the weapon effect value for Decreased DEF."
+  },
+  {
+    "id": 140800000301240504,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301240601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301240602,
+    "value": "Inflict \"DEF Down 35%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301240603,
+    "value": "When engaging enemies that include Large Machine tag,\nadds 3% to the weapon effect value for Decreased DEF."
+  },
+  {
+    "id": 140800000301240604,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301240701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301240702,
+    "value": "Inflict \"DEF Down 40%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301240703,
+    "value": "When engaging enemies that include Large Machine tag,\nadds 3% to the weapon effect value for Decreased DEF."
+  },
+  {
+    "id": 140800000301240704,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301240801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301240802,
+    "value": "Inflict \"DEF Down 45%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301240803,
+    "value": "When engaging enemies that include Large Machine tag,\nadds 3% to the weapon effect value for Decreased DEF."
+  },
+  {
+    "id": 140800000301240804,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301240901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301240902,
+    "value": "Inflict \"DEF Down 50%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000301240903,
+    "value": "When engaging enemies that include Large Machine tag,\nadds 3% to the weapon effect value for Decreased DEF."
+  },
+  {
+    "id": 140800000301240904,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301250101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301250102,
+    "value": "Restores own HP equal to 10% of damage dealt\n (Restoration is capped at 5% of own Max HP)"
+  },
+  {
+    "id": 140800000301250103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301250201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301250202,
+    "value": "Restores own HP equal to 20% of damage dealt\n (Restoration is capped at 10% of own Max HP)"
+  },
+  {
+    "id": 140800000301250203,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301250301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301250302,
+    "value": "Restores own HP equal to 30% of damage dealt\n (Restoration is capped at 15% of own Max HP)"
+  },
+  {
+    "id": 140800000301250303,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301250401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301250402,
+    "value": "Restores own HP equal to 40% of damage dealt\n (Restoration is capped at 20% of own Max HP)"
+  },
+  {
+    "id": 140800000301250403,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301250501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301250502,
+    "value": "Restores own HP equal to 50% of damage dealt\n (Restoration is capped at 25% of own Max HP)"
+  },
+  {
+    "id": 140800000301250503,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301250601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301250602,
+    "value": "Restores own HP equal to 60% of damage dealt\n (Restoration is capped at 30% of own Max HP)"
+  },
+  {
+    "id": 140800000301250603,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301250701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301250702,
+    "value": "Restores own HP equal to 70% of damage dealt\n (Restoration is capped at 35% of own Max HP)"
+  },
+  {
+    "id": 140800000301250703,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301250801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301250802,
+    "value": "Restores own HP equal to 80% of damage dealt\n (Restoration is capped at 40% of own Max HP)"
+  },
+  {
+    "id": 140800000301250803,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301250901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301250902,
+    "value": "Restores own HP equal to 90% of damage dealt\n (Restoration is capped at 45% of own Max HP)"
+  },
+  {
+    "id": 140800000301250903,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301260101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301260102,
+    "value": "Decrease enemy MP by 1 on hit."
+  },
+  {
+    "id": 140800000301260103,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301260201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301260202,
+    "value": "Decrease enemy MP by 2 on hit."
+  },
+  {
+    "id": 140800000301260203,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301260301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301260302,
+    "value": "Decrease enemy MP by 3 on hit."
+  },
+  {
+    "id": 140800000301260303,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301260401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301260402,
+    "value": "Decrease enemy MP by 4 on hit."
+  },
+  {
+    "id": 140800000301260403,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301260501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301260502,
+    "value": "Decrease enemy MP by 5 on hit."
+  },
+  {
+    "id": 140800000301260503,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301260601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301260602,
+    "value": "Decrease enemy MP by 6 on hit."
+  },
+  {
+    "id": 140800000301260603,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301260701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301260702,
+    "value": "Decrease enemy MP by 7 on hit."
+  },
+  {
+    "id": 140800000301260703,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301260801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301260802,
+    "value": "Decrease enemy MP by 8 on hit."
+  },
+  {
+    "id": 140800000301260803,
+    "value": "Able to move after use"
+  },
+  {
+    "id": 140800000301260901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000301260902,
+    "value": "Decrease enemy MP by 9 on hit."
+  },
+  {
+    "id": 140800000301260903,
+    "value": "Able to move after use"
+  },
+  {
     "id": 140800000310010101,
     "value": "Inflict \"ATK Down 10%\" on enemies (1 turn(s))."
   },
@@ -15814,6 +20294,14 @@
   {
     "id": 140800000310510902,
     "value": "When combating enemies that include EFSF (U.C.) tag,\nadds 3% to the weapon effect value for Increased Physical Damage."
+  },
+  {
+    "id": 140800000310520901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000310520902,
+    "value": "Able to move after use"
   },
   {
     "id": 140800000320030101,

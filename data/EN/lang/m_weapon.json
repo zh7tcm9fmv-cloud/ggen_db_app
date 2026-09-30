@@ -9020,6 +9020,22 @@
     "value": "Beam Rifle SSP"
   },
   {
+    "id": 120100117500010001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100117500010002,
+    "value": "Head Vulcan Gun"
+  },
+  {
+    "id": 120100117500010003,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100117500010090,
+    "value": "Beam Rifle SSP"
+  },
+  {
     "id": 120100117500011001,
     "value": "Beam Saber"
   },
@@ -9036,6 +9052,18 @@
     "value": "Beam Rifle SSP"
   },
   {
+    "id": 120100117500020001,
+    "value": "Vulcan Cannon"
+  },
+  {
+    "id": 120100117500020002,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100117500020090,
+    "value": "Beam Rifle SSP"
+  },
+  {
     "id": 120100117500021001,
     "value": "Vulcan Cannon"
   },
@@ -9045,6 +9073,38 @@
   },
   {
     "id": 120100117500021090,
+    "value": "Beam Rifle SSP"
+  },
+  {
+    "id": 120100117500030001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100117500030002,
+    "value": "Twin Multi-Launcher"
+  },
+  {
+    "id": 120100117500030003,
+    "value": "Beam Bazooka"
+  },
+  {
+    "id": 120100117500030090,
+    "value": "Beam Bazooka SSP"
+  },
+  {
+    "id": 120100117500040001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100117500040002,
+    "value": "Head Vulcan Gun"
+  },
+  {
+    "id": 120100117500040003,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100117500040090,
     "value": "Beam Rifle SSP"
   },
   {
@@ -9064,6 +9124,22 @@
     "value": "Beam Rifle SSP"
   },
   {
+    "id": 120100117500050001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100117500050002,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100117500050003,
+    "value": "Javelin Unit"
+  },
+  {
+    "id": 120100117500050090,
+    "value": "Beam Rifle SSP"
+  },
+  {
     "id": 120100117500051001,
     "value": "Beam Saber"
   },
@@ -9080,6 +9156,70 @@
     "value": "Javelin Unit SSP"
   },
   {
+    "id": 120100117500060001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100117500060002,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100117500060003,
+    "value": "Gatling Gun"
+  },
+  {
+    "id": 120100117500060090,
+    "value": "Gatling Gun SSP"
+  },
+  {
+    "id": 120100117500070001,
+    "value": "Beam Gun"
+  },
+  {
+    "id": 120100117500070002,
+    "value": "Gatling Cannon"
+  },
+  {
+    "id": 120100117500070003,
+    "value": "Missile Pod"
+  },
+  {
+    "id": 120100117500070090,
+    "value": "Gatling Gun SSP"
+  },
+  {
+    "id": 120100117500080001,
+    "value": "Leveler"
+  },
+  {
+    "id": 120100117500080002,
+    "value": "Beam Cannon"
+  },
+  {
+    "id": 120100117500080003,
+    "value": "Missile Pod"
+  },
+  {
+    "id": 120100117500080080,
+    "value": "Leveler"
+  },
+  {
+    "id": 120100117500080090,
+    "value": "Beam Cannon SSP"
+  },
+  {
+    "id": 120100117500090001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100117500090002,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100117500090090,
+    "value": "Beam Rifle SSP"
+  },
+  {
     "id": 120100117500091001,
     "value": "Beam Saber"
   },
@@ -9090,6 +9230,858 @@
   {
     "id": 120100117500091090,
     "value": "Beam Rifle SSP"
+  },
+  {
+    "id": 120100117500100001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100117500100002,
+    "value": "VSBR"
+  },
+  {
+    "id": 120100117500100003,
+    "value": "Mega Beam Cannon"
+  },
+  {
+    "id": 120100117500100004,
+    "value": "Wings of Light"
+  },
+  {
+    "id": 120100117500100005,
+    "value": "Mega Beam Rifle"
+  },
+  {
+    "id": 120100117500100006,
+    "value": "Mega Beam Cannon"
+  },
+  {
+    "id": 120100117500100007,
+    "value": "Barrage"
+  },
+  {
+    "id": 120100117500100090,
+    "value": "VSBR SSP"
+  },
+  {
+    "id": 120100117500105001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100117500105002,
+    "value": "VSBR"
+  },
+  {
+    "id": 120100117500105003,
+    "value": "Mega Beam Cannon"
+  },
+  {
+    "id": 120100117500105004,
+    "value": "Barrage EX"
+  },
+  {
+    "id": 120100117500105005,
+    "value": "Wings of Light"
+  },
+  {
+    "id": 120100117500105006,
+    "value": "Mega Beam Cannon"
+  },
+  {
+    "id": 120100117500110001,
+    "value": "Beam Tonfa"
+  },
+  {
+    "id": 120100117500110002,
+    "value": "6-Tube Micro Missile Pod"
+  },
+  {
+    "id": 120100117500110003,
+    "value": "Mega Beam Cannon"
+  },
+  {
+    "id": 120100117500110004,
+    "value": "Mega Beam Cannon"
+  },
+  {
+    "id": 120100117500110090,
+    "value": "6-Tube Micro Missile Pod SSP"
+  },
+  {
+    "id": 120100117500115001,
+    "value": "Beam Tonfa"
+  },
+  {
+    "id": 120100117500115002,
+    "value": "6-Tube Micro Missile Pod"
+  },
+  {
+    "id": 120100117500115003,
+    "value": "Mega Beam Cannon"
+  },
+  {
+    "id": 120100117500115004,
+    "value": "Beam Tonfa EX"
+  },
+  {
+    "id": 120100117500115005,
+    "value": "Mega Beam Cannon"
+  },
+  {
+    "id": 120100117500120001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100117500120002,
+    "value": "Wings of Light"
+  },
+  {
+    "id": 120100117500120003,
+    "value": "Mega Beam Cannon"
+  },
+  {
+    "id": 120100117500120004,
+    "value": "Barrage"
+  },
+  {
+    "id": 120100117500120101,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100117500120102,
+    "value": "Wings of Light"
+  },
+  {
+    "id": 120100117500120103,
+    "value": "Mega Beam Cannon"
+  },
+  {
+    "id": 120100117500120104,
+    "value": "Barrage"
+  },
+  {
+    "id": 120100117500120201,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100117500120202,
+    "value": "Wings of Light"
+  },
+  {
+    "id": 120100117500120203,
+    "value": "Mega Beam Cannon"
+  },
+  {
+    "id": 120100117500120204,
+    "value": "Barrage"
+  },
+  {
+    "id": 120100117500130001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100117500130002,
+    "value": "Waist-Mounted Beam Gun"
+  },
+  {
+    "id": 120100117500130003,
+    "value": "4-Tube Missile Pod"
+  },
+  {
+    "id": 120100117500131001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100117500131002,
+    "value": "Waist-Mounted Beam Gun"
+  },
+  {
+    "id": 120100117500131003,
+    "value": "4-Tube Missile Pod"
+  },
+  {
+    "id": 120100117500131090,
+    "value": "Boots SSP"
+  },
+  {
+    "id": 120100117500140001,
+    "value": "Boots"
+  },
+  {
+    "id": 120100117500141001,
+    "value": "Boots"
+  },
+  {
+    "id": 120100117500141090,
+    "value": "Boots SSP"
+  },
+  {
+    "id": 120100117500150001,
+    "value": "Eight-Armed Beam Saber"
+  },
+  {
+    "id": 120100117500150002,
+    "value": "Beam Smartgun"
+  },
+  {
+    "id": 120100117500150003,
+    "value": "Overhang Cannon"
+  },
+  {
+    "id": 120100117500150090,
+    "value": "Eight-Armed Beam Saber SSP"
+  },
+  {
+    "id": 120100117500160001,
+    "value": "Beam Smartgun"
+  },
+  {
+    "id": 120100117500160090,
+    "value": "Eight-Armed Beam Saber SSP"
+  },
+  {
+    "id": 120100117500170001,
+    "value": "Overhang Cannon"
+  },
+  {
+    "id": 120100117500170002,
+    "value": "Gatling Gun"
+  },
+  {
+    "id": 120100117500170003,
+    "value": "4-Tube Missile Pod"
+  },
+  {
+    "id": 120100117500170004,
+    "value": "Overhang Cannon"
+  },
+  {
+    "id": 120100117500171001,
+    "value": "Overhang Cannon"
+  },
+  {
+    "id": 120100117500171002,
+    "value": "Gatling Gun"
+  },
+  {
+    "id": 120100117500171003,
+    "value": "4-Tube Missile Pod"
+  },
+  {
+    "id": 120100117500171004,
+    "value": "Overhang Cannon"
+  },
+  {
+    "id": 120100117500171090,
+    "value": "Overhang Cannon SSP"
+  },
+  {
+    "id": 120100117500180001,
+    "value": "Boots"
+  },
+  {
+    "id": 120100117500181001,
+    "value": "Boots"
+  },
+  {
+    "id": 120100117500181090,
+    "value": "Overhang Cannon SSP"
+  },
+  {
+    "id": 120100117500190001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100117500190002,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100117500190003,
+    "value": "Wings of Light"
+  },
+  {
+    "id": 120100117500190004,
+    "value": "Wings of Light"
+  },
+  {
+    "id": 120100117500190090,
+    "value": "Wings of Light SSP"
+  },
+  {
+    "id": 120100117500200001,
+    "value": "Boots"
+  },
+  {
+    "id": 120100117500200090,
+    "value": "Wings of Light SSP"
+  },
+  {
+    "id": 120100117500210001,
+    "value": "Mega Beam Shield"
+  },
+  {
+    "id": 120100117500210002,
+    "value": "Wings of Light"
+  },
+  {
+    "id": 120100117500210003,
+    "value": "Mega Beam Rifle"
+  },
+  {
+    "id": 120100117500210004,
+    "value": "VSBR"
+  },
+  {
+    "id": 120100117500210090,
+    "value": "Mega Beam Shield SSP"
+  },
+  {
+    "id": 120100117500220001,
+    "value": "Mega Beam Cannon"
+  },
+  {
+    "id": 120100117500220002,
+    "value": "Spray Beam Pod"
+  },
+  {
+    "id": 120100117500220003,
+    "value": "Micro Missile Pod"
+  },
+  {
+    "id": 120100117500220004,
+    "value": "Mega Beam Cannon"
+  },
+  {
+    "id": 120100117500220090,
+    "value": "Mega Beam Cannon SSP"
+  },
+  {
+    "id": 120100117500230001,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100117500230002,
+    "value": "Beam Bazooka"
+  },
+  {
+    "id": 120100117500230003,
+    "value": "Twin Multi-Launcher"
+  },
+  {
+    "id": 120100117500230090,
+    "value": "Beam Bazooka SSP"
+  },
+  {
+    "id": 120100117500240001,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100117500240002,
+    "value": "5-Tube Beam Strings"
+  },
+  {
+    "id": 120100117500240090,
+    "value": "5-Tube Beam Strings SSP"
+  },
+  {
+    "id": 120100117500250001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100117500250002,
+    "value": "5-Tube Beam Strings"
+  },
+  {
+    "id": 120100117500250003,
+    "value": "Beam Cannon"
+  },
+  {
+    "id": 120100117500250090,
+    "value": "Beam Cannon SSP"
+  },
+  {
+    "id": 120100117500260001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100117500260002,
+    "value": "Gatling Gun"
+  },
+  {
+    "id": 120100117500260003,
+    "value": "Beam Bazooka"
+  },
+  {
+    "id": 120100117500261001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100117500261002,
+    "value": "Gatling Gun"
+  },
+  {
+    "id": 120100117500261003,
+    "value": "Beam Bazooka"
+  },
+  {
+    "id": 120100117500261090,
+    "value": "Bottom Terminal SSP"
+  },
+  {
+    "id": 120100117500270001,
+    "value": "Bottom Terminal"
+  },
+  {
+    "id": 120100117500271001,
+    "value": "Bottom Terminal"
+  },
+  {
+    "id": 120100117500271090,
+    "value": "Bottom Terminal SSP"
+  },
+  {
+    "id": 120100117500280001,
+    "value": "Beam Tomahawk"
+  },
+  {
+    "id": 120100117500280002,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100117500280003,
+    "value": "Beam Bazooka"
+  },
+  {
+    "id": 120100117500280090,
+    "value": "Beam Bazooka SSP"
+  },
+  {
+    "id": 120100117500290001,
+    "value": "Twin Wing-Mounted Multi-Pod"
+  },
+  {
+    "id": 120100117500290090,
+    "value": "Beam Bazooka SSP"
+  },
+  {
+    "id": 120100117500300001,
+    "value": "Shock Bite"
+  },
+  {
+    "id": 120100117500300002,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100117500300003,
+    "value": "Quadruple Leg-Mounted Multi-Pod"
+  },
+  {
+    "id": 120100117500300090,
+    "value": "Quadruple Leg-Mounted Multi-Pod SSP"
+  },
+  {
+    "id": 120100117500310001,
+    "value": "Quadruple Leg-Mounted Multi-Pod"
+  },
+  {
+    "id": 120100117500310090,
+    "value": "Quadruple Leg-Mounted Multi-Pod SSP"
+  },
+  {
+    "id": 120100117500320001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100117500320002,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100117500320003,
+    "value": "9-Tube Thigh-Mounted Multi-Launcher"
+  },
+  {
+    "id": 120100117500320090,
+    "value": "9-Tube Thigh-Mounted Multi-Launcher SSP"
+  },
+  {
+    "id": 120100117500330001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100117500330002,
+    "value": "Shoulder-Mounted Mega Beam Gun"
+  },
+  {
+    "id": 120100117500330003,
+    "value": "Shoulder-Mounted Beam Rotor"
+  },
+  {
+    "id": 120100117500330090,
+    "value": "Shoulder-Mounted Mega Beam Gun SSP"
+  },
+  {
+    "id": 120100117500340001,
+    "value": "Beam Cannon"
+  },
+  {
+    "id": 120100117500340090,
+    "value": "Beam Cannon SSP"
+  },
+  {
+    "id": 120100117500350001,
+    "value": "Rapid-Fire Autocannon"
+  },
+  {
+    "id": 120100117500350090,
+    "value": "Rapid-Fire Autocannon SSP"
+  },
+  {
+    "id": 120100117500360001,
+    "value": "Beam Cannon"
+  },
+  {
+    "id": 120100117500360002,
+    "value": "Gatling Gun"
+  },
+  {
+    "id": 120100117500360090,
+    "value": "Beam Cannon SSP"
+  },
+  {
+    "id": 120100117500370001,
+    "value": "Beam Cannon"
+  },
+  {
+    "id": 120100117500370002,
+    "value": "Large Mega Particle Cannon"
+  },
+  {
+    "id": 120100117500370080,
+    "value": "Large Mega Particle Cannon"
+  },
+  {
+    "id": 120100117500370090,
+    "value": "Large Mega Particle Cannon SSP"
+  },
+  {
+    "id": 120100117500380001,
+    "value": "Beam Katar"
+  },
+  {
+    "id": 120100117500380002,
+    "value": "Beam Scythe"
+  },
+  {
+    "id": 120100117500380090,
+    "value": "Beam Scythe SSP"
+  },
+  {
+    "id": 120100117500390001,
+    "value": "Crown Beam Cannon"
+  },
+  {
+    "id": 120100117500390090,
+    "value": "Beam Scythe SSP"
+  },
+  {
+    "id": 120100117500400001,
+    "value": "Shot Claw"
+  },
+  {
+    "id": 120100117500400002,
+    "value": "Arm-Mounted Internal Beam Gun"
+  },
+  {
+    "id": 120100117500400003,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100117500400090,
+    "value": "Arm-Mounted Internal Beam Gun SSP"
+  },
+  {
+    "id": 120100117500410001,
+    "value": "3-Tube Torpedo Pod"
+  },
+  {
+    "id": 120100117500410090,
+    "value": "Arm-Mounted Internal Beam Gun SSP"
+  },
+  {
+    "id": 120100117500430001,
+    "value": "Tail Beam Gun"
+  },
+  {
+    "id": 120100117500430002,
+    "value": "Tailrad"
+  },
+  {
+    "id": 120100117500430003,
+    "value": "Chest Missile Launcher"
+  },
+  {
+    "id": 120100117500430004,
+    "value": "Tailrad"
+  },
+  {
+    "id": 120100117500430090,
+    "value": "Tailrad SSP"
+  },
+  {
+    "id": 120100117500440001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100117500440002,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100117500440090,
+    "value": "Beam Rifle SSP"
+  },
+  {
+    "id": 120100117500450001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100117500450002,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100117500450003,
+    "value": "Leveler"
+  },
+  {
+    "id": 120100117500450090,
+    "value": "Beam Rifle SSP"
+  },
+  {
+    "id": 120100117500460001,
+    "value": "Einerad Launcher"
+  },
+  {
+    "id": 120100117500460002,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100117500460003,
+    "value": "9-Tube Shoulder-Mounted Missile Launcher"
+  },
+  {
+    "id": 120100117500460004,
+    "value": "Leveler"
+  },
+  {
+    "id": 120100117500461001,
+    "value": "Einerad Launcher"
+  },
+  {
+    "id": 120100117500461002,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100117500461003,
+    "value": "9-Tube Shoulder-Mounted Missile Launcher"
+  },
+  {
+    "id": 120100117500461004,
+    "value": "Leveler"
+  },
+  {
+    "id": 120100117500461090,
+    "value": "Einerad Launcher SSP"
+  },
+  {
+    "id": 120100117500470001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100117500470002,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100117500470003,
+    "value": "Shoulder Beam Gun"
+  },
+  {
+    "id": 120100117500470090,
+    "value": "Beam Rifle SSP"
+  },
+  {
+    "id": 120100117500480001,
+    "value": "Beam Fan"
+  },
+  {
+    "id": 120100117500480002,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100117500480003,
+    "value": "Hand Beam Gun"
+  },
+  {
+    "id": 120100117500480090,
+    "value": "Beam Rifle SSP"
+  },
+  {
+    "id": 120100117500490001,
+    "value": "Metal Whip"
+  },
+  {
+    "id": 120100117500490002,
+    "value": "Beam Strings"
+  },
+  {
+    "id": 120100117500490003,
+    "value": "Beam Gun"
+  },
+  {
+    "id": 120100117500491001,
+    "value": "Metal Whip"
+  },
+  {
+    "id": 120100117500491002,
+    "value": "Beam Strings"
+  },
+  {
+    "id": 120100117500491003,
+    "value": "Beam Gun"
+  },
+  {
+    "id": 120100117500491090,
+    "value": "Metal Whip SSP"
+  },
+  {
+    "id": 120100117500500001,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100117500500002,
+    "value": "Beam Barrage"
+  },
+  {
+    "id": 120100117500500090,
+    "value": "Beam Barrage SSP"
+  },
+  {
+    "id": 120100117500510001,
+    "value": "Chest-Mounted Beam Cannon"
+  },
+  {
+    "id": 120100117500510002,
+    "value": "Internal Beam Shot Claw"
+  },
+  {
+    "id": 120100117500510003,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100117500510090,
+    "value": "Internal Beam Shot Claw SSP"
+  },
+  {
+    "id": 120100117500520001,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100117500520002,
+    "value": "Heat Rod"
+  },
+  {
+    "id": 120100117500520090,
+    "value": "Heat Rod SSP"
+  },
+  {
+    "id": 120100117500522001,
+    "value": "Heat Rod"
+  },
+  {
+    "id": 120100117500530001,
+    "value": "Serrated Blade"
+  },
+  {
+    "id": 120100117500530002,
+    "value": "Beam Cannon"
+  },
+  {
+    "id": 120100117500530003,
+    "value": "Missile Pod"
+  },
+  {
+    "id": 120100117500530080,
+    "value": "Leveler"
+  },
+  {
+    "id": 120100117500530090,
+    "value": "Serrated Blade SSP"
+  },
+  {
+    "id": 120100117500540001,
+    "value": "Chest-Mounted Beam Cannon"
+  },
+  {
+    "id": 120100117500540002,
+    "value": "Internal Beam Shot Claw"
+  },
+  {
+    "id": 120100117500540003,
+    "value": "Variable Beam Launcher"
+  },
+  {
+    "id": 120100117500540090,
+    "value": "Variable Beam Launcher SSP"
+  },
+  {
+    "id": 120100117500550001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100117500550002,
+    "value": "Chest Missile Launcher"
+  },
+  {
+    "id": 120100117500550003,
+    "value": "Zanneck Cannon"
+  },
+  {
+    "id": 120100117500550004,
+    "value": "Zanneck Cannon"
+  },
+  {
+    "id": 120100117500550090,
+    "value": "Zanneck Cannon SSP"
+  },
+  {
+    "id": 120100117500560001,
+    "value": "Beam Mace"
+  },
+  {
+    "id": 120100117500560002,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100117500560003,
+    "value": "Multiple Beam Launcher"
+  },
+  {
+    "id": 120100117500560090,
+    "value": "Multiple Beam Launcher SSP"
+  },
+  {
+    "id": 120100117500570001,
+    "value": "Only Nail"
+  },
+  {
+    "id": 120100117500570002,
+    "value": "Beam Strings"
+  },
+  {
+    "id": 120100117500570003,
+    "value": "Beam Launcher"
+  },
+  {
+    "id": 120100117500570090,
+    "value": "Only Nail SSP"
   },
   {
     "id": 120100120000010001,
@@ -23440,6 +24432,26 @@
     "value": "Haro Tackle"
   },
   {
+    "id": 120100185000485001,
+    "value": "Beam Fan"
+  },
+  {
+    "id": 120100185000485002,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100185000485003,
+    "value": "Tinkle Bits"
+  },
+  {
+    "id": 120100185000485004,
+    "value": "Wings of Light EX"
+  },
+  {
+    "id": 120100185000485005,
+    "value": "Wings of Light"
+  },
+  {
     "id": 120100185000531001,
     "value": "Large Beam Saber"
   },
@@ -23458,6 +24470,26 @@
   {
     "id": 120100185000531090,
     "value": "Deflection Type Mega Particle Cannon SSP"
+  },
+  {
+    "id": 120100185000540001,
+    "value": "Diffuse Beam Cannon"
+  },
+  {
+    "id": 120100185000540002,
+    "value": "Shot Claw (Melee)"
+  },
+  {
+    "id": 120100185000540003,
+    "value": "Shot Claw (Ranged)"
+  },
+  {
+    "id": 120100185000540004,
+    "value": "Psycho-Waves"
+  },
+  {
+    "id": 120100185000540090,
+    "value": "Shot Claw (Ranged) SSP"
   },
   {
     "id": 120100200100010001,
@@ -23974,6 +25006,158 @@
   {
     "id": 120100216200010003,
     "value": "Bombardment"
+  },
+  {
+    "id": 120100217500010001,
+    "value": "Missile Barrage"
+  },
+  {
+    "id": 120100217500010002,
+    "value": "Mega Particle Cannon"
+  },
+  {
+    "id": 120100217500020001,
+    "value": "Anti-Air Attack"
+  },
+  {
+    "id": 120100217500020002,
+    "value": "Missile Barrage"
+  },
+  {
+    "id": 120100217500020003,
+    "value": "Mega Particle Cannon"
+  },
+  {
+    "id": 120100217500020004,
+    "value": "Beam-Disrupting Screen"
+  },
+  {
+    "id": 120100217500026001,
+    "value": "Anti-Air Attack"
+  },
+  {
+    "id": 120100217500026002,
+    "value": "Missile Barrage"
+  },
+  {
+    "id": 120100217500026003,
+    "value": "Mega Particle Cannon"
+  },
+  {
+    "id": 120100217500026004,
+    "value": "Beam-Disrupting Screen"
+  },
+  {
+    "id": 120100217500026005,
+    "value": "Suicide Attack"
+  },
+  {
+    "id": 120100217500030001,
+    "value": "Anti-Air Attack"
+  },
+  {
+    "id": 120100217500030002,
+    "value": "Missile Barrage"
+  },
+  {
+    "id": 120100217500030003,
+    "value": "Bombardment"
+  },
+  {
+    "id": 120100217500040001,
+    "value": "Anti-Air Attack"
+  },
+  {
+    "id": 120100217500040002,
+    "value": "Missile Barrage"
+  },
+  {
+    "id": 120100217500040003,
+    "value": "Bombardment"
+  },
+  {
+    "id": 120100217500040004,
+    "value": "Leveler"
+  },
+  {
+    "id": 120100217500050001,
+    "value": "Anti-Air Attack"
+  },
+  {
+    "id": 120100217500050002,
+    "value": "Missile Barrage"
+  },
+  {
+    "id": 120100217500050003,
+    "value": "Bombardment"
+  },
+  {
+    "id": 120100217500060001,
+    "value": "Anti-Air Attack"
+  },
+  {
+    "id": 120100217500060002,
+    "value": "Missile Barrage"
+  },
+  {
+    "id": 120100217500060003,
+    "value": "Bombardment"
+  },
+  {
+    "id": 120100217500070001,
+    "value": "Anti-Air Attack"
+  },
+  {
+    "id": 120100217500070002,
+    "value": "Missile Barrage"
+  },
+  {
+    "id": 120100217500070003,
+    "value": "Bombardment"
+  },
+  {
+    "id": 120100217500080001,
+    "value": "Missile Barrage"
+  },
+  {
+    "id": 120100217500080002,
+    "value": "Bombardment"
+  },
+  {
+    "id": 120100217500100001,
+    "value": "Anti-Air Attack"
+  },
+  {
+    "id": 120100217500100002,
+    "value": "Bombardment"
+  },
+  {
+    "id": 120100217500110001,
+    "value": "Anti-Air Attack"
+  },
+  {
+    "id": 120100217500110002,
+    "value": "Missile Barrage"
+  },
+  {
+    "id": 120100217500110003,
+    "value": "Bombardment"
+  },
+  {
+    "id": 120100217500116001,
+    "value": "Anti-Air Attack"
+  },
+  {
+    "id": 120100217500116002,
+    "value": "Missile Barrage"
+  },
+  {
+    "id": 120100217500116003,
+    "value": "Bombardment"
+  },
+  {
+    "id": 120100217500116004,
+    "value": "Suicide Attack"
   },
   {
     "id": 120100220000010001,

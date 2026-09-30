@@ -1492,6 +1492,30 @@
     "value": "Limiter OFF R (Mobile Suit Gundam F91)"
   },
   {
+    "id": 270100000000200296,
+    "value": "Heavyweight Defense Boost R(Mobile Suit V Gundam)"
+  },
+  {
+    "id": 270100000000200297,
+    "value": "Add-On Armor R(Mobile Suit V Gundam)"
+  },
+  {
+    "id": 270100000000200298,
+    "value": "Reinforced Armor R(Mobile Suit V Gundam)"
+  },
+  {
+    "id": 270100000000200299,
+    "value": "Limiter OFF R(Mobile Suit V Gundam)"
+  },
+  {
+    "id": 270100000000200300,
+    "value": "Booster Parts R(Mobile Suit V Gundam)"
+  },
+  {
+    "id": 270100000000200301,
+    "value": "Heavyweight Attack Boost R(Mobile Suit V Gundam)"
+  },
+  {
     "id": 270100000000300001,
     "value": "Add-On Armor SR (Mobile Suit Gundam SEED Astray)"
   },
@@ -2416,6 +2440,34 @@
     "value": "Add-On Armor SR (Fierce Enemy Assault)"
   },
   {
+    "id": 270100000000300237,
+    "value": "Limiter OFF SR(Fierce Enemy Assault)"
+  },
+  {
+    "id": 270100000000300238,
+    "value": "Booster Parts SR(League Militaire)"
+  },
+  {
+    "id": 270100000000300239,
+    "value": "Limiter OFF SR(League Militaire)"
+  },
+  {
+    "id": 270100000000300240,
+    "value": "Booster Parts SR(Zanscare Empire)"
+  },
+  {
+    "id": 270100000000300241,
+    "value": "Reinforced Armor SR(Zanscare Empire)"
+  },
+  {
+    "id": 270100000000300242,
+    "value": "Add-On Armor SR(League Militaire)"
+  },
+  {
+    "id": 270100000000300243,
+    "value": "Limiter OFF SR(Zanscare Empire)"
+  },
+  {
     "id": 270100000000300244,
     "value": "Add-On Armor SR(Mobile Suit Gundam 00F)"
   },
@@ -2790,5 +2842,13 @@
   {
     "id": 270100000000400094,
     "value": "Limiter OFF SSR (Fierce Enemy Assault)"
+  },
+  {
+    "id": 270100000000400095,
+    "value": "Limiter OFF SSR(Mobile Suit V Gundam)"
+  },
+  {
+    "id": 270100000000400096,
+    "value": "Reinforced Armor SSR(Fierce Enemy Assault)"
   }
 ]

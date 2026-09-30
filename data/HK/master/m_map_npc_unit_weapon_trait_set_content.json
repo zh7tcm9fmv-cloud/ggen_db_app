@@ -10825,6 +10825,26 @@
     "WeaponTraitId": 300670301
   },
   {
+    "MapNpcWeaponTraitSetId": 300700101,
+    "SortOrder": 1,
+    "WeaponTraitId": 300700101
+  },
+  {
+    "MapNpcWeaponTraitSetId": 300700101,
+    "SortOrder": 2,
+    "WeaponTraitId": 300700102
+  },
+  {
+    "MapNpcWeaponTraitSetId": 300700201,
+    "SortOrder": 1,
+    "WeaponTraitId": 300700201
+  },
+  {
+    "MapNpcWeaponTraitSetId": 300700201,
+    "SortOrder": 2,
+    "WeaponTraitId": 300700202
+  },
+  {
     "MapNpcWeaponTraitSetId": 300700301,
     "SortOrder": 1,
     "WeaponTraitId": 300350501
@@ -10833,6 +10853,66 @@
     "MapNpcWeaponTraitSetId": 300700301,
     "SortOrder": 2,
     "WeaponTraitId": 300350502
+  },
+  {
+    "MapNpcWeaponTraitSetId": 300700401,
+    "SortOrder": 1,
+    "WeaponTraitId": 300700401
+  },
+  {
+    "MapNpcWeaponTraitSetId": 300700401,
+    "SortOrder": 2,
+    "WeaponTraitId": 300700402
+  },
+  {
+    "MapNpcWeaponTraitSetId": 300700501,
+    "SortOrder": 1,
+    "WeaponTraitId": 300700501
+  },
+  {
+    "MapNpcWeaponTraitSetId": 300700501,
+    "SortOrder": 2,
+    "WeaponTraitId": 300700502
+  },
+  {
+    "MapNpcWeaponTraitSetId": 300700601,
+    "SortOrder": 1,
+    "WeaponTraitId": 300700601
+  },
+  {
+    "MapNpcWeaponTraitSetId": 300700601,
+    "SortOrder": 2,
+    "WeaponTraitId": 300700602
+  },
+  {
+    "MapNpcWeaponTraitSetId": 300700701,
+    "SortOrder": 1,
+    "WeaponTraitId": 300700701
+  },
+  {
+    "MapNpcWeaponTraitSetId": 300700701,
+    "SortOrder": 2,
+    "WeaponTraitId": 300700702
+  },
+  {
+    "MapNpcWeaponTraitSetId": 300700801,
+    "SortOrder": 1,
+    "WeaponTraitId": 300700801
+  },
+  {
+    "MapNpcWeaponTraitSetId": 300700801,
+    "SortOrder": 2,
+    "WeaponTraitId": 300700802
+  },
+  {
+    "MapNpcWeaponTraitSetId": 300700901,
+    "SortOrder": 1,
+    "WeaponTraitId": 300700901
+  },
+  {
+    "MapNpcWeaponTraitSetId": 300700901,
+    "SortOrder": 2,
+    "WeaponTraitId": 300700902
   },
   {
     "MapNpcWeaponTraitSetId": 300820101,
@@ -10928,6 +11008,2756 @@
     "MapNpcWeaponTraitSetId": 300990901,
     "SortOrder": 4,
     "WeaponTraitId": 300990904
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301020301,
+    "SortOrder": 1,
+    "WeaponTraitId": 301020301
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301020301,
+    "SortOrder": 2,
+    "WeaponTraitId": 301020302
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301020401,
+    "SortOrder": 1,
+    "WeaponTraitId": 301020401
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301020401,
+    "SortOrder": 2,
+    "WeaponTraitId": 301020402
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301020501,
+    "SortOrder": 1,
+    "WeaponTraitId": 301020501
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301020501,
+    "SortOrder": 2,
+    "WeaponTraitId": 301020502
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301050101,
+    "SortOrder": 1,
+    "WeaponTraitId": 301050101
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301050101,
+    "SortOrder": 2,
+    "WeaponTraitId": 301050102
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301050101,
+    "SortOrder": 3,
+    "WeaponTraitId": 301050103
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301050201,
+    "SortOrder": 1,
+    "WeaponTraitId": 301050201
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301050201,
+    "SortOrder": 2,
+    "WeaponTraitId": 301050202
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301050201,
+    "SortOrder": 3,
+    "WeaponTraitId": 301050203
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301050301,
+    "SortOrder": 1,
+    "WeaponTraitId": 301050301
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301050301,
+    "SortOrder": 2,
+    "WeaponTraitId": 301050302
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301050301,
+    "SortOrder": 3,
+    "WeaponTraitId": 301050303
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301050401,
+    "SortOrder": 1,
+    "WeaponTraitId": 301050401
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301050401,
+    "SortOrder": 2,
+    "WeaponTraitId": 301050402
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301050401,
+    "SortOrder": 3,
+    "WeaponTraitId": 301050403
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301050501,
+    "SortOrder": 1,
+    "WeaponTraitId": 301050501
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301050501,
+    "SortOrder": 2,
+    "WeaponTraitId": 301050502
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301050501,
+    "SortOrder": 3,
+    "WeaponTraitId": 301050503
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301050601,
+    "SortOrder": 1,
+    "WeaponTraitId": 301050601
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301050601,
+    "SortOrder": 2,
+    "WeaponTraitId": 301050602
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301050601,
+    "SortOrder": 3,
+    "WeaponTraitId": 301050603
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301050701,
+    "SortOrder": 1,
+    "WeaponTraitId": 301050701
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301050701,
+    "SortOrder": 2,
+    "WeaponTraitId": 301050702
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301050701,
+    "SortOrder": 3,
+    "WeaponTraitId": 301050703
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301050801,
+    "SortOrder": 1,
+    "WeaponTraitId": 301050801
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301050801,
+    "SortOrder": 2,
+    "WeaponTraitId": 301050802
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301050801,
+    "SortOrder": 3,
+    "WeaponTraitId": 301050803
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301050901,
+    "SortOrder": 1,
+    "WeaponTraitId": 301050901
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301050901,
+    "SortOrder": 2,
+    "WeaponTraitId": 301050902
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301050901,
+    "SortOrder": 3,
+    "WeaponTraitId": 301050903
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301060101,
+    "SortOrder": 1,
+    "WeaponTraitId": 301060101
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301060101,
+    "SortOrder": 2,
+    "WeaponTraitId": 301060102
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301060101,
+    "SortOrder": 3,
+    "WeaponTraitId": 301060103
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301060201,
+    "SortOrder": 1,
+    "WeaponTraitId": 301060201
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301060201,
+    "SortOrder": 2,
+    "WeaponTraitId": 301060202
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301060201,
+    "SortOrder": 3,
+    "WeaponTraitId": 301060203
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301060301,
+    "SortOrder": 1,
+    "WeaponTraitId": 301060301
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301060301,
+    "SortOrder": 2,
+    "WeaponTraitId": 301060302
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301060301,
+    "SortOrder": 3,
+    "WeaponTraitId": 301060303
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301060401,
+    "SortOrder": 1,
+    "WeaponTraitId": 301060401
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301060401,
+    "SortOrder": 2,
+    "WeaponTraitId": 301060402
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301060401,
+    "SortOrder": 3,
+    "WeaponTraitId": 301060403
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301060501,
+    "SortOrder": 1,
+    "WeaponTraitId": 301060501
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301060501,
+    "SortOrder": 2,
+    "WeaponTraitId": 301060502
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301060501,
+    "SortOrder": 3,
+    "WeaponTraitId": 301060503
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301060601,
+    "SortOrder": 1,
+    "WeaponTraitId": 301060601
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301060601,
+    "SortOrder": 2,
+    "WeaponTraitId": 301060602
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301060601,
+    "SortOrder": 3,
+    "WeaponTraitId": 301060603
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301060701,
+    "SortOrder": 1,
+    "WeaponTraitId": 301060701
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301060701,
+    "SortOrder": 2,
+    "WeaponTraitId": 301060702
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301060701,
+    "SortOrder": 3,
+    "WeaponTraitId": 301060703
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301060801,
+    "SortOrder": 1,
+    "WeaponTraitId": 301060801
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301060801,
+    "SortOrder": 2,
+    "WeaponTraitId": 301060802
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301060801,
+    "SortOrder": 3,
+    "WeaponTraitId": 301060803
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301060901,
+    "SortOrder": 1,
+    "WeaponTraitId": 301060901
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301060901,
+    "SortOrder": 2,
+    "WeaponTraitId": 301060902
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301060901,
+    "SortOrder": 3,
+    "WeaponTraitId": 301060903
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301070101,
+    "SortOrder": 1,
+    "WeaponTraitId": 301070101
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301070101,
+    "SortOrder": 2,
+    "WeaponTraitId": 301070102
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301070101,
+    "SortOrder": 3,
+    "WeaponTraitId": 301070103
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301070201,
+    "SortOrder": 1,
+    "WeaponTraitId": 301070201
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301070201,
+    "SortOrder": 2,
+    "WeaponTraitId": 301070202
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301070201,
+    "SortOrder": 3,
+    "WeaponTraitId": 301070203
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301070301,
+    "SortOrder": 1,
+    "WeaponTraitId": 301070301
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301070301,
+    "SortOrder": 2,
+    "WeaponTraitId": 301070302
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301070301,
+    "SortOrder": 3,
+    "WeaponTraitId": 301070303
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301070401,
+    "SortOrder": 1,
+    "WeaponTraitId": 301070401
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301070401,
+    "SortOrder": 2,
+    "WeaponTraitId": 301070402
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301070401,
+    "SortOrder": 3,
+    "WeaponTraitId": 301070403
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301070501,
+    "SortOrder": 1,
+    "WeaponTraitId": 301070501
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301070501,
+    "SortOrder": 2,
+    "WeaponTraitId": 301070502
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301070501,
+    "SortOrder": 3,
+    "WeaponTraitId": 301070503
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301070601,
+    "SortOrder": 1,
+    "WeaponTraitId": 301070601
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301070601,
+    "SortOrder": 2,
+    "WeaponTraitId": 301070602
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301070601,
+    "SortOrder": 3,
+    "WeaponTraitId": 301070603
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301070701,
+    "SortOrder": 1,
+    "WeaponTraitId": 301070701
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301070701,
+    "SortOrder": 2,
+    "WeaponTraitId": 301070702
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301070701,
+    "SortOrder": 3,
+    "WeaponTraitId": 301070703
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301070801,
+    "SortOrder": 1,
+    "WeaponTraitId": 301070801
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301070801,
+    "SortOrder": 2,
+    "WeaponTraitId": 301070802
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301070801,
+    "SortOrder": 3,
+    "WeaponTraitId": 301070803
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301070901,
+    "SortOrder": 1,
+    "WeaponTraitId": 301070901
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301070901,
+    "SortOrder": 2,
+    "WeaponTraitId": 301070902
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301070901,
+    "SortOrder": 3,
+    "WeaponTraitId": 301070903
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301080101,
+    "SortOrder": 1,
+    "WeaponTraitId": 301080101
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301080101,
+    "SortOrder": 2,
+    "WeaponTraitId": 301080102
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301080101,
+    "SortOrder": 3,
+    "WeaponTraitId": 301080103
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301080201,
+    "SortOrder": 1,
+    "WeaponTraitId": 301080201
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301080201,
+    "SortOrder": 2,
+    "WeaponTraitId": 301080202
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301080201,
+    "SortOrder": 3,
+    "WeaponTraitId": 301080203
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301080301,
+    "SortOrder": 1,
+    "WeaponTraitId": 301080301
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301080301,
+    "SortOrder": 2,
+    "WeaponTraitId": 301080302
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301080301,
+    "SortOrder": 3,
+    "WeaponTraitId": 301080303
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301080401,
+    "SortOrder": 1,
+    "WeaponTraitId": 301080401
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301080401,
+    "SortOrder": 2,
+    "WeaponTraitId": 301080402
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301080401,
+    "SortOrder": 3,
+    "WeaponTraitId": 301080403
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301080501,
+    "SortOrder": 1,
+    "WeaponTraitId": 301080501
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301080501,
+    "SortOrder": 2,
+    "WeaponTraitId": 301080502
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301080501,
+    "SortOrder": 3,
+    "WeaponTraitId": 301080503
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301080601,
+    "SortOrder": 1,
+    "WeaponTraitId": 301080601
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301080601,
+    "SortOrder": 2,
+    "WeaponTraitId": 301080602
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301080601,
+    "SortOrder": 3,
+    "WeaponTraitId": 301080603
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301080701,
+    "SortOrder": 1,
+    "WeaponTraitId": 301080701
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301080701,
+    "SortOrder": 2,
+    "WeaponTraitId": 301080702
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301080701,
+    "SortOrder": 3,
+    "WeaponTraitId": 301080703
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301080801,
+    "SortOrder": 1,
+    "WeaponTraitId": 301080801
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301080801,
+    "SortOrder": 2,
+    "WeaponTraitId": 301080802
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301080801,
+    "SortOrder": 3,
+    "WeaponTraitId": 301080803
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301080901,
+    "SortOrder": 1,
+    "WeaponTraitId": 301080901
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301080901,
+    "SortOrder": 2,
+    "WeaponTraitId": 301080902
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301080901,
+    "SortOrder": 3,
+    "WeaponTraitId": 301080903
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301090101,
+    "SortOrder": 1,
+    "WeaponTraitId": 301090101
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301090101,
+    "SortOrder": 2,
+    "WeaponTraitId": 301090102
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301090101,
+    "SortOrder": 3,
+    "WeaponTraitId": 301090103
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301090201,
+    "SortOrder": 1,
+    "WeaponTraitId": 301090201
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301090201,
+    "SortOrder": 2,
+    "WeaponTraitId": 301090202
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301090201,
+    "SortOrder": 3,
+    "WeaponTraitId": 301090203
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301090301,
+    "SortOrder": 1,
+    "WeaponTraitId": 301090301
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301090301,
+    "SortOrder": 2,
+    "WeaponTraitId": 301090302
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301090301,
+    "SortOrder": 3,
+    "WeaponTraitId": 301090303
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301090401,
+    "SortOrder": 1,
+    "WeaponTraitId": 301090401
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301090401,
+    "SortOrder": 2,
+    "WeaponTraitId": 301090402
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301090401,
+    "SortOrder": 3,
+    "WeaponTraitId": 301090403
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301090501,
+    "SortOrder": 1,
+    "WeaponTraitId": 301090501
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301090501,
+    "SortOrder": 2,
+    "WeaponTraitId": 301090502
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301090501,
+    "SortOrder": 3,
+    "WeaponTraitId": 301090503
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301090601,
+    "SortOrder": 1,
+    "WeaponTraitId": 301090601
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301090601,
+    "SortOrder": 2,
+    "WeaponTraitId": 301090602
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301090601,
+    "SortOrder": 3,
+    "WeaponTraitId": 301090603
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301090701,
+    "SortOrder": 1,
+    "WeaponTraitId": 301090701
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301090701,
+    "SortOrder": 2,
+    "WeaponTraitId": 301090702
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301090701,
+    "SortOrder": 3,
+    "WeaponTraitId": 301090703
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301090801,
+    "SortOrder": 1,
+    "WeaponTraitId": 301090801
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301090801,
+    "SortOrder": 2,
+    "WeaponTraitId": 301090802
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301090801,
+    "SortOrder": 3,
+    "WeaponTraitId": 301090803
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301090901,
+    "SortOrder": 1,
+    "WeaponTraitId": 301090901
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301090901,
+    "SortOrder": 2,
+    "WeaponTraitId": 301090902
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301090901,
+    "SortOrder": 3,
+    "WeaponTraitId": 301090903
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301100101,
+    "SortOrder": 1,
+    "WeaponTraitId": 301100101
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301100101,
+    "SortOrder": 2,
+    "WeaponTraitId": 301100102
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301100101,
+    "SortOrder": 3,
+    "WeaponTraitId": 301100103
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301100201,
+    "SortOrder": 1,
+    "WeaponTraitId": 301100201
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301100201,
+    "SortOrder": 2,
+    "WeaponTraitId": 301100202
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301100201,
+    "SortOrder": 3,
+    "WeaponTraitId": 301100203
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301100301,
+    "SortOrder": 1,
+    "WeaponTraitId": 301100301
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301100301,
+    "SortOrder": 2,
+    "WeaponTraitId": 301100302
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301100301,
+    "SortOrder": 3,
+    "WeaponTraitId": 301100303
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301100401,
+    "SortOrder": 1,
+    "WeaponTraitId": 301100401
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301100401,
+    "SortOrder": 2,
+    "WeaponTraitId": 301100402
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301100401,
+    "SortOrder": 3,
+    "WeaponTraitId": 301100403
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301100501,
+    "SortOrder": 1,
+    "WeaponTraitId": 301100501
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301100501,
+    "SortOrder": 2,
+    "WeaponTraitId": 301100502
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301100501,
+    "SortOrder": 3,
+    "WeaponTraitId": 301100503
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301100601,
+    "SortOrder": 1,
+    "WeaponTraitId": 301100601
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301100601,
+    "SortOrder": 2,
+    "WeaponTraitId": 301100602
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301100601,
+    "SortOrder": 3,
+    "WeaponTraitId": 301100603
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301100701,
+    "SortOrder": 1,
+    "WeaponTraitId": 301100701
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301100701,
+    "SortOrder": 2,
+    "WeaponTraitId": 301100702
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301100701,
+    "SortOrder": 3,
+    "WeaponTraitId": 301100703
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301100801,
+    "SortOrder": 1,
+    "WeaponTraitId": 301100801
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301100801,
+    "SortOrder": 2,
+    "WeaponTraitId": 301100802
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301100801,
+    "SortOrder": 3,
+    "WeaponTraitId": 301100803
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301100901,
+    "SortOrder": 1,
+    "WeaponTraitId": 301100901
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301100901,
+    "SortOrder": 2,
+    "WeaponTraitId": 301100902
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301100901,
+    "SortOrder": 3,
+    "WeaponTraitId": 301100903
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301110901,
+    "SortOrder": 1,
+    "WeaponTraitId": 301110901
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301110901,
+    "SortOrder": 2,
+    "WeaponTraitId": 301110902
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301110901,
+    "SortOrder": 3,
+    "WeaponTraitId": 301110901
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301110901,
+    "SortOrder": 4,
+    "WeaponTraitId": 301110902
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301120101,
+    "SortOrder": 1,
+    "WeaponTraitId": 301120101
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301120101,
+    "SortOrder": 2,
+    "WeaponTraitId": 301120102
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301120101,
+    "SortOrder": 3,
+    "WeaponTraitId": 301120103
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301120201,
+    "SortOrder": 1,
+    "WeaponTraitId": 301120201
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301120201,
+    "SortOrder": 2,
+    "WeaponTraitId": 301120202
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301120201,
+    "SortOrder": 3,
+    "WeaponTraitId": 301120203
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301120301,
+    "SortOrder": 1,
+    "WeaponTraitId": 301120301
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301120301,
+    "SortOrder": 2,
+    "WeaponTraitId": 301120302
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301120301,
+    "SortOrder": 3,
+    "WeaponTraitId": 301120303
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301120401,
+    "SortOrder": 1,
+    "WeaponTraitId": 301120401
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301120401,
+    "SortOrder": 2,
+    "WeaponTraitId": 301120402
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301120401,
+    "SortOrder": 3,
+    "WeaponTraitId": 301120403
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301120501,
+    "SortOrder": 1,
+    "WeaponTraitId": 301120501
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301120501,
+    "SortOrder": 2,
+    "WeaponTraitId": 301120502
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301120501,
+    "SortOrder": 3,
+    "WeaponTraitId": 301120503
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301120601,
+    "SortOrder": 1,
+    "WeaponTraitId": 301120601
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301120601,
+    "SortOrder": 2,
+    "WeaponTraitId": 301120602
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301120601,
+    "SortOrder": 3,
+    "WeaponTraitId": 301120603
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301120701,
+    "SortOrder": 1,
+    "WeaponTraitId": 301120701
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301120701,
+    "SortOrder": 2,
+    "WeaponTraitId": 301120702
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301120701,
+    "SortOrder": 3,
+    "WeaponTraitId": 301120703
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301120801,
+    "SortOrder": 1,
+    "WeaponTraitId": 301120801
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301120801,
+    "SortOrder": 2,
+    "WeaponTraitId": 301120802
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301120801,
+    "SortOrder": 3,
+    "WeaponTraitId": 301120803
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301120901,
+    "SortOrder": 1,
+    "WeaponTraitId": 301120901
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301120901,
+    "SortOrder": 2,
+    "WeaponTraitId": 301120902
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301120901,
+    "SortOrder": 3,
+    "WeaponTraitId": 301120903
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301130101,
+    "SortOrder": 1,
+    "WeaponTraitId": 301130101
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301130101,
+    "SortOrder": 2,
+    "WeaponTraitId": 301130102
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301130101,
+    "SortOrder": 3,
+    "WeaponTraitId": 301130103
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301130201,
+    "SortOrder": 1,
+    "WeaponTraitId": 301130201
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301130201,
+    "SortOrder": 2,
+    "WeaponTraitId": 301130202
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301130201,
+    "SortOrder": 3,
+    "WeaponTraitId": 301130203
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301130301,
+    "SortOrder": 1,
+    "WeaponTraitId": 301130301
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301130301,
+    "SortOrder": 2,
+    "WeaponTraitId": 301130302
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301130301,
+    "SortOrder": 3,
+    "WeaponTraitId": 301130303
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301130401,
+    "SortOrder": 1,
+    "WeaponTraitId": 301130401
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301130401,
+    "SortOrder": 2,
+    "WeaponTraitId": 301130402
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301130401,
+    "SortOrder": 3,
+    "WeaponTraitId": 301130403
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301130501,
+    "SortOrder": 1,
+    "WeaponTraitId": 301130501
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301130501,
+    "SortOrder": 2,
+    "WeaponTraitId": 301130502
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301130501,
+    "SortOrder": 3,
+    "WeaponTraitId": 301130503
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301130601,
+    "SortOrder": 1,
+    "WeaponTraitId": 301130601
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301130601,
+    "SortOrder": 2,
+    "WeaponTraitId": 301130602
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301130601,
+    "SortOrder": 3,
+    "WeaponTraitId": 301130603
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301130701,
+    "SortOrder": 1,
+    "WeaponTraitId": 301130701
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301130701,
+    "SortOrder": 2,
+    "WeaponTraitId": 301130702
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301130701,
+    "SortOrder": 3,
+    "WeaponTraitId": 301130703
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301130801,
+    "SortOrder": 1,
+    "WeaponTraitId": 301130801
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301130801,
+    "SortOrder": 2,
+    "WeaponTraitId": 301130802
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301130801,
+    "SortOrder": 3,
+    "WeaponTraitId": 301130803
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301130901,
+    "SortOrder": 1,
+    "WeaponTraitId": 301130901
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301130901,
+    "SortOrder": 2,
+    "WeaponTraitId": 301130902
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301130901,
+    "SortOrder": 3,
+    "WeaponTraitId": 301130903
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301140101,
+    "SortOrder": 1,
+    "WeaponTraitId": 301140101
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301140101,
+    "SortOrder": 2,
+    "WeaponTraitId": 301140102
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301140101,
+    "SortOrder": 3,
+    "WeaponTraitId": 301140103
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301140201,
+    "SortOrder": 1,
+    "WeaponTraitId": 301140201
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301140201,
+    "SortOrder": 2,
+    "WeaponTraitId": 301140202
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301140201,
+    "SortOrder": 3,
+    "WeaponTraitId": 301140203
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301140301,
+    "SortOrder": 1,
+    "WeaponTraitId": 301140301
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301140301,
+    "SortOrder": 2,
+    "WeaponTraitId": 301140302
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301140301,
+    "SortOrder": 3,
+    "WeaponTraitId": 301140303
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301140401,
+    "SortOrder": 1,
+    "WeaponTraitId": 301140401
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301140401,
+    "SortOrder": 2,
+    "WeaponTraitId": 301140402
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301140401,
+    "SortOrder": 3,
+    "WeaponTraitId": 301140403
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301140501,
+    "SortOrder": 1,
+    "WeaponTraitId": 301140501
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301140501,
+    "SortOrder": 2,
+    "WeaponTraitId": 301140502
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301140501,
+    "SortOrder": 3,
+    "WeaponTraitId": 301140503
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301140601,
+    "SortOrder": 1,
+    "WeaponTraitId": 301140601
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301140601,
+    "SortOrder": 2,
+    "WeaponTraitId": 301140602
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301140601,
+    "SortOrder": 3,
+    "WeaponTraitId": 301140603
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301140701,
+    "SortOrder": 1,
+    "WeaponTraitId": 301140701
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301140701,
+    "SortOrder": 2,
+    "WeaponTraitId": 301140702
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301140701,
+    "SortOrder": 3,
+    "WeaponTraitId": 301140703
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301140801,
+    "SortOrder": 1,
+    "WeaponTraitId": 301140801
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301140801,
+    "SortOrder": 2,
+    "WeaponTraitId": 301140802
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301140801,
+    "SortOrder": 3,
+    "WeaponTraitId": 301140803
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301140901,
+    "SortOrder": 1,
+    "WeaponTraitId": 301140901
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301140901,
+    "SortOrder": 2,
+    "WeaponTraitId": 301140902
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301140901,
+    "SortOrder": 3,
+    "WeaponTraitId": 301140903
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301150101,
+    "SortOrder": 1,
+    "WeaponTraitId": 301150101
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301150101,
+    "SortOrder": 2,
+    "WeaponTraitId": 301150102
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301150101,
+    "SortOrder": 3,
+    "WeaponTraitId": 301150103
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301150201,
+    "SortOrder": 1,
+    "WeaponTraitId": 301150201
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301150201,
+    "SortOrder": 2,
+    "WeaponTraitId": 301150202
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301150201,
+    "SortOrder": 3,
+    "WeaponTraitId": 301150203
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301150301,
+    "SortOrder": 1,
+    "WeaponTraitId": 301150301
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301150301,
+    "SortOrder": 2,
+    "WeaponTraitId": 301150302
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301150301,
+    "SortOrder": 3,
+    "WeaponTraitId": 301150303
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301150401,
+    "SortOrder": 1,
+    "WeaponTraitId": 301150401
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301150401,
+    "SortOrder": 2,
+    "WeaponTraitId": 301150402
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301150401,
+    "SortOrder": 3,
+    "WeaponTraitId": 301150403
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301150501,
+    "SortOrder": 1,
+    "WeaponTraitId": 301150501
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301150501,
+    "SortOrder": 2,
+    "WeaponTraitId": 301150502
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301150501,
+    "SortOrder": 3,
+    "WeaponTraitId": 301150503
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301150601,
+    "SortOrder": 1,
+    "WeaponTraitId": 301150601
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301150601,
+    "SortOrder": 2,
+    "WeaponTraitId": 301150602
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301150601,
+    "SortOrder": 3,
+    "WeaponTraitId": 301150603
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301150701,
+    "SortOrder": 1,
+    "WeaponTraitId": 301150701
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301150701,
+    "SortOrder": 2,
+    "WeaponTraitId": 301150702
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301150701,
+    "SortOrder": 3,
+    "WeaponTraitId": 301150703
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301150801,
+    "SortOrder": 1,
+    "WeaponTraitId": 301150801
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301150801,
+    "SortOrder": 2,
+    "WeaponTraitId": 301150802
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301150801,
+    "SortOrder": 3,
+    "WeaponTraitId": 301150803
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301150901,
+    "SortOrder": 1,
+    "WeaponTraitId": 301150901
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301150901,
+    "SortOrder": 2,
+    "WeaponTraitId": 301150902
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301150901,
+    "SortOrder": 3,
+    "WeaponTraitId": 301150903
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301160101,
+    "SortOrder": 1,
+    "WeaponTraitId": 301160101
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301160101,
+    "SortOrder": 2,
+    "WeaponTraitId": 301160102
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301160101,
+    "SortOrder": 3,
+    "WeaponTraitId": 301160103
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301160201,
+    "SortOrder": 1,
+    "WeaponTraitId": 301160201
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301160201,
+    "SortOrder": 2,
+    "WeaponTraitId": 301160202
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301160201,
+    "SortOrder": 3,
+    "WeaponTraitId": 301160203
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301160301,
+    "SortOrder": 1,
+    "WeaponTraitId": 301160301
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301160301,
+    "SortOrder": 2,
+    "WeaponTraitId": 301160302
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301160301,
+    "SortOrder": 3,
+    "WeaponTraitId": 301160303
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301160401,
+    "SortOrder": 1,
+    "WeaponTraitId": 301160401
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301160401,
+    "SortOrder": 2,
+    "WeaponTraitId": 301160402
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301160401,
+    "SortOrder": 3,
+    "WeaponTraitId": 301160403
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301160501,
+    "SortOrder": 1,
+    "WeaponTraitId": 301160501
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301160501,
+    "SortOrder": 2,
+    "WeaponTraitId": 301160502
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301160501,
+    "SortOrder": 3,
+    "WeaponTraitId": 301160503
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301160601,
+    "SortOrder": 1,
+    "WeaponTraitId": 301160601
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301160601,
+    "SortOrder": 2,
+    "WeaponTraitId": 301160602
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301160601,
+    "SortOrder": 3,
+    "WeaponTraitId": 301160603
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301160701,
+    "SortOrder": 1,
+    "WeaponTraitId": 301160701
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301160701,
+    "SortOrder": 2,
+    "WeaponTraitId": 301160702
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301160701,
+    "SortOrder": 3,
+    "WeaponTraitId": 301160703
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301160801,
+    "SortOrder": 1,
+    "WeaponTraitId": 301160801
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301160801,
+    "SortOrder": 2,
+    "WeaponTraitId": 301160802
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301160801,
+    "SortOrder": 3,
+    "WeaponTraitId": 301160803
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301160901,
+    "SortOrder": 1,
+    "WeaponTraitId": 301160901
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301160901,
+    "SortOrder": 2,
+    "WeaponTraitId": 301160902
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301160901,
+    "SortOrder": 3,
+    "WeaponTraitId": 301160903
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301170101,
+    "SortOrder": 1,
+    "WeaponTraitId": 301170101
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301170101,
+    "SortOrder": 2,
+    "WeaponTraitId": 301170102
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301170101,
+    "SortOrder": 3,
+    "WeaponTraitId": 301170103
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301170201,
+    "SortOrder": 1,
+    "WeaponTraitId": 301170201
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301170201,
+    "SortOrder": 2,
+    "WeaponTraitId": 301170202
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301170201,
+    "SortOrder": 3,
+    "WeaponTraitId": 301170203
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301170301,
+    "SortOrder": 1,
+    "WeaponTraitId": 301170301
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301170301,
+    "SortOrder": 2,
+    "WeaponTraitId": 301170302
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301170301,
+    "SortOrder": 3,
+    "WeaponTraitId": 301170303
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301170401,
+    "SortOrder": 1,
+    "WeaponTraitId": 301170401
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301170401,
+    "SortOrder": 2,
+    "WeaponTraitId": 301170402
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301170401,
+    "SortOrder": 3,
+    "WeaponTraitId": 301170403
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301170501,
+    "SortOrder": 1,
+    "WeaponTraitId": 301170501
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301170501,
+    "SortOrder": 2,
+    "WeaponTraitId": 301170502
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301170501,
+    "SortOrder": 3,
+    "WeaponTraitId": 301170503
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301170601,
+    "SortOrder": 1,
+    "WeaponTraitId": 301170601
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301170601,
+    "SortOrder": 2,
+    "WeaponTraitId": 301170602
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301170601,
+    "SortOrder": 3,
+    "WeaponTraitId": 301170603
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301170701,
+    "SortOrder": 1,
+    "WeaponTraitId": 301170701
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301170701,
+    "SortOrder": 2,
+    "WeaponTraitId": 301170702
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301170701,
+    "SortOrder": 3,
+    "WeaponTraitId": 301170703
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301170801,
+    "SortOrder": 1,
+    "WeaponTraitId": 301170801
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301170801,
+    "SortOrder": 2,
+    "WeaponTraitId": 301170802
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301170801,
+    "SortOrder": 3,
+    "WeaponTraitId": 301170803
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301170901,
+    "SortOrder": 1,
+    "WeaponTraitId": 301170901
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301170901,
+    "SortOrder": 2,
+    "WeaponTraitId": 301170902
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301170901,
+    "SortOrder": 3,
+    "WeaponTraitId": 301170903
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301180101,
+    "SortOrder": 1,
+    "WeaponTraitId": 301180101
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301180101,
+    "SortOrder": 2,
+    "WeaponTraitId": 301180102
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301180101,
+    "SortOrder": 3,
+    "WeaponTraitId": 301180103
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301180201,
+    "SortOrder": 1,
+    "WeaponTraitId": 301180201
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301180201,
+    "SortOrder": 2,
+    "WeaponTraitId": 301180202
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301180201,
+    "SortOrder": 3,
+    "WeaponTraitId": 301180203
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301180301,
+    "SortOrder": 1,
+    "WeaponTraitId": 301180301
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301180301,
+    "SortOrder": 2,
+    "WeaponTraitId": 301180302
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301180301,
+    "SortOrder": 3,
+    "WeaponTraitId": 301180303
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301180401,
+    "SortOrder": 1,
+    "WeaponTraitId": 301180401
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301180401,
+    "SortOrder": 2,
+    "WeaponTraitId": 301180402
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301180401,
+    "SortOrder": 3,
+    "WeaponTraitId": 301180403
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301180501,
+    "SortOrder": 1,
+    "WeaponTraitId": 301180501
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301180501,
+    "SortOrder": 2,
+    "WeaponTraitId": 301180502
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301180501,
+    "SortOrder": 3,
+    "WeaponTraitId": 301180503
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301180601,
+    "SortOrder": 1,
+    "WeaponTraitId": 301180601
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301180601,
+    "SortOrder": 2,
+    "WeaponTraitId": 301180602
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301180601,
+    "SortOrder": 3,
+    "WeaponTraitId": 301180603
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301180701,
+    "SortOrder": 1,
+    "WeaponTraitId": 301180701
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301180701,
+    "SortOrder": 2,
+    "WeaponTraitId": 301180702
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301180701,
+    "SortOrder": 3,
+    "WeaponTraitId": 301180703
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301180801,
+    "SortOrder": 1,
+    "WeaponTraitId": 301180801
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301180801,
+    "SortOrder": 2,
+    "WeaponTraitId": 301180802
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301180801,
+    "SortOrder": 3,
+    "WeaponTraitId": 301180803
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301180901,
+    "SortOrder": 1,
+    "WeaponTraitId": 301180901
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301180901,
+    "SortOrder": 2,
+    "WeaponTraitId": 301180902
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301180901,
+    "SortOrder": 3,
+    "WeaponTraitId": 301180903
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301190101,
+    "SortOrder": 1,
+    "WeaponTraitId": 301190101
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301190101,
+    "SortOrder": 2,
+    "WeaponTraitId": 301190102
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301190101,
+    "SortOrder": 3,
+    "WeaponTraitId": 301190103
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301190201,
+    "SortOrder": 1,
+    "WeaponTraitId": 301190201
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301190201,
+    "SortOrder": 2,
+    "WeaponTraitId": 301190202
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301190201,
+    "SortOrder": 3,
+    "WeaponTraitId": 301190203
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301190301,
+    "SortOrder": 1,
+    "WeaponTraitId": 301190301
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301190301,
+    "SortOrder": 2,
+    "WeaponTraitId": 301190302
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301190301,
+    "SortOrder": 3,
+    "WeaponTraitId": 301190303
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301190401,
+    "SortOrder": 1,
+    "WeaponTraitId": 301190401
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301190401,
+    "SortOrder": 2,
+    "WeaponTraitId": 301190402
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301190401,
+    "SortOrder": 3,
+    "WeaponTraitId": 301190403
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301190501,
+    "SortOrder": 1,
+    "WeaponTraitId": 301190501
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301190501,
+    "SortOrder": 2,
+    "WeaponTraitId": 301190502
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301190501,
+    "SortOrder": 3,
+    "WeaponTraitId": 301190503
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301190601,
+    "SortOrder": 1,
+    "WeaponTraitId": 301190601
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301190601,
+    "SortOrder": 2,
+    "WeaponTraitId": 301190602
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301190601,
+    "SortOrder": 3,
+    "WeaponTraitId": 301190603
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301190701,
+    "SortOrder": 1,
+    "WeaponTraitId": 301190701
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301190701,
+    "SortOrder": 2,
+    "WeaponTraitId": 301190702
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301190701,
+    "SortOrder": 3,
+    "WeaponTraitId": 301190703
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301190801,
+    "SortOrder": 1,
+    "WeaponTraitId": 301190801
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301190801,
+    "SortOrder": 2,
+    "WeaponTraitId": 301190802
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301190801,
+    "SortOrder": 3,
+    "WeaponTraitId": 301190803
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301190901,
+    "SortOrder": 1,
+    "WeaponTraitId": 301190901
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301190901,
+    "SortOrder": 2,
+    "WeaponTraitId": 301190902
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301190901,
+    "SortOrder": 3,
+    "WeaponTraitId": 301190903
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301200101,
+    "SortOrder": 1,
+    "WeaponTraitId": 301200101
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301200101,
+    "SortOrder": 2,
+    "WeaponTraitId": 301200102
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301200101,
+    "SortOrder": 3,
+    "WeaponTraitId": 301200103
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301200201,
+    "SortOrder": 1,
+    "WeaponTraitId": 301200201
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301200201,
+    "SortOrder": 2,
+    "WeaponTraitId": 301200202
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301200201,
+    "SortOrder": 3,
+    "WeaponTraitId": 301200203
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301200301,
+    "SortOrder": 1,
+    "WeaponTraitId": 301200301
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301200301,
+    "SortOrder": 2,
+    "WeaponTraitId": 301200302
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301200301,
+    "SortOrder": 3,
+    "WeaponTraitId": 301200303
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301200401,
+    "SortOrder": 1,
+    "WeaponTraitId": 301200401
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301200401,
+    "SortOrder": 2,
+    "WeaponTraitId": 301200402
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301200401,
+    "SortOrder": 3,
+    "WeaponTraitId": 301200403
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301200501,
+    "SortOrder": 1,
+    "WeaponTraitId": 301200501
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301200501,
+    "SortOrder": 2,
+    "WeaponTraitId": 301200502
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301200501,
+    "SortOrder": 3,
+    "WeaponTraitId": 301200503
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301200601,
+    "SortOrder": 1,
+    "WeaponTraitId": 301200601
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301200601,
+    "SortOrder": 2,
+    "WeaponTraitId": 301200602
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301200601,
+    "SortOrder": 3,
+    "WeaponTraitId": 301200603
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301200701,
+    "SortOrder": 1,
+    "WeaponTraitId": 301200701
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301200701,
+    "SortOrder": 2,
+    "WeaponTraitId": 301200702
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301200701,
+    "SortOrder": 3,
+    "WeaponTraitId": 301200703
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301200801,
+    "SortOrder": 1,
+    "WeaponTraitId": 301200801
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301200801,
+    "SortOrder": 2,
+    "WeaponTraitId": 301200802
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301200801,
+    "SortOrder": 3,
+    "WeaponTraitId": 301200803
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301200901,
+    "SortOrder": 1,
+    "WeaponTraitId": 301200901
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301200901,
+    "SortOrder": 2,
+    "WeaponTraitId": 301200902
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301200901,
+    "SortOrder": 3,
+    "WeaponTraitId": 301200903
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301210101,
+    "SortOrder": 1,
+    "WeaponTraitId": 301210101
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301210101,
+    "SortOrder": 2,
+    "WeaponTraitId": 301210102
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301210101,
+    "SortOrder": 3,
+    "WeaponTraitId": 301210103
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301210201,
+    "SortOrder": 1,
+    "WeaponTraitId": 301210201
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301210201,
+    "SortOrder": 2,
+    "WeaponTraitId": 301210202
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301210201,
+    "SortOrder": 3,
+    "WeaponTraitId": 301210203
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301210301,
+    "SortOrder": 1,
+    "WeaponTraitId": 301210301
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301210301,
+    "SortOrder": 2,
+    "WeaponTraitId": 301210302
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301210301,
+    "SortOrder": 3,
+    "WeaponTraitId": 301210303
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301210401,
+    "SortOrder": 1,
+    "WeaponTraitId": 301210401
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301210401,
+    "SortOrder": 2,
+    "WeaponTraitId": 301210402
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301210401,
+    "SortOrder": 3,
+    "WeaponTraitId": 301210403
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301210501,
+    "SortOrder": 1,
+    "WeaponTraitId": 301210501
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301210501,
+    "SortOrder": 2,
+    "WeaponTraitId": 301210502
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301210501,
+    "SortOrder": 3,
+    "WeaponTraitId": 301210503
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301210601,
+    "SortOrder": 1,
+    "WeaponTraitId": 301210601
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301210601,
+    "SortOrder": 2,
+    "WeaponTraitId": 301210602
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301210601,
+    "SortOrder": 3,
+    "WeaponTraitId": 301210603
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301210701,
+    "SortOrder": 1,
+    "WeaponTraitId": 301210701
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301210701,
+    "SortOrder": 2,
+    "WeaponTraitId": 301210702
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301210701,
+    "SortOrder": 3,
+    "WeaponTraitId": 301210703
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301210801,
+    "SortOrder": 1,
+    "WeaponTraitId": 301210801
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301210801,
+    "SortOrder": 2,
+    "WeaponTraitId": 301210802
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301210801,
+    "SortOrder": 3,
+    "WeaponTraitId": 301210803
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301210901,
+    "SortOrder": 1,
+    "WeaponTraitId": 301210901
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301210901,
+    "SortOrder": 2,
+    "WeaponTraitId": 301210902
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301210901,
+    "SortOrder": 3,
+    "WeaponTraitId": 301210903
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301220101,
+    "SortOrder": 1,
+    "WeaponTraitId": 301220101
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301220101,
+    "SortOrder": 2,
+    "WeaponTraitId": 301220102
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301220101,
+    "SortOrder": 3,
+    "WeaponTraitId": 301220103
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301230101,
+    "SortOrder": 1,
+    "WeaponTraitId": 301230101
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301230101,
+    "SortOrder": 2,
+    "WeaponTraitId": 301230102
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301230101,
+    "SortOrder": 3,
+    "WeaponTraitId": 301230103
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301230201,
+    "SortOrder": 1,
+    "WeaponTraitId": 301230201
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301230201,
+    "SortOrder": 2,
+    "WeaponTraitId": 301230202
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301230201,
+    "SortOrder": 3,
+    "WeaponTraitId": 301230203
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301230301,
+    "SortOrder": 1,
+    "WeaponTraitId": 301230301
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301230301,
+    "SortOrder": 2,
+    "WeaponTraitId": 301230302
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301230301,
+    "SortOrder": 3,
+    "WeaponTraitId": 301230303
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301230401,
+    "SortOrder": 1,
+    "WeaponTraitId": 301230401
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301230401,
+    "SortOrder": 2,
+    "WeaponTraitId": 301230402
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301230401,
+    "SortOrder": 3,
+    "WeaponTraitId": 301230403
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301230501,
+    "SortOrder": 1,
+    "WeaponTraitId": 301230501
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301230501,
+    "SortOrder": 2,
+    "WeaponTraitId": 301230502
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301230501,
+    "SortOrder": 3,
+    "WeaponTraitId": 301230503
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301240101,
+    "SortOrder": 1,
+    "WeaponTraitId": 301240101
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301240101,
+    "SortOrder": 2,
+    "WeaponTraitId": 301240102
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301240101,
+    "SortOrder": 3,
+    "WeaponTraitId": 301240103
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301240101,
+    "SortOrder": 4,
+    "WeaponTraitId": 301240104
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301240201,
+    "SortOrder": 1,
+    "WeaponTraitId": 301240201
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301240201,
+    "SortOrder": 2,
+    "WeaponTraitId": 301240202
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301240201,
+    "SortOrder": 3,
+    "WeaponTraitId": 301240203
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301240201,
+    "SortOrder": 4,
+    "WeaponTraitId": 301240204
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301240301,
+    "SortOrder": 1,
+    "WeaponTraitId": 301240301
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301240301,
+    "SortOrder": 2,
+    "WeaponTraitId": 301240302
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301240301,
+    "SortOrder": 3,
+    "WeaponTraitId": 301240303
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301240301,
+    "SortOrder": 4,
+    "WeaponTraitId": 301240304
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301240401,
+    "SortOrder": 1,
+    "WeaponTraitId": 301240401
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301240401,
+    "SortOrder": 2,
+    "WeaponTraitId": 301240402
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301240401,
+    "SortOrder": 3,
+    "WeaponTraitId": 301240403
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301240401,
+    "SortOrder": 4,
+    "WeaponTraitId": 301240404
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301240501,
+    "SortOrder": 1,
+    "WeaponTraitId": 301240501
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301240501,
+    "SortOrder": 2,
+    "WeaponTraitId": 301240502
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301240501,
+    "SortOrder": 3,
+    "WeaponTraitId": 301240503
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301240501,
+    "SortOrder": 4,
+    "WeaponTraitId": 301240504
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301240601,
+    "SortOrder": 1,
+    "WeaponTraitId": 301240601
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301240601,
+    "SortOrder": 2,
+    "WeaponTraitId": 301240602
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301240601,
+    "SortOrder": 3,
+    "WeaponTraitId": 301240603
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301240601,
+    "SortOrder": 4,
+    "WeaponTraitId": 301240604
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301240701,
+    "SortOrder": 1,
+    "WeaponTraitId": 301240701
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301240701,
+    "SortOrder": 2,
+    "WeaponTraitId": 301240702
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301240701,
+    "SortOrder": 3,
+    "WeaponTraitId": 301240703
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301240701,
+    "SortOrder": 4,
+    "WeaponTraitId": 301240704
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301240801,
+    "SortOrder": 1,
+    "WeaponTraitId": 301240801
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301240801,
+    "SortOrder": 2,
+    "WeaponTraitId": 301240802
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301240801,
+    "SortOrder": 3,
+    "WeaponTraitId": 301240803
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301240801,
+    "SortOrder": 4,
+    "WeaponTraitId": 301240804
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301240901,
+    "SortOrder": 1,
+    "WeaponTraitId": 301240901
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301240901,
+    "SortOrder": 2,
+    "WeaponTraitId": 301240902
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301240901,
+    "SortOrder": 3,
+    "WeaponTraitId": 301240903
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301240901,
+    "SortOrder": 4,
+    "WeaponTraitId": 301240904
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301250101,
+    "SortOrder": 1,
+    "WeaponTraitId": 301250101
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301250101,
+    "SortOrder": 2,
+    "WeaponTraitId": 301250102
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301250101,
+    "SortOrder": 3,
+    "WeaponTraitId": 301250103
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301250201,
+    "SortOrder": 1,
+    "WeaponTraitId": 301250201
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301250201,
+    "SortOrder": 2,
+    "WeaponTraitId": 301250202
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301250201,
+    "SortOrder": 3,
+    "WeaponTraitId": 301250203
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301250301,
+    "SortOrder": 1,
+    "WeaponTraitId": 301250301
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301250301,
+    "SortOrder": 2,
+    "WeaponTraitId": 301250302
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301250301,
+    "SortOrder": 3,
+    "WeaponTraitId": 301250303
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301250401,
+    "SortOrder": 1,
+    "WeaponTraitId": 301250401
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301250401,
+    "SortOrder": 2,
+    "WeaponTraitId": 301250402
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301250401,
+    "SortOrder": 3,
+    "WeaponTraitId": 301250403
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301250501,
+    "SortOrder": 1,
+    "WeaponTraitId": 301250501
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301250501,
+    "SortOrder": 2,
+    "WeaponTraitId": 301250502
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301250501,
+    "SortOrder": 3,
+    "WeaponTraitId": 301250503
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301250601,
+    "SortOrder": 1,
+    "WeaponTraitId": 301250601
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301250601,
+    "SortOrder": 2,
+    "WeaponTraitId": 301250602
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301250601,
+    "SortOrder": 3,
+    "WeaponTraitId": 301250603
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301250701,
+    "SortOrder": 1,
+    "WeaponTraitId": 301250701
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301250701,
+    "SortOrder": 2,
+    "WeaponTraitId": 301250702
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301250701,
+    "SortOrder": 3,
+    "WeaponTraitId": 301250703
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301250801,
+    "SortOrder": 1,
+    "WeaponTraitId": 301250801
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301250801,
+    "SortOrder": 2,
+    "WeaponTraitId": 301250802
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301250801,
+    "SortOrder": 3,
+    "WeaponTraitId": 301250803
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301250901,
+    "SortOrder": 1,
+    "WeaponTraitId": 301250901
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301250901,
+    "SortOrder": 2,
+    "WeaponTraitId": 301250902
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301250901,
+    "SortOrder": 3,
+    "WeaponTraitId": 301250903
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301260101,
+    "SortOrder": 1,
+    "WeaponTraitId": 301260101
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301260101,
+    "SortOrder": 2,
+    "WeaponTraitId": 301260102
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301260101,
+    "SortOrder": 3,
+    "WeaponTraitId": 301260103
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301260201,
+    "SortOrder": 1,
+    "WeaponTraitId": 301260201
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301260201,
+    "SortOrder": 2,
+    "WeaponTraitId": 301260202
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301260201,
+    "SortOrder": 3,
+    "WeaponTraitId": 301260203
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301260301,
+    "SortOrder": 1,
+    "WeaponTraitId": 301260301
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301260301,
+    "SortOrder": 2,
+    "WeaponTraitId": 301260302
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301260301,
+    "SortOrder": 3,
+    "WeaponTraitId": 301260303
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301260401,
+    "SortOrder": 1,
+    "WeaponTraitId": 301260401
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301260401,
+    "SortOrder": 2,
+    "WeaponTraitId": 301260402
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301260401,
+    "SortOrder": 3,
+    "WeaponTraitId": 301260403
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301260501,
+    "SortOrder": 1,
+    "WeaponTraitId": 301260501
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301260501,
+    "SortOrder": 2,
+    "WeaponTraitId": 301260502
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301260501,
+    "SortOrder": 3,
+    "WeaponTraitId": 301260503
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301260601,
+    "SortOrder": 1,
+    "WeaponTraitId": 301260601
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301260601,
+    "SortOrder": 2,
+    "WeaponTraitId": 301260602
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301260601,
+    "SortOrder": 3,
+    "WeaponTraitId": 301260603
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301260701,
+    "SortOrder": 1,
+    "WeaponTraitId": 301260701
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301260701,
+    "SortOrder": 2,
+    "WeaponTraitId": 301260702
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301260701,
+    "SortOrder": 3,
+    "WeaponTraitId": 301260703
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301260801,
+    "SortOrder": 1,
+    "WeaponTraitId": 301260801
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301260801,
+    "SortOrder": 2,
+    "WeaponTraitId": 301260802
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301260801,
+    "SortOrder": 3,
+    "WeaponTraitId": 301260803
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301260901,
+    "SortOrder": 1,
+    "WeaponTraitId": 301260901
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301260901,
+    "SortOrder": 2,
+    "WeaponTraitId": 301260902
+  },
+  {
+    "MapNpcWeaponTraitSetId": 301260901,
+    "SortOrder": 3,
+    "WeaponTraitId": 301260903
   },
   {
     "MapNpcWeaponTraitSetId": 310380101,
@@ -13273,6 +16103,16 @@
     "MapNpcWeaponTraitSetId": 700660901,
     "SortOrder": 2,
     "WeaponTraitId": 700660902
+  },
+  {
+    "MapNpcWeaponTraitSetId": 700660903,
+    "SortOrder": 1,
+    "WeaponTraitId": 300210201
+  },
+  {
+    "MapNpcWeaponTraitSetId": 700660903,
+    "SortOrder": 2,
+    "WeaponTraitId": 300570501
   },
   {
     "MapNpcWeaponTraitSetId": 990000101,

@@ -14,5 +14,21 @@
     "GashaContainerDestroyAnimationTypeIndex": 3,
     "AttackBgmCueSheetName": "",
     "BgmHandoverOverrideSeriesId": 0
+  },
+  {
+    "GashaId": 2609500301,
+    "GashaContentDetailId": 11175001050,
+    "AttackMovieResourceId": "gasha_additional_attack_g1750u01050",
+    "GashaContainerDestroyAnimationTypeIndex": 3,
+    "AttackBgmCueSheetName": "bgm_1750_0001",
+    "BgmHandoverOverrideSeriesId": 1750
+  },
+  {
+    "GashaId": 2609500301,
+    "GashaContentDetailId": 11850004850,
+    "AttackMovieResourceId": "gasha_additional_attack_g8500u04850",
+    "GashaContainerDestroyAnimationTypeIndex": 3,
+    "AttackBgmCueSheetName": "bgm_1750_0009",
+    "BgmHandoverOverrideSeriesId": 1750
   }
 ]

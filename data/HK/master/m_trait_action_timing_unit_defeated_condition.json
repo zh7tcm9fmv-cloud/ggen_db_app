@@ -106,5 +106,29 @@
     "AllyTypeIndex": 1,
     "MainUnitIds": "",
     "CharacterIds": "2370001500"
+  },
+  {
+    "Id": 100000023,
+    "AllyTypeIndex": 1,
+    "MainUnitIds": "",
+    "CharacterIds": "1175000700"
+  },
+  {
+    "Id": 100000024,
+    "AllyTypeIndex": 1,
+    "MainUnitIds": "",
+    "CharacterIds": "1175001200"
+  },
+  {
+    "Id": 100000025,
+    "AllyTypeIndex": 1,
+    "MainUnitIds": "",
+    "CharacterIds": "1175001700"
+  },
+  {
+    "Id": 100000026,
+    "AllyTypeIndex": 1,
+    "MainUnitIds": "",
+    "CharacterIds": "1175001800"
   }
 ]

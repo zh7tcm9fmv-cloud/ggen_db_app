@@ -140,6 +140,16 @@
     "SeriesId": 1620
   },
   {
+    "Id": 1750,
+    "DefaultBackgroundResourceId": "",
+    "CompleteBackgroundResourceId": "",
+    "LogoResourceId": "series_1750",
+    "IsVisibleTop": true,
+    "ScenarioStageSeriesId": 1750,
+    "ScheduleId": 2609501801,
+    "SeriesId": 1750
+  },
+  {
     "Id": 2000,
     "DefaultBackgroundResourceId": "",
     "CompleteBackgroundResourceId": "",

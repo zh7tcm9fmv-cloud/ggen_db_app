@@ -18,6 +18,12 @@
     "Bgm": "bgm_1620_0001"
   },
   {
+    "Id": 1750,
+    "ScenarioStageSeriesId": 1750,
+    "ScheduleId": 2609509903,
+    "Bgm": "bgm_1750_0001"
+  },
+  {
     "Id": 2190,
     "ScenarioStageSeriesId": 2190,
     "ScheduleId": 2603609902,

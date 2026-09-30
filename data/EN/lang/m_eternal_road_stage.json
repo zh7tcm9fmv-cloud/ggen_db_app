@@ -92,6 +92,10 @@
     "value": "Mobile Suit Gundam F91"
   },
   {
+    "id": 130100000090500030,
+    "value": "Mobile Suit V Gundam"
+  },
+  {
     "id": 130100000090510001,
     "value": "U.C. Series"
   },
@@ -228,6 +232,10 @@
     "value": "Lightning-Fast"
   },
   {
+    "id": 130100000090510039,
+    "value": "Mobile Suit V Gundam"
+  },
+  {
     "id": 130100000090520001,
     "value": "U.C. Series"
   },
@@ -338,5 +346,9 @@
   {
     "id": 130100000090520031,
     "value": "Lightning-Fast"
+  },
+  {
+    "id": 130100000090520032,
+    "value": "Mobile Suit V Gundam"
   }
 ]

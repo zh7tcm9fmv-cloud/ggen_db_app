@@ -230,6 +230,26 @@
     "ScheduleId": 2606509901
   },
   {
+    "Id": 1175001100,
+    "ResourceId": "g1750u01100",
+    "NameLanguageId": 110100001175001100,
+    "ProfileLanguageId": 110200001175001100,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 1750,
+    "ModelNumber": "ZMTS33S",
+    "ScheduleId": 2609509901
+  },
+  {
+    "Id": 1175001900,
+    "ResourceId": "g1750u01900",
+    "NameLanguageId": 110100001175001900,
+    "ProfileLanguageId": 110200001175001900,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 1750,
+    "ModelNumber": "LM314V21",
+    "ScheduleId": 2609509901
+  },
+  {
     "Id": 1200000100,
     "ResourceId": "g2000u00100",
     "NameLanguageId": 110100001200000100,

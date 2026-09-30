@@ -1232,6 +1232,174 @@
     "value": "6: Development Requests"
   },
   {
+    "id": 100901117500010001,
+    "value": "1: Squad Enhancements"
+  },
+  {
+    "id": 100901117500010002,
+    "value": "1: Mobile Suit Delivery"
+  },
+  {
+    "id": 100901117500010003,
+    "value": "2: Squad Enhancements"
+  },
+  {
+    "id": 100901117500010004,
+    "value": "2: Mobile Suit Delivery"
+  },
+  {
+    "id": 100901117500010005,
+    "value": "3: Squad Enhancements"
+  },
+  {
+    "id": 100901117500010006,
+    "value": "3: Mobile Suit Delivery"
+  },
+  {
+    "id": 100901117500010007,
+    "value": "4: Squad Enhancements"
+  },
+  {
+    "id": 100901117500010008,
+    "value": "4: Mobile Suit Delivery"
+  },
+  {
+    "id": 100901117500010009,
+    "value": "5: Squad Enhancements"
+  },
+  {
+    "id": 100901117500010010,
+    "value": "5: Mobile Suit Delivery"
+  },
+  {
+    "id": 100901117500010011,
+    "value": "6: Squad Enhancements"
+  },
+  {
+    "id": 100901117500010012,
+    "value": "6: Mobile Suit Delivery"
+  },
+  {
+    "id": 100901117500010013,
+    "value": "6: Raise Funds"
+  },
+  {
+    "id": 100901117500010014,
+    "value": "6: Development Requests"
+  },
+  {
+    "id": 100901117500050101,
+    "value": "1: Development Requests"
+  },
+  {
+    "id": 100901117500050102,
+    "value": "1: Mobile Suit Delivery"
+  },
+  {
+    "id": 100901117500050103,
+    "value": "2: Development Requests"
+  },
+  {
+    "id": 100901117500050104,
+    "value": "2: Mobile Suit Delivery"
+  },
+  {
+    "id": 100901117500050105,
+    "value": "3: Development Requests"
+  },
+  {
+    "id": 100901117500050106,
+    "value": "3: Mobile Suit Delivery"
+  },
+  {
+    "id": 100901117500050107,
+    "value": "4: Development Requests"
+  },
+  {
+    "id": 100901117500050108,
+    "value": "4: Mobile Suit Delivery"
+  },
+  {
+    "id": 100901117500050109,
+    "value": "5: Development Requests"
+  },
+  {
+    "id": 100901117500050110,
+    "value": "5: Mobile Suit Delivery"
+  },
+  {
+    "id": 100901117500050111,
+    "value": "6: Squad Enhancements"
+  },
+  {
+    "id": 100901117500050112,
+    "value": "6: Mobile Suit Delivery"
+  },
+  {
+    "id": 100901117500050113,
+    "value": "6: Raise Funds"
+  },
+  {
+    "id": 100901117500050114,
+    "value": "6: Development Requests"
+  },
+  {
+    "id": 100901117500340101,
+    "value": "1: Sortie Requests"
+  },
+  {
+    "id": 100901117500340102,
+    "value": "1: Raise Funds"
+  },
+  {
+    "id": 100901117500340103,
+    "value": "2: Sortie Requests"
+  },
+  {
+    "id": 100901117500340104,
+    "value": "2: Raise Funds"
+  },
+  {
+    "id": 100901117500340105,
+    "value": "3: Sortie Requests"
+  },
+  {
+    "id": 100901117500340106,
+    "value": "3: Raise Funds"
+  },
+  {
+    "id": 100901117500340107,
+    "value": "4: Sortie Requests"
+  },
+  {
+    "id": 100901117500340108,
+    "value": "4: Raise Funds"
+  },
+  {
+    "id": 100901117500340109,
+    "value": "5: Sortie Requests"
+  },
+  {
+    "id": 100901117500340110,
+    "value": "5: Raise Funds"
+  },
+  {
+    "id": 100901117500340111,
+    "value": "6: Squad Enhancements"
+  },
+  {
+    "id": 100901117500340112,
+    "value": "6: Mobile Suit Delivery"
+  },
+  {
+    "id": 100901117500340113,
+    "value": "6: Raise Funds"
+  },
+  {
+    "id": 100901117500340114,
+    "value": "6: Development Requests"
+  },
+  {
     "id": 100901120000010101,
     "value": "1: Squad Enhancements"
   },
@@ -3296,6 +3464,66 @@
     "value": "5: Special Request from Carozzo"
   },
   {
+    "id": 100902117500010001,
+    "value": "1: Special Request from Uso"
+  },
+  {
+    "id": 100902117500010002,
+    "value": "2: Special Request from Uso"
+  },
+  {
+    "id": 100902117500010003,
+    "value": "3: Special Request from Uso"
+  },
+  {
+    "id": 100902117500010004,
+    "value": "4: Special Request from Uso"
+  },
+  {
+    "id": 100902117500010005,
+    "value": "5: Special Request from Uso"
+  },
+  {
+    "id": 100902117500050101,
+    "value": "1: Special Request from Katejina"
+  },
+  {
+    "id": 100902117500050102,
+    "value": "2: Special Request from Katejina"
+  },
+  {
+    "id": 100902117500050103,
+    "value": "3: Special Request from Katejina"
+  },
+  {
+    "id": 100902117500050104,
+    "value": "4: Special Request from Katejina"
+  },
+  {
+    "id": 100902117500050105,
+    "value": "5: Special Request from Katejina"
+  },
+  {
+    "id": 100902117500340101,
+    "value": "1: Special Request from Shakti"
+  },
+  {
+    "id": 100902117500340102,
+    "value": "2: Special Request from Shakti"
+  },
+  {
+    "id": 100902117500340103,
+    "value": "3: Special Request from Shakti"
+  },
+  {
+    "id": 100902117500340104,
+    "value": "4: Special Request from Shakti"
+  },
+  {
+    "id": 100902117500340105,
+    "value": "5: Special Request from Shakti"
+  },
+  {
     "id": 100902120000010101,
     "value": "1: Special Request from Domon"
   },
@@ -5162,6 +5390,174 @@
   {
     "id": 101301116200060014,
     "value": "Develop units from the \"Mobile Suit Gundam F91\" series 3 times."
+  },
+  {
+    "id": 101301117500010001,
+    "value": "Use 1 Unit Upgrade Data to upgrade \"Mobile Suit V Gundam\" series units."
+  },
+  {
+    "id": 101301117500010002,
+    "value": "Transfer \"[N] Jamesgun.\""
+  },
+  {
+    "id": 101301117500010003,
+    "value": "Use 2 Unit Upgrade Data to upgrade \"Mobile Suit V Gundam\" series units."
+  },
+  {
+    "id": 101301117500010004,
+    "value": "Transfer \"[R] Javelin.\""
+  },
+  {
+    "id": 101301117500010005,
+    "value": "Use 3 Unit Upgrade Data to upgrade \"Mobile Suit V Gundam\" series units."
+  },
+  {
+    "id": 101301117500010006,
+    "value": "Transfer \"[R] Gun EZ.\""
+  },
+  {
+    "id": 101301117500010007,
+    "value": "Use 4 Unit Upgrade Data to upgrade \"Mobile Suit V Gundam\" series units."
+  },
+  {
+    "id": 101301117500010008,
+    "value": "Transfer \"[SR] Gun Blaster.\""
+  },
+  {
+    "id": 101301117500010009,
+    "value": "Use 5 Unit Upgrade Data to upgrade \"Mobile Suit V Gundam\" series units."
+  },
+  {
+    "id": 101301117500010010,
+    "value": "Transfer \"[SR] Victory Gundam.\""
+  },
+  {
+    "id": 101301117500010011,
+    "value": "Use 5 Unit Upgrade Data to upgrade \"Mobile Suit V Gundam\" series units."
+  },
+  {
+    "id": 101301117500010012,
+    "value": "Transfer \"[SR] V-Dash Gundam.\""
+  },
+  {
+    "id": 101301117500010013,
+    "value": "Transfer 5000 Capital."
+  },
+  {
+    "id": 101301117500010014,
+    "value": "Develop units from the \"Mobile Suit V Gundam\" series 3 times."
+  },
+  {
+    "id": 101301117500050101,
+    "value": "Develop units from the \"Mobile Suit V Gundam\" series 1 time."
+  },
+  {
+    "id": 101301117500050102,
+    "value": "Transfer \"[N] Zolo.\""
+  },
+  {
+    "id": 101301117500050103,
+    "value": "Develop units from the \"Mobile Suit V Gundam\" series 2 times."
+  },
+  {
+    "id": 101301117500050104,
+    "value": "Transfer \"[R] Zollidia.\""
+  },
+  {
+    "id": 101301117500050105,
+    "value": "Develop units from the \"Mobile Suit V Gundam\" series 3 times."
+  },
+  {
+    "id": 101301117500050106,
+    "value": "Transfer \"[R] Gedlav.\""
+  },
+  {
+    "id": 101301117500050107,
+    "value": "Develop units from the \"Mobile Suit V Gundam\" series 4 times."
+  },
+  {
+    "id": 101301117500050108,
+    "value": "Transfer \"[SR] Jabaco & Twinrad.\""
+  },
+  {
+    "id": 101301117500050109,
+    "value": "Develop units from the \"Mobile Suit V Gundam\" series 5 times."
+  },
+  {
+    "id": 101301117500050110,
+    "value": "Transfer \"[SR] Contio.\""
+  },
+  {
+    "id": 101301117500050111,
+    "value": "Use 5 Unit Upgrade Data to upgrade \"Mobile Suit V Gundam\" series units."
+  },
+  {
+    "id": 101301117500050112,
+    "value": "Transfer \"[SR] Rig Shokew.\""
+  },
+  {
+    "id": 101301117500050113,
+    "value": "Transfer 5000 Capital."
+  },
+  {
+    "id": 101301117500050114,
+    "value": "Develop units from the \"Mobile Suit V Gundam\" series 3 times."
+  },
+  {
+    "id": 101301117500340101,
+    "value": "Clear a stage from series \"Mobile Suit V Gundam\" 1 time."
+  },
+  {
+    "id": 101301117500340102,
+    "value": "Transfer 1000 Capital."
+  },
+  {
+    "id": 101301117500340103,
+    "value": "Clear a stage from series \"Mobile Suit V Gundam\" 2 times."
+  },
+  {
+    "id": 101301117500340104,
+    "value": "Transfer 1500 Capital."
+  },
+  {
+    "id": 101301117500340105,
+    "value": "Clear a stage from series \"Mobile Suit V Gundam\" 3 times."
+  },
+  {
+    "id": 101301117500340106,
+    "value": "Transfer 2000 Capital."
+  },
+  {
+    "id": 101301117500340107,
+    "value": "Clear a stage from series \"Mobile Suit V Gundam\" 4 times."
+  },
+  {
+    "id": 101301117500340108,
+    "value": "Transfer 3000 Capital."
+  },
+  {
+    "id": 101301117500340109,
+    "value": "Clear a stage from series \"Mobile Suit V Gundam\" 5 times."
+  },
+  {
+    "id": 101301117500340110,
+    "value": "Transfer 4000 Capital."
+  },
+  {
+    "id": 101301117500340111,
+    "value": "Use 5 Unit Upgrade Data to upgrade \"Mobile Suit V Gundam\" series units."
+  },
+  {
+    "id": 101301117500340112,
+    "value": "Transfer \"[SR] Gun Blaster.\""
+  },
+  {
+    "id": 101301117500340113,
+    "value": "Transfer 5000 Capital."
+  },
+  {
+    "id": 101301117500340114,
+    "value": "Develop units from the \"Mobile Suit V Gundam\" series 3 times."
   },
   {
     "id": 101301120000010101,
@@ -7226,6 +7622,66 @@
   {
     "id": 101302116200060005,
     "value": "Transfer \"[SSR] Berga-Giros (Enhanced Armament Type).\""
+  },
+  {
+    "id": 101302117500010001,
+    "value": "Transfer \"[R] Shokew.\""
+  },
+  {
+    "id": 101302117500010002,
+    "value": "Transfer \"[R] Gun EZ.\""
+  },
+  {
+    "id": 101302117500010003,
+    "value": "Transfer \"[SR] Victory Gundam.\""
+  },
+  {
+    "id": 101302117500010004,
+    "value": "Transfer \"[SR] V-Dash Gundam.\""
+  },
+  {
+    "id": 101302117500010005,
+    "value": "Transfer \"[SSR] V2 Gundam.\""
+  },
+  {
+    "id": 101302117500050101,
+    "value": "Transfer \"[R] Memedorza.\""
+  },
+  {
+    "id": 101302117500050102,
+    "value": "Transfer \"[R] Jabaco.\""
+  },
+  {
+    "id": 101302117500050103,
+    "value": "Transfer \"[SR] Rig Shokew.\""
+  },
+  {
+    "id": 101302117500050104,
+    "value": "Transfer \"[SR] Gedlav & Einerad.\""
+  },
+  {
+    "id": 101302117500050105,
+    "value": "Transfer \"[SSR] Gottrlatan.\""
+  },
+  {
+    "id": 101302117500340101,
+    "value": "Transfer \"[N] Combat Bike (Type B).\""
+  },
+  {
+    "id": 101302117500340102,
+    "value": "Transfer \"[R] Gedlav.\""
+  },
+  {
+    "id": 101302117500340103,
+    "value": "Transfer \"[R] Javelin.\""
+  },
+  {
+    "id": 101302117500340104,
+    "value": "Transfer \"[SR] Victory Gundam.\""
+  },
+  {
+    "id": 101302117500340105,
+    "value": "Transfer \"[SSR] Rig Contio.\""
   },
   {
     "id": 101302120000010101,

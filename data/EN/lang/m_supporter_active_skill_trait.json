@@ -152,6 +152,10 @@
     "value": "EN Restoration"
   },
   {
+    "id": 160400001175000250,
+    "value": "EN Restoration"
+  },
+  {
     "id": 160400001200000150,
     "value": "EN Restoration"
   },
@@ -512,6 +516,10 @@
     "value": "Allies in range:\nRestore EN by 40%"
   },
   {
+    "id": 160500001175000250,
+    "value": "Allies in range:\nRestore EN by 40%"
+  },
+  {
     "id": 160500001200000150,
     "value": "Allies in range:\nRestore EN by 50%"
   },
@@ -720,12 +728,28 @@
     "value": "Allies in range:\nRestore HP by 30%"
   },
   {
+    "id": 161000001175000150,
+    "value": "HP Restoration"
+  },
+  {
+    "id": 161000001175000151,
+    "value": "Damage Reduction"
+  },
+  {
     "id": 161000001370000550,
     "value": "HP Restoration"
   },
   {
     "id": 161000001370000551,
     "value": "Damage Reduced"
+  },
+  {
+    "id": 161100001175000150,
+    "value": "Allies in range:\nRestore HP by 30%"
+  },
+  {
+    "id": 161100001175000151,
+    "value": "Reduce damage taken by 15% (1turn(s))."
   },
   {
     "id": 161100001370000550,

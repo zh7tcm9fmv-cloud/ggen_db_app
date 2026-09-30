@@ -228,6 +228,30 @@
     "CharacterId": 1166000100
   },
   {
+    "GashaContentDetailId": 11175001050,
+    "CharacterId": 1175000101
+  },
+  {
+    "GashaContentDetailId": 11175001150,
+    "CharacterId": 1175000500
+  },
+  {
+    "GashaContentDetailId": 11175001310,
+    "CharacterId": 1175000201
+  },
+  {
+    "GashaContentDetailId": 11175001710,
+    "CharacterId": 1175000701
+  },
+  {
+    "GashaContentDetailId": 11175002610,
+    "CharacterId": 1175000400
+  },
+  {
+    "GashaContentDetailId": 11175004610,
+    "CharacterId": 1175001900
+  },
+  {
     "GashaContentDetailId": 11200000410,
     "CharacterId": 1200000204
   },
@@ -550,5 +574,9 @@
   {
     "GashaContentDetailId": 11850001650,
     "CharacterId": 1850001501
+  },
+  {
+    "GashaContentDetailId": 11850004850,
+    "CharacterId": 1175000601
   }
 ]

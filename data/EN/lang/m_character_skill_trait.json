@@ -1092,6 +1092,14 @@
     "value": "Zero Ammo LV 3"
   },
   {
+    "id": 141300000390280401,
+    "value": "Ranged Boost LV 4"
+  },
+  {
+    "id": 141300000390280402,
+    "value": "Save EN LV 4"
+  },
+  {
     "id": 141400000270130101,
     "value": "Increase Accuracy by 15% (1 turn(s))."
   },
@@ -1174,5 +1182,13 @@
   {
     "id": 141400000330220302,
     "value": "Can be used once without consuming MAP Weapon's remaining ammo."
+  },
+  {
+    "id": 141400000390280401,
+    "value": "Increase Ranged by 20% [1 turn]."
+  },
+  {
+    "id": 141400000390280402,
+    "value": "Reduce weapons EN consumption by 20% [1 turn(s)]."
   }
 ]

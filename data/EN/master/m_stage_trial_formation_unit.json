@@ -1,0 +1,18 @@
+[
+  {
+    "StageTrialFormationSetId": 1,
+    "ForceNumber": 1,
+    "SlotIndex": 1,
+    "UnitId": 1175001050,
+    "StageTrialFormationUnitSpecId": 1,
+    "OptionPartsId": 0
+  },
+  {
+    "StageTrialFormationSetId": 2,
+    "ForceNumber": 1,
+    "SlotIndex": 1,
+    "UnitId": 1850004850,
+    "StageTrialFormationUnitSpecId": 1,
+    "OptionPartsId": 0
+  }
+]

@@ -65,6 +65,58 @@
     "OverrideTraitActionTimingTypeIndex": 11
   },
   {
+    "Id": 117500105011,
+    "UnitSkillId": 117500105000,
+    "NameLanguageId": 141500117500105011,
+    "DescriptionLanguageId": 141600117500105011,
+    "ResourceId": "trait_10270101",
+    "TraitTypeIndex": 10,
+    "TraitValue": 1,
+    "BuffLabelColorTypeIndex": 3,
+    "IsDisplayUpDown": false,
+    "ActiveTraitConditionSetId": 0,
+    "OverrideTraitActionTimingTypeIndex": 0
+  },
+  {
+    "Id": 117500105012,
+    "UnitSkillId": 117500105000,
+    "NameLanguageId": 141500117500105012,
+    "DescriptionLanguageId": 141600117500105012,
+    "ResourceId": "trait_10060101",
+    "TraitTypeIndex": 7,
+    "TraitValue": 10,
+    "BuffLabelColorTypeIndex": 3,
+    "IsDisplayUpDown": false,
+    "ActiveTraitConditionSetId": 0,
+    "OverrideTraitActionTimingTypeIndex": 3
+  },
+  {
+    "Id": 117500105013,
+    "UnitSkillId": 117500105000,
+    "NameLanguageId": 141500117500105013,
+    "DescriptionLanguageId": 141600117500105013,
+    "ResourceId": "trait_10590101",
+    "TraitTypeIndex": 11,
+    "TraitValue": 20,
+    "BuffLabelColorTypeIndex": 3,
+    "IsDisplayUpDown": false,
+    "ActiveTraitConditionSetId": 1000005,
+    "OverrideTraitActionTimingTypeIndex": 0
+  },
+  {
+    "Id": 117500105014,
+    "UnitSkillId": 117500105000,
+    "NameLanguageId": 141500117500105014,
+    "DescriptionLanguageId": 141600117500105014,
+    "ResourceId": "trait_10120701",
+    "TraitTypeIndex": 12,
+    "TraitValue": 3,
+    "BuffLabelColorTypeIndex": 3,
+    "IsDisplayUpDown": false,
+    "ActiveTraitConditionSetId": 0,
+    "OverrideTraitActionTimingTypeIndex": 0
+  },
+  {
     "Id": 137000595011,
     "UnitSkillId": 137000595000,
     "NameLanguageId": 141500137000595011,

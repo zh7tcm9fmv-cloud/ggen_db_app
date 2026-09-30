@@ -6,5 +6,9 @@
   {
     "WeaponEffectPrefabPairSetId": 80062,
     "FinalHitEffectId": "ef_mpd_0025_01_eternalhit_wing"
+  },
+  {
+    "WeaponEffectPrefabPairSetId": 80085,
+    "FinalHitEffectId": "ef_mpd_0025_01_eternalhit_v2assault"
   }
 ]

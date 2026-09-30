@@ -48,6 +48,46 @@
     "value": "Hint 4-2"
   },
   {
+    "id": 360190520006000001,
+    "value": "Hint 1"
+  },
+  {
+    "id": 360190520006000002,
+    "value": "Hint 2"
+  },
+  {
+    "id": 360190520006000003,
+    "value": "Hint 3"
+  },
+  {
+    "id": 360190520014000001,
+    "value": "Hint 1"
+  },
+  {
+    "id": 360190520014000002,
+    "value": "Hint 2"
+  },
+  {
+    "id": 360190520014000003,
+    "value": "Hint 3"
+  },
+  {
+    "id": 360190520014000004,
+    "value": "Hint 4"
+  },
+  {
+    "id": 360190520014000005,
+    "value": "Hint 5"
+  },
+  {
+    "id": 360190520016000001,
+    "value": "Hint 1"
+  },
+  {
+    "id": 360190520016000002,
+    "value": "Hint 2"
+  },
+  {
     "id": 360190520017000001,
     "value": "Hint"
   },
@@ -86,6 +126,18 @@
   {
     "id": 360190520021000003,
     "value": "Hint 2-2"
+  },
+  {
+    "id": 360190520024000001,
+    "value": "Hint 1"
+  },
+  {
+    "id": 360190520024000002,
+    "value": "Hint 2"
+  },
+  {
+    "id": 360190520024000003,
+    "value": "Hint 3"
   },
   {
     "id": 360290520001000001,
@@ -132,6 +184,46 @@
     "value": "In this stage, the reinforcements that appear after defeating\n12 enemy units are positioned at a long range.\nLeverage MAP Weapons to defeat them efficiently."
   },
   {
+    "id": 360290520006000001,
+    "value": "You will lose if Kamille Bidan, Emma Sheen, or Quattro Bajeena\nis defeated. Add characters (units) with Support Defense to your\nformation, use Chance Steps, and protect the guest forces."
+  },
+  {
+    "id": 360290520006000002,
+    "value": "Guest forces can use your forces' Support Attacks/Defenses.\nDefeat enemies by using Support Attacks and trigger Chance Steps\nto move to positions where you can protect the guest forces."
+  },
+  {
+    "id": 360290520006000003,
+    "value": "The enemy forces' main squad is positioned in the upper left,\ncenter, and lower right. Try to move your forces' units so that\ntheir combat power is distributed evenly."
+  },
+  {
+    "id": 360290520014000001,
+    "value": "The Ptolemaios 2 has the Increased DEF (All) ability. Prioritize\ndestroying it while letting nearby units exhaust their Support\nDefense uses."
+  },
+  {
+    "id": 360290520014000002,
+    "value": "After clearing mission objectives, Seraphim Gundam, which lowers\nyour squad's MOV, and 00 Raiser Final Battle Type will appear.\nPosition your units near its spawn point to destroy it quickly."
+  },
+  {
+    "id": 360290520014000003,
+    "value": "When the enemy 00 Raiser Final Battle Type's HP falls below 50%,\nCherudim Gundam and Arios Gundam will appear as reinforcements.\nNote they will revive once with 50% HP after being defeated."
+  },
+  {
+    "id": 360290520014000004,
+    "value": "The reinforcements' Cherudim Gundam executes Support Attack from\na long range. However, the attack will not reach at certain\nranges, so be sure to avoid Counters and destroy it."
+  },
+  {
+    "id": 360290520014000005,
+    "value": "Be careful of the Arios Gundam, as it attacks repeatedly with\nGuaranteed Chance Step. Use durability-type units to protect\nyour forces and try to destroy it with Counters."
+  },
+  {
+    "id": 360290520016000001,
+    "value": "If Gundam Aerial (Rebuild) survives, 6 Gundnode [MA]\nunits will appear as reinforcements every turn. They have\nrelatively low HP, so try to wipe them out every turn."
+  },
+  {
+    "id": 360290520016000002,
+    "value": "Gundam Calibarn has a long range and a strong Support Attack, so\nbe sure to destroy it early. Place your forces between enemies\nwith Support Defense to attack without allowing Support Defense."
+  },
+  {
     "id": 360290520017000001,
     "value": "A large number of enemy units are deployed in this stage,\nand as you clear mission objectives, even more will appear.\nLeverage MAP Weapons to defeat the enemy efficiently."
   },
@@ -170,5 +262,17 @@
   {
     "id": 360290520021000003,
     "value": "In this stage, reinforcements appear when you defeat certain\nunits. Pay attention to the order in which\nyou defeat them to reach the target area efficiently."
+  },
+  {
+    "id": 360290520024000001,
+    "value": "Prioritize defeating Pale Rider (Ground Heavy Equipment Type) \nand Efreet Customs. Each of them provides a 300% DEF increase\nto Yuu Kajima and Nimbus Schterzen, who have Support Defense."
+  },
+  {
+    "id": 360290520024000002,
+    "value": "Some enemies have an ability that restores half of their HP when\nit falls below 50%. Use skills or Support Attacks while their\nremaining HP is above 50% to take them down right away."
+  },
+  {
+    "id": 360290520024000003,
+    "value": "Banagher Links and Riddhe Marcenas have Support Defense and\nappear as enemy reinforcements at the start of the turn 1 enemy\nphase. Defeat as many enemies as possible before they appear."
   }
 ]

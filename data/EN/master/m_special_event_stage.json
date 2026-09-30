@@ -194,5 +194,33 @@
     "ConsumeSpecialEventStageTicketAmount": 0,
     "DisplayScheduleId": 0,
     "DisplayIfHasTicket": false
+  },
+  {
+    "Id": 99000118,
+    "SpecialEventGroupId": 220013,
+    "StageId": 99000118,
+    "Priority": 1,
+    "StageNameLanguageId": 130100000099000118,
+    "ThumbnailResourceId": "sp_stage_event_thum_99000118",
+    "DescriptionLanguageId": 310200000099000118,
+    "HomeBannerResourceId": "sp_stage_event_home_banner_99000118",
+    "ConsumeSpecialEventStageTicketId": 0,
+    "ConsumeSpecialEventStageTicketAmount": 0,
+    "DisplayScheduleId": 0,
+    "DisplayIfHasTicket": false
+  },
+  {
+    "Id": 99000119,
+    "SpecialEventGroupId": 220013,
+    "StageId": 99000119,
+    "Priority": 2,
+    "StageNameLanguageId": 130100000099000119,
+    "ThumbnailResourceId": "sp_stage_event_thum_99000119",
+    "DescriptionLanguageId": 310200000099000119,
+    "HomeBannerResourceId": "sp_stage_event_home_banner_99000118",
+    "ConsumeSpecialEventStageTicketId": 0,
+    "ConsumeSpecialEventStageTicketAmount": 0,
+    "DisplayScheduleId": 0,
+    "DisplayIfHasTicket": false
   }
 ]

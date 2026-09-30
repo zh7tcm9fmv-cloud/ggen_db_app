@@ -20,6 +20,22 @@
     "value": "Increased MOB LV 2"
   },
   {
+    "id": 141500117500105011,
+    "value": "Increased MOV"
+  },
+  {
+    "id": 141500117500105012,
+    "value": "Increased MOB"
+  },
+  {
+    "id": 141500117500105013,
+    "value": "Beam Damage Reduction"
+  },
+  {
+    "id": 141500117500105014,
+    "value": "Increased MP"
+  },
+  {
     "id": 141500137000595011,
     "value": "Increased ATK"
   },
@@ -46,6 +62,22 @@
   {
     "id": 141600116300015012,
     "value": "Increase own MOB by 10% until the Initial Damage Nullification effect expires."
+  },
+  {
+    "id": 141600117500105011,
+    "value": "Increase own MOV by 1 (1 time(s))."
+  },
+  {
+    "id": 141600117500105012,
+    "value": "Increase own MOB by 10% (1 turn(s))."
+  },
+  {
+    "id": 141600117500105013,
+    "value": "When enemies attack with a beam weapon,\nreduce damage taken by 20% (1 turn(s))."
+  },
+  {
+    "id": 141600117500105014,
+    "value": "Increase own MP by 3 (1 time(s))."
   },
   {
     "id": 141600137000595011,

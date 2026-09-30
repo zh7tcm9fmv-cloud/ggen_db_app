@@ -1,0 +1,12 @@
+[
+  {
+    "Id": 1,
+    "Level": 100,
+    "DefaultWeaponLevel": 5,
+    "LimitBreakStep": 0,
+    "IsSp": false,
+    "IsSsp": false,
+    "SspLevel": 0,
+    "SspCustomCoreLevel": 0
+  }
+]

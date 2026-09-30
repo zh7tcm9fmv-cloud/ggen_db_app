@@ -532,6 +532,98 @@
     "value": "Mobile Suit Gundam HATHAWAY HARD STAGE 1"
   },
   {
+    "id": 130100000017500104,
+    "value": "The White Mobile Suit"
+  },
+  {
+    "id": 130100000017500203,
+    "value": "Radiance of a Warrior"
+  },
+  {
+    "id": 130100000017500303,
+    "value": "Sound of the Guillotine"
+  },
+  {
+    "id": 130100000017500403,
+    "value": "Striking! Shrike Team"
+  },
+  {
+    "id": 130100000017500504,
+    "value": "Battle of Gibraltar"
+  },
+  {
+    "id": 130100000017500604,
+    "value": "Space Fleet Battle"
+  },
+  {
+    "id": 130100000017500704,
+    "value": "Strike the Strategic Satellite"
+  },
+  {
+    "id": 130100000017500804,
+    "value": "Maria and Uso"
+  },
+  {
+    "id": 130100000017500902,
+    "value": "Blinding Lights Across Space"
+  },
+  {
+    "id": 130100000017501003,
+    "value": "The New Suit, V2"
+  },
+  {
+    "id": 130100000017501103,
+    "value": "Motorrad Launches"
+  },
+  {
+    "id": 130100000017501203,
+    "value": "Giant Roller Operation"
+  },
+  {
+    "id": 130100000017501303,
+    "value": "Mother, Return to the Earth"
+  },
+  {
+    "id": 130100000017501402,
+    "value": "The North Sea Aflame"
+  },
+  {
+    "id": 130100000017501503,
+    "value": "Blood in the Vortex of Light"
+  },
+  {
+    "id": 130100000017501603,
+    "value": "Fuala, Comet of the Battlefield"
+  },
+  {
+    "id": 130100000017501703,
+    "value": "The Women's Battlefield"
+  },
+  {
+    "id": 130100000017501803,
+    "value": "Above the Angel's Halo"
+  },
+  {
+    "id": 130100000017501902,
+    "value": "Showdown Born of Hatred"
+  },
+  {
+    "id": 130100000017502002,
+    "value": "Ascension of the Angels"
+  },
+  {
+    "id": 130100000017502101,
+    "value": "Mobile Suit V Gundam HARD STAGE 1"
+  },
+  {
+    "id": 130100000017502201,
+    "value": "Mobile Suit V Gundam HARD STAGE 2"
+  },
+  {
+    "id": 130100000017502301,
+    "value": "Mobile Suit V Gundam HARD STAGE 3"
+  },
+  {
     "id": 130100000030800103,
     "value": "New G"
   },
@@ -1828,6 +1920,10 @@
     "value": "Mobile Suit Gundam F91"
   },
   {
+    "id": 130100000090500030,
+    "value": "Mobile Suit V Gundam"
+  },
+  {
     "id": 130100000090510001,
     "value": "U.C. Series"
   },
@@ -1956,6 +2052,10 @@
     "value": "Lightning-Fast"
   },
   {
+    "id": 130100000090510039,
+    "value": "Mobile Suit V Gundam"
+  },
+  {
     "id": 130100000090520001,
     "value": "U.C. Series"
   },
@@ -2066,6 +2166,10 @@
   {
     "id": 130100000090520031,
     "value": "Lightning-Fast"
+  },
+  {
+    "id": 130100000090520032,
+    "value": "Mobile Suit V Gundam"
   },
   {
     "id": 130100000090800103,
@@ -2410,6 +2514,18 @@
   {
     "id": 130300001620080103,
     "value": "Defeat all enemies within 2 turns."
+  },
+  {
+    "id": 130300001750210103,
+    "value": "Defeat Cronicle Asher within 2 turns."
+  },
+  {
+    "id": 130300001750220103,
+    "value": "Defeat Uso Ewin within 2 turns."
+  },
+  {
+    "id": 130300001750230103,
+    "value": "Defeat Robert Gomez within 2 turns."
   },
   {
     "id": 999999007100000082,

@@ -2396,6 +2396,10 @@
     "value": "Clear EXPERT No.29: Test Type with only development units/other units."
   },
   {
+    "id": 180100200010003001,
+    "value": "Clear EXPERT No.30 Mobile Suit V Gundam with only development units/other units."
+  },
+  {
     "id": 180100200010100101,
     "value": "Clear EXPERT No.1 U.C. Series with 10 surviving units."
   },
@@ -2510,6 +2514,10 @@
   {
     "id": 180100200010102901,
     "value": "Clear EXPERT No.29: Test Type with 10 surviving units."
+  },
+  {
+    "id": 180100200010103001,
+    "value": "Clear EXPERT No.30 Mobile Suit V Gundam with 10 surviving units."
   },
   {
     "id": 180100200010200101,
@@ -12838,6 +12846,262 @@
   {
     "id": 180100260930031301,
     "value": "Clear \"[Special] Total War: Hard-4\" from the story event with only Mobile Suit Gundam 00F series or Celestial Being tag units in your formation."
+  },
+  {
+    "id": 180100260950010101,
+    "value": "Complete all missions for Step 1."
+  },
+  {
+    "id": 180100260950010102,
+    "value": "Clear V2 Assault Buster Gundam (EX) Special Stage."
+  },
+  {
+    "id": 180100260950010103,
+    "value": "Clear Zanspine (EX) Special Stage."
+  },
+  {
+    "id": 180100260950010104,
+    "value": "Develop 5 units."
+  },
+  {
+    "id": 180100260950010105,
+    "value": "Clear any Main Stage 10 times."
+  },
+  {
+    "id": 180100260950010201,
+    "value": "Complete all missions for Step 2."
+  },
+  {
+    "id": 180100260950010202,
+    "value": "Raise Zoloat (League Militaire)'s limit breaks to 1."
+  },
+  {
+    "id": 180100260950010203,
+    "value": "Clear an Upgrade Stages 10 times."
+  },
+  {
+    "id": 180100260950010204,
+    "value": "Upgrade 5 weapons."
+  },
+  {
+    "id": 180100260950010205,
+    "value": "Clear any Main Stage 20 times."
+  },
+  {
+    "id": 180100260950010301,
+    "value": "Complete all missions for Step 3."
+  },
+  {
+    "id": 180100260950010302,
+    "value": "Raise Zoloat (League Militaire)'s limit breaks to 2."
+  },
+  {
+    "id": 180100260950010303,
+    "value": "Upgrade 10 weapons."
+  },
+  {
+    "id": 180100260950010304,
+    "value": "Make an enemy capture 10 times."
+  },
+  {
+    "id": 180100260950010305,
+    "value": "Clear any Main Stage 30 times."
+  },
+  {
+    "id": 180100260950010401,
+    "value": "Complete all missions for Step 4."
+  },
+  {
+    "id": 180100260950010402,
+    "value": "Clear a secret battle 1 time(s) on any Main Stage (skips excluded)."
+  },
+  {
+    "id": 180100260950010403,
+    "value": "Purchase an item 3 time(s) in any shop."
+  },
+  {
+    "id": 180100260950010404,
+    "value": "Develop 20 units."
+  },
+  {
+    "id": 180100260950010405,
+    "value": "Clear any Main Stage 40 times."
+  },
+  {
+    "id": 180100260950010501,
+    "value": "Complete all missions for Step 5."
+  },
+  {
+    "id": 180100260950010502,
+    "value": "Raise Zoloat (League Militaire)'s limit breaks to 3."
+  },
+  {
+    "id": 180100260950010503,
+    "value": "Reach Zoloat (League Militaire) level 90 or higher."
+  },
+  {
+    "id": 180100260950010504,
+    "value": "Clear a stage 1 time with Zoloat (League Militaire) in your formation."
+  },
+  {
+    "id": 180100260950010505,
+    "value": "Clear any Main Stage 50 times."
+  },
+  {
+    "id": 180100260950010601,
+    "value": "Complete all missions for Step 6."
+  },
+  {
+    "id": 180100260950010602,
+    "value": "Clear stage 1 of the \"Mobile Suit V Gundam\" series."
+  },
+  {
+    "id": 180100260950010603,
+    "value": "Develop R units from the \"Mobile Suit V Gundam\" series 1 time."
+  },
+  {
+    "id": 180100260950010604,
+    "value": "Develop SR units from the \"Mobile Suit V Gundam\" series 1 time."
+  },
+  {
+    "id": 180100260950010605,
+    "value": "Develop SSR units from the \"Mobile Suit V Gundam\" series 1 time."
+  },
+  {
+    "id": 180100260950010701,
+    "value": "Complete all missions for Step 7."
+  },
+  {
+    "id": 180100260950010702,
+    "value": "Clear all stages (incl. HARD difficulty) from the \"Mobile Suit V Gundam\" series."
+  },
+  {
+    "id": 180100260950010703,
+    "value": "Capture a unit from \"Mobile Suit V Gundam\" series 20 time(s)."
+  },
+  {
+    "id": 180100260950010704,
+    "value": "Raise Limit Break to 3 or higher for \"Mobile Suit V Gundam\" series Development Diagram SSR unit."
+  },
+  {
+    "id": 180100260950010705,
+    "value": "Use 1,500 AP."
+  },
+  {
+    "id": 180100260950020001,
+    "value": "Clear all main stages (excl. HARD difficulty) from the series \"Mobile Suit V Gundam.\""
+  },
+  {
+    "id": 180100260950020002,
+    "value": "Clear all main stages (excl. HARD difficulty) from the series \"Mobile Suit V Gundam\" with a Battle Score of <sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\">."
+  },
+  {
+    "id": 180100260950041101,
+    "value": "Clear the Fierce Enemy Assault: \"Rig Ring\" stage on NORMAL difficulty or higher 1 time(s)."
+  },
+  {
+    "id": 180100260950041102,
+    "value": "Clear the Fierce Enemy Assault: \"Rig Ring\" stage on NORMAL difficulty or higher 3 time(s)."
+  },
+  {
+    "id": 180100260950041103,
+    "value": "Clear the Fierce Enemy Assault: \"Rig Ring\" stage on NORMAL difficulty or higher 5 time(s)."
+  },
+  {
+    "id": 180100260950041201,
+    "value": "Clear the Fierce Enemy Assault: \"Rig Ring\" stage on HARD difficulty or higher 5 time(s)."
+  },
+  {
+    "id": 180100260950041301,
+    "value": "Clear the Fierce Enemy Assault: \"Rig Ring\" stage on EXPERT difficulty or higher 5 time(s)."
+  },
+  {
+    "id": 180100260950041302,
+    "value": "Clear the Fierce Enemy Assault: \"Rig Ring\" stage on EXPERT difficulty or higher 20 time(s)."
+  },
+  {
+    "id": 180100260950041303,
+    "value": "Clear the Fierce Enemy Assault: \"Rig Ring\" stage on EXPERT difficulty or higher 30 time(s)."
+  },
+  {
+    "id": 180100260950041304,
+    "value": "Clear the Fierce Enemy Assault: \"Rig Ring\" stage on EXPERT difficulty or higher 35 time(s)."
+  },
+  {
+    "id": 180100260950041305,
+    "value": "Clear the Fierce Enemy Assault: \"Rig Ring\" stage on EXPERT difficulty or higher 40 time(s)."
+  },
+  {
+    "id": 180100260950041401,
+    "value": "Clear the Fierce Enemy Assault: \"Rig Ring\" stage on NORMAL difficulty or higher 10 time(s)."
+  },
+  {
+    "id": 180100260950041501,
+    "value": "Clear the Fierce Enemy Assault: \"Rig Ring\" stage on HARD difficulty or higher 10 time(s)."
+  },
+  {
+    "id": 180100260950041601,
+    "value": "Clear the Fierce Enemy Assault: \"Rig Ring\" stage on EXPERT difficulty or higher 15 time(s)."
+  },
+  {
+    "id": 180100260950041701,
+    "value": "Clear the Fierce Enemy Assault: \"Rig Ring\" stage on EXPERT difficulty or higher 10 time(s)."
+  },
+  {
+    "id": 180100260950041801,
+    "value": "Clear the Fierce Enemy Assault: \"Rig Ring\" stage on EXPERT difficulty or higher 25 time(s)."
+  },
+  {
+    "id": 180100260950080001,
+    "value": "Reach Request Rank 2 for Uso Ewin."
+  },
+  {
+    "id": 180100260950080002,
+    "value": "Reach Request Rank 3 for Uso Ewin."
+  },
+  {
+    "id": 180100260950080003,
+    "value": "Reach Request Rank 4 for Uso Ewin."
+  },
+  {
+    "id": 180100260950080004,
+    "value": "Reach Request Rank 5 for Uso Ewin."
+  },
+  {
+    "id": 180100260950080005,
+    "value": "Reach Request Rank 2 for Katejina Loos."
+  },
+  {
+    "id": 180100260950080006,
+    "value": "Reach Request Rank 3 for Katejina Loos."
+  },
+  {
+    "id": 180100260950080007,
+    "value": "Reach Request Rank 4 for Katejina Loos."
+  },
+  {
+    "id": 180100260950080008,
+    "value": "Reach Request Rank 5 for Katejina Loos."
+  },
+  {
+    "id": 180100260950080009,
+    "value": "Reach Request Rank 2 for Shakti Kareen."
+  },
+  {
+    "id": 180100260950080010,
+    "value": "Reach Request Rank 3 for Shakti Kareen."
+  },
+  {
+    "id": 180100260950080011,
+    "value": "Reach Request Rank 4 for Shakti Kareen."
+  },
+  {
+    "id": 180100260950080012,
+    "value": "Reach Request Rank 5 for Shakti Kareen."
+  },
+  {
+    "id": 180100260950090001,
+    "value": "Get all Development Diagrams from series \"Mobile Suit V Gundam\" to one hundred percent."
   },
   {
     "id": 180100300010200101,
