@@ -17463,21 +17463,49 @@ def health_check():
     """
     browse_ready = bool(CHAR_BROWSE_LIST_ROW_CACHE and UNIT_BROWSE_LIST_ROW_CACHE)
     mem = {}
+    rss_mb = None
     try:
-        import resource
-        ru = resource.getrusage(resource.RUSAGE_SELF)
-        # Linux: ru_maxrss is KB; macOS: bytes.
-        rss = int(getattr(ru, 'ru_maxrss', 0) or 0)
-        if sys.platform == 'darwin':
-            rss_mb = rss / (1024 * 1024)
-        else:
-            rss_mb = rss / 1024
-        mem['rss_mb'] = round(rss_mb, 1)
+        # Prefer current RSS (VmRSS) — ru_maxrss is a high-water mark and never shrinks.
+        if sys.platform.startswith('linux'):
+            try:
+                with open('/proc/self/status', 'r', encoding='utf-8', errors='ignore') as _sf:
+                    for _line in _sf:
+                        if _line.startswith('VmRSS:'):
+                            rss_mb = int(_line.split()[1]) / 1024.0
+                            break
+            except Exception:
+                rss_mb = None
+        if rss_mb is None:
+            import resource
+            ru = resource.getrusage(resource.RUSAGE_SELF)
+            # Linux: ru_maxrss is KB; macOS: bytes.
+            rss = int(getattr(ru, 'ru_maxrss', 0) or 0)
+            if sys.platform == 'darwin':
+                rss_mb = rss / (1024 * 1024)
+            else:
+                rss_mb = rss / 1024
+        mem['rss_mb'] = round(float(rss_mb), 1)
     except Exception:
-        pass
+        rss_mb = None
     try:
         import meta_synergy_rank as _msr_h
+        # Soft trim refillable MSY/BSP caches when RSS is high (no worker recycle).
+        if rss_mb is not None:
+            trim_info = _msr_h.trim_runtime_caches_for_rss(rss_mb=rss_mb)
+            if trim_info:
+                mem['rss_trim'] = trim_info
+                # Re-read current RSS after trim when possible.
+                if sys.platform.startswith('linux'):
+                    try:
+                        with open('/proc/self/status', 'r', encoding='utf-8', errors='ignore') as _sf2:
+                            for _line in _sf2:
+                                if _line.startswith('VmRSS:'):
+                                    mem['rss_mb'] = round(int(_line.split()[1]) / 1024.0, 1)
+                                    break
+                    except Exception:
+                        pass
         mem['msy_char_pair_cache'] = len(getattr(_msr_h, '_char_pair_cache', {}) or {})
+        mem['msy_char_pair_cache_max'] = int(getattr(_msr_h, '_CHAR_PAIR_CACHE_MAX', 0) or 0)
         mem['msy_unit_weapon_cache'] = len(getattr(_msr_h, '_unit_weapon_cache', {}) or {})
         mem['bsp_published_memory_keys'] = len(getattr(_msr_h, '_BSP_PUBLISHED_MEMORY', {}) or {})
         mem['bsp_group_lru'] = len(getattr(_msr_h, '_BSP_GROUP_LRU', {}) or {})
@@ -21452,6 +21480,10 @@ _SPI_API_PAYLOAD_CACHE = {
     'payload': None,
     'by_lang': {},  # lc -> (mtime, payload)
 }
+# Pre-serialized /ip board responses (raw JSON + gzip). Avoids re-jsonify of ~20MB every hit.
+_SPI_HTTP_BODY_CACHE = {}
+_SPI_HTTP_BODY_CACHE_LOCK = threading.Lock()
+_SPI_HTTP_BODY_CACHE_MAX = 12
 _SPI_DROP_ROW_KEYS = frozenset({'meta', 'detail_lines', 'calibration'})
 # Always keep these breakdown axes even at 0 so the dossier does not look like they were unscored.
 _SPI_KEEP_BREAKDOWN_ZERO = frozenset({'terrain', 'max_debuff'})
@@ -21995,22 +22027,56 @@ def api_sp_investment():
     votes_mtime = int(_SPI_VOTES_CACHE.get('mtime') or 0)
     payload = _spi_payload_with_community_votes(payload, votes_data)
     ck = f"sp_investment_v1_lean_sdgate_abil_details_{lc}_{int(mtime)}_{votes_mtime}"
+    etag = _api_etag_from_cache_key(ck) if (_API_ETAG_ENABLED and ck) else None
+    cc = _api_cache_control_header(public=True, max_age=300, private=False, no_store=False)
+    if etag and _api_if_none_match_matches(request.headers.get('If-None-Match'), etag):
+        resp = make_response('', 304)
+        resp.headers['ETag'] = etag
+        resp.headers['Cache-Control'] = cc
+        return resp
+    accept = (request.headers.get('Accept-Encoding') or '').lower()
+    want_gzip = 'gzip' in accept
+    hit = None
+    with _SPI_HTTP_BODY_CACHE_LOCK:
+        hit = _SPI_HTTP_BODY_CACHE.get(ck)
+    if hit and hit.get('raw') is not None:
+        body = hit.get('gzip') if want_gzip and hit.get('gzip') else hit['raw']
+        resp = make_response(body)
+        resp.headers['Content-Type'] = 'application/json; charset=utf-8'
+        resp.headers['Cache-Control'] = cc
+        if etag:
+            resp.headers['ETag'] = etag
+        if want_gzip and hit.get('gzip') and body is hit.get('gzip'):
+            resp.headers['Content-Encoding'] = 'gzip'
+            resp.headers['Vary'] = 'Accept-Encoding'
+        resp.headers['Content-Length'] = str(len(body))
+        return resp
+    # Cold: serialize once, cache raw + gzip for subsequent hits.
     resp = jsonify_cacheable(payload, ck, public=True, max_age=300, convert_images=False)
-    # Gzip large board JSON when the client accepts it (Railway/edge may not compress JSON).
-    if resp.status_code == 200:
-        accept = (request.headers.get('Accept-Encoding') or '').lower()
-        if 'gzip' in accept and 'Content-Encoding' not in resp.headers:
-            import gzip as _gzip
-            raw = resp.get_data()
-            if raw and len(raw) > 2048:
-                compressed = _gzip.compress(raw, compresslevel=5)
-                if len(compressed) < len(raw):
-                    resp.set_data(compressed)
-                    resp.headers['Content-Encoding'] = 'gzip'
-                    resp.headers['Content-Length'] = str(len(compressed))
-                    vary = resp.headers.get('Vary') or ''
-                    if 'Accept-Encoding' not in vary:
-                        resp.headers['Vary'] = (vary + ', Accept-Encoding').lstrip(', ').strip()
+    if resp.status_code != 200:
+        return resp
+    raw = resp.get_data()
+    compressed = None
+    if raw and len(raw) > 2048:
+        import gzip as _gzip
+        compressed = _gzip.compress(raw, compresslevel=5)
+        if len(compressed) >= len(raw):
+            compressed = None
+    with _SPI_HTTP_BODY_CACHE_LOCK:
+        _SPI_HTTP_BODY_CACHE[ck] = {'raw': raw, 'gzip': compressed, 'etag': etag}
+        while len(_SPI_HTTP_BODY_CACHE) > _SPI_HTTP_BODY_CACHE_MAX:
+            try:
+                oldest = next(iter(_SPI_HTTP_BODY_CACHE))
+            except StopIteration:
+                break
+            _SPI_HTTP_BODY_CACHE.pop(oldest, None)
+    if want_gzip and compressed is not None:
+        resp.set_data(compressed)
+        resp.headers['Content-Encoding'] = 'gzip'
+        resp.headers['Content-Length'] = str(len(compressed))
+        vary = resp.headers.get('Vary') or ''
+        if 'Accept-Encoding' not in vary:
+            resp.headers['Vary'] = (vary + ', Accept-Encoding').lstrip(', ').strip()
     return resp
 
 
@@ -30931,6 +30997,100 @@ def api_banner_timeline_vote():
     })
 
 
+def build_supporter_detail_dict(supporter_id, lc, level=None, lb_tier=3, for_uid_q='', for_cid_q='', ld=None):
+    """Build one supporter detail payload (same shape as GET /api/supporter/<id>).
+
+    Used by single-detail and /cal autofit batch so selecting an attacker does not
+    storm N parallel detail requests against gthread (4 threads) under high RSS.
+    """
+    supporter_id = normalize_id(supporter_id)
+    info = supporter_info_map.get(supporter_id)
+    if not info:
+        return None
+    if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
+        return None
+    if ld is None:
+        ld = get_lang_data(lc)
+    for_uid_q = (for_uid_q or '').strip()
+    for_cid_q = (for_cid_q or '').strip()
+    for_uid_key = normalize_id(for_uid_q) if for_uid_q else '0'
+    for_cid_key = normalize_id(for_cid_q) if for_cid_q else '0'
+    ri = info.get('rarity', '1')
+    max_level = supporter_max_level_for_rarity(ri)
+    if level is None:
+        level = max_level
+    level = min(max_level, max(1, int(level)))
+    lb_tier = min(3, max(0, int(lb_tier)))
+    lid = ld.get('supporter_id_map', {}).get(supporter_id, "")
+    cn = ld.get('supporter_text_map', {}).get(lid, "Unknown") if lid else "Unknown"
+    base_hp = int(info.get('hp_add', 0))
+    base_atk = int(info.get('atk_add', 0))
+    rate = supporter_growth_map.get((level, lb_tier), 10000)
+    # Flat HP/ATK support: floor(base * rate / 10000). Half-up was +1 vs in-game on fractional
+    # products (Atra LV50/1★ ATK 191.52 → 192); MS Attack % bucket stays ceil (Sandaime/Versal).
+    hps = max(0, math.floor(base_hp * rate / 10000))
+    atks = max(0, math.floor(base_atk * rate / 10000))
+    ls = []
+    for l in supporter_leader_map.get(supporter_id, []):
+        if l.get('tier') != lb_tier:
+            continue
+        desc = ld.get('supporter_leader_text_map', {}).get(l.get('desc_lang_id', ''), '')
+        tcid = normalize_id(l.get('trait_cond_id', '0'))
+        raw_c = trait_condition_raw_map.get(str(tcid), {})
+        same_group = 'SameGroup' in (raw_c.get('target_types') or [])
+        if for_uid_q and for_uid_key != '0':
+            applies = trait_condition_matches_unit(
+                tcid, for_uid_key, ld, lc,
+                for_cid_key if for_cid_key and for_cid_key != '0' else None,
+            )
+        else:
+            applies = True
+        tags = resolve_condition_tags(
+            tcid, trait_condition_raw_map, ld.get('lineage_lookup', {}), ld.get('series_name_map', {}), lc,
+        )
+        # Dual-tag 44% combos keep ``and`` at lower LB (same TraitConditionSetId, smaller %).
+        if tcid in SUPPORTER_DUAL_TAG_44_COND_IDS and len(tags) >= 2:
+            sep = 'and'
+        else:
+            sep = 'and' if '44%' in desc else ('or' if '36%' in desc or len(tags) >= 2 else 'default')
+        ls.append({
+            'desc': desc, 'tags': tags, 'separator': sep, 'trait_cond_id': tcid,
+            'applies': applies, 'same_group': same_group,
+        })
+    if for_uid_q and for_uid_key != '0':
+        _resolve_supporter_leader_skill_applies(ls)
+    asks = []
+    for a in supporter_active_map.get(supporter_id, []):
+        an = ld.get('supporter_active_text_map', {}).get(a.get('name_lang_id', ''), '')
+        ad = ld.get('supporter_active_text_map', {}).get(a.get('desc_lang_id', ''), '')
+        icf = find_trait_icon(a.get('resource_id', ''))
+        asks.append({'name': an, 'desc': ad, 'icon': f"/static/images/Trait/{icf}" if icf else ''})
+    portrait = find_supporter_full_portrait(info.get('resource_id')) or find_supporter_portrait(info.get('resource_id'), supporter_id)
+    acq = info.get('acquisition_route', '0')
+    acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
+    gasha_lid = info.get('gasha_quote_lang_id', '0')
+    gacha_quote = ld.get('supporter_text_map', {}).get(gasha_lid, '') if gasha_lid != '0' else ''
+    combat_power = supporter_combat_power_for(ri, lb_tier)
+    _supp_conds = {
+        normalize_id(x.get('trait_cond_id', '0'))
+        for x in supporter_leader_map.get(supporter_id, [])
+    }
+    leader_and_trait_cond_ids = sorted(
+        c for c in _supp_conds if c and c != '0' and c in SUPPORTER_DUAL_TAG_44_COND_IDS
+    )
+    return {
+        'id': supporter_id, 'name': cn, 'rarity': RARITY_MAP.get(ri, "Unknown"), 'rarity_id': ri,
+        'rarity_icon': RARITY_ICON_MAP.get(ri, ''), 'hp_support': hps, 'atk_support': atks,
+        'leader_skills': ls, 'active_skills': asks, 'portrait': portrait, 'lang': lc,
+        'level': level, 'lb_tier': lb_tier, 'base_hp': base_hp, 'base_atk': base_atk,
+        'growth_rate_basis': rate, 'is_limited_time': supporter_id in LIMITED_TIME_SUPPORTER_IDS,
+        'max_level': max_level, 'acquisition_route': acq, 'acquisition_icon': acq_icon or '',
+        'gacha_obtained_quote': gacha_quote or '', 'combat_power': combat_power,
+        'leader_and_trait_cond_ids': leader_and_trait_cond_ids,
+        'is_schedule_shell': entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')),
+    }
+
+
 @app.route('/api/supporter/<supporter_id>')
 def get_supporter(supporter_id):
     try:
@@ -30940,82 +31100,86 @@ def get_supporter(supporter_id):
         for_cid_q = (request.args.get('for_char_id') or '').strip()
         for_uid_key = normalize_id(for_uid_q) if for_uid_q else '0'
         for_cid_key = normalize_id(for_cid_q) if for_cid_q else '0'
-        ld = get_lang_data(lc); supporter_id = normalize_id(supporter_id); info = supporter_info_map.get(supporter_id)
-        if not info: return jsonify({'error': f'Supporter {supporter_id} not found'}), 404
+        supporter_id = normalize_id(supporter_id)
+        info = supporter_info_map.get(supporter_id)
+        if not info:
+            return jsonify({'error': f'Supporter {supporter_id} not found'}), 404
         if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
             return jsonify({'error': f'Supporter {supporter_id} not found'}), 404
         ri = info.get('rarity', '1')
-        # supporter-addon #1 level cap by rarity
         max_level = supporter_max_level_for_rarity(ri)
         level = min(max_level, max(1, int(request.args.get('level', max_level))))
         ck = f"s8_{supporter_id}_{lc}_{level}_{lb_tier}_{for_uid_key}_{for_cid_key}_{lr_schedule_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
-        lid = ld.get('supporter_id_map', {}).get(supporter_id, ""); cn = ld.get('supporter_text_map', {}).get(lid, "Unknown") if lid else "Unknown"
-        base_hp = int(info.get('hp_add', 0)); base_atk = int(info.get('atk_add', 0))
-        rate = supporter_growth_map.get((level, lb_tier), 10000)
-        # Flat HP/ATK support: floor(base * rate / 10000). Half-up was +1 vs in-game on fractional
-        # products (Atra LV50/1★ ATK 191.52 → 192); MS Attack % bucket stays ceil (Sandaime/Versal).
-        hps = max(0, math.floor(base_hp * rate / 10000))
-        atks = max(0, math.floor(base_atk * rate / 10000))
-        ls = []
-        for l in supporter_leader_map.get(supporter_id, []):
-            if l.get('tier') != lb_tier: continue
-            desc = ld.get('supporter_leader_text_map', {}).get(l.get('desc_lang_id', ''), '')
-            tcid = normalize_id(l.get('trait_cond_id', '0'))
-            raw_c = trait_condition_raw_map.get(str(tcid), {})
-            same_group = 'SameGroup' in (raw_c.get('target_types') or [])
-            if for_uid_q and for_uid_key != '0':
-                applies = trait_condition_matches_unit(tcid, for_uid_key, ld, lc, for_cid_key if for_cid_key and for_cid_key != '0' else None)
-            else:
-                applies = True
-            tags = resolve_condition_tags(tcid, trait_condition_raw_map, ld.get('lineage_lookup', {}), ld.get('series_name_map', {}), lc)
-            # Dual-tag 44% combos keep ``and`` at lower LB (same TraitConditionSetId, smaller %).
-            if tcid in SUPPORTER_DUAL_TAG_44_COND_IDS and len(tags) >= 2:
-                sep = 'and'
-            else:
-                sep = 'and' if '44%' in desc else ('or' if '36%' in desc or len(tags) >= 2 else 'default')
-            ls.append({'desc': desc, 'tags': tags, 'separator': sep, 'trait_cond_id': tcid, 'applies': applies, 'same_group': same_group})
-        if for_uid_q and for_uid_key != '0':
-            _resolve_supporter_leader_skill_applies(ls)
-        asks = []
-        for a in supporter_active_map.get(supporter_id, []):
-            an = ld.get('supporter_active_text_map', {}).get(a.get('name_lang_id', ''), ''); ad = ld.get('supporter_active_text_map', {}).get(a.get('desc_lang_id', ''), '')
-            icf = find_trait_icon(a.get('resource_id', ''))
-            asks.append({'name': an, 'desc': ad, 'icon': f"/static/images/Trait/{icf}" if icf else ''})
-        portrait = find_supporter_full_portrait(info.get('resource_id')) or find_supporter_portrait(info.get('resource_id'), supporter_id)
-        # supporter-addon #2 acquisition route icon
-        acq = info.get('acquisition_route', '0')
-        acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
-        # supporter-addon #3 gacha obtained quote (text in lang m_supporter.json)
-        gasha_lid = info.get('gasha_quote_lang_id', '0')
-        gacha_quote = ld.get('supporter_text_map', {}).get(gasha_lid, '') if gasha_lid != '0' else ''
-        # supporter-addon #4 combat power contribution
-        combat_power = supporter_combat_power_for(ri, lb_tier)
-        # TraitConditionSetIds that must stay ``and`` at every LB (dual-tag 44% combos).
-        _supp_conds = {
-            normalize_id(x.get('trait_cond_id', '0'))
-            for x in supporter_leader_map.get(supporter_id, [])
-        }
-        leader_and_trait_cond_ids = sorted(
-            c for c in _supp_conds if c and c != '0' and c in SUPPORTER_DUAL_TAG_44_COND_IDS
+        result = build_supporter_detail_dict(
+            supporter_id, lc, level=level, lb_tier=lb_tier,
+            for_uid_q=for_uid_q, for_cid_q=for_cid_q,
         )
-        result = {
-            'id': supporter_id, 'name': cn, 'rarity': RARITY_MAP.get(ri, "Unknown"), 'rarity_id': ri,
-            'rarity_icon': RARITY_ICON_MAP.get(ri, ''), 'hp_support': hps, 'atk_support': atks,
-            'leader_skills': ls, 'active_skills': asks, 'portrait': portrait, 'lang': lc,
-            'level': level, 'lb_tier': lb_tier, 'base_hp': base_hp, 'base_atk': base_atk,
-            'growth_rate_basis': rate, 'is_limited_time': supporter_id in LIMITED_TIME_SUPPORTER_IDS,
-            'max_level': max_level, 'acquisition_route': acq, 'acquisition_icon': acq_icon or '',
-            'gacha_obtained_quote': gacha_quote or '', 'combat_power': combat_power,
-            'leader_and_trait_cond_ids': leader_and_trait_cond_ids,
-            'is_schedule_shell': entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')),
-        }
+        if not result:
+            return jsonify({'error': f'Supporter {supporter_id} not found'}), 404
         set_cached_response(ck, result)
         return jsonify_cacheable(result, ck, private=True, max_age=3600, convert_images=True)
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/dc_autofit_supporters')
+def dc_autofit_supporters():
+    """One-shot supporter details for /cal auto-equip (unit+pilot filtered).
+
+    Replaces N× GET /api/supporter/<id> from dcAutoFitOptionPartAndSupporter so a
+    single gthread worker is not flooded when RSS is already high (~3GB).
+    """
+    try:
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
+        lb_tier = min(3, max(0, int(request.args.get('lb_tier', 3))))
+        u_arg = (request.args.get('unit_id') or request.args.get('for_unit_id') or '').strip()
+        c_arg = (request.args.get('character_id') or request.args.get('for_char_id') or '').strip()
+        for_unit = normalize_id(u_arg) if u_arg else None
+        if for_unit and for_unit not in unit_info_map:
+            for_unit = None
+        for_char = normalize_id(c_arg) if c_arg else None
+        if for_char and for_char not in char_info_map:
+            for_char = None
+        if not for_unit:
+            return jsonify({'error': 'unit_id required'}), 400
+        level_arg = request.args.get('level', '').strip()
+        level = int(level_arg) if level_arg else None
+        uf = f"u{for_unit}"
+        cf = f"c{for_char}" if for_char else 'c0'
+        lv_key = str(level if level is not None else 'max')
+        ck = f"dc_af_sup_v1_{lc}_{lv_key}_{lb_tier}_{uf}_{cf}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        cached = get_cached_response(ck)
+        if cached:
+            return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
+        ld = get_lang_data(lc)
+        rows = []
+        for sid, info in supporter_info_map.items():
+            if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
+                continue
+            nsid = normalize_id(sid)
+            if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')):
+                continue
+            lid = ld.get('supporter_id_map', {}).get(sid, '')
+            if not lid or not ld.get('supporter_text_map', {}).get(lid, ''):
+                continue
+            if not supporter_leader_applies_to_unit(sid, for_unit, ld, lc, for_char):
+                continue
+            detail = build_supporter_detail_dict(
+                nsid, lc, level=level, lb_tier=lb_tier,
+                for_uid_q=for_unit, for_cid_q=for_char or '', ld=ld,
+            )
+            if detail:
+                rows.append(detail)
+        rows.sort(key=lambda r: (RARITY_SORT.get(str(r.get('rarity_id', '1')), 4), -(r.get('atk_support') or 0), str(r.get('id') or '')))
+        payload = {'rows': rows, 'total': len(rows), 'unit_id': for_unit, 'character_id': for_char or ''}
+        set_cached_response(ck, payload)
+        return jsonify_cacheable(payload, ck, private=True, max_age=3600, convert_images=True)
+    except Exception as e:
+        import traceback; traceback.print_exc(); return jsonify({'error': str(e), 'rows': []}), 500
+
 
 @app.route('/api/dc_targets')
 def list_dc_targets():

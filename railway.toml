@@ -3,4 +3,7 @@ healthcheckPath = "/health"
 healthcheckTimeout = 300
 # One stalled /api/meta_synergy_dc/assemble must not stop worker heartbeats.
 # Sync workers (gunicorn default) do that — keep the threaded worker explicit.
-startCommand = "gunicorn wsgi:application --bind 0.0.0.0:$PORT --timeout 120 --graceful-timeout 20 --workers 1 --worker-class gthread --threads 4"
+# workers=1: a 2nd worker would roughly double master LANG/browse RSS (~3GB already).
+# threads=8: more concurrent light API work under gthread (was 4; queueing under load).
+# Do NOT use --max-requests here — recycling the only worker forces a full DB reload.
+startCommand = "gunicorn wsgi:application --bind 0.0.0.0:$PORT --timeout 120 --graceful-timeout 20 --workers 1 --worker-class gthread --threads 8"

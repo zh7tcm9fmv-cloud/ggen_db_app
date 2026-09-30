@@ -3223,8 +3223,7 @@ const cap=Math.max(1,Number(d.max_level)||100);
 const lv=Math.min(cap,Math.max(1,S.currentSupporterLevel||cap));
 const lb=S.currentSupporterLbTier??3;
 try{
-const r=await fetch(`/api/supporter/${encodeURIComponent(d.id)}?lang=${encodeURIComponent(S.lang)}&level=${lv}&lb_tier=${lb}&sv=s8`,{credentials:'same-origin',cache:'no-store'});
-const nd=await r.json();
+const nd=await _ggenFetchSupporterDetail(`/api/supporter/${encodeURIComponent(d.id)}?lang=${encodeURIComponent(S.lang)}&level=${lv}&lb_tier=${lb}&sv=s8`);
 if(nd.error)return;
 applySupporterLeaderSepSticky(nd);
 S.currentSupporterLevel=Math.max(1,Number(nd.level)||lv);
@@ -9878,7 +9877,7 @@ try{
 let cq='';
 if(slot.atkUnit&&slot.atkUnit!=='__manual__')cq+='&for_unit_id='+encodeURIComponent(String(slot.atkUnit));
 if(slot.atkChar&&slot.atkChar!=='__manual__')cq+='&for_char_id='+encodeURIComponent(String(slot.atkChar));
-const rd=await fetch(`/api/supporter/${spId}?lang=${S.lang}&level=${lv}&lb_tier=${lb}${cq}`).then(r=>r.json());
+const rd=await _ggenFetchSupporterDetail(`/api/supporter/${spId}?lang=${S.lang}&level=${lv}&lb_tier=${lb}${cq}`);
 if(rd&&!rd.error){rd._dcLevel=lv;rd._dcLbTier=lb;slot.supporters=[rd]}
 }catch(_){}
 }
@@ -9934,7 +9933,7 @@ try{
 const lv=Math.min(100,Math.max(1,parseInt(obj.defSpl!==undefined?obj.defSpl:100,10)||100));
 const lb=Math.min(3,Math.max(0,parseInt(obj.defSpb!==undefined?obj.defSpb:0,10)||0));
 const cq='&for_unit_id='+encodeURIComponent(uid)+'&for_char_id='+encodeURIComponent(cid);
-const rd=await fetch(`/api/supporter/${obj.defSp}?lang=${S.lang}&level=${lv}&lb_tier=${lb}${cq}`).then(r=>r.json());
+const rd=await _ggenFetchSupporterDetail(`/api/supporter/${obj.defSp}?lang=${S.lang}&level=${lv}&lb_tier=${lb}${cq}`);
 if(rd&&!rd.error){rd._dcLevel=lv;rd._dcLbTier=lb;S.dc.defSupporters=[rd]}
 }catch(_){}
 }
@@ -10437,7 +10436,7 @@ const ent=S.tb.supBySide[ss];
 if(!ent||!ent.id)return;
 const lb=Math.min(3,Math.max(0,ent.lbTier|0));const slv=Math.min(100,Math.max(1,ent.level!=null?ent.level|0:100));
 try{
-const rd=await fetch(`/api/supporter/${encodeURIComponent(ent.id)}?lang=${encodeURIComponent(S.lang)}&level=${slv}&lb_tier=${lb}${_tbSupporterFetchQs(ss)}`).then(r=>r.json());
+const rd=await _ggenFetchSupporterDetail(`/api/supporter/${encodeURIComponent(ent.id)}?lang=${encodeURIComponent(S.lang)}&level=${slv}&lb_tier=${lb}${_tbSupporterFetchQs(ss)}`);
 if(!rd.error){ent.data=rd;if(rd.lb_tier!=null)ent.lbTier=rd.lb_tier|0;if(rd.level!=null)ent.level=Math.min(100,Math.max(1,rd.level|0))}
 }catch(_){}
 }));
@@ -11187,6 +11186,19 @@ if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses(true);
 else onDcParamChange();
 });
 }
+async function _dcFetchAutofitSupporterDetails(){
+const uid=String(S.dc.atkUnit||'');
+if(!uid||uid==='__manual__')return[];
+const cid=(S.dc.atkChar&&S.dc.atkChar!=='__manual__'&&!(S.dc.atkCharData&&S.dc.atkCharData._manual))?String(S.dc.atkChar):'';
+let q=`lang=${encodeURIComponent(S.lang)}&level=100&lb_tier=3&unit_id=${encodeURIComponent(uid)}`;
+if(cid)q+=`&character_id=${encodeURIComponent(cid)}`;
+try{
+const r=await fetch(`/api/dc_autofit_supporters?${q}`);
+if(!r.ok)return[];
+const d=await r.json();
+return Array.isArray(d&&d.rows)?d.rows:[];
+}catch(_){return[]}
+}
 async function dcAutoFitOptionPartAndSupporter(fitGen){
 if(typeof S==='undefined'||!S.dc)return;
 if(S.dc._dcAutoFitBusy){
@@ -11199,31 +11211,23 @@ S.dc._dcAutoFitBusy=true;
 try{
 const slotIdx=Math.min(Math.max(S.dc.atkSlotIndex|0,0),DC_ATK_SLOT_COUNT-1);
 const sl={unitData:ud,charData:S.dc.atkCharData,unitId:S.dc.atkUnit,charId:S.dc.atkChar,lbTier:S.dc.lbTier,charCondPassive:!!S.dc.charCondPassive,unitCondPassive:!!S.dc.unitCondPassive,unitStatMode:S.dc.unitStatMode||'normal',unitTurnBuffAtk:!!S.dc.unitTurnBuffAtk,unitTurnBuffDef:!!S.dc.unitTurnBuffDef,optionParts:[]};
-const cq=_dcForSupporterContextQuery();
 const uid=String(S.dc.atkUnit);
 const needSup=!Array.isArray(S.dc.supporters)||!S.dc.supporters.length;
 const needOp=!Array.isArray(S.dc.optionParts)||!S.dc.optionParts.length;
-const [supRows,opRows]=await Promise.all([
-needSup?_dcFetchAllListRows('/api/supporters','rarity=ALL'+_dcSupporterUnitCharQuery()):Promise.resolve([]),
+/* One batch supporter payload + one OP list — never N× /api/supporter/<id> (gthread starvation). */
+const [supDetails,opRows]=await Promise.all([
+needSup?_dcFetchAutofitSupporterDetails():Promise.resolve([]),
 needOp?_dcFetchAllListRows('/api/option_parts','rarity=ALL&effect=ALL&unit_id='+encodeURIComponent(uid)):Promise.resolve([])
 ]);
 let bestSup=null,bestAtk=-1;
 if(needSup){
-const chunk=24;
-for(let i=0;i<supRows.length;i+=chunk){
 if(!_dcAutoFitContextValid(fitGen,slotIdx,sl.unitId,sl.charId))return;
-const batch=supRows.slice(i,i+chunk);
-const resolved=await Promise.all(batch.map(async row=>{
-try{const d=await fetch(`/api/supporter/${encodeURIComponent(row.id)}?lang=${S.lang}&level=100&lb_tier=3${cq}`).then(r=>r.json());
-return(!d||d.error)?null:d;
-}catch(_){return null}
-}));
-for(let j=0;j<resolved.length;j++){
-const d=resolved[j];
-if(!d)continue;
+for(let i=0;i<(supDetails||[]).length;i++){
+if((i&15)===15&&!_dcAutoFitContextValid(fitGen,slotIdx,sl.unitId,sl.charId))return;
+const d=supDetails[i];
+if(!d||d.error)continue;
 const atk=(_dcStatTotalsForAutoRank(sl,[],d)||{}).atk|0;
 if(atk>bestAtk){bestAtk=atk;bestSup=d}
-}
 }
 if(!_dcAutoFitContextValid(fitGen,slotIdx,sl.unitId,sl.charId))return;
 if(bestSup){bestSup._dcLevel=100;bestSup._dcLbTier=3;S.dc.supporters=[bestSup]}
@@ -11475,7 +11479,7 @@ const lb=Math.min(3,Math.max(0,ent.lbTier|0));
 const slv=Math.min(100,Math.max(1,ent.level!=null?ent.level|0:100));
 try{
 const q=`/api/supporter/${encodeURIComponent(ent.id)}?lang=${S.lang}&level=${slv}&lb_tier=${lb}&for_unit_id=${encodeURIComponent(sl.unitId)}&for_char_id=${encodeURIComponent(sl.charId||'')}`;
-const d=await fetch(q).then(r=>r.json());
+const d=await _ggenFetchSupporterDetail(q);
 supByKey[k]=(!d||d.error)?null:d;
 }catch(_){supByKey[k]=null}
 }));
@@ -11704,7 +11708,7 @@ const lbQ=Math.min(3,Math.max(0,(S.tb.supBySide[side].lbTier|0)));
 const lvQ=Math.min(100,Math.max(1,(S.tb.supBySide[side].level!=null?S.tb.supBySide[side].level|0:100)));
 let q=`/api/supporter/${encodeURIComponent(sup.id)}?lang=${S.lang}&level=${lvQ}&lb_tier=${lbQ}&for_unit_id=${encodeURIComponent(uid)}`;
 if(cid)q+='&for_char_id='+encodeURIComponent(cid);
-const d=await fetch(q).then(r=>r.json());
+const d=await _ggenFetchSupporterDetail(q);
 const ls=d&&d.leader_skills||[];
 S.tb._leaderApplyCache[k]=ls.some(x=>x&&x.applies);
 }catch(_){S.tb._leaderApplyCache[k]=false}
@@ -11765,8 +11769,8 @@ if(!ent||!ent.id)return;
 const lb=Math.min(3,Math.max(0,ent.lbTier|0));
 const slv=Math.min(100,Math.max(1,ent.level!=null?ent.level|0:100));
 try{
-const d=await fetch(`/api/supporter/${encodeURIComponent(ent.id)}?lang=${S.lang}&level=${slv}&lb_tier=${lb}${_tbSupporterFetchQs(side)}`).then(r=>r.json());
-if(!d.error){ent.data=d;ent.lbTier=d.lb_tier!=null?d.lb_tier|0:lb;if(d.level!=null)ent.level=Math.min(100,Math.max(1,d.level|0));S.tb._leaderApplyCache={}}
+const d=await _ggenFetchSupporterDetail(`/api/supporter/${encodeURIComponent(ent.id)}?lang=${S.lang}&level=${slv}&lb_tier=${lb}${_tbSupporterFetchQs(side)}`);
+if(d&&!d.error){ent.data=d;ent.lbTier=d.lb_tier!=null?d.lb_tier|0:lb;if(d.level!=null)ent.level=Math.min(100,Math.max(1,d.level|0));S.tb._leaderApplyCache={}}
 }catch(_){}
 }
 let _tbSupporterLevelTimers={};
@@ -11853,7 +11857,7 @@ const lb=Math.min(3,Math.max(0,ent.lbTier|0));
 const slv=Math.min(100,Math.max(1,ent.level!=null?ent.level|0:100));
 try{
 const q=`/api/supporter/${encodeURIComponent(ent.id)}?lang=${S.lang}&level=${slv}&lb_tier=${lb}&for_unit_id=${encodeURIComponent(j.sl.unitId)}&for_char_id=${encodeURIComponent(j.sl.charId||'')}`;
-const d=await fetch(q).then(r=>r.json());
+const d=await _ggenFetchSupporterDetail(q);
 supByKey[j.key]=(!d||d.error)?null:d;
 }catch(_){supByKey[j.key]=null}
 }));
@@ -12388,7 +12392,7 @@ const ss=S._tbSupPickerSide===2?2:1;
 try{
 const prevLb=S.tb.supBySide[ss]&&S.tb.supBySide[ss].lbTier!=null?S.tb.supBySide[ss].lbTier|0:3;
 const prevLv=S.tb.supBySide[ss]&&S.tb.supBySide[ss].level!=null?S.tb.supBySide[ss].level|0:100;
-const d=await fetch(`/api/supporter/${encodeURIComponent(sid)}?lang=${S.lang}&level=${prevLv}&lb_tier=${prevLb}${_tbSupporterFetchQs(ss)}`).then(r=>r.json());
+const d=await _ggenFetchSupporterDetail(`/api/supporter/${encodeURIComponent(sid)}?lang=${S.lang}&level=${prevLv}&lb_tier=${prevLb}${_tbSupporterFetchQs(ss)}`);
 if(!d.error){S.tb.supBySide[ss]={id:sid,data:d,lbTier:d.lb_tier!=null?d.lb_tier|0:prevLb,level:Math.min(100,Math.max(1,d.level!=null?d.level|0:prevLv))};S.tb._leaderApplyCache={};tbInvalidateTbPickerUnitCache()}
 }catch(_){}
 renderTeamBuilder();return;
@@ -15345,15 +15349,56 @@ ${lsHtml}
 }
 async function _dcFetchAllListRows(base,extra,listQ){
 const qv=listQ!==undefined&&listQ!==null?String(listQ):'';
+const extraS=String(extra||'');
+/* One-shot bulk for rarity=ALL picker/autofit lists (option_parts / supporters support ranking_bulk). */
+const useBulk=/(^|&)rarity=ALL(&|$)/.test(extraS)||extraS.indexOf('rarity=ALL')>=0;
+const pp=useBulk?5000:100;
+const bulkQ=useBulk?'&ranking_bulk=1':'';
 const rows=[];let page=1;let totalPages=1;
 do{
-const r=await fetch(`${base}?lang=${S.lang}&page=${page}&per_page=100&sort=rarity&dir=desc&q=${encodeURIComponent(qv)}&${extra}`);
+const r=await fetch(`${base}?lang=${S.lang}&page=${page}&per_page=${pp}&sort=rarity&dir=desc&q=${encodeURIComponent(qv)}&${extra}${bulkQ}`);
 const d=await r.json();
 rows.push(...(d.rows||[]));
 totalPages=d.total_pages||1;
 page++;
 }while(page<=totalPages);
 return rows;
+}
+/** Shared supporter-detail GET cache + in-flight dedupe (TB stats/autofill + DC). Same URL → same JSON; no feature change. */
+const _ggenSupporterDetailCache=new Map();
+const _ggenSupporterDetailInflight=new Map();
+const _GGEN_SUPPORTER_DETAIL_CACHE_MAX=120;
+function _ggenSupporterDetailCacheGet(url){
+const hit=_ggenSupporterDetailCache.get(url);
+if(hit==null)return null;
+_ggenSupporterDetailCache.delete(url);
+_ggenSupporterDetailCache.set(url,hit);
+return hit;
+}
+function _ggenSupporterDetailCacheSet(url,data){
+if(_ggenSupporterDetailCache.has(url))_ggenSupporterDetailCache.delete(url);
+_ggenSupporterDetailCache.set(url,data);
+while(_ggenSupporterDetailCache.size>_GGEN_SUPPORTER_DETAIL_CACHE_MAX){
+const k=_ggenSupporterDetailCache.keys().next().value;
+_ggenSupporterDetailCache.delete(k);
+}
+}
+async function _ggenFetchSupporterDetail(url){
+const cached=_ggenSupporterDetailCacheGet(url);
+if(cached!=null)return cached;
+const infl=_ggenSupporterDetailInflight.get(url);
+if(infl)return infl;
+const p=(async()=>{
+try{
+const d=await fetch(url,{credentials:'same-origin'}).then(r=>r.json());
+if(d&&!d.error)_ggenSupporterDetailCacheSet(url,d);
+return d;
+}finally{
+_ggenSupporterDetailInflight.delete(url);
+}
+})();
+_ggenSupporterDetailInflight.set(url,p);
+return p;
 }
 function _dcOptionPartUnitQuery(){
 const uid=S.dc.atkUnit;
@@ -15400,7 +15445,7 @@ async function selectDcSupporter(id){
 try{
 const cq=_dcForSupporterContextQuery();
 const lb=_dcDefaultSupporterLbTier(S.dc.supporters[0]);
-const rd=await fetch(`/api/supporter/${id}?lang=${S.lang}&level=100&lb_tier=${lb}${cq}`).then(r=>r.json());
+const rd=await _ggenFetchSupporterDetail(`/api/supporter/${id}?lang=${S.lang}&level=100&lb_tier=${lb}${cq}`);
 if(rd&&!rd.error){rd._dcLevel=100;rd._dcLbTier=lb;S.dc.supporters=[rd];renderDcSupporters();_dcSnapActiveAttackerToSlot();_dcRefreshAtkPanelsAfterMods()}
 }catch(e){}
 }
@@ -15408,12 +15453,12 @@ async function updateDcSupporterLv(idx,val){
 const s=S.dc.supporters[idx];if(!s)return;
 const lv=Math.min(100,Math.max(1,parseInt(val)||100));
 const lb=_dcDefaultSupporterLbTier(s);
-try{const r=await fetch(`/api/supporter/${s.id}?lang=${S.lang}&level=${lv}&lb_tier=${lb}${_dcForSupporterContextQuery()}`);const d=await r.json();if(d&&!d.error){Object.assign(s,d);s._dcLevel=lv;s._dcLbTier=lb;renderDcSupporters();_dcSnapActiveAttackerToSlot();_dcRefreshAtkPanelsAfterMods()}}catch(e){}
+try{const d=await _ggenFetchSupporterDetail(`/api/supporter/${s.id}?lang=${S.lang}&level=${lv}&lb_tier=${lb}${_dcForSupporterContextQuery()}`);if(d&&!d.error){Object.assign(s,d);s._dcLevel=lv;s._dcLbTier=lb;renderDcSupporters();_dcSnapActiveAttackerToSlot();_dcRefreshAtkPanelsAfterMods()}}catch(e){}
 }
 async function updateDcSupporterLb(idx,tier){
 const s=S.dc.supporters[idx];if(!s)return;
 const lv=s._dcLevel||100;
-try{const r=await fetch(`/api/supporter/${s.id}?lang=${S.lang}&level=${lv}&lb_tier=${tier}${_dcForSupporterContextQuery()}`);const d=await r.json();if(d&&!d.error){Object.assign(s,d);s._dcLevel=lv;s._dcLbTier=tier;renderDcSupporters();_dcSnapActiveAttackerToSlot();_dcRefreshAtkPanelsAfterMods()}}catch(e){}
+try{const d=await _ggenFetchSupporterDetail(`/api/supporter/${s.id}?lang=${S.lang}&level=${lv}&lb_tier=${tier}${_dcForSupporterContextQuery()}`);if(d&&!d.error){Object.assign(s,d);s._dcLevel=lv;s._dcLbTier=tier;renderDcSupporters();_dcSnapActiveAttackerToSlot();_dcRefreshAtkPanelsAfterMods()}}catch(e){}
 }
 function removeDcOptionPart(i){S.dc.optionParts.splice(i,1);renderDcOptionParts();_dcSnapActiveAttackerToSlot();_dcRefreshAtkPanelsAfterMods()}
 function removeDcSupporter(i){S.dc.supporters.splice(i,1);renderDcSupporters();_dcSnapActiveAttackerToSlot();_dcRefreshAtkPanelsAfterMods()}
@@ -15499,7 +15544,7 @@ async function selectDcDefSupporter(id){
 try{
 const cq=_dcDefForSupporterContextQuery();
 const lb=_dcDefaultSupporterLbTier(S.dc.defSupporters&&S.dc.defSupporters[0]);
-const rd=await fetch(`/api/supporter/${id}?lang=${S.lang}&level=100&lb_tier=${lb}${cq}`).then(r=>r.json());
+const rd=await _ggenFetchSupporterDetail(`/api/supporter/${id}?lang=${S.lang}&level=100&lb_tier=${lb}${cq}`);
 if(rd&&!rd.error){rd._dcLevel=100;rd._dcLbTier=lb;S.dc.defSupporters=[rd];renderDcDefSupporters();onDcParamChange()}
 }catch(e){}
 }
@@ -15507,12 +15552,12 @@ async function updateDcDefSupporterLv(idx,val){
 const s=S.dc.defSupporters&&S.dc.defSupporters[idx];if(!s)return;
 const lv=Math.min(100,Math.max(1,parseInt(val)||100));
 const lb=_dcDefaultSupporterLbTier(s);
-try{const r=await fetch(`/api/supporter/${s.id}?lang=${S.lang}&level=${lv}&lb_tier=${lb}${_dcDefForSupporterContextQuery()}`);const d=await r.json();if(d&&!d.error){Object.assign(s,d);s._dcLevel=lv;s._dcLbTier=lb;renderDcDefSupporters();onDcParamChange()}}catch(e){}
+try{const d=await _ggenFetchSupporterDetail(`/api/supporter/${s.id}?lang=${S.lang}&level=${lv}&lb_tier=${lb}${_dcDefForSupporterContextQuery()}`);if(d&&!d.error){Object.assign(s,d);s._dcLevel=lv;s._dcLbTier=lb;renderDcDefSupporters();onDcParamChange()}}catch(e){}
 }
 async function updateDcDefSupporterLb(idx,tier){
 const s=S.dc.defSupporters&&S.dc.defSupporters[idx];if(!s)return;
 const lv=s._dcLevel||100;
-try{const r=await fetch(`/api/supporter/${s.id}?lang=${S.lang}&level=${lv}&lb_tier=${tier}${_dcDefForSupporterContextQuery()}`);const d=await r.json();if(d&&!d.error){Object.assign(s,d);s._dcLevel=lv;s._dcLbTier=tier;renderDcDefSupporters();onDcParamChange()}}catch(e){}
+try{const d=await _ggenFetchSupporterDetail(`/api/supporter/${s.id}?lang=${S.lang}&level=${lv}&lb_tier=${tier}${_dcDefForSupporterContextQuery()}`);if(d&&!d.error){Object.assign(s,d);s._dcLevel=lv;s._dcLbTier=tier;renderDcDefSupporters();onDcParamChange()}}catch(e){}
 }
 function removeDcDefOptionPart(i){if(!S.dc.defOptionParts)S.dc.defOptionParts=[];S.dc.defOptionParts.splice(i,1);renderDcDefOptionParts();onDcParamChange()}
 function removeDcDefSupporter(i){if(!S.dc.defSupporters)S.dc.defSupporters=[];S.dc.defSupporters.splice(i,1);renderDcDefSupporters();onDcParamChange()}
