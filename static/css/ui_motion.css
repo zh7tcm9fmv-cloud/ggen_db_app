@@ -43,6 +43,14 @@
   from{opacity:0}
   to{opacity:1}
 }
+/* Detail modal: no enter animation — owner requires instant open (spinner/lag feel). */
+#detailModal.active .modal-content,
+#detailModal .modal-content{
+  animation:none!important;
+  opacity:1!important;
+  transform:none!important;
+}
+
 .modal-content,
 .tag-modal-content,
 .cmp-modal,

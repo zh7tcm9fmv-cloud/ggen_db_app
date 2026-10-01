@@ -205,11 +205,10 @@ html.ggen-15 #detailModal .modal-content.roadmap-calendar-detail #detailInner,
 
 /* Soft full-bleed header — blends into page; quiet hex, no chamfer plate. */
 html.ggen-15 .app-header{
-  background:linear-gradient(180deg,rgba(10,14,23,.92) 0%,rgba(10,14,23,.78) 70%,rgba(10,14,23,.2) 100%);
+  background:linear-gradient(180deg,rgba(10,14,23,.97) 0%,rgba(10,14,23,.95) 70%,rgba(10,14,23,.92) 100%);
   border-bottom:none;
   box-shadow:none;
-  backdrop-filter:blur(10px) saturate(1.05);
-  -webkit-backdrop-filter:blur(10px) saturate(1.05);
+  /* no blur — GPU thrash with solid wash */
 }
 /* header-inner — no plate/chamfer; hex wash only. Stack ABOVE #navTabsShell. */
 html.ggen-15 .app-header .header-inner{
@@ -516,15 +515,11 @@ html.ggen-15 #detailModal .modal-content .skill-card{
   border-color:rgba(0,217,255,.28);
 }
 
-/* Investment Priority + Banner Timeline / Latest Release cards */
+/* Investment Priority + Latest Release cards (banner timeline uses classic strip CSS only) */
 html.ggen-15 .spi-card,
 html.ggen-15 .lr-card,
-html.ggen-15 .bt-lr-tile,
-html.ggen-15 .bt-vote-extra-thumb,
 html.ggen-15 .main-content .spi-card,
-html.ggen-15 .main-content .lr-card,
-html.ggen-15 .main-content .bt-lr-tile,
-html.ggen-15 .main-content .bt-vote-extra-thumb{
+html.ggen-15 .main-content .lr-card{
   border-radius:0 !important;
   clip-path:var(--g15-chamfer);
 }
@@ -568,19 +563,10 @@ html.ggen-15 .main-content .lr-card:not(.bt-lr-tile--limited):hover{
     radial-gradient(120% 80% at 0% 0%,rgba(0,217,255,.12),transparent 55%),
     var(--bg-card-hover);
 }
-/* Limited tiles keep gradient border chrome; chamfer clip only */
-html.ggen-15 .lr-card.bt-lr-tile--limited,
-html.ggen-15 .main-content .lr-card.bt-lr-tile--limited{
-  border-radius:0 !important;
-}
 html.ggen-15 .spi-bucket-head h3,
 html.ggen-15 .spi-role-label,
-html.ggen-15 .bt-feat-label,
-html.ggen-15 .bt-feat-sub,
 html.ggen-15 .main-content .spi-bucket-head h3,
-html.ggen-15 .main-content .spi-role-label,
-html.ggen-15 .main-content .bt-feat-label,
-html.ggen-15 .main-content .bt-feat-sub{
+html.ggen-15 .main-content .spi-role-label{
   font-family:var(--font-teko);
   letter-spacing:.06em;
   text-transform:uppercase;
@@ -634,74 +620,6 @@ html.ggen-15 .tm-browse-shortcut{
 html.ggen-15 .main-content .rarity-filter-btn,
 html.ggen-15 .main-content .role-filter-dd-btn{
   font-size:calc(15px * var(--g15-type-nudge));
-}
-
-/* Banner Timeline (/tl) — override Classic !important sizes so Teko matches readability */
-html.ggen-15 #panel-banner_timeline .bt-table-wrap thead th{
-  font-size:calc(14px * var(--g15-type-nudge));
-}
-html.ggen-15 #panel-banner_timeline .bt-banner-title{
-  font-size:calc(15px * var(--g15-type-nudge));
-}
-html.ggen-15 #panel-banner_timeline .bt-banner-sched-k{
-  font-size:calc(10px * var(--g15-type-nudge));
-}
-html.ggen-15 #panel-banner_timeline .bt-banner-sched-v{
-  font-size:calc(12px * var(--g15-type-nudge));
-}
-html.ggen-15 #panel-banner_timeline .bt-date-cell{
-  font-size:clamp(
-    calc(11px * var(--g15-type-nudge)),
-    calc(.85rem * var(--g15-type-nudge)),
-    calc(13px * var(--g15-type-nudge))
-  );
-}
-html.ggen-15 #panel-banner_timeline .bt-vtl-monthlabel{
-  font-size:calc(13px * var(--g15-type-nudge));
-}
-html.ggen-15 #panel-banner_timeline .bt-vtl-title{
-  font-size:clamp(
-    calc(14px * var(--g15-type-nudge)),
-    calc((1rem + .4vw) * var(--g15-type-nudge)),
-    calc(17px * var(--g15-type-nudge))
-  );
-}
-html.ggen-15 #panel-banner_timeline .bt-vtl-meta-compact{
-  font-size:calc(10.5px * var(--g15-type-nudge));
-}
-html.ggen-15 #panel-banner_timeline .bt-strip .lr-card .lr-card-name,
-html.ggen-15 #panel-banner_timeline .bt-vote-extra-thumb .lr-card-name{
-  font-size:calc(13px * var(--g15-type-nudge)) !important;
-}
-html.ggen-15 #panel-banner_timeline .bt-table .bt-strip .lr-card .lr-card-name,
-html.ggen-15 #panel-banner_timeline .bt-table .bt-strip .bt-vote-extra-thumb .lr-card-name{
-  font-size:calc(11px * var(--g15-type-nudge)) !important;
-}
-html.ggen-15 #panel-banner_timeline .bt-strip .bt-drop-tab,
-html.ggen-15 #panel-banner_timeline .bt-strip .bt-exchange-tab{
-  font-size:calc(11px * var(--g15-type-nudge));
-}
-html.ggen-15 #panel-banner_timeline .bt-table .bt-strip .bt-drop-tab,
-html.ggen-15 #panel-banner_timeline .bt-table .bt-strip .bt-exchange-tab{
-  font-size:calc(10px * var(--g15-type-nudge));
-}
-html.ggen-15 #panel-banner_timeline .bt-drop-pity-line{
-  font-size:calc(11px * var(--g15-type-nudge));
-}
-html.ggen-15 #panel-banner_timeline .bt-gacha-hub-title{
-  font-size:calc(15px * var(--g15-type-nudge));
-}
-html.ggen-15 #panel-banner_timeline .bt-gacha-hub-hint{
-  font-size:calc(12px * var(--g15-type-nudge));
-}
-html.ggen-15 #panel-banner_timeline .bt-gacha-hub-card-title{
-  font-size:calc(13px * var(--g15-type-nudge));
-}
-@media (min-width:769px){
-  html.ggen-15 #panel-banner_timeline .bt-table .bt-strip .bt-drop-tab,
-  html.ggen-15 #panel-banner_timeline .bt-table .bt-strip .bt-exchange-tab{
-    font-size:calc(11px * var(--g15-type-nudge));
-  }
 }
 
 @media(max-width:768px){

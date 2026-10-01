@@ -37,10 +37,8 @@ const REQUIRED_FUNCTIONS = [
   'ensureGachaSimLoaded',
   'openRoadmapCalendar',
   'btFeaturedMergedCell',
-  'btRerenderOnDesignChange',
-  'btBannerPoolStillAvailable',
-  'btBindFeatLazyObserver',
-  'btHydrateLazyFeatCell',
+  'loadBannerTimeline',
+  'renderBannerTimeline',
 ];
 
 const REQUIRED_CONSTS = ['TB_TRASH_ICON'];

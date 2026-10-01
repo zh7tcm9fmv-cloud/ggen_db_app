@@ -6258,6 +6258,13 @@ _API_CACHE_PIN_PREFIXES = (
     'browse_filters_',
     # Banner timeline is huge to rebuild (~1–3s). Evicting it under browse/detail
     # traffic made /tl and site-wide votes feel randomly sluggish after every feature.
+    'banner_tl_v22_',
+    'banner_tl_full_v22_',
+    'banner_tl_v21_',
+    'banner_tl_full_v21_',
+    'banner_tl_v20_',
+    'banner_tl_full_v20_',
+    'banner_tl_feat_v20_',
     'banner_tl_v19_',
     'banner_tl_full_v19_',
     'banner_tl_feat_v19_',
@@ -28801,35 +28808,15 @@ def _banner_timeline_unit_item(uid, ld):
     role_id = info.get('role', '0')
     rids = info.get('resource_ids', [])
     thum = find_list_thumb(rids, uid, 'images/unit_portraits')
-    portrait = find_portrait(rids, uid, 'images/unit_portraits') or thum or ''
-    rec_cid = resolve_unit_recommend_character_id(uid, info)
-    out = {
+    # Classic /tl thumbs only — no full portraits / recommend_character nest (was 1.5 HUD).
+    return {
         'type': 'unit', 'id': uid, 'name': name, 'thum': thum or '',
-        'portrait': portrait or '',
         'rarity': RARITY_MAP.get(str(ri), 'N'), 'rarity_id': str(ri),
         'role_icon': ROLE_ICON_MAP.get(role_id, ''),
         'acquisition_icon': ai or '', 'special_icons': si,
         'is_ultimate': bool(info.get('is_ultimate', False)),
         'is_limited_time': uid in LIMITED_TIME_UNIT_IDS,
-        'recommend_character_id': rec_cid if rec_cid != '0' else '',
     }
-    if rec_cid and rec_cid != '0' and rec_cid in char_info_map and rec_cid in char_list_playable_ids:
-        cinfo = char_info_map.get(rec_cid, {}) or {}
-        if cinfo.get('role', '0') != '0':
-            clid = ld['char_id_map'].get(rec_cid, '')
-            cname = ld['char_text_map'].get(clid, '') if clid else ''
-            if cname:
-                crids = cinfo.get('resource_ids', [])
-                cthum = find_list_thumb(crids, rec_cid, 'images/portraits')
-                cpor = find_portrait(crids, rec_cid, 'images/portraits') or cthum or ''
-                out['recommend_character'] = {
-                    'id': rec_cid,
-                    'name': cname,
-                    'thum': cthum or '',
-                    'portrait': cpor or '',
-                    'is_limited_time': rec_cid in LIMITED_TIME_CHARACTER_IDS,
-                }
-    return out
 
 
 def _banner_timeline_char_item(cid, ld):
@@ -28849,10 +28836,8 @@ def _banner_timeline_char_item(cid, ld):
     role_id = info.get('role', '0')
     rids = info.get('resource_ids', [])
     thum = find_list_thumb(rids, cid, 'images/portraits')
-    portrait = find_portrait(rids, cid, 'images/portraits') or thum or ''
     return {
         'type': 'character', 'id': cid, 'name': name, 'thum': thum or '',
-        'portrait': portrait or '',
         'rarity': RARITY_MAP.get(str(ri), 'N'), 'rarity_id': str(ri),
         'role_icon': ROLE_ICON_MAP.get(role_id, ''),
         'acquisition_icon': acq_icon or '',
@@ -28872,13 +28857,10 @@ def _banner_timeline_supporter_item(sid, ld):
         return None
     ri = info.get('rarity', '1')
     thum = find_supporter_portrait(info.get('resource_id'), sid)
-    full = find_supporter_full_portrait(info.get('resource_id')) if info.get('resource_id') else None
-    portrait = full or thum or ''
     acq = info.get('acquisition_route', '0')
     acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
     return {
         'type': 'supporter', 'id': sid, 'name': name, 'thum': thum or '',
-        'portrait': portrait or '',
         'rarity': RARITY_MAP.get(str(ri), 'N'), 'rarity_id': str(ri),
         'role_icon': '', 'acquisition_icon': acq_icon or '',
         'special_icons': [], 'is_ultimate': False,
@@ -28916,12 +28898,12 @@ def _bt_banner_thumb_should_use_ver2_logo(appeal_resource_id, start_ms):
 def api_banner_timeline():
     """Gacha banner list with schedules, appeal art, and featured units/characters from master chains."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    # v19: full featured inline again — v18 slim+per-banner hydrate made /tl scroll feel slower (1s+ RTT each).
-    ck = f'banner_tl_v19_{lc}'
-    ck_full = f'banner_tl_full_v19_{lc}'
+    # v22: classic thumbs only (no 1.5 HUD portraits / recommend_character / hydrate).
+    ck = f'banner_tl_v22_{lc}'
+    ck_full = f'banner_tl_full_v22_{lc}'
     cached = get_cached_response(ck)
     if cached and get_cached_response(ck_full):
-        return jsonify_cacheable(cached, ck, public=True, max_age=1800, convert_images=True)
+        return jsonify_cacheable(cached, ck, public=True, max_age=1800, convert_images=False)
 
     ld = get_lang_data(lc)
     lp = LANG_PATHS.get(lc) or LANG_PATHS.get(DEFAULT_LANG)
@@ -29210,114 +29192,12 @@ def api_banner_timeline():
 
     rows_out.sort(key=_sort_key)
     full_out = {'banners': rows_out, 'gacha_movie_settings': gacha_movie_settings}
-    for row in full_out.get('banners') or []:
-        if isinstance(row, dict):
-            row['featured_deferred'] = False
-    set_cached_response(ck_full, full_out)
-    set_cached_response(ck, full_out)
-    return jsonify_cacheable(full_out, ck, public=True, max_age=1800, convert_images=True)
+    # Pin both keys to the same payload (legacy full key kept for vote_pools helpers).
+    out_pub = convert_image_urls(full_out) if (IMAGE_CDN and GAME_IMAGES_USE_CDN) else full_out
+    set_cached_response(ck_full, out_pub)
+    set_cached_response(ck, out_pub)
+    return jsonify_cacheable(out_pub, ck, public=True, max_age=1800, convert_images=False)
 
-
-def _bt_banner_pool_still_available(row, now_ms=None):
-    """Match client btBannerPoolStillAvailable — active / permanent keep featured inline."""
-    if not isinstance(row, dict):
-        return True
-    if normalize_id(row.get('schedule_id')) == '9999990001':
-        return True
-    try:
-        end = int(row.get('end_ms') or 0)
-    except (TypeError, ValueError):
-        end = 0
-    if end <= 0:
-        return True
-    try:
-        if _jst_year_from_epoch_ms(end) >= 2098:
-            return True
-    except Exception:
-        pass
-    if now_ms is None:
-        import time as _time
-        now_ms = int(_time.time() * 1000)
-    return now_ms < end
-
-
-def _bt_featured_vote_labels(featured_units, featured_chars, featured_supporters):
-    labels = {}
-    for typ, items in (
-        ('unit', featured_units),
-        ('character', featured_chars),
-        ('supporter', featured_supporters),
-    ):
-        for it in items or []:
-            if not isinstance(it, dict) or it.get('id') is None:
-                continue
-            labels[f'{typ}:{it["id"]}'] = str(it.get('name') or it['id'])
-    return labels
-
-
-def _bt_slim_ended_featured_timeline(full_out, now_ms=None):
-    """Drop heavy featured blobs for ended pools; client hydrates on scroll."""
-    import copy
-    slim = copy.deepcopy(full_out) if isinstance(full_out, dict) else {'banners': []}
-    for row in slim.get('banners') or []:
-        if not isinstance(row, dict):
-            continue
-        if _bt_banner_pool_still_available(row, now_ms):
-            row['featured_deferred'] = False
-            continue
-        labels = _bt_featured_vote_labels(
-            row.get('featured_units'),
-            row.get('featured_chars'),
-            row.get('featured_supporters'),
-        )
-        row['featured_deferred'] = True
-        row['featured_vote_labels'] = labels
-        row['featured_units'] = []
-        row['featured_chars'] = []
-        row['featured_supporters'] = []
-    return slim
-
-
-def _bt_ensure_banner_timeline_full(lc):
-    ck_full = f'banner_tl_full_v19_{lc}'
-    full = get_cached_response(ck_full)
-    if isinstance(full, dict) and full.get('banners') is not None:
-        return full
-    with app.test_request_context(f'/api/banner_timeline?lang={lc}'):
-        api_banner_timeline()
-    return get_cached_response(ck_full) or {'banners': []}
-
-
-@app.route('/api/banner_timeline/<gasha_id>/featured')
-def api_banner_timeline_featured(gasha_id):
-    """Full featured strips for one banner (legacy hydrate path; timeline is full again in v19)."""
-    lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    gid = normalize_id(gasha_id)
-    if gid == '0':
-        return jsonify({'error': 'invalid_gasha_id'}), 400
-    ck = f'banner_tl_feat_v19_{lc}_{gid}'
-    cached = get_cached_response(ck)
-    if cached:
-        return jsonify_cacheable(cached, ck, public=True, max_age=1800, convert_images=True)
-    full = _bt_ensure_banner_timeline_full(lc)
-    row = None
-    for b in (full.get('banners') or []):
-        if isinstance(b, dict) and normalize_id(b.get('gasha_id')) == gid:
-            row = b
-            break
-    if not row:
-        return jsonify({'error': 'not_found', 'gasha_id': gid}), 404
-    out = {
-        'gasha_id': gid,
-        'featured_units': row.get('featured_units') or [],
-        'featured_chars': row.get('featured_chars') or [],
-        'featured_supporters': row.get('featured_supporters') or [],
-        'point_exchange': row.get('point_exchange'),
-        'drop_pity': row.get('drop_pity'),
-        'vote_enabled': row.get('vote_enabled'),
-    }
-    set_cached_response(ck, out)
-    return jsonify_cacheable(out, ck, public=True, max_age=1800, convert_images=True)
 
 
 ML_LEAGUE_RANK_LABELS = {
@@ -30867,6 +30747,12 @@ def _bt_banner_vote_enabled(gasha_id, featured_units, featured_chars, featured_s
 def _bt_timeline_cache_keys_for_lang(lc):
     """Prefer current timeline cache tag; keep older keys as fallback during rollouts."""
     return (
+        f'banner_tl_v22_{lc}',
+        f'banner_tl_full_v22_{lc}',
+        f'banner_tl_v21_{lc}',
+        f'banner_tl_full_v21_{lc}',
+        f'banner_tl_v20_{lc}',
+        f'banner_tl_full_v20_{lc}',
         f'banner_tl_v19_{lc}',
         f'banner_tl_v18_{lc}',
         f'banner_tl_v5_{lc}',
