@@ -25,6 +25,7 @@
     whatsNew: null,
     btVoteLoaded: false,
     btBanners: null,
+    btVotePools: null,
     btVoteMine: {},
     btVoteTotals: {},
     kofiNotice: null,
@@ -351,7 +352,9 @@
   }
 
   function btVoteEnabledBanners() {
-    return (state.btBanners || []).filter(btVoteEnabledForBanner);
+    const full = state.btBanners;
+    if (full && full.length) return full.filter(btVoteEnabledForBanner);
+    return (state.btVotePools || []).filter(btVoteEnabledForBanner);
   }
 
   function btVoteNoticeBannerIdsKey() {
@@ -499,21 +502,19 @@
     ensureNoticeFlare(document.getElementById('navBannerTimelineTab'));
     const lc = lang || currentLang();
     try {
-      // Votes must be fresh; banner list is mostly static — allow HTTP cache so cold start stays snappy.
-      const vr = await fetch('/api/banner_timeline/votes', {
-        credentials: 'same-origin',
-        cache: 'no-store',
-      });
+      // Votes + tiny vote_pools meta only — never pull full /api/banner_timeline site-wide.
+      const vr = await fetch(
+        '/api/banner_timeline/votes?lang=' + encodeURIComponent(lc),
+        {
+          credentials: 'same-origin',
+          cache: 'no-store',
+        }
+      );
       if (vr && vr.ok) {
         const d = await vr.json();
         state.btVoteTotals = d.totals || {};
         state.btVoteMine = d.mine || {};
-      }
-      if (!state.btBanners) {
-        const br = await fetch('/api/banner_timeline?lang=' + encodeURIComponent(lc), {
-          credentials: 'same-origin',
-        });
-        if (br && br.ok) state.btBanners = (await br.json()).banners || [];
+        if (Array.isArray(d.vote_pools)) state.btVotePools = d.vote_pools;
       }
       state.btVoteLoaded = true;
     } catch (_) {}
@@ -647,6 +648,7 @@
     setBtState(patch) {
       if (!patch) return;
       if (patch.banners) state.btBanners = patch.banners;
+      if (patch.votePools) state.btVotePools = patch.votePools;
       if (patch.mine) state.btVoteMine = patch.mine;
       if (patch.totals) state.btVoteTotals = patch.totals;
       if (patch.loaded) state.btVoteLoaded = true;

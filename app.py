@@ -28911,8 +28911,9 @@ def _bt_banner_thumb_should_use_ver2_logo(appeal_resource_id, start_ms):
 def api_banner_timeline():
     """Gacha banner list with schedules, appeal art, and featured units/characters from master chains."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f'banner_tl_v18_{lc}'
-    ck_full = f'banner_tl_full_v18_{lc}'
+    # v19: full featured inline again — v18 slim+per-banner hydrate made /tl scroll feel slower (1s+ RTT each).
+    ck = f'banner_tl_v19_{lc}'
+    ck_full = f'banner_tl_full_v19_{lc}'
     cached = get_cached_response(ck)
     if cached and get_cached_response(ck_full):
         return jsonify_cacheable(cached, ck, public=True, max_age=1800, convert_images=True)
@@ -29204,10 +29205,12 @@ def api_banner_timeline():
 
     rows_out.sort(key=_sort_key)
     full_out = {'banners': rows_out, 'gacha_movie_settings': gacha_movie_settings}
+    for row in full_out.get('banners') or []:
+        if isinstance(row, dict):
+            row['featured_deferred'] = False
     set_cached_response(ck_full, full_out)
-    slim_out = _bt_slim_ended_featured_timeline(full_out)
-    set_cached_response(ck, slim_out)
-    return jsonify_cacheable(slim_out, ck, public=True, max_age=1800, convert_images=True)
+    set_cached_response(ck, full_out)
+    return jsonify_cacheable(full_out, ck, public=True, max_age=1800, convert_images=True)
 
 
 def _bt_banner_pool_still_available(row, now_ms=None):
@@ -29271,7 +29274,7 @@ def _bt_slim_ended_featured_timeline(full_out, now_ms=None):
 
 
 def _bt_ensure_banner_timeline_full(lc):
-    ck_full = f'banner_tl_full_v18_{lc}'
+    ck_full = f'banner_tl_full_v19_{lc}'
     full = get_cached_response(ck_full)
     if isinstance(full, dict) and full.get('banners') is not None:
         return full
@@ -29282,12 +29285,12 @@ def _bt_ensure_banner_timeline_full(lc):
 
 @app.route('/api/banner_timeline/<gasha_id>/featured')
 def api_banner_timeline_featured(gasha_id):
-    """Full featured strips for one banner (ended-pool hydrate)."""
+    """Full featured strips for one banner (legacy hydrate path; timeline is full again in v19)."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
     gid = normalize_id(gasha_id)
     if gid == '0':
         return jsonify({'error': 'invalid_gasha_id'}), 400
-    ck = f'banner_tl_feat_v18_{lc}_{gid}'
+    ck = f'banner_tl_feat_v19_{lc}_{gid}'
     cached = get_cached_response(ck)
     if cached:
         return jsonify_cacheable(cached, ck, public=True, max_age=1800, convert_images=True)
@@ -30856,20 +30859,55 @@ def _bt_banner_vote_enabled(gasha_id, featured_units, featured_chars, featured_s
     return bool(featured_units or featured_chars or featured_supporters)
 
 
+def _bt_timeline_cache_keys_for_lang(lc):
+    """Prefer current timeline cache tag; keep older keys as fallback during rollouts."""
+    return (
+        f'banner_tl_v19_{lc}',
+        f'banner_tl_v18_{lc}',
+        f'banner_tl_v5_{lc}',
+    )
+
+
+def _bt_vote_pools_meta(lang=None):
+    """Tiny vote-notice payload: gasha_id + vote_enabled only (no featured art)."""
+    lc = validate_lang_code(lang or DEFAULT_LANG)
+    for key in _bt_timeline_cache_keys_for_lang(lc):
+        cached = get_cached_response(key)
+        if not isinstance(cached, dict):
+            continue
+        banners = cached.get('banners')
+        if not isinstance(banners, list) or not banners:
+            continue
+        out = []
+        seen = set()
+        for row in banners:
+            if not isinstance(row, dict):
+                continue
+            gid = normalize_id(row.get('gasha_id'))
+            if not gid or gid == '0' or gid in seen:
+                continue
+            seen.add(gid)
+            enabled = row.get('vote_enabled') is not False and _bt_vote_gasha_allowed(gid)
+            out.append({'gasha_id': gid, 'vote_enabled': bool(enabled)})
+        return out
+    return []
+
+
 def _bt_vote_banner_enabled(gasha_id):
     """Resolve vote_enabled from cached banner timeline rows when available."""
     if not _bt_vote_gasha_allowed(gasha_id):
         return False
     gid = normalize_id(gasha_id)
     for lc in ('EN', 'TW', 'HK', 'JA', 'JP'):
-        cached = get_cached_response(f'banner_tl_v5_{lc}')
-        if not isinstance(cached, dict):
-            continue
-        for row in cached.get('banners') or []:
-            if not isinstance(row, dict):
+        for key in _bt_timeline_cache_keys_for_lang(lc):
+            cached = get_cached_response(key)
+            if not isinstance(cached, dict):
                 continue
-            if normalize_id(row.get('gasha_id')) == gid:
-                return row.get('vote_enabled') is not False
+            for row in cached.get('banners') or []:
+                if not isinstance(row, dict):
+                    continue
+                if normalize_id(row.get('gasha_id')) == gid:
+                    return row.get('vote_enabled') is not False
     return True
 
 
@@ -31238,7 +31276,13 @@ def api_banner_timeline_votes():
     totals = data.get('totals') or {}
     voter_id = _bt_vote_voter_id()
     mine = _bt_vote_mine_for_voter(data.get('ballots') or {}, voter_id)
-    return jsonify({'totals': totals, 'mine': mine})
+    # vote_pools: notice dots only — clients must NOT fetch full /api/banner_timeline site-wide.
+    lang = request.args.get('lang') or DEFAULT_LANG
+    return jsonify({
+        'totals': totals,
+        'mine': mine,
+        'vote_pools': _bt_vote_pools_meta(lang),
+    })
 
 
 @app.route('/api/banner_timeline/vote', methods=['POST'])
