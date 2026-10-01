@@ -757,7 +757,12 @@ def static_font_cdn_offload(filename):
         abort(404)
     leaf = name.rsplit('/', 1)[-1]
     if name in _RAILWAY_SAME_ORIGIN_FONTS or leaf in _RAILWAY_SAME_ORIGIN_FONTS:
-        return send_from_directory(os.path.join(STATIC_ROOT, 'font'), name)
+        resp = send_from_directory(os.path.join(STATIC_ROOT, 'font'), name)
+        # Allow <link rel=preload as=font crossorigin> to reuse the same bytes as @font-face.
+        # Without ACAO, mobile Safari/Chrome drop the preload and Teko often loses font-display:optional.
+        resp.headers['Access-Control-Allow-Origin'] = '*'
+        resp.headers.setdefault('Cache-Control', 'public, max-age=31536000, immutable')
+        return resp
     if FONT_CDN and not _is_blocked_media_url(FONT_CDN):
         dest = FONT_CDN.rstrip('/') + '/font/' + name
         qs = request.query_string.decode('utf-8', 'ignore') if request.query_string else ''

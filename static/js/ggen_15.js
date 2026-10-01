@@ -51,9 +51,34 @@
     try {
       v = String(window.__GGEN_APP_JS_VERSION__ || '');
     } catch (_) {}
+    /* teko=swap2 busts caches that still hold font-display:optional */
     return (
-      '/static/css/ggen_teko.css' + (v ? '?v=' + encodeURIComponent(v) : '')
+      '/static/css/ggen_teko.css' +
+      (v ? '?v=' + encodeURIComponent(v) + '&teko=swap2' : '?teko=swap2')
     );
+  }
+
+  function ensureTekoInlineFaces() {
+    if (document.getElementById('ggen15FontsInline')) return;
+    var v = '';
+    try {
+      v = String(window.__GGEN_APP_JS_VERSION__ || '');
+    } catch (_) {}
+    var qv = encodeURIComponent(v);
+    var st = document.createElement('style');
+    st.id = 'ggen15FontsInline';
+    /* font-display:swap — optional left mobile on system font forever when preload raced. */
+    st.textContent =
+      "@font-face{font-family:'Teko';src:url('/static/font/Teko-SemiBold.ttf?v=" +
+      qv +
+      "') format('truetype');font-weight:500;font-style:normal;font-display:swap}" +
+      "@font-face{font-family:'Teko';src:url('/static/font/Teko-SemiBold.ttf?v=" +
+      qv +
+      "') format('truetype');font-weight:600;font-style:normal;font-display:swap}" +
+      "@font-face{font-family:'Teko';src:url('/static/font/Teko-Bold.ttf?v=" +
+      qv +
+      "') format('truetype');font-weight:700;font-style:normal;font-display:swap}";
+    document.head.appendChild(st);
   }
 
   function ensureTekoLink(enable) {
@@ -64,6 +89,7 @@
       }
       return;
     }
+    ensureTekoInlineFaces();
     if (!link) {
       link = document.createElement('link');
       link.id = TEKO_LINK_ID;
@@ -72,9 +98,10 @@
       document.head.appendChild(link);
     } else if (
       link.href &&
-      link.href.indexOf('fonts.googleapis.com') !== -1
+      (link.href.indexOf('fonts.googleapis.com') !== -1 ||
+        link.href.indexOf('teko=swap2') === -1)
     ) {
-      /* Migrate old Google Fonts link from cached HTML / early inject. */
+      /* Migrate old Google Fonts / optional-face CSS from cached HTML. */
       link.href = tekoCssHref();
     }
     link.disabled = false;

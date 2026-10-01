@@ -71,12 +71,12 @@ window.__ggenLoadGtm=function(){
 {% endif %}
 <script>
 (function(){
-  /* Perf: preload tiny Roboto + Teko (~150KB) when 1.5 is preferred — avoids font-display swap flash.
-     Multi-MB brand/CJK faces still inject after idle (see _defer_brand_fonts). */
+  /* Same-origin font preload: do NOT set crossOrigin unless the response sends ACAO.
+     crossOrigin without ACAO wastes the preload on mobile → Teko stuck on fallback. */
   var v={{ app_js_version|tojson }};
   function preloadFont(href, type){
     var link=document.createElement('link');
-    link.rel='preload';link.as='font';link.type=type||'font/ttf';link.crossOrigin='anonymous';
+    link.rel='preload';link.as='font';link.type=type||'font/ttf';
     link.href=href;
     document.head.appendChild(link);
   }
@@ -87,8 +87,10 @@ window.__ggenLoadGtm=function(){
     var stored='';
     try{stored=localStorage.getItem('ggen_design_15')||localStorage.getItem('ggen_units_mock15')||''}catch(_){}
     var on=q==='15'?true:q==='classic'?false:(stored==='0'?false:true);
+    window.__GGEN_DESIGN_15_EARLY__=!!on;
     if(on){
       preloadFont('/static/font/Teko-SemiBold.ttf?v='+encodeURIComponent(v));
+      preloadFont('/static/font/Teko-Bold.ttf?v='+encodeURIComponent(v));
     }
   }catch(_){}
 })();
@@ -101,7 +103,7 @@ window.__ggenLoadGtm=function(){
 <link rel="stylesheet" href="{{ url_for('static', filename='css/app_shell_bundle.min.css') }}?v={{ app_js_version }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/ggen_15.css') }}?v={{ app_js_version }}">
 <script>
-/* 1.5 Special Design — early class so first paint matches preference */
+/* 1.5 Special Design — early class + inline Teko faces (swap) so mobile does not wait on ggen_teko.css RTT. */
 (function(){
   try{
     var params=new URLSearchParams(location.search||'');
@@ -109,14 +111,23 @@ window.__ggenLoadGtm=function(){
     var stored='';
     try{stored=localStorage.getItem('ggen_design_15')||localStorage.getItem('ggen_units_mock15')||''}catch(_){}
     var on=q==='15'?true:q==='classic'?false:(stored==='0'?false:true);
+    if(typeof window.__GGEN_DESIGN_15_EARLY__==='boolean')on=!!window.__GGEN_DESIGN_15_EARLY__;
     window.__GGEN_DESIGN_15__=!!on;
     document.documentElement.classList.add(on?'ggen-15':'ggen-classic');
     if(on){
+      var v={{ app_js_version|tojson }};
+      var qv=encodeURIComponent(v);
+      var st=document.createElement('style');
+      st.id='ggen15FontsInline';
+      st.textContent=
+        "@font-face{font-family:'Teko';src:url('/static/font/Teko-SemiBold.ttf?v="+qv+"') format('truetype');font-weight:500;font-style:normal;font-display:swap}"+
+        "@font-face{font-family:'Teko';src:url('/static/font/Teko-SemiBold.ttf?v="+qv+"') format('truetype');font-weight:600;font-style:normal;font-display:swap}"+
+        "@font-face{font-family:'Teko';src:url('/static/font/Teko-Bold.ttf?v="+qv+"') format('truetype');font-weight:700;font-style:normal;font-display:swap}";
+      document.head.appendChild(st);
       var l=document.createElement('link');
       l.id='ggen15Fonts';
       l.rel='stylesheet';
-      l.href='{{ url_for('static', filename='css/ggen_teko.css') }}?v={{ app_js_version }}';
-      /* media=all + optional faces: no print→all flash once fonts are preloaded above */
+      l.href='{{ url_for('static', filename='css/ggen_teko.css') }}?v={{ app_js_version }}&teko=swap2';
       document.head.appendChild(l);
     }
   }catch(_){}
