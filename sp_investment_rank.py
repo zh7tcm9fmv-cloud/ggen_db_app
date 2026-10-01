@@ -2231,14 +2231,21 @@ def _spi_support_def_bonus_from_text(tx: str) -> int:
 
 
 _SPI_GUARANTEED_CHANCE_STEP_REGEXES = (
-    re.compile(r"chance\s*step\s+will\s+trigger", re.IGNORECASE),
-    re.compile(r"force[- ]?activate\s+chance\s*step", re.IGNORECASE),
+    # Guaranteed Chance Step (official m_help)
     re.compile(r"guaranteed\s+chance\s*step", re.IGNORECASE),
-    re.compile(r"敵を撃破しなくてもチャンスステップを発動"),
+    re.compile(r"force[- ]?activate\s+chance\s*step", re.IGNORECASE),
+    re.compile(r"chance\s*step\s+will\s+trigger\s+at\s+the\s+end\s+of\s+any\s+action", re.IGNORECASE),
     re.compile(r"無条件チャンスステップ"),
-    re.compile(r"オートチャンスステップ"),
-    re.compile(r"即使未擊敗敵人仍會發動額外行動"),
+    re.compile(r"行動内容に関係なく"),
     re.compile(r"無條件額外行動"),
+    re.compile(r"無論採取何種行動"),
+    # Auto-Chance Step still counts as special CS for SPI scoring
+    re.compile(r"auto[- ]?chance\s*step", re.IGNORECASE),
+    re.compile(r"regardless of whether or not an enemy has been defeated", re.IGNORECASE),
+    re.compile(r"オートチャンスステップ"),
+    re.compile(r"敵を撃破しなくてもチャンスステップを発動"),
+    re.compile(r"自動額外行動"),
+    re.compile(r"即使未擊敗(?:敵人|對手).{0,12}發動額外行動"),
 )
 
 

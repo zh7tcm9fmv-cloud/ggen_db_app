@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>1.5 new design — Featured Unit Assembly cards (mock)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@500;700&display=swap" rel="stylesheet" />
+  <style>
+    /* Preview-only mock of 1-5anniv-gget.ggame.jp .c-unit-card — not wired into the main site. */
+
+    @font-face {
+      font-family: "Teko";
+      src: url("../font/Teko-SemiBold.ttf") format("truetype");
+      font-weight: 400 600;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root {
+      --vw: 100vw;
+      --color-yellow: 255 212 0;
+      --color-pink: 233 54 221; /* Returns — #e936dd */
+      --color-blue: 63 136 246; /* Avalanche — #3f88f6 */
+      --color-dark: 36 36 36;
+      --color-white: 255 255 255;
+      --color-cyan: 0 217 255;
+      --font-NotoSans-family: "Noto Sans", "Segoe UI", sans-serif;
+      --font-Teko-family: "Teko", Impact, sans-serif;
+      --c-unit-card-accent: var(--color-yellow);
+    }
+
+    html {
+      font-size: calc(16 / 1440 * min(var(--vw), 1440px));
+      line-height: 1.15;
+      -webkit-text-size-adjust: 100%;
+    }
+    @media screen and (max-width: 820.88px) {
+      html { font-size: 4.2666666667vw; }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: rgb(var(--color-white) / 1);
+      font-family: var(--font-NotoSans-family);
+      background:
+        radial-gradient(120% 80% at 50% 0%, rgb(0 40 70 / 0.85), transparent 55%),
+        linear-gradient(180deg, #020810 0%, #06101c 40%, #0a1628 100%);
+    }
+
+    .mock-page {
+      width: min(80rem, 100%);
+      margin: 0 auto;
+      padding: 3rem 1.5rem 4rem;
+    }
+
+    .mock-badge {
+      display: inline-block;
+      margin: 0 0 1rem;
+      padding: 0.35rem 0.75rem;
+      border: 1px solid rgb(var(--color-cyan) / 0.55);
+      color: rgb(var(--color-cyan) / 1);
+      font-family: var(--font-Teko-family);
+      font-size: 1.25rem;
+      letter-spacing: 0.06em;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .mock-title {
+      margin: 0 0 0.5rem;
+      font-family: var(--font-Teko-family);
+      font-weight: 400;
+      font-size: clamp(2.25rem, 4vw, 3.75rem);
+      line-height: 0.95;
+      letter-spacing: 0.01em;
+      color: rgb(var(--color-yellow) / 1);
+      text-shadow: 0 0 1.5rem rgb(var(--color-yellow) / 0.25);
+      min-height: 2.2em;
+    }
+
+    .mock-sub {
+      margin: 0 0 1.75rem;
+      max-width: 46rem;
+      font-size: 1rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      line-height: 1.5;
+      color: rgb(255 255 255 / 0.82);
+      min-height: 3em;
+    }
+
+    .mock-note {
+      margin: 0 0 1.5rem;
+      font-size: 0.8125rem;
+      letter-spacing: 0.03em;
+      color: rgb(255 255 255 / 0.45);
+    }
+
+    /* --- tabs --- */
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 0 0 2rem;
+      padding: 0;
+      list-style: none;
+    }
+    .tabs button {
+      appearance: none;
+      cursor: pointer;
+      margin: 0;
+      padding: 0.65rem 1.1rem 0.55rem;
+      border: 1px solid rgb(255 255 255 / 0.22);
+      background: rgb(0 0 0 / 0.35);
+      color: rgb(255 255 255 / 0.72);
+      font-family: var(--font-Teko-family);
+      font-size: 1.15rem;
+      letter-spacing: 0.04em;
+      line-height: 1;
+      clip-path: polygon(0.4rem 0, 100% 0, 100% calc(100% - 0.4rem), calc(100% - 0.4rem) 100%, 0 100%);
+      transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+    }
+    .tabs button:hover {
+      color: rgb(var(--color-white) / 1);
+      border-color: rgb(var(--color-cyan) / 0.55);
+    }
+    .tabs button[aria-selected="true"] {
+      color: rgb(var(--color-dark) / 1);
+      background: rgb(var(--color-yellow) / 1);
+      border-color: rgb(var(--color-yellow) / 1);
+    }
+
+    .panel[hidden] { display: none; }
+
+    /* --- list --- */
+    .list {
+      display: flex;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      gap: 0.5rem;
+    }
+    @media screen and (max-width: 820.88px) {
+      .list {
+        flex-direction: column;
+        align-items: center;
+        gap: 2.5rem;
+      }
+    }
+    .list > .item {
+      display: flex;
+      flex: 1 0 0;
+      min-width: 0;
+    }
+    @media screen and (max-width: 820.88px) {
+      .list > .item { width: 19.625rem; flex: none; }
+    }
+
+    /* New Limited — unit art crops; characters use shared bottom-align */
+    .pool-new .item.__01 {
+      --c-unit-card-unit-w: 33.8125rem; --c-unit-card-unit-h: 33.8125rem;
+      --c-unit-card-unit-x: -9.125rem; --c-unit-card-unit-y: -8.1875rem;
+      --c-unit-card-character-w: 9rem; --c-unit-card-character-h: 9rem;
+      --c-unit-card-character-x: 10.4rem;
+    }
+    .pool-new .item.__02 {
+      --c-unit-card-unit-w: 22.9375rem; --c-unit-card-unit-h: 22.9375rem;
+      --c-unit-card-unit-x: -0.9375rem; --c-unit-card-unit-y: -3.3125rem;
+      --c-unit-card-character-w: 9.5rem; --c-unit-card-character-h: 9.5rem;
+      --c-unit-card-character-x: 9.9rem;
+    }
+    .pool-new .item.__03 {
+      --c-unit-card-unit-w: 21.6875rem; --c-unit-card-unit-h: 21.6875rem;
+      --c-unit-card-unit-x: -2.0625rem; --c-unit-card-unit-y: 2.3125rem;
+      --c-unit-card-character-w: 9.25rem; --c-unit-card-character-h: 9.25rem;
+      --c-unit-card-character-x: 10.15rem;
+    }
+    @media screen and (max-width: 820.88px) {
+      .pool-new .item.__01 {
+        --c-unit-card-unit-w: 24.5625rem; --c-unit-card-unit-h: 19.0625rem;
+        --c-unit-card-unit-x: -4.9375rem; --c-unit-card-unit-y: 0rem;
+      }
+      .pool-new .item.__02 {
+        --c-unit-card-unit-w: 13.8125rem; --c-unit-card-unit-h: 13.8125rem;
+        --c-unit-card-unit-x: 1.75rem; --c-unit-card-unit-y: 2.875rem;
+      }
+      .pool-new .item.__03 {
+        --c-unit-card-unit-w: 18.5625rem; --c-unit-card-unit-h: 17.1875rem;
+        --c-unit-card-unit-x: 0.9375rem; --c-unit-card-unit-y: 1.5rem;
+      }
+    }
+
+    /* Returns — unit art crops; characters use shared bottom-align */
+    .pool-returns .item.__01 {
+      --c-unit-card-unit-w: 24.5625rem; --c-unit-card-unit-h: 19.0625rem;
+      --c-unit-card-unit-x: -4.9375rem; --c-unit-card-unit-y: 0rem;
+      --c-unit-card-character-w: 9rem; --c-unit-card-character-h: 9rem;
+      --c-unit-card-character-x: 10.4rem;
+    }
+    .pool-returns .item.__02 {
+      --c-unit-card-unit-w: 13.8125rem; --c-unit-card-unit-h: 13.8125rem;
+      --c-unit-card-unit-x: 1.75rem; --c-unit-card-unit-y: 2.875rem;
+      --c-unit-card-character-w: 9.5rem; --c-unit-card-character-h: 9.5rem;
+      --c-unit-card-character-x: 9.9rem;
+    }
+    .pool-returns .item.__03 {
+      --c-unit-card-unit-w: 18.5625rem; --c-unit-card-unit-h: 17.1875rem;
+      --c-unit-card-unit-x: 0.9375rem; --c-unit-card-unit-y: 1.5rem;
+      --c-unit-card-character-w: 9.25rem; --c-unit-card-character-h: 9.25rem;
+      --c-unit-card-character-x: 10.15rem;
+    }
+
+    /* Avalanche — unit art crops; characters use shared bottom-align */
+    .pool-astraea .item.__01 {
+      --c-unit-card-unit-w: 22.5rem; --c-unit-card-unit-h: 22.5rem;
+      --c-unit-card-unit-x: -1.5rem; --c-unit-card-unit-y: -2rem;
+      --c-unit-card-character-w: 9rem; --c-unit-card-character-h: 9rem;
+      --c-unit-card-character-x: 10.4rem;
+    }
+    .pool-astraea .item.__02 {
+      --c-unit-card-unit-w: 21.5rem; --c-unit-card-unit-h: 21.5rem;
+      --c-unit-card-unit-x: -1rem; --c-unit-card-unit-y: -1.25rem;
+      --c-unit-card-character-w: 9.5rem; --c-unit-card-character-h: 9.5rem;
+      --c-unit-card-character-x: 9.9rem;
+    }
+    .pool-astraea .item.__03 {
+      --c-unit-card-unit-w: 20.5rem; --c-unit-card-unit-h: 20.5rem;
+      --c-unit-card-unit-x: -0.75rem; --c-unit-card-unit-y: -0.5rem;
+      --c-unit-card-character-w: 9.25rem; --c-unit-card-character-h: 9.25rem;
+      --c-unit-card-character-x: 10.15rem;
+    }
+
+    /* Shared: unit characters bottom-aligned to HUD (sizes set per-pool above) */
+
+    /* Shared supporter layout: game sb_ thumb only (no face layer / no glow) */
+    .item.__04,
+    .c-unit-card.--supporter {
+      --c-unit-card-unit-w: 18.25rem;
+      --c-unit-card-unit-h: 10.22rem; /* 900:504 */
+      --c-unit-card-unit-x: 0.7rem;
+      --c-unit-card-unit-y: 5.1rem;
+    }
+    .c-unit-card.--supporter > .image > .character {
+      display: none;
+    }
+    .c-unit-card.--supporter > .image > .visual > .picture > .i {
+      object-fit: contain;
+    }
+    /* Stronger outside-frame dim for supporters (deeper shadow plate) */
+    .c-unit-card.--supporter > .image > .shadow {
+      z-index: 3;
+    }
+
+    /* --- c-unit-card --- */
+    .c-unit-card {
+      --c-unit-card-accent: var(--color-yellow);
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      gap: 0.5rem;
+    }
+    .c-unit-card.__yellow {
+      --c-unit-card-accent: var(--color-yellow);
+    }
+    .c-unit-card.__pink {
+      --c-unit-card-accent: var(--color-pink);
+    }
+    .c-unit-card.__blue {
+      --c-unit-card-accent: var(--color-blue);
+    }
+
+    .c-unit-card > .image {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      aspect-ratio: 314 / 320;
+    }
+
+    .c-unit-card > .image > .bg {
+      position: absolute;
+      z-index: 1;
+      inset: 0;
+      clip-path: polygon(
+        0% 6.25%, 6.37% 0%, 99.36% 0%, 100% 0.63%,
+        100% 89.38%, 90.26% 99.56%, 89.17% 100%, 0.64% 100%, 0% 99.38%
+      );
+      background-color: rgba(0, 0, 0, 0.3);
+    }
+
+    .c-unit-card > .image > .visual,
+    .c-unit-card > .image > .character {
+      position: absolute;
+      z-index: 2;
+      inset: 0;
+      overflow: hidden;
+      clip-path: polygon(
+        0% 6.25%, 6.37% 0%, 99.36% 0%, 100% 0.63%,
+        100% 89.38%, 90.26% 99.56%, 89.17% 100%, 0.64% 100%, 0% 99.38%
+      );
+    }
+    .c-unit-card > .image > .character {
+      z-index: 5;
+      pointer-events: none; /* hits re-enable on .hit */
+    }
+
+    .c-unit-card > .image > .shadow {
+      position: absolute;
+      z-index: 3;
+      inset: 0;
+      pointer-events: none;
+    }
+    .c-unit-card > .image > .shadow > .icon {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .c-unit-card > .image > .waku {
+      position: absolute;
+      z-index: 4;
+      overflow: hidden;
+      color: rgb(var(--c-unit-card-accent) / 1);
+      pointer-events: none;
+      inset: 0;
+    }
+    .c-unit-card > .image > .waku > .icon {
+      position: absolute;
+      inset: 1.25% 1.27%;
+      display: block;
+      width: auto;
+      height: auto;
+    }
+    .c-unit-card > .image > .waku > .label {
+      position: absolute;
+      top: 5%;
+      left: 8.92%;
+      margin: 0;
+      white-space: nowrap;
+      color: rgb(var(--color-dark) / 1);
+      font-family: var(--font-Teko-family);
+      font-weight: 400;
+      line-height: 0.9;
+      letter-spacing: -0.01em;
+      font-size: 1rem;
+      font-feature-settings: "palt";
+    }
+
+    /* Hit targets: crop box + hover pop + detail link */
+    .c-unit-card > .image > .visual > .hit {
+      position: absolute;
+      top: var(--c-unit-card-unit-y, 0px);
+      left: var(--c-unit-card-unit-x, 0px);
+      display: block;
+      width: var(--c-unit-card-unit-w, 100%);
+      height: var(--c-unit-card-unit-h, 100%);
+      transform-origin: center center;
+      transition: transform 200ms cubic-bezier(0.2, 0, 0, 1);
+      cursor: pointer;
+      outline: none;
+    }
+    .c-unit-card > .image > .character > .hit {
+      position: absolute;
+      top: auto;
+      bottom: 0;
+      left: var(--c-unit-card-character-x, 0px);
+      display: block;
+      width: var(--c-unit-card-character-w, 100%);
+      height: var(--c-unit-card-character-h, 100%);
+      transform-origin: center bottom;
+      transition: transform 200ms cubic-bezier(0.2, 0, 0, 1);
+      cursor: pointer;
+      outline: none;
+      pointer-events: auto;
+      filter: drop-shadow(-0.25rem -0.25rem 1rem rgb(var(--c-unit-card-accent) / 1));
+    }
+    .c-unit-card > .image > .visual > .hit:hover,
+    .c-unit-card > .image > .visual > .hit:focus-visible {
+      transform: translateY(-0.5rem) scale(1.05);
+      z-index: 6;
+    }
+    .c-unit-card > .image > .character > .hit:hover,
+    .c-unit-card > .image > .character > .hit:focus-visible {
+      transform: translateY(-0.45rem) scale(1.07);
+    }
+    .c-unit-card > .image > .visual > .hit > .picture,
+    .c-unit-card > .image > .character > .hit > .picture {
+      position: absolute;
+      inset: 0;
+      top: 0;
+      left: 0;
+      bottom: auto;
+      display: block;
+      width: 100%;
+      height: 100%;
+      filter: none;
+    }
+    .c-unit-card:not(.--supporter) > .image > .character > .hit > .picture > .i {
+      object-fit: contain;
+      object-position: center bottom;
+    }
+    .picture > .i {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .c-unit-card > .image > .visual > .hit,
+      .c-unit-card > .image > .character > .hit {
+        transition: none;
+      }
+      .c-unit-card > .image > .visual > .hit:hover,
+      .c-unit-card > .image > .visual > .hit:focus-visible,
+      .c-unit-card > .image > .character > .hit:hover,
+      .c-unit-card > .image > .character > .hit:focus-visible {
+        transform: none;
+      }
+    }
+
+    .c-unit-card > .text {
+      display: flex;
+      flex-direction: column;
+      gap: 0.125rem;
+      height: 3.325rem;
+    }
+    .c-unit-card > .text > .name {
+      margin: 0;
+      font-family: var(--font-NotoSans-family);
+      font-weight: 700;
+      font-size: 1rem;
+      line-height: 160%;
+      letter-spacing: 0.04em;
+      font-feature-settings: "palt";
+    }
+    .c-unit-card > .text > .pilot {
+      margin: 0;
+      font-family: var(--font-NotoSans-family);
+      font-weight: 500;
+      font-size: 0.875rem;
+      line-height: 160%;
+      letter-spacing: 0.04em;
+      font-feature-settings: "palt";
+      color: rgb(255 255 255 / 0.78);
+    }
+
+    .svg-sprite {
+      position: absolute;
+      width: 0;
+      height: 0;
+      overflow: hidden;
+    }
+  
+    /* --- /tl featured-tile chrome (mock) --- */
+    .bt-feat-tile{
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      width:100%;
+      padding:8px 6px 10px;
+      box-sizing:border-box;
+      border-radius:10px;
+      overflow:hidden;
+      border:2px solid transparent;
+      background:
+        linear-gradient(#121a2a,#121a2a) padding-box,
+        linear-gradient(128deg,#db2777 0%,#a855f7 42%,#2563eb 100%) border-box;
+      box-shadow:0 4px 18px rgba(168,85,247,.18), inset 0 1px 0 rgba(255,255,255,.08);
+    }
+    .bt-feat-tile.bt-lr-tile--lt-supporter{
+      background:
+        linear-gradient(#121a2a,#121a2a) padding-box,
+        linear-gradient(125deg,#0d4f5c 0%,#0e7490 38%,#c9a962 95%) border-box;
+      box-shadow:0 4px 18px rgba(14,116,144,.22), inset 0 1px 0 rgba(255,255,255,.07);
+    }
+    .bt-feat-tile > .bt-lim-beam{
+      position:absolute;
+      inset:0;
+      z-index:4;
+      border-radius:inherit;
+      padding:2px;
+      pointer-events:none;
+      overflow:hidden;
+      -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+      -webkit-mask-composite:xor;
+      mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+      mask-composite:exclude;
+    }
+    .bt-feat-tile > .bt-lim-beam::before{
+      content:"";
+      position:absolute;
+      left:50%;
+      top:50%;
+      width:220%;
+      aspect-ratio:1;
+      background:conic-gradient(from 0deg,transparent 0 58%,#ff4fd8 72%,#fff 80%,#00d4ff 88%,#ffd400 94%,transparent 100%);
+      animation:btLimBeamSpin 3.2s linear infinite;
+    }
+    @keyframes btLimBeamSpin{
+      from{transform:translate(-50%,-50%) rotate(0deg)}
+      to{transform:translate(-50%,-50%) rotate(1turn)}
+    }
+    .bt-feat-tile > .bt-limited-topbar,
+    .bt-feat-tile > .c-unit-card{position:relative;z-index:1}
+    .bt-feat-tile > .bt-limited-topbar{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width:100%;
+      margin:0 0 6px;
+      pointer-events:none;
+      line-height:0;
+    }
+    .limited-ur-badge{
+      display:inline-grid;
+      place-items:center;
+      position:relative;
+      vertical-align:middle;
+      line-height:0;
+      max-width:100%;
+      overflow:visible;
+    }
+    .limited-ur-badge-base{
+      display:block;
+      width:100%;
+      height:auto;
+      grid-area:1/1;
+      pointer-events:none;
+      user-select:none;
+    }
+    .limited-ur-badge-text{
+      grid-area:1/1;
+      z-index:1;
+      display:block;
+      max-width:90%;
+      padding:0 5%;
+      box-sizing:border-box;
+      font-weight:900;
+      color:#fff;
+      text-shadow:0 1px 2px rgba(0,0,0,.98),0 0 4px rgba(0,0,0,.9);
+      text-align:center;
+      line-height:1.05;
+      white-space:nowrap;
+      pointer-events:none;
+    }
+    /* Expand plate for "Limited Time" so text is not clipped (was ~90px for "Limited") */
+    .limited-ur-badge--tile.limited-ur-badge--limited-time{
+      width:min(148px,100%);
+      filter:drop-shadow(0 1px 3px rgba(0,0,0,.55));
+    }
+    .limited-ur-badge--limited-time .limited-ur-badge-text{
+      font-size:11px;
+      letter-spacing:.02em;
+      text-transform:none;
+      overflow:visible;
+      text-overflow:clip;
+    }
+    @media (prefers-reduced-motion: reduce){
+      .bt-feat-tile > .bt-lim-beam::before{animation:none}
+    }
+
+    /* Mock detail popup (same-window; stands in for openDetail) */
+    .mock-detail-overlay{
+      position:fixed;inset:0;z-index:1000;
+      display:flex;align-items:center;justify-content:center;
+      padding:1.5rem;
+      background:rgba(4,8,16,.72);
+      backdrop-filter:blur(6px);
+      opacity:0;pointer-events:none;
+      transition:opacity 220ms cubic-bezier(0.05,0.7,0.1,1);
+    }
+    .mock-detail-overlay.is-open{opacity:1;pointer-events:auto}
+    .mock-detail-panel{
+      width:min(420px,100%);
+      padding:1.25rem 1.35rem 1.4rem;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.12);
+      background:linear-gradient(165deg,#1a2236 0%,#121826 100%);
+      box-shadow:0 16px 48px rgba(0,0,0,.55);
+      transform:translateY(10px) scale(.98);
+      transition:transform 220ms cubic-bezier(0.05,0.7,0.1,1);
+    }
+    .mock-detail-overlay.is-open .mock-detail-panel{transform:none}
+    .mock-detail-kicker{
+      margin:0 0 .35rem;
+      font-family:var(--font-Teko-family);
+      font-size:1.1rem;
+      letter-spacing:.06em;
+      color:rgb(var(--color-cyan)/1);
+      text-transform:uppercase;
+    }
+    .mock-detail-title{
+      margin:0 0 .5rem;
+      font-size:1.15rem;
+      font-weight:700;
+      line-height:1.3;
+    }
+    .mock-detail-meta{
+      margin:0 0 1rem;
+      font-size:.85rem;
+      color:rgb(255 255 255 / .55);
+      word-break:break-all;
+    }
+    .mock-detail-note{
+      margin:0 0 1.1rem;
+      font-size:.8rem;
+      line-height:1.45;
+      color:rgb(255 255 255 / .7);
+    }
+    .mock-detail-actions{display:flex;gap:.6rem;flex-wrap:wrap}
+    .mock-detail-actions button,
+    .mock-detail-actions a{
+      appearance:none;
+      border:1px solid rgba(255,255,255,.2);
+      background:rgba(0,0,0,.35);
+      color:#fff;
+      font:inherit;
+      font-size:.85rem;
+      padding:.45rem .85rem;
+      border-radius:6px;
+      cursor:pointer;
+      text-decoration:none;
+    }
+    .mock-detail-actions .primary{
+      border-color:rgb(var(--color-cyan)/.55);
+      background:rgb(var(--color-cyan)/.18);
+    }
+
+  </style>
+</head>
+<body>
+  <svg class="svg-sprite" aria-hidden="true" focusable="false">
+    <symbol viewBox="0 0 314 320" id="c_unit_card_shadow" xmlns="http://www.w3.org/2000/svg">
+      <g clip-path="url(#c_unit_card_shadow_clip0)">
+        <path d="M20 0C18.9 0 17.36 0.64 16.59 1.41L1.41 16.59C0.63 17.37 0 18.9 0 20V318C0 319.1 0.9 320 2 320H280C281.1 320 282.64 319.36 283.41 318.59L312.58 289.42C313.36 288.64 313.99 287.11 313.99 286.01V2C313.99 0.9 313.09 0 311.99 0H20ZM309.5 177.5C309.5 178.6 308.86 180.14 308.09 180.91L174.92 314.08C174.14 314.86 172.61 315.49 171.51 315.49H6.5C5.4 315.49 4.5 314.59 4.5 313.49V22.5C4.5 21.4 5.14 19.86 5.91 19.09L19.08 5.92C19.86 5.14 21.39 4.51 22.49 4.51H307.49C308.59 4.51 309.49 5.41 309.49 6.51V177.51L309.5 177.5Z" fill="black" fill-opacity="0.5"/>
+      </g>
+      <defs><clipPath id="c_unit_card_shadow_clip0"><rect width="314" height="320" fill="white"/></clipPath></defs>
+    </symbol>
+    <!-- Deeper outside-frame dim for supporter thumbs -->
+    <symbol viewBox="0 0 314 320" id="c_unit_card_shadow_deep" xmlns="http://www.w3.org/2000/svg">
+      <g clip-path="url(#c_unit_card_shadow_deep_clip0)">
+        <path d="M20 0C18.9 0 17.36 0.64 16.59 1.41L1.41 16.59C0.63 17.37 0 18.9 0 20V318C0 319.1 0.9 320 2 320H280C281.1 320 282.64 319.36 283.41 318.59L312.58 289.42C313.36 288.64 313.99 287.11 313.99 286.01V2C313.99 0.9 313.09 0 311.99 0H20ZM309.5 177.5C309.5 178.6 308.86 180.14 308.09 180.91L174.92 314.08C174.14 314.86 172.61 315.49 171.51 315.49H6.5C5.4 315.49 4.5 314.59 4.5 313.49V22.5C4.5 21.4 5.14 19.86 5.91 19.09L19.08 5.92C19.86 5.14 21.39 4.51 22.49 4.51H307.49C308.59 4.51 309.49 5.41 309.49 6.51V177.51L309.5 177.5Z" fill="black" fill-opacity="0.82"/>
+      </g>
+      <defs><clipPath id="c_unit_card_shadow_deep_clip0"><rect width="314" height="320" fill="white"/></clipPath></defs>
+    </symbol>
+    <symbol viewBox="0 0 306 312" id="c_unit_card_waku" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g clip-path="url(#c_unit_card_waku_clip0)">
+        <path d="M169.17 311H2C0.9 311 0 310.1 0 309V303H35.17C35.7 303 36.21 303.21 36.58 303.59L39.41 306.42C39.79 306.8 40.29 307.01 40.82 307.01H173.99L170.58 310.42C170.2 310.8 169.7 311.01 169.17 311.01V311Z" fill="currentColor"/>
+        <path d="M305 17H183.99C182.93 17 181.91 17.42 181.16 18.17L167.5 31.83C166.75 32.58 165.73 33 164.67 33H1V16C6.86 10.14 10.14 6.86 16 1H304C304.55 1 305 1.45 305 2V17Z" fill="currentColor"/>
+        <path d="M170.91 310.09C170.13 310.87 168.6 311.5 167.5 311.5H2.5C1.4 311.5 0.5 310.6 0.5 309.5V18.5C0.5 17.4 1.14 15.86 1.91 15.09L15.09 1.91C15.87 1.13 17.4 0.5 18.5 0.5H303.5C304.6 0.5 305.5 1.4 305.5 2.5V173.5C305.5 174.6 304.86 176.14 304.09 176.91L170.92 310.08L170.91 310.09Z" stroke="currentColor" stroke-miterlimit="10"/>
+      </g>
+      <defs><clipPath id="c_unit_card_waku_clip0"><rect width="306" height="312" fill="white"/></clipPath></defs>
+    </symbol>
+  </svg>
+
+  <main class="mock-page">
+    <p class="mock-badge">1.5 new design</p>
+    <h1 class="mock-title" id="pool-title">New Limited UR Unit &amp; New Limited UR Supporter!</h1>
+    <p class="mock-sub" id="pool-sub">1.5th Anniv. Featured Unit Assembly — anniversary site card art + crops.</p>
+    <p class="mock-note">Preview of /tl featured side: combined unit+character card, one limited beam, “Limited Time” badge (plate expands). Sprite clicks open an in-page detail popup (not a new tab).</p>
+
+    <div class="tabs" role="tablist" aria-label="Featured pools">
+      <button type="button" role="tab" id="tab-new" aria-controls="panel-new" aria-selected="true" data-pool="new">New Limited</button>
+      <button type="button" role="tab" id="tab-returns" aria-controls="panel-returns" aria-selected="false" data-pool="returns">Returns</button>
+      <button type="button" role="tab" id="tab-astraea" aria-controls="panel-astraea" aria-selected="false" data-pool="astraea">Avalanche Astraea</button>
+    </div>
+
+    <!-- NEW LIMITED -->
+    <section class="panel pool-new" id="panel-new" role="tabpanel" aria-labelledby="tab-new">
+      <ul class="list">
+        <li class="item __01">
+          <div class="bt-feat-tile bt-lr-tile--limited bt-lr-tile--lt-unit">
+            <div class="bt-limited-topbar" aria-hidden="true">
+              <span class="limited-ur-badge limited-ur-badge--tile limited-ur-badge--limited-time" role="img" aria-label="Limited Time">
+                <img class="limited-ur-badge-base" src="/static/images/UI/UI_Gasha_Label_UR_Base.webp" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">
+                <span class="limited-ur-badge-text">Limited Time</span>
+              </span>
+            </div>
+            <div class="bt-lim-beam" aria-hidden="true"></div>
+          <div class="c-unit-card __yellow">
+            <div class="image">
+              <div class="bg"></div>
+              <div class="visual"><a class="hit" href="/u/1175001050" data-detail-type="u" data-detail-id="1175001050" aria-label="V2 Assault Buster Gundam (EX) detail"><picture class="picture"><img class="i" src="./01_unit.webp" alt="" /></picture></a></div>
+              <div class="shadow"><svg class="icon" viewBox="0 0 314 320" preserveAspectRatio="none"><use href="#c_unit_card_shadow"></use></svg></div>
+              <div class="waku">
+                <svg class="icon" viewBox="0 0 306 312" preserveAspectRatio="none"><use href="#c_unit_card_waku"></use></svg>
+                <p class="label">UNIT &amp; CHARACTER</p>
+              </div>
+              <div class="character"><a class="hit" href="/c/1175000101" data-detail-type="c" data-detail-id="1175000101" aria-label="Uso Ewin detail"><picture class="picture"><img class="i" src="./01_char.webp" alt="" /></picture></a></div>
+            </div>
+            <div class="text">
+              <p class="name">V2 Assault Buster Gundam (EX)</p>
+              <p class="pilot">Uso Ewin</p>
+            </div>
+          </div>
+          </div>
+        </li>
+        <li class="item __02">
+          <div class="bt-feat-tile bt-lr-tile--limited bt-lr-tile--lt-unit">
+            <div class="bt-limited-topbar" aria-hidden="true">
+              <span class="limited-ur-badge limited-ur-badge--tile limited-ur-badge--limited-time" role="img" aria-label="Limited Time">
+                <img class="limited-ur-badge-base" src="/static/images/UI/UI_Gasha_Label_UR_Base.webp" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">
+                <span class="limited-ur-badge-text">Limited Time</span>
+              </span>
+            </div>
+            <div class="bt-lim-beam" aria-hidden="true"></div>
+          <div class="c-unit-card __yellow">
+            <div class="image">
+              <div class="bg"></div>
+              <div class="visual"><a class="hit" href="/u/1850004850" data-detail-type="u" data-detail-id="1850004850" aria-label="Zanspine (EX) detail"><picture class="picture"><img class="i" src="./02_unit.webp" alt="" /></picture></a></div>
+              <div class="shadow"><svg class="icon" viewBox="0 0 314 320" preserveAspectRatio="none"><use href="#c_unit_card_shadow"></use></svg></div>
+              <div class="waku">
+                <svg class="icon" viewBox="0 0 306 312" preserveAspectRatio="none"><use href="#c_unit_card_waku"></use></svg>
+                <p class="label">UNIT &amp; CHARACTER</p>
+              </div>
+              <div class="character"><a class="hit" href="/c/1175000601" data-detail-type="c" data-detail-id="1175000601" aria-label="Fuala Griffon detail"><picture class="picture"><img class="i" src="./02_char.webp" alt="" /></picture></a></div>
+            </div>
+            <div class="text">
+              <p class="name">Zanspine (EX)</p>
+              <p class="pilot">Fuala Griffon</p>
+            </div>
+          </div>
+          </div>
+        </li>
+        <li class="item __03">
+          <div class="bt-feat-tile bt-lr-tile--limited bt-lr-tile--lt-unit">
+            <div class="bt-limited-topbar" aria-hidden="true">
+              <span class="limited-ur-badge limited-ur-badge--tile limited-ur-badge--limited-time" role="img" aria-label="Limited Time">
+                <img class="limited-ur-badge-base" src="/static/images/UI/UI_Gasha_Label_UR_Base.webp" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">
+                <span class="limited-ur-badge-text">Limited Time</span>
+              </span>
+            </div>
+            <div class="bt-lim-beam" aria-hidden="true"></div>
+          <div class="c-unit-card __yellow">
+            <div class="image">
+              <div class="bg"></div>
+              <div class="visual"><a class="hit" href="/u/1175001150" data-detail-type="u" data-detail-id="1175001150" aria-label="Gottrlatan (EX) detail"><picture class="picture"><img class="i" src="./03_unit.webp" alt="" /></picture></a></div>
+              <div class="shadow"><svg class="icon" viewBox="0 0 314 320" preserveAspectRatio="none"><use href="#c_unit_card_shadow"></use></svg></div>
+              <div class="waku">
+                <svg class="icon" viewBox="0 0 306 312" preserveAspectRatio="none"><use href="#c_unit_card_waku"></use></svg>
+                <p class="label">UNIT &amp; CHARACTER</p>
+              </div>
+              <div class="character"><a class="hit" href="/c/1175000500" data-detail-type="c" data-detail-id="1175000500" aria-label="Katejina Loos detail"><picture class="picture"><img class="i" src="./03_char.webp" alt="" /></picture></a></div>
+            </div>
+            <div class="text">
+              <p class="name">Gottrlatan (EX)</p>
+              <p class="pilot">Katejina Loos</p>
+            </div>
+          </div>
+          </div>
+        </li>
+        <li class="item __04">
+          <div class="bt-feat-tile bt-lr-tile--limited bt-lr-tile--lt-supporter">
+            <div class="bt-limited-topbar" aria-hidden="true">
+              <span class="limited-ur-badge limited-ur-badge--tile limited-ur-badge--limited-time" role="img" aria-label="Limited Time">
+                <img class="limited-ur-badge-base" src="/static/images/UI/UI_Gasha_Label_UR_Base.webp" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">
+                <span class="limited-ur-badge-text">Limited Time</span>
+              </span>
+            </div>
+            <div class="bt-lim-beam" aria-hidden="true"></div>
+          <div class="c-unit-card __yellow --supporter">
+            <div class="image">
+              <div class="bg"></div>
+              <div class="visual"><a class="hit" href="/s/1175000150" data-detail-type="s" data-detail-id="1175000150" aria-label="Robert Gomez &amp; Reinforce Junior detail"><picture class="picture"><img class="i" src="./supp_robert.webp" alt="" /></picture></a></div>
+              <div class="shadow"><svg class="icon" viewBox="0 0 314 320" preserveAspectRatio="none"><use href="#c_unit_card_shadow_deep"></use></svg></div>
+              <div class="waku">
+                <svg class="icon" viewBox="0 0 306 312" preserveAspectRatio="none"><use href="#c_unit_card_waku"></use></svg>
+                <p class="label">SUPPORTER</p>
+              </div>
+            </div>
+            <div class="text">
+              <p class="name">Robert Gomez &amp; Reinforce Junior</p>
+            </div>
+          </div>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- RETURNS -->
+    <section class="panel pool-returns" id="panel-returns" role="tabpanel" aria-labelledby="tab-returns" hidden>
+      <ul class="list">
+        <li class="item __01">
+          <div class="bt-feat-tile bt-lr-tile--limited bt-lr-tile--lt-unit">
+            <div class="bt-limited-topbar" aria-hidden="true">
+              <span class="limited-ur-badge limited-ur-badge--tile limited-ur-badge--limited-time" role="img" aria-label="Limited Time">
+                <img class="limited-ur-badge-base" src="/static/images/UI/UI_Gasha_Label_UR_Base.webp" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">
+                <span class="limited-ur-badge-text">Limited Time</span>
+              </span>
+            </div>
+            <div class="bt-lim-beam" aria-hidden="true"></div>
+          <div class="c-unit-card __pink">
+            <div class="image">
+              <div class="bg"></div>
+              <div class="visual"><a class="hit" href="/u/1114000150" data-detail-type="u" data-detail-id="1114000150" aria-label="Hi-Nu Gundam (EX) detail"><picture class="picture"><img class="i" src="./returns_01_unit.webp" alt="" /></picture></a></div>
+              <div class="shadow"><svg class="icon" viewBox="0 0 314 320" preserveAspectRatio="none"><use href="#c_unit_card_shadow"></use></svg></div>
+              <div class="waku">
+                <svg class="icon" viewBox="0 0 306 312" preserveAspectRatio="none"><use href="#c_unit_card_waku"></use></svg>
+                <p class="label">UNIT &amp; CHARACTER</p>
+              </div>
+              <div class="character"><a class="hit" href="/c/1110000102" data-detail-type="c" data-detail-id="1110000102" aria-label="Amuro Ray detail"><picture class="picture"><img class="i" src="./returns_01_char.webp" alt="" /></picture></a></div>
+            </div>
+            <div class="text">
+              <p class="name">Hi-Nu Gundam (EX)</p>
+              <p class="pilot">Amuro Ray</p>
+            </div>
+          </div>
+          </div>
+        </li>
+        <li class="item __02">
+          <div class="bt-feat-tile bt-lr-tile--limited bt-lr-tile--lt-unit">
+            <div class="bt-limited-topbar" aria-hidden="true">
+              <span class="limited-ur-badge limited-ur-badge--tile limited-ur-badge--limited-time" role="img" aria-label="Limited Time">
+                <img class="limited-ur-badge-base" src="/static/images/UI/UI_Gasha_Label_UR_Base.webp" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">
+                <span class="limited-ur-badge-text">Limited Time</span>
+              </span>
+            </div>
+            <div class="bt-lim-beam" aria-hidden="true"></div>
+          <div class="c-unit-card __pink">
+            <div class="image">
+              <div class="bg"></div>
+              <div class="visual"><a class="hit" href="/u/1430003450" data-detail-type="u" data-detail-id="1430003450" aria-label="Gundam Barbatos Lupus Rex (EX) detail"><picture class="picture"><img class="i" src="./returns_02_unit.webp" alt="" /></picture></a></div>
+              <div class="shadow"><svg class="icon" viewBox="0 0 314 320" preserveAspectRatio="none"><use href="#c_unit_card_shadow"></use></svg></div>
+              <div class="waku">
+                <svg class="icon" viewBox="0 0 306 312" preserveAspectRatio="none"><use href="#c_unit_card_waku"></use></svg>
+                <p class="label">UNIT &amp; CHARACTER</p>
+              </div>
+              <div class="character"><a class="hit" href="/c/1430000109" data-detail-type="c" data-detail-id="1430000109" aria-label="Mikazuki Augus detail"><picture class="picture"><img class="i" src="./returns_02_char.webp" alt="" /></picture></a></div>
+            </div>
+            <div class="text">
+              <p class="name">Gundam Barbatos Lupus Rex (EX)</p>
+              <p class="pilot">Mikazuki Augus</p>
+            </div>
+          </div>
+          </div>
+        </li>
+        <li class="item __03">
+          <div class="bt-feat-tile bt-lr-tile--limited bt-lr-tile--lt-unit">
+            <div class="bt-limited-topbar" aria-hidden="true">
+              <span class="limited-ur-badge limited-ur-badge--tile limited-ur-badge--limited-time" role="img" aria-label="Limited Time">
+                <img class="limited-ur-badge-base" src="/static/images/UI/UI_Gasha_Label_UR_Base.webp" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">
+                <span class="limited-ur-badge-text">Limited Time</span>
+              </span>
+            </div>
+            <div class="bt-lim-beam" aria-hidden="true"></div>
+          <div class="c-unit-card __pink">
+            <div class="image">
+              <div class="bg"></div>
+              <div class="visual"><a class="hit" href="/u/1200003950" data-detail-type="u" data-detail-id="1200003950" aria-label="Burning Gundam (EX) detail"><picture class="picture"><img class="i" src="./returns_03_unit.webp" alt="" /></picture></a></div>
+              <div class="shadow"><svg class="icon" viewBox="0 0 314 320" preserveAspectRatio="none"><use href="#c_unit_card_shadow"></use></svg></div>
+              <div class="waku">
+                <svg class="icon" viewBox="0 0 306 312" preserveAspectRatio="none"><use href="#c_unit_card_waku"></use></svg>
+                <p class="label">UNIT &amp; CHARACTER</p>
+              </div>
+              <div class="character"><a class="hit" href="/c/1200000103" data-detail-type="c" data-detail-id="1200000103" aria-label="Domon Kasshu detail"><picture class="picture"><img class="i" src="./returns_03_char.webp" alt="" /></picture></a></div>
+            </div>
+            <div class="text">
+              <p class="name">Burning Gundam (EX)</p>
+              <p class="pilot">Domon Kasshu</p>
+            </div>
+          </div>
+          </div>
+        </li>
+        <li class="item __04">
+          <div class="bt-feat-tile bt-lr-tile--limited bt-lr-tile--lt-supporter">
+            <div class="bt-limited-topbar" aria-hidden="true">
+              <span class="limited-ur-badge limited-ur-badge--tile limited-ur-badge--limited-time" role="img" aria-label="Limited Time">
+                <img class="limited-ur-badge-base" src="/static/images/UI/UI_Gasha_Label_UR_Base.webp" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">
+                <span class="limited-ur-badge-text">Limited Time</span>
+              </span>
+            </div>
+            <div class="bt-lim-beam" aria-hidden="true"></div>
+          <div class="c-unit-card __pink --supporter">
+            <div class="image">
+              <div class="bg"></div>
+              <div class="visual"><a class="hit" href="/s/1125000250" data-detail-type="s" data-detail-id="1125000250" aria-label="Otto Mitas &amp; Nahel Argama detail"><picture class="picture"><img class="i" src="./supp_otto.webp" alt="" /></picture></a></div>
+              <div class="shadow"><svg class="icon" viewBox="0 0 314 320" preserveAspectRatio="none"><use href="#c_unit_card_shadow_deep"></use></svg></div>
+              <div class="waku">
+                <svg class="icon" viewBox="0 0 306 312" preserveAspectRatio="none"><use href="#c_unit_card_waku"></use></svg>
+                <p class="label">SUPPORTER</p>
+              </div>
+            </div>
+            <div class="text">
+              <p class="name">Otto Mitas &amp; Nahel Argama</p>
+            </div>
+          </div>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- AVALANCHE / New Unit Featured -->
+    <section class="panel pool-astraea" id="panel-astraea" role="tabpanel" aria-labelledby="tab-astraea" hidden>
+      <ul class="list">
+        <li class="item __01">
+          <div class="bt-feat-tile bt-lr-tile--limited bt-lr-tile--lt-unit">
+            <div class="bt-limited-topbar" aria-hidden="true">
+              <span class="limited-ur-badge limited-ur-badge--tile limited-ur-badge--limited-time" role="img" aria-label="Limited Time">
+                <img class="limited-ur-badge-base" src="/static/images/UI/UI_Gasha_Label_UR_Base.webp" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">
+                <span class="limited-ur-badge-text">Limited Time</span>
+              </span>
+            </div>
+            <div class="bt-lim-beam" aria-hidden="true"></div>
+          <div class="c-unit-card __blue">
+            <div class="image">
+              <div class="bg"></div>
+              <div class="visual"><a class="hit" href="/u/1375001550" data-detail-type="u" data-detail-id="1375001550" aria-label="Gundam Avalanche Astraea Type-F' (EX) detail"><picture class="picture"><img class="i" src="./astraea_01_unit.webp" alt="" /></picture></a></div>
+              <div class="shadow"><svg class="icon" viewBox="0 0 314 320" preserveAspectRatio="none"><use href="#c_unit_card_shadow"></use></svg></div>
+              <div class="waku">
+                <svg class="icon" viewBox="0 0 306 312" preserveAspectRatio="none"><use href="#c_unit_card_waku"></use></svg>
+                <p class="label">UNIT &amp; CHARACTER</p>
+              </div>
+              <div class="character"><a class="hit" href="/c/1376000100" data-detail-type="c" data-detail-id="1376000100" aria-label="Fon Spaak detail"><picture class="picture"><img class="i" src="./astraea_01_char.webp" alt="" /></picture></a></div>
+            </div>
+            <div class="text">
+              <p class="name">Gundam Avalanche Astraea Type-F' (EX)</p>
+              <p class="pilot">Fon Spaak</p>
+            </div>
+          </div>
+          </div>
+        </li>
+        <li class="item __02">
+          <div class="bt-feat-tile bt-lr-tile--limited bt-lr-tile--lt-unit">
+            <div class="bt-limited-topbar" aria-hidden="true">
+              <span class="limited-ur-badge limited-ur-badge--tile limited-ur-badge--limited-time" role="img" aria-label="Limited Time">
+                <img class="limited-ur-badge-base" src="/static/images/UI/UI_Gasha_Label_UR_Base.webp" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">
+                <span class="limited-ur-badge-text">Limited Time</span>
+              </span>
+            </div>
+            <div class="bt-lim-beam" aria-hidden="true"></div>
+          <div class="c-unit-card __blue">
+            <div class="image">
+              <div class="bg"></div>
+              <div class="visual"><a class="hit" href="/u/1370010150" data-detail-type="u" data-detail-id="1370010150" aria-label="Susanowo (EX) detail"><picture class="picture"><img class="i" src="./astraea_02_unit.webp" alt="" /></picture></a></div>
+              <div class="shadow"><svg class="icon" viewBox="0 0 314 320" preserveAspectRatio="none"><use href="#c_unit_card_shadow"></use></svg></div>
+              <div class="waku">
+                <svg class="icon" viewBox="0 0 306 312" preserveAspectRatio="none"><use href="#c_unit_card_waku"></use></svg>
+                <p class="label">UNIT &amp; CHARACTER</p>
+              </div>
+              <div class="character"><a class="hit" href="/c/1370004501" data-detail-type="c" data-detail-id="1370004501" aria-label="Mr. Bushido detail"><picture class="picture"><img class="i" src="./astraea_02_char.webp" alt="" /></picture></a></div>
+            </div>
+            <div class="text">
+              <p class="name">Susanowo (EX)</p>
+              <p class="pilot">Mr. Bushido</p>
+            </div>
+          </div>
+          </div>
+        </li>
+        <li class="item __03">
+          <div class="bt-feat-tile bt-lr-tile--limited bt-lr-tile--lt-unit">
+            <div class="bt-limited-topbar" aria-hidden="true">
+              <span class="limited-ur-badge limited-ur-badge--tile limited-ur-badge--limited-time" role="img" aria-label="Limited Time">
+                <img class="limited-ur-badge-base" src="/static/images/UI/UI_Gasha_Label_UR_Base.webp" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">
+                <span class="limited-ur-badge-text">Limited Time</span>
+              </span>
+            </div>
+            <div class="bt-lim-beam" aria-hidden="true"></div>
+          <div class="c-unit-card __blue">
+            <div class="image">
+              <div class="bg"></div>
+              <div class="visual"><a class="hit" href="/u/1370000150" data-detail-type="u" data-detail-id="1370000150" aria-label="Gundam Exia (EX) detail"><picture class="picture"><img class="i" src="./astraea_03_unit.webp" alt="" /></picture></a></div>
+              <div class="shadow"><svg class="icon" viewBox="0 0 314 320" preserveAspectRatio="none"><use href="#c_unit_card_shadow"></use></svg></div>
+              <div class="waku">
+                <svg class="icon" viewBox="0 0 306 312" preserveAspectRatio="none"><use href="#c_unit_card_waku"></use></svg>
+                <p class="label">UNIT &amp; CHARACTER</p>
+              </div>
+              <div class="character"><a class="hit" href="/c/1370000100" data-detail-type="c" data-detail-id="1370000100" aria-label="Setsuna F. Seiei detail"><picture class="picture"><img class="i" src="./astraea_03_char.webp" alt="" /></picture></a></div>
+            </div>
+            <div class="text">
+              <p class="name">Gundam Exia (EX)</p>
+              <p class="pilot">Setsuna F. Seiei</p>
+            </div>
+          </div>
+          </div>
+        </li>
+        <li class="item __04">
+          <div class="bt-feat-tile bt-lr-tile--limited bt-lr-tile--lt-supporter">
+            <div class="bt-limited-topbar" aria-hidden="true">
+              <span class="limited-ur-badge limited-ur-badge--tile limited-ur-badge--limited-time" role="img" aria-label="Limited Time">
+                <img class="limited-ur-badge-base" src="/static/images/UI/UI_Gasha_Label_UR_Base.webp" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">
+                <span class="limited-ur-badge-text">Limited Time</span>
+              </span>
+            </div>
+            <div class="bt-lim-beam" aria-hidden="true"></div>
+          <div class="c-unit-card __blue --supporter">
+            <div class="image">
+              <div class="bg"></div>
+              <div class="visual"><a class="hit" href="/s/1376000150" data-detail-type="s" data-detail-id="1376000150" aria-label="Sherilyn Hyde &amp; Euclides detail"><picture class="picture"><img class="i" src="./supp_sherilyn.webp" alt="" /></picture></a></div>
+              <div class="shadow"><svg class="icon" viewBox="0 0 314 320" preserveAspectRatio="none"><use href="#c_unit_card_shadow_deep"></use></svg></div>
+              <div class="waku">
+                <svg class="icon" viewBox="0 0 306 312" preserveAspectRatio="none"><use href="#c_unit_card_waku"></use></svg>
+                <p class="label">SUPPORTER</p>
+              </div>
+            </div>
+            <div class="text">
+              <p class="name">Sherilyn Hyde &amp; Euclides</p>
+            </div>
+          </div>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </main>
+
+  <div class="mock-detail-overlay" id="mockDetail" hidden>
+    <div class="mock-detail-panel" role="dialog" aria-modal="true" aria-labelledby="mockDetailTitle">
+      <p class="mock-detail-kicker" id="mockDetailKind">Detail</p>
+      <h2 class="mock-detail-title" id="mockDetailTitle">—</h2>
+      <p class="mock-detail-meta" id="mockDetailMeta"></p>
+      <p class="mock-detail-note">On <code>/tl</code> this would call <code>openDetail()</code> in the same tab (modal), not a new tab — same as browse <code>/u</code> / <code>/c</code> / <code>/s</code>.</p>
+      <div class="mock-detail-actions">
+        <button type="button" class="primary" id="mockDetailClose">Close</button>
+        <a id="mockDetailReal" href="#" target="_self">Open real detail path</a>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    (function () {
+      var meta = {
+        new: {
+          title: "New Limited UR Unit & New Limited UR Supporter!",
+          sub: "1.5th Anniv. Featured Unit Assembly — anniversary site card art + crops."
+        },
+        returns: {
+          title: "Limited UR Unit Returns!",
+          sub: "1.5th Anniv. Featured Unit Assembly — Limited UR Unit & Supporter Returns pool."
+        },
+        astraea: {
+          title: "New Unit Featured Unit Assembly",
+          sub: "Gundam Avalanche Astraea Type-F' (EX) pool — DB portraits with anniversary-matched character framing; supporters use sb_ thumbs."
+        }
+      };
+      var tabs = Array.prototype.slice.call(document.querySelectorAll('.tabs [role="tab"]'));
+      var titleEl = document.getElementById("pool-title");
+      var subEl = document.getElementById("pool-sub");
+
+      function activate(pool) {
+        tabs.forEach(function (btn) {
+          var on = btn.getAttribute("data-pool") === pool;
+          btn.setAttribute("aria-selected", on ? "true" : "false");
+          var panel = document.getElementById(btn.getAttribute("aria-controls"));
+          if (panel) panel.hidden = !on;
+        });
+        var m = meta[pool];
+        if (m) {
+          titleEl.textContent = m.title;
+          subEl.textContent = m.sub;
+        }
+        try { history.replaceState(null, "", "#" + pool); } catch (e) {}
+      }
+
+      tabs.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          activate(btn.getAttribute("data-pool"));
+        });
+      });
+
+      var hash = (location.hash || "").replace(/^#/, "");
+      if (meta[hash]) activate(hash);
+    })();
+
+    (function () {
+      var TYPE_MAP = { u: "unit", c: "character", s: "supporter" };
+      var KIND = { unit: "Unit", character: "Character", supporter: "Supporter" };
+      var ov = document.getElementById("mockDetail");
+      var titleEl = document.getElementById("mockDetailTitle");
+      var kindEl = document.getElementById("mockDetailKind");
+      var metaEl = document.getElementById("mockDetailMeta");
+      var realEl = document.getElementById("mockDetailReal");
+      var closeBtn = document.getElementById("mockDetailClose");
+      if (!ov) return;
+
+      function openMock(type, id, label) {
+        var t = TYPE_MAP[type] || type;
+        kindEl.textContent = KIND[t] || t;
+        titleEl.textContent = label || (t + " " + id);
+        metaEl.textContent = "/" + type + "/" + id;
+        realEl.href = "/" + type + "/" + id;
+        ov.hidden = false;
+        requestAnimationFrame(function () { ov.classList.add("is-open"); });
+      }
+      function closeMock() {
+        ov.classList.remove("is-open");
+        setTimeout(function () { ov.hidden = true; }, 220);
+      }
+      closeBtn.addEventListener("click", closeMock);
+      ov.addEventListener("click", function (e) {
+        if (e.target === ov) closeMock();
+      });
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && ov.classList.contains("is-open")) closeMock();
+      });
+
+      document.querySelectorAll("a.hit[data-detail-type]").forEach(function (a) {
+        a.addEventListener("click", function (e) {
+          e.preventDefault();
+          openMock(
+            a.getAttribute("data-detail-type"),
+            a.getAttribute("data-detail-id"),
+            a.getAttribute("aria-label")
+          );
+        });
+      });
+    })();
+
+  </script>
+</body>
+</html>

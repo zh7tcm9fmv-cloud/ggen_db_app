@@ -993,39 +993,41 @@ a.nav-tab:any-link:hover:not(.active),a.nav-tab:visited:hover:not(.active){color
 #panel-banner_timeline .bt-table .bt-strip .lr-card.bt-lr-tile--limited.bt-lr-tile--has-meta,
 #panel-banner_timeline .bt-table .bt-strip .lr-card.bt-lr-tile--limited.bt-lr-tile--exchangeable{padding-top:6px!important}
 #panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--limited > .bt-limited-topbar .limited-ur-badge{
-  width:90px;
+  width:min(100%,148px);
   max-width:100%;
+  overflow:hidden;
   filter:drop-shadow(0 1px 3px rgba(0,0,0,.55));
+  container-type:inline-size;
 }
 #panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--limited > .bt-limited-topbar .limited-ur-badge-text{
-  font-size:12px;
+  font-size:clamp(7.5px,8.2cqi,10px);
   font-weight:900;
-  letter-spacing:.02em;
+  letter-spacing:0;
   text-transform:none;
   color:#fff;
-  text-shadow:0 1px 2px rgba(0,0,0,.98),0 0 4px rgba(0,0,0,.9);
-  line-height:1.05;
-  max-width:90%;
-  padding:0 4%;
+  text-shadow:0 1px 2px rgba(0,0,0,.95);
+  line-height:1;
+  max-width:58%;
+  padding:0;
   white-space:nowrap;
-  overflow:visible;
+  overflow:hidden;
   text-overflow:clip;
 }
-/* CJK: same text size as EN; slightly wider plate so 期間限定 fills like “Limited” */
+/* CJK: 期間限定 */
 html[data-ui-lang="JA"] #panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--limited > .bt-limited-topbar .limited-ur-badge,
 html[data-ui-lang="JP"] #panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--limited > .bt-limited-topbar .limited-ur-badge,
 html[data-ui-lang="TW"] #panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--limited > .bt-limited-topbar .limited-ur-badge,
 html[data-ui-lang="HK"] #panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--limited > .bt-limited-topbar .limited-ur-badge{
-  width:104px;
+  width:min(100%,120px);
 }
 html[data-ui-lang="JA"] #panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--limited > .bt-limited-topbar .limited-ur-badge-text,
 html[data-ui-lang="JP"] #panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--limited > .bt-limited-topbar .limited-ur-badge-text,
 html[data-ui-lang="TW"] #panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--limited > .bt-limited-topbar .limited-ur-badge-text,
 html[data-ui-lang="HK"] #panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--limited > .bt-limited-topbar .limited-ur-badge-text{
-  font-size:12px;
+  font-size:clamp(8px,9cqi,11px);
   letter-spacing:0;
   font-weight:800;
-  max-width:92%;
+  max-width:62%;
 }
 #panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--limited:hover{border-color:transparent!important;box-shadow:0 6px 22px rgba(0,212,255,.14),0 4px 20px rgba(168,85,247,.25),inset 0 1px 0 rgba(255,255,255,.1)!important}
 #panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--limited.bt-lr-tile--lt-supporter:hover{box-shadow:0 6px 22px rgba(0,212,255,.16),0 4px 20px rgba(201,169,98,.22),inset 0 1px 0 rgba(255,255,255,.1)!important}
@@ -1111,16 +1113,21 @@ html[data-ui-lang="HK"] #panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--li
   margin:0 0 2px!important;
 }
 #panel-banner_timeline .bt-table .bt-strip .lr-card.bt-lr-tile--limited > .bt-limited-topbar .limited-ur-badge{
-  width:70px;
+  width:min(100%,140px);
+  overflow:hidden;
+  container-type:inline-size;
 }
 #panel-banner_timeline .bt-table .bt-strip .lr-card.bt-lr-tile--limited > .bt-limited-topbar .limited-ur-badge-text{
-  font-size:10px;
+  font-size:clamp(7px,8cqi,9.5px);
+  max-width:58%;
+  letter-spacing:0;
+  text-transform:none;
 }
 html[data-ui-lang="JA"] #panel-banner_timeline .bt-table .bt-strip .lr-card.bt-lr-tile--limited > .bt-limited-topbar .limited-ur-badge,
 html[data-ui-lang="JP"] #panel-banner_timeline .bt-table .bt-strip .lr-card.bt-lr-tile--limited > .bt-limited-topbar .limited-ur-badge,
 html[data-ui-lang="TW"] #panel-banner_timeline .bt-table .bt-strip .lr-card.bt-lr-tile--limited > .bt-limited-topbar .limited-ur-badge,
 html[data-ui-lang="HK"] #panel-banner_timeline .bt-table .bt-strip .lr-card.bt-lr-tile--limited > .bt-limited-topbar .limited-ur-badge{
-  width:82px;
+  width:min(100%,112px);
 }
 html[data-ui-lang="JA"] #panel-banner_timeline .bt-table .bt-strip .lr-card.bt-lr-tile--limited > .bt-limited-topbar .limited-ur-badge-text,
 html[data-ui-lang="JP"] #panel-banner_timeline .bt-table .bt-strip .lr-card.bt-lr-tile--limited > .bt-limited-topbar .limited-ur-badge-text,

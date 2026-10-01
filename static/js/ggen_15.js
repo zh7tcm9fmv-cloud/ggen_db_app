@@ -185,6 +185,11 @@
         });
       }
     } catch (_) {}
+    try {
+      if (typeof window.btRerenderOnDesignChange === 'function') {
+        window.btRerenderOnDesignChange();
+      }
+    } catch (_) {}
   }
 
   function bindNavHorizontalScroll() {

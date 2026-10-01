@@ -138,6 +138,16 @@ def _public_site_origin():
     return _DEFAULT_PUBLIC_ORIGIN
 
 
+def _bt_feat15_enabled():
+    """1.5 /tl featured HUD ship gate. Off on Railway unless GGEN_BT_FEAT15=1."""
+    raw = (os.environ.get('GGEN_BT_FEAT15') or '').strip().lower()
+    if raw in ('1', 'true', 'yes', 'on'):
+        return True
+    if raw in ('0', 'false', 'no', 'off'):
+        return False
+    return not bool(os.environ.get('RAILWAY_ENVIRONMENT') or os.environ.get('RAILWAY_SERVICE_ID'))
+
+
 @app.context_processor
 def _inject_public_origin():
     origin = _public_site_origin()
@@ -151,6 +161,7 @@ def _inject_public_origin():
         # Available on every template so deploy auto-reload + ?v= cache-bust work
         # without each route having to pass app_js_version explicitly.
         'app_js_version': _app_js_bundle_version_tag(),
+        'bt_feat15_enabled': _bt_feat15_enabled(),
     }
 
 # Bust cache when static assets change OR when a new git commit is deployed.
@@ -232,6 +243,7 @@ def _app_js_bundle_version_tag():
         ('css', 'collections.css'),
         ('css', 'collections_15.css'),
         ('css', 'ggen_15.css'),
+        ('css', 'bt_feat_15.css'),
         ('css', 'ggen_teko.css'),
         ('css', 'tag_matrix.css'),
         ('css', 'tag_matrix_15.css'),
@@ -2842,18 +2854,29 @@ def _ability_id_has_guaranteed_chance_step_trait(aid):
 
 
 def _ability_text_implies_pilot_guaranteed_chance_step(txt):
-    """LANG prose for Guaranteed / force-activate Chance Step (Mao EX, Blue Destiny EX, …)."""
+    """LANG prose for Guaranteed / Auto Chance Step (pilot cond passive / SPI).
+
+    Official m_help (2026-09-30+):
+    - Guaranteed Chance Step / 無条件チャンスステップ / 無條件額外行動
+    - Auto-Chance Step / オートチャンスステップ / 自動額外行動
+    Both are special CS forms; browse filter for Guaranteed uses the stricter set below.
+    """
     if not txt or not isinstance(txt, str):
         return False
     return bool(re.search(
-        r'chance\s*step\s+will\s+trigger|'
-        r'force[- ]?activate\s+chance\s*step|'
         r'guaranteed\s+chance\s*step|'
-        r'敵を撃破しなくてもチャンスステップを発動|'
+        r'force[- ]?activate\s+chance\s*step|'
+        r'chance\s*step\s+will\s+trigger\s+at\s+the\s+end\s+of\s+any\s+action|'
+        r'auto[- ]?chance\s*step|'
+        r'regardless of whether or not an enemy has been defeated|'
         r'無条件チャンスステップ|'
         r'オートチャンスステップ|'
-        r'即使未擊敗敵人仍會發動額外行動|'
-        r'無條件額外行動',
+        r'敵を撃破しなくてもチャンスステップを発動|'
+        r'行動内容に関係なく|'
+        r'無條件額外行動|'
+        r'自動額外行動|'
+        r'即使未擊敗(?:敵人|對手).{0,12}發動額外行動|'
+        r'無論採取何種行動',
         txt, re.I))
 
 
@@ -9106,15 +9129,19 @@ def _char_support_counter_atk_excluded_from_dossier_stats(full_text):
 
 
 def _extract_char_dossier_decrease_pct_en(text):
-    """EN lines like \"but decrease Defense by 25%\" paired with vigor / conditional buffs."""
+    """EN lines like \"and decrease DEF by 25%\" / \"but decrease Defense by 25%\" (pilot dossier)."""
     bonuses = {}
     if not text or not isinstance(text, str):
         return bonuses
-    stat_alt = r'(?:Defense|Reaction|Awaken|Melee|Ranged)'
+    # Official EN uses abbreviated DEF (Florence EX etc.); full Defense still supported.
+    stat_alt = r'(?:Defense|DEF|Reaction|Awaken|Melee|Ranged)'
     pat = re.compile(
-        rf'\b(?:but\s+|,\s*)?(?:decrease(?:s)?|reduce(?:s)?)\s+(?:own\s+)?({stat_alt}(?:\s+and\s+{stat_alt})*)\s+by\s*(\d+)%',
+        rf'\b(?:and\s+|but\s+|,\s*)?(?:decrease(?:s)?|reduce(?:s)?)\s+(?:own\s+)?({stat_alt}(?:\s+and\s+{stat_alt})*)\s+by\s*(\d+)%',
         re.IGNORECASE)
-    canon = {'defense': 'Defense', 'reaction': 'Reaction', 'awaken': 'Awaken', 'melee': 'Melee', 'ranged': 'Ranged'}
+    canon = {
+        'defense': 'Defense', 'def': 'Defense',
+        'reaction': 'Reaction', 'awaken': 'Awaken', 'melee': 'Melee', 'ranged': 'Ranged',
+    }
     for m in pat.finditer(text):
         pct = int(m.group(2))
         chunk = m.group(1)
@@ -9132,8 +9159,12 @@ def _extract_stat_percent_char_cjk(text):
     if not text:
         return bonuses
     # 反応値 = Reaction (JA); 回避値 kept as legacy alias seen in some lines.
-    ja_map = {'射撃値': 'Ranged', '格闘値': 'Melee', '覚醒値': 'Awaken', '反応値': 'Reaction', '回避値': 'Reaction', '防御力': 'Defense'}
-    ja_one = '(射撃値|格闘値|覚醒値|反応値|回避値|防御力)'
+    # 守備値 = Defense (official JA pilot dossier; 防御力 also seen).
+    ja_map = {
+        '射撃値': 'Ranged', '格闘値': 'Melee', '覚醒値': 'Awaken',
+        '反応値': 'Reaction', '回避値': 'Reaction', '防御力': 'Defense', '守備値': 'Defense',
+    }
+    ja_one = '(射撃値|格闘値|覚醒値|反応値|回避値|防御力|守備値)'
     for m in re.finditer(r'自身の' + ja_one + r'と' + ja_one + r'が(\d+)%上昇', text):
         p = int(m.group(3))
         for gi in (1, 2):
@@ -9145,7 +9176,17 @@ def _extract_stat_percent_char_cjk(text):
         k = ja_map.get(m.group(1))
         if k:
             bonuses[k] = bonuses.get(k, 0) + p
-    zh_map = {'射擊值': 'Ranged', '格鬥值': 'Melee', '覺醒值': 'Awaken', '反應值': 'Reaction'}
+    # JA decrease: 自身の守備値が25%減少 / 防御力がN%減少
+    for m in re.finditer(r'自身の' + ja_one + r'が(\d+)%減少', text):
+        p = int(m.group(2))
+        k = ja_map.get(m.group(1))
+        if k:
+            bonuses[k] = bonuses.get(k, 0) - p
+    zh_map = {
+        '射擊值': 'Ranged', '格鬥值': 'Melee', '覺醒值': 'Awaken', '反應值': 'Reaction',
+        '防禦力': 'Defense', '守備值': 'Defense',
+    }
+    zh_one = '(射擊值|格鬥值|覺醒值|反應值|防禦力|守備值)'
     mc = re.search(r'自身(射擊值|格鬥值|覺醒值|反應值)((?:及(?:射擊值|格鬥值|覺醒值|反應值))*)提升(\d+)%', text)
     if mc:
         p = int(mc.group(3))
@@ -9165,6 +9206,12 @@ def _extract_stat_percent_char_cjk(text):
         bonuses['Awaken'] = bonuses.get('Awaken', 0) + int(mm.group(1))
     for mm in re.finditer(r'自身反應值提升(\d+)%', text):
         bonuses['Reaction'] = bonuses.get('Reaction', 0) + int(mm.group(1))
+    # TW/HK decrease (防禦力 / 守備值)
+    for m in re.finditer(r'自身' + zh_one + r'(?:降低|減少|下降)(\d+)%', text):
+        p = int(m.group(2))
+        k = zh_map.get(m.group(1))
+        if k:
+            bonuses[k] = bonuses.get(k, 0) - p
     return bonuses
 
 
@@ -9173,7 +9220,7 @@ def extract_stat_percent_char(text, full_detail_text=None, char_id=None):
     # Gate-only lines ("When piloting units from specified series,") carry into the next
     # sentence via _add_char_trait_pct_to_buckets. Skip them here — but do NOT bail when the
     # same sentence also has a pilot dossier % (Oxford-comma lists like Newtype (V)).
-    _pilot_stat_alt = r'(?:Defense|Reaction|Awaken|Melee|Ranged|Range)'
+    _pilot_stat_alt = r'(?:Defense|DEF|Reaction|Awaken|Melee|Ranged|Range)'
     _has_pilot_pct = bool(re.search(
         rf'(?:increase|decreas|reduc)\w*.*\b{_pilot_stat_alt}\b.*\d+\s*%',
         tl, re.IGNORECASE))
@@ -10718,6 +10765,7 @@ char_skill_base_data = load_json(os.path.join(BASE_DIR, "m_character_skill.json"
 unit_skill_master_data = load_json(os.path.join(BASE_DIR, "m_unit_skill.json"))
 unit_skill_set_content_data = load_json(os.path.join(BASE_DIR, "m_unit_skill_set_content.json"))
 unit_skill_trait_master_data = load_json(os.path.join(BASE_DIR, "m_unit_skill_trait.json"))
+unit_skill_trait_condition_data = load_json(os.path.join(BASE_DIR, "m_unit_skill_trait_condition.json"))
 unit_ssp_config_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_config.json"))
 unit_ssp_stat_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_add_status.json"))
 ssp_abil_replace_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_custom_core_ability_change.json"))
@@ -11049,15 +11097,85 @@ def create_unit_skill_trait_by_skill_lookup(d):
             'name_lang_id': normalize_id(item.get('NameLanguageId') or item.get('nameLanguageId')),
             'desc_lang_id': normalize_id(item.get('DescriptionLanguageId') or item.get('descriptionLanguageId')),
             'resource_id': str(item.get('ResourceId') or item.get('resourceId') or ''),
+            'active_cond_set_id': normalize_id(
+                item.get('ActiveTraitConditionSetId') or item.get('activeTraitConditionSetId') or '0'
+            ),
         })
     for k in lk:
         lk[k].sort(key=lambda x: x['id'])
     return lk
 
 
+def create_unit_skill_trait_condition_map(d):
+    """UnitSkillTraitConditionSetId -> {weapon_attrs, attack_types}.
+
+    Master rows may use label strings (Beam) and/or numeric enums (1/2/3), same idea as
+    m_trait_condition / m_trait_condition_target_weapon.
+    """
+    attr_label_to_key = {
+        'physical': 'physical', 'beam': 'beam', 'special': 'special',
+        'Physical': 'physical', 'Beam': 'beam', 'Special': 'special',
+        '1': 'physical', '2': 'beam', '3': 'special',
+    }
+    atk_label_to_key = {
+        'ranged': 'ranged', 'melee': 'melee', 'awaken': 'awaken',
+        'Ranged': 'ranged', 'Melee': 'melee', 'Awaken': 'awaken',
+        '1': 'ranged', '2': 'melee', '3': 'awaken',
+    }
+    out = {}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict):
+            continue
+        cid = normalize_id(
+            item.get('UnitSkillTraitConditionSetId')
+            or item.get('unitSkillTraitConditionSetId')
+            or item.get('Id')
+            or item.get('id')
+        )
+        if not cid or cid == '0':
+            continue
+        wattrs = []
+        seen_a = set()
+        for part in str(item.get('WeaponAttributeTypes') or '').split(','):
+            part = part.strip()
+            if not part:
+                continue
+            key = attr_label_to_key.get(part) or attr_label_to_key.get(part.lower())
+            if key and key not in seen_a:
+                seen_a.add(key)
+                wattrs.append(key)
+        atypes = []
+        seen_t = set()
+        for part in str(item.get('AttackAttributeTypes') or '').split(','):
+            part = part.strip()
+            if not part:
+                continue
+            key = atk_label_to_key.get(part) or atk_label_to_key.get(part.lower())
+            if key and key not in seen_t:
+                seen_t.add(key)
+                atypes.append(key)
+        if not (wattrs or atypes):
+            continue
+        prev = out.get(cid)
+        if prev:
+            for k in wattrs:
+                if k not in prev['weapon_attrs']:
+                    prev['weapon_attrs'].append(k)
+            for k in atypes:
+                if k not in prev['attack_types']:
+                    prev['attack_types'].append(k)
+        else:
+            out[cid] = {'weapon_attrs': wattrs, 'attack_types': atypes}
+    return out
+
+
 unit_skill_info_map = create_unit_skill_info_map(unit_skill_master_data) if unit_skill_master_data else {}
 unit_skill_set_lookup = create_unit_skill_set_lookup(unit_skill_set_content_data) if unit_skill_set_content_data else {}
 unit_skill_trait_by_skill = create_unit_skill_trait_by_skill_lookup(unit_skill_trait_master_data) if unit_skill_trait_master_data else {}
+unit_skill_trait_condition_map = (
+    create_unit_skill_trait_condition_map(unit_skill_trait_condition_data)
+    if unit_skill_trait_condition_data else {}
+)
 unit_info_map = create_unit_info_map(unit_master_data); unit_stat_map = create_unit_status_map(unit_status_data)
 limit_break_item_unit_map = create_limit_break_item_unit_map(unit_master_data) if unit_master_data else {}
 # Official limited-time units from m_gasha_content_detail.IsLimitedTime (RewardTypeIndex 3).
@@ -11238,15 +11356,17 @@ CHANCE_STEP_PLUS_ONE_REGEXES = (
     re.compile(r'チャンスステップ[\s\S]{0,24}[+＋]\s*1(?!\d)'),
     re.compile(r'額外行動[\s\S]{0,24}[+＋]\s*1(?!\d)'),
 )
+# Official LANG (m_help): Guaranteed ≠ Auto-Chance.
+# Guaranteed: end of any action · 無条件 / 無條件
+# Auto: combat end even without KO · オート / 自動 (matched only by broader pilot/SPI helpers)
 GUARANTEED_CHANCE_STEP_TEXT_RES = (
-    re.compile(r'chance\s*step\s+will\s+trigger', re.IGNORECASE),
-    re.compile(r'force[- ]?activate\s+chance\s*step', re.IGNORECASE),
     re.compile(r'guaranteed\s+chance\s*step', re.IGNORECASE),
-    re.compile(r'敵を撃破しなくてもチャンスステップを発動'),
+    re.compile(r'force[- ]?activate\s+chance\s*step', re.IGNORECASE),
+    re.compile(r'chance\s*step\s+will\s+trigger\s+at\s+the\s+end\s+of\s+any\s+action', re.IGNORECASE),
     re.compile(r'無条件チャンスステップ'),
-    re.compile(r'オートチャンスステップ'),
-    re.compile(r'即使未擊敗敵人仍會發動額外行動'),
+    re.compile(r'行動内容に関係なく'),
     re.compile(r'無條件額外行動'),
+    re.compile(r'無論採取何種行動'),
 )
 
 
@@ -12356,7 +12476,7 @@ def _precompute_guaranteed_chance_step_data():
                     d.get('text', '') if isinstance(d, dict) else str(d)
                     for d in bab.get('details', [])
                 )
-                hit = _ability_text_implies_pilot_guaranteed_chance_step(detail_blob or '')
+                hit = any(rx.search(detail_blob or '') for rx in GUARANTEED_CHANCE_STEP_TEXT_RES)
                 if hit and not icon:
                     icon = (bab.get('icon') or '').strip()
             if hit:
@@ -15550,6 +15670,13 @@ def resolve_unit_skill(usid, ld, sv):
     if desc:
         details.append(desc)
     tnf = ld.get('unit_skill_trait_name_fallback', {}); tdf = ld.get('unit_skill_trait_desc_fallback', {})
+    attr_labels = ld.get('weapon_attr_type_labels') or _WEAPON_ATTR_TRAIT_SHORT['EN']
+    atk_labels = ld.get('weapon_attack_type_labels') if isinstance(ld.get('weapon_attack_type_labels'), dict) else None
+    if not isinstance(atk_labels, dict) or not atk_labels:
+        atk_labels = {
+            'ranged': 'Ranged', 'melee': 'Melee', 'awaken': 'Awaken',
+        }
+    traits_out = []
     for tr in unit_skill_trait_by_skill.get(usid, []):
         tlid = normalize_id(tr.get('desc_lang_id', ''))
         tdesc = ''
@@ -15561,20 +15688,87 @@ def resolve_unit_skill(usid, ld, sv):
         tid = tr.get('id', '')
         if not tdesc:
             tdesc = tdf.get(tid, '')
+        tname = ''
+        nl = normalize_id(tr.get('name_lang_id', ''))
+        if nl and nl != '0':
+            entries = stm.get(nl)
+            if entries and isinstance(entries, list) and len(entries) > 0:
+                best = next((x for x in entries if x.get('full_id') == nl), entries[0])
+                tname = best.get('text', '') or ''
+        if not tname:
+            tname = tnf.get(tid, '')
         if not tdesc:
-            nl = normalize_id(tr.get('name_lang_id', ''))
-            if nl and nl != '0':
-                entries = stm.get(nl)
-                if entries and isinstance(entries, list) and len(entries) > 0:
-                    best = next((x for x in entries if x.get('full_id') == nl), entries[0])
-                    tdesc = best.get('text', '') or ''
-        if not tdesc:
-            tdesc = tnf.get(tid, '')
+            tdesc = tname
+        cond_id = normalize_id(tr.get('active_cond_set_id') or '0')
+        cond = unit_skill_trait_condition_map.get(cond_id, {}) or {}
+        wattrs = list(cond.get('weapon_attrs') or [])
+        atypes = list(cond.get('attack_types') or [])
+        cond_tags = []
+        for ak in wattrs:
+            lab = (attr_labels.get(ak) if isinstance(attr_labels, dict) else None) or _WEAPON_ATTR_TRAIT_SHORT['EN'].get(ak, ak)
+            cond_tags.append({
+                'id': ak,
+                'name': lab,
+                'type': 'weapon_attribute',
+                'source': 'unit_skill_trait_condition',
+            })
+        for atk in atypes:
+            lab = (atk_labels.get(atk) if isinstance(atk_labels, dict) else None) or atk
+            cond_tags.append({
+                'id': atk,
+                'name': lab,
+                'type': 'attack_attribute',
+                'source': 'unit_skill_trait_condition',
+            })
+        traits_out.append({
+            'id': tid,
+            'name': tname,
+            'desc': tdesc,
+            'resource_id': str(tr.get('resource_id') or ''),
+            'active_cond_set_id': cond_id if cond_id != '0' else '',
+            'active_weapon_attrs': wattrs,
+            'active_attack_types': atypes,
+        })
         tnorm = (tdesc or '').strip()
-        if not tnorm or tnorm in blob:
+        if not tnorm and not cond_tags:
             continue
-        details.append(tdesc)
-        blob = (blob + '\n' + tnorm).strip() if blob else tnorm
+
+        def _attach_cond_tags_to_details(tags):
+            if not tags:
+                return False
+            needle = tnorm.lower().replace('\n', ' ')
+            for i, d0 in enumerate(details):
+                if isinstance(d0, str):
+                    hay = d0.strip().lower().replace('\n', ' ')
+                    if (needle and needle in hay) or (not needle and i == 0):
+                        details[i] = {'text': d0, 'conditions': list(tags)}
+                        return True
+                elif isinstance(d0, dict):
+                    hay = str(d0.get('text') or '').strip().lower().replace('\n', ' ')
+                    if (needle and needle in hay) or (not needle and i == 0):
+                        prev = list(d0.get('conditions') or [])
+                        seen = {(c.get('id'), c.get('source')) for c in prev}
+                        for c in tags:
+                            key = (c.get('id'), c.get('source'))
+                            if key not in seen:
+                                prev.append(c)
+                                seen.add(key)
+                        d0['conditions'] = prev
+                        return True
+            return False
+
+        if tnorm and tnorm not in blob:
+            if cond_tags:
+                details.append({'text': tdesc, 'conditions': cond_tags})
+            else:
+                details.append(tdesc)
+            blob = (blob + '\n' + tnorm).strip() if blob else tnorm
+        elif cond_tags:
+            # Skill-level description already includes this trait line; still expose structured gates.
+            if not _attach_cond_tags_to_details(cond_tags):
+                details.append({'text': tdesc or tname or '', 'conditions': cond_tags})
+                if tnorm:
+                    blob = (blob + '\n' + tnorm).strip() if blob else tnorm
     ri = str(info.get('resource_id', '') or '').strip() or str(ld.get('skill_resource_map', {}).get(usid, '') or '').strip()
     icf = find_trait_icon(ri) if ri else None
     if not icf:
@@ -15585,7 +15779,20 @@ def resolve_unit_skill(usid, ld, sv):
             icf = find_trait_icon(tri)
             if icf:
                 break
-    return {'id': usid, 'name': name, 'sort': sv, 'details': details, 'icon': f"/static/images/Trait/{icf}" if icf else '', 'has_icon': bool(icf), 'is_ex': False, 'is_sp': False, 'frame_overlay': '', 'resource_id': ri, 'skip_skill_modal': True}
+    return {
+        'id': usid,
+        'name': name,
+        'sort': sv,
+        'details': details,
+        'traits': traits_out,
+        'icon': f"/static/images/Trait/{icf}" if icf else '',
+        'has_icon': bool(icf),
+        'is_ex': False,
+        'is_sp': False,
+        'frame_overlay': '',
+        'resource_id': ri,
+        'skip_skill_modal': True,
+    }
 
 def resolve_npc_character_skills(ssid, lc):
     if not ssid or ssid == '0': return []
@@ -28599,15 +28806,37 @@ def _banner_timeline_unit_item(uid, ld):
     ai = ACQUISITION_ROUTE_ICONS.get(acq, '')
     si = [ai] if ai else []
     role_id = info.get('role', '0')
-    thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
-    return {
+    rids = info.get('resource_ids', [])
+    thum = find_list_thumb(rids, uid, 'images/unit_portraits')
+    portrait = find_portrait(rids, uid, 'images/unit_portraits') or thum or ''
+    rec_cid = resolve_unit_recommend_character_id(uid, info)
+    out = {
         'type': 'unit', 'id': uid, 'name': name, 'thum': thum or '',
+        'portrait': portrait or '',
         'rarity': RARITY_MAP.get(str(ri), 'N'), 'rarity_id': str(ri),
         'role_icon': ROLE_ICON_MAP.get(role_id, ''),
         'acquisition_icon': ai or '', 'special_icons': si,
         'is_ultimate': bool(info.get('is_ultimate', False)),
         'is_limited_time': uid in LIMITED_TIME_UNIT_IDS,
+        'recommend_character_id': rec_cid if rec_cid != '0' else '',
     }
+    if rec_cid and rec_cid != '0' and rec_cid in char_info_map and rec_cid in char_list_playable_ids:
+        cinfo = char_info_map.get(rec_cid, {}) or {}
+        if cinfo.get('role', '0') != '0':
+            clid = ld['char_id_map'].get(rec_cid, '')
+            cname = ld['char_text_map'].get(clid, '') if clid else ''
+            if cname:
+                crids = cinfo.get('resource_ids', [])
+                cthum = find_list_thumb(crids, rec_cid, 'images/portraits')
+                cpor = find_portrait(crids, rec_cid, 'images/portraits') or cthum or ''
+                out['recommend_character'] = {
+                    'id': rec_cid,
+                    'name': cname,
+                    'thum': cthum or '',
+                    'portrait': cpor or '',
+                    'is_limited_time': rec_cid in LIMITED_TIME_CHARACTER_IDS,
+                }
+    return out
 
 
 def _banner_timeline_char_item(cid, ld):
@@ -28625,9 +28854,12 @@ def _banner_timeline_char_item(cid, ld):
     acq = info.get('acquisition_route', '0')
     acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
     role_id = info.get('role', '0')
-    thum = find_list_thumb(info.get('resource_ids', []), cid, 'images/portraits')
+    rids = info.get('resource_ids', [])
+    thum = find_list_thumb(rids, cid, 'images/portraits')
+    portrait = find_portrait(rids, cid, 'images/portraits') or thum or ''
     return {
         'type': 'character', 'id': cid, 'name': name, 'thum': thum or '',
+        'portrait': portrait or '',
         'rarity': RARITY_MAP.get(str(ri), 'N'), 'rarity_id': str(ri),
         'role_icon': ROLE_ICON_MAP.get(role_id, ''),
         'acquisition_icon': acq_icon or '',
@@ -28647,10 +28879,13 @@ def _banner_timeline_supporter_item(sid, ld):
         return None
     ri = info.get('rarity', '1')
     thum = find_supporter_portrait(info.get('resource_id'), sid)
+    full = find_supporter_full_portrait(info.get('resource_id')) if info.get('resource_id') else None
+    portrait = full or thum or ''
     acq = info.get('acquisition_route', '0')
     acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
     return {
         'type': 'supporter', 'id': sid, 'name': name, 'thum': thum or '',
+        'portrait': portrait or '',
         'rarity': RARITY_MAP.get(str(ri), 'N'), 'rarity_id': str(ri),
         'role_icon': '', 'acquisition_icon': acq_icon or '',
         'special_icons': [], 'is_ultimate': False,
@@ -28688,7 +28923,7 @@ def _bt_banner_thumb_should_use_ver2_logo(appeal_resource_id, start_ms):
 def api_banner_timeline():
     """Gacha banner list with schedules, appeal art, and featured units/characters from master chains."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f'banner_tl_v16_{lc}'
+    ck = f'banner_tl_v17_{lc}'
     cached = get_cached_response(ck)
     if cached:
         return jsonify_cacheable(cached, ck, public=True, max_age=1800, convert_images=True)
@@ -32057,7 +32292,7 @@ def get_character(char_id):
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
         view_ranking = request.args.get('view', '').strip().lower() == 'ranking'
-        ck = f"c_{char_id}_{lc}_r14_{1 if view_ranking else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        ck = f"c_{char_id}_{lc}_r15_{1 if view_ranking else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
