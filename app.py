@@ -16771,6 +16771,11 @@ def _schedule_browse_list_performance_caches():
             _prewarm_default_browse_list_api_caches(stages_only=True)
         except Exception as e:
             print(f'Browse list stage prewarm skipped: {e}')
+        # /tl cold build is multi-second per locale — warm after stages so first open is snappy.
+        try:
+            _prewarm_banner_timeline_caches()
+        except Exception as e:
+            print(f'Banner timeline prewarm skipped: {e}')
 
     threading.Thread(target=_run, name='browse-list-cache', daemon=True).start()
 
@@ -16781,6 +16786,31 @@ def _start_browse_cache_warmup():
         _BROWSE_LIST_CACHE_READY.set()
         return
     _schedule_browse_list_performance_caches()
+
+
+def _prewarm_banner_timeline_caches():
+    """Seed /api/banner_timeline for active langs so /tl is not a cold multi-second rebuild."""
+    langs = []
+    for lc in (DEFAULT_LANG, 'EN', 'TW', 'HK', 'JA', 'JP'):
+        if lc and lc not in langs:
+            langs.append(lc)
+    # Prefer langs that actually have master loaded.
+    have = set((LANG_DATA or {}).keys()) if LANG_DATA else set()
+    if have:
+        langs = [lc for lc in langs if lc in have] or list(have)[:1]
+    warmed = 0
+    for lc in langs:
+        ck = f'banner_tl_v22_{lc}'
+        if get_cached_response(ck):
+            continue
+        try:
+            with app.test_request_context(f'/api/banner_timeline?lang={lc}&sv=22'):
+                api_banner_timeline()
+            warmed += 1
+        except Exception as e:
+            print(f'Banner timeline prewarm skipped ({lc}): {e}')
+    if warmed:
+        print(f'Banner timeline prewarm: {warmed} locale(s) cached', flush=True)
 
 
 def _prewarm_default_browse_list_api_caches(include_stages=False, stages_only=False):
@@ -28898,11 +28928,13 @@ def _bt_banner_thumb_should_use_ver2_logo(appeal_resource_id, start_ms):
 def api_banner_timeline():
     """Gacha banner list with schedules, appeal art, and featured units/characters from master chains."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    # v22: classic thumbs only (no 1.5 HUD portraits / recommend_character / hydrate).
+    # v22: classic thumbs; warm path must not wait on a second key.
     ck = f'banner_tl_v22_{lc}'
     ck_full = f'banner_tl_full_v22_{lc}'
     cached = get_cached_response(ck)
-    if cached and get_cached_response(ck_full):
+    if cached:
+        if not get_cached_response(ck_full):
+            set_cached_response(ck_full, cached)
         return jsonify_cacheable(cached, ck, public=True, max_age=1800, convert_images=False)
 
     ld = get_lang_data(lc)

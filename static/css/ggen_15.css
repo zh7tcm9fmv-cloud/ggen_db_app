@@ -449,24 +449,29 @@ html.ggen-15 .main-content .list-grid-card:focus-visible{
   outline:2px solid rgba(0,217,255,.7);
   outline-offset:3px;
 }
-html.ggen-15 .main-content .list-grid-card-name,
+html.ggen-15 .main-content .list-grid-card-name{
+  /* Unit/char names may include Greek ν — body stack only. */
+  font-family:var(--font-body);
+  font-weight:600;
+  letter-spacing:0.01em;
+  text-transform:none;
+}
 html.ggen-15 .main-content .list-grid-card-stats,
 html.ggen-15 .main-content .list-grid-stat-l{
   font-family:var(--font-teko);
   font-weight:600;
   letter-spacing:.04em;
 }
-html.ggen-15 .main-content .list-grid-card-name{text-transform:uppercase}
-html.ggen-15 .main-content .data-table,
-html.ggen-15 .main-content .data-table th,
-html.ggen-15 .main-content .data-table td{
-  font-family:var(--font-teko);
-  letter-spacing:.03em;
-}
 html.ggen-15 .main-content .data-table th{
+  font-family:var(--font-teko);
+  letter-spacing:.06em;
   text-transform:uppercase;
   font-weight:600;
-  letter-spacing:.06em;
+}
+html.ggen-15 .main-content .data-table,
+html.ggen-15 .main-content .data-table td{
+  font-family:var(--font-body);
+  letter-spacing:0.01em;
 }
 
 /* Detail modals (all entity types) */
@@ -480,7 +485,13 @@ html.ggen-15 #detailModal .modal-content{
     radial-gradient(80% 50% at 8% 0%,rgba(0,217,255,.08),transparent 50%),
     var(--bg-modal,var(--bg-card,#0a1422));
 }
-html.ggen-15 #detailModal .modal-content .detail-title,
+html.ggen-15 #detailModal .modal-content .detail-title{
+  /* Entity names (ν鋼彈) — body face; Teko lacks Greek. */
+  font-family:var(--font-body);
+  letter-spacing:0.02em;
+  text-transform:none;
+  font-weight:700;
+}
 html.ggen-15 #detailModal .modal-content .section-title,
 html.ggen-15 #detailModal .modal-content .modal-top-label,
 html.ggen-15 #detailModal .modal-content .modal-entity-id,
@@ -495,7 +506,6 @@ html.ggen-15 #detailModal .modal-content button:not(.close-btn){
   font-family:var(--font-teko);
   letter-spacing:.05em;
 }
-html.ggen-15 #detailModal .modal-content .detail-title,
 html.ggen-15 #detailModal .modal-content .section-title,
 html.ggen-15 #detailModal .modal-content .modal-top-label{
   text-transform:uppercase;
@@ -544,9 +554,10 @@ html.ggen-15 .spi-card-name,
 html.ggen-15 .lr-card-name,
 html.ggen-15 .main-content .spi-card-name,
 html.ggen-15 .main-content .lr-card-name{
-  font-family:var(--font-teko);
-  letter-spacing:.04em;
-  text-transform:uppercase;
+  /* Game names (ν鋼彈 etc.) — never Teko; Teko lacks Greek and paints ν as N. */
+  font-family:var(--font-body);
+  letter-spacing:0.01em;
+  text-transform:none;
 }
 html.ggen-15 .lr-card:not(.bt-lr-tile--limited),
 html.ggen-15 .main-content .lr-card:not(.bt-lr-tile--limited){
@@ -571,12 +582,19 @@ html.ggen-15 .main-content .spi-role-label{
   letter-spacing:.06em;
   text-transform:uppercase;
 }
+/* /tl banner titles can include Greek ν in TW/HK — keep body stack */
+html.ggen-15 #panel-banner_timeline .bt-banner-title{
+  font-family:var(--font-body);
+  letter-spacing:0.01em;
+  text-transform:none;
+}
 
 /* —— Type size nudge (Teko metrics → closer to Classic perceived size) —— */
 html.ggen-15 #navTabs .nav-tab,
 html.ggen-15 .nav-tab{
   font-size:calc(18px * var(--g15-type-nudge));
 }
+/* CJK HUD faces (ShinGo / UDShinGo) read optically huge at Teko nudge — match Classic ~18px feel */
 html.ggen-15[data-ui-lang="JA"] #navTabs .nav-tab,
 html.ggen-15[data-ui-lang="JP"] #navTabs .nav-tab,
 html.ggen-15[data-ui-lang="TW"] #navTabs .nav-tab,
@@ -585,7 +603,8 @@ html.ggen-15[data-ui-lang="JA"] .nav-tab,
 html.ggen-15[data-ui-lang="JP"] .nav-tab,
 html.ggen-15[data-ui-lang="TW"] .nav-tab,
 html.ggen-15[data-ui-lang="HK"] .nav-tab{
-  font-size:calc(17px * var(--g15-type-nudge));
+  font-size:15px;
+  line-height:1.25;
 }
 html.ggen-15 .main-content .section-title{
   font-size:calc(19px * var(--g15-type-nudge));
@@ -606,7 +625,7 @@ html.ggen-15 .spi-card-name,
 html.ggen-15 .lr-card-name,
 html.ggen-15 .main-content .spi-card-name,
 html.ggen-15 .main-content .lr-card-name{
-  font-size:calc(14px * var(--g15-type-nudge));
+  font-size:14px;
 }
 html.ggen-15 .bt-feat-label,
 html.ggen-15 .bt-feat-sub,
