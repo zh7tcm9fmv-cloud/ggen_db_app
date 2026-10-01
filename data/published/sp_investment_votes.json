@@ -13987,7 +13987,16 @@
     "ip_de7e64bee90aa7577415d778ac39ba4f:unit:1125004700:ssp": "up",
     "ip_de7e64bee90aa7577415d778ac39ba4f:unit:1175000100:ssp": "up",
     "ip_de7e64bee90aa7577415d778ac39ba4f:unit:1125000800:ssp": "up",
-    "ip_de7e64bee90aa7577415d778ac39ba4f:unit:1144000300:ssp": "up"
+    "ip_de7e64bee90aa7577415d778ac39ba4f:unit:1144000300:ssp": "up",
+    "ip_de7e64bee90aa7577415d778ac39ba4f:unit:1175000800:ssp": "up",
+    "ip_de7e64bee90aa7577415d778ac39ba4f:unit:1095003200:ssp": "up",
+    "ip_de7e64bee90aa7577415d778ac39ba4f:unit:1370006200:ssp": "up",
+    "ip_de7e64bee90aa7577415d778ac39ba4f:unit:1125003500:ssp": "up",
+    "ip_de7e64bee90aa7577415d778ac39ba4f:unit:1370008500:ssp": "up",
+    "ip_de7e64bee90aa7577415d778ac39ba4f:unit:1430000800:ssp": "up",
+    "ip_de7e64bee90aa7577415d778ac39ba4f:unit:1133000100:ssp": "up",
+    "ip_de7e64bee90aa7577415d778ac39ba4f:unit:1125005300:ssp": "up",
+    "ip_de7e64bee90aa7577415d778ac39ba4f:unit:1330000300:ssp": "up"
   },
   "targets": {
     "unit:1155000700:sp": {
@@ -16751,7 +16760,7 @@
       "down": 0
     },
     "unit:1125003500:ssp": {
-      "up": 5,
+      "up": 6,
       "down": 1
     },
     "unit:1125001600:ssp": {
@@ -16795,7 +16804,7 @@
       "down": 2
     },
     "unit:1330000300:ssp": {
-      "up": 2,
+      "up": 3,
       "down": 1
     },
     "unit:1370006600:sp": {
@@ -16819,7 +16828,7 @@
       "down": 2
     },
     "unit:1370006200:ssp": {
-      "up": 5,
+      "up": 6,
       "down": 0
     },
     "character:1430002800:sp": {
@@ -16899,7 +16908,7 @@
       "down": 3
     },
     "unit:1095003200:ssp": {
-      "up": 6,
+      "up": 7,
       "down": 1
     },
     "unit:1370001100:ssp": {
@@ -18379,7 +18388,7 @@
       "down": 1
     },
     "unit:1125005300:ssp": {
-      "up": 3,
+      "up": 4,
       "down": 1
     },
     "unit:1144000300:ssp": {
@@ -18551,7 +18560,7 @@
       "down": 1
     },
     "unit:1133000100:ssp": {
-      "up": 3,
+      "up": 4,
       "down": 1
     },
     "unit:1370000100:ssp": {
@@ -18559,7 +18568,7 @@
       "down": 4
     },
     "unit:1430000800:ssp": {
-      "up": 3,
+      "up": 4,
       "down": 1
     },
     "unit:1080002200:ssp": {
@@ -19667,7 +19676,7 @@
       "down": 1
     },
     "unit:1370008500:ssp": {
-      "up": 3,
+      "up": 4,
       "down": 0
     },
     "unit:1133000900:ssp": {
@@ -24687,6 +24696,10 @@
       "down": 0
     },
     "unit:1175000100:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1175000800:ssp": {
       "up": 1,
       "down": 0
     }
