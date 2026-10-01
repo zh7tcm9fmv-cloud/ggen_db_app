@@ -6256,6 +6256,11 @@ _API_CACHE_PIN_PREFIXES = (
     'ul57_',
     'stages14_',
     'browse_filters_',
+    # Banner timeline is huge to rebuild (~1–3s). Evicting it under browse/detail
+    # traffic made /tl and site-wide votes feel randomly sluggish after every feature.
+    'banner_tl_v19_',
+    'banner_tl_full_v19_',
+    'banner_tl_feat_v19_',
     'tag_matrix_v5_',
     'tag_matrix_v6_',
     'tag_matrix_v7_',
