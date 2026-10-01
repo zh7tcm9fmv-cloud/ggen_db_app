@@ -297,11 +297,3 @@ html.ggen-15 #panel-banner_timeline .bt-table.bt-vote-mode-on .bt-c-unit-card .h
   html.ggen-15 #panel-banner_timeline .bt-c-unit-card > .image > .visual > .hit:hover,
   html.ggen-15 #panel-banner_timeline .bt-c-unit-card > .image > .character > .hit:hover{transform:none}
 }
-
-/* Ended pools: featured strip placeholder until scrolled into view */
-#panel-banner_timeline .bt-feat-lazy .bt-feat-lazy-ph{
-  min-height:148px;
-  border-radius:2px;
-  background:linear-gradient(90deg,rgba(255,255,255,.04),rgba(255,255,255,.08),rgba(255,255,255,.04));
-  background-size:200% 100%;
-}

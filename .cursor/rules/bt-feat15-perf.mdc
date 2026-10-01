@@ -1,0 +1,13 @@
+---
+description: /tl 1.5 featured HUD is parked — do not rewire without owner ask
+globs: static/js/app.js,templates/index.html,_mocks/bt_tl_feat15/**
+alwaysApply: false
+---
+
+# `/tl` 1.5 featured HUD — parked
+
+Owner (**Oct 2026**): complete revert from live `/tl`. Classic strips only.
+
+Mock kept at `_mocks/bt_tl_feat15/` (`bt_feat_15.css` + `bt_feat_15_app_snippet.js` + README).
+
+Do **not** re-link CSS or re-branch `btFeaturedMergedCell` unless the owner asks to resume. Site-wide Special Design (`ggen-15`) is separate and stays.

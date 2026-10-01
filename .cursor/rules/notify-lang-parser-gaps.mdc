@@ -1,0 +1,33 @@
+---
+description: Notify owner when LANG/master wording would break CP/stat parsers
+alwaysApply: true
+---
+
+# Notify on LANG / parser gaps (do not silently ship)
+
+Owner lesson (**Oct 2026 — Florence 1850001501**): official EN said `decrease DEF by 25%` while `extract_stat_percent_char` only matched `Defense`. Awaken/Reaction still applied; Defense CP silently vanished on detail + DC.
+
+## Hard rule
+
+After MasterData / LANG imports, trait text edits, or changes to `extract_stat_percent_*` / CP dossier parsers:
+
+1. Run:
+   ```text
+   python scripts/check_char_cp_stat_parse.py
+   ```
+2. If it fails **or** you notice wording the parsers do not cover (abbreviations like `DEF`/`ATK`, JA `守備値…減少`, TW/HK equivalents, “and decrease …”, Oxford lists): **tell the owner explicitly** before calling the work done — name the discrepancy, what still “works”, what silently drops, and that a worldwide parser fix (not an id special-case) is required.
+3. Never assume “stats look mostly right” = CP sheet is correct. Spot-check at least one increase **and** one decrease line on a known CP/EX kit when touching parsers.
+4. After a parser fix that changes character JSON, bump the `/api/character/<id>` cache-key fragment (e.g. `r14` → `r15`) so browsers do not keep a 304’d stale body.
+
+## What to watch for
+
+| Signal in trait text | Risk |
+|---|---|
+| `decrease DEF` / `increase DEF` (abbrev) | Character dossier parser historically missed `DEF` |
+| `守備値…減少` / TW `防禦力`/`守備值` | CJK decrease path |
+| Split newlines (`increase…`, then `and decrease…`) | Per-line buckets; decrease line must parse alone |
+| `improve decrease DEF weapon effects` | Combat wording — **not** dossier Defense; do not force into pilot stats |
+
+## Reply habit
+
+If a gap exists or the check fails: say **discrepancy found** in the owner reply (what broke / what would break). Do not bury it under “fixed locally” for an unrelated UI task.

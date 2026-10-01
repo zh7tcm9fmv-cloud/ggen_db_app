@@ -138,16 +138,6 @@ def _public_site_origin():
     return _DEFAULT_PUBLIC_ORIGIN
 
 
-def _bt_feat15_enabled():
-    """1.5 /tl featured HUD ship gate. Off on Railway unless GGEN_BT_FEAT15=1."""
-    raw = (os.environ.get('GGEN_BT_FEAT15') or '').strip().lower()
-    if raw in ('1', 'true', 'yes', 'on'):
-        return True
-    if raw in ('0', 'false', 'no', 'off'):
-        return False
-    return not bool(os.environ.get('RAILWAY_ENVIRONMENT') or os.environ.get('RAILWAY_SERVICE_ID'))
-
-
 @app.context_processor
 def _inject_public_origin():
     origin = _public_site_origin()
@@ -161,7 +151,6 @@ def _inject_public_origin():
         # Available on every template so deploy auto-reload + ?v= cache-bust work
         # without each route having to pass app_js_version explicitly.
         'app_js_version': _app_js_bundle_version_tag(),
-        'bt_feat15_enabled': _bt_feat15_enabled(),
     }
 
 # Bust cache when static assets change OR when a new git commit is deployed.
@@ -243,7 +232,6 @@ def _app_js_bundle_version_tag():
         ('css', 'collections.css'),
         ('css', 'collections_15.css'),
         ('css', 'ggen_15.css'),
-        ('css', 'bt_feat_15.css'),
         ('css', 'ggen_teko.css'),
         ('css', 'tag_matrix.css'),
         ('css', 'tag_matrix_15.css'),
@@ -28923,9 +28911,10 @@ def _bt_banner_thumb_should_use_ver2_logo(appeal_resource_id, start_ms):
 def api_banner_timeline():
     """Gacha banner list with schedules, appeal art, and featured units/characters from master chains."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f'banner_tl_v17_{lc}'
+    ck = f'banner_tl_v18_{lc}'
+    ck_full = f'banner_tl_full_v18_{lc}'
     cached = get_cached_response(ck)
-    if cached:
+    if cached and get_cached_response(ck_full):
         return jsonify_cacheable(cached, ck, public=True, max_age=1800, convert_images=True)
 
     ld = get_lang_data(lc)
@@ -29214,7 +29203,111 @@ def api_banner_timeline():
         return (0, -int(sm))
 
     rows_out.sort(key=_sort_key)
-    out = {'banners': rows_out, 'gacha_movie_settings': gacha_movie_settings}
+    full_out = {'banners': rows_out, 'gacha_movie_settings': gacha_movie_settings}
+    set_cached_response(ck_full, full_out)
+    slim_out = _bt_slim_ended_featured_timeline(full_out)
+    set_cached_response(ck, slim_out)
+    return jsonify_cacheable(slim_out, ck, public=True, max_age=1800, convert_images=True)
+
+
+def _bt_banner_pool_still_available(row, now_ms=None):
+    """Match client btBannerPoolStillAvailable — active / permanent keep featured inline."""
+    if not isinstance(row, dict):
+        return True
+    if normalize_id(row.get('schedule_id')) == '9999990001':
+        return True
+    try:
+        end = int(row.get('end_ms') or 0)
+    except (TypeError, ValueError):
+        end = 0
+    if end <= 0:
+        return True
+    try:
+        if _jst_year_from_epoch_ms(end) >= 2098:
+            return True
+    except Exception:
+        pass
+    if now_ms is None:
+        import time as _time
+        now_ms = int(_time.time() * 1000)
+    return now_ms < end
+
+
+def _bt_featured_vote_labels(featured_units, featured_chars, featured_supporters):
+    labels = {}
+    for typ, items in (
+        ('unit', featured_units),
+        ('character', featured_chars),
+        ('supporter', featured_supporters),
+    ):
+        for it in items or []:
+            if not isinstance(it, dict) or it.get('id') is None:
+                continue
+            labels[f'{typ}:{it["id"]}'] = str(it.get('name') or it['id'])
+    return labels
+
+
+def _bt_slim_ended_featured_timeline(full_out, now_ms=None):
+    """Drop heavy featured blobs for ended pools; client hydrates on scroll."""
+    import copy
+    slim = copy.deepcopy(full_out) if isinstance(full_out, dict) else {'banners': []}
+    for row in slim.get('banners') or []:
+        if not isinstance(row, dict):
+            continue
+        if _bt_banner_pool_still_available(row, now_ms):
+            row['featured_deferred'] = False
+            continue
+        labels = _bt_featured_vote_labels(
+            row.get('featured_units'),
+            row.get('featured_chars'),
+            row.get('featured_supporters'),
+        )
+        row['featured_deferred'] = True
+        row['featured_vote_labels'] = labels
+        row['featured_units'] = []
+        row['featured_chars'] = []
+        row['featured_supporters'] = []
+    return slim
+
+
+def _bt_ensure_banner_timeline_full(lc):
+    ck_full = f'banner_tl_full_v18_{lc}'
+    full = get_cached_response(ck_full)
+    if isinstance(full, dict) and full.get('banners') is not None:
+        return full
+    with app.test_request_context(f'/api/banner_timeline?lang={lc}'):
+        api_banner_timeline()
+    return get_cached_response(ck_full) or {'banners': []}
+
+
+@app.route('/api/banner_timeline/<gasha_id>/featured')
+def api_banner_timeline_featured(gasha_id):
+    """Full featured strips for one banner (ended-pool hydrate)."""
+    lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
+    gid = normalize_id(gasha_id)
+    if gid == '0':
+        return jsonify({'error': 'invalid_gasha_id'}), 400
+    ck = f'banner_tl_feat_v18_{lc}_{gid}'
+    cached = get_cached_response(ck)
+    if cached:
+        return jsonify_cacheable(cached, ck, public=True, max_age=1800, convert_images=True)
+    full = _bt_ensure_banner_timeline_full(lc)
+    row = None
+    for b in (full.get('banners') or []):
+        if isinstance(b, dict) and normalize_id(b.get('gasha_id')) == gid:
+            row = b
+            break
+    if not row:
+        return jsonify({'error': 'not_found', 'gasha_id': gid}), 404
+    out = {
+        'gasha_id': gid,
+        'featured_units': row.get('featured_units') or [],
+        'featured_chars': row.get('featured_chars') or [],
+        'featured_supporters': row.get('featured_supporters') or [],
+        'point_exchange': row.get('point_exchange'),
+        'drop_pity': row.get('drop_pity'),
+        'vote_enabled': row.get('vote_enabled'),
+    }
     set_cached_response(ck, out)
     return jsonify_cacheable(out, ck, public=True, max_age=1800, convert_images=True)
 

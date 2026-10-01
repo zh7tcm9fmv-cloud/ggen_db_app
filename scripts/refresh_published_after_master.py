@@ -6,12 +6,14 @@ Runs (in order):
   2. Ko-fi promo Popup avatars → static/js/kofi_donate_promo.js
   3. Investment Priority (/ip) board → data/published/sp_investment_v1.json
   4. Coverage gate (eligible catalog vs published /ip)
+  5. Character CP dossier parse gate (DEF/ATK abbreviations etc.)
 
 Usage (from ggen_db_app):
   python scripts/refresh_published_after_master.py
   python scripts/refresh_published_after_master.py --skip-gasha
   python scripts/refresh_published_after_master.py --skip-popup
   python scripts/refresh_published_after_master.py --skip-spi
+  python scripts/refresh_published_after_master.py --skip-cp-parse
 
 Typical full post-import workflow (What's New baseline + published caches):
   python scripts/refresh_whats_new_snapshot.py --publish
@@ -50,6 +52,11 @@ def main() -> int:
     )
     ap.add_argument('--skip-spi', action='store_true', help='Skip Investment Priority (/ip) rebuild.')
     ap.add_argument('--skip-coverage', action='store_true', help='Skip SPI coverage check.')
+    ap.add_argument(
+        '--skip-cp-parse',
+        action='store_true',
+        help='Skip character CP dossier parse coverage (DEF abbreviations etc.).',
+    )
     args = ap.parse_args()
 
     os.environ.setdefault('GGEN_TIER_USE_BUNDLED_EN', '1')
@@ -87,6 +94,19 @@ def main() -> int:
             'check_sp_investment_coverage.py',
         )
         if rc != 0:
+            return rc
+
+    if not args.skip_cp_parse:
+        rc = _run_step(
+            'Verify character CP dossier parse (DEF etc.)',
+            'check_char_cp_stat_parse.py',
+        )
+        if rc != 0:
+            print(
+                'CP parse coverage failed — discrepancy: dossier wording may not match '
+                'extract_stat_percent_char (silent missing DEF/ATK etc.). Fix parser before ship.',
+                file=sys.stderr,
+            )
             return rc
 
     print('\nPublished cache refresh complete.', flush=True)
