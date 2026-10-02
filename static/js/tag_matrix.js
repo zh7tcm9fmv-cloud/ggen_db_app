@@ -1555,7 +1555,7 @@
     if (state.role !== 'ALL') board.classList.add('tm-role-filter-' + state.role);
 
     /* Keep all filter-matching rows in the DOM; focus only hides via syncSelectionUi. */
-    refreshColBags();
+    if (state.ownedOnly) refreshColBags();
     var visible = [];
     rows.forEach(function (row) {
       if (!rowMatches(row)) return;

@@ -16793,6 +16793,12 @@ def _schedule_browse_list_performance_caches():
             _prewarm_banner_timeline_caches()
         except Exception as e:
             print(f'Banner timeline prewarm skipped: {e}')
+        # /tm+/dm same class: large JSON, convert_image_urls once into cache — warm after /tl.
+        # Do not change payload shape or CDN URL style for “perf”; only seed the existing cache.
+        try:
+            _prewarm_matrix_board_caches()
+        except Exception as e:
+            print(f'Matrix board prewarm skipped: {e}')
 
     threading.Thread(target=_run, name='browse-list-cache', daemon=True).start()
 
@@ -16828,6 +16834,43 @@ def _prewarm_banner_timeline_caches():
             print(f'Banner timeline prewarm skipped ({lc}): {e}')
     if warmed:
         print(f'Banner timeline prewarm: {warmed} locale(s) cached', flush=True)
+
+
+def _prewarm_matrix_board_langs():
+    """Locales to warm for /tm+/dm — same preference order as banner timeline."""
+    langs = []
+    for lc in (DEFAULT_LANG, 'EN', 'TW', 'HK', 'JA', 'JP'):
+        if lc and lc not in langs:
+            langs.append(lc)
+    have = set((LANG_DATA or {}).keys()) if LANG_DATA else set()
+    if have:
+        langs = [lc for lc in langs if lc in have] or list(have)[:1]
+    return langs
+
+
+def _prewarm_matrix_board_caches():
+    """Seed /api/tag_matrix + /api/debuff_matrix so first /tm+/dm open is cache-hit, not cold build.
+
+    Look-safe: identical payloads (including convert_image_urls at cache write). No slim/relative-path
+    tricks, no IMAGE_CDN override. Runs in the browse-cache background thread after /tl.
+    """
+    frag = lr_schedule_cache_key_fragment()
+    warmed = 0
+    for lc in _prewarm_matrix_board_langs():
+        for label, ck_prefix, path, handler in (
+            ('tag', f'tag_matrix_v8_{lc}_{frag}', f'/api/tag_matrix?lang={lc}&sv=8', api_tag_matrix),
+            ('debuff', f'debuff_matrix_v14_{lc}_{frag}', f'/api/debuff_matrix?lang={lc}&sv=14', api_debuff_matrix),
+        ):
+            if get_cached_response(ck_prefix):
+                continue
+            try:
+                with app.test_request_context(path):
+                    handler()
+                warmed += 1
+            except Exception as e:
+                print(f'Matrix board prewarm skipped ({label}/{lc}): {e}')
+    if warmed:
+        print(f'Matrix board prewarm: {warmed} board(s) cached', flush=True)
 
 
 def _prewarm_default_browse_list_api_caches(include_stages=False, stages_only=False):
@@ -21323,9 +21366,9 @@ def api_collections_census_stats():
 
 @app.route('/api/collections/catalog')
 def api_collections_catalog():
-    """Slim UR catalog for /collections (Units + Supporters; no ULT / transform alts)."""
+    """Slim UR catalog for /collections (Units + Supporters; UR ULT included; no transform alts)."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f'collections_ur_v4_{lc}_{lr_schedule_cache_key_fragment()}'
+    ck = f'collections_ur_v5_{lc}_{lr_schedule_cache_key_fragment()}'
     cached = get_cached_response(ck)
     if cached:
         return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
@@ -21341,8 +21384,8 @@ def api_collections_catalog():
             continue
         if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')):
             continue
-        if bool(info.get('is_ultimate', False)):
-            continue
+        # Include UR Ultimate kits so /tm+/dm “My collection” can sync ULT ownership.
+        # Still skip transform alternates (duplicate roster rows).
         if _unit_is_transform_alternate(uid):
             continue
         ri = info.get('rarity', '1')
@@ -21359,6 +21402,7 @@ def api_collections_catalog():
             name = f'Unknown ({uid})'
         thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
         art = find_portrait(info.get('resource_ids', []), uid, 'images/unit_portraits') or thum
+        is_ult = bool(info.get('is_ultimate', False))
         units.append({
             'id': uid,
             'name': name,
@@ -21368,6 +21412,7 @@ def api_collections_catalog():
             'thum': thum or '',
             'art': art or '',
             'is_limited_time': uid in LIMITED_TIME_UNIT_IDS,
+            'is_ultimate': is_ult,
             'rarity': 'UR',
             'rarity_id': ri,
             'rarity_sort': RARITY_SORT.get(ri, 4),
@@ -21413,7 +21458,8 @@ def api_collections_catalog():
         'supporters': supporters,
         'lang': lc,
         'scope': 'UR',
-        'exclude': ['ULT', 'transform_alternate', 'characters'],
+        'exclude': ['transform_alternate', 'characters'],
+        'include': ['UR_ULT'],
     }
     set_cached_response(ck, result)
     return jsonify_cacheable(result, ck, public=True, max_age=3600, convert_images=True)

@@ -7,6 +7,7 @@
   var SAVE_SLOT_COUNT = 5;
   var LANG_STORAGE_KEY = 'ggen_lang';
   var MAX_LB = 3; /* unowned = -1, owned LB0..LB3 */
+  var ULT_ICON = '/static/images/UI/UI_Common_Icon_ULT.webp';
   var EAGER_THUMB_COUNT = 16;
 
   var LB_ICONS = {
@@ -134,7 +135,7 @@
       preview_msg: 'If download does not start, long-press (mobile) or right-click the image and choose Save image.',
       download: 'Download',
       close: 'Close',
-      foot: 'UR units exclude Ultimate and transform alternates. Progress is saved in this browser only.',
+      foot: 'UR units (including Ultimate). Transform alternates excluded. Progress is saved in this browser only.',
       report_title: 'Collections Report',
       brand_line: 'GGEN ETERNAL DATABASE  ·  SD Gundam G Generation',
       owned_line: 'Possessed {owned} / {total} · Limit Break {lb} / {lbMax}',
@@ -271,7 +272,7 @@
       preview_msg: 'ダウンロードが始まらない場合は、長押し（スマホ）または右クリックで画像を保存してください。',
       download: 'ダウンロード',
       close: '閉じる',
-      foot: 'URユニットはULT・変形形態を除外。記録はこのブラウザのみ。',
+      foot: 'URユニット（ULT含む）。変形形態は除外。記録はこのブラウザのみ。',
       report_title: 'コレクションレポート',
       brand_line: 'GGEN ETERNAL DATABASE  ·  SD Gundam G Generation',
       owned_line: '所持 {owned} / {total} · 限界突破 {lb} / {lbMax}',
@@ -408,7 +409,7 @@
       preview_msg: '若未開始下載，請長按（手機）或右鍵選擇儲存圖片。',
       download: '下載',
       close: '關閉',
-      foot: 'UR 單位不含終極單位與變形形態。進度僅保存在此瀏覽器。',
+      foot: 'UR 單位（含終極單位）。不含變形形態。進度僅保存在此瀏覽器。',
       report_title: '收藏報告',
       brand_line: 'GGEN ETERNAL DATABASE  ·  SD Gundam G Generation',
       owned_line: '持有 {owned} / {total} · 突破界限 {lb} / {lbMax}',
@@ -544,7 +545,7 @@
       download: '下載',
       close: '關閉',
       preview_msg: '若未開始下載，請長按（手機）或右鍵選擇儲存圖片。',
-      foot: 'UR 單位不含終極單位與變形形態。進度僅保存在此瀏覽器。',
+      foot: 'UR 單位（含終極單位）。不含變形形態。進度僅保存在此瀏覽器。',
       report_title: '收藏報告',
       brand_line: 'GGEN ETERNAL DATABASE  ·  SD Gundam G Generation',
       owned_line: '持有 {owned} / {total} · 突破界限 {lb} / {lbMax}',
@@ -2141,6 +2142,13 @@
       '<div class="list-thumb-portrait-wrap">' +
       portrait +
       '</div>' +
+      (row.is_ultimate
+        ? '<div class="list-thumb-icons"><span class="list-thumb-icon-wrap"><img class="list-thumb-acq-icon" src="' +
+          esc(imgUrl(ULT_ICON)) +
+          '" alt="ULT" ' +
+          chromeLoad +
+          '></span></div>'
+        : '') +
       '<img class="list-thumb-frame" src="' +
       esc(frameU) +
       '" alt="" ' +

@@ -1,0 +1,35 @@
+---
+description: /tm /dm performance — look-safe only (Oct 2026 lesson)
+alwaysApply: true
+---
+
+# Matrix boards (`/tm` `/dm`) — look-safe performance only
+
+Owner lesson (**Oct 2026**): “slim” relative image paths + forcing local `IMAGE_CDN=github.io` made **browse / detail look broken** (missing frames, chrome, headers). Owner rule: **no feature or look change for performance.**
+
+## Hard rule
+
+1. **Never** strip `convert_image_urls()` from `/api/tag_matrix` or `/api/debuff_matrix` “to shrink JSON.” Absolute CDN URLs in the cached payload are intentional; clients already use `cdnPath` for relative fallbacks.
+2. **Never** restart local Flask with a non-default `IMAGE_CDN` (e.g. personal `github.io`) for matrix/browse stress unless the owner **explicitly** asks — incomplete hosts 404 frames/UI and look like a site-wide regression.
+3. **Never** change image URL shape, frame/base paths, rarity chrome, or detail media wiring as a matrix perf lever.
+4. Allowed levers only:
+   - In-memory cache + **pin prefixes** (`tag_matrix_v*_`, `debuff_matrix_v*_`)
+   - **Gzip** on large JSON (already in `after_request`)
+   - **Server prewarm** of the *same* handlers after browse/`/tl` (seed cache; identical payload)
+   - Client: lazy thumbs / eager budget; skip work when filters are off (e.g. collections bags only when “My collection” is on)
+   - Field trimming that is already lean-card design — not inventing new URL schemes
+
+## Forbidden “perf” patterns (caused the look break)
+
+| Pattern | Why |
+|---|---|
+| Drop `convert_image_urls` so wire JSON uses bare `/static/images` | Relies on every client path rewriting correctly; easy to desync with browse |
+| Local `IMAGE_CDN=…github.io…` for “faster portraits” | Incomplete asset host → missing frames site-wide |
+| Slim/hydrate / scroll storms | Same class as Oct `/tl` outage — banned by `live-perf-never-break-snappy.mdc` |
+
+## Checklist before claiming /tm /dm is “faster”
+
+- [ ] Payload still has absolute CDN (or same style as browse) after warm
+- [ ] Spot-check `/u` `/c` frames + detail chrome still load on the **same** local server
+- [ ] No `IMAGE_CDN` override unless owner asked
+- [ ] Honest: cold build vs warm cache vs gzip wire size

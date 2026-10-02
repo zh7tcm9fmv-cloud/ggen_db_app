@@ -1463,7 +1463,7 @@
   }
 
   function renderBoard() {
-    refreshColBags();
+    if (state.ownedOnly) refreshColBags();
     var board = document.getElementById('dmBoard');
     var head = document.getElementById('dmStickyHead');
     if (!board) return;
