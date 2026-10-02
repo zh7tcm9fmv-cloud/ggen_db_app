@@ -39,6 +39,8 @@ Owner lesson (**Oct 2026**): `/tl` slim+hydrate, InstantBrowse `ranking_bulk` wa
 - [ ] Cold `/` + open unit/char detail still feels instant locally
 - [ ] `/tl` warm path &lt; ~100ms after prewarm (not multi-second spinner on every open)
 - [ ] No new idle megabyte fetches; no new full-viewport blur
+- [ ] No new boot-prewarm of multi‑MB boards (`/tm` `/dm`) into pinned API cache
+- [ ] Live `/health` `memory.rss_mb` not climbing past ~1GB after “perf” deploys
 - [ ] `node scripts/verify_app_js_bundle.mjs` if `app.js` changed
 - [ ] Honest status: local-only vs needs deploy
 

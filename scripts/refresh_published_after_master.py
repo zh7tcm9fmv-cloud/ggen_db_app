@@ -57,6 +57,11 @@ def main() -> int:
         action='store_true',
         help='Skip character CP dossier parse coverage (DEF abbreviations etc.).',
     )
+    ap.add_argument(
+        '--with-matrix',
+        action='store_true',
+        help='Also rebuild /tm+/dm published boards (requires local Flask on :5000).',
+    )
     args = ap.parse_args()
 
     os.environ.setdefault('GGEN_TIER_USE_BUNDLED_EN', '1')
@@ -107,6 +112,15 @@ def main() -> int:
                 'extract_stat_percent_char (silent missing DEF/ATK etc.). Fix parser before ship.',
                 file=sys.stderr,
             )
+            return rc
+
+    if args.with_matrix:
+        rc = _run_step(
+            'Publish /tm+/dm matrix boards (needs Flask :5000)',
+            'build_matrix_boards.py',
+        )
+        if rc != 0:
+            print('Matrix board publish failed (is local Flask running?).', file=sys.stderr)
             return rc
 
     print('\nPublished cache refresh complete.', flush=True)

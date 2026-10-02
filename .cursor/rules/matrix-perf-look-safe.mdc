@@ -13,18 +13,24 @@ Owner lesson (**Oct 2026**): “slim” relative image paths + forcing local `IM
 2. **Never** restart local Flask with a non-default `IMAGE_CDN` (e.g. personal `github.io`) for matrix/browse stress unless the owner **explicitly** asks — incomplete hosts 404 frames/UI and look like a site-wide regression.
 3. **Never** change image URL shape, frame/base paths, rarity chrome, or detail media wiring as a matrix perf lever.
 4. Allowed levers only:
-   - In-memory cache + **pin prefixes** (`tag_matrix_v*_`, `debuff_matrix_v*_`)
+   - **Published gzip boards** in `data/published/matrix_boards/` (same JSON + CDN URLs as live).
+     Build: `python scripts/build_matrix_boards.py` with local Flask up. API loads file on cache miss.
+     No extra Railway egress (same response bytes users already download). No boot RAM party.
+   - In-memory cache when a user actually opens `/tm` or `/dm` (on-demand, **unpinned**)
    - **Gzip** on large JSON (already in `after_request`)
-   - **Server prewarm** of the *same* handlers after browse/`/tl` (seed cache; identical payload)
-   - Client: lazy thumbs / eager budget; skip work when filters are off (e.g. collections bags only when “My collection” is on)
+   - Client: lazy thumbs / eager budget; skip work when filters are off
    - Field trimming that is already lean-card design — not inventing new URL schemes
 
-## Forbidden “perf” patterns (caused the look break)
+5. **Never boot-prewarm** `/api/tag_matrix` / `/api/debuff_matrix` for all locales into RAM.
+   Use published files instead. `/tl` prewarm stays.
+
+## Forbidden “perf” patterns
 
 | Pattern | Why |
 |---|---|
 | Drop `convert_image_urls` so wire JSON uses bare `/static/images` | Relies on every client path rewriting correctly; easy to desync with browse |
 | Local `IMAGE_CDN=…github.io…` for “faster portraits” | Incomplete asset host → missing frames site-wide |
+| Boot-prewarm all `/tm`+`/dm` locales into pinned API cache | Railway RSS / GIL thrash → first page dies |
 | Slim/hydrate / scroll storms | Same class as Oct `/tl` outage — banned by `live-perf-never-break-snappy.mdc` |
 
 ## Checklist before claiming /tm /dm is “faster”

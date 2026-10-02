@@ -64,7 +64,7 @@
       page_title: 'Hangar Collection — GGen Eternal Database',
       eyebrow: 'UR Acquisition Review',
       title: 'Hangar Collection',
-      sub: 'Track UR unit and supporter possession\nTap a portrait to cycle not possessed → Limit Break 0 → MAX Limit Break.\nPossessing a unit covers its character',
+      sub: 'Track UR unit and supporter possession\nTap a portrait to cycle not possessed → Limit Break 0 → MAX Limit Break (Ultimate: form ids, no LB).\nPossessing a unit covers its character',
       lang: 'Lang',
       support_alipay: 'Support on AlipayHK',
       support_kofi: 'Support on Ko-fi',
@@ -135,7 +135,7 @@
       preview_msg: 'If download does not start, long-press (mobile) or right-click the image and choose Save image.',
       download: 'Download',
       close: 'Close',
-      foot: 'UR units (including Ultimate). Transform alternates excluded. Progress is saved in this browser only.',
+      foot: 'UR units (including Ultimate). Ultimate cycles form ids (not Limit Break). Transform alternates excluded. Progress is saved in this browser only.',
       report_title: 'Collections Report',
       brand_line: 'GGEN ETERNAL DATABASE  ·  SD Gundam G Generation',
       owned_line: 'Possessed {owned} / {total} · Limit Break {lb} / {lbMax}',
@@ -272,7 +272,7 @@
       preview_msg: 'ダウンロードが始まらない場合は、長押し（スマホ）または右クリックで画像を保存してください。',
       download: 'ダウンロード',
       close: '閉じる',
-      foot: 'URユニット（ULT含む）。変形形態は除外。記録はこのブラウザのみ。',
+      foot: 'URユニット（ULT含む）。ULTは限界突破ではなく形態ID切替。変形形態は除外。記録はこのブラウザのみ。',
       report_title: 'コレクションレポート',
       brand_line: 'GGEN ETERNAL DATABASE  ·  SD Gundam G Generation',
       owned_line: '所持 {owned} / {total} · 限界突破 {lb} / {lbMax}',
@@ -409,7 +409,7 @@
       preview_msg: '若未開始下載，請長按（手機）或右鍵選擇儲存圖片。',
       download: '下載',
       close: '關閉',
-      foot: 'UR 單位（含終極單位）。不含變形形態。進度僅保存在此瀏覽器。',
+      foot: 'UR 單位（含終極單位）。終極單位以形態 ID 切換（非突破界限）。不含變形形態。進度僅保存在此瀏覽器。',
       report_title: '收藏報告',
       brand_line: 'GGEN ETERNAL DATABASE  ·  SD Gundam G Generation',
       owned_line: '持有 {owned} / {total} · 突破界限 {lb} / {lbMax}',
@@ -545,7 +545,7 @@
       download: '下載',
       close: '關閉',
       preview_msg: '若未開始下載，請長按（手機）或右鍵選擇儲存圖片。',
-      foot: 'UR 單位（含終極單位）。不含變形形態。進度僅保存在此瀏覽器。',
+      foot: 'UR 單位（含終極單位）。終極單位以形態 ID 切換（非突破界限）。不含變形形態。進度僅保存在此瀏覽器。',
       report_title: '收藏報告',
       brand_line: 'GGEN ETERNAL DATABASE  ·  SD Gundam G Generation',
       owned_line: '持有 {owned} / {total} · 突破界限 {lb} / {lbMax}',
@@ -745,6 +745,95 @@
     setLb(id, next);
   }
 
+  function isUltRow(row) {
+    return !!(row && row.is_ultimate && Array.isArray(row.ult_variants) && row.ult_variants.length);
+  }
+
+  function ultVariantIds(row) {
+    if (!isUltRow(row)) return [];
+    return row.ult_variants.map(function (v) {
+      return String((v && v.id) || v || '');
+    }).filter(Boolean);
+  }
+
+  function getUltOwnedId(row) {
+    var ids = ultVariantIds(row);
+    var i;
+    for (i = 0; i < ids.length; i++) {
+      if (getLb(ids[i]) >= 0) return ids[i];
+    }
+    return null;
+  }
+
+  function setUltOwnedId(row, selectedId) {
+    var ids = ultVariantIds(row);
+    var sel = selectedId ? String(selectedId) : '';
+    ids.forEach(function (id) {
+      setLb(id, sel && id === sel ? 0 : -1);
+    });
+  }
+
+  function cycleUlt(row) {
+    var ids = ultVariantIds(row);
+    if (!ids.length) return;
+    var cur = getUltOwnedId(row);
+    var idx = cur ? ids.indexOf(cur) : -1;
+    var next = idx + 1;
+    if (next >= ids.length) setUltOwnedId(row, null);
+    else setUltOwnedId(row, ids[next]);
+  }
+
+  /** Possession / LB UI state — ULT has no Limit Break stars. */
+  function rowState(row) {
+    if (isUltRow(row)) {
+      var oid = getUltOwnedId(row);
+      return {
+        owned: !!oid,
+        lb: oid ? 0 : -1,
+        ultId: oid,
+        skipLb: true
+      };
+    }
+    var lb = getLb(row && row.id);
+    return { owned: lb >= 0, lb: lb, ultId: null, skipLb: false };
+  }
+
+  function rowDisplayMedia(row) {
+    if (!isUltRow(row)) return { thum: row.thum || '', art: row.art || '' };
+    var oid = getUltOwnedId(row);
+    var vars = row.ult_variants || [];
+    var pick = null;
+    var i;
+    if (oid) {
+      for (i = 0; i < vars.length; i++) {
+        if (String(vars[i].id) === oid) {
+          pick = vars[i];
+          break;
+        }
+      }
+    }
+    if (!pick) pick = vars[0] || {};
+    return { thum: pick.thum || row.thum || '', art: pick.art || row.art || '' };
+  }
+
+  function rowTitleExtra(row, st) {
+    if (isUltRow(row)) {
+      if (!st.owned) return t('unowned');
+      return String(st.ultId || '');
+    }
+    return lbTitle(st.lb);
+  }
+
+  function findRowByCardId(id) {
+    var sid = String(id || '');
+    var list = activeList();
+    var i;
+    for (i = 0; i < list.length; i++) {
+      if (String(list[i].id) === sid) return list[i];
+    }
+    return null;
+  }
+
   function activeList() {
     return state.catalog[state.type] || [];
   }
@@ -768,6 +857,7 @@
     var limTotal = 0;
     var limOwned = 0;
     var lbSum = 0;
+    var lbEligible = 0;
     var byRole = { '1': { t: 0, o: 0, m: 0 }, '2': { t: 0, o: 0, m: 0 }, '3': { t: 0, o: 0, m: 0 } };
     var bySkill = {
       hp: { t: 0, o: 0, m: 0 },
@@ -775,13 +865,14 @@
       hybrid: { t: 0, o: 0, m: 0 }
     };
     rows.forEach(function (row) {
-      var lb = getLb(row.id);
-      var isOwned = lb >= 0;
-      if (isOwned) {
-        owned++;
-        lbSum += lb;
+      var st = rowState(row);
+      var isOwned = st.owned;
+      if (isOwned) owned++;
+      if (!st.skipLb) {
+        lbEligible++;
+        if (isOwned) lbSum += st.lb;
+        if (st.lb >= MAX_LB) maxed++;
       }
-      if (lb >= MAX_LB) maxed++;
       if (row.is_limited_time) {
         limTotal++;
         if (isOwned) limOwned++;
@@ -790,17 +881,17 @@
       if (byRole[rid]) {
         byRole[rid].t++;
         if (isOwned) byRole[rid].o++;
-        if (lb >= MAX_LB) byRole[rid].m++;
+        if (!st.skipLb && st.lb >= MAX_LB) byRole[rid].m++;
       }
       var sk = String(row.skill_kind || '');
       if (bySkill[sk]) {
         bySkill[sk].t++;
         if (isOwned) bySkill[sk].o++;
-        if (lb >= MAX_LB) bySkill[sk].m++;
+        if (!st.skipLb && st.lb >= MAX_LB) bySkill[sk].m++;
       }
     });
     var pct = total ? Math.round((owned / total) * 1000) / 10 : 0;
-    var lbMax = total * MAX_LB;
+    var lbMax = lbEligible * MAX_LB;
     return {
       total: total,
       owned: owned,
@@ -811,7 +902,8 @@
       bySkill: bySkill,
       pct: pct,
       lbTotal: lbSum,
-      lbMax: lbMax
+      lbMax: lbMax,
+      lbEligible: lbEligible
     };
   }
 
@@ -1570,7 +1662,7 @@
     if (!canvas) return;
     var buckets = donutBucketsFromStats(st);
     var complete = st.total > 0 && st.owned >= st.total;
-    var perfect = complete && st.maxed >= st.total;
+    var perfect = complete && st.maxed >= (st.lbEligible || 0);
     var dpr = window.devicePixelRatio || 1;
     var css = 132;
     canvas.width = css * dpr;
@@ -1881,7 +1973,7 @@
     var hud = document.getElementById('colHud');
     var gauge = document.getElementById('colGauge');
     var complete = st.total > 0 && st.owned >= st.total;
-    var perfect = complete && st.maxed >= st.total;
+    var perfect = complete && st.maxed >= (st.lbEligible || 0);
 
     syncGaugeTypeIcon();
 
@@ -2075,7 +2167,8 @@
 
   function thumbHtml(row, idx) {
     var r = rarityKey(row);
-    var thum = imgUrl(row.thum || '');
+    var media = rowDisplayMedia(row);
+    var thum = imgUrl(media.thum || '');
     var eager = typeof idx === 'number' && idx < EAGER_THUMB_COUNT;
     var loadAttr = eager
       ? 'loading="eager" decoding="async" fetchpriority="high"'
@@ -2177,8 +2270,9 @@
     }
     grid.innerHTML = rows
       .map(function (row, idx) {
-        var lb = getLb(row.id);
-        var cls = lb < 0 ? 'is-unowned' : 'lb-' + lb;
+        var st = rowState(row);
+        var cls = !st.owned ? 'is-unowned' : st.skipLb ? 'lb-0 is-ult-owned' : 'lb-' + st.lb;
+        if (st.skipLb) cls += ' col-card--ult';
         var lim = row.is_limited_time
           ? '<div class="bt-limited-topbar col-card-lim" aria-hidden="true">' +
             limitedUrBadgeHtml(limitedWord(), 'tile') +
@@ -2198,12 +2292,12 @@
           '" title="' +
           esc(row.name) +
           ' · ' +
-          esc(lbTitle(lb)) +
+          esc(rowTitleExtra(row, st)) +
           '">' +
           '<div class="col-card-thumb">' +
           lim +
           thumbHtml(row, idx) +
-          lbIconsHtml(lb) +
+          (st.skipLb ? '' : lbIconsHtml(st.lb)) +
           '</div>' +
           '<div class="col-card-name">' +
           esc(row.name) +
@@ -2305,6 +2399,16 @@
         units: data.units || [],
         supporters: data.supporters || []
       };
+      /* ULT: keep at most one owned form id (…01 or …02); drop LB values on those ids. */
+      (state.catalog.units || []).forEach(function (row) {
+        if (!isUltRow(row)) return;
+        var ids = ultVariantIds(row);
+        var keep = getUltOwnedId(row);
+        ids.forEach(function (vid) {
+          if (!keep) setLb(vid, -1);
+          else setLb(vid, vid === keep ? 0 : -1);
+        });
+      });
       if (status) {
         status.textContent = t('loaded', {
           units: state.catalog.units.length,
@@ -2396,6 +2500,12 @@
         var card = ev.target.closest('.col-card');
         if (!card) return;
         var id = card.getAttribute('data-id');
+        var row = findRowByCardId(id);
+        if (row && isUltRow(row)) {
+          cycleUlt(row);
+          refresh(); /* portrait may switch …01 ↔ …02 */
+          return;
+        }
         cycleLb(id);
         refresh({ patchId: id });
       });
@@ -2405,7 +2515,12 @@
     if (ownVis) {
       ownVis.addEventListener('click', function () {
         filteredList().forEach(function (row) {
-          setLb(row.id, 0);
+          if (isUltRow(row)) {
+            var ids = ultVariantIds(row);
+            setUltOwnedId(row, ids[0] || null);
+          } else {
+            setLb(row.id, 0);
+          }
         });
         saveOwned();
         refresh();
@@ -2415,6 +2530,8 @@
     if (maxVis) {
       maxVis.addEventListener('click', function () {
         filteredList().forEach(function (row) {
+          /* ULT has no Limit Break — leave ULT cards unchanged on Max LB. */
+          if (isUltRow(row)) return;
           setLb(row.id, MAX_LB);
         });
         saveOwned();
@@ -2429,10 +2546,15 @@
         });
         if (!limited.length) return;
         var allOwned = limited.every(function (row) {
-          return getLb(row.id) >= 0;
+          return rowState(row).owned;
         });
         limited.forEach(function (row) {
-          setLb(row.id, allOwned ? -1 : 0);
+          if (isUltRow(row)) {
+            var ids = ultVariantIds(row);
+            setUltOwnedId(row, allOwned ? null : ids[0] || null);
+          } else {
+            setLb(row.id, allOwned ? -1 : 0);
+          }
         });
         saveOwned();
         refresh();
@@ -3392,7 +3514,7 @@
     var rows = activeList();
     var st = computeStats(rows);
     var complete = st.total > 0 && st.owned >= st.total;
-    var perfect = complete && st.maxed >= st.total;
+    var perfect = complete && st.maxed >= (st.lbEligible || 0);
     var cols = Math.min(6, Math.max(4, Math.ceil(Math.sqrt((rows.length || 1) * 0.7))));
     /* 1.5 page landscape cells — chamfer + cover art (no UR base/frame) */
     var cellW = 148;
@@ -3528,7 +3650,8 @@
       loadImage(imgUrl(LIMITED_UR_LABEL_BASE)),
       Promise.all(
         rows.map(function (row) {
-          return loadImage(imgUrl(row.art || row.thum || ''));
+          var media = rowDisplayMedia(row);
+          return loadImage(imgUrl(media.art || media.thum || ''));
         })
       )
     ]);
@@ -3727,10 +3850,11 @@
       var rowIdx = Math.floor(i / cols);
       var x = pad + col * (cellW + gapX);
       var y = gridY + rowIdx * (cellH + gapY);
-      var lb = getLb(row.id);
+      var st = rowState(row);
+      var lb = st.lb;
       var im = thumbs[i];
-      var owned = lb >= 0;
-      var accent = !owned ? 'rgba(90,110,140,0.55)' : lb >= 3 ? '#ffd700' : '#00d9ff';
+      var owned = st.owned;
+      var accent = !owned ? 'rgba(90,110,140,0.55)' : (!st.skipLb && lb >= 3) ? '#ffd700' : '#00d9ff';
 
       ctx.save();
       if (!owned) {
@@ -4009,7 +4133,7 @@
     var rows = activeList();
     var st = computeStats(rows);
     var complete = st.total > 0 && st.owned >= st.total;
-    var perfect = complete && st.maxed >= st.total;
+    var perfect = complete && st.maxed >= (st.lbEligible || 0);
     var n = rows.length;
     var pyramid = pyramidRowsForCount(n);
     var cellW = 200;
@@ -4147,7 +4271,8 @@
       loadImage(imgUrl(LIMITED_UR_LABEL_BASE)),
       Promise.all(
         rows.map(function (row) {
-          return loadImage(imgUrl(row.art || row.thum || ''));
+          var media = rowDisplayMedia(row);
+          return loadImage(imgUrl(media.art || media.thum || ''));
         })
       )
     ]);
@@ -4335,7 +4460,8 @@
       for (var j = 0; j < count; j++) {
         var row = rows[cursor];
         var thumb = thumbs[cursor];
-        var lb = row ? getLb(row.id) : -1;
+        var st = row ? rowState(row) : { owned: false, lb: -1, skipLb: false };
+        var lb = st.owned ? st.lb : -1;
         var cx = xStart + j * stepX + cellW / 2;
         var cy = y + cellH / 2;
         var spin = (0.12 + cursor * 0.07) % 1;
@@ -4369,7 +4495,7 @@
       } else {
         ctx.drawImage(slot.thumb, x0, y0, dw, dh);
       }
-      if (slot.lb >= 0) {
+      if (slot.lb >= 0 && !(slot.row && isUltRow(slot.row))) {
         var pipH = Math.max(16, Math.min(26, (dw / 7) | 0));
         drawLbPipsTight(ctx, pipIcons, slot.lb, slot.cx, y0 + dh - pipH + 1, pipH);
       }
@@ -5197,18 +5323,8 @@
   }
 
   function catalogNameById(id) {
-    var list = activeList();
-    for (var i = 0; i < list.length; i++) {
-      if (String(list[i].id) === String(id)) return list[i].name || String(id);
-    }
-    var units = state.catalog.units || [];
-    for (var u = 0; u < units.length; u++) {
-      if (String(units[u].id) === String(id)) return units[u].name || String(id);
-    }
-    var supps = state.catalog.supporters || [];
-    for (var s = 0; s < supps.length; s++) {
-      if (String(supps[s].id) === String(id)) return supps[s].name || String(id);
-    }
+    var row = catalogRowById(id);
+    if (row && row.name) return row.name;
     return String(id);
   }
 
@@ -5248,7 +5364,12 @@
     for (var L = 0; L < lists.length; L++) {
       var list = lists[L];
       for (var i = 0; i < list.length; i++) {
-        if (String(list[i].id) === sid) return list[i];
+        var row = list[i];
+        if (String(row.id) === sid) return row;
+        if (isUltRow(row)) {
+          var vids = ultVariantIds(row);
+          if (vids.indexOf(sid) >= 0) return row;
+        }
       }
     }
     return null;

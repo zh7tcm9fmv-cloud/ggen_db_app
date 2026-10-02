@@ -6285,24 +6285,8 @@ _API_CACHE_PIN_PREFIXES = (
     'banner_tl_v19_',
     'banner_tl_full_v19_',
     'banner_tl_feat_v19_',
-    'tag_matrix_v5_',
-    'tag_matrix_v6_',
-    'tag_matrix_v7_',
-    'tag_matrix_v8_',
-    'debuff_matrix_v1_',
-    'debuff_matrix_v2_',
-    'debuff_matrix_v3_',
-    'debuff_matrix_v4_',
-    'debuff_matrix_v5_',
-    'debuff_matrix_v6_',
-    'debuff_matrix_v7_',
-    'debuff_matrix_v8_',
-    'debuff_matrix_v9_',
-    'debuff_matrix_v10_',
-    'debuff_matrix_v11_',
-    'debuff_matrix_v12_',
-    'debuff_matrix_v13_',
-    'debuff_matrix_v14_',
+    # /tm+/dm boards are multi‑MB each — do NOT pin. Pinning + boot-prewarm (removed)
+    # held all locales in RSS and starved homepage (Oct 2026). On-demand + evictable.
 )
 
 
@@ -16793,12 +16777,9 @@ def _schedule_browse_list_performance_caches():
             _prewarm_banner_timeline_caches()
         except Exception as e:
             print(f'Banner timeline prewarm skipped: {e}')
-        # /tm+/dm same class: large JSON, convert_image_urls once into cache — warm after /tl.
-        # Do not change payload shape or CDN URL style for “perf”; only seed the existing cache.
-        try:
-            _prewarm_matrix_board_caches()
-        except Exception as e:
-            print(f'Matrix board prewarm skipped: {e}')
+        # Do NOT prewarm /tm+/dm here. Each board is multi‑MB (converted CDN JSON) and pinned;
+        # warming 4 langs × 2 APIs at boot bloated Railway RSS (~1.3GB+) and fought homepage
+        # first paint (Oct 2026). Matrices stay on-demand.
 
     threading.Thread(target=_run, name='browse-list-cache', daemon=True).start()
 
@@ -16834,43 +16815,6 @@ def _prewarm_banner_timeline_caches():
             print(f'Banner timeline prewarm skipped ({lc}): {e}')
     if warmed:
         print(f'Banner timeline prewarm: {warmed} locale(s) cached', flush=True)
-
-
-def _prewarm_matrix_board_langs():
-    """Locales to warm for /tm+/dm — same preference order as banner timeline."""
-    langs = []
-    for lc in (DEFAULT_LANG, 'EN', 'TW', 'HK', 'JA', 'JP'):
-        if lc and lc not in langs:
-            langs.append(lc)
-    have = set((LANG_DATA or {}).keys()) if LANG_DATA else set()
-    if have:
-        langs = [lc for lc in langs if lc in have] or list(have)[:1]
-    return langs
-
-
-def _prewarm_matrix_board_caches():
-    """Seed /api/tag_matrix + /api/debuff_matrix so first /tm+/dm open is cache-hit, not cold build.
-
-    Look-safe: identical payloads (including convert_image_urls at cache write). No slim/relative-path
-    tricks, no IMAGE_CDN override. Runs in the browse-cache background thread after /tl.
-    """
-    frag = lr_schedule_cache_key_fragment()
-    warmed = 0
-    for lc in _prewarm_matrix_board_langs():
-        for label, ck_prefix, path, handler in (
-            ('tag', f'tag_matrix_v8_{lc}_{frag}', f'/api/tag_matrix?lang={lc}&sv=8', api_tag_matrix),
-            ('debuff', f'debuff_matrix_v14_{lc}_{frag}', f'/api/debuff_matrix?lang={lc}&sv=14', api_debuff_matrix),
-        ):
-            if get_cached_response(ck_prefix):
-                continue
-            try:
-                with app.test_request_context(path):
-                    handler()
-                warmed += 1
-            except Exception as e:
-                print(f'Matrix board prewarm skipped ({label}/{lc}): {e}')
-    if warmed:
-        print(f'Matrix board prewarm: {warmed} board(s) cached', flush=True)
 
 
 def _prewarm_default_browse_list_api_caches(include_stages=False, stages_only=False):
@@ -19154,6 +19098,45 @@ def _tag_matrix_build_supporter_card(sid, info, name, ld, lc, resolved_tags=None
     )
 
 
+# Published /tm+/dm boards (data/published/matrix_boards/*.json.gz) — same JSON as live build
+# (CDN URLs already applied). Avoids multi-second cold rebuild + boot RAM prewarm.
+# Browser bytes unchanged vs live API; files ship in the deploy artifact (not a new CDN hop).
+_MATRIX_PUBLISHED_DIR = os.path.join(app_dir, 'data', 'published', 'matrix_boards')
+_TAG_MATRIX_PUBLISHED_V = 8
+_DEBUFF_MATRIX_PUBLISHED_V = 14
+
+
+def _matrix_force_live_build():
+    """Build script / ?live=1 — skip published file and rebuild from master."""
+    if (os.environ.get('GGEN_MATRIX_FORCE_LIVE') or '').strip().lower() in ('1', 'true', 'yes', 'on'):
+        return True
+    try:
+        return str(request.args.get('live') or '').strip().lower() in ('1', 'true', 'yes')
+    except Exception:
+        return False
+
+
+def _matrix_published_gz_path(kind, lc):
+    ver = _TAG_MATRIX_PUBLISHED_V if kind == 'tag' else _DEBUFF_MATRIX_PUBLISHED_V
+    return os.path.join(_MATRIX_PUBLISHED_DIR, f'{kind}_matrix_v{ver}_{lc}.json.gz')
+
+
+def _try_load_published_matrix(kind, lc):
+    path = _matrix_published_gz_path(kind, lc)
+    if not os.path.isfile(path):
+        return None
+    try:
+        import gzip as _gzip
+        with _gzip.open(path, 'rt', encoding='utf-8') as f:
+            data = json.load(f)
+        if not isinstance(data, dict) or not isinstance(data.get('rows'), list):
+            return None
+        return data
+    except Exception as e:
+        print(f'published matrix load failed ({kind}/{lc}): {e}', flush=True)
+        return None
+
+
 @app.route('/api/tag_matrix')
 def api_tag_matrix():
     """One-shot board for /tm: major + Other-Series rows × supports + units by role."""
@@ -19163,6 +19146,11 @@ def api_tag_matrix():
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=False)
+        if not _matrix_force_live_build():
+            pub = _try_load_published_matrix('tag', lc)
+            if pub is not None:
+                set_cached_response(ck, pub)
+                return jsonify_cacheable(pub, ck, public=True, max_age=3600, convert_images=False)
         ld = get_lang_data(lc)
         buckets = {}
         row_order = []  # bucket keys in display order
@@ -19727,6 +19715,11 @@ def api_debuff_matrix():
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=False)
+        if not _matrix_force_live_build():
+            pub = _try_load_published_matrix('debuff', lc)
+            if pub is not None:
+                set_cached_response(ck, pub)
+                return jsonify_cacheable(pub, ck, public=True, max_age=3600, convert_images=False)
         ld = get_lang_data(lc)
         buckets = {}
         row_order = []
@@ -21366,9 +21359,9 @@ def api_collections_census_stats():
 
 @app.route('/api/collections/catalog')
 def api_collections_catalog():
-    """Slim UR catalog for /collections (Units + Supporters; UR ULT included; no transform alts)."""
+    """Slim UR catalog for /collections (Units + Supporters; UR ULT paired …01/…02; no transform alts)."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f'collections_ur_v5_{lc}_{lr_schedule_cache_key_fragment()}'
+    ck = f'collections_ur_v6_{lc}_{lr_schedule_cache_key_fragment()}'
     cached = get_cached_response(ck)
     if cached:
         return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
@@ -21377,7 +21370,7 @@ def api_collections_catalog():
         return warming
     ld = get_lang_data(lc) or {}
 
-    units = []
+    units_raw = []
     for uid in unit_list_playable_ids:
         info = unit_info_map.get(uid) or {}
         if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
@@ -21403,7 +21396,7 @@ def api_collections_catalog():
         thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
         art = find_portrait(info.get('resource_ids', []), uid, 'images/unit_portraits') or thum
         is_ult = bool(info.get('is_ultimate', False))
-        units.append({
+        units_raw.append({
             'id': uid,
             'name': name,
             'role_id': role_id,
@@ -21417,6 +21410,29 @@ def api_collections_catalog():
             'rarity_id': ri,
             'rarity_sort': RARITY_SORT.get(ri, 4),
         })
+    # ULT kits ship as …01 / …02 forms (no Limit Break stars). Collapse to one /col card
+    # with ult_variants so the client cycles unowned → 01 → 02 (not LB0..3).
+    units = []
+    ult_groups = {}
+    for row in units_raw:
+        if not row.get('is_ultimate'):
+            units.append(row)
+            continue
+        uid = str(row.get('id') or '')
+        gkey = uid[:-1] if len(uid) >= 2 and uid[-1] in '12' else uid
+        ult_groups.setdefault(gkey, []).append(row)
+    for gkey in sorted(ult_groups.keys(), key=lambda k: safe_int(ult_groups[k][0].get('id'), 0)):
+        members = sorted(ult_groups[gkey], key=lambda r: safe_int(r.get('id'), 0))
+        base = dict(members[0])
+        base['ult_variants'] = [
+            {'id': m['id'], 'thum': m.get('thum') or '', 'art': m.get('art') or ''}
+            for m in members
+        ]
+        # Card id = lowest variant (…01); ownership is stored on the selected variant id.
+        base['id'] = members[0]['id']
+        base['thum'] = members[0].get('thum') or ''
+        base['art'] = members[0].get('art') or ''
+        units.append(base)
     # Same default as browse lists: rarity desc, then numeric id.
     units = sort_rows(units, 'rarity', 'desc', {'name', 'role', 'rarity'})
 
