@@ -29,7 +29,12 @@ Owner lesson (**Oct 2026**): `/tl` slim+hydrate, InstantBrowse `ranking_bulk` wa
 
 ## Allowed recovery patterns (what restored snappy)
 
-- Full featured `/tl` JSON **with** server prewarm after browse caches + nav hover prefetch
+- Full featured `/tl` JSON **with** server prewarm after browse caches + nav hover/`pointerdown` prefetch
+- **`/tl` spinner bar (Oct 2026 — owner-confirmed “substantially better”)** — keep this class forever:
+  - Early head fetch on `/tl` (and `/banners`) deep-link: start timeline + votes **during** HTML/CSS/JS download (`window.__GGEN_BT_BOOT__`)
+  - Session cache (`ggen_bt_cache_v22_*`) paints instantly on revisit; refresh in background
+  - Delayed spinner (~100ms) — if early/prefetch/session wins, **never show** the loading overlay
+  - Idle low-priority prefetch of timeline only (~37KB gzip) after browse first paint — **not** idle `ranking_bulk` / full megabyte catalogs; **never** `JSON.stringify` the full timeline into `sessionStorage` from that idle path (main-thread freeze races `/u` detail); defer session write to idle from `/tl` load only; skip/ defer while detail modal is open (timeout ≥8–12s)
 - Pin timeline cache keys so eviction does not force cold rebuild under traffic
 - Pre-serialized raw+gzip bodies for large warm JSON (`/tl`, published `/tm` `/dm`) — no re-jsonify under GIL
 - Published matrix gzip served as bytes (never keep decoded multi‑MB boards in `_api_cache`)
@@ -43,10 +48,12 @@ When any tab feels below bar, **measure the whole critical path** before patchin
 `/health` · `/` · `/api/characters` · `/api/units` · `/api/banner_timeline` · `/api/tag_matrix` · `/api/debuff_matrix` · collections catalog.
 If `/health` alone is multi-hundred-ms while RSS ≥ ~1.1GB, fix **process pressure** (RAM / re-serialize / prewarm) — do not only slim the reported page.
 
+After **any** new feature or “perf” change, `/tl` must still meet the spinner bar above (deep-link + tab switch + revisit) with **no look/feature change**. Same class for other heavy tabs when adding similar loads: overlap fetch with boot, session soft paint, delayed spinner — never regress to a cold spinner on every open.
+
 ## Checklist before push to Railway
 
 - [ ] Cold `/` + open unit/char detail still feels instant locally
-- [ ] `/tl` warm path &lt; ~100ms after prewarm (not multi-second spinner on every open)
+- [ ] `/tl` deep-link / tab open: **no spinner** when early boot, session cache, or prefetch already has data (delayed spinner only on true cold miss); warm API still &lt; ~100ms after server prewarm
 - [ ] No new idle megabyte fetches; no new full-viewport blur
 - [ ] No new boot-prewarm of multi‑MB boards (`/tm` `/dm`) into pinned API cache
 - [ ] Live `/health` `memory.rss_mb` not climbing past ~1GB after “perf” deploys

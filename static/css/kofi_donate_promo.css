@@ -156,27 +156,32 @@
   opacity:0;
   visibility:hidden;
   pointer-events:none;
-  transform:scale(.92);
+  transform:scale(.96);
   filter:none;
   clip-path:none;
   box-shadow:
     0 1px 0 rgba(255,255,255,.24) inset,
     0 8px 20px rgba(0,0,0,.42);
-  /* Hover pop: zero delay — owner: X felt laggy with even .08s. */
-  transition:none;
+  /* Hover fade-in (hidden until panel hover / touch reveal). */
+  transition:
+    opacity .2s ease,
+    visibility .2s ease,
+    transform .2s ease,
+    background .15s ease,
+    border-color .15s ease,
+    color .15s ease;
   animation:none;
 }
-.kofi-donate-promo.is-visible .kofi-donate-promo-close,
+.kofi-donate-promo-panel:hover .kofi-donate-promo-close,
 .kofi-donate-promo-bubble:hover .kofi-donate-promo-close,
+.kofi-donate-promo-panel:focus-within .kofi-donate-promo-close,
 .kofi-donate-promo-bubble:focus-within .kofi-donate-promo-close,
-.kofi-donate-promo-panel.is-close-visible .kofi-donate-promo-bubble .kofi-donate-promo-close,
-.kofi-donate-promo-close:hover,
+.kofi-donate-promo-panel.is-close-visible .kofi-donate-promo-close,
 .kofi-donate-promo-close:focus-visible{
   opacity:1;
   visibility:visible;
   pointer-events:auto;
   transform:scale(1);
-  animation:none;
 }
 .kofi-donate-promo-close:hover{
   color:#fff;
@@ -187,51 +192,12 @@
   width:14px;
   height:14px;
 }
-@-webkit-keyframes kofi-promo-close-morph{
-  0%{
-    opacity:0;
-    transform:scale(.35);
-    filter:blur(14px) saturate(1.15);
-    clip-path:inset(48% 0 0 48% round 100%);
-  }
-  55%{
-    opacity:.94;
-    transform:scale(1.06);
-    filter:blur(1px) saturate(1.08);
-    clip-path:inset(8% 0 0 8% round 12px);
-  }
-  100%{
-    opacity:1;
-    transform:scale(1);
-    filter:blur(0) saturate(1);
-    clip-path:inset(0 0 0 0 round 8px);
-  }
-}
-@keyframes kofi-promo-close-morph{
-  0%{
-    opacity:0;
-    transform:scale(.35);
-    filter:blur(14px) saturate(1.15);
-    clip-path:inset(48% 0 0 48% round 100%);
-  }
-  55%{
-    opacity:.94;
-    transform:scale(1.06);
-    filter:blur(1px) saturate(1.08);
-    clip-path:inset(8% 0 0 8% round 12px);
-  }
-  100%{
-    opacity:1;
-    transform:scale(1);
-    filter:blur(0) saturate(1);
-    clip-path:inset(0 0 0 0 round 8px);
-  }
-}
 @media (hover:none),(pointer:coarse){
-  .kofi-donate-promo-panel.is-close-visible .kofi-donate-promo-bubble .kofi-donate-promo-close{
+  .kofi-donate-promo-panel.is-close-visible .kofi-donate-promo-close{
     opacity:1;
     visibility:visible;
     pointer-events:auto;
+    transform:scale(1);
   }
 }
 .kofi-donate-promo-maria-wrap{
@@ -399,20 +365,18 @@
     -webkit-animation:none!important;
     animation:none!important;
   }
-  .kofi-donate-promo-panel:hover .kofi-donate-promo-bubble .kofi-donate-promo-close,
-  .kofi-donate-promo-panel:focus-within .kofi-donate-promo-bubble .kofi-donate-promo-close,
-  .kofi-donate-promo-close:focus-visible{
-    transform:none;
+  .kofi-donate-promo-close{
+    transition:none;
   }
-  .kofi-donate-promo.is-visible .kofi-donate-promo-close,
+  .kofi-donate-promo-panel:hover .kofi-donate-promo-close,
   .kofi-donate-promo-bubble:hover .kofi-donate-promo-close,
+  .kofi-donate-promo-panel:focus-within .kofi-donate-promo-close,
   .kofi-donate-promo-bubble:focus-within .kofi-donate-promo-close,
-  .kofi-donate-promo-panel.is-close-visible .kofi-donate-promo-bubble .kofi-donate-promo-close,
-  .kofi-donate-promo-close:hover,
+  .kofi-donate-promo-panel.is-close-visible .kofi-donate-promo-close,
   .kofi-donate-promo-close:focus-visible{
-    clip-path:inset(0 0 0 0 round 8px);
-    filter:none;
     transform:none;
+    clip-path:none;
+    filter:none;
     opacity:1;
     visibility:visible;
     pointer-events:auto;

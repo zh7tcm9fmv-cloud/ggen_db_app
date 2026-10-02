@@ -28,6 +28,7 @@ This database is mostly static. Browse + Top 10 must feel instant. If performanc
 6. **Boot / deploy** — Production entry is `wsgi:application` (not `app:app`). Bind before DB import; show the boot shell while loading. Never run browse-cache build **synchronously at import**. `/health` must return 200 during boot (`booting:true`) and after (`booting:false`). List APIs may 503 `warming_up` briefly (client retries). A blank/white screen with no boot UI for 30s+ is unacceptable.
 7. **Regression = bug** — After any feature fix, spot-check `/` + `/health` + `/api/characters` (and a cold `wsgi` boot). If Top 10, browse, fonts, or cold homepage feel worse than this bar, measure and restore.
 8. **Performance-only = no look/UX change** — Do not change fonts, CSS stacks, layout, or copy for speed. Before coding, list exact file/behavior changes. If a lever needs different fonts to win, skip it and say so.
+9. **`/tl` open feel (Oct 2026 bar)** — Banner timeline must not flash a spinner on every visit. Required class: early deep-link fetch overlapping boot, session soft paint + background refresh, delayed spinner, nav `pointerenter`/`pointerdown` + post-browse idle prefetch of the **timeline JSON only** (~37KB gzip). Do not regress to “show spinner → wait full RTT → paint.” Same look/features. Extend this pattern to other heavy tabs when adding similar loads — never invent slim/hydrate storms or idle megabyte catalogs instead.
 
 ## Anti-patterns
 
@@ -41,3 +42,5 @@ This database is mostly static. Browse + Top 10 must feel instant. If performanc
 - Preloading multi‑MB brand OTFs so fonts fight detail/browse image bandwidth
 - Registering the same brand OTF under 5 discrete `@font-face` weights (Firefox name-table spam)
 - Nested-quote `outerHTML='<div…'>` inside template-literal `onerror` on huge `app.js` lines (breaks parse → site dead)
+- Reintroducing a cold `/tl` spinner on every open (dropping early boot fetch, session soft paint, delayed spinner, or nav/idle timeline prefetch)
+- Idle `/tl` prefetch that `JSON.stringify`s the full timeline into `sessionStorage` (or fires within ~2s of browse paint) and races `/u` `/c` detail opens

@@ -1917,9 +1917,9 @@ _bounded_cache_lock = threading.Lock()
 # Hard caps — unbounded pair cache can grow toward tens of GB under Meta Synergy / BSP traffic.
 # Keep a large warm pair cache: aggressive trim + a low max made Top 10 / MSY colder (Sep 2026).
 _UNIT_WEAPON_CACHE_MAX = max(256, min(8192, int(os.environ.get('MSY_UNIT_WEAPON_CACHE_MAX', '2048') or '2048')))
-# Default 12k (was 50k): at 50k full, Railway RSS sat ~1.2GB and every route (incl /tl,
-# /health) became multi‑second. Pair cache is refillable; Top 10 /cal still warm-hit common keys.
-_CHAR_PAIR_CACHE_MAX = max(1024, min(200000, int(os.environ.get('MSY_CHAR_PAIR_CACHE_MAX', '12000') or '12000')))
+# Default 8k (was 50k→12k): at 12k full, live RSS still climbed past ~1GB and detail/browse
+# warm hits sat at multi‑hundred‑ms. Pair cache is refillable; Top 10 /cal stay warm on common keys.
+_CHAR_PAIR_CACHE_MAX = max(1024, min(200000, int(os.environ.get('MSY_CHAR_PAIR_CACHE_MAX', '8000') or '8000')))
 _rankings_result_cache = {}
 _rankings_browse_payload_cache = {}
 _MSY_BROWSE_PAYLOAD_CACHE_TTL = max(15, min(300, int(os.environ.get('MSY_BROWSE_CACHE_TTL', '60') or '60')))
@@ -1965,12 +1965,16 @@ _BSP_GROUP_LRU = OrderedDict()  # (cache_key_tuple, uid) -> group
 _BSP_GROUP_LRU_LOCK = threading.Lock()
 _BSP_SHARD_ENSURE_LOCKS = {}
 _BSP_SHARD_ENSURE_GUARD = threading.Lock()
-# Opt-in only: trimming on every Railway /health while rss≈3GB thrashed MSY/BSP caches.
+# Soft trim on Railway when RSS climbs past ~1GB (live detail/browse floor died at ~1.1GB).
+# Interval ≥3min so Top 10 /cal are not thrashed. Override with RSS_TRIM_ENABLED=0 / RSS_TRIM_MB.
 _RSS_TRIM_LOCK = threading.Lock()
 _RSS_TRIM_LAST_MONO = 0.0
-_RSS_TRIM_MIN_INTERVAL_SEC = max(30.0, float(os.environ.get('RSS_TRIM_MIN_INTERVAL_SEC', '300') or '300'))
-_RSS_TRIM_MB = max(1200.0, float(os.environ.get('RSS_TRIM_MB', '4500') or '4500'))
-_RSS_TRIM_ENABLED = os.environ.get('RSS_TRIM_ENABLED', '').strip().lower() in ('1', 'true', 'yes')
+_RSS_TRIM_MIN_INTERVAL_SEC = max(60.0, float(os.environ.get('RSS_TRIM_MIN_INTERVAL_SEC', '180') or '180'))
+_RSS_TRIM_MB = max(800.0, float(os.environ.get('RSS_TRIM_MB', '1000') or '1000'))
+_RSS_TRIM_ENABLED = os.environ.get(
+    'RSS_TRIM_ENABLED',
+    '1' if (os.environ.get('RAILWAY_ENVIRONMENT') or os.environ.get('RAILWAY_SERVICE_NAME') or '').strip() else '0',
+).strip().lower() in ('1', 'true', 'yes', 'on')
 SHINN_EX_CHAR_ID = '1330000103'
 _MSY_BUILD_WORKERS = max(1, min(8, int(os.environ.get('MSY_BUILD_WORKERS', '6') or '6')))
 _MSY_USE_PROCESS_BUILD = os.environ.get('MSY_USE_PROCESS_BUILD', '').strip().lower() in ('1', 'true', 'yes')
