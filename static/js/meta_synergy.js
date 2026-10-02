@@ -2,9 +2,9 @@
   'use strict';
 
   var RANK_MODES = [
-    { id: 'super_crit', labelKey: 'msy_rank_super_crit', metricKey: 'msy_metric_super_crit', dmgField: 'super_crit_dmg', vigor: 'super', vigorLabelKey: 'dc_vigor_super', icon: '/static/images/UI/UI_Tention_Up_03.webp' },
-    { id: 'crit', labelKey: 'msy_rank_crit', metricKey: 'msy_metric_crit', dmgField: 'crit_dmg', vigor: 'max', vigorLabelKey: 'dc_vigor_max', icon: '/static/images/UI/UI_Tention_Up_01.webp' },
-    { id: 'normal', labelKey: 'msy_rank_normal', metricKey: 'msy_metric_normal', dmgField: 'normal_dmg', vigor: 'high', vigorLabelKey: 'dc_vigor_high', icon: '/static/images/UI/UI_Tention_Up_02.webp' }
+    { id: 'super_crit', labelKey: 'msy_rank_super_crit', metricKey: 'msy_metric_super_crit', dmgField: 'super_crit_dmg', vigor: 'super', vigorLabelKey: 'dc_vigor_super', icon: '/static/images/UI/ui_tention_up_03.webp' },
+    { id: 'crit', labelKey: 'msy_rank_crit', metricKey: 'msy_metric_crit', dmgField: 'crit_dmg', vigor: 'max', vigorLabelKey: 'dc_vigor_max', icon: '/static/images/UI/ui_tention_up_01.webp' },
+    { id: 'normal', labelKey: 'msy_rank_normal', metricKey: 'msy_metric_normal', dmgField: 'normal_dmg', vigor: 'high', vigorLabelKey: 'dc_vigor_high', icon: '/static/images/UI/ui_tention_up_02.webp' }
   ];
 
   var UR_ICON = '/static/images/UI/UI_Common_RarityIcon_UR.webp';
@@ -74,7 +74,7 @@
   }
 
   function rankModeIconHtml(path) {
-    var src = path && path.indexOf('/static/') === 0 ? path : '/static/images/UI/UI_Tention_Up_01.webp';
+    var src = path && path.indexOf('/static/') === 0 ? path : '/static/images/UI/ui_tention_up_01.webp';
     return '<img class="msy-rank-mode-icon" src="' + escAttr(src) + '" width="28" height="28" alt="" decoding="async" loading="eager" onerror="this.onerror=null;if(typeof gameImageUrlFallback===\'function\')gameImageUrlFallback(this)">';
   }
 

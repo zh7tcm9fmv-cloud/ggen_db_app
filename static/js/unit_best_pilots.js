@@ -12,9 +12,9 @@
   };
   /* Rank metric → sim vigor (same as /msy RANK_MODES). */
   var RANK_MODE_VIGOR = {
-    super_crit: { key: 'super', labelKey: 'dc_vigor_super', icon: '/static/images/UI/UI_Tention_Up_03.webp' },
-    crit: { key: 'max', labelKey: 'dc_vigor_max', icon: '/static/images/UI/UI_Tention_Up_01.webp' },
-    normal: { key: 'high', labelKey: 'dc_vigor_high', icon: '/static/images/UI/UI_Tention_Up_02.webp' }
+    super_crit: { key: 'super', labelKey: 'dc_vigor_super', icon: '/static/images/UI/ui_tention_up_03.webp' },
+    crit: { key: 'max', labelKey: 'dc_vigor_max', icon: '/static/images/UI/ui_tention_up_01.webp' },
+    normal: { key: 'high', labelKey: 'dc_vigor_high', icon: '/static/images/UI/ui_tention_up_02.webp' }
   };
   var RANK_MODE_LABEL = {
     super_crit: 'msy_metric_super_crit',

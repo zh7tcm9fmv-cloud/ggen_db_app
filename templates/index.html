@@ -108,13 +108,15 @@ window.__ggenLoadGtm=function(){
 {% endif %}
 <script>
 (function(){
-  /* Same-origin font preload: do NOT set crossOrigin unless the response sends ACAO.
-     crossOrigin without ACAO wastes the preload on mobile → Teko stuck on fallback. */
+  /* Font preload must use crossOrigin=anonymous to match @font-face CORS mode.
+     Railway /static/font allowlist sends ACAO:* — without crossorigin the preload
+     is discarded ("preload not used") and a second fetch races font-display. */
   var v={{ app_js_version|tojson }};
   function preloadFont(href, type){
     var link=document.createElement('link');
     link.rel='preload';link.as='font';link.type=type||'font/ttf';
     link.href=href;
+    link.crossOrigin='anonymous';
     document.head.appendChild(link);
   }
   preloadFont('/static/font/roboto_medium_numbers.ttf?v='+encodeURIComponent(v));
@@ -135,7 +137,7 @@ window.__ggenLoadGtm=function(){
 <style>
 /* Prefer CDN emblem without putting url() in a CSS variable (breaks Dark Reader / similar). */
 .brand-title-row::before{background-image:url('{% if image_cdn %}{{ image_cdn }}/images/UI/brand-emblem-panel.webp{% else %}/static/images/UI/brand-emblem-panel.webp{% endif %}')}
-@font-face{font-family:'RobotoMediumNumbers';src:url('/static/font/roboto_medium_numbers.ttf?v={{ app_js_version }}') format('truetype');font-weight:normal;font-style:normal;font-display:optional}
+@font-face{font-family:'RobotoMediumNumbers';src:url('/static/font/roboto_medium_numbers.ttf?v={{ app_js_version }}') format('truetype');font-weight:normal;font-style:normal;font-display:swap}
 </style>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/app_shell_bundle.min.css') }}?v={{ app_js_version }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/ggen_15.css') }}?v={{ app_js_version }}">
