@@ -236,7 +236,7 @@ html[data-ui-lang="HK"] .collections-page.collections-15 .collections-stat-lim-b
   background:
     radial-gradient(120% 80% at 0% 0%,rgba(0,217,255,.12),transparent 55%),
     rgba(12,24,44,.96);
-  filter:brightness(1.04);
+  /* No filter — filter + clip-path clips the HUD bottom on hover. */
 }
 .collections-page.collections-15 .col-card.is-unowned{
   opacity:.28;
