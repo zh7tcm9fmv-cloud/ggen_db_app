@@ -1917,7 +1917,9 @@ _bounded_cache_lock = threading.Lock()
 # Hard caps — unbounded pair cache can grow toward tens of GB under Meta Synergy / BSP traffic.
 # Keep a large warm pair cache: aggressive trim + a low max made Top 10 / MSY colder (Sep 2026).
 _UNIT_WEAPON_CACHE_MAX = max(256, min(8192, int(os.environ.get('MSY_UNIT_WEAPON_CACHE_MAX', '2048') or '2048')))
-_CHAR_PAIR_CACHE_MAX = max(1024, min(200000, int(os.environ.get('MSY_CHAR_PAIR_CACHE_MAX', '50000') or '50000')))
+# Default 12k (was 50k): at 50k full, Railway RSS sat ~1.2GB and every route (incl /tl,
+# /health) became multi‑second. Pair cache is refillable; Top 10 /cal still warm-hit common keys.
+_CHAR_PAIR_CACHE_MAX = max(1024, min(200000, int(os.environ.get('MSY_CHAR_PAIR_CACHE_MAX', '12000') or '12000')))
 _rankings_result_cache = {}
 _rankings_browse_payload_cache = {}
 _MSY_BROWSE_PAYLOAD_CACHE_TTL = max(15, min(300, int(os.environ.get('MSY_BROWSE_CACHE_TTL', '60') or '60')))

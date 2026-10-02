@@ -6390,6 +6390,154 @@ def jsonify_cacheable(data, cache_key, *, public=True, max_age=3600, private=Fal
         resp.headers['Vary'] = 'Cookie'
     return resp
 
+
+# Pre-serialized JSON bodies (raw + gzip). Warm hits skip jsonify + gzip under GIL —
+# critical when RSS is high (/tl ~0.5MB JSON, /tm+/dm multi‑MB). Look/features unchanged.
+_HTTP_JSON_BODY_CACHE = {}
+_HTTP_JSON_BODY_CACHE_LOCK = threading.Lock()
+_HTTP_JSON_BODY_CACHE_MAX = max(8, min(64, int(os.environ.get('HTTP_JSON_BODY_CACHE_MAX', '32') or '32')))
+
+
+def _http_json_body_cache_get(cache_key):
+    with _HTTP_JSON_BODY_CACHE_LOCK:
+        return _HTTP_JSON_BODY_CACHE.get(cache_key)
+
+
+def _http_json_body_cache_put(cache_key, raw, compressed, etag):
+    with _HTTP_JSON_BODY_CACHE_LOCK:
+        _HTTP_JSON_BODY_CACHE[cache_key] = {'raw': raw, 'gzip': compressed, 'etag': etag}
+        while len(_HTTP_JSON_BODY_CACHE) > _HTTP_JSON_BODY_CACHE_MAX:
+            try:
+                oldest = next(iter(_HTTP_JSON_BODY_CACHE))
+            except StopIteration:
+                break
+            _HTTP_JSON_BODY_CACHE.pop(oldest, None)
+
+
+def _http_json_body_cache_drop_prefix(prefix):
+    pref = str(prefix or '')
+    if not pref:
+        return 0
+    dropped = 0
+    with _HTTP_JSON_BODY_CACHE_LOCK:
+        for k in [x for x in _HTTP_JSON_BODY_CACHE if str(x).startswith(pref)]:
+            _HTTP_JSON_BODY_CACHE.pop(k, None)
+            dropped += 1
+    return dropped
+
+
+def jsonify_preserialized(data, cache_key, *, public=True, max_age=3600, private=False,
+                          no_store=False, convert_images=False):
+    """jsonify_cacheable + remember raw/gzip so later hits do not re-serialize."""
+    if convert_images:
+        data = convert_image_urls(data)
+    etag = _api_etag_from_cache_key(cache_key) if (_API_ETAG_ENABLED and cache_key) else None
+    cc = _api_cache_control_header(
+        public=public, max_age=max_age, private=private, no_store=no_store,
+    )
+    if etag and _api_if_none_match_matches(request.headers.get('If-None-Match'), etag):
+        resp = make_response('', 304)
+        resp.headers['ETag'] = etag
+        resp.headers['Cache-Control'] = cc
+        if private or not public:
+            resp.headers['Vary'] = 'Cookie'
+        return resp
+    hit = _http_json_body_cache_get(cache_key) if cache_key else None
+    accept = (request.headers.get('Accept-Encoding') or '').lower()
+    want_gzip = 'gzip' in accept
+    if hit and hit.get('raw') is not None:
+        body = hit.get('gzip') if want_gzip and hit.get('gzip') else hit['raw']
+        resp = make_response(body)
+        resp.headers['Content-Type'] = 'application/json; charset=utf-8'
+        resp.headers['Cache-Control'] = cc
+        if etag:
+            resp.headers['ETag'] = etag
+        if want_gzip and hit.get('gzip') and body is hit.get('gzip'):
+            resp.headers['Content-Encoding'] = 'gzip'
+            vary = resp.headers.get('Vary') or ''
+            if 'Accept-Encoding' not in vary:
+                resp.headers['Vary'] = (vary + ', Accept-Encoding').lstrip(', ').strip()
+        if private or not public:
+            resp.headers['Vary'] = 'Cookie'
+        resp.headers['Content-Length'] = str(len(body))
+        return resp
+    resp = jsonify(data)
+    resp.headers['Cache-Control'] = cc
+    if etag:
+        resp.headers['ETag'] = etag
+    if private or not public:
+        resp.headers['Vary'] = 'Cookie'
+    if not cache_key:
+        return resp
+    raw = resp.get_data()
+    compressed = None
+    if raw and len(raw) > 2048:
+        import gzip as _gzip
+        compressed = _gzip.compress(raw, compresslevel=5)
+        if len(compressed) >= len(raw):
+            compressed = None
+    _http_json_body_cache_put(cache_key, raw, compressed, etag)
+    if want_gzip and compressed is not None:
+        resp.set_data(compressed)
+        resp.headers['Content-Encoding'] = 'gzip'
+        resp.headers['Content-Length'] = str(len(compressed))
+        vary = resp.headers.get('Vary') or ''
+        if 'Accept-Encoding' not in vary:
+            resp.headers['Vary'] = (vary + ', Accept-Encoding').lstrip(', ').strip()
+    return resp
+
+
+def _serve_published_gzip_json(path, cache_key, *, max_age=3600, public=True):
+    """Serve a published *.json.gz as application/json without decoding into a Python dict.
+
+    Same browser JSON as live build; keeps multi‑MB boards out of `_api_cache` RSS.
+    """
+    if not path or not os.path.isfile(path):
+        return None
+    etag = _api_etag_from_cache_key(cache_key) if (_API_ETAG_ENABLED and cache_key) else None
+    cc = _api_cache_control_header(public=public, max_age=max_age, private=False, no_store=False)
+    if etag and _api_if_none_match_matches(request.headers.get('If-None-Match'), etag):
+        resp = make_response('', 304)
+        resp.headers['ETag'] = etag
+        resp.headers['Cache-Control'] = cc
+        return resp
+    hit = _http_json_body_cache_get(cache_key) if cache_key else None
+    gz = hit.get('gzip') if hit else None
+    raw = hit.get('raw') if hit else None
+    if gz is None:
+        try:
+            with open(path, 'rb') as f:
+                gz = f.read()
+        except Exception as e:
+            print(f'published gzip read failed ({path}): {e}', flush=True)
+            return None
+        if not gz:
+            return None
+        # Decompress once for non-gzip clients; keep both in the small body cache.
+        try:
+            import gzip as _gzip
+            raw = _gzip.decompress(gz)
+        except Exception as e:
+            print(f'published gzip decompress failed ({path}): {e}', flush=True)
+            return None
+        if cache_key:
+            _http_json_body_cache_put(cache_key, raw, gz, etag)
+    accept = (request.headers.get('Accept-Encoding') or '').lower()
+    want_gzip = 'gzip' in accept
+    body = gz if want_gzip and gz else raw
+    if body is None:
+        return None
+    resp = make_response(body)
+    resp.headers['Content-Type'] = 'application/json; charset=utf-8'
+    resp.headers['Cache-Control'] = cc
+    if etag:
+        resp.headers['ETag'] = etag
+    if want_gzip and gz and body is gz:
+        resp.headers['Content-Encoding'] = 'gzip'
+        resp.headers['Vary'] = 'Accept-Encoding'
+    resp.headers['Content-Length'] = str(len(body))
+    return resp
+
 # ═══════════════════════════════════════════════════════
 # IMAGE FINDING FUNCTIONS (using IMAGE_INDEX)
 # ═══════════════════════════════════════════════════════
@@ -16777,9 +16925,9 @@ def _schedule_browse_list_performance_caches():
             _prewarm_banner_timeline_caches()
         except Exception as e:
             print(f'Banner timeline prewarm skipped: {e}')
-        # Do NOT prewarm /tm+/dm here. Each board is multi‑MB (converted CDN JSON) and pinned;
-        # warming 4 langs × 2 APIs at boot bloated Railway RSS (~1.3GB+) and fought homepage
-        # first paint (Oct 2026). Matrices stay on-demand.
+        # Do NOT prewarm /tm+/dm here. Boards are multi‑MB; boot-prewarm bloated Railway RSS
+        # (~1.3GB+) and starved homepage (Oct 2026). Published gzip is served on-demand as
+        # bytes (no decoded dict in `_api_cache`).
 
     threading.Thread(target=_run, name='browse-list-cache', daemon=True).start()
 
@@ -17773,7 +17921,25 @@ def health_check():
             mem['bsp_unit_count'] = int(_bsp_stub.get('unit_count') or 0)
     except Exception:
         pass
+    # Published /tm+/dm serve gzip bytes only — drop any leftover decoded boards from `_api_cache`.
+    try:
+        with _api_cache_lock:
+            _mx_keys = [
+                k for k in _api_cache
+                if str(k).startswith(('tag_matrix_', 'debuff_matrix_'))
+            ]
+            for k in _mx_keys:
+                _api_cache.pop(k, None)
+        if _mx_keys:
+            mem['matrix_api_cache_dropped'] = len(_mx_keys)
+    except Exception:
+        pass
     mem['api_cache_keys'] = len(_api_cache)
+    try:
+        with _HTTP_JSON_BODY_CACHE_LOCK:
+            mem['http_json_body_cache_keys'] = len(_HTTP_JSON_BODY_CACHE)
+    except Exception:
+        pass
     payload = {
         'ok': True,
         'booting': False,
@@ -19143,14 +19309,16 @@ def api_tag_matrix():
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
         ck = f'tag_matrix_v8_{lc}_{lr_schedule_cache_key_fragment()}'
+        # Prefer published gzip bytes — never keep decoded multi‑MB boards in `_api_cache`.
+        if not _matrix_force_live_build():
+            pub_resp = _serve_published_gzip_json(
+                _matrix_published_gz_path('tag', lc), ck, max_age=3600, public=True,
+            )
+            if pub_resp is not None:
+                return pub_resp
         cached = get_cached_response(ck)
         if cached:
-            return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=False)
-        if not _matrix_force_live_build():
-            pub = _try_load_published_matrix('tag', lc)
-            if pub is not None:
-                set_cached_response(ck, pub)
-                return jsonify_cacheable(pub, ck, public=True, max_age=3600, convert_images=False)
+            return jsonify_preserialized(cached, ck, public=True, max_age=3600, convert_images=False)
         ld = get_lang_data(lc)
         buckets = {}
         row_order = []  # bucket keys in display order
@@ -19299,7 +19467,7 @@ def api_tag_matrix():
         # Convert CDN URLs once at cache write — 304 path must not deep-copy again
         payload = convert_image_urls(payload)
         set_cached_response(ck, payload)
-        return jsonify_cacheable(payload, ck, public=True, max_age=3600, convert_images=False)
+        return jsonify_preserialized(payload, ck, public=True, max_age=3600, convert_images=False)
     except Exception as e:
         import traceback
         traceback.print_exc()
@@ -19712,14 +19880,15 @@ def api_debuff_matrix():
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
         ck = f'debuff_matrix_v14_{lc}_{lr_schedule_cache_key_fragment()}'
+        if not _matrix_force_live_build():
+            pub_resp = _serve_published_gzip_json(
+                _matrix_published_gz_path('debuff', lc), ck, max_age=3600, public=True,
+            )
+            if pub_resp is not None:
+                return pub_resp
         cached = get_cached_response(ck)
         if cached:
-            return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=False)
-        if not _matrix_force_live_build():
-            pub = _try_load_published_matrix('debuff', lc)
-            if pub is not None:
-                set_cached_response(ck, pub)
-                return jsonify_cacheable(pub, ck, public=True, max_age=3600, convert_images=False)
+            return jsonify_preserialized(cached, ck, public=True, max_age=3600, convert_images=False)
         ld = get_lang_data(lc)
         buckets = {}
         row_order = []
@@ -19928,7 +20097,7 @@ def api_debuff_matrix():
         }
         payload = convert_image_urls(payload)
         set_cached_response(ck, payload)
-        return jsonify_cacheable(payload, ck, public=True, max_age=3600, convert_images=False)
+        return jsonify_preserialized(payload, ck, public=True, max_age=3600, convert_images=False)
     except Exception as e:
         import traceback
         traceback.print_exc()
@@ -29014,7 +29183,8 @@ def api_banner_timeline():
     if cached:
         if not get_cached_response(ck_full):
             set_cached_response(ck_full, cached)
-        return jsonify_cacheable(cached, ck, public=True, max_age=1800, convert_images=False)
+        # Pre-serialized body: warm /tl must not re-jsonify ~0.5MB under GIL/RSS pressure.
+        return jsonify_preserialized(cached, ck, public=True, max_age=1800, convert_images=False)
 
     ld = get_lang_data(lc)
     lp = LANG_PATHS.get(lc) or LANG_PATHS.get(DEFAULT_LANG)
@@ -29023,7 +29193,7 @@ def api_banner_timeline():
     if not base or not os.path.isdir(base):
         out = {'banners': []}
         set_cached_response(ck, out)
-        return jsonify_cacheable(out, ck, public=True, max_age=1800, convert_images=True)
+        return jsonify_preserialized(out, ck, public=True, max_age=1800, convert_images=True)
 
     def _master_file(name):
         p = os.path.join(base, name)
@@ -29307,7 +29477,7 @@ def api_banner_timeline():
     out_pub = convert_image_urls(full_out) if (IMAGE_CDN and GAME_IMAGES_USE_CDN) else full_out
     set_cached_response(ck_full, out_pub)
     set_cached_response(ck, out_pub)
-    return jsonify_cacheable(out_pub, ck, public=True, max_age=1800, convert_images=False)
+    return jsonify_preserialized(out_pub, ck, public=True, max_age=1800, convert_images=False)
 
 
 

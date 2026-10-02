@@ -31,8 +31,17 @@ Owner lesson (**Oct 2026**): `/tl` slim+hydrate, InstantBrowse `ranking_bulk` wa
 
 - Full featured `/tl` JSON **with** server prewarm after browse caches + nav hover prefetch
 - Pin timeline cache keys so eviction does not force cold rebuild under traffic
+- Pre-serialized raw+gzip bodies for large warm JSON (`/tl`, published `/tm` `/dm`) — no re-jsonify under GIL
+- Published matrix gzip served as bytes (never keep decoded multi‑MB boards in `_api_cache`)
+- Cap refillable MSY pair cache so RSS stays under ~1GB (default 12k, not 50k)
 - Gate deferred work behind detail-closed + long idle / user intent
 - Remove FX/decoration that burns bandwidth without product value (e.g. pedestal area spirals)
+
+## Site-wide bar (not one tab)
+
+When any tab feels below bar, **measure the whole critical path** before patching that tab alone:
+`/health` · `/` · `/api/characters` · `/api/units` · `/api/banner_timeline` · `/api/tag_matrix` · `/api/debuff_matrix` · collections catalog.
+If `/health` alone is multi-hundred-ms while RSS ≥ ~1.1GB, fix **process pressure** (RAM / re-serialize / prewarm) — do not only slim the reported page.
 
 ## Checklist before push to Railway
 
