@@ -14,6 +14,26 @@
   }catch(_){}
 })();
 </script>
+<!-- /tl deep-link: start timeline+votes fetch during HTML/CSS/JS download so app boot
+     often finds data ready (no spinner). Same JSON endpoints — look/features unchanged. -->
+<script>
+(function(){
+  try{
+    var path=String(location.pathname||'');
+    if(!/^\/(tl|banners)\/?$/i.test(path))return;
+    var l=String(document.documentElement.getAttribute('data-ui-lang')||'EN').trim().toUpperCase();
+    if(l==='JP')l='JA';
+    if(l!=='EN'&&l!=='TW'&&l!=='HK'&&l!=='JA')l='EN';
+    var ck=l+'|drl22';
+    window.__GGEN_BT_BOOT__={
+      lang:l,
+      cacheKey:ck,
+      timeline:fetch('/api/banner_timeline?lang='+encodeURIComponent(l)+'&sv=22',{credentials:'same-origin'}).then(function(r){return r.ok?r.json():null}),
+      votes:fetch('/api/banner_timeline/votes?lang='+encodeURIComponent(l),{credentials:'same-origin',cache:'no-store'}).then(function(r){return r.ok?r.json():null}).catch(function(){return null})
+    };
+  }catch(_){}
+})();
+</script>
 <!-- Google Tag Manager (after first paint — keeps character browse boot snappy) -->
 <script>
 window.dataLayer=window.dataLayer||[];
