@@ -14,7 +14,8 @@
   }catch(_){}
 })();
 </script>
-<!-- Cap concurrent /api/* fetches (1 worker / GIL). Queues extras — same responses, less spike. -->
+<!-- Cap concurrent /api/* fetches (1 worker / GIL). Queues extras — same responses, less spike.
+     Entity detail (/c /u /s dossiers) bypasses the gate so openDetail never waits on prefetch. -->
 <script>
 (function(){
   try{
@@ -25,21 +26,35 @@
     var raw=window.fetch.bind(window);
     var active=0;
     var q=[];
-    function isApi(input){
+    function urlOf(input){
       try{
-        var u='';
-        if(typeof input==='string')u=input;
-        else if(input&&typeof input.url==='string')u=input.url;
+        if(typeof input==='string')return input;
+        if(input&&typeof input.url==='string')return input.url;
+      }catch(_){}
+      return '';
+    }
+    function isApi(u){
+      try{
         if(!u)return false;
         if(u.indexOf('/api/')===0)return true;
-        if(u.indexOf('/api/')>0){
-          /* same-origin absolute */
-          if(/^https?:\/\//i.test(u)){
-            try{ return new URL(u).pathname.indexOf('/api/')===0; }catch(_){ return false; }
-          }
+        if(u.indexOf('/api/')>0 && /^https?:\/\//i.test(u)){
+          try{ return new URL(u).pathname.indexOf('/api/')===0; }catch(_){ return false; }
         }
         return false;
       }catch(_){ return false; }
+    }
+    /* /api/character/ID — not /api/characters. Same for unit/supporter. */
+    function isEntityDetailApi(u){
+      try{
+        var path=u;
+        if(/^https?:\/\//i.test(u)){
+          try{ path=new URL(u).pathname; }catch(_){}
+        }
+        return /^\/api\/(?:character|unit|supporter|option_part|stage)\/[^/?]+/i.test(path||'');
+      }catch(_){ return false; }
+    }
+    function isHighPri(u){
+      return isEntityDetailApi(u);
     }
     function pump(){
       while(active<MAX && q.length){
@@ -57,9 +72,14 @@
       }
     }
     window.fetch=function(input, init){
-      if(!isApi(input))return raw(input, init);
+      var u=urlOf(input);
+      if(!isApi(u))return raw(input, init);
+      /* User opening a dossier must not sit behind list/prefetch/idle /api work. */
+      if(isEntityDetailApi(u))return raw(input, init);
       return new Promise(function(resolve, reject){
-        q.push({input:input, init:init, resolve:resolve, reject:reject});
+        var job={input:input, init:init, resolve:resolve, reject:reject};
+        if(isHighPri(u))q.unshift(job);
+        else q.push(job);
         pump();
       });
     };
