@@ -30,11 +30,14 @@ Owner lesson (**Oct 2026**): `/tl` slim+hydrate, InstantBrowse `ranking_bulk` wa
 ## Allowed recovery patterns (what restored snappy)
 
 - Full featured `/tl` JSON **with** server prewarm after browse caches + nav hover/`pointerdown` prefetch
-- **`/tl` spinner bar (Oct 2026 — owner-confirmed “substantially better”)** — keep this class forever:
-  - Early head fetch on `/tl` (and `/banners`) deep-link: start timeline + votes **during** HTML/CSS/JS download (`window.__GGEN_BT_BOOT__`)
-  - Session cache (`ggen_bt_cache_v22_*`) paints instantly on revisit; refresh in background
-  - Delayed spinner (~100ms) — if early/prefetch/session wins, **never show** the loading overlay
-  - Idle low-priority prefetch of timeline only (~37KB gzip) after browse first paint — **not** idle `ranking_bulk` / full megabyte catalogs; **never** `JSON.stringify` the full timeline into `sessionStorage` from that idle path (main-thread freeze races `/u` detail); defer session write to idle from `/tl` load only; skip/ defer while detail modal is open (timeout ≥8–12s)
+- **`/tl` `/new` `/ip` spinner bar (Oct 2026 — owner-confirmed)** — keep this class forever:
+  - Early head fetch on deep-link (`/tl`, `/new`, `/ip`): start the tab’s API **during** HTML/CSS/JS download
+  - Session soft paint + background refresh where the payload is small (`/tl`)
+  - Delayed spinner (~100ms) **only** on empty cold tab panels — never when replacing visible content with a different entity
+  - Unit/char/supporter detail: on switch (close→other or browse another), **immediately** clear to spinner — never leave the previous dossier on screen
+  - Nav `pointerenter`/`pointerdown` prefetch for `/tl`, `/new`, `/ip`
+  - Idle low-priority prefetch of **timeline only** (~37KB gzip) after browse first paint — **not** idle `ranking_bulk`, **not** idle `/api/sp_investment` (~1.4MB; races `/u` detail)
+  - **never** `JSON.stringify` the full timeline into `sessionStorage` from that idle path; defer session write to idle from `/tl` load only; skip/defer while detail modal is open (timeout ≥8–12s)
 - Pin timeline cache keys so eviction does not force cold rebuild under traffic
 - Pre-serialized raw+gzip bodies for large warm JSON (`/tl`, published `/tm` `/dm`) — no re-jsonify under GIL
 - Published matrix gzip served as bytes (never keep decoded multi‑MB boards in `_api_cache`)

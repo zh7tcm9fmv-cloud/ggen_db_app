@@ -3843,19 +3843,44 @@
     statusEl.textContent = t('loading');
     grid.setAttribute('aria-busy', 'true');
     try {
-      const votesP = fetch('/api/sp_investment/votes', {
-        credentials: 'same-origin',
-        cache: 'no-store',
-      })
-        .then((r) => (r && r.ok ? r.json() : null))
-        .catch(() => null);
-      const r = await fetch(spiApiUrl());
-      if (!r.ok) throw new Error('HTTP ' + r.status);
-      payload = await r.json();
-      if (payload.error) throw new Error(payload.error);
+      const lang = uiLang();
+      let votes = null;
+      const boot =
+        !window.__SPI_PREVIEW__ &&
+        window.__GGEN_SPI_BOOT__ &&
+        window.__GGEN_SPI_BOOT__.lang === lang
+          ? window.__GGEN_SPI_BOOT__
+          : null;
+      const pref =
+        !boot &&
+        !window.__SPI_PREVIEW__ &&
+        window.__GGEN_SPI_PREFETCH__ &&
+        window.__GGEN_SPI_PREFETCH__.lang === lang
+          ? window.__GGEN_SPI_PREFETCH__
+          : null;
+      if (boot) {
+        window.__GGEN_SPI_BOOT__ = null;
+        payload = await boot.data;
+        votes = await boot.votes;
+      } else if (pref) {
+        window.__GGEN_SPI_PREFETCH__ = null;
+        payload = await pref.data;
+        votes = await pref.votes;
+      } else {
+        const votesP = fetch('/api/sp_investment/votes', {
+          credentials: 'same-origin',
+          cache: 'no-store',
+        })
+          .then((r) => (r && r.ok ? r.json() : null))
+          .catch(() => null);
+        const r = await fetch(spiApiUrl());
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        payload = await r.json();
+        votes = await votesP;
+      }
+      if (!payload || payload.error) throw new Error((payload && payload.error) || 'empty');
       invalidateUnitBoardIndex();
-      _payloadLang = uiLang();
-      const votes = await votesP;
+      _payloadLang = lang;
       if (votes && typeof votes === 'object') {
         voteTallies = Object.assign(Object.create(null), votes.tallies || {});
         voteMine = Object.assign(Object.create(null), votes.mine || {});
