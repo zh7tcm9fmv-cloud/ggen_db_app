@@ -21510,8 +21510,16 @@ def api_collections_census_stats():
     data = _collections_census_load()
     entries = data.get('entries') or {}
     n_snap = len(entries) if isinstance(entries, dict) else 0
+    max_ts = 0
+    if isinstance(entries, dict):
+        for _row in entries.values():
+            if isinstance(_row, dict):
+                try:
+                    max_ts = max(max_ts, int(_row.get('ts') or 0))
+                except (TypeError, ValueError):
+                    pass
     board_key = 'supporters' if str(board).lower() in ('supporters', 's', 'supp') else 'units'
-    ck = f'col_census_stats_v3_{board_key}_{top_n}_{n_snap}'
+    ck = f'col_census_stats_v3_{board_key}_{top_n}_{n_snap}_{max_ts}'
     cached = get_cached_response(ck)
     if cached:
         return jsonify_preserialized(cached, ck, public=True, max_age=60, convert_images=False)
