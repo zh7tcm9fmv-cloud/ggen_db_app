@@ -14,6 +14,58 @@
   }catch(_){}
 })();
 </script>
+<!-- Cap concurrent /api/* fetches (1 worker / GIL). Queues extras — same responses, less spike. -->
+<script>
+(function(){
+  try{
+    if(window.__GGEN_API_FETCH_GATED__)return;
+    window.__GGEN_API_FETCH_GATED__=1;
+    var MAX=Math.max(1, Math.min(6, parseInt(String(window.__GGEN_API_FETCH_MAX__||'3'),10)||3));
+    window.__GGEN_API_FETCH_MAX__=MAX;
+    var raw=window.fetch.bind(window);
+    var active=0;
+    var q=[];
+    function isApi(input){
+      try{
+        var u='';
+        if(typeof input==='string')u=input;
+        else if(input&&typeof input.url==='string')u=input.url;
+        if(!u)return false;
+        if(u.indexOf('/api/')===0)return true;
+        if(u.indexOf('/api/')>0){
+          /* same-origin absolute */
+          if(/^https?:\/\//i.test(u)){
+            try{ return new URL(u).pathname.indexOf('/api/')===0; }catch(_){ return false; }
+          }
+        }
+        return false;
+      }catch(_){ return false; }
+    }
+    function pump(){
+      while(active<MAX && q.length){
+        var job=q.shift();
+        active++;
+        raw(job.input, job.init).then(function(r){
+          active--;
+          pump();
+          job.resolve(r);
+        }, function(e){
+          active--;
+          pump();
+          job.reject(e);
+        });
+      }
+    }
+    window.fetch=function(input, init){
+      if(!isApi(input))return raw(input, init);
+      return new Promise(function(resolve, reject){
+        q.push({input:input, init:init, resolve:resolve, reject:reject});
+        pump();
+      });
+    };
+  }catch(_){}
+})();
+</script>
 <!-- Deep-link early fetch: overlap API RTT with HTML/CSS/JS so /tl /new /ip often paint
      without a spinner. Same endpoints — look/features unchanged. Never idle-prefetch /ip
      (≈1.4MB) from browse — that races /u detail. -->
