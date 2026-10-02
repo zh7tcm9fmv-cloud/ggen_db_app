@@ -17883,21 +17883,9 @@ def health_check():
         rss_mb = None
     try:
         import meta_synergy_rank as _msr_h
-        # Soft trim is opt-in (RSS_TRIM_ENABLED=1). Default off — /health runs often on Railway.
-        if rss_mb is not None and getattr(_msr_h, '_RSS_TRIM_ENABLED', False):
-            trim_info = _msr_h.trim_runtime_caches_for_rss(rss_mb=rss_mb)
-            if trim_info:
-                mem['rss_trim'] = trim_info
-                # Re-read current RSS after trim when possible.
-                if sys.platform.startswith('linux'):
-                    try:
-                        with open('/proc/self/status', 'r', encoding='utf-8', errors='ignore') as _sf2:
-                            for _line in _sf2:
-                                if _line.startswith('VmRSS:'):
-                                    mem['rss_mb'] = round(int(_line.split()[1]) / 1024.0, 1)
-                                    break
-                    except Exception:
-                        pass
+        # NEVER trim caches on the /health request path. Railway probes /health continuously;
+        # sync trim+gc held the gthread worker for multi‑seconds and made browse/detail look dead
+        # (Oct 2026 — health returned rss_trim while /c /u sat at 5–11s). Cap caches instead.
         mem['msy_char_pair_cache'] = len(getattr(_msr_h, '_char_pair_cache', {}) or {})
         mem['msy_char_pair_cache_max'] = int(getattr(_msr_h, '_CHAR_PAIR_CACHE_MAX', 0) or 0)
         mem['msy_unit_weapon_cache'] = len(getattr(_msr_h, '_unit_weapon_cache', {}) or {})
@@ -26913,7 +26901,7 @@ def list_characters():
     ck = f"cl36_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_{ability_ck}_lop{_cbc['lineage_combine']}_sop{_cbc['series_combine']}_skop{_cbc['skill_combine']}_abop{_cbc['trait_combine']}_gs{1 if grid_skills else 0}_{sb_ck}_{rb_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached:
-        return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
+        return jsonify_preserialized(cached, ck, public=True, max_age=3600, convert_images=False)
     warming = _browse_list_warming_guard('char')
     if warming: return warming
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -27035,8 +27023,9 @@ def list_characters():
             _hsp = int(str(_ri)) <= 4
             row['grid_skills'] = collect_character_grid_skills(_cid, ld, use_sp=bool(sp_list and _hsp))
     result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'skill_filter': skill_arg, 'stat_bounds': stat_bounds, 'sort_priority_band': sort_priority_band}
+    result = convert_image_urls(result)
     set_cached_response(ck, result)
-    return jsonify_cacheable(result, ck, public=True, max_age=3600, convert_images=True)
+    return jsonify_preserialized(result, ck, public=True, max_age=3600, convert_images=False)
 
 
 @app.route('/api/units')
@@ -27110,7 +27099,7 @@ def list_units():
     ck = f"ul62_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_attr_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached:
-        return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
+        return jsonify_preserialized(cached, ck, public=True, max_age=3600, convert_images=False)
     warming = _browse_list_warming_guard('unit')
     if warming: return warming
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -27319,8 +27308,9 @@ def list_units():
     result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'ability_filter': ability_arg, 'terrain_filter': terrain_arg, 'weapon_debuff': weapon_debuff_arg, 'weapon_range': weapon_range_arg, 'weapon_range_non_map': weapon_range_non_map_arg, 'map_weapon_range': map_weapon_range_arg, 'weapon_debuff_present_keys': _wbp, 'weapon_debuff_auto_pep_keys': _wb_auto_pep, 'terrain_present_tokens': sorted(UNIT_TERRAIN_FILTER_TOKENS_PRESENT), 'weapon_range_ssp_ex_present': sorted(WEAPON_RANGE_SSP_EX_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_present': sorted(WEAPON_RANGE_SSP_EX_SSP_VALUES_PRESENT, key=int), 'weapon_range_non_map_present': sorted(WEAPON_RANGE_NON_MAP_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_present': sorted(WEAPON_RANGE_NON_MAP_SSP_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_present': sorted(WEAPON_RANGE_ALL_SSP_VALUES_PRESENT, key=int), 'weapon_range_non_map_cond_present': sorted(WEAPON_RANGE_NON_MAP_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_cond_present': sorted(WEAPON_RANGE_ALL_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_cond_present': sorted(WEAPON_RANGE_SSP_EX_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_pilot_cond_present': sorted(WEAPON_RANGE_NON_MAP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_pilot_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_pilot_cond_present': sorted(WEAPON_RANGE_ALL_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_pilot_cond_present': sorted(WEAPON_RANGE_SSP_EX_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_pilot_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_full_cond_present': sorted(WEAPON_RANGE_NON_MAP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_full_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_full_cond_present': sorted(WEAPON_RANGE_ALL_SSP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_full_cond_present': sorted(WEAPON_RANGE_SSP_EX_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_full_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_FULL_COND_VALUES_PRESENT, key=int), 'mechanism': mechanism_arg, 'mechanism_present': _mech_rows, 'stat_bounds': stat_bounds, 'sort_priority_band': sort_priority_band}
     if not sq:
         result['transform_alt_browse_rows'] = _build_transform_alt_browse_rows(ld, lc, stat_mode, cond_list)
+    result = convert_image_urls(result)
     set_cached_response(ck, result)
-    return jsonify_cacheable(result, ck, public=True, max_age=3600, convert_images=True)
+    return jsonify_preserialized(result, ck, public=True, max_age=3600, convert_images=False)
 
 # Option part trait text → primary stat groups (matches front-end _dcParseOptionPartBonuses + TW phrasing).
 _OP_PART_STAT_INCREASE_RE = re.compile(
@@ -32604,7 +32594,8 @@ def get_character(char_id):
         ck = f"c_{char_id}_{lc}_r15_{1 if view_ranking else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
-            return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
+            # Images already CDN-converted when cached; skip re-walk + re-jsonify under GIL.
+            return jsonify_preserialized(cached, ck, private=True, max_age=3600, convert_images=False)
         ld = get_lang_data(lc); ldc = get_calc_lang_data(); char_id = normalize_id(char_id); info = char_info_map.get(char_id)
         if not info: return jsonify({'error': f'Character {char_id} not found'}), 404
         if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
@@ -32717,8 +32708,9 @@ def get_character(char_id):
             result['abilities'] = []
             result['skills'] = []
             result['view_ranking'] = True
+        result = convert_image_urls(result)
         set_cached_response(ck, result)
-        return jsonify_cacheable(result, ck, private=True, max_age=3600, convert_images=True)
+        return jsonify_preserialized(result, ck, private=True, max_age=3600, convert_images=False)
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'error': str(e)}), 500
 
@@ -32734,7 +32726,7 @@ def get_unit(unit_id):
         ck = f"u_{unit_id}_{lc}_ssp18_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_bp3_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
-            return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
+            return jsonify_preserialized(cached, ck, private=True, max_age=3600, convert_images=False)
         ld = get_lang_data(lc); ldc = get_calc_lang_data(); unit_id = normalize_id(unit_id); info = unit_info_map.get(unit_id)
         if not info: return jsonify({'error': f'Unit {unit_id} not found'}), 404
         if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
@@ -33182,8 +33174,9 @@ def get_unit(unit_id):
             result['best_synergy_pilot_eligible'] = (not _is_sd_unit) and _msr.unit_is_rankable(unit_id, lc)
         except Exception:
             result['best_synergy_pilot_eligible'] = False
+        result = convert_image_urls(result)
         set_cached_response(ck, result)
-        return jsonify_cacheable(result, ck, private=True, max_age=3600, convert_images=True)
+        return jsonify_preserialized(result, ck, private=True, max_age=3600, convert_images=False)
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'error': str(e)}), 500
 

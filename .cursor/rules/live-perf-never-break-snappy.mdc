@@ -25,7 +25,7 @@ Owner lesson (**Oct 2026**): `/tl` slim+hydrate, InstantBrowse `ranking_bulk` wa
 | Idle `ranking_bulk` ~1MB warm | GIL + main-thread freeze ~8–15s after “good” first paint |
 | Full timeline in content-notice bootstrap | Races browse/detail on every cold load |
 | Overlay / sticky `backdrop-filter` | Solid wash moment = GPU thrash |
-| Shipping `app.js` without minify/verify | Live serves `app.min.js` |
+| Sync RSS trim on `/health` | Railway probes freeze the gthread worker for multi‑seconds; /c /u die |
 
 ## Allowed recovery patterns (what restored snappy)
 
@@ -41,7 +41,7 @@ Owner lesson (**Oct 2026**): `/tl` slim+hydrate, InstantBrowse `ranking_bulk` wa
 - Pin timeline cache keys so eviction does not force cold rebuild under traffic
 - Pre-serialized raw+gzip bodies for large warm JSON (`/tl`, published `/tm` `/dm`) — no re-jsonify under GIL
 - Published matrix gzip served as bytes (never keep decoded multi‑MB boards in `_api_cache`)
-- Cap refillable MSY pair cache so RSS stays under ~1GB (default 12k, not 50k)
+- Cap refillable MSY pair cache (default 6k). Never sync-trim on `/health` (Railway probes freeze the worker)
 - Gate deferred work behind detail-closed + long idle / user intent
 - Remove FX/decoration that burns bandwidth without product value (e.g. pedestal area spirals)
 
