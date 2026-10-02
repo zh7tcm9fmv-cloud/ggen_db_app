@@ -31,6 +31,10 @@ scripts/*.log
 data/published/*.tmp
 data/published/*.pid
 data/published/*.log
+data/published/*.backup.json.gz
+data/published/bsp_*.log
+_wsgi_*.txt
+_tmp_wsgi_*
 
 # Ko-fi CSV exports contain emails — never commit
 data/kofi/raw/
@@ -47,12 +51,21 @@ data/persistent/*
 !data/persistent/README.md
 !data/persistent/banner_pool_votes.json.example
 
-# Published vote snapshot (committed; synced to GitHub on Railway — survives free-tier deploys)
-# Published game data caches (MSY / SPI / gasha / votes) — allow these; ignore tmp/logs above.
+# Published game data caches (MSY / SPI / gasha / votes / matrix boards) — keep these.
 !data/published/
 !data/published/banner_pool_votes.json
 !data/published/sp_investment_votes.json
+!data/published/sp_investment_v1.json
 !data/published/tier_mockup_v2.json
 !data/published/msy_*.json.gz
+!data/published/msy__*.json.gz
 !data/published/bsp_shards/
-!data/published/bsp_shards/**/
+!data/published/bsp_shards/**
+!data/published/matrix_boards/
+!data/published/matrix_boards/**
+!data/published/official_gasha/
+!data/published/official_gasha/**
+
+# After the msy__* allowlist — never re-commit old BSP monoliths / backups.
+data/published/msy__v19_*
+data/published/*.backup.json.gz
