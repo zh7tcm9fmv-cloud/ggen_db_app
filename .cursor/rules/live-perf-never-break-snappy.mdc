@@ -1,0 +1,45 @@
+---
+description: Never ship live into an unusable/slow state — Oct 2026 lesson
+alwaysApply: true
+---
+
+# Live site must stay snappy (Oct 2026 outage lesson)
+
+Owner lesson (**Oct 2026**): `/tl` slim+hydrate, InstantBrowse `ranking_bulk` warm, full-timeline vote bootstrap, and full-viewport `backdrop-filter` put **production** in a state where browse/detail felt dead. Getting back to usable took days. **Do not repeat.**
+
+## Hard rule
+
+1. **Never deploy a change that makes the live homepage / browse / detail / `/tl` feel laggy** relative to the snappy-static-cache bar — even if the feature is “correct” or “temporary.”
+2. **Feature-complete ≠ cold multi-second API.** Keep full payloads when needed; **prewarm** (server) + light **hover prefetch** (client). Do **not** invent scroll/IO hydrate storms or site-wide megabyte fetches to “fix” size.
+3. **No full-viewport `backdrop-filter: blur`** on detail / search / compare overlays (or sticky header glass). Solid wash only — blur tanks GPU the moment the overlay appears.
+4. **No auto `ranking_bulk` / InstantBrowse catalog warm** on idle after first paint. Arm only on explicit search focus (or equivalent user intent).
+5. **Do not fetch full `/api/banner_timeline` from site-wide notices.** Votes use `vote_pools` only.
+6. **Teko is Latin HUD only.** Never put Teko (or `text-transform:uppercase` via Teko stacks) on game names — Greek `ν` becomes `N`. Keep `unicode-range` Latin on Teko; names/titles use `--font-body`.
+7. Before claiming live is OK: rebuild `app.min.js` + shell CSS when touched, restart local Flask for Python, hard-refresh, and say **local vs live** honestly (`verify-live-before-fixed.mdc`).
+
+## Forbidden “perf” patterns (caused the outage)
+
+| Pattern | Why it killed the site |
+|---|---|
+| Slim `/tl` + IntersectionObserver hydrate | Scroll storms + jank; worse than full warm payload |
+| Idle `ranking_bulk` ~1MB warm | GIL + main-thread freeze ~8–15s after “good” first paint |
+| Full timeline in content-notice bootstrap | Races browse/detail on every cold load |
+| Overlay / sticky `backdrop-filter` | Solid wash moment = GPU thrash |
+| Shipping `app.js` without minify/verify | Live serves `app.min.js` |
+
+## Allowed recovery patterns (what restored snappy)
+
+- Full featured `/tl` JSON **with** server prewarm after browse caches + nav hover prefetch
+- Pin timeline cache keys so eviction does not force cold rebuild under traffic
+- Gate deferred work behind detail-closed + long idle / user intent
+- Remove FX/decoration that burns bandwidth without product value (e.g. pedestal area spirals)
+
+## Checklist before push to Railway
+
+- [ ] Cold `/` + open unit/char detail still feels instant locally
+- [ ] `/tl` warm path &lt; ~100ms after prewarm (not multi-second spinner on every open)
+- [ ] No new idle megabyte fetches; no new full-viewport blur
+- [ ] `node scripts/verify_app_js_bundle.mjs` if `app.js` changed
+- [ ] Honest status: local-only vs needs deploy
+
+If a change needs a trade-off that risks live snappiness, **stop and tell the owner** before shipping — do not “try it on Railway.”

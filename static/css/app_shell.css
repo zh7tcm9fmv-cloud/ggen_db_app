@@ -1594,18 +1594,19 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .modal-content.unit-detail .unit-detail-head-main>.detail-model{margin-top:2px;margin-bottom:6px}
 /* In-game koma stage — title slot under meta / above model #.
    NOTE: do not use height:min(...,100%) here — % height vs auto parent collapses to 0.
-   ALL rarities: effect display size ~UR spiral (410); ped ~190; overflow:visible (no FX clip).
+   Pedestal plate only (area FX spirals removed). Tighter --view-h + lift vs FX-era box.
    --compose-lift trims meta→art gap without clipping. */
 .unit-model-stage{
   --koma-px:512;
   --ped-w:190;
-  --fx-w:410;
+  --fx-w:0;
   --stage:232px;
-  --view-h:0.88;
-  --compose-lift:-18cqw;
-  --fx-anchor-y:60cqw;
-  --ped-anchor-y:60cqw;
-  --ped-anchor-ty:-28%;
+  /* Was 0.88 for FX-era tall box; 0.74 trims empty vertical air around ped+koma. */
+  --view-h:0.74;
+  --compose-lift:-10cqw;
+  --fx-anchor-y:58cqw;
+  --ped-anchor-y:58cqw;
+  --ped-anchor-ty:-30%;
   position:relative;
   container-type:inline-size;
   width:min(var(--stage),100%);

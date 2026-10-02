@@ -6,6 +6,9 @@
   'use strict';
 
   var STORAGE_LANG = 'ggen_lang';
+  var STORAGE_OWNED_ONLY = 'ggen_matrix_owned_only';
+  var COL_KEY = 'ggen_collections_v1';
+  var _colBags = { units: {}, supporters: {} };
   var cacheByLang = {};
   var rows = [];
   var debuffDefs = [];
@@ -192,7 +195,8 @@
     },
     role: 'ALL',
     rarity: 'UR',
-    search: ''
+    search: '',
+    ownedOnly: false
   };
 
   var I18N = {
@@ -234,6 +238,10 @@
       special: 'Special',
       headSupp: 'Supporters',
       headTag: 'Tag',
+      collection: 'Collection',
+      ownedOnly: 'My collection',
+      ownedOnlyTip: 'Show only units and supporters marked owned on Collections (/col). Stored in this browser — mark kits on /collections first.',
+      noOwned: 'No owned kits match. Mark units/supporters on Collections (/col), then turn this on.',
       searchPh: 'Find tag...',
       loading: 'Loading…',
       err: 'Failed to load',
@@ -290,6 +298,10 @@
       special: '特殊',
       headSupp: 'サポーター',
       headTag: 'タグ',
+      collection: 'コレクション',
+      ownedOnly: '所持のみ',
+      ownedOnlyTip: 'コレクション（/col）で所持にしたユニット／サポーターだけ表示。このブラウザに保存されます。',
+      noOwned: '所持キットがありません。先にコレクション（/col）で所持を付けてからONにしてください。',
       searchPh: 'タグ検索...',
       loading: '読み込み中…',
       err: '読み込み失敗',
@@ -346,6 +358,10 @@
       special: '特殊',
       headSupp: '支援人員',
       headTag: '標籤',
+      collection: '收藏',
+      ownedOnly: '我的收藏',
+      ownedOnlyTip: '只顯示在收藏（/col）標記為持有的單位／支援人員。資料存在此瀏覽器。',
+      noOwned: '沒有符合的持有機體。請先到收藏（/col）標記持有，再開啟此篩選。',
       searchPh: '搜尋標籤...',
       loading: '載入中…',
       err: '載入失敗',
@@ -402,6 +418,10 @@
       special: '特殊',
       headSupp: '支援人員',
       headTag: '標籤',
+      collection: '收藏',
+      ownedOnly: '我的收藏',
+      ownedOnlyTip: '只顯示在收藏（/col）標記為持有的單位／支援人員。資料存在此瀏覽器。',
+      noOwned: '沒有符合的持有機體。請先到收藏（/col）標記持有，再開啟此篩選。',
       searchPh: '搜尋標籤...',
       loading: '載入中…',
       err: '載入失敗',
@@ -475,9 +495,46 @@
     if (state.role === 'ALL') return true;
     return String((card && card.role) || '') === String(state.role);
   }
+
+  function refreshColBags() {
+    try {
+      var o = JSON.parse(localStorage.getItem(COL_KEY) || '{}');
+      _colBags = { units: o.units || {}, supporters: o.supporters || {} };
+    } catch (_) {
+      _colBags = { units: {}, supporters: {} };
+    }
+  }
+  function isCollectionsOwned(bag, id) {
+    if (!id || !bag) return false;
+    var v = bag[String(id)];
+    if (v === undefined || v === null || v === '' || v === false) return false;
+    var n = Number(v);
+    if (!Number.isNaN(n) && n < 0) return false;
+    return true;
+  }
+  function readOwnedOnlyPref() {
+    try {
+      return localStorage.getItem(STORAGE_OWNED_ONLY) === '1';
+    } catch (_) {
+      return false;
+    }
+  }
+  function writeOwnedOnlyPref(on) {
+    try {
+      localStorage.setItem(STORAGE_OWNED_ONLY, on ? '1' : '0');
+    } catch (_) {}
+  }
   function filterUnits(list) {
     return (list || []).filter(function (u) {
-      return rarityOk(u) && roleOk(u);
+      if (!rarityOk(u) || !roleOk(u)) return false;
+      if (state.ownedOnly && !isCollectionsOwned(_colBags.units, u && u.id)) return false;
+      return true;
+    });
+  }
+  function filterSupports(list) {
+    if (!state.ownedOnly) return list || [];
+    return (list || []).filter(function (r) {
+      return isCollectionsOwned(_colBags.supporters, r && r.id);
     });
   }
 
@@ -680,7 +737,7 @@
   }
 
   function rowHasSupports(row) {
-    return !!(row && row.supports && row.supports.length);
+    return filterSupports((row && row.supports) || []).length > 0;
   }
 
   function rowMatches(row) {
@@ -1239,8 +1296,9 @@
   }
 
   function supportsCellHtml(list, eagerBudget) {
-    /* Rarity filter is for units only — keep SR/R supports visible. */
-    var items = (list || []).slice().sort(function (a, b) {
+    /* Rarity filter is for units only — keep SR/R supports visible.
+       Owned-only still filters supporters via Collections. */
+    var items = filterSupports(list).slice().sort(function (a, b) {
       var ka = SKILL_KIND_ORDER.indexOf(resolveSkillKind(a));
       var kb = SKILL_KIND_ORDER.indexOf(resolveSkillKind(b));
       if (ka < 0) ka = 99;
@@ -1405,6 +1463,7 @@
   }
 
   function renderBoard() {
+    refreshColBags();
     var board = document.getElementById('dmBoard');
     var head = document.getElementById('dmStickyHead');
     if (!board) return;
@@ -1500,7 +1559,9 @@
 
     if (!visible.length) {
       html +=
-        '<div class="dm-empty-board" role="status">' + esc(t('noMatch')) + '</div>';
+        '<div class="dm-empty-board" role="status">' +
+          esc(state.ownedOnly ? t('noOwned') : t('noMatch')) +
+          '</div>';
     }
     board.innerHTML = html;
     rebuildItemIndex();
@@ -1590,6 +1651,7 @@
       dmDebuffGroupLbl: 'debuffGroup',
       dmRoleLbl: 'role',
       dmRarityLbl: 'rarity',
+      dmOwnedLbl: 'collection',
       dmRoleAll: 'all',
       dmChipFour: 'four',
       dmChipSix: 'six',
@@ -1645,6 +1707,22 @@
     });
   }
 
+
+  function syncOwnedUi() {
+    var btn = document.getElementById('dmOwnedOnly');
+    var lab = document.getElementById('dmOwnedOnlyLabel');
+    var tip = t('ownedOnlyTip');
+    var label = t('ownedOnly');
+    if (lab) lab.textContent = label;
+    if (btn) {
+      btn.classList.toggle('is-active', !!state.ownedOnly);
+      btn.setAttribute('aria-pressed', state.ownedOnly ? 'true' : 'false');
+      btn.title = tip;
+      btn.setAttribute('aria-label', label);
+    }
+    var nav = document.getElementById('dmOwnedTabs');
+    if (nav) nav.setAttribute('aria-label', t('collection'));
+  }
   function syncChipUi() {
     document.querySelectorAll('#dmTagGroupTabs .dm-chip').forEach(function (btn) {
       var g = btn.getAttribute('data-tag-group');
@@ -1724,6 +1802,7 @@
         });
         if (!any) state.tagGroups[g] = 1;
         syncChipUi();
+    syncOwnedUi();
         renderBoard();
       });
     }
@@ -1740,6 +1819,7 @@
         });
         if (!any) state.debuffGroups[g] = 1;
         syncChipUi();
+    syncOwnedUi();
         renderBoard();
       });
     }
@@ -1750,6 +1830,7 @@
         if (!btn || !roles.contains(btn)) return;
         state.role = btn.getAttribute('data-role') || 'ALL';
         syncChipUi();
+    syncOwnedUi();
         renderBoard();
       });
     }
@@ -1760,6 +1841,7 @@
         if (!btn || !rarity.contains(btn)) return;
         state.rarity = btn.getAttribute('data-rarity') || 'UR';
         syncChipUi();
+    syncOwnedUi();
         renderBoard();
       });
     }
@@ -2114,6 +2196,27 @@
   function init() {
     try { localStorage.setItem('ggen_visited_dm', '1'); } catch (_) {}
     state.lang = readLang();
+
+    state.ownedOnly = readOwnedOnlyPref();
+    syncOwnedUi();
+    var ownedBtn = document.getElementById('dmOwnedOnly');
+    if (ownedBtn && !ownedBtn._dmOwnedBound) {
+      ownedBtn._dmOwnedBound = 1;
+      ownedBtn.addEventListener('click', function () {
+        state.ownedOnly = !state.ownedOnly;
+        writeOwnedOnlyPref(state.ownedOnly);
+        refreshColBags();
+        syncOwnedUi();
+        renderBoard();
+      });
+    }
+    window.addEventListener('storage', function (ev) {
+      if (!ev || (ev.key !== COL_KEY && ev.key !== STORAGE_OWNED_ONLY)) return;
+      if (ev.key === STORAGE_OWNED_ONLY) state.ownedOnly = readOwnedOnlyPref();
+      refreshColBags();
+      syncOwnedUi();
+      renderBoard();
+    });
     applyStaticI18n();
     try {
       if (typeof window.__ggenInjectBrandFonts === 'function') {
@@ -2122,6 +2225,7 @@
     } catch (_) {}
     paintRarityIcons();
     syncChipUi();
+    syncOwnedUi();
     bindFilters();
     bindLang();
     bindBoardVerticalScroll();

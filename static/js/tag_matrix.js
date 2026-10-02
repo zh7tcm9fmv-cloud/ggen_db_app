@@ -5,10 +5,13 @@
   'use strict';
 
   var STORAGE_LANG = 'ggen_lang';
+  var STORAGE_OWNED_ONLY = 'ggen_matrix_owned_only';
+  var COL_KEY = 'ggen_collections_v1';
   var cacheByLang = {};
   var rows = [];
   var loadSeq = 0;
   var API_SV = 8;
+  var _colBags = { units: {}, supporters: {} };
 
   var TERRAIN_TYPE_ICONS = {
     Space: '/static/images/Terrain/UI_Common_TerrainIcon_Space.webp',
@@ -118,7 +121,8 @@
     anchorUnitId: null,
     anchorTagId: null,
     /* Mobile only: toolbar Squad toggle → tap units to multi-select (desktop keeps right-click). */
-    squadMode: false
+    squadMode: false,
+    ownedOnly: false
   };
 
   /* In-memory payload + O(1) hover lookup (avoid baking hover HTML into every tile). */
@@ -161,6 +165,10 @@
       group: 'Tag group',
       role: 'Type',
       rarity: 'Rarity',
+      collection: 'Collection',
+      ownedOnly: 'My collection',
+      ownedOnlyTip:
+        'Show only units and supporters marked owned on Collections (/col). Stored in this browser — mark kits on /collections first.',
       all: 'All',
       four: 'Four',
       six: 'Six',
@@ -175,6 +183,7 @@
       searchPh: 'Find tag (shippu, 疾風…)',
       searchHint: 'Filters tag rows only — not unit names. Browse-style match: any locale / id / alias; spaces & commas = AND; -term excludes.',
       noMatch: 'No tags match that search.',
+      noOwned: 'No owned kits match. Mark units/supporters on Collections (/col), then turn this on.',
       legFour: 'Four Major',
       legSix: 'Six Major',
       legNew: 'New Major',
@@ -241,6 +250,9 @@
       group: '区分',
       role: 'タイプ',
       rarity: 'レアリティ',
+      collection: 'コレクション',
+      ownedOnly: '所持のみ',
+      ownedOnlyTip: 'コレクション（/col）で所持にしたユニット／サポーターだけ表示。このブラウザに保存されます。',
       all: 'すべて',
       four: '四大',
       six: '六大',
@@ -255,6 +267,7 @@
       searchPh: 'タグ検索（疾風…）',
       searchHint: 'タグ行のみ絞り込み（ユニット名ではない）。全言語名／ID／別名。空白・カンマはAND、先頭-で除外。',
       noMatch: '一致するタグがありません。',
+      noOwned: '所持キットがありません。先にコレクション（/col）で所持を付けてからONにしてください。',
       legFour: '四大',
       legSix: '六大',
       legNew: '新しいタグ',
@@ -320,6 +333,9 @@
       group: '分組',
       role: '類型',
       rarity: '稀有度',
+      collection: '收藏',
+      ownedOnly: '我的收藏',
+      ownedOnlyTip: '只顯示在收藏（/col）標記為持有的單位／支援人員。資料存在此瀏覽器。',
       all: '全部',
       four: '四大',
       six: '六大',
@@ -334,6 +350,7 @@
       searchPh: '搜尋標籤（疾風、shippu…）',
       searchHint: '只篩選標籤列，不是單位名稱。可用各語名稱／ID／別名；空白與逗號為 AND；-關鍵字排除。',
       noMatch: '沒有符合的標籤。',
+      noOwned: '沒有符合的持有機體。請先到收藏（/col）標記持有，再開啟此篩選。',
       legFour: '四大',
       legSix: '六大',
       legNew: '新標籤',
@@ -399,6 +416,9 @@
       group: '分組',
       role: '類型',
       rarity: '稀有度',
+      collection: '收藏',
+      ownedOnly: '我的收藏',
+      ownedOnlyTip: '只顯示在收藏（/col）標記為持有的單位／支援人員。資料存在此瀏覽器。',
       all: '全部',
       four: '四大',
       six: '六大',
@@ -413,6 +433,7 @@
       searchPh: '搜尋標籤（疾風、shippu…）',
       searchHint: '只篩選標籤列，不是單位名稱。可用各語名稱／ID／別名；空白與逗號為 AND；-關鍵字排除。',
       noMatch: '沒有符合的標籤。',
+      noOwned: '沒有符合的持有機體。請先到收藏（/col）標記持有，再開啟此篩選。',
       legFour: '四大',
       legSix: '六大',
       legNew: '新標籤',
@@ -505,6 +526,35 @@
     };
     return cdnPath(map[role] || map[1]);
   }
+
+  function refreshColBags() {
+    try {
+      var o = JSON.parse(localStorage.getItem(COL_KEY) || '{}');
+      _colBags = { units: o.units || {}, supporters: o.supporters || {} };
+    } catch (_) {
+      _colBags = { units: {}, supporters: {} };
+    }
+  }
+  function isCollectionsOwned(bag, id) {
+    if (!id || !bag) return false;
+    var v = bag[String(id)];
+    if (v === undefined || v === null || v === '' || v === false) return false;
+    var n = Number(v);
+    if (!Number.isNaN(n) && n < 0) return false;
+    return true;
+  }
+  function readOwnedOnlyPref() {
+    try {
+      return localStorage.getItem(STORAGE_OWNED_ONLY) === '1';
+    } catch (_) {
+      return false;
+    }
+  }
+  function writeOwnedOnlyPref(on) {
+    try {
+      localStorage.setItem(STORAGE_OWNED_ONLY, on ? '1' : '0');
+    } catch (_) {}
+  }
   function rarityOk(r) {
     var letter = String((r && r.rarity) || '').toUpperCase();
     if (state.rarity === 'UR') return letter === 'UR';
@@ -514,8 +564,29 @@
     }
     return true;
   }
-  function filterList(list) {
-    return (list || []).filter(rarityOk);
+  function filterList(list, bagKey) {
+    bagKey = bagKey || 'units';
+    return (list || []).filter(function (r) {
+      if (!rarityOk(r)) return false;
+      if (state.ownedOnly && !isCollectionsOwned(_colBags[bagKey], r && r.id)) return false;
+      return true;
+    });
+  }
+  function filterSupports(list) {
+    if (!state.ownedOnly) return list || [];
+    return (list || []).filter(function (r) {
+      return isCollectionsOwned(_colBags.supporters, r && r.id);
+    });
+  }
+  function rowHasOwnedContent(row) {
+    if (filterSupports(row.supports || []).length) return true;
+    var roles = ['1', '2', '3'];
+    for (var i = 0; i < roles.length; i++) {
+      var r = roles[i];
+      if (state.role !== 'ALL' && state.role !== r) continue;
+      if (filterList((row.units && row.units[r]) || []).length) return true;
+    }
+    return false;
   }
   function kindLabel(kind) {
     if (kind === 'hp') return t('kindHp');
@@ -1154,8 +1225,9 @@
 
   function supportsCellHtml(list, eagerBudget) {
     /* Rarity filter is for units only — SR/R supports (e.g. Protagonist 1850000360)
-       must stay visible when browsing UR kits, or Squad highlight has nothing to paint. */
-    var items = (list || []).slice().sort(function (a, b) {
+       must stay visible when browsing UR kits, or Squad highlight has nothing to paint.
+       Owned-only still filters supporters via Collections. */
+    var items = filterSupports(list).slice().sort(function (a, b) {
       var ka = SKILL_KIND_ORDER.indexOf(resolveSkillKind(a));
       var kb = SKILL_KIND_ORDER.indexOf(resolveSkillKind(b));
       if (ka < 0) ka = 99;
@@ -1421,7 +1493,7 @@
       if (!rowMatches(row)) return;
       if (focusOn && !rowHasSelectedUnit(row)) return;
       tags++;
-      supports += (row.supports || []).length;
+      supports += filterSupports(row.supports || []).length;
       ['1', '2', '3'].forEach(function (r) {
         if (state.role !== 'ALL' && state.role !== r) return;
         units += filterList((row.units && row.units[r]) || []).length;
@@ -1483,9 +1555,11 @@
     if (state.role !== 'ALL') board.classList.add('tm-role-filter-' + state.role);
 
     /* Keep all filter-matching rows in the DOM; focus only hides via syncSelectionUi. */
+    refreshColBags();
     var visible = [];
     rows.forEach(function (row) {
       if (!rowMatches(row)) return;
+      if (state.ownedOnly && !rowHasOwnedContent(row)) return;
       visible.push(row);
     });
     syncBoardColumnWidths(visible);
@@ -1570,7 +1644,9 @@
 
     if (!visible.length) {
       html +=
-        '<div class="tm-empty-board" role="status">' + esc(t('noMatch')) + '</div>';
+        '<div class="tm-empty-board" role="status">' +
+          esc(state.ownedOnly ? t('noOwned') : t('noMatch')) +
+          '</div>';
     }
 
     hideHoverPortal();
@@ -2154,6 +2230,7 @@
       ['tmGroupLbl', 'group'],
       ['tmRoleLbl', 'role'],
       ['tmRarityLbl', 'rarity'],
+      ['tmOwnedLbl', 'collection'],
       ['tmChipFour', 'four'],
       ['tmChipSix', 'six'],
       ['tmChipNew', 'new'],
@@ -2225,6 +2302,7 @@
     } catch (_) {}
     fillRarityChipIcons();
     syncRarityActive();
+    syncOwnedUi();
   }
 
   function syncHtmlLang(L) {
@@ -2255,6 +2333,22 @@
     });
   }
 
+
+  function syncOwnedUi() {
+    var btn = document.getElementById('tmOwnedOnly');
+    var lab = document.getElementById('tmOwnedOnlyLabel');
+    var tip = t('ownedOnlyTip');
+    var label = t('ownedOnly');
+    if (lab) lab.textContent = label;
+    if (btn) {
+      btn.classList.toggle('is-active', !!state.ownedOnly);
+      btn.setAttribute('aria-pressed', state.ownedOnly ? 'true' : 'false');
+      btn.title = tip;
+      btn.setAttribute('aria-label', label);
+    }
+    var nav = document.getElementById('tmOwnedTabs');
+    if (nav) nav.setAttribute('aria-label', t('collection'));
+  }
   function syncRarityActive() {
     var root = document.getElementById('tmRarityTabs');
     if (!root) return;
@@ -2412,6 +2506,27 @@
       syncRarityActive();
       renderBoard();
     });
+    state.ownedOnly = readOwnedOnlyPref();
+    syncOwnedUi();
+    var ownedBtn = document.getElementById('tmOwnedOnly');
+    if (ownedBtn && !ownedBtn._tmOwnedBound) {
+      ownedBtn._tmOwnedBound = 1;
+      ownedBtn.addEventListener('click', function () {
+        state.ownedOnly = !state.ownedOnly;
+        writeOwnedOnlyPref(state.ownedOnly);
+        refreshColBags();
+        syncOwnedUi();
+        renderBoard();
+      });
+    }
+    window.addEventListener('storage', function (ev) {
+      if (!ev || (ev.key !== COL_KEY && ev.key !== STORAGE_OWNED_ONLY)) return;
+      if (ev.key === STORAGE_OWNED_ONLY) state.ownedOnly = readOwnedOnlyPref();
+      refreshColBags();
+      syncOwnedUi();
+      renderBoard();
+    });
+
     fillRarityChipIcons();
     syncRarityActive();
 

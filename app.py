@@ -1256,12 +1256,28 @@ UNIT_SEARCH_HAYSTACK_EXTRA_BY_ID = {
     '1200002210': ' devil',
     '1200002300': ' devil',
     '1200005300': ' devil',
+    # ν Gundam family — JA/TW/HK display uses Greek ν / CJK titles, not Latin "Nu".
+    '1110000100': ' nu',
+    '1110000150': ' nu',
+    '1114000100': ' nu',
+    '1114000150': ' nu',
+    '1114000450': ' nu',
+    '1115000100': ' nu',
+    '1115000200': ' nu',
+    '1705005400': ' nu',
 }
 
 # A search box query that is only the token "dx" (DX ≡ Double X) returns exactly these roster rows; locale-agnostic.
 DOUBLE_X_DX_TOKEN_UNIT_IDS = frozenset({'1230003800', '1230003850', '1230005300'})
 # Query "00" only: these unit rows only (by id), not every title in m_series 3700 — keeps browse aligned with name/id intent.
 UNIT_SEARCH_SHORTHAND_00_UNIT_IDS = frozenset({'1370006200', '1370005700', '1370005900', '1370005950'})
+# ν Gundam family (exact token "nu") — locale-agnostic; excludes accidental EN hits like Nuclear / Nutter.
+UNIT_SEARCH_NU_GUNDAM_UNIT_IDS = frozenset({
+    '1110000100', '1110000150',
+    '1114000100', '1114000150', '1114000450',
+    '1115000100', '1115000200',
+    '1705005400',
+})
 # Single-token unit nicknames (exact query only) → roster rows; prevents substring/id-fragment bleed (e.g. spiegel → spi → Spinner Rodi).
 UNIT_SEARCH_NICKNAME_TOKEN_UNIT_IDS = {
     'spiegel': frozenset({'1200001100'}),
@@ -1269,6 +1285,7 @@ UNIT_SEARCH_NICKNAME_TOKEN_UNIT_IDS = {
     'devil': frozenset({'1200002210', '1200002300', '1200005300'}),
     'devil gundam': frozenset({'1200002210', '1200002300', '1200005300'}),
     'devilgundam': frozenset({'1200002210', '1200002300', '1200005300'}),
+    'nu': UNIT_SEARCH_NU_GUNDAM_UNIT_IDS,
 }
 # ScheduleId 9999990001 = stage/NPC shell rows in master (not obtainable in-game).
 SCHEDULE_ID_NONPLAYABLE_SHELL = '9999990001'
