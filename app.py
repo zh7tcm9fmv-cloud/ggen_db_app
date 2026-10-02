@@ -28543,7 +28543,7 @@ def list_supporters():
         ck = f"sl10_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rk}_{lineage_ck}_lc{lineage_combine_supp}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}_{uf}_{cf}"
         cached = get_cached_response(ck)
         if cached:
-            return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
+            return jsonify_preserialized(cached, ck, public=True, max_age=3600, convert_images=False)
         ld = get_lang_data(lc); rows = []
         npc123_list = search_query_is_npc123_list_seek(sq)
         for sid, info in supporter_info_map.items():
@@ -28611,8 +28611,9 @@ def list_supporters():
         total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
         start = (page - 1) * pp; pr = rows[start:start + pp]
         result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'rarity_filter': rav}
+        result = convert_image_urls(result)
         set_cached_response(ck, result)
-        return jsonify_cacheable(result, ck, public=True, max_age=3600, convert_images=True)
+        return jsonify_preserialized(result, ck, public=True, max_age=3600, convert_images=False)
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'rows': [], 'total': 0, 'page': 1, 'per_page': 50, 'total_pages': 1}), 500
 
@@ -28875,7 +28876,7 @@ def api_latest_release():
     ck = f"lr_v8_{lc}_{wm_ck}_{scope}_{1 if unlocked else 0}"
     cached = get_cached_response(ck)
     if cached:
-        return jsonify(convert_image_urls(cached))
+        return jsonify_preserialized(cached, ck, public=True, max_age=300, convert_images=False)
     ld = get_lang_data(lc)
     skip_sched = {'0', '9999990001'}
     groups = {}
@@ -29000,8 +29001,9 @@ def api_latest_release():
     }
     if LATEST_RELEASE_PASSWORD:
         result['watermark'] = wm
+    result = convert_image_urls(result)
     set_cached_response(ck, result)
-    return jsonify(convert_image_urls(result))
+    return jsonify_preserialized(result, ck, public=True, max_age=300, convert_images=False)
 
 
 def resolve_m_schedule_release_fields(schedule_id):
@@ -31668,15 +31670,16 @@ def get_supporter(supporter_id):
         ck = f"s8_{supporter_id}_{lc}_{level}_{lb_tier}_{for_uid_key}_{for_cid_key}_{lr_schedule_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
-            return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
+            return jsonify_preserialized(cached, ck, private=True, max_age=3600, convert_images=False)
         result = build_supporter_detail_dict(
             supporter_id, lc, level=level, lb_tier=lb_tier,
             for_uid_q=for_uid_q, for_cid_q=for_cid_q,
         )
         if not result:
             return jsonify({'error': f'Supporter {supporter_id} not found'}), 404
+        result = convert_image_urls(result)
         set_cached_response(ck, result)
-        return jsonify_cacheable(result, ck, private=True, max_age=3600, convert_images=True)
+        return jsonify_preserialized(result, ck, private=True, max_age=3600, convert_images=False)
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'error': str(e)}), 500
 
