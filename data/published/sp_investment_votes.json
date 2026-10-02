@@ -14070,7 +14070,23 @@
     "ip_1b092ca550993eb0c8261826a8e58236:unit:1007001160:ssp": "up",
     "ip_214424dd92674170f8a0dc10cf7730f3:unit:1175001900:ssp": "up",
     "ip_214424dd92674170f8a0dc10cf7730f3:unit:1370005900:ssp": "up",
-    "ip_214424dd92674170f8a0dc10cf7730f3:unit:1211001210:ssp": "up"
+    "ip_214424dd92674170f8a0dc10cf7730f3:unit:1211001210:ssp": "up",
+    "ip_bdb518d94713e55d8f70ca6da0f0bd58:character:1175000300:sp": "up",
+    "ip_bdb518d94713e55d8f70ca6da0f0bd58:character:1175001700:sp": "up",
+    "ip_bdb518d94713e55d8f70ca6da0f0bd58:character:1175002300:sp": "up",
+    "ip_bdb518d94713e55d8f70ca6da0f0bd58:character:1175000201:sp": "up",
+    "ip_bdb518d94713e55d8f70ca6da0f0bd58:character:1175000800:sp": "up",
+    "ip_bdb518d94713e55d8f70ca6da0f0bd58:character:1175000200:sp": "up",
+    "ip_bdb518d94713e55d8f70ca6da0f0bd58:character:1175001800:sp": "up",
+    "ip_bdb518d94713e55d8f70ca6da0f0bd58:character:1175002700:sp": "up",
+    "ip_bdb518d94713e55d8f70ca6da0f0bd58:character:1175001400:sp": "up",
+    "ip_bdb518d94713e55d8f70ca6da0f0bd58:character:1175001300:sp": "up",
+    "ip_bdb518d94713e55d8f70ca6da0f0bd58:character:1175001500:sp": "up",
+    "ip_bdb518d94713e55d8f70ca6da0f0bd58:character:1175002400:sp": "up",
+    "ip_bdb518d94713e55d8f70ca6da0f0bd58:character:1175002000:sp": "up",
+    "ip_bdb518d94713e55d8f70ca6da0f0bd58:character:1175001600:sp": "up",
+    "ip_bdb518d94713e55d8f70ca6da0f0bd58:character:1175000900:sp": "up",
+    "ip_bdb518d94713e55d8f70ca6da0f0bd58:character:1175002100:sp": "up"
   },
   "targets": {
     "unit:1155000700:sp": {
@@ -24786,6 +24802,70 @@
       "down": 0
     },
     "character:1175001200:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1175000300:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1175001700:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1175002300:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1175000201:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1175000800:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1175000200:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1175001800:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1175002700:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1175001400:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1175001300:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1175001500:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1175002400:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1175002000:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1175001600:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1175000900:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1175002100:sp": {
       "up": 1,
       "down": 0
     }
