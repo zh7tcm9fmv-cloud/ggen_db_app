@@ -4,6 +4,7 @@ healthcheckTimeout = 300
 # One stalled /api/meta_synergy_dc/assemble must not stop worker heartbeats.
 # Sync workers (gunicorn default) do that — keep the threaded worker explicit.
 # workers=1: a 2nd worker would roughly double master LANG/browse RSS (~3GB already).
-# threads A/B: now testing 8 (was 6). Owner live audit Oct 2026.
+# workers=1: a 2nd worker would roughly double master LANG/browse RSS.
+# threads=4: A/B Oct 2026 (4 vs 6 vs 8 live) — 6/8 did not beat 4 on burst/tail; keep 4.
 # Do NOT use --max-requests here — recycling the only worker forces a full DB reload.
-startCommand = "gunicorn wsgi:application --bind 0.0.0.0:$PORT --timeout 120 --graceful-timeout 20 --workers 1 --worker-class gthread --threads 8"
+startCommand = "gunicorn wsgi:application --bind 0.0.0.0:$PORT --timeout 120 --graceful-timeout 20 --workers 1 --worker-class gthread --threads 4"
