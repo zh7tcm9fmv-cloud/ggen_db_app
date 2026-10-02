@@ -1604,6 +1604,8 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
   /* Was 0.88 for FX-era tall box; 0.74 trims empty vertical air around ped+koma. */
   --view-h:0.74;
   --compose-lift:-10cqw;
+  /* Ped left edge at stage 0 (align with title/meta/model #); koma stays on ped center. */
+  --compose-x:calc(var(--ped-w) / var(--koma-px) * 50cqw);
   --fx-anchor-y:58cqw;
   --ped-anchor-y:58cqw;
   --ped-anchor-ty:-30%;
@@ -1631,14 +1633,16 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .unit-model-stage-koma{
   position:absolute;display:block;pointer-events:none;object-fit:contain;
 }
-/* Layer order: effect → pedestal → unit (koma on top) — same anchors every tier */
+/* Layer order: effect → pedestal → unit (koma on top) — same anchors every tier.
+   Horizontal: left-align composition with head-main title/meta/model # (ped left edge
+   at stage 0). Shared axis = half ped width so koma stays centered on the plate. */
 .unit-model-stage-effect{z-index:1}
 .unit-model-stage-pedestal{z-index:2}
 .unit-model-stage-koma{
   z-index:3;
   /* Size vs 512 canvas: tight-crop ogk (new V batch etc.) use --koma-nat-* from JS so they
      don't fill the stage like a full 512 plate. Defaults keep legacy 512 art unchanged. */
-  left:50cqw;
+  left:var(--compose-x);
   top:calc(var(--compose-lift) + 50cqw);
   width:calc(var(--koma-nat-w, 512) / var(--koma-px) * 100cqw);
   height:calc(var(--koma-nat-h, 512) / var(--koma-px) * 100cqw);
@@ -1647,7 +1651,7 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
   filter:drop-shadow(0 6px 12px rgba(0,0,0,.55));
 }
 .unit-model-stage-effect{
-  left:50cqw;
+  left:var(--compose-x);
   top:calc(var(--fx-anchor-y) + var(--compose-lift));
   width:calc(var(--fx-w) / var(--koma-px) * 100cqw);
   height:auto;
@@ -1655,7 +1659,7 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
   transform:translate(-50%,-50%);
 }
 .unit-model-stage-pedestal{
-  left:50cqw;
+  left:var(--compose-x);
   top:calc(var(--ped-anchor-y) + var(--compose-lift));
   width:calc(var(--ped-w) / var(--koma-px) * 100cqw);
   height:auto;
