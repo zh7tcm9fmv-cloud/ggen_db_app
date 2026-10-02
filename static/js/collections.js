@@ -5434,6 +5434,13 @@
     if (censusTipCol !== col) {
       card.innerHTML = src.innerHTML;
       censusTipCol = col;
+      /* Cloned tip imgs must not re-enter lazy deferral. */
+      card.querySelectorAll('img').forEach(function (im) {
+        try {
+          im.loading = 'eager';
+          if (im.getAttribute('fetchpriority') == null) im.setAttribute('fetchpriority', 'high');
+        } catch (_) {}
+      });
     }
     card.hidden = false;
     card.classList.add('is-open');
@@ -5497,13 +5504,22 @@
         var row = catalogRowById(r.id);
         var name = (row && row.name) || catalogNameById(r.id);
         var thum = row && row.thum ? imgUrl(row.thum) : '';
+        /* Eager: tip markup is display:none until portal clone — lazy never loads,
+           so hover waited on a cold CDN fetch every time (regression vs instant tip). */
         var img = thum
           ? '<img src="' +
             esc(thum) +
             '" alt="' +
             esc(name) +
-            '" loading="lazy" decoding="async">'
+            '" loading="eager" decoding="async" fetchpriority="low">'
           : '';
+        if (thum) {
+          try {
+            var warm = new Image();
+            warm.decoding = 'async';
+            warm.src = thum;
+          } catch (_) {}
+        }
         return (
           '<div class="collections-census-vhist-col">' +
           '<div class="collections-census-vhist-barwrap">' +
@@ -5639,8 +5655,7 @@
     try {
       var board = state.type === 'supporters' ? 'supporters' : 'units';
       var res = await fetch('/api/collections/census/stats?board=' + encodeURIComponent(board) + '&top=24', {
-        credentials: 'same-origin',
-        cache: 'no-store'
+        credentials: 'same-origin'
       });
       var data = await res.json().catch(function () {
         return null;

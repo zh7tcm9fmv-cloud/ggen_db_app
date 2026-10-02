@@ -21508,10 +21508,18 @@ def api_collections_census_stats():
     except (TypeError, ValueError):
         top_n = 40
     data = _collections_census_load()
-    stats = _collections_census_build_stats(data.get('entries') or {}, board=board, top_n=top_n)
+    entries = data.get('entries') or {}
+    n_snap = len(entries) if isinstance(entries, dict) else 0
+    board_key = 'supporters' if str(board).lower() in ('supporters', 's', 'supp') else 'units'
+    ck = f'col_census_stats_v3_{board_key}_{top_n}_{n_snap}'
+    cached = get_cached_response(ck)
+    if cached:
+        return jsonify_preserialized(cached, ck, public=True, max_age=60, convert_images=False)
+    stats = _collections_census_build_stats(entries, board=board, top_n=top_n)
     # Optional contributor count only
     stats['contributors'] = int(stats.get('snapshots') or 0)
-    return jsonify_cacheable(stats, f"col_census_stats_v2_{stats['board']}_{top_n}_{stats['snapshots']}", public=True, max_age=60)
+    set_cached_response(ck, stats)
+    return jsonify_preserialized(stats, ck, public=True, max_age=60, convert_images=False)
 
 
 @app.route('/api/collections/catalog')
@@ -21521,7 +21529,7 @@ def api_collections_catalog():
     ck = f'collections_ur_v6_{lc}_{lr_schedule_cache_key_fragment()}'
     cached = get_cached_response(ck)
     if cached:
-        return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
+        return jsonify_preserialized(cached, ck, public=True, max_age=3600, convert_images=False)
     warming = _browse_list_warming_guard('unit')
     if warming:
         return warming
@@ -21634,8 +21642,9 @@ def api_collections_catalog():
         'exclude': ['transform_alternate', 'characters'],
         'include': ['UR_ULT'],
     }
+    result = convert_image_urls(result)
     set_cached_response(ck, result)
-    return jsonify_cacheable(result, ck, public=True, max_age=3600, convert_images=True)
+    return jsonify_preserialized(result, ck, public=True, max_age=3600, convert_images=False)
 
 
 @app.route('/ip')
