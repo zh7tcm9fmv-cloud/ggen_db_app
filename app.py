@@ -55,8 +55,28 @@ from gasha_official_rates import (
 # (http.client.IncompleteRead). Every GitHub sync / CDN fetch must use these.
 # ---------------------------------------------------------------------------
 def _http_read_all(resp):
-    """Read a full urllib response body (raises IncompleteRead if Content-Length unmet)."""
-    return resp.read()
+    """Read a full urllib response body in chunks.
+
+    ``resp.read()`` of a large GitHub body often IncompleteReads on Railway
+    (~400KB then drop). Chunks keep the prefix so the caller can Range-resume.
+    """
+    chunks = []
+    try:
+        while True:
+            block = resp.read(65536)
+            if not block:
+                break
+            chunks.append(block)
+        return b''.join(chunks)
+    except IncompleteRead as e:
+        if e.partial:
+            chunks.append(e.partial)
+        raise IncompleteRead(b''.join(chunks), e.expected) from None
+
+
+def _http_hdrs_has(hdrs, name):
+    want = name.lower()
+    return any(str(k).lower() == want for k in (hdrs or {}))
 
 
 def _http_request_bytes(
@@ -72,21 +92,56 @@ def _http_request_bytes(
 ):
     """
     HTTP request with retries on IncompleteRead / transient network / selected 5xx.
-    HTTPError for other status codes is raised immediately (no silent swallow).
+    GET: gzip off + Range resume from the truncated offset (full retry kept dying
+    at the same ~400KB cut). HTTPError for other status codes is raised immediately.
     """
     last_err = None
     hdrs = dict(headers or {})
+    method_u = (method or 'GET').upper()
+    if method_u == 'GET' and not _http_hdrs_has(hdrs, 'Accept-Encoding'):
+        hdrs['Accept-Encoding'] = 'identity'
+    if not _http_hdrs_has(hdrs, 'User-Agent'):
+        hdrs['User-Agent'] = 'ggen-db-app'
     attempts = max(0, int(retries)) + 1
+    buf = b''
     for attempt in range(attempts):
+        req_headers = dict(hdrs)
+        resume = method_u == 'GET' and bool(buf)
+        if resume:
+            req_headers['Range'] = f'bytes={len(buf)}-'
         try:
-            req = Request(url, data=data, headers=hdrs, method=method)
+            req = Request(url, data=data, headers=req_headers, method=method)
             with urlopen(req, timeout=timeout) as resp:
-                return _http_read_all(resp)
-        except IncompleteRead as e:
-            last_err = e
-            print(f'{log_prefix}: IncompleteRead (attempt {attempt + 1}/{attempts}): {e}')
-            time.sleep(0.2 * (attempt + 1))
+                status = int(getattr(resp, 'status', None) or resp.getcode() or 200)
+                try:
+                    body = _http_read_all(resp)
+                except IncompleteRead as e:
+                    last_err = e
+                    partial = e.partial or b''
+                    if method_u == 'GET' and partial:
+                        if status == 206 and buf:
+                            buf = buf + partial
+                        else:
+                            buf = partial
+                        extra = f', {e.expected} more expected' if e.expected else ''
+                        print(
+                            f'{log_prefix}: truncated body ({len(buf)} bytes{extra}); '
+                            f'resuming (attempt {attempt + 1}/{attempts})'
+                        )
+                        time.sleep(0.2 * (attempt + 1))
+                        continue
+                    print(f'{log_prefix}: IncompleteRead (attempt {attempt + 1}/{attempts}): {e}')
+                    time.sleep(0.2 * (attempt + 1))
+                    continue
+                if resume and status == 206:
+                    return buf + body
+                return body
         except HTTPError as e:
+            if resume and e.code in (400, 416) and attempt < attempts - 1:
+                buf = b''
+                last_err = e
+                time.sleep(0.15 * (attempt + 1))
+                continue
             if e.code in retry_http and attempt < attempts - 1:
                 last_err = e
                 print(f'{log_prefix}: HTTP {e.code} (attempt {attempt + 1}/{attempts})')
@@ -99,7 +154,7 @@ def _http_request_bytes(
             time.sleep(0.2 * (attempt + 1))
     if last_err is not None:
         raise last_err
-    return b''
+    return buf if buf else b''
 
 
 def _http_get_bytes(url, *, headers=None, timeout=20, retries=2, log_prefix='http'):
@@ -30584,7 +30639,7 @@ def _banner_pool_votes_pick_richer(a, b):
 
 def _banner_pool_votes_fetch_url(url, *, headers=None, timeout=20):
     data = _banner_pool_votes_http_get_json(
-        url, headers=headers, timeout=timeout, retries=2
+        url, headers=headers, timeout=timeout, retries=3
     )
     return data if isinstance(data, dict) else None
 
@@ -30620,9 +30675,9 @@ def _banner_pool_votes_fetch_github():
     """
     Load vote JSON from GitHub.
 
-    Prefer the *raw* file body (Accept: application/vnd.github.raw / raw.githubusercontent.com).
-    The Contents JSON+base64 envelope is ~33% larger and is what Railway was truncating
-    (IncompleteRead ~512KB). SHA for PUT comes from a directory listing, not the fat file GET.
+    Prefer raw.githubusercontent.com (Range-friendly CDN). Contents API raw on Railway
+    often drops the last ~4–16KB (~400KB of a ~417KB body) — retrying from byte 0
+    hits the same cut. SHA for PUT comes from a directory listing, not the fat file GET.
     """
     global _BANNER_VOTES_GITHUB_SHA
     cfg = _banner_pool_votes_github_config()
@@ -30630,20 +30685,15 @@ def _banner_pool_votes_fetch_github():
         return None
     token, repo, path, branch = cfg
     data = None
-    raw_headers = {
+    cdn_headers = {
         'Authorization': f'Bearer {token}',
-        'Accept': 'application/vnd.github.raw',
-        'X-GitHub-Api-Version': '2022-11-28',
         'User-Agent': 'ggen-db-app-banner-votes',
+        'Accept': 'application/json,text/plain,*/*',
+        'Accept-Encoding': 'identity',
     }
-    api_raw_url = f'https://api.github.com/repos/{repo}/contents/{quote(path)}?ref={quote(branch)}'
     try:
-        raw = _banner_pool_votes_http_get_bytes(
-            api_raw_url, headers=raw_headers, timeout=25, retries=3
-        )
-        parsed = json.loads(raw.decode('utf-8'))
-        if isinstance(parsed, dict):
-            data = parsed
+        cdn_url = f'https://raw.githubusercontent.com/{repo}/{quote(branch)}/{path}'
+        data = _banner_pool_votes_fetch_url(cdn_url, headers=cdn_headers, timeout=45)
     except HTTPError as e:
         if e.code == 404:
             if _banner_pool_votes_ensure_github_branch():
@@ -30654,22 +30704,33 @@ def _banner_pool_votes_fetch_github():
                     'votes will reset on deploy until the token can create refs.'
                 )
             return None
-        print(f'banner_pool_votes: GitHub raw API fetch failed: {e}')
-    except (URLError, OSError, IncompleteRead, json.JSONDecodeError, ValueError, TimeoutError) as e:
-        print(f'banner_pool_votes: GitHub raw API fetch failed: {e}')
+        print(f'banner_pool_votes: raw.githubusercontent fetch failed: {e}')
+    except (URLError, OSError, IncompleteRead, json.JSONDecodeError, TimeoutError) as e:
+        print(f'banner_pool_votes: raw.githubusercontent fetch failed: {e}')
 
+    api_raw_url = f'https://api.github.com/repos/{repo}/contents/{quote(path)}?ref={quote(branch)}'
     if data is None:
-        # CDN raw URL — plain JSON, no API envelope
+        raw_headers = {
+            'Authorization': f'Bearer {token}',
+            'Accept': 'application/vnd.github.raw',
+            'X-GitHub-Api-Version': '2022-11-28',
+            'User-Agent': 'ggen-db-app-banner-votes',
+            'Accept-Encoding': 'identity',
+        }
         try:
-            cdn_url = f'https://raw.githubusercontent.com/{repo}/{quote(branch)}/{path}'
-            cdn_headers = {
-                'Authorization': f'Bearer {token}',
-                'User-Agent': 'ggen-db-app-banner-votes',
-                'Accept': 'application/json,text/plain,*/*',
-            }
-            data = _banner_pool_votes_fetch_url(cdn_url, headers=cdn_headers, timeout=25)
-        except (HTTPError, URLError, OSError, IncompleteRead, json.JSONDecodeError, TimeoutError) as e:
-            print(f'banner_pool_votes: raw.githubusercontent fetch failed: {e}')
+            raw = _banner_pool_votes_http_get_bytes(
+                api_raw_url, headers=raw_headers, timeout=45, retries=3
+            )
+            parsed = json.loads(raw.decode('utf-8'))
+            if isinstance(parsed, dict):
+                data = parsed
+        except HTTPError as e:
+            if e.code == 404:
+                print(f'banner_pool_votes: vote file not on {branch} yet (first save pending)')
+                return None
+            print(f'banner_pool_votes: GitHub raw API fetch failed: {e}')
+        except (URLError, OSError, IncompleteRead, json.JSONDecodeError, ValueError, TimeoutError) as e:
+            print(f'banner_pool_votes: GitHub raw API fetch failed: {e}')
 
     if data is None:
         # Legacy fallback: Contents JSON + base64 (larger; keep for odd media-type failures)
