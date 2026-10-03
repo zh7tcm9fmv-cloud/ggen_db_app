@@ -1,5 +1,5 @@
 ---
-description: Restart local Flask after server-side fixes so /tl and APIs match the working tree
+description: Restart local Flask after server-side fixes; never leave Cursor preview on stale markup
 alwaysApply: true
 ---
 
@@ -7,21 +7,34 @@ alwaysApply: true
 
 Owner lesson (**Sep 2026 — anniversary drop %**): code was correct in the tree, but `:5000` still ran an **old** `wsgi` process, so `/api/banner_timeline` returned stale fields (`drop_rate_labels: null`) and `/tl` looked “unfixed.” The owner had to ask why.
 
+Owner lesson (**Oct 2026 — collections disclaimer**): template already had `colDisclaimerTitle`, but Cursor browser preview still showed old `aside#colDisclaimer` with no title. Agent said “hard-refresh” **without restarting Flask** → owner wasted a prompt on stale markup. **That is agent failure, not owner error.**
+
 ## Hard rule
 
-After any change that affects the **running local app** (not CSS/JS-only client files the browser will pick up on hard-refresh alone), **restart local Flask before telling the owner to check** `http://127.0.0.1:5000` (or any local path).
+After any change that affects the **running local app**, **restart local Flask and verify the response in this same turn** before telling the owner to check `http://127.0.0.1:5000` (or any local path). Do **not** end the turn with “hard-refresh” if Flask still has pre-edit templates/Python.
 
 ### Restart when you touched
 
 - `app.py` / `wsgi.py` / imported Python modules (`gasha_official_rates.py`, etc.)
-- Templates that Flask renders at request time
+- **Any** `templates/*.html` (Jinja is loaded by the running process — disk edit ≠ what `:5000` serves)
 - Master/published data the process loads at boot (or that only refresh after restart)
 - Env-dependent server behavior
 
 ### Skip restart only when
 
-- Pure client change already verified via hard-refresh (`app.js` → minify + `verify_app_js_bundle.mjs`, CSS with cache bust), **and** no Python/API change in the same turn
+- Pure client change already verified via hard-refresh (`app.js` → minify + `verify_app_js_bundle.mjs`, CSS with cache bust), **and** no Python/API/**template** change in the same turn
 - Local Flask is not running and the owner is only testing Railway/live
+
+## End-of-turn gate (mandatory)
+
+Before the reply that asks the owner to look at local:
+
+1. Restart Flask (script below) if anything in “Restart when you touched” changed.
+2. Wait until `Database ready` / `/health` shows `ok` and not booting.
+3. **Fetch the path yourself** (`Invoke-WebRequest` / curl) and confirm the new markup or API field is in the bytes (e.g. `colDisclaimerTitle` present). If missing → fix/restart again; do not ping the owner.
+4. Only then say they can hard-refresh / re-open the Cursor preview.
+
+Cursor Simple Browser / embedded preview often keeps the previous DOM until the **server** serves new HTML — telling them to refresh while Flask is stale guarantees another wasted prompt.
 
 ## How (Windows / this repo)
 
@@ -33,10 +46,10 @@ $env:PYTHONIOENCODING='utf-8'
 python wsgi.py
 ```
 
-Run in background; wait until `Database ready` / `/health` shows `ok` and not booting; then spot-check the fixed API/path **on local** before saying they can refresh.
+Run in background; wait until ready; spot-check the fixed path **on local** before saying they can refresh.
 
 ## Reply habit
 
-- Say you **restarted local Flask** (or that it was already current) when the owner will check `:5000`.
-- Do **not** ask them to restart, or leave them debugging stale processes.
+- Say you **restarted local Flask** and **verified** the path when the owner will check `:5000`.
+- Do **not** ask them to restart, or leave them debugging stale processes / old markup.
 - Still honor `verify-live-before-fixed.mdc` for Railway/live claims.

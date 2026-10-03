@@ -64,7 +64,10 @@
       page_title: 'Hangar Collection — GGen Eternal Database',
       eyebrow: 'UR Acquisition Review',
       title: 'Hangar Collection',
-      sub: 'Track UR unit and supporter possession\nTap a portrait to cycle not possessed → Limit Break 0 → MAX Limit Break (Ultimate: form ids, no LB).\nPossessing a unit covers its character',
+      sub: 'Track UR unit and supporter possession\nTap a portrait to cycle not possessed → Limit Break 0 → MAX Limit Break (Ultimate: form ids, no LB)\nPossessing a unit covers its character',
+      disclaimer:
+        'Our website never reads your in-game account\nBandai Namco ID (BNID) auto-sync is not supported\nIt violates the official Terms of Service\nAdd Units and Supporters here manually\nThen generate a share code and save it as your collection\nNever share account credentials with any third-party site',
+      disclaimer_label: 'Disclaimer',
       lang: 'Lang',
       support_alipay: 'Support on AlipayHK',
       support_kofi: 'Support on Ko-fi',
@@ -201,7 +204,10 @@
       page_title: '格納庫コレクション — GGen Eternal Database',
       eyebrow: 'UR取得進捗',
       title: '格納庫コレクション',
-      sub: 'URユニット／サポーターの所持を記録\nタップで未所持 → 限界突破0 → 限界突破MAX。\nユニット所持はキャラクター所持も含みます',
+      sub: 'URユニット／サポーターの所持を記録\nタップで未所持 → 限界突破0 → 限界突破MAX\nユニット所持はキャラクター所持も含みます',
+      disclaimer:
+        '当サイトはゲームアカウントからデータを取得しません\nBANDAI NAMCO ID（BNID）による自動同期は非対応です\n公式利用規約に抵触するためです\nユニット／サポーターはここで手動登録してください\nその後、共有コードを生成してコレクションとして保存してください\nアカウント情報を第三者サイトに入力しないでください',
+      disclaimer_label: '注意',
       lang: '言語',
       support_alipay: 'AlipayHKで支援',
       support_kofi: 'Ko-fiで支援',
@@ -338,7 +344,10 @@
       page_title: '格納庫收藏 — GGen Eternal Database',
       eyebrow: 'UR獲取進度',
       title: '格納庫收藏',
-      sub: '記錄 UR 單位與支援人員持有狀態\n點選肖像可循環：未持有 → 突破界限 0 → 突破界限 MAX。\n持有單位即視為持有角色',
+      sub: '記錄 UR 單位與支援人員持有狀態\n點選肖像可循環：未持有 → 突破界限 0 → 突破界限 MAX\n持有單位即視為持有角色',
+      disclaimer:
+        '本網站不會讀取您的遊戲帳號資料\n不支援以 BANDAI NAMCO ID（BNID）自動同步收藏\n此作法違反官方服務條款\n請在此手動登記單位／支援人員\n然後生成分享代碼並存成您的收藏\n切勿將帳號密碼提供給任何第三方網站',
+      disclaimer_label: '注意',
       lang: '語言',
       support_alipay: '以 AlipayHK 支持',
       support_kofi: '在 Ko-fi 支持',
@@ -474,7 +483,10 @@
       page_title: '格納庫收藏 — GGen Eternal Database',
       eyebrow: 'UR獲取進度',
       title: '格納庫收藏',
-      sub: '記錄 UR 單位與支援人員持有狀態\n點選肖像可循環：未持有 → 突破界限 0 → 突破界限 MAX。\n持有單位即視為持有角色',
+      sub: '記錄 UR 單位與支援人員持有狀態\n點選肖像可循環：未持有 → 突破界限 0 → 突破界限 MAX\n持有單位即視為持有角色',
+      disclaimer:
+        '本網站不會讀取您的遊戲帳號資料\n不支援以 BANDAI NAMCO ID（BNID）自動同步收藏\n此作法違反官方服務條款\n請在此手動登記單位／支援人員\n然後生成分享代碼並存成您的收藏\n切勿將帳號密碼提供給任何第三方網站',
+      disclaimer_label: '注意',
       lang: '語言',
       support_alipay: '以 AlipayHK 支持',
       support_kofi: '在 Ko-fi 支持',
@@ -1004,6 +1016,8 @@
     setText('colEyebrow', t('eyebrow'));
     setText('colTitle', t('title'));
     setText('colSub', t('sub'));
+    setText('colDisclaimerTitle', t('disclaimer_label'));
+    setText('colDisclaimer', t('disclaimer'));
     setText('alipayhkHeaderLabel', t('support_alipay'));
     setText('kofiHeaderLabel', t('support_kofi'));
     setText('alipayhkModalTitle', t('alipay_modal_title'));

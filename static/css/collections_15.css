@@ -151,8 +151,24 @@ html[data-ui-lang="HK"] .collections-page.collections-15 .collections-stat-lim-b
 .collections-page.collections-15 .collections-intro{
   position:relative;padding-bottom:14px;margin-bottom:18px;
 }
+.collections-page.collections-15 .collections-disclaimer{
+  font-family:var(--font-body);
+  max-width:min(420px,100%);
+  gap:4px;
+}
+.collections-page.collections-15 .collections-disclaimer-title{
+  font-family:var(--font-body);
+  font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:rgb(var(--g15-cyan));
+  line-height:1.2;
+}
+.collections-page.collections-15 .collections-disclaimer-body{
+  font-size:13px;line-height:1.45;font-weight:400;
+  color:var(--text-secondary);
+  white-space:pre-line;
+}
 .collections-page.collections-15 .collections-intro::after{
-  content:"";display:block;margin-top:14px;height:2px;width:min(420px,100%);
+  content:"";display:block;flex:1 0 100%;margin-top:14px;height:2px;width:min(420px,100%);
   background:
     linear-gradient(90deg,rgb(var(--g15-cyan)),rgb(var(--g15-blue)) 40%,transparent);
   clip-path:polygon(0 0,100% 0,calc(100% - 10px) 100%,0 100%);

@@ -14,7 +14,13 @@
 .collections-intro{
   margin:0 0 14px;
   min-width:0;
+  display:flex;
+  flex-wrap:wrap;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px 28px;
 }
+.collections-intro-main{flex:1 1 280px;min-width:0}
 .collections-eyebrow{
   font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
   color:var(--accent-orange);margin-bottom:4px;
@@ -26,6 +32,29 @@
 .collections-sub{
   margin:6px 0 0;max-width:62ch;font-size:13px;line-height:1.45;color:var(--text-secondary);
   white-space:pre-line;
+}
+.collections-disclaimer{
+  flex:0 1 420px;
+  margin:0;
+  max-width:min(420px,100%);
+  text-align:right;
+  align-self:flex-start;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+.collections-disclaimer-title{
+  font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--accent-orange);line-height:1.2;
+  text-align:right;
+}
+.collections-disclaimer-body{
+  margin:0;
+  font-size:13px;
+  line-height:1.45;
+  color:var(--text-secondary);
+  white-space:pre-line;
+  text-align:right;
 }
 
 .collections-main{max-width:1600px;margin:0 auto;padding:16px 20px 40px;min-width:0}
@@ -1172,7 +1201,9 @@
 @media(max-width:720px){
   .collections-main{padding:12px 12px 36px}
   .collections-foot{padding:8px 12px 24px}
-  .collections-intro{margin-bottom:12px}
+  .collections-intro{margin-bottom:12px;flex-direction:column;gap:10px}
+  .collections-disclaimer{text-align:left;max-width:none;align-self:stretch}
+  .collections-disclaimer-title,.collections-disclaimer-body{text-align:left}
   .collections-grid{
     grid-template-columns:repeat(auto-fill,minmax(96px,1fr));
     gap:8px;
