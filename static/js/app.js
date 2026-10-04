@@ -4271,6 +4271,11 @@ function closeModal(){
 const m=document.getElementById('detailModal');
 const wasOpen=!!(m&&m.classList.contains('active'));
 if(!wasOpen||S._historyApplyingPopstate)return;
+const ret=S.currentDetailData&&S.currentDetailData.detail_return;
+if(ret&&ret.type==='stage'&&ret.payload){
+restoreStageDetailReturn();
+return;
+}
 closeModalDomOnly();
 if(S._historyModalPushed){
 S._historyModalPushed=false;
@@ -4363,11 +4368,23 @@ S.currentDetailData=pay;
 S.currentDetailType='stage';
 inn.innerHTML=pay.content_locked?renderEternalStageLockedPanel(pay):renderStageShell(pay);
 syncModalDetailChrome();
+try{
+const bp=browseShortPathForDetailType('stage',pay.id);
+if(bp)replaceHistoryToBrowsePath(bp,{ggenDetail:1});
+}catch(_){}
 if(!pay.content_locked){
 updateDetailDynamicSections('stage');
 const finishRestore=()=>{
-if(modalScrollTop!=null&&!Number.isNaN(modalScrollTop))_setDetailModalScrollTop(modalScrollTop);
-if(returnNpcId)scrollToNpcDetailByNpcId(returnNpcId,'fromStageReturn');
+/* Back from NPC kit → stage map (locate/flash), not the NPC details list. */
+if(returnNpcId){
+if(!focusStageMapNpc(returnNpcId)){
+const mapHost=document.getElementById('detailStageMapContainer');
+if(mapHost){try{mapHost.scrollIntoView({behavior:'auto',block:'nearest'})}catch(_){}}
+else if(modalScrollTop!=null&&!Number.isNaN(modalScrollTop))_setDetailModalScrollTop(modalScrollTop);
+}
+}else if(modalScrollTop!=null&&!Number.isNaN(modalScrollTop)){
+_setDetailModalScrollTop(modalScrollTop);
+}
 S._stageDetailUiRestore=null;
 };
 requestAnimationFrame(()=>requestAnimationFrame(finishRestore));
@@ -5661,7 +5678,7 @@ return;
 }
 finish();
 }
-function updateDetailDynamicSections(type){const d=S.currentDetailData;if(type!=='supporter'&&type!=='stage'){document.getElementById('detailStatsWrapper').innerHTML=renderStatsWrapper(d,type);ensureDetailRankingToggleDom(type);applyDetailRankingInline(type)}if(type==='character'){const extra=document.getElementById('charExtraInfo');if(extra)extra.innerHTML=renderCharacterExtraInfo(d);const ucHost=document.getElementById('npcUnitCondTargets');if(ucHost)ucHost.innerHTML=renderNpcUnitConditionTargetsRow(d);document.getElementById('detailAbilitiesContainer').innerHTML=renderAbilsDynamic(d.abilities,t('sec_abilities'),false,S.spActive);document.getElementById('detailSkillsContainer').innerHTML=renderSkills(d.skills,S.spActive);syncNpcUnitConditionHighlights();syncAffinityExPairHighlights();syncPilotCondHighlights()}else if(type==='unit'){syncUnitLbVideoUi();void ensureUnitBestPilotsLoaded().then(api=>{if(api&&typeof api.syncUi==='function'&&S.currentDetailType==='unit'&&S.currentDetailData&&String(S.currentDetailData.id)===String(d&&d.id))api.syncUi(S.currentDetailData)});document.getElementById('detailAbilitiesContainer').innerHTML=renderAbilsDynamic(d.abilities,t('sec_abilities'),S.sspActive,false);document.getElementById('detailUnitSkillsContainer').innerHTML=renderSkills(d.skills||[],false);const modEl=document.getElementById('detailModifiersContainer');if(modEl)modEl.innerHTML=renderModifiers(d.modifiers||[]);document.getElementById('detailWeaponsContainer').innerHTML=renderWeaponsDynamic(withNpcMapWeaponStrategyHints(d.weapons,d),S.sspActive,d);document.getElementById('detailMechanismsContainer').innerHTML=renderMechanisms(d.mechanisms);fillDetailSspMaterials('unit');const tr=document.getElementById('detailUnitTerrainRow');if(tr){const base=d.terrain||[];const ter=S.sspActive&&(d.terrain_ssp&&d.terrain_ssp.length)?d.terrain_ssp:base;const hasTerrainEnh=!!(S.sspActive&&(d.has_terrain_enhancement===true||(d.terrain_ssp&&d.terrain&&d.terrain_ssp.some((ts,i)=>ts.level!==(d.terrain[i]?.level??-1)))));tr.innerHTML=renderHeaderTerrain(ter,S.sspActive,hasTerrainEnh)}syncPilotCondHighlights();syncUnitCondAbilityHighlights()}else if(type==='supporter'){let lh='';if(d.leader_skills&&d.leader_skills.length){lh=`<div class="detail-section"><div class="section-title">${t('sec_leader_skill')}</div><div class="ability-list">${d.leader_skills.map(ls=>{let ts2=ls.tags.map(t=>t.name).join(',');return`<div class="ability-item" style="flex-direction:column;gap:10px;cursor:pointer;" onclick="openTagModal('${esc(ts2)}','${ls.separator}')"><div class="ability-detail" style="margin:0;">${esc(ls.desc)}</div>${ls.tags&&ls.tags.length?`<div class="detail-tags-row" style="margin-top:0;align-items:center;">${renderSkillTags([{tags:ls.tags,separator:ls.separator}])}</div>`:''}</div>`}).join('')}</div></div>`}document.getElementById('detailLeaderSkillContainer').innerHTML=lh;let ah='';if(d.active_skills&&d.active_skills.length){ah=`<div class="detail-section"><div class="section-title">${t('sec_active_skills')}</div><div class="ability-list">${d.active_skills.map(sk=>`<div class="ability-item"><div class="ability-icon-wrap">${renderAbilIcon({icon:sk.icon})}</div><div class="ability-info"><div class="ability-name">${esc(sk.name)}</div><div class="ability-detail" style="margin:0;white-space:pre-wrap;">${esc(sk.desc)}</div></div></div>`).join('')}</div></div>`}document.getElementById('detailAbilitiesContainer').innerHTML=ah}else if(type==='stage'){document.getElementById('detailStageRestrictionsContainer').innerHTML=renderStageRestrictions(d);document.getElementById('detailStageMapContainer').innerHTML=renderStageMapSection(d);document.getElementById('detailNpcContainer').innerHTML=renderNpcDetails(d.npc_details||[],d.id,S._stageDetailUiRestore);syncNpcUnitConditionHighlights();const kickTape=()=>kickStageHazardTapeAnimations(document.getElementById('detailStageRestrictionsContainer'));requestAnimationFrame(()=>requestAnimationFrame(kickTape));setTimeout(kickTape,400)}if(type==='character'||type==='unit')requestAnimationFrame(adjustDetailModalLayout)}
+function updateDetailDynamicSections(type){const d=S.currentDetailData;if(type!=='supporter'&&type!=='stage'){document.getElementById('detailStatsWrapper').innerHTML=renderStatsWrapper(d,type);ensureDetailRankingToggleDom(type);applyDetailRankingInline(type)}if(type==='character'){const extra=document.getElementById('charExtraInfo');if(extra)extra.innerHTML=renderCharacterExtraInfo(d);const ucHost=document.getElementById('npcUnitCondTargets');if(ucHost)ucHost.innerHTML=renderNpcUnitConditionTargetsRow(d);document.getElementById('detailAbilitiesContainer').innerHTML=renderAbilsDynamic(d.abilities,t('sec_abilities'),false,S.spActive);document.getElementById('detailSkillsContainer').innerHTML=renderSkills(d.skills,S.spActive);syncNpcUnitConditionHighlights();syncAffinityExPairHighlights();syncPilotCondHighlights()}else if(type==='unit'){syncUnitLbVideoUi();void ensureUnitBestPilotsLoaded().then(api=>{if(api&&typeof api.syncUi==='function'&&S.currentDetailType==='unit'&&S.currentDetailData&&String(S.currentDetailData.id)===String(d&&d.id))api.syncUi(S.currentDetailData)});document.getElementById('detailAbilitiesContainer').innerHTML=renderAbilsDynamic(d.abilities,t('sec_abilities'),S.sspActive,false);document.getElementById('detailUnitSkillsContainer').innerHTML=renderSkills(d.skills||[],false);const modEl=document.getElementById('detailModifiersContainer');if(modEl)modEl.innerHTML=renderModifiers(d.modifiers||[]);document.getElementById('detailWeaponsContainer').innerHTML=renderWeaponsDynamic(withNpcMapWeaponStrategyHints(d.weapons,d),S.sspActive,d);document.getElementById('detailMechanismsContainer').innerHTML=renderMechanisms(d.mechanisms);fillDetailSspMaterials('unit');const tr=document.getElementById('detailUnitTerrainRow');if(tr){const base=d.terrain||[];const ter=S.sspActive&&(d.terrain_ssp&&d.terrain_ssp.length)?d.terrain_ssp:base;const hasTerrainEnh=!!(S.sspActive&&(d.has_terrain_enhancement===true||(d.terrain_ssp&&d.terrain&&d.terrain_ssp.some((ts,i)=>ts.level!==(d.terrain[i]?.level??-1)))));tr.innerHTML=renderHeaderTerrain(ter,S.sspActive,hasTerrainEnh)}syncPilotCondHighlights();syncUnitCondAbilityHighlights()}else if(type==='supporter'){let lh='';if(d.leader_skills&&d.leader_skills.length){lh=`<div class="detail-section"><div class="section-title">${t('sec_leader_skill')}</div><div class="ability-list">${d.leader_skills.map(ls=>{let ts2=ls.tags.map(t=>t.name).join(',');return`<div class="ability-item" style="flex-direction:column;gap:10px;cursor:pointer;" onclick="openTagModal('${esc(ts2)}','${ls.separator}')"><div class="ability-detail" style="margin:0;">${esc(ls.desc)}</div>${ls.tags&&ls.tags.length?`<div class="detail-tags-row" style="margin-top:0;align-items:center;">${renderSkillTags([{tags:ls.tags,separator:ls.separator}])}</div>`:''}</div>`}).join('')}</div></div>`}document.getElementById('detailLeaderSkillContainer').innerHTML=lh;let ah='';if(d.active_skills&&d.active_skills.length){ah=`<div class="detail-section"><div class="section-title">${t('sec_active_skills')}</div><div class="ability-list">${d.active_skills.map(sk=>`<div class="ability-item"><div class="ability-icon-wrap">${renderAbilIcon({icon:sk.icon})}</div><div class="ability-info"><div class="ability-name">${esc(sk.name)}</div><div class="ability-detail" style="margin:0;white-space:pre-wrap;">${esc(sk.desc)}</div></div></div>`).join('')}</div></div>`}document.getElementById('detailAbilitiesContainer').innerHTML=ah}else if(type==='stage'){document.getElementById('detailStageRestrictionsContainer').innerHTML=renderStageRestrictions(d);document.getElementById('detailStageMapContainer').innerHTML=renderStageMapSection(d);document.getElementById('detailNpcContainer').innerHTML=renderNpcDetails(d.npc_details||[],d.id,S._stageDetailUiRestore);ensureStageMapNpcHoverBound();ensureStageNpcCompactHoverBound();hideStageNpcHoverPop();scheduleWarmStageNpcHoverThumbs();syncNpcUnitConditionHighlights();const kickTape=()=>kickStageHazardTapeAnimations(document.getElementById('detailStageRestrictionsContainer'));requestAnimationFrame(()=>requestAnimationFrame(kickTape));setTimeout(kickTape,400)}if(type==='character'||type==='unit')requestAnimationFrame(adjustDetailModalLayout)}
 function renderStatsWrapper(d,type){
 let hcf=type==='character'?(d.has_conditional_passive!=null?d.has_conditional_passive:d.has_ex_stats):((d.has_cond_stats)||!!d.has_cond_weapon_range);
 if(type==='character'&&characterHasConditionalChanceOrSupportAbility(d))hcf=true;
@@ -6904,6 +6921,9 @@ function refreshStageMapAndNpcPanels(){
   if(mapHost)mapHost.innerHTML=renderStageMapSection(d);
   const npcHost=document.getElementById('detailNpcContainer');
   if(npcHost)npcHost.innerHTML=renderNpcDetails(d.npc_details||[],d.id,S._stageDetailUiRestore);
+  ensureStageMapNpcHoverBound();
+  ensureStageNpcCompactHoverBound();
+  hideStageNpcHoverPop();
   syncNpcUnitConditionHighlights();
 }
 function _refreshStageMapAndNpcPanelsPreserveScroll(){
@@ -6919,6 +6939,9 @@ function _refreshStageMapAndNpcPanelsPreserveScroll(){
   }
   const npcHost=document.getElementById('detailNpcContainer');
   if(npcHost)npcHost.innerHTML=renderNpcDetails(S.currentDetailData.npc_details||[],S.currentDetailData.id,S._stageDetailUiRestore);
+  ensureStageMapNpcHoverBound();
+  ensureStageNpcCompactHoverBound();
+  hideStageNpcHoverPop();
   syncNpcUnitConditionHighlights();
 }
 function setStageMapReinforcementOnly(on){
@@ -7210,6 +7233,7 @@ function _stageMapScrollContainerToUnit(u){
   return true;
 }
 function focusStageMapNpc(npcId){
+  hideStageNpcHoverPop();
   const nid=String(npcId!=null?npcId:'').trim();
   if(!nid||S.currentDetailType!=='stage'||!S.currentDetailData)return false;
   const md=S.currentDetailData.map_data||{};
@@ -7233,6 +7257,8 @@ function focusStageMapNpc(npcId){
     if(mapHost)mapHost.innerHTML=renderStageMapSection(S.currentDetailData);
     const npcHost=document.getElementById('detailNpcContainer');
     if(npcHost)npcHost.innerHTML=renderNpcDetails(S.currentDetailData.npc_details||[],S.currentDetailData.id,S._stageDetailUiRestore);
+    ensureStageMapNpcHoverBound();
+    ensureStageNpcCompactHoverBound();
   }
   const flash=()=>{
     const wrap=document.getElementById('stageMapGridWrap');
@@ -7302,10 +7328,275 @@ function renderStageNpcCompactTile(n,idx){
   const cHint=firstNpcStrategyHintIconFromCharacter(ch);
   const capBadges=badges.length?`<div class="stage-npc-compact-badges">${badges.join('')}</div>`:'';
   const escapeBtn=_stageNpcCanEscape(npcKey)?`<button type="button" class="stage-npc-escape-btn" onclick="event.stopPropagation();stageEscapeNpc('${escJs(String(npcKey))}')" title="${escAttr(t('stage_map_escape'))}">${stageMapEscapeMechIconHtml('stage-npc-escape-btn-ic')}<span class="stage-npc-escape-btn-label">${esc(t('stage_map_escape'))}</span></button>`:'';
-  return`<div id="npc-detail-${idx}" class="stage-npc-compact-tile npc-card" data-npc-id="${escAttr(String(n.npc_id!=null?n.npc_id:''))}" onclick="focusStageMapNpc('${escJs(String(npcKey))}')" title="${escAttr(lab)}"><div class="stage-npc-compact-pair">${renderStageNpcCompactThumb((u&&(u.thum||u.portrait)),lab,'unit',uid,npcKey,uHint,ch)}${renderStageNpcCompactThumb((ch&&(ch.thum||ch.portrait)),lab,'character',chid,npcKey,cHint)}</div><div class="stage-npc-compact-caption">${esc(lab)}</div>${escapeBtn}${capBadges}</div>`;
+  return`<div id="npc-detail-${idx}" class="stage-npc-compact-tile npc-card" data-npc-id="${escAttr(String(n.npc_id!=null?n.npc_id:''))}" data-npc-idx="${escAttr(String(idx))}" onclick="focusStageMapNpc('${escJs(String(npcKey))}')" aria-label="${escAttr(lab)}"><div class="stage-npc-compact-pair">${renderStageNpcCompactThumb((u&&(u.thum||u.portrait)),lab,'unit',uid,npcKey,uHint,ch)}${renderStageNpcCompactThumb((ch&&(ch.thum||ch.portrait)),lab,'character',chid,npcKey,cHint)}</div><div class="stage-npc-compact-caption">${esc(lab)}</div>${escapeBtn}${capBadges}</div>`;
 }
 function npcDetailsGroupSection(sid,gk,title,rows,open){if(!rows||!rows.length)return'';const tiles=rows.map(r=>renderStageNpcCompactTile(r.n,r.idx)).join('');return`<details class="stage-npc-group" ${open?'open':''}><summary class="stage-npc-group-summary"><span class="stage-npc-summary-title">${esc(title)}</span><span class="stage-npc-count">(${rows.length})</span></summary><div class="stage-npc-compact-grid" data-stage-npc-group="${escAttr(sid+'_'+gk)}">${tiles}</div></details>`}
-function renderNpcDetails(list,stageId,ui){if(!list||!list.length)return`<div class="detail-section"><div class="section-title">${t('sec_npc_details')}</div><div class="ability-item"><div class="ability-info"><div class="ability-detail">${t('none')}</div></div></div></div>`;const sid=String(stageId!=null?stageId:'').replace(/[^a-zA-Z0-9_-]/g,'_')||'stage';const indexed=(list||[]).map((n,i)=>({n,idx:i})).filter(o=>_stageNpcDetailRowVisible(o.n));const guests=indexed.filter(o=>o.n.side==='guest');const friendly=indexed.filter(o=>o.n.side==='friendly');const enemies=indexed.filter(o=>o.n.side==='enemy');const guestOpen=stageNpcGroupOpenFromUi(ui,sid,'guest',true);const friendlyOpen=stageNpcGroupOpenFromUi(ui,sid,'friendly',!guests.length);const enemyOpen=stageNpcGroupOpenFromUi(ui,sid,'enemy',!guests.length&&!friendly.length);const body=npcDetailsGroupSection(sid,'guest',t('stage_npc_guest_tab'),guests,guestOpen)+npcDetailsGroupSection(sid,'friendly',t('stage_npc_friendly_forces_tab'),friendly,friendlyOpen)+npcDetailsGroupSection(sid,'enemy',t('stage_npc_enemy_tab'),enemies,enemyOpen);return`<div class="detail-section"><div class="section-title">${t('sec_npc_details')}</div>${body}</div>`}
+function renderNpcDetails(list,stageId,ui){if(!list||!list.length)return`<div class="detail-section"><div class="section-title">${t('sec_npc_details')}</div><div class="ability-item"><div class="ability-info"><div class="ability-detail">${t('none')}</div></div></div></div>`;const sid=String(stageId!=null?stageId:'').replace(/[^a-zA-Z0-9_-]/g,'_')||'stage';const indexed=(list||[]).map((n,i)=>({n,idx:i})).filter(o=>_stageNpcDetailRowVisible(o.n));const guests=indexed.filter(o=>o.n.side==='guest');const friendly=indexed.filter(o=>o.n.side==='friendly');const enemies=indexed.filter(o=>o.n.side==='enemy');const guestOpen=stageNpcGroupOpenFromUi(ui,sid,'guest',false);const friendlyOpen=stageNpcGroupOpenFromUi(ui,sid,'friendly',false);const enemyOpen=stageNpcGroupOpenFromUi(ui,sid,'enemy',false);const body=npcDetailsGroupSection(sid,'guest',t('stage_npc_guest_tab'),guests,guestOpen)+npcDetailsGroupSection(sid,'friendly',t('stage_npc_friendly_forces_tab'),friendly,friendlyOpen)+npcDetailsGroupSection(sid,'enemy',t('stage_npc_enemy_tab'),enemies,enemyOpen);return`<div class="detail-section"><div class="section-title">${t('sec_npc_details')}</div>${body}</div>`}
+function _stageNpcHoverCanUse(){
+  try{return !!(window.matchMedia&&window.matchMedia('(hover: hover) and (pointer: fine)').matches)}catch(_){return true}
+}
+function _stageNpcHoverIsCoarse(){
+  try{return !!(window.matchMedia&&window.matchMedia('(hover: none), (pointer: coarse)').matches)}catch(_){return false}
+}
+const _STAGE_MAP_NPC_HOVER_SEL='#stageMapGridWrap .map-cell.npc-clickable, #stageMapGridWrap .stage-map-parent-slot.npc-clickable, #stageMapGridWrap .stage-map-escape-unit.npc-clickable';
+function _stageNpcHoverNameOf(x){
+  if(x==null)return'';
+  if(typeof x==='string')return x.trim();
+  if(typeof x!=='object')return'';
+  return String(x.display_name||x.name||'').trim();
+}
+function _stageNpcHoverListNames(rows,maxN){
+  const out=[];
+  (rows||[]).forEach(x=>{
+    if(out.length>=maxN)return;
+    const n=_stageNpcHoverNameOf(x);
+    if(n)out.push(n);
+  });
+  return out;
+}
+function _stageNpcHoverStatChips(raw,order,type){
+  if(!raw||typeof raw!=='object')return'';
+  const bits=[];
+  (order||[]).forEach(k=>{
+    if(raw[k]==null||raw[k]==='')return;
+    const v=Math.round(Number(raw[k])||0);
+    const lab=(typeof tStat==='function')?tStat(k,type):k;
+    bits.push(`<span class="stage-npc-hover-stat"><span class="stage-npc-hover-stat-k">${esc(lab)}</span><span class="stage-npc-hover-stat-v">${fmtN(v)}</span></span>`);
+  });
+  return bits.length?`<div class="stage-npc-hover-stats">${bits.join('')}</div>`:'';
+}
+function _stageNpcHoverNamedBlock(title,names){
+  if(!names||!names.length)return'';
+  return`<div class="stage-npc-hover-block"><div class="stage-npc-hover-block-title">${esc(title)}</div><ul class="stage-npc-hover-list">${names.map(n=>`<li>${esc(n)}</li>`).join('')}</ul></div>`;
+}
+function _stageNpcRowFromHoverAnchor(anchor){
+  if(!anchor)return null;
+  const list=(S.currentDetailData&&S.currentDetailData.npc_details)||[];
+  const nid=String(anchor.getAttribute('data-npc-map-npc-id')||anchor.getAttribute('data-npc-id')||'').trim();
+  if(nid){
+    const hit=_resolveStageNpcRow(nid);
+    if(hit&&hit.row)return hit.row;
+    const found=list.find(r=>String(r&&r.npc_id)===nid);
+    if(found)return found;
+  }
+  const rawD=anchor.getAttribute('data-npc-map-detail');
+  if(rawD!=null&&String(rawD).trim()!==''){
+    const i=parseInt(rawD,10);
+    if(!Number.isNaN(i)&&list[i])return list[i];
+  }
+  const idx=parseInt(anchor.getAttribute('data-npc-idx'),10);
+  if(!Number.isNaN(idx)&&list[idx])return list[idx];
+  const uid=String(anchor.getAttribute('data-npc-map-unit-id')||'').trim();
+  if(uid){
+    const hit=_resolveStageNpcRowByUnitId(uid);
+    if(hit&&hit.row)return hit.row;
+  }
+  return null;
+}
+function _stageNpcHoverKeyFromAnchor(anchor,row){
+  if(row&&row.npc_id!=null)return String(row.npc_id);
+  if(!anchor)return'';
+  return String(anchor.getAttribute('data-npc-map-npc-id')||anchor.getAttribute('data-npc-id')||anchor.getAttribute('data-npc-map-detail')||'');
+}
+function _stageNpcHoverThumbSrc(path){
+  if(!path)return'';
+  return isRasterWebpCandidate(path)?imgUrlWebp(path):imgUrl(path);
+}
+function _stageNpcHoverWarmRow(n){
+  if(!n||typeof n!=='object')return;
+  const u=n.unit,ch=n.character;
+  if(u)warmPathDetailImg(u.thum||u.portrait);
+  if(ch)warmPathDetailImg(ch.thum||ch.portrait);
+}
+function scheduleWarmStageNpcHoverThumbs(){
+  const go=()=>{
+    if(S.currentDetailType!=='stage'||!S.currentDetailData)return;
+    const list=S.currentDetailData.npc_details||[];
+    let n=0;
+    for(let i=0;i<list.length&&n<28;i++){
+      const row=list[i];
+      if(!row)continue;
+      const ch=row.character;
+      const path=ch&&(ch.thum||ch.portrait);
+      if(!path)continue;
+      warmPathDetailImg(path);
+      n++;
+    }
+  };
+  if(window.requestIdleCallback)requestIdleCallback(go,{timeout:2200});
+  else setTimeout(go,500);
+}
+function renderStageNpcHoverPopHtml(n,opts){
+  if(!n||typeof n!=='object')return'';
+  const o=opts||{};
+  const u=n.unit||null,ch=n.character||null;
+  const lab=_stageNpcKitLabel(n)||`NPC ${n.npc_id}`;
+  const uSrc=_stageNpcHoverThumbSrc(u&&(u.thum||u.portrait));
+  const cSrc=_stageNpcHoverThumbSrc(ch&&(ch.thum||ch.portrait));
+  const uThumb=uSrc?`<img src="${uSrc}" alt="" loading="eager" decoding="async" fetchpriority="high" onerror="gameImageUrlFallback(this)">`:'';
+  const cThumb=cSrc?`<img src="${cSrc}" alt="" loading="eager" decoding="async" fetchpriority="high" onerror="gameImageUrlFallback(this)">`:'';
+  const badges=[];
+  if(u&&u.level>0)badges.push(`<span class="stage-npc-meta-badge">${esc(t('sa_unit_lv')!=='sa_unit_lv'?t('sa_unit_lv'):'Unit Lv')} ${fmtN(u.level)}</span>`);
+  if(ch&&ch.level>0)badges.push(`<span class="stage-npc-meta-badge">${esc(t('sa_char_lv')!=='sa_char_lv'?t('sa_char_lv'):'Pilot Lv')} ${fmtN(ch.level)}</span>`);
+  if(n.is_story_event_boss)badges.push(`<span class="stage-npc-meta-badge stage-npc-meta-badge--boss">${esc(t('stage_story_boss')!=='stage_story_boss'?t('stage_story_boss'):'Story boss')}</span>`);
+  const uStats=_stageNpcHoverStatChips(u&&u.stats_raw,['HP','EN','Attack','Defense','Mobility','Move'],'unit');
+  const cStats=_stageNpcHoverStatChips(ch&&ch.stats_raw,['Ranged','Melee','Awaken','Defense','Reaction'],'character');
+  const wNames=_stageNpcHoverListNames(u&&u.weapons,5);
+  const uAb=_stageNpcHoverListNames(u&&u.abilities,4);
+  const cAb=_stageNpcHoverListNames(ch&&ch.abilities,3);
+  const cSk=_stageNpcHoverListNames(ch&&ch.skills,3);
+  const openBtn=o.showOpen?`<button type="button" class="stage-npc-hover-open" data-stage-npc-hover-open="1">${esc(t('sec_npc_details')||'NPC details')}</button>`:'';
+  return`<div class="stage-npc-hover-card"><div class="stage-npc-hover-head"><div class="stage-npc-hover-thumbs">${uThumb}${cThumb}</div><div class="stage-npc-hover-head-text"><div class="stage-npc-hover-name">${esc(lab)}</div>${badges.length?`<div class="stage-npc-hover-badges">${badges.join('')}</div>`:''}</div></div>${uStats}${cStats}${_stageNpcHoverNamedBlock(t('sec_weapons')||'Weapons',wNames)}${_stageNpcHoverNamedBlock(t('sec_abilities')||'Abilities',uAb)}${_stageNpcHoverNamedBlock(t('sec_skills')||'Skills',cSk.concat(cAb).slice(0,4))}${openBtn}</div>`;
+}
+let _stageNpcHoverHideTimer=null;
+let _stageNpcHoverNpcId='';
+let _stageNpcHoverSticky=false;
+let _stageNpcHoverOpenArgs=null;
+function hideStageNpcHoverPop(){
+  if(_stageNpcHoverHideTimer){clearTimeout(_stageNpcHoverHideTimer);_stageNpcHoverHideTimer=null}
+  _stageNpcHoverNpcId='';
+  _stageNpcHoverSticky=false;
+  _stageNpcHoverOpenArgs=null;
+  const el=document.getElementById('stageNpcHoverPop');
+  if(!el)return;
+  el.hidden=true;
+  el.classList.remove('is-open','is-sticky');
+  el.innerHTML='';
+}
+function ensureStageNpcHoverPopEl(){
+  let el=document.getElementById('stageNpcHoverPop');
+  if(el)return el;
+  el=document.createElement('div');
+  el.id='stageNpcHoverPop';
+  el.className='stage-npc-hover-pop';
+  el.hidden=true;
+  el.setAttribute('role','tooltip');
+  el.addEventListener('click',e=>{
+    const btn=e.target&&e.target.closest&&e.target.closest('[data-stage-npc-hover-open]');
+    if(!btn)return;
+    e.preventDefault();
+    e.stopPropagation();
+    const args=_stageNpcHoverOpenArgs;
+    hideStageNpcHoverPop();
+    if(args)onStageMapUnitClick(args.detailIdx,e,args.unitId,args.npcId,args.flashVariant);
+  });
+  document.body.appendChild(el);
+  return el;
+}
+function positionStageNpcHoverPop(el,anchor){
+  if(!el||!anchor)return;
+  const r=anchor.getBoundingClientRect();
+  const pad=10;
+  const vw=window.innerWidth||0,vh=window.innerHeight||0;
+  el.style.left='0px';el.style.top='0px';
+  const tw=el.offsetWidth||280,th=el.offsetHeight||160;
+  let left=r.left+r.width/2-tw/2;
+  let top=r.top-th-8;
+  if(top<pad)top=r.bottom+8;
+  if(left<pad)left=pad;
+  if(left+tw>vw-pad)left=Math.max(pad,vw-tw-pad);
+  if(top+th>vh-pad)top=Math.max(pad,vh-th-pad);
+  el.style.left=Math.round(left)+'px';
+  el.style.top=Math.round(top)+'px';
+}
+function showStageNpcHoverPop(anchor,opts){
+  if(!anchor)return false;
+  const o=opts||{};
+  const sticky=!!o.sticky;
+  const n=_stageNpcRowFromHoverAnchor(anchor);
+  if(!n){if(!sticky)hideStageNpcHoverPop();return false}
+  _stageNpcHoverWarmRow(n);
+  const key=_stageNpcHoverKeyFromAnchor(anchor,n);
+  if(_stageNpcHoverHideTimer){clearTimeout(_stageNpcHoverHideTimer);_stageNpcHoverHideTimer=null}
+  _stageNpcHoverSticky=sticky;
+  _stageNpcHoverNpcId=key;
+  _stageNpcHoverOpenArgs=o.openArgs||null;
+  const el=ensureStageNpcHoverPopEl();
+  el.innerHTML=renderStageNpcHoverPopHtml(n,{showOpen:sticky});
+  el.hidden=false;
+  el.classList.add('is-open');
+  el.classList.toggle('is-sticky',sticky);
+  positionStageNpcHoverPop(el,anchor);
+  return true;
+}
+function scheduleHideStageNpcHoverPop(){
+  if(_stageNpcHoverSticky)return;
+  if(_stageNpcHoverHideTimer)clearTimeout(_stageNpcHoverHideTimer);
+  _stageNpcHoverHideTimer=setTimeout(()=>{_stageNpcHoverHideTimer=null;if(!_stageNpcHoverSticky)hideStageNpcHoverPop()},80);
+}
+function _stageNpcMapClickArgsFromCell(cell){
+  let detailIdx=null;
+  const rawD=cell.getAttribute('data-npc-map-detail');
+  if(rawD!=null&&String(rawD).trim()!==''){
+    const n=parseInt(rawD,10);
+    if(!Number.isNaN(n))detailIdx=n;
+  }
+  const npcId=String(cell.getAttribute('data-npc-map-npc-id')||'').trim();
+  const unitId=String(cell.getAttribute('data-npc-map-unit-id')||'').trim();
+  const stackCell=cell.getAttribute('data-npc-map-stack-cell')==='1';
+  const reinfUnit=cell.getAttribute('data-npc-map-reinf-unit')==='1';
+  const flashVariant=(stackCell&&reinfUnit)?'stackReinf':undefined;
+  return{detailIdx,unitId,npcId,flashVariant};
+}
+function ensureStageMapNpcHoverBound(){
+  const dm=document.getElementById('detailModal');
+  if(!dm||dm.dataset.stageMapNpcHoverWired==='1')return;
+  dm.dataset.stageMapNpcHoverWired='1';
+  dm.addEventListener('pointerover',e=>{
+    if(!_stageNpcHoverCanUse()||_stageNpcHoverSticky)return;
+    const cell=e.target&&e.target.closest&&e.target.closest(_STAGE_MAP_NPC_HOVER_SEL);
+    if(!cell||!dm.contains(cell))return;
+    _stageNpcHoverWarmRow(_stageNpcRowFromHoverAnchor(cell));
+    showStageNpcHoverPop(cell,{sticky:false,openArgs:_stageNpcMapClickArgsFromCell(cell)});
+  });
+  dm.addEventListener('pointerout',e=>{
+    if(_stageNpcHoverSticky)return;
+    const cell=e.target&&e.target.closest&&e.target.closest(_STAGE_MAP_NPC_HOVER_SEL);
+    if(!cell)return;
+    const to=e.relatedTarget;
+    if(to&&(cell.contains(to)||(to.closest&&to.closest('#stageNpcHoverPop'))))return;
+    scheduleHideStageNpcHoverPop();
+  });
+  dm.addEventListener('click',e=>{
+    if(!_stageNpcHoverSticky)return;
+    const pop=document.getElementById('stageNpcHoverPop');
+    if(pop&&pop.contains(e.target))return;
+    const cell=e.target&&e.target.closest&&e.target.closest(_STAGE_MAP_NPC_HOVER_SEL);
+    if(cell)return;
+    hideStageNpcHoverPop();
+  },true);
+  const body=document.querySelector('#detailModal .detail-body')||document.getElementById('modalContent');
+  if(body&&body.dataset.npcHoverScrollBound!=='1'){
+    body.dataset.npcHoverScrollBound='1';
+    body.addEventListener('scroll',()=>{hideStageNpcHoverPop()},{passive:true});
+  }
+  const mapWrapHost=document.getElementById('detailStageMapContainer');
+  if(mapWrapHost&&mapWrapHost.dataset.npcHoverScrollBound!=='1'){
+    mapWrapHost.dataset.npcHoverScrollBound='1';
+    mapWrapHost.addEventListener('scroll',()=>{hideStageNpcHoverPop()},{passive:true,capture:true});
+  }
+}
+function ensureStageNpcCompactHoverBound(){
+  ensureStageMapNpcHoverBound();
+  const root=document.getElementById('detailNpcContainer');
+  if(!root||root.dataset.npcHoverBound==='1')return;
+  root.dataset.npcHoverBound='1';
+  root.addEventListener('pointerover',e=>{
+    if(!_stageNpcHoverCanUse()||_stageNpcHoverSticky)return;
+    const tile=e.target&&e.target.closest&&e.target.closest('.stage-npc-compact-tile');
+    if(!tile||!root.contains(tile))return;
+    _stageNpcHoverWarmRow(_stageNpcRowFromHoverAnchor(tile));
+    showStageNpcHoverPop(tile,{sticky:false});
+  });
+  root.addEventListener('pointerout',e=>{
+    if(_stageNpcHoverSticky)return;
+    const tile=e.target&&e.target.closest&&e.target.closest('.stage-npc-compact-tile');
+    if(!tile||!root.contains(tile))return;
+    const to=e.relatedTarget;
+    if(to&&(tile.contains(to)||(to.closest&&to.closest('#stageNpcHoverPop'))))return;
+    scheduleHideStageNpcHoverPop();
+  });
+}
 function renderSeries(s,listTab){if(!s||!s.length)return'';const clk=listTab==='characters'||listTab==='units';const tip=esc(t('search_series_click'));return`<div class="detail-series-row">${s.map(x=>{const rawId=x.id!=null?String(x.id).trim():'';if(!clk){if(x.icon)return`<img class="series-icon-img" src="${imgUrl(x.icon)}" alt="${esc(x.name)}" title="${esc(x.name)}" loading="lazy" onerror="this.outerHTML='<span class=\\'series-text-fallback\\'>${esc(x.name)}</span>'">`;return`<span class="series-text-fallback" title="${esc(x.name)}">${esc(x.name)}</span>`}if(!rawId){if(x.icon)return`<img class="series-icon-img" src="${imgUrl(x.icon)}" alt="${esc(x.name)}" title="${esc(x.name)}" loading="lazy" onerror="this.outerHTML='<span class=\\'series-text-fallback\\'>${esc(x.name)}</span>'">`;return`<span class="series-text-fallback">${esc(x.name)}</span>`}const inner=x.icon?`<img class="series-icon-img series-icon-clickable" src="${imgUrl(x.icon)}" alt="${esc(x.name)}" loading="lazy" onerror="this.style.display='none';var fb=this.nextElementSibling;if(fb)fb.style.display='inline-flex'"><span class="series-text-fallback series-icon-clickable" style="display:none">${esc(x.name)}</span>`:`<span class="series-text-fallback series-icon-clickable">${esc(x.name)}</span>`;return`<button type="button" class="series-icon-hitbox" data-series-id="${escAttr(rawId)}" data-list-tab="${escAttr(listTab)}" data-series-name="${escAttr(x.name||'')}" title="${tip}" aria-label="${tip}">${inner}</button>`}).join('')}</div>`}
 
 function createTagHtml(tag,opts){const o=opts||{};const tn=typeof tag==='string'?tag:(tag.name||'');const tt=typeof tag==='string'?'':(tag.type||'');const tid=typeof tag==='string'?'':(tag.id||'');const preferred=(o.defaultTarget==='unit'||o.defaultTarget==='character')?o.defaultTarget:'';const forceTagModal=!!o.force_tag_modal;let li='';if(tt==='character')li='/static/images/UI/UI_Common_Icon_Category_Chara_Main.webp';else li='/static/images/UI/UI_Common_Icon_Category_MS_Main.webp';let onClick=`openTagModal('${escJs(tn)}','or'${preferred?`,'${preferred}'`:''})`;if(tt==='series'&&tid&&!forceTagModal){const tab=(preferred==='character')?'characters':'units';onClick=`openSeriesModal('${escJs(tid)}','${tab}','${escJs(tn)}')`}const dataUnit=tt==='unit'&&tid&&String(tid).length>=9?` data-cond-unit-id="${escAttr(String(tid))}"`:'';return`<div class="tag-composite"${dataUnit} onclick="event.stopPropagation();${onClick}" title="Click to view"><div class="tag-part-icon">${li?`<img class="tag-icon-fg" src="${imgUrl(li)}" alt="" loading="lazy" onerror="this.style.display='none'">`:''}</div><div class="tag-part-value">${esc(tn)}</div></div>`}
@@ -7712,22 +8003,24 @@ function wireStageMapNpcClicks(){
 const dm=document.getElementById('detailModal');
 if(!dm||dm.dataset.stageMapNpcWired==='1')return;
 dm.dataset.stageMapNpcWired='1';
+ensureStageMapNpcHoverBound();
 dm.addEventListener('click',function(e){
-const cell=e.target&&e.target.closest&&e.target.closest('#stageMapGridWrap .map-cell.npc-clickable, #stageMapGridWrap .stage-map-parent-slot.npc-clickable, #stageMapGridWrap .stage-map-escape-unit.npc-clickable');
+const cell=e.target&&e.target.closest&&e.target.closest(_STAGE_MAP_NPC_HOVER_SEL);
 if(!cell)return;
 e.stopPropagation();
-let detailIdx=null;
-const rawD=cell.getAttribute('data-npc-map-detail');
-if(rawD!=null&&String(rawD).trim()!==''){
-const n=parseInt(rawD,10);
-if(!Number.isNaN(n))detailIdx=n;
+const args=_stageNpcMapClickArgsFromCell(cell);
+const key=_stageNpcHoverKeyFromAnchor(cell,_stageNpcRowFromHoverAnchor(cell));
+const coarse=_stageNpcHoverIsCoarse()||!_stageNpcHoverCanUse();
+if(coarse){
+  const pop=document.getElementById('stageNpcHoverPop');
+  const already=!!(_stageNpcHoverSticky&&_stageNpcHoverNpcId&&key&&_stageNpcHoverNpcId===key&&pop&&!pop.hidden);
+  if(!already){
+    showStageNpcHoverPop(cell,{sticky:true,openArgs:args});
+    return;
+  }
 }
-const npcId=String(cell.getAttribute('data-npc-map-npc-id')||'').trim();
-const unitId=String(cell.getAttribute('data-npc-map-unit-id')||'').trim();
-const stackCell=cell.getAttribute('data-npc-map-stack-cell')==='1';
-const reinfUnit=cell.getAttribute('data-npc-map-reinf-unit')==='1';
-const flashVariant=(stackCell&&reinfUnit)?'stackReinf':undefined;
-onStageMapUnitClick(detailIdx,e,unitId,npcId,flashVariant);
+hideStageNpcHoverPop();
+onStageMapUnitClick(args.detailIdx,e,args.unitId,args.npcId,args.flashVariant);
 });
 }
 function fmtN(n){return n!=null?Number(n).toLocaleString():'0'}
