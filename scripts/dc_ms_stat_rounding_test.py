@@ -1,4 +1,4 @@
-"""Regression: MS growth % bucket rounding (ceil ATK/HP, floor DEF/MOB/EN/Move).
+"""Regression: MS growth % is integer floor for every stat.
 
 Mirrors _dcMsGrowthFromPct in static/js/app.js.
 Also locks supporter ATK flat floor (Atra LV50/1★ → 191, not half-up 192).
@@ -8,32 +8,15 @@ Run: python scripts/dc_ms_stat_rounding_test.py
 from __future__ import annotations
 
 import math
-import struct
 
-C = math.ceil
 F = math.floor
 
 
-def _f32(x: float) -> float:
-    return struct.unpack("f", struct.pack("f", float(x)))[0]
-
-
 def ms_growth_from_pct(base: int | float, pct_sum: int | float, stat_name: str) -> int:
+    del stat_name
     b = F(max(0, float(base)))
     p = F(float(pct_sum))
-    num = int(b * (100 + p))
-    q = num // 100
-    rem = num % 100
-    if stat_name in ("Attack", "HP"):
-        if rem == 80 or rem == 20:
-            return q
-        if rem == 0:
-            raw = _f32(b) * _f32(1.0 + p / 100.0)
-            if raw > q:
-                return q + 1
-            return q
-        return q + 1
-    return q
+    return (b * (100 + p)) // 100
 
 
 def supporter_flat(base: int, rate: int) -> int:
@@ -41,10 +24,16 @@ def supporter_flat(base: int, rate: int) -> int:
 
 
 def main() -> None:
-    # Sandaime LB2 + OP 12% ATK + squad 5/5 + Sumeragi LB1 leader 36% + flats
+    # V2 Assault Buster (EX) LB3 + Limiter OFF 12% ATK + Carozzo LB1 leader 36% / flats (in-game 2026-10)
+    assert ms_growth_from_pct(98260, 10 + 36, "HP") + 2400 == 145859
+    assert ms_growth_from_pct(11961, 15 + 12 + 36, "Attack") + 360 == 19856
+    assert ms_growth_from_pct(9081, 36, "Defense") == 12350
+    assert ms_growth_from_pct(10095, 36, "Mobility") == 13729
+
+    # Sandaime LB2 + OP 12% ATK + squad 5/5 + Sumeragi LB1 leader 36% + flats (integer floor)
     sand = dict(
-        hp=(90448, 36, 3600, 126610),
-        atk=(9370, 53, 240, 14577),
+        hp=(90448, 36, 3600, 126609),
+        atk=(9370, 53, 240, 14576),
         defense=(8515, 46, 0, 12431),
         mob=(9711, 36, 0, 13206),
         en=(421, 15, 0, 484),
@@ -60,15 +49,12 @@ def main() -> None:
         got = ms_growth_from_pct(base, pct, name_map[stat]) + flat
         assert got == want, f"Sandaime {stat}: got {got}, want {want}"
 
-    # Versal LB1 +15% unit passive ATK +12% OP +5% squad +36% leader +240 ATK flat
     versal_atk = ms_growth_from_pct(10126, 15 + 12 + 5 + 36, "Attack") + 240
-    assert versal_atk == 17252, versal_atk
+    assert versal_atk == 17251, versal_atk
 
-    # Full Armor Hyaku-Shiki Kai LB1 +15% ATK +12% OP +40% leader +5% squad +390 ATK flat (CP off — no combat stacks)
     hyaku_atk = ms_growth_from_pct(10015, 15 + 12 + 40 + 5, "Attack") + 390
     assert hyaku_atk == 17615, hyaku_atk
 
-    # D Gundam Third LB0 +20% HP-tier CP ATK +12% OP +25% leader +2% SameGroup ATK/DEF (Support-role only) +300 ATK flat
     dg_atk = ms_growth_from_pct(7580, 20 + 12 + 25 + 2, "Attack") + 300
     assert dg_atk == 12352, dg_atk
     dg_def = ms_growth_from_pct(6535, 25 + 2, "Defense")
@@ -78,24 +64,17 @@ def main() -> None:
     dg_mob = ms_growth_from_pct(7192, 25, "Mobility")
     assert dg_mob == 8990, dg_mob
 
-    # Susanowo (EX) LB0 Attack-role: unit 15% + OP 12% + Sumeragi LB1 36% (no SameGroup +2) +240 ATK flat
-    assert ms_growth_from_pct(8476, 15 + 12 + 36, "Attack") + 240 == 14056
+    assert ms_growth_from_pct(8476, 15 + 12 + 36, "Attack") + 240 == 14055
     assert ms_growth_from_pct(6237, 36, "Defense") == 8482
-    # HP rem=0 + float32 epsilon → 98427 (not integer-exact 98426)
-    assert ms_growth_from_pct(69725, 36, "HP") + 3600 == 98427
+    assert ms_growth_from_pct(69725, 36, "HP") + 3600 == 98426
     assert ms_growth_from_pct(7238, 36, "Mobility") == 9843
 
-    # Barbatos Lupus Rex (EX) LB2 + Atra LV50/1★: floor support ATK 191 (not half-up 192)
     assert supporter_flat(300, 6384) == 191
-    assert ms_growth_from_pct(10801, 15 + 12 + 36, "Attack") + 191 == 17797
-    assert ms_growth_from_pct(10801, 30 + 12 + 36, "Attack") + 191 == 19417
+    assert ms_growth_from_pct(10801, 15 + 12 + 36, "Attack") + 191 == 17796
+    assert ms_growth_from_pct(10801, 30 + 12 + 36, "Attack") + 191 == 19416
     assert ms_growth_from_pct(8816, -10 + 36, "Defense") == 11108
 
-    # Round (old bug) would undershoot ATK/HP and overshoot DEF/MOB on Sandaime
-    assert int(round(9370 * 1.53)) + 240 == 14576
-    assert int(round(8515 * 1.46)) == 12432
-
-    print("dc_ms_stat_rounding_test: OK (ceil MS ATK + floor supporter flat + HP f32 rem0)")
+    print("dc_ms_stat_rounding_test: OK (integer-floor MS growth + supporter flat)")
 
 
 if __name__ == "__main__":

@@ -8785,7 +8785,11 @@ if(keys&&keys.length)atkTypes=keys.slice();
 if(!atkTypes.length)atkTypes.push('Ranged');
 return atkTypes;
 }
+/** Vigor damage dealt (⑨ pool): High 10% / Max 20% / Supercharged 30%. Not the MP weapon-power trait table. */
 const DC_MP={medium:{dmgBonus:0,critMult:0.10},high:{dmgBonus:0.10,critMult:0.20},max:{dmgBonus:0.20,critMult:0.20},super:{dmgBonus:0.30,critMult:0.30}};
+/** “Higher own MP → weapon power (up to cap%)” only: High 10% / Max 15% / Supercharged 20% of a 20% cap (Barrage EX 7200 → 7920 at High). */
+const DC_MP_TRAIT_PWR_STEP={medium:0,high:10,max:15,super:20};
+const DC_MP_TRAIT_PWR_SUPER_STEP=20;
 function _dcNormMpLevel(lv){
 const x=String(lv!=null?lv:'').trim();
 if(x==='supercharged')return'super';
@@ -8794,6 +8798,33 @@ if(DC_MP[x])return x;
 return'medium';
 }
 function _dcMpProfile(lv){return DC_MP[_dcNormMpLevel(lv)]||DC_MP.medium;}
+function _dcVigorDmgBonusPct(lv){return Math.round((_dcMpProfile(lv).dmgBonus||0)*100);}
+function _dcMpTraitAppliedPct(maxPct,mpLevel){
+const cap=maxPct|0;if(cap<=0)return 0;
+const step=DC_MP_TRAIT_PWR_STEP[_dcNormMpLevel(mpLevel)]|0;
+return Math.round(cap*step/DC_MP_TRAIT_PWR_SUPER_STEP);
+}
+function _dcCurrentMpLevel(){return(S&&S.dc&&S.dc.mpLevel!=null&&S.dc.mpLevel!=='')?S.dc.mpLevel:'medium';}
+function _dcWeaponTraitPowerBuckets(wt,mpLevel){
+const traitDistPow=Math.min(100,(wt.distPowerMax||0)+(wt.distCoreMax||0));
+let hpPow=wt.hpPowerMax|0;
+let mpPow=_dcMpTraitAppliedPct(wt.mpPowerMax,mpLevel);
+let enPow=wt.enPowerMax|0;
+const tagBonus=wt.enemyTagWpMaxBonus|0;
+if(tagBonus>0&&_dcEnemyTagWeaponBonusActive(wt)){
+if((wt.hpPowerMax|0)>0)hpPow+=tagBonus;
+else if((wt.mpPowerMax|0)>0)mpPow+=tagBonus;
+else if((wt.enPowerMax|0)>0)enPow+=tagBonus;
+else hpPow+=tagBonus;
+}
+return{traitDistPow,hpPow,mpPow,enPow,traitScaling:hpPow+mpPow+enPow};
+}
+function _dcMpTraitPowNoteHtml(maxPct){
+const cap=maxPct|0;
+const applied=_dcMpTraitAppliedPct(cap,_dcCurrentMpLevel());
+if(applied>=cap)return`+${cap}% (${esc(t('dc_wpn_trait_max_applied'))})`;
+return`+${applied}% (${esc(_dcVigorLabel(_dcCurrentMpLevel()))}; max ${cap}%)`;
+}
 function _dcVigorLabel(lv){
 const k=_dcNormMpLevel(lv);
 if(k==='high')return t('dc_vigor_high');
@@ -9132,20 +9163,9 @@ const sspFlat=_dcDcIncludeSspWeaponEffects()?(wpn.ssp_power_bonus|0):0;
 const sheetPow=baseLv+sspFlat;
 const traitLv=(wpn&&wpn.levels&&wpn.levels.length)?Math.min(Math.max(0,lvIdx|0),wpn.levels.length-1):0;
 const wt=_dcParseWeaponTraits(wpn,traitLv);
-const traitDistPow=Math.min(100,(wt.distPowerMax||0)+(wt.distCoreMax||0));
-let hpPow=wt.hpPowerMax|0;
-let mpPow=wt.mpPowerMax|0;
-let enPow=wt.enPowerMax|0;
-const tagBonus=wt.enemyTagWpMaxBonus|0;
-if(tagBonus>0&&_dcEnemyTagWeaponBonusActive(wt)){
-if(hpPow>0)hpPow+=tagBonus;
-else if(mpPow>0)mpPow+=tagBonus;
-else if(enPow>0)enPow+=tagBonus;
-else hpPow+=tagBonus;
-}
+const b=_dcWeaponTraitPowerBuckets(wt,_dcCurrentMpLevel());
 const opPct=_dcOptionPartWeaponPowerPct(optionParts||[],wpn,atkUnitData)|0;
-const traitScaling=hpPow+mpPow+enPow;
-return Math.floor(sheetPow*(100+traitDistPow+traitScaling+opPct)/100);
+return Math.floor(sheetPow*(100+b.traitDistPow+b.traitScaling+opPct)/100);
 }
 function _dcRefreshFinalWpnPowPlaceholder(){
 const el=document.getElementById('dcFinalWpnPow');if(!el)return;
@@ -14110,7 +14130,7 @@ if((utb.atkPct|0)>0||(utb.defPct|0)>0){
 unitTurnBuffHtml=`<div class="dc-section-label" style="margin-top:10px;color:var(--accent-cyan)">Unit skill (1 turn)</div><div style="font-size:12px;line-height:1.6">`;
 if((utb.atkPct|0)>0)unitTurnBuffHtml+=`<label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin-bottom:4px"><input type="checkbox" ${S.dc.unitTurnBuffAtk?'checked':''} onchange="setDcUnitTurnBuffAtk(this.checked)"><span>MS ATK +${utb.atkPct}% (1 turn)</span></label>`;
 if((utb.defPct|0)>0)unitTurnBuffHtml+=`<label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin-bottom:4px"><input type="checkbox" ${S.dc.unitTurnBuffDef?'checked':''} onchange="setDcUnitTurnBuffDef(this.checked)"><span>MS DEF +${utb.defPct}% (1 turn)</span></label>`;
-unitTurnBuffHtml+=`<div style="font-size:10px;color:var(--text-muted);margin-top:4px;line-height:1.35">Detected from this unit’s skill descriptions. MS ATK +% (1 turn) stacks in the same % bucket as other MS Attack lines; the panel uses <strong>ceil</strong> on that bucket to match the in-game MS sheet (same value used in damage ⑧). MS DEF toggle updates the panel only (damage uses the <strong>defender</strong>’s MS DEF).</div></div>`;
+unitTurnBuffHtml+=`<div style="font-size:10px;color:var(--text-muted);margin-top:4px;line-height:1.35">Detected from this unit’s skill descriptions. MS ATK +% (1 turn) stacks in the same % bucket as other MS Attack lines; the panel uses integer floor on that bucket to match the in-game MS sheet (same value used in damage ⑧). MS DEF toggle updates the panel only (damage uses the <strong>defender</strong>’s MS DEF).</div></div>`;
 }
 const uGridBase=`stats-grid dc-atk-ers dc-stat-visual--${uMode} dc-stat-grid-4`;
 const uGridCls=sheetBuffOn?`${uGridBase} dc-stats-mini--ml-buff`:uGridBase;
@@ -15291,20 +15311,9 @@ const sspFlat=_dcDcIncludeSspWeaponEffects()?(wpn.ssp_power_bonus|0):0;
 const sheetPow=baseLv+sspFlat;
 const traitLv=(wpn&&wpn.levels&&wpn.levels.length)?Math.min(Math.max(0,lvIdx|0),wpn.levels.length-1):0;
 const wt=_dcParseWeaponTraits(wpn,traitLv);
-const traitDistPow=Math.min(100,(wt.distPowerMax||0)+(wt.distCoreMax||0));
-let hpPow=wt.hpPowerMax|0;
-let mpPow=wt.mpPowerMax|0;
-let enPow=wt.enPowerMax|0;
-const tagBonus=wt.enemyTagWpMaxBonus|0;
-if(tagBonus>0&&_dcEnemyTagWeaponBonusActive(wt)){
-if(hpPow>0)hpPow+=tagBonus;
-else if(mpPow>0)mpPow+=tagBonus;
-else if(enPow>0)enPow+=tagBonus;
-else hpPow+=tagBonus;
-}
-const traitScaling=hpPow+mpPow+enPow;
+const b=_dcWeaponTraitPowerBuckets(wt,_dcCurrentMpLevel());
 // Integer % apply (floor): 6480×117/100 → 7581 for Full Burst +17% remaining EN.
-return Math.floor(sheetPow*(100+traitDistPow+traitScaling)/100);
+return Math.floor(sheetPow*(100+b.traitDistPow+b.traitScaling)/100);
 }
 /** DC weapon header PWR: raw level table power + SSP flat in SSP mode only — excludes trait % scaling (that affects damage via _dcComputedWeaponPowerForLevel). */
 function _dcWpnSheetFlatPower(wpn,lvIdx){
@@ -15420,7 +15429,7 @@ h+=`<div style="font-weight:700;color:var(--text-secondary);margin:4px 0 2px">${
 if(distBase)h+=`<div style="color:var(--text-muted)">${esc(t('dc_wpn_trait_dist'))}: +${distBase}% (${esc(t('dc_wpn_trait_max_applied'))})</div>`;
 if(coreExtra)h+=`<div style="color:#c084fc">${esc(t('dc_wpn_trait_custom_core'))}: +${coreExtra}% (${esc(t('dc_wpn_trait_max_applied'))})</div>`;
 if(wt.hpPowerMax)h+=`<div style="color:var(--text-muted)">${esc(t('dc_wpn_trait_hp'))}: +${wt.hpPowerMax}% (${esc(t('dc_wpn_trait_max_applied'))})</div>`;
-if(wt.mpPowerMax)h+=`<div style="color:var(--text-muted)">${esc(t('dc_wpn_trait_mp'))}: +${wt.mpPowerMax}% (${esc(t('dc_wpn_trait_max_applied'))})</div>`;
+if(wt.mpPowerMax)h+=`<div style="color:var(--text-muted)">${esc(t('dc_wpn_trait_mp'))}: ${_dcMpTraitPowNoteHtml(wt.mpPowerMax)}</div>`;
 if(wt.enPowerMax)h+=`<div style="color:var(--text-muted)">${esc(t('dc_wpn_trait_en')||'EN scaling')}: +${wt.enPowerMax}% (${esc(t('dc_wpn_trait_max_applied'))})</div>`;
 if((cw.ssp_traits||[]).length&&!_dcDcIncludeSspWeaponEffects())h+=`<div style="color:#eab308;margin-top:4px">${esc(t('dc_wpn_trait_ssp_hint'))}</div>`;
 }
@@ -15469,7 +15478,7 @@ if(distBase)h+=`<div style="color:var(--text-muted)">${esc(t('dc_wpn_trait_dist'
 const coreExtra2=Math.max(0,effDistMax-distBase);
 if(coreExtra2)h+=`<div style="color:#c084fc">${esc(t('dc_wpn_trait_custom_core'))}: +${coreExtra2}% (${esc(t('dc_wpn_trait_max_applied'))})</div>`;
 if(wt.hpPowerMax)h+=`<div style="color:var(--text-muted)">${esc(t('dc_wpn_trait_hp'))}: +${wt.hpPowerMax}% (${esc(t('dc_wpn_trait_max_applied'))})</div>`;
-if(wt.mpPowerMax)h+=`<div style="color:var(--text-muted)">${esc(t('dc_wpn_trait_mp'))}: +${wt.mpPowerMax}% (${esc(t('dc_wpn_trait_max_applied'))})</div>`;
+if(wt.mpPowerMax)h+=`<div style="color:var(--text-muted)">${esc(t('dc_wpn_trait_mp'))}: ${_dcMpTraitPowNoteHtml(wt.mpPowerMax)}</div>`;
 if(wt.enPowerMax)h+=`<div style="color:var(--text-muted)">${esc(t('dc_wpn_trait_en')||'EN scaling')}: +${wt.enPowerMax}% (${esc(t('dc_wpn_trait_max_applied'))})</div>`;
 if((cw.ssp_traits||[]).length&&!_dcDcIncludeSspWeaponEffects())h+=`<div style="color:#eab308;margin-top:4px">${esc(t('dc_wpn_trait_ssp_hint'))}</div>`;
 }
@@ -17151,27 +17160,13 @@ cb.disabled=false;
 _dcApplyAutoZeonForMatchingDefender(info.wt);
 cb.checked=S.dc.applyZeonEnemyTag!==false;
 }
-/** In-game MS growth % bucket: ceil on Attack/HP, floor on DEF/MOB/EN/Move (LB growth base is floored).
- *  Integer rem rules match most sheet totals; rem===0 + float32 epsilon covers Unity CeilToInt(base*(1+pct/100f))
- *  when int math is exact but f32 sits just above q (Susanowo HP +36% → 98427 not 98426). */
+/** In-game MS growth %: integer floor base×(100+pct)/100 for every stat (HP/ATK/DEF/MOB/EN/Move).
+ *  V2 Assault Buster +36% leader +12% OP ATK: HP 98260×1.46 → 143459; ATK 11961×1.63 → 19496 (ceil was +1 vs sheet). */
 function _dcMsGrowthFromPct(base,pctSum,statName){
 const F=Math.floor;
 const b=F(Math.max(0,Number(base)||0));
 const p=F(Number(pctSum)||0);
-const num=b*(100+p);
-const q=F(num/100);
-const rem=((num%100)+100)%100;
-const k=String(statName||'');
-if(k==='Attack'||k==='HP'){
-if(rem===80||rem===20)return q;
-if(rem===0){
-const f=Math.fround(b)*Math.fround(1+p/100);
-if(f>q)return q+1;
-return q;
-}
-return q+1;
-}
-return q;
+return F(b*(100+p)/100);
 }
 /** Breakdown +lines under MS HP/ATK/DEF/MOB: same per-stat rounding as panel totals. Supporter flats use a distinct color. */
 function _dcMsStatEnhancementLinesHtml(ctx,atkUnitStats){
@@ -17221,7 +17216,7 @@ const pctAtkNoEx=_dcMsGrowthFromPct(atkBase,pAtk+opAt+tAtk+sheetBuffPct+lp+lpAd+
 const atkHtml=L(pctAtkNoEx,'Option part %, 1-turn MS ATK %, leader %, SameGroup +2% ATK/DEF (Support-role MS), ML/GO, squad conditions (EX squad % is on the EX line below; Support Attack/Counter % is combat-only)')+L(opFlat.Attack|0,'Option part flat Attack')+L(atkSupport|0,'Supporter ATK support','stat-card-bonus--supporter-flat');
 return{hpHtml,atkHtml,defHtml,mobHtml};
 }
-/** MS growth % buckets: see _dcMsGrowthFromPct. Hyaku LB1 +72% ATK +390 → 17615; Versal +68% +240 → 17252; Sandaime LB2 +53% +240 → 14577; Susanowo LB0 ATK +63% +240 → 14056 / HP +36% +3600 → 98427; D Gundam +59% ATK panel. */
+/** MS growth % buckets: integer floor. V2 AB EX LB3 +36% leader: HP 145859 / ATK 19856 with OP 12% + Carozzo flats. */
 function _dcGetModifiedAttackerUnitStatsFromCtx(ctx,atkUnitStats,forPanel){
 const F=Math.floor;
 const c=ctx||{};
@@ -17346,10 +17341,10 @@ const opWpnPowPct=_dcOptionPartWeaponPowerPct(S.dc.optionParts,wpn,ud);
 const computedWpnPow=_dcEffectiveWeaponPowerWithOptionParts(wpn,S.dc.wpnLv,S.dc.optionParts,ud);
 const traitLvCalc=(wpn.levels&&wpn.levels.length)?Math.min(Math.max(0,S.dc.wpnLv|0),wpn.levels.length-1):0;
 const wtTraits=_dcParseWeaponTraits(wpn,traitLvCalc);
-const traitDistPow=Math.min(100,(wtTraits.distPowerMax||0)+(wtTraits.distCoreMax||0));
-let traitHpPow=wtTraits.hpPowerMax|0;
-let traitMpPow=wtTraits.mpPowerMax|0;
-{const tb=wtTraits.enemyTagWpMaxBonus|0;if(tb>0&&_dcEnemyTagWeaponBonusActive(wtTraits)){if(traitHpPow>0)traitHpPow+=tb;else if(traitMpPow>0)traitMpPow+=tb;else traitHpPow+=tb}}
+const wpnTraitB=_dcWeaponTraitPowerBuckets(wtTraits,_dcCurrentMpLevel());
+const traitDistPow=wpnTraitB.traitDistPow;
+const traitHpPow=wpnTraitB.hpPow;
+const traitMpPow=wpnTraitB.mpPow;
 const finalOverride=S.dc.finalWpnPow||0;
 const finalWpnPowOverride=finalOverride>0;
 const weaponPower=finalOverride>0?finalOverride:computedWpnPow;
@@ -17360,7 +17355,7 @@ const dist=_dcDefaultWeaponDistance(wpn);
 const terrainPct=S.dc.terrain;
 const terrainCorrection=1-(terrainPct/100);
 const mp=_dcMpProfile(S.dc.mpLevel);
-const vigorDmgBonusPct=Math.round((mp.dmgBonus||0)*100);
+const vigorDmgBonusPct=_dcVigorDmgBonusPct(S.dc.mpLevel);
 const vigorCritPct=Math.round((mp.critMult||0)*100);
 let defendMult=1.0;
 if(S.dc.defending)defendMult=S.dc.shield?0.6:0.8;
