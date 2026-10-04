@@ -2293,25 +2293,46 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
   font-size:13px;
   line-height:1.2;
 }
+.stage-reward-grid>.stage-reward-item--profile-title{
+  grid-column:1/-1;
+  width:100%;
+  max-width:min(100%,420px);
+  justify-self:center;
+  flex-wrap:nowrap;
+  gap:10px;
+  align-items:center;
+}
 .stage-reward-pt-thumb{
-  width:176px;
-  max-width:100%;
-  height:62px;
+  flex:0 1 auto;
+  width:auto;
+  max-width:min(100%,280px);
+  height:auto;
+  min-height:0;
   display:flex;
   align-items:center;
   justify-content:center;
-  background:rgba(255,255,255,0.04);
-  border:1px solid var(--border-color);
-  border-radius:8px;
-  flex:1 1 176px;
-  overflow:hidden;
+  background:transparent;
+  border:none;
+  border-radius:0;
+  overflow:visible;
+  padding:0;
 }
-/* Wide title banners: name + qty sit on their own row so x1 cannot cover wrapping words. */
-.stage-reward-item--profile-title .stage-reward-row-body,
-.stage-reward-pt-thumb + .stage-reward-row-body,
-.stage-reward-grid>.ability-item>div[style*="176px"] + .stage-reward-row-body{
-  flex:1 1 100%;
-  width:100%;
+.stage-reward-pt-thumb .ml-reward-chip-ic--title,
+.stage-reward-pt-thumb img{
+  width:auto !important;
+  height:40px;
+  max-width:100% !important;
+  max-height:48px;
+  object-fit:contain;
+  object-position:center;
+  display:block;
+  padding:0;
+  flex-shrink:1;
+}
+/* Title row: banner + name + qty on one line (same chip language as /ml). */
+.stage-reward-item--profile-title .stage-reward-row-body{
+  flex:1 1 auto;
+  width:auto;
   min-width:0;
 }
 .stage-reward-desc{
