@@ -5275,6 +5275,7 @@ if(tl.includes('special')||tl.includes('特殊'))return'special';
 return tl;
 }
 function _pilotRangeTypeKeysMatchWeapon(wpnTypesStr,wpn){
+if(weaponRowLooksMapWeapon(wpn))return false;
 const wpnKeySet=new Set(_dcWeaponAttributeKeys(wpn));
 const types=String(wpnTypesStr||'').split(/\s+or\s+|,\s*|\s+and\s+|\s*\/\s*|\s*、\s*/);
 return types.some(t=>{const key=_normalizePilotWeaponTypeToken(t);return key&&wpnKeySet.has(key)});
@@ -5339,9 +5340,9 @@ mods.push({wpnTypes,inc:parseInt(inc,10)||0});
 sources.forEach(txt=>{
 const s=String(txt||'');
 let m;
-const reAndVigor=/when\s+piloting\s+(.+?)\s+and\s+vigor\s+is\s+\w+\s+or\s+higher,?\s*increase\s+max\s+range\s+of\s+(.+?)\s+by\s+(\d+)/gi;
+const reAndVigor=/when\s+piloting\s+(.+?)\s+and\s+vigor\s+is\s+["'“”]?\w+["'“”]?\s+or\s+(?:higher|greater|above),?\s*increase\s+max\s+range\s+of\s+(.+?)\s+by\s+(\d+)/gi;
 while((m=reAndVigor.exec(s))!==null)push(m[1],m[2],m[3]);
-const reIfVigor=/when\s+piloting\s+(.+?),\s*if\s+vigor\s+is\s+\w+\s+or\s+higher,?\s*(?:the\s+)?max\s+range\s+of\s+(.+?)\s+(?:weapons?\s+)?is\s+increased\s+by\s+(\d+)/gi;
+const reIfVigor=/when\s+piloting\s+(.+?),\s*if\s+vigor\s+is\s+["'“”]?\w+["'“”]?\s+or\s+(?:higher|greater|above),?\s*(?:the\s+)?max\s+range\s+of\s+(.+?)\s+(?:weapons?\s+)?is\s+increased\s+by\s+(\d+)/gi;
 while((m=reIfVigor.exec(s))!==null)push(m[1],m[2],m[3]);
 const reSimple=/when\s+piloting\s+(.+?),[\s\S]{0,160}?increase\s+max\s+range\s+of\s+(.+?)\s+by\s+(\d+)/gi;
 while((m=reSimple.exec(s))!==null){if(/\band\s+vigor\b/i.test(m[1]))continue;push(m[1],m[2],m[3])}
@@ -15056,7 +15057,7 @@ enPushIfUnit(m[1],'medium',_dcTwZhWeaponTypesToEn(m[2]),parseInt(m[3],10)||0);
 });
 return mods;
 }
-const re=/when\s+piloting\s+(.+?),\s*if\s+vigor\s+is\s+(\w+)\s+or\s+higher,?\s*(?:the\s+)?max\s+range\s+of\s+(.+?)\s+(?:weapon\s+)?is\s+increased\s+by\s+(\d+)/gi;
+const re=/when\s+piloting\s+(.+?),\s*if\s+vigor\s+is\s+["'“”]?(\w+)["'“”]?\s+or\s+(?:higher|greater|above),?\s*(?:the\s+)?max\s+range\s+of\s+(.+?)\s+(?:weapon\s+)?is\s+increased\s+by\s+(\d+)/gi;
 sources.forEach(txt=>{
 let m;const re2=new RegExp(re.source,'gi');
 while((m=re2.exec(txt))!==null){
@@ -15068,7 +15069,7 @@ if(unitName.includes(reqUnit)||reqUnit.includes(unitBare)){
 mods.push({reqVigor,wpnTypes,rangeInc});
 }
 }
-const reAndVigor=/when\s+piloting\s+(.+?)\s+and\s+vigor\s+is\s+(\w+)\s+or\s+higher,?\s*increase\s+max\s+range\s+of\s+(.+?)\s+by\s+(\d+)/gi;
+const reAndVigor=/when\s+piloting\s+(.+?)\s+and\s+vigor\s+is\s+["'“”]?(\w+)["'“”]?\s+or\s+(?:higher|greater|above),?\s*increase\s+max\s+range\s+of\s+(.+?)\s+by\s+(\d+)/gi;
 while((m=reAndVigor.exec(txt))!==null){
 const reqUnit=m[1].trim().toLowerCase();
 const reqVigor=m[2].trim().toLowerCase();
@@ -15105,7 +15106,7 @@ if(unitName.includes(reqUnit)||reqUnit.includes(unitBare)){
 mods.push({reqVigor:'super',wpnTypes,rangeInc});
 }
 }
-const reUnitVigorRange=/when\s+vigor\s+is\s+(\w+)\s+or\s+higher,?\s*increase\s+max\s+range\s+of\s+(.+?)\s+by\s+(\d+)/gi;
+const reUnitVigorRange=/when\s+vigor\s+is\s+["'“”]?(\w+)["'“”]?\s+or\s+(?:higher|greater|above),?\s*increase\s+max\s+range\s+of\s+(.+?)\s+by\s+(\d+)/gi;
 while((m=reUnitVigorRange.exec(txt))!==null){
 mods.push({reqVigor:m[1].trim().toLowerCase(),wpnTypes:m[2].trim().toLowerCase(),rangeInc:parseInt(m[3],10)||0});
 }
@@ -15114,7 +15115,7 @@ if(S.dc.atkUnitData&&Array.isArray(S.dc.atkUnitData.abilities)){
 (S.dc.atkUnitData.abilities||[]).forEach(ab=>{
 const blob=_dcVigorAbilityTextBlob(ab);
 let m;
-const reUnitVigorRange=/when\s+vigor\s+is\s+(\w+)\s+or\s+higher,?\s*increase\s+max\s+range\s+of\s+(.+?)\s+by\s+(\d+)/gi;
+const reUnitVigorRange=/when\s+vigor\s+is\s+["'“”]?(\w+)["'“”]?\s+or\s+(?:higher|greater|above),?\s*increase\s+max\s+range\s+of\s+(.+?)\s+by\s+(\d+)/gi;
 while((m=reUnitVigorRange.exec(blob))!==null){
 mods.push({reqVigor:m[1].trim().toLowerCase(),wpnTypes:m[2].trim().toLowerCase(),rangeInc:parseInt(m[3],10)||0});
 }
