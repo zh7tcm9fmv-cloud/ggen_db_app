@@ -407,6 +407,10 @@ Object.assign(T.HK,{tab_collections:'收藏',tab_tag_matrix:'標籤對照表',ta
 Object.assign(T.JA,{tab_collections:'コレクション',tab_tag_matrix:'タグ対応表',tab_debuff_matrix:'マイナス効果対応表'});
 Object.assign(T.JP,{tab_collections:'コレクション',tab_tag_matrix:'タグ対応表',tab_debuff_matrix:'マイナス効果対応表'});
 Object.assign(T.EN,{item_sp_conversion:'SP Conversion',unit_model_stage:'In-game model'});
+Object.assign(T.EN,{stage_map_unit_roster:'Key Units'});
+Object.assign(T.TW,{stage_map_unit_roster:'注目單位'});
+Object.assign(T.HK,{stage_map_unit_roster:'注目單位'});
+Object.assign(T.JA,{stage_map_unit_roster:'注目ユニット'});
 Object.assign(T.TW,{item_sp_conversion:'SP化'});
 Object.assign(T.HK,{item_sp_conversion:'SP化'});
 Object.assign(T.JA,{item_sp_conversion:'SP化'});
@@ -6103,9 +6107,14 @@ function renderStageMapSection(d){
       </div>
     </div>
   </div>`:'';
-  const mapBody=renderStageMapGrid(md);
+  const mapInner=renderStageMapGrid(md);
+  const escapeOn=!!S.stageMapEscapeLayerVisible;
+  const reinfOn=!!S.stageMapReinforcementOnly;
+  const rosterHtml=S.stageMapExpanded?renderStageMapUnitRoster(d):'';
+  const vpCls='stage-map-viewport'+(escapeOn?' stage-map-viewport--escape':'')+(reinfOn?' stage-map-viewport--reinf':'')+(rosterHtml?' stage-map-viewport--with-roster':'');
+  const mapBody=`<div class="${vpCls}">${mapInner}${rosterHtml}</div>`;
   const hasDock=_stageMapParentDockUnits(md.units||[]).length>0;
-  const wrapCls='map-grid-container'+(S.stageMapExpanded?' active':'')+(hasDock?' has-escape-dock':'');
+  const wrapCls='map-grid-container'+(S.stageMapExpanded?' active':'')+(hasDock?' has-escape-dock':'')+(rosterHtml?' has-map-roster':'');
 return`<div class="detail-section"><div class="section-title">${t('sec_stage_map')}</div><button class="toggle-map-btn" onclick="toggleStageMap()"><span>${S.stageMapExpanded?t('hide_stage_map'):t('view_stage_map')}</span></button>${controls}<div id="stageMapGridWrap" class="${wrapCls}">${mapBody}</div></div>`
 }
 
@@ -6877,7 +6886,6 @@ function renderStageMapGrid(md){
   const mapBlock=`<div class="stage-map-grid-wrap${escapeOn?' stage-map-grid-wrap--escape':''}${reinfOn?' stage-map-grid-wrap--reinf':''}">${parentOverlayHtml}${html}${reinfLayerHtml}${escapeLayerHtml}</div>`;
   if((escapeOn&&(parentOverlayHtml||escapeLayerHtml.includes('stage-map-escape-unit')||escapeLayerHtml.includes('stage-map-escape-overlap-host')))||(reinfOn&&(reinfLayerHtml.includes('stage-map-reinf')||parentOverlayHtml))){
     setTimeout(_stageMapWireEscapeOverlapUi,0);
-    return`<div class="stage-map-viewport${escapeOn?' stage-map-viewport--escape':''}${reinfOn?' stage-map-viewport--reinf':''}">${mapBlock}</div>`;
   }
   return mapBlock
 }
@@ -7576,26 +7584,85 @@ function ensureStageMapNpcHoverBound(){
     mapWrapHost.addEventListener('scroll',()=>{hideStageNpcHoverPop()},{passive:true,capture:true});
   }
 }
+function _stageNpcCollectHintedNames(rows,maxN){
+  const out=[];
+  (rows||[]).forEach(x=>{
+    if(out.length>=maxN)return;
+    if(!x||typeof x!=='object')return;
+    const sub=(x.ssp_replacement&&x.ssp_replacement.strategy_hint_icon)?x.ssp_replacement:((x.sp_replacement&&x.sp_replacement.strategy_hint_icon)?x.sp_replacement:null);
+    if(!x.strategy_hint_icon&&!sub)return;
+    const n=_stageNpcHoverNameOf(sub||x);
+    if(n)out.push(n);
+  });
+  return out;
+}
+function _stageMapKeyUnitHints(n){
+  const u=n&&n.unit,ch=n&&n.character;
+  const uHint=firstNpcStrategyHintIconFromUnit(u);
+  const cHint=firstNpcStrategyHintIconFromCharacter(ch);
+  if(!uHint&&!cHint)return null;
+  const labels=[];
+  const pushUnique=lab=>{const s=String(lab||'').trim();if(s&&!labels.includes(s))labels.push(s)};
+  if(u){
+    if(u.strategy_hint_move_icon)pushUnique(typeof tStat==='function'?tStat('Move','unit'):'Move');
+    if(u.strategy_hint_atk_icon||u.strategy_hint_stats_icon)pushUnique(typeof tStat==='function'?tStat('Attack','unit'):'Attack');
+    if(u.strategy_hint_hp_icon)pushUnique(typeof tStat==='function'?tStat('HP','unit'):'HP');
+    if(u.strategy_hint_en_icon)pushUnique(typeof tStat==='function'?tStat('EN','unit'):'EN');
+    if(u.strategy_hint_def_icon)pushUnique(typeof tStat==='function'?tStat('Defense','unit'):'Defense');
+    if(u.strategy_hint_mob_icon)pushUnique(typeof tStat==='function'?tStat('Mobility','unit'):'Mobility');
+    _stageNpcCollectHintedNames(u.weapons,3).forEach(pushUnique);
+    _stageNpcCollectHintedNames(u.abilities,3).forEach(pushUnique);
+  }
+  if(ch){
+    _stageNpcCollectHintedNames(ch.skills,3).forEach(pushUnique);
+    _stageNpcCollectHintedNames(ch.abilities,3).forEach(pushUnique);
+  }
+  return{uHint,cHint,labels:labels.slice(0,4)};
+}
+function _stageMapRosterThumb(src,hintUrl,kind){
+  const hint=String(hintUrl||'').trim();
+  const hintSrc=hint?imgUrlWebp(imgUrlPreferCdn(hint)):'';
+  const hintHtml=hintSrc?`<span class="stage-npc-thumb-hint stage-npc-thumb-hint--pulse"><img src="${hintSrc}" alt="" loading="lazy" onerror="this.parentElement.innerHTML=''"></span>`:'';
+  const hitCls='stage-map-roster-thumb'+(hintSrc?' stage-npc-thumb-hit--has-hint stage-npc-thumb-hit--pulse':'');
+  const ph=kind==='unit'?'U':'C';
+  const inner=src?`<img src="${_stageNpcHoverThumbSrc(src)}" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback(this)">`:`<span class="stage-map-roster-thumb-ph">${ph}</span>`;
+  return`<span class="${hitCls}">${hintHtml}${inner}</span>`;
+}
+function renderStageMapRosterRow(n,idx,hints){
+  if(!n||!hints)return'';
+  const u=n.unit,ch=n.character;
+  const lab=_stageNpcKitLabel(n)||`NPC ${n.npc_id}`;
+  const npcKey=n.npc_id;
+  const side=String(n.side||'').toLowerCase()||'enemy';
+  const openKind=hints.uHint?'unit':(hints.cHint?'character':'unit');
+  const openId=openKind==='unit'?(u&&u.id):(ch&&ch.id);
+  const canOpen=openId!=null&&String(openId).trim()!==''&&String(openId).trim()!=='0';
+  const click=canOpen?`onclick="openStageNpcEntityDetail('${escJs(openKind)}','${escJs(String(openId))}','${escJs(String(npcKey))}')"`:`onclick="focusStageMapNpc('${escJs(String(npcKey))}')"`;
+  const badges=[];
+  if(n.is_story_event_boss)badges.push(`<span class="stage-npc-meta-badge stage-npc-meta-badge--boss">${esc(t('stage_story_boss')!=='stage_story_boss'?t('stage_story_boss'):'Story boss')}</span>`);
+  if(u&&u.level>0)badges.push(`<span class="stage-npc-meta-badge">${esc(t('sa_unit_lv')!=='sa_unit_lv'?t('sa_unit_lv'):'Unit Lv')} ${fmtN(u.level)}</span>`);
+  if(ch&&ch.level>0)badges.push(`<span class="stage-npc-meta-badge">${esc(t('sa_char_lv')!=='sa_char_lv'?t('sa_char_lv'):'Pilot Lv')} ${fmtN(ch.level)}</span>`);
+  const brief=hints.labels&&hints.labels.length?hints.labels.join(' · '):'';
+  const briefHtml=brief?`<div class="stage-map-roster-brief">${esc(brief)}</div>`:'';
+  return`<button type="button" class="stage-map-roster-row npc-card stage-map-roster-row--key stage-map-roster-row--${escAttr(side)}" data-npc-id="${escAttr(String(n.npc_id!=null?n.npc_id:''))}" data-npc-idx="${escAttr(String(idx))}" ${click} title="${escAttr(lab)}" aria-label="${escAttr(lab)}"><div class="stage-map-roster-thumbs">${_stageMapRosterThumb(u&&(u.thum||u.portrait),hints.uHint,'unit')}${_stageMapRosterThumb(ch&&(ch.thum||ch.portrait),hints.cHint,'character')}</div><div class="stage-map-roster-main"><div class="stage-map-roster-name">${esc(lab)}</div>${badges.length?`<div class="stage-map-roster-badges">${badges.join('')}</div>`:''}${briefHtml}</div></button>`;
+}
+function renderStageMapUnitRoster(d){
+  const list=(d&&d.npc_details)||[];
+  const keyed=[];
+  list.forEach((n,i)=>{
+    if(!_stageNpcDetailRowVisible(n))return;
+    const hints=_stageMapKeyUnitHints(n);
+    if(!hints)return;
+    keyed.push({n,idx:i,hints});
+  });
+  if(!keyed.length)return'';
+  const body=keyed.map(r=>renderStageMapRosterRow(r.n,r.idx,r.hints)).join('');
+  const title=t('stage_map_unit_roster')!=='stage_map_unit_roster'?t('stage_map_unit_roster'):'Key Units';
+  return`<aside class="stage-map-roster stage-map-roster--key" aria-label="${escAttr(title)}"><div class="stage-map-roster-head"><span class="stage-map-roster-head-ic" aria-hidden="true"><img src="${imgUrlWebp(imgUrlPreferCdn('/static/images/Key%20Unit/strategy_hint_0000.webp'))}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'"></span><span class="stage-map-roster-head-label">${esc(title)}</span><span class="stage-map-roster-count">(${keyed.length})</span></div><div class="stage-map-roster-scroll">${body}</div></aside>`;
+}
 function ensureStageNpcCompactHoverBound(){
+  // Hover/sticky pop is map-only; NPC details tiles use the map roster for brief info.
   ensureStageMapNpcHoverBound();
-  const root=document.getElementById('detailNpcContainer');
-  if(!root||root.dataset.npcHoverBound==='1')return;
-  root.dataset.npcHoverBound='1';
-  root.addEventListener('pointerover',e=>{
-    if(!_stageNpcHoverCanUse()||_stageNpcHoverSticky)return;
-    const tile=e.target&&e.target.closest&&e.target.closest('.stage-npc-compact-tile');
-    if(!tile||!root.contains(tile))return;
-    _stageNpcHoverWarmRow(_stageNpcRowFromHoverAnchor(tile));
-    showStageNpcHoverPop(tile,{sticky:false});
-  });
-  root.addEventListener('pointerout',e=>{
-    if(_stageNpcHoverSticky)return;
-    const tile=e.target&&e.target.closest&&e.target.closest('.stage-npc-compact-tile');
-    if(!tile||!root.contains(tile))return;
-    const to=e.relatedTarget;
-    if(to&&(tile.contains(to)||(to.closest&&to.closest('#stageNpcHoverPop'))))return;
-    scheduleHideStageNpcHoverPop();
-  });
 }
 function renderSeries(s,listTab){if(!s||!s.length)return'';const clk=listTab==='characters'||listTab==='units';const tip=esc(t('search_series_click'));return`<div class="detail-series-row">${s.map(x=>{const rawId=x.id!=null?String(x.id).trim():'';if(!clk){if(x.icon)return`<img class="series-icon-img" src="${imgUrl(x.icon)}" alt="${esc(x.name)}" title="${esc(x.name)}" loading="lazy" onerror="this.outerHTML='<span class=\\'series-text-fallback\\'>${esc(x.name)}</span>'">`;return`<span class="series-text-fallback" title="${esc(x.name)}">${esc(x.name)}</span>`}if(!rawId){if(x.icon)return`<img class="series-icon-img" src="${imgUrl(x.icon)}" alt="${esc(x.name)}" title="${esc(x.name)}" loading="lazy" onerror="this.outerHTML='<span class=\\'series-text-fallback\\'>${esc(x.name)}</span>'">`;return`<span class="series-text-fallback">${esc(x.name)}</span>`}const inner=x.icon?`<img class="series-icon-img series-icon-clickable" src="${imgUrl(x.icon)}" alt="${esc(x.name)}" loading="lazy" onerror="this.style.display='none';var fb=this.nextElementSibling;if(fb)fb.style.display='inline-flex'"><span class="series-text-fallback series-icon-clickable" style="display:none">${esc(x.name)}</span>`:`<span class="series-text-fallback series-icon-clickable">${esc(x.name)}</span>`;return`<button type="button" class="series-icon-hitbox" data-series-id="${escAttr(rawId)}" data-list-tab="${escAttr(listTab)}" data-series-name="${escAttr(x.name||'')}" title="${tip}" aria-label="${tip}">${inner}</button>`}).join('')}</div>`}
 
@@ -7938,12 +8005,15 @@ el.classList.remove('npc-card-highlight--from-stage-map');
 function findNpcDetailCardByNpcId(nid){
 const raw=String(nid!=null?nid:'').trim();
 if(!raw)return null;
-const root=document.getElementById('detailNpcContainer');
-if(!root)return null;
+const roots=[document.querySelector('#stageMapGridWrap .stage-map-roster'),document.getElementById('detailNpcContainer')];
+for(let r=0;r<roots.length;r++){
+const root=roots[r];
+if(!root)continue;
 const nodes=root.querySelectorAll('.npc-card[data-npc-id]');
 for(let i=0;i<nodes.length;i++){
 const n=nodes[i];
 if(String(n.getAttribute('data-npc-id')||'').trim()===raw)return n;
+}
 }
 return null;
 }
