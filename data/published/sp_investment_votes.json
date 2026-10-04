@@ -14504,6 +14504,7 @@
     "ip_d52107102d1274f181197f0951c67c96:character:1031001500:sp": "up",
     "ip_d52107102d1274f181197f0951c67c96:character:1336000101:sp": "up",
     "ip_d52107102d1274f181197f0951c67c96:character:1430005800:sp": "up",
+    "ip_d52107102d1274f181197f0951c67c96:character:1175000701:sp": "up",
     "ip_0192cee19bf54f0ffacd65cd5477aea0:unit:1085001010:ssp": "up"
   },
   "targets": {
@@ -25148,7 +25149,7 @@
       "down": 0
     },
     "character:1175000701:sp": {
-      "up": 3,
+      "up": 4,
       "down": 0
     },
     "unit:1175001710:sp": {
