@@ -5310,6 +5310,8 @@ if(/additively\s+increase\s+.+?\s+weapon effects by\s+\d+\s*%/i.test(tx))return 
 if(/武装効果値が\d+%加算/.test(tx)||/武裝效果.*?加算/.test(tx)||/武裝效果值增加\d+%/.test(tx))return true;
 if(/increase\s+(?:own\s+)?(?:Melee|Ranged|Awaken|Defense|Reaction)\s+by\s+\d+\s*%|(?:格闘|射撃|覚醒|防御|反応)値が\d+%上昇|(?:格鬥|射擊|覺醒|防禦|反應)值提升\d+%/i.test(tx))return true;
 if(/reduce\s+(?:own\s+)?(?:weapon\s+)?EN\s+consumption|消費ENが\d+%軽減|消耗EN減輕\d+%/i.test(tx))return true;
+/* Auto / Guaranteed Chance Step + Support Atk/Def count lines (pilot-gated) */
+if(/Chance\s*Step|チャンスステップ|額外行動|guaranteed\s+chance|auto[- ]?chance|force[- ]?activate\s+chance|regardless of whether or not (?:an\s+)?enem(?:y|ies)\s+ha(?:s|ve)\s+been\s+defeated|敵を撃破しなくても|無条件チャンス|オートチャンス|無條件額外|自動額外|即使未擊敗|Support\s*Defen[cs]e|支援防[禦御]|Support\s*Attack|支援攻[撃擊]/i.test(tx))return true;
 const cd=charData||S.pilotCondCharData||S.currentDetailData;
 const pm=cd&&cd.pair_unit_stat_mod;
 if(pm&&pm[String(ud.id||'')])return true;

@@ -748,7 +748,11 @@
 }
 .collections-preview-msg b{color:var(--accent-cyan);font-weight:700}
 .collections-preview-modal img{
-  max-width:min(960px,96vw);max-height:72vh;object-fit:contain;
+  /* Fit entire report in the viewport (unit + supporter). Canvas widths still match on download. */
+  width:auto;height:auto;
+  max-width:min(860px,94vw);
+  max-height:min(64vh,calc(100dvh - 150px));
+  object-fit:contain;
   border:1px solid var(--border-color);background:#000;border-radius:var(--radius-sm);
 }
 .collections-preview-row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}

@@ -3478,6 +3478,79 @@
     drawShareStatBar(ctx, x + padX, y + h - 18, w - padX * 2, 8, card.pct, tone);
   }
 
+  /* Shared export frame — unit + supporter open side-by-side at the same chrome scale */
+  var SHARE_REPORT_TARGET_W = 1160;
+  /* ~supporter aspect (2320×3492 @2×). Header/icons stay absolute; body densifies to fit. */
+  var SHARE_REPORT_TARGET_H = Math.round(SHARE_REPORT_TARGET_W * (3492 / 2320));
+
+  function fitShareReportGrid(n, gridW, bodyBudget) {
+    n = Math.max(1, n | 0);
+    bodyBudget = Math.max(160, bodyBudget | 0);
+    var best = null;
+    var cols;
+    for (cols = 5; cols <= 10; cols++) {
+      var gapX = cols >= 8 ? 8 : 10;
+      var cellW = Math.floor((gridW - (cols - 1) * gapX) / cols);
+      if (cellW < 84) continue;
+      var cellH = Math.round((cellW * 504) / 900);
+      var rowsN = Math.ceil(n / cols);
+      var gapY = 8;
+      var gridH = rowsN * cellH + Math.max(0, rowsN - 1) * gapY;
+      if (gridH > bodyBudget) {
+        var minGap = 4;
+        var maxCellH = rowsN > 1
+          ? Math.floor((bodyBudget - (rowsN - 1) * minGap) / rowsN)
+          : bodyBudget;
+        if (maxCellH < 36) continue;
+        cellH = Math.min(cellH, maxCellH);
+        cellW = Math.min(cellW, Math.round((cellH * 900) / 504));
+        gapY = minGap;
+        gridH = rowsN * cellH + Math.max(0, rowsN - 1) * gapY;
+        if (gridH > bodyBudget) continue;
+      } else {
+        /* Spread leftover vertical space a bit, but keep cells from looking sparse */
+        if (rowsN > 1) {
+          var room = bodyBudget - rowsN * cellH;
+          gapY = Math.min(24, Math.max(6, Math.floor(room / (rowsN - 1))));
+          gridH = rowsN * cellH + (rowsN - 1) * gapY;
+        }
+      }
+      var usedW = cols * cellW + (cols - 1) * gapX;
+      var score = cellW * 1000 - cols;
+      if (!best || score > best.score) {
+        best = {
+          cols: cols,
+          gapX: gapX,
+          gapY: gapY,
+          cellW: cellW,
+          cellH: cellH,
+          rowsN: rowsN,
+          gridH: gridH,
+          usedW: usedW,
+          score: score
+        };
+      }
+    }
+    if (best) return best;
+    /* Last resort — tiny cells, still honor width */
+    cols = 10;
+    var gapX2 = 6;
+    var cw = Math.max(64, Math.floor((gridW - (cols - 1) * gapX2) / cols));
+    var ch = Math.max(36, Math.round((cw * 504) / 900));
+    var rn = Math.ceil(n / cols);
+    return {
+      cols: cols,
+      gapX: gapX2,
+      gapY: 4,
+      cellW: cw,
+      cellH: ch,
+      rowsN: rn,
+      gridH: rn * ch + Math.max(0, rn - 1) * 4,
+      usedW: cols * cw + (cols - 1) * gapX2,
+      score: 0
+    };
+  }
+
   /* Locale “THE JOURNEY” plates for units 1.5 Save (EN / JA / TW·HK) */
   var SHARE_JOURNEY = {
     EN: '/static/images/UI/f655e384e9c3.webp',
@@ -3529,17 +3602,13 @@
     var st = computeStats(rows);
     var complete = st.total > 0 && st.owned >= st.total;
     var perfect = complete && st.maxed >= (st.lbEligible || 0);
-    var cols = Math.min(6, Math.max(4, Math.ceil(Math.sqrt((rows.length || 1) * 0.7))));
-    /* 1.5 page landscape cells — chamfer + cover art (no UR base/frame) */
-    var cellW = 148;
-    var cellH = Math.round((cellW * 504) / 900);
-    var gapX = 12;
-    var gapY = 30;
     var pad = 44;
+    var W = SHARE_REPORT_TARGET_W;
+    var H = SHARE_REPORT_TARGET_H;
+    var gridW = W - pad * 2;
+    var footReserve = pad + 48;
     var playerName = currentUsername();
     var titleBottom = pad + (playerName ? 110 : 96);
-    var gridW = cols * cellW + (cols - 1) * gapX;
-    var W = gridW + pad * 2;
     /* Ring top-aligned with header pad (cuts empty air above). */
     var emblemSize = Math.round(Math.min(236, Math.max(196, W * 0.32)));
     var emblemTop = pad;
@@ -3586,9 +3655,15 @@
     var subBlockH =
       cardRowsLayout * cardHLayout + (cardRowsLayout - 1) * cardGapLayout;
     var headerH = subY + subBlockH + 20;
-    var rowsN = Math.max(1, Math.ceil((rows.length || 1) / cols));
-    var gridH = rowsN * cellH + (rowsN - 1) * gapY;
-    var H = headerH + gridH + pad + 48;
+    var bodyBudget = Math.max(200, H - headerH - footReserve);
+    var gridLayout = fitShareReportGrid(rows.length || 1, gridW, bodyBudget);
+    var cols = gridLayout.cols;
+    var gapX = gridLayout.gapX;
+    var gapY = gridLayout.gapY;
+    var cellW = gridLayout.cellW;
+    var cellH = gridLayout.cellH;
+    var gridH = gridLayout.gridH;
+    var gridOriginX = pad + Math.floor((gridW - gridLayout.usedW) / 2);
     /* 2× layout — crisp enough; 3× + full-art was the main save lag */
     var scale = 2;
     var canvas = document.createElement('canvas');
@@ -3862,7 +3937,7 @@
       var row = rows[i];
       var col = i % cols;
       var rowIdx = Math.floor(i / cols);
-      var x = pad + col * (cellW + gapX);
+      var x = gridOriginX + col * (cellW + gapX);
       var y = gridY + rowIdx * (cellH + gapY);
       var st = rowState(row);
       var lb = st.lb;
@@ -3984,7 +4059,7 @@
       }
     }
 
-    var footY = gridY + gridH + 22;
+    var footY = H - footReserve + 22;
     ctx.strokeStyle = '#1e293b';
     ctx.beginPath();
     ctx.moveTo(pad, footY);
@@ -4057,18 +4132,44 @@
   }
 
   function pyramidRowsForCount(n) {
+    /* Wider base within the shared report frame (was 8; avoid old 12-wide sprawl). */
     n = Math.max(0, n | 0);
     if (!n) return [];
-    if (n === 84) return [4, 5, 6, 7, 8, 9, 10, 11, 12, 12];
+    var MAX_COLS = 10;
     var rows = [];
     var left = n;
-    var w = Math.max(3, Math.min(10, Math.ceil((-1 + Math.sqrt(1 + 8 * n)) / 2) - 2));
+    var w = Math.max(2, Math.min(4, Math.ceil(Math.sqrt(n / 2)) - 1));
     while (left > 0) {
-      var take = Math.min(w, left);
-      if (left - take > 0 && left - take < Math.max(2, w - 2)) take = left;
+      var take = Math.min(w, MAX_COLS, left);
       rows.push(take);
       left -= take;
-      w += 1;
+      w = Math.min(MAX_COLS, w + 1);
+    }
+    /* Absorb tiny last rows so the base doesn't look broken */
+    while (rows.length >= 2 && rows[rows.length - 1] < 4) {
+      if (rows[rows.length - 2] < MAX_COLS) {
+        var stub = rows.pop();
+        rows[rows.length - 1] += stub;
+        if (rows[rows.length - 1] > MAX_COLS) {
+          var over = rows[rows.length - 1] - MAX_COLS;
+          rows[rows.length - 1] = MAX_COLS;
+          rows.push(over);
+          break;
+        }
+        continue;
+      }
+      var moved = false;
+      var i;
+      for (i = rows.length - 2; i >= 0; i--) {
+        var floor = i === 0 ? 2 : rows[i - 1];
+        if (rows[i] > floor && rows[i] > 2) {
+          rows[i]--;
+          rows[rows.length - 1]++;
+          moved = true;
+          if (rows[rows.length - 1] >= 4) break;
+        }
+      }
+      if (!moved) break;
     }
     return rows;
   }
@@ -4143,30 +4244,18 @@
   }
 
   async function generateShareImage15() {
-    /* Same report chrome as Regular — only unit layout (pyramid) + anniversary logo differ. */
+    /* Same report chrome + frame as Regular/supporter — pyramid body densifies to fit. */
     var rows = activeList();
     var st = computeStats(rows);
     var complete = st.total > 0 && st.owned >= st.total;
     var perfect = complete && st.maxed >= (st.lbEligible || 0);
     var n = rows.length;
-    var pyramid = pyramidRowsForCount(n);
-    var cellW = 200;
-    var cellH = 224;
-    /* Dense stack like 1.5 anniv SD piles — sit into each other, not side-by-side */
-    var overlapX = 0.34;
-    var overlapY = 0.30;
-    var stepX = Math.round(cellW * (1 - overlapX));
-    var stepY = Math.round(cellH * (1 - overlapY));
     var pad = 44;
     var edge = 48;
     var padBot = 56;
-    var maxCols = 1;
-    var ri;
-    for (ri = 0; ri < pyramid.length; ri++) maxCols = Math.max(maxCols, pyramid[ri]);
-    var contentW = (maxCols - 1) * stepX + cellW;
-    var contentH = (pyramid.length - 1) * stepY + cellH;
-    var gridW = Math.max(contentW + edge * 2, 640);
-    var W = gridW + pad * 2;
+    var W = SHARE_REPORT_TARGET_W;
+    var H = SHARE_REPORT_TARGET_H;
+    var gridW = W - pad * 2;
     var playerName = currentUsername();
     var titleBottom = pad + (playerName ? 110 : 96);
     var emblemSize = Math.round(Math.min(236, Math.max(196, W * 0.32)));
@@ -4213,7 +4302,33 @@
     var subBlockH =
       cardRowsLayout * cardHLayout + (cardRowsLayout - 1) * cardGapLayout;
     var headerH = subY + subBlockH + 20;
-    var H = headerH + contentH + edge + padBot;
+    var bodyBudget = Math.max(240, H - headerH - edge - padBot);
+
+    var pyramid = pyramidRowsForCount(n);
+    var cellW = 188;
+    var cellH = 210;
+    /* Dense stack like 1.5 anniv SD piles — sit into each other, not side-by-side */
+    var overlapX = 0.40;
+    var overlapY = 0.32;
+    var stepX = Math.round(cellW * (1 - overlapX));
+    var stepY = Math.round(cellH * (1 - overlapY));
+    var maxCols = 1;
+    var ri;
+    for (ri = 0; ri < pyramid.length; ri++) maxCols = Math.max(maxCols, pyramid[ri]);
+    var contentW = (maxCols - 1) * stepX + cellW;
+    var contentH = pyramid.length ? (pyramid.length - 1) * stepY + cellH : cellH;
+    var availW = Math.max(320, gridW - edge * 2);
+    var fitW = contentW > 0 ? availW / contentW : 1;
+    var fitH = contentH > 0 ? bodyBudget / contentH : 1;
+    var fit = Math.min(fitW, fitH, 1.08);
+    if (contentW > 0 && Math.abs(fit - 1) > 0.01) {
+      cellW = Math.max(96, Math.round(cellW * fit));
+      cellH = Math.max(108, Math.round(cellH * fit));
+      stepX = Math.round(cellW * (1 - overlapX));
+      stepY = Math.round(cellH * (1 - overlapY));
+      contentW = (maxCols - 1) * stepX + cellW;
+      contentH = pyramid.length ? (pyramid.length - 1) * stepY + cellH : cellH;
+    }
 
     /* Same 2× scale as Regular — rim-free draw is already fast */
     var scale = 2;
@@ -4563,7 +4678,7 @@
       alpha: 1
     });
 
-    var footY = headerH + contentH + edge / 2 + 8;
+    var footY = H - padBot + 8;
     ctx.strokeStyle = '#1e293b';
     ctx.beginPath();
     ctx.moveTo(pad, footY);

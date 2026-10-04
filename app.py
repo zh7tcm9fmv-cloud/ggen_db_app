@@ -2926,9 +2926,10 @@ def _ability_text_implies_pilot_guaranteed_chance_step(txt):
     return bool(re.search(
         r'guaranteed\s+chance\s*step|'
         r'force[- ]?activate\s+chance\s*step|'
+        r'chance\s*step\s+will\s+trigger|'
         r'chance\s*step\s+will\s+trigger\s+at\s+the\s+end\s+of\s+any\s+action|'
         r'auto[- ]?chance\s*step|'
-        r'regardless of whether or not an enemy has been defeated|'
+        r'regardless of whether or not (?:an\s+)?enem(?:y|ies)\s+ha(?:s|ve)\s+been\s+defeated|'
         r'無条件チャンスステップ|'
         r'オートチャンスステップ|'
         r'敵を撃破しなくてもチャンスステップを発動|'
