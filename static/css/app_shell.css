@@ -2253,25 +2253,41 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .map-cell.enemy.map-cell--story-boss{box-shadow:inset 0 0 0 2px rgba(244,114,182,.9),0 0 12px rgba(236,72,153,.4)}
 .map-cell.map-cell--event-area{background:repeating-linear-gradient(-45deg,rgba(99,102,241,.12),rgba(99,102,241,.12) 6px,rgba(99,102,241,.22) 6px,rgba(99,102,241,.22) 12px);outline:1px dashed rgba(129,140,248,.65)}
 .stage-reward-subhead{margin:0;font-size:12px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.04em}
+/* Modal-width aware — columns / chip gaps follow the detail panel, not only the viewport. */
+.detail-section--stage-rewards{
+  container-type:inline-size;
+  container-name:stage-rewards;
+}
+/* Centered multi-col chips. auto-fit collapses empty tracks so 2 items = one centered row. */
 .stage-reward-grid{
+  --sr-col-min:clamp(148px,22vw,200px);
+  --sr-col-max:clamp(200px,28vw,270px);
+  --sr-chip-gap:clamp(2px,0.85vw,6px);
+  --sr-qty-gap:clamp(2px,0.7vw,6px);
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,260px));
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,var(--sr-col-min)),min(100%,var(--sr-col-max))));
   justify-content:center;
-  gap:8px;
+  justify-items:stretch;
+  gap:clamp(4px,1.1vw,8px);
   align-items:start;
+  width:100%;
 }
 /* Compact reward chips — don’t inherit tall ability-card padding / stretch gaps. */
 .stage-reward-grid>.ability-item{
-  padding:8px 10px;
+  display:flex;
+  align-items:center;
+  padding:clamp(4px,0.7vw,6px) clamp(6px,1vw,8px);
   margin:0;
+  width:100%;
+  max-width:var(--sr-col-max);
   min-height:0;
   min-width:0;
   height:auto;
-  align-self:start;
+  justify-self:center;
   box-sizing:border-box;
   flex-wrap:nowrap;
-  gap:8px;
-  overflow:visible;
+  gap:var(--sr-chip-gap);
+  overflow:hidden;
 }
 .stage-reward-grid>.ability-item>.stage-reward-row-body{
   flex:1 1 auto;
@@ -2279,33 +2295,46 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
   display:grid;
   grid-template-columns:minmax(0,1fr) max-content;
   align-items:center;
-  column-gap:8px;
+  column-gap:var(--sr-qty-gap);
+}
+.stage-reward-grid>.ability-item>.stage-reward-row-body:not(:has(.stage-reward-qty)){
+  grid-template-columns:minmax(0,1fr);
+  column-gap:0;
 }
 .stage-reward-copy{min-width:0;max-width:100%;overflow:hidden}
-.stage-reward-name{font-size:13px;line-height:1.25;word-break:normal;overflow-wrap:break-word}
+.stage-reward-name{
+  font-size:clamp(11px,1.7vw,12px);
+  line-height:1.2;
+  word-break:normal;
+  overflow-wrap:anywhere;
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+  line-clamp:2;
+  overflow:hidden;
+}
 .stage-reward-qty,
 .stage-reward-grid .stage-reward-row-body>.stage-meta-badge{
   flex:0 0 auto;
   justify-self:end;
   align-self:center;
   white-space:nowrap;
-  padding:4px 8px;
-  font-size:13px;
-  line-height:1.2;
+  padding:2px 5px;
+  font-size:clamp(10px,1.5vw,11px);
+  line-height:1.15;
 }
+/* Same chip footprint as currency — do not full-span / recenter (that staggered the row). */
 .stage-reward-grid>.stage-reward-item--profile-title{
-  grid-column:1/-1;
   width:100%;
-  max-width:min(100%,420px);
-  justify-self:center;
+  max-width:var(--sr-col-max);
   flex-wrap:nowrap;
-  gap:10px;
+  gap:var(--sr-chip-gap);
   align-items:center;
 }
 .stage-reward-pt-thumb{
-  flex:0 1 auto;
+  flex:0 0 auto;
   width:auto;
-  max-width:min(100%,280px);
+  max-width:clamp(52px,16vw,88px);
   height:auto;
   min-height:0;
   display:flex;
@@ -2314,15 +2343,15 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
   background:transparent;
   border:none;
   border-radius:0;
-  overflow:visible;
+  overflow:hidden;
   padding:0;
 }
 .stage-reward-pt-thumb .ml-reward-chip-ic--title,
 .stage-reward-pt-thumb img{
   width:auto !important;
-  height:40px;
+  height:clamp(24px,4.2vw,28px);
   max-width:100% !important;
-  max-height:48px;
+  max-height:clamp(26px,4.6vw,32px);
   object-fit:contain;
   object-position:center;
   display:block;
@@ -2334,6 +2363,35 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
   flex:1 1 auto;
   width:auto;
   min-width:0;
+}
+/* Narrow detail panel: fewer / tighter chips; pull icon↔qty closer. */
+@container stage-rewards (max-width:720px){
+  .stage-reward-grid{
+    --sr-col-min:clamp(140px,42cqi,190px);
+    --sr-col-max:clamp(180px,48cqi,240px);
+    --sr-chip-gap:3px;
+    --sr-qty-gap:3px;
+  }
+}
+@container stage-rewards (max-width:520px){
+  .stage-reward-grid{
+    --sr-col-min:min(100%,160px);
+    --sr-col-max:min(100%,220px);
+    --sr-chip-gap:2px;
+    --sr-qty-gap:2px;
+    gap:5px;
+  }
+  .stage-reward-pt-thumb{max-width:64px}
+}
+@container stage-rewards (max-width:360px){
+  .stage-reward-grid{
+    grid-template-columns:1fr;
+    --sr-col-max:100%;
+    --sr-chip-gap:2px;
+    --sr-qty-gap:2px;
+  }
+  .stage-reward-grid>.ability-item,
+  .stage-reward-grid>.stage-reward-item--profile-title{max-width:100%}
 }
 .stage-reward-desc{
   font-size:11px;
@@ -2450,9 +2508,11 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 }
 @media(max-width:768px){
   .stage-reward-grid{
-    grid-template-columns:1fr;
-    justify-content:stretch;
-    gap:6px;
+    --sr-col-min:clamp(140px,44vw,180px);
+    --sr-col-max:clamp(170px,48vw,240px);
+    --sr-chip-gap:2px;
+    --sr-qty-gap:2px;
+    gap:5px;
   }
   .detail-section--stage-rewards>.stage-reward-grid,
   .detail-section--stage-rewards>.stage-condition-item{
@@ -2466,17 +2526,12 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
     flex:1 1 100%;
     max-width:100%;
   }
-  .stage-reward-grid>.ability-item,
   .stage-mission-reward-cell .ability-item{
-    padding:7px 8px;
-    gap:8px;
+    padding:5px 8px;
+    gap:var(--sr-chip-gap,2px);
   }
-  .stage-reward-name{font-size:12px}
-  .stage-reward-qty,
-  .stage-reward-grid .stage-reward-row-body>.stage-meta-badge,
-  .stage-mission-reward-cell .stage-reward-row-body>.stage-meta-badge{
-    padding:3px 6px;
-    font-size:12px;
+  .stage-mission-reward-cell .stage-reward-row-body{
+    column-gap:var(--sr-qty-gap,2px);
   }
 }
 .map-cell.map-cell--unit-origin{position:relative;overflow:visible;z-index:4}
