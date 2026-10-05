@@ -1649,8 +1649,9 @@
   /** Full labels for share PNG — role/skill + Max LB % only (matches live tip tone). */
   function drawShareDonutLegend(ctx, x, y, buckets) {
     var lbShort = t('max_lb');
-    var rowH = 18;
+    var rowH = Math.max(18, shareTextLineH(13) + 2);
     var list = buckets || [];
+    var maxLineW = Math.max(80, SHARE_REPORT_TARGET_W - x - 44);
     ctx.save();
     ctx.textAlign = 'left';
     ctx.textBaseline = 'middle';
@@ -1665,7 +1666,7 @@
       ctx.fillStyle = '#f0f2f7';
       ctx.font = uiCanvasFont(13, '600');
       var line = String(b.label || '') + ' - ' + lbShort + ' (' + pct + '%)';
-      ctx.fillText(line, x + 14, cy);
+      ctx.fillText(shareFitText(ctx, line, maxLineW), x + 14, cy);
     }
     ctx.restore();
     return list.length * rowH;
@@ -2770,14 +2771,17 @@
 
   var GGEN_TEKO_FAM = 'GgenTeko';
 
-  /** Canvas text: self-hosted GgenTeko (1.5 display) for Latin; site CJK for JA/TW/HK. */
+  /**
+   * Canvas text for share/save images.
+   * EN Teko sizes are the layout golden standard — CJK uses the same px (no 1.12 inflate)
+   * so title / possession / cards keep EN spacing and do not overlap.
+   */
   function uiCanvasFont(sizePx, weight) {
     var px = Number(sizePx) || 14;
     if (isCjkUiLang()) {
-      px = Math.round(px * 1.12);
       var w = weight || 'bold';
       var fam =
-        '"Noto Sans JP","ShinGoPr6DeBold","UDShinGoStdTCMed","Microsoft JhengHei","Yu Gothic UI","Yu Gothic","PingFang TC",sans-serif';
+        '"ShinGoPr6DeBold","UDShinGoStdTCMed","Noto Sans JP","Microsoft JhengHei","Yu Gothic UI","Yu Gothic","PingFang TC",sans-serif';
       return w + ' ' + px + 'px ' + fam;
     }
     var tw = String(weight || '600');
@@ -2786,6 +2790,21 @@
     else if (tw === '600' || tw === '500') tw = tw;
     else tw = '600';
     return tw + ' ' + px + 'px "' + GGEN_TEKO_FAM + '", Teko, sans-serif';
+  }
+
+  /** Line box height for stacking share text (CJK needs slightly more leading). */
+  function shareTextLineH(sizePx) {
+    var px = Number(sizePx) || 14;
+    return Math.ceil(px * (isCjkUiLang() ? 1.3 : 1.08));
+  }
+
+  function shareFitText(ctx, text, maxW) {
+    var s = String(text == null ? '' : text);
+    if (!s || !(maxW > 8)) return s;
+    if (ctx.measureText(s).width <= maxW) return s;
+    var ell = '…';
+    while (s.length > 1 && ctx.measureText(s + ell).width > maxW) s = s.slice(0, -1);
+    return s ? s + ell : '';
   }
 
   /**
@@ -2991,18 +3010,31 @@
     ctx.restore();
   }
 
-  /** Share-image possession % — same Teko / CJK stack as live HUD (not Roboto). */
+  /** Possession % digits always Teko — matches EN share layout in every locale. */
   function pctShareFont(sizePx, weight) {
-    return uiCanvasFont(sizePx, weight || '700');
+    var px = Number(sizePx) || 58;
+    var tw = String(weight || '700');
+    if (tw === 'bold' || tw === '800' || tw === '900') tw = '700';
+    else if (tw === 'normal' || tw === '400') tw = '500';
+    else if (tw === '600' || tw === '500' || tw === '700') tw = tw;
+    else tw = '700';
+    return tw + ' ' + px + 'px "' + GGEN_TEKO_FAM + '", Teko, sans-serif';
   }
 
-  function measureSharePossessionHead(ctx, pctStr, complete, perfect, numSizeOpt) {
+  function sharePossessionLabelText() {
+    var label = t('possession') + ' · ' + typeTitle();
+    if (!isCjkUiLang()) label = String(label || '').toUpperCase();
+    return label;
+  }
+
+  function measureSharePossessionHead(ctx, pctStr, complete, perfect, numSizeOpt, maxWOpt) {
     var padX = 14;
     var padY = 12;
     var gap = 6;
     var numSize = numSizeOpt || 58;
     var pctSize = Math.round(numSize * 0.5);
     var labelSize = 13;
+    var innerMax = maxWOpt > 40 ? maxWOpt - padX * 2 : 0;
     var h = padY;
     ctx.font = pctShareFont(numSize, '800');
     var numW = ctx.measureText(pctStr).width;
@@ -3011,40 +3043,112 @@
     var row1W = numW + 3 + pctW;
     h += numSize + gap;
     ctx.font = uiCanvasFont(labelSize, 'bold');
-    var label = (t('possession') + ' · ' + typeTitle()).toUpperCase();
+    var label = shareFitText(ctx, sharePossessionLabelText(), innerMax || 9999);
     var labelW = ctx.measureText(label).width;
-    h += labelSize + 8;
+    h += shareTextLineH(labelSize) + 6;
     var badgeW = 0;
     if (complete) {
       ctx.font = uiCanvasFont(11, 'bold');
       var badge = perfect ? t('complete_max') : t('complete');
-      badgeW = Math.max(perfect ? 128 : 80, ctx.measureText(badge).width + 22);
+      badge = shareFitText(ctx, badge, innerMax || 9999);
+      badgeW = Math.min(
+        innerMax || 9999,
+        Math.max(perfect ? 128 : 80, ctx.measureText(badge).width + 22)
+      );
       h += 20 + 4;
       if (perfect) {
         var subBadge = t('complete') + ' · ' + t('report_max_lb');
-        badgeW = Math.max(badgeW, Math.max(150, ctx.measureText(subBadge).width + 18));
-        h += 17 + 2;
+        subBadge = shareFitText(ctx, subBadge, innerMax || 9999);
+        badgeW = Math.max(
+          badgeW,
+          Math.min(innerMax || 9999, Math.max(150, ctx.measureText(subBadge).width + 18))
+        );
+        h += shareTextLineH(10) + 6;
       }
     }
+    var w = Math.max(row1W, labelW, badgeW) + padX * 2;
+    if (maxWOpt > 40) w = Math.min(w, maxWOpt);
     return {
-      w: Math.max(row1W, labelW, badgeW) + padX * 2,
+      w: w,
       h: h + padY - 2,
-      numSize: numSize
+      numSize: numSize,
+      label: label
     };
+  }
+
+  /**
+   * Title stack for share images — EN vertical rhythm; CJK shrinks/fits instead of overlapping.
+   * Returns { h, titleSize, titleStr, brand }.
+   */
+  function measureShareReportTitleBlock(ctx, maxTextW, playerName) {
+    var cjk = isCjkUiLang();
+    var titleStr = cjk ? t('report_title') : String(t('report_title') || '').toUpperCase();
+    var titleSize = 32;
+    ctx.font = uiCanvasFont(titleSize, '600');
+    while (titleSize > 18 && maxTextW > 40 && ctx.measureText(titleStr).width > maxTextW) {
+      titleSize -= 1;
+      ctx.font = uiCanvasFont(titleSize, '600');
+    }
+    ctx.font = uiCanvasFont(14, '600');
+    var brand = shareFitText(ctx, t('brand_line'), maxTextW);
+    /* EN reference: title@+2, brand@+38, name@+58, type@+80 → bottom ~96/110 */
+    var h = 2;
+    h += shareTextLineH(titleSize) + 4;
+    h += shareTextLineH(14) + 6;
+    if (playerName) {
+      h += shareTextLineH(18) + 4;
+      h += shareTextLineH(16);
+    } else {
+      h += shareTextLineH(16);
+    }
+    h += 10;
+    var minH = playerName ? 110 : 96;
+    return {
+      h: Math.max(minH, h),
+      titleSize: titleSize,
+      titleStr: titleStr,
+      brand: brand
+    };
+  }
+
+  function drawShareReportTitleBlock(ctx, textX, pad, maxTextW, playerName, measured) {
+    var m = measured || measureShareReportTitleBlock(ctx, maxTextW, playerName);
+    var y = pad + 2;
+    ctx.textBaseline = 'top';
+    ctx.textAlign = 'left';
+    ctx.fillStyle = '#f0f2f7';
+    ctx.font = uiCanvasFont(m.titleSize, '600');
+    ctx.fillText(m.titleStr, textX, y);
+    y += shareTextLineH(m.titleSize) + 4;
+    ctx.fillStyle = '#7af0ff';
+    ctx.font = uiCanvasFont(14, '600');
+    ctx.fillText(m.brand, textX, y);
+    y += shareTextLineH(14) + 6;
+    if (playerName) {
+      ctx.fillStyle = '#ffd700';
+      ctx.font = uiCanvasFont(18, '600');
+      ctx.fillText(shareFitText(ctx, playerName, maxTextW), textX, y);
+      y += shareTextLineH(18) + 4;
+    }
+    ctx.fillStyle = '#00d9ff';
+    ctx.font = uiCanvasFont(16, '600');
+    ctx.fillText(shareFitText(ctx, 'UR ' + typeTitle(), maxTextW), textX, y);
+    return pad + m.h;
   }
 
   /**
    * Draw compact Possession % block like the live HUD head.
    * Returns { w, h } of the painted content box.
    */
-  function drawSharePossessionHead(ctx, x, y, pctStr, complete, perfect, numSizeOpt) {
+  function drawSharePossessionHead(ctx, x, y, pctStr, complete, perfect, numSizeOpt, maxWOpt) {
     var padX = 14;
     var padY = 12;
     var gap = 6;
     var numSize = numSizeOpt || 58;
     var pctSize = Math.round(numSize * 0.5);
     var labelSize = 13;
-    var box = measureSharePossessionHead(ctx, pctStr, complete, perfect, numSize);
+    var innerMax = maxWOpt > 40 ? maxWOpt - padX * 2 : 0;
+    var box = measureSharePossessionHead(ctx, pctStr, complete, perfect, numSize, maxWOpt);
     var contentW = box.w;
     var contentH = box.h;
 
@@ -3105,14 +3209,19 @@
 
     ctx.fillStyle = '#8494ae';
     ctx.font = uiCanvasFont(labelSize, 'bold');
-    var label = (t('possession') + ' · ' + typeTitle()).toUpperCase();
+    var label =
+      box.label || shareFitText(ctx, sharePossessionLabelText(), innerMax || contentW - padX * 2);
     ctx.fillText(label, x + padX, cursorY);
-    cursorY += labelSize + 6;
+    cursorY += shareTextLineH(labelSize) + 6;
 
     if (complete) {
       var badge = perfect ? t('complete_max') : t('complete');
       ctx.font = uiCanvasFont(10, 'bold');
-      var badgeW = Math.max(perfect ? 118 : 72, ctx.measureText(badge).width + 20);
+      badge = shareFitText(ctx, badge, innerMax || contentW - padX * 2);
+      var badgeW = Math.min(
+        innerMax || contentW - padX * 2,
+        Math.max(perfect ? 118 : 72, ctx.measureText(badge).width + 20)
+      );
       var badgeH = 18;
       var bx = x + padX;
       var by = cursorY;
@@ -3144,8 +3253,12 @@
       if (perfect) {
         var subBadge = t('complete') + ' · ' + t('report_max_lb');
         ctx.font = uiCanvasFont(10, 'bold');
-        var sbw = Math.max(140, ctx.measureText(subBadge).width + 16);
-        var sbh = 16;
+        subBadge = shareFitText(ctx, subBadge, innerMax || contentW - padX * 2);
+        var sbw = Math.min(
+          innerMax || contentW - padX * 2,
+          Math.max(140, ctx.measureText(subBadge).width + 16)
+        );
+        var sbh = Math.max(16, shareTextLineH(10));
         drawRoundRect(ctx, bx, cursorY, sbw, sbh, 8);
         ctx.fillStyle = 'rgba(15,23,42,0.92)';
         ctx.fill();
@@ -3241,12 +3354,7 @@
     var labelMax = w - (labelX - x) - padX;
     var label = String(half.label || '');
     if (!isCjkUiLang()) label = label.toUpperCase();
-    while (label.length > 1 && ctx.measureText(label).width > labelMax) {
-      label = label.slice(0, -1);
-    }
-    if (label !== String(half.label || '').toUpperCase() && label.length > 1 && !isCjkUiLang()) {
-      label = label.slice(0, -1) + '…';
-    }
+    label = shareFitText(ctx, label, labelMax);
     ctx.fillText(label, labelX, leadY + 1);
 
     var nStr = String(half.n);
@@ -3440,24 +3548,21 @@
     var labelMax = w - (labelX - x) - padX;
     var label = String(card.label || '');
     if (!isCjkUiLang()) label = label.toUpperCase();
-    while (label.length > 1 && ctx.measureText(label).width > labelMax) {
-      label = label.slice(0, -1);
-    }
-    if (label.length > 1 && ctx.measureText(label).width > labelMax) {
-      label = label.slice(0, -1) + '…';
-    }
+    label = shareFitText(ctx, label, labelMax);
+    var labelLineH = shareTextLineH(13);
     /* Vertically center POSSESSED with the Limited chip when present */
     var labelY =
       card.lead === 'limited'
-        ? leadY - 1 + Math.max(0, (headerBottom - (leadY - 1) - 13) / 2)
+        ? leadY - 1 + Math.max(0, (headerBottom - (leadY - 1) - labelLineH) / 2)
         : leadY + 1;
     ctx.fillText(label, labelX, labelY);
-    headerBottom = Math.max(headerBottom, labelY + 14);
+    headerBottom = Math.max(headerBottom, labelY + labelLineH);
 
     var numY = Math.max(y + 38, headerBottom + 4);
     /* Keep bar clear — nudge numbers up if card is tight */
     var barTop = y + h - 22;
-    if (numY + 28 > barTop) numY = Math.max(headerBottom + 2, barTop - 28);
+    var numBlockH = card.maxed != null ? shareTextLineH(24) + shareTextLineH(11) + 4 : shareTextLineH(24);
+    if (numY + numBlockH > barTop) numY = Math.max(headerBottom + 2, barTop - numBlockH);
 
     var nStr = String(card.n);
     var dStr = ' / ' + card.d;
@@ -3472,7 +3577,11 @@
       var maxNote = t('max_lb') + ' ' + (card.maxed | 0);
       ctx.font = uiCanvasFont(11, '600');
       ctx.fillStyle = 'rgba(132,148,174,0.95)';
-      ctx.fillText(maxNote, x + padX, numY + 24);
+      ctx.fillText(
+        shareFitText(ctx, maxNote, w - padX * 2),
+        x + padX,
+        numY + shareTextLineH(24)
+      );
     }
 
     drawShareStatBar(ctx, x + padX, y + h - 18, w - padX * 2, 8, card.pct, tone);
@@ -3608,11 +3717,14 @@
     var gridW = W - pad * 2;
     var footReserve = pad + 48;
     var playerName = currentUsername();
-    var titleBottom = pad + (playerName ? 110 : 96);
     /* Ring top-aligned with header pad (cuts empty air above). */
     var emblemSize = Math.round(Math.min(236, Math.max(196, W * 0.32)));
     var emblemTop = pad;
     var pctStr = pctDisplayKey(st.pct);
+    var logoSizeHint = 64;
+    var textXHint = pad + logoSizeHint + 16;
+    var maxTitleW = Math.max(160, W - textXHint - pad - emblemSize - 28);
+    var maxPctW = Math.max(160, W - pad * 2 - emblemSize - 36);
 
     try {
       await ensureTekoForCanvas();
@@ -3640,9 +3752,19 @@
     /* Compact possession head — sized vs donut so % reads at similar visual weight */
     var sharePctNumSize = Math.round(Math.min(64, Math.max(54, emblemSize * 0.28)));
     var mctx = document.createElement('canvas').getContext('2d');
-    var pctBox = measureSharePossessionHead(mctx, pctStr, complete, perfect, sharePctNumSize);
+    var titleMeas = measureShareReportTitleBlock(mctx, maxTitleW, playerName);
+    var titleBottom = pad + titleMeas.h;
+    var pctBox = measureSharePossessionHead(
+      mctx,
+      pctStr,
+      complete,
+      perfect,
+      sharePctNumSize,
+      maxPctW
+    );
     var pctPanelY = titleBottom + 6;
-    var legendBlockH = 3 * 18 + 12;
+    var legendRowH = Math.max(18, shareTextLineH(13) + 2);
+    var legendBlockH = 3 * legendRowH + 12;
     var gaugeRowBottom = Math.max(
       pctPanelY + pctBox.h,
       emblemTop + emblemSize + legendBlockH
@@ -3651,7 +3773,8 @@
     var cardColsLayout = 3;
     var cardRowsLayout = 2;
     var cardGapLayout = 10;
-    var cardHLayout = 96;
+    /* Slightly taller cards for CJK so label / counts / bar do not collide */
+    var cardHLayout = isCjkUiLang() ? 108 : 96;
     var subBlockH =
       cardRowsLayout * cardHLayout + (cardRowsLayout - 1) * cardGapLayout;
     var headerH = subY + subBlockH + 20;
@@ -3779,31 +3902,19 @@
     if (logo) {
       ctx.drawImage(logo, pad, pad, logoSize, logoSize);
     }
+    var titleMaxW = Math.max(160, W - textX - pad - emblemSize - 28);
+    drawShareReportTitleBlock(ctx, textX, pad, titleMaxW, playerName, titleMeas);
 
-    ctx.textBaseline = 'top';
-    ctx.fillStyle = '#f0f2f7';
-    var titleStr = isCjkUiLang() ? t('report_title') : String(t('report_title') || '').toUpperCase();
-    ctx.font = uiCanvasFont(32, '600');
-    ctx.fillText(titleStr, textX, pad + 2);
-
-    ctx.fillStyle = '#7af0ff';
-    ctx.font = uiCanvasFont(14, '600');
-    ctx.fillText(t('brand_line'), textX, pad + 38);
-
-    if (playerName) {
-      ctx.fillStyle = '#ffd700';
-      ctx.font = uiCanvasFont(18, '600');
-      ctx.fillText(playerName, textX, pad + 58);
-      ctx.fillStyle = '#00d9ff';
-      ctx.font = uiCanvasFont(16, '600');
-      ctx.fillText('UR ' + typeTitle(), textX, pad + 80);
-    } else {
-      ctx.fillStyle = '#00d9ff';
-      ctx.font = uiCanvasFont(16, '600');
-      ctx.fillText('UR ' + typeTitle(), textX, pad + 58);
-    }
-
-    drawSharePossessionHead(ctx, pad, pctPanelY, pctStr, complete, perfect, sharePctNumSize);
+    drawSharePossessionHead(
+      ctx,
+      pad,
+      pctPanelY,
+      pctStr,
+      complete,
+      perfect,
+      sharePctNumSize,
+      maxPctW
+    );
 
     var shareBuckets = donutBucketsFromStats(st);
     drawRoundedRoleDonut(
@@ -3895,7 +4006,7 @@
     var cardRows = Math.ceil(shareStatCards.length / cardCols);
     var cardGap = 10;
     var cardW = (gridW - cardGap * (cardCols - 1)) / cardCols;
-    var cardH = 96;
+    var cardH = cardHLayout;
     for (var sci = 0; sci < shareStatCards.length; sci++) {
       var sc = shareStatCards[sci];
       var scCol = sci % cardCols;
@@ -4010,7 +4121,7 @@
       ctx.restore();
 
       if (row.is_limited_time) {
-        var limLabel = limitedWord().toUpperCase();
+        var limLabel = isCjkUiLang() ? limitedWord() : limitedWord().toUpperCase();
         var limW = Math.min(cellW * 0.72, 118);
         var limH = limW * (88 / 282);
         var limX = x + (cellW - limW) / 2;
@@ -4257,10 +4368,13 @@
     var H = SHARE_REPORT_TARGET_H;
     var gridW = W - pad * 2;
     var playerName = currentUsername();
-    var titleBottom = pad + (playerName ? 110 : 96);
     var emblemSize = Math.round(Math.min(236, Math.max(196, W * 0.32)));
     var emblemTop = pad;
     var pctStr = pctDisplayKey(st.pct);
+    /* 1.5 anniversary logo can be ~168 wide — reserve that for title measure */
+    var textXHint15 = pad + 168 + 16;
+    var maxTitleW15 = Math.max(160, W - textXHint15 - pad - emblemSize - 28);
+    var maxPctW15 = Math.max(160, W - pad * 2 - emblemSize - 36);
 
     try {
       await ensureTekoForCanvas();
@@ -4287,9 +4401,19 @@
 
     var sharePctNumSize = Math.round(Math.min(64, Math.max(54, emblemSize * 0.28)));
     var mctx = document.createElement('canvas').getContext('2d');
-    var pctBox = measureSharePossessionHead(mctx, pctStr, complete, perfect, sharePctNumSize);
+    var titleMeas15 = measureShareReportTitleBlock(mctx, maxTitleW15, playerName);
+    var titleBottom = pad + titleMeas15.h;
+    var pctBox = measureSharePossessionHead(
+      mctx,
+      pctStr,
+      complete,
+      perfect,
+      sharePctNumSize,
+      maxPctW15
+    );
     var pctPanelY = titleBottom + 6;
-    var legendBlockH = 3 * 18 + 12;
+    var legendRowH15 = Math.max(18, shareTextLineH(13) + 2);
+    var legendBlockH = 3 * legendRowH15 + 12;
     var gaugeRowBottom = Math.max(
       pctPanelY + pctBox.h,
       emblemTop + emblemSize + legendBlockH
@@ -4298,7 +4422,7 @@
     var cardColsLayout = 3;
     var cardRowsLayout = 2;
     var cardGapLayout = 10;
-    var cardHLayout = 96;
+    var cardHLayout = isCjkUiLang() ? 108 : 96;
     var subBlockH =
       cardRowsLayout * cardHLayout + (cardRowsLayout - 1) * cardGapLayout;
     var headerH = subY + subBlockH + 20;
@@ -4444,31 +4568,19 @@
       ctx.drawImage(logo, pad, pad - 4, logoW, logoH);
       textX = pad + logoW + 16;
     }
+    var titleMaxW15 = Math.max(160, W - textX - pad - emblemSize - 28);
+    drawShareReportTitleBlock(ctx, textX, pad, titleMaxW15, playerName, titleMeas15);
 
-    ctx.textBaseline = 'top';
-    ctx.fillStyle = '#f0f2f7';
-    var titleStr = isCjkUiLang() ? t('report_title') : String(t('report_title') || '').toUpperCase();
-    ctx.font = uiCanvasFont(32, '600');
-    ctx.fillText(titleStr, textX, pad + 2);
-
-    ctx.fillStyle = '#7af0ff';
-    ctx.font = uiCanvasFont(14, '600');
-    ctx.fillText(t('brand_line'), textX, pad + 38);
-
-    if (playerName) {
-      ctx.fillStyle = '#ffd700';
-      ctx.font = uiCanvasFont(18, '600');
-      ctx.fillText(playerName, textX, pad + 58);
-      ctx.fillStyle = '#00d9ff';
-      ctx.font = uiCanvasFont(16, '600');
-      ctx.fillText('UR ' + typeTitle(), textX, pad + 80);
-    } else {
-      ctx.fillStyle = '#00d9ff';
-      ctx.font = uiCanvasFont(16, '600');
-      ctx.fillText('UR ' + typeTitle(), textX, pad + 58);
-    }
-
-    drawSharePossessionHead(ctx, pad, pctPanelY, pctStr, complete, perfect, sharePctNumSize);
+    drawSharePossessionHead(
+      ctx,
+      pad,
+      pctPanelY,
+      pctStr,
+      complete,
+      perfect,
+      sharePctNumSize,
+      maxPctW15
+    );
 
     var shareBuckets = donutBucketsFromStats(st);
     drawRoundedRoleDonut(
@@ -4562,7 +4674,7 @@
     var cardCols = 3;
     var cardGap = 10;
     var cardW = (gridW - cardGap * (cardCols - 1)) / cardCols;
-    var cardH = 96;
+    var cardH = cardHLayout;
     for (var sci = 0; sci < shareStatCards.length; sci++) {
       var sc = shareStatCards[sci];
       var scCol = sci % cardCols;
