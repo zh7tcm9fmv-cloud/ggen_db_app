@@ -5,7 +5,9 @@
     "Y": 8,
     "MapStageId": 907000100402000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001005001,
@@ -13,7 +15,9 @@
     "Y": 8,
     "MapStageId": 907000100502000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001005002,
@@ -21,7 +25,9 @@
     "Y": 8,
     "MapStageId": 907000100502000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001005003,
@@ -29,7 +35,9 @@
     "Y": 13,
     "MapStageId": 907000100502000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001005004,
@@ -37,7 +45,9 @@
     "Y": 17,
     "MapStageId": 907000100502000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001009001,
@@ -45,7 +55,9 @@
     "Y": 7,
     "MapStageId": 907000100902000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001009002,
@@ -53,7 +65,9 @@
     "Y": 3,
     "MapStageId": 907000100902000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001009003,
@@ -61,7 +75,9 @@
     "Y": 1,
     "MapStageId": 907000100902000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001009004,
@@ -69,7 +85,9 @@
     "Y": 11,
     "MapStageId": 907000100902000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001009005,
@@ -77,7 +95,9 @@
     "Y": 3,
     "MapStageId": 907000100902000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001009006,
@@ -85,7 +105,9 @@
     "Y": 18,
     "MapStageId": 907000100902000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001009007,
@@ -93,7 +115,9 @@
     "Y": 14,
     "MapStageId": 907000100902000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001011001,
@@ -101,7 +125,9 @@
     "Y": 13,
     "MapStageId": 907000101102000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001011002,
@@ -109,7 +135,9 @@
     "Y": 6,
     "MapStageId": 907000101102000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001013001,
@@ -117,7 +145,9 @@
     "Y": 17,
     "MapStageId": 907000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001013002,
@@ -125,7 +155,9 @@
     "Y": 12,
     "MapStageId": 907000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001014001,
@@ -133,7 +165,9 @@
     "Y": 2,
     "MapStageId": 907000101402000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001014002,
@@ -141,7 +175,9 @@
     "Y": 2,
     "MapStageId": 907000101402000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001014003,
@@ -149,7 +185,9 @@
     "Y": 6,
     "MapStageId": 907000101402000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001014004,
@@ -157,7 +195,9 @@
     "Y": 6,
     "MapStageId": 907000101402000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001014005,
@@ -165,7 +205,9 @@
     "Y": 10,
     "MapStageId": 907000101402000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001014006,
@@ -173,7 +215,9 @@
     "Y": 10,
     "MapStageId": 907000101402000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001015001,
@@ -181,7 +225,9 @@
     "Y": 15,
     "MapStageId": 907000101502000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001015002,
@@ -189,7 +235,9 @@
     "Y": 8,
     "MapStageId": 907000101502000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001015005,
@@ -197,7 +245,9 @@
     "Y": 17,
     "MapStageId": 907000101502000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001015006,
@@ -205,7 +255,9 @@
     "Y": 8,
     "MapStageId": 907000101502000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001015007,
@@ -213,7 +265,9 @@
     "Y": 15,
     "MapStageId": 907000101502000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001015008,
@@ -221,7 +275,9 @@
     "Y": 10,
     "MapStageId": 907000101502000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001016001,
@@ -229,7 +285,9 @@
     "Y": 9,
     "MapStageId": 907000101602000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001016002,
@@ -237,7 +295,9 @@
     "Y": 6,
     "MapStageId": 907000101602000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001016003,
@@ -245,7 +305,9 @@
     "Y": 3,
     "MapStageId": 907000101602000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001016004,
@@ -253,7 +315,9 @@
     "Y": 9,
     "MapStageId": 907000101602000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001016005,
@@ -261,7 +325,9 @@
     "Y": 3,
     "MapStageId": 907000101602000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001017001,
@@ -269,7 +335,9 @@
     "Y": 14,
     "MapStageId": 907000101702000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001017002,
@@ -277,7 +345,9 @@
     "Y": 14,
     "MapStageId": 907000101702000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001017005,
@@ -285,7 +355,9 @@
     "Y": 10,
     "MapStageId": 907000101702000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001017006,
@@ -293,7 +365,9 @@
     "Y": 10,
     "MapStageId": 907000101702000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001019002,
@@ -301,7 +375,9 @@
     "Y": 19,
     "MapStageId": 907000101902000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001019003,
@@ -309,7 +385,9 @@
     "Y": 13,
     "MapStageId": 907000101902000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001019005,
@@ -317,7 +395,9 @@
     "Y": 25,
     "MapStageId": 907000101902000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001020001,
@@ -325,7 +405,9 @@
     "Y": 15,
     "MapStageId": 907000102002000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001020002,
@@ -333,7 +415,9 @@
     "Y": 11,
     "MapStageId": 907000102002000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001020003,
@@ -341,7 +425,9 @@
     "Y": 15,
     "MapStageId": 907000102002000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070001020004,
@@ -349,7 +435,9 @@
     "Y": 19,
     "MapStageId": 907000102002000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002003001,
@@ -357,7 +445,9 @@
     "Y": 13,
     "MapStageId": 907000200302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002004001,
@@ -365,7 +455,9 @@
     "Y": 14,
     "MapStageId": 907000200402000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002004002,
@@ -373,7 +465,9 @@
     "Y": 10,
     "MapStageId": 907000200402000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002009001,
@@ -381,7 +475,9 @@
     "Y": 13,
     "MapStageId": 907000200902000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002009002,
@@ -389,7 +485,9 @@
     "Y": 13,
     "MapStageId": 907000200902000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002009003,
@@ -397,7 +495,9 @@
     "Y": 12,
     "MapStageId": 907000200902000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002009004,
@@ -405,7 +505,9 @@
     "Y": 7,
     "MapStageId": 907000200902000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002009005,
@@ -413,7 +515,9 @@
     "Y": 2,
     "MapStageId": 907000200902000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002009006,
@@ -421,7 +525,9 @@
     "Y": 12,
     "MapStageId": 907000200902000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002009007,
@@ -429,7 +535,9 @@
     "Y": 7,
     "MapStageId": 907000200902000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002009008,
@@ -437,7 +545,9 @@
     "Y": 2,
     "MapStageId": 907000200902000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002011002,
@@ -445,7 +555,9 @@
     "Y": 19,
     "MapStageId": 907000201102000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002011003,
@@ -453,7 +565,9 @@
     "Y": 19,
     "MapStageId": 907000201102000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002012001,
@@ -461,7 +575,9 @@
     "Y": 9,
     "MapStageId": 907000201202000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002012002,
@@ -469,7 +585,9 @@
     "Y": 9,
     "MapStageId": 907000201202000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002013001,
@@ -477,7 +595,9 @@
     "Y": 8,
     "MapStageId": 907000201302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002013002,
@@ -485,7 +605,9 @@
     "Y": 14,
     "MapStageId": 907000201302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002013004,
@@ -493,7 +615,9 @@
     "Y": 11,
     "MapStageId": 907000201302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002013005,
@@ -501,7 +625,9 @@
     "Y": 17,
     "MapStageId": 907000201302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002013006,
@@ -509,7 +635,9 @@
     "Y": 23,
     "MapStageId": 907000201302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002013007,
@@ -517,7 +645,9 @@
     "Y": 19,
     "MapStageId": 907000201302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002014001,
@@ -525,7 +655,9 @@
     "Y": 5,
     "MapStageId": 907000201402000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002014002,
@@ -533,7 +665,9 @@
     "Y": 5,
     "MapStageId": 907000201402000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002014003,
@@ -541,7 +675,9 @@
     "Y": 13,
     "MapStageId": 907000201402000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002014004,
@@ -549,7 +685,9 @@
     "Y": 13,
     "MapStageId": 907000201402000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002015001,
@@ -557,7 +695,9 @@
     "Y": 13,
     "MapStageId": 907000201502000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002015002,
@@ -565,7 +705,9 @@
     "Y": 27,
     "MapStageId": 907000201502000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002015003,
@@ -573,7 +715,9 @@
     "Y": 27,
     "MapStageId": 907000201502000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002015004,
@@ -581,7 +725,9 @@
     "Y": 21,
     "MapStageId": 907000201502000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002015005,
@@ -589,7 +735,9 @@
     "Y": 21,
     "MapStageId": 907000201502000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002015006,
@@ -597,7 +745,9 @@
     "Y": 12,
     "MapStageId": 907000201502000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002015007,
@@ -605,7 +755,9 @@
     "Y": 12,
     "MapStageId": 907000201502000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002016001,
@@ -613,7 +765,9 @@
     "Y": 15,
     "MapStageId": 907000201602000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002016002,
@@ -621,7 +775,9 @@
     "Y": 22,
     "MapStageId": 907000201602000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002016003,
@@ -629,7 +785,9 @@
     "Y": 8,
     "MapStageId": 907000201602000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002016004,
@@ -637,7 +795,9 @@
     "Y": 12,
     "MapStageId": 907000201602000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002016005,
@@ -645,7 +805,9 @@
     "Y": 18,
     "MapStageId": 907000201602000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002017001,
@@ -653,7 +815,9 @@
     "Y": 9,
     "MapStageId": 907000201702000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002017002,
@@ -661,7 +825,9 @@
     "Y": 9,
     "MapStageId": 907000201702000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002017003,
@@ -669,7 +835,9 @@
     "Y": 12,
     "MapStageId": 907000201702000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002017004,
@@ -677,7 +845,9 @@
     "Y": 12,
     "MapStageId": 907000201702000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002019001,
@@ -685,7 +855,9 @@
     "Y": 3,
     "MapStageId": 907000201902000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002019002,
@@ -693,7 +865,9 @@
     "Y": 13,
     "MapStageId": 907000201902000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002019003,
@@ -701,7 +875,9 @@
     "Y": 3,
     "MapStageId": 907000201902000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002019004,
@@ -709,7 +885,9 @@
     "Y": 13,
     "MapStageId": 907000201902000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002019005,
@@ -717,7 +895,9 @@
     "Y": 8,
     "MapStageId": 907000201902000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002020001,
@@ -725,7 +905,9 @@
     "Y": 6,
     "MapStageId": 907000202002000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002020002,
@@ -733,7 +915,9 @@
     "Y": 20,
     "MapStageId": 907000202002000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002020003,
@@ -741,7 +925,9 @@
     "Y": 6,
     "MapStageId": 907000202002000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002020004,
@@ -749,7 +935,9 @@
     "Y": 20,
     "MapStageId": 907000202002000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9070002020005,
@@ -757,7 +945,9 @@
     "Y": 11,
     "MapStageId": 907000202002000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013001,
@@ -765,7 +955,9 @@
     "Y": 23,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013002,
@@ -773,7 +965,9 @@
     "Y": 23,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013003,
@@ -781,7 +975,9 @@
     "Y": 22,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013004,
@@ -789,7 +985,9 @@
     "Y": 22,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013005,
@@ -797,7 +995,9 @@
     "Y": 22,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013006,
@@ -805,7 +1005,9 @@
     "Y": 22,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013007,
@@ -813,7 +1015,9 @@
     "Y": 22,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013008,
@@ -821,7 +1025,9 @@
     "Y": 22,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013009,
@@ -829,7 +1035,9 @@
     "Y": 22,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013010,
@@ -837,7 +1045,9 @@
     "Y": 21,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013011,
@@ -845,7 +1055,9 @@
     "Y": 21,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013012,
@@ -853,7 +1065,9 @@
     "Y": 21,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013013,
@@ -861,7 +1075,9 @@
     "Y": 21,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013014,
@@ -869,7 +1085,9 @@
     "Y": 21,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013015,
@@ -877,7 +1095,9 @@
     "Y": 21,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013016,
@@ -885,7 +1105,9 @@
     "Y": 21,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013017,
@@ -893,7 +1115,9 @@
     "Y": 20,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013018,
@@ -901,7 +1125,9 @@
     "Y": 20,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013019,
@@ -909,7 +1135,9 @@
     "Y": 20,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013020,
@@ -917,7 +1145,9 @@
     "Y": 20,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013021,
@@ -925,7 +1155,9 @@
     "Y": 20,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013022,
@@ -933,7 +1165,9 @@
     "Y": 20,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013023,
@@ -941,7 +1175,9 @@
     "Y": 19,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013024,
@@ -949,7 +1185,9 @@
     "Y": 19,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013025,
@@ -957,7 +1195,9 @@
     "Y": 19,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013026,
@@ -965,7 +1205,9 @@
     "Y": 19,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013027,
@@ -973,7 +1215,9 @@
     "Y": 19,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013028,
@@ -981,7 +1225,9 @@
     "Y": 19,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013029,
@@ -989,7 +1235,9 @@
     "Y": 19,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013030,
@@ -997,7 +1245,9 @@
     "Y": 18,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013031,
@@ -1005,7 +1255,9 @@
     "Y": 18,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013032,
@@ -1013,7 +1265,9 @@
     "Y": 18,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013033,
@@ -1021,7 +1275,9 @@
     "Y": 18,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013034,
@@ -1029,7 +1285,9 @@
     "Y": 18,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013035,
@@ -1037,7 +1295,9 @@
     "Y": 18,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013036,
@@ -1045,7 +1305,9 @@
     "Y": 18,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013037,
@@ -1053,7 +1315,9 @@
     "Y": 17,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013038,
@@ -1061,7 +1325,9 @@
     "Y": 17,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013039,
@@ -1069,7 +1335,9 @@
     "Y": 17,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013040,
@@ -1077,7 +1345,9 @@
     "Y": 17,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013041,
@@ -1085,7 +1355,9 @@
     "Y": 17,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013042,
@@ -1093,7 +1365,9 @@
     "Y": 17,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013043,
@@ -1101,7 +1375,9 @@
     "Y": 17,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013044,
@@ -1109,7 +1385,9 @@
     "Y": 16,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013045,
@@ -1117,7 +1395,9 @@
     "Y": 16,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013046,
@@ -1125,7 +1405,9 @@
     "Y": 16,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013047,
@@ -1133,7 +1415,9 @@
     "Y": 16,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013048,
@@ -1141,7 +1425,9 @@
     "Y": 16,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013049,
@@ -1149,7 +1435,9 @@
     "Y": 16,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013050,
@@ -1157,7 +1445,9 @@
     "Y": 16,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013051,
@@ -1165,7 +1455,9 @@
     "Y": 16,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013052,
@@ -1173,7 +1465,9 @@
     "Y": 16,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013053,
@@ -1181,7 +1475,9 @@
     "Y": 15,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013054,
@@ -1189,7 +1485,9 @@
     "Y": 15,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013055,
@@ -1197,7 +1495,9 @@
     "Y": 15,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013056,
@@ -1205,7 +1505,9 @@
     "Y": 15,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013057,
@@ -1213,7 +1515,9 @@
     "Y": 15,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013058,
@@ -1221,7 +1525,9 @@
     "Y": 15,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013059,
@@ -1229,7 +1535,9 @@
     "Y": 15,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013060,
@@ -1237,7 +1545,9 @@
     "Y": 15,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013061,
@@ -1245,7 +1555,9 @@
     "Y": 15,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013062,
@@ -1253,7 +1565,9 @@
     "Y": 15,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013063,
@@ -1261,7 +1575,9 @@
     "Y": 15,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013064,
@@ -1269,7 +1585,9 @@
     "Y": 15,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013065,
@@ -1277,7 +1595,9 @@
     "Y": 15,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013066,
@@ -1285,7 +1605,9 @@
     "Y": 15,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013067,
@@ -1293,7 +1615,9 @@
     "Y": 15,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013068,
@@ -1301,7 +1625,9 @@
     "Y": 14,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013069,
@@ -1309,7 +1635,9 @@
     "Y": 14,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013070,
@@ -1317,7 +1645,9 @@
     "Y": 14,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013071,
@@ -1325,7 +1655,9 @@
     "Y": 14,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013072,
@@ -1333,7 +1665,9 @@
     "Y": 14,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013073,
@@ -1341,7 +1675,9 @@
     "Y": 14,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013074,
@@ -1349,7 +1685,9 @@
     "Y": 14,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013075,
@@ -1357,7 +1695,9 @@
     "Y": 14,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013076,
@@ -1365,7 +1705,9 @@
     "Y": 13,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013077,
@@ -1373,7 +1715,9 @@
     "Y": 13,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013078,
@@ -1381,7 +1725,9 @@
     "Y": 13,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013079,
@@ -1389,7 +1735,9 @@
     "Y": 13,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013080,
@@ -1397,7 +1745,9 @@
     "Y": 13,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013081,
@@ -1405,7 +1755,9 @@
     "Y": 13,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013082,
@@ -1413,7 +1765,9 @@
     "Y": 12,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013083,
@@ -1421,7 +1775,9 @@
     "Y": 12,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013084,
@@ -1429,7 +1785,9 @@
     "Y": 12,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013085,
@@ -1437,7 +1795,9 @@
     "Y": 12,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013086,
@@ -1445,7 +1805,9 @@
     "Y": 12,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013087,
@@ -1453,7 +1815,9 @@
     "Y": 11,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013088,
@@ -1461,7 +1825,9 @@
     "Y": 12,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013089,
@@ -1469,7 +1835,9 @@
     "Y": 12,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013090,
@@ -1477,7 +1845,9 @@
     "Y": 12,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013091,
@@ -1485,7 +1855,9 @@
     "Y": 12,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013092,
@@ -1493,7 +1865,9 @@
     "Y": 12,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013093,
@@ -1501,7 +1875,9 @@
     "Y": 11,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013094,
@@ -1509,7 +1885,9 @@
     "Y": 11,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013095,
@@ -1517,7 +1895,9 @@
     "Y": 11,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013096,
@@ -1525,7 +1905,9 @@
     "Y": 11,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013097,
@@ -1533,7 +1915,9 @@
     "Y": 11,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013098,
@@ -1541,7 +1925,9 @@
     "Y": 10,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013099,
@@ -1549,7 +1935,9 @@
     "Y": 10,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013100,
@@ -1557,7 +1945,9 @@
     "Y": 11,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013101,
@@ -1565,7 +1955,9 @@
     "Y": 11,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013102,
@@ -1573,7 +1965,9 @@
     "Y": 11,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013103,
@@ -1581,7 +1975,9 @@
     "Y": 11,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013104,
@@ -1589,7 +1985,9 @@
     "Y": 11,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013105,
@@ -1597,7 +1995,9 @@
     "Y": 10,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013106,
@@ -1605,7 +2005,9 @@
     "Y": 10,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013107,
@@ -1613,7 +2015,9 @@
     "Y": 10,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013108,
@@ -1621,7 +2025,9 @@
     "Y": 10,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013109,
@@ -1629,7 +2035,9 @@
     "Y": 9,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013110,
@@ -1637,7 +2045,9 @@
     "Y": 10,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013111,
@@ -1645,7 +2055,9 @@
     "Y": 10,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013112,
@@ -1653,7 +2065,9 @@
     "Y": 10,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013113,
@@ -1661,7 +2075,9 @@
     "Y": 10,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013114,
@@ -1669,7 +2085,9 @@
     "Y": 9,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013115,
@@ -1677,7 +2095,9 @@
     "Y": 9,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013116,
@@ -1685,7 +2105,9 @@
     "Y": 9,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013117,
@@ -1693,7 +2115,9 @@
     "Y": 8,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013118,
@@ -1701,7 +2125,9 @@
     "Y": 8,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013119,
@@ -1709,7 +2135,9 @@
     "Y": 9,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013120,
@@ -1717,7 +2145,9 @@
     "Y": 9,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013121,
@@ -1725,7 +2155,9 @@
     "Y": 9,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013122,
@@ -1733,7 +2165,9 @@
     "Y": 8,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013123,
@@ -1741,7 +2175,9 @@
     "Y": 8,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013124,
@@ -1749,7 +2185,9 @@
     "Y": 8,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013125,
@@ -1757,7 +2195,9 @@
     "Y": 8,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013126,
@@ -1765,7 +2205,9 @@
     "Y": 8,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013127,
@@ -1773,7 +2215,9 @@
     "Y": 7,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013128,
@@ -1781,7 +2225,9 @@
     "Y": 7,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013129,
@@ -1789,7 +2235,9 @@
     "Y": 7,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013130,
@@ -1797,7 +2245,9 @@
     "Y": 6,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013131,
@@ -1805,7 +2255,9 @@
     "Y": 7,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013132,
@@ -1813,7 +2265,9 @@
     "Y": 7,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013133,
@@ -1821,7 +2275,9 @@
     "Y": 7,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013134,
@@ -1829,7 +2285,9 @@
     "Y": 7,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013135,
@@ -1837,7 +2295,9 @@
     "Y": 6,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013136,
@@ -1845,7 +2305,9 @@
     "Y": 6,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013137,
@@ -1853,7 +2315,9 @@
     "Y": 6,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013138,
@@ -1861,7 +2325,9 @@
     "Y": 5,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013139,
@@ -1869,7 +2335,9 @@
     "Y": 5,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013140,
@@ -1877,7 +2345,9 @@
     "Y": 5,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013141,
@@ -1885,7 +2355,9 @@
     "Y": 6,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013142,
@@ -1893,7 +2365,9 @@
     "Y": 6,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   },
   {
     "Id": 9900001013143,
@@ -1901,6 +2375,8 @@
     "Y": 6,
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
-    "InitStandbyTypeIndex": 0
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
   }
 ]

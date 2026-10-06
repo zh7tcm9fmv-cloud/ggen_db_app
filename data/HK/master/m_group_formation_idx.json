@@ -630,6 +630,12 @@
     "GroupFormationNumber": 1
   },
   {
+    "Id": 2798254804,
+    "GroupFormationTypeIndex": 20,
+    "ContentTargetId": 0,
+    "GroupFormationNumber": 1
+  },
+  {
     "Id": 2817644434,
     "GroupFormationTypeIndex": 2,
     "ContentTargetId": 90510012,
@@ -867,6 +873,12 @@
     "Id": 3718660099,
     "GroupFormationTypeIndex": 1,
     "ContentTargetId": 3700,
+    "GroupFormationNumber": 1
+  },
+  {
+    "Id": 3763269223,
+    "GroupFormationTypeIndex": 17,
+    "ContentTargetId": 99000117,
     "GroupFormationNumber": 1
   },
   {

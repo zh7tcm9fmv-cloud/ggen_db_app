@@ -14182,6 +14182,13 @@
     "DirectionTypeIndex": 2
   },
   {
+    "MapStageId": 990000101702000000,
+    "BattleSidePlacedTypeIndex": 1,
+    "X": 7,
+    "Y": 10,
+    "DirectionTypeIndex": 1
+  },
+  {
     "MapStageId": 990000101802000000,
     "BattleSidePlacedTypeIndex": 1,
     "X": 5,

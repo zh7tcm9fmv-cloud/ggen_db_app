@@ -73225,6 +73225,16 @@
     "RewardId": 2099000115000002
   },
   {
+    "RewardSetId": 20990001170000,
+    "SortOrder": 1,
+    "RewardId": 2099000117000001
+  },
+  {
+    "RewardSetId": 20990001170000,
+    "SortOrder": 2,
+    "RewardId": 2099000117000002
+  },
+  {
     "RewardSetId": 20990001180000,
     "SortOrder": 1,
     "RewardId": 2099000118000001

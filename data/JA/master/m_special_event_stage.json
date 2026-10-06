@@ -196,6 +196,20 @@
     "DisplayIfHasTicket": false
   },
   {
+    "Id": 99000117,
+    "SpecialEventGroupId": 220014,
+    "StageId": 99000117,
+    "Priority": 3,
+    "StageNameLanguageId": 130100000099000117,
+    "ThumbnailResourceId": "sp_stage_event_thum_99000102",
+    "DescriptionLanguageId": 310200000099000117,
+    "HomeBannerResourceId": "sp_stage_event_home_banner_99000102",
+    "ConsumeSpecialEventStageTicketId": 0,
+    "ConsumeSpecialEventStageTicketAmount": 0,
+    "DisplayScheduleId": 0,
+    "DisplayIfHasTicket": false
+  },
+  {
     "Id": 99000118,
     "SpecialEventGroupId": 220013,
     "StageId": 99000118,

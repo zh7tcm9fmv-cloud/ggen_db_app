@@ -1,0 +1,128 @@
+[
+  {
+    "Id": 1,
+    "UnitBodyTypeIndex": 0,
+    "RoleTypeIndex": 0,
+    "BromideResourceId": 0
+  },
+  {
+    "Id": 2,
+    "UnitBodyTypeIndex": 1,
+    "RoleTypeIndex": 50,
+    "BromideResourceId": 500
+  },
+  {
+    "Id": 3,
+    "UnitBodyTypeIndex": 2,
+    "RoleTypeIndex": 100,
+    "BromideResourceId": 1000
+  },
+  {
+    "Id": 4,
+    "UnitBodyTypeIndex": 3,
+    "RoleTypeIndex": 150,
+    "BromideResourceId": 1500
+  },
+  {
+    "Id": 5,
+    "UnitBodyTypeIndex": 4,
+    "RoleTypeIndex": 200,
+    "BromideResourceId": 2000
+  },
+  {
+    "Id": 6,
+    "UnitBodyTypeIndex": 5,
+    "RoleTypeIndex": 300,
+    "BromideResourceId": 2500
+  },
+  {
+    "Id": 7,
+    "UnitBodyTypeIndex": 6,
+    "RoleTypeIndex": 400,
+    "BromideResourceId": 3000
+  },
+  {
+    "Id": 8,
+    "UnitBodyTypeIndex": 7,
+    "RoleTypeIndex": 500,
+    "BromideResourceId": 3500
+  },
+  {
+    "Id": 9,
+    "UnitBodyTypeIndex": 8,
+    "RoleTypeIndex": 600,
+    "BromideResourceId": 4000
+  },
+  {
+    "Id": 10,
+    "UnitBodyTypeIndex": 9,
+    "RoleTypeIndex": 750,
+    "BromideResourceId": 4500
+  },
+  {
+    "Id": 11,
+    "UnitBodyTypeIndex": 10,
+    "RoleTypeIndex": 900,
+    "BromideResourceId": 5000
+  },
+  {
+    "Id": 12,
+    "UnitBodyTypeIndex": 11,
+    "RoleTypeIndex": 1050,
+    "BromideResourceId": 5500
+  },
+  {
+    "Id": 13,
+    "UnitBodyTypeIndex": 12,
+    "RoleTypeIndex": 1200,
+    "BromideResourceId": 6000
+  },
+  {
+    "Id": 14,
+    "UnitBodyTypeIndex": 13,
+    "RoleTypeIndex": 1400,
+    "BromideResourceId": 6500
+  },
+  {
+    "Id": 15,
+    "UnitBodyTypeIndex": 14,
+    "RoleTypeIndex": 1600,
+    "BromideResourceId": 7000
+  },
+  {
+    "Id": 16,
+    "UnitBodyTypeIndex": 15,
+    "RoleTypeIndex": 1800,
+    "BromideResourceId": 7500
+  },
+  {
+    "Id": 17,
+    "UnitBodyTypeIndex": 16,
+    "RoleTypeIndex": 2000,
+    "BromideResourceId": 8000
+  },
+  {
+    "Id": 18,
+    "UnitBodyTypeIndex": 17,
+    "RoleTypeIndex": 2250,
+    "BromideResourceId": 8500
+  },
+  {
+    "Id": 19,
+    "UnitBodyTypeIndex": 18,
+    "RoleTypeIndex": 2500,
+    "BromideResourceId": 9000
+  },
+  {
+    "Id": 20,
+    "UnitBodyTypeIndex": 19,
+    "RoleTypeIndex": 2750,
+    "BromideResourceId": 9500
+  },
+  {
+    "Id": 21,
+    "UnitBodyTypeIndex": 20,
+    "RoleTypeIndex": 3000,
+    "BromideResourceId": 10000
+  }
+]

@@ -160875,6 +160875,28 @@
     "LinkedCharacterLevel": 0
   },
   {
+    "Id": 2099000117000001,
+    "RewardTypeIndex": 10,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 100,
+    "WeaponEnhancementStep": 0,
+    "LinkedCharacterLevel": 0
+  },
+  {
+    "Id": 2099000117000002,
+    "RewardTypeIndex": 1,
+    "TargetId": 240000021138,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 100,
+    "WeaponEnhancementStep": 0,
+    "LinkedCharacterLevel": 0
+  },
+  {
     "Id": 2099000118000001,
     "RewardTypeIndex": 10,
     "TargetId": 0,
@@ -269331,6 +269353,17 @@
     "Level": 0,
     "UnitAbilitySetId": 0,
     "Count": 5,
+    "WeaponEnhancementStep": 0,
+    "LinkedCharacterLevel": 0
+  },
+  {
+    "Id": 9910261010000101,
+    "RewardTypeIndex": 1,
+    "TargetId": 191100000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
     "WeaponEnhancementStep": 0,
     "LinkedCharacterLevel": 0
   },

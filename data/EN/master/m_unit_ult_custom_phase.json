@@ -1,0 +1,12 @@
+[
+  {
+    "Id": 1,
+    "UnitBodyTypeIndex": 1,
+    "RoleTypeIndex": 10
+  },
+  {
+    "Id": 2,
+    "UnitBodyTypeIndex": 2,
+    "RoleTypeIndex": 20
+  }
+]

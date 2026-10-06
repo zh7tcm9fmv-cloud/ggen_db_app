@@ -73110,6 +73110,16 @@
     "RewardId": 2099000115000002
   },
   {
+    "RewardSetId": 20990001170000,
+    "SortOrder": 1,
+    "RewardId": 2099000117000001
+  },
+  {
+    "RewardSetId": 20990001170000,
+    "SortOrder": 2,
+    "RewardId": 2099000117000002
+  },
+  {
     "RewardSetId": 20990001180000,
     "SortOrder": 1,
     "RewardId": 2099000118000001
@@ -122848,6 +122858,11 @@
     "RewardSetId": 99102609400004,
     "SortOrder": 1,
     "RewardId": 9910260940000401
+  },
+  {
+    "RewardSetId": 99102610100001,
+    "SortOrder": 1,
+    "RewardId": 9910261010000101
   },
   {
     "RewardSetId": 99112250820011,

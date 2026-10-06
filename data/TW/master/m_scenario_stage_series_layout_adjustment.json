@@ -2,31 +2,43 @@
   {
     "ScenarioStageSeriesId": 1100,
     "LogoOffsetX": -12,
-    "BromideScalePercent": 100
+    "BromideScalePercent": 100,
+    "Unknown_Col_3": 0,
+    "Unknown_Col_4": 0
   },
   {
     "ScenarioStageSeriesId": 1250,
     "LogoOffsetX": 0,
-    "BromideScalePercent": 105
+    "BromideScalePercent": 105,
+    "Unknown_Col_3": 0,
+    "Unknown_Col_4": 0
   },
   {
     "ScenarioStageSeriesId": 2100,
     "LogoOffsetX": -10,
-    "BromideScalePercent": 100
+    "BromideScalePercent": 100,
+    "Unknown_Col_3": 0,
+    "Unknown_Col_4": 0
   },
   {
     "ScenarioStageSeriesId": 2190,
     "LogoOffsetX": -48,
-    "BromideScalePercent": 90
+    "BromideScalePercent": 90,
+    "Unknown_Col_3": 0,
+    "Unknown_Col_4": 0
   },
   {
     "ScenarioStageSeriesId": 3000,
     "LogoOffsetX": -30,
-    "BromideScalePercent": 100
+    "BromideScalePercent": 100,
+    "Unknown_Col_3": 0,
+    "Unknown_Col_4": 0
   },
   {
     "ScenarioStageSeriesId": 4300,
     "LogoOffsetX": 0,
-    "BromideScalePercent": 109
+    "BromideScalePercent": 109,
+    "Unknown_Col_3": 0,
+    "Unknown_Col_4": 0
   }
 ]
