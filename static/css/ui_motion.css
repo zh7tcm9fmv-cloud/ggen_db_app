@@ -245,8 +245,9 @@ input[type=range].ui-range.ui-range-snap::-moz-range-thumb{
   }
 }
 .rarity-filter-row,
-.role-filter-row{
-  transition:background var(--motion-dur-quick) var(--motion-ease-standard),color var(--motion-dur-quick) var(--motion-ease-standard),box-shadow var(--motion-dur-quick) var(--motion-ease-standard);
+.role-filter-row,
+.rarity-star-opt{
+  transition:background var(--motion-dur-quick) var(--motion-ease-standard),color var(--motion-dur-quick) var(--motion-ease-standard),box-shadow var(--motion-dur-quick) var(--motion-ease-standard),opacity var(--motion-dur-quick) var(--motion-ease-standard),filter var(--motion-dur-quick) var(--motion-ease-standard),border-color var(--motion-dur-quick) var(--motion-ease-standard);
 }
 
 /* —— Nav underline: GPU scaleX instead of width (Transitions pill cue, keep cyan bar) —— */
