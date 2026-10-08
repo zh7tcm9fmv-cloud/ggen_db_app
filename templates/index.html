@@ -180,25 +180,9 @@ window.__ggenLoadGtm=function(){
 {% endif %}
 <script>
 (function(){
-  /* Font preload must use crossOrigin=anonymous to match @font-face CORS mode.
-     Railway /static/font allowlist sends ACAO:* — without crossorigin the preload
-     is discarded ("preload not used") and a second fetch races font-display.
-     Do NOT early-preload Teko here: the design-15 block below injects @font-face
-     immediately. Double preload+unused-first-paint caused console spam on /st etc.
-     Roboto numbers: defer until idle so Stages/collab first paint is not warned. */
-  var v={{ app_js_version|tojson }};
-  function preloadFont(href, type){
-    var link=document.createElement('link');
-    link.rel='preload';link.as='font';link.type=type||'font/ttf';
-    link.href=href;
-    link.crossOrigin='anonymous';
-    document.head.appendChild(link);
-  }
-  function preloadRoboto(){
-    preloadFont('/static/font/roboto_medium_numbers.ttf?v='+encodeURIComponent(v));
-  }
-  if(typeof requestIdleCallback==='function')requestIdleCallback(preloadRoboto,{timeout:2500});
-  else setTimeout(preloadRoboto,1200);
+  /* No <link rel=preload> for fonts here. @font-face below (Roboto) and the
+     design-15 block (Teko) fetch on use — avoids Firefox "preloaded … not used"
+     console spam. Roboto is ~3KB; Teko still injects immediately when 1.5 is on. */
   try{
     var params=new URLSearchParams(location.search||'');
     var q=params.get('design')||params.get('mock');
