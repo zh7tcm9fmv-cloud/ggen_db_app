@@ -5896,6 +5896,17 @@
     "Unknown_Col_8": 0
   },
   {
+    "Id": 179500001,
+    "NameLanguageId": 300100000179500001,
+    "ResourceId": "bgm_7950_0001",
+    "IsPaid": false,
+    "ScheduleId": 2610209901,
+    "SeriesId": 7950,
+    "HasLyrics": false,
+    "SortOrder": 1795000010,
+    "Unknown_Col_8": 0
+  },
+  {
     "Id": 185000001,
     "NameLanguageId": 300100000185000001,
     "ResourceId": "bgm_8500_0001",

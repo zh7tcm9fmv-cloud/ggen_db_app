@@ -10152,6 +10152,14 @@
     "ScheduleId": 2511209901
   },
   {
+    "UnitId": 1795000100,
+    "UnitSspInitialReleaseSetId": 0,
+    "UnitSspCustomCoreGroupId": 1795000100,
+    "UnitSspAddStatusId": 100014,
+    "UnitSspMaterialConsumeSetId": 1,
+    "ScheduleId": 2511209901
+  },
+  {
     "UnitId": 1850000100,
     "UnitSspInitialReleaseSetId": 1850000100,
     "UnitSspCustomCoreGroupId": 1850000100,

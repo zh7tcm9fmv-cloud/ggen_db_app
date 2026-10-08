@@ -218,5 +218,25 @@
     "ComicSeriesTypeIndex": 1,
     "ComicReleaseConditionTypeIndex": 0,
     "TargetValue": 0
+  },
+  {
+    "Id": 90021,
+    "NameLanguageId": 350100000000090021,
+    "CoverThumbnailResourceId": "comic_cover_90021",
+    "Priority": 90261021,
+    "ScheduleId": 2610203102,
+    "ComicSeriesTypeIndex": 1,
+    "ComicReleaseConditionTypeIndex": 0,
+    "TargetValue": 0
+  },
+  {
+    "Id": 90022,
+    "NameLanguageId": 350100000000090022,
+    "CoverThumbnailResourceId": "comic_cover_90022",
+    "Priority": 90261020,
+    "ScheduleId": 2610203102,
+    "ComicSeriesTypeIndex": 1,
+    "ComicReleaseConditionTypeIndex": 0,
+    "TargetValue": 0
   }
 ]

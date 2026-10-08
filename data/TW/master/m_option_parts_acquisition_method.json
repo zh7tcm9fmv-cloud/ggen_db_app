@@ -983,5 +983,10 @@
     "OptionPartsId": 400096,
     "AcquisitionMethodTypeIndex": 22,
     "TargetId": 9023002408
+  },
+  {
+    "OptionPartsId": 400097,
+    "AcquisitionMethodTypeIndex": 3,
+    "TargetId": 90520033
   }
 ]

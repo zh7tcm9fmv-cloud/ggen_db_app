@@ -5392,6 +5392,38 @@
     "value": "EX Character Ability"
   },
   {
+    "id": 140100000203030101,
+    "value": "(Series conditions) Support Attack / Counter Support LV 1"
+  },
+  {
+    "id": 140100000203100100,
+    "value": "Max EX LV 1"
+  },
+  {
+    "id": 140100000203100107,
+    "value": "(Cond: Vigor) Support Attack / Counter Support LV 1"
+  },
+  {
+    "id": 140100000203100108,
+    "value": "(Cond: Vigor) Increased Ranged LV 1"
+  },
+  {
+    "id": 140100000203100109,
+    "value": "Increased ACC LV 1"
+  },
+  {
+    "id": 140100000203100110,
+    "value": "Increased EVA LV 1"
+  },
+  {
+    "id": 140100000203100111,
+    "value": "Decreased MP"
+  },
+  {
+    "id": 140100000203100112,
+    "value": "MP Lock (1 turn(s))"
+  },
+  {
     "id": 140100000300010101,
     "value": "Decreased ATK (1 turn(s)) LV 1"
   },
@@ -9553,7 +9585,7 @@
   },
   {
     "id": 140100000403000101,
-    "value": "Booster Parts N (Mobile Suit Gundam the Witch from Mercury)"
+    "value": "Booster Parts N (Mobile Suit Gundam SEED Astray)"
   },
   {
     "id": 140100000403010101,
@@ -11136,6 +11168,10 @@
     "value": "Reinforced Armor SSR(Fierce Enemy Assault)"
   },
   {
+    "id": 140100000407010101,
+    "value": "Reinforced Armor SSR(Gold)"
+  },
+  {
     "id": 140100000407020100,
     "value": "Heavyweight Defense Boost R(Mobile Suit V Gundam)"
   },
@@ -12674,6 +12710,10 @@
   {
     "id": 140100000511570201,
     "value": "(Cond: Defeat) Increased ATK & DEF"
+  },
+  {
+    "id": 140100000511610101,
+    "value": "(Cond: Defeat) Re-sortie"
   },
   {
     "id": 140100000530010100,
@@ -14628,6 +14668,34 @@
     "value": "Increased DEF"
   },
   {
+    "id": 140100000612510101,
+    "value": "(Destroy Conditions) Increased ATK"
+  },
+  {
+    "id": 140100000612510111,
+    "value": "(Destroy Conditions) Increased ATK"
+  },
+  {
+    "id": 140100000612510201,
+    "value": "(Destroy Conditions) Increased ATK"
+  },
+  {
+    "id": 140100000612510211,
+    "value": "(Destroy Conditions) Increased ATK"
+  },
+  {
+    "id": 140100000612520101,
+    "value": "(Cond: Character) Increased DEF"
+  },
+  {
+    "id": 140100000612530101,
+    "value": "Increased DEF"
+  },
+  {
+    "id": 140100000612540101,
+    "value": "HP Restoration (Squad Units) "
+  },
+  {
     "id": 140100000612550101,
     "value": "(Cond: Defeat) Increased ATK & DEF"
   },
@@ -14650,6 +14718,54 @@
   {
     "id": 140100000612580101,
     "value": "Increased ATK"
+  },
+  {
+    "id": 140100000612620101,
+    "value": "Supercharged EX"
+  },
+  {
+    "id": 140100000612620106,
+    "value": "Supercharged EX"
+  },
+  {
+    "id": 140100000612620107,
+    "value": "(Cond: Vigor) Increased Critical Rate"
+  },
+  {
+    "id": 140100000612620109,
+    "value": "Increased Melee"
+  },
+  {
+    "id": 140100000612620110,
+    "value": ""
+  },
+  {
+    "id": 140100000612620111,
+    "value": "Decreased MP"
+  },
+  {
+    "id": 140100000612630101,
+    "value": "Supercharged EX"
+  },
+  {
+    "id": 140100000612630106,
+    "value": "Supercharged EX"
+  },
+  {
+    "id": 140100000612630107,
+    "value": "(Cond: Vigor) Increased Critical Rate"
+  },
+  {
+    "id": 140100000612630109,
+    "value": "Increased Defense"
+  },
+  {
+    "id": 140100000612630110,
+    "value": ""
+  },
+  {
+    "id": 140100000612630111,
+    "value": "Decreased MP"
   },
   {
     "id": 140100000699000101,
@@ -15710,5 +15826,33 @@
   {
     "id": 140100000700650501,
     "value": "Decreased Damage Dealt"
+  },
+  {
+    "id": 140100000700701001,
+    "value": "Decreased ATK LV 10"
+  },
+  {
+    "id": 140100000700711001,
+    "value": "Decreased DEF LV 10"
+  },
+  {
+    "id": 140100000710030501,
+    "value": "Increased MOB"
+  },
+  {
+    "id": 140100000710030502,
+    "value": "Increased MOB LV 5"
+  },
+  {
+    "id": 140100000710250201,
+    "value": "Increased MP LV 2"
+  },
+  {
+    "id": 140100000710250401,
+    "value": "Increased MP LV 4"
+  },
+  {
+    "id": 140100000710250601,
+    "value": "Increased MP LV 6"
   }
 ]

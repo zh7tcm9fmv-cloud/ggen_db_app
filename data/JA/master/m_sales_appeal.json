@@ -1366,7 +1366,7 @@
   },
   {
     "Id": 2609400701,
-    "DisplayConditionSetId": 18001225105001,
+    "DisplayConditionSetId": 99132609400701,
     "ScheduleId": 2609402802,
     "IsInfiniteDisplay": false,
     "SalesAppealDisplaySourceSetId": 2609400701,
@@ -1454,6 +1454,19 @@
     "Priority": 1,
     "ShouldTransition": true,
     "ContentImageResourceId": "99000102"
+  },
+  {
+    "Id": 2610200101,
+    "DisplayConditionSetId": 20908002030000,
+    "ScheduleId": 2610202901,
+    "IsInfiniteDisplay": false,
+    "SalesAppealDisplaySourceSetId": 2610200101,
+    "TransitionId": 49000000230002,
+    "SalesAppealTargetTypeIndex": 1,
+    "TargetId": 0,
+    "Priority": 1,
+    "ShouldTransition": true,
+    "ContentImageResourceId": "2610200101"
   },
   {
     "Id": 35260730040301,

@@ -5280,6 +5280,10 @@
     "value": "SR Extreme Gundam Limit Break Material"
   },
   {
+    "id": 150100171795000100,
+    "value": "SSR Extreme Gundam Excellia Limit Break Material"
+  },
+  {
     "id": 150100171850000100,
     "value": "R Phoenix Gundam Limit Break Material"
   },
@@ -12074,6 +12078,10 @@
   {
     "id": 150200171779000110,
     "value": "An item used to perform Limit Break on SR Extreme Gundam"
+  },
+  {
+    "id": 150200171795000100,
+    "value": "An item used to perform Limit Break on SSR Extreme Gundam Excellia"
   },
   {
     "id": 150200171850000100,

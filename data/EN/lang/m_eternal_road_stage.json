@@ -96,6 +96,10 @@
     "value": "Mobile Suit V Gundam"
   },
   {
+    "id": 130100000090500031,
+    "value": "Tank/Soldier"
+  },
+  {
     "id": 130100000090510001,
     "value": "U.C. Series"
   },
@@ -236,6 +240,10 @@
     "value": "Mobile Suit V Gundam"
   },
   {
+    "id": 130100000090510040,
+    "value": "Gouf/Zeon"
+  },
+  {
     "id": 130100000090520001,
     "value": "U.C. Series"
   },
@@ -350,5 +358,9 @@
   {
     "id": 130100000090520032,
     "value": "Mobile Suit V Gundam"
+  },
+  {
+    "id": 130100000090520033,
+    "value": "Gold/Veteran"
   }
 ]

@@ -8554,5 +8554,17 @@
     "SeriesId": 0,
     "SortOrder": 0,
     "UnitId": 0
+  },
+  {
+    "Id": 400097,
+    "ResourceId": "op_000000002",
+    "RarityTypeIndex": 4,
+    "TraitSetId": 407010101,
+    "ScheduleId": 0,
+    "SortNameLanguageId": 270100000000400097,
+    "SearchWordGroupId": 0,
+    "SeriesId": 0,
+    "SortOrder": 0,
+    "UnitId": 0
   }
 ]

@@ -348,6 +348,30 @@
     "SlotIndex": 0
   },
   {
+    "StageSortieRestrictionSetGroupId": 130025,
+    "SortieRestrictionTypeIndex": 2,
+    "TargetId": 1125,
+    "SlotIndex": 0
+  },
+  {
+    "StageSortieRestrictionSetGroupId": 130026,
+    "SortieRestrictionTypeIndex": 2,
+    "TargetId": 1137,
+    "SlotIndex": 0
+  },
+  {
+    "StageSortieRestrictionSetGroupId": 130027,
+    "SortieRestrictionTypeIndex": 2,
+    "TargetId": 1118,
+    "SlotIndex": 0
+  },
+  {
+    "StageSortieRestrictionSetGroupId": 130028,
+    "SortieRestrictionTypeIndex": 2,
+    "TargetId": 1103,
+    "SlotIndex": 0
+  },
+  {
     "StageSortieRestrictionSetGroupId": 140001,
     "SortieRestrictionTypeIndex": 2,
     "TargetId": 1014,

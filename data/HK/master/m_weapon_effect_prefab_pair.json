@@ -3354,6 +3354,12 @@
     "DamagedEffectId": "ef_mpd_0027_015_funnel_rigring"
   },
   {
+    "Id": 370014,
+    "WeaponEffectPrefabPairSetId": 370014,
+    "WeaponEffectId": "ef_mpa_0027_000_funnel_exstream",
+    "DamagedEffectId": "ef_mpd_0027_000_funnel_exstream"
+  },
+  {
     "Id": 370015,
     "WeaponEffectPrefabPairSetId": 370015,
     "WeaponEffectId": "ef_mpa_0027_000_funnel_doggorla",
@@ -4761,6 +4767,12 @@
     "Id": 900236,
     "WeaponEffectPrefabPairSetId": 900236,
     "WeaponEffectId": "ef_mpw_111_02_battleshipbomb",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900237,
+    "WeaponEffectPrefabPairSetId": 900237,
+    "WeaponEffectId": "ef_mpw_112_01_milchstrasse",
     "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
   },
   {

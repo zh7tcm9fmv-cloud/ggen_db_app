@@ -276,6 +276,118 @@
     "ReleaseConditionReopenStageId": 1705003
   },
   {
+    "StageId": 2100101,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 2100102,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 2100103,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 2100104,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 2100201,
+    "ReleaseConditionReopenStageId": 2100104
+  },
+  {
+    "StageId": 2100301,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 2100302,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 2100303,
+    "ReleaseConditionReopenStageId": 2100201
+  },
+  {
+    "StageId": 2100401,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 2100402,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 2100403,
+    "ReleaseConditionReopenStageId": 2100303
+  },
+  {
+    "StageId": 2100501,
+    "ReleaseConditionReopenStageId": 2100403
+  },
+  {
+    "StageId": 2100601,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 2100602,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 2100603,
+    "ReleaseConditionReopenStageId": 2100501
+  },
+  {
+    "StageId": 2100701,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 2100702,
+    "ReleaseConditionReopenStageId": 2100603
+  },
+  {
+    "StageId": 2100703,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 2100801,
+    "ReleaseConditionReopenStageId": 2100702
+  },
+  {
+    "StageId": 2100901,
+    "ReleaseConditionReopenStageId": 2100801
+  },
+  {
+    "StageId": 2101001,
+    "ReleaseConditionReopenStageId": 2100901
+  },
+  {
+    "StageId": 2101101,
+    "ReleaseConditionReopenStageId": 2101001
+  },
+  {
+    "StageId": 2105001,
+    "ReleaseConditionReopenStageId": 2100702
+  },
+  {
+    "StageId": 2105002,
+    "ReleaseConditionReopenStageId": 2106001
+  },
+  {
+    "StageId": 2105003,
+    "ReleaseConditionReopenStageId": 2106002
+  },
+  {
+    "StageId": 2106001,
+    "ReleaseConditionReopenStageId": 2105001
+  },
+  {
+    "StageId": 2106002,
+    "ReleaseConditionReopenStageId": 2105002
+  },
+  {
+    "StageId": 2106003,
+    "ReleaseConditionReopenStageId": 2105003
+  },
+  {
     "StageId": 2200101,
     "ReleaseConditionReopenStageId": 0
   },

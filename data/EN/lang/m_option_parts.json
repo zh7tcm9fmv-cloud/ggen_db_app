@@ -45,7 +45,7 @@
   },
   {
     "id": 270100000000100012,
-    "value": "Booster Parts N (Mobile Suit Gundam the Witch from Mercury)"
+    "value": "Booster Parts N (Mobile Suit Gundam SEED Astray)"
   },
   {
     "id": 270100000000100013,
@@ -2850,5 +2850,9 @@
   {
     "id": 270100000000400096,
     "value": "Reinforced Armor SSR(Fierce Enemy Assault)"
+  },
+  {
+    "id": 270100000000400097,
+    "value": "Reinforced Armor SSR(Gold)"
   }
 ]

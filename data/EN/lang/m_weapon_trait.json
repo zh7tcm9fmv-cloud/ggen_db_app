@@ -11380,6 +11380,30 @@
     "value": "Decreased DEF (1 turn(s)) LV 9"
   },
   {
+    "id": 140700000700701001,
+    "value": "Decreased ATK(5 turn(s))"
+  },
+  {
+    "id": 140700000700711001,
+    "value": "Decreased DEF(5 turn(s))"
+  },
+  {
+    "id": 140700000710030501,
+    "value": "Increased MOB LV 5"
+  },
+  {
+    "id": 140700000710250201,
+    "value": "Increased MP LV 2"
+  },
+  {
+    "id": 140700000710250401,
+    "value": "Increased MP LV 4"
+  },
+  {
+    "id": 140700000710250601,
+    "value": "Increased MP LV 6"
+  },
+  {
     "id": 140800000300010101,
     "value": "Inflict \"ATK Down 10%\" on enemies (1 turn(s))."
   },
@@ -15281,7 +15305,7 @@
   },
   {
     "id": 140800000300780102,
-    "value": "Restores own HP equal to 10% of damage dealt\n(Recovery is capped at 5% of own Max HP)"
+    "value": "Restores own HP equal to 10% of damage dealt\n(Restoration is capped at 5% of own Max HP)"
   },
   {
     "id": 140800000300780201,
@@ -15289,7 +15313,7 @@
   },
   {
     "id": 140800000300780202,
-    "value": "Restores own HP equal to 20% of damage dealt\n(Recovery is capped at 10% of own Max HP)"
+    "value": "Restores own HP equal to 20% of damage dealt\n(Restoration is capped at 10% of own Max HP)"
   },
   {
     "id": 140800000300780301,
@@ -15297,7 +15321,7 @@
   },
   {
     "id": 140800000300780302,
-    "value": "Restores own HP equal to 30% of damage dealt\n(Recovery is capped at 15% of own Max HP)"
+    "value": "Restores own HP equal to 30% of damage dealt\n(Restoration is capped at 15% of own Max HP)"
   },
   {
     "id": 140800000300780401,
@@ -15305,7 +15329,7 @@
   },
   {
     "id": 140800000300780402,
-    "value": "Restores own HP equal to 40% of damage dealt\n(Recovery is capped at 20% of own Max HP)"
+    "value": "Restores own HP equal to 40% of damage dealt\n(Restoration is capped at 20% of own Max HP)"
   },
   {
     "id": 140800000300780501,
@@ -15313,7 +15337,7 @@
   },
   {
     "id": 140800000300780502,
-    "value": "Restores own HP equal to 50% of damage dealt\n(Recovery is capped at 25% of own Max HP)"
+    "value": "Restores own HP equal to 50% of damage dealt\n(Restoration is capped at 25% of own Max HP)"
   },
   {
     "id": 140800000300780601,
@@ -15321,7 +15345,7 @@
   },
   {
     "id": 140800000300780602,
-    "value": "Restores own HP equal to 60% of damage dealt\n(Recovery is capped at 30% of own Max HP)"
+    "value": "Restores own HP equal to 60% of damage dealt\n(Restoration is capped at 30% of own Max HP)"
   },
   {
     "id": 140800000300780701,
@@ -15329,7 +15353,7 @@
   },
   {
     "id": 140800000300780702,
-    "value": "Restores own HP equal to 70% of damage dealt\n(Recovery is capped at 35% of own Max HP)"
+    "value": "Restores own HP equal to 70% of damage dealt\n(Restoration is capped at 35% of own Max HP)"
   },
   {
     "id": 140800000300780801,
@@ -15337,7 +15361,7 @@
   },
   {
     "id": 140800000300780802,
-    "value": "Restores own HP equal to 80% of damage dealt\n(Recovery is capped at 40% of own Max HP)"
+    "value": "Restores own HP equal to 80% of damage dealt\n(Restoration is capped at 40% of own Max HP)"
   },
   {
     "id": 140800000300780901,
@@ -15345,7 +15369,7 @@
   },
   {
     "id": 140800000300780902,
-    "value": "Restores own HP equal to 90% of damage dealt\n(Recovery is capped at 45% of own Max HP)"
+    "value": "Restores own HP equal to 90% of damage dealt\n(Restoration is capped at 45% of own Max HP)"
   },
   {
     "id": 140800000300790101,
@@ -15357,7 +15381,7 @@
   },
   {
     "id": 140800000300790103,
-    "value": "Restores own EN equal to 10% of EN damage dealt\n(Recovery is capped at 10% of own Max EN)"
+    "value": "Restores own EN equal to 10% of EN damage dealt\n(Restoration is capped at 10% of own Max EN)"
   },
   {
     "id": 140800000300790201,
@@ -15369,7 +15393,7 @@
   },
   {
     "id": 140800000300790203,
-    "value": "Restores own EN equal to 20% of EN damage dealt\n(Recovery is capped at 15% of own Max EN)"
+    "value": "Restores own EN equal to 20% of EN damage dealt\n(Restoration is capped at 15% of own Max EN)"
   },
   {
     "id": 140800000300790301,
@@ -15381,7 +15405,7 @@
   },
   {
     "id": 140800000300790303,
-    "value": "Restores own EN equal to 30% of EN damage dealt\n(Recovery is capped at 20% of own Max EN)"
+    "value": "Restores own EN equal to 30% of EN damage dealt\n(Restoration is capped at 20% of own Max EN)"
   },
   {
     "id": 140800000300790401,
@@ -15393,7 +15417,7 @@
   },
   {
     "id": 140800000300790403,
-    "value": "Restores own EN equal to 40% of EN damage dealt\n(Recovery is capped at 25% of own Max EN)"
+    "value": "Restores own EN equal to 40% of EN damage dealt\n(Restoration is capped at 25% of own Max EN)"
   },
   {
     "id": 140800000300790501,
@@ -15405,7 +15429,7 @@
   },
   {
     "id": 140800000300790503,
-    "value": "Restores own EN equal to 50% of EN damage dealt\n(Recovery is capped at 30% of own Max EN)"
+    "value": "Restores own EN equal to 50% of EN damage dealt\n(Restoration is capped at 30% of own Max EN)"
   },
   {
     "id": 140800000300790601,
@@ -15417,7 +15441,7 @@
   },
   {
     "id": 140800000300790603,
-    "value": "Restores own EN equal to 60% of EN damage dealt\n(Recovery is capped at 35% of own Max EN)"
+    "value": "Restores own EN equal to 60% of EN damage dealt\n(Restoration is capped at 35% of own Max EN)"
   },
   {
     "id": 140800000300790701,
@@ -15429,7 +15453,7 @@
   },
   {
     "id": 140800000300790703,
-    "value": "Restores own EN equal to 70% of EN damage dealt\n(Recovery is capped at 40% of own Max EN)"
+    "value": "Restores own EN equal to 70% of EN damage dealt\n(Restoration is capped at 40% of own Max EN)"
   },
   {
     "id": 140800000300790801,
@@ -15441,7 +15465,7 @@
   },
   {
     "id": 140800000300790803,
-    "value": "Restores own EN equal to 80% of EN damage dealt\n(Recovery is capped at 45% of own Max EN)"
+    "value": "Restores own EN equal to 80% of EN damage dealt\n(Restoration is capped at 45% of own Max EN)"
   },
   {
     "id": 140800000300790901,
@@ -15453,7 +15477,7 @@
   },
   {
     "id": 140800000300790903,
-    "value": "Restores own EN equal to 90% of EN damage dealt\n(Recovery is capped at 50% of own Max EN)"
+    "value": "Restores own EN equal to 90% of EN damage dealt\n(Restoration is capped at 50% of own Max EN)"
   },
   {
     "id": 140800000300800101,
@@ -22489,7 +22513,7 @@
   },
   {
     "id": 140800000700480101,
-    "value": "Restores own HP equal to 90% of damage dealt\n(Recovery is capped at 45% of own Max HP)"
+    "value": "Restores own HP equal to 90% of damage dealt\n(Restoration is capped at 45% of own Max HP)"
   },
   {
     "id": 140800000700490101,
@@ -22722,5 +22746,29 @@
   {
     "id": 140800000700660902,
     "value": "Inflict \"DEF Down 50%\" on the enemies (1 turn(s))."
+  },
+  {
+    "id": 140800000700701001,
+    "value": "Inflict \"ATK Down 100%\" on enemies(5 turn(s))."
+  },
+  {
+    "id": 140800000700711001,
+    "value": "Inflict \"DEF Down 100%\" on enemies(5 turn(s))."
+  },
+  {
+    "id": 140800000710030501,
+    "value": "Applies \"Increased MOB 50%\" to self."
+  },
+  {
+    "id": 140800000710250201,
+    "value": "Increase MP by 2."
+  },
+  {
+    "id": 140800000710250401,
+    "value": "Increase MP by 4."
+  },
+  {
+    "id": 140800000710250601,
+    "value": "Increase MP by 6."
   }
 ]

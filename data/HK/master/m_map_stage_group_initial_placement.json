@@ -11228,6 +11228,13 @@
     "DirectionTypeIndex": 4
   },
   {
+    "MapStageId": 905000003102000000,
+    "BattleSidePlacedTypeIndex": 1,
+    "X": 11,
+    "Y": 21,
+    "DirectionTypeIndex": 4
+  },
+  {
     "MapStageId": 905100000102000000,
     "BattleSidePlacedTypeIndex": 1,
     "X": 9,
@@ -11718,6 +11725,20 @@
     "DirectionTypeIndex": 2
   },
   {
+    "MapStageId": 905100004002000000,
+    "BattleSidePlacedTypeIndex": 1,
+    "X": 4,
+    "Y": 22,
+    "DirectionTypeIndex": 4
+  },
+  {
+    "MapStageId": 905100004002000000,
+    "BattleSidePlacedTypeIndex": 2,
+    "X": 14,
+    "Y": 22,
+    "DirectionTypeIndex": 4
+  },
+  {
     "MapStageId": 905200000102000000,
     "BattleSidePlacedTypeIndex": 1,
     "X": 9,
@@ -12135,6 +12156,20 @@
     "BattleSidePlacedTypeIndex": 2,
     "X": 3,
     "Y": 15,
+    "DirectionTypeIndex": 2
+  },
+  {
+    "MapStageId": 905200003302000000,
+    "BattleSidePlacedTypeIndex": 1,
+    "X": 15,
+    "Y": 14,
+    "DirectionTypeIndex": 3
+  },
+  {
+    "MapStageId": 905200003302000000,
+    "BattleSidePlacedTypeIndex": 2,
+    "X": 7,
+    "Y": 6,
     "DirectionTypeIndex": 2
   },
   {
@@ -12751,6 +12786,20 @@
     "BattleSidePlacedTypeIndex": 1,
     "X": 4,
     "Y": 6,
+    "DirectionTypeIndex": 2
+  },
+  {
+    "MapStageId": 908000200102000000,
+    "BattleSidePlacedTypeIndex": 1,
+    "X": 12,
+    "Y": 5,
+    "DirectionTypeIndex": 2
+  },
+  {
+    "MapStageId": 908000200202000000,
+    "BattleSidePlacedTypeIndex": 1,
+    "X": 11,
+    "Y": 4,
     "DirectionTypeIndex": 2
   },
   {

@@ -6444,6 +6444,10 @@
     "value": "Extreme Gundam"
   },
   {
+    "id": 110100001795000100,
+    "value": "Extreme Gundam Excellia"
+  },
+  {
     "id": 110100001850000100,
     "value": "Phoenix Gundam"
   },
@@ -12866,6 +12870,10 @@
   {
     "id": 110200001779000100,
     "value": "A mobile suit that appeared in Mobile Suit Gundam: Extreme Vs.\nIn a distant future in which the Earth was destroyed, it was built to serve as an arbitrator of a \"perfect and ideal universe.\""
+  },
+  {
+    "id": 110200001795000100,
+    "value": "A mobile suit developed by Sthesia as her personal machine to allow her to fight alongside Leos.\nThe Extreme Gundam Excellia is capable of deploying an energy field shaped like a magic circle to protect itself and allies.\nIt was designed to support Leos as well as to hold its own in combat."
   },
   {
     "id": 110200001850000100,
@@ -20084,6 +20092,10 @@
     "value": "Extreme Gundam"
   },
   {
+    "id": 110300001795000100,
+    "value": "Extreme Gundam Excellia"
+  },
+  {
     "id": 110300001850000100,
     "value": "Phoenix Gundam"
   },
@@ -27298,6 +27310,10 @@
   {
     "id": 110400001779000110,
     "value": "Extreme Gundam"
+  },
+  {
+    "id": 110400001795000100,
+    "value": "Extreme Gundam Excellia"
   },
   {
     "id": 110400001850000100,

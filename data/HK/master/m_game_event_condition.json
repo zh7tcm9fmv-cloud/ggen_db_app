@@ -558,6 +558,15 @@
     "TargetValue5": 0
   },
   {
+    "Id": 200010003101,
+    "GameEventConditionTypeIndex": 228,
+    "TargetValue1": 90520033,
+    "TargetValue2": 0,
+    "TargetValue3": 0,
+    "TargetValue4": 0,
+    "TargetValue5": 0
+  },
+  {
     "Id": 200010100101,
     "GameEventConditionTypeIndex": 229,
     "TargetValue1": 90520001,
@@ -822,6 +831,15 @@
     "Id": 200010103001,
     "GameEventConditionTypeIndex": 229,
     "TargetValue1": 90520032,
+    "TargetValue2": 10,
+    "TargetValue3": 0,
+    "TargetValue4": 0,
+    "TargetValue5": 0
+  },
+  {
+    "Id": 200010103101,
+    "GameEventConditionTypeIndex": 229,
+    "TargetValue1": 90520033,
     "TargetValue2": 10,
     "TargetValue3": 0,
     "TargetValue4": 0,
@@ -11545,6 +11563,60 @@
     "TargetValue3": 0,
     "TargetValue4": 0,
     "TargetValue5": 0
+  },
+  {
+    "Id": 261020030101,
+    "GameEventConditionTypeIndex": 106,
+    "TargetValue1": 1795000100,
+    "TargetValue2": 0,
+    "TargetValue3": 0,
+    "TargetValue4": 0,
+    "TargetValue5": 0
+  },
+  {
+    "Id": 261020030201,
+    "GameEventConditionTypeIndex": 107,
+    "TargetValue1": 1795000101,
+    "TargetValue2": 0,
+    "TargetValue3": 0,
+    "TargetValue4": 0,
+    "TargetValue5": 0
+  },
+  {
+    "Id": 261020030301,
+    "GameEventConditionTypeIndex": 145,
+    "TargetValue1": 1795000100,
+    "TargetValue2": 0,
+    "TargetValue3": 0,
+    "TargetValue4": 0,
+    "TargetValue5": 0
+  },
+  {
+    "Id": 261020030401,
+    "GameEventConditionTypeIndex": 331,
+    "TargetValue1": 90800202,
+    "TargetValue2": 1125001200,
+    "TargetValue3": 2,
+    "TargetValue4": 2,
+    "TargetValue5": 0
+  },
+  {
+    "Id": 261020030501,
+    "GameEventConditionTypeIndex": 331,
+    "TargetValue1": 90800202,
+    "TargetValue2": 1095002500,
+    "TargetValue3": 3,
+    "TargetValue4": 2,
+    "TargetValue5": 0
+  },
+  {
+    "Id": 261020030601,
+    "GameEventConditionTypeIndex": 288,
+    "TargetValue1": 90800202,
+    "TargetValue2": 1795000101,
+    "TargetValue3": 1795000100,
+    "TargetValue4": 1125001200,
+    "TargetValue5": 1
   },
   {
     "Id": 300010200101,

@@ -1071,6 +1071,78 @@
     "TargetRewardSetId": 0
   },
   {
+    "Id": 126102001,
+    "CampaignEffectTypeIndex": 3,
+    "Value": 200,
+    "CampaignEffectCalcTypeIndex": 1,
+    "CampaignEffectTargetTypeIndex": 1,
+    "CampaignEffectTargetSetId": 11800000001,
+    "TargetRewardSetId": 0
+  },
+  {
+    "Id": 126102002,
+    "CampaignEffectTypeIndex": 9,
+    "Value": 1,
+    "CampaignEffectCalcTypeIndex": 2,
+    "CampaignEffectTargetTypeIndex": 0,
+    "CampaignEffectTargetSetId": 0,
+    "TargetRewardSetId": 3900261020000101
+  },
+  {
+    "Id": 126102003,
+    "CampaignEffectTypeIndex": 9,
+    "Value": 1,
+    "CampaignEffectCalcTypeIndex": 2,
+    "CampaignEffectTargetTypeIndex": 0,
+    "CampaignEffectTargetSetId": 0,
+    "TargetRewardSetId": 3900261020000102
+  },
+  {
+    "Id": 126102004,
+    "CampaignEffectTypeIndex": 9,
+    "Value": 1,
+    "CampaignEffectCalcTypeIndex": 2,
+    "CampaignEffectTargetTypeIndex": 0,
+    "CampaignEffectTargetSetId": 0,
+    "TargetRewardSetId": 3900261020000103
+  },
+  {
+    "Id": 126102005,
+    "CampaignEffectTypeIndex": 9,
+    "Value": 1,
+    "CampaignEffectCalcTypeIndex": 2,
+    "CampaignEffectTargetTypeIndex": 0,
+    "CampaignEffectTargetSetId": 0,
+    "TargetRewardSetId": 3900261020000104
+  },
+  {
+    "Id": 126102006,
+    "CampaignEffectTypeIndex": 9,
+    "Value": 1,
+    "CampaignEffectCalcTypeIndex": 2,
+    "CampaignEffectTargetTypeIndex": 0,
+    "CampaignEffectTargetSetId": 0,
+    "TargetRewardSetId": 3900261020000105
+  },
+  {
+    "Id": 126102007,
+    "CampaignEffectTypeIndex": 9,
+    "Value": 1,
+    "CampaignEffectCalcTypeIndex": 2,
+    "CampaignEffectTargetTypeIndex": 0,
+    "CampaignEffectTargetSetId": 0,
+    "TargetRewardSetId": 3900261020000106
+  },
+  {
+    "Id": 126102090,
+    "CampaignEffectTypeIndex": 9,
+    "Value": 1,
+    "CampaignEffectCalcTypeIndex": 2,
+    "CampaignEffectTargetTypeIndex": 0,
+    "CampaignEffectTargetSetId": 0,
+    "TargetRewardSetId": 3900261020000107
+  },
+  {
     "Id": 425105001,
     "CampaignEffectTypeIndex": 5,
     "Value": 1,

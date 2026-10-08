@@ -8656,6 +8656,14 @@
     "value": "All of your units are defeated.\nLimit: 3 turns."
   },
   {
+    "id": 130300009050003101,
+    "value": "Your units reach the target area."
+  },
+  {
+    "id": 130300009050003104,
+    "value": "All of your units defeated. / Limit: 3 turns.\nPenetrate the enemy force's target area."
+  },
+  {
     "id": 130300009051000101,
     "value": "Defeat all enemy units."
   },
@@ -8960,6 +8968,14 @@
     "value": "All of your units are defeated.\nLimit: 3 turns."
   },
   {
+    "id": 130300009051004001,
+    "value": "Defeat 3 Guntank Mass Production Type(s)."
+  },
+  {
+    "id": 130300009051004004,
+    "value": "Guest force Norris Packard is defeated.\nAll of your units Defeated. / Limit: 4 turns."
+  },
+  {
     "id": 130300009052000101,
     "value": "Defeat all enemy units."
   },
@@ -9237,6 +9253,14 @@
   },
   {
     "id": 130300009052003204,
+    "value": "All of your units are defeated.\nLimit: 3 turns."
+  },
+  {
+    "id": 130300009052003301,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300009052003304,
     "value": "All of your units are defeated.\nLimit: 3 turns."
   },
   {
@@ -9678,6 +9702,22 @@
   {
     "id": 130300009080013304,
     "value": "All of your units are defeated.\nGuest forces are defeated."
+  },
+  {
+    "id": 130300009080020101,
+    "value": "Defeat Extreme Gundam."
+  },
+  {
+    "id": 130300009080020104,
+    "value": "All of your units are defeated."
+  },
+  {
+    "id": 130300009080020201,
+    "value": "Defeat enemy force's Sinanju and Qubeley a total of 3 time(s), or defeat enemy force's Sinanju 2 time(s)."
+  },
+  {
+    "id": 130300009080020204,
+    "value": "All of your units are defeated.\nLimit: 3 turns."
   },
   {
     "id": 130300009101010101,

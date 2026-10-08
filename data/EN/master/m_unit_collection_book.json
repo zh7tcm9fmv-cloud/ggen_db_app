@@ -11869,6 +11869,17 @@
     "KomaMovePositionY": 0
   },
   {
+    "Id": 79500001,
+    "DefaultUnitId": 1795000100,
+    "SortOrder": 79500001,
+    "SeriesId": 7950,
+    "DescriptionLanguageId": 110200001795000100,
+    "ScheduleId": 2610209901,
+    "OverrideKomaSize": 0,
+    "KomaMovePositionX": 0,
+    "KomaMovePositionY": 0
+  },
+  {
     "Id": 85000001,
     "DefaultUnitId": 1850000100,
     "SortOrder": 85000001,

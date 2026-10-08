@@ -53,7 +53,7 @@
   },
   {
     "id": 240700000000000014,
-    "value": "Total Character SP Conversions"
+    "value": "Character SP Conversions"
   },
   {
     "id": 240700000000000015,
@@ -65,19 +65,19 @@
   },
   {
     "id": 240700000000000019,
-    "value": "Units Registered to the Database"
+    "value": "Database Units"
   },
   {
     "id": 240700000000000020,
-    "value": "Units Registered to the Database"
+    "value": "Database Units"
   },
   {
     "id": 240700000000000021,
-    "value": "Units Registered to the Database"
+    "value": "Database Units"
   },
   {
     "id": 240700000000000022,
-    "value": "Characters Registered to the Database"
+    "value": "Database Characters"
   },
   {
     "id": 240700000000000023,
@@ -97,10 +97,10 @@
   },
   {
     "id": 240700000000000027,
-    "value": "ULT Alteration Intermediate Completions"
+    "value": "ULT Alt Progress Milestone"
   },
   {
     "id": 240700000000000028,
-    "value": "ULT Alteration Final Completions"
+    "value": "ULT Alt Completed"
   }
 ]

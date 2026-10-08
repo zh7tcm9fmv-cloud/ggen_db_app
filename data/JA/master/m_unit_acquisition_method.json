@@ -21736,6 +21736,11 @@
   },
   {
     "UnitId": 1021000100,
+    "AcquisitionMethodTypeIndex": 16,
+    "TargetId": 2100901
+  },
+  {
+    "UnitId": 1021000100,
     "AcquisitionMethodTypeIndex": 19,
     "TargetId": 200013
   },
@@ -22191,6 +22196,11 @@
   },
   {
     "UnitId": 1021000200,
+    "AcquisitionMethodTypeIndex": 16,
+    "TargetId": 2100801
+  },
+  {
+    "UnitId": 1021000200,
     "AcquisitionMethodTypeIndex": 19,
     "TargetId": 200013
   },
@@ -22643,6 +22653,11 @@
     "UnitId": 1021000210,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2609500503
+  },
+  {
+    "UnitId": 1021000400,
+    "AcquisitionMethodTypeIndex": 16,
+    "TargetId": 2101001
   },
   {
     "UnitId": 1021000400,

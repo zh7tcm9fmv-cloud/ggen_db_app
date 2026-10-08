@@ -438,6 +438,42 @@
     "StageSortieRestrictionSetGroupId": 140017
   },
   {
+    "StageSortieRestrictionSetId": 150017,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 130025
+  },
+  {
+    "StageSortieRestrictionSetId": 150017,
+    "SortieRestrictionTargetTypeIndex": 2,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 140015
+  },
+  {
+    "StageSortieRestrictionSetId": 150018,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 130026
+  },
+  {
+    "StageSortieRestrictionSetId": 150018,
+    "SortieRestrictionTargetTypeIndex": 2,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 140002
+  },
+  {
+    "StageSortieRestrictionSetId": 150019,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 130027
+  },
+  {
+    "StageSortieRestrictionSetId": 150019,
+    "SortieRestrictionTargetTypeIndex": 2,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 130028
+  },
+  {
     "StageSortieRestrictionSetId": 180001,
     "SortieRestrictionTargetTypeIndex": 3,
     "IsAnd": true,

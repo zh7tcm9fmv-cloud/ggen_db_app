@@ -430,5 +430,29 @@
     "ScheduleId": 2609403101,
     "SubtitleLanguageId": 0,
     "AuthorNameLanguageId": 0
+  },
+  {
+    "Id": 9002100010001,
+    "ComicSeriesId": 90021,
+    "PartNameLanguageId": 350209002100010001,
+    "TitleLanguageId": 350309002100010001,
+    "Priority": 999,
+    "ComicReleaseConditionTypeIndex": 0,
+    "TargetValue": 0,
+    "ScheduleId": 2610203102,
+    "SubtitleLanguageId": 0,
+    "AuthorNameLanguageId": 0
+  },
+  {
+    "Id": 9002200010001,
+    "ComicSeriesId": 90022,
+    "PartNameLanguageId": 350209002200010001,
+    "TitleLanguageId": 350309002200010001,
+    "Priority": 999,
+    "ComicReleaseConditionTypeIndex": 0,
+    "TargetValue": 0,
+    "ScheduleId": 2610203102,
+    "SubtitleLanguageId": 0,
+    "AuthorNameLanguageId": 0
   }
 ]

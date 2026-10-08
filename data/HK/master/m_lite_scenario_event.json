@@ -9,5 +9,16 @@
     "TopBgLogoResourceId1": "lite_scenario_event_top_title_logo_230001",
     "BgmResourceId": "",
     "IsTitleMovieSkip": false
+  },
+  {
+    "EventId": 230002,
+    "ResourceId": "230002",
+    "BackgroundResourceId": "lite_scenario_event_bg_230002",
+    "PromotionTextLanguageId": 330100000000230002,
+    "MemoryResourceId": "",
+    "TopResourceId": "lite_scenario_event_top_230002",
+    "TopBgLogoResourceId1": "",
+    "BgmResourceId": "",
+    "IsTitleMovieSkip": true
   }
 ]

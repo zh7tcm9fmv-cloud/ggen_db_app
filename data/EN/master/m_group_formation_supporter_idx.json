@@ -66,6 +66,12 @@
     "PositionNumber": 1
   },
   {
+    "Id": 171591836,
+    "GroupFormationIdxId": 416730114,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
     "Id": 195381474,
     "GroupFormationIdxId": 859470647,
     "ForceNumber": 2,
@@ -111,6 +117,12 @@
     "Id": 272484206,
     "GroupFormationIdxId": 3204998224,
     "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 288251742,
+    "GroupFormationIdxId": 4216127742,
+    "ForceNumber": 2,
     "PositionNumber": 1
   },
   {
@@ -300,6 +312,12 @@
     "PositionNumber": 1
   },
   {
+    "Id": 687778419,
+    "GroupFormationIdxId": 3396266425,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
     "Id": 689336769,
     "GroupFormationIdxId": 3904625909,
     "ForceNumber": 2,
@@ -411,6 +429,12 @@
     "Id": 827883468,
     "GroupFormationIdxId": 4066347663,
     "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 838930733,
+    "GroupFormationIdxId": 416730114,
+    "ForceNumber": 2,
     "PositionNumber": 1
   },
   {
@@ -561,6 +585,12 @@
     "Id": 1132426557,
     "GroupFormationIdxId": 1713003891,
     "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1136005987,
+    "GroupFormationIdxId": 4216127742,
+    "ForceNumber": 1,
     "PositionNumber": 1
   },
   {
@@ -891,6 +921,12 @@
     "Id": 1964234314,
     "GroupFormationIdxId": 2798254804,
     "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 1977113646,
+    "GroupFormationIdxId": 3396266425,
+    "ForceNumber": 2,
     "PositionNumber": 1
   },
   {
@@ -1314,6 +1350,12 @@
     "PositionNumber": 1
   },
   {
+    "Id": 2907614520,
+    "GroupFormationIdxId": 1358917664,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
     "Id": 2912391831,
     "GroupFormationIdxId": 3275037844,
     "ForceNumber": 2,
@@ -1364,6 +1406,12 @@
   {
     "Id": 2982200913,
     "GroupFormationIdxId": 336278238,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 3017281257,
+    "GroupFormationIdxId": 1358917664,
     "ForceNumber": 1,
     "PositionNumber": 1
   },

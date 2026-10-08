@@ -108,6 +108,18 @@
     "CharacterIds": "2370001500"
   },
   {
+    "Id": 100000019,
+    "AllyTypeIndex": 1,
+    "MainUnitIds": "",
+    "CharacterIds": "1001000200"
+  },
+  {
+    "Id": 100000020,
+    "AllyTypeIndex": 1,
+    "MainUnitIds": "",
+    "CharacterIds": "1001000300"
+  },
+  {
     "Id": 100000023,
     "AllyTypeIndex": 1,
     "MainUnitIds": "",

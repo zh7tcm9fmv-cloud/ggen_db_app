@@ -14925,6 +14925,21 @@
     "BattleMovieReadIdx": 1228
   },
   {
+    "UnitBattleMovieId": "g7950u00100",
+    "WeaponBattleMovieId": "1",
+    "BattleMovieReadIdx": 2940
+  },
+  {
+    "UnitBattleMovieId": "g7950u00100",
+    "WeaponBattleMovieId": "2",
+    "BattleMovieReadIdx": 2941
+  },
+  {
+    "UnitBattleMovieId": "g7950u00100",
+    "WeaponBattleMovieId": "3",
+    "BattleMovieReadIdx": 2942
+  },
+  {
     "UnitBattleMovieId": "g8500u00200",
     "WeaponBattleMovieId": "1",
     "BattleMovieReadIdx": 1229

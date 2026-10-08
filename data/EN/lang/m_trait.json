@@ -3029,23 +3029,23 @@
   },
   {
     "id": 141200000101650101,
-    "value": "When own Vigor is \"Max\" or greater,\nincrease max range of special weapons by 1."
+    "value": "When Vigor is \"Max\" or greater,\nincrease max range of special weapons by 1."
   },
   {
     "id": 141200000101650102,
-    "value": "When own Vigor is \"Max\" or greater,\nincrease max range of special weapons by 2."
+    "value": "When Vigor is \"Max\" or greater,\nincrease max range of special weapons by 2."
   },
   {
     "id": 141200000101650103,
-    "value": "When own Vigor is \"Max\" or greater,\nincrease max range of special weapons by 3."
+    "value": "When Vigor is \"Max\" or greater,\nincrease max range of special weapons by 3."
   },
   {
     "id": 141200000101650104,
-    "value": "When own Vigor is \"Max\" or greater,\nincrease max range of special weapons by 4."
+    "value": "When Vigor is \"Max\" or greater,\nincrease max range of special weapons by 4."
   },
   {
     "id": 141200000101650105,
-    "value": "When own Vigor is \"Max\" or greater,\nincrease max range of special weapons by 5."
+    "value": "When Vigor is \"Max\" or greater,\nincrease max range of special weapons by 5."
   },
   {
     "id": 141200000101660101,
@@ -9022,6 +9022,58 @@
   {
     "id": 141200000203020107,
     "value": ""
+  },
+  {
+    "id": 141200000203030101,
+    "value": "When piloting units from specified series,\nSupport Attack/Counter +1 time."
+  },
+  {
+    "id": 141200000203100101,
+    "value": "When piloting units with the specified series and own Vigor is \"Max\" or greater,\nSupport Attack / Counter +1 time(s) (1 turn).\nIncrease own Ranged, Accuracy, and Reaction by 15% (1 turn)\napply MP Lock to self\n\nWhen effect ends, \ndecrease own MP by 6."
+  },
+  {
+    "id": 141200000203100102,
+    "value": ""
+  },
+  {
+    "id": 141200000203100103,
+    "value": ""
+  },
+  {
+    "id": 141200000203100104,
+    "value": ""
+  },
+  {
+    "id": 141200000203100105,
+    "value": ""
+  },
+  {
+    "id": 141200000203100106,
+    "value": ""
+  },
+  {
+    "id": 141200000203100107,
+    "value": "Support Attack/Counter +1 time(s) (1 turn(s))."
+  },
+  {
+    "id": 141200000203100108,
+    "value": "Increase Range by 15% (1 turn(s))."
+  },
+  {
+    "id": 141200000203100109,
+    "value": "Increases Accuracy by 15% (1 turn(s))."
+  },
+  {
+    "id": 141200000203100110,
+    "value": "Increase Evasion by 15% (1 turn(s))."
+  },
+  {
+    "id": 141200000203100111,
+    "value": "When effect ends:\nDecrease own MP by 12"
+  },
+  {
+    "id": 141200000203100112,
+    "value": "Apply MP Lock to self (1 turn(s))."
   },
   {
     "id": 141200000300010101,
@@ -15388,6 +15440,10 @@
     "value": "When equipped to Rig Ring,\nincrease DEF by 2%."
   },
   {
+    "id": 141200000407010101,
+    "value": "Increase DEF by 12%."
+  },
+  {
     "id": 141200000407020101,
     "value": "Increase DEF by 250."
   },
@@ -17042,6 +17098,10 @@
   {
     "id": 141200000511570202,
     "value": ""
+  },
+  {
+    "id": 141200000511610101,
+    "value": "Can re-sortie once after being defeated."
   },
   {
     "id": 141200000530010101,
@@ -18989,7 +19049,7 @@
   },
   {
     "id": 141200000611680101,
-    "value": "When own Vigor is \"Supercharged\",\n\"Supercharged EX\" (permanent)."
+    "value": "When Vigor is \"Supercharged\",\n\"Supercharged EX\" (permanent)."
   },
   {
     "id": 141200000611680102,
@@ -19472,6 +19532,34 @@
     "value": "Increase DEF by 300%."
   },
   {
+    "id": 141200000612510101,
+    "value": "When your squad's Kai Shiden is destroyed,\nincrease own ATK by 100%."
+  },
+  {
+    "id": 141200000612510111,
+    "value": "Increase ATK by 100%."
+  },
+  {
+    "id": 141200000612510201,
+    "value": "When your squad's Hayato Kobayashi is destroyed,\nincrease own ATK by 100%."
+  },
+  {
+    "id": 141200000612510211,
+    "value": "Increase ATK by 100%."
+  },
+  {
+    "id": 141200000612520101,
+    "value": "Increase DEF by 100%\nfor squad units piloted by Haman Karn."
+  },
+  {
+    "id": 141200000612530101,
+    "value": "Increase DEF by 100%."
+  },
+  {
+    "id": 141200000612540101,
+    "value": "Restore squad HP by 50% at the start of every turn."
+  },
+  {
     "id": 141200000612550101,
     "value": "When Juca Meilasch in your squad is defeated,\nincrease own ATK and DEF by 50%."
   },
@@ -19510,6 +19598,78 @@
   {
     "id": 141200000612580101,
     "value": "Increase ATK by 100%."
+  },
+  {
+    "id": 141200000612620101,
+    "value": "When Vigor is \"Supercharged\",\n\"Supercharged EX\" (1 turn(s)).\nGrant Guaranteed Critical to self (1 turn(s))\nIncrease Melee by 100% (1 turn(s)).\nApply MP Lock to self.\n\nWhen \"Supercharged EX\" ends,\ndecrease own MP by 12"
+  },
+  {
+    "id": 141200000612620102,
+    "value": ""
+  },
+  {
+    "id": 141200000612620104,
+    "value": ""
+  },
+  {
+    "id": 141200000612620105,
+    "value": ""
+  },
+  {
+    "id": 141200000612620106,
+    "value": "MP Lock (1 turn(s))"
+  },
+  {
+    "id": 141200000612620107,
+    "value": "Grant Guaranteed Critical to self (1 turn(s))"
+  },
+  {
+    "id": 141200000612620109,
+    "value": "Increase Melee by 100% (1 turn(s))."
+  },
+  {
+    "id": 141200000612620110,
+    "value": ""
+  },
+  {
+    "id": 141200000612620111,
+    "value": "Decrease MP by 12"
+  },
+  {
+    "id": 141200000612630101,
+    "value": "When Vigor is \"Supercharged\",\n\"Supercharged EX\" (1 turn(s)).\nGrant Guaranteed Critical to self (1 turn(s))\nIncrease Defense by 100% (1 turn(s)).\nApply MP Lock to self.\n\nWhen \"Supercharged EX\" ends,\ndecrease own MP by 12"
+  },
+  {
+    "id": 141200000612630102,
+    "value": ""
+  },
+  {
+    "id": 141200000612630104,
+    "value": ""
+  },
+  {
+    "id": 141200000612630105,
+    "value": ""
+  },
+  {
+    "id": 141200000612630106,
+    "value": "MP Lock (1 turn(s))"
+  },
+  {
+    "id": 141200000612630107,
+    "value": "Grant Guaranteed Critical to self (1 turn(s))"
+  },
+  {
+    "id": 141200000612630109,
+    "value": "Increase Defense by 100% (1 turn(s))."
+  },
+  {
+    "id": 141200000612630110,
+    "value": ""
+  },
+  {
+    "id": 141200000612630111,
+    "value": "Decrease MP by 12"
   },
   {
     "id": 141200000699000101,
@@ -20574,5 +20734,33 @@
   {
     "id": 141200000700650501,
     "value": "Reduce damage dealt to enemies by 30%."
+  },
+  {
+    "id": 141200000700701001,
+    "value": "ATK Down 100%."
+  },
+  {
+    "id": 141200000700711001,
+    "value": "DEF Down 100%"
+  },
+  {
+    "id": 141200000710030501,
+    "value": "Applies \"Increased MOB 50%\" to self."
+  },
+  {
+    "id": 141200000710030502,
+    "value": "Increase Mobility by 50%."
+  },
+  {
+    "id": 141200000710250201,
+    "value": "Increase MP by 2."
+  },
+  {
+    "id": 141200000710250401,
+    "value": "Increase MP by 4."
+  },
+  {
+    "id": 141200000710250601,
+    "value": "Increase MP by 6."
   }
 ]

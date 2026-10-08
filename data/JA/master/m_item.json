@@ -18480,6 +18480,20 @@
     "IsPrecious": false
   },
   {
+    "Id": 171795000100,
+    "ResourceId": "",
+    "ItemTypeIndex": 3,
+    "RarityTypeIndex": 4,
+    "NameLanguageId": 150100171795000100,
+    "DescriptionLanguageId": 150200171795000100,
+    "MaxCapacity": 9999,
+    "ScheduleId": 2610209901,
+    "EffectValue": 0,
+    "IsHiddenIfEmpty": false,
+    "SortOrder": 120999900,
+    "IsPrecious": false
+  },
+  {
     "Id": 171850000100,
     "ResourceId": "",
     "ItemTypeIndex": 3,

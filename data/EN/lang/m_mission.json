@@ -2400,6 +2400,10 @@
     "value": "Clear EXPERT No.30 Mobile Suit V Gundam with only development units/other units."
   },
   {
+    "id": 180100200010003101,
+    "value": "Clear EXPERT No.31 Gold/Veteran with only development units/other units."
+  },
+  {
     "id": 180100200010100101,
     "value": "Clear EXPERT No.1 U.C. Series with 10 surviving units."
   },
@@ -2518,6 +2522,10 @@
   {
     "id": 180100200010103001,
     "value": "Clear EXPERT No.30 Mobile Suit V Gundam with 10 surviving units."
+  },
+  {
+    "id": 180100200010103101,
+    "value": "Clear EXPERT No.31 Gold/Veteran with 10 surviving units."
   },
   {
     "id": 180100200010200101,
@@ -13470,6 +13478,30 @@
   {
     "id": 180101251085011309,
     "value": "Get all Development Diagrams from series \"Mobile Suit Gundam Iron-Blooded Orphans\" to one hundred percent."
+  },
+  {
+    "id": 180101261020030101,
+    "value": "Reach [SSR]Extreme Gundam Excellia level 60 or higher."
+  },
+  {
+    "id": 180101261020030201,
+    "value": "Reach Sthesia Awar level 45 or higher."
+  },
+  {
+    "id": 180101261020030301,
+    "value": "Clear a stage 1 time with [SSR]Extreme Gundam Excellia in your formation."
+  },
+  {
+    "id": 180101261020030401,
+    "value": "Clear GUNDAM EXA Collaboration Stage HARD within 2 turn(s) by destroying the enemy forces' Sinanju 2 or more times."
+  },
+  {
+    "id": 180101261020030501,
+    "value": "Clear GUNDAM EXA Collaboration Stage HARD within 2 turn(s) by destroying the enemy forces' Qubeley 3 or more times."
+  },
+  {
+    "id": 180101261020030601,
+    "value": "Clear GUNDAM EXA Collaboration Stage HARD while destroying the enemy forces' Sinanju using your forces' Extreme Gundam Excellia piloted by Sthesia Awar."
   },
   {
     "id": 180102603600800010,

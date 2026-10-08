@@ -58,5 +58,17 @@
     "EventId": 230001,
     "ScenarioStageId": 90800133,
     "ReleaseRewardSetId": 0
+  },
+  {
+    "Id": 23000201,
+    "EventId": 230002,
+    "ScenarioStageId": 90800201,
+    "ReleaseRewardSetId": 0
+  },
+  {
+    "Id": 23000202,
+    "EventId": 230002,
+    "ScenarioStageId": 90800202,
+    "ReleaseRewardSetId": 0
   }
 ]

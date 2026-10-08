@@ -64666,6 +64666,188 @@
     "OverrideCharacterNameLanguageId": 0
   },
   {
+    "BattleMovieVoiceSetId": 1795000100,
+    "BattleMovieVoiceId": "A0101",
+    "PlayTimeLength": 4000,
+    "SubtitleLanguageId": 101000179500010001,
+    "OverrideCharacterNameLanguageId": 0
+  },
+  {
+    "BattleMovieVoiceSetId": 1795000100,
+    "BattleMovieVoiceId": "A0201",
+    "PlayTimeLength": 4000,
+    "SubtitleLanguageId": 101000179500010002,
+    "OverrideCharacterNameLanguageId": 0
+  },
+  {
+    "BattleMovieVoiceSetId": 1795000100,
+    "BattleMovieVoiceId": "A0301",
+    "PlayTimeLength": 4000,
+    "SubtitleLanguageId": 101000179500010003,
+    "OverrideCharacterNameLanguageId": 0
+  },
+  {
+    "BattleMovieVoiceSetId": 1795000100,
+    "BattleMovieVoiceId": "A0401",
+    "PlayTimeLength": 4000,
+    "SubtitleLanguageId": 101000179500010004,
+    "OverrideCharacterNameLanguageId": 0
+  },
+  {
+    "BattleMovieVoiceSetId": 1795000100,
+    "BattleMovieVoiceId": "B0101",
+    "PlayTimeLength": 2000,
+    "SubtitleLanguageId": 101000179500010005,
+    "OverrideCharacterNameLanguageId": 0
+  },
+  {
+    "BattleMovieVoiceSetId": 1795000100,
+    "BattleMovieVoiceId": "B0201",
+    "PlayTimeLength": 2000,
+    "SubtitleLanguageId": 101000179500010006,
+    "OverrideCharacterNameLanguageId": 0
+  },
+  {
+    "BattleMovieVoiceSetId": 1795000100,
+    "BattleMovieVoiceId": "B0301",
+    "PlayTimeLength": 2000,
+    "SubtitleLanguageId": 101000179500010007,
+    "OverrideCharacterNameLanguageId": 0
+  },
+  {
+    "BattleMovieVoiceSetId": 1795000100,
+    "BattleMovieVoiceId": "B0401",
+    "PlayTimeLength": 2000,
+    "SubtitleLanguageId": 101000179500010008,
+    "OverrideCharacterNameLanguageId": 0
+  },
+  {
+    "BattleMovieVoiceSetId": 1795000100,
+    "BattleMovieVoiceId": "E0101",
+    "PlayTimeLength": 2000,
+    "SubtitleLanguageId": 101000179500010009,
+    "OverrideCharacterNameLanguageId": 0
+  },
+  {
+    "BattleMovieVoiceSetId": 1795000100,
+    "BattleMovieVoiceId": "E0201",
+    "PlayTimeLength": 2000,
+    "SubtitleLanguageId": 101000179500010010,
+    "OverrideCharacterNameLanguageId": 0
+  },
+  {
+    "BattleMovieVoiceSetId": 1795000100,
+    "BattleMovieVoiceId": "F0101",
+    "PlayTimeLength": 4000,
+    "SubtitleLanguageId": 101000179500010011,
+    "OverrideCharacterNameLanguageId": 0
+  },
+  {
+    "BattleMovieVoiceSetId": 1795000100,
+    "BattleMovieVoiceId": "G0101",
+    "PlayTimeLength": 4000,
+    "SubtitleLanguageId": 101000179500010012,
+    "OverrideCharacterNameLanguageId": 0
+  },
+  {
+    "BattleMovieVoiceSetId": 1795000100,
+    "BattleMovieVoiceId": "H0101",
+    "PlayTimeLength": 4000,
+    "SubtitleLanguageId": 101000179500010013,
+    "OverrideCharacterNameLanguageId": 0
+  },
+  {
+    "BattleMovieVoiceSetId": 1795000100,
+    "BattleMovieVoiceId": "H0201",
+    "PlayTimeLength": 4000,
+    "SubtitleLanguageId": 101000179500010016,
+    "OverrideCharacterNameLanguageId": 0
+  },
+  {
+    "BattleMovieVoiceSetId": 1795000100,
+    "BattleMovieVoiceId": "I0101",
+    "PlayTimeLength": 4000,
+    "SubtitleLanguageId": 101000179500010014,
+    "OverrideCharacterNameLanguageId": 0
+  },
+  {
+    "BattleMovieVoiceSetId": 1795000100,
+    "BattleMovieVoiceId": "L0101",
+    "PlayTimeLength": 4000,
+    "SubtitleLanguageId": 101000179500010015,
+    "OverrideCharacterNameLanguageId": 0
+  },
+  {
+    "BattleMovieVoiceSetId": 1795000100,
+    "BattleMovieVoiceId": "M0101",
+    "PlayTimeLength": 4000,
+    "SubtitleLanguageId": 101000179500010019,
+    "OverrideCharacterNameLanguageId": 0
+  },
+  {
+    "BattleMovieVoiceSetId": 1795000100,
+    "BattleMovieVoiceId": "N0101",
+    "PlayTimeLength": 4000,
+    "SubtitleLanguageId": 101000179500010020,
+    "OverrideCharacterNameLanguageId": 0
+  },
+  {
+    "BattleMovieVoiceSetId": 1795000100,
+    "BattleMovieVoiceId": "P0101",
+    "PlayTimeLength": 4000,
+    "SubtitleLanguageId": 101000179500010021,
+    "OverrideCharacterNameLanguageId": 0
+  },
+  {
+    "BattleMovieVoiceSetId": 1795000100,
+    "BattleMovieVoiceId": "Q0101",
+    "PlayTimeLength": 4000,
+    "SubtitleLanguageId": 101000179500010026,
+    "OverrideCharacterNameLanguageId": 0
+  },
+  {
+    "BattleMovieVoiceSetId": 1795000100,
+    "BattleMovieVoiceId": "R0101",
+    "PlayTimeLength": 4000,
+    "SubtitleLanguageId": 101000179500010018,
+    "OverrideCharacterNameLanguageId": 0
+  },
+  {
+    "BattleMovieVoiceSetId": 1795000100,
+    "BattleMovieVoiceId": "T0101",
+    "PlayTimeLength": 4000,
+    "SubtitleLanguageId": 101000179500010017,
+    "OverrideCharacterNameLanguageId": 0
+  },
+  {
+    "BattleMovieVoiceSetId": 1795000100,
+    "BattleMovieVoiceId": "T0201",
+    "PlayTimeLength": 4000,
+    "SubtitleLanguageId": 101000179500010022,
+    "OverrideCharacterNameLanguageId": 0
+  },
+  {
+    "BattleMovieVoiceSetId": 1795000100,
+    "BattleMovieVoiceId": "T0301",
+    "PlayTimeLength": 4000,
+    "SubtitleLanguageId": 101000179500010023,
+    "OverrideCharacterNameLanguageId": 0
+  },
+  {
+    "BattleMovieVoiceSetId": 1795000100,
+    "BattleMovieVoiceId": "T0401",
+    "PlayTimeLength": 4000,
+    "SubtitleLanguageId": 101000179500010024,
+    "OverrideCharacterNameLanguageId": 0
+  },
+  {
+    "BattleMovieVoiceSetId": 1795000100,
+    "BattleMovieVoiceId": "Z0101",
+    "PlayTimeLength": 4000,
+    "SubtitleLanguageId": 101000179500010025,
+    "OverrideCharacterNameLanguageId": 0
+  },
+  {
     "BattleMovieVoiceSetId": 1850000100,
     "BattleMovieVoiceId": "A0101",
     "PlayTimeLength": 4000,

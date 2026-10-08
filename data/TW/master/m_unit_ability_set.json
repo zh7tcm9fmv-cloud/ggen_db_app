@@ -10670,6 +10670,21 @@
     "AbilityId": 1000301
   },
   {
+    "UnitId": 1795000100,
+    "SortOrder": 1,
+    "AbilityId": 1000202
+  },
+  {
+    "UnitId": 1795000100,
+    "SortOrder": 2,
+    "AbilityId": 1001602
+  },
+  {
+    "UnitId": 1795000100,
+    "SortOrder": 3,
+    "AbilityId": 1018001
+  },
+  {
     "UnitId": 1850000200,
     "SortOrder": 1,
     "AbilityId": 1000302
