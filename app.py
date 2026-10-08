@@ -24431,6 +24431,114 @@ def api_whats_new_status():
     return r
 
 
+def _jst_calendar_date_from_epoch_ms(ms):
+    """Asia/Tokyo calendar date for schedule StartDatetime (epoch ms), or None."""
+    if ms is None or ms <= 0:
+        return None
+    try:
+        if ZoneInfo is not None:
+            dt = datetime.fromtimestamp(ms / 1000.0, tz=timezone.utc).astimezone(ZoneInfo('Asia/Tokyo'))
+        else:
+            dt = datetime.utcfromtimestamp(ms / 1000.0) + timedelta(hours=9)
+        return dt.date()
+    except Exception:
+        return None
+
+
+def _jst_today_date():
+    try:
+        if ZoneInfo is not None:
+            return datetime.now(ZoneInfo('Asia/Tokyo')).date()
+    except Exception:
+        pass
+    return (datetime.utcnow() + timedelta(hours=9)).date()
+
+
+def _schedule_starts_on_jst_day(schedule_id, day):
+    """True when m_schedule.StartDatetime falls on the given JST calendar day."""
+    sched = normalize_id(schedule_id, '0')
+    if sched in ('0', '9999990001'):
+        return False
+    sm = int((schedule_start_ms_by_id or {}).get(sched, 0) or 0)
+    return _jst_calendar_date_from_epoch_ms(sm) == day
+
+
+def _stages_notice_ids_by_category_today():
+    """Eternal Road + Collaboration stages whose schedule starts today (JST) — /st pulse scope."""
+    today = _jst_today_date()
+    eternal_ids = []
+    for sid in (eternal_stage_map or {}):
+        sid_n = normalize_id(sid)
+        if sid_n in ('', '0'):
+            continue
+        sm = (stage_map or {}).get(sid_n, {})
+        if _schedule_starts_on_jst_day(sm.get('schedule_id', '0'), today):
+            eternal_ids.append(sid_n)
+    collab_ids = []
+    for sid in (lite_scenario_event_stage_map or {}):
+        sid_n = normalize_id(sid)
+        if sid_n in ('', '0'):
+            continue
+        ssc = (scenario_stage_map or {}).get(sid_n, {})
+        sm = (stage_map or {}).get(sid_n, {})
+        sched = normalize_id(ssc.get('schedule_id') or sm.get('schedule_id') or '0')
+        if _schedule_starts_on_jst_day(sched, today):
+            collab_ids.append(sid_n)
+    return {
+        'eternal': sorted(set(eternal_ids)),
+        'collaboration_stage': sorted(set(collab_ids)),
+    }
+
+
+_STAGES_CATALOG_STATUS_CACHE = None  # (jst_date_iso, payload_base)
+
+
+def _stages_catalog_status_payload(last_seen_fp=''):
+    """Unread /st pulse for Eternal + Collaboration stages that open today (JST)."""
+    global _STAGES_CATALOG_STATUS_CACHE
+    today = _jst_today_date()
+    today_iso = today.isoformat()
+    if _STAGES_CATALOG_STATUS_CACHE is None or _STAGES_CATALOG_STATUS_CACHE[0] != today_iso:
+        by_cat = _stages_notice_ids_by_category_today()
+        cat_fps = {}
+        all_parts = []
+        for cat in sorted(by_cat.keys()):
+            ids = by_cat[cat]
+            if ids:
+                cat_fps[cat] = hashlib.sha256(','.join(ids).encode('utf-8')).hexdigest()[:16]
+            else:
+                cat_fps[cat] = ''
+            for sid in ids:
+                all_parts.append(f'{cat}:{sid}')
+        content_fp = ''
+        if all_parts:
+            raw = (today_iso + '|' + '|'.join(all_parts)).encode('utf-8')
+            content_fp = hashlib.sha256(raw).hexdigest()[:32]
+        _STAGES_CATALOG_STATUS_CACHE = (today_iso, {
+            'content_fp': content_fp,
+            'stage_count': len(all_parts),
+            'notice_day': today_iso,
+            'by_category': {c: len(by_cat[c]) for c in by_cat},
+            'category_fps': cat_fps,
+            'stage_ids': by_cat,
+        })
+    base = dict(_STAGES_CATALOG_STATUS_CACHE[1])
+    seen_fp = (last_seen_fp or '').strip()
+    content_fp = base.get('content_fp') or ''
+    base['has_new'] = bool(content_fp) and content_fp != seen_fp
+    return base
+
+
+@app.route('/api/stages/status')
+def api_stages_status():
+    """Unread Stages (/st) — Eternal Road + Collaboration stages opening today (JST)."""
+    last_seen_fp = request.args.get('last_seen_fp', '')
+    payload = _stages_catalog_status_payload(last_seen_fp)
+    r = jsonify(payload)
+    r.headers['Cache-Control'] = 'public, max-age=120'
+    return r
+
+
 def _latest_release_content_status_payload(last_seen_at=0, last_seen_fp=''):
     skip_sched = {'0', '9999990001'}
     ws = jst_three_month_window_start_ms()

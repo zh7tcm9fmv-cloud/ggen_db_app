@@ -3,6 +3,7 @@
   const GAME_NEWS_SEEN_KEY = 'ggen_game_news_seen';
   const WHATS_NEW_SEEN_KEY = 'ggen_whats_new_seen';
   const LATEST_RELEASE_SEEN_KEY = 'ggen_latest_release_seen';
+  const STAGES_CATALOG_SEEN_KEY = 'ggen_stages_catalog_seen';
   const KOFI_NOTICE_SEEN_KEY = 'ggen_kofi_notice_seen';
   const PAGE_VISITS_KEY = 'ggen_page_visits';
   /**
@@ -14,6 +15,11 @@
     { pageId: 'master_league', tabId: 'navMasterLeagueTab', version: '1' },
     { pageId: 'e_simulator', tabId: 'navStageTab', extraIds: ['stageSourceEsimBtn'], version: '1' },
   ];
+  /** Stage source buttons that flare for today's Eternal / Collaboration openings. */
+  const STAGES_CATEGORY_BTN_IDS = {
+    eternal: 'stageSourceEternalBtn',
+    collaboration_stage: 'stageSourceCollabBtn',
+  };
   const LANG_STORAGE_KEY = 'ggen_lang';
   const UI_NOTICE_FLARE_PATH = '/static/images/UI/UI_MapEventEffect_FlareCircleRed.webp';
   const BT_VOTE_DISABLED_GASHA_IDS = new Set(['2504100101', '2604300101']);
@@ -23,6 +29,7 @@
     gameNews: null,
     latestRelease: null,
     whatsNew: null,
+    stagesCatalog: null,
     btVoteLoaded: false,
     btBanners: null,
     btVotePools: null,
@@ -158,6 +165,8 @@
         setPageVisitNotice(el, show);
       });
     });
+    // Re-apply stages catalog pulse so e_sim page-visit clear does not wipe it.
+    refreshStagesNavNotice();
     syncOverflowHints();
   }
 
@@ -168,6 +177,7 @@
     pageVisitTargetIds(entry).forEach((id) => {
       setPageVisitNotice(document.getElementById(id), false);
     });
+    refreshStagesNavNotice();
     syncOverflowHints();
     refreshHomeAggregate();
   }
@@ -196,11 +206,14 @@
   function readGlobalSeen(key) {
     try {
       const row = JSON.parse(localStorage.getItem(key) || '{}');
-      return row && typeof row === 'object'
-        ? { at: Number(row.at) || 0, fp: String(row.fp || '') }
-        : { at: 0, fp: '' };
+      if (!row || typeof row !== 'object') return { at: 0, fp: '', cats: {} };
+      return {
+        at: Number(row.at) || 0,
+        fp: String(row.fp || ''),
+        cats: row.cats && typeof row.cats === 'object' ? row.cats : {},
+      };
     } catch (_) {
-      return { at: 0, fp: '' };
+      return { at: 0, fp: '', cats: {} };
     }
   }
 
@@ -225,6 +238,8 @@
         at: Number(patch && patch.at != null ? patch.at : row.at) || 0,
         fp: String(patch && patch.fp != null ? patch.fp : row.fp || ''),
       };
+      if (patch && patch.cats && typeof patch.cats === 'object') next.cats = patch.cats;
+      else if (row.cats && typeof row.cats === 'object') next.cats = row.cats;
       localStorage.setItem(key, JSON.stringify(next));
     } catch (_) {}
   }
@@ -322,6 +337,51 @@
     syncOverflowHints();
   }
 
+  function stagesCatalogHasNew() {
+    return !!(state.stagesCatalog && state.stagesCatalog.has_new);
+  }
+
+  function stagesCategoryHasNew(cat) {
+    if (!stagesCatalogHasNew()) return false;
+    const seen = readGlobalSeen(STAGES_CATALOG_SEEN_KEY);
+    const seenCats = seen.cats && typeof seen.cats === 'object' ? seen.cats : {};
+    const fps = (state.stagesCatalog && state.stagesCatalog.category_fps) || {};
+    const fp = String(fps[cat] || '');
+    if (!fp) return false;
+    // First visit (no global fp): treat all present categories as new.
+    if (!seen.fp) return true;
+    return fp !== String(seenCats[cat] || '');
+  }
+
+  function refreshStagesNavNotice() {
+    const tab = document.getElementById('navStageTab');
+    const esimNeeds = pageNeedsVisitNotice(pageVisitEntry('e_simulator'));
+    const stagesNew = stagesCatalogHasNew();
+    if (tab) {
+      tab.classList.add('ui-notice-anchor');
+      if (esimNeeds) setPageVisitNotice(tab, true);
+      else setNotice(tab, stagesNew);
+    }
+    Object.keys(STAGES_CATEGORY_BTN_IDS).forEach((cat) => {
+      const el = document.getElementById(STAGES_CATEGORY_BTN_IDS[cat]);
+      if (!el) return;
+      el.classList.add('ui-notice-anchor');
+      ensureNoticeFlare(el);
+      setNotice(el, stagesCategoryHasNew(cat));
+    });
+    // Keep e_sim page-visit flare on its button if still unread.
+    const esimBtn = document.getElementById('stageSourceEsimBtn');
+    if (esimBtn && pageNeedsVisitNotice(pageVisitEntry('e_simulator'))) {
+      setPageVisitNotice(esimBtn, true);
+    }
+    syncOverflowHints();
+  }
+
+  function updateStagesCatalogNotice(show) {
+    if (state.stagesCatalog) state.stagesCatalog.has_new = !!show;
+    refreshStagesNavNotice();
+  }
+
   function isGameNewsPage() {
     return !!document.getElementById('gameNewsNavCurrent');
   }
@@ -339,6 +399,7 @@
       !!(state.gameNews && state.gameNews.has_new) ||
       !!(state.latestRelease && state.latestRelease.has_new) ||
       !!(state.whatsNew && state.whatsNew.has_new) ||
+      stagesCatalogHasNew() ||
       btUserNeedsVoteNotice() ||
       hasUnreadPageVisitNotices()
     );
@@ -477,6 +538,45 @@
     }
   }
 
+  async function bootstrapStagesCatalog() {
+    ensureNoticeFlare(document.getElementById('navStageTab'));
+    const seen = readGlobalSeen(STAGES_CATALOG_SEEN_KEY);
+    try {
+      const r = await fetch(
+        '/api/stages/status?last_seen_fp=' + encodeURIComponent(seen.fp || ''),
+        { credentials: 'same-origin', cache: 'no-store' }
+      );
+      if (!r.ok) {
+        state.stagesCatalog = null;
+        refreshStagesNavNotice();
+        return;
+      }
+      const d = await r.json();
+      state.stagesCatalog = d;
+      refreshStagesNavNotice();
+      refreshHomeAggregate();
+    } catch (_) {
+      state.stagesCatalog = null;
+      refreshStagesNavNotice();
+    }
+  }
+
+  async function markStagesCatalogSeen() {
+    try {
+      const r = await fetch('/api/stages/status', { credentials: 'same-origin', cache: 'no-store' });
+      if (!r.ok) return;
+      const d = await r.json();
+      writeGlobalSeen(STAGES_CATALOG_SEEN_KEY, {
+        at: Date.now(),
+        fp: String(d.content_fp || ''),
+        cats: d.category_fps && typeof d.category_fps === 'object' ? d.category_fps : {},
+      });
+      state.stagesCatalog = Object.assign({}, d, { has_new: false });
+      refreshStagesNavNotice();
+      refreshHomeAggregate();
+    } catch (_) {}
+  }
+
   async function bootstrapWhatsNew() {
     document.querySelectorAll('.btn-whats-new').forEach(ensureNoticeFlare);
     const seen = readGlobalSeen(WHATS_NEW_SEEN_KEY);
@@ -582,6 +682,7 @@
         ev.key === GAME_NEWS_SEEN_KEY ||
         ev.key === WHATS_NEW_SEEN_KEY ||
         ev.key === LATEST_RELEASE_SEEN_KEY ||
+        ev.key === STAGES_CATALOG_SEEN_KEY ||
         ev.key === KOFI_NOTICE_SEEN_KEY ||
         ev.key === PAGE_VISITS_KEY ||
         ev.key === 'ggen_bt_vote_notice_off'
@@ -605,6 +706,7 @@
       bootstrapGameNews(),
       bootstrapLatestRelease(),
       bootstrapWhatsNew(),
+      bootstrapStagesCatalog(),
       bootstrapBtVotes(state.lang),
       bootstrapKofiNotice(),
     ]);
@@ -617,10 +719,12 @@
     bootstrapGameNews,
     bootstrapLatestRelease,
     bootstrapWhatsNew,
+    bootstrapStagesCatalog,
     bootstrapBtVotes,
     markGameNewsSeenForLang,
     markLatestReleaseSeen,
     markWhatsNewSeen,
+    markStagesCatalogSeen,
     markKofiNoticeSeen,
     markKofiPostSeen,
     bootstrapKofiNotice,
@@ -628,6 +732,8 @@
     isKofiNoticeEnabled,
     markPageVisitSeen,
     bootstrapPageVisitNotices,
+    refreshStagesNavNotice,
+    updateStagesCatalogNotice,
     updateBtVoteNotices,
     uiNoticeFlareHtml,
     ensureNoticeFlare,
@@ -638,6 +744,7 @@
     GAME_NEWS_SEEN_KEY,
     WHATS_NEW_SEEN_KEY,
     LATEST_RELEASE_SEEN_KEY,
+    STAGES_CATALOG_SEEN_KEY,
     KOFI_NOTICE_SEEN_KEY,
     KOFI_POST_SEEN_KEY: KOFI_NOTICE_SEEN_KEY,
     PAGE_VISITS_KEY,
