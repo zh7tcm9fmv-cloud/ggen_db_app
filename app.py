@@ -8167,6 +8167,25 @@ def create_special_event_stage_map(d):
         }
     return lookup
 
+
+def create_lite_scenario_event_stage_map(d):
+    """m_lite_scenario_event_stage → collaboration stages keyed by ScenarioStageId."""
+    lookup = {}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict):
+            continue
+        sid = normalize_id(item.get('ScenarioStageId') or item.get('scenarioStageId'))
+        if sid == '0':
+            continue
+        lookup[sid] = {
+            'stage_id': sid,
+            'row_id': normalize_id(item.get('Id') or item.get('id')),
+            'event_id': normalize_id(item.get('EventId') or item.get('eventId')),
+            'release_reward_set_id': normalize_id(item.get('ReleaseRewardSetId') or item.get('releaseRewardSetId')),
+        }
+    return lookup
+
+
 def create_scenario_stage_map(d):
     lookup = {}
     for item in extract_data_list(d):
@@ -8181,6 +8200,7 @@ def create_scenario_stage_map(d):
             'stage_difficulty_type_index': safe_int(item.get('StageDifficultyTypeIndex') or item.get('stageDifficultyTypeIndex'), 1),
             'title_name_lang_id': normalize_id(item.get('TitleNameLanguageId') or item.get('titleNameLanguageId')),
             'stage_number': safe_int(item.get('StageNumber') or item.get('stageNumber'), 0),
+            'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0'),
             'scenario_only_first_clear_reward_set_id': normalize_id(
                 item.get('ScenarioOnlyStageFirstClearRewardSetId')
                 or item.get('scenarioOnlyStageFirstClearRewardSetId')
@@ -10913,6 +10933,7 @@ map_event_data = load_json(os.path.join(BASE_DIR, "m_map_event.json"))
 map_event_partner_data = load_json(os.path.join(BASE_DIR, "m_map_event_partner.json"))
 map_event_partner_set_content_data = load_json(os.path.join(BASE_DIR, "m_map_event_partner_set_content.json"))
 special_event_stage_data = load_json(os.path.join(BASE_DIR, "m_special_event_stage.json"))
+lite_scenario_event_stage_data = load_json(os.path.join(BASE_DIR, "m_lite_scenario_event_stage.json"))
 main_stage_series_challenge_data = load_json(os.path.join(BASE_DIR, "m_main_stage_series_challenge.json"))
 main_scenario_stage_challenge_data = load_json(os.path.join(BASE_DIR, "m_main_scenario_stage_challenge.json"))
 main_stage_challenge_data = load_json(os.path.join(BASE_DIR, "m_main_stage_challenge.json"))
@@ -11070,6 +11091,9 @@ map_event_panel_stage_by_stage = create_map_event_panel_stage_by_stage_lookup(ma
 map_event_lookup = create_map_event_lookup(map_event_data) if map_event_data else {}
 map_event_partners_by_event = create_map_event_partners_by_event_lookup(map_event_data, map_event_partner_data, map_event_partner_set_content_data) if map_event_data and map_event_partner_data and map_event_partner_set_content_data else {}
 special_event_stage_map = create_special_event_stage_map(special_event_stage_data) if special_event_stage_data else {}
+lite_scenario_event_stage_map = (
+    create_lite_scenario_event_stage_map(lite_scenario_event_stage_data) if lite_scenario_event_stage_data else {}
+)
 scenario_stage_map = create_scenario_stage_map(scenario_stage_data) if scenario_stage_data else {}
 main_stage_series_challenge_map = create_main_stage_series_challenge_map(main_stage_series_challenge_data) if main_stage_series_challenge_data else {}
 main_stage_challenge_map = create_main_stage_challenge_map(main_stage_challenge_data) if main_stage_challenge_data else {}
@@ -15032,6 +15056,41 @@ def challenge_stage_thumb_url(thumbnail_resource_id):
     return f'/static/images/Stages/{rid}.png'
 
 
+# CDN: ggen_db_images/images/Stages/Colab stages (space → %20 in /static paths).
+COLLAB_STAGE_IMAGE_SUBDIR = 'Stages/Colab%20stages'
+
+
+def collaboration_stage_thumb_url(thumbnail_resource_id, event_id=None):
+    """Lite-scenario / collab stage thumbs — Colab stages folder for lite_scenario_event_thum_*.
+
+    Other ThumbnailResourceIds (sca_*, thum_map_bg_*) live under images/Stages like Challenge.
+    When those are missing from the CDN tree, EXA (event 230002) falls back to its bromide art.
+    """
+    rid = str(thumbnail_resource_id or '').strip()
+    if not rid or rid == '0':
+        return ''
+    if rid.startswith('lite_scenario_event_thum'):
+        return game_image_public_url(_game_images_webp_path(COLLAB_STAGE_IMAGE_SUBDIR, rid))
+    primary = challenge_stage_thumb_url(rid)
+    eid = normalize_id(event_id) if event_id is not None else '0'
+    if eid == '230002' and rid.startswith('thum_map_bg'):
+        # EXA HARD master points at thum_map_bg_* which may not be shipped; use event bromide.
+        return game_image_public_url(
+            _game_images_webp_path(COLLAB_STAGE_IMAGE_SUBDIR, 'UI_Event_ScenarioStage_Bromide_230002')
+        )
+    return primary
+
+
+def collaboration_stage_select_logo_url(lang_code, event_id='230002'):
+    """Stage-select logo for Collaboration Stage toolbar button (locale suffix)."""
+    loc = {'EN': 'en', 'JA': 'ja', 'JP': 'ja', 'TW': 'tw', 'HK': 'hk'}.get(
+        str(lang_code or 'EN').upper(), 'en'
+    )
+    eid = normalize_id(event_id) or '230002'
+    rid = f'lite_scenario_event_stage_select_logo_{eid}_{loc}'
+    return game_image_public_url(_game_images_webp_path(COLLAB_STAGE_IMAGE_SUBDIR, rid))
+
+
 def stage_map_background_url(background_asset):
     """m_map.BackgroundAsset (map_bg_*) → lmb_map_bg_* minimap art under images/Stages."""
     rid = str(background_asset or '').strip()
@@ -18227,6 +18286,12 @@ def stages_grand_offensive_page():
 
 @app.route('/special')
 def stages_special_page():
+    return _serve_index()
+
+
+@app.route('/collab')
+@app.route('/collaboration')
+def stages_collaboration_page():
     return _serve_index()
 
 
@@ -31865,6 +31930,10 @@ def _populate_stage_list_row_portraits(page_rows):
         if thumb_rid is not None:
             if row.get('stage_category') == 'challenge_stage':
                 row['portrait'] = challenge_stage_thumb_url(thumb_rid)
+            elif row.get('stage_category') == 'collaboration_stage':
+                row['portrait'] = collaboration_stage_thumb_url(
+                    thumb_rid, event_id=row.get('collaboration_event_id')
+                )
             else:
                 row['portrait'] = special_event_stage_thumb_url(thumb_rid)
             row.pop('_portrait_duid', None)
@@ -31895,15 +31964,58 @@ def list_stages():
         _challenge_series_ids = _valid_challenge_series_filter_ids()
         if challenge_series != 'ALL' and normalize_id(challenge_series) not in _challenge_series_ids:
             challenge_series = 'ALL'
-        if cat not in ('eternal', 'score_attack', 'special_stage', 'tower_stage', 'challenge_stage'): cat = 'eternal'
-        if cat != 'eternal':
+        if cat not in (
+            'eternal', 'score_attack', 'special_stage', 'tower_stage',
+            'challenge_stage', 'collaboration_stage',
+        ):
+            cat = 'eternal'
+        # Eternal + Collaboration: Normal/Hard(/Expert) difficulty filter.
+        if cat not in ('eternal', 'collaboration_stage'):
             df = 'all'
-        ck = f"stages15_{cat}_{tower_side}_{challenge_series}_{lc}_{page}_{pp}_{sq}_{df}_{sb}_{sd}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_{eternal_stage_session_cache_key_fragment()}"
+        ck = f"stages16_{cat}_{tower_side}_{challenge_series}_{lc}_{page}_{pp}_{sq}_{df}_{sb}_{sd}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_{eternal_stage_session_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
         ld = get_lang_data(lc); rows = []
-        if cat == 'challenge_stage':
+        if cat == 'collaboration_stage':
+            for sid, lite in (lite_scenario_event_stage_map or {}).items():
+                ssc = (scenario_stage_map or {}).get(sid, {})
+                sm = stage_map.get(sid, {})
+                if not ssc and not sm:
+                    continue
+                sn = safe_int(ssc.get('stage_number'), 0)
+                sname = resolve_scenario_stage_name(ld, ssc.get('title_name_lang_id', '0'), sid)
+                dti = safe_int(ssc.get('stage_difficulty_type_index'), 1)
+                diff = get_stage_difficulty_by_type_index(dti, lc)
+                if df != 'all' and df != '' and diff['code'] != df:
+                    continue
+                vis = not eternal_stage_before_mstage_schedule_release(sid)
+                if sq:
+                    searchable = (f"{sid} {sname} {sn}" if vis else str(sid)).lower()
+                    if not search_row_matches_query(sq, searchable, None, entity_id=sid):
+                        continue
+                eid = safe_int(lite.get('event_id'), 0)
+                sn_sort = eid * 100000 + sn
+                if vis:
+                    rows.append({
+                        '_sn_sort': sn_sort,
+                        'id': sid, 'stage_number': sn, 'name': sname,
+                        'recommended_cp': sm.get('recommended_cp', 0),
+                        'terrain': resolve_stage_terrain_name(sm.get('terrain_type_index', '0'), lc),
+                        'difficulty_code': diff['code'], 'difficulty_name': diff['name'], 'portrait': '',
+                        '_thumb_rid': ssc.get('thumbnail_resource_id') or '',
+                        'content_locked': False, 'stage_category': 'collaboration_stage',
+                        'collaboration_event_id': normalize_id(lite.get('event_id')),
+                    })
+                else:
+                    rows.append({
+                        '_sn_sort': sn_sort,
+                        'id': sid, 'stage_number': None, 'name': '',
+                        'recommended_cp': None, 'terrain': '',
+                        'difficulty_code': '', 'difficulty_name': '', 'portrait': '',
+                        'content_locked': True, 'stage_category': 'collaboration_stage',
+                    })
+        elif cat == 'challenge_stage':
             for sid, ch in (main_scenario_stage_challenge_map or {}).items():
                 ssc = (scenario_stage_map or {}).get(sid, {})
                 mc = (main_stage_challenge_map or {}).get(sid, {})
@@ -32073,11 +32185,23 @@ def list_stages():
                         'difficulty_code': '', 'difficulty_name': '', 'portrait': '',
                         'content_locked': True, 'stage_category': 'eternal',
                     })
+        def _stage_list_sn_sort_key(sk):
+            """Normalize _sn_sort for list ordering (int or tuple — special_stage uses tuples)."""
+            if isinstance(sk, tuple):
+                return tuple(safe_int(v, 0) for v in sk)
+            return (safe_int(sk, 0),)
+
+        def _stage_list_sn_sort_key_desc(sk):
+            return tuple(-v for v in _stage_list_sn_sort_key(sk))
+
         if sb == 'stage_number':
-            if sd == 'asc': rows.sort(key=lambda x: (x['_sn_sort'], safe_int(x['id'], 0)))
-            else: rows.sort(key=lambda x: (-x['_sn_sort'], safe_int(x['id'], 0)))
+            # Desc must not use `-tuple` (TypeError → empty 500 for Special Stages default sort).
+            if sd == 'asc':
+                rows.sort(key=lambda x: (_stage_list_sn_sort_key(x['_sn_sort']), safe_int(x['id'], 0)))
+            else:
+                rows.sort(key=lambda x: (_stage_list_sn_sort_key_desc(x['_sn_sort']), safe_int(x['id'], 0)))
         else:
-            rows.sort(key=lambda x: (x['_sn_sort'], safe_int(x['id'], 0)))
+            rows.sort(key=lambda x: (_stage_list_sn_sort_key(x['_sn_sort']), safe_int(x['id'], 0)))
         total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
         start = (page - 1) * pp; pr = rows[start:start + pp]
         _populate_stage_list_row_portraits(pr)
@@ -32126,10 +32250,18 @@ def get_stage(stage_id):
         tes = tower_event_stage_map.get(stage_id) if tower_event_stage_map else None
         ch = main_scenario_stage_challenge_map.get(stage_id) if main_scenario_stage_challenge_map else None
         est_er = eternal_stage_map.get(stage_id)
+        lite_row = (lite_scenario_event_stage_map or {}).get(stage_id) if lite_scenario_event_stage_map else None
         ssc_map = (scenario_stage_map or {}).get(stage_id) if scenario_stage_map else None
         sm_direct = (stage_map or {}).get(stage_id) if stage_map else None
+        # Collaboration (lite scenario) before generic chronicle / E Simulator.
+        is_collaboration_stage = bool(
+            lite_row and ssc_map and sm_direct and not sas and not ses and not tes and not ch and not est_er
+        )
         # E Simulator / chronicle scenarios live in m_scenario_stage + m_stage (StageTypeIndex 18).
-        is_chronicle_stage = bool(ssc_map and sm_direct and not sas and not ses and not tes and not ch and not est_er)
+        is_chronicle_stage = bool(
+            ssc_map and sm_direct and not sas and not ses and not tes and not ch and not est_er
+            and not is_collaboration_stage
+        )
         if sas:
             is_score_attack = True
             is_special_event_stage = False
@@ -32149,13 +32281,13 @@ def get_stage(stage_id):
             is_score_attack = False
             is_special_event_stage = False
             is_tower_event_stage = False
-            is_challenge_stage = True
+            is_challenge_stage = False
         elif est_er:
             is_score_attack = False
             is_special_event_stage = False
             is_tower_event_stage = False
             is_challenge_stage = False
-        elif is_chronicle_stage:
+        elif is_collaboration_stage or is_chronicle_stage:
             is_score_attack = False
             is_special_event_stage = False
             is_tower_event_stage = False
@@ -32213,6 +32345,21 @@ def get_stage(stage_id):
                 'recommended_combat_power': safe_int(mc.get('recommended_combat_power'), 0),
             }
             vis = True
+        elif is_collaboration_stage:
+            mmeta = map_stage_meta_by_stage_id.get(stage_id, {}) if map_stage_meta_by_stage_id else {}
+            est = {
+                'stage_number': safe_int(ssc_map.get('stage_number'), 0),
+                'title_name_lang_id': ssc_map.get('title_name_lang_id', '0'),
+                'thumbnail_resource_id': ssc_map.get('thumbnail_resource_id', ''),
+                'stage_difficulty_type_index': safe_int(
+                    ssc_map.get('stage_difficulty_type_index'),
+                    safe_int(mmeta.get('stage_difficulty_type_index'), 1),
+                ),
+                'display_unit_id': '0',
+                'recommended_combat_power': safe_int(sm_direct.get('recommended_cp'), 0),
+                'collaboration_event_id': normalize_id((lite_row or {}).get('event_id')),
+            }
+            vis = not eternal_stage_before_mstage_schedule_release(stage_id)
         elif is_chronicle_stage:
             mmeta = map_stage_meta_by_stage_id.get(stage_id, {}) if map_stage_meta_by_stage_id else {}
             est = {
@@ -32235,9 +32382,10 @@ def get_stage(stage_id):
                 'ses' if is_special_event_stage else (
                     'tes' if is_tower_event_stage else (
                         'ch' if is_challenge_stage else (
-                            'ce' if is_chronicle_stage else 'er')))))
+                            'collab' if is_collaboration_stage else (
+                                'ce' if is_chronicle_stage else 'er'))))))
         # mstage18: chronicle/E-sim first-clear from node content FirstClearRewardSetId.
-        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_{eternal_stage_session_cache_key_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage27"
+        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_{eternal_stage_session_cache_key_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage28"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
@@ -32279,7 +32427,7 @@ def get_stage(stage_id):
                 if len(_dup_ids) > 1 and safe_int(stage_id, 0) == max(_dup_ids):
                     if 'rerun' not in sname.lower():
                         sname = f"{sname} (Rerun)"
-        elif is_challenge_stage or is_chronicle_stage:
+        elif is_challenge_stage or is_collaboration_stage or is_chronicle_stage:
             sname = resolve_scenario_stage_name(ld, est.get('title_name_lang_id', '0'), stage_id)
             if is_chronicle_stage and (not sname or sname.startswith('Unknown') or sname == stage_id):
                 try:
@@ -32288,10 +32436,16 @@ def get_stage(stage_id):
                 except Exception:
                     pass
             if not sname:
-                sname = f"E Simulator ({stage_id})"
+                sname = (
+                    f"Collaboration ({stage_id})" if is_collaboration_stage
+                    else f"E Simulator ({stage_id})"
+                )
         else:
             sname = ld.get('stage_text_map', {}).get(est.get('stage_name_lang_id', ''), '') or f"Unknown ({stage_id})"
-        if is_score_attack or is_special_event_stage or is_tower_event_stage or is_challenge_stage or is_chronicle_stage:
+        if (
+            is_score_attack or is_special_event_stage or is_tower_event_stage
+            or is_challenge_stage or is_collaboration_stage or is_chronicle_stage
+        ):
             diff = get_stage_difficulty_by_type_index(est.get('stage_difficulty_type_index'), lc)
         else:
             diff = get_stage_difficulty(stage_id, lc)
@@ -32304,6 +32458,11 @@ def get_stage(stage_id):
             portrait = special_event_stage_thumb_url(ses.get('thumbnail_resource_id')) or portrait
         elif is_challenge_stage:
             portrait = challenge_stage_thumb_url(est.get('thumbnail_resource_id')) or portrait
+        elif is_collaboration_stage:
+            portrait = collaboration_stage_thumb_url(
+                est.get('thumbnail_resource_id'),
+                event_id=(lite_row or {}).get('event_id'),
+            ) or portrait
         if is_chronicle_stage:
             try:
                 import e_simulator_data as _esim_art
@@ -32322,7 +32481,9 @@ def get_stage(stage_id):
         sg = []
         # Empty restriction set id (0) still means a real squad when SortieCount > 0
         # ("No Limit"). E-sim often has Group2SortieCount>0 with set id 0.
-        allow_empty_sortie_set = is_score_attack or is_tower_event_stage or is_chronicle_stage
+        allow_empty_sortie_set = (
+            is_score_attack or is_tower_event_stage or is_chronicle_stage or is_collaboration_stage
+        )
         if is_challenge_stage:
             for gn, gk, count_key in [
                 (1, 'group1_sortie_restriction_set_id', 'group1_sortie_count'),
@@ -32363,7 +32524,7 @@ def get_stage(stage_id):
                 is_score_attack=is_score_attack,
                 is_special_event_stage=is_special_event_stage,
                 is_challenge_stage=is_challenge_stage,
-                is_chronicle_stage=is_chronicle_stage,
+                is_chronicle_stage=is_chronicle_stage or is_collaboration_stage,
             )
             uom = []; nt = map_npc_by_map_stage.get(msid, [])
             _challenge_sid = stage_id if is_challenge_stage else None
@@ -32603,11 +32764,12 @@ def get_stage(stage_id):
                 'special_stage' if is_special_event_stage else (
                     'tower_stage' if is_tower_event_stage else (
                         'challenge_stage' if is_challenge_stage else (
-                            'chronicle' if is_chronicle_stage else 'eternal')))))
+                            'collaboration_stage' if is_collaboration_stage else (
+                                'chronicle' if is_chronicle_stage else 'eternal'))))))
         stage_rewards = resolve_stage_rewards(
             stage_id,
             lc,
-            category=stage_cat,
+            category=('chronicle' if is_collaboration_stage else stage_cat),
             score_attack_reward_id=est.get('score_attack_reward_id', '0'),
         )
         tower_side = 'ALL'
@@ -32617,7 +32779,9 @@ def get_stage(stage_id):
             _ginfo = (tower_event_stage_group_map or {}).get(_gid, {})
             _grid = str(_ginfo.get('resource_id') or '').strip() if isinstance(_ginfo, dict) else ''
             tower_side = classify_tower_side(sname, _gname, _grid)
-        mc_cp = safe_int(est.get('recommended_combat_power'), 0) if (is_challenge_stage or is_chronicle_stage) else 0
+        mc_cp = safe_int(est.get('recommended_combat_power'), 0) if (
+            is_challenge_stage or is_collaboration_stage or is_chronicle_stage
+        ) else 0
         rec_cp = mc_cp if mc_cp > 0 else sm.get('recommended_cp', 0)
         capturable_units = resolve_challenge_capturable_units(stage_id, lc) if is_challenge_stage else []
         challenge_series_name = resolve_challenge_series_name(ld, est.get('challenge_series_id', '0')) if is_challenge_stage else ''
@@ -32626,7 +32790,7 @@ def get_stage(stage_id):
         _ch_hard = _challenge_stage_is_hard(est.get('thumbnail_resource_id')) if is_challenge_stage else False
         _er_expert = (
             not is_score_attack and not is_special_event_stage and not is_tower_event_stage
-            and not is_challenge_stage and not is_chronicle_stage
+            and not is_challenge_stage and not is_collaboration_stage and not is_chronicle_stage
             and safe_int(est.get('stage_difficulty_type_index'), 1) == 3
         )
         _show_stage_missions = _ch_hard or _er_expert
@@ -33377,7 +33541,7 @@ def sitemap_xml():
         # Canonical public URLs only (aliases like /sp-list and /banners 301 elsewhere).
         paths = [
             '/', '/ip', '/collections', '/game-news', '/tm', '/dm', '/about', '/contact', '/privacy-policy',
-            '/c', '/u', '/s', '/st', '/gtower', '/challenge', '/go', '/special',
+            '/c', '/u', '/s', '/st', '/gtower', '/challenge', '/go', '/special', '/collab',
             '/cal', '/tb', '/tl', '/ml', '/rk', '/op', '/new', '/esim', '/gacha-sim',
         ]
         today = date.today().isoformat()
