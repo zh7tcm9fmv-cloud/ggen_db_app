@@ -886,7 +886,7 @@ function detailRankingBarWidth(meta){if(!meta||!meta.total||!meta.rank)return 0;
 function ordinalSuffixEn(n){const v=Math.abs(Number(n)||0);const mod100=v%100;if(mod100>=11&&mod100<=13)return'th';switch(v%10){case 1:return'st';case 2:return'nd';case 3:return'rd';default:return'th'}}
 function detailRankingPosText(meta){if(!meta||!meta.rank||!meta.total)return'-';const rk=Number(meta.rank)||0,tt=Number(meta.total)||0;if(S.lang==='EN')return`${rk}${ordinalSuffixEn(rk)}/${tt}`;return`${fmtN(rk)}位/${fmtN(tt)}`}
 function detailRecommendOptsForType(type){const o={viewRanking:true,detailVariant:'rk'};if(type==='character'){o.listCharSpPerspective=!!S.spActive;o.listCharCondPerspective=!!S.conditionalPassiveActive;return o}o.listUnitSpPerspective=!!S.spActive;o.listUnitSspPerspective=!!S.sspActive;o.listUnitCondPerspective=!!S.conditionalPassiveActive;return o}
-function openDetailFromRecommend(type,id,viewRanking){const o=viewRanking?detailRecommendOptsForType(type):{};if(viewRanking){void ensureDetailRankingStats(type,String(id)).catch(()=>{})}else if(type==='character'&&S.currentDetailType==='unit'&&S.pilotConditionalPassiveActive&&S.currentDetailData){o.pilotCondHighlightUnitId=String(S.currentDetailData.id)}openDetail(type,String(id),Object.keys(o).length?o:undefined)}
+function openDetailFromRecommend(type,id,viewRanking){const o=viewRanking?detailRecommendOptsForType(type):{};if(viewRanking){void ensureDetailRankingStats(type,String(id)).catch(()=>{})}else if(type==='character'&&S.currentDetailType==='unit'&&S.pilotConditionalPassiveActive&&S.currentDetailData){o.pilotCondHighlightUnitId=String(S.currentDetailData.id);o.preserveConditionalPassive=true}openDetail(type,String(id),Object.keys(o).length?o:undefined)}
 function buildRankingCharactersListUrl(p,pp,opts){const sort=S.ranking.sortChar,dir=S.ranking.dirChar;const q=document.getElementById('rankCharFilter').value.trim();const roleQ=getRoleQuerySuffix('rankChar');const rq=getRarityQuerySuffix('rankChar');const useDp=opts&&opts.detailStatPerspective;const stQ=listStatQChar(useDp?!!S.spActive:!!S.listRankCharSp,useDp?!!S.conditionalPassiveActive:!!S.listRankCharCond);const srcQ=(cur=>{if(!cur||cur==='ALL')return '';return '&source='+encodeURIComponent(cur)})(S.listRankCharSource||'ALL');const linQ=(()=>{let sel=S.listRankCharLineage;if(sel==='ALL'||!sel)sel=[];if(!Array.isArray(sel))sel=[];if(!sel.length)return '';return '&lineage_id='+encodeURIComponent(sel.join(','))})();const linOp=(()=>{let sel=S.listRankCharLineage;if(!Array.isArray(sel)||sel.length<2)return '';return '&lineage_op='+encodeURIComponent(browseCombineOp(S.browseCombRankCharLineage))})();const serQ=(()=>{let sel=S.listRankCharSeries;if(sel==='ALL'||!sel)sel=[];if(!Array.isArray(sel)){if(String(sel).trim())sel=[String(sel)];else sel=[]}if(!sel.length)return '';return '&series_id='+encodeURIComponent(sel.join(','))})();const serOp=(()=>{let sel=S.listRankCharSeries;if(!Array.isArray(sel)||sel.length<2)return '';return '&series_op='+encodeURIComponent(browseCombineOp(S.browseCombRankCharSeries))})();const skillQ=(()=>{let sel=S.listRankCharSkills;if(sel==='ALL'||!sel)sel=[];if(!Array.isArray(sel))sel=[];if(!sel.length)return '';return '&skill_id='+encodeURIComponent(sel.join(','))})();const skOp=(()=>{let sel=S.listRankCharSkills;if(!Array.isArray(sel)||sel.length<2)return '';return '&skill_op='+encodeURIComponent(browseCombineOp(S.browseCombRankCharSkill))})();const abilQ=(()=>{let sel=S.listRankCharAbilities;if(sel==='ALL'||!sel)sel=[];if(!Array.isArray(sel))sel=[];if(!sel.length)return '';return '&ability_id='+encodeURIComponent(sel.join(','))})();const traitOp=(()=>{let sel=S.listRankCharAbilities;if(!Array.isArray(sel)||sel.length<2)return '';return '&ability_op='+encodeURIComponent(browseCombineOp(S.browseCombRankCharTrait))})();return`/api/characters?lang=${S.lang}&page=${p}&per_page=${pp}&sort=${encodeURIComponent(sort)}&dir=${dir}&stat_bounds=1&q=${encodeURIComponent(q)}${roleQ}${rq}${stQ}${srcQ}${linQ}${linOp}${serQ}${serOp}${skillQ}${skOp}${abilQ}${traitOp}`}
 function buildRankingUnitsListUrl(p,pp,opts){const sort=S.ranking.sortUnit,dir=S.ranking.dirUnit;const qRaw=document.getElementById('rankUnitFilter').value.trim();const qApi=expandUnitSearchQuery(qRaw);const roleQ=getRoleQuerySuffix('rankUnit');const rq=getRarityQuerySuffix('rankUnit');const useDp=opts&&opts.detailStatPerspective;const stQ=listStatQUnit(useDp?!!S.spActive:!!S.listRankUnitSp,useDp?!!S.sspActive:!!S.listRankUnitSsp,useDp?!!S.conditionalPassiveActive:!!S.listRankUnitCond,useDp?!!S.pilotConditionalPassiveActive:!!S.listRankUnitPilotCond);const srcQ=(cur=>{if(!cur||cur==='ALL')return '';return '&source='+encodeURIComponent(cur)})(S.listRankUnitSource||'ALL');const terrQ=(()=>{let sel=S.listRankUnitTerrain;if(!Array.isArray(sel))sel=[];if(!sel.length)return '';return '&terrain='+encodeURIComponent(sel.join(','))})();const terrOp=(()=>{let sel=S.listRankUnitTerrain;if(!Array.isArray(sel)||sel.length<2)return '';return '&terrain_op='+encodeURIComponent(browseCombineOp(S.browseCombRankTerrain))})();const debQ=(()=>{let sel=effectiveWeaponDebuffSel('listRankUnitWeaponDebuff');if(!sel.length)return '';return '&weapon_debuff='+encodeURIComponent(sel.join(','))})();const debOp=(()=>{let sel=effectiveWeaponDebuffSel('listRankUnitWeaponDebuff');if(!Array.isArray(sel)||sel.length<2)return '';return '&weapon_debuff_op='+encodeURIComponent(browseCombineOp(S.browseCombRankWb))})();const wrnmQ=(()=>{let sel=S.listRankUnitWeaponRangeNonMap;if(!Array.isArray(sel))sel=[];if(!sel.length)return '';return '&weapon_range_non_map='+encodeURIComponent(sel.join(','))})();const wrnmOp=(()=>{let sel=S.listRankUnitWeaponRangeNonMap;if(!Array.isArray(sel)||sel.length<2)return '';return '&weapon_range_non_map_op='+encodeURIComponent(browseCombineOp(S.browseCombRankWrNm))})();const wrnmSex=S.listRankUnitWeaponRangeNonMapSspExOnly?'&weapon_range_non_map_ssp_ex=1':'';const mwrQ=(()=>{if(!mapWeaponFilterActiveForPfx('rankUnit'))return '';let sel=S.listRankUnitMapWeaponRange;if(!Array.isArray(sel))sel=[];if(!sel.length)return '';return '&map_weapon_range='+encodeURIComponent(sel.join(','))})();const mwrOp=(()=>{if(!mapWeaponFilterActiveForPfx('rankUnit'))return '';let sel=S.listRankUnitMapWeaponRange;if(!Array.isArray(sel)||sel.length<2)return '';return '&map_weapon_range_op='+encodeURIComponent(browseCombineOp(S.browseCombRankMapWr))})();const mechQ=(()=>{let sel=S.listRankUnitMechanism;if(!Array.isArray(sel))sel=[];if(!sel.length)return '';return '&mechanism='+encodeURIComponent(sel.join(','))})();const mechOp=(()=>{let sel=S.listRankUnitMechanism;if(!Array.isArray(sel)||sel.length<2)return '';return '&mechanism_op='+encodeURIComponent(browseCombineOp(S.browseCombRankMech))})();const linQ=(()=>{let sel=S.listRankUnitLineage;if(sel==='ALL'||!sel)sel=[];if(!Array.isArray(sel))sel=[];if(!sel.length)return '';return '&lineage_id='+encodeURIComponent(sel.join(','))})();const linOp=(()=>{let sel=S.listRankUnitLineage;if(!Array.isArray(sel)||sel.length<2)return '';return '&lineage_op='+encodeURIComponent(browseCombineOp(S.browseCombRankUnitLineage))})();const serQ=(()=>{let sel=S.listRankUnitSeries;if(sel==='ALL'||!sel)sel=[];if(!Array.isArray(sel)){if(String(sel).trim())sel=[String(sel)];else sel=[]}if(!sel.length)return '';return '&series_id='+encodeURIComponent(sel.join(','))})();const serOp=(()=>{let sel=S.listRankUnitSeries;if(!Array.isArray(sel)||sel.length<2)return '';return '&series_op='+encodeURIComponent(browseCombineOp(S.browseCombRankUnitSeries))})();const abQ=(()=>{let sel=S.listRankUnitAbilities;if(sel==='ALL'||!sel)sel=[];if(!Array.isArray(sel))sel=[];if(!sel.length)return '';return '&ability_id='+encodeURIComponent(sel.join(','))})();const abOp=(()=>{let sel=S.listRankUnitAbilities;if(!Array.isArray(sel)||sel.length<2)return '';return '&ability_op='+encodeURIComponent(browseCombineOp(S.browseCombRankUnitAbil))})();return`/api/units?lang=${S.lang}&page=${p}&per_page=${pp}&sort=${encodeURIComponent(sort)}&dir=${dir}&stat_bounds=1&q=${encodeURIComponent(qApi)}${roleQ}${rq}${stQ}${srcQ}${terrQ}${terrOp}${debQ}${debOp}${wrnmQ}${wrnmOp}${wrnmSex}${mwrQ}${mwrOp}${mechQ}${mechOp}${linQ}${linOp}${serQ}${serOp}${abQ}${abOp}`}
 function renderRankingRowBar(val,bounds){if(!bounds||bounds.min==null||bounds.max==null||bounds.max===bounds.min)return'<span class="ranking-bar-track"><span class="ranking-bar-fill" style="width:50%"></span></span>';const v=Math.max(bounds.min,Math.min(bounds.max,Number(val)||0));const w=100*(v-bounds.min)/(bounds.max-bounds.min);return`<span class="ranking-bar-track"><span class="ranking-bar-fill" style="width:${w.toFixed(2)}%"></span></span>`}
@@ -5114,6 +5114,9 @@ return merged;
 function _textImpliesPilotingTagAffinity(tx){
 return /piloting units with specified tags|指定.*?タグ|指定.*?標籤|指定.*?标签|含有上述「標籤」|搭乘單位含有上述「標籤」|上記の「タグ」|搭乗ユニットが上記の「タグ」|critical rate|暴擊率|暴击率|爆擊率|EN consumption|消費EN|消耗EN|damage dealt|与ダメージ|造成的損傷/i.test(String(tx||''));
 }
+function _textImpliesPilotingSeriesAffinity(tx){
+return /piloting units with (?:the\s+)?specified series|指定.*?シリーズ|指定.*?系列|上記の「シリーズ」|搭乗ユニットが上記の「シリーズ」|搭乘單位含有上述「系列」|含有上述「系列」/i.test(String(tx||''));
+}
 function _extractEnConsumptionReductionPct(tx){
 const s=String(tx||'');
 let out=0;
@@ -5185,11 +5188,32 @@ addConds(detail.conditions);
 (detail.condition_groups||[]).forEach(g=>{if(g&&typeof g==='object')addConds(g.conditions)});
 return names;
 }
+function _collectSeriesIdsFromAbilityDetail(detail){
+const ids=new Set();
+if(!detail||typeof detail!=='object')return ids;
+function addConds(arr){
+(arr||[]).forEach(c=>{
+if(!c||typeof c!=='object')return;
+if(String(c.type||'').toLowerCase()!=='series')return;
+const sid=String(c.id||'').trim();
+if(sid&&sid!=='0')ids.add(sid);
+});
+}
+addConds(detail.conditions);
+(detail.condition_groups||[]).forEach(g=>{if(g&&typeof g==='object')addConds(g.conditions)});
+return ids;
+}
 function _unitTagsMatchAbilityDetail(detail,unitTags){
 const req=_collectLineageTagNamesFromAbilityDetail(detail);
 if(!req.size)return false;
 const unitNames=new Set((unitTags||[]).map(t=>String(t.name||'').trim().toLowerCase()).filter(Boolean));
 return[...req].some(r=>unitNames.has(r));
+}
+function _unitSeriesMatchAbilityDetail(detail,unitSeries){
+const req=_collectSeriesIdsFromAbilityDetail(detail);
+if(!req.size)return false;
+const have=new Set((unitSeries||[]).map(s=>String(s&&s.id!=null?s.id:'').trim()).filter(x=>x&&x!=='0'));
+return[...req].some(r=>have.has(r));
 }
 function _extractPilotWeaponStatPctFromText(tx){
 const s=String(tx||'');
@@ -5198,6 +5222,8 @@ let m=s.match(/Increases?\s+own\s+(?:ACC|Accuracy)\s+and\s+(?:EVA|EVADE|Evasion)
 if(m)out.acc=Math.max(out.acc,parseInt(m[1],10)||0);
 m=s.match(/Increases?\s+own\s+(?:ACC|Accuracy)\s+and\s+(?:Critical|CRIT)\s+by\s+(\d+)\s*%/i);
 if(m){const p=parseInt(m[1],10)||0;out.acc=Math.max(out.acc,p);out.crit=Math.max(out.crit,p)}
+m=s.match(/Increases?\s+(?:own\s+)?((?:(?:Defense|DEF|Reaction|Awaken|Melee|Ranged|Range|Accuracy|ACC|Critical\s+Rate|Critical|CRIT)(?:\s*,\s*|\s*,?\s+and\s+))+)(?:Defense|DEF|Reaction|Awaken|Melee|Ranged|Range|Accuracy|ACC|Critical\s+Rate|Critical|CRIT)\s+by\s+(\d+)\s*%/i);
+if(m){const p=parseInt(m[2],10)||0;const chunk=m[0]||'';if(/\b(?:ACC|Accuracy)\b/i.test(chunk))out.acc=Math.max(out.acc,p);if(/\b(?:Critical(?:\s+Rate)?|CRIT)\b/i.test(chunk))out.crit=Math.max(out.crit,p)}
 m=s.match(/Increases?\s+(?:own\s+)?(?:ACC|Accuracy)\s+by\s+(\d+)\s*%/i);
 if(m)out.acc=Math.max(out.acc,parseInt(m[1],10)||0);
 m=s.match(/Increases?\s+(?:own\s+)?(?:Critical|CRIT)\s+by\s+(\d+)\s*%/i);
@@ -5231,8 +5257,10 @@ const cd=S.pilotCondCharData;
 (ab.details||[]).forEach(d2=>{
 if(typeof d2!=='object')return;
 const tx=String(d2.text||'');
-if(!_textImpliesPilotingTagAffinity(tx))return;
-if(!_unitTagsMatchAbilityDetail(d2,ud.tags))return;
+let ok=false;
+if(_textImpliesPilotingSeriesAffinity(tx)&&_unitSeriesMatchAbilityDetail(d2,ud.series))ok=true;
+else if(_textImpliesPilotingTagAffinity(tx)&&_unitTagsMatchAbilityDetail(d2,ud.tags))ok=true;
+if(!ok)return;
 const row=_extractPilotWeaponStatPctFromText(tx);
 out.acc=Math.max(out.acc,row.acc);
 out.crit=Math.max(out.crit,row.crit);

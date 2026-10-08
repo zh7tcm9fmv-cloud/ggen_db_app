@@ -2749,7 +2749,7 @@ def _collect_pilot_weapon_effect_additive_bonuses(uid, ld, lc, stat_mode='normal
 
 
 def _extract_pilot_weapon_stat_pct_from_text(txt):
-    """ACC/Crit % from pilot tag-affinity ability lines."""
+    """ACC/Crit % from pilot tag/series-affinity ability lines."""
     s = str(txt or '')
     out = {'acc': 0, 'crit': 0}
     m = re.search(
@@ -2764,6 +2764,21 @@ def _extract_pilot_weapon_stat_pct_from_text(txt):
         p = int(m.group(1) or 0)
         out['acc'] = max(out['acc'], p)
         out['crit'] = max(out['crit'], p)
+    # Mixed dossier+weapon Oxford list: "Increase own Ranged, Accuracy, and Reaction by 15%"
+    m = re.search(
+        r'Increases?\s+(?:own\s+)?'
+        r'((?:(?:Defense|DEF|Reaction|Awaken|Melee|Ranged|Range|Accuracy|ACC|Critical\s+Rate|Critical|CRIT)'
+        r'(?:\s*,\s*|\s*,?\s+and\s+))+)'
+        r'(?:Defense|DEF|Reaction|Awaken|Melee|Ranged|Range|Accuracy|ACC|Critical\s+Rate|Critical|CRIT)'
+        r'\s+by\s+(\d+)\s*%',
+        s, re.I)
+    if m:
+        p = int(m.group(2) or 0)
+        chunk = (m.group(0) or '')
+        if re.search(r'\b(?:ACC|Accuracy)\b', chunk, re.I):
+            out['acc'] = max(out['acc'], p)
+        if re.search(r'\b(?:Critical(?:\s+Rate)?|CRIT)\b', chunk, re.I):
+            out['crit'] = max(out['crit'], p)
     m = re.search(r'Increases?\s+(?:own\s+)?(?:ACC|Accuracy)\s+by\s+(\d+)\s*%', s, re.I)
     if m:
         out['acc'] = max(out['acc'], int(m.group(1) or 0))
@@ -2794,25 +2809,45 @@ def _extract_pilot_weapon_stat_pct_from_text(txt):
     return out
 
 
+def _recommend_pilot_id_for_unit(uid):
+    """Recommend character id for this unit (any rarity — series-gated Max EX may be SSR)."""
+    uid = normalize_id(uid)
+    info = unit_info_map.get(uid)
+    if not info:
+        return '0'
+    rc = normalize_id(info.get('recommend_character_id') or '0')
+    if rc == '0':
+        _mmap = globals().get('MANUAL_UNIT_RECOMMEND_CHARACTER_MAP') or {}
+        rc = _mmap.get(uid, '0') if isinstance(_mmap, dict) else '0'
+    if rc == '0' or rc not in char_info_map:
+        return '0'
+    return rc
+
+
 def _collect_pilot_tag_weapon_stat_bonuses(uid, ld, lc, stat_mode='normal'):
-    """Recommend UR pilot: ACC/Crit when piloting units with matching tags."""
+    """Recommend pilot: ACC/Crit when piloting units with matching tags or series."""
     out = {'acc': 0, 'crit': 0}
-    rc = _recommend_ur_pilot_id_for_unit(uid)
+    rc = _recommend_pilot_id_for_unit(uid)
     if rc == '0':
         return out
+    # Tag affinity historically required UR recommend; keep that for tag-only rows.
+    rc_ur = _recommend_ur_pilot_id_for_unit(uid)
     for ad in _char_ability_entries_for_pilot_cond(rc, ld, lc, stat_mode):
         for d2 in ad.get('details', []) or []:
             if not isinstance(d2, dict):
                 continue
             txt = d2.get('text', '') or ''
-            if not _ability_text_implies_pilot_tag_affinity_weapon_stat(txt):
-                continue
-            req_tags = _collect_detail_lineage_tag_names(d2)
-            if not req_tags or not _unit_has_any_lineage_tag(uid, lc, req_tags):
-                continue
-            row = _extract_pilot_weapon_stat_pct_from_text(txt)
-            out['acc'] = max(out['acc'], row['acc'])
-            out['crit'] = max(out['crit'], row['crit'])
+            row = {'acc': 0, 'crit': 0}
+            if _ability_text_implies_pilot_series_affinity_weapon_stat(txt):
+                req_sids = _collect_detail_series_ids(d2)
+                if req_sids and _unit_has_any_series_id(uid, lc, req_sids):
+                    row = _extract_pilot_weapon_stat_pct_from_text(txt)
+            elif rc_ur != '0' and _ability_text_implies_pilot_tag_affinity_weapon_stat(txt):
+                req_tags = _collect_detail_lineage_tag_names(d2)
+                if req_tags and _unit_has_any_lineage_tag(uid, lc, req_tags):
+                    row = _extract_pilot_weapon_stat_pct_from_text(txt)
+            out['acc'] = max(out['acc'], row.get('acc') or 0)
+            out['crit'] = max(out['crit'], row.get('crit') or 0)
     return out
 
 
@@ -2824,6 +2859,26 @@ def _ability_text_implies_pilot_tag_affinity_weapon_stat(txt):
             r'piloting units with specified tags|指定.*?タグ|指定.*?標籤|指定.*?标签|'
             r'含有上述「標籤」|搭乘單位含有上述「標籤」|上記の「タグ」|搭乗ユニットが上記の「タグ」',
             txt, re.I):
+        return False
+    return bool(re.search(
+        r'ACC|Accuracy|Critical|CRIT|critical rate|命中率|クリティカル|暴擊|暴击|爆擊',
+        txt, re.I))
+
+
+def _ability_text_has_pilot_series_affinity_prefix(txt):
+    """Shared prefix: ability applies when piloting units with the specified series."""
+    if not txt or not isinstance(txt, str):
+        return False
+    return bool(re.search(
+        r'piloting units with (?:the\s+)?specified series|'
+        r'指定.*?シリーズ|指定.*?系列|上記の「シリーズ」|搭乗ユニットが上記の「シリーズ」|'
+        r'搭乘單位含有上述「系列」|含有上述「系列」',
+        txt, re.I))
+
+
+def _ability_text_implies_pilot_series_affinity_weapon_stat(txt):
+    """Pilot series affinity: ACC/Crit when piloting units with the specified series."""
+    if not _ability_text_has_pilot_series_affinity_prefix(txt):
         return False
     return bool(re.search(
         r'ACC|Accuracy|Critical|CRIT|critical rate|命中率|クリティカル|暴擊|暴击|爆擊',
@@ -3064,12 +3119,15 @@ def _unit_ability_text_implies_pilot_cond_passive(txt):
 
 
 def _unit_has_pilot_cond_passive(uid, ld, lc, stat_mode='normal'):
-    """UR recommend pilot grants detail-card-visible PEP for this unit.
+    """Recommend pilot grants detail-card-visible PEP for this unit.
 
-    Eligible: ATK/DEF/squad stats, weapon ACC/Crit, weapon range, weapon-effect
-    additives, weapon EN cost, Guaranteed Chance Step (force-activate CS) when
-    piloting this unit. Not eligible: tag-affinity damage dealt/taken only
-    (those never appear on the unit detail card).
+    Eligible: ATK/DEF/squad stats, weapon ACC/Crit (tag or series affinity),
+    weapon range, weapon-effect additives, weapon EN cost, Guaranteed Chance
+    Step when piloting this unit. Not eligible: tag-affinity damage dealt/taken
+    only (those never appear on the unit detail card).
+
+    Series-gated Max EX ACC (any rarity recommend, e.g. SSR collab) lights PEP.
+    Named-unit / tag exclusives still require a UR recommend pilot.
     """
     uid = normalize_id(uid)
     cache_key = (uid, lc)
@@ -3080,13 +3138,24 @@ def _unit_has_pilot_cond_passive(uid, ld, lc, stat_mode='normal'):
     if not info:
         _PILOT_COND_PASSIVE_CACHE[cache_key] = False
         return False
-    rc = normalize_id(info.get('recommend_character_id') or '0')
-    if rc == '0':
-        rc = MANUAL_UNIT_RECOMMEND_CHARACTER_MAP.get(uid, '0')
-    if rc == '0' or rc not in char_info_map:
+    rc_any = _recommend_pilot_id_for_unit(uid)
+    if rc_any == '0':
         _PILOT_COND_PASSIVE_CACHE[cache_key] = False
         return False
-    if RARITY_MAP.get(char_info_map[rc].get('rarity', '1')) != 'UR':
+    # Series affinity ACC/Crit — any rarity recommend (SSR Max EX collab kits).
+    for ad in _char_ability_entries_for_pilot_cond(rc_any, ld, lc, stat_mode):
+        for d2 in ad.get('details', []) or []:
+            if not isinstance(d2, dict):
+                continue
+            txt = d2.get('text', '') or ''
+            if not _ability_text_implies_pilot_series_affinity_weapon_stat(txt):
+                continue
+            req_sids = _collect_detail_series_ids(d2)
+            if req_sids and _unit_has_any_series_id(uid, lc, req_sids):
+                _PILOT_COND_PASSIVE_CACHE[cache_key] = True
+                return True
+    rc = _recommend_ur_pilot_id_for_unit(uid)
+    if rc == '0':
         _PILOT_COND_PASSIVE_CACHE[cache_key] = False
         return False
     pair_row = (CHAR_PAIR_UNIT_STAT_MOD_PCT.get(rc) or {}).get(uid)
@@ -9485,8 +9554,12 @@ def extract_stat_percent_char(text, full_detail_text=None, char_id=None):
         return bonuses
     # N-stat list: "increase own Ranged, Melee, and Reaction by 15%" (Newtype (V) etc.).
     # Prefer this over the 1–2-stat pattern so Oxford commas are not left unmatched.
+    # Accuracy/Critical may sit in the same Oxford list (weapon sheet, not dossier) — allow as
+    # skippable tokens so "Ranged, Accuracy, and Reaction by 15%" still yields Ranged+Reaction.
+    _list_skip = r'(?:Accuracy|ACC|Critical\s+Rate|Critical|CRIT)'
+    _list_tok = rf'(?:{_pilot_stat_alt}|{_list_skip})'
     m_list = re.search(
-        rf"Increases?\s+(?:own\s+)?({_pilot_stat_alt}(?:\s*,\s*{_pilot_stat_alt})+(?:\s*,?\s+and\s+{_pilot_stat_alt})?)\s+by\s*(\d+)%",
+        rf"Increases?\s+(?:own\s+)?({_list_tok}(?:\s*,\s*{_list_tok})+(?:\s*,?\s+and\s+{_list_tok})?)\s+by\s*(\d+)%",
         text, re.IGNORECASE)
     if m_list:
         p = int(m_list.group(2))
@@ -9495,11 +9568,14 @@ def extract_stat_percent_char(text, full_detail_text=None, char_id=None):
         chunk_norm = re.sub(r'\s*,?\s+and\s+', ',', chunk, flags=re.IGNORECASE)
         parts = [raw.strip() for raw in chunk_norm.split(',') if raw.strip()]
         for raw in parts:
-            u = raw.title().upper()
+            u = re.sub(r'\s+', ' ', raw).strip().upper()
+            if u in ('ACCURACY', 'ACC') or u in ('CRITICAL', 'CRIT') or u.startswith('CRITICAL RATE'):
+                continue
             if u == 'RANGE':
                 bonuses['Ranged'] = bonuses.get('Ranged', 0) + p
-            elif u in ('MELEE', 'RANGED', 'DEFENSE', 'REACTION', 'AWAKEN'):
-                bonuses[raw.title()] = bonuses.get(raw.title(), 0) + p
+            elif u in ('MELEE', 'RANGED', 'DEFENSE', 'REACTION', 'AWAKEN', 'DEF'):
+                bonuses['Defense' if u == 'DEF' else raw.title()] = bonuses.get(
+                    'Defense' if u == 'DEF' else raw.title(), 0) + p
         return bonuses
     # "Increase" alone matches only the 7-letter prefix of "increases", leaving a stray "s" — use Increases?
     m = re.search(r"Increases? (?:own )?(Melee|Ranged|Range|Defense|Reaction|Awaken|ATK|DEF)(?: and (Melee|Ranged|Range|Defense|Reaction|Awaken|ATK|DEF))? by\s*(\d+)%", text, re.IGNORECASE)
@@ -25045,6 +25121,30 @@ def _collect_detail_lineage_tag_names(detail):
     return names
 
 
+def _collect_detail_series_ids(detail):
+    """Series condition ids from an ability detail (e.g. GUNDAM EXA / 7950)."""
+    if not isinstance(detail, dict):
+        return []
+    ids, seen = [], set()
+
+    def _add(conds):
+        for c in conds or []:
+            if not isinstance(c, dict):
+                continue
+            if str(c.get('type') or '').lower() not in ('series',):
+                continue
+            sid = normalize_id(c.get('id') or '')
+            if sid and sid != '0' and sid not in seen:
+                seen.add(sid)
+                ids.append(sid)
+
+    _add(detail.get('conditions'))
+    for g in detail.get('condition_groups') or []:
+        if isinstance(g, dict):
+            _add(g.get('conditions'))
+    return ids
+
+
 def _unit_has_any_lineage_tag(uid, lc, req_tag_names):
     """True if playable unit carries any of the lineage tag names from a pilot affinity ability."""
     if not req_tag_names:
@@ -25056,6 +25156,21 @@ def _unit_has_any_lineage_tag(uid, lc, req_tag_names):
     }
     for rn in req_tag_names:
         if str(rn).strip().lower() in unit_tags:
+            return True
+    return False
+
+
+def _unit_has_any_series_id(uid, lc, req_series_ids):
+    """True if playable unit belongs to any of the series ids from a pilot series-affinity ability."""
+    if not req_series_ids:
+        return False
+    want = {normalize_id(x) for x in req_series_ids if normalize_id(x) not in ('', '0')}
+    if not want:
+        return False
+    for s in resolve_series(unit_ser_map.get(normalize_id(uid), ''), lc) or []:
+        if not isinstance(s, dict):
+            continue
+        if normalize_id(s.get('id') or '') in want:
             return True
     return False
 
@@ -32987,7 +33102,7 @@ def get_character(char_id):
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
         view_ranking = request.args.get('view', '').strip().lower() == 'ranking'
-        ck = f"c_{char_id}_{lc}_r15_{1 if view_ranking else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        ck = f"c_{char_id}_{lc}_r16_{1 if view_ranking else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             # Images already CDN-converted when cached; skip re-walk + re-jsonify under GIL.
@@ -33119,7 +33234,7 @@ def get_unit(unit_id):
         if stat_mode_arg not in ('normal', 'sp', 'ssp'):
             stat_mode_arg = 'normal'
         cond_for_ranking = request.args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
-        ck = f"u_{unit_id}_{lc}_ssp18_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_bp3_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        ck = f"u_{unit_id}_{lc}_ssp19_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_bp3_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_preserialized(cached, ck, private=True, max_age=3600, convert_images=False)

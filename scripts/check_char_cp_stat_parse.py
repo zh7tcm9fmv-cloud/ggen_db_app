@@ -131,6 +131,19 @@ def main() -> int:
                 f"Florence canary: expected Defense=-25 from {line3!r}, got {got}"
             )
 
+    # Sthesia Max EX: Accuracy sits in the dossier Oxford list (weapon sheet only).
+    checked += 1
+    sthesia_line = "Increase own Ranged, Accuracy, and Reaction by 15% (1 turn)"
+    got_st = extract_stat_percent_char(sthesia_line, sthesia_line)
+    if int(got_st.get("Ranged", 0) or 0) != 15 or int(got_st.get("Reaction", 0) or 0) != 15:
+        fails.append(
+            f"Sthesia Max EX canary: expected Ranged=15 Reaction=15 from {sthesia_line!r}, got {got_st}"
+        )
+    if "Accuracy" in got_st:
+        fails.append(
+            f"Sthesia Max EX canary: Accuracy must not enter dossier buckets, got {got_st}"
+        )
+
     print(f"Checked {checked} pilot-dossier decrease line(s) in {args.traits.name}")
     if fails:
         print(f"FAIL: {len(fails)} parser miss(es):", file=sys.stderr)
