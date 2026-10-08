@@ -182,7 +182,10 @@ window.__ggenLoadGtm=function(){
 (function(){
   /* Font preload must use crossOrigin=anonymous to match @font-face CORS mode.
      Railway /static/font allowlist sends ACAO:* — without crossorigin the preload
-     is discarded ("preload not used") and a second fetch races font-display. */
+     is discarded ("preload not used") and a second fetch races font-display.
+     Do NOT early-preload Teko here: the design-15 block below injects @font-face
+     immediately. Double preload+unused-first-paint caused console spam on /st etc.
+     Roboto numbers: defer until idle so Stages/collab first paint is not warned. */
   var v={{ app_js_version|tojson }};
   function preloadFont(href, type){
     var link=document.createElement('link');
@@ -191,7 +194,11 @@ window.__ggenLoadGtm=function(){
     link.crossOrigin='anonymous';
     document.head.appendChild(link);
   }
-  preloadFont('/static/font/roboto_medium_numbers.ttf?v='+encodeURIComponent(v));
+  function preloadRoboto(){
+    preloadFont('/static/font/roboto_medium_numbers.ttf?v='+encodeURIComponent(v));
+  }
+  if(typeof requestIdleCallback==='function')requestIdleCallback(preloadRoboto,{timeout:2500});
+  else setTimeout(preloadRoboto,1200);
   try{
     var params=new URLSearchParams(location.search||'');
     var q=params.get('design')||params.get('mock');
@@ -199,10 +206,6 @@ window.__ggenLoadGtm=function(){
     try{stored=localStorage.getItem('ggen_design_15')||localStorage.getItem('ggen_units_mock15')||''}catch(_){}
     var on=q==='15'?true:q==='classic'?false:(stored==='0'?false:true);
     window.__GGEN_DESIGN_15_EARLY__=!!on;
-    if(on){
-      preloadFont('/static/font/Teko-SemiBold.ttf?v='+encodeURIComponent(v));
-      preloadFont('/static/font/Teko-Bold.ttf?v='+encodeURIComponent(v));
-    }
   }catch(_){}
 })();
 </script>

@@ -32543,7 +32543,7 @@ def get_stage(stage_id):
             is_score_attack = False
             is_special_event_stage = False
             is_tower_event_stage = False
-            is_challenge_stage = False
+            is_challenge_stage = True
         elif est_er:
             is_score_attack = False
             is_special_event_stage = False
@@ -32639,6 +32639,8 @@ def get_stage(stage_id):
         else:
             est = est_er
             vis = eternal_stage_content_visible(stage_id, est)
+        if not isinstance(est, dict):
+            return jsonify({'error': f'Stage {stage_id} not found'}), 404
         ck_cat = (
             'sa' if is_score_attack else (
                 'ses' if is_special_event_stage else (
