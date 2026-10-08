@@ -8267,6 +8267,18 @@ def _challenge_stage_is_hard(thumbnail_resource_id):
 
 _CHALLENGE_HARD_MISSION_CONDITION_TYPES = frozenset({273, 276, 281})
 _ETERNAL_EXPERT_MISSION_CONDITION_TYPES = frozenset({228, 229, 230, 263})
+# Collaboration HARD missions (EXA 90800202 uses 288 + 331; keep open for future collab events).
+_COLLABORATION_HARD_MISSION_CONDITION_TYPES = frozenset({288, 331})
+
+
+def create_collaboration_hard_stage_id_set(lite_map, scenario_map):
+    """Lite-scenario / collab stages with StageDifficultyTypeIndex == 2 (Hard)."""
+    out = set()
+    for sid in (lite_map or {}):
+        ssc = (scenario_map or {}).get(normalize_id(sid), {})
+        if safe_int(ssc.get('stage_difficulty_type_index'), 1) == 2:
+            out.add(normalize_id(sid))
+    return out
 
 
 def create_game_event_condition_map(d):
@@ -11106,6 +11118,9 @@ game_event_condition_map = create_game_event_condition_map(game_event_condition_
 mission_group_sort_map = create_mission_group_sort_map(mission_group_data) if mission_group_data else {}
 challenge_hard_stage_ids = create_challenge_hard_stage_id_set(scenario_stage_map, main_scenario_stage_challenge_map)
 eternal_expert_stage_ids = create_eternal_expert_stage_id_set(eternal_stage_map)
+collaboration_hard_stage_ids = create_collaboration_hard_stage_id_set(
+    lite_scenario_event_stage_map, scenario_stage_map,
+)
 _challenge_hard_missions_by_stage = create_missions_by_target_stage(
     mission_data, game_event_condition_map, challenge_hard_stage_ids, mission_group_sort_map,
     _CHALLENGE_HARD_MISSION_CONDITION_TYPES,
@@ -11114,8 +11129,14 @@ _eternal_expert_missions_by_stage = create_missions_by_target_stage(
     mission_data, game_event_condition_map, eternal_expert_stage_ids, mission_group_sort_map,
     _ETERNAL_EXPERT_MISSION_CONDITION_TYPES,
 ) if mission_data and game_event_condition_map else {}
+_collaboration_hard_missions_by_stage = create_missions_by_target_stage(
+    mission_data, game_event_condition_map, collaboration_hard_stage_ids, mission_group_sort_map,
+    _COLLABORATION_HARD_MISSION_CONDITION_TYPES,
+) if mission_data and game_event_condition_map and collaboration_hard_stage_ids else {}
 stage_missions_by_stage = merge_missions_by_stage_indexes(
-    _challenge_hard_missions_by_stage, _eternal_expert_missions_by_stage,
+    _challenge_hard_missions_by_stage,
+    _eternal_expert_missions_by_stage,
+    _collaboration_hard_missions_by_stage,
 )
 tower_event_map = create_tower_event_map(tower_event_data) if tower_event_data else {}
 tower_event_stage_group_map = create_tower_event_stage_group_map(tower_event_stage_group_data) if tower_event_stage_group_data else {}
@@ -15013,6 +15034,7 @@ def resolve_stage_rewards(stage_id, lc, category='eternal', score_attack_reward_
         if fc == '0':
             return []
         return _decorate_reward_rows(_resolve_reward_rows_from_set_id(fc), lc)
+    # Eternal + Collaboration (+ default): first-clear lives on m_stage.FirstClearRewardSetId.
     sm = (stage_map or {}).get(sid, {})
     fc = normalize_id(sm.get('first_clear_reward_set_id', '0'))
     reward_set_id = fc if fc != '0' else normalize_id(f"20{sid}0000")
@@ -15060,25 +15082,42 @@ def challenge_stage_thumb_url(thumbnail_resource_id):
 COLLAB_STAGE_IMAGE_SUBDIR = 'Stages/Colab%20stages'
 
 
-def collaboration_stage_thumb_url(thumbnail_resource_id, event_id=None):
-    """Lite-scenario / collab stage thumbs — Colab stages folder for lite_scenario_event_thum_*.
+def _collab_stage_pack_has(resource_id):
+    """True when rid exists under images/Stages/Colab stages (image_index and/or local CDN checkout)."""
+    rid = str(resource_id or '').strip()
+    if not rid or rid == '0':
+        return False
+    folder_key = 'images/Stages/Colab stages'
+    names = set()
+    for fn in (IMAGE_INDEX or {}).get(folder_key, []) or []:
+        base = str(fn or '').rsplit('.', 1)[0]
+        if base:
+            names.add(base)
+    if rid in names:
+        return True
+    # Local CDN checkout (dev) — owner often drops new WebPs before image_index refresh.
+    try:
+        images_root = os.environ.get('GGEN_IMAGES_DIR') or os.path.join(
+            os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'ggen_db_images', 'images'
+        )
+        colab_dir = os.path.join(images_root, 'Stages', 'Colab stages')
+        if os.path.isdir(colab_dir):
+            for ext in ('.webp', '.png'):
+                if os.path.isfile(os.path.join(colab_dir, rid + ext)):
+                    return True
+    except Exception:
+        pass
+    return False
 
-    Other ThumbnailResourceIds (sca_*, thum_map_bg_*) live under images/Stages like Challenge.
-    When those are missing from the CDN tree, EXA (event 230002) falls back to its bromide art.
-    """
+
+def collaboration_stage_thumb_url(thumbnail_resource_id, event_id=None):
+    """Collaboration stage thumbs — prefer Stages/Colab stages pack; else Stages root (Challenge path)."""
     rid = str(thumbnail_resource_id or '').strip()
     if not rid or rid == '0':
         return ''
-    if rid.startswith('lite_scenario_event_thum'):
+    if rid.startswith('lite_scenario_event_thum') or _collab_stage_pack_has(rid):
         return game_image_public_url(_game_images_webp_path(COLLAB_STAGE_IMAGE_SUBDIR, rid))
-    primary = challenge_stage_thumb_url(rid)
-    eid = normalize_id(event_id) if event_id is not None else '0'
-    if eid == '230002' and rid.startswith('thum_map_bg'):
-        # EXA HARD master points at thum_map_bg_* which may not be shipped; use event bromide.
-        return game_image_public_url(
-            _game_images_webp_path(COLLAB_STAGE_IMAGE_SUBDIR, 'UI_Event_ScenarioStage_Bromide_230002')
-        )
-    return primary
+    return challenge_stage_thumb_url(rid)
 
 
 def collaboration_stage_select_logo_url(lang_code, event_id='230002'):
@@ -32385,7 +32424,7 @@ def get_stage(stage_id):
                             'collab' if is_collaboration_stage else (
                                 'ce' if is_chronicle_stage else 'er'))))))
         # mstage18: chronicle/E-sim first-clear from node content FirstClearRewardSetId.
-        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_{eternal_stage_session_cache_key_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage28"
+        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_{eternal_stage_session_cache_key_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage29_collabrew"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
@@ -32769,7 +32808,8 @@ def get_stage(stage_id):
         stage_rewards = resolve_stage_rewards(
             stage_id,
             lc,
-            category=('chronicle' if is_collaboration_stage else stage_cat),
+            # Collaboration first-clear is on m_stage (like Eternal), not chronicle/e-sim.
+            category=stage_cat,
             score_attack_reward_id=est.get('score_attack_reward_id', '0'),
         )
         tower_side = 'ALL'
@@ -32793,7 +32833,8 @@ def get_stage(stage_id):
             and not is_challenge_stage and not is_collaboration_stage and not is_chronicle_stage
             and safe_int(est.get('stage_difficulty_type_index'), 1) == 3
         )
-        _show_stage_missions = _ch_hard or _er_expert
+        _collab_hard = is_collaboration_stage and safe_int(est.get('stage_difficulty_type_index'), 1) == 2
+        _show_stage_missions = _ch_hard or _er_expert or _collab_hard
         _sched_release = resolve_m_schedule_release_fields(sm.get('schedule_id', '0'))
         result = {
             'content_locked': False, 'id': stage_id, 'stage_number': sn, 'name': sname,
@@ -32824,6 +32865,7 @@ def get_stage(stage_id):
             'challenge_series_id': est.get('challenge_series_id', '0') if is_challenge_stage else '',
             'challenge_series_name': challenge_series_name,
             'challenge_is_hard': _ch_hard,
+            'collaboration_is_hard': _collab_hard,
             'challenge_series_layout': challenge_series_layout,
             'stage_missions': resolve_stage_missions(stage_id, lc) if _show_stage_missions else [],
         }
