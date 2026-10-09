@@ -2808,12 +2808,15 @@ def _extract_pilot_weapon_stat_pct_from_text(txt):
         p = int(m.group(1) or 0)
         out['acc'] = max(out['acc'], p)
         out['crit'] = max(out['crit'], p)
-    # Mixed dossier+weapon Oxford list: "Increase own Ranged, Accuracy, and Reaction by 15%"
+    # Mixed dossier+weapon Oxford list:
+    # Mixed dossier+weapon Oxford list (Accuracy → PEP ACC; Evasion is not a dossier/weapon sheet %).
+    # "Increase own Ranged, Accuracy, and Reaction by 15%" (legacy)
+    # "Increase own Ranged, Accuracy, and Evasion by 15%" (Max EX Oct 2026)
     m = re.search(
         r'Increases?\s+(?:own\s+)?'
-        r'((?:(?:Defense|DEF|Reaction|Awaken|Melee|Ranged|Range|Accuracy|ACC|Critical\s+Rate|Critical|CRIT)'
+        r'((?:(?:Defense|DEF|Reaction|Evasion|EVA|EVADE|Awaken|Melee|Ranged|Range|Accuracy|ACC|Critical\s+Rate|Critical|CRIT)'
         r'(?:\s*,\s*|\s*,?\s+and\s+))+)'
-        r'(?:Defense|DEF|Reaction|Awaken|Melee|Ranged|Range|Accuracy|ACC|Critical\s+Rate|Critical|CRIT)'
+        r'(?:Defense|DEF|Reaction|Evasion|EVA|EVADE|Awaken|Melee|Ranged|Range|Accuracy|ACC|Critical\s+Rate|Critical|CRIT)'
         r'\s+by\s+(\d+)\s*%',
         s, re.I)
     if m:
@@ -2841,15 +2844,27 @@ def _extract_pilot_weapon_stat_pct_from_text(txt):
     m = re.search(r'自身の命中率と回避率が(\d+)%上昇', s)
     if m:
         out['acc'] = max(out['acc'], int(m.group(1) or 0))
+    # JA Max EX list: 射撃値と命中率と回避率がN%上昇
+    m = re.search(r'自身の射撃値と命中率と回避率が(\d+)%上昇', s)
+    if m:
+        out['acc'] = max(out['acc'], int(m.group(1) or 0))
     m = re.search(r'自身のクリティカル率が(\d+)%上昇', s)
     if m:
         out['crit'] = max(out['crit'], int(m.group(1) or 0))
     m = re.search(r'自身命中率(?:及|和)閃避率提升(\d+)%', s)
     if m:
         out['acc'] = max(out['acc'], int(m.group(1) or 0))
+    # TW/HK Max EX list: 射擊值、命中率及閃避率提升N%
+    m = re.search(r'自身射擊值[、,]\s*命中率及閃避率提升(\d+)%', s)
+    if m:
+        out['acc'] = max(out['acc'], int(m.group(1) or 0))
     m = re.search(r'自身(?:的)?(?:暴擊|暴击|爆擊)率提升(\d+)%', s)
     if m:
         out['crit'] = max(out['crit'], int(m.group(1) or 0))
+    # KR: 사격치와 명중률과 회피율… 15% 상승
+    m = re.search(r'사격치와\s*명중률과\s*회피율[이가]?\s*(\d+)\s*%\s*상승', s)
+    if m:
+        out['acc'] = max(out['acc'], int(m.group(1) or 0))
     return out
 
 
@@ -9488,6 +9503,7 @@ def _extract_char_dossier_decrease_pct_en(text):
     if not text or not isinstance(text, str):
         return bonuses
     # Official EN uses abbreviated DEF (Florence EX etc.); full Defense still supported.
+    # Evasion/EVA is not a dossier CP column — do not map it onto Reaction.
     stat_alt = r'(?:Defense|DEF|Reaction|Awaken|Melee|Ranged)'
     pat = re.compile(
         rf'\b(?:and\s+|but\s+|,\s*)?(?:decrease(?:s)?|reduce(?:s)?)\s+(?:own\s+)?({stat_alt}(?:\s+and\s+{stat_alt})*)\s+by\s*(\d+)%',
@@ -9530,6 +9546,10 @@ def _extract_stat_percent_char_cjk(text):
         k = ja_map.get(m.group(1))
         if k:
             bonuses[k] = bonuses.get(k, 0) + p
+    # JA Max EX: 射撃値と命中率と回避率がN%上昇 — dossier gets Ranged only; 命中率=PEP ACC; 回避率 unused.
+    for m in re.finditer(r'自身の射撃値と命中率と回避率が(\d+)%上昇', text):
+        p = int(m.group(1))
+        bonuses['Ranged'] = bonuses.get('Ranged', 0) + p
     # JA decrease: 自身の守備値が25%減少 / 防御力がN%減少
     for m in re.finditer(r'自身の' + ja_one + r'が(\d+)%減少', text):
         p = int(m.group(2))
@@ -9560,6 +9580,14 @@ def _extract_stat_percent_char_cjk(text):
         bonuses['Awaken'] = bonuses.get('Awaken', 0) + int(mm.group(1))
     for mm in re.finditer(r'自身反應值提升(\d+)%', text):
         bonuses['Reaction'] = bonuses.get('Reaction', 0) + int(mm.group(1))
+    # TW/HK Max EX: 射擊值、命中率及閃避率 — dossier Ranged only; 命中率=PEP ACC; 閃避率 unused.
+    for m in re.finditer(r'自身射擊值[、,]\s*命中率及閃避率提升(\d+)%', text):
+        p = int(m.group(1))
+        bonuses['Ranged'] = bonuses.get('Ranged', 0) + p
+    # KR Max EX: 사격치와 명중률과 회피율 — dossier Ranged only; 명중률=PEP ACC; 회피율 unused.
+    for m in re.finditer(r'사격치와\s*명중률과\s*회피율[이가]?\s*(\d+)\s*%\s*상승', text):
+        p = int(m.group(1))
+        bonuses['Ranged'] = bonuses.get('Ranged', 0) + p
     # TW/HK decrease (防禦力 / 守備值)
     for m in re.finditer(r'自身' + zh_one + r'(?:降低|減少|下降)(\d+)%', text):
         p = int(m.group(2))
@@ -9574,9 +9602,11 @@ def extract_stat_percent_char(text, full_detail_text=None, char_id=None):
     # Gate-only lines ("When piloting units from specified series,") carry into the next
     # sentence via _add_char_trait_pct_to_buckets. Skip them here — but do NOT bail when the
     # same sentence also has a pilot dossier % (Oxford-comma lists like Newtype (V)).
+    # Evasion/EVA is NOT a dossier CP column (CHAR_STAT_ORDER has Reaction, not Evasion) — skip it.
     _pilot_stat_alt = r'(?:Defense|DEF|Reaction|Awaken|Melee|Ranged|Range)'
+    _list_skip = r'(?:Accuracy|ACC|Critical\s+Rate|Critical|CRIT|Evasion|EVA|EVADE)'
     _has_pilot_pct = bool(re.search(
-        rf'(?:increase|decreas|reduc)\w*.*\b{_pilot_stat_alt}\b.*\d+\s*%',
+        rf'(?:increase|decreas|reduc)\w*.*\b(?:{_pilot_stat_alt}|Accuracy|ACC|Evasion|EVA|EVADE)\b.*\d+\s*%',
         tl, re.IGNORECASE))
     if not _has_pilot_pct:
         for kw in ['when piloting', 'when supporting', 'when executing', 'if vigor']:
@@ -9589,7 +9619,7 @@ def extract_stat_percent_char(text, full_detail_text=None, char_id=None):
         return bonuses
     # Triple: "Increase own Critical Rate, Melee, and Reaction by 20%" (Supercharged EX; Critical is not a dossier stat).
     m3 = re.search(
-        r"Increases? own Critical Rate,\s*(Melee|Ranged|Awaken)\s*,\s*and\s+(Melee|Ranged|Defense|Reaction|Awaken)\s+by\s*(\d+)%",
+        r"Increases? own Critical Rate,\s*(Melee|Ranged|Awaken)\s*,\s*and\s+(Melee|Ranged|Defense|Reaction|Evasion|Awaken)\s+by\s*(\d+)%",
         text, re.IGNORECASE)
     if m3:
         p = int(m3.group(3))
@@ -9597,14 +9627,15 @@ def extract_stat_percent_char(text, full_detail_text=None, char_id=None):
             raw = m3.group(gi)
             if not raw:
                 continue
-            n = raw.title()
-            bonuses[n] = bonuses.get(n, 0) + p
+            u = raw.strip().upper()
+            if u in ('EVASION', 'EVA', 'EVADE'):
+                continue
+            bonuses[raw.title()] = bonuses.get(raw.title(), 0) + p
         return bonuses
     # N-stat list: "increase own Ranged, Melee, and Reaction by 15%" (Newtype (V) etc.).
     # Prefer this over the 1–2-stat pattern so Oxford commas are not left unmatched.
-    # Accuracy/Critical may sit in the same Oxford list (weapon sheet, not dossier) — allow as
-    # skippable tokens so "Ranged, Accuracy, and Reaction by 15%" still yields Ranged+Reaction.
-    _list_skip = r'(?:Accuracy|ACC|Critical\s+Rate|Critical|CRIT)'
+    # Accuracy/Critical/Evasion may sit in the same Oxford list — skip them so
+    # "Ranged, Accuracy, and Evasion by 15%" yields Ranged only (Accuracy → PEP elsewhere).
     _list_tok = rf'(?:{_pilot_stat_alt}|{_list_skip})'
     m_list = re.search(
         rf"Increases?\s+(?:own\s+)?({_list_tok}(?:\s*,\s*{_list_tok})+(?:\s*,?\s+and\s+{_list_tok})?)\s+by\s*(\d+)%",
@@ -9619,14 +9650,18 @@ def extract_stat_percent_char(text, full_detail_text=None, char_id=None):
             u = re.sub(r'\s+', ' ', raw).strip().upper()
             if u in ('ACCURACY', 'ACC') or u in ('CRITICAL', 'CRIT') or u.startswith('CRITICAL RATE'):
                 continue
+            if u in ('EVASION', 'EVA', 'EVADE'):
+                continue
             if u == 'RANGE':
                 bonuses['Ranged'] = bonuses.get('Ranged', 0) + p
-            elif u in ('MELEE', 'RANGED', 'DEFENSE', 'REACTION', 'AWAKEN', 'DEF'):
+            elif u == 'REACTION':
+                bonuses['Reaction'] = bonuses.get('Reaction', 0) + p
+            elif u in ('MELEE', 'RANGED', 'DEFENSE', 'AWAKEN', 'DEF'):
                 bonuses['Defense' if u == 'DEF' else raw.title()] = bonuses.get(
                     'Defense' if u == 'DEF' else raw.title(), 0) + p
         return bonuses
     # "Increase" alone matches only the 7-letter prefix of "increases", leaving a stray "s" — use Increases?
-    m = re.search(r"Increases? (?:own )?(Melee|Ranged|Range|Defense|Reaction|Awaken|ATK|DEF)(?: and (Melee|Ranged|Range|Defense|Reaction|Awaken|ATK|DEF))? by\s*(\d+)%", text, re.IGNORECASE)
+    m = re.search(r"Increases? (?:own )?(Melee|Ranged|Range|Defense|Reaction|Evasion|Awaken|ATK|DEF)(?: and (Melee|Ranged|Range|Defense|Reaction|Evasion|Awaken|ATK|DEF))? by\s*(\d+)%", text, re.IGNORECASE)
     if m:
         p = int(m.group(3))
         for s in [m.group(1), m.group(2)]:
@@ -9652,6 +9687,8 @@ def extract_stat_percent_char(text, full_detail_text=None, char_id=None):
                 bonuses["Defense"] = bonuses.get("Defense", 0) + p
             elif u == "RANGE":
                 bonuses["Ranged"] = bonuses.get("Ranged", 0) + p
+            elif u in ("EVASION", "EVA", "EVADE"):
+                continue
             else:
                 n = s.title()
                 bonuses[n] = bonuses.get(n, 0) + p
@@ -33351,7 +33388,8 @@ def get_character(char_id):
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
         view_ranking = request.args.get('view', '').strip().lower() == 'ranking'
-        ck = f"c_{char_id}_{lc}_r16_{1 if view_ranking else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        # r18: Max EX Evasion/回避率 is not a dossier CP column — skip it; Ranged+Accuracy (PEP) only.
+        ck = f"c_{char_id}_{lc}_r18_{1 if view_ranking else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             # Images already CDN-converted when cached; skip re-walk + re-jsonify under GIL.

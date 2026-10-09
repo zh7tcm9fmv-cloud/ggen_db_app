@@ -5,6 +5,10 @@ Florence (1850001501) regression — official EN uses \"decrease DEF by N%\" whi
 character parser historically only matched \"Defense\". Silent miss: Awaken/Reaction
 applied, Defense stayed flat.
 
+Sthesia Max EX (Oct 2026): official EN uses \"Ranged, Accuracy, and Evasion\".
+Evasion is not a dossier CP column — must NOT map onto Reaction. Ranged still applies;
+Accuracy is PEP weapon ACC (tested separately via weapon extractor).
+
 Run after MasterData / LANG updates (or whenever touching extract_stat_percent_char):
 
   python scripts/check_char_cp_stat_parse.py
@@ -87,7 +91,7 @@ def main() -> int:
     os.chdir(ROOT)
     os.environ.setdefault("GGEN_TIER_USE_BUNDLED_EN", "1")
 
-    from app import extract_stat_percent_char  # noqa: E402
+    from app import extract_stat_percent_char, _extract_pilot_weapon_stat_pct_from_text  # noqa: E402
 
     if not args.traits.is_file():
         print(f"Missing traits file: {args.traits}", file=sys.stderr)
@@ -131,20 +135,61 @@ def main() -> int:
                 f"Florence canary: expected Defense=-25 from {line3!r}, got {got}"
             )
 
-    # Sthesia Max EX: Accuracy sits in the dossier Oxford list (weapon sheet only).
+    # Sthesia Max EX: Evasion is not a dossier column — Ranged only; Accuracy → PEP.
     checked += 1
-    sthesia_line = "Increase own Ranged, Accuracy, and Reaction by 15% (1 turn)"
+    sthesia_line = "Increase own Ranged, Accuracy, and Evasion by 15% (1 turn)"
     got_st = extract_stat_percent_char(sthesia_line, sthesia_line)
-    if int(got_st.get("Ranged", 0) or 0) != 15 or int(got_st.get("Reaction", 0) or 0) != 15:
+    if int(got_st.get("Ranged", 0) or 0) != 15:
         fails.append(
-            f"Sthesia Max EX canary: expected Ranged=15 Reaction=15 from {sthesia_line!r}, got {got_st}"
+            f"Sthesia Max EX canary: expected Ranged=15 from {sthesia_line!r}, got {got_st}"
         )
-    if "Accuracy" in got_st:
+    if int(got_st.get("Reaction", 0) or 0) != 0:
         fails.append(
-            f"Sthesia Max EX canary: Accuracy must not enter dossier buckets, got {got_st}"
+            f"Sthesia Max EX canary: Evasion must NOT map to Reaction, got {got_st}"
+        )
+    if "Accuracy" in got_st or "Evasion" in got_st:
+        fails.append(
+            f"Sthesia Max EX canary: Accuracy/Evasion must not be dossier keys, got {got_st}"
+        )
+    pep = _extract_pilot_weapon_stat_pct_from_text(sthesia_line)
+    if int(pep.get("acc", 0) or 0) != 15:
+        fails.append(
+            f"Sthesia Max EX PEP canary: expected acc=15 from {sthesia_line!r}, got {pep}"
         )
 
-    print(f"Checked {checked} pilot-dossier decrease line(s) in {args.traits.name}")
+    # Legacy Reaction wording must still put Reaction on the dossier.
+    checked += 1
+    legacy_line = "Increase own Ranged, Accuracy, and Reaction by 15% (1 turn)"
+    got_legacy = extract_stat_percent_char(legacy_line, legacy_line)
+    if int(got_legacy.get("Ranged", 0) or 0) != 15 or int(got_legacy.get("Reaction", 0) or 0) != 15:
+        fails.append(
+            f"Sthesia Max EX legacy canary: expected Ranged=15 Reaction=15 from {legacy_line!r}, got {got_legacy}"
+        )
+
+    # Scan EN traits: Evasion in increase lists must never inflate dossier Reaction.
+    _EVASION_INCREASE = re.compile(
+        r"Increases?\s+(?:own\s+)?[^\n]{0,80}\bEvasion\b[^\n]{0,40}by\s*(\d+)\s*%",
+        re.IGNORECASE,
+    )
+    for tid, blob in _load_en_trait_values(args.traits):
+        for line in blob.splitlines():
+            line = line.strip()
+            if not line or not _EVASION_INCREASE.search(line):
+                continue
+            if "Reaction" in line:
+                continue
+            checked += 1
+            got = extract_stat_percent_char(line, blob)
+            if int(got.get("Reaction", 0) or 0) != 0:
+                fails.append(
+                    f"trait {tid}: Evasion must not map to dossier Reaction; line={line!r} got={got}"
+                )
+            if "Ranged" in line and int(got.get("Ranged", 0) or 0) <= 0:
+                fails.append(
+                    f"trait {tid}: Ranged+Evasion list must still yield Ranged; line={line!r} got={got}"
+                )
+
+    print(f"Checked {checked} pilot-dossier line(s) in {args.traits.name}")
     if fails:
         print(f"FAIL: {len(fails)} parser miss(es):", file=sys.stderr)
         for row in fails[:40]:

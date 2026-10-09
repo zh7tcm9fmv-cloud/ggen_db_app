@@ -24,9 +24,13 @@ After MasterData / LANG imports, trait text edits, or changes to `extract_stat_p
 | Signal in trait text | Risk |
 |---|---|
 | `decrease DEF` / `increase DEF` (abbrev) | Character dossier parser historically missed `DEF` |
+| `Evasion` / `EVA` in pilot % lists (was `Reaction`) | **Not** a dossier CP column — skip (do not map to Reaction). Keep **Ranged** for CP; **Accuracy** → PEP weapon ACC |
+| JA `射撃値と命中率と回避率` / TW `射擊值、命中率及閃避率` / KR `사격치와 명중률과 회피율` | CJK Max EX — dossier **Ranged** only; 命中/명중 → PEP ACC; 回避/閃避/회피 unused on CP |
 | `守備値…減少` / TW `防禦力`/`守備值` | CJK decrease path |
 | Split newlines (`increase…`, then `and decrease…`) | Per-line buckets; decrease line must parse alone |
 | `improve decrease DEF weapon effects` | Combat wording — **not** dossier Defense; do not force into pilot stats |
+
+Keep the Sthesia Max EX canary on current official EN (`…Accuracy, and Evasion…`): expect **Ranged=15**, **Reaction=0**, PEP **acc=15**. Never re-map Evasion→Reaction.
 
 ## Reply habit
 

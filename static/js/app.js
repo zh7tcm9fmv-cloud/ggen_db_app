@@ -5524,7 +5524,7 @@ let m=s.match(/Increases?\s+own\s+(?:ACC|Accuracy)\s+and\s+(?:EVA|EVADE|Evasion)
 if(m)out.acc=Math.max(out.acc,parseInt(m[1],10)||0);
 m=s.match(/Increases?\s+own\s+(?:ACC|Accuracy)\s+and\s+(?:Critical|CRIT)\s+by\s+(\d+)\s*%/i);
 if(m){const p=parseInt(m[1],10)||0;out.acc=Math.max(out.acc,p);out.crit=Math.max(out.crit,p)}
-m=s.match(/Increases?\s+(?:own\s+)?((?:(?:Defense|DEF|Reaction|Awaken|Melee|Ranged|Range|Accuracy|ACC|Critical\s+Rate|Critical|CRIT)(?:\s*,\s*|\s*,?\s+and\s+))+)(?:Defense|DEF|Reaction|Awaken|Melee|Ranged|Range|Accuracy|ACC|Critical\s+Rate|Critical|CRIT)\s+by\s+(\d+)\s*%/i);
+m=s.match(/Increases?\s+(?:own\s+)?((?:(?:Defense|DEF|Reaction|Evasion|EVA|EVADE|Awaken|Melee|Ranged|Range|Accuracy|ACC|Critical\s+Rate|Critical|CRIT)(?:\s*,\s*|\s*,?\s+and\s+))+)(?:Defense|DEF|Reaction|Evasion|EVA|EVADE|Awaken|Melee|Ranged|Range|Accuracy|ACC|Critical\s+Rate|Critical|CRIT)\s+by\s+(\d+)\s*%/i);
 if(m){const p=parseInt(m[2],10)||0;const chunk=m[0]||'';if(/\b(?:ACC|Accuracy)\b/i.test(chunk))out.acc=Math.max(out.acc,p);if(/\b(?:Critical(?:\s+Rate)?|CRIT)\b/i.test(chunk))out.crit=Math.max(out.crit,p)}
 m=s.match(/Increases?\s+(?:own\s+)?(?:ACC|Accuracy)\s+by\s+(\d+)\s*%/i);
 if(m)out.acc=Math.max(out.acc,parseInt(m[1],10)||0);
@@ -5536,9 +5536,15 @@ m=s.match(/Increases?\s+own\s+critical rate by\s+(\d+)\s*%/i);
 if(m)out.crit=Math.max(out.crit,parseInt(m[1],10)||0);
 m=s.match(/自身の命中率と回避率が(\d+)%上昇/);
 if(m)out.acc=Math.max(out.acc,parseInt(m[1],10)||0);
+m=s.match(/自身の射撃値と命中率と回避率が(\d+)%上昇/);
+if(m)out.acc=Math.max(out.acc,parseInt(m[1],10)||0);
 m=s.match(/自身のクリティカル率が(\d+)%上昇/);
 if(m)out.crit=Math.max(out.crit,parseInt(m[1],10)||0);
 m=s.match(/自身命中率(?:及|和)閃避率提升(\d+)%/);
+if(m)out.acc=Math.max(out.acc,parseInt(m[1],10)||0);
+m=s.match(/自身射擊值[、,]\s*命中率及閃避率提升(\d+)%/);
+if(m)out.acc=Math.max(out.acc,parseInt(m[1],10)||0);
+m=s.match(/사격치와\s*명중률과\s*회피율[이가]?\s*(\d+)\s*%\s*상승/);
 if(m)out.acc=Math.max(out.acc,parseInt(m[1],10)||0);
 m=s.match(/自身(?:的)?(?:暴擊|暴击|爆擊)率提升(\d+)%/);
 if(m)out.crit=Math.max(out.crit,parseInt(m[1],10)||0);
