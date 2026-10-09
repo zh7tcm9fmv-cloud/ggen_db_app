@@ -9029,7 +9029,7 @@
   },
   {
     "id": 141200000203100101,
-    "value": "When piloting units with the specified series and own Vigor is \"Max\" or greater,\nSupport Attack / Counter +1 time(s) (1 turn).\nIncrease own Ranged, Accuracy, and Reaction by 15% (1 turn)\napply MP Lock to self\n\nWhen effect ends, \ndecrease own MP by 6."
+    "value": "When piloting units with the specified series and own Vigor is \"Max\" or greater,\nSupport Attack / Counter +1 time(s) (1 turn).\nIncrease own Ranged, Accuracy, and Evasion by 15% (1 turn)\napply MP Lock to self\n\nWhen effect ends, \ndecrease own MP by 6."
   },
   {
     "id": 141200000203100102,

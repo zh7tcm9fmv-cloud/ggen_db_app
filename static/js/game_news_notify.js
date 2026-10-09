@@ -3,7 +3,9 @@ const GAME_NEWS_SEEN_KEY = 'ggen_game_news_seen';
 
 function normalizeGameNewsLangKey(lang) {
   const k = String(lang || 'EN').trim().toUpperCase() || 'EN';
-  return k === 'JA' ? 'JP' : k;
+  if (k === 'JA') return 'JP';
+  if (k === 'HR') return 'KR';
+  return k;
 }
 
 function readGameNewsSeenState(lang) {

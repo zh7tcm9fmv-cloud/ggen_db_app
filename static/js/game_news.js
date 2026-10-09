@@ -35,6 +35,13 @@ const UI = {
     iframe_title: 'SDガンダム ジージェネ エターナル — 更新情報',
     close: '閉じる',
   },
+  KR: {
+    page_title: '게임 뉴스',
+    nav_home: '← GGen Eternal Database',
+    nav_investment: '투자 우선도',
+    iframe_title: 'SD건담 G제네레이션 이터널 — 업데이트 정보',
+    close: '닫기',
+  },
 };
 
 const ALIPAY_MODAL = {
@@ -42,6 +49,7 @@ const ALIPAY_MODAL = {
   TW: { title: 'AlipayHK', hint: '請使用 AlipayHK 掃描二維碼付款（港幣 50.00 元）。' },
   HK: { title: 'AlipayHK', hint: '請使用 AlipayHK 掃描二維碼付款（港幣 50.00 元）。' },
   JP: { title: 'AlipayHK', hint: 'AlipayHKアプリでQRコードを読み取り、HK$50.00をお支払いください。' },
+  KR: { title: 'AlipayHK', hint: 'AlipayHK 앱으로 QR 코드를 스캔해 HK$50.00을 결제해 주세요.' },
 };
 
 const HEADER = {
@@ -49,6 +57,7 @@ const HEADER = {
   TW: { alipay: '以 AlipayHK 支持', kofi: '在 Ko-fi 支持' },
   HK: { alipay: '以 AlipayHK 支持', kofi: '在 Ko-fi 支持' },
   JP: { alipay: 'AlipayHKで支援', kofi: 'Ko-fiで支援' },
+  KR: { alipay: 'AlipayHK로 후원', kofi: 'Ko-fi로 후원' },
 };
 
 function readPersistedLang() {
@@ -69,12 +78,14 @@ function persistLang(l) {
 function tUi(lang) {
   const k = (lang || 'EN').toUpperCase();
   if (k === 'JA') return UI.JP;
+  if (k === 'HR') return UI.KR;
   return UI[k] || UI.EN;
 }
 
 function tHeader(lang) {
   const k = (lang || 'EN').toUpperCase();
   if (k === 'JA') return HEADER.JP;
+  if (k === 'HR') return HEADER.KR;
   return HEADER[k] || HEADER.EN;
 }
 
@@ -83,6 +94,7 @@ function gameNewsUrlForLang(lang) {
   let seg = 'en';
   if (k === 'TW') seg = 'tw';
   else if (k === 'HK') seg = 'hk';
+  else if (k === 'KR' || k === 'HR') seg = 'hr';
   else if (k === 'JP' || k === 'JA') {
     return `${GAME_NEWS_BASE_JP}/ja/information/update.html`;
   }

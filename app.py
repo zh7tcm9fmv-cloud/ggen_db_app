@@ -24180,7 +24180,8 @@ def game_news_page():
 
 
 # Official site information feed (All tab) — same source as the embedded Game News iframe.
-GAME_NEWS_LANG_TYPE = {'EN': 2, 'TW': 3, 'HK': 4, 'JP': 1}
+# Official information_*_{langType}_0.json — GL path /hr/ uses langType 6 (Korean).
+GAME_NEWS_LANG_TYPE = {'EN': 2, 'TW': 3, 'HK': 4, 'JP': 1, 'KR': 6}
 GAME_NEWS_TAB_ALL = 4
 GAME_NEWS_GL_WEB = 'https://web.gl.eternal.channel.or.jp'
 GAME_NEWS_JP_WEB = 'https://web.jp.eternal.channel.or.jp'
