@@ -1,0 +1,28 @@
+# Locale feature parity (not “KR UI only”)
+
+Owner lesson (**Oct 2026**): shipping KR with missing unit-detail **CP / PEP** because ability-text detectors only matched EN/JA/TW. Users saw an incomplete KR build. Locales are **translations of the same product** — every language must light the same toggles and apply the same bonuses.
+
+## Hard rule
+
+1. When adding or changing any parser that gates UI/API behavior from ability/trait **prose** (CP, PEP, weapon ACC/Crit, weapon range, EN cost, vigor gates, series/tag affinity, named-unit “when piloting”, Guaranteed CS, etc.), include **EN + JA + TW/HK + KR (HR pack)** in the same change.
+2. Never assume KR is “labels/i18n only.” Hangul LANG is live master text for `/api/*?lang=KR`.
+3. After MasterData/LANG import or parser edits, run:
+   ```text
+   python scripts/check_locale_pep_parity.py --langs KR --limit 200
+   ```
+   (Flask must be up.) Expand `--limit 0` before claiming KR parity for a ship.
+4. If a new official wording appears in one locale only, **tell the owner** and extend the worldwide detector — do not leave that locale silently feature-stripped.
+
+## Common KR anchors (extend, do not replace)
+
+| Feature | KR signal (examples) |
+|---|---|
+| Series affinity | `탑승 유닛이 위 '시리즈'` |
+| Tag affinity | `탑승 유닛이 위 '태그'` |
+| Named unit gate | `'유닛명' 탑승 시` (+ Hangul in `_normalize_piloting_name`) |
+| ACC / Crit PEP | `명중률` / `크리티컬률` |
+| Beam range CP | `빔 무장의 최대 사정거리가 N 상승` |
+| Vigor gate | `텐션이 '초강기'/'초일격' 이상`, title `텐션 조건` |
+| Squad MS ATK | `같은 부대`, `공격력 및 방어력` |
+| EN cost | `소비되는 EN` / `N% 감소` |
+| Guaranteed CS | `무조건 찬스 스텝` |

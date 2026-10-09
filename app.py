@@ -2265,13 +2265,13 @@ def _weapon_range_type_keys_from_phrase(phrase):
     """Map trait phrasing ('Physical or Beam Weapons') to canonical type keys."""
     if not phrase:
         return frozenset()
-    tl = str(phrase).lower().replace('&', ' ').replace('、', ' ').replace('及', ' ')
+    tl = str(phrase).lower().replace('&', ' ').replace('、', ' ').replace('及', ' ').replace(',', ' ')
     keys = set()
-    if 'physical' in tl or '物理' in phrase:
+    if 'physical' in tl or '物理' in phrase or '물리' in phrase:
         keys.add('physical')
-    if 'beam' in tl or '光束' in phrase or 'ビーム' in phrase or '鐳射' in phrase:
+    if 'beam' in tl or '光束' in phrase or 'ビーム' in phrase or '鐳射' in phrase or '빔' in phrase:
         keys.add('beam')
-    if 'special' in tl or '特殊' in phrase:
+    if 'special' in tl or '特殊' in phrase or '특수' in phrase:
         keys.add('special')
     if not keys and re.search(r'\bweapons?\b', tl):
         keys = {'physical', 'beam', 'special'}
@@ -2334,6 +2334,16 @@ def _parse_weapon_max_range_increases_from_text(text):
             out.append((types, inc))
     for m in re.finditer(
             r'((?:物理|ビーム|特殊)(?:[、及](?:物理|ビーム|特殊))?)武装の最大射程が(\d+)上昇', s):
+        types = _weapon_range_type_keys_from_phrase(m.group(1))
+        inc = int(m.group(2))
+        key = (types, inc)
+        if key not in seen:
+            seen.add(key)
+            out.append((types, inc))
+    # KR: 빔 무장의 최대 사정거리가 1 상승 / 물리, 빔 무장의 최대 사정거리가 1 상승
+    for m in re.finditer(
+            r'((?:물리|빔|특수)(?:\s*[,，및]\s*(?:물리|빔|특수))*)\s*무장의\s*최대\s*사정거리가\s*(\d+)\s*상승',
+            s):
         types = _weapon_range_type_keys_from_phrase(m.group(1))
         inc = int(m.group(2))
         key = (types, inc)
@@ -2475,7 +2485,11 @@ _PILOT_COND_PASSIVE_CACHE = {}
 
 
 def _normalize_piloting_name(s):
-    return re.sub(r'\s+', ' ', re.sub(r'[^a-z0-9\u3040-\u9fff]+', ' ', str(s or '').lower())).strip()
+    # Keep Latin + CJK + Hangul (KR unit/pilot names); strip punctuation only.
+    return re.sub(
+        r'\s+', ' ',
+        re.sub(r'[^a-z0-9\u3040-\u9fff\uac00-\ud7a3]+', ' ', str(s or '').lower()),
+    ).strip()
 
 
 def _unit_name_matches_piloting_phrase(unit_id, ld, phrase):
@@ -2511,6 +2525,19 @@ def _extract_piloting_unit_phrase_from_text(text):
     if m:
         return m.group(1).strip()
     m = re.search(r'搭乗ユニットが「([^」]+)」', s)
+    if m:
+        return m.group(1).strip()
+    # KR: '빅 랑 (EX)' 탑승 시 / 「…」 탑승 시 / 탑승 유닛이 '알트론…'이며
+    m = re.search(r"'([^']+)'\s*탑승", s)
+    if m:
+        return m.group(1).strip()
+    m = re.search(r'「([^」]+)」\s*탑승', s)
+    if m:
+        return m.group(1).strip()
+    m = re.search(r"탑승\s*유닛이\s*'([^']+)'", s)
+    if m:
+        return m.group(1).strip()
+    m = re.search(r'탑승\s*유닛이\s*「([^」]+)」', s)
     if m:
         return m.group(1).strip()
     m = re.search(r'when\s+piloting\s+(.+?)(?:\n|,|\.)', s, re.I | re.S)
@@ -2561,7 +2588,7 @@ def _pilot_text_targets_unit(uid, ld, text):
     ul = uname.lower()
     if ul not in sl:
         return False
-    return bool(re.search(r'when\s+piloting|搭乘|搭乗', sl, re.I))
+    return bool(re.search(r'when\s+piloting|搭乘|搭乗|탑승', sl, re.I))
 
 
 def _collect_pilot_weapon_range_modifiers(uid, ld, lc, stat_mode):
@@ -2583,7 +2610,7 @@ def _collect_pilot_weapon_range_modifiers(uid, ld, lc, stat_mode):
                 for ad in _char_ability_entries_for_pilot_cond(rc, ld, lc, stat_mode):
                     for d2 in ad.get('details', []) or []:
                         txt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
-                        if not txt or not re.search(r'when\s+piloting|搭乘|搭乗', txt, re.I):
+                        if not txt or not re.search(r'when\s+piloting|搭乘|搭乗|탑승', txt, re.I):
                             continue
                         if not _pilot_text_targets_unit(uid, ld, txt):
                             continue
@@ -2607,7 +2634,8 @@ def _ability_text_implies_pilot_gated_squad_stat(txt):
         r'increases? ATK by|Increase ATK by|increase ATK by|same[-\s]squad|in your squad|units in your squad|'
         r'攻撃力と防御力|攻擊力與防禦力|同部隊|部隊內|所屬部隊|自身所屬部隊|'
         r'攻擊力提升\d+%.*防禦力提升|防禦力提升\d+%.*攻擊力提升|'
-        r'攻撃力と防御力\d+%アップ|攻撃力.*防御力.*アップ',
+        r'攻撃力と防御力\d+%アップ|攻撃力.*防御力.*アップ|'
+        r'같은\s*부대|공격력\s*및\s*방어력|공격력,\s*방어력|공격력이\s*\d+\s*%\s*상승|방어력이\s*\d+\s*%\s*상승',
         txt, re.I))
 
 
@@ -2625,6 +2653,9 @@ def _ability_text_implies_pilot_weapon_effect_additive(txt):
     if re.search(r'武裝效果值增加\d+%|武裝效果.*?增加\d+%', txt):
         return True
     if re.search(r'武裝效果.*?加算', txt):
+        return True
+    # KR: 공격력 감소 무장 효과 수치가 5% 가산 / 무장 효과치가 5% 가산
+    if re.search(r'무장\s*효과(?:치|수치)?[가이]?\s*\d+\s*%\s*가산|무장\s*효과\s*수치가\s*\d+\s*%\s*가산', txt):
         return True
     return False
 
@@ -2653,12 +2684,21 @@ def _ability_phrase_to_weapon_effect_keys(phrase):
         keys.add('dmg_spec')
     if re.search(r'def|防御力|防禦力', p + s) and re.search(r'decrease|down|減少', p + s, re.I):
         keys.add('def_dn')
-    if re.search(r'atk|attack|攻撃力|攻擊力', p + s, re.I) and re.search(r'decrease|down|減少', p + s, re.I):
+    if re.search(r'atk|attack|攻撃力|攻擊力|공격력', p + s, re.I) and re.search(r'decrease|down|減少|감소', p + s, re.I):
         keys.add('atk_dn')
-    if re.search(r'mob|mobility|機動力', p + s, re.I) and re.search(r'decrease|down|減少', p + s, re.I):
+    if re.search(r'mob|mobility|機動力|기동력', p + s, re.I) and re.search(r'decrease|down|減少|감소', p + s, re.I):
         keys.add('mob_dn')
-    if re.search(r'acc|accuracy|命中', p + s, re.I) and re.search(r'decrease|down|減少', p + s, re.I):
+    if re.search(r'acc|accuracy|命中|명중', p + s, re.I) and re.search(r'decrease|down|減少|감소', p + s, re.I):
         keys.add('acc_dn')
+    if re.search(r'def|防御力|防禦力|방어력', p + s, re.I) and re.search(r'decrease|down|減少|감소', p + s, re.I):
+        keys.add('def_dn')
+    if re.search(r'특수\s*대미지|특수\s*손상', s):
+        keys.add('dmg_spec')
+    if re.search(r'빔\s*대미지|물리\s*대미지', s):
+        if '빔' in s:
+            keys.add('dmg_beam')
+        if '물리' in s:
+            keys.add('dmg_phys')
     if re.search(r'ビーム武装被ダメージ上昇|ビーム.*被ダメージ.*上昇', s):
         keys.add('dmg_beam')
     if re.search(r'遭光束武裝攻擊時.*損傷提升|遭光束武裝攻擊時所受損傷提升', s):
@@ -2688,7 +2728,7 @@ def _parse_pilot_weapon_effect_additive_from_text(text, uid, ld, require_unit_ga
     s = str(text or '')
     if not s:
         return bonuses
-    has_pilot_gate = bool(re.search(r'when\s+piloting|搭乘|搭乗', s, re.I))
+    has_pilot_gate = bool(re.search(r'when\s+piloting|搭乘|搭乗|탑승', s, re.I))
     if require_unit_gate:
         if not has_pilot_gate:
             return bonuses
@@ -2721,6 +2761,14 @@ def _parse_pilot_weapon_effect_additive_from_text(text, uid, ld, require_unit_ga
             bonuses[k] = max(bonuses.get(k, 0), pct)
     re_tw = re.compile(r'(.+?)的武裝效果值增加(\d+)%')
     for m in re_tw.finditer(s):
+        pct = int(m.group(2) or 0)
+        if not pct:
+            continue
+        for k in _ability_phrase_to_weapon_effect_keys(m.group(1)):
+            bonuses[k] = max(bonuses.get(k, 0), pct)
+    # KR: 공격력 감소 무장 효과 수치가 5% 가산 / 받는 특수 대미지 상승 무장 효과치가 5% 가산
+    re_kr = re.compile(r'(.+?)\s*무장\s*효과(?:치|수치)?[가이]?\s*(\d+)\s*%\s*가산')
+    for m in re_kr.finditer(s):
         pct = int(m.group(2) or 0)
         if not pct:
             continue
@@ -2762,12 +2810,12 @@ def _collect_pilot_weapon_effect_additive_bonuses(uid, ld, lc, stat_mode='normal
             txt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
             if not txt:
                 continue
-            if re.search(r'when\s+piloting|搭乘|搭乗', txt, re.I) and _pilot_text_targets_unit(uid, ld, txt):
+            if re.search(r'when\s+piloting|搭乘|搭乗|탑승', txt, re.I) and _pilot_text_targets_unit(uid, ld, txt):
                 ability_targets_unit = True
                 unit_gated_ability = True
             if not re.search(
-                    r'when\s+piloting|搭乘|搭乗|weapon effects by|武装効果値が\d+%加算|武裝效果值增加\d+%|'
-                    r'武裝效果.*?增加\d+%|additively\s+increase',
+                    r'when\s+piloting|搭乘|搭乗|탑승|weapon effects by|武装効果値が\d+%加算|武裝效果值增加\d+%|'
+                    r'武裝效果.*?增加\d+%|additively\s+increase|무장\s*효과.*가산',
                     txt, re.I):
                 continue
             row = _parse_pilot_weapon_effect_additive_from_text(txt, uid, ld, require_unit_gate=True)
@@ -2865,6 +2913,17 @@ def _extract_pilot_weapon_stat_pct_from_text(txt):
     m = re.search(r'사격치와\s*명중률과\s*회피율[이가]?\s*(\d+)\s*%\s*상승', s)
     if m:
         out['acc'] = max(out['acc'], int(m.group(1) or 0))
+    m = re.search(r'명중률[이가]?\s*(\d+)\s*%\s*상승', s)
+    if m:
+        out['acc'] = max(out['acc'], int(m.group(1) or 0))
+    # KR ACC+EVA: 자신의 명중률과 회피율이 5% 상승
+    m = re.search(r'명중률과\s*회피율[이가]?\s*(\d+)\s*%\s*상승', s)
+    if m:
+        out['acc'] = max(out['acc'], int(m.group(1) or 0))
+    # KR: 자신의 크리티컬률이 15% 상승
+    m = re.search(r'크리티컬률[이가]?\s*(\d+)\s*%\s*상승', s)
+    if m:
+        out['crit'] = max(out['crit'], int(m.group(1) or 0))
     return out
 
 
@@ -2914,13 +2973,10 @@ def _ability_text_implies_pilot_tag_affinity_weapon_stat(txt):
     """Pilot affinity: ACC/Crit (etc.) when piloting units with specified tags."""
     if not txt or not isinstance(txt, str):
         return False
-    if not re.search(
-            r'piloting units with specified tags|指定.*?タグ|指定.*?標籤|指定.*?标签|'
-            r'含有上述「標籤」|搭乘單位含有上述「標籤」|上記の「タグ」|搭乗ユニットが上記の「タグ」',
-            txt, re.I):
+    if not _ability_text_has_pilot_tag_affinity_prefix(txt):
         return False
     return bool(re.search(
-        r'ACC|Accuracy|Critical|CRIT|critical rate|命中率|クリティカル|暴擊|暴击|爆擊',
+        r'ACC|Accuracy|Critical|CRIT|critical rate|命中率|クリティカル|暴擊|暴击|爆擊|명중률|크리티컬',
         txt, re.I))
 
 
@@ -2931,7 +2987,8 @@ def _ability_text_has_pilot_series_affinity_prefix(txt):
     return bool(re.search(
         r'piloting units with (?:the\s+)?specified series|'
         r'指定.*?シリーズ|指定.*?系列|上記の「シリーズ」|搭乗ユニットが上記の「シリーズ」|'
-        r'搭乘單位含有上述「系列」|含有上述「系列」',
+        r'搭乘單位含有上述「系列」|含有上述「系列」|'
+        r"탑승\s*유닛이\s*위\s*'시리즈'|탑승\s*유닛이\s*위\s*「시리즈」",
         txt, re.I))
 
 
@@ -2940,7 +2997,7 @@ def _ability_text_implies_pilot_series_affinity_weapon_stat(txt):
     if not _ability_text_has_pilot_series_affinity_prefix(txt):
         return False
     return bool(re.search(
-        r'ACC|Accuracy|Critical|CRIT|critical rate|命中率|クリティカル|暴擊|暴击|爆擊',
+        r'ACC|Accuracy|Critical|CRIT|critical rate|命中率|クリティカル|暴擊|暴击|爆擊|명중률|크리티컬',
         txt, re.I))
 
 
@@ -2950,7 +3007,9 @@ def _ability_text_has_pilot_tag_affinity_prefix(txt):
         return False
     return bool(re.search(
         r'piloting units with specified tags|指定.*?タグ|指定.*?標籤|指定.*?标签|'
-        r'含有上述「標籤」|搭乘單位含有上述「標籤」|上記の「タグ」|搭乗ユニットが上記の「タグ」',
+        r'含有上述「標籤」|搭乘單位含有上述「標籤」|上記の「タグ」|搭乗ユニットが上記の「タグ」|'
+        r"탑승\s*유닛이\s*위\s*'태그'|탑승\s*유닛이\s*위\s*「태그」|"
+        r"탑승\s*캐릭터가\s*위\s*'태그'|탑승캐릭터\s*위\s*'태그'",
         txt, re.I))
 
 
@@ -2959,7 +3018,8 @@ def _ability_text_implies_pilot_tag_affinity_en_consumption(txt):
     if not _ability_text_has_pilot_tag_affinity_prefix(txt):
         return False
     return bool(re.search(
-        r'EN\s+consumption|consumption\s+EN|消費EN|消耗EN|EN消費|EN消耗',
+        r'EN\s+consumption|consumption\s+EN|消費EN|消耗EN|EN消費|EN消耗|'
+        r'소비되는\s*EN|무장\s*사용으로\s*소비|무장\s*소비\s*EN',
         txt, re.I))
 
 
@@ -2973,7 +3033,8 @@ def _ability_text_implies_pilot_tag_affinity_damage_only(txt):
         return False
     return bool(re.search(
         r'damage dealt|damage taken|与ダメージ|被ダメージ|造成的損傷|造成的损伤|'
-        r'受到的損傷|受到的损伤|損傷提升|损伤提升|減輕所受|减轻所受',
+        r'受到的損傷|受到的损伤|損傷提升|损伤提升|減輕所受|减轻所受|'
+        r'주는\s*대미지|받는\s*대미지|대미지가\s*\d+\s*%\s*(?:상승|감소)',
         txt, re.I))
 
 
@@ -2990,7 +3051,8 @@ def _ability_text_implies_pilot_gated_pilot_stat(txt):
         r'increase\s+(?:own\s+)?(?:Melee|Ranged|Awaken|Defense|Reaction)\s+by\s+\d+\s*%|'
         r'(?:Melee|Ranged|Awaken|Defense|Reaction)\s+by\s+\d+\s*%|'
         r'(?:格闘|射撃|覚醒|防御|反応)値が\d+%上昇|'
-        r'(?:格鬥|射擊|覺醒|防禦|反應)值提升\d+%',
+        r'(?:格鬥|射擊|覺醒|防禦|反應)值提升\d+%|'
+        r'(?:사격치|격투치|각성치|수비치|반응치)가?\s*\d+\s*%\s*상승',
         txt, re.I))
 
 
@@ -3002,7 +3064,8 @@ def _ability_text_implies_pilot_en_consumption(txt):
         r'reduce\s+(?:own\s+)?(?:weapon\s+)?EN\s+consumption|'
         r'weapon\s+EN\s+consumption\s+by|'
         r'消費ENが\d+%軽減|武装の消費EN|'
-        r'消耗EN減輕|武裝消耗EN',
+        r'消耗EN減輕|武裝消耗EN|'
+        r'소비되는\s*EN|무장\s*사용으로\s*소비|무장\s*소비\s*EN|EN가?\s*\d+\s*%\s*감소',
         txt, re.I))
 
 
@@ -3051,7 +3114,10 @@ def _ability_text_implies_pilot_guaranteed_chance_step(txt):
         r'無條件額外行動|'
         r'自動額外行動|'
         r'即使未擊敗(?:敵人|對手).{0,12}發動額外行動|'
-        r'無論採取何種行動',
+        r'無論採取何種行動|'
+        r'무조건\s*찬스\s*스텝|'
+        r'자동\s*찬스\s*스텝|'
+        r'찬스\s*스텝\s*강제\s*발동',
         txt, re.I))
 
 
@@ -3065,6 +3131,9 @@ def _extract_en_consumption_reduction_pct(txt):
         r'武装の消費ENが(\d+)%軽減',
         r'消耗EN減輕(\d+)%',
         r'武裝消耗EN減輕(\d+)%',
+        r'소비되는\s*EN[이가]?\s*(\d+)\s*%\s*감소',
+        r'무장\s*소비\s*EN[이가]?\s*(\d+)\s*%\s*감소',
+        r'EN[이가]?\s*(\d+)\s*%\s*감소',
     ):
         m = re.search(pat, s, re.I)
         if m:
@@ -3084,13 +3153,13 @@ def _collect_pilot_en_cost_reduction_pct(uid, ld, lc, stat_mode='normal'):
                 txt = str(d2)
                 if not _ability_text_implies_pilot_en_consumption(txt):
                     continue
-                if re.search(r'when\s+piloting|搭乘|搭乗', txt, re.I) and _pilot_text_targets_unit(uid, ld, txt):
+                if re.search(r'when\s+piloting|搭乘|搭乗|탑승', txt, re.I) and _pilot_text_targets_unit(uid, ld, txt):
                     pct = max(pct, _extract_en_consumption_reduction_pct(txt))
                 continue
             txt = d2.get('text', '') or ''
             if not txt or not _ability_text_implies_pilot_en_consumption(txt):
                 continue
-            if re.search(r'when\s+piloting|搭乘|搭乗', txt, re.I) and _pilot_text_targets_unit(uid, ld, txt):
+            if re.search(r'when\s+piloting|搭乘|搭乗|탑승', txt, re.I) and _pilot_text_targets_unit(uid, ld, txt):
                 pct = max(pct, _extract_en_consumption_reduction_pct(txt))
                 continue
             if _ability_text_implies_pilot_tag_affinity_en_or_damage(txt):
@@ -3153,7 +3222,15 @@ def _char_detail_same_squad_ms_ad_pep_matches_unit(uid, lc, detail):
         r'Increase\s+ATK\s+and\s+DEF\s+by\s+(\d+)\s*%[\s\S]*?\[Condition\s*1\][\s\S]*?'
         r'increase\s+ATK\s+and\s+DEF\s+by\s+(\d+)\s*%[\s\S]*?\[Condition\s*2\]',
         txt, re.I)
+    if not dual:
+        # KR: 같은 부대 내의 [조건1] … 공격력, 방어력 2% … [조건2] … 공격력, 방어력 3%
+        dual = re.search(
+            r'\[조건\s*1\][\s\S]*?공격력(?:,|\s*및)\s*방어력\s*(\d+)\s*%[\s\S]*?'
+            r'\[조건\s*2\][\s\S]*?공격력(?:,|\s*및)\s*방어력\s*(\d+)\s*%',
+            txt)
     if dual:
+        if not groups:
+            return True
         for n, pct in ((1, int(dual.group(1))), (2, int(dual.group(2)))):
             if pct <= 0:
                 continue
@@ -3161,7 +3238,10 @@ def _char_detail_same_squad_ms_ad_pep_matches_unit(uid, lc, detail):
             if g and _unit_matches_ability_condition_group(uid, lc, g):
                 return True
         return False
-    if not re.search(r'increases?\s+ATK\s+and\s+DEF\s+by\s+\d+\s*%', txt, re.I):
+    if not re.search(
+            r'increases?\s+ATK\s+and\s+DEF\s+by\s+\d+\s*%|'
+            r'攻撃力と防御力|攻擊力與防禦力|공격력\s*및\s*방어력|공격력,\s*방어력',
+            txt, re.I):
         return False
     if not groups:
         return True
@@ -3172,7 +3252,9 @@ def _unit_ability_text_implies_pilot_cond_passive(txt):
     """MS ability: pilot-character-gated squad stat buff (e.g. Phenex Narrative/Newtype → NT-D)."""
     if not txt or not isinstance(txt, str):
         return False
-    if not re.search(r'when\s+piloting\s+character|パイロット|駕駛員|操縦.*?キャラ', txt, re.I):
+    if not re.search(
+            r'when\s+piloting\s+character|パイロット|駕駛員|操縦.*?キャラ|탑승\s*캐릭터|탑승캐릭터',
+            txt, re.I):
         return False
     return _ability_text_implies_pilot_gated_squad_stat(txt)
 
@@ -3240,7 +3322,7 @@ def _unit_has_pilot_cond_passive(uid, ld, lc, stat_mode='normal'):
                 if req_tags and _unit_has_any_lineage_tag(uid, lc, req_tags):
                     _PILOT_COND_PASSIVE_CACHE[cache_key] = True
                     return True
-            if re.search(r'when\s+piloting|搭乘|搭乗', txt, re.I):
+            if re.search(r'when\s+piloting|搭乘|搭乗|탑승', txt, re.I):
                 if not _pilot_text_targets_unit(uid, ld, txt):
                     continue
                 if _ability_text_implies_pilot_gated_squad_stat(txt):
@@ -3278,7 +3360,7 @@ def _unit_has_pilot_cond_passive(uid, ld, lc, stat_mode='normal'):
             continue
         for d2 in ad.get('details', []) or []:
             txt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
-            if re.search(r'when\s+piloting|搭乘|搭乗', str(txt or ''), re.I) and _pilot_text_targets_unit(uid, ld, txt):
+            if re.search(r'when\s+piloting|搭乘|搭乗|탑승', str(txt or ''), re.I) and _pilot_text_targets_unit(uid, ld, txt):
                 _PILOT_COND_PASSIVE_CACHE[cache_key] = True
                 return True
     _PILOT_COND_PASSIVE_CACHE[cache_key] = False
@@ -5087,7 +5169,12 @@ def _is_conditional_stat_text(t):
         return True
     if _trait_line_is_vigor_supercharged_gate(tl, raw):
         return True
-    if re.search(r'戰意為|战意为|テンションが|気力が', raw):
+    if re.search(r'戰意為|战意为|テンションが|気力が|텐션이', raw):
+        return True
+    # KR action gates: Support Attack/Counter/Defense, "… 시"
+    if re.search(r'지원\s*공격|지원\s*반격|지원\s*방어|자신이\s*지원', raw):
+        return True
+    if re.search(r'탑승\s*유닛이', raw):
         return True
     return False
 
@@ -5123,7 +5210,11 @@ def trait_title_implies_conditional_stat_bonuses(name):
     )
     if any(m in name for m in cjk_markers):
         return True
-    if any(m in name for m in ('シリーズ条件', 'タグ条件', '戦闘条件', '戦闘回数条件', '被ダメージ条件', '受到損傷條件', '受到损伤条件', 'HP条件', '気力条件', 'テンション条件', '支援時', '機体条件')):
+    if any(m in name for m in (
+        'シリーズ条件', 'タグ条件', '戦闘条件', '戦闘回数条件', '被ダメージ条件',
+        '受到損傷條件', '受到损伤条件', 'HP条件', '気力条件', 'テンション条件',
+        '支援時', '機体条件', '텐션 조건', '태그 조건', '시리즈 조건', '지원 시',
+    )):
         return True
     return False
 
@@ -5264,10 +5355,10 @@ def _blob_has_squad_unit_stat_context(blob):
         return True
     if ' for units' in bl and ('squad' in bl or 'tag' in bl):
         return True
-    # JA/TW/HK: per-unit-in-squad wording; 攻撃力/攻擊力 lines are MS ATK, not pilot shooting/fighting stats.
-    if '同部隊' in blob or '部隊内' in blob:
+    # JA/TW/HK/KR: per-unit-in-squad wording; 攻撃力/攻擊力/공격력 lines are MS ATK, not pilot dossier.
+    if '同部隊' in blob or '部隊内' in blob or '같은 부대' in blob:
         return True
-    if '每有1架' in blob or 'ユニット1体につき' in blob:
+    if '每有1架' in blob or 'ユニット1体につき' in blob or '유닛 1기당' in blob or '1기당' in blob:
         return True
     return False
 
@@ -6017,6 +6108,7 @@ def _ability_title_is_vigor_condition(name):
     if any(m in name for m in (
         '氣勢條件', '气势条件', 'テンション条件', '戦意條件', '戰意條件', '战意条件',
         '（氣勢條件）', '（气势条件）', '（テンション条件）', '（戦意條件）', '（戰意條件）', '（战意条件）',
+        '텐션 조건', '(텐션 조건)',
     )):
         return True
     return False
@@ -7500,6 +7592,13 @@ def _vigor_threshold_key_from_text(text):
     if '戰意(?:為|是)「超強勢」以上' in raw or '战意(?:为|是)「超强」以上' in raw:
         return 'max'
     if '戰意(?:為|是)「強勢」以上' in raw or '战意(?:为|是)「强势」以上' in raw:
+        return 'high'
+    # KR (HR pack): 텐션이 '초일격'/'초강기'/'강기' 이상
+    if re.search(r"텐션이\s*'초일격'\s*이상", raw) or re.search(r'텐션이\s*「초일격」\s*이상', raw):
+        return 'super'
+    if re.search(r"텐션이\s*'초강기'\s*이상", raw) or re.search(r'텐션이\s*「초강기」\s*이상', raw):
+        return 'max'
+    if re.search(r"텐션이\s*'강기'\s*이상", raw) or re.search(r'텐션이\s*「강기」\s*이상', raw):
         return 'high'
     return ''
 
@@ -10769,7 +10868,9 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
         if boost_conds:
             condition_groups.append({'label': 'Boost Target', 'conditions': list(boost_conds)})
         cond_nums = []
-        for mv in re.findall(r'\[condition\s*(\d+)\]', (en_text or '').lower()):
+        # EN [Condition N] plus KR [조건N] (HR pack often has no separate EN prose blob).
+        _cond_scan = f'{en_text or ""}\n{display_text or ""}'
+        for mv in re.findall(r'\[(?:condition|조건)\s*(\d+)\]', _cond_scan, flags=re.I):
             try:
                 iv = int(mv)
             except (TypeError, ValueError):
@@ -10889,7 +10990,7 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
     carry_boost_for_next = []
     def _looks_conditional_text(info_row):
         txt = (str(info_row.get('en_text') or '') + ' ' + str(info_row.get('display_text') or '')).lower()
-        if '[condition' in txt:
+        if '[condition' in txt or '[조건' in (str(info_row.get('display_text') or '') + str(info_row.get('en_text') or '')):
             return True
         # Heuristic: only attach implicit condition tags on clearly conditional lines.
         disp = str(info_row.get('display_text') or '')
@@ -10899,9 +11000,10 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
             or ('specified' in txt)
             or ('above tag' in txt)
             or ('above series' in txt)
-            or bool(re.search(r'搭乘|搭乗', disp))
+            or bool(re.search(r'搭乘|搭乗|탑승', disp))
             or ('上述' in disp)
             or ('上記' in disp)
+            or ('같은 부대' in disp)
         )
     for idx, info in enumerate(trait_info):
         nums = [n for n in (info.get('condition_nums') or []) if isinstance(n, int) and n > 0]
@@ -10924,7 +11026,9 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
                     _dual_recv = (
                         2 in nums
                         and own_tgt
-                        and re.search(r'same[-\s]?squad|in the same squad|同部隊|部隊內|所屬部隊', _en + '\n' + _disp, re.I)
+                        and re.search(
+                            r'same[-\s]?squad|in the same squad|同部隊|部隊內|所屬部隊|같은\s*부대',
+                            _en + '\n' + _disp, re.I)
                     )
                     if _dual_recv:
                         conds_for_n = list(own_tgt)

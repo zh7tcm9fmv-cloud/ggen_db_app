@@ -5414,15 +5414,15 @@ _parsePilotWeaponEffectAdditiveFromText(tx,ud,{skipUnitGate:true}).forEach((v,k)
 return merged;
 }
 function _textImpliesPilotingTagAffinity(tx){
-return /piloting units with specified tags|指定.*?タグ|指定.*?標籤|指定.*?标签|含有上述「標籤」|搭乘單位含有上述「標籤」|上記の「タグ」|搭乗ユニットが上記の「タグ」|critical rate|暴擊率|暴击率|爆擊率|EN consumption|消費EN|消耗EN|damage dealt|与ダメージ|造成的損傷/i.test(String(tx||''));
+return /piloting units with specified tags|指定.*?タグ|指定.*?標籤|指定.*?标签|含有上述「標籤」|搭乘單位含有上述「標籤」|上記の「タグ」|搭乗ユニットが上記の「タグ」|탑승\s*유닛이\s*위\s*'태그'|탑승\s*캐릭터가\s*위\s*'태그'|탑승캐릭터\s*위\s*'태그'|critical rate|暴擊率|暴击率|爆擊率|명중률|크리티컬|EN consumption|消費EN|消耗EN|damage dealt|与ダメージ|造成的損傷/i.test(String(tx||''));
 }
 function _textImpliesPilotingSeriesAffinity(tx){
-return /piloting units with (?:the\s+)?specified series|指定.*?シリーズ|指定.*?系列|上記の「シリーズ」|搭乗ユニットが上記の「シリーズ」|搭乘單位含有上述「系列」|含有上述「系列」/i.test(String(tx||''));
+return /piloting units with (?:the\s+)?specified series|指定.*?シリーズ|指定.*?系列|上記の「シリーズ」|搭乗ユニットが上記の「シリーズ」|搭乘單位含有上述「系列」|含有上述「系列」|탑승\s*유닛이\s*위\s*'시리즈'/i.test(String(tx||''));
 }
 function _extractEnConsumptionReductionPct(tx){
 const s=String(tx||'');
 let out=0;
-const pats=[/reduce\s+(?:own\s+)?(?:weapon\s+)?EN\s+consumption\s+by\s+(\d+)\s*%/i,/weapon\s+EN\s+consumption\s+by\s+(\d+)\s*%/i,/消費ENが(\d+)%軽減/,/武装の消費ENが(\d+)%軽減/,/消耗EN減輕(\d+)%/,/武裝消耗EN減輕(\d+)%/];
+const pats=[/reduce\s+(?:own\s+)?(?:weapon\s+)?EN\s+consumption\s+by\s+(\d+)\s*%/i,/weapon\s+EN\s+consumption\s+by\s+(\d+)\s*%/i,/消費ENが(\d+)%軽減/,/武装の消費ENが(\d+)%軽減/,/消耗EN減輕(\d+)%/,/武裝消耗EN減輕(\d+)%/,/소비되는\s*EN[이가]?\s*(\d+)\s*%\s*감소/,/무장\s*소비\s*EN[이가]?\s*(\d+)\s*%\s*감소/,/EN[이가]?\s*(\d+)\s*%\s*감소/];
 pats.forEach(re=>{const m=s.match(re);if(m)out=Math.max(out,parseInt(m[1],10)||0)});
 return out;
 }
@@ -5546,6 +5546,12 @@ m=s.match(/自身射擊值[、,]\s*命中率及閃避率提升(\d+)%/);
 if(m)out.acc=Math.max(out.acc,parseInt(m[1],10)||0);
 m=s.match(/사격치와\s*명중률과\s*회피율[이가]?\s*(\d+)\s*%\s*상승/);
 if(m)out.acc=Math.max(out.acc,parseInt(m[1],10)||0);
+m=s.match(/명중률과\s*회피율[이가]?\s*(\d+)\s*%\s*상승/);
+if(m)out.acc=Math.max(out.acc,parseInt(m[1],10)||0);
+m=s.match(/명중률[이가]?\s*(\d+)\s*%\s*상승/);
+if(m)out.acc=Math.max(out.acc,parseInt(m[1],10)||0);
+m=s.match(/크리티컬률[이가]?\s*(\d+)\s*%\s*상승/);
+if(m)out.crit=Math.max(out.crit,parseInt(m[1],10)||0);
 m=s.match(/自身(?:的)?(?:暴擊|暴击|爆擊)率提升(\d+)%/);
 if(m)out.crit=Math.max(out.crit,parseInt(m[1],10)||0);
 return out;
