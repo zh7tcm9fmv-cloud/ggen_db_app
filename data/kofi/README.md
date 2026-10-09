@@ -26,5 +26,6 @@ Raw CSVs are copied to `data/kofi/raw/` (gitignored — they contain emails). Pu
 
 Place files under `static/images/KofiSupporters/` and map display names in
 `scripts/build_kofi_supporter_wall.py` → `THUMB_FILES`.
-Everyone else uses `UI_Home_Menu_Icon_Shop`. Crown goes to the **top total** donor.
+Everyone else uses `UI_Home_Menu_Icon_Shop`. Top **3** totals get Haro Gold / Silver / Bronze
+badges + matching avatar frames (`rank` 1–3 in the published JSON).
 If an export lags payments, bump totals in `TOTAL_OVERRIDES` / add names in `EXTRA_SUPPORTERS`.

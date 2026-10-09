@@ -27,7 +27,7 @@ ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = ROOT / "data" / "kofi" / "raw"
 PUB_PATH = ROOT / "data" / "published" / "kofi_supporter_wall.json"
 FALLBACK_THUMB = "/static/images/UI/UI_Home_Menu_Icon_Shop.webp"
-CROWN_NAME = None  # crown = highest total after sort (not a fixed name)
+# Top-3 ranks (by total) get Haro gold/silver/bronze badges in the wall UI.
 
 # When Ko-fi Supporters CSV lags behind payments, bump known totals here.
 TOTAL_OVERRIDES = {
@@ -83,6 +83,17 @@ def truthy(s) -> bool:
     return str(s or "").strip().lower() in ("true", "1", "yes")
 
 
+def normalize_buyer_email(email: str) -> str:
+    """Lowercase + collapse Google mail aliases so one person is not two wall cards."""
+    e = (email or "").strip().lower()
+    if not e or "@" not in e:
+        return e
+    local, _, domain = e.partition("@")
+    if domain == "googlemail.com":
+        domain = "gmail.com"
+    return f"{local}@{domain}"
+
+
 def is_generic_from(name: str) -> bool:
     return (name or "").strip().casefold() in GENERIC_FROM_NAMES
 
@@ -118,7 +129,7 @@ def load_from_transactions(transactions_csv: Path) -> list[dict]:
     by_email: dict[str, dict] = {}
     with transactions_csv.open(encoding="utf-8-sig", newline="") as f:
         for row in csv.DictReader(f):
-            email = (row.get("BuyerEmail") or "").strip().lower()
+            email = normalize_buyer_email(row.get("BuyerEmail") or "")
             if not email:
                 continue
             name = (row.get("From") or "").strip()
@@ -257,21 +268,22 @@ def thumb_for(name: str) -> str:
 
 
 def build(people: list[dict], *, keep_prior: bool = True) -> dict:
-    crown_key = people[0]["name"].casefold() if people else ""
-
+    # people are sorted by total desc — first three unique display slots get ranks 1–3.
     supporters = []
     seen = set()
+    rank_n = 0
     for p in people:
         key = p["name"].casefold()
         # Same display name from different people: keep both, but track for prior-merge.
         seen.add(key)
-        supporters.append(
-            {
-                "name": p["name"],
-                "thumb": thumb_for(p["name"]),
-                "crown": key == crown_key and not any(s.get("crown") for s in supporters),
-            }
-        )
+        rank_n += 1
+        entry = {
+            "name": p["name"],
+            "thumb": thumb_for(p["name"]),
+        }
+        if rank_n <= 3:
+            entry["rank"] = rank_n
+        supporters.append(entry)
 
     # Keep prior wall members missing from this export (e.g. custom thumbs / old gifts).
     if keep_prior and PUB_PATH.is_file():
@@ -291,7 +303,6 @@ def build(people: list[dict], *, keep_prior: bool = True) -> dict:
                 {
                     "name": name,
                     "thumb": s.get("thumb") or thumb_for(name),
-                    "crown": False,
                 }
             )
 
@@ -348,8 +359,10 @@ def main(argv: list[str] | None = None) -> int:
     PUB_PATH.parent.mkdir(parents=True, exist_ok=True)
     PUB_PATH.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"Wrote {PUB_PATH} ({payload['count']} supporters)")
-    crown = next((s["name"] for s in payload["supporters"] if s.get("crown")), None)
-    print(f"Crown: {crown}")
+    ranked = [(s.get("rank"), s["name"]) for s in payload["supporters"] if s.get("rank")]
+    ranked.sort(key=lambda x: x[0] or 99)
+    if ranked:
+        print("Haro ranks:", ", ".join(f"#{r} {n}" for r, n in ranked))
     unknowns = [s["name"] for s in payload["supporters"] if s["name"].startswith("Unknown ")]
     if unknowns:
         print("Anonymous:", ", ".join(unknowns))

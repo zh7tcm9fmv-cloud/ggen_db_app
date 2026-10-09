@@ -73,6 +73,7 @@
   background: var(--bg-card);
   border: 2px solid rgba(42, 54, 84, 0.95);
   box-shadow: var(--shadow-surface);
+  box-sizing: border-box;
 }
 .kofi-supporter-avatar--fallback {
   object-fit: contain;
@@ -80,21 +81,56 @@
   box-sizing: border-box;
   background: rgba(17, 24, 39, 0.95);
 }
+
+/* Same location/size as the old 👑 crown emoji (~1rem), Haro icon inside */
 .kofi-supporter-crown {
   position: absolute;
   top: -10px;
   left: 50%;
   transform: translateX(-50%);
+  width: 1rem;
+  height: 1rem;
   font-size: 1rem;
   line-height: 1;
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.65));
   pointer-events: none;
   z-index: 1;
 }
-.kofi-supporter-card--crown .kofi-supporter-avatar {
-  border-color: rgba(255, 215, 0, 0.75);
-  box-shadow: var(--shadow-surface), 0 0 0 2px rgba(255, 215, 0, 0.2);
+.kofi-supporter-crown-img {
+  width: 1rem;
+  height: 1rem;
+  display: block;
+  object-fit: contain;
 }
+
+/*
+ * Avatar frames — metal tones sampled from UI_Common_Icon_Haro_{Gold,Silver,Bronze}:
+ *   Gold mid #FCCC18 / deep #CC840C / glow #FEEA2B
+ *   Silver mid #B4CCD8 / deep #78909C / glow #C9DCE6
+ *   Bronze mid #E47830 / deep #C06024 / glow #FCB484
+ */
+.kofi-supporter-card--gold .kofi-supporter-avatar {
+  border-color: #fccc18;
+  box-shadow:
+    var(--shadow-surface),
+    0 0 0 2px rgba(204, 132, 12, 0.55),
+    0 0 10px rgba(254, 234, 43, 0.35);
+}
+.kofi-supporter-card--silver .kofi-supporter-avatar {
+  border-color: #b4ccd8;
+  box-shadow:
+    var(--shadow-surface),
+    0 0 0 2px rgba(120, 144, 156, 0.55),
+    0 0 10px rgba(201, 220, 230, 0.28);
+}
+.kofi-supporter-card--bronze .kofi-supporter-avatar {
+  border-color: #e47830;
+  box-shadow:
+    var(--shadow-surface),
+    0 0 0 2px rgba(192, 96, 36, 0.55),
+    0 0 10px rgba(252, 180, 132, 0.3);
+}
+
 .kofi-supporter-name {
   font-size: 0.68rem;
   font-weight: 600;
@@ -105,6 +141,15 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   padding: 0 2px;
+}
+.kofi-supporter-card--gold .kofi-supporter-name {
+  color: #f8d24a;
+}
+.kofi-supporter-card--silver .kofi-supporter-name {
+  color: #c5d8e4;
+}
+.kofi-supporter-card--bronze .kofi-supporter-name {
+  color: #e8a06a;
 }
 
 @media (max-width: 640px) {
