@@ -309,7 +309,7 @@
       noMatch: '該当なし',
       status: '{n} タグ · デバッファー {u}',
       foot: '/dm · /api/debuff_matrix',
-      rotateHint: 'Rotate to landscape for a better viewing',
+      rotateHint: '横向きにすると見やすくなります',
       exclusiveLabel: '互斥',
       kindHp: 'HPリペア',
       kindEn: 'ENチャージ',
@@ -369,7 +369,7 @@
       noMatch: '無符合項目',
       status: '{n} 標籤 · 減益單位 {u}',
       foot: '/dm · /api/debuff_matrix',
-      rotateHint: 'Rotate to landscape for a better viewing',
+      rotateHint: '請旋轉為橫向以獲得較佳瀏覽體驗',
       exclusiveLabel: '互斥',
       kindHp: 'HP修復',
       kindEn: 'EN填充',
@@ -429,7 +429,7 @@
       noMatch: '無符合項目',
       status: '{n} 標籤 · 減益單位 {u}',
       foot: '/dm · /api/debuff_matrix',
-      rotateHint: 'Rotate to landscape for a better viewing',
+      rotateHint: '請旋轉為橫向以獲得較佳瀏覽體驗',
       exclusiveLabel: '互斥',
       kindHp: 'HP修復',
       kindEn: 'EN填充',
@@ -439,8 +439,69 @@
       legStat: '能力',
       legPierce: '特殊',
       legPower: '威力'
+    },
+    HR: {
+      navChar: '캐릭터',
+      navUnit: '유닛',
+      navSupp: '서포터',
+      navRanking: '랭킹',
+      navMod: '옵션 파츠',
+      navStage: '스테이지',
+      navMasterLeague: '마스터 리그',
+      navCalc: '대미지 시뮬레이터',
+      navTb: '팀 빌더',
+      navLatest: '최신 등장',
+      navBanner: '유닛 보급',
+      navInvestment: '투자 우선도',
+      navCollections: '컬렉션',
+      navGameNews: '게임 뉴스',
+      navTagMatrix: '태그 매트릭스',
+      navDebuffMatrix: '디버프 매트릭스',
+      navSection: '섹션',
+      eyebrow: '약체계 · 라이브',
+      title: '디버프 매트릭스',
+      sub: '왼쪽은 서포터＋계통 태그. 기본 표시는 스테이터스＋위력（사정거리／특수는 전환）.',
+      note: '열 안은 정확한 %（예: 40%, 35%）. 추천 파일럿 무장 효과 가산을 포함.',
+      tagGroup: '태그 그룹',
+      debuffGroup: '디버프 종류',
+      role: '타입',
+      rarity: '레어도',
+      all: '전체',
+      four: '사대',
+      six: '육대',
+      new: '신규',
+      other: '기타',
+      series: '기타 · 시리즈',
+      stat: '스테이터스',
+      power: '위력',
+      range: '사정거리',
+      special: '특수',
+      headSupp: '서포터',
+      headTag: '태그',
+      collection: '컬렉션',
+      ownedOnly: '내 컬렉션',
+      ownedOnlyTip: '컬렉션（/col）에서 보유로 표시한 유닛／서포터만 표시. 이 브라우저에 저장됩니다.',
+      noOwned: '보유 키트가 없습니다. 먼저 컬렉션（/col）에서 보유를 표시한 뒤 ON 하세요.',
+      searchPh: '태그 검색...',
+      loading: '로딩 중…',
+      err: '로딩 실패',
+      empty: '—',
+      noMatch: '해당 없음',
+      status: '{n} 태그 · 디버퍼 {u}',
+      foot: '/dm · /api/debuff_matrix',
+      rotateHint: '가로 모드로 회전하면 더 보기 편합니다',
+      exclusiveLabel: '상호 배타',
+      kindHp: 'HP 리페어',
+      kindEn: 'EN 차지',
+      kindHybrid: 'HP&EN 회복',
+      kindOther: '기타',
+      limited: '기간 한정',
+      legStat: '스테이터스',
+      legPierce: '특수',
+      legPower: '위력'
     }
   };
+  I18N.KR = I18N.HR;
 
   function esc(s) {
     return String(s == null ? '' : s)
@@ -470,15 +531,23 @@
     try {
       var L = (localStorage.getItem(STORAGE_LANG) || 'EN').toUpperCase();
       if (L === 'JP') L = 'JA';
-      if (L !== 'EN' && L !== 'JA' && L !== 'TW' && L !== 'HK') L = 'EN';
+      if (L === 'KR') L = 'HR';
+      if (L !== 'EN' && L !== 'JA' && L !== 'TW' && L !== 'HK' && L !== 'HR') L = 'EN';
       return L;
     } catch (_) {
       return 'EN';
     }
   }
+  function displayLangCode(L) {
+    L = String(L || 'EN').toUpperCase();
+    if (L === 'JA') return 'JP';
+    if (L === 'HR') return 'KR';
+    return L;
+  }
   function writeLang(L) {
     try {
-      localStorage.setItem(STORAGE_LANG, L);
+      /* Persist UI display codes (JP/KR) so main app /api/languages match. */
+      localStorage.setItem(STORAGE_LANG, displayLangCode(L));
     } catch (_) {}
   }
 
@@ -1680,10 +1749,16 @@
       search.setAttribute('title', t('searchPh'));
     }
     var lab = document.getElementById('dmLangLabel');
-    if (lab) lab.textContent = state.lang;
-    document.documentElement.setAttribute('data-ui-lang', state.lang);
+    if (lab) lab.textContent = displayLangCode(state.lang);
+    document.documentElement.setAttribute('data-ui-lang', displayLangCode(state.lang));
     document.documentElement.lang =
-      state.lang === 'JA' ? 'ja' : state.lang === 'TW' || state.lang === 'HK' ? 'zh-Hant' : 'en';
+      state.lang === 'JA'
+        ? 'ja'
+        : state.lang === 'TW' || state.lang === 'HK'
+          ? 'zh-Hant'
+          : state.lang === 'HR'
+            ? 'ko'
+            : 'en';
     try {
       document.title = t('navDebuffMatrix') + ' — GGen Eternal Database';
     } catch (_) {}
@@ -1880,7 +1955,8 @@
     function setLang(L) {
       L = String(L || 'EN').toUpperCase();
       if (L === 'JP') L = 'JA';
-      if (L !== 'EN' && L !== 'JA' && L !== 'TW' && L !== 'HK') L = 'EN';
+      if (L === 'KR') L = 'HR';
+      if (L !== 'EN' && L !== 'JA' && L !== 'TW' && L !== 'HK' && L !== 'HR') L = 'EN';
       state.lang = L;
       writeLang(L);
       close();
@@ -1891,6 +1967,8 @@
           window.__ggenInjectBrandFonts();
         }
       } catch (_) {}
+      var lbl = document.getElementById('dmLangLabel');
+      if (lbl) lbl.textContent = displayLangCode(L);
       loadMatrix();
     }
     btn.addEventListener('click', function (ev) {
@@ -2196,6 +2274,11 @@
   function init() {
     try { localStorage.setItem('ggen_visited_dm', '1'); } catch (_) {}
     state.lang = readLang();
+    try {
+      var raw = localStorage.getItem(STORAGE_LANG) || '';
+      var disp = displayLangCode(state.lang);
+      if (raw && raw !== disp) localStorage.setItem(STORAGE_LANG, disp);
+    } catch (_) {}
 
     state.ownedOnly = readOwnedOnlyPref();
     syncOwnedUi();

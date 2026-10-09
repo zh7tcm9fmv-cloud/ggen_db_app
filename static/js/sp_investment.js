@@ -698,7 +698,8 @@
     if (window.SpiI18n && typeof SpiI18n.normLang === 'function') return SpiI18n.normLang(raw);
     const k = String(raw || 'EN').toUpperCase();
     if (k === 'JP') return 'JA';
-    if (k === 'JA' || k === 'TW' || k === 'HK' || k === 'EN') return k;
+    if (k === 'KR' || k === 'HR') return 'KR';
+    if (k === 'JA' || k === 'TW' || k === 'HK' || k === 'EN' || k === 'KR') return k;
     return 'EN';
   }
 
@@ -720,6 +721,14 @@
     return Object.assign({}, base, i18nMeta || {});
   }
 
+  /** Localize combat specialty chip (Ranged/Melee/Awaken/…) via BREAKDOWN pack. */
+  function tSpecialty(spec) {
+    const raw = String(spec || '').trim();
+    if (!raw) return '';
+    const meta = breakdownMetaFor(raw.toLowerCase());
+    return (meta && meta.label) || raw;
+  }
+
   function isEmbedded() {
     return !!document.getElementById('panel-investment_priority');
   }
@@ -736,7 +745,7 @@
     const lc = uiLang();
     if (!isEmbedded()) {
       document.documentElement.setAttribute('data-ui-lang', lc);
-      const htmlLang = lc === 'JA' ? 'ja' : lc === 'TW' || lc === 'HK' ? 'zh' : 'en';
+      const htmlLang = lc === 'JA' ? 'ja' : lc === 'TW' || lc === 'HK' ? 'zh' : lc === 'KR' ? 'ko' : 'en';
       document.documentElement.setAttribute('lang', htmlLang);
       document.title = t('page_title');
     }
@@ -930,13 +939,14 @@
     // Units may lack EN in published payload — still show the grid and fill from ranking.
     if (!hasAny && kind === 'character') return '';
     const specialty = kind === 'character' ? row.specialty : '';
+    const specialtyLabel = specialty ? tSpecialty(specialty) : '';
     const roleLabel = tRole(row.role) || row.role || '';
     const cards = keys
       .map((k) => renderEntityStatCard(kind, k, entityStatValue(row, k), null, specialty && k === specialty))
       .join('');
     const modeNote =
       kind === 'character'
-        ? `${esc(t('stats_note_pilot', { role: roleLabel, specialty: specialty || '·' }))}`
+        ? `${esc(t('stats_note_pilot', { role: roleLabel, specialty: specialtyLabel || '·' }))}`
         : `${esc(t('stats_note_unit', { mode: String(row.mode || board || 'sp').toUpperCase(), role: roleLabel }))}`;
     return `<section class="spi-dossier-section spi-entity-stats-block" id="spiEntityStats">
       <div class="spi-dossier-section-head">
@@ -3296,7 +3306,7 @@
       })
       .join('');
     return `<div class="spi-score-viz">
-      <div class="spi-score-bars" aria-label="Score contribution chart">${bars}</div>
+      <div class="spi-score-bars" aria-label="${escAttr(t('score_chart_aria'))}">${bars}</div>
     </div>`;
   }
 
@@ -3330,7 +3340,7 @@
         </a>`;
       })
       .join('');
-    const spec = row.specialty ? ` (${row.specialty})` : '';
+    const spec = row.specialty ? ` (${tSpecialty(row.specialty)})` : '';
     return `<section class="spi-dossier-section">
       <div class="spi-dossier-section-head">
         <h4 class="spi-dossier-h">${esc(t('recommend_ms'))} <span class="spi-dossier-h-sub">${esc(t('recommend_ms_sub'))}</span></h4>
@@ -3359,7 +3369,7 @@
       .map((c) => {
         const thumb = renderFramedThumb(c, 'character');
         const specChip = c.specialty
-          ? `<span class="spi-chip">${esc(c.specialty)}</span>`
+          ? `<span class="spi-chip">${esc(tSpecialty(c.specialty))}</span>`
           : '';
         const openAttrs = isEmbedded()
           ? ` href="/c/${encodeURIComponent(c.id)}" data-spi-open-db-rec="character:${escAttr(c.id)}"`
@@ -3487,7 +3497,7 @@
       <div class="spi-dossier-thumb" role="link" tabindex="0" data-spi-open-db-thumb="${esc(kind)}:${esc(row.id)}" title="${escAttr(t('open_in_db'))}">${renderFramedThumb(row, kind)}</div>
       <div class="spi-dossier-head-text">
         <h3 class="spi-modal-title" id="spiModalTitle">${esc(row.name || row.id)}</h3>
-        <p class="spi-modal-sub">${esc(tRole(row.role) || row.role)}${isPilot && row.specialty ? ` · ${esc(row.specialty)}` : ''} · ${esc((row.mode || board) || '').toUpperCase()}</p>
+        <p class="spi-modal-sub">${esc(tRole(row.role) || row.role)}${isPilot && row.specialty ? ` · ${esc(tSpecialty(row.specialty))}` : ''} · ${esc((row.mode || board) || '').toUpperCase()}</p>
         <div class="spi-dossier-badges">
           ${letterChip(row.letter)}
           <span class="spi-chip score">${esc(t('total_pt', { n: row.total }))}</span>

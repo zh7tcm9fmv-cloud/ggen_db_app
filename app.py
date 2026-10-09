@@ -22284,15 +22284,19 @@ _SPI_ER_UI = {
     'JA': {'stage': 'ステージ {n}', 'free': '制限なし', 'restricted': '制限あり'},
     'TW': {'stage': '關卡 {n}', 'free': '無限制', 'restricted': '有限制'},
     'HK': {'stage': '關卡 {n}', 'free': '無限制', 'restricted': '有限制'},
+    'HR': {'stage': '스테이지 {n}', 'free': '제한 없음', 'restricted': '제한 있음'},
 }
 _SPI_TAG_NAME_CACHE = {}  # lc -> {en_name_lower: loc_name}
 
 
 def _spi_norm_lang(lc):
+    """SPI request lang → LANG_DATA key. KR UI uses HR pack (same as validate_lang_code)."""
     lc = (lc or DEFAULT_LANG).upper()
     if lc == 'JP':
         lc = 'JA'
-    if lc not in ('EN', 'JA', 'TW', 'HK'):
+    if lc == 'KR':
+        lc = 'HR'
+    if lc not in ('EN', 'JA', 'TW', 'HK', 'HR'):
         lc = DEFAULT_LANG
     return lc
 
@@ -22500,6 +22504,32 @@ def _spi_localize_board_rows(buckets, kind, lc, tag_map):
                 r['abilities'] = _spi_localize_char_kit_list(r.get('abilities'), 'ability', lc)
             if kind == 'character' and r.get('skills'):
                 r['skills'] = _spi_localize_char_kit_list(r.get('skills'), 'skill', lc)
+            # Recommended kits on dossiers (names were stuck on EN board text).
+            for rec_key, rec_kind in (
+                ('recommended_characters', 'character'),
+                ('recommended_units', 'unit'),
+            ):
+                recs = r.get(rec_key)
+                if not isinstance(recs, list) or not recs:
+                    continue
+                out_recs = []
+                for rec in recs:
+                    if not isinstance(rec, dict):
+                        out_recs.append(rec)
+                        continue
+                    rc = dict(rec)
+                    rid = normalize_id(rc.get('id'))
+                    try:
+                        if rec_kind == 'character':
+                            nm = _wn_char_name(rid, ld) or ''
+                        else:
+                            nm = _wn_unit_name(rid, ld) or ''
+                        if nm and not str(nm).startswith(('Unit ', 'Character ', 'Char ')):
+                            rc['name'] = nm
+                    except Exception:
+                        pass
+                    out_recs.append(rc)
+                r[rec_key] = out_recs
             new_rows.append(r)
         buckets[bname] = new_rows
 
@@ -22513,7 +22543,8 @@ def _sp_investment_localize_payload(payload, lc):
         return payload
     tag_map = _spi_tag_en_to_locale_map(lc)
     out = copy.deepcopy(payload)
-    out['lang'] = lc
+    # Client UI codes use KR; LANG pack key is HR.
+    out['lang'] = 'KR' if lc == 'HR' else lc
     # Bucket labels — client also overlays; keep EN keys with localized display.
     bl = out.get('bucket_labels') or {}
     loc_bl = {
@@ -22538,6 +22569,13 @@ def _sp_investment_localize_payload(payload, lc):
             'solid': '穩健',
             'situational': '睇場合',
             'niche': '小眾',
+        },
+        'HR': {
+            'priority': 'BEYOND THE TIME',
+            'recommended': '추천',
+            'solid': '견실',
+            'situational': '상황 의존',
+            'niche': '니치',
         },
     }
     if lc in loc_bl and loc_bl[lc]:
@@ -22817,7 +22855,8 @@ def api_sp_investment():
     votes_data = _spi_votes_load()
     votes_mtime = int(_SPI_VOTES_CACHE.get('mtime') or 0)
     payload = _spi_payload_with_community_votes(payload, votes_data)
-    ck = f"sp_investment_v1_lean_sdgate_abil_details_{lc}_{int(mtime)}_{votes_mtime}"
+    # kr_rec_loc: localize recommended_* names + KR dossier i18n (2026-10).
+    ck = f"sp_investment_v1_lean_sdgate_abil_details_kr_rec_loc_{lc}_{int(mtime)}_{votes_mtime}"
     etag = _api_etag_from_cache_key(ck) if (_API_ETAG_ENABLED and ck) else None
     cc = _api_cache_control_header(public=True, max_age=300, private=False, no_store=False)
     if etag and _api_if_none_match_matches(request.headers.get('If-None-Match'), etag):
@@ -28164,6 +28203,9 @@ def _acquisition_section_label(lc):
 
 def _acq_type_label(typ, lc):
     en = _ACQ_TYPE_LABELS_EN.get(str(typ), f'Type {typ}')
+    lc = (lc or '').upper()
+    if lc == 'KR':
+        lc = 'HR'
     if lc in ('TW', 'HK'):
         tw = {
             '3': '永恆之路', '6': '機體開發', '7': '扭蛋', '13': '主線關卡', '14': '商店',
@@ -28180,6 +28222,13 @@ def _acq_type_label(typ, lc):
             '26': 'メインステージチャレンジ',
         }
         return ja.get(str(typ), en)
+    if lc == 'HR':
+        hr = {
+            '3': '이터널 로드', '6': '기체 개발', '7': '가샤', '13': '메인 스테이지', '14': '상점',
+            '16': '스토리 이벤트', '17': '침공 이벤트', '18': '캐릭터 스카우트', '19': '박스 가샤',
+            '20': '스토리 이벤트（CARDDASS 이벤트）', '21': '타워 이벤트', '26': '메인 스테이지 챌린지',
+        }
+        return hr.get(str(typ), en)
     return en
 
 
@@ -28488,12 +28537,17 @@ def _option_part_conditional_phrase_likely_present(text):
     blob = (text or '').lower()
     if not blob:
         return False
+    raw = text or ''
     hints = (
         ' when ', ' if ', '[condition',
         'when equipped', 'when combating',
-        '當', '装备', '裝備', '時', '条件', '戦闘', '戰鬥',
+        '當', '当', '装备', '裝備', '時', '时', '条件', '條件', '戦闘', '戰鬥', '战斗',
+        # JA trait wording
+        '装備', '装備時', 'の場合',
+        # KR / HR trait wording (e.g. 장비한 유닛이「…」의 경우)
+        '경우', '장비', '장착', '전투',
     )
-    return any(h in blob for h in hints)
+    return any(h in blob or h in raw for h in hints)
 
 
 def _option_part_desc_uses_placeholder_tag_phrase(text):
@@ -28515,16 +28569,23 @@ def _option_part_condition_line_from_tags(tags, lc, target_types=None):
     tts = {str(x or '').strip() for x in (target_types or []) if str(x or '').strip()}
     combat = bool(tts & {'AttackTarget', 'Enemy', 'EnemyUnit', 'EnemyCharacter'})
     joined = ', '.join(names)
+    lc = (lc or '').upper()
+    if lc == 'KR':
+        lc = 'HR'
     if combat:
         if lc in ('TW', 'HK'):
             return f"與擁有以下標籤的敵人戰鬥時：{joined}"
         if lc in ('JA', 'JP'):
             return f"以下タグを持つ敵との戦闘時：{joined}"
+        if lc == 'HR':
+            return f"다음 태그를 가진 적과 전투 시：{joined}"
         return f"When combating enemies with: {joined}."
     if lc in ('TW', 'HK'):
         return f"裝備於擁有以下標籤的單位時：{joined}"
     if lc in ('JA', 'JP'):
         return f"以下タグを持つユニット装備時：{joined}"
+    if lc == 'HR':
+        return f"다음 태그를 가진 유닛 장비 시：{joined}"
     return f"When equipped to a Unit possessing: {joined}."
 
 
@@ -28716,16 +28777,44 @@ def _extract_fierce_enemy_name(detail_text, lc):
     txt = str(detail_text or '').strip()
     if not txt:
         return ''
+    lc = (lc or '').upper()
+    if lc == 'KR':
+        lc = 'HR'
     if lc in ('TW', 'HK'):
         m = re.search(r'裝備於(.+?)時', txt)
+        if m:
+            return m.group(1).strip()
+        m = re.search(r'「([^」]+)」', txt)
         return m.group(1).strip() if m else ''
     if lc in ('JA', 'JP'):
         m = re.search(r'(.+?)に装備時', txt)
+        if m:
+            return m.group(1).strip()
+        m = re.search(r'「([^」]+)」', txt)
         return m.group(1).strip() if m else ''
+    if lc == 'HR':
+        # 장비한 유닛이「리그 링」의 경우 / 다음 태그를 가진 유닛 장비 시：…
+        m = re.search(r'「([^」]+)」', txt)
+        if m:
+            return m.group(1).strip()
+        m = re.search(r'유닛 장비 시[：:]\s*(.+)$', txt, re.M)
+        if m:
+            return m.group(1).strip().rstrip('.')
+        return ''
     for line in txt.splitlines():
-        if 'when equipped to' not in line.lower():
+        low = line.lower()
+        if 'when equipped to a unit possessing' in low:
+            name = re.sub(
+                r'^.*when equipped to a unit possessing\s*:?\s*',
+                '',
+                line,
+                flags=re.IGNORECASE,
+            ).strip()
+            return name.rstrip('.').strip()
+        if 'when equipped to' not in low:
             continue
         name = re.sub(r'^.*when equipped to\s+', '', line, flags=re.IGNORECASE).strip()
+        name = re.sub(r'^a\s+unit\s+possessing\s*:?\s*', '', name, flags=re.IGNORECASE)
         name = name.rstrip('.').strip()
         if name:
             return name
@@ -28733,11 +28822,108 @@ def _extract_fierce_enemy_name(detail_text, lc):
 
 
 def _option_part_acquisition_label(lc):
+    lc = (lc or '').upper()
+    if lc == 'KR':
+        lc = 'HR'
     if lc in ('TW', 'HK'):
         return '獲取方式'
     if lc in ('JA', 'JP'):
         return '入手方法'
+    if lc == 'HR':
+        return '입수 방법'
     return 'Acquisition method'
+
+
+def _fierce_enemy_assault_event_name(lc):
+    """LANG m_event id 250100000000100001 — Fierce Enemy Assault / 強敵襲来 / 강적 습격."""
+    lc = (lc or '').upper()
+    if lc == 'KR':
+        lc = 'HR'
+    return {
+        'EN': 'Fierce Enemy Assault',
+        'JA': '強敵襲来',
+        'JP': '強敵襲来',
+        'TW': '強敵來襲',
+        'HK': '強敵來襲',
+        'HR': '강적 습격',
+    }.get(lc, 'Fierce Enemy Assault')
+
+
+def _format_clear_stage_acq(stage_name, lc):
+    lc = (lc or '').upper()
+    if lc == 'KR':
+        lc = 'HR'
+    if not stage_name:
+        if lc in ('TW', 'HK'):
+            return '塔活動'
+        if lc in ('JA', 'JP'):
+            return 'タワーイベント'
+        if lc == 'HR':
+            return '타워 이벤트'
+        return 'Tower Event'
+    if lc in ('TW', 'HK'):
+        return f'通關關卡「{stage_name}」'
+    if lc in ('JA', 'JP'):
+        return f'ステージ「{stage_name}」をクリア'
+    if lc == 'HR':
+        return f'스테이지 「{stage_name}」 클리어'
+    return f'Clear Stage "{stage_name}"'
+
+
+def _format_fierce_enemy_assault_acq(enemy_name, lc):
+    lc = (lc or '').upper()
+    if lc == 'KR':
+        lc = 'HR'
+    ev = _fierce_enemy_assault_event_name(lc)
+    if enemy_name:
+        if lc in ('TW', 'HK'):
+            return f'通關關卡「{ev} Vs. {enemy_name}（挑戰）等級 8」'
+        if lc in ('JA', 'JP'):
+            return f'ステージ「{ev} Vs. {enemy_name}（チャレンジ）レベル8」をクリア'
+        if lc == 'HR':
+            return f'스테이지 「{ev} Vs. {enemy_name}（챌린지）레벨 8」 클리어'
+        return f'Clear Stage "{ev} Vs. {enemy_name} (Challenge) Level 8"'
+    if lc in ('TW', 'HK'):
+        return f'{ev}（挑戰）等級 8'
+    if lc in ('JA', 'JP'):
+        return f'{ev}（チャレンジ）レベル8'
+    if lc == 'HR':
+        return f'{ev}（챌린지）레벨 8'
+    return f'{ev} (Challenge) Level 8'
+
+
+def _format_eternal_road_expert_acq(stage_name, lc):
+    lc = (lc or '').upper()
+    if lc == 'KR':
+        lc = 'HR'
+    if stage_name:
+        if lc in ('TW', 'HK'):
+            return f'通關永恆之路專家關卡「{stage_name}」報酬'
+        if lc in ('JA', 'JP'):
+            return f'エターナルロード・エキスパートステージ「{stage_name}」クリア報酬'
+        if lc == 'HR':
+            return f'이터널 로드 전문가 스테이지 「{stage_name}」 클리어 보상'
+        return f'Clear Eternal Road Expert Stage "{stage_name}" reward'
+    if lc in ('TW', 'HK'):
+        return '永恆之路'
+    if lc in ('JA', 'JP'):
+        return 'エターナルロード'
+    if lc == 'HR':
+        return '이터널 로드'
+    return 'Eternal Road'
+
+
+def _haro_option_part_acq_label(lc):
+    lc = (lc or '').upper()
+    if lc == 'KR':
+        lc = 'HR'
+    if lc in ('TW', 'HK'):
+        return '期間限定特別角色招募'
+    if lc in ('JA', 'JP'):
+        return '期間限定特別キャラクタースカウト'
+    if lc == 'HR':
+        return '기간 한정 특별 캐릭터 스카우트'
+    return 'Limited Time Special Character Request'
 
 
 def _infer_option_part_acquisition_from_rewards(opid, lc, ld):
@@ -28769,6 +28955,8 @@ def _infer_option_part_acquisition_from_rewards(opid, lc, ld):
 def _build_option_part_acquisition_methods(opid, lc, ld, detail_text):
     methods = []
     oid = normalize_id(opid)
+    benefit = _resolve_option_part_benefit_unit(opid, lc, ld)
+    benefit_name = str((benefit or {}).get('name') or '').strip()
     for row in option_parts_acquisition_by_id.get(oid) or []:
         typ = normalize_id(row.get('AcquisitionMethodTypeIndex') or row.get('acquisitionMethodTypeIndex'))
         tid = normalize_id(row.get('TargetId') or row.get('targetId'))
@@ -28776,18 +28964,15 @@ def _build_option_part_acquisition_methods(opid, lc, ld, detail_text):
             continue
         if typ == '3':
             st_name = _find_eternal_stage_name(tid, ld)
-            methods.append(f'Clear Eternal Road Expert Stage "{st_name}" reward' if st_name else 'Eternal Road')
+            methods.append(_format_eternal_road_expert_acq(st_name, lc))
         elif typ == '14':
             methods.append('G-Shop')
         elif typ == '21':
             st_name = _find_tower_event_stage_name(tid, ld)
-            methods.append(f'Clear Stage "{st_name}"' if st_name else 'Tower Event')
+            methods.append(_format_clear_stage_acq(st_name, lc))
         elif typ == '22':
-            enemy_name = _extract_fierce_enemy_name(detail_text, lc)
-            if enemy_name:
-                methods.append(f'Clear Stage "Fierce Enemy Assault Vs. {enemy_name} (Challenge) Level 8"')
-            else:
-                methods.append('Fierce Enemy Assault (Challenge) Level 8')
+            enemy_name = benefit_name or _extract_fierce_enemy_name(detail_text, lc)
+            methods.append(_format_fierce_enemy_assault_acq(enemy_name, lc))
         else:
             line = _format_acquisition_line(typ, tid, lc, ld)
             if line:
@@ -28853,7 +29038,7 @@ def _option_part_detail_row(item, lc, variant_tag_id=''):
     acquisition_methods = _build_option_part_acquisition_methods(opid, lc, ld, details)
     # OP fix: all Haro option parts use this acquisition method label.
     if 'haro' in (name or '').lower():
-        acquisition_methods = ['Limited Time Special Character Request']
+        acquisition_methods = [_haro_option_part_acq_label(lc)]
     return {
         'id': opid,
         'name': name,
@@ -28887,7 +29072,8 @@ def get_option_part(option_part_id):
         row = _option_part_detail_row(item, lc, variant_tag_id=variant_tag_id)
         if not row:
             return jsonify({'error': 'Not found'}), 404
-        ck = f"opd2_{normalize_id(option_part_id)}_{lc}_v{variant_tag_id}"
+        # opd3: KR/HR acquisition + condition-line locale fix (bust stale opd2 EN fallthrough bodies)
+        ck = f"opd3_{normalize_id(option_part_id)}_{lc}_v{variant_tag_id}"
         return jsonify_cacheable(row, ck, private=True, max_age=3600, convert_images=True)
     except Exception as e:
         import traceback; traceback.print_exc()

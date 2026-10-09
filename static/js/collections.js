@@ -617,7 +617,142 @@
       nav_investment: '投資優先度',
       nav_collections: '收藏',
       nav_game_news: '遊戲公告'
-    }
+    },
+    KR: {
+      page_title: '격납고 컬렉션 — GGen Eternal Database',
+      eyebrow: 'UR 입수 점검',
+      title: '격납고 컬렉션',
+      sub: 'UR 유닛·서포터 보유를 추적\n초상화를 탭하면 미보유 → 한계돌파 0 → 최대 한계돌파（얼티밋: 형태 ID, LB 없음）\n유닛을 보유하면 해당 캐릭터도 커버됩니다',
+      disclaimer: '본 사이트는 인게임 계정을 읽지 않습니다\n반다이 남코 ID（BNID）자동 동기화는 지원하지 않습니다\n공식 이용약관에 위배됩니다\n유닛·서포터를 여기서 직접 추가하세요\n공유 코드를 만들어 컬렉션으로 저장하세요\n계정 정보를 제3자 사이트와 공유하지 마세요',
+      disclaimer_label: '면책',
+      lang: '언어',
+      support_alipay: 'AlipayHK로 후원',
+      support_kofi: 'Ko-fi로 후원',
+      alipay_modal_title: 'AlipayHK',
+      alipay_modal_hint: 'AlipayHK로 QR을 스캔해 HK$50.00을 결제하세요.',
+      alipay_close: '닫기',
+      units: '유닛',
+      supporters: '서포터',
+      role_all: '전체',
+      role_attack: '공격형',
+      role_support: '지원형',
+      role_durability: '내구형',
+      search_ph: '이름 또는 ID로 검색…',
+      select_lb0: '전체 선택（LB0）',
+      select_max: '전체 선택（최대 LB）',
+      select_limited: '기간 한정 전체 선택（LB0）',
+      reset_all: '전체 초기화',
+      save_image: '이미지로 저장',
+      save_image_choose: '스타일 선택',
+      save_image_regular: '일반',
+      save_image_15: '1.5',
+      share_x: '{x}에 공유',
+      share_code: '공유 코드',
+      share_code_ph: '가져올 코드 붙여넣기…',
+      copy_share_code: '공유 코드 생성',
+      import_share_code: '가져오기',
+      share_code_copied: '공유 코드를 복사했습니다 — 이름을 붙여 슬롯에 저장할 수 있습니다（선택）.',
+      share_code_fail: '공유 코드를 만들지 못했습니다.\n{err}',
+      share_import_ok: '{n}건을 가져왔습니다.',
+      share_import_fail: '유효하지 않거나 알 수 없는 공유 코드입니다.',
+      share_import_confirm: '이 브라우저의 컬렉션 진행도를 가져온 코드로 바꿀까요?',
+      share_save_name: '이 컬렉션 이름',
+      share_save_slot: '슬롯에 저장',
+      share_save_confirm: '저장',
+      share_save_skip: '나중에',
+      share_save_ok: '“{name}”을 슬롯 {i}에 저장 · 코드 {code}',
+      share_save_need_name: '저장하려면 컬렉션 이름을 입력하세요.',
+      slot_empty: '비어 있음',
+      slot_label: '{i}. {name}',
+      username: '플레이어 이름',
+      username_ph: '인게임 이름',
+      share_need_name: 'X 공유에 포함할 플레이어 이름을 입력하세요.',
+      share_paste_hint: '이미지를 복사했습니다 — X 포스트에 붙여넣으세요（Ctrl+V / ⌘V）.',
+      share_attach_hint: '이미지를 다운로드했습니다 — X 포스트에 첨부하세요.',
+      share_done: '공유했습니다.',
+      share_fail: '공유하지 못했습니다.\n{err}',
+      share_cancel: '공유를 취소했습니다.',
+      possession: '보유율',
+      complete: 'COMPLETE',
+      complete_max: '최대 한계돌파',
+      owned: '보유',
+      max_lb: '최대 한계돌파',
+      report_max_lb: '최대 한계돌파',
+      lb_progress: '한계돌파',
+      role_owned: '{role}',
+      limited: '기간 한정',
+      skill_hp: 'HP 회복',
+      skill_en: 'EN 회복',
+      skill_hybrid: '하이브리드',
+      loading: 'UR 목록 로딩 중…',
+      load_fail: '목록을 불러오지 못했습니다 — Flask가 실행 중인가요? ({err})',
+      loaded: '유닛 {units} · 서포터 {supporters} 로드됨',
+      showing: '표시 {n} / {total} UR {type} · 탭으로 LB 전환',
+      no_match: '이 필터에 맞는 항목이 없습니다.',
+      reset_confirm: '이 기기의 모든 {type} 보유를 초기화할까요?',
+      generating: '생성 중…',
+      save_fail: '이미지를 만들지 못했습니다.\n{err}',
+      preview_msg: '다운로드가 시작되지 않으면 길게 누르기（모바일）또는 이미지를 우클릭해 저장하세요.',
+      download: '다운로드',
+      close: '닫기',
+      foot: 'UR 유닛（얼티밋 포함）. 얼티밋은 형태 ID를 순환（한계돌파 아님）. 변형 교체는 제외. 진행도는 이 브라우저에만 저장됩니다.',
+      report_title: '컬렉션 리포트',
+      brand_line: 'GGEN ETERNAL DATABASE  ·  SD Gundam G Generation',
+      owned_line: '보유 {owned} / {total} · 한계돌파 {lb} / {lbMax}',
+      share_body: 'GGEN ETERNAL DATABASE — 컬렉션 리포트\n· UR 유닛 {u_pct}% ({u_owned}/{u_total}) · LB {u_lb}/{u_lbMax}\n· UR 서포터 {s_pct}% ({s_owned}/{s_total}) · LB {s_lb}/{s_lbMax}\n내 컬렉션을 추적하고 익명 센서스에 참여하세요:\n{url}\n#GundamEternal #ジージェネエターナル',
+      share_body_named: 'GGEN ETERNAL DATABASE — 컬렉션 리포트\n{name}\n· UR 유닛 {u_pct}% ({u_owned}/{u_total}) · LB {u_lb}/{u_lbMax}\n· UR 서포터 {s_pct}% ({s_owned}/{s_total}) · LB {s_lb}/{s_lbMax}\n내 컬렉션을 추적하고 익명 센서스에 참여하세요:\n{url}\n#GundamEternal #ジージェネエターナル',
+      noun_units: '유닛',
+      noun_supporters: '서포터',
+      unowned: '미보유',
+      census_title: '커뮤니티 센서스',
+      census_blurb: '옵트인 익명 통계. 고유 표시 이름을 선택하세요. 그래프에 이름은 표시되지 않습니다.',
+      census_optin: '내 컬렉션을 익명 센서스에 포함',
+      census_submit: '센서스 제출 / 갱신',
+      census_hist_title: '플레이어 컬렉션 깊이',
+      census_own_title: '가장 많이 모인 {type}',
+      census_hist_hint: '각 막대 = 보유율%（보유÷카탈로그）가 해당 구간에 있는 플레이어 수 — 보유율 게이지와 동일. 유닛·서포터는 각각 차트（탭 전환）.',
+      census_own_hint: '적게 모인 순 → 많이 모인 순（왼→오）. 높이 = 센서스 총 보유 포인트（미보유=0 · 최대 LB=4）. 막대 호버（모바일은 탭）로 상세.',
+      census_own_tip: '{pts} pt · {owned}명 보유 · 평균 {avg} / 4',
+      census_y_owned: 'Pt',
+      census_need_optin: '참여하려면 옵트인 체크를 하세요.',
+      census_need_name: '먼저 고유 표시 이름을 입력하세요.',
+      census_ok: '“{name}”으로 센서스 저장 · 스냅샷 {n}건.',
+      census_updated: '“{name}” 센서스 갱신 · 스냅샷 {n}건.',
+      census_name_taken: '이미 쓰인 표시 이름입니다. 다른 이름을 고르세요.',
+      census_fail: '센서스 제출 실패.\n{err}',
+      census_empty: '아직 옵트인 스냅샷이 없습니다 — 첫 참여자가 되어 주세요.',
+      census_meta: '익명 스냅샷 {n}건 · 보드: {board}',
+      census_loading: '센서스 로딩 중…',
+      saves_title: '저장된 컬렉션',
+      save_slot_ph: '컬렉션 이름',
+      save_slot: '저장',
+      load_slot: '불러오기',
+      clear_slot: '비우기',
+      save_slot_ok: '“{name}”을 저장했습니다.',
+      load_slot_ok: '“{name}”을 불러왔습니다（{n}건）.',
+      load_slot_empty: '그 슬롯은 비어 있습니다.',
+      load_slot_confirm: '현재 브라우저 컬렉션을 “{name}”으로 바꿀까요?',
+      clear_slot_ok: '슬롯 {i}을 비웠습니다.',
+      default_save_name: '컬렉션 {i}',
+      special_design: '특별 디자인',
+      classic: '클래식',
+      nav_section: '섹션',
+      nav_char: '캐릭터',
+      nav_unit: '유닛',
+      nav_supporter: '서포터',
+      nav_ranking: '랭킹',
+      nav_mod: '옵션 파츠',
+      nav_stage: '스테이지',
+      nav_master_league: '마스터 리그',
+      nav_calc: '대미지 시뮬레이터',
+      nav_tb: '팀 빌더',
+      nav_latest: '최신 등장',
+      nav_banner: '유닛 보급',
+      nav_investment: '투자 우선도',
+      nav_collections: '컬렉션',
+      nav_game_news: '게임 뉴스'
+    },
+
   };
 
   var IMAGE_CDN = (function () {
@@ -653,6 +788,7 @@
   function normLang(lc) {
     lc = String(lc || 'EN').toUpperCase();
     if (lc === 'JP') lc = 'JA';
+    if (lc === 'HR') lc = 'KR';
     return COL_T[lc] ? lc : 'EN';
   }
 
@@ -1007,7 +1143,7 @@
     state.lang = normLang(state.lang);
     document.documentElement.setAttribute('data-ui-lang', state.lang);
     document.documentElement.lang =
-      state.lang === 'JA' ? 'ja' : state.lang === 'TW' ? 'zh-Hant-TW' : state.lang === 'HK' ? 'zh-Hant-HK' : 'en';
+      state.lang === 'JA' ? 'ja' : state.lang === 'TW' ? 'zh-Hant-TW' : state.lang === 'HK' ? 'zh-Hant-HK' : state.lang === 'KR' ? 'ko' : 'en';
     try {
       if (typeof window.__ggenInjectBrandFonts === 'function') window.__ggenInjectBrandFonts();
     } catch (e) {}
@@ -1205,7 +1341,7 @@
     state.lang = lc;
     try {
       localStorage.setItem('ggen_collections_lang', state.lang);
-      localStorage.setItem(LANG_STORAGE_KEY, state.lang);
+      localStorage.setItem(LANG_STORAGE_KEY, state.lang === 'JA' ? 'JP' : state.lang);
     } catch (e) {}
     closeLangDropdown();
     applyUiLang();

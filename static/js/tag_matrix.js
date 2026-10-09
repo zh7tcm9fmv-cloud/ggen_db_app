@@ -300,8 +300,8 @@
       kindHybridShort: '回復',
       kindOther: '他',
       limited: '期間限定',
-      rotateHint: 'Rotate to landscape for a better viewing',
-      rotateHintAria: '画面の向き — landscape recommended'
+      rotateHint: '横向きにすると見やすくなります',
+      rotateHintAria: '端末を横向きにすると見やすくなります'
     },
     TW: {
       nav: '標籤對照表',
@@ -383,8 +383,8 @@
       kindHybridShort: '恢復',
       kindOther: '其他',
       limited: '期間限定',
-      rotateHint: 'Rotate to landscape for a better viewing',
-      rotateHintAria: '畫面方向 — landscape recommended'
+      rotateHint: '請旋轉為橫向以獲得較佳瀏覽體驗',
+      rotateHintAria: '請將裝置旋轉為橫向以獲得較佳瀏覽體驗'
     },
     HK: {
       nav: '標籤對照表',
@@ -466,14 +466,97 @@
       kindHybridShort: '恢復',
       kindOther: '其他',
       limited: '期間限定',
-      rotateHint: 'Rotate to landscape for a better viewing',
-      rotateHintAria: '畫面方向 — landscape recommended'
+      rotateHint: '請旋轉為橫向以獲得較佳瀏覽體驗',
+      rotateHintAria: '請將裝置旋轉為橫向以獲得較佳瀏覽體驗'
+    },
+    HR: {
+      nav: '태그 매트릭스',
+      navChar: '캐릭터',
+      navUnit: '유닛',
+      navSupp: '서포터',
+      navRanking: '랭킹',
+      navMod: '옵션 파츠',
+      navStage: '스테이지',
+      navMasterLeague: '마스터 리그',
+      navCalc: '대미지 시뮬레이터',
+      navTb: '팀 빌더',
+      navLatest: '최신 등장',
+      navBanner: '유닛 보급',
+      navInvestment: '투자 우선도',
+      navCollections: '컬렉션',
+      navGameNews: '게임 뉴스',
+      navTagMatrix: '태그 매트릭스',
+      navDebuffMatrix: '디버프 매트릭스',
+      navSection: '섹션',
+      tabUnits: '유닛',
+      tabSupporters: '서포터',
+      tabCollections: '컬렉션',
+      eyebrow: '계통 태그 · 라이브',
+      title: '태그 매트릭스',
+      sub: '사대／육대／신규 계통 태그별로 대응 서포터와 롤별 유닛을 목록으로 표시. 우클릭으로 복수 선택해 공통 서포터를 확인.',
+      note: '상호 배타적인 m_lineage ID의 커뮤니티 분류（LANG 명칭）.',
+      filters: '필터',
+      group: '태그 그룹',
+      role: '타입',
+      rarity: '레어도',
+      collection: '컬렉션',
+      ownedOnly: '내 컬렉션',
+      ownedOnlyTip: '컬렉션（/col）에서 보유로 표시한 유닛／서포터만 표시. 이 브라우저에 저장됩니다.',
+      all: '전체',
+      four: '사대',
+      six: '육대',
+      new: '신규',
+      other: '기타',
+      series: '기타 · 시리즈',
+      ur: 'UR',
+      ssrPlus: 'SSR+',
+      ssrMinus: 'SSR-',
+      exclusive: '상호 배타 강조',
+      supports: '서포터',
+      searchPh: '태그 검색（疾風…）',
+      searchHint: '태그 행만 필터（유닛 이름 아님）. 모든 언어 이름／ID／별명. 공백·쉼표는 AND, 앞의 -로 제외.',
+      noMatch: '일치하는 태그가 없습니다.',
+      noOwned: '보유 키트가 없습니다. 먼저 컬렉션（/col）에서 보유를 표시한 뒤 ON 하세요.',
+      legFour: '사대',
+      legSix: '육대',
+      legNew: '신규',
+      headSupp: '서포터',
+      headTag: '태그',
+      headAtk: '공격형',
+      headSup: '지원형',
+      headDur: '내구형',
+      roleAtk: '공격형',
+      roleSup: '지원형',
+      roleDur: '내구형',
+      exclusiveLabel: '상호 배타',
+      exclusiveLabelShort: '배타',
+      foot: '/tm · /api/tag_matrix',
+      status: '{n} 태그 · 유닛 {u} · 서포터 {s}',
+      statusFocus: '포커스 {k} · {n} 태그 · Esc / Clear · 우클릭으로 복수 선택',
+      statusFocusTouch: '소대 · {k} 선택 · {n} 태그 · 탭으로 추가 · Clear로 해제',
+      statusSquadIdle: '소대 ON · 유닛을 탭해 복수 선택 · Clear / Esc로 해제',
+      squad: '소대',
+      clearFocus: 'Clear',
+      loading: '로딩 중…',
+      err: '실패',
+      empty: '—',
+      kindHp: 'HP 리페어',
+      kindEn: 'EN 차지',
+      kindHybrid: 'HP&EN 회복',
+      kindHpShort: 'HP',
+      kindEnShort: 'EN',
+      kindHybridShort: '회복',
+      kindOther: '기타',
+      limited: '기간 한정',
+      rotateHint: '가로 모드로 회전하면 더 보기 편합니다',
+      rotateHintAria: '화면을 가로로 회전하면 더 보기 편합니다'
     }
   };
+  I18N.KR = I18N.HR;
 
   (function assertTmI18nKeys() {
     var keys = Object.keys(I18N.EN);
-    ['JA', 'TW', 'HK'].forEach(function (lc) {
+    ['JA', 'TW', 'HK', 'HR'].forEach(function (lc) {
       keys.forEach(function (k) {
         if (I18N[lc][k] == null) {
           try {
@@ -2307,10 +2390,10 @@
   }
 
   function syncHtmlLang(L) {
-    var map = { EN: 'en', JA: 'ja', TW: 'zh-Hant-TW', HK: 'zh-Hant-HK' };
+    var map = { EN: 'en', JA: 'ja', TW: 'zh-Hant-TW', HK: 'zh-Hant-HK', HR: 'ko', KR: 'ko' };
     var code = map[L] || 'en';
     document.documentElement.setAttribute('lang', code);
-    document.documentElement.setAttribute('data-ui-lang', L);
+    document.documentElement.setAttribute('data-ui-lang', displayLangCode(L));
   }
 
   function rarityIconsHtml(keys) {
@@ -2393,6 +2476,12 @@
     }
   }
 
+  function displayLangCode(L) {
+    L = String(L || 'EN').toUpperCase();
+    if (L === 'JA') return 'JP';
+    if (L === 'HR') return 'KR';
+    return L;
+  }
   function setLang(L) {
     L = String(L || 'EN').toUpperCase();
     if (L === 'JP') L = 'JA';
@@ -2400,7 +2489,8 @@
     if (L !== 'EN' && L !== 'JA' && L !== 'TW' && L !== 'HK' && L !== 'HR') L = 'EN';
     state.lang = L;
     try {
-      localStorage.setItem(STORAGE_LANG, L);
+      /* Persist UI display codes (JP/KR) so main app /api/languages match. */
+      localStorage.setItem(STORAGE_LANG, displayLangCode(L));
     } catch (_) {}
     syncHtmlLang(L);
     try {
@@ -2409,7 +2499,7 @@
       }
     } catch (_) {}
     var lbl = document.getElementById('tmLangLabel');
-    if (lbl) lbl.textContent = L;
+    if (lbl) lbl.textContent = displayLangCode(L);
     applyCopy();
     loadMatrix();
   }
@@ -2485,7 +2575,13 @@
       }
     } catch (_) {}
     var lbl = document.getElementById('tmLangLabel');
-    if (lbl) lbl.textContent = state.lang;
+    if (lbl) lbl.textContent = displayLangCode(state.lang);
+    /* Rewrite legacy JA/HR storage to JP/KR without changing pack locale. */
+    try {
+      var raw = localStorage.getItem(STORAGE_LANG) || '';
+      var disp = displayLangCode(state.lang);
+      if (raw && raw !== disp) localStorage.setItem(STORAGE_LANG, disp);
+    } catch (_) {}
     applyCopy();
 
     bindLang();

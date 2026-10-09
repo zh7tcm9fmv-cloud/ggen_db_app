@@ -64,7 +64,7 @@ try {
   var _lg = localStorage.getItem('ggen_lang');
   if (_lg) {
     document.documentElement.setAttribute('data-ui-lang', _lg);
-    var _htmlLang = (_lg === 'JA' || _lg === 'JP') ? 'ja' : (_lg === 'TW' || _lg === 'HK' ? 'zh' : 'en');
+    var _htmlLang = (_lg === 'JA' || _lg === 'JP') ? 'ja' : (_lg === 'TW' || _lg === 'HK' ? 'zh' : ((_lg === 'KR' || _lg === 'HR') ? 'ko' : 'en'));
     document.documentElement.setAttribute('lang', _htmlLang);
   }
 } catch (e) {}
@@ -117,6 +117,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <button type="button" class="spi-lang-btn" data-lang="JA" title="JP">JP</button>
         <button type="button" class="spi-lang-btn" data-lang="TW" title="TW">TW</button>
         <button type="button" class="spi-lang-btn" data-lang="HK" title="HK">HK</button>
+        <button type="button" class="spi-lang-btn" data-lang="KR" title="KR">KR</button>
       </div>
       <a class="spi-header-back" href="/" data-i18n="back_db">← Database</a>
     </div>
