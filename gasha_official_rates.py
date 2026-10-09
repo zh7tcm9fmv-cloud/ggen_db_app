@@ -24,9 +24,10 @@ _OFFICIAL_FETCH_HEADERS = {
 
 def official_gasha_detail_url(gasha_id, lc='EN') -> str:
     """Public detail page (same path every banner; only gasha_id changes)."""
-    seg = {'JA': 'ja', 'JP': 'ja', 'EN': 'en', 'TW': 'tw', 'HK': 'hk'}.get(
-        (lc or 'EN').upper(), 'en'
-    )
+    seg = {
+        'JA': 'ja', 'JP': 'ja', 'EN': 'en', 'TW': 'tw', 'HK': 'hk',
+        'KR': 'hr', 'HR': 'hr',
+    }.get((lc or 'EN').upper(), 'en')
     gid = str(gasha_id or '').strip()
     return f'{OFFICIAL_GASHA_BASE}/{seg}/gasha/detail.html?gasha_id={gid}'
 

@@ -15387,9 +15387,10 @@ def collaboration_stage_thumb_url(thumbnail_resource_id, event_id=None):
 
 def collaboration_stage_select_logo_url(lang_code, event_id='230002'):
     """Stage-select logo for Collaboration Stage toolbar button (locale suffix)."""
-    loc = {'EN': 'en', 'JA': 'ja', 'JP': 'ja', 'TW': 'tw', 'HK': 'hk'}.get(
-        str(lang_code or 'EN').upper(), 'en'
-    )
+    loc = {
+        'EN': 'en', 'JA': 'ja', 'JP': 'ja', 'TW': 'tw', 'HK': 'hk',
+        'KR': 'hr', 'HR': 'hr',
+    }.get(str(lang_code or 'EN').upper(), 'en')
     eid = normalize_id(event_id) or '230002'
     rid = f'lite_scenario_event_stage_select_logo_{eid}_{loc}'
     return game_image_public_url(_game_images_webp_path(COLLAB_STAGE_IMAGE_SUBDIR, rid))
@@ -17375,7 +17376,7 @@ def _prewarm_banner_timeline_caches():
         if get_cached_response(ck):
             continue
         try:
-            with app.test_request_context(f'/api/banner_timeline?lang={lc}&sv=22'):
+            with app.test_request_context(f'/api/banner_timeline?lang={lc}&sv=23'):
                 api_banner_timeline()
             warmed += 1
         except Exception as e:
@@ -29838,7 +29839,11 @@ def format_banner_duration_ms(delta_ms):
 
 
 def _banner_timeline_image_suffix(lc):
-    return {'EN': 'en', 'TW': 'tw', 'HK': 'hk', 'JA': 'ja', 'JP': 'ja'}.get(lc, 'en')
+    # Game CDN Gasha/ML art: EN→en, JA→ja, TW→tw, HK→hk, KR UI (HR pack)→hr.
+    return {
+        'EN': 'en', 'TW': 'tw', 'HK': 'hk', 'JA': 'ja', 'JP': 'ja',
+        'KR': 'hr', 'HR': 'hr',
+    }.get((lc or 'EN').upper(), 'en')
 
 
 def _banner_timeline_unit_item(uid, ld):
@@ -29956,9 +29961,9 @@ def _bt_banner_thumb_should_use_ver2_logo(appeal_resource_id, start_ms):
 def api_banner_timeline():
     """Gacha banner list with schedules, appeal art, and featured units/characters from master chains."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    # v22: classic thumbs; warm path must not wait on a second key.
-    ck = f'banner_tl_v22_{lc}'
-    ck_full = f'banner_tl_full_v22_{lc}'
+    # v23: KR/HR Gasha art uses _hr (parity with JA/TW/HK locale suffixes).
+    ck = f'banner_tl_v23_{lc}'
+    ck_full = f'banner_tl_full_v23_{lc}'
     cached = get_cached_response(ck)
     if cached:
         if not get_cached_response(ck_full):
@@ -31814,6 +31819,8 @@ def _bt_banner_vote_enabled(gasha_id, featured_units, featured_chars, featured_s
 def _bt_timeline_cache_keys_for_lang(lc):
     """Prefer current timeline cache tag; keep older keys as fallback during rollouts."""
     return (
+        f'banner_tl_v23_{lc}',
+        f'banner_tl_full_v23_{lc}',
         f'banner_tl_v22_{lc}',
         f'banner_tl_full_v22_{lc}',
         f'banner_tl_v21_{lc}',

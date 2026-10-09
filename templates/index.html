@@ -101,8 +101,8 @@
     if(/^\/(tl|banners)\/?$/i.test(path)){
       window.__GGEN_BT_BOOT__={
         lang:l,
-        cacheKey:l+'|drl22',
-        timeline:fetch('/api/banner_timeline?lang='+encodeURIComponent(l)+'&sv=22',{credentials:'same-origin'}).then(function(r){return r.ok?r.json():null}),
+        cacheKey:l+'|drl23',
+        timeline:fetch('/api/banner_timeline?lang='+encodeURIComponent(l)+'&sv=23',{credentials:'same-origin'}).then(function(r){return r.ok?r.json():null}),
         votes:fetch('/api/banner_timeline/votes?lang='+encodeURIComponent(l),{credentials:'same-origin',cache:'no-store'}).then(function(r){return r.ok?r.json():null}).catch(function(){return null})
       };
     }

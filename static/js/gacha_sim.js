@@ -33,9 +33,10 @@ window.GgenGachaSim = (function () {
 
   function logoLangSuffix() {
     var l = uiLang();
-    if (l === "JA") return "ja";
+    if (l === "JA" || l === "JP") return "ja";
     if (l === "TW") return "tw";
     if (l === "HK") return "hk";
+    if (l === "KR" || l === "HR") return "hr";
     return "en";
   }
 

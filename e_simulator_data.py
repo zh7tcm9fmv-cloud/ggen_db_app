@@ -260,6 +260,7 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
 
     lang_logo_suffix = {
         'EN': 'en', 'JA': 'ja', 'TW': 'tw', 'HK': 'hk', 'JP': 'ja',
+        'KR': 'hr', 'HR': 'hr',
     }.get((lang_code or 'EN').upper(), 'en')
 
     def pub(path):
