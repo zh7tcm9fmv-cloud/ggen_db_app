@@ -96,8 +96,14 @@
   }
 
   var injectedNotoUi=false;
-  /* Stage source bar: one Noto face for all locales (matches JP "Challenge" label look). */
+  /* Stage source bar Noto — JA/TW/HK only. EN/KR must not pull multi-MB Noto JP (snappy bar). */
   function injectNotoForStageUi(){
+    var lang=currentLang();
+    if(!needsBodyCjk(lang)){
+      var stale=document.getElementById('ggenNotoStageUi');
+      if(stale)stale.remove();
+      return;
+    }
     if(injectedNotoUi||document.getElementById('ggenBrandFontBody')||document.getElementById('ggenNotoStageUi')){injectedNotoUi=true;return}
     if(paused||detailOpen())return;
     appendFaces('ggenNotoStageUi',face(
@@ -154,11 +160,13 @@
     var lang=currentLang();
     if(!needsBodyCjk(lang)){
       injectedBodyFor=lang;
+      injectedNotoUi=false;
       var el=document.getElementById('ggenBrandFontBody');
       if(el)el.remove();
+      var noto=document.getElementById('ggenNotoStageUi');
+      if(noto)noto.remove();
       if(detailOpen()){paused=true;return}
       if(!injectedBrand)scheduleBrand();
-      injectNotoForStageUi();
       return;
     }
     if(detailOpen()){paused=true;return}
