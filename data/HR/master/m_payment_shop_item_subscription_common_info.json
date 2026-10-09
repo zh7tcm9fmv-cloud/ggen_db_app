@@ -1,0 +1,112 @@
+[
+  {
+    "Id": 100000001,
+    "SubscriptionCommonDescriptionTypeIndex": 6,
+    "SortOrder": 1,
+    "DescriptionLanguageId": 193100000000000006,
+    "Priority": 1,
+    "ScheduleId": 0,
+    "HeaderDescriptionLanguageId": 193400000000000006,
+    "PaymentShopItemId": 0
+  },
+  {
+    "Id": 100000002,
+    "SubscriptionCommonDescriptionTypeIndex": 8,
+    "SortOrder": 2,
+    "DescriptionLanguageId": 193100000000000008,
+    "Priority": 1,
+    "ScheduleId": 0,
+    "HeaderDescriptionLanguageId": 193400000000000008,
+    "PaymentShopItemId": 0
+  },
+  {
+    "Id": 100000004,
+    "SubscriptionCommonDescriptionTypeIndex": 1,
+    "SortOrder": 4,
+    "DescriptionLanguageId": 193100000000000001,
+    "Priority": 1,
+    "ScheduleId": 0,
+    "HeaderDescriptionLanguageId": 193400000000000001,
+    "PaymentShopItemId": 0
+  },
+  {
+    "Id": 100000005,
+    "SubscriptionCommonDescriptionTypeIndex": 2,
+    "SortOrder": 5,
+    "DescriptionLanguageId": 193100000000000002,
+    "Priority": 1,
+    "ScheduleId": 0,
+    "HeaderDescriptionLanguageId": 193400000000000002,
+    "PaymentShopItemId": 0
+  },
+  {
+    "Id": 100000006,
+    "SubscriptionCommonDescriptionTypeIndex": 3,
+    "SortOrder": 6,
+    "DescriptionLanguageId": 193100000000000003,
+    "Priority": 1,
+    "ScheduleId": 0,
+    "HeaderDescriptionLanguageId": 193400000000000003,
+    "PaymentShopItemId": 0
+  },
+  {
+    "Id": 100000007,
+    "SubscriptionCommonDescriptionTypeIndex": 4,
+    "SortOrder": 7,
+    "DescriptionLanguageId": 193100000000000004,
+    "Priority": 1,
+    "ScheduleId": 0,
+    "HeaderDescriptionLanguageId": 193400000000000004,
+    "PaymentShopItemId": 0
+  },
+  {
+    "Id": 100000008,
+    "SubscriptionCommonDescriptionTypeIndex": 5,
+    "SortOrder": 8,
+    "DescriptionLanguageId": 193100000000000005,
+    "Priority": 1,
+    "ScheduleId": 0,
+    "HeaderDescriptionLanguageId": 193400000000000005,
+    "PaymentShopItemId": 0
+  },
+  {
+    "Id": 5260645010201,
+    "SubscriptionCommonDescriptionTypeIndex": 6,
+    "SortOrder": 2,
+    "DescriptionLanguageId": 193100000000000006,
+    "Priority": 1,
+    "ScheduleId": 0,
+    "HeaderDescriptionLanguageId": 193405260645010201,
+    "PaymentShopItemId": 526064501
+  },
+  {
+    "Id": 5260645010301,
+    "SubscriptionCommonDescriptionTypeIndex": 8,
+    "SortOrder": 3,
+    "DescriptionLanguageId": 193100000000000008,
+    "Priority": 1,
+    "ScheduleId": 0,
+    "HeaderDescriptionLanguageId": 193405260645010301,
+    "PaymentShopItemId": 526064501
+  },
+  {
+    "Id": 5260645010401,
+    "SubscriptionCommonDescriptionTypeIndex": 1,
+    "SortOrder": 4,
+    "DescriptionLanguageId": 193105260645010401,
+    "Priority": 1,
+    "ScheduleId": 0,
+    "HeaderDescriptionLanguageId": 193400000000000001,
+    "PaymentShopItemId": 526064501
+  },
+  {
+    "Id": 5260645010501,
+    "SubscriptionCommonDescriptionTypeIndex": 2,
+    "SortOrder": 5,
+    "DescriptionLanguageId": 193105260645010501,
+    "Priority": 1,
+    "ScheduleId": 0,
+    "HeaderDescriptionLanguageId": 193400000000000002,
+    "PaymentShopItemId": 526064501
+  }
+]

@@ -1,0 +1,173 @@
+[
+  {
+    "Id": 170500101,
+    "StageId": 1705001,
+    "ReinforcementLimit": 1,
+    "X": 9,
+    "Y": 14,
+    "Width": 2,
+    "Height": 2
+  },
+  {
+    "Id": 170500102,
+    "StageId": 1705001,
+    "ReinforcementLimit": 1,
+    "X": 16,
+    "Y": 14,
+    "Width": 2,
+    "Height": 2
+  },
+  {
+    "Id": 170500201,
+    "StageId": 1705002,
+    "ReinforcementLimit": 1,
+    "X": 9,
+    "Y": 14,
+    "Width": 2,
+    "Height": 2
+  },
+  {
+    "Id": 170500202,
+    "StageId": 1705002,
+    "ReinforcementLimit": 1,
+    "X": 16,
+    "Y": 14,
+    "Width": 2,
+    "Height": 2
+  },
+  {
+    "Id": 170500203,
+    "StageId": 1705002,
+    "ReinforcementLimit": 1,
+    "X": 12,
+    "Y": 9,
+    "Width": 3,
+    "Height": 2
+  },
+  {
+    "Id": 170500301,
+    "StageId": 1705003,
+    "ReinforcementLimit": 1,
+    "X": 12,
+    "Y": 9,
+    "Width": 3,
+    "Height": 2
+  },
+  {
+    "Id": 170500302,
+    "StageId": 1705003,
+    "ReinforcementLimit": 1,
+    "X": 9,
+    "Y": 14,
+    "Width": 3,
+    "Height": 2
+  },
+  {
+    "Id": 170500303,
+    "StageId": 1705003,
+    "ReinforcementLimit": 1,
+    "X": 16,
+    "Y": 14,
+    "Width": 3,
+    "Height": 2
+  },
+  {
+    "Id": 170500304,
+    "StageId": 1705003,
+    "ReinforcementLimit": 1,
+    "X": 12,
+    "Y": 17,
+    "Width": 3,
+    "Height": 2
+  },
+  {
+    "Id": 170600101,
+    "StageId": 1706001,
+    "ReinforcementLimit": 2,
+    "X": 6,
+    "Y": 16,
+    "Width": 3,
+    "Height": 2
+  },
+  {
+    "Id": 170600102,
+    "StageId": 1706001,
+    "ReinforcementLimit": 1,
+    "X": 12,
+    "Y": 25,
+    "Width": 3,
+    "Height": 2
+  },
+  {
+    "Id": 170600201,
+    "StageId": 1706002,
+    "ReinforcementLimit": 1,
+    "X": 6,
+    "Y": 20,
+    "Width": 2,
+    "Height": 2
+  },
+  {
+    "Id": 170600202,
+    "StageId": 1706002,
+    "ReinforcementLimit": 3,
+    "X": 12,
+    "Y": 17,
+    "Width": 3,
+    "Height": 2
+  },
+  {
+    "Id": 170600203,
+    "StageId": 1706002,
+    "ReinforcementLimit": 1,
+    "X": 8,
+    "Y": 20,
+    "Width": 1,
+    "Height": 2
+  },
+  {
+    "Id": 170600204,
+    "StageId": 1706002,
+    "ReinforcementLimit": 2,
+    "X": 11,
+    "Y": 25,
+    "Width": 4,
+    "Height": 3
+  },
+  {
+    "Id": 170600301,
+    "StageId": 1706003,
+    "ReinforcementLimit": 3,
+    "X": 7,
+    "Y": 14,
+    "Width": 2,
+    "Height": 3
+  },
+  {
+    "Id": 170600302,
+    "StageId": 1706003,
+    "ReinforcementLimit": 1,
+    "X": 12,
+    "Y": 17,
+    "Width": 2,
+    "Height": 1
+  },
+  {
+    "Id": 170600303,
+    "StageId": 1706003,
+    "ReinforcementLimit": 2,
+    "X": 12,
+    "Y": 15,
+    "Width": 2,
+    "Height": 2
+  },
+  {
+    "Id": 170600304,
+    "StageId": 1706003,
+    "ReinforcementLimit": 1,
+    "X": 12,
+    "Y": 14,
+    "Width": 2,
+    "Height": 1
+  }
+]

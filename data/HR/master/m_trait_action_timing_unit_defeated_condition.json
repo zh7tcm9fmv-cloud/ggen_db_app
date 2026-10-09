@@ -1,0 +1,146 @@
+[
+  {
+    "Id": 100000001,
+    "AllyTypeIndex": 1,
+    "MainUnitIds": "",
+    "CharacterIds": "1400000201"
+  },
+  {
+    "Id": 100000002,
+    "AllyTypeIndex": 1,
+    "MainUnitIds": "",
+    "CharacterIds": "1400002500"
+  },
+  {
+    "Id": 100000003,
+    "AllyTypeIndex": 1,
+    "MainUnitIds": "",
+    "CharacterIds": "1013001100"
+  },
+  {
+    "Id": 100000004,
+    "AllyTypeIndex": 1,
+    "MainUnitIds": "",
+    "CharacterIds": "1013000900"
+  },
+  {
+    "Id": 100000005,
+    "AllyTypeIndex": 2,
+    "MainUnitIds": "",
+    "CharacterIds": "1370003700"
+  },
+  {
+    "Id": 100000006,
+    "AllyTypeIndex": 1,
+    "MainUnitIds": "",
+    "CharacterIds": "1370003202"
+  },
+  {
+    "Id": 100000007,
+    "AllyTypeIndex": 1,
+    "MainUnitIds": "",
+    "CharacterIds": "1370005402"
+  },
+  {
+    "Id": 100000008,
+    "AllyTypeIndex": 1,
+    "MainUnitIds": "",
+    "CharacterIds": "1001000100"
+  },
+  {
+    "Id": 100000009,
+    "AllyTypeIndex": 1,
+    "MainUnitIds": "",
+    "CharacterIds": "1125000100"
+  },
+  {
+    "Id": 100000010,
+    "AllyTypeIndex": 1,
+    "MainUnitIds": "",
+    "CharacterIds": "1400002000"
+  },
+  {
+    "Id": 100000011,
+    "AllyTypeIndex": 1,
+    "MainUnitIds": "",
+    "CharacterIds": "1001001700"
+  },
+  {
+    "Id": 100000012,
+    "AllyTypeIndex": 1,
+    "MainUnitIds": "",
+    "CharacterIds": "1850003900"
+  },
+  {
+    "Id": 100000013,
+    "AllyTypeIndex": 1,
+    "MainUnitIds": "",
+    "CharacterIds": "1219000600"
+  },
+  {
+    "Id": 100000014,
+    "AllyTypeIndex": 1,
+    "MainUnitIds": "",
+    "CharacterIds": "1219000100"
+  },
+  {
+    "Id": 100000015,
+    "AllyTypeIndex": 1,
+    "MainUnitIds": "",
+    "CharacterIds": "2162000100"
+  },
+  {
+    "Id": 100000016,
+    "AllyTypeIndex": 1,
+    "MainUnitIds": "",
+    "CharacterIds": "1009000900"
+  },
+  {
+    "Id": 100000017,
+    "AllyTypeIndex": 1,
+    "MainUnitIds": "",
+    "CharacterIds": "1009000200"
+  },
+  {
+    "Id": 100000018,
+    "AllyTypeIndex": 1,
+    "MainUnitIds": "",
+    "CharacterIds": "2370001500"
+  },
+  {
+    "Id": 100000019,
+    "AllyTypeIndex": 1,
+    "MainUnitIds": "",
+    "CharacterIds": "1001000200"
+  },
+  {
+    "Id": 100000020,
+    "AllyTypeIndex": 1,
+    "MainUnitIds": "",
+    "CharacterIds": "1001000300"
+  },
+  {
+    "Id": 100000023,
+    "AllyTypeIndex": 1,
+    "MainUnitIds": "",
+    "CharacterIds": "1175000700"
+  },
+  {
+    "Id": 100000024,
+    "AllyTypeIndex": 1,
+    "MainUnitIds": "",
+    "CharacterIds": "1175001200"
+  },
+  {
+    "Id": 100000025,
+    "AllyTypeIndex": 1,
+    "MainUnitIds": "",
+    "CharacterIds": "1175001700"
+  },
+  {
+    "Id": 100000026,
+    "AllyTypeIndex": 1,
+    "MainUnitIds": "",
+    "CharacterIds": "1175001800"
+  }
+]

@@ -1,0 +1,212 @@
+[
+  {
+    "LeagueMatchingGroupId": 1,
+    "LeagueRankTypeIndex": 1,
+    "SlotNumber": 1,
+    "LeagueSlotTypeIndex": 1,
+    "LeagueMatchingGroupRangeId": 61
+  },
+  {
+    "LeagueMatchingGroupId": 1,
+    "LeagueRankTypeIndex": 1,
+    "SlotNumber": 2,
+    "LeagueSlotTypeIndex": 2,
+    "LeagueMatchingGroupRangeId": 62
+  },
+  {
+    "LeagueMatchingGroupId": 1,
+    "LeagueRankTypeIndex": 1,
+    "SlotNumber": 3,
+    "LeagueSlotTypeIndex": 3,
+    "LeagueMatchingGroupRangeId": 63
+  },
+  {
+    "LeagueMatchingGroupId": 1,
+    "LeagueRankTypeIndex": 1,
+    "SlotNumber": 4,
+    "LeagueSlotTypeIndex": 2,
+    "LeagueMatchingGroupRangeId": 62
+  },
+  {
+    "LeagueMatchingGroupId": 1,
+    "LeagueRankTypeIndex": 1,
+    "SlotNumber": 5,
+    "LeagueSlotTypeIndex": 1,
+    "LeagueMatchingGroupRangeId": 61
+  },
+  {
+    "LeagueMatchingGroupId": 1,
+    "LeagueRankTypeIndex": 2,
+    "SlotNumber": 1,
+    "LeagueSlotTypeIndex": 1,
+    "LeagueMatchingGroupRangeId": 51
+  },
+  {
+    "LeagueMatchingGroupId": 1,
+    "LeagueRankTypeIndex": 2,
+    "SlotNumber": 2,
+    "LeagueSlotTypeIndex": 2,
+    "LeagueMatchingGroupRangeId": 52
+  },
+  {
+    "LeagueMatchingGroupId": 1,
+    "LeagueRankTypeIndex": 2,
+    "SlotNumber": 3,
+    "LeagueSlotTypeIndex": 3,
+    "LeagueMatchingGroupRangeId": 53
+  },
+  {
+    "LeagueMatchingGroupId": 1,
+    "LeagueRankTypeIndex": 2,
+    "SlotNumber": 4,
+    "LeagueSlotTypeIndex": 2,
+    "LeagueMatchingGroupRangeId": 52
+  },
+  {
+    "LeagueMatchingGroupId": 1,
+    "LeagueRankTypeIndex": 2,
+    "SlotNumber": 5,
+    "LeagueSlotTypeIndex": 1,
+    "LeagueMatchingGroupRangeId": 51
+  },
+  {
+    "LeagueMatchingGroupId": 1,
+    "LeagueRankTypeIndex": 3,
+    "SlotNumber": 1,
+    "LeagueSlotTypeIndex": 1,
+    "LeagueMatchingGroupRangeId": 41
+  },
+  {
+    "LeagueMatchingGroupId": 1,
+    "LeagueRankTypeIndex": 3,
+    "SlotNumber": 2,
+    "LeagueSlotTypeIndex": 2,
+    "LeagueMatchingGroupRangeId": 42
+  },
+  {
+    "LeagueMatchingGroupId": 1,
+    "LeagueRankTypeIndex": 3,
+    "SlotNumber": 3,
+    "LeagueSlotTypeIndex": 3,
+    "LeagueMatchingGroupRangeId": 43
+  },
+  {
+    "LeagueMatchingGroupId": 1,
+    "LeagueRankTypeIndex": 3,
+    "SlotNumber": 4,
+    "LeagueSlotTypeIndex": 2,
+    "LeagueMatchingGroupRangeId": 42
+  },
+  {
+    "LeagueMatchingGroupId": 1,
+    "LeagueRankTypeIndex": 3,
+    "SlotNumber": 5,
+    "LeagueSlotTypeIndex": 1,
+    "LeagueMatchingGroupRangeId": 41
+  },
+  {
+    "LeagueMatchingGroupId": 1,
+    "LeagueRankTypeIndex": 4,
+    "SlotNumber": 1,
+    "LeagueSlotTypeIndex": 1,
+    "LeagueMatchingGroupRangeId": 31
+  },
+  {
+    "LeagueMatchingGroupId": 1,
+    "LeagueRankTypeIndex": 4,
+    "SlotNumber": 2,
+    "LeagueSlotTypeIndex": 2,
+    "LeagueMatchingGroupRangeId": 32
+  },
+  {
+    "LeagueMatchingGroupId": 1,
+    "LeagueRankTypeIndex": 4,
+    "SlotNumber": 3,
+    "LeagueSlotTypeIndex": 3,
+    "LeagueMatchingGroupRangeId": 33
+  },
+  {
+    "LeagueMatchingGroupId": 1,
+    "LeagueRankTypeIndex": 4,
+    "SlotNumber": 4,
+    "LeagueSlotTypeIndex": 2,
+    "LeagueMatchingGroupRangeId": 32
+  },
+  {
+    "LeagueMatchingGroupId": 1,
+    "LeagueRankTypeIndex": 4,
+    "SlotNumber": 5,
+    "LeagueSlotTypeIndex": 1,
+    "LeagueMatchingGroupRangeId": 31
+  },
+  {
+    "LeagueMatchingGroupId": 1,
+    "LeagueRankTypeIndex": 5,
+    "SlotNumber": 1,
+    "LeagueSlotTypeIndex": 1,
+    "LeagueMatchingGroupRangeId": 21
+  },
+  {
+    "LeagueMatchingGroupId": 1,
+    "LeagueRankTypeIndex": 5,
+    "SlotNumber": 2,
+    "LeagueSlotTypeIndex": 2,
+    "LeagueMatchingGroupRangeId": 22
+  },
+  {
+    "LeagueMatchingGroupId": 1,
+    "LeagueRankTypeIndex": 5,
+    "SlotNumber": 3,
+    "LeagueSlotTypeIndex": 3,
+    "LeagueMatchingGroupRangeId": 23
+  },
+  {
+    "LeagueMatchingGroupId": 1,
+    "LeagueRankTypeIndex": 5,
+    "SlotNumber": 4,
+    "LeagueSlotTypeIndex": 2,
+    "LeagueMatchingGroupRangeId": 22
+  },
+  {
+    "LeagueMatchingGroupId": 1,
+    "LeagueRankTypeIndex": 5,
+    "SlotNumber": 5,
+    "LeagueSlotTypeIndex": 1,
+    "LeagueMatchingGroupRangeId": 21
+  },
+  {
+    "LeagueMatchingGroupId": 1,
+    "LeagueRankTypeIndex": 6,
+    "SlotNumber": 1,
+    "LeagueSlotTypeIndex": 1,
+    "LeagueMatchingGroupRangeId": 11
+  },
+  {
+    "LeagueMatchingGroupId": 1,
+    "LeagueRankTypeIndex": 6,
+    "SlotNumber": 2,
+    "LeagueSlotTypeIndex": 2,
+    "LeagueMatchingGroupRangeId": 12
+  },
+  {
+    "LeagueMatchingGroupId": 1,
+    "LeagueRankTypeIndex": 6,
+    "SlotNumber": 3,
+    "LeagueSlotTypeIndex": 3,
+    "LeagueMatchingGroupRangeId": 13
+  },
+  {
+    "LeagueMatchingGroupId": 1,
+    "LeagueRankTypeIndex": 6,
+    "SlotNumber": 4,
+    "LeagueSlotTypeIndex": 2,
+    "LeagueMatchingGroupRangeId": 12
+  },
+  {
+    "LeagueMatchingGroupId": 1,
+    "LeagueRankTypeIndex": 6,
+    "SlotNumber": 5,
+    "LeagueSlotTypeIndex": 1,
+    "LeagueMatchingGroupRangeId": 11
+  }
+]

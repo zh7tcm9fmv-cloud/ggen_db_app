@@ -1,0 +1,146 @@
+[
+  {
+    "Id": 2500010101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 0,
+    "TutorialTriggerConditionSetId": 25000101
+  },
+  {
+    "Id": 2500010201,
+    "ConditionTypeIndex": 2,
+    "TargetValue": 0,
+    "TutorialTriggerConditionSetId": 25000102
+  },
+  {
+    "Id": 2500010301,
+    "ConditionTypeIndex": 3,
+    "TargetValue": 2500010090,
+    "TutorialTriggerConditionSetId": 25000103
+  },
+  {
+    "Id": 2500010401,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 0,
+    "TutorialTriggerConditionSetId": 25000104
+  },
+  {
+    "Id": 2500010402,
+    "ConditionTypeIndex": 7,
+    "TargetValue": 25000105,
+    "TutorialTriggerConditionSetId": 25000104
+  },
+  {
+    "Id": 2500010501,
+    "ConditionTypeIndex": 3,
+    "TargetValue": 2500010091,
+    "TutorialTriggerConditionSetId": 25000105
+  },
+  {
+    "Id": 2500010601,
+    "ConditionTypeIndex": 3,
+    "TargetValue": 2500010130,
+    "TutorialTriggerConditionSetId": 25000106
+  },
+  {
+    "Id": 2500010602,
+    "ConditionTypeIndex": 2,
+    "TargetValue": 0,
+    "TutorialTriggerConditionSetId": 25000106
+  },
+  {
+    "Id": 2500010701,
+    "ConditionTypeIndex": 4,
+    "TargetValue": 2500010270,
+    "TutorialTriggerConditionSetId": 25000107
+  },
+  {
+    "Id": 2500010702,
+    "ConditionTypeIndex": 4,
+    "TargetValue": 2500010540,
+    "TutorialTriggerConditionSetId": 25000107
+  },
+  {
+    "Id": 2500010703,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 0,
+    "TutorialTriggerConditionSetId": 25000107
+  },
+  {
+    "Id": 2500010801,
+    "ConditionTypeIndex": 4,
+    "TargetValue": 2500010620,
+    "TutorialTriggerConditionSetId": 25000108
+  },
+  {
+    "Id": 2500010802,
+    "ConditionTypeIndex": 2,
+    "TargetValue": 0,
+    "TutorialTriggerConditionSetId": 25000108
+  },
+  {
+    "Id": 2500010901,
+    "ConditionTypeIndex": 8,
+    "TargetValue": 100,
+    "TutorialTriggerConditionSetId": 25000109
+  },
+  {
+    "Id": 2500010902,
+    "ConditionTypeIndex": 2,
+    "TargetValue": 0,
+    "TutorialTriggerConditionSetId": 25000109
+  },
+  {
+    "Id": 2500011001,
+    "ConditionTypeIndex": 6,
+    "TargetValue": 92011012,
+    "TutorialTriggerConditionSetId": 25000110
+  },
+  {
+    "Id": 2500011002,
+    "ConditionTypeIndex": 2,
+    "TargetValue": 0,
+    "TutorialTriggerConditionSetId": 25000110
+  },
+  {
+    "Id": 2500011101,
+    "ConditionTypeIndex": 6,
+    "TargetValue": 92011020,
+    "TutorialTriggerConditionSetId": 25000111
+  },
+  {
+    "Id": 2500011102,
+    "ConditionTypeIndex": 2,
+    "TargetValue": 0,
+    "TutorialTriggerConditionSetId": 25000111
+  },
+  {
+    "Id": 2500011201,
+    "ConditionTypeIndex": 6,
+    "TargetValue": 92012012,
+    "TutorialTriggerConditionSetId": 25000112
+  },
+  {
+    "Id": 2500011202,
+    "ConditionTypeIndex": 2,
+    "TargetValue": 0,
+    "TutorialTriggerConditionSetId": 25000112
+  },
+  {
+    "Id": 2500011301,
+    "ConditionTypeIndex": 6,
+    "TargetValue": 92012020,
+    "TutorialTriggerConditionSetId": 25000113
+  },
+  {
+    "Id": 2500011302,
+    "ConditionTypeIndex": 2,
+    "TargetValue": 0,
+    "TutorialTriggerConditionSetId": 25000113
+  },
+  {
+    "Id": 2500011401,
+    "ConditionTypeIndex": 5,
+    "TargetValue": 92011012,
+    "TutorialTriggerConditionSetId": 25000114
+  }
+]

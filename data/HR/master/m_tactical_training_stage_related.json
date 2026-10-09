@@ -1,0 +1,26 @@
+[
+  {
+    "TacticalTrainingStageId": 90110101,
+    "RelatedStageId": 90520001
+  },
+  {
+    "TacticalTrainingStageId": 90110101,
+    "RelatedStageId": 90520002
+  },
+  {
+    "TacticalTrainingStageId": 90110102,
+    "RelatedStageId": 90520017
+  },
+  {
+    "TacticalTrainingStageId": 90110103,
+    "RelatedStageId": 90520003
+  },
+  {
+    "TacticalTrainingStageId": 90110104,
+    "RelatedStageId": 90520003
+  },
+  {
+    "TacticalTrainingStageId": 90110105,
+    "RelatedStageId": 90520004
+  }
+]

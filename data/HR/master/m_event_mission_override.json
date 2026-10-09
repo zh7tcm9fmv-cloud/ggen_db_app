@@ -1,0 +1,26 @@
+[
+  {
+    "Id": 20000401,
+    "EventId": 200004,
+    "StandUpResourceId": "cb_g7050c00400",
+    "QuoteLanguageId": 251100000020000401,
+    "BgmId": 170500003,
+    "BackgroundResourceId": "em_200004"
+  },
+  {
+    "Id": 20001501,
+    "EventId": 200015,
+    "StandUpResourceId": "cb_g7050c00800",
+    "QuoteLanguageId": 251100000020001501,
+    "BgmId": 170500006,
+    "BackgroundResourceId": "em_200015"
+  },
+  {
+    "Id": 20001601,
+    "EventId": 200016,
+    "StandUpResourceId": "cb_g7050c04300",
+    "QuoteLanguageId": 251100000020001601,
+    "BgmId": 170500011,
+    "BackgroundResourceId": "em_200016"
+  }
+]

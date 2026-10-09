@@ -1,0 +1,20 @@
+[
+  {
+    "Id": 25000101,
+    "ChronicleEventId": 250001,
+    "SortOrder": 1,
+    "TabNameLanguageId": 380100000025000101
+  },
+  {
+    "Id": 25000102,
+    "ChronicleEventId": 250001,
+    "SortOrder": 2,
+    "TabNameLanguageId": 380100000025000102
+  },
+  {
+    "Id": 25000103,
+    "ChronicleEventId": 250001,
+    "SortOrder": 3,
+    "TabNameLanguageId": 380100000025000103
+  }
+]

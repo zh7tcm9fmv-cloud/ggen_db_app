@@ -1,0 +1,14 @@
+[
+  {
+    "Id": 26095001,
+    "SortOrder": 999850011,
+    "DescriptionLanguageId": 180600000260950011,
+    "AvailableScheduleId": 2609502701,
+    "ReceivableScheduleId": 2609502708,
+    "HomeBannerResourceId": "thum_step_mission_26095001",
+    "HomeBannerLanguageId": 180500000260950011,
+    "InformationId": 2026093009,
+    "TabResourceId": "sm_banner_26095001",
+    "ProgressRewardResourceId": "stm_c_banner_26095001"
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "Id": 2504100001,
+    "ProductId": "gpp_a",
+    "RewardSetId": 18000325041001
+  },
+  {
+    "Id": 2504100002,
+    "ProductId": "gpp_b",
+    "RewardSetId": 18000325041002
+  },
+  {
+    "Id": 2504100003,
+    "ProductId": "gpp_c",
+    "RewardSetId": 18000325041003
+  },
+  {
+    "Id": 2504100004,
+    "ProductId": "gpp_d",
+    "RewardSetId": 18000325041004
+  }
+]

@@ -1,0 +1,320 @@
+[
+  {
+    "Id": 250950010101,
+    "MybaseAdditionalAssetResourceSetId": 25095001,
+    "MybaseAdditionalAssetTypeIndex": 1,
+    "ResourceId": "bgm_0000_0141"
+  },
+  {
+    "Id": 250950010201,
+    "MybaseAdditionalAssetResourceSetId": 25095001,
+    "MybaseAdditionalAssetTypeIndex": 2,
+    "ResourceId": "g8500u03800"
+  },
+  {
+    "Id": 250950010202,
+    "MybaseAdditionalAssetResourceSetId": 25095001,
+    "MybaseAdditionalAssetTypeIndex": 2,
+    "ResourceId": "g8500u03900"
+  },
+  {
+    "Id": 250950010203,
+    "MybaseAdditionalAssetResourceSetId": 25095001,
+    "MybaseAdditionalAssetTypeIndex": 2,
+    "ResourceId": "g8500u04000"
+  },
+  {
+    "Id": 250950010204,
+    "MybaseAdditionalAssetResourceSetId": 25095001,
+    "MybaseAdditionalAssetTypeIndex": 2,
+    "ResourceId": "g8500u04100"
+  },
+  {
+    "Id": 250950010205,
+    "MybaseAdditionalAssetResourceSetId": 25095001,
+    "MybaseAdditionalAssetTypeIndex": 2,
+    "ResourceId": "g8500u04200"
+  },
+  {
+    "Id": 250950010206,
+    "MybaseAdditionalAssetResourceSetId": 25095001,
+    "MybaseAdditionalAssetTypeIndex": 2,
+    "ResourceId": "g8500u04300"
+  },
+  {
+    "Id": 250950010301,
+    "MybaseAdditionalAssetResourceSetId": 25095001,
+    "MybaseAdditionalAssetTypeIndex": 3,
+    "ResourceId": "g1250u00400"
+  },
+  {
+    "Id": 250950010302,
+    "MybaseAdditionalAssetResourceSetId": 25095001,
+    "MybaseAdditionalAssetTypeIndex": 3,
+    "ResourceId": "g1250u00401"
+  },
+  {
+    "Id": 250950010303,
+    "MybaseAdditionalAssetResourceSetId": 25095001,
+    "MybaseAdditionalAssetTypeIndex": 3,
+    "ResourceId": "g1330u00200"
+  },
+  {
+    "Id": 250950010304,
+    "MybaseAdditionalAssetResourceSetId": 25095001,
+    "MybaseAdditionalAssetTypeIndex": 3,
+    "ResourceId": "g1330u00201"
+  },
+  {
+    "Id": 250950010305,
+    "MybaseAdditionalAssetResourceSetId": 25095001,
+    "MybaseAdditionalAssetTypeIndex": 3,
+    "ResourceId": "g1330u00400"
+  },
+  {
+    "Id": 250950010306,
+    "MybaseAdditionalAssetResourceSetId": 25095001,
+    "MybaseAdditionalAssetTypeIndex": 3,
+    "ResourceId": "g1330u00401"
+  },
+  {
+    "Id": 250950010401,
+    "MybaseAdditionalAssetResourceSetId": 25095001,
+    "MybaseAdditionalAssetTypeIndex": 4,
+    "ResourceId": "deco_1001"
+  },
+  {
+    "Id": 250950010501,
+    "MybaseAdditionalAssetResourceSetId": 25095001,
+    "MybaseAdditionalAssetTypeIndex": 5,
+    "ResourceId": "confetti_01"
+  },
+  {
+    "Id": 260350010101,
+    "MybaseAdditionalAssetResourceSetId": 26035001,
+    "MybaseAdditionalAssetTypeIndex": 1,
+    "ResourceId": "bgm_0000_0141"
+  },
+  {
+    "Id": 260350010201,
+    "MybaseAdditionalAssetResourceSetId": 26035001,
+    "MybaseAdditionalAssetTypeIndex": 2,
+    "ResourceId": "g8500u03800"
+  },
+  {
+    "Id": 260350010202,
+    "MybaseAdditionalAssetResourceSetId": 26035001,
+    "MybaseAdditionalAssetTypeIndex": 2,
+    "ResourceId": "g8500u03900"
+  },
+  {
+    "Id": 260350010203,
+    "MybaseAdditionalAssetResourceSetId": 26035001,
+    "MybaseAdditionalAssetTypeIndex": 2,
+    "ResourceId": "g8500u04000"
+  },
+  {
+    "Id": 260350010204,
+    "MybaseAdditionalAssetResourceSetId": 26035001,
+    "MybaseAdditionalAssetTypeIndex": 2,
+    "ResourceId": "g8500u04100"
+  },
+  {
+    "Id": 260350010205,
+    "MybaseAdditionalAssetResourceSetId": 26035001,
+    "MybaseAdditionalAssetTypeIndex": 2,
+    "ResourceId": "g8500u04200"
+  },
+  {
+    "Id": 260350010206,
+    "MybaseAdditionalAssetResourceSetId": 26035001,
+    "MybaseAdditionalAssetTypeIndex": 2,
+    "ResourceId": "g8500u04300"
+  },
+  {
+    "Id": 260350010301,
+    "MybaseAdditionalAssetResourceSetId": 26035001,
+    "MybaseAdditionalAssetTypeIndex": 3,
+    "ResourceId": "g2190u00150"
+  },
+  {
+    "Id": 260350010302,
+    "MybaseAdditionalAssetResourceSetId": 26035001,
+    "MybaseAdditionalAssetTypeIndex": 3,
+    "ResourceId": "g2190u00151"
+  },
+  {
+    "Id": 260350010303,
+    "MybaseAdditionalAssetResourceSetId": 26035001,
+    "MybaseAdditionalAssetTypeIndex": 3,
+    "ResourceId": "g2190u00350"
+  },
+  {
+    "Id": 260350010304,
+    "MybaseAdditionalAssetResourceSetId": 26035001,
+    "MybaseAdditionalAssetTypeIndex": 3,
+    "ResourceId": "g2190u00351"
+  },
+  {
+    "Id": 260350010305,
+    "MybaseAdditionalAssetResourceSetId": 26035001,
+    "MybaseAdditionalAssetTypeIndex": 3,
+    "ResourceId": "g3700u03500_2"
+  },
+  {
+    "Id": 260350010306,
+    "MybaseAdditionalAssetResourceSetId": 26035001,
+    "MybaseAdditionalAssetTypeIndex": 3,
+    "ResourceId": "g3700u03501_2"
+  },
+  {
+    "Id": 260350010307,
+    "MybaseAdditionalAssetResourceSetId": 26035001,
+    "MybaseAdditionalAssetTypeIndex": 3,
+    "ResourceId": "g3700u05950"
+  },
+  {
+    "Id": 260350010308,
+    "MybaseAdditionalAssetResourceSetId": 26035001,
+    "MybaseAdditionalAssetTypeIndex": 3,
+    "ResourceId": "g3700u05951"
+  },
+  {
+    "Id": 260350010309,
+    "MybaseAdditionalAssetResourceSetId": 26035001,
+    "MybaseAdditionalAssetTypeIndex": 3,
+    "ResourceId": "g3700u06800_2"
+  },
+  {
+    "Id": 260350010310,
+    "MybaseAdditionalAssetResourceSetId": 26035001,
+    "MybaseAdditionalAssetTypeIndex": 3,
+    "ResourceId": "g3700u06801_2"
+  },
+  {
+    "Id": 260350010401,
+    "MybaseAdditionalAssetResourceSetId": 26035001,
+    "MybaseAdditionalAssetTypeIndex": 4,
+    "ResourceId": "deco_1002"
+  },
+  {
+    "Id": 260350010501,
+    "MybaseAdditionalAssetResourceSetId": 26035001,
+    "MybaseAdditionalAssetTypeIndex": 5,
+    "ResourceId": "confetti_01"
+  },
+  {
+    "Id": 260940010101,
+    "MybaseAdditionalAssetResourceSetId": 26094001,
+    "MybaseAdditionalAssetTypeIndex": 1,
+    "ResourceId": "bgm_0000_0141"
+  },
+  {
+    "Id": 260940010201,
+    "MybaseAdditionalAssetResourceSetId": 26094001,
+    "MybaseAdditionalAssetTypeIndex": 2,
+    "ResourceId": "g8500u03800"
+  },
+  {
+    "Id": 260940010202,
+    "MybaseAdditionalAssetResourceSetId": 26094001,
+    "MybaseAdditionalAssetTypeIndex": 2,
+    "ResourceId": "g8500u03900"
+  },
+  {
+    "Id": 260940010203,
+    "MybaseAdditionalAssetResourceSetId": 26094001,
+    "MybaseAdditionalAssetTypeIndex": 2,
+    "ResourceId": "g8500u04000"
+  },
+  {
+    "Id": 260940010204,
+    "MybaseAdditionalAssetResourceSetId": 26094001,
+    "MybaseAdditionalAssetTypeIndex": 2,
+    "ResourceId": "g8500u04100"
+  },
+  {
+    "Id": 260940010205,
+    "MybaseAdditionalAssetResourceSetId": 26094001,
+    "MybaseAdditionalAssetTypeIndex": 2,
+    "ResourceId": "g8500u04200"
+  },
+  {
+    "Id": 260940010206,
+    "MybaseAdditionalAssetResourceSetId": 26094001,
+    "MybaseAdditionalAssetTypeIndex": 2,
+    "ResourceId": "g8500u04300"
+  },
+  {
+    "Id": 260940010301,
+    "MybaseAdditionalAssetResourceSetId": 26094001,
+    "MybaseAdditionalAssetTypeIndex": 3,
+    "ResourceId": "g1750u01300_left"
+  },
+  {
+    "Id": 260940010302,
+    "MybaseAdditionalAssetResourceSetId": 26094001,
+    "MybaseAdditionalAssetTypeIndex": 3,
+    "ResourceId": "g1750u01300_right"
+  },
+  {
+    "Id": 260940010303,
+    "MybaseAdditionalAssetResourceSetId": 26094001,
+    "MybaseAdditionalAssetTypeIndex": 3,
+    "ResourceId": "g1750u02000_left"
+  },
+  {
+    "Id": 260940010304,
+    "MybaseAdditionalAssetResourceSetId": 26094001,
+    "MybaseAdditionalAssetTypeIndex": 3,
+    "ResourceId": "g1750u02000_right"
+  },
+  {
+    "Id": 260940010309,
+    "MybaseAdditionalAssetResourceSetId": 26094001,
+    "MybaseAdditionalAssetTypeIndex": 3,
+    "ResourceId": "g1750u04700_left"
+  },
+  {
+    "Id": 260940010310,
+    "MybaseAdditionalAssetResourceSetId": 26094001,
+    "MybaseAdditionalAssetTypeIndex": 3,
+    "ResourceId": "g1750u04700_right"
+  },
+  {
+    "Id": 260940010311,
+    "MybaseAdditionalAssetResourceSetId": 26094001,
+    "MybaseAdditionalAssetTypeIndex": 3,
+    "ResourceId": "g1750u01900_left"
+  },
+  {
+    "Id": 260940010312,
+    "MybaseAdditionalAssetResourceSetId": 26094001,
+    "MybaseAdditionalAssetTypeIndex": 3,
+    "ResourceId": "g1750u01900_right"
+  },
+  {
+    "Id": 260940010313,
+    "MybaseAdditionalAssetResourceSetId": 26094001,
+    "MybaseAdditionalAssetTypeIndex": 3,
+    "ResourceId": "g1750u01901_left"
+  },
+  {
+    "Id": 260940010314,
+    "MybaseAdditionalAssetResourceSetId": 26094001,
+    "MybaseAdditionalAssetTypeIndex": 3,
+    "ResourceId": "g1750u01901_right"
+  },
+  {
+    "Id": 260940010401,
+    "MybaseAdditionalAssetResourceSetId": 26094001,
+    "MybaseAdditionalAssetTypeIndex": 4,
+    "ResourceId": "deco_1003"
+  },
+  {
+    "Id": 260940010501,
+    "MybaseAdditionalAssetResourceSetId": 26094001,
+    "MybaseAdditionalAssetTypeIndex": 5,
+    "ResourceId": "confetti_01"
+  }
+]

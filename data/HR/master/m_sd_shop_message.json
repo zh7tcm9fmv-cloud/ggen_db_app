@@ -1,0 +1,26 @@
+[
+  {
+    "Id": 2000041001,
+    "ShopId": 18200004,
+    "SdShopMessageTypeIndex": 1,
+    "MessageLanguageId": 251200002000041001
+  },
+  {
+    "Id": 2000041002,
+    "ShopId": 18200004,
+    "SdShopMessageTypeIndex": 1,
+    "MessageLanguageId": 251200002000041002
+  },
+  {
+    "Id": 2000041003,
+    "ShopId": 18200004,
+    "SdShopMessageTypeIndex": 1,
+    "MessageLanguageId": 251200002000041003
+  },
+  {
+    "Id": 2000042001,
+    "ShopId": 18200004,
+    "SdShopMessageTypeIndex": 2,
+    "MessageLanguageId": 251200002000042001
+  }
+]

@@ -1,0 +1,226 @@
+[
+  {
+    "Id": 2500010020,
+    "ScenarioStageId": 92011002,
+    "StageDivergenceTypeIndex": 1,
+    "IsChronicleVictorySuccessHidden": false,
+    "SkipReleaseConditionId": 0,
+    "BromideUnitId": 1001002100
+  },
+  {
+    "Id": 2500010030,
+    "ScenarioStageId": 92011004,
+    "StageDivergenceTypeIndex": 1,
+    "IsChronicleVictorySuccessHidden": false,
+    "SkipReleaseConditionId": 0,
+    "BromideUnitId": 1001002700
+  },
+  {
+    "Id": 2500010040,
+    "ScenarioStageId": 92011006,
+    "StageDivergenceTypeIndex": 1,
+    "IsChronicleVictorySuccessHidden": false,
+    "SkipReleaseConditionId": 0,
+    "BromideUnitId": 1001001500
+  },
+  {
+    "Id": 2500010050,
+    "ScenarioStageId": 92011008,
+    "StageDivergenceTypeIndex": 1,
+    "IsChronicleVictorySuccessHidden": false,
+    "SkipReleaseConditionId": 25000100401,
+    "BromideUnitId": 1001003000
+  },
+  {
+    "Id": 2500010090,
+    "ScenarioStageId": 92011011,
+    "StageDivergenceTypeIndex": 1,
+    "IsChronicleVictorySuccessHidden": false,
+    "SkipReleaseConditionId": 0,
+    "BromideUnitId": 1001002800
+  },
+  {
+    "Id": 2500010091,
+    "ScenarioStageId": 92011012,
+    "StageDivergenceTypeIndex": 2,
+    "IsChronicleVictorySuccessHidden": false,
+    "SkipReleaseConditionId": 0,
+    "BromideUnitId": 1001000100
+  },
+  {
+    "Id": 2500010130,
+    "ScenarioStageId": 92011014,
+    "StageDivergenceTypeIndex": 3,
+    "IsChronicleVictorySuccessHidden": false,
+    "SkipReleaseConditionId": 0,
+    "BromideUnitId": 1001001500
+  },
+  {
+    "Id": 2500010140,
+    "ScenarioStageId": 92011016,
+    "StageDivergenceTypeIndex": 3,
+    "IsChronicleVictorySuccessHidden": false,
+    "SkipReleaseConditionId": 25000100901,
+    "BromideUnitId": 1007000700
+  },
+  {
+    "Id": 2500010180,
+    "ScenarioStageId": 92011019,
+    "StageDivergenceTypeIndex": 1,
+    "IsChronicleVictorySuccessHidden": false,
+    "SkipReleaseConditionId": 0,
+    "BromideUnitId": 1001002600
+  },
+  {
+    "Id": 2500010181,
+    "ScenarioStageId": 92011020,
+    "StageDivergenceTypeIndex": 2,
+    "IsChronicleVictorySuccessHidden": false,
+    "SkipReleaseConditionId": 0,
+    "BromideUnitId": 2001000800
+  },
+  {
+    "Id": 2500010220,
+    "ScenarioStageId": 92011022,
+    "StageDivergenceTypeIndex": 3,
+    "IsChronicleVictorySuccessHidden": false,
+    "SkipReleaseConditionId": 0,
+    "BromideUnitId": 1001002700
+  },
+  {
+    "Id": 2500010230,
+    "ScenarioStageId": 92011024,
+    "StageDivergenceTypeIndex": 3,
+    "IsChronicleVictorySuccessHidden": false,
+    "SkipReleaseConditionId": 0,
+    "BromideUnitId": 1001003000
+  },
+  {
+    "Id": 2500010240,
+    "ScenarioStageId": 92011026,
+    "StageDivergenceTypeIndex": 3,
+    "IsChronicleVictorySuccessHidden": false,
+    "SkipReleaseConditionId": 25000101501,
+    "BromideUnitId": 2001001000
+  },
+  {
+    "Id": 2500010290,
+    "ScenarioStageId": 92012002,
+    "StageDivergenceTypeIndex": 1,
+    "IsChronicleVictorySuccessHidden": false,
+    "SkipReleaseConditionId": 0,
+    "BromideUnitId": 1001000600
+  },
+  {
+    "Id": 2500010300,
+    "ScenarioStageId": 92012004,
+    "StageDivergenceTypeIndex": 1,
+    "IsChronicleVictorySuccessHidden": false,
+    "SkipReleaseConditionId": 0,
+    "BromideUnitId": 2009000200
+  },
+  {
+    "Id": 2500010310,
+    "ScenarioStageId": 92012006,
+    "StageDivergenceTypeIndex": 1,
+    "IsChronicleVictorySuccessHidden": false,
+    "SkipReleaseConditionId": 0,
+    "BromideUnitId": 1001000600
+  },
+  {
+    "Id": 2500010320,
+    "ScenarioStageId": 92012008,
+    "StageDivergenceTypeIndex": 1,
+    "IsChronicleVictorySuccessHidden": false,
+    "SkipReleaseConditionId": 25000102001,
+    "BromideUnitId": 1001000700
+  },
+  {
+    "Id": 2500010360,
+    "ScenarioStageId": 92012011,
+    "StageDivergenceTypeIndex": 1,
+    "IsChronicleVictorySuccessHidden": false,
+    "SkipReleaseConditionId": 0,
+    "BromideUnitId": 1001000100
+  },
+  {
+    "Id": 2500010361,
+    "ScenarioStageId": 92012012,
+    "StageDivergenceTypeIndex": 2,
+    "IsChronicleVictorySuccessHidden": false,
+    "SkipReleaseConditionId": 0,
+    "BromideUnitId": 1001001700
+  },
+  {
+    "Id": 2500010400,
+    "ScenarioStageId": 92012014,
+    "StageDivergenceTypeIndex": 3,
+    "IsChronicleVictorySuccessHidden": false,
+    "SkipReleaseConditionId": 0,
+    "BromideUnitId": 2001000900
+  },
+  {
+    "Id": 2500010410,
+    "ScenarioStageId": 92012016,
+    "StageDivergenceTypeIndex": 3,
+    "IsChronicleVictorySuccessHidden": false,
+    "SkipReleaseConditionId": 25000102501,
+    "BromideUnitId": 1001000100
+  },
+  {
+    "Id": 2500010450,
+    "ScenarioStageId": 92012019,
+    "StageDivergenceTypeIndex": 1,
+    "IsChronicleVictorySuccessHidden": false,
+    "SkipReleaseConditionId": 0,
+    "BromideUnitId": 1001000600
+  },
+  {
+    "Id": 2500010451,
+    "ScenarioStageId": 92012020,
+    "StageDivergenceTypeIndex": 2,
+    "IsChronicleVictorySuccessHidden": false,
+    "SkipReleaseConditionId": 0,
+    "BromideUnitId": 1001002100
+  },
+  {
+    "Id": 2500010490,
+    "ScenarioStageId": 92012022,
+    "StageDivergenceTypeIndex": 3,
+    "IsChronicleVictorySuccessHidden": false,
+    "SkipReleaseConditionId": 0,
+    "BromideUnitId": 1001000600
+  },
+  {
+    "Id": 2500010500,
+    "ScenarioStageId": 92012024,
+    "StageDivergenceTypeIndex": 3,
+    "IsChronicleVictorySuccessHidden": false,
+    "SkipReleaseConditionId": 0,
+    "BromideUnitId": 2001000100
+  },
+  {
+    "Id": 2500010510,
+    "ScenarioStageId": 92012026,
+    "StageDivergenceTypeIndex": 3,
+    "IsChronicleVictorySuccessHidden": false,
+    "SkipReleaseConditionId": 25000103101,
+    "BromideUnitId": 1017000100
+  },
+  {
+    "Id": 2500010560,
+    "ScenarioStageId": 92013001,
+    "StageDivergenceTypeIndex": 3,
+    "IsChronicleVictorySuccessHidden": false,
+    "SkipReleaseConditionId": 25000103301,
+    "BromideUnitId": 1007000960
+  },
+  {
+    "Id": 2500010590,
+    "ScenarioStageId": 92013003,
+    "StageDivergenceTypeIndex": 3,
+    "IsChronicleVictorySuccessHidden": false,
+    "SkipReleaseConditionId": 25000103401,
+    "BromideUnitId": 1007001160
+  }
+]

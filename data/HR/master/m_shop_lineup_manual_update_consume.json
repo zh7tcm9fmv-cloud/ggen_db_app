@@ -1,0 +1,32 @@
+[
+  {
+    "ShopId": 10000001,
+    "UpdateCount": 1,
+    "RequiredCurrencyCount": 500
+  },
+  {
+    "ShopId": 10000001,
+    "UpdateCount": 2,
+    "RequiredCurrencyCount": 2500
+  },
+  {
+    "ShopId": 10000001,
+    "UpdateCount": 3,
+    "RequiredCurrencyCount": 5000
+  },
+  {
+    "ShopId": 11000001,
+    "UpdateCount": 1,
+    "RequiredCurrencyCount": 50
+  },
+  {
+    "ShopId": 11000001,
+    "UpdateCount": 2,
+    "RequiredCurrencyCount": 250
+  },
+  {
+    "ShopId": 11000001,
+    "UpdateCount": 3,
+    "RequiredCurrencyCount": 500
+  }
+]

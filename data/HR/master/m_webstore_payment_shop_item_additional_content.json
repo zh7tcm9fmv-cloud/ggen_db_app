@@ -1,0 +1,184 @@
+[
+  {
+    "Id": 22603600303,
+    "PaymentShopItemId": 226036003,
+    "StoreTypeIndex": 3,
+    "PaidDiamondCount": 800,
+    "BonusRewardSetId": 0
+  },
+  {
+    "Id": 22603600304,
+    "PaymentShopItemId": 226036003,
+    "StoreTypeIndex": 4,
+    "PaidDiamondCount": 800,
+    "BonusRewardSetId": 0
+  },
+  {
+    "Id": 22603600403,
+    "PaymentShopItemId": 226036004,
+    "StoreTypeIndex": 3,
+    "PaidDiamondCount": 800,
+    "BonusRewardSetId": 0
+  },
+  {
+    "Id": 22603600404,
+    "PaymentShopItemId": 226036004,
+    "StoreTypeIndex": 4,
+    "PaidDiamondCount": 800,
+    "BonusRewardSetId": 0
+  },
+  {
+    "Id": 22603600503,
+    "PaymentShopItemId": 226036005,
+    "StoreTypeIndex": 3,
+    "PaidDiamondCount": 50,
+    "BonusRewardSetId": 0
+  },
+  {
+    "Id": 22603600504,
+    "PaymentShopItemId": 226036005,
+    "StoreTypeIndex": 4,
+    "PaidDiamondCount": 50,
+    "BonusRewardSetId": 0
+  },
+  {
+    "Id": 22603600603,
+    "PaymentShopItemId": 226036006,
+    "StoreTypeIndex": 3,
+    "PaidDiamondCount": 300,
+    "BonusRewardSetId": 0
+  },
+  {
+    "Id": 22603600604,
+    "PaymentShopItemId": 226036006,
+    "StoreTypeIndex": 4,
+    "PaidDiamondCount": 300,
+    "BonusRewardSetId": 0
+  },
+  {
+    "Id": 22603600703,
+    "PaymentShopItemId": 226036007,
+    "StoreTypeIndex": 3,
+    "PaidDiamondCount": 1100,
+    "BonusRewardSetId": 0
+  },
+  {
+    "Id": 22603600704,
+    "PaymentShopItemId": 226036007,
+    "StoreTypeIndex": 4,
+    "PaidDiamondCount": 1100,
+    "BonusRewardSetId": 0
+  },
+  {
+    "Id": 22603600803,
+    "PaymentShopItemId": 226036008,
+    "StoreTypeIndex": 3,
+    "PaidDiamondCount": 400,
+    "BonusRewardSetId": 0
+  },
+  {
+    "Id": 22603600804,
+    "PaymentShopItemId": 226036008,
+    "StoreTypeIndex": 4,
+    "PaidDiamondCount": 400,
+    "BonusRewardSetId": 0
+  },
+  {
+    "Id": 22606500403,
+    "PaymentShopItemId": 226065004,
+    "StoreTypeIndex": 3,
+    "PaidDiamondCount": 120,
+    "BonusRewardSetId": 0
+  },
+  {
+    "Id": 22606500404,
+    "PaymentShopItemId": 226065004,
+    "StoreTypeIndex": 4,
+    "PaidDiamondCount": 120,
+    "BonusRewardSetId": 0
+  },
+  {
+    "Id": 22606500503,
+    "PaymentShopItemId": 226065005,
+    "StoreTypeIndex": 3,
+    "PaidDiamondCount": 800,
+    "BonusRewardSetId": 0
+  },
+  {
+    "Id": 22606500504,
+    "PaymentShopItemId": 226065005,
+    "StoreTypeIndex": 4,
+    "PaidDiamondCount": 800,
+    "BonusRewardSetId": 0
+  },
+  {
+    "Id": 22609500203,
+    "PaymentShopItemId": 226095002,
+    "StoreTypeIndex": 3,
+    "PaidDiamondCount": 800,
+    "BonusRewardSetId": 0
+  },
+  {
+    "Id": 22609500204,
+    "PaymentShopItemId": 226095002,
+    "StoreTypeIndex": 4,
+    "PaidDiamondCount": 800,
+    "BonusRewardSetId": 0
+  },
+  {
+    "Id": 22609500303,
+    "PaymentShopItemId": 226095003,
+    "StoreTypeIndex": 3,
+    "PaidDiamondCount": 800,
+    "BonusRewardSetId": 0
+  },
+  {
+    "Id": 22609500304,
+    "PaymentShopItemId": 226095003,
+    "StoreTypeIndex": 4,
+    "PaidDiamondCount": 800,
+    "BonusRewardSetId": 0
+  },
+  {
+    "Id": 22609500403,
+    "PaymentShopItemId": 226095004,
+    "StoreTypeIndex": 3,
+    "PaidDiamondCount": 50,
+    "BonusRewardSetId": 0
+  },
+  {
+    "Id": 22609500404,
+    "PaymentShopItemId": 226095004,
+    "StoreTypeIndex": 4,
+    "PaidDiamondCount": 50,
+    "BonusRewardSetId": 0
+  },
+  {
+    "Id": 22609500503,
+    "PaymentShopItemId": 226095005,
+    "StoreTypeIndex": 3,
+    "PaidDiamondCount": 300,
+    "BonusRewardSetId": 0
+  },
+  {
+    "Id": 22609500504,
+    "PaymentShopItemId": 226095005,
+    "StoreTypeIndex": 4,
+    "PaidDiamondCount": 300,
+    "BonusRewardSetId": 0
+  },
+  {
+    "Id": 22609500603,
+    "PaymentShopItemId": 226095006,
+    "StoreTypeIndex": 3,
+    "PaidDiamondCount": 1100,
+    "BonusRewardSetId": 0
+  },
+  {
+    "Id": 22609500604,
+    "PaymentShopItemId": 226095006,
+    "StoreTypeIndex": 4,
+    "PaidDiamondCount": 1100,
+    "BonusRewardSetId": 0
+  }
+]

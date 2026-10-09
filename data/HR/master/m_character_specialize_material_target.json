@@ -1,0 +1,104 @@
+[
+  {
+    "ItemId": 200000000002,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 4,
+    "TargetId": 0
+  },
+  {
+    "ItemId": 240000020010,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 2,
+    "TargetId": 10
+  },
+  {
+    "ItemId": 240000020090,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 2,
+    "TargetId": 90
+  },
+  {
+    "ItemId": 240000020210,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 2,
+    "TargetId": 210
+  },
+  {
+    "ItemId": 240000020950,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 2,
+    "TargetId": 950
+  },
+  {
+    "ItemId": 240000022100,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 2,
+    "TargetId": 2100
+  },
+  {
+    "ItemId": 240000023000,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 2,
+    "TargetId": 3000
+  },
+  {
+    "ItemId": 250000010810,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 2,
+    "TargetId": 810
+  },
+  {
+    "ItemId": 250000011750,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 2,
+    "TargetId": 1750
+  },
+  {
+    "ItemId": 250000013760,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 2,
+    "TargetId": 3760
+  },
+  {
+    "ItemId": 250000021002,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 5,
+    "TargetId": 1002
+  },
+  {
+    "ItemId": 250000021003,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 5,
+    "TargetId": 1055
+  },
+  {
+    "ItemId": 251001003301,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 1,
+    "TargetId": 1001003301
+  },
+  {
+    "ItemId": 251080001601,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 1,
+    "TargetId": 1080001601
+  },
+  {
+    "ItemId": 251095002901,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 1,
+    "TargetId": 1095002901
+  },
+  {
+    "ItemId": 251210002400,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 1,
+    "TargetId": 1210002400
+  },
+  {
+    "ItemId": 251300002502,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 1,
+    "TargetId": 1300002502
+  }
+]

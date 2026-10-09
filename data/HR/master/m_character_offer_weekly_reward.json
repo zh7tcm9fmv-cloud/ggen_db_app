@@ -1,0 +1,51 @@
+[
+  {
+    "Id": 1,
+    "SlotTypeIndex": 1,
+    "ClearCount": 5,
+    "RewardSetId": 99020000000001,
+    "ScheduleId": 2506159901
+  },
+  {
+    "Id": 2,
+    "SlotTypeIndex": 2,
+    "ClearCount": 10,
+    "RewardSetId": 99020000000002,
+    "ScheduleId": 2506159901
+  },
+  {
+    "Id": 3,
+    "SlotTypeIndex": 3,
+    "ClearCount": 15,
+    "RewardSetId": 99020000000003,
+    "ScheduleId": 2506159901
+  },
+  {
+    "Id": 4,
+    "SlotTypeIndex": 1,
+    "ClearCount": 5,
+    "RewardSetId": 99020000000004,
+    "ScheduleId": 2506159902
+  },
+  {
+    "Id": 5,
+    "SlotTypeIndex": 2,
+    "ClearCount": 10,
+    "RewardSetId": 99020000000005,
+    "ScheduleId": 2506159902
+  },
+  {
+    "Id": 6,
+    "SlotTypeIndex": 3,
+    "ClearCount": 15,
+    "RewardSetId": 99020000000006,
+    "ScheduleId": 2506159902
+  },
+  {
+    "Id": 7,
+    "SlotTypeIndex": 1,
+    "ClearCount": 20,
+    "RewardSetId": 99020000000007,
+    "ScheduleId": 2602209903
+  }
+]

@@ -1,0 +1,2382 @@
+[
+  {
+    "Id": 9070001004001,
+    "X": 6,
+    "Y": 8,
+    "MapStageId": 907000100402000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001005001,
+    "X": 3,
+    "Y": 8,
+    "MapStageId": 907000100502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001005002,
+    "X": 7,
+    "Y": 8,
+    "MapStageId": 907000100502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001005003,
+    "X": 12,
+    "Y": 13,
+    "MapStageId": 907000100502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001005004,
+    "X": 12,
+    "Y": 17,
+    "MapStageId": 907000100502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001009001,
+    "X": 12,
+    "Y": 7,
+    "MapStageId": 907000100902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001009002,
+    "X": 15,
+    "Y": 3,
+    "MapStageId": 907000100902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001009003,
+    "X": 7,
+    "Y": 1,
+    "MapStageId": 907000100902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001009004,
+    "X": 19,
+    "Y": 11,
+    "MapStageId": 907000100902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001009005,
+    "X": 0,
+    "Y": 3,
+    "MapStageId": 907000100902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001009006,
+    "X": 16,
+    "Y": 18,
+    "MapStageId": 907000100902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001009007,
+    "X": 4,
+    "Y": 14,
+    "MapStageId": 907000100902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001011001,
+    "X": 8,
+    "Y": 13,
+    "MapStageId": 907000101102000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001011002,
+    "X": 8,
+    "Y": 6,
+    "MapStageId": 907000101102000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001013001,
+    "X": 12,
+    "Y": 17,
+    "MapStageId": 907000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001013002,
+    "X": 12,
+    "Y": 12,
+    "MapStageId": 907000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001014001,
+    "X": 4,
+    "Y": 2,
+    "MapStageId": 907000101402000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001014002,
+    "X": 8,
+    "Y": 2,
+    "MapStageId": 907000101402000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001014003,
+    "X": 5,
+    "Y": 6,
+    "MapStageId": 907000101402000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001014004,
+    "X": 9,
+    "Y": 6,
+    "MapStageId": 907000101402000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001014005,
+    "X": 5,
+    "Y": 10,
+    "MapStageId": 907000101402000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001014006,
+    "X": 10,
+    "Y": 10,
+    "MapStageId": 907000101402000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001015001,
+    "X": 6,
+    "Y": 15,
+    "MapStageId": 907000101502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001015002,
+    "X": 6,
+    "Y": 8,
+    "MapStageId": 907000101502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001015005,
+    "X": 21,
+    "Y": 17,
+    "MapStageId": 907000101502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001015006,
+    "X": 21,
+    "Y": 8,
+    "MapStageId": 907000101502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001015007,
+    "X": 27,
+    "Y": 15,
+    "MapStageId": 907000101502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001015008,
+    "X": 27,
+    "Y": 10,
+    "MapStageId": 907000101502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001016001,
+    "X": 18,
+    "Y": 9,
+    "MapStageId": 907000101602000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001016002,
+    "X": 21,
+    "Y": 6,
+    "MapStageId": 907000101602000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001016003,
+    "X": 18,
+    "Y": 3,
+    "MapStageId": 907000101602000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001016004,
+    "X": 24,
+    "Y": 9,
+    "MapStageId": 907000101602000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001016005,
+    "X": 24,
+    "Y": 3,
+    "MapStageId": 907000101602000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001017001,
+    "X": 11,
+    "Y": 14,
+    "MapStageId": 907000101702000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001017002,
+    "X": 18,
+    "Y": 14,
+    "MapStageId": 907000101702000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001017005,
+    "X": 13,
+    "Y": 10,
+    "MapStageId": 907000101702000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001017006,
+    "X": 16,
+    "Y": 10,
+    "MapStageId": 907000101702000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001019002,
+    "X": 14,
+    "Y": 19,
+    "MapStageId": 907000101902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001019003,
+    "X": 14,
+    "Y": 13,
+    "MapStageId": 907000101902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001019005,
+    "X": 14,
+    "Y": 25,
+    "MapStageId": 907000101902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001020001,
+    "X": 7,
+    "Y": 15,
+    "MapStageId": 907000102002000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001020002,
+    "X": 14,
+    "Y": 11,
+    "MapStageId": 907000102002000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001020003,
+    "X": 21,
+    "Y": 15,
+    "MapStageId": 907000102002000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070001020004,
+    "X": 14,
+    "Y": 19,
+    "MapStageId": 907000102002000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002003001,
+    "X": 9,
+    "Y": 13,
+    "MapStageId": 907000200302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002004001,
+    "X": 11,
+    "Y": 14,
+    "MapStageId": 907000200402000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002004002,
+    "X": 10,
+    "Y": 10,
+    "MapStageId": 907000200402000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002009001,
+    "X": 5,
+    "Y": 13,
+    "MapStageId": 907000200902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002009002,
+    "X": 17,
+    "Y": 13,
+    "MapStageId": 907000200902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002009003,
+    "X": 7,
+    "Y": 12,
+    "MapStageId": 907000200902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002009004,
+    "X": 7,
+    "Y": 7,
+    "MapStageId": 907000200902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002009005,
+    "X": 7,
+    "Y": 2,
+    "MapStageId": 907000200902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002009006,
+    "X": 15,
+    "Y": 12,
+    "MapStageId": 907000200902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002009007,
+    "X": 15,
+    "Y": 7,
+    "MapStageId": 907000200902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002009008,
+    "X": 15,
+    "Y": 2,
+    "MapStageId": 907000200902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002011002,
+    "X": 8,
+    "Y": 19,
+    "MapStageId": 907000201102000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002011003,
+    "X": 14,
+    "Y": 19,
+    "MapStageId": 907000201102000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002012001,
+    "X": 12,
+    "Y": 9,
+    "MapStageId": 907000201202000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002012002,
+    "X": 7,
+    "Y": 9,
+    "MapStageId": 907000201202000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002013001,
+    "X": 4,
+    "Y": 8,
+    "MapStageId": 907000201302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002013002,
+    "X": 4,
+    "Y": 14,
+    "MapStageId": 907000201302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002013004,
+    "X": 12,
+    "Y": 11,
+    "MapStageId": 907000201302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002013005,
+    "X": 12,
+    "Y": 17,
+    "MapStageId": 907000201302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002013006,
+    "X": 12,
+    "Y": 23,
+    "MapStageId": 907000201302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002013007,
+    "X": 7,
+    "Y": 19,
+    "MapStageId": 907000201302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002014001,
+    "X": 9,
+    "Y": 5,
+    "MapStageId": 907000201402000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002014002,
+    "X": 15,
+    "Y": 5,
+    "MapStageId": 907000201402000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002014003,
+    "X": 7,
+    "Y": 13,
+    "MapStageId": 907000201402000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002014004,
+    "X": 17,
+    "Y": 13,
+    "MapStageId": 907000201402000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002015001,
+    "X": 12,
+    "Y": 13,
+    "MapStageId": 907000201502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002015002,
+    "X": 9,
+    "Y": 27,
+    "MapStageId": 907000201502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002015003,
+    "X": 15,
+    "Y": 27,
+    "MapStageId": 907000201502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002015004,
+    "X": 9,
+    "Y": 21,
+    "MapStageId": 907000201502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002015005,
+    "X": 15,
+    "Y": 21,
+    "MapStageId": 907000201502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002015006,
+    "X": 6,
+    "Y": 12,
+    "MapStageId": 907000201502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002015007,
+    "X": 18,
+    "Y": 12,
+    "MapStageId": 907000201502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002016001,
+    "X": 11,
+    "Y": 15,
+    "MapStageId": 907000201602000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002016002,
+    "X": 17,
+    "Y": 22,
+    "MapStageId": 907000201602000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002016003,
+    "X": 17,
+    "Y": 8,
+    "MapStageId": 907000201602000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002016004,
+    "X": 22,
+    "Y": 12,
+    "MapStageId": 907000201602000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002016005,
+    "X": 22,
+    "Y": 18,
+    "MapStageId": 907000201602000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002017001,
+    "X": 13,
+    "Y": 9,
+    "MapStageId": 907000201702000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002017002,
+    "X": 16,
+    "Y": 9,
+    "MapStageId": 907000201702000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002017003,
+    "X": 12,
+    "Y": 12,
+    "MapStageId": 907000201702000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002017004,
+    "X": 17,
+    "Y": 12,
+    "MapStageId": 907000201702000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002019001,
+    "X": 8,
+    "Y": 3,
+    "MapStageId": 907000201902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002019002,
+    "X": 8,
+    "Y": 13,
+    "MapStageId": 907000201902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002019003,
+    "X": 18,
+    "Y": 3,
+    "MapStageId": 907000201902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002019004,
+    "X": 18,
+    "Y": 13,
+    "MapStageId": 907000201902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002019005,
+    "X": 13,
+    "Y": 8,
+    "MapStageId": 907000201902000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002020001,
+    "X": 6,
+    "Y": 6,
+    "MapStageId": 907000202002000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002020002,
+    "X": 6,
+    "Y": 20,
+    "MapStageId": 907000202002000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002020003,
+    "X": 18,
+    "Y": 6,
+    "MapStageId": 907000202002000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002020004,
+    "X": 18,
+    "Y": 20,
+    "MapStageId": 907000202002000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9070002020005,
+    "X": 12,
+    "Y": 11,
+    "MapStageId": 907000202002000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013001,
+    "X": 7,
+    "Y": 23,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013002,
+    "X": 23,
+    "Y": 23,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013003,
+    "X": 8,
+    "Y": 22,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013004,
+    "X": 9,
+    "Y": 22,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013005,
+    "X": 14,
+    "Y": 22,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013006,
+    "X": 15,
+    "Y": 22,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013007,
+    "X": 16,
+    "Y": 22,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013008,
+    "X": 21,
+    "Y": 22,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013009,
+    "X": 22,
+    "Y": 22,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013010,
+    "X": 9,
+    "Y": 21,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013011,
+    "X": 10,
+    "Y": 21,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013012,
+    "X": 14,
+    "Y": 21,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013013,
+    "X": 15,
+    "Y": 21,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013014,
+    "X": 16,
+    "Y": 21,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013015,
+    "X": 20,
+    "Y": 21,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013016,
+    "X": 21,
+    "Y": 21,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013017,
+    "X": 10,
+    "Y": 20,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013018,
+    "X": 11,
+    "Y": 20,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013019,
+    "X": 14,
+    "Y": 20,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013020,
+    "X": 16,
+    "Y": 20,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013021,
+    "X": 19,
+    "Y": 20,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013022,
+    "X": 20,
+    "Y": 20,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013023,
+    "X": 11,
+    "Y": 19,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013024,
+    "X": 12,
+    "Y": 19,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013025,
+    "X": 13,
+    "Y": 19,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013026,
+    "X": 15,
+    "Y": 19,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013027,
+    "X": 17,
+    "Y": 19,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013028,
+    "X": 18,
+    "Y": 19,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013029,
+    "X": 19,
+    "Y": 19,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013030,
+    "X": 12,
+    "Y": 18,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013031,
+    "X": 13,
+    "Y": 18,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013032,
+    "X": 14,
+    "Y": 18,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013033,
+    "X": 15,
+    "Y": 18,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013034,
+    "X": 16,
+    "Y": 18,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013035,
+    "X": 17,
+    "Y": 18,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013036,
+    "X": 18,
+    "Y": 18,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013037,
+    "X": 10,
+    "Y": 17,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013038,
+    "X": 11,
+    "Y": 17,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013039,
+    "X": 13,
+    "Y": 17,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013040,
+    "X": 15,
+    "Y": 17,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013041,
+    "X": 17,
+    "Y": 17,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013042,
+    "X": 19,
+    "Y": 17,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013043,
+    "X": 20,
+    "Y": 17,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013044,
+    "X": 9,
+    "Y": 16,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 1,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013045,
+    "X": 10,
+    "Y": 16,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013046,
+    "X": 12,
+    "Y": 16,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013047,
+    "X": 14,
+    "Y": 16,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013048,
+    "X": 15,
+    "Y": 16,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013049,
+    "X": 16,
+    "Y": 16,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013050,
+    "X": 18,
+    "Y": 16,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013051,
+    "X": 20,
+    "Y": 16,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013052,
+    "X": 21,
+    "Y": 16,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 3,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013053,
+    "X": 8,
+    "Y": 15,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 1,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013054,
+    "X": 9,
+    "Y": 15,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013055,
+    "X": 10,
+    "Y": 15,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013056,
+    "X": 11,
+    "Y": 15,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013057,
+    "X": 12,
+    "Y": 15,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013058,
+    "X": 13,
+    "Y": 15,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013059,
+    "X": 14,
+    "Y": 15,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013060,
+    "X": 15,
+    "Y": 15,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013061,
+    "X": 16,
+    "Y": 15,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013062,
+    "X": 17,
+    "Y": 15,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013063,
+    "X": 18,
+    "Y": 15,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013064,
+    "X": 19,
+    "Y": 15,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013065,
+    "X": 20,
+    "Y": 15,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013066,
+    "X": 21,
+    "Y": 15,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013067,
+    "X": 22,
+    "Y": 15,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 3,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013068,
+    "X": 7,
+    "Y": 14,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 1,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013069,
+    "X": 8,
+    "Y": 14,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013070,
+    "X": 9,
+    "Y": 14,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013071,
+    "X": 14,
+    "Y": 14,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013072,
+    "X": 16,
+    "Y": 14,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013073,
+    "X": 21,
+    "Y": 14,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013074,
+    "X": 22,
+    "Y": 14,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013075,
+    "X": 23,
+    "Y": 14,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 3,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013076,
+    "X": 7,
+    "Y": 13,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 1,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013077,
+    "X": 9,
+    "Y": 13,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013078,
+    "X": 14,
+    "Y": 13,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013079,
+    "X": 16,
+    "Y": 13,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013080,
+    "X": 21,
+    "Y": 13,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013081,
+    "X": 23,
+    "Y": 13,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 3,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013082,
+    "X": 7,
+    "Y": 12,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 1,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013083,
+    "X": 8,
+    "Y": 12,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 1,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013084,
+    "X": 9,
+    "Y": 12,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 1,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013085,
+    "X": 10,
+    "Y": 12,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013086,
+    "X": 13,
+    "Y": 12,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013087,
+    "X": 15,
+    "Y": 11,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013088,
+    "X": 17,
+    "Y": 12,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013089,
+    "X": 20,
+    "Y": 12,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013090,
+    "X": 21,
+    "Y": 12,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 3,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013091,
+    "X": 22,
+    "Y": 12,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 3,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013092,
+    "X": 23,
+    "Y": 12,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 3,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013093,
+    "X": 7,
+    "Y": 11,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 1,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013094,
+    "X": 9,
+    "Y": 11,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 1,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013095,
+    "X": 10,
+    "Y": 11,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 1,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013096,
+    "X": 11,
+    "Y": 11,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013097,
+    "X": 12,
+    "Y": 11,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013098,
+    "X": 14,
+    "Y": 10,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013099,
+    "X": 16,
+    "Y": 10,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013100,
+    "X": 18,
+    "Y": 11,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013101,
+    "X": 19,
+    "Y": 11,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013102,
+    "X": 20,
+    "Y": 11,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 3,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013103,
+    "X": 21,
+    "Y": 11,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 3,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013104,
+    "X": 23,
+    "Y": 11,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 3,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013105,
+    "X": 7,
+    "Y": 10,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 1,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013106,
+    "X": 8,
+    "Y": 10,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 1,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013107,
+    "X": 9,
+    "Y": 10,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 1,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013108,
+    "X": 11,
+    "Y": 10,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 1,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013109,
+    "X": 15,
+    "Y": 9,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013110,
+    "X": 19,
+    "Y": 10,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 3,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013111,
+    "X": 21,
+    "Y": 10,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 3,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013112,
+    "X": 22,
+    "Y": 10,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 3,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013113,
+    "X": 23,
+    "Y": 10,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 3,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013114,
+    "X": 7,
+    "Y": 9,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 1,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013115,
+    "X": 9,
+    "Y": 9,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 1,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013116,
+    "X": 12,
+    "Y": 9,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 1,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013117,
+    "X": 14,
+    "Y": 8,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013118,
+    "X": 16,
+    "Y": 8,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013119,
+    "X": 18,
+    "Y": 9,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 3,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013120,
+    "X": 21,
+    "Y": 9,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 3,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013121,
+    "X": 23,
+    "Y": 9,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 3,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013122,
+    "X": 8,
+    "Y": 8,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 1,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013123,
+    "X": 9,
+    "Y": 8,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 1,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013124,
+    "X": 12,
+    "Y": 8,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 1,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013125,
+    "X": 21,
+    "Y": 8,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 3,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013126,
+    "X": 22,
+    "Y": 8,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 3,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013127,
+    "X": 8,
+    "Y": 7,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 1,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013128,
+    "X": 9,
+    "Y": 7,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 1,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013129,
+    "X": 12,
+    "Y": 7,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 1,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013130,
+    "X": 15,
+    "Y": 6,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013131,
+    "X": 17,
+    "Y": 7,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013132,
+    "X": 18,
+    "Y": 7,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 3,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013133,
+    "X": 21,
+    "Y": 7,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 3,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013134,
+    "X": 22,
+    "Y": 7,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 3,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013135,
+    "X": 10,
+    "Y": 6,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 1,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013136,
+    "X": 11,
+    "Y": 6,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 1,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013137,
+    "X": 12,
+    "Y": 6,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 1,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013138,
+    "X": 14,
+    "Y": 5,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013139,
+    "X": 15,
+    "Y": 5,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013140,
+    "X": 16,
+    "Y": 5,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013141,
+    "X": 18,
+    "Y": 6,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 3,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013142,
+    "X": 19,
+    "Y": 6,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 3,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  },
+  {
+    "Id": 9900001013143,
+    "X": 20,
+    "Y": 6,
+    "MapStageId": 990000101302000000,
+    "InitDirectionTypeIndex": 3,
+    "InitStandbyTypeIndex": 0,
+    "Unknown_Col_6": false,
+    "Unknown_Col_7": ""
+  }
+]

@@ -1,0 +1,82 @@
+[
+  {
+    "RarityIndex": 1,
+    "LimitBreakStep": 0,
+    "CombatPower": 10000
+  },
+  {
+    "RarityIndex": 1,
+    "LimitBreakStep": 1,
+    "CombatPower": 11000
+  },
+  {
+    "RarityIndex": 1,
+    "LimitBreakStep": 2,
+    "CombatPower": 12000
+  },
+  {
+    "RarityIndex": 1,
+    "LimitBreakStep": 3,
+    "CombatPower": 13000
+  },
+  {
+    "RarityIndex": 3,
+    "LimitBreakStep": 0,
+    "CombatPower": 20000
+  },
+  {
+    "RarityIndex": 3,
+    "LimitBreakStep": 1,
+    "CombatPower": 21000
+  },
+  {
+    "RarityIndex": 3,
+    "LimitBreakStep": 2,
+    "CombatPower": 22000
+  },
+  {
+    "RarityIndex": 3,
+    "LimitBreakStep": 3,
+    "CombatPower": 23000
+  },
+  {
+    "RarityIndex": 4,
+    "LimitBreakStep": 0,
+    "CombatPower": 30000
+  },
+  {
+    "RarityIndex": 4,
+    "LimitBreakStep": 1,
+    "CombatPower": 31000
+  },
+  {
+    "RarityIndex": 4,
+    "LimitBreakStep": 2,
+    "CombatPower": 32000
+  },
+  {
+    "RarityIndex": 4,
+    "LimitBreakStep": 3,
+    "CombatPower": 33000
+  },
+  {
+    "RarityIndex": 5,
+    "LimitBreakStep": 0,
+    "CombatPower": 40000
+  },
+  {
+    "RarityIndex": 5,
+    "LimitBreakStep": 1,
+    "CombatPower": 41000
+  },
+  {
+    "RarityIndex": 5,
+    "LimitBreakStep": 2,
+    "CombatPower": 42000
+  },
+  {
+    "RarityIndex": 5,
+    "LimitBreakStep": 3,
+    "CombatPower": 43000
+  }
+]

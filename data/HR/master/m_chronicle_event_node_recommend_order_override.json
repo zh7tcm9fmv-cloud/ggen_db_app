@@ -1,0 +1,16 @@
+[
+  {
+    "Id": 25000101,
+    "ChronicleEventNodeId": 250001022,
+    "EvaluationOrder": 1,
+    "ReleaseConditionId": 25000104601,
+    "OverrideRecommendOrder": 1001
+  },
+  {
+    "Id": 25000102,
+    "ChronicleEventNodeId": 250001051,
+    "EvaluationOrder": 1,
+    "ReleaseConditionId": 25000104701,
+    "OverrideRecommendOrder": 1002
+  }
+]

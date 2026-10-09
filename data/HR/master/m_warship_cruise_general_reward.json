@@ -1,0 +1,142 @@
+[
+  {
+    "WarshipCruiseGeneralRewardSlotId": 1001,
+    "Level": 1,
+    "PlayerRank": 1,
+    "RewardSetId": 99030000000001,
+    "GrantMinute": 60
+  },
+  {
+    "WarshipCruiseGeneralRewardSlotId": 1001,
+    "Level": 2,
+    "PlayerRank": 15,
+    "RewardSetId": 99030000000002,
+    "GrantMinute": 30
+  },
+  {
+    "WarshipCruiseGeneralRewardSlotId": 1001,
+    "Level": 3,
+    "PlayerRank": 23,
+    "RewardSetId": 99030000000003,
+    "GrantMinute": 30
+  },
+  {
+    "WarshipCruiseGeneralRewardSlotId": 1001,
+    "Level": 4,
+    "PlayerRank": 31,
+    "RewardSetId": 99030000000002,
+    "GrantMinute": 20
+  },
+  {
+    "WarshipCruiseGeneralRewardSlotId": 1001,
+    "Level": 5,
+    "PlayerRank": 39,
+    "RewardSetId": 99030000000004,
+    "GrantMinute": 12
+  },
+  {
+    "WarshipCruiseGeneralRewardSlotId": 1101,
+    "Level": 1,
+    "PlayerRank": 5,
+    "RewardSetId": 99030000000005,
+    "GrantMinute": 3
+  },
+  {
+    "WarshipCruiseGeneralRewardSlotId": 1101,
+    "Level": 2,
+    "PlayerRank": 17,
+    "RewardSetId": 99030000000006,
+    "GrantMinute": 2
+  },
+  {
+    "WarshipCruiseGeneralRewardSlotId": 1101,
+    "Level": 3,
+    "PlayerRank": 25,
+    "RewardSetId": 99030000000005,
+    "GrantMinute": 2
+  },
+  {
+    "WarshipCruiseGeneralRewardSlotId": 1101,
+    "Level": 4,
+    "PlayerRank": 33,
+    "RewardSetId": 99030000000007,
+    "GrantMinute": 1
+  },
+  {
+    "WarshipCruiseGeneralRewardSlotId": 1101,
+    "Level": 5,
+    "PlayerRank": 41,
+    "RewardSetId": 99030000000006,
+    "GrantMinute": 1
+  },
+  {
+    "WarshipCruiseGeneralRewardSlotId": 1201,
+    "Level": 1,
+    "PlayerRank": 7,
+    "RewardSetId": 99030000000008,
+    "GrantMinute": 60
+  },
+  {
+    "WarshipCruiseGeneralRewardSlotId": 1201,
+    "Level": 2,
+    "PlayerRank": 19,
+    "RewardSetId": 99030000000008,
+    "GrantMinute": 30
+  },
+  {
+    "WarshipCruiseGeneralRewardSlotId": 1201,
+    "Level": 3,
+    "PlayerRank": 27,
+    "RewardSetId": 99030000000008,
+    "GrantMinute": 20
+  },
+  {
+    "WarshipCruiseGeneralRewardSlotId": 1201,
+    "Level": 4,
+    "PlayerRank": 35,
+    "RewardSetId": 99030000000008,
+    "GrantMinute": 15
+  },
+  {
+    "WarshipCruiseGeneralRewardSlotId": 1201,
+    "Level": 5,
+    "PlayerRank": 43,
+    "RewardSetId": 99030000000008,
+    "GrantMinute": 12
+  },
+  {
+    "WarshipCruiseGeneralRewardSlotId": 1301,
+    "Level": 1,
+    "PlayerRank": 11,
+    "RewardSetId": 99030000000009,
+    "GrantMinute": 60
+  },
+  {
+    "WarshipCruiseGeneralRewardSlotId": 1301,
+    "Level": 2,
+    "PlayerRank": 21,
+    "RewardSetId": 99030000000009,
+    "GrantMinute": 30
+  },
+  {
+    "WarshipCruiseGeneralRewardSlotId": 1301,
+    "Level": 3,
+    "PlayerRank": 29,
+    "RewardSetId": 99030000000009,
+    "GrantMinute": 20
+  },
+  {
+    "WarshipCruiseGeneralRewardSlotId": 1301,
+    "Level": 4,
+    "PlayerRank": 37,
+    "RewardSetId": 99030000000009,
+    "GrantMinute": 15
+  },
+  {
+    "WarshipCruiseGeneralRewardSlotId": 1301,
+    "Level": 5,
+    "PlayerRank": 45,
+    "RewardSetId": 99030000000009,
+    "GrantMinute": 12
+  }
+]

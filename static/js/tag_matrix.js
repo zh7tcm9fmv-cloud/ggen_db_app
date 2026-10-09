@@ -512,7 +512,8 @@
     try {
       var L = (localStorage.getItem(STORAGE_LANG) || 'EN').toUpperCase();
       if (L === 'JP') L = 'JA';
-      if (L !== 'EN' && L !== 'JA' && L !== 'TW' && L !== 'HK') L = 'EN';
+      if (L === 'KR') L = 'HR';
+      if (L !== 'EN' && L !== 'JA' && L !== 'TW' && L !== 'HK' && L !== 'HR') L = 'EN';
       return L;
     } catch (_) {
       return 'EN';
@@ -2395,7 +2396,8 @@
   function setLang(L) {
     L = String(L || 'EN').toUpperCase();
     if (L === 'JP') L = 'JA';
-    if (L !== 'EN' && L !== 'JA' && L !== 'TW' && L !== 'HK') L = 'EN';
+    if (L === 'KR') L = 'HR';
+    if (L !== 'EN' && L !== 'JA' && L !== 'TW' && L !== 'HK' && L !== 'HR') L = 'EN';
     state.lang = L;
     try {
       localStorage.setItem(STORAGE_LANG, L);

@@ -1,0 +1,26 @@
+[
+  {
+    "Id": 2500010101,
+    "EventBonusAndSetId": 25000101,
+    "EventBonusTargetTypeIndex": 3,
+    "TargetId": 25000101
+  },
+  {
+    "Id": 2500010102,
+    "EventBonusAndSetId": 25000101,
+    "EventBonusTargetTypeIndex": 2,
+    "TargetId": 25000101
+  },
+  {
+    "Id": 2500010201,
+    "EventBonusAndSetId": 25000102,
+    "EventBonusTargetTypeIndex": 3,
+    "TargetId": 25000102
+  },
+  {
+    "Id": 2500010202,
+    "EventBonusAndSetId": 25000102,
+    "EventBonusTargetTypeIndex": 2,
+    "TargetId": 25000102
+  }
+]

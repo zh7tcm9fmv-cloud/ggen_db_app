@@ -1,0 +1,306 @@
+[
+  {
+    "Id": 3000100101,
+    "LeagueEventCutInSetId": 30001001,
+    "CutInResourceId": "ml_cutin_01",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0008",
+    "QuoteLanguageId": 2504000003000100101,
+    "Weight": 0
+  },
+  {
+    "Id": 3000100102,
+    "LeagueEventCutInSetId": 30001001,
+    "CutInResourceId": "ml_cutin_01",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0029",
+    "QuoteLanguageId": 2504000003000100102,
+    "Weight": 0
+  },
+  {
+    "Id": 3000100103,
+    "LeagueEventCutInSetId": 30001001,
+    "CutInResourceId": "ml_cutin_01",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0009",
+    "QuoteLanguageId": 2504000003000100103,
+    "Weight": 0
+  },
+  {
+    "Id": 3000100104,
+    "LeagueEventCutInSetId": 30001001,
+    "CutInResourceId": "ml_cutin_01",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0016",
+    "QuoteLanguageId": 2504000003000100104,
+    "Weight": 120
+  },
+  {
+    "Id": 3000100105,
+    "LeagueEventCutInSetId": 30001001,
+    "CutInResourceId": "ml_cutin_01",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0030",
+    "QuoteLanguageId": 2504000003000100105,
+    "Weight": 120
+  },
+  {
+    "Id": 3000100106,
+    "LeagueEventCutInSetId": 30001001,
+    "CutInResourceId": "ml_cutin_01",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0011",
+    "QuoteLanguageId": 2504000003000100106,
+    "Weight": 120
+  },
+  {
+    "Id": 3000100107,
+    "LeagueEventCutInSetId": 30001001,
+    "CutInResourceId": "ml_cutin_01",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0017",
+    "QuoteLanguageId": 2504000003000100107,
+    "Weight": 170
+  },
+  {
+    "Id": 3000100108,
+    "LeagueEventCutInSetId": 30001001,
+    "CutInResourceId": "ml_cutin_01",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0031",
+    "QuoteLanguageId": 2504000003000100108,
+    "Weight": 170
+  },
+  {
+    "Id": 3000100109,
+    "LeagueEventCutInSetId": 30001001,
+    "CutInResourceId": "ml_cutin_01",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0014",
+    "QuoteLanguageId": 2504000003000100109,
+    "Weight": 300
+  },
+  {
+    "Id": 3000100201,
+    "LeagueEventCutInSetId": 30001002,
+    "CutInResourceId": "ml_cutin_02",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0018",
+    "QuoteLanguageId": 2504000003000100201,
+    "Weight": 0
+  },
+  {
+    "Id": 3000100202,
+    "LeagueEventCutInSetId": 30001002,
+    "CutInResourceId": "ml_cutin_02",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0019",
+    "QuoteLanguageId": 2504000003000100202,
+    "Weight": 0
+  },
+  {
+    "Id": 3000100203,
+    "LeagueEventCutInSetId": 30001002,
+    "CutInResourceId": "ml_cutin_02",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0026",
+    "QuoteLanguageId": 2504000003000100203,
+    "Weight": 70
+  },
+  {
+    "Id": 3000100204,
+    "LeagueEventCutInSetId": 30001002,
+    "CutInResourceId": "ml_cutin_02",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0032",
+    "QuoteLanguageId": 2504000003000100204,
+    "Weight": 70
+  },
+  {
+    "Id": 3000100205,
+    "LeagueEventCutInSetId": 30001002,
+    "CutInResourceId": "ml_cutin_02",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0021",
+    "QuoteLanguageId": 2504000003000100205,
+    "Weight": 70
+  },
+  {
+    "Id": 3000100206,
+    "LeagueEventCutInSetId": 30001002,
+    "CutInResourceId": "ml_cutin_02",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0022",
+    "QuoteLanguageId": 2504000003000100206,
+    "Weight": 230
+  },
+  {
+    "Id": 3000100207,
+    "LeagueEventCutInSetId": 30001002,
+    "CutInResourceId": "ml_cutin_02",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0023",
+    "QuoteLanguageId": 2504000003000100207,
+    "Weight": 110
+  },
+  {
+    "Id": 3000100208,
+    "LeagueEventCutInSetId": 30001002,
+    "CutInResourceId": "ml_cutin_02",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0033",
+    "QuoteLanguageId": 2504000003000100208,
+    "Weight": 110
+  },
+  {
+    "Id": 3000100209,
+    "LeagueEventCutInSetId": 30001002,
+    "CutInResourceId": "ml_cutin_02",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0024",
+    "QuoteLanguageId": 2504000003000100209,
+    "Weight": 110
+  },
+  {
+    "Id": 3000100210,
+    "LeagueEventCutInSetId": 30001002,
+    "CutInResourceId": "ml_cutin_02",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0028",
+    "QuoteLanguageId": 2504000003000100210,
+    "Weight": 230
+  },
+  {
+    "Id": 3000100301,
+    "LeagueEventCutInSetId": 30001003,
+    "CutInResourceId": "ml_cutin_01",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0008",
+    "QuoteLanguageId": 2504000003000100101,
+    "Weight": 80
+  },
+  {
+    "Id": 3000100302,
+    "LeagueEventCutInSetId": 30001003,
+    "CutInResourceId": "ml_cutin_01",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0029",
+    "QuoteLanguageId": 2504000003000100102,
+    "Weight": 80
+  },
+  {
+    "Id": 3000100303,
+    "LeagueEventCutInSetId": 30001003,
+    "CutInResourceId": "ml_cutin_01",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0009",
+    "QuoteLanguageId": 2504000003000100103,
+    "Weight": 80
+  },
+  {
+    "Id": 3000100304,
+    "LeagueEventCutInSetId": 30001003,
+    "CutInResourceId": "ml_cutin_01",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0016",
+    "QuoteLanguageId": 2504000003000100104,
+    "Weight": 100
+  },
+  {
+    "Id": 3000100305,
+    "LeagueEventCutInSetId": 30001003,
+    "CutInResourceId": "ml_cutin_01",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0030",
+    "QuoteLanguageId": 2504000003000100105,
+    "Weight": 100
+  },
+  {
+    "Id": 3000100306,
+    "LeagueEventCutInSetId": 30001003,
+    "CutInResourceId": "ml_cutin_01",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0011",
+    "QuoteLanguageId": 2504000003000100106,
+    "Weight": 180
+  },
+  {
+    "Id": 3000100307,
+    "LeagueEventCutInSetId": 30001003,
+    "CutInResourceId": "ml_cutin_01",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0017",
+    "QuoteLanguageId": 2504000003000100107,
+    "Weight": 180
+  },
+  {
+    "Id": 3000100308,
+    "LeagueEventCutInSetId": 30001003,
+    "CutInResourceId": "ml_cutin_01",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0031",
+    "QuoteLanguageId": 2504000003000100108,
+    "Weight": 200
+  },
+  {
+    "Id": 3000100309,
+    "LeagueEventCutInSetId": 30001003,
+    "CutInResourceId": "ml_cutin_01",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0014",
+    "QuoteLanguageId": 2504000003000100109,
+    "Weight": 0
+  },
+  {
+    "Id": 3000100401,
+    "LeagueEventCutInSetId": 30001004,
+    "CutInResourceId": "ml_cutin_02",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0018",
+    "QuoteLanguageId": 2504000003000100201,
+    "Weight": 70
+  },
+  {
+    "Id": 3000100402,
+    "LeagueEventCutInSetId": 30001004,
+    "CutInResourceId": "ml_cutin_02",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0019",
+    "QuoteLanguageId": 2504000003000100202,
+    "Weight": 70
+  },
+  {
+    "Id": 3000100403,
+    "LeagueEventCutInSetId": 30001004,
+    "CutInResourceId": "ml_cutin_02",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0026",
+    "QuoteLanguageId": 2504000003000100203,
+    "Weight": 70
+  },
+  {
+    "Id": 3000100404,
+    "LeagueEventCutInSetId": 30001004,
+    "CutInResourceId": "ml_cutin_02",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0032",
+    "QuoteLanguageId": 2504000003000100204,
+    "Weight": 100
+  },
+  {
+    "Id": 3000100405,
+    "LeagueEventCutInSetId": 30001004,
+    "CutInResourceId": "ml_cutin_02",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0021",
+    "QuoteLanguageId": 2504000003000100205,
+    "Weight": 200
+  },
+  {
+    "Id": 3000100406,
+    "LeagueEventCutInSetId": 30001004,
+    "CutInResourceId": "ml_cutin_02",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0022",
+    "QuoteLanguageId": 2504000003000100206,
+    "Weight": 0
+  },
+  {
+    "Id": 3000100407,
+    "LeagueEventCutInSetId": 30001004,
+    "CutInResourceId": "ml_cutin_02",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0023",
+    "QuoteLanguageId": 2504000003000100207,
+    "Weight": 190
+  },
+  {
+    "Id": 3000100408,
+    "LeagueEventCutInSetId": 30001004,
+    "CutInResourceId": "ml_cutin_02",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0033",
+    "QuoteLanguageId": 2504000003000100208,
+    "Weight": 150
+  },
+  {
+    "Id": 3000100409,
+    "LeagueEventCutInSetId": 30001004,
+    "CutInResourceId": "ml_cutin_02",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0024",
+    "QuoteLanguageId": 2504000003000100209,
+    "Weight": 150
+  },
+  {
+    "Id": 3000100410,
+    "LeagueEventCutInSetId": 30001004,
+    "CutInResourceId": "ml_cutin_02",
+    "VoiceResourceId": "vc_masterleague_0001_btl_0028",
+    "QuoteLanguageId": 2504000003000100210,
+    "Weight": 0
+  }
+]

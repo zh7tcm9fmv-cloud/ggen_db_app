@@ -1,0 +1,35 @@
+[
+  {
+    "Id": 25000101,
+    "ChronicleEventId": 250001,
+    "ReleaseChronicleEventDocumentGroupId": 0,
+    "NameLanguageId": 380100000025000101,
+    "ResourceId": "25000101",
+    "BackgroundResourceId": "25000101",
+    "CompleteRewardReceiveConditionId": 25000104001,
+    "CompleteRewardSetId": 44250001010000,
+    "UseBgmVariation": false
+  },
+  {
+    "Id": 25000102,
+    "ChronicleEventId": 250001,
+    "ReleaseChronicleEventDocumentGroupId": 25000105,
+    "NameLanguageId": 380100000025000102,
+    "ResourceId": "25000102",
+    "BackgroundResourceId": "25000101",
+    "CompleteRewardReceiveConditionId": 25000104101,
+    "CompleteRewardSetId": 44250001020000,
+    "UseBgmVariation": false
+  },
+  {
+    "Id": 25000103,
+    "ChronicleEventId": 250001,
+    "ReleaseChronicleEventDocumentGroupId": 25000110,
+    "NameLanguageId": 380100000025000103,
+    "ResourceId": "25000103",
+    "BackgroundResourceId": "25000103",
+    "CompleteRewardReceiveConditionId": 25000104201,
+    "CompleteRewardSetId": 44250001030000,
+    "UseBgmVariation": true
+  }
+]

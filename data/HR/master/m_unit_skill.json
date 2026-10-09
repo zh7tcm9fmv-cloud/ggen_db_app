@@ -1,0 +1,72 @@
+[
+  {
+    "Id": 111400045000,
+    "NameLanguageId": 141300111400045000,
+    "DescriptionLanguageId": 141400111400045000,
+    "ResourceId": "trait_11630103",
+    "StartEffectResourceId": "ef_mpc_0093_01_durableshield",
+    "ActiveEffectResourceId": "ef_mpc_0093_01_durableshield_loop",
+    "Duration": 1,
+    "UsageLimit": 1,
+    "MultiTargetTypeIndex": 1,
+    "MultiTargetRangeMin": 0,
+    "MultiTargetRangeMax": 3,
+    "MultiTargetCount": 1
+  },
+  {
+    "Id": 114400055000,
+    "NameLanguageId": 141300114400055000,
+    "DescriptionLanguageId": 141400114400055000,
+    "ResourceId": "trait_11470103",
+    "StartEffectResourceId": "ef_mpc_0092_01_unitaura_phenex",
+    "ActiveEffectResourceId": "ef_mpc_0092_01_unitaura_phenex_loop",
+    "Duration": 1,
+    "UsageLimit": 1,
+    "MultiTargetTypeIndex": 0,
+    "MultiTargetRangeMin": 0,
+    "MultiTargetRangeMax": 0,
+    "MultiTargetCount": 0
+  },
+  {
+    "Id": 116300015000,
+    "NameLanguageId": 141300116300015000,
+    "DescriptionLanguageId": 141400116300015000,
+    "ResourceId": "trait_11540103",
+    "StartEffectResourceId": "ef_mpc_0094_01_mepe_f91",
+    "ActiveEffectResourceId": "ef_mpc_0094_01_mepe_f91_loop",
+    "Duration": 1,
+    "UsageLimit": 1,
+    "MultiTargetTypeIndex": 0,
+    "MultiTargetRangeMin": 0,
+    "MultiTargetRangeMax": 0,
+    "MultiTargetCount": 0
+  },
+  {
+    "Id": 117500105000,
+    "NameLanguageId": 141300117500105000,
+    "DescriptionLanguageId": 141400117500105000,
+    "ResourceId": "trait_11710101",
+    "StartEffectResourceId": "ef_mpc_0091_04_unitskill",
+    "ActiveEffectResourceId": "ef_mpc_0091_04_unitskill_loop",
+    "Duration": 1,
+    "UsageLimit": 1,
+    "MultiTargetTypeIndex": 0,
+    "MultiTargetRangeMin": 0,
+    "MultiTargetRangeMax": 0,
+    "MultiTargetCount": 0
+  },
+  {
+    "Id": 137000595000,
+    "NameLanguageId": 141300137000595000,
+    "DescriptionLanguageId": 141400137000595000,
+    "ResourceId": "trait_11430103",
+    "StartEffectResourceId": "ef_mpc_0091_05_unitskill",
+    "ActiveEffectResourceId": "ef_mpc_0091_05_unitskill_loop",
+    "Duration": 1,
+    "UsageLimit": 1,
+    "MultiTargetTypeIndex": 0,
+    "MultiTargetRangeMin": 0,
+    "MultiTargetRangeMax": 0,
+    "MultiTargetCount": 0
+  }
+]

@@ -1,0 +1,47 @@
+[
+  {
+    "Id": 901000100402000003,
+    "SupporterId": 1001000250,
+    "MapGroupId": 901000100402000005,
+    "HpAdditionValue": 0,
+    "AttackAdditionValue": 0,
+    "LeaderSkillId": 100100025000,
+    "ActiveSkillId": 1001000250
+  },
+  {
+    "Id": 906000100102000001,
+    "SupporterId": 1001000250,
+    "MapGroupId": 906000100102000001,
+    "HpAdditionValue": 0,
+    "AttackAdditionValue": 0,
+    "LeaderSkillId": 100100025001,
+    "ActiveSkillId": 1001000250
+  },
+  {
+    "Id": 906000100102000002,
+    "SupporterId": 1300000450,
+    "MapGroupId": 906000100102000002,
+    "HpAdditionValue": 3000,
+    "AttackAdditionValue": 200,
+    "LeaderSkillId": 130000045003,
+    "ActiveSkillId": 1300000450
+  },
+  {
+    "Id": 906000100202000001,
+    "SupporterId": 1001000250,
+    "MapGroupId": 906000100202000001,
+    "HpAdditionValue": 0,
+    "AttackAdditionValue": 0,
+    "LeaderSkillId": 100100025001,
+    "ActiveSkillId": 1001000250
+  },
+  {
+    "Id": 906000100202000002,
+    "SupporterId": 1095000150,
+    "MapGroupId": 906000100202000002,
+    "HpAdditionValue": 2500,
+    "AttackAdditionValue": 250,
+    "LeaderSkillId": 109500015003,
+    "ActiveSkillId": 1095000150
+  }
+]

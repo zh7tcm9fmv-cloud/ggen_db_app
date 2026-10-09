@@ -1,0 +1,112 @@
+[
+  {
+    "Id": 1,
+    "SizeTypeIndex": 2,
+    "ForwardArea": 0,
+    "RearArea": 0,
+    "LeftArea": 0,
+    "RightArea": 0,
+    "PivotSquareSize": 1,
+    "RequiredTurnAround": false
+  },
+  {
+    "Id": 2,
+    "SizeTypeIndex": 3,
+    "ForwardArea": 0,
+    "RearArea": 0,
+    "LeftArea": 0,
+    "RightArea": 0,
+    "PivotSquareSize": 2,
+    "RequiredTurnAround": false
+  },
+  {
+    "Id": 3,
+    "SizeTypeIndex": 4,
+    "ForwardArea": 1,
+    "RearArea": 0,
+    "LeftArea": 0,
+    "RightArea": 0,
+    "PivotSquareSize": 2,
+    "RequiredTurnAround": true
+  },
+  {
+    "Id": 4,
+    "SizeTypeIndex": 8,
+    "ForwardArea": 1,
+    "RearArea": 0,
+    "LeftArea": 0,
+    "RightArea": 0,
+    "PivotSquareSize": 3,
+    "RequiredTurnAround": true
+  },
+  {
+    "Id": 5,
+    "SizeTypeIndex": 8,
+    "ForwardArea": 0,
+    "RearArea": 0,
+    "LeftArea": 0,
+    "RightArea": 2,
+    "PivotSquareSize": 3,
+    "RequiredTurnAround": true
+  },
+  {
+    "Id": 6,
+    "SizeTypeIndex": 7,
+    "ForwardArea": 2,
+    "RearArea": 0,
+    "LeftArea": 0,
+    "RightArea": 0,
+    "PivotSquareSize": 1,
+    "RequiredTurnAround": true
+  },
+  {
+    "Id": 7,
+    "SizeTypeIndex": 5,
+    "ForwardArea": 1,
+    "RearArea": 0,
+    "LeftArea": 0,
+    "RightArea": 0,
+    "PivotSquareSize": 1,
+    "RequiredTurnAround": true
+  },
+  {
+    "Id": 8,
+    "SizeTypeIndex": 6,
+    "ForwardArea": 2,
+    "RearArea": 0,
+    "LeftArea": 0,
+    "RightArea": 0,
+    "PivotSquareSize": 1,
+    "RequiredTurnAround": true
+  },
+  {
+    "Id": 9,
+    "SizeTypeIndex": 8,
+    "ForwardArea": 1,
+    "RearArea": 0,
+    "LeftArea": 0,
+    "RightArea": 0,
+    "PivotSquareSize": 4,
+    "RequiredTurnAround": true
+  },
+  {
+    "Id": 10,
+    "SizeTypeIndex": 4,
+    "ForwardArea": 0,
+    "RearArea": 0,
+    "LeftArea": 0,
+    "RightArea": 0,
+    "PivotSquareSize": 3,
+    "RequiredTurnAround": false
+  },
+  {
+    "Id": 11,
+    "SizeTypeIndex": 4,
+    "ForwardArea": 0,
+    "RearArea": 0,
+    "LeftArea": 0,
+    "RightArea": 1,
+    "PivotSquareSize": 2,
+    "RequiredTurnAround": true
+  }
+]

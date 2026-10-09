@@ -1,0 +1,34 @@
+[
+  {
+    "GashaId": 2603600301,
+    "GashaContentDetailId": 11219000150,
+    "AttackMovieResourceId": "gasha_additional_attack_g2190u00250",
+    "GashaContainerDestroyAnimationTypeIndex": 3,
+    "AttackBgmCueSheetName": "",
+    "BgmHandoverOverrideSeriesId": 0
+  },
+  {
+    "GashaId": 2603600301,
+    "GashaContentDetailId": 11370005950,
+    "AttackMovieResourceId": "gasha_additional_attack_g3700u05950",
+    "GashaContainerDestroyAnimationTypeIndex": 3,
+    "AttackBgmCueSheetName": "",
+    "BgmHandoverOverrideSeriesId": 0
+  },
+  {
+    "GashaId": 2609500301,
+    "GashaContentDetailId": 11175001050,
+    "AttackMovieResourceId": "gasha_additional_attack_g1750u01050",
+    "GashaContainerDestroyAnimationTypeIndex": 3,
+    "AttackBgmCueSheetName": "bgm_1750_0001",
+    "BgmHandoverOverrideSeriesId": 1750
+  },
+  {
+    "GashaId": 2609500301,
+    "GashaContentDetailId": 11850004850,
+    "AttackMovieResourceId": "gasha_additional_attack_g8500u04850",
+    "GashaContainerDestroyAnimationTypeIndex": 3,
+    "AttackBgmCueSheetName": "bgm_1750_0009",
+    "BgmHandoverOverrideSeriesId": 1750
+  }
+]

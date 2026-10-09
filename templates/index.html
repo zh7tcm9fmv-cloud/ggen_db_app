@@ -8,9 +8,10 @@
   try{
     var l=String(localStorage.getItem('ggen_lang')||'EN').trim().toUpperCase();
     if(l==='JP')l='JA';
-    if(l!=='EN'&&l!=='TW'&&l!=='HK'&&l!=='JA')l='EN';
-    document.documentElement.setAttribute('data-ui-lang',l);
-    document.documentElement.lang=l==='JA'?'ja':(l==='TW'||l==='HK')?'zh-Hant':'en';
+    if(l==='KR')l='HR';
+    if(l!=='EN'&&l!=='TW'&&l!=='HK'&&l!=='JA'&&l!=='HR')l='EN';
+    document.documentElement.setAttribute('data-ui-lang',l==='HR'?'KR':(l==='JA'?'JP':l));
+    document.documentElement.lang=l==='JA'?'ja':l==='HR'?'ko':(l==='TW'||l==='HK')?'zh-Hant':'en';
   }catch(_){}
 })();
 </script>
@@ -94,8 +95,9 @@
   try{
     var path=String(location.pathname||'');
     var l=String(document.documentElement.getAttribute('data-ui-lang')||'EN').trim().toUpperCase();
-    if(l==='JP')l='JA';
-    if(l!=='EN'&&l!=='TW'&&l!=='HK'&&l!=='JA')l='EN';
+    if(l!=='EN'&&l!=='TW'&&l!=='HK'&&l!=='JP'&&l!=='JA'&&l!=='KR'&&l!=='HR')l='EN';
+    if(l==='JA')l='JP';
+    if(l==='HR')l='KR';
     if(/^\/(tl|banners)\/?$/i.test(path)){
       window.__GGEN_BT_BOOT__={
         lang:l,

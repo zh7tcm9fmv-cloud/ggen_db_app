@@ -909,7 +909,13 @@ if IS_LOCAL:
             'root': r"C:\Users\Mikew0911\Desktop\GGen_JA",
             'master_prefix': "MasterData_",
             'lang_prefix': "Lang_MasterData_"
-        }
+        },
+        # HR = Korean game LANG pack (CDN locale hr). UI label is KR.
+        'HR': {
+            'root': r"C:\Users\Mikew0911\Desktop\GGen_HR",
+            'master_prefix': "MasterData_",
+            'lang_prefix': "Lang_MasterData_"
+        },
     }
 else:
     print("Running in DEPLOYMENT mode")
@@ -929,7 +935,11 @@ else:
         'JA': {
             'master_dir': os.path.join(os.path.dirname(__file__), 'data', 'JA', 'master'),
             'lang_dir': os.path.join(os.path.dirname(__file__), 'data', 'JA', 'lang'),
-        }
+        },
+        'HR': {
+            'master_dir': os.path.join(os.path.dirname(__file__), 'data', 'HR', 'master'),
+            'lang_dir': os.path.join(os.path.dirname(__file__), 'data', 'HR', 'lang'),
+        },
     }
 
 DEFAULT_LANG = 'EN'
@@ -1032,15 +1042,42 @@ UI_LABELS = {
         'stage_score_type_4': '生存数', 'stage_score_type_5': 'ボーナス',
         'reward_diamonds': 'ダイヤ',
     },
+    # Korean (HR pack / KR UI). Prefer game LANG for dossier text; these are UI chrome fallbacks.
+    'HR': {
+        'restriction_before_moving': '이동 전에만 사용 가능.',
+        'restriction_tension_max': '텐션 Max 이상일 때 사용 가능.',
+        'restriction_mp': '{}MP 소비 시 사용 가능.',
+        'restriction_hp': 'HP {}% 소비 시 사용 가능.',
+        'restriction_recover_hp': '사용 시 HP를 {}% 회복한다.',
+        'restriction_recover_en': '사용 시 EN을 {}% 회복한다.',
+        'restriction_recover_mp': '사용 시 {}MP를 회복한다.',
+        'restriction_map_supply_mp': '범위 내 소대 유닛에 탑승 중인 캐릭터의 MP를 {} 상승시킨다.',
+        'map_weapon_designate_spots': '최대 {}곳까지 지정할 수 있다.',
+        'stage_recommended_cp': '추천 전력: {}', 'stage_no_prefix': 'No. {}', 'sortie_group': '소대 {}',
+        'restriction_applies_unit': '유닛에 적용', 'restriction_applies_both': '유닛과 캐릭터에 적용',
+        'restriction_applies_characters': '캐릭터에 적용',
+        'terrain_space': '우주', 'terrain_atmospheric': '공중', 'terrain_ground': '지상', 'terrain_amphibious': '수중', 'terrain_unknown': '불명',
+        'victory_conditions': '승리 조건', 'defeat_conditions': '패배 조건',
+        'branch_victory_conditions': '분기 승리 조건', 'none': '없음',
+        'difficulty_normal': '노멀', 'difficulty_hard': '하드', 'difficulty_expert': '엑스퍼트',
+        'difficulty_none': '없음', 'difficulty_hell': '헬', 'difficulty_inferno': '인페르노',
+        'difficulty_challenge': '챌린지', 'difficulty_another': 'Another', 'difficulty_another2': 'Another2',
+        'stage_score_type_1': '클리어 평가', 'stage_score_type_2': '피데미지', 'stage_score_type_3': '오버킬',
+        'stage_score_type_4': '생존 수', 'stage_score_type_5': '보너스',
+        'reward_diamonds': '다이아',
+    },
 }
+UI_LABELS['KR'] = dict(UI_LABELS['HR'])
 UNIT_ROLE_TYPE_LANG_MAP = {
     'EN': {'1': 'Attack Type', '2': 'Defense Type', '3': 'Support Type'},
     'TW': {'1': '攻擊型', '2': '耐久型', '3': '支援型'},
     'HK': {'1': '攻擊型', '2': '耐久型', '3': '支援型'},
     'JA': {'1': '攻撃型', '2': '耐久型', '3': '支援型'},
+    'HR': {'1': '공격형', '2': '내구형', '3': '지원형'},
 }
-ROLE_NAME_MAP_CHARS = {'EN': {'Attack': 'Attack', 'Defense': 'Defense', 'Support': 'Support'}, 'TW': {'Attack': '攻擊型', 'Defense': '耐久型', 'Support': '支援型'}, 'JA': {'Attack': '攻撃型', 'Defense': '耐久型', 'Support': '支援型'}}
+ROLE_NAME_MAP_CHARS = {'EN': {'Attack': 'Attack', 'Defense': 'Defense', 'Support': 'Support'}, 'TW': {'Attack': '攻擊型', 'Defense': '耐久型', 'Support': '支援型'}, 'JA': {'Attack': '攻撃型', 'Defense': '耐久型', 'Support': '支援型'}, 'HR': {'Attack': '공격형', 'Defense': '내구형', 'Support': '지원형'}}
 ROLE_NAME_MAP_CHARS['HK'] = dict(ROLE_NAME_MAP_CHARS['TW'])
+ROLE_NAME_MAP_CHARS['KR'] = dict(ROLE_NAME_MAP_CHARS['HR'])
 
 
 def resolve_role_label(role_id, lang_code=None):
@@ -1052,16 +1089,18 @@ def resolve_role_label(role_id, lang_code=None):
     lc = (lang_code or DEFAULT_LANG).upper()
     if lc == 'JP':
         lc = 'JA'
+    if lc == 'KR':
+        lc = 'HR'
     m = ROLE_NAME_MAP_CHARS.get(lc) or ROLE_NAME_MAP_CHARS['EN']
     return m.get(en_label, en_label)
 # Indices align with StageTerrainTypeIndex in m_stage / m_help five terrain types.
-# Official m_help: EN Land/Underwater; TW+HK 地面/水面/水中; JA 地上/水上/水中.
+# Official m_help: EN Land/Underwater; TW+HK 地面/水面/水中; JA 地上/水上/水中; HR 지상/수상/수중.
 STAGE_TERRAIN_MAP = {
-    '1': {'EN': 'Space', 'TW': '宇宙', 'HK': '宇宙', 'JA': '宇宙'},
-    '2': {'EN': 'Atmospheric', 'TW': '空中', 'HK': '空中', 'JA': '空中'},
-    '3': {'EN': 'Land', 'TW': '地面', 'HK': '地面', 'JA': '地上'},
-    '4': {'EN': 'Sea', 'TW': '水面', 'HK': '水面', 'JA': '水上'},
-    '5': {'EN': 'Underwater', 'TW': '水中', 'HK': '水中', 'JA': '水中'},
+    '1': {'EN': 'Space', 'TW': '宇宙', 'HK': '宇宙', 'JA': '宇宙', 'HR': '우주'},
+    '2': {'EN': 'Atmospheric', 'TW': '空中', 'HK': '空中', 'JA': '空中', 'HR': '공중'},
+    '3': {'EN': 'Land', 'TW': '地面', 'HK': '地面', 'JA': '地上', 'HR': '지상'},
+    '4': {'EN': 'Sea', 'TW': '水面', 'HK': '水面', 'JA': '水上', 'HR': '수상'},
+    '5': {'EN': 'Underwater', 'TW': '水中', 'HK': '水中', 'JA': '水中', 'HR': '수중'},
 }
 
 def get_ui_label(lang_code, key):
@@ -1143,7 +1182,12 @@ for lang_code in LANG_CONFIG:
 
 # Fallback: if a language's root is missing, try same project with lang-specific prefix (as in GUI.py)
 # e.g. TW: look for GGen_Database/MasterData_*/Lang_MasterData_TW_* so character/unit names can be translated
-_ALT_LANG_PREFIX = {'TW': 'Lang_MasterData_TW_', 'HK': 'Lang_MasterData_HK_', 'JA': 'Lang_MasterData_JA_'}
+_ALT_LANG_PREFIX = {
+    'TW': 'Lang_MasterData_TW_',
+    'HK': 'Lang_MasterData_HK_',
+    'JA': 'Lang_MasterData_JA_',
+    'HR': 'Lang_MasterData_HR_',
+}
 app_dir = os.path.dirname(os.path.abspath(__file__))
 bundled_lang = lambda lc: os.path.join(app_dir, 'data', lc, 'lang')
 bundled_master = lambda lc: os.path.join(app_dir, 'data', lc, 'master')
@@ -4584,6 +4628,8 @@ _WEAPON_ATTR_TRAIT_SHORT = {
     'HK': {'physical': '物理', 'beam': '光束', 'special': '特殊'},
     'JA': {'physical': '物理', 'beam': 'ビーム', 'special': '特殊'},
     'JP': {'physical': '物理', 'beam': 'ビーム', 'special': '特殊'},
+    'HR': {'physical': '물리', 'beam': '빔', 'special': '특수'},
+    'KR': {'physical': '물리', 'beam': '빔', 'special': '특수'},
 }
 _WEAPON_ATTR_TRAIT_PARSE = {
     'EN': {
@@ -4762,6 +4808,8 @@ _ATTACK_ATTR_TYPE_SHORT = {
     'HK': {'ranged': '射擊', 'melee': '格鬥', 'awaken': '覺醒'},
     'JA': {'ranged': '射撃', 'melee': '格闘', 'awaken': '覚醒'},
     'JP': {'ranged': '射撃', 'melee': '格闘', 'awaken': '覚醒'},
+    'HR': {'ranged': '사격', 'melee': '격투', 'awaken': '각성'},
+    'KR': {'ranged': '사격', 'melee': '격투', 'awaken': '각성'},
 }
 
 
@@ -17420,9 +17468,21 @@ def validate_lang_code(lc):
     lc = (lc or DEFAULT_LANG).upper()
     if lc == 'JP':
         lc = 'JA'
+    if lc == 'KR':
+        lc = 'HR'
     if lc == 'JA' and not jp_mode_unlocked():
         return DEFAULT_LANG
     if lc not in LANG_DATA: lc = DEFAULT_LANG
+    return lc
+
+
+def display_lang_code(lc):
+    """API/UI language label: JA→JP, HR→KR."""
+    lc = (lc or DEFAULT_LANG).upper()
+    if lc == 'JA':
+        return 'JP'
+    if lc == 'HR':
+        return 'KR'
     return lc
 
 def series_names_lower_for_search(ser_list):
@@ -24096,7 +24156,7 @@ _GAME_NEWS_STATUS_CACHE_TTL = 300
 
 def _game_news_lang_type(lc):
     lc = validate_lang_code(lc)
-    display = 'JP' if lc == 'JA' else lc
+    display = display_lang_code(lc)
     return GAME_NEWS_LANG_TYPE.get(display, 2)
 
 
@@ -24138,7 +24198,7 @@ def _fetch_game_news_items(lang_code):
 
 def _game_news_status_payload(lang_code, last_seen_at=0, last_seen_fp=''):
     lc = validate_lang_code(lang_code)
-    display = 'JP' if lc == 'JA' else lc
+    display = display_lang_code(lc)
     cache_key = display
     now = time.time()
     cached = _game_news_status_cache.get(cache_key)
@@ -24647,12 +24707,12 @@ def _latest_release_content_status_payload(last_seen_at=0, last_seen_fp=''):
     }
 
 
-_LANG_ORDER = ('EN', 'TW', 'HK', 'JA')
+_LANG_ORDER = ('EN', 'TW', 'HK', 'JA', 'HR')
 
 @app.route('/api/languages')
 def get_languages():
     ordered = [lc for lc in _LANG_ORDER if lc in LANG_DATA]
-    display_languages = [('JP' if lc == 'JA' else lc) for lc in ordered]
+    display_languages = [display_lang_code(lc) for lc in ordered]
     return jsonify(convert_image_urls({'languages': display_languages, 'default': DEFAULT_LANG}))
 
 WHATS_NEW_JSON_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'whats_new.json')

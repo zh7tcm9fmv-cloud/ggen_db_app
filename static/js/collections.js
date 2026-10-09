@@ -1120,7 +1120,8 @@
   function specialDesignIconSrc() {
     var L = String(state.lang || 'EN').toUpperCase();
     if (L === 'JP') L = 'JA';
-    if (L !== 'EN' && L !== 'JA' && L !== 'TW' && L !== 'HK') L = 'EN';
+    if (L === 'KR') L = 'HR';
+    if (L !== 'EN' && L !== 'JA' && L !== 'TW' && L !== 'HK' && L !== 'HR') L = 'EN';
     return imgUrl('/static/images/UI/collections_15_special_design_' + L + '.webp');
   }
 

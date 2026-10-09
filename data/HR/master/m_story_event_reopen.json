@@ -1,0 +1,62 @@
+[
+  {
+    "StoryEventId": 200001,
+    "ScheduleId": 2510509901,
+    "DailyBossSkipCountLimit": 0,
+    "Unknown_Col_3": 0
+  },
+  {
+    "StoryEventId": 200002,
+    "ScheduleId": 2510509901,
+    "DailyBossSkipCountLimit": 0,
+    "Unknown_Col_3": 0
+  },
+  {
+    "StoryEventId": 200005,
+    "ScheduleId": 2601109901,
+    "DailyBossSkipCountLimit": 0,
+    "Unknown_Col_3": 0
+  },
+  {
+    "StoryEventId": 200006,
+    "ScheduleId": 2601109901,
+    "DailyBossSkipCountLimit": 0,
+    "Unknown_Col_3": 0
+  },
+  {
+    "StoryEventId": 200007,
+    "ScheduleId": 2604209901,
+    "DailyBossSkipCountLimit": 0,
+    "Unknown_Col_3": 0
+  },
+  {
+    "StoryEventId": 200008,
+    "ScheduleId": 2607109902,
+    "DailyBossSkipCountLimit": 0,
+    "Unknown_Col_3": 0
+  },
+  {
+    "StoryEventId": 200010,
+    "ScheduleId": 2607109903,
+    "DailyBossSkipCountLimit": 0,
+    "Unknown_Col_3": 0
+  },
+  {
+    "StoryEventId": 200011,
+    "ScheduleId": 2609109901,
+    "DailyBossSkipCountLimit": 0,
+    "Unknown_Col_3": 0
+  },
+  {
+    "StoryEventId": 200012,
+    "ScheduleId": 2609109902,
+    "DailyBossSkipCountLimit": 0,
+    "Unknown_Col_3": 0
+  },
+  {
+    "StoryEventId": 200013,
+    "ScheduleId": 2610209902,
+    "DailyBossSkipCountLimit": 0,
+    "Unknown_Col_3": 0
+  }
+]

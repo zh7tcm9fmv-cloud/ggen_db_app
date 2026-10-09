@@ -1,0 +1,27 @@
+[
+  {
+    "LeagueIngameConfigGroupId": 1,
+    "Turn": 1,
+    "BonusRate": 100
+  },
+  {
+    "LeagueIngameConfigGroupId": 1,
+    "Turn": 2,
+    "BonusRate": 60
+  },
+  {
+    "LeagueIngameConfigGroupId": 1,
+    "Turn": 3,
+    "BonusRate": 30
+  },
+  {
+    "LeagueIngameConfigGroupId": 1,
+    "Turn": 4,
+    "BonusRate": 20
+  },
+  {
+    "LeagueIngameConfigGroupId": 1,
+    "Turn": 5,
+    "BonusRate": 0
+  }
+]

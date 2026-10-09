@@ -1,0 +1,14 @@
+[
+  {
+    "Id": 225082001,
+    "DurationDays": 20,
+    "RewardLimit": 15,
+    "FirstRewardSetId": 99112250820011,
+    "DailyRewardSetId": 99112250820012,
+    "BannerResourceId": "225082001",
+    "NameLanguageId": 192100000225082001,
+    "AppealDescriptionLanguageId": 192200000225082001,
+    "DurationDescriptionLanguageId": 192300000225082001,
+    "NoticeDescriptionLanguageId": 192400000225082001
+  }
+]

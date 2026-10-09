@@ -1,0 +1,314 @@
+[
+  {
+    "Id": 250001001,
+    "StartChronicleEventNodeId": 250001001,
+    "EndChronicleEventNodeId": 250001002,
+    "ReleaseConditionId": 0
+  },
+  {
+    "Id": 250001002,
+    "StartChronicleEventNodeId": 250001002,
+    "EndChronicleEventNodeId": 250001018,
+    "ReleaseConditionId": 25000100101
+  },
+  {
+    "Id": 250001003,
+    "StartChronicleEventNodeId": 250001018,
+    "EndChronicleEventNodeId": 250001019,
+    "ReleaseConditionId": 25000100101
+  },
+  {
+    "Id": 250001004,
+    "StartChronicleEventNodeId": 250001003,
+    "EndChronicleEventNodeId": 250001009,
+    "ReleaseConditionId": 25000100201
+  },
+  {
+    "Id": 250001005,
+    "StartChronicleEventNodeId": 250001009,
+    "EndChronicleEventNodeId": 250001010,
+    "ReleaseConditionId": 25000100201
+  },
+  {
+    "Id": 250001006,
+    "StartChronicleEventNodeId": 250001004,
+    "EndChronicleEventNodeId": 250001005,
+    "ReleaseConditionId": 25000100301
+  },
+  {
+    "Id": 250001007,
+    "StartChronicleEventNodeId": 250001005,
+    "EndChronicleEventNodeId": 250001006,
+    "ReleaseConditionId": 25000100401
+  },
+  {
+    "Id": 250001008,
+    "StartChronicleEventNodeId": 250001006,
+    "EndChronicleEventNodeId": 250001007,
+    "ReleaseConditionId": 25000100501
+  },
+  {
+    "Id": 250001009,
+    "StartChronicleEventNodeId": 250001009,
+    "EndChronicleEventNodeId": 250001012,
+    "ReleaseConditionId": 25000100701
+  },
+  {
+    "Id": 250001010,
+    "StartChronicleEventNodeId": 250001012,
+    "EndChronicleEventNodeId": 250001013,
+    "ReleaseConditionId": 25000100701
+  },
+  {
+    "Id": 250001011,
+    "StartChronicleEventNodeId": 250001013,
+    "EndChronicleEventNodeId": 250001014,
+    "ReleaseConditionId": 25000100801
+  },
+  {
+    "Id": 250001012,
+    "StartChronicleEventNodeId": 250001014,
+    "EndChronicleEventNodeId": 250001015,
+    "ReleaseConditionId": 25000100901
+  },
+  {
+    "Id": 250001013,
+    "StartChronicleEventNodeId": 250001015,
+    "EndChronicleEventNodeId": 250001016,
+    "ReleaseConditionId": 25000101001
+  },
+  {
+    "Id": 250001014,
+    "StartChronicleEventNodeId": 250001018,
+    "EndChronicleEventNodeId": 250001021,
+    "ReleaseConditionId": 25000101201
+  },
+  {
+    "Id": 250001015,
+    "StartChronicleEventNodeId": 250001021,
+    "EndChronicleEventNodeId": 250001022,
+    "ReleaseConditionId": 25000101201
+  },
+  {
+    "Id": 250001016,
+    "StartChronicleEventNodeId": 250001022,
+    "EndChronicleEventNodeId": 250001023,
+    "ReleaseConditionId": 25000101301
+  },
+  {
+    "Id": 250001017,
+    "StartChronicleEventNodeId": 250001023,
+    "EndChronicleEventNodeId": 250001024,
+    "ReleaseConditionId": 25000101401
+  },
+  {
+    "Id": 250001018,
+    "StartChronicleEventNodeId": 250001024,
+    "EndChronicleEventNodeId": 250001025,
+    "ReleaseConditionId": 25000101501
+  },
+  {
+    "Id": 250001019,
+    "StartChronicleEventNodeId": 250001025,
+    "EndChronicleEventNodeId": 250001026,
+    "ReleaseConditionId": 25000101601
+  },
+  {
+    "Id": 250001020,
+    "StartChronicleEventNodeId": 250001028,
+    "EndChronicleEventNodeId": 250001029,
+    "ReleaseConditionId": 0
+  },
+  {
+    "Id": 250001021,
+    "StartChronicleEventNodeId": 250001029,
+    "EndChronicleEventNodeId": 250001045,
+    "ReleaseConditionId": 25000101701
+  },
+  {
+    "Id": 250001022,
+    "StartChronicleEventNodeId": 250001045,
+    "EndChronicleEventNodeId": 250001046,
+    "ReleaseConditionId": 25000101701
+  },
+  {
+    "Id": 250001023,
+    "StartChronicleEventNodeId": 250001030,
+    "EndChronicleEventNodeId": 250001036,
+    "ReleaseConditionId": 25000101801
+  },
+  {
+    "Id": 250001024,
+    "StartChronicleEventNodeId": 250001036,
+    "EndChronicleEventNodeId": 250001037,
+    "ReleaseConditionId": 25000101801
+  },
+  {
+    "Id": 250001025,
+    "StartChronicleEventNodeId": 250001031,
+    "EndChronicleEventNodeId": 250001032,
+    "ReleaseConditionId": 25000101901
+  },
+  {
+    "Id": 250001026,
+    "StartChronicleEventNodeId": 250001032,
+    "EndChronicleEventNodeId": 250001033,
+    "ReleaseConditionId": 25000102001
+  },
+  {
+    "Id": 250001027,
+    "StartChronicleEventNodeId": 250001033,
+    "EndChronicleEventNodeId": 250001034,
+    "ReleaseConditionId": 25000102101
+  },
+  {
+    "Id": 250001028,
+    "StartChronicleEventNodeId": 250001036,
+    "EndChronicleEventNodeId": 250001039,
+    "ReleaseConditionId": 25000102301
+  },
+  {
+    "Id": 250001029,
+    "StartChronicleEventNodeId": 250001039,
+    "EndChronicleEventNodeId": 250001040,
+    "ReleaseConditionId": 25000102301
+  },
+  {
+    "Id": 250001030,
+    "StartChronicleEventNodeId": 250001040,
+    "EndChronicleEventNodeId": 250001041,
+    "ReleaseConditionId": 25000102401
+  },
+  {
+    "Id": 250001031,
+    "StartChronicleEventNodeId": 250001041,
+    "EndChronicleEventNodeId": 250001042,
+    "ReleaseConditionId": 25000102501
+  },
+  {
+    "Id": 250001032,
+    "StartChronicleEventNodeId": 250001042,
+    "EndChronicleEventNodeId": 250001043,
+    "ReleaseConditionId": 25000102601
+  },
+  {
+    "Id": 250001033,
+    "StartChronicleEventNodeId": 250001045,
+    "EndChronicleEventNodeId": 250001048,
+    "ReleaseConditionId": 25000102801
+  },
+  {
+    "Id": 250001034,
+    "StartChronicleEventNodeId": 250001048,
+    "EndChronicleEventNodeId": 250001049,
+    "ReleaseConditionId": 25000102801
+  },
+  {
+    "Id": 250001035,
+    "StartChronicleEventNodeId": 250001049,
+    "EndChronicleEventNodeId": 250001050,
+    "ReleaseConditionId": 25000102901
+  },
+  {
+    "Id": 250001036,
+    "StartChronicleEventNodeId": 250001050,
+    "EndChronicleEventNodeId": 250001051,
+    "ReleaseConditionId": 25000103001
+  },
+  {
+    "Id": 250001037,
+    "StartChronicleEventNodeId": 250001051,
+    "EndChronicleEventNodeId": 250001052,
+    "ReleaseConditionId": 25000103101
+  },
+  {
+    "Id": 250001038,
+    "StartChronicleEventNodeId": 250001052,
+    "EndChronicleEventNodeId": 250001053,
+    "ReleaseConditionId": 25000103201
+  },
+  {
+    "Id": 250001039,
+    "StartChronicleEventNodeId": 250001055,
+    "EndChronicleEventNodeId": 250001056,
+    "ReleaseConditionId": 0
+  },
+  {
+    "Id": 250001040,
+    "StartChronicleEventNodeId": 250001056,
+    "EndChronicleEventNodeId": 250001057,
+    "ReleaseConditionId": 25000103301
+  },
+  {
+    "Id": 250001041,
+    "StartChronicleEventNodeId": 250001057,
+    "EndChronicleEventNodeId": 250001061,
+    "ReleaseConditionId": 25000103501
+  },
+  {
+    "Id": 250001042,
+    "StartChronicleEventNodeId": 250001058,
+    "EndChronicleEventNodeId": 250001059,
+    "ReleaseConditionId": 0
+  },
+  {
+    "Id": 250001043,
+    "StartChronicleEventNodeId": 250001059,
+    "EndChronicleEventNodeId": 250001060,
+    "ReleaseConditionId": 25000103401
+  },
+  {
+    "Id": 250001044,
+    "StartChronicleEventNodeId": 250001060,
+    "EndChronicleEventNodeId": 250001061,
+    "ReleaseConditionId": 25000104301
+  },
+  {
+    "Id": 250001045,
+    "StartChronicleEventNodeId": 250001022,
+    "EndChronicleEventNodeId": 250001063,
+    "ReleaseConditionId": 25000103601
+  },
+  {
+    "Id": 250001046,
+    "StartChronicleEventNodeId": 250001063,
+    "EndChronicleEventNodeId": 250001064,
+    "ReleaseConditionId": 25000103601
+  },
+  {
+    "Id": 250001047,
+    "StartChronicleEventNodeId": 250001051,
+    "EndChronicleEventNodeId": 250001065,
+    "ReleaseConditionId": 25000103801
+  },
+  {
+    "Id": 250001048,
+    "StartChronicleEventNodeId": 250001065,
+    "EndChronicleEventNodeId": 250001066,
+    "ReleaseConditionId": 25000103801
+  },
+  {
+    "Id": 250001049,
+    "StartChronicleEventNodeId": 250001019,
+    "EndChronicleEventNodeId": 250001003,
+    "ReleaseConditionId": 25000100101
+  },
+  {
+    "Id": 250001050,
+    "StartChronicleEventNodeId": 250001010,
+    "EndChronicleEventNodeId": 250001004,
+    "ReleaseConditionId": 25000100201
+  },
+  {
+    "Id": 250001051,
+    "StartChronicleEventNodeId": 250001046,
+    "EndChronicleEventNodeId": 250001030,
+    "ReleaseConditionId": 25000101701
+  },
+  {
+    "Id": 250001052,
+    "StartChronicleEventNodeId": 250001037,
+    "EndChronicleEventNodeId": 250001031,
+    "ReleaseConditionId": 25000101801
+  }
+]

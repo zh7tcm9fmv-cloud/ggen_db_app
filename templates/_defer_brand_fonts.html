@@ -16,9 +16,12 @@
 
   function currentLang(){
     var lang=String(document.documentElement.getAttribute('data-ui-lang')||'EN').trim().toUpperCase();
-    return lang==='JP'?'JA':lang;
+    if(lang==='JP')return 'JA';
+    if(lang==='KR')return 'HR';
+    return lang;
   }
   function needsBodyCjk(lang){
+    /* KR uses system Hangul stacks (see app_shell.css) — no multi-MB download. */
     return lang==='JA'||lang==='TW'||lang==='HK';
   }
   function fontUrl(cdnRel, localRel){

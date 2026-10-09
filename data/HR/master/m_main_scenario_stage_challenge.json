@@ -1,0 +1,660 @@
+[
+  {
+    "Id": 100202,
+    "MainStageChallengeId": 100202,
+    "ScenarioStageId": 100202,
+    "StageNumber": 1,
+    "MainStageSeriesChallengeId": 10
+  },
+  {
+    "Id": 100303,
+    "MainStageChallengeId": 100303,
+    "ScenarioStageId": 100303,
+    "StageNumber": 2,
+    "MainStageSeriesChallengeId": 10
+  },
+  {
+    "Id": 100402,
+    "MainStageChallengeId": 100402,
+    "ScenarioStageId": 100402,
+    "StageNumber": 3,
+    "MainStageSeriesChallengeId": 10
+  },
+  {
+    "Id": 100502,
+    "MainStageChallengeId": 100502,
+    "ScenarioStageId": 100502,
+    "StageNumber": 4,
+    "MainStageSeriesChallengeId": 10
+  },
+  {
+    "Id": 100603,
+    "MainStageChallengeId": 100603,
+    "ScenarioStageId": 100603,
+    "StageNumber": 5,
+    "MainStageSeriesChallengeId": 10
+  },
+  {
+    "Id": 100703,
+    "MainStageChallengeId": 100703,
+    "ScenarioStageId": 100703,
+    "StageNumber": 6,
+    "MainStageSeriesChallengeId": 10
+  },
+  {
+    "Id": 100802,
+    "MainStageChallengeId": 100802,
+    "ScenarioStageId": 100802,
+    "StageNumber": 7,
+    "MainStageSeriesChallengeId": 10
+  },
+  {
+    "Id": 100902,
+    "MainStageChallengeId": 100902,
+    "ScenarioStageId": 100902,
+    "StageNumber": 8,
+    "MainStageSeriesChallengeId": 10
+  },
+  {
+    "Id": 101003,
+    "MainStageChallengeId": 101003,
+    "ScenarioStageId": 101003,
+    "StageNumber": 9,
+    "MainStageSeriesChallengeId": 10
+  },
+  {
+    "Id": 101103,
+    "MainStageChallengeId": 101103,
+    "ScenarioStageId": 101103,
+    "StageNumber": 10,
+    "MainStageSeriesChallengeId": 10
+  },
+  {
+    "Id": 101203,
+    "MainStageChallengeId": 101203,
+    "ScenarioStageId": 101203,
+    "StageNumber": 11,
+    "MainStageSeriesChallengeId": 10
+  },
+  {
+    "Id": 101303,
+    "MainStageChallengeId": 101303,
+    "ScenarioStageId": 101303,
+    "StageNumber": 12,
+    "MainStageSeriesChallengeId": 10
+  },
+  {
+    "Id": 101402,
+    "MainStageChallengeId": 101402,
+    "ScenarioStageId": 101402,
+    "StageNumber": 13,
+    "MainStageSeriesChallengeId": 10
+  },
+  {
+    "Id": 101501,
+    "MainStageChallengeId": 101501,
+    "ScenarioStageId": 101501,
+    "StageNumber": 1,
+    "MainStageSeriesChallengeId": 10
+  },
+  {
+    "Id": 101601,
+    "MainStageChallengeId": 101601,
+    "ScenarioStageId": 101601,
+    "StageNumber": 2,
+    "MainStageSeriesChallengeId": 10
+  },
+  {
+    "Id": 101701,
+    "MainStageChallengeId": 101701,
+    "ScenarioStageId": 101701,
+    "StageNumber": 3,
+    "MainStageSeriesChallengeId": 10
+  },
+  {
+    "Id": 8100103,
+    "MainStageChallengeId": 8100103,
+    "ScenarioStageId": 8100103,
+    "StageNumber": 1,
+    "MainStageSeriesChallengeId": 810
+  },
+  {
+    "Id": 8100204,
+    "MainStageChallengeId": 8100204,
+    "ScenarioStageId": 8100204,
+    "StageNumber": 2,
+    "MainStageSeriesChallengeId": 810
+  },
+  {
+    "Id": 8100303,
+    "MainStageChallengeId": 8100303,
+    "ScenarioStageId": 8100303,
+    "StageNumber": 3,
+    "MainStageSeriesChallengeId": 810
+  },
+  {
+    "Id": 8100402,
+    "MainStageChallengeId": 8100402,
+    "ScenarioStageId": 8100402,
+    "StageNumber": 4,
+    "MainStageSeriesChallengeId": 810
+  },
+  {
+    "Id": 8100503,
+    "MainStageChallengeId": 8100503,
+    "ScenarioStageId": 8100503,
+    "StageNumber": 5,
+    "MainStageSeriesChallengeId": 810
+  },
+  {
+    "Id": 8100603,
+    "MainStageChallengeId": 8100603,
+    "ScenarioStageId": 8100603,
+    "StageNumber": 6,
+    "MainStageSeriesChallengeId": 810
+  },
+  {
+    "Id": 8100703,
+    "MainStageChallengeId": 8100703,
+    "ScenarioStageId": 8100703,
+    "StageNumber": 7,
+    "MainStageSeriesChallengeId": 810
+  },
+  {
+    "Id": 8100802,
+    "MainStageChallengeId": 8100802,
+    "ScenarioStageId": 8100802,
+    "StageNumber": 8,
+    "MainStageSeriesChallengeId": 810
+  },
+  {
+    "Id": 8100902,
+    "MainStageChallengeId": 8100902,
+    "ScenarioStageId": 8100902,
+    "StageNumber": 9,
+    "MainStageSeriesChallengeId": 810
+  },
+  {
+    "Id": 8101002,
+    "MainStageChallengeId": 8101002,
+    "ScenarioStageId": 8101002,
+    "StageNumber": 10,
+    "MainStageSeriesChallengeId": 810
+  },
+  {
+    "Id": 8101105,
+    "MainStageChallengeId": 8101105,
+    "ScenarioStageId": 8101105,
+    "StageNumber": 11,
+    "MainStageSeriesChallengeId": 810
+  },
+  {
+    "Id": 8101202,
+    "MainStageChallengeId": 8101202,
+    "ScenarioStageId": 8101202,
+    "StageNumber": 12,
+    "MainStageSeriesChallengeId": 810
+  },
+  {
+    "Id": 8101302,
+    "MainStageChallengeId": 8101302,
+    "ScenarioStageId": 8101302,
+    "StageNumber": 13,
+    "MainStageSeriesChallengeId": 810
+  },
+  {
+    "Id": 8101402,
+    "MainStageChallengeId": 8101402,
+    "ScenarioStageId": 8101402,
+    "StageNumber": 14,
+    "MainStageSeriesChallengeId": 810
+  },
+  {
+    "Id": 8101502,
+    "MainStageChallengeId": 8101502,
+    "ScenarioStageId": 8101502,
+    "StageNumber": 15,
+    "MainStageSeriesChallengeId": 810
+  },
+  {
+    "Id": 8101601,
+    "MainStageChallengeId": 8101601,
+    "ScenarioStageId": 8101601,
+    "StageNumber": 1,
+    "MainStageSeriesChallengeId": 810
+  },
+  {
+    "Id": 8101701,
+    "MainStageChallengeId": 8101701,
+    "ScenarioStageId": 8101701,
+    "StageNumber": 2,
+    "MainStageSeriesChallengeId": 810
+  },
+  {
+    "Id": 8101801,
+    "MainStageChallengeId": 8101801,
+    "ScenarioStageId": 8101801,
+    "StageNumber": 3,
+    "MainStageSeriesChallengeId": 810
+  },
+  {
+    "Id": 9500105,
+    "MainStageChallengeId": 9500105,
+    "ScenarioStageId": 9500105,
+    "StageNumber": 1,
+    "MainStageSeriesChallengeId": 950
+  },
+  {
+    "Id": 9500204,
+    "MainStageChallengeId": 9500204,
+    "ScenarioStageId": 9500204,
+    "StageNumber": 2,
+    "MainStageSeriesChallengeId": 950
+  },
+  {
+    "Id": 9500303,
+    "MainStageChallengeId": 9500303,
+    "ScenarioStageId": 9500303,
+    "StageNumber": 3,
+    "MainStageSeriesChallengeId": 950
+  },
+  {
+    "Id": 9500403,
+    "MainStageChallengeId": 9500403,
+    "ScenarioStageId": 9500403,
+    "StageNumber": 4,
+    "MainStageSeriesChallengeId": 950
+  },
+  {
+    "Id": 9500503,
+    "MainStageChallengeId": 9500503,
+    "ScenarioStageId": 9500503,
+    "StageNumber": 5,
+    "MainStageSeriesChallengeId": 950
+  },
+  {
+    "Id": 9500603,
+    "MainStageChallengeId": 9500603,
+    "ScenarioStageId": 9500603,
+    "StageNumber": 6,
+    "MainStageSeriesChallengeId": 950
+  },
+  {
+    "Id": 9500703,
+    "MainStageChallengeId": 9500703,
+    "ScenarioStageId": 9500703,
+    "StageNumber": 7,
+    "MainStageSeriesChallengeId": 950
+  },
+  {
+    "Id": 9500802,
+    "MainStageChallengeId": 9500802,
+    "ScenarioStageId": 9500802,
+    "StageNumber": 8,
+    "MainStageSeriesChallengeId": 950
+  },
+  {
+    "Id": 9500903,
+    "MainStageChallengeId": 9500903,
+    "ScenarioStageId": 9500903,
+    "StageNumber": 9,
+    "MainStageSeriesChallengeId": 950
+  },
+  {
+    "Id": 9501002,
+    "MainStageChallengeId": 9501002,
+    "ScenarioStageId": 9501002,
+    "StageNumber": 10,
+    "MainStageSeriesChallengeId": 950
+  },
+  {
+    "Id": 9501103,
+    "MainStageChallengeId": 9501103,
+    "ScenarioStageId": 9501103,
+    "StageNumber": 11,
+    "MainStageSeriesChallengeId": 950
+  },
+  {
+    "Id": 9501203,
+    "MainStageChallengeId": 9501203,
+    "ScenarioStageId": 9501203,
+    "StageNumber": 12,
+    "MainStageSeriesChallengeId": 950
+  },
+  {
+    "Id": 9501303,
+    "MainStageChallengeId": 9501303,
+    "ScenarioStageId": 9501303,
+    "StageNumber": 13,
+    "MainStageSeriesChallengeId": 950
+  },
+  {
+    "Id": 9501403,
+    "MainStageChallengeId": 9501403,
+    "ScenarioStageId": 9501403,
+    "StageNumber": 14,
+    "MainStageSeriesChallengeId": 950
+  },
+  {
+    "Id": 9501502,
+    "MainStageChallengeId": 9501502,
+    "ScenarioStageId": 9501502,
+    "StageNumber": 15,
+    "MainStageSeriesChallengeId": 950
+  },
+  {
+    "Id": 9501602,
+    "MainStageChallengeId": 9501602,
+    "ScenarioStageId": 9501602,
+    "StageNumber": 16,
+    "MainStageSeriesChallengeId": 950
+  },
+  {
+    "Id": 9501703,
+    "MainStageChallengeId": 9501703,
+    "ScenarioStageId": 9501703,
+    "StageNumber": 17,
+    "MainStageSeriesChallengeId": 950
+  },
+  {
+    "Id": 9501803,
+    "MainStageChallengeId": 9501803,
+    "ScenarioStageId": 9501803,
+    "StageNumber": 18,
+    "MainStageSeriesChallengeId": 950
+  },
+  {
+    "Id": 9501901,
+    "MainStageChallengeId": 9501901,
+    "ScenarioStageId": 9501901,
+    "StageNumber": 1,
+    "MainStageSeriesChallengeId": 950
+  },
+  {
+    "Id": 9502001,
+    "MainStageChallengeId": 9502001,
+    "ScenarioStageId": 9502001,
+    "StageNumber": 2,
+    "MainStageSeriesChallengeId": 950
+  },
+  {
+    "Id": 9502101,
+    "MainStageChallengeId": 9502101,
+    "ScenarioStageId": 9502101,
+    "StageNumber": 3,
+    "MainStageSeriesChallengeId": 950
+  },
+  {
+    "Id": 21000203,
+    "MainStageChallengeId": 21000203,
+    "ScenarioStageId": 21000203,
+    "StageNumber": 1,
+    "MainStageSeriesChallengeId": 2100
+  },
+  {
+    "Id": 21000302,
+    "MainStageChallengeId": 21000302,
+    "ScenarioStageId": 21000302,
+    "StageNumber": 2,
+    "MainStageSeriesChallengeId": 2100
+  },
+  {
+    "Id": 21000403,
+    "MainStageChallengeId": 21000403,
+    "ScenarioStageId": 21000403,
+    "StageNumber": 3,
+    "MainStageSeriesChallengeId": 2100
+  },
+  {
+    "Id": 21000502,
+    "MainStageChallengeId": 21000502,
+    "ScenarioStageId": 21000502,
+    "StageNumber": 4,
+    "MainStageSeriesChallengeId": 2100
+  },
+  {
+    "Id": 21000602,
+    "MainStageChallengeId": 21000602,
+    "ScenarioStageId": 21000602,
+    "StageNumber": 5,
+    "MainStageSeriesChallengeId": 2100
+  },
+  {
+    "Id": 21000703,
+    "MainStageChallengeId": 21000703,
+    "ScenarioStageId": 21000703,
+    "StageNumber": 6,
+    "MainStageSeriesChallengeId": 2100
+  },
+  {
+    "Id": 21000802,
+    "MainStageChallengeId": 21000802,
+    "ScenarioStageId": 21000802,
+    "StageNumber": 7,
+    "MainStageSeriesChallengeId": 2100
+  },
+  {
+    "Id": 21000903,
+    "MainStageChallengeId": 21000903,
+    "ScenarioStageId": 21000903,
+    "StageNumber": 8,
+    "MainStageSeriesChallengeId": 2100
+  },
+  {
+    "Id": 21001004,
+    "MainStageChallengeId": 21001004,
+    "ScenarioStageId": 21001004,
+    "StageNumber": 9,
+    "MainStageSeriesChallengeId": 2100
+  },
+  {
+    "Id": 21001102,
+    "MainStageChallengeId": 21001102,
+    "ScenarioStageId": 21001102,
+    "StageNumber": 10,
+    "MainStageSeriesChallengeId": 2100
+  },
+  {
+    "Id": 21001204,
+    "MainStageChallengeId": 21001204,
+    "ScenarioStageId": 21001204,
+    "StageNumber": 11,
+    "MainStageSeriesChallengeId": 2100
+  },
+  {
+    "Id": 21001303,
+    "MainStageChallengeId": 21001303,
+    "ScenarioStageId": 21001303,
+    "StageNumber": 12,
+    "MainStageSeriesChallengeId": 2100
+  },
+  {
+    "Id": 21001405,
+    "MainStageChallengeId": 21001405,
+    "ScenarioStageId": 21001405,
+    "StageNumber": 13,
+    "MainStageSeriesChallengeId": 2100
+  },
+  {
+    "Id": 21001504,
+    "MainStageChallengeId": 21001504,
+    "ScenarioStageId": 21001504,
+    "StageNumber": 14,
+    "MainStageSeriesChallengeId": 2100
+  },
+  {
+    "Id": 21001602,
+    "MainStageChallengeId": 21001602,
+    "ScenarioStageId": 21001602,
+    "StageNumber": 15,
+    "MainStageSeriesChallengeId": 2100
+  },
+  {
+    "Id": 21001702,
+    "MainStageChallengeId": 21001702,
+    "ScenarioStageId": 21001702,
+    "StageNumber": 16,
+    "MainStageSeriesChallengeId": 2100
+  },
+  {
+    "Id": 21001801,
+    "MainStageChallengeId": 21001801,
+    "ScenarioStageId": 21001801,
+    "StageNumber": 1,
+    "MainStageSeriesChallengeId": 2100
+  },
+  {
+    "Id": 21001901,
+    "MainStageChallengeId": 21001901,
+    "ScenarioStageId": 21001901,
+    "StageNumber": 2,
+    "MainStageSeriesChallengeId": 2100
+  },
+  {
+    "Id": 21002001,
+    "MainStageChallengeId": 21002001,
+    "ScenarioStageId": 21002001,
+    "StageNumber": 3,
+    "MainStageSeriesChallengeId": 2100
+  },
+  {
+    "Id": 30000103,
+    "MainStageChallengeId": 30000103,
+    "ScenarioStageId": 30000103,
+    "StageNumber": 1,
+    "MainStageSeriesChallengeId": 3000
+  },
+  {
+    "Id": 30000202,
+    "MainStageChallengeId": 30000202,
+    "ScenarioStageId": 30000202,
+    "StageNumber": 2,
+    "MainStageSeriesChallengeId": 3000
+  },
+  {
+    "Id": 30000303,
+    "MainStageChallengeId": 30000303,
+    "ScenarioStageId": 30000303,
+    "StageNumber": 3,
+    "MainStageSeriesChallengeId": 3000
+  },
+  {
+    "Id": 30000403,
+    "MainStageChallengeId": 30000403,
+    "ScenarioStageId": 30000403,
+    "StageNumber": 4,
+    "MainStageSeriesChallengeId": 3000
+  },
+  {
+    "Id": 30000503,
+    "MainStageChallengeId": 30000503,
+    "ScenarioStageId": 30000503,
+    "StageNumber": 5,
+    "MainStageSeriesChallengeId": 3000
+  },
+  {
+    "Id": 30000603,
+    "MainStageChallengeId": 30000603,
+    "ScenarioStageId": 30000603,
+    "StageNumber": 6,
+    "MainStageSeriesChallengeId": 3000
+  },
+  {
+    "Id": 30000703,
+    "MainStageChallengeId": 30000703,
+    "ScenarioStageId": 30000703,
+    "StageNumber": 7,
+    "MainStageSeriesChallengeId": 3000
+  },
+  {
+    "Id": 30000802,
+    "MainStageChallengeId": 30000802,
+    "ScenarioStageId": 30000802,
+    "StageNumber": 8,
+    "MainStageSeriesChallengeId": 3000
+  },
+  {
+    "Id": 30000904,
+    "MainStageChallengeId": 30000904,
+    "ScenarioStageId": 30000904,
+    "StageNumber": 9,
+    "MainStageSeriesChallengeId": 3000
+  },
+  {
+    "Id": 30001003,
+    "MainStageChallengeId": 30001003,
+    "ScenarioStageId": 30001003,
+    "StageNumber": 10,
+    "MainStageSeriesChallengeId": 3000
+  },
+  {
+    "Id": 30001103,
+    "MainStageChallengeId": 30001103,
+    "ScenarioStageId": 30001103,
+    "StageNumber": 11,
+    "MainStageSeriesChallengeId": 3000
+  },
+  {
+    "Id": 30001203,
+    "MainStageChallengeId": 30001203,
+    "ScenarioStageId": 30001203,
+    "StageNumber": 12,
+    "MainStageSeriesChallengeId": 3000
+  },
+  {
+    "Id": 30001304,
+    "MainStageChallengeId": 30001304,
+    "ScenarioStageId": 30001304,
+    "StageNumber": 13,
+    "MainStageSeriesChallengeId": 3000
+  },
+  {
+    "Id": 30001403,
+    "MainStageChallengeId": 30001403,
+    "ScenarioStageId": 30001403,
+    "StageNumber": 14,
+    "MainStageSeriesChallengeId": 3000
+  },
+  {
+    "Id": 30001503,
+    "MainStageChallengeId": 30001503,
+    "ScenarioStageId": 30001503,
+    "StageNumber": 15,
+    "MainStageSeriesChallengeId": 3000
+  },
+  {
+    "Id": 30001604,
+    "MainStageChallengeId": 30001604,
+    "ScenarioStageId": 30001604,
+    "StageNumber": 16,
+    "MainStageSeriesChallengeId": 3000
+  },
+  {
+    "Id": 30001704,
+    "MainStageChallengeId": 30001704,
+    "ScenarioStageId": 30001704,
+    "StageNumber": 17,
+    "MainStageSeriesChallengeId": 3000
+  },
+  {
+    "Id": 30001801,
+    "MainStageChallengeId": 30001801,
+    "ScenarioStageId": 30001801,
+    "StageNumber": 1,
+    "MainStageSeriesChallengeId": 3000
+  },
+  {
+    "Id": 30001901,
+    "MainStageChallengeId": 30001901,
+    "ScenarioStageId": 30001901,
+    "StageNumber": 2,
+    "MainStageSeriesChallengeId": 3000
+  },
+  {
+    "Id": 30002001,
+    "MainStageChallengeId": 30002001,
+    "ScenarioStageId": 30002001,
+    "StageNumber": 3,
+    "MainStageSeriesChallengeId": 3000
+  }
+]

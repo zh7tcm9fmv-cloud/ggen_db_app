@@ -1,0 +1,541 @@
+[
+  {
+    "Id": 2000090101,
+    "StoryEventAssessmentTaskGroupId": 20000901,
+    "SortOrder": 1,
+    "MissionId": 260120031101,
+    "TransitionId": 50000000900103
+  },
+  {
+    "Id": 2000090102,
+    "StoryEventAssessmentTaskGroupId": 20000901,
+    "SortOrder": 2,
+    "MissionId": 260120031102,
+    "TransitionId": 50000000900103
+  },
+  {
+    "Id": 2000090103,
+    "StoryEventAssessmentTaskGroupId": 20000901,
+    "SortOrder": 3,
+    "MissionId": 260120031103,
+    "TransitionId": 50000000900103
+  },
+  {
+    "Id": 2000090104,
+    "StoryEventAssessmentTaskGroupId": 20000901,
+    "SortOrder": 4,
+    "MissionId": 260120031104,
+    "TransitionId": 50000000900103
+  },
+  {
+    "Id": 2000090105,
+    "StoryEventAssessmentTaskGroupId": 20000901,
+    "SortOrder": 5,
+    "MissionId": 260120031105,
+    "TransitionId": 50000000900801
+  },
+  {
+    "Id": 2000090106,
+    "StoryEventAssessmentTaskGroupId": 20000901,
+    "SortOrder": 6,
+    "MissionId": 260120031106,
+    "TransitionId": 50000000900801
+  },
+  {
+    "Id": 2000090107,
+    "StoryEventAssessmentTaskGroupId": 20000901,
+    "SortOrder": 7,
+    "MissionId": 260120031107,
+    "TransitionId": 50000000900801
+  },
+  {
+    "Id": 2000090108,
+    "StoryEventAssessmentTaskGroupId": 20000901,
+    "SortOrder": 8,
+    "MissionId": 260120031108,
+    "TransitionId": 50000000900801
+  },
+  {
+    "Id": 2000090109,
+    "StoryEventAssessmentTaskGroupId": 20000901,
+    "SortOrder": 9,
+    "MissionId": 260120031109,
+    "TransitionId": 50000000900801
+  },
+  {
+    "Id": 2000090110,
+    "StoryEventAssessmentTaskGroupId": 20000901,
+    "SortOrder": 10,
+    "MissionId": 260120031110,
+    "TransitionId": 50000000900801
+  },
+  {
+    "Id": 2000090111,
+    "StoryEventAssessmentTaskGroupId": 20000901,
+    "SortOrder": 11,
+    "MissionId": 260120031111,
+    "TransitionId": 50000000900801
+  },
+  {
+    "Id": 2000090112,
+    "StoryEventAssessmentTaskGroupId": 20000901,
+    "SortOrder": 12,
+    "MissionId": 260120031112,
+    "TransitionId": 50000000900801
+  },
+  {
+    "Id": 2000090113,
+    "StoryEventAssessmentTaskGroupId": 20000901,
+    "SortOrder": 13,
+    "MissionId": 260120031113,
+    "TransitionId": 50000000901501
+  },
+  {
+    "Id": 2000090201,
+    "StoryEventAssessmentTaskGroupId": 20000902,
+    "SortOrder": 1,
+    "MissionId": 260120031201,
+    "TransitionId": 50000000900203
+  },
+  {
+    "Id": 2000090202,
+    "StoryEventAssessmentTaskGroupId": 20000902,
+    "SortOrder": 2,
+    "MissionId": 260120031202,
+    "TransitionId": 50000000900203
+  },
+  {
+    "Id": 2000090203,
+    "StoryEventAssessmentTaskGroupId": 20000902,
+    "SortOrder": 3,
+    "MissionId": 260120031203,
+    "TransitionId": 50000000900203
+  },
+  {
+    "Id": 2000090204,
+    "StoryEventAssessmentTaskGroupId": 20000902,
+    "SortOrder": 4,
+    "MissionId": 260120031204,
+    "TransitionId": 50000000900203
+  },
+  {
+    "Id": 2000090205,
+    "StoryEventAssessmentTaskGroupId": 20000902,
+    "SortOrder": 5,
+    "MissionId": 260120031205,
+    "TransitionId": 50000000900901
+  },
+  {
+    "Id": 2000090206,
+    "StoryEventAssessmentTaskGroupId": 20000902,
+    "SortOrder": 6,
+    "MissionId": 260120031206,
+    "TransitionId": 50000000900901
+  },
+  {
+    "Id": 2000090207,
+    "StoryEventAssessmentTaskGroupId": 20000902,
+    "SortOrder": 7,
+    "MissionId": 260120031207,
+    "TransitionId": 50000000900901
+  },
+  {
+    "Id": 2000090208,
+    "StoryEventAssessmentTaskGroupId": 20000902,
+    "SortOrder": 8,
+    "MissionId": 260120031208,
+    "TransitionId": 50000000900901
+  },
+  {
+    "Id": 2000090209,
+    "StoryEventAssessmentTaskGroupId": 20000902,
+    "SortOrder": 9,
+    "MissionId": 260120031209,
+    "TransitionId": 50000000900901
+  },
+  {
+    "Id": 2000090210,
+    "StoryEventAssessmentTaskGroupId": 20000902,
+    "SortOrder": 10,
+    "MissionId": 260120031210,
+    "TransitionId": 50000000900901
+  },
+  {
+    "Id": 2000090211,
+    "StoryEventAssessmentTaskGroupId": 20000902,
+    "SortOrder": 11,
+    "MissionId": 260120031211,
+    "TransitionId": 50000000900901
+  },
+  {
+    "Id": 2000090212,
+    "StoryEventAssessmentTaskGroupId": 20000902,
+    "SortOrder": 12,
+    "MissionId": 260120031212,
+    "TransitionId": 50000000900901
+  },
+  {
+    "Id": 2000090301,
+    "StoryEventAssessmentTaskGroupId": 20000903,
+    "SortOrder": 1,
+    "MissionId": 260120031301,
+    "TransitionId": 50000000900303
+  },
+  {
+    "Id": 2000090302,
+    "StoryEventAssessmentTaskGroupId": 20000903,
+    "SortOrder": 2,
+    "MissionId": 260120031302,
+    "TransitionId": 50000000900303
+  },
+  {
+    "Id": 2000090303,
+    "StoryEventAssessmentTaskGroupId": 20000903,
+    "SortOrder": 3,
+    "MissionId": 260120031303,
+    "TransitionId": 50000000900303
+  },
+  {
+    "Id": 2000090304,
+    "StoryEventAssessmentTaskGroupId": 20000903,
+    "SortOrder": 4,
+    "MissionId": 260120031304,
+    "TransitionId": 50000000900303
+  },
+  {
+    "Id": 2000090305,
+    "StoryEventAssessmentTaskGroupId": 20000903,
+    "SortOrder": 5,
+    "MissionId": 260120031305,
+    "TransitionId": 50000000901001
+  },
+  {
+    "Id": 2000090306,
+    "StoryEventAssessmentTaskGroupId": 20000903,
+    "SortOrder": 6,
+    "MissionId": 260120031306,
+    "TransitionId": 50000000901001
+  },
+  {
+    "Id": 2000090307,
+    "StoryEventAssessmentTaskGroupId": 20000903,
+    "SortOrder": 7,
+    "MissionId": 260120031307,
+    "TransitionId": 50000000901001
+  },
+  {
+    "Id": 2000090308,
+    "StoryEventAssessmentTaskGroupId": 20000903,
+    "SortOrder": 8,
+    "MissionId": 260120031308,
+    "TransitionId": 50000000901001
+  },
+  {
+    "Id": 2000090309,
+    "StoryEventAssessmentTaskGroupId": 20000903,
+    "SortOrder": 9,
+    "MissionId": 260120031309,
+    "TransitionId": 50000000901001
+  },
+  {
+    "Id": 2000090310,
+    "StoryEventAssessmentTaskGroupId": 20000903,
+    "SortOrder": 10,
+    "MissionId": 260120031310,
+    "TransitionId": 50000000901001
+  },
+  {
+    "Id": 2000090311,
+    "StoryEventAssessmentTaskGroupId": 20000903,
+    "SortOrder": 11,
+    "MissionId": 260120031311,
+    "TransitionId": 50000000901001
+  },
+  {
+    "Id": 2000090312,
+    "StoryEventAssessmentTaskGroupId": 20000903,
+    "SortOrder": 12,
+    "MissionId": 260120031312,
+    "TransitionId": 50000000901001
+  },
+  {
+    "Id": 2000090313,
+    "StoryEventAssessmentTaskGroupId": 20000903,
+    "SortOrder": 13,
+    "MissionId": 260120031313,
+    "TransitionId": 50000000901501
+  },
+  {
+    "Id": 2000090401,
+    "StoryEventAssessmentTaskGroupId": 20000904,
+    "SortOrder": 1,
+    "MissionId": 260120031401,
+    "TransitionId": 50000000900403
+  },
+  {
+    "Id": 2000090402,
+    "StoryEventAssessmentTaskGroupId": 20000904,
+    "SortOrder": 2,
+    "MissionId": 260120031402,
+    "TransitionId": 50000000900403
+  },
+  {
+    "Id": 2000090403,
+    "StoryEventAssessmentTaskGroupId": 20000904,
+    "SortOrder": 3,
+    "MissionId": 260120031403,
+    "TransitionId": 50000000900403
+  },
+  {
+    "Id": 2000090404,
+    "StoryEventAssessmentTaskGroupId": 20000904,
+    "SortOrder": 4,
+    "MissionId": 260120031404,
+    "TransitionId": 50000000900403
+  },
+  {
+    "Id": 2000090405,
+    "StoryEventAssessmentTaskGroupId": 20000904,
+    "SortOrder": 5,
+    "MissionId": 260120031405,
+    "TransitionId": 50000000901101
+  },
+  {
+    "Id": 2000090406,
+    "StoryEventAssessmentTaskGroupId": 20000904,
+    "SortOrder": 6,
+    "MissionId": 260120031406,
+    "TransitionId": 50000000901101
+  },
+  {
+    "Id": 2000090407,
+    "StoryEventAssessmentTaskGroupId": 20000904,
+    "SortOrder": 7,
+    "MissionId": 260120031407,
+    "TransitionId": 50000000901101
+  },
+  {
+    "Id": 2000090408,
+    "StoryEventAssessmentTaskGroupId": 20000904,
+    "SortOrder": 8,
+    "MissionId": 260120031408,
+    "TransitionId": 50000000901101
+  },
+  {
+    "Id": 2000090409,
+    "StoryEventAssessmentTaskGroupId": 20000904,
+    "SortOrder": 9,
+    "MissionId": 260120031409,
+    "TransitionId": 50000000901101
+  },
+  {
+    "Id": 2000090410,
+    "StoryEventAssessmentTaskGroupId": 20000904,
+    "SortOrder": 10,
+    "MissionId": 260120031410,
+    "TransitionId": 50000000901101
+  },
+  {
+    "Id": 2000090411,
+    "StoryEventAssessmentTaskGroupId": 20000904,
+    "SortOrder": 11,
+    "MissionId": 260120031411,
+    "TransitionId": 50000000901101
+  },
+  {
+    "Id": 2000090412,
+    "StoryEventAssessmentTaskGroupId": 20000904,
+    "SortOrder": 12,
+    "MissionId": 260120031412,
+    "TransitionId": 50000000901101
+  },
+  {
+    "Id": 2000090413,
+    "StoryEventAssessmentTaskGroupId": 20000904,
+    "SortOrder": 13,
+    "MissionId": 260120031413,
+    "TransitionId": 50000000901501
+  },
+  {
+    "Id": 2000090501,
+    "StoryEventAssessmentTaskGroupId": 20000905,
+    "SortOrder": 1,
+    "MissionId": 260120031501,
+    "TransitionId": 50000000900503
+  },
+  {
+    "Id": 2000090502,
+    "StoryEventAssessmentTaskGroupId": 20000905,
+    "SortOrder": 2,
+    "MissionId": 260120031502,
+    "TransitionId": 50000000900503
+  },
+  {
+    "Id": 2000090503,
+    "StoryEventAssessmentTaskGroupId": 20000905,
+    "SortOrder": 3,
+    "MissionId": 260120031503,
+    "TransitionId": 50000000900503
+  },
+  {
+    "Id": 2000090504,
+    "StoryEventAssessmentTaskGroupId": 20000905,
+    "SortOrder": 4,
+    "MissionId": 260120031504,
+    "TransitionId": 50000000900503
+  },
+  {
+    "Id": 2000090505,
+    "StoryEventAssessmentTaskGroupId": 20000905,
+    "SortOrder": 5,
+    "MissionId": 260120031505,
+    "TransitionId": 50000000901201
+  },
+  {
+    "Id": 2000090506,
+    "StoryEventAssessmentTaskGroupId": 20000905,
+    "SortOrder": 6,
+    "MissionId": 260120031506,
+    "TransitionId": 50000000901201
+  },
+  {
+    "Id": 2000090507,
+    "StoryEventAssessmentTaskGroupId": 20000905,
+    "SortOrder": 7,
+    "MissionId": 260120031507,
+    "TransitionId": 50000000901201
+  },
+  {
+    "Id": 2000090508,
+    "StoryEventAssessmentTaskGroupId": 20000905,
+    "SortOrder": 8,
+    "MissionId": 260120031508,
+    "TransitionId": 50000000901201
+  },
+  {
+    "Id": 2000090509,
+    "StoryEventAssessmentTaskGroupId": 20000905,
+    "SortOrder": 9,
+    "MissionId": 260120031509,
+    "TransitionId": 50000000901201
+  },
+  {
+    "Id": 2000090510,
+    "StoryEventAssessmentTaskGroupId": 20000905,
+    "SortOrder": 10,
+    "MissionId": 260120031510,
+    "TransitionId": 50000000901201
+  },
+  {
+    "Id": 2000090511,
+    "StoryEventAssessmentTaskGroupId": 20000905,
+    "SortOrder": 11,
+    "MissionId": 260120031511,
+    "TransitionId": 50000000901201
+  },
+  {
+    "Id": 2000090512,
+    "StoryEventAssessmentTaskGroupId": 20000905,
+    "SortOrder": 12,
+    "MissionId": 260120031512,
+    "TransitionId": 50000000901201
+  },
+  {
+    "Id": 2000090513,
+    "StoryEventAssessmentTaskGroupId": 20000905,
+    "SortOrder": 13,
+    "MissionId": 260120031513,
+    "TransitionId": 50000000901501
+  },
+  {
+    "Id": 2000090601,
+    "StoryEventAssessmentTaskGroupId": 20000906,
+    "SortOrder": 1,
+    "MissionId": 260120031601,
+    "TransitionId": 50000000900603
+  },
+  {
+    "Id": 2000090602,
+    "StoryEventAssessmentTaskGroupId": 20000906,
+    "SortOrder": 2,
+    "MissionId": 260120031602,
+    "TransitionId": 50000000900603
+  },
+  {
+    "Id": 2000090603,
+    "StoryEventAssessmentTaskGroupId": 20000906,
+    "SortOrder": 3,
+    "MissionId": 260120031603,
+    "TransitionId": 50000000900702
+  },
+  {
+    "Id": 2000090604,
+    "StoryEventAssessmentTaskGroupId": 20000906,
+    "SortOrder": 4,
+    "MissionId": 260120031604,
+    "TransitionId": 50000000900702
+  },
+  {
+    "Id": 2000090605,
+    "StoryEventAssessmentTaskGroupId": 20000906,
+    "SortOrder": 5,
+    "MissionId": 260120031605,
+    "TransitionId": 50000000901301
+  },
+  {
+    "Id": 2000090606,
+    "StoryEventAssessmentTaskGroupId": 20000906,
+    "SortOrder": 6,
+    "MissionId": 260120031606,
+    "TransitionId": 50000000901301
+  },
+  {
+    "Id": 2000090607,
+    "StoryEventAssessmentTaskGroupId": 20000906,
+    "SortOrder": 7,
+    "MissionId": 260120031607,
+    "TransitionId": 50000000901301
+  },
+  {
+    "Id": 2000090608,
+    "StoryEventAssessmentTaskGroupId": 20000906,
+    "SortOrder": 8,
+    "MissionId": 260120031608,
+    "TransitionId": 50000000901301
+  },
+  {
+    "Id": 2000090609,
+    "StoryEventAssessmentTaskGroupId": 20000906,
+    "SortOrder": 9,
+    "MissionId": 260120031609,
+    "TransitionId": 50000000901401
+  },
+  {
+    "Id": 2000090610,
+    "StoryEventAssessmentTaskGroupId": 20000906,
+    "SortOrder": 10,
+    "MissionId": 260120031610,
+    "TransitionId": 50000000901401
+  },
+  {
+    "Id": 2000090611,
+    "StoryEventAssessmentTaskGroupId": 20000906,
+    "SortOrder": 11,
+    "MissionId": 260120031611,
+    "TransitionId": 50000000901401
+  },
+  {
+    "Id": 2000090612,
+    "StoryEventAssessmentTaskGroupId": 20000906,
+    "SortOrder": 12,
+    "MissionId": 260120031612,
+    "TransitionId": 50000000901401
+  },
+  {
+    "Id": 2000090613,
+    "StoryEventAssessmentTaskGroupId": 20000906,
+    "SortOrder": 13,
+    "MissionId": 260120031613,
+    "TransitionId": 50000000901501
+  }
+]

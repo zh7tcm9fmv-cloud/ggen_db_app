@@ -1,0 +1,47 @@
+[
+  {
+    "Id": 1,
+    "WeaponQuoteCategory": "B：格闘",
+    "AlternateWeaponQuoteCategory": "A"
+  },
+  {
+    "Id": 2,
+    "WeaponQuoteCategory": "C：射撃",
+    "AlternateWeaponQuoteCategory": "A"
+  },
+  {
+    "Id": 3,
+    "WeaponQuoteCategory": "D：汎用サイコミュ",
+    "AlternateWeaponQuoteCategory": "C：射撃"
+  },
+  {
+    "Id": 4,
+    "WeaponQuoteCategory": "E：ファンネル",
+    "AlternateWeaponQuoteCategory": "C：射撃"
+  },
+  {
+    "Id": 5,
+    "WeaponQuoteCategory": "F：フィンファンネル",
+    "AlternateWeaponQuoteCategory": "C：射撃"
+  },
+  {
+    "Id": 6,
+    "WeaponQuoteCategory": "G：ファング",
+    "AlternateWeaponQuoteCategory": "C：射撃"
+  },
+  {
+    "Id": 7,
+    "WeaponQuoteCategory": "H：フィンファング",
+    "AlternateWeaponQuoteCategory": "C：射撃"
+  },
+  {
+    "Id": 8,
+    "WeaponQuoteCategory": "I：ドラグーン",
+    "AlternateWeaponQuoteCategory": "C：射撃"
+  },
+  {
+    "Id": 9,
+    "WeaponQuoteCategory": "J：ガンビット",
+    "AlternateWeaponQuoteCategory": "C：射撃"
+  }
+]

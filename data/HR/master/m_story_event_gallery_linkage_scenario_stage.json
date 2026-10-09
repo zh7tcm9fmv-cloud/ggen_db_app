@@ -1,0 +1,27 @@
+[
+  {
+    "StoryEventGalleryOverrideId": 25103001,
+    "ScenarioStageId": 6010103,
+    "LinkageScenarioStageId": 6000103
+  },
+  {
+    "StoryEventGalleryOverrideId": 25103001,
+    "ScenarioStageId": 6010203,
+    "LinkageScenarioStageId": 6000203
+  },
+  {
+    "StoryEventGalleryOverrideId": 25103001,
+    "ScenarioStageId": 6010303,
+    "LinkageScenarioStageId": 6000403
+  },
+  {
+    "StoryEventGalleryOverrideId": 25103001,
+    "ScenarioStageId": 6010402,
+    "LinkageScenarioStageId": 6000502
+  },
+  {
+    "StoryEventGalleryOverrideId": 25103001,
+    "ScenarioStageId": 6010503,
+    "LinkageScenarioStageId": 6000703
+  }
+]

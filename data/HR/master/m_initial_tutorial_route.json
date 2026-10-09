@@ -1,0 +1,162 @@
+[
+  {
+    "BeforeStepTypeIndex": 1,
+    "AfterStepTypeIndex": 2,
+    "InitialTutorialApiTypeIndex": 1
+  },
+  {
+    "BeforeStepTypeIndex": 2,
+    "AfterStepTypeIndex": 3,
+    "InitialTutorialApiTypeIndex": 1
+  },
+  {
+    "BeforeStepTypeIndex": 3,
+    "AfterStepTypeIndex": 4,
+    "InitialTutorialApiTypeIndex": 1
+  },
+  {
+    "BeforeStepTypeIndex": 4,
+    "AfterStepTypeIndex": 5,
+    "InitialTutorialApiTypeIndex": 1
+  },
+  {
+    "BeforeStepTypeIndex": 5,
+    "AfterStepTypeIndex": 6,
+    "InitialTutorialApiTypeIndex": 1
+  },
+  {
+    "BeforeStepTypeIndex": 6,
+    "AfterStepTypeIndex": 7,
+    "InitialTutorialApiTypeIndex": 1
+  },
+  {
+    "BeforeStepTypeIndex": 7,
+    "AfterStepTypeIndex": 9,
+    "InitialTutorialApiTypeIndex": 1
+  },
+  {
+    "BeforeStepTypeIndex": 9,
+    "AfterStepTypeIndex": 13,
+    "InitialTutorialApiTypeIndex": 7
+  },
+  {
+    "BeforeStepTypeIndex": 10,
+    "AfterStepTypeIndex": 14,
+    "InitialTutorialApiTypeIndex": 1
+  },
+  {
+    "BeforeStepTypeIndex": 11,
+    "AfterStepTypeIndex": 25,
+    "InitialTutorialApiTypeIndex": 1
+  },
+  {
+    "BeforeStepTypeIndex": 12,
+    "AfterStepTypeIndex": 28,
+    "InitialTutorialApiTypeIndex": 1
+  },
+  {
+    "BeforeStepTypeIndex": 13,
+    "AfterStepTypeIndex": 10,
+    "InitialTutorialApiTypeIndex": 1
+  },
+  {
+    "BeforeStepTypeIndex": 14,
+    "AfterStepTypeIndex": 15,
+    "InitialTutorialApiTypeIndex": 2
+  },
+  {
+    "BeforeStepTypeIndex": 15,
+    "AfterStepTypeIndex": 16,
+    "InitialTutorialApiTypeIndex": 2
+  },
+  {
+    "BeforeStepTypeIndex": 16,
+    "AfterStepTypeIndex": 18,
+    "InitialTutorialApiTypeIndex": 3
+  },
+  {
+    "BeforeStepTypeIndex": 17,
+    "AfterStepTypeIndex": 21,
+    "InitialTutorialApiTypeIndex": 3
+  },
+  {
+    "BeforeStepTypeIndex": 18,
+    "AfterStepTypeIndex": 19,
+    "InitialTutorialApiTypeIndex": 1
+  },
+  {
+    "BeforeStepTypeIndex": 19,
+    "AfterStepTypeIndex": 20,
+    "InitialTutorialApiTypeIndex": 4
+  },
+  {
+    "BeforeStepTypeIndex": 20,
+    "AfterStepTypeIndex": 11,
+    "InitialTutorialApiTypeIndex": 1
+  },
+  {
+    "BeforeStepTypeIndex": 21,
+    "AfterStepTypeIndex": 22,
+    "InitialTutorialApiTypeIndex": 1
+  },
+  {
+    "BeforeStepTypeIndex": 22,
+    "AfterStepTypeIndex": 23,
+    "InitialTutorialApiTypeIndex": 1
+  },
+  {
+    "BeforeStepTypeIndex": 23,
+    "AfterStepTypeIndex": 24,
+    "InitialTutorialApiTypeIndex": 4
+  },
+  {
+    "BeforeStepTypeIndex": 24,
+    "AfterStepTypeIndex": 12,
+    "InitialTutorialApiTypeIndex": 1
+  },
+  {
+    "BeforeStepTypeIndex": 25,
+    "AfterStepTypeIndex": 26,
+    "InitialTutorialApiTypeIndex": 11
+  },
+  {
+    "BeforeStepTypeIndex": 26,
+    "AfterStepTypeIndex": 27,
+    "InitialTutorialApiTypeIndex": 10
+  },
+  {
+    "BeforeStepTypeIndex": 27,
+    "AfterStepTypeIndex": 17,
+    "InitialTutorialApiTypeIndex": 2
+  },
+  {
+    "BeforeStepTypeIndex": 28,
+    "AfterStepTypeIndex": 30,
+    "InitialTutorialApiTypeIndex": 6
+  },
+  {
+    "BeforeStepTypeIndex": 29,
+    "AfterStepTypeIndex": 31,
+    "InitialTutorialApiTypeIndex": 8
+  },
+  {
+    "BeforeStepTypeIndex": 30,
+    "AfterStepTypeIndex": 29,
+    "InitialTutorialApiTypeIndex": 5
+  },
+  {
+    "BeforeStepTypeIndex": 31,
+    "AfterStepTypeIndex": 32,
+    "InitialTutorialApiTypeIndex": 9
+  },
+  {
+    "BeforeStepTypeIndex": 32,
+    "AfterStepTypeIndex": 33,
+    "InitialTutorialApiTypeIndex": 1
+  },
+  {
+    "BeforeStepTypeIndex": 33,
+    "AfterStepTypeIndex": 34,
+    "InitialTutorialApiTypeIndex": 1
+  }
+]

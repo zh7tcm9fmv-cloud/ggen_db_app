@@ -1,0 +1,56 @@
+[
+  {
+    "Id": 20000901,
+    "StoryEventId": 200009,
+    "SortOrder": 1,
+    "UnitId": 1009000300,
+    "ReleaseScheduleId": 2601201302,
+    "PointItemId": 222000090001,
+    "CompletePointItemCount": 1300
+  },
+  {
+    "Id": 20000902,
+    "StoryEventId": 200009,
+    "SortOrder": 2,
+    "UnitId": 1009000200,
+    "ReleaseScheduleId": 2601201302,
+    "PointItemId": 222000090002,
+    "CompletePointItemCount": 1200
+  },
+  {
+    "Id": 20000903,
+    "StoryEventId": 200009,
+    "SortOrder": 3,
+    "UnitId": 1009000400,
+    "ReleaseScheduleId": 2601201302,
+    "PointItemId": 222000090003,
+    "CompletePointItemCount": 1300
+  },
+  {
+    "Id": 20000904,
+    "StoryEventId": 200009,
+    "SortOrder": 4,
+    "UnitId": 1009000700,
+    "ReleaseScheduleId": 2601201302,
+    "PointItemId": 222000090004,
+    "CompletePointItemCount": 1300
+  },
+  {
+    "Id": 20000905,
+    "StoryEventId": 200009,
+    "SortOrder": 5,
+    "UnitId": 1009000600,
+    "ReleaseScheduleId": 2601201302,
+    "PointItemId": 222000090005,
+    "CompletePointItemCount": 1300
+  },
+  {
+    "Id": 20000906,
+    "StoryEventId": 200009,
+    "SortOrder": 6,
+    "UnitId": 1009000500,
+    "ReleaseScheduleId": 2601201302,
+    "PointItemId": 222000090006,
+    "CompletePointItemCount": 1300
+  }
+]

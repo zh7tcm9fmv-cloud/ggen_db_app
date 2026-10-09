@@ -1,0 +1,257 @@
+[
+  {
+    "Id": 1114000800,
+    "UnitBodyTypeIndex": 11140008,
+    "RoleTypeIndex": 1
+  },
+  {
+    "Id": 1114000801,
+    "UnitBodyTypeIndex": 11140008,
+    "RoleTypeIndex": 2
+  },
+  {
+    "Id": 1114000802,
+    "UnitBodyTypeIndex": 11140008,
+    "RoleTypeIndex": 3
+  },
+  {
+    "Id": 1133000300,
+    "UnitBodyTypeIndex": 11330003,
+    "RoleTypeIndex": 1
+  },
+  {
+    "Id": 1133000301,
+    "UnitBodyTypeIndex": 11330003,
+    "RoleTypeIndex": 2
+  },
+  {
+    "Id": 1133000302,
+    "UnitBodyTypeIndex": 11330003,
+    "RoleTypeIndex": 3
+  },
+  {
+    "Id": 1144002000,
+    "UnitBodyTypeIndex": 11440020,
+    "RoleTypeIndex": 1
+  },
+  {
+    "Id": 1144002001,
+    "UnitBodyTypeIndex": 11440020,
+    "RoleTypeIndex": 2
+  },
+  {
+    "Id": 1144002002,
+    "UnitBodyTypeIndex": 11440020,
+    "RoleTypeIndex": 3
+  },
+  {
+    "Id": 1157000200,
+    "UnitBodyTypeIndex": 11570002,
+    "RoleTypeIndex": 1
+  },
+  {
+    "Id": 1157000201,
+    "UnitBodyTypeIndex": 11570002,
+    "RoleTypeIndex": 2
+  },
+  {
+    "Id": 1157000202,
+    "UnitBodyTypeIndex": 11570002,
+    "RoleTypeIndex": 3
+  },
+  {
+    "Id": 1175001200,
+    "UnitBodyTypeIndex": 11750012,
+    "RoleTypeIndex": 1
+  },
+  {
+    "Id": 1175001201,
+    "UnitBodyTypeIndex": 11750012,
+    "RoleTypeIndex": 2
+  },
+  {
+    "Id": 1175001202,
+    "UnitBodyTypeIndex": 11750012,
+    "RoleTypeIndex": 3
+  },
+  {
+    "Id": 1200005600,
+    "UnitBodyTypeIndex": 12000056,
+    "RoleTypeIndex": 1
+  },
+  {
+    "Id": 1200005601,
+    "UnitBodyTypeIndex": 12000056,
+    "RoleTypeIndex": 2
+  },
+  {
+    "Id": 1200005602,
+    "UnitBodyTypeIndex": 12000056,
+    "RoleTypeIndex": 3
+  },
+  {
+    "Id": 1211000100,
+    "UnitBodyTypeIndex": 12110001,
+    "RoleTypeIndex": 1
+  },
+  {
+    "Id": 1211000101,
+    "UnitBodyTypeIndex": 12110001,
+    "RoleTypeIndex": 2
+  },
+  {
+    "Id": 1211000102,
+    "UnitBodyTypeIndex": 12110001,
+    "RoleTypeIndex": 3
+  },
+  {
+    "Id": 1308000500,
+    "UnitBodyTypeIndex": 13080005,
+    "RoleTypeIndex": 1
+  },
+  {
+    "Id": 1308000501,
+    "UnitBodyTypeIndex": 13080005,
+    "RoleTypeIndex": 2
+  },
+  {
+    "Id": 1308000502,
+    "UnitBodyTypeIndex": 13080005,
+    "RoleTypeIndex": 3
+  },
+  {
+    "Id": 1342000100,
+    "UnitBodyTypeIndex": 13420001,
+    "RoleTypeIndex": 1
+  },
+  {
+    "Id": 1342000101,
+    "UnitBodyTypeIndex": 13420001,
+    "RoleTypeIndex": 2
+  },
+  {
+    "Id": 1342000102,
+    "UnitBodyTypeIndex": 13420001,
+    "RoleTypeIndex": 3
+  },
+  {
+    "Id": 1379000100,
+    "UnitBodyTypeIndex": 13790001,
+    "RoleTypeIndex": 1
+  },
+  {
+    "Id": 1379000101,
+    "UnitBodyTypeIndex": 13790001,
+    "RoleTypeIndex": 2
+  },
+  {
+    "Id": 1379000102,
+    "UnitBodyTypeIndex": 13790001,
+    "RoleTypeIndex": 3
+  },
+  {
+    "Id": 1430008000,
+    "UnitBodyTypeIndex": 14300080,
+    "RoleTypeIndex": 1
+  },
+  {
+    "Id": 1430008001,
+    "UnitBodyTypeIndex": 14300080,
+    "RoleTypeIndex": 2
+  },
+  {
+    "Id": 1430008002,
+    "UnitBodyTypeIndex": 14300080,
+    "RoleTypeIndex": 3
+  },
+  {
+    "Id": 1501004200,
+    "UnitBodyTypeIndex": 15010042,
+    "RoleTypeIndex": 1
+  },
+  {
+    "Id": 1501004201,
+    "UnitBodyTypeIndex": 15010042,
+    "RoleTypeIndex": 2
+  },
+  {
+    "Id": 1501004202,
+    "UnitBodyTypeIndex": 15010042,
+    "RoleTypeIndex": 3
+  },
+  {
+    "Id": 1750000300,
+    "UnitBodyTypeIndex": 17500003,
+    "RoleTypeIndex": 1
+  },
+  {
+    "Id": 1750000301,
+    "UnitBodyTypeIndex": 17500003,
+    "RoleTypeIndex": 2
+  },
+  {
+    "Id": 1750000302,
+    "UnitBodyTypeIndex": 17500003,
+    "RoleTypeIndex": 3
+  },
+  {
+    "Id": 1761000100,
+    "UnitBodyTypeIndex": 17610001,
+    "RoleTypeIndex": 1
+  },
+  {
+    "Id": 1761000101,
+    "UnitBodyTypeIndex": 17610001,
+    "RoleTypeIndex": 2
+  },
+  {
+    "Id": 1761000102,
+    "UnitBodyTypeIndex": 17610001,
+    "RoleTypeIndex": 3
+  },
+  {
+    "Id": 1764000200,
+    "UnitBodyTypeIndex": 17640002,
+    "RoleTypeIndex": 1
+  },
+  {
+    "Id": 1764000201,
+    "UnitBodyTypeIndex": 17640002,
+    "RoleTypeIndex": 2
+  },
+  {
+    "Id": 1764000202,
+    "UnitBodyTypeIndex": 17640002,
+    "RoleTypeIndex": 3
+  },
+  {
+    "Id": 1850003200,
+    "UnitBodyTypeIndex": 18500032,
+    "RoleTypeIndex": 1
+  },
+  {
+    "Id": 1850003201,
+    "UnitBodyTypeIndex": 18500032,
+    "RoleTypeIndex": 2
+  },
+  {
+    "Id": 1850003202,
+    "UnitBodyTypeIndex": 18500032,
+    "RoleTypeIndex": 3
+  },
+  {
+    "Id": 1850003300,
+    "UnitBodyTypeIndex": 18500033,
+    "RoleTypeIndex": 1
+  },
+  {
+    "Id": 1850003301,
+    "UnitBodyTypeIndex": 18500033,
+    "RoleTypeIndex": 2
+  },
+  {
+    "Id": 1850003302,
+    "UnitBodyTypeIndex": 18500033,
+    "RoleTypeIndex": 3
+  }
+]

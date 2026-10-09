@@ -1,0 +1,16 @@
+[
+  {
+    "Id": 900000016,
+    "CharacterSkillId": 990000006,
+    "CharacterSkillUseConditionGroupId": 990000006,
+    "CharacterSkillUseConditionTypeIndex": 2,
+    "ConditionValue": "guncannon,guntank,corebooster"
+  },
+  {
+    "Id": 900000017,
+    "CharacterSkillId": 990000007,
+    "CharacterSkillUseConditionGroupId": 990000007,
+    "CharacterSkillUseConditionTypeIndex": 2,
+    "ConditionValue": "makube"
+  }
+]
