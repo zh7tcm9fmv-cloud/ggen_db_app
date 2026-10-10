@@ -725,7 +725,8 @@ window.__GGEN_LAZY__=(function(){
     'sp_investment_i18n': url_for('static', filename='js/sp_investment_i18n.js'),
     'sp_investment_i18n_guide': url_for('static', filename='js/sp_investment_i18n_guide.js'),
     'sp_investment': url_for('static', filename='js/sp_investment.js'),
-    'gacha_sim': url_for('static', filename='js/gacha_sim.js')
+    'gacha_sim': url_for('static', filename='js/gacha_sim.js'),
+    'unit_holo_card': url_for('static', filename='js/unit_holo_card.js')
   } | tojson }};
   var cache={};
   function withV(url, bump){
@@ -785,6 +786,10 @@ window.__GGEN_LAZY__=(function(){
     if(window.GgenContentNotices)return Promise.resolve(window.GgenContentNotices);
     return loadJs('content_notices').then(function(){return window.GgenContentNotices||null});
   }
+  function ensureUnitHoloCard(){
+    if(window.GgenUnitHoloCard)return Promise.resolve(window.GgenUnitHoloCard);
+    return loadJs('unit_holo_card').then(function(){return window.GgenUnitHoloCard||null});
+  }
   function ensureExtras(){
     if(cache._extras)return cache._extras;
     cache._extras=Promise.all([
@@ -821,7 +826,9 @@ window.__GGEN_LAZY__=(function(){
     ensureCraftUiCss:ensureCraftUiCss,
     ensureSpInvestment:ensureSpInvestment,
     ensureGachaSim:ensureGachaSim,
-    ensureContentNotices:ensureContentNotices
+    ensureContentNotices:ensureContentNotices,
+    ensureUnitHoloCard:ensureUnitHoloCard,
+    loadJs:loadJs
   };
 })();
 </script>

@@ -306,21 +306,44 @@
   100%{transform:translate3d(0,0,0);opacity:1}
 }
 
-/* Unit Assembly limited frame — bt-lr-tile--limited / detail-limited-banner (unit + character) */
+/* Gradient Text (React Bits–inspired) on perk highlight phrases */
 .kofi-promo-kw{
+  --kofi-kw-gradient:linear-gradient(
+    110deg,
+    #22d3ee 0%,
+    #67e8f9 18%,
+    #a78bfa 38%,
+    #f472b6 55%,
+    #fbbf24 72%,
+    #22d3ee 100%
+  );
   display:inline;
   font-weight:800;
   letter-spacing:.02em;
-  color:#fff;
-  padding:0 3px;
+  padding:0 1px;
   margin:0;
-  border:1px solid rgba(255,255,255,.52);
-  border-radius:3px;
-  background:linear-gradient(125deg,#db2777 0%,#a855f7 28%,#7c3aed 52%,#c026d3 74%,#2563eb 100%);
-  box-shadow:0 1px 0 rgba(255,255,255,.12) inset;
-  text-shadow:0 1px 2px rgba(0,0,0,.78);
+  border:none;
+  border-radius:0;
+  background-image:var(--kofi-kw-gradient);
+  background-size:220% 100%;
+  background-position:0% 50%;
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  -webkit-text-fill-color:transparent;
   -webkit-box-decoration-break:clone;
   box-decoration-break:clone;
+  filter:drop-shadow(0 0 5px rgba(34,211,238,.42));
+  -webkit-animation:kofi-promo-kw-sweep 3.4s linear infinite;
+  animation:kofi-promo-kw-sweep 3.4s linear infinite;
+}
+@-webkit-keyframes kofi-promo-kw-sweep{
+  0%{background-position:0% 50%}
+  100%{background-position:220% 50%}
+}
+@keyframes kofi-promo-kw-sweep{
+  0%{background-position:0% 50%}
+  100%{background-position:220% 50%}
 }
 
 #kofiHeaderLink.kofi-donate-promo-target-highlight{
@@ -361,9 +384,13 @@
   100%{opacity:0;transform:scale(1.52)}
 }
 @media (prefers-reduced-motion:reduce){
-  .kofi-donate-promo-panel,#kofiHeaderLink.kofi-donate-promo-target-highlight::before,#kofiHeaderLink.kofi-donate-promo-target-highlight::after,.kofi-promo-slot-inner,.kofi-donate-promo-close{
+  .kofi-donate-promo-panel,#kofiHeaderLink.kofi-donate-promo-target-highlight::before,#kofiHeaderLink.kofi-donate-promo-target-highlight::after,.kofi-promo-slot-inner,.kofi-donate-promo-close,.kofi-promo-kw{
     -webkit-animation:none!important;
     animation:none!important;
+  }
+  .kofi-promo-kw{
+    background-position:40% 50%;
+    filter:drop-shadow(0 0 3px rgba(34,211,238,.28));
   }
   .kofi-donate-promo-close{
     transition:none;

@@ -533,4 +533,21 @@ body:not(.tm-page).nav-tabs-collapsed #navTabsShell{
   #panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--limited > .bt-lim-beam{
     background:linear-gradient(90deg,#00d4ff,#ffd400)!important;
   }
+  .modal-content.unit-detail .unit-holo-card__stage{
+    transform:none!important;
+    transition:none!important;
+  }
+  .modal-content.unit-detail .unit-holo-card__foil,
+  .modal-content.unit-detail .unit-holo-card__glare,
+  .modal-content.unit-detail .unit-holo-card::before,
+  .modal-content.unit-detail .unit-holo-card::after,
+  .modal-content.unit-detail .unit-holo-card > .border-glow-edge,
+  .modal-content.unit-detail .unit-holo-card__canvas{
+    opacity:0!important;
+    transition:none!important;
+  }
+  .modal-content.unit-detail .unit-holo-card.is-holo-webgl .detail-portrait{
+    opacity:1!important;
+    visibility:visible!important;
+  }
 }
