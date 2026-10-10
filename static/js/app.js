@@ -4146,7 +4146,8 @@ let holoOn=false;
 let mounting=false;
 let touchTap=null;
 let suppressClick=0;
-const TAP_SLOP=16;
+/* Larger slop so finger-drag foil on iOS does not count as toggle-off */
+const TAP_SLOP=28;
 const isInteractiveTarget=el=>{
 if(!el||!el.closest)return false;
 /* Only real controls — empty slots are pointer-events:none and must not block toggle */

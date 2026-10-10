@@ -115,12 +115,13 @@
       return null;
     }
     var pointer = { x: 0.5, y: 0.5, inside: false };
-    function readPointer(e) {
+    var pressing = false;
+    function readClient(clientX, clientY) {
       var rect = card.getBoundingClientRect();
       var w = rect.width || 1;
       var h = rect.height || 1;
-      pointer.x = clamp((e.clientX - rect.left) / w, 0, 1);
-      pointer.y = clamp((e.clientY - rect.top) / h, 0, 1);
+      pointer.x = clamp((clientX - rect.left) / w, 0, 1);
+      pointer.y = clamp((clientY - rect.top) / h, 0, 1);
     }
     function syncGlow() {
       if (!pointer.inside) {
@@ -140,17 +141,40 @@
     function onDown(e) {
       if (e.isPrimary === false) return;
       if (e.button != null && e.button !== 0) return;
-      readPointer(e);
+      pressing = true;
+      readClient(e.clientX, e.clientY);
       pointer.inside = true;
       syncGlow();
     }
     function onMove(e) {
-      if (e.pointerType === 'touch' && !e.buttons) return;
-      readPointer(e);
+      if (e.pointerType === 'touch' && !pressing) return;
+      readClient(e.clientX, e.clientY);
       pointer.inside = true;
       syncGlow();
     }
     function onUp() {
+      pressing = false;
+      pointer.inside = false;
+      syncGlow();
+    }
+    function onTouchStart(e) {
+      if (!e.changedTouches || !e.changedTouches.length) return;
+      pressing = true;
+      readClient(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+      pointer.inside = true;
+      syncGlow();
+    }
+    function onTouchMove(e) {
+      if (!pressing || !e.touches || !e.touches.length) return;
+      readClient(e.touches[0].clientX, e.touches[0].clientY);
+      pointer.inside = true;
+      try {
+        e.preventDefault();
+      } catch (_) {}
+      syncGlow();
+    }
+    function onTouchEnd() {
+      pressing = false;
       pointer.inside = false;
       syncGlow();
     }
@@ -159,12 +183,20 @@
     card.addEventListener('pointerup', onUp);
     card.addEventListener('pointercancel', onUp);
     card.addEventListener('pointerleave', onUp);
+    card.addEventListener('touchstart', onTouchStart, { passive: true });
+    card.addEventListener('touchmove', onTouchMove, { passive: false });
+    card.addEventListener('touchend', onTouchEnd, { passive: true });
+    card.addEventListener('touchcancel', onTouchEnd, { passive: true });
     function destroy() {
       card.removeEventListener('pointerdown', onDown);
       card.removeEventListener('pointermove', onMove);
       card.removeEventListener('pointerup', onUp);
       card.removeEventListener('pointercancel', onUp);
       card.removeEventListener('pointerleave', onUp);
+      card.removeEventListener('touchstart', onTouchStart);
+      card.removeEventListener('touchmove', onTouchMove);
+      card.removeEventListener('touchend', onTouchEnd);
+      card.removeEventListener('touchcancel', onTouchEnd);
       card.classList.remove('is-holo-active');
       unwrapStage(card, stage);
       card._ggenHolo = null;
@@ -604,14 +636,22 @@
       raf = requestAnimationFrame(tick);
     }
 
-    function readPointer(e) {
+    var pressing = false;
+    var activeTouchId = null;
+
+    function readClient(clientX, clientY) {
       var rect = card.getBoundingClientRect();
       var w = rect.width || 1;
       var h = rect.height || 1;
-      pointer.x = clamp((e.clientX - rect.left) / w, 0, 1);
-      pointer.y = clamp((e.clientY - rect.top) / h, 0, 1);
+      pointer.x = clamp((clientX - rect.left) / w, 0, 1);
+      pointer.y = clamp((clientY - rect.top) / h, 0, 1);
+    }
+    function readPointer(e) {
+      readClient(e.clientX, e.clientY);
     }
     function onEnter(e) {
+      /* Desktop hover; ignore synthetic touch enter */
+      if (e.pointerType === 'touch') return;
       readPointer(e);
       pointer.inside = true;
       wake();
@@ -619,6 +659,7 @@
     function onDown(e) {
       if (e.isPrimary === false) return;
       if (e.button != null && e.button !== 0) return;
+      pressing = true;
       readPointer(e);
       pointer.inside = true;
       try {
@@ -627,14 +668,26 @@
       wake();
     }
     function onMove(e) {
-      /* Touch: only track while finger is down (buttons) or captured */
-      if (e.pointerType === 'touch' && e.type === 'pointermove' && !e.buttons) return;
+      /*
+       * iOS Safari often reports buttons===0 during touch pointermove.
+       * Track with our pressing flag instead.
+       */
+      if (e.pointerType === 'touch' && !pressing) return;
+      if (e.pointerType !== 'touch' && !pressing && e.buttons === 0) {
+        /* mouse hover path */
+        readPointer(e);
+        pointer.inside = true;
+        wake();
+        return;
+      }
+      if (e.pointerType !== 'touch' && !pressing) return;
       readPointer(e);
       pointer.inside = true;
       wake();
     }
     function onUp(e) {
       if (e.isPrimary === false) return;
+      pressing = false;
       pointer.inside = false;
       try {
         if (card.hasPointerCapture && card.hasPointerCapture(e.pointerId)) {
@@ -643,18 +696,69 @@
       } catch (_) {}
       wake();
     }
-    function onLeave() {
+    function onLeave(e) {
+      if (pressing) return;
+      if (e && e.pointerType === 'touch') return;
       pointer.inside = false;
       wake();
     }
 
-    /* Foil tracking: mouse enter/move + touch press/drag (not hover-only). */
+    /* Native touch path — reliable foil drag on iOS Safari */
+    function onTouchStart(e) {
+      if (!e.changedTouches || !e.changedTouches.length) return;
+      var t = e.changedTouches[0];
+      activeTouchId = t.identifier;
+      pressing = true;
+      readClient(t.clientX, t.clientY);
+      pointer.inside = true;
+      wake();
+    }
+    function onTouchMove(e) {
+      if (!pressing) return;
+      var t = null;
+      var i;
+      for (i = 0; i < e.touches.length; i++) {
+        if (activeTouchId == null || e.touches[i].identifier === activeTouchId) {
+          t = e.touches[i];
+          break;
+        }
+      }
+      if (!t) return;
+      readClient(t.clientX, t.clientY);
+      pointer.inside = true;
+      try {
+        e.preventDefault();
+      } catch (_) {}
+      wake();
+    }
+    function onTouchEnd(e) {
+      if (!e.changedTouches || !e.changedTouches.length) return;
+      var ended = false;
+      var i;
+      for (i = 0; i < e.changedTouches.length; i++) {
+        if (activeTouchId == null || e.changedTouches[i].identifier === activeTouchId) {
+          ended = true;
+          break;
+        }
+      }
+      if (!ended) return;
+      activeTouchId = null;
+      pressing = false;
+      pointer.inside = false;
+      wake();
+    }
+
+    /* Foil tracking: mouse hover + finger press/drag */
     card.addEventListener('pointerenter', onEnter);
     card.addEventListener('pointerdown', onDown);
     card.addEventListener('pointermove', onMove, { passive: true });
     card.addEventListener('pointerup', onUp);
     card.addEventListener('pointercancel', onUp);
     card.addEventListener('pointerleave', onLeave);
+    card.addEventListener('touchstart', onTouchStart, { passive: true });
+    card.addEventListener('touchmove', onTouchMove, { passive: false });
+    card.addEventListener('touchend', onTouchEnd, { passive: true });
+    card.addEventListener('touchcancel', onTouchEnd, { passive: true });
 
     var ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(resize) : null;
     if (ro) ro.observe(stage);
@@ -690,6 +794,10 @@
       card.removeEventListener('pointerup', onUp);
       card.removeEventListener('pointercancel', onUp);
       card.removeEventListener('pointerleave', onLeave);
+      card.removeEventListener('touchstart', onTouchStart);
+      card.removeEventListener('touchmove', onTouchMove);
+      card.removeEventListener('touchend', onTouchEnd);
+      card.removeEventListener('touchcancel', onTouchEnd);
       if (ro) ro.disconnect();
       if (io) io.disconnect();
       card.classList.remove('is-holo-webgl', 'is-holo-active');

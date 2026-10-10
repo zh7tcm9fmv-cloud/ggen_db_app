@@ -1574,7 +1574,11 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
   outline:2px solid rgba(0,212,255,.65);
   outline-offset:3px;
 }
-.modal-content.unit-detail .unit-holo-card.unit-holo-card--armed.is-holo-on{cursor:grab}
+.modal-content.unit-detail .unit-holo-card.unit-holo-card--armed.is-holo-on{
+  cursor:grab;
+  /* Own the gesture while foil is on — iOS scroll must not steal drag */
+  touch-action:none;
+}
 .modal-content.unit-detail .unit-holo-card.is-holo-on{
   --edge-proximity:0;
   --cursor-angle:45deg;
