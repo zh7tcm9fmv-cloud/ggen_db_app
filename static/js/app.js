@@ -4137,19 +4137,20 @@ else{im.addEventListener('load',tick,{once:true});im.addEventListener('error',ti
 tick();
 setTimeout(()=>{if(stage.isConnected)stage.classList.add('is-ready')},2800);
 }
-/** UR unit portrait holo: tap/click to toggle (pointer events — mobile + desktop). */
+/** UR unit portrait holo: iOS tap (touchend) + desktop click. WebGL lazy on activate. */
 function bindUnitPortraitFx(root){
 const card=root&&root.querySelector?root.querySelector('.unit-holo-card.unit-holo-card--armed'):null;
 if(!card||card.dataset.holoBound==='1')return;
 card.dataset.holoBound='1';
 let holoOn=false;
 let mounting=false;
-let tapPtr=null;
+let touchTap=null;
 let suppressClick=0;
-const TAP_SLOP=14;
+const TAP_SLOP=16;
 const isInteractiveTarget=el=>{
 if(!el||!el.closest)return false;
-return!!el.closest('button,a,input,select,textarea,.unit-lb-video-btn,.unit-gacha-pull-video-btn,#unitBestPilotBtnSlotPortrait,.unit-best-pilot-btn-slot');
+/* Only real controls — empty slots are pointer-events:none and must not block toggle */
+return!!el.closest('button,a,input,select,textarea,.unit-lb-video-btn,.unit-gacha-pull-video-btn,.unit-best-pilot-btn');
 };
 const setPressed=on=>{
 card.setAttribute('aria-pressed',on?'true':'false');
@@ -4171,56 +4172,57 @@ intensity:limited?1:0.7,
 edgeSparkle:limited?1:0.7,
 glare:limited?0.85:0.45,
 scale:limited?1.15:1,
-/* No CSS lift on activate/hover — size must match cold portrait */
 hoverScale:1,
 idle:true
 };
 };
 const turnOn=()=>{
 if(mounting||holoOn)return;
-const api0=window.GgenUnitHoloCard;
-const start=api=>{
-if(!api||typeof api.mount!=='function'||!card.isConnected){mounting=false;return}
-try{if(card._ggenHolo&&typeof card._ggenHolo.destroy==='function')card._ggenHolo.destroy()}catch(_){}
-const mounted=api.mount(card,mountOpts());
-mounting=false;
-if(!mounted)return;
+/* Immediate chrome so iOS tap always shows something while script/WebGL loads */
 holoOn=true;
-setPressed(true);
-};
-if(api0&&typeof api0.mount==='function'){start(api0);return}
 mounting=true;
+setPressed(true);
+const finish=api=>{
+mounting=false;
+if(!card.isConnected){turnOff();return}
+if(!api||typeof api.mount!=='function')return;
+try{if(card._ggenHolo&&typeof card._ggenHolo.destroy==='function')card._ggenHolo.destroy()}catch(_){}
+try{api.mount(card,mountOpts())}catch(_){}
+};
+const api0=window.GgenUnitHoloCard;
+if(api0&&typeof api0.mount==='function'){finish(api0);return}
 const lazy=window.__GGEN_LAZY__;
 const p=lazy&&typeof lazy.ensureUnitHoloCard==='function'
 ?lazy.ensureUnitHoloCard()
 :(lazy&&typeof lazy.loadJs==='function'?lazy.loadJs('unit_holo_card').then(()=>window.GgenUnitHoloCard):Promise.resolve(null));
-Promise.resolve(p).then(start).catch(()=>{mounting=false});
+Promise.resolve(p).then(finish).catch(()=>{mounting=false});
 };
 const toggle=()=>{
 if(holoOn||mounting)turnOff();
 else turnOn();
 };
-card.addEventListener('pointerdown',e=>{
-if(e.isPrimary===false)return;
-if(e.button!=null&&e.button!==0)return;
-if(isInteractiveTarget(e.target)){tapPtr=null;return}
-tapPtr={id:e.pointerId,x:e.clientX,y:e.clientY};
+/* iOS Safari: touchend is the reliable tap; preventDefault suppresses ghost click */
+card.addEventListener('touchstart',e=>{
+if(!e.touches||e.touches.length!==1){touchTap=null;return}
+if(isInteractiveTarget(e.target)){touchTap=null;return}
+const t=e.touches[0];
+touchTap={id:t.identifier,x:t.clientX,y:t.clientY};
 },{passive:true});
-card.addEventListener('pointerup',e=>{
-if(!tapPtr||tapPtr.id!==e.pointerId)return;
-const dx=e.clientX-tapPtr.x,dy=e.clientY-tapPtr.y;
-tapPtr=null;
-if(Math.hypot(dx,dy)>TAP_SLOP)return;
+card.addEventListener('touchend',e=>{
+if(!touchTap)return;
+let t=null;
+const list=e.changedTouches||[];
+for(let i=0;i<list.length;i++){if(list[i].identifier===touchTap.id){t=list[i];break}}
+const start=touchTap;
+touchTap=null;
+if(!t)return;
+if(Math.hypot(t.clientX-start.x,t.clientY-start.y)>TAP_SLOP)return;
 if(isInteractiveTarget(e.target))return;
 suppressClick=1;
 try{e.preventDefault()}catch(_){}
-e.stopPropagation();
 toggle();
-});
-card.addEventListener('pointercancel',e=>{
-if(tapPtr&&tapPtr.id===e.pointerId)tapPtr=null;
-},{passive:true});
-/* Ghost click after touch pointerup — do not double-toggle */
+},{passive:false});
+card.addEventListener('touchcancel',()=>{touchTap=null},{passive:true});
 card.addEventListener('click',e=>{
 if(isInteractiveTarget(e.target))return;
 if(suppressClick){suppressClick=0;e.preventDefault();e.stopPropagation();return}

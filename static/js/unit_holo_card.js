@@ -81,25 +81,127 @@
     return stage;
   }
 
+  function ensureEdge(card) {
+    if (card.querySelector('.border-glow-edge')) return;
+    var edge = document.createElement('span');
+    edge.className = 'border-glow-edge';
+    edge.setAttribute('aria-hidden', 'true');
+    card.appendChild(edge);
+  }
+
+  function unwrapStage(card, stage) {
+    if (!stage || !card) return;
+    try {
+      var kids = stage.querySelectorAll('img.detail-portrait, .detail-portrait-placeholder');
+      for (var ki = 0; ki < kids.length; ki++) {
+        card.insertBefore(kids[ki], stage);
+      }
+      if (stage.parentNode) stage.parentNode.removeChild(stage);
+    } catch (_) {}
+    try {
+      var eg = card.querySelector('.border-glow-edge');
+      if (eg && eg.parentNode) eg.parentNode.removeChild(eg);
+    } catch (_) {}
+  }
+
+  /** CSS border-glow only (no WebGL) — still returns destroy so toggle works on iOS. */
+  function mountCssOnly(card, opts, reduced) {
+    opts = opts || {};
+    ensureEdge(card);
+    var stage = ensureStage(card);
+    var img = stage.querySelector('img.detail-portrait, img');
+    if (!img) {
+      unwrapStage(card, stage);
+      return null;
+    }
+    var pointer = { x: 0.5, y: 0.5, inside: false };
+    function readPointer(e) {
+      var rect = card.getBoundingClientRect();
+      var w = rect.width || 1;
+      var h = rect.height || 1;
+      pointer.x = clamp((e.clientX - rect.left) / w, 0, 1);
+      pointer.y = clamp((e.clientY - rect.top) / h, 0, 1);
+    }
+    function syncGlow() {
+      if (!pointer.inside) {
+        card.style.setProperty('--edge-proximity', '0');
+        card.classList.remove('is-holo-active');
+        return;
+      }
+      var nx = Math.abs(pointer.x - 0.5) * 2;
+      var ny = Math.abs(pointer.y - 0.5) * 2;
+      var edge = Math.min(1, Math.max(nx, ny)) * 100;
+      var deg = (Math.atan2(pointer.y - 0.5, pointer.x - 0.5) * 180) / Math.PI + 90;
+      if (deg < 0) deg += 360;
+      card.style.setProperty('--edge-proximity', edge.toFixed(2));
+      card.style.setProperty('--cursor-angle', deg.toFixed(2) + 'deg');
+      card.classList.add('is-holo-active');
+    }
+    function onDown(e) {
+      if (e.isPrimary === false) return;
+      if (e.button != null && e.button !== 0) return;
+      readPointer(e);
+      pointer.inside = true;
+      syncGlow();
+    }
+    function onMove(e) {
+      if (e.pointerType === 'touch' && !e.buttons) return;
+      readPointer(e);
+      pointer.inside = true;
+      syncGlow();
+    }
+    function onUp() {
+      pointer.inside = false;
+      syncGlow();
+    }
+    card.addEventListener('pointerdown', onDown);
+    card.addEventListener('pointermove', onMove, { passive: true });
+    card.addEventListener('pointerup', onUp);
+    card.addEventListener('pointercancel', onUp);
+    card.addEventListener('pointerleave', onUp);
+    function destroy() {
+      card.removeEventListener('pointerdown', onDown);
+      card.removeEventListener('pointermove', onMove);
+      card.removeEventListener('pointerup', onUp);
+      card.removeEventListener('pointercancel', onUp);
+      card.removeEventListener('pointerleave', onUp);
+      card.classList.remove('is-holo-active');
+      unwrapStage(card, stage);
+      card._ggenHolo = null;
+    }
+    var api = { destroy: destroy, reload: function () {}, settings: { cssOnly: true, reduced: !!reduced } };
+    card._ggenHolo = api;
+    return api;
+  }
+
   function mount(card, opts) {
     opts = opts || {};
     if (!card || card._ggenHolo) return null;
-    var stage = ensureStage(card);
-    var img = stage.querySelector('img.detail-portrait, img');
-    if (!stage || !img) return null;
 
     var reduced = false;
     try {
       reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     } catch (_) {}
-    if (reduced) return null;
 
-    if (!card.querySelector('.border-glow-edge')) {
-      var edge = document.createElement('span');
-      edge.className = 'border-glow-edge';
-      edge.setAttribute('aria-hidden', 'true');
-      card.appendChild(edge);
+    /* Probe WebGL2 before wrapping the portrait (failed probe used to leave a broken stage). */
+    var probe = document.createElement('canvas');
+    var glProbe = null;
+    try {
+      glProbe = probe.getContext('webgl2', {
+        alpha: true,
+        premultipliedAlpha: true,
+        antialias: false
+      });
+    } catch (_) {
+      glProbe = null;
     }
+    if (!glProbe) return mountCssOnly(card, opts, reduced);
+
+    var stage = ensureStage(card);
+    var img = stage.querySelector('img.detail-portrait, img');
+    if (!stage || !img) return null;
+
+    ensureEdge(card);
 
     var canvas = stage.querySelector('canvas.unit-holo-card__canvas');
     if (!canvas) {
@@ -114,11 +216,20 @@
       premultipliedAlpha: true,
       antialias: false
     });
-    if (!gl) return null;
+    if (!gl) {
+      try {
+        if (canvas.parentNode) canvas.parentNode.removeChild(canvas);
+      } catch (_) {}
+      unwrapStage(card, stage);
+      return mountCssOnly(card, opts, reduced);
+    }
 
     var vertex = compile(gl, gl.VERTEX_SHADER, VERTEX);
     var fragment = compile(gl, gl.FRAGMENT_SHADER, FRAGMENT);
-    if (!vertex || !fragment) return null;
+    if (!vertex || !fragment) {
+      unwrapStage(card, stage);
+      return mountCssOnly(card, opts, reduced);
+    }
     var program = gl.createProgram();
     gl.attachShader(program, vertex);
     gl.attachShader(program, fragment);
@@ -128,7 +239,8 @@
     gl.deleteShader(fragment);
     if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
       gl.deleteProgram(program);
-      return null;
+      unwrapStage(card, stage);
+      return mountCssOnly(card, opts, reduced);
     }
 
     var buffer = gl.createBuffer();
@@ -186,10 +298,10 @@
       glare: clamp(opts.glare != null ? opts.glare : 0.5, 0, 1),
       foil: foil,
       radius: Math.max(0, opts.radius != null ? opts.radius : 10),
-      tiltMax: clamp(opts.tiltMax != null ? opts.tiltMax : 14, 0, 45),
-      /* Default 1: avoid click/hover scale jump vs cold portrait box */
-      hoverScale: clamp(opts.hoverScale != null ? opts.hoverScale : 1, 0.8, 1.3),
-      idle: opts.idle !== false
+      /* Reduce Motion (common on iOS): keep foil, kill tilt/idle drift */
+      tiltMax: reduced ? 0 : clamp(opts.tiltMax != null ? opts.tiltMax : 14, 0, 45),
+      hoverScale: 1,
+      idle: reduced ? false : opts.idle !== false
     };
 
     var state = {
