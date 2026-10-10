@@ -29,7 +29,14 @@
   }
 
   body {
-    min-height: var(--app-vh, 100dvh);
+    /*
+     * Do NOT size body to --app-vh (visualViewport height). On iOS 26 Liquid Glass,
+     * that leaves a solid dark gap above the Safari address / tab bar when chrome
+     * resizes (detail open, orientation, motion permission, etc.).
+     */
+    min-height: 100dvh;
+    min-height: -webkit-fill-available;
+    min-height: var(--layout-vh, 100dvh);
     overflow-x: clip;
     min-width: 0;
     width: 100%;
@@ -546,8 +553,9 @@
 
     .bg-pattern {
       top: calc(-1 * var(--visual-vv-offset-top, 0px));
-      height: calc(var(--layout-vh, 100vh) + var(--visual-vv-offset-top, 0px));
-      min-height: calc(var(--layout-vh, 100vh) + var(--visual-vv-offset-top, 0px));
+      bottom: calc(-1 * var(--cmp-browser-inset-bottom, 0px));
+      height: auto;
+      min-height: calc(100% + var(--visual-vv-offset-top, 0px) + var(--cmp-browser-inset-bottom, 0px));
       max-height: none;
     }
   }

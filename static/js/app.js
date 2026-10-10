@@ -7609,14 +7609,20 @@ let offsetTop=0;
 let insetBottom=0;
 if(vv){
 visualH=Math.max(0,Math.round(vv.height||0));
-offsetTop=Math.max(0,Math.round(vv.offsetTop||0));
+/* iOS 26 can leave offsetTop stuck (often ~24) or wild after keyboard/orientation — cap it */
+offsetTop=Math.min(80,Math.max(0,Math.round(vv.offsetTop||0)));
 insetBottom=Math.max(0,layoutH-visualH-offsetTop);
+/* Ignore nonsense insets that shrink the painted runway into a black chrome gap */
+if(insetBottom>180)insetBottom=0;
 }
 const root=document.documentElement.style;
-root.setProperty('--layout-vh',layoutH+'px');
+/* Prefer the larger of layout vs visual so body never collapses under the address bar */
+const stableH=Math.max(layoutH,visualH);
+root.setProperty('--layout-vh',stableH+'px');
 root.setProperty('--visual-vv-offset-top',offsetTop+'px');
 root.setProperty('--cmp-browser-inset-bottom',insetBottom+'px');
 root.setProperty('--dvh',visualH+'px');
+/* Keep --app-vh for overlays that need the visible frame, but do not drive body min-height */
 root.setProperty('--app-vh',visualH+'px');
 }
 function scheduleUpdateCmpBrowserInset(){

@@ -174,7 +174,8 @@ window.__ggenLoadGtm=function(){
 <link rel="apple-touch-icon" href="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Gallery_Comics_Logo_Eternalbase.webp{% else %}/static/images/UI/UI_Gallery_Comics_Logo_Eternalbase.webp{% endif %}">
 <link rel="manifest" href="/static/site.webmanifest">
 <meta name="theme-color" content="#0a0e17">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- black (not black-translucent): avoids a solid black status/chrome strip on iOS Safari -->
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="GGen Eternal Database">
 {% if image_cdn %}
 <link rel="dns-prefetch" href="{{ image_cdn }}">
