@@ -537,17 +537,14 @@ body:not(.tm-page).nav-tabs-collapsed #navTabsShell{
     transform:none!important;
     transition:none!important;
   }
-  .modal-content.unit-detail .unit-holo-card__foil,
-  .modal-content.unit-detail .unit-holo-card__glare,
+  .modal-content.unit-detail .unit-holo-card.is-holo-on:not(.is-holo-webgl) .unit-holo-card__stage::after{
+    animation:none!important;
+    opacity:.65!important;
+  }
+  /* Keep foil visible — only kill spatial tilt, not the holo layers */
   .modal-content.unit-detail .unit-holo-card::before,
   .modal-content.unit-detail .unit-holo-card::after,
-  .modal-content.unit-detail .unit-holo-card > .border-glow-edge,
-  .modal-content.unit-detail .unit-holo-card__canvas{
-    opacity:0!important;
+  .modal-content.unit-detail .unit-holo-card > .border-glow-edge{
     transition:none!important;
-  }
-  .modal-content.unit-detail .unit-holo-card.is-holo-webgl .detail-portrait{
-    opacity:1!important;
-    visibility:visible!important;
   }
 }

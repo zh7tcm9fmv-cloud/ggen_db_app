@@ -1628,6 +1628,34 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
   z-index:2;
   border-radius:inherit;
 }
+/* Safari/WebGL loading or CSS-only: visible foil sheen over the real portrait */
+.modal-content.unit-detail .unit-holo-card.is-holo-on:not(.is-holo-webgl) .unit-holo-card__stage::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:3;
+  pointer-events:none;
+  border-radius:inherit;
+  background:
+    linear-gradient(125deg,transparent 28%,rgba(255,255,255,.42) 48%,transparent 62%),
+    linear-gradient(210deg,rgba(0,212,255,.35),transparent 42%,rgba(255,80,200,.28) 70%,transparent 85%),
+    radial-gradient(ellipse at 30% 20%,rgba(255,220,120,.28),transparent 45%);
+  background-size:220% 220%,160% 160%,100% 100%;
+  mix-blend-mode:color-dodge;
+  opacity:.7;
+  animation:unit-holo-css-sheen 2.6s ease-in-out infinite;
+}
+@keyframes unit-holo-css-sheen{
+  0%,100%{background-position:0% 40%,100% 0%,50% 50%;opacity:.55}
+  50%{background-position:100% 60%,0% 100%,50% 50%;opacity:.85}
+}
+@media (prefers-reduced-motion:reduce){
+  .modal-content.unit-detail .unit-holo-card.is-holo-on:not(.is-holo-webgl) .unit-holo-card__stage::after{
+    animation:none;
+    opacity:.65;
+    background-position:40% 50%,60% 40%,50% 50%;
+  }
+}
 .modal-content.unit-detail .unit-holo-card.is-holo-webgl .unit-holo-card__canvas{opacity:1}
 .modal-content.unit-detail .unit-holo-card.is-holo-webgl .detail-portrait,
 .modal-content.unit-detail .unit-holo-card.is-holo-webgl .detail-portrait-placeholder{
