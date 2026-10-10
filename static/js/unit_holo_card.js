@@ -14,6 +14,37 @@
     return n < a ? a : n > b ? b : n;
   }
 
+  function isCoarsePointer() {
+    try {
+      if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) return true;
+    } catch (_) {}
+    return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  }
+
+  /**
+   * iOS Safari requires a user-gesture call to DeviceOrientationEvent.requestPermission.
+   * Call from the same tap that enables holo. Resolves to 'granted' | 'denied' | 'unavailable'.
+   */
+  function requestGyroPermission() {
+    try {
+      if (typeof window.DeviceOrientationEvent === 'undefined') {
+        return Promise.resolve('unavailable');
+      }
+      var req = window.DeviceOrientationEvent.requestPermission;
+      if (typeof req !== 'function') {
+        /* Android / desktop: no prompt */
+        return Promise.resolve('granted');
+      }
+      return Promise.resolve(req.call(window.DeviceOrientationEvent)).then(function (state) {
+        return state === 'granted' ? 'granted' : 'denied';
+      }).catch(function () {
+        return 'denied';
+      });
+    } catch (_) {
+      return Promise.resolve('unavailable');
+    }
+  }
+
   function parseFoilColor(value) {
     var fallback = [0.78, 0.8, 0.84];
     try {
@@ -330,11 +361,13 @@
       glare: clamp(opts.glare != null ? opts.glare : 0.5, 0, 1),
       foil: foil,
       radius: Math.max(0, opts.radius != null ? opts.radius : 10),
-      /* Reduce Motion: no CSS 3D tilt, but keep light drift so foil still reads on iOS */
+      /* Reduce Motion: no CSS 3D tilt, but keep light drift / gyro foil on iOS */
       tiltMax: reduced ? 0 : clamp(opts.tiltMax != null ? opts.tiltMax : 14, 0, 45),
       hoverScale: 1,
       idle: opts.idle !== false,
-      reduced: !!reduced
+      reduced: !!reduced,
+      dprMax: clamp(opts.dprMax != null ? opts.dprMax : 2, 1, 3),
+      gyro: opts.gyro !== false && isCoarsePointer()
     };
 
     var state = {
@@ -351,6 +384,14 @@
       clock: Math.random() * 40
     };
     var pointer = { x: 0.5, y: 0.5, inside: false };
+    var gyro = {
+      ok: false,
+      baseBeta: null,
+      baseGamma: null,
+      beta: 0,
+      gamma: 0,
+      live: false
+    };
     var textureReady = false;
     var raf = 0;
     var last = 0;
@@ -420,7 +461,7 @@
         });
         return;
       }
-      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var dpr = Math.min(window.devicePixelRatio || 1, settings.dprMax);
       var cw = Math.max(1, Math.round(css.w * dpr));
       var ch = Math.max(1, Math.round(css.h * dpr));
       canvas.style.width = css.w + 'px';
@@ -525,7 +566,7 @@
     function resize() {
       var css = stageCssSize();
       if (css.w < 24 || css.h < 24) return;
-      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var dpr = Math.min(window.devicePixelRatio || 1, settings.dprMax);
       var w = Math.max(1, Math.round(css.w * dpr));
       var h = Math.max(1, Math.round(css.h * dpr));
       canvas.style.width = css.w + 'px';
@@ -539,6 +580,39 @@
       wake();
     }
 
+    function onDeviceOrient(e) {
+      if (!alive || e.beta == null || e.gamma == null) return;
+      if (gyro.baseBeta == null) {
+        gyro.baseBeta = e.beta;
+        gyro.baseGamma = e.gamma;
+      }
+      /* Relative to pose at enable — natural hold = center */
+      gyro.beta = e.beta - gyro.baseBeta;
+      gyro.gamma = e.gamma - gyro.baseGamma;
+      gyro.live = true;
+      wake();
+    }
+
+    function bindGyro() {
+      if (!settings.gyro || typeof window.DeviceOrientationEvent === 'undefined') return;
+      var start = function () {
+        if (!alive || gyro.ok) return;
+        gyro.ok = true;
+        window.addEventListener('deviceorientation', onDeviceOrient, true);
+        wake();
+      };
+      var perm = opts.gyroPermission;
+      if (perm && typeof perm.then === 'function') {
+        perm.then(function (state) {
+          if (state === 'granted') start();
+        });
+        return;
+      }
+      requestGyroPermission().then(function (state) {
+        if (state === 'granted') start();
+      });
+    }
+
     function tick(now) {
       raf = 0;
       if (!alive) return;
@@ -549,13 +623,30 @@
       var lightX = 0.36;
       var lightY = 0.26;
       var lift = 1;
-      var drifting = settings.idle && !pointer.inside;
+      var usingGyro = gyro.live && !pointer.inside;
+      var drifting = settings.idle && !pointer.inside && !usingGyro;
+      var tiltCap = settings.tiltMax > 0 ? settings.tiltMax : 16;
       if (pointer.inside) {
-        targetX = (0.5 - pointer.y) * 2 * settings.tiltMax;
-        targetY = (pointer.x - 0.5) * 2 * settings.tiltMax;
+        targetX = (0.5 - pointer.y) * 2 * (settings.tiltMax || tiltCap);
+        targetY = (pointer.x - 0.5) * 2 * (settings.tiltMax || tiltCap);
+        /* When Reduce Motion kills CSS tilt, still drive foil light from finger */
+        if (settings.reduced) {
+          targetX = 0;
+          targetY = 0;
+        }
         lightX = pointer.x;
         lightY = pointer.y;
         lift = settings.hoverScale;
+      } else if (usingGyro) {
+        /* beta = front/back, gamma = left/right */
+        var gTiltX = clamp(-gyro.beta * 0.55, -tiltCap, tiltCap);
+        var gTiltY = clamp(gyro.gamma * 0.65, -tiltCap, tiltCap);
+        if (!settings.reduced) {
+          targetX = gTiltX;
+          targetY = gTiltY;
+        }
+        lightX = clamp(0.5 + gyro.gamma / 36, 0.05, 0.95);
+        lightY = clamp(0.5 - gyro.beta / 36, 0.05, 0.95);
       } else if (drifting) {
         state.clock += dt;
         var t = state.clock;
@@ -601,13 +692,22 @@
       }
       draw();
 
-      /* Border-glow CSS vars (edge cone) */
+      /* Border-glow CSS vars (edge cone) — finger or gyro */
       var edge = 0;
-      if (pointer.inside) {
-        var nx = Math.abs(pointer.x - 0.5) * 2;
-        var ny = Math.abs(pointer.y - 0.5) * 2;
+      if (pointer.inside || usingGyro) {
+        var nx;
+        var ny;
+        var deg;
+        if (pointer.inside) {
+          nx = Math.abs(pointer.x - 0.5) * 2;
+          ny = Math.abs(pointer.y - 0.5) * 2;
+          deg = (Math.atan2(pointer.y - 0.5, pointer.x - 0.5) * 180) / Math.PI + 90;
+        } else {
+          nx = Math.min(1, Math.abs(gyro.gamma) / 28);
+          ny = Math.min(1, Math.abs(gyro.beta) / 28);
+          deg = (Math.atan2(-gyro.beta, gyro.gamma) * 180) / Math.PI + 90;
+        }
         edge = Math.min(1, Math.max(nx, ny)) * 100;
-        var deg = (Math.atan2(pointer.y - 0.5, pointer.x - 0.5) * 180) / Math.PI + 90;
         if (deg < 0) deg += 360;
         card.style.setProperty('--edge-proximity', edge.toFixed(2));
         card.style.setProperty('--cursor-angle', deg.toFixed(2) + 'deg');
@@ -625,7 +725,8 @@
         Math.abs(state.tiltX - targetX) +
         Math.abs(state.tiltY - targetY);
       calm = motion > 0.02 ? 0 : calm + dt;
-      if (!visible || (!drifting && !pointer.inside && calm > 0.3)) return;
+      /* Gyro stays live — keep the loop while orientation is driving foil */
+      if (!visible || (!drifting && !pointer.inside && !usingGyro && calm > 0.3)) return;
       raf = requestAnimationFrame(tick);
     }
 
@@ -783,11 +884,17 @@
     if (img.complete && img.naturalWidth) loadTexture();
     else img.addEventListener('load', loadTexture, { once: true });
     resize();
+    bindGyro();
     wake();
 
     function destroy() {
       alive = false;
       cancelAnimationFrame(raf);
+      try {
+        window.removeEventListener('deviceorientation', onDeviceOrient, true);
+      } catch (_) {}
+      gyro.ok = false;
+      gyro.live = false;
       card.removeEventListener('pointerenter', onEnter);
       card.removeEventListener('pointerdown', onDown);
       card.removeEventListener('pointermove', onMove);
@@ -832,6 +939,8 @@
 
   global.GgenUnitHoloCard = {
     mount: mount,
+    requestGyroPermission: requestGyroPermission,
+    isCoarsePointer: isCoarsePointer,
     DEFAULT_FOIL: DEFAULT_FOIL,
     PRESET_SHARDS: PRESET_SHARDS
   };

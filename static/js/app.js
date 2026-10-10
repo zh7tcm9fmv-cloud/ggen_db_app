@@ -4163,16 +4163,26 @@ holoOn=false;
 mounting=false;
 setPressed(false);
 };
-const mountOpts=()=>{
+const isCoarse=()=>{
+try{if(window.matchMedia&&window.matchMedia('(pointer: coarse)').matches)return true}catch(_){}
+return!!('ontouchstart'in window||(navigator&&navigator.maxTouchPoints>0));
+};
+const mountOpts=(gyroPermission)=>{
 const limited=card.getAttribute('data-holo-limited')==='1';
 const api=window.GgenUnitHoloCard;
+const mobile=isCoarse();
 return{
 preset:api&&api.PRESET_SHARDS!=null?api.PRESET_SHARDS:2,
 foilColor:(api&&api.DEFAULT_FOIL)||'#e2e6ec',
-intensity:limited?1:0.7,
-edgeSparkle:limited?1:0.7,
-glare:limited?0.85:0.45,
-scale:limited?1.15:1,
+/* Mobile: push foil closer to desktop richness (small portrait + DPR) */
+intensity:limited?1:(mobile?0.95:0.7),
+edgeSparkle:limited?1:(mobile?1:0.7),
+glare:limited?0.92:(mobile?0.8:0.45),
+scale:limited?1.2:(mobile?1.12:1),
+tiltMax:mobile?18:14,
+dprMax:mobile?3:2,
+gyro:mobile,
+gyroPermission:gyroPermission||null,
 hoverScale:1,
 idle:true
 };
@@ -4183,12 +4193,25 @@ if(mounting||holoOn)return;
 holoOn=true;
 mounting=true;
 setPressed(true);
+/* Must start from this tap gesture — iOS motion permission (before lazy script) */
+let gyroPermission=null;
+if(isCoarse()){
+try{
+if(typeof DeviceOrientationEvent!=='undefined'&&typeof DeviceOrientationEvent.requestPermission==='function'){
+gyroPermission=DeviceOrientationEvent.requestPermission().then(s=>s==='granted'?'granted':'denied').catch(()=>'denied');
+}else{
+gyroPermission=Promise.resolve('granted');
+}
+}catch(_){gyroPermission=Promise.resolve('denied')}
+}
 const finish=api=>{
 mounting=false;
 if(!card.isConnected){turnOff();return}
 if(!api||typeof api.mount!=='function')return;
 try{if(card._ggenHolo&&typeof card._ggenHolo.destroy==='function')card._ggenHolo.destroy()}catch(_){}
-try{api.mount(card,mountOpts())}catch(_){}
+/* If script loaded after tap, request gyro again (may no-op if already decided) */
+if(!gyroPermission&&api&&typeof api.requestGyroPermission==='function')gyroPermission=api.requestGyroPermission();
+try{api.mount(card,mountOpts(gyroPermission))}catch(_){}
 };
 const api0=window.GgenUnitHoloCard;
 if(api0&&typeof api0.mount==='function'){finish(api0);return}
