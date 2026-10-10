@@ -4137,13 +4137,16 @@ else{im.addEventListener('load',tick,{once:true});im.addEventListener('error',ti
 tick();
 setTimeout(()=>{if(stage.isConnected)stage.classList.add('is-ready')},2800);
 }
-/** UR unit portrait holo: click to toggle. Script + WebGL stay off the detail-open path. */
+/** UR unit portrait holo: tap/click to toggle (pointer events — mobile + desktop). */
 function bindUnitPortraitFx(root){
 const card=root&&root.querySelector?root.querySelector('.unit-holo-card.unit-holo-card--armed'):null;
 if(!card||card.dataset.holoBound==='1')return;
 card.dataset.holoBound='1';
 let holoOn=false;
 let mounting=false;
+let tapPtr=null;
+let suppressClick=0;
+const TAP_SLOP=14;
 const isInteractiveTarget=el=>{
 if(!el||!el.closest)return false;
 return!!el.closest('button,a,input,select,textarea,.unit-lb-video-btn,.unit-gacha-pull-video-btn,#unitBestPilotBtnSlotPortrait,.unit-best-pilot-btn-slot');
@@ -4193,18 +4196,43 @@ const p=lazy&&typeof lazy.ensureUnitHoloCard==='function'
 :(lazy&&typeof lazy.loadJs==='function'?lazy.loadJs('unit_holo_card').then(()=>window.GgenUnitHoloCard):Promise.resolve(null));
 Promise.resolve(p).then(start).catch(()=>{mounting=false});
 };
-const toggle=e=>{
-if(e&&isInteractiveTarget(e.target))return;
-if(e){e.preventDefault();e.stopPropagation()}
+const toggle=()=>{
 if(holoOn||mounting)turnOff();
 else turnOn();
 };
-card.addEventListener('click',toggle);
+card.addEventListener('pointerdown',e=>{
+if(e.isPrimary===false)return;
+if(e.button!=null&&e.button!==0)return;
+if(isInteractiveTarget(e.target)){tapPtr=null;return}
+tapPtr={id:e.pointerId,x:e.clientX,y:e.clientY};
+},{passive:true});
+card.addEventListener('pointerup',e=>{
+if(!tapPtr||tapPtr.id!==e.pointerId)return;
+const dx=e.clientX-tapPtr.x,dy=e.clientY-tapPtr.y;
+tapPtr=null;
+if(Math.hypot(dx,dy)>TAP_SLOP)return;
+if(isInteractiveTarget(e.target))return;
+suppressClick=1;
+try{e.preventDefault()}catch(_){}
+e.stopPropagation();
+toggle();
+});
+card.addEventListener('pointercancel',e=>{
+if(tapPtr&&tapPtr.id===e.pointerId)tapPtr=null;
+},{passive:true});
+/* Ghost click after touch pointerup — do not double-toggle */
+card.addEventListener('click',e=>{
+if(isInteractiveTarget(e.target))return;
+if(suppressClick){suppressClick=0;e.preventDefault();e.stopPropagation();return}
+e.preventDefault();
+e.stopPropagation();
+toggle();
+});
 card.addEventListener('keydown',e=>{
 if(e.key!=='Enter'&&e.key!==' ')return;
 if(isInteractiveTarget(e.target))return;
 e.preventDefault();
-toggle(e);
+toggle();
 });
 }
 function warmDetailImagesFromPayload(type,d){

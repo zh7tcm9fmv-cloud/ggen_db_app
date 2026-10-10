@@ -404,19 +404,43 @@
       raf = requestAnimationFrame(tick);
     }
 
-    function onEnter(e) {
+    function readPointer(e) {
       var rect = card.getBoundingClientRect();
-      pointer.x = clamp((e.clientX - rect.left) / rect.width, 0, 1);
-      pointer.y = clamp((e.clientY - rect.top) / rect.height, 0, 1);
+      var w = rect.width || 1;
+      var h = rect.height || 1;
+      pointer.x = clamp((e.clientX - rect.left) / w, 0, 1);
+      pointer.y = clamp((e.clientY - rect.top) / h, 0, 1);
+    }
+    function onEnter(e) {
+      readPointer(e);
       pointer.inside = true;
       wake();
     }
-    function onMove(e) {
-      if (e.pointerType === 'touch' && e.type === 'pointermove' && !e.buttons) return;
-      var rect = card.getBoundingClientRect();
-      pointer.x = clamp((e.clientX - rect.left) / rect.width, 0, 1);
-      pointer.y = clamp((e.clientY - rect.top) / rect.height, 0, 1);
+    function onDown(e) {
+      if (e.isPrimary === false) return;
+      if (e.button != null && e.button !== 0) return;
+      readPointer(e);
       pointer.inside = true;
+      try {
+        card.setPointerCapture(e.pointerId);
+      } catch (_) {}
+      wake();
+    }
+    function onMove(e) {
+      /* Touch: only track while finger is down (buttons) or captured */
+      if (e.pointerType === 'touch' && e.type === 'pointermove' && !e.buttons) return;
+      readPointer(e);
+      pointer.inside = true;
+      wake();
+    }
+    function onUp(e) {
+      if (e.isPrimary === false) return;
+      pointer.inside = false;
+      try {
+        if (card.hasPointerCapture && card.hasPointerCapture(e.pointerId)) {
+          card.releasePointerCapture(e.pointerId);
+        }
+      } catch (_) {}
       wake();
     }
     function onLeave() {
@@ -424,9 +448,12 @@
       wake();
     }
 
-    /* Mounted only while click-toggled on: track pointer for foil, optional idle drift. */
+    /* Foil tracking: mouse enter/move + touch press/drag (not hover-only). */
     card.addEventListener('pointerenter', onEnter);
+    card.addEventListener('pointerdown', onDown);
     card.addEventListener('pointermove', onMove, { passive: true });
+    card.addEventListener('pointerup', onUp);
+    card.addEventListener('pointercancel', onUp);
     card.addEventListener('pointerleave', onLeave);
 
     var ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(resize) : null;
@@ -458,7 +485,10 @@
       alive = false;
       cancelAnimationFrame(raf);
       card.removeEventListener('pointerenter', onEnter);
+      card.removeEventListener('pointerdown', onDown);
       card.removeEventListener('pointermove', onMove);
+      card.removeEventListener('pointerup', onUp);
+      card.removeEventListener('pointercancel', onUp);
       card.removeEventListener('pointerleave', onLeave);
       if (ro) ro.disconnect();
       if (io) io.disconnect();

@@ -1559,6 +1559,9 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 /* Unit holo — cold path = click target only. Heavy 3D/glow CSS only while .is-holo-on. */
 .modal-content.unit-detail .unit-holo-card.unit-holo-card--armed{
   cursor:pointer;
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;
 }
 .modal-content.unit-detail .unit-holo-card.unit-holo-card--armed:focus-visible{
   outline:2px solid rgba(0,212,255,.65);
