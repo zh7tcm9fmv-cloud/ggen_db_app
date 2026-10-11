@@ -413,6 +413,7 @@
       live: false
     };
     var textureReady = false;
+    var paused = false;
     var raf = 0;
     var last = 0;
     var visible = true;
@@ -555,9 +556,10 @@
           gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
         }
         textureReady = true;
-        card.classList.add('is-holo-webgl');
+        /* Premount stays paused — never flash foil until the user toggles on. */
+        if (!paused) card.classList.add('is-holo-webgl');
         draw();
-        wake();
+        if (!paused) wake();
       } catch (_) {
         textureReady = false;
         card.classList.remove('is-holo-webgl');
@@ -679,7 +681,7 @@
         if (textureReady) loadTexture();
       }
       draw();
-      wake();
+      if (!paused) wake();
     }
 
     function onDeviceOrient(e) {
@@ -695,24 +697,30 @@
       wake();
     }
 
-    function bindGyro() {
+    function startGyroListener() {
+      if (!alive || gyro.ok) return;
+      gyro.ok = true;
+      window.addEventListener('deviceorientation', onDeviceOrient, true);
+      wake();
+    }
+
+    function enableGyro(permissionPromise) {
       if (!settings.gyro || typeof window.DeviceOrientationEvent === 'undefined') return;
-      var start = function () {
-        if (!alive || gyro.ok) return;
-        gyro.ok = true;
-        window.addEventListener('deviceorientation', onDeviceOrient, true);
-        wake();
-      };
-      var perm = opts.gyroPermission;
+      if (gyro.ok) return;
+      var perm = permissionPromise != null ? permissionPromise : opts.gyroPermission;
       if (perm && typeof perm.then === 'function') {
         perm.then(function (state) {
-          if (state === 'granted') start();
+          if (state === 'granted') startGyroListener();
         });
         return;
       }
       requestGyroPermission().then(function (state) {
-        if (state === 'granted') start();
+        if (state === 'granted') startGyroListener();
       });
+    }
+
+    function bindGyro() {
+      enableGyro(opts.gyroPermission);
     }
 
     function tick(now) {
@@ -1014,8 +1022,6 @@
     state.lightX = 0.5;
     state.lightY = 0.42;
 
-    var paused = false;
-
     if (img.complete && img.naturalWidth) loadTexture();
     else img.addEventListener('load', loadTexture, { once: true });
     resize();
@@ -1033,19 +1039,23 @@
       raf = 0;
       pointer.inside = false;
       pressing = false;
-      card.classList.remove('is-holo-webgl', 'is-holo-active');
-      stage.style.transform = '';
+      activeTouchId = null;
       card.style.setProperty('--edge-proximity', '0');
+      stage.style.transform = '';
+      /* Hide foil first, then clear holo classes — no opacity tween / double-image flash. */
       if (canvas) {
+        canvas.style.display = 'none';
         canvas.style.opacity = '0';
         canvas.style.visibility = 'hidden';
       }
+      card.classList.remove('is-holo-webgl', 'is-holo-active');
     }
 
     function resume() {
       if (!alive) return;
       paused = false;
       if (canvas) {
+        canvas.style.display = '';
         canvas.style.opacity = '';
         canvas.style.visibility = '';
       }
@@ -1110,6 +1120,7 @@
       reload: loadTexture,
       pause: pause,
       resume: resume,
+      enableGyro: enableGyro,
       settings: settings
     };
     card._ggenHolo = api;

@@ -4161,13 +4161,16 @@ let holoOn=false;
 let mounting=false;
 let touchTap=null;
 let suppressClick=0;
-/* Live delay: warm lazy script + CORS portrait before first tap. */
+/* Live delay: warm script + CORS portrait, then premount WebGL paused (compile off the tap). */
+let onHoloWarmReady=()=>{};
 const prefetchHoloScript=()=>{
 try{
-if(window.GgenUnitHoloCard)return;
+if(window.GgenUnitHoloCard){onHoloWarmReady();return}
 const lazy=window.__GGEN_LAZY__;
-if(lazy&&typeof lazy.ensureUnitHoloCard==='function'){lazy.ensureUnitHoloCard();return}
-if(lazy&&typeof lazy.loadJs==='function')lazy.loadJs('unit_holo_card');
+const p=lazy&&typeof lazy.ensureUnitHoloCard==='function'
+?lazy.ensureUnitHoloCard()
+:(lazy&&typeof lazy.loadJs==='function'?lazy.loadJs('unit_holo_card'):null);
+if(p&&typeof p.then==='function'){p.then(()=>onHoloWarmReady()).catch(()=>{});return}
 }catch(_){}
 };
 const warmHoloTexture=()=>{
@@ -4176,12 +4179,13 @@ const port=card.querySelector('img.detail-portrait, img.supporter-portrait');
 if(!port)return;
 const src=port.currentSrc||port.src;
 if(!src)return;
-if(card._ggenHoloWarm&&card._ggenHoloWarmSrc===src)return;
+if(card._ggenHoloWarm&&card._ggenHoloWarmSrc===src){onHoloWarmReady();return}
 card._ggenHoloWarmSrc=src;
 const keep=src;
 const take=bm=>{
 if(!card.isConnected||card._ggenHoloWarmSrc!==keep||!bm)return;
 card._ggenHoloWarm=bm;
+onHoloWarmReady();
 };
 if(typeof fetch==='function'){
 fetch(src,{mode:'cors',credentials:'omit'})
@@ -4214,8 +4218,6 @@ loader.onload=()=>take(loader);
 loader.src=src+(src.indexOf('?')>=0?'&':'?')+'ggen_holo=1';
 }catch(_){}
 };
-prefetchHoloScript();
-warmHoloTexture();
 try{
 card.addEventListener('pointerenter',prefetchHoloScript,{passive:true});
 card.addEventListener('pointerdown',prefetchHoloScript,{passive:true});
@@ -4235,14 +4237,14 @@ card.classList.toggle('is-holo-on',!!on);
 const turnOff=()=>{
 holoOn=false;
 mounting=false;
-setPressed(false);
 const holo=card._ggenHolo;
-/* Keep WebGL instance — resume is instant on next tap (no shader recompile). */
+/* Pause WebGL before dropping .is-holo-on — reverse order caused a portrait fade on deactivate. */
 if(holo&&typeof holo.pause==='function'){
 try{holo.pause()}catch(_){}
-return;
-}
+}else{
 try{if(holo&&typeof holo.destroy==='function')holo.destroy()}catch(_){}
+}
+setPressed(false);
 };
 const isCoarse=()=>{
 try{if(window.matchMedia&&window.matchMedia('(pointer: coarse)').matches)return true}catch(_){}
@@ -4324,12 +4326,48 @@ hoverScale:1,
 idle:true
 };
 };
+const requestGyroFromGesture=()=>{
+if(!isCoarse())return null;
+try{
+if(typeof DeviceOrientationEvent!=='undefined'&&typeof DeviceOrientationEvent.requestPermission==='function'){
+return DeviceOrientationEvent.requestPermission().then(s=>s==='granted'?'granted':'denied').catch(()=>'denied');
+}
+return Promise.resolve('granted');
+}catch(_){return Promise.resolve('denied')}
+};
+/* Compile + upload while the dossier is open — first tap only flips pause→resume. */
+const premountHolo=()=>{
+if(!card.isConnected||holoOn||mounting||card._ggenHolo)return;
+const api=window.GgenUnitHoloCard;
+if(!api||typeof api.mount!=='function')return;
+try{
+api.mount(card,mountOpts(null));
+const h=card._ggenHolo;
+if(h&&h.settings&&h.settings.cssOnly){
+try{h.destroy()}catch(_){}
+return;
+}
+if(h&&typeof h.pause==='function')h.pause();
+}catch(_){}
+};
+onHoloWarmReady=()=>{
+if(!window.GgenUnitHoloCard)return;
+if(card._ggenHolo&&typeof card._ggenHolo.reload==='function'){
+try{card._ggenHolo.reload()}catch(_){}
+return;
+}
+premountHolo();
+};
+prefetchHoloScript();
+warmHoloTexture();
 const turnOn=()=>{
 if(mounting||holoOn)return;
 const existing=card._ggenHolo;
 if(existing&&typeof existing.resume==='function'&&!(existing.settings&&existing.settings.cssOnly)){
 holoOn=true;
 setPressed(true);
+const gp=requestGyroFromGesture();
+try{if(typeof existing.enableGyro==='function')existing.enableGyro(gp)}catch(_){}
 try{existing.resume()}catch(_){}
 return;
 }
@@ -4339,27 +4377,23 @@ mounting=true;
 setPressed(true);
 prefetchHoloScript();
 warmHoloTexture();
-/* Must start from this tap gesture — iOS motion permission (before lazy script) */
-let gyroPermission=null;
-if(isCoarse()){
-try{
-if(typeof DeviceOrientationEvent!=='undefined'&&typeof DeviceOrientationEvent.requestPermission==='function'){
-gyroPermission=DeviceOrientationEvent.requestPermission().then(s=>s==='granted'?'granted':'denied').catch(()=>'denied');
-}else{
-gyroPermission=Promise.resolve('granted');
-}
-}catch(_){gyroPermission=Promise.resolve('denied')}
-}
+const gyroPermission=requestGyroFromGesture();
 const finish=api=>{
 mounting=false;
 if(!card.isConnected){turnOff();return}
 if(!api||typeof api.mount!=='function')return;
+/* Prefer premounted instance if warm finished during the tap */
+if(card._ggenHolo&&typeof card._ggenHolo.resume==='function'&&!(card._ggenHolo.settings&&card._ggenHolo.settings.cssOnly)){
+try{if(typeof card._ggenHolo.enableGyro==='function')card._ggenHolo.enableGyro(gyroPermission)}catch(_){}
+try{card._ggenHolo.resume()}catch(_){}
+return;
+}
 try{
 if(card._ggenHolo&&typeof card._ggenHolo.destroy==='function')card._ggenHolo.destroy();
 }catch(_){}
-/* If script loaded after tap, request gyro again (may no-op if already decided) */
-if(!gyroPermission&&api&&typeof api.requestGyroPermission==='function')gyroPermission=api.requestGyroPermission();
-try{api.mount(card,mountOpts(gyroPermission))}catch(_){}
+let gp=gyroPermission;
+if(!gp&&api&&typeof api.requestGyroPermission==='function')gp=api.requestGyroPermission();
+try{api.mount(card,mountOpts(gp))}catch(_){}
 const holo=card._ggenHolo;
 /* CSS-only path has no foil (sheen removed) — don't leave a blank "on" state */
 if(holo&&holo.settings&&holo.settings.cssOnly){turnOff();return}

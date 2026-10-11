@@ -1564,6 +1564,20 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
   user-select:none;
   -webkit-user-select:none;
 }
+/* No opacity fades on activate / pull / deactivate (root --transition includes opacity). */
+.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.unit-holo-card--armed,
+.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.unit-holo-card--armed .detail-portrait,
+.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.unit-holo-card--armed .detail-portrait-placeholder,
+.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.unit-holo-card--armed .supporter-portrait,
+.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.unit-holo-card--armed .supporter-portrait-placeholder,
+.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.unit-holo-card--armed .unit-holo-card__stage,
+.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.unit-holo-card--armed .unit-holo-card__canvas,
+.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.unit-holo-card--armed::before,
+.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.unit-holo-card--armed::after,
+.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.unit-holo-card--armed > .border-glow-edge{
+  transition:none!important;
+  animation:none!important;
+}
 /* Tap feedback before WebGL mounts (iOS lazy script) */
 .modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-on > .detail-portrait,
 .modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-on > .detail-portrait-placeholder{
@@ -1631,6 +1645,7 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
   pointer-events:none;
   z-index:2;
   border-radius:inherit;
+  transition:none!important;
 }
 /* No CSS foil sheen — shards / cracked ice only via WebGL (.is-holo-webgl). */
 .modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-webgl .unit-holo-card__canvas{opacity:1}
@@ -1638,6 +1653,7 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-webgl .detail-portrait-placeholder{
   opacity:0!important;
   visibility:hidden;
+  transition:none!important;
 }
 .modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-on .unit-holo-card__stage .detail-portrait,
 .modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-on .unit-holo-card__stage .detail-portrait-placeholder{
@@ -1657,7 +1673,8 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
   border-radius:var(--radius-md);
   pointer-events:none;
   z-index:0;
-  transition:opacity .25s ease-out;
+  /* Instant edge track — opacity transitions looked like a wash/fade on pull */
+  transition:none!important;
 }
 .modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-on:not(.is-holo-active)::before,
 .modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-on:not(.is-holo-active)::after{opacity:0}
@@ -1701,7 +1718,7 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
   pointer-events:none;
   z-index:3;
   opacity:0;
-  transition:opacity .25s ease-out;
+  transition:none!important;
   -webkit-mask-image:conic-gradient(from var(--cursor-angle) at center,black 2.5%,transparent 12%,transparent 88%,black 97.5%);
   mask-image:conic-gradient(from var(--cursor-angle) at center,black 2.5%,transparent 12%,transparent 88%,black 97.5%);
   mix-blend-mode:plus-lighter;
@@ -1740,6 +1757,7 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .modal-content.supporter-detail .unit-holo-card.is-holo-webgl .supporter-portrait-placeholder{
   opacity:0!important;
   visibility:hidden;
+  transition:none!important;
 }
 .modal-content.supporter-detail .unit-holo-card.is-holo-on .unit-holo-card__stage .supporter-portrait,
 .modal-content.supporter-detail .unit-holo-card.is-holo-on .unit-holo-card__stage .supporter-portrait-placeholder{
