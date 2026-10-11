@@ -13,15 +13,21 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const infile = path.join(root, 'static', 'js', 'app.js');
-const outfile = path.join(root, 'static', 'js', 'app.min.js');
+const jobs = [
+  ['app.js', 'app.min.js'],
+  ['unit_holo_card.js', 'unit_holo_card.min.js'],
+];
 
-const r = spawnSync(
-  'npx',
-  ['--yes', 'esbuild', infile, '--minify', `--outfile=${outfile}`],
-  { cwd: root, stdio: 'inherit', shell: true },
-);
-if (r.status !== 0) {
-  process.exit(r.status || 1);
+for (const [srcName, outName] of jobs) {
+  const infile = path.join(root, 'static', 'js', srcName);
+  const outfile = path.join(root, 'static', 'js', outName);
+  const r = spawnSync(
+    'npx',
+    ['--yes', 'esbuild', infile, '--minify', `--outfile=${outfile}`],
+    { cwd: root, stdio: 'inherit', shell: true },
+  );
+  if (r.status !== 0) {
+    process.exit(r.status || 1);
+  }
+  console.log('Wrote', outfile);
 }
-console.log('Wrote', outfile);

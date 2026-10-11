@@ -566,13 +566,21 @@
     }
 
     function loadTexture() {
-      if (!alive) return;
+      if (!alive || paused) return;
       var src = img.currentSrc || img.src;
       if (!src) return;
 
       function applySource(sourceImg) {
         if (!alive || !sourceImg) return;
         uploadFromImg(sourceImg);
+      }
+
+      /* Detail open already CORS-warmed the portrait — skip a second CDN round-trip. */
+      var warm = card._ggenHoloWarm;
+      var warmSrc = card._ggenHoloWarmSrc;
+      if (warm && warmSrc && warmSrc === src) {
+        applySource(warm);
+        if (textureReady) return;
       }
 
       function loadWithBust() {
@@ -709,7 +717,7 @@
 
     function tick(now) {
       raf = 0;
-      if (!alive) return;
+      if (!alive || paused) return;
       if (typeof document !== 'undefined' && document.hidden) return;
       var dt = Math.min(1 / 30, Math.max(1 / 240, (now - last) / 1000));
       last = now;
@@ -842,7 +850,7 @@
     }
 
     function wake() {
-      if (!alive) return;
+      if (!alive || paused) return;
       if (typeof document !== 'undefined' && document.hidden) return;
       ambienceUntil = Math.max(ambienceUntil, performance.now() + (pointer.inside || gyro.live ? 4200 : 2800));
       calm = 0;
@@ -1006,6 +1014,8 @@
     state.lightX = 0.5;
     state.lightY = 0.42;
 
+    var paused = false;
+
     if (img.complete && img.naturalWidth) loadTexture();
     else img.addEventListener('load', loadTexture, { once: true });
     resize();
@@ -1016,8 +1026,38 @@
     ambienceUntil = performance.now() + 2400;
     wake();
 
+    function pause() {
+      if (!alive || paused) return;
+      paused = true;
+      cancelAnimationFrame(raf);
+      raf = 0;
+      pointer.inside = false;
+      pressing = false;
+      card.classList.remove('is-holo-webgl', 'is-holo-active');
+      stage.style.transform = '';
+      card.style.setProperty('--edge-proximity', '0');
+      if (canvas) {
+        canvas.style.opacity = '0';
+        canvas.style.visibility = 'hidden';
+      }
+    }
+
+    function resume() {
+      if (!alive) return;
+      paused = false;
+      if (canvas) {
+        canvas.style.opacity = '';
+        canvas.style.visibility = '';
+      }
+      if (textureReady) card.classList.add('is-holo-webgl');
+      else loadTexture();
+      ambienceUntil = performance.now() + 2400;
+      wake();
+    }
+
     function destroy() {
       alive = false;
+      paused = false;
       cancelAnimationFrame(raf);
       raf = 0;
       try {
@@ -1065,7 +1105,13 @@
       card._ggenHolo = null;
     }
 
-    var api = { destroy: destroy, reload: loadTexture, settings: settings };
+    var api = {
+      destroy: destroy,
+      reload: loadTexture,
+      pause: pause,
+      resume: resume,
+      settings: settings
+    };
     card._ggenHolo = api;
     return api;
   }

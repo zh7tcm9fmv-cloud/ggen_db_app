@@ -4145,6 +4145,10 @@ const root=document.getElementById('detailInner');
 if(!root)return;
 root.querySelectorAll('.unit-holo-card').forEach(function(card){
 try{if(card._ggenHolo&&typeof card._ggenHolo.destroy==='function')card._ggenHolo.destroy()}catch(_){}
+try{
+if(card._ggenHoloWarm&&typeof card._ggenHoloWarm.close==='function')card._ggenHoloWarm.close();
+}catch(_){}
+try{card._ggenHoloWarm=null;card._ggenHoloWarmSrc=''}catch(_){}
 try{card.classList.remove('is-holo-on','is-holo-webgl','is-holo-active')}catch(_){}
 });
 }catch(_){}
@@ -4157,7 +4161,7 @@ let holoOn=false;
 let mounting=false;
 let touchTap=null;
 let suppressClick=0;
-/* Live delay was lazy JS download on first tap — warm script as soon as UR detail paints. */
+/* Live delay: warm lazy script + CORS portrait before first tap. */
 const prefetchHoloScript=()=>{
 try{
 if(window.GgenUnitHoloCard)return;
@@ -4166,7 +4170,52 @@ if(lazy&&typeof lazy.ensureUnitHoloCard==='function'){lazy.ensureUnitHoloCard();
 if(lazy&&typeof lazy.loadJs==='function')lazy.loadJs('unit_holo_card');
 }catch(_){}
 };
+const warmHoloTexture=()=>{
+try{
+const port=card.querySelector('img.detail-portrait, img.supporter-portrait');
+if(!port)return;
+const src=port.currentSrc||port.src;
+if(!src)return;
+if(card._ggenHoloWarm&&card._ggenHoloWarmSrc===src)return;
+card._ggenHoloWarmSrc=src;
+const keep=src;
+const take=bm=>{
+if(!card.isConnected||card._ggenHoloWarmSrc!==keep||!bm)return;
+card._ggenHoloWarm=bm;
+};
+if(typeof fetch==='function'){
+fetch(src,{mode:'cors',credentials:'omit'})
+.then(r=>{if(!r||!r.ok)throw new Error('holo warm');return r.blob()})
+.then(blob=>{
+if(typeof createImageBitmap==='function')return createImageBitmap(blob);
+return new Promise((resolve,reject)=>{
+const u=URL.createObjectURL(blob);
+const im=new Image();
+im.onload=()=>{URL.revokeObjectURL(u);resolve(im)};
+im.onerror=()=>{URL.revokeObjectURL(u);reject(new Error('warm img'))};
+im.src=u;
+});
+})
+.then(take)
+.catch(()=>{
+try{
+const loader=new Image();
+loader.crossOrigin='anonymous';
+loader.decoding='async';
+loader.onload=()=>take(loader);
+loader.src=src+(src.indexOf('?')>=0?'&':'?')+'ggen_holo=1';
+}catch(_){}
+});
+return;
+}
+const loader=new Image();
+loader.crossOrigin='anonymous';
+loader.onload=()=>take(loader);
+loader.src=src+(src.indexOf('?')>=0?'&':'?')+'ggen_holo=1';
+}catch(_){}
+};
 prefetchHoloScript();
+warmHoloTexture();
 try{
 card.addEventListener('pointerenter',prefetchHoloScript,{passive:true});
 card.addEventListener('pointerdown',prefetchHoloScript,{passive:true});
@@ -4184,10 +4233,16 @@ card.setAttribute('aria-pressed',on?'true':'false');
 card.classList.toggle('is-holo-on',!!on);
 };
 const turnOff=()=>{
-try{if(card._ggenHolo&&typeof card._ggenHolo.destroy==='function')card._ggenHolo.destroy()}catch(_){}
 holoOn=false;
 mounting=false;
 setPressed(false);
+const holo=card._ggenHolo;
+/* Keep WebGL instance — resume is instant on next tap (no shader recompile). */
+if(holo&&typeof holo.pause==='function'){
+try{holo.pause()}catch(_){}
+return;
+}
+try{if(holo&&typeof holo.destroy==='function')holo.destroy()}catch(_){}
 };
 const isCoarse=()=>{
 try{if(window.matchMedia&&window.matchMedia('(pointer: coarse)').matches)return true}catch(_){}
@@ -4271,10 +4326,19 @@ idle:true
 };
 const turnOn=()=>{
 if(mounting||holoOn)return;
+const existing=card._ggenHolo;
+if(existing&&typeof existing.resume==='function'&&!(existing.settings&&existing.settings.cssOnly)){
+holoOn=true;
+setPressed(true);
+try{existing.resume()}catch(_){}
+return;
+}
 /* Immediate chrome so iOS tap always shows something while script/WebGL loads */
 holoOn=true;
 mounting=true;
 setPressed(true);
+prefetchHoloScript();
+warmHoloTexture();
 /* Must start from this tap gesture — iOS motion permission (before lazy script) */
 let gyroPermission=null;
 if(isCoarse()){
@@ -4290,7 +4354,9 @@ const finish=api=>{
 mounting=false;
 if(!card.isConnected){turnOff();return}
 if(!api||typeof api.mount!=='function')return;
-try{if(card._ggenHolo&&typeof card._ggenHolo.destroy==='function')card._ggenHolo.destroy()}catch(_){}
+try{
+if(card._ggenHolo&&typeof card._ggenHolo.destroy==='function')card._ggenHolo.destroy();
+}catch(_){}
 /* If script loaded after tap, request gyro again (may no-op if already decided) */
 if(!gyroPermission&&api&&typeof api.requestGyroPermission==='function')gyroPermission=api.requestGyroPermission();
 try{api.mount(card,mountOpts(gyroPermission))}catch(_){}
@@ -4304,9 +4370,9 @@ const kick=()=>{
 if(!card.isConnected||!holoOn)return;
 if(card.classList.contains('is-holo-webgl'))return;
 try{holo.reload()}catch(_){}
-if(++tries<8)setTimeout(kick,60);
+if(++tries<8)setTimeout(kick,40);
 };
-setTimeout(kick,30);
+setTimeout(kick,16);
 }
 };
 const api0=window.GgenUnitHoloCard;

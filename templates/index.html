@@ -727,7 +727,7 @@ window.__GGEN_LAZY__=(function(){
     'sp_investment_i18n_guide': url_for('static', filename='js/sp_investment_i18n_guide.js'),
     'sp_investment': url_for('static', filename='js/sp_investment.js'),
     'gacha_sim': url_for('static', filename='js/gacha_sim.js'),
-    'unit_holo_card': url_for('static', filename='js/unit_holo_card.js')
+    'unit_holo_card': url_for('static', filename='js/' + (holo_js_bundle or 'unit_holo_card.js'))
   } | tojson }};
   var cache={};
   function withV(url, bump){
@@ -789,6 +789,17 @@ window.__GGEN_LAZY__=(function(){
   }
   function ensureUnitHoloCard(){
     if(window.GgenUnitHoloCard)return Promise.resolve(window.GgenUnitHoloCard);
+    try{
+      var href=withV(js.unit_holo_card);
+      if(href&&!document.querySelector('link[data-ggen-holo-preload]')){
+        var pl=document.createElement('link');
+        pl.rel='preload';
+        pl.as='script';
+        pl.href=href;
+        pl.setAttribute('data-ggen-holo-preload','1');
+        document.head.appendChild(pl);
+      }
+    }catch(_){}
     return loadJs('unit_holo_card').then(function(){return window.GgenUnitHoloCard||null});
   }
   function ensureExtras(){
@@ -810,8 +821,14 @@ window.__GGEN_LAZY__=(function(){
     if(window.requestIdleCallback)requestIdleCallback(go,{timeout:5000});
     else setTimeout(go,1200);
   }
-  if(document.readyState==='complete')scheduleExtras();
-  else window.addEventListener('load',scheduleExtras);
+  function scheduleHoloWarm(){
+    /* ~15–20KB gzip — after browse paint so first UR tap is not a cold script download. */
+    function go(){try{ensureUnitHoloCard()}catch(_){}}
+    if(window.requestIdleCallback)requestIdleCallback(go,{timeout:10000});
+    else setTimeout(go,2200);
+  }
+  if(document.readyState==='complete'){scheduleExtras();scheduleHoloWarm()}
+  else window.addEventListener('load',function(){scheduleExtras();scheduleHoloWarm()});
   window.openSupportFeedback=function(){
     ensureExtras().then(function(){
       if(window.GgenSiteFeedback&&typeof window.GgenSiteFeedback.openModal==='function'){

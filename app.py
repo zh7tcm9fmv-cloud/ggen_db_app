@@ -206,6 +206,7 @@ def _inject_public_origin():
         # Available on every template so deploy auto-reload + ?v= cache-bust work
         # without each route having to pass app_js_version explicitly.
         'app_js_version': _app_js_bundle_version_tag(),
+        'holo_js_bundle': _holo_js_served_bundle_name(),
     }
 
 # Bust cache when static assets change OR when a new git commit is deployed.
@@ -255,11 +256,21 @@ def _app_js_served_bundle_name():
     return 'app.js'
 
 
+def _holo_js_served_bundle_name():
+    """Prefer minified holo WebGL module when present (lazy-loaded on UR detail)."""
+    root = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'js')
+    if os.path.isfile(os.path.join(root, 'unit_holo_card.min.js')):
+        return 'unit_holo_card.min.js'
+    return 'unit_holo_card.js'
+
+
 def _app_js_bundle_version_tag():
     root = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static')
     assets = (
         ('js', _app_js_served_bundle_name()),
         ('js', 'app.js'),
+        ('js', _holo_js_served_bundle_name()),
+        ('js', 'unit_holo_card.js'),
         ('js', 'msy_dc_engine.js'),
         ('js', 'msy_dc_worker.js'),
         ('js', 'unit_best_pilots.js'),
@@ -18268,6 +18279,7 @@ def _serve_index():
         game_images_use_cdn=GAME_IMAGES_USE_CDN,
         app_js_version=_app_js_bundle_version_tag(),
         app_js_bundle=_app_js_served_bundle_name(),
+        holo_js_bundle=_holo_js_served_bundle_name(),
         kofi_page_url=KOFI_PAGE_URL,
         page_canonical=page_canonical,
     ))
