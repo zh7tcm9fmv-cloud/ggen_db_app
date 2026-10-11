@@ -1557,7 +1557,7 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .detail-header{display:flex;gap:28px;padding:52px 28px 24px;border-bottom:1px solid var(--border-color);background:rgba(0,0,0,0.2);overflow:hidden;position:relative}
 .detail-portrait-wrap{flex-shrink:0;width:300px;max-width:100%;position:relative}.detail-portrait{width:100%;max-width:300px;height:400px;object-fit:contain;object-position:center calc(50% + var(--portrait-optical-y));border-radius:var(--radius-md);border:2px solid var(--border-color);background:rgba(13,19,33,0.8)}
 /* Unit holo — cold path = click target only. Heavy 3D/glow CSS only while .is-holo-on. */
-.modal-content.unit-detail .unit-holo-card.unit-holo-card--armed{
+.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.unit-holo-card--armed{
   cursor:pointer;
   touch-action:manipulation;
   -webkit-tap-highlight-color:transparent;
@@ -1565,21 +1565,21 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
   -webkit-user-select:none;
 }
 /* Tap feedback before WebGL mounts (iOS lazy script) */
-.modal-content.unit-detail .unit-holo-card.is-holo-on > .detail-portrait,
-.modal-content.unit-detail .unit-holo-card.is-holo-on > .detail-portrait-placeholder{
+.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-on > .detail-portrait,
+.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-on > .detail-portrait-placeholder{
   border-color:rgba(0,212,255,.5);
   box-shadow:0 0 0 1px rgba(0,212,255,.22);
 }
-.modal-content.unit-detail .unit-holo-card.unit-holo-card--armed:focus-visible{
+.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.unit-holo-card--armed:focus-visible{
   outline:2px solid rgba(0,212,255,.65);
   outline-offset:3px;
 }
-.modal-content.unit-detail .unit-holo-card.unit-holo-card--armed.is-holo-on{
+.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.unit-holo-card--armed.is-holo-on{
   cursor:grab;
   /* Own the gesture while foil is on — iOS scroll must not steal drag */
   touch-action:none;
 }
-.modal-content.unit-detail .unit-holo-card.is-holo-on{
+.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-on{
   --edge-proximity:0;
   --cursor-angle:45deg;
   --edge-sensitivity:28;
@@ -1605,7 +1605,7 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
   isolation:isolate;
   overflow:visible;
 }
-.modal-content.unit-detail .unit-holo-card.is-holo-on .unit-holo-card__stage{
+.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-on .unit-holo-card__stage{
   /* Same outer box as cold .detail-portrait — no size jump on toggle */
   position:relative;
   display:block;
@@ -1621,7 +1621,7 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
   will-change:transform;
   z-index:1;
 }
-.modal-content.unit-detail .unit-holo-card.is-holo-on .unit-holo-card__canvas{
+.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-on .unit-holo-card__canvas{
   position:absolute;
   inset:0;
   width:100%;
@@ -1633,7 +1633,7 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
   border-radius:inherit;
 }
 /* Safari/WebGL loading or CSS-only: richer foil sheen over the real portrait */
-.modal-content.unit-detail .unit-holo-card.is-holo-on:not(.is-holo-webgl) .unit-holo-card__stage::after{
+.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-on:not(.is-holo-webgl) .unit-holo-card__stage::after{
   content:"";
   position:absolute;
   inset:0;
@@ -1655,20 +1655,20 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
   50%{background-position:100% 60%,0% 100%,50% 50%;opacity:.85}
 }
 @media (prefers-reduced-motion:reduce){
-  .modal-content.unit-detail .unit-holo-card.is-holo-on:not(.is-holo-webgl) .unit-holo-card__stage::after{
+  .modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-on:not(.is-holo-webgl) .unit-holo-card__stage::after{
     animation:none;
     opacity:.65;
     background-position:40% 50%,60% 40%,50% 50%;
   }
 }
-.modal-content.unit-detail .unit-holo-card.is-holo-webgl .unit-holo-card__canvas{opacity:1}
-.modal-content.unit-detail .unit-holo-card.is-holo-webgl .detail-portrait,
-.modal-content.unit-detail .unit-holo-card.is-holo-webgl .detail-portrait-placeholder{
+.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-webgl .unit-holo-card__canvas{opacity:1}
+.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-webgl .detail-portrait,
+.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-webgl .detail-portrait-placeholder{
   opacity:0!important;
   visibility:hidden;
 }
-.modal-content.unit-detail .unit-holo-card.is-holo-on .unit-holo-card__stage .detail-portrait,
-.modal-content.unit-detail .unit-holo-card.is-holo-on .unit-holo-card__stage .detail-portrait-placeholder{
+.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-on .unit-holo-card__stage .detail-portrait,
+.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-on .unit-holo-card__stage .detail-portrait-placeholder{
   /* Keep cold width/height/aspect-ratio; only move chrome to the stage */
   display:block;
   border:none;
@@ -1677,8 +1677,8 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
   position:relative;
   z-index:1;
 }
-.modal-content.unit-detail .unit-holo-card.is-holo-on::before,
-.modal-content.unit-detail .unit-holo-card.is-holo-on::after{
+.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-on::before,
+.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-on::after{
   content:"";
   position:absolute;
   inset:0;
@@ -1687,9 +1687,9 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
   z-index:0;
   transition:opacity .25s ease-out;
 }
-.modal-content.unit-detail .unit-holo-card.is-holo-on:not(.is-holo-active)::before,
-.modal-content.unit-detail .unit-holo-card.is-holo-on:not(.is-holo-active)::after{opacity:0}
-.modal-content.unit-detail .unit-holo-card.is-holo-on::before{
+.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-on:not(.is-holo-active)::before,
+.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-on:not(.is-holo-active)::after{opacity:0}
+.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-on::before{
   border:1px solid transparent;
   background:
     linear-gradient(var(--card-bg) 0 100%) padding-box,
@@ -1706,7 +1706,7 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
   -webkit-mask-image:conic-gradient(from var(--cursor-angle) at center,black calc(var(--cone-spread) * 1%),transparent calc((var(--cone-spread) + 15) * 1%),transparent calc((100 - var(--cone-spread) - 15) * 1%),black calc((100 - var(--cone-spread)) * 1%));
   mask-image:conic-gradient(from var(--cursor-angle) at center,black calc(var(--cone-spread) * 1%),transparent calc((var(--cone-spread) + 15) * 1%),transparent calc((100 - var(--cone-spread) - 15) * 1%),black calc((100 - var(--cone-spread)) * 1%));
 }
-.modal-content.unit-detail .unit-holo-card.is-holo-on::after{
+.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-on::after{
   border:1px solid transparent;
   background:
     var(--gradient-one) padding-box,
@@ -1722,7 +1722,7 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
   -webkit-mask-image:conic-gradient(from var(--cursor-angle) at center,transparent 5%,black 18%,black 82%,transparent 95%);
   mask-image:conic-gradient(from var(--cursor-angle) at center,transparent 5%,black 18%,black 82%,transparent 95%);
 }
-.modal-content.unit-detail .unit-holo-card.is-holo-on > .border-glow-edge{
+.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-on > .border-glow-edge{
   position:absolute;
   inset:calc(var(--glow-padding) * -1);
   border-radius:inherit;
@@ -1734,10 +1734,10 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
   mask-image:conic-gradient(from var(--cursor-angle) at center,black 2.5%,transparent 12%,transparent 88%,black 97.5%);
   mix-blend-mode:plus-lighter;
 }
-.modal-content.unit-detail .unit-holo-card.is-holo-on.is-holo-active > .border-glow-edge{
+.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-on.is-holo-active > .border-glow-edge{
   opacity:calc((var(--edge-proximity) - var(--edge-sensitivity)) / (100 - var(--edge-sensitivity)));
 }
-.modal-content.unit-detail .unit-holo-card.is-holo-on > .border-glow-edge::before{
+.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-on > .border-glow-edge::before{
   content:"";
   position:absolute;
   inset:var(--glow-padding);
@@ -1750,9 +1750,40 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
     0 0 16px 0 var(--glow-color-30),
     0 0 28px 2px var(--glow-color-20);
 }
-.modal-content.unit-detail .unit-holo-card > .detail-limited-banner--on-portrait{z-index:5}
+.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card > .detail-limited-banner--on-portrait{z-index:5}
 .modal-content.unit-detail .unit-holo-card > #unitLbVideoBtnSlot,
 .modal-content.unit-detail .unit-holo-card > #unitBestPilotBtnSlotPortrait{z-index:6}
+
+/* Supporter UR holo — keep wide art borderless; clicks hit the wrap */
+.modal-content.supporter-detail .unit-holo-card.unit-holo-card--armed .supporter-portrait{pointer-events:auto}
+.modal-content.supporter-detail .unit-holo-card.is-holo-on .unit-holo-card__stage{
+  border:none;
+  background:transparent;
+  box-shadow:none;
+}
+.modal-content.supporter-detail .unit-holo-card.is-holo-webgl .supporter-portrait,
+.modal-content.supporter-detail .unit-holo-card.is-holo-webgl .supporter-portrait-placeholder{
+  opacity:0!important;
+  visibility:hidden;
+}
+.modal-content.supporter-detail .unit-holo-card.is-holo-on .unit-holo-card__stage .supporter-portrait,
+.modal-content.supporter-detail .unit-holo-card.is-holo-on .unit-holo-card__stage .supporter-portrait-placeholder{
+  display:block;
+  border:none;
+  border-radius:0;
+  background:transparent;
+  position:relative;
+  z-index:1;
+  width:100%;
+  height:auto;
+  filter:none;
+}
+.modal-content.supporter-detail .unit-holo-card.is-holo-on > .supporter-portrait,
+.modal-content.supporter-detail .unit-holo-card.is-holo-on > .supporter-portrait-placeholder{
+  border:none;
+  box-shadow:0 0 0 1px rgba(0,212,255,.28);
+  filter:drop-shadow(0 4px 8px rgba(0,0,0,0.6));
+}
 .stage-portrait{width:240px;height:240px;object-fit:contain;border-radius:var(--radius-md);border:2px solid var(--border-color);background:rgba(13,19,33,0.8)}
 .supporter-portrait{border:none;background:transparent;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.6));pointer-events:none;display:block}
 .supporter-detail-header{gap:28px;padding:56px 28px 24px;align-items:flex-start}

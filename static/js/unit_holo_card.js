@@ -97,7 +97,7 @@
   function ensureStage(card) {
     var stage = card.querySelector('.unit-holo-card__stage');
     if (stage) return stage;
-    var img = card.querySelector('img.detail-portrait, .detail-portrait-placeholder');
+    var img = card.querySelector('img.detail-portrait, img.supporter-portrait, .detail-portrait-placeholder, .supporter-portrait-placeholder');
     stage = document.createElement('div');
     stage.className = 'unit-holo-card__stage';
     if (img && img.parentNode === card) {
@@ -123,7 +123,7 @@
   function unwrapStage(card, stage) {
     if (!stage || !card) return;
     try {
-      var kids = stage.querySelectorAll('img.detail-portrait, .detail-portrait-placeholder');
+      var kids = stage.querySelectorAll('img.detail-portrait, img.supporter-portrait, .detail-portrait-placeholder, .supporter-portrait-placeholder');
       for (var ki = 0; ki < kids.length; ki++) {
         card.insertBefore(kids[ki], stage);
       }
@@ -140,7 +140,7 @@
     opts = opts || {};
     ensureEdge(card);
     var stage = ensureStage(card);
-    var img = stage.querySelector('img.detail-portrait, img');
+    var img = stage.querySelector('img.detail-portrait, img.supporter-portrait, img');
     if (!img) {
       unwrapStage(card, stage);
       return null;
@@ -261,7 +261,7 @@
     if (!glProbe) return mountCssOnly(card, opts, reduced);
 
     var stage = ensureStage(card);
-    var img = stage.querySelector('img.detail-portrait, img');
+    var img = stage.querySelector('img.detail-portrait, img.supporter-portrait, img');
     if (!stage || !img) return null;
 
     ensureEdge(card);
@@ -914,7 +914,7 @@
       } catch (_) {}
       try {
         /* Unwrap portrait so cold shell matches normal detail again */
-        var kids = stage.querySelectorAll('img.detail-portrait, .detail-portrait-placeholder');
+        var kids = stage.querySelectorAll('img.detail-portrait, img.supporter-portrait, .detail-portrait-placeholder, .supporter-portrait-placeholder');
         for (var ki = 0; ki < kids.length; ki++) {
           card.insertBefore(kids[ki], stage);
         }
