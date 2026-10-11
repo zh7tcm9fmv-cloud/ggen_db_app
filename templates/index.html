@@ -822,10 +822,16 @@ window.__GGEN_LAZY__=(function(){
     else setTimeout(go,1200);
   }
   function scheduleHoloWarm(){
-    /* ~15–20KB gzip — after browse paint so first UR tap is not a cold script download. */
-    function go(){try{ensureUnitHoloCard()}catch(_){}}
-    if(window.requestIdleCallback)requestIdleCallback(go,{timeout:10000});
-    else setTimeout(go,2200);
+    /* Small script only — never race an open detail dossier (portraits win). */
+    function go(){
+      try{
+        var m=document.getElementById('detailModal');
+        if(m&&m.classList.contains('active')){setTimeout(go,3000);return}
+        ensureUnitHoloCard();
+      }catch(_){}
+    }
+    if(window.requestIdleCallback)requestIdleCallback(go,{timeout:14000});
+    else setTimeout(go,4000);
   }
   if(document.readyState==='complete'){scheduleExtras();scheduleHoloWarm()}
   else window.addEventListener('load',function(){scheduleExtras();scheduleHoloWarm()});

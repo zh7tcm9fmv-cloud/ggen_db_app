@@ -4161,7 +4161,10 @@ let holoOn=false;
 let mounting=false;
 let touchTap=null;
 let suppressClick=0;
-/* Live delay: warm script + CORS portrait, then premount WebGL paused (compile off the tap). */
+/*
+ * Snappy detail bar: do NOT fetch/compile holo on dossier open.
+ * Warm only on portrait intent (hover / press) so shell + portraits win first.
+ */
 let onHoloWarmReady=()=>{};
 const prefetchHoloScript=()=>{
 try{
@@ -4218,10 +4221,14 @@ loader.onload=()=>take(loader);
 loader.src=src+(src.indexOf('?')>=0?'&':'?')+'ggen_holo=1';
 }catch(_){}
 };
+const armHoloWarm=()=>{
+prefetchHoloScript();
+warmHoloTexture();
+};
 try{
-card.addEventListener('pointerenter',prefetchHoloScript,{passive:true});
-card.addEventListener('pointerdown',prefetchHoloScript,{passive:true});
-card.addEventListener('touchstart',prefetchHoloScript,{passive:true});
+card.addEventListener('pointerenter',armHoloWarm,{passive:true});
+card.addEventListener('pointerdown',armHoloWarm,{passive:true});
+card.addEventListener('touchstart',armHoloWarm,{passive:true});
 }catch(_){}
 /* Larger slop so finger-drag foil on iOS does not count as toggle-off */
 const TAP_SLOP=28;
@@ -4260,14 +4267,15 @@ const kind=card.getAttribute('data-holo-kind')
 ||(card.closest('.modal-content.unit-detail')&&'unit')
 ||'unit';
 const isSupp=kind==='supporter';
-/* Stable id-hash variety for unit / character / supporter:
-   classic shards or cracked ice; ice gets silver vs dark ground. */
-let preset=api&&api.PRESET_SHARDS!=null?api.PRESET_SHARDS:2;
+/* Cracked ice only — variety from seed / silver|dark ground / density (no shards). */
+let preset=api&&api.PRESET_ICE!=null?api.PRESET_ICE:8;
 let foilColor=(api&&api.DEFAULT_FOIL)||'#e2e6ec';
-/* Limited: slight density bump only — intensity handled softer below */
-let scaleBase=limited?(mobile?1.14:1.08):(mobile?1.12:1);
+/* Limited reads denser + brighter; regular stays clearly below that tier. */
+let scaleBase=limited?(mobile?1.08:1.04):(mobile?0.98:0.94);
 let patternSeed=0;
 let iceBg=0;
+/* Hash-driven ice family: fine / medium / bold crack density. */
+let iceFamily=1;
 {
 const seed=String(
 card.getAttribute('data-holo-seed')
@@ -4280,44 +4288,39 @@ for(let i=0;i<seed.length;i++){
 h^=seed.charCodeAt(i);
 h=Math.imul(h,16777619)>>>0;
 }
-const ice=api&&api.PRESET_ICE!=null?api.PRESET_ICE:8;
-const shards=api&&api.PRESET_SHARDS!=null?api.PRESET_SHARDS:2;
-/* Supporters: cracked ice only. Units/chars: shards + cracked ice. */
-if(isSupp){
-preset=ice;
-}else{
-preset=((h%2)===0)?shards:ice;
-}
-const iceOn=preset===ice;
 /* Ice silver/dark ground: initial hint only — WebGL retunes from portrait luminance. */
-const darkBg=iceOn&&(((h>>>20)&1)===1);
+const darkBg=((h>>>20)&1)===1;
 foilColor=darkBg?'#1a1e24':'#e2e6ec';
-/* Pattern variety: density jitter + seed (Voronoi layout differs per id) */
-scaleBase*=iceOn
-?((isSupp?(mobile?0.95:1.05):(mobile?0.92:1.05))+(((h>>>16)%6)*0.03))
-:(0.92+(((h>>>16)%9)*0.025));
+iceFamily=(h>>>8)%3; /* 0 fine, 1 medium, 2 bold */
+const dens=isSupp
+?(mobile?0.94:1.0)
+:(iceFamily===0?(mobile?0.82:0.9):iceFamily===2?(mobile?0.98:1.06):(mobile?0.9:0.98));
+scaleBase*=dens+(((h>>>16)%5)*0.018);
 patternSeed=((h>>>4)%997)+1;
 iceBg=darkBg?1:0;
 }
-const iceOn=preset===(api&&api.PRESET_ICE!=null?api.PRESET_ICE:8);
-/* Supporter ice: foil on top, portrait stays dominant (was washing out). */
-const iceReg=isSupp?0.5:0.62;
-const iceLtd=isSupp?0.58:0.72;
-const shardsReg=mobile?0.95:0.7;
-const shardsLtd=mobile?0.98:0.82;
+/* Regular ice softer; limited is the only “hot” tier. */
+const iceReg=isSupp?0.46:0.46;
+const iceLtd=isSupp?0.58:0.64;
+/* Fine cracks: a touch more edge flash; bold: slightly more body glare */
+const fine=iceFamily===0;
+const bold=iceFamily===2;
 return{
 preset,
 foilColor,
 seed:patternSeed,
 bg:iceBg,
 wideSurface:!!isSupp,
-/* Mobile: push foil closer to desktop richness (small portrait + DPR) */
-intensity:iceOn?(limited?iceLtd:(mobile?iceReg+(isSupp?0.03:0.06):iceReg)):(limited?shardsLtd:shardsReg),
-edgeSparkle:iceOn?(isSupp?(limited?0.42:0.34):(limited?(mobile?0.78:0.65):(mobile?0.7:0.55))):(limited?0.88:(mobile?1:0.7)),
-glare:iceOn?(isSupp?(limited?0.32:0.24):(limited?(mobile?0.62:0.48):(mobile?0.55:0.35))):(limited?0.7:(mobile?0.8:0.45)),
+intensity:limited?iceLtd:(mobile?iceReg+(isSupp?0.02:0.03):iceReg),
+edgeSparkle:isSupp
+?(limited?0.4:0.3)
+:(limited?(mobile?(fine?0.7:0.64):(fine?0.6:0.54)):(mobile?(fine?0.48:0.4):(fine?0.38:0.32))),
+glare:isSupp
+?(limited?0.3:0.2)
+:(limited?(mobile?(bold?0.54:0.48):(bold?0.44:0.38)):(mobile?(bold?0.34:0.28):(bold?0.28:0.22))),
 scale:scaleBase,
 /* Limited: slightly livelier tilt without heavier cover */
-tiltMax:mobile?(limited?20:18):(limited?16:14),
+tiltMax:mobile?(limited?19:16):(limited?15:13),
 /* Cap DPR — ice Voronoi is heavy; 3× mobile burned GPU for little gain */
 dprMax:2,
 gyro:mobile,
@@ -4335,7 +4338,7 @@ return DeviceOrientationEvent.requestPermission().then(s=>s==='granted'?'granted
 return Promise.resolve('granted');
 }catch(_){return Promise.resolve('denied')}
 };
-/* Compile + upload while the dossier is open — first tap only flips pause→resume. */
+/* After portrait intent only — never on cold detail open. */
 const premountHolo=()=>{
 if(!card.isConnected||holoOn||mounting||card._ggenHolo)return;
 const api=window.GgenUnitHoloCard;
@@ -4351,15 +4354,20 @@ if(h&&typeof h.pause==='function')h.pause();
 }catch(_){}
 };
 onHoloWarmReady=()=>{
-if(!window.GgenUnitHoloCard)return;
+if(!window.GgenUnitHoloCard||holoOn||mounting)return;
+const go=()=>{
+if(!card.isConnected||holoOn||mounting)return;
 if(card._ggenHolo&&typeof card._ggenHolo.reload==='function'){
 try{card._ggenHolo.reload()}catch(_){}
 return;
 }
 premountHolo();
 };
-prefetchHoloScript();
-warmHoloTexture();
+try{
+if(window.requestIdleCallback)requestIdleCallback(go,{timeout:500});
+else setTimeout(go,0);
+}catch(_){setTimeout(go,0)}
+};
 const turnOn=()=>{
 if(mounting||holoOn)return;
 const existing=card._ggenHolo;
@@ -4375,8 +4383,7 @@ return;
 holoOn=true;
 mounting=true;
 setPressed(true);
-prefetchHoloScript();
-warmHoloTexture();
+armHoloWarm();
 const gyroPermission=requestGyroFromGesture();
 const finish=api=>{
 mounting=false;
