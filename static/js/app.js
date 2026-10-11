@@ -4157,6 +4157,21 @@ let holoOn=false;
 let mounting=false;
 let touchTap=null;
 let suppressClick=0;
+/* Live delay was lazy JS download on first tap — warm script as soon as UR detail paints. */
+const prefetchHoloScript=()=>{
+try{
+if(window.GgenUnitHoloCard)return;
+const lazy=window.__GGEN_LAZY__;
+if(lazy&&typeof lazy.ensureUnitHoloCard==='function'){lazy.ensureUnitHoloCard();return}
+if(lazy&&typeof lazy.loadJs==='function')lazy.loadJs('unit_holo_card');
+}catch(_){}
+};
+prefetchHoloScript();
+try{
+card.addEventListener('pointerenter',prefetchHoloScript,{passive:true});
+card.addEventListener('pointerdown',prefetchHoloScript,{passive:true});
+card.addEventListener('touchstart',prefetchHoloScript,{passive:true});
+}catch(_){}
 /* Larger slop so finger-drag foil on iOS does not count as toggle-off */
 const TAP_SLOP=28;
 const isInteractiveTarget=el=>{
@@ -4210,20 +4225,26 @@ h=Math.imul(h,16777619)>>>0;
 }
 const ice=api&&api.PRESET_ICE!=null?api.PRESET_ICE:8;
 const shards=api&&api.PRESET_SHARDS!=null?api.PRESET_SHARDS:2;
-/* Mostly cracked ice; some classic shards for catalog variety */
-preset=((h%5)===0)?shards:ice;
+/* Supporters: cracked ice only. Units/chars: shards + cracked ice. */
+if(isSupp){
+preset=ice;
+}else{
+preset=((h%2)===0)?shards:ice;
+}
 const iceOn=preset===ice;
+/* Ice silver/dark ground: initial hint only — WebGL retunes from portrait luminance. */
 const darkBg=iceOn&&(((h>>>20)&1)===1);
 foilColor=darkBg?'#1a1e24':'#e2e6ec';
+/* Pattern variety: density jitter + seed (Voronoi layout differs per id) */
 scaleBase*=iceOn
-?((mobile?0.92:1.05)+(((h>>>16)%6)*0.03)) /* ice: mobile lighter; desktop 1.05–1.20 */
-:(0.92+(((h>>>16)%9)*0.02)); /* shards 0.92–1.08 */
+?((isSupp?(mobile?0.95:1.05):(mobile?0.92:1.05))+(((h>>>16)%6)*0.03))
+:(0.92+(((h>>>16)%9)*0.025));
 patternSeed=((h>>>4)%997)+1;
 iceBg=darkBg?1:0;
 }
 const iceOn=preset===(api&&api.PRESET_ICE!=null?api.PRESET_ICE:8);
-/* Ice soft for readability; limited = one notch above regular UR (not maxed). */
-const iceReg=isSupp?0.48:0.62;
+/* Supporter ice: foil on top, portrait stays dominant (was washing out). */
+const iceReg=isSupp?0.5:0.62;
 const iceLtd=isSupp?0.58:0.72;
 const shardsReg=mobile?0.95:0.7;
 const shardsLtd=mobile?0.98:0.82;
@@ -4232,10 +4253,11 @@ preset,
 foilColor,
 seed:patternSeed,
 bg:iceBg,
+wideSurface:!!isSupp,
 /* Mobile: push foil closer to desktop richness (small portrait + DPR) */
-intensity:iceOn?(limited?iceLtd:(mobile?iceReg+0.06:iceReg)):(limited?shardsLtd:shardsReg),
-edgeSparkle:iceOn?(limited?(mobile?0.78:0.65):(mobile?0.7:0.55)):(limited?0.88:(mobile?1:0.7)),
-glare:iceOn?(limited?(mobile?0.62:0.48):(mobile?0.55:0.35)):(limited?0.7:(mobile?0.8:0.45)),
+intensity:iceOn?(limited?iceLtd:(mobile?iceReg+(isSupp?0.03:0.06):iceReg)):(limited?shardsLtd:shardsReg),
+edgeSparkle:iceOn?(isSupp?(limited?0.42:0.34):(limited?(mobile?0.78:0.65):(mobile?0.7:0.55))):(limited?0.88:(mobile?1:0.7)),
+glare:iceOn?(isSupp?(limited?0.32:0.24):(limited?(mobile?0.62:0.48):(mobile?0.55:0.35))):(limited?0.7:(mobile?0.8:0.45)),
 scale:scaleBase,
 /* Limited: slightly livelier tilt without heavier cover */
 tiltMax:mobile?(limited?20:18):(limited?16:14),
@@ -4272,6 +4294,20 @@ try{if(card._ggenHolo&&typeof card._ggenHolo.destroy==='function')card._ggenHolo
 /* If script loaded after tap, request gyro again (may no-op if already decided) */
 if(!gyroPermission&&api&&typeof api.requestGyroPermission==='function')gyroPermission=api.requestGyroPermission();
 try{api.mount(card,mountOpts(gyroPermission))}catch(_){}
+const holo=card._ggenHolo;
+/* CSS-only path has no foil (sheen removed) — don't leave a blank "on" state */
+if(holo&&holo.settings&&holo.settings.cssOnly){turnOff();return}
+/* Texture sometimes misses first layout frame — retry until WebGL foil paints */
+if(holo&&typeof holo.reload==='function'){
+let tries=0;
+const kick=()=>{
+if(!card.isConnected||!holoOn)return;
+if(card.classList.contains('is-holo-webgl'))return;
+try{holo.reload()}catch(_){}
+if(++tries<8)setTimeout(kick,60);
+};
+setTimeout(kick,30);
+}
 };
 const api0=window.GgenUnitHoloCard;
 if(api0&&typeof api0.mount==='function'){finish(api0);return}

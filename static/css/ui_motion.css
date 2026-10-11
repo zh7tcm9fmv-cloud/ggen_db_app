@@ -537,10 +537,6 @@ body:not(.tm-page).nav-tabs-collapsed #navTabsShell{
     transform:none!important;
     transition:none!important;
   }
-  .modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-on:not(.is-holo-webgl) .unit-holo-card__stage::after{
-    animation:none!important;
-    opacity:.65!important;
-  }
   /* Keep foil visible — only kill spatial tilt, not the holo layers */
   .modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card::before,
   .modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card::after,
