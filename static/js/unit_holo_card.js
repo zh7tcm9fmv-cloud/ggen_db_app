@@ -5,10 +5,18 @@
   'use strict';
 
   var PERSPECTIVE = 1100;
+  var PRESET_BURSTS = 0;
+  var PRESET_STARS = 1;
   var PRESET_SHARDS = 2;
+  var PRESET_COSMOS = 3;
+  var PRESET_RAINBOW = 4;
+  var PRESET_SWIRL = 5;
+  var PRESET_GLITTER = 6;
+  var PRESET_GOLD = 7;
+  var PRESET_ICE = 8;
   var DEFAULT_FOIL = '#e2e6ec';
   var VERTEX = "#version 300 es\nin vec2 position;\nvoid main() {\n gl_Position = vec4(position, 0.0, 1.0);\n}\n";
-  var FRAGMENT = "#version 300 es\nprecision highp float;\n\nuniform sampler2D uArt;\nuniform vec2 uSize;\nuniform float uAspect;\nuniform vec2 uTilt;\nuniform vec2 uLight;\nuniform float uDistance;\nuniform int uPreset;\nuniform float uIntensity;\nuniform float uScale;\nuniform float uEdge;\nuniform float uFrame;\nuniform float uRadius;\nuniform float uGlare;\nuniform vec3 uFoil;\nuniform float uReady;\n\nout vec4 outColor;\n\nconst float TAU = 6.28318530718;\n\nstruct Foil {\n float mask;\n float angle;\n float jitter;\n vec2 facet;\n};\n\nfloat hash(vec2 p) {\n p = fract(p * vec2(234.34, 435.345));\n p += dot(p, p + 34.23);\n return fract(p.x * p.y);\n}\n\nvec2 hash2(vec2 p) {\n return vec2(hash(p), hash(p + 17.31));\n}\n\nvec3 hue(float t) {\n t = abs(fract(t * 0.5) * 2.0 - 1.0);\n vec3 c = mix(vec3(0.1, 0.25, 1.0), vec3(0.0, 0.85, 1.0), smoothstep(0.0, 0.25, t));\n c = mix(c, vec3(0.25, 1.0, 0.2), smoothstep(0.25, 0.45, t));\n c = mix(c, vec3(1.0, 0.92, 0.05), smoothstep(0.45, 0.65, t));\n c = mix(c, vec3(1.0, 0.45, 0.05), smoothstep(0.65, 0.85, t));\n return mix(c, vec3(0.95, 0.12, 0.3), smoothstep(0.85, 1.0, t));\n}\n\nFoil bursts(vec2 p) {\n vec2 q = mat2(0.7071068, 0.7071068, -0.7071068, 0.7071068) * (p - vec2(0.5, 0.5 * uAspect)) / (0.283 / uScale);\n vec2 d = fract(q) - 0.5;\n float u = length(d) / 0.49;\n float angle = atan(d.y, d.x);\n if (u < 0.12) {\n float ring = min(floor(u / 0.045 + 0.5), 2.0);\n float count = max(1.0, ring * 6.0);\n float spot = (floor(angle / TAU * count) + 0.5) / count * TAU;\n vec2 dot = vec2(cos(spot), sin(spot)) * ring * 0.045;\n float m = smoothstep(0.024, 0.012, length(d / 0.49 - dot));\n return Foil(m, angle, 0.5, vec2(0.0));\n }\n bool inner = u < 0.66;\n float slot = angle / TAU * (inner ? 56.0 : 72.0);\n bool shifted = mod(floor(slot), 2.0) > 0.5;\n vec2 band = inner ? (shifted ? vec2(0.45, 0.61) : vec2(0.33, 0.49)) : (shifted ? vec2(0.84, 0.99) : vec2(0.7, 0.85));\n float across = abs(u - (band.x + band.y) * 0.5) / ((band.y - band.x) * 0.5);\n float along = abs(fract(slot) - 0.5) * 2.0;\n float width = inner ? 0.72 : 0.6;\n float m = smoothstep(1.0, 0.78, across) * smoothstep(width, width - 0.2, along);\n return Foil(m, angle, 0.5, vec2(0.0));\n}\n\nFoil stars(vec2 p) {\n Foil best = Foil(0.0, 0.0, 0.0, vec2(0.0));\n vec2 g = p / (0.08 / uScale);\n vec2 base = floor(g);\n for (int j = -1; j <= 1; j++) {\n for (int i = -1; i <= 1; i++) {\n vec2 id = base + vec2(float(i), float(j));\n float pick = hash(id + 1.3);\n vec2 d = g - (id + 0.5 + (hash2(id) - 0.5) * 0.55);\n float m = smoothstep(0.07, 0.035, length(d));\n if (pick < 0.62) {\n float size = mix(0.16, 0.5, pow(hash(id + 9.0), 1.8));\n float sector = TAU / (pick < 0.3 ? 4.0 : 5.0);\n float k = abs(fract((atan(d.y, d.x) + hash(id + 4.0) * TAU) / sector) - 0.5) * 2.0;\n float edge = size * mix(1.0, 0.36, pow(k, 0.6));\n m = smoothstep(edge, edge * 0.8, length(d));\n }\n if (m > best.mask) best = Foil(m, hash(id + 6.0) * TAU, hash(id + 8.0), (hash2(id + 2.0) - 0.5) * 0.6);\n }\n }\n return best;\n}\n\nFoil shards(vec2 p) {\n vec2 g = p * 19.0 * uScale;\n vec2 base = floor(g);\n float best = 9.0;\n float second = 9.0;\n vec2 id = base;\n for (int j = -1; j <= 1; j++) {\n for (int i = -1; i <= 1; i++) {\n vec2 cell = base + vec2(float(i), float(j));\n float d = length(cell + 0.08 + hash2(cell) * 0.84 - g);\n if (d < best) {\n second = best;\n best = d;\n id = cell;\n } else if (d < second) {\n second = d;\n }\n }\n }\n float crack = smoothstep(0.015, 0.07, second - best);\n float shine = 0.25 + 0.75 * pow(hash(id + 7.7), 2.0);\n return Foil((0.2 + 0.8 * crack) * shine, hash(id + 3.17) * TAU, hash(id + 11.73), (hash2(id + 5.0) - 0.5) * 0.5);\n}\n\nFoil cosmos(vec2 p) {\n Foil best = Foil(0.0, 0.0, 0.0, vec2(0.0));\n vec2 g = p / (0.16 / uScale);\n vec2 base = floor(g);\n for (int j = -1; j <= 1; j++) {\n for (int i = -1; i <= 1; i++) {\n vec2 id = base + vec2(float(i), float(j));\n vec2 d = g - (id + 0.5 + (hash2(id) - 0.5) * 0.7);\n float size = mix(0.16, 0.52, hash(id + 2.0));\n float r = length(d);\n float m = max(smoothstep(0.05, 0.0, abs(r - size)), smoothstep(size, size - 0.04, r) * 0.22);\n if (m > best.mask) best = Foil(m, hash(id + 6.0) * TAU + atan(d.y, d.x) * 0.5, hash(id + 1.0), (hash2(id + 4.0) - 0.5) * 0.5);\n }\n }\n vec2 fine = p / (0.035 / uScale);\n vec2 cell = floor(fine);\n float dots = smoothstep(0.2, 0.1, length(fine - cell - 0.5 - (hash2(cell + 9.0) - 0.5) * 0.6)) * step(0.55, hash(cell + 2.0));\n if (dots > best.mask) best = Foil(dots, hash(cell) * TAU, hash(cell + 3.0), (hash2(cell + 7.0) - 0.5) * 0.6);\n return best;\n}\n\nFoil rainbow(vec2 p) {\n return Foil(0.86 + 0.14 * hash(floor(p * 700.0 * uScale)), 0.2, 0.5, vec2(0.0));\n}\n\nFoil swirl(vec2 p) {\n vec2 d = p - vec2(0.5, 0.42 * uAspect);\n float angle = atan(d.y, d.x);\n float rays = 0.55 + 0.45 * smoothstep(0.3, 0.7, abs(fract(angle / TAU * 60.0 * uScale) - 0.5) * 2.0);\n return Foil(rays, angle, length(d), vec2(0.0));\n}\n\nFoil glitter(vec2 p) {\n vec2 g = p * 72.0 * uScale;\n vec2 cell = floor(g);\n float size = mix(0.18, 0.4, hash(cell + 3.0));\n float m = smoothstep(size, size * 0.55, length(fract(g) - 0.5 - (hash2(cell) - 0.5) * 0.5)) * step(0.25, hash(cell + 5.0));\n return Foil(m, hash(cell + 7.0) * TAU, hash(cell + 9.0), (hash2(cell + 11.0) - 0.5) * 0.9);\n}\n\nFoil gold(vec2 p) {\n Foil flake = glitter(p * 0.8);\n if (flake.mask > 0.5) return flake;\n float etch = 0.55 + 0.45 * smoothstep(0.2, 0.8, abs(fract((p.x * 0.6 + p.y) * 140.0 * uScale) - 0.5) * 2.0);\n return Foil(etch, 0.9, 0.4, vec2(0.0));\n}\n\nvec3 sparkles(vec2 p, vec3 halfway, vec2 sweep, float awake) {\n vec2 g = p * 62.0;\n vec2 cell = floor(g);\n vec2 d = fract(g) - 0.5 - (hash2(cell) - 0.5) * 0.36;\n float spin = hash(cell + 3.0) * TAU;\n d = mat2(cos(spin), -sin(spin), sin(spin), cos(spin)) * d;\n vec2 a = abs(d);\n float hexagon = max(a.x * 0.866 + a.y * 0.5, a.y);\n float size = mix(0.22, 0.38, hash(cell + 2.0));\n float piece = smoothstep(size, size - 0.07, hexagon) * step(0.42, hash(cell + 4.0));\n vec3 facet = normalize(vec3((hash2(cell + 6.0) - 0.5) * 0.9, 1.0));\n float flash = pow(max(dot(facet, halfway), 0.0), 6.0);\n vec3 tint = hue(dot(sweep, vec2(cos(spin), sin(spin))) * 1.2 + dot(sweep, vec2(0.8, 0.6)) * 0.8 + hash(cell + 8.0) * 0.5);\n vec3 color = piece * tint * (0.3 + 1.6 * flash) * awake;\n vec2 fine = p * 210.0;\n vec2 speckCell = floor(fine);\n float speck = smoothstep(0.24, 0.0, length(fract(fine) - 0.5 - (hash2(speckCell) - 0.5) * 0.5)) * step(0.72, hash(speckCell + 1.0));\n float speckFlash = pow(max(dot(normalize(vec3((hash2(speckCell + 2.0) - 0.5) * 0.9, 1.0)), halfway), 0.0), 10.0);\n return color + vec3(1.2) * speck * speckFlash * (1.0 - piece);\n}\n\nvoid main() {\n vec2 uv = vec2(gl_FragCoord.x / uSize.x, 1.0 - gl_FragCoord.y / uSize.y);\n vec2 p = vec2(uv.x, uv.y * uAspect);\n vec2 center = vec2(0.5, 0.5 * uAspect);\n vec2 q = abs(p - center) - center + uRadius;\n float outside = length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - uRadius;\n float pixel = 1.0 / uSize.x;\n float alpha = clamp(0.5 - outside / pixel, 0.0, 1.0);\n vec4 sampled = texture(uArt, uv);\n if (uReady > 0.5) alpha *= sampled.a;\n if (alpha <= 0.0) {\n outColor = vec4(0.0);\n return;\n }\n vec3 art = uReady > 0.5 ? pow(sampled.rgb, vec3(2.2)) : vec3(0.12);\n\n mat3 rx = mat3(1.0, 0.0, 0.0, 0.0, cos(uTilt.x), sin(uTilt.x), 0.0, -sin(uTilt.x), cos(uTilt.x));\n mat3 ry = mat3(cos(uTilt.y), 0.0, -sin(uTilt.y), 0.0, 1.0, 0.0, sin(uTilt.y), 0.0, cos(uTilt.y));\n mat3 turn = rx * ry;\n vec3 world = turn * vec3(p - center, 0.0);\n vec3 view = normalize(transpose(turn) * (vec3(0.0, 0.0, uDistance) - world));\n vec3 lamp = vec3((uLight - 0.5) * vec2(1.1, 1.1 * uAspect), 0.9);\n vec3 light = normalize(transpose(turn) * (lamp - world));\n vec3 halfway = normalize(light + view);\n vec2 sweep = light.xy + view.xy;\n float sheen = pow(max(halfway.z, 0.0), 10.0);\n float shine = pow(max(halfway.z, 0.0), 80.0);\n float frame = 1.0 - smoothstep(uFrame - pixel, uFrame + pixel, -outside);\n\n Foil f;\n if (uPreset == 0) f = bursts(p);\n else if (uPreset == 1) f = stars(p);\n else if (uPreset == 2) f = shards(p);\n else if (uPreset == 3) f = cosmos(p);\n else if (uPreset == 4) f = rainbow(p);\n else if (uPreset == 5) f = swirl(p);\n else if (uPreset == 6) f = glitter(p);\n else f = gold(p);\n\n vec3 metal = uPreset == 7 ? vec3(1.0, 0.74, 0.38) * dot(uFoil, vec3(0.3333)) * 1.15 : uFoil;\n vec4 look = uPreset == 0 ? vec4(0.25, 1.9, 0.12, 1.0)\n : uPreset == 1 ? vec4(0.6, 1.4, 0.3, 1.0)\n : uPreset == 2 ? vec4(0.9, 0.9, 0.6, 0.5)\n : uPreset == 3 ? vec4(0.7, 1.2, 0.35, 0.85)\n : uPreset == 4 ? vec4(0.0, 2.2, 0.0, 0.45)\n : uPreset == 5 ? vec4(1.6, 0.3, 0.0, 0.4)\n : uPreset == 6 ? vec4(0.9, 1.0, 0.6, 1.0)\n : vec4(0.3, 1.0, 0.2, 0.95);\n vec2 dir = vec2(cos(f.angle), sin(f.angle));\n float phase = dot(sweep, dir) * look.x + dot(sweep, vec2(0.8, 0.6)) * look.y + f.jitter * look.z;\n float spoke = 1.0;\n if (uPreset == 5) {\n float facing = dot(normalize(sweep + 0.0001), dir);\n phase = f.jitter * 2.4 + facing * 0.6 + length(sweep) * 0.8;\n spoke = 0.3 + 0.7 * smoothstep(0.25, 0.95, abs(facing));\n }\n vec3 tint = hue(phase);\n if (uPreset == 7) tint = mix(tint, metal, 0.65);\n float glint = pow(max(dot(normalize(vec3(f.facet, 1.0)), halfway), 0.0), 24.0) * step(0.001, length(f.facet));\n bool layered = uPreset == 2 || uPreset == 4 || uPreset == 5 || uPreset == 7;\n vec3 foil = (layered ? tint : mix(tint, vec3(1.0), 0.12)) * (1.15 + 0.3 * sheen) + metal * glint * 1.2;\n float tilted = smoothstep(0.02, 0.21, length(sin(uTilt)));\n float awake = mix(0.78, 1.0, tilted);\n float strength = uIntensity * f.mask * (1.0 - frame) * awake;\n float band = uPreset == 5 ? spoke : layered ? 0.25 + 0.75 * smoothstep(0.3, 0.95, 0.5 + 0.5 * cos(phase * TAU * 0.5 + 1.3)) : 1.0;\n vec3 color = layered\n ? 1.0 - (1.0 - art) * (1.0 - clamp(foil * look.w * band * strength, 0.0, 1.0))\n : mix(art, foil, clamp(strength * look.w, 0.0, 1.0));\n color += sparkles(p, halfway, sweep, mix(0.55, 1.0, tilted)) * uEdge * frame;\n color += uFoil * sheen * 0.12 * frame;\n color += vec3(sheen * 0.07 + shine * 0.3) * uGlare;\n color = pow(clamp(color, 0.0, 1.0), vec3(1.0 / 2.2));\n outColor = vec4(color * alpha, alpha);\n}\n";
+  var FRAGMENT = "#version 300 es\nprecision highp float;\n\nuniform sampler2D uArt;\nuniform vec2 uSize;\nuniform float uAspect;\nuniform vec2 uTilt;\nuniform vec2 uLight;\nuniform float uDistance;\nuniform int uPreset;\nuniform float uIntensity;\nuniform float uScale;\nuniform float uEdge;\nuniform float uFrame;\nuniform float uRadius;\nuniform float uGlare;\nuniform vec3 uFoil;\nuniform float uReady;\nuniform float uSeed;\nuniform float uBg;\n\nout vec4 outColor;\n\nconst float TAU = 6.28318530718;\n\nstruct Foil {\n float mask;\n float angle;\n float jitter;\n vec2 facet;\n};\n\nfloat hash(vec2 p) {\n p = fract(p * vec2(234.34, 435.345));\n p += dot(p, p + 34.23);\n return fract(p.x * p.y);\n}\n\nvec2 hash2(vec2 p) {\n return vec2(hash(p), hash(p + 17.31));\n}\n\nvec3 hue(float t) {\n t = abs(fract(t * 0.5) * 2.0 - 1.0);\n vec3 c = mix(vec3(0.1, 0.25, 1.0), vec3(0.0, 0.85, 1.0), smoothstep(0.0, 0.25, t));\n c = mix(c, vec3(0.25, 1.0, 0.2), smoothstep(0.25, 0.45, t));\n c = mix(c, vec3(1.0, 0.92, 0.05), smoothstep(0.45, 0.65, t));\n c = mix(c, vec3(1.0, 0.45, 0.05), smoothstep(0.65, 0.85, t));\n return mix(c, vec3(0.95, 0.12, 0.3), smoothstep(0.85, 1.0, t));\n}\n\nFoil bursts(vec2 p) {\n vec2 q = mat2(0.7071068, 0.7071068, -0.7071068, 0.7071068) * (p - vec2(0.5, 0.5 * uAspect)) / (0.283 / uScale);\n vec2 d = fract(q) - 0.5;\n float u = length(d) / 0.49;\n float angle = atan(d.y, d.x);\n if (u < 0.12) {\n float ring = min(floor(u / 0.045 + 0.5), 2.0);\n float count = max(1.0, ring * 6.0);\n float spot = (floor(angle / TAU * count) + 0.5) / count * TAU;\n vec2 dot = vec2(cos(spot), sin(spot)) * ring * 0.045;\n float m = smoothstep(0.024, 0.012, length(d / 0.49 - dot));\n return Foil(m, angle, 0.5, vec2(0.0));\n }\n bool inner = u < 0.66;\n float slot = angle / TAU * (inner ? 56.0 : 72.0);\n bool shifted = mod(floor(slot), 2.0) > 0.5;\n vec2 band = inner ? (shifted ? vec2(0.45, 0.61) : vec2(0.33, 0.49)) : (shifted ? vec2(0.84, 0.99) : vec2(0.7, 0.85));\n float across = abs(u - (band.x + band.y) * 0.5) / ((band.y - band.x) * 0.5);\n float along = abs(fract(slot) - 0.5) * 2.0;\n float width = inner ? 0.72 : 0.6;\n float m = smoothstep(1.0, 0.78, across) * smoothstep(width, width - 0.2, along);\n return Foil(m, angle, 0.5, vec2(0.0));\n}\n\nFoil stars(vec2 p) {\n Foil best = Foil(0.0, 0.0, 0.0, vec2(0.0));\n vec2 g = p / (0.08 / uScale);\n vec2 base = floor(g);\n for (int j = -1; j <= 1; j++) {\n for (int i = -1; i <= 1; i++) {\n vec2 id = base + vec2(float(i), float(j));\n float pick = hash(id + 1.3);\n vec2 d = g - (id + 0.5 + (hash2(id) - 0.5) * 0.55);\n float m = smoothstep(0.07, 0.035, length(d));\n if (pick < 0.62) {\n float size = mix(0.16, 0.5, pow(hash(id + 9.0), 1.8));\n float sector = TAU / (pick < 0.3 ? 4.0 : 5.0);\n float k = abs(fract((atan(d.y, d.x) + hash(id + 4.0) * TAU) / sector) - 0.5) * 2.0;\n float edge = size * mix(1.0, 0.36, pow(k, 0.6));\n m = smoothstep(edge, edge * 0.8, length(d));\n }\n if (m > best.mask) best = Foil(m, hash(id + 6.0) * TAU, hash(id + 8.0), (hash2(id + 2.0) - 0.5) * 0.6);\n }\n }\n return best;\n}\n\nFoil shards(vec2 p) {\n vec2 seed = vec2(uSeed, uSeed * 1.37);\n vec2 g = p * 19.0 * uScale;\n vec2 base = floor(g);\n float best = 9.0;\n float second = 9.0;\n vec2 id = base;\n for (int j = -1; j <= 1; j++) {\n for (int i = -1; i <= 1; i++) {\n vec2 cell = base + vec2(float(i), float(j));\n float d = length(cell + 0.08 + hash2(cell + seed) * 0.84 - g);\n if (d < best) {\n second = best;\n best = d;\n id = cell;\n } else if (d < second) {\n second = d;\n }\n }\n }\n float crack = smoothstep(0.015, 0.07, second - best);\n float shine = 0.25 + 0.75 * pow(hash(id + seed + 7.7), 2.0);\n return Foil((0.2 + 0.8 * crack) * shine, hash(id + seed + 3.17) * TAU, hash(id + seed + 11.73), (hash2(id + seed + 5.0) - 0.5) * 0.5);\n}\n\nFoil ice(vec2 p) {\n vec2 seed = vec2(uSeed * 2.11, uSeed * 0.73 + 3.1);\n vec2 g = p * 58.0 * uScale;\n vec2 base = floor(g);\n float best = 9.0;\n float second = 9.0;\n vec2 id = base;\n for (int j = -1; j <= 1; j++) {\n for (int i = -1; i <= 1; i++) {\n vec2 cell = base + vec2(float(i), float(j));\n float d = length(cell + hash2(cell + seed) - g);\n if (d < best) {\n second = best;\n best = d;\n id = cell;\n } else if (d < second) {\n second = d;\n }\n }\n }\n float edge = second - best;\n float fill = smoothstep(0.0, 0.0025, edge);\n float gap = 1.0 - smoothstep(0.0, 0.0055, edge);\n float mask = fill * (1.0 - gap * 0.99);\n float ang = hash(id + seed + 3.17) * TAU;\n float jit = hash(id + seed + 11.73);\n vec2 facet = (hash2(id + seed + 5.0) - 0.5) * 1.9;\n return Foil(mask, ang, jit, facet);\n}\n\nFoil cosmos(vec2 p) {\n Foil best = Foil(0.0, 0.0, 0.0, vec2(0.0));\n vec2 g = p / (0.16 / uScale);\n vec2 base = floor(g);\n for (int j = -1; j <= 1; j++) {\n for (int i = -1; i <= 1; i++) {\n vec2 id = base + vec2(float(i), float(j));\n vec2 d = g - (id + 0.5 + (hash2(id) - 0.5) * 0.7);\n float size = mix(0.16, 0.52, hash(id + 2.0));\n float r = length(d);\n float m = max(smoothstep(0.05, 0.0, abs(r - size)), smoothstep(size, size - 0.04, r) * 0.22);\n if (m > best.mask) best = Foil(m, hash(id + 6.0) * TAU + atan(d.y, d.x) * 0.5, hash(id + 1.0), (hash2(id + 4.0) - 0.5) * 0.5);\n }\n }\n vec2 fine = p / (0.035 / uScale);\n vec2 cell = floor(fine);\n float dots = smoothstep(0.2, 0.1, length(fine - cell - 0.5 - (hash2(cell + 9.0) - 0.5) * 0.6)) * step(0.55, hash(cell + 2.0));\n if (dots > best.mask) best = Foil(dots, hash(cell) * TAU, hash(cell + 3.0), (hash2(cell + 7.0) - 0.5) * 0.6);\n return best;\n}\n\nFoil rainbow(vec2 p) {\n return Foil(0.86 + 0.14 * hash(floor(p * 700.0 * uScale)), 0.2, 0.5, vec2(0.0));\n}\n\nFoil swirl(vec2 p) {\n vec2 d = p - vec2(0.5, 0.42 * uAspect);\n float angle = atan(d.y, d.x);\n float rays = 0.55 + 0.45 * smoothstep(0.3, 0.7, abs(fract(angle / TAU * 60.0 * uScale) - 0.5) * 2.0);\n return Foil(rays, angle, length(d), vec2(0.0));\n}\n\nFoil glitter(vec2 p) {\n vec2 g = p * 72.0 * uScale;\n vec2 cell = floor(g);\n float size = mix(0.18, 0.4, hash(cell + 3.0));\n float m = smoothstep(size, size * 0.55, length(fract(g) - 0.5 - (hash2(cell) - 0.5) * 0.5)) * step(0.25, hash(cell + 5.0));\n return Foil(m, hash(cell + 7.0) * TAU, hash(cell + 9.0), (hash2(cell + 11.0) - 0.5) * 0.9);\n}\n\nFoil gold(vec2 p) {\n Foil flake = glitter(p * 0.8);\n if (flake.mask > 0.5) return flake;\n float etch = 0.55 + 0.45 * smoothstep(0.2, 0.8, abs(fract((p.x * 0.6 + p.y) * 140.0 * uScale) - 0.5) * 2.0);\n return Foil(etch, 0.9, 0.4, vec2(0.0));\n}\n\nvec3 sparkles(vec2 p, vec3 halfway, vec2 sweep, float awake) {\n vec2 g = p * 62.0;\n vec2 cell = floor(g);\n vec2 d = fract(g) - 0.5 - (hash2(cell) - 0.5) * 0.36;\n float spin = hash(cell + 3.0) * TAU;\n d = mat2(cos(spin), -sin(spin), sin(spin), cos(spin)) * d;\n vec2 a = abs(d);\n float hexagon = max(a.x * 0.866 + a.y * 0.5, a.y);\n float size = mix(0.22, 0.38, hash(cell + 2.0));\n float piece = smoothstep(size, size - 0.07, hexagon) * step(0.42, hash(cell + 4.0));\n vec3 facet = normalize(vec3((hash2(cell + 6.0) - 0.5) * 0.9, 1.0));\n float flash = pow(max(dot(facet, halfway), 0.0), 6.0);\n vec3 tint = hue(dot(sweep, vec2(cos(spin), sin(spin))) * 1.2 + dot(sweep, vec2(0.8, 0.6)) * 0.8 + hash(cell + 8.0) * 0.5);\n vec3 color = piece * tint * (0.3 + 1.6 * flash) * awake;\n vec2 fine = p * 210.0;\n vec2 speckCell = floor(fine);\n float speck = smoothstep(0.24, 0.0, length(fract(fine) - 0.5 - (hash2(speckCell) - 0.5) * 0.5)) * step(0.72, hash(speckCell + 1.0));\n float speckFlash = pow(max(dot(normalize(vec3((hash2(speckCell + 2.0) - 0.5) * 0.9, 1.0)), halfway), 0.0), 10.0);\n return color + vec3(1.2) * speck * speckFlash * (1.0 - piece);\n}\n\nvoid main() {\n vec2 uv = vec2(gl_FragCoord.x / uSize.x, 1.0 - gl_FragCoord.y / uSize.y);\n vec2 p = vec2(uv.x, uv.y * uAspect);\n vec2 center = vec2(0.5, 0.5 * uAspect);\n vec2 q = abs(p - center) - center + uRadius;\n float outside = length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - uRadius;\n float pixel = 1.0 / uSize.x;\n float alpha = clamp(0.5 - outside / pixel, 0.0, 1.0);\n vec4 sampled = texture(uArt, uv);\n if (uReady > 0.5) alpha *= sampled.a;\n if (alpha <= 0.0) {\n outColor = vec4(0.0);\n return;\n }\n vec3 art = uReady > 0.5 ? pow(sampled.rgb, vec3(2.2)) : vec3(0.12);\n\n mat3 rx = mat3(1.0, 0.0, 0.0, 0.0, cos(uTilt.x), sin(uTilt.x), 0.0, -sin(uTilt.x), cos(uTilt.x));\n mat3 ry = mat3(cos(uTilt.y), 0.0, -sin(uTilt.y), 0.0, 1.0, 0.0, sin(uTilt.y), 0.0, cos(uTilt.y));\n mat3 turn = rx * ry;\n vec3 world = turn * vec3(p - center, 0.0);\n vec3 view = normalize(transpose(turn) * (vec3(0.0, 0.0, uDistance) - world));\n vec3 lamp = vec3((uLight - 0.5) * vec2(1.1, 1.1 * uAspect), 0.9);\n vec3 light = normalize(transpose(turn) * (lamp - world));\n vec3 halfway = normalize(light + view);\n vec2 sweep = light.xy + view.xy;\n float sheen = pow(max(halfway.z, 0.0), 10.0);\n float shine = pow(max(halfway.z, 0.0), 80.0);\n float frame = 1.0 - smoothstep(uFrame - pixel, uFrame + pixel, -outside);\n\n Foil f;\n if (uPreset == 0) f = bursts(p);\n else if (uPreset == 1) f = stars(p);\n else if (uPreset == 2) f = shards(p);\n else if (uPreset == 3) f = cosmos(p);\n else if (uPreset == 4) f = rainbow(p);\n else if (uPreset == 5) f = swirl(p);\n else if (uPreset == 6) f = glitter(p);\n else if (uPreset == 7) f = gold(p);\n else f = ice(p);\n\n float tilted = smoothstep(0.02, 0.21, length(sin(uTilt)));\n float awake = mix(0.78, 1.0, tilted);\n vec3 color;\n if (uPreset == 8) {\n float flash = pow(max(dot(normalize(vec3(f.facet, 1.15)), halfway), 0.0), 10.0);\n flash = smoothstep(0.14, 0.55, flash);\n float cellHue = f.angle / TAU + dot(sweep, vec2(0.62, 0.48)) * 0.55 + f.jitter * 0.2;\n vec3 shardCol = hue(cellHue);\n vec3 silverBg = mix(vec3(0.72, 0.76, 0.82), vec3(0.92, 0.94, 0.97), sheen);\n vec3 darkBg = mix(vec3(0.12, 0.13, 0.16), vec3(0.28, 0.30, 0.34), sheen * 0.5);\n vec3 ground = mix(silverBg, darkBg, clamp(uBg, 0.0, 1.0));\n vec3 foilTint = mix(ground, shardCol * (1.05 + 0.45 * sheen), flash);\n foilTint = mix(foilTint, ground * mix(0.75, 0.4, clamp(uBg, 0.0, 1.0)), 1.0 - f.mask);\n float strength = uIntensity * f.mask * awake * mix(0.22, 0.55, flash);\n color = 1.0 - (1.0 - art) * (1.0 - clamp(foilTint * strength, 0.0, 0.72));\n color = mix(color, shardCol, flash * f.mask * uIntensity * 0.12);\n color += ground * sheen * 0.04 * (1.0 - frame) * uIntensity;\n } else {\n vec3 metal = uPreset == 7 ? vec3(1.0, 0.74, 0.38) * dot(uFoil, vec3(0.3333)) * 1.15 : uFoil;\n vec4 look = uPreset == 0 ? vec4(0.25, 1.9, 0.12, 1.0)\n : uPreset == 1 ? vec4(0.6, 1.4, 0.3, 1.0)\n : uPreset == 2 ? vec4(0.9, 0.9, 0.6, 0.5)\n : uPreset == 3 ? vec4(0.7, 1.2, 0.35, 0.85)\n : uPreset == 4 ? vec4(0.0, 2.2, 0.0, 0.45)\n : uPreset == 5 ? vec4(1.6, 0.3, 0.0, 0.4)\n : uPreset == 6 ? vec4(0.9, 1.0, 0.6, 1.0)\n : vec4(0.3, 1.0, 0.2, 0.95);\n vec2 dir = vec2(cos(f.angle), sin(f.angle));\n float phase = dot(sweep, dir) * look.x + dot(sweep, vec2(0.8, 0.6)) * look.y + f.jitter * look.z;\n float spoke = 1.0;\n if (uPreset == 5) {\n float facing = dot(normalize(sweep + 0.0001), dir);\n phase = f.jitter * 2.4 + facing * 0.6 + length(sweep) * 0.8;\n spoke = 0.3 + 0.7 * smoothstep(0.25, 0.95, abs(facing));\n }\n vec3 tint = hue(phase);\n if (uPreset == 7) tint = mix(tint, metal, 0.65);\n float glint = pow(max(dot(normalize(vec3(f.facet, 1.0)), halfway), 0.0), 24.0) * step(0.001, length(f.facet));\n bool layered = uPreset == 2 || uPreset == 4 || uPreset == 5 || uPreset == 7;\n vec3 foil = (layered ? tint : mix(tint, vec3(1.0), 0.12)) * (1.15 + 0.3 * sheen) + metal * glint * 1.2;\n float strength = uIntensity * f.mask * (1.0 - frame) * awake;\n float band = uPreset == 5 ? spoke : layered ? 0.25 + 0.75 * smoothstep(0.3, 0.95, 0.5 + 0.5 * cos(phase * TAU * 0.5 + 1.3)) : 1.0;\n color = layered\n ? 1.0 - (1.0 - art) * (1.0 - clamp(foil * look.w * band * strength, 0.0, 1.0))\n : mix(art, foil, clamp(strength * look.w, 0.0, 1.0));\n }\n color += sparkles(p, halfway, sweep, mix(0.55, 1.0, tilted)) * uEdge * frame;\n color += uFoil * sheen * 0.12 * frame;\n color += vec3(sheen * 0.07 + shine * 0.3) * uGlare;\n color = pow(clamp(color, 0.0, 1.0), vec3(1.0 / 2.2));\n outColor = vec4(color * alpha, alpha);\n}\n";
 
   function clamp(n, a, b) {
     return n < a ? a : n > b ? b : n;
@@ -346,7 +354,9 @@
       'uRadius',
       'uGlare',
       'uFoil',
-      'uReady'
+      'uReady',
+      'uSeed',
+      'uBg'
     ].forEach(function (name) {
       uniforms[name] = gl.getUniformLocation(program, name);
     });
@@ -360,6 +370,8 @@
       frame: clamp(opts.frame != null ? opts.frame : 4, 0, 20) / 100,
       glare: clamp(opts.glare != null ? opts.glare : 0.5, 0, 1),
       foil: foil,
+      seed: Number.isFinite(opts.seed) ? opts.seed : (Number.isFinite(opts.patternSeed) ? opts.patternSeed : 0),
+      bg: clamp(opts.bg != null ? opts.bg : (opts.iceBg != null ? opts.iceBg : 0), 0, 1),
       radius: Math.max(0, opts.radius != null ? opts.radius : 10),
       /* Reduce Motion: no CSS 3D tilt, but keep light drift / gyro foil on iOS */
       tiltMax: reduced ? 0 : clamp(opts.tiltMax != null ? opts.tiltMax : 14, 0, 45),
@@ -398,6 +410,8 @@
     var visible = true;
     var alive = true;
     var calm = 0;
+    /* Ambient drift only for a short window after mount/interaction — not forever. */
+    var ambienceUntil = 0;
     var bake = document.createElement('canvas');
     var bakeCtx = bake.getContext('2d', { alpha: true });
 
@@ -425,6 +439,8 @@
       gl.uniform1f(uniforms.uRadius, settings.radius / Math.max(1, canvas.clientWidth));
       gl.uniform1f(uniforms.uGlare, settings.glare);
       gl.uniform3f(uniforms.uFoil, settings.foil[0], settings.foil[1], settings.foil[2]);
+      gl.uniform1f(uniforms.uSeed, settings.seed || 0);
+      gl.uniform1f(uniforms.uBg, settings.bg || 0);
       gl.uniform1f(uniforms.uReady, textureReady ? 1 : 0);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     }
@@ -616,6 +632,7 @@
     function tick(now) {
       raf = 0;
       if (!alive) return;
+      if (typeof document !== 'undefined' && document.hidden) return;
       var dt = Math.min(1 / 30, Math.max(1 / 240, (now - last) / 1000));
       last = now;
       var targetX = 0;
@@ -624,7 +641,7 @@
       var lightY = 0.26;
       var lift = 1;
       var usingGyro = gyro.live && !pointer.inside;
-      var drifting = settings.idle && !pointer.inside && !usingGyro;
+      var drifting = settings.idle && !pointer.inside && !usingGyro && now < ambienceUntil;
       var tiltCap = settings.tiltMax > 0 ? settings.tiltMax : 16;
       if (pointer.inside) {
         targetX = (0.5 - pointer.y) * 2 * (settings.tiltMax || tiltCap);
@@ -731,10 +748,23 @@
     }
 
     function wake() {
-      if (raf || !alive) return;
+      if (!alive) return;
+      if (typeof document !== 'undefined' && document.hidden) return;
+      ambienceUntil = Math.max(ambienceUntil, performance.now() + (pointer.inside || gyro.live ? 4200 : 2400));
       calm = 0;
+      if (raf) return;
       last = performance.now();
       raf = requestAnimationFrame(tick);
+    }
+
+    function onVisibility() {
+      if (!alive) return;
+      if (typeof document !== 'undefined' && document.hidden) {
+        cancelAnimationFrame(raf);
+        raf = 0;
+        return;
+      }
+      wake();
     }
 
     var pressing = false;
@@ -885,11 +915,19 @@
     else img.addEventListener('load', loadTexture, { once: true });
     resize();
     bindGyro();
+    try {
+      document.addEventListener('visibilitychange', onVisibility);
+    } catch (_) {}
+    ambienceUntil = performance.now() + 2400;
     wake();
 
     function destroy() {
       alive = false;
       cancelAnimationFrame(raf);
+      raf = 0;
+      try {
+        document.removeEventListener('visibilitychange', onVisibility);
+      } catch (_) {}
       try {
         window.removeEventListener('deviceorientation', onDeviceOrient, true);
       } catch (_) {}
@@ -942,7 +980,15 @@
     requestGyroPermission: requestGyroPermission,
     isCoarsePointer: isCoarsePointer,
     DEFAULT_FOIL: DEFAULT_FOIL,
-    PRESET_SHARDS: PRESET_SHARDS
+    PRESET_BURSTS: PRESET_BURSTS,
+    PRESET_STARS: PRESET_STARS,
+    PRESET_SHARDS: PRESET_SHARDS,
+    PRESET_COSMOS: PRESET_COSMOS,
+    PRESET_RAINBOW: PRESET_RAINBOW,
+    PRESET_SWIRL: PRESET_SWIRL,
+    PRESET_GLITTER: PRESET_GLITTER,
+    PRESET_GOLD: PRESET_GOLD,
+    PRESET_ICE: PRESET_ICE
   };
 })(typeof window !== 'undefined' ? window : this);
 
