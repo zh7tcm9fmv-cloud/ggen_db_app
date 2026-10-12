@@ -151,8 +151,8 @@
       unowned: 'Not possessed',
       census_title: 'Community census',
       census_blurb:
-        'Opt-in anonymous stats. Choose a unique display name. Graphs never show names.',
-      census_optin: 'Include my Collections in the anonymous census',
+        'Anonymous community stats. Choose a unique display name. Graphs never show names. Saving an image, sharing on X, or generating a share code also updates your census.',
+      census_optin: '',
       census_submit: 'Submit / update census',
       census_hist_title: 'Player collection depth',
       census_own_title: 'Most collected {type}',
@@ -291,8 +291,8 @@
       unowned: '未所持',
       census_title: 'コミュニティセンサス',
       census_blurb:
-        '任意参加の匿名統計です。表示名は一意。グラフに名前は出ません。',
-      census_optin: '自分のコレクションを匿名センサスに含める',
+        '匿名のコミュニティ統計です。表示名は一意。グラフに名前は出ません。画像保存・X共有・共有コード生成時にもセンサスが更新されます。',
+      census_optin: '',
       census_submit: 'センサスを送信／更新',
       census_hist_title: 'プレイヤーのコレクション深度',
       census_own_title: '所持が多い{type}',
@@ -302,13 +302,13 @@
         '所持ポイントが少ない順（左→右）。高さ＝センサス内の合計所持ポイント（未所持=0・限界突破MAX=4）。棒にホバー（スマホはタップ）で詳細表示。',
       census_own_tip: '{pts}pt · 所持 {owned}人 · 平均 {avg} / 4',
       census_y_owned: 'Pt',
-      census_need_optin: '参加するにはチェックを入れてください。',
+      census_need_optin: '',
       census_need_name: '先に表示名を入力してください（他者と重複不可）。',
       census_ok: '「{name}」としてセンサスを保存しました · {n}件。',
       census_updated: '「{name}」のセンサスを更新しました · {n}件。',
       census_name_taken: 'その表示名は使用中です。別の名前を選んでください。',
       census_fail: 'センサス送信に失敗しました。\n{err}',
-      census_empty: 'まだ任意参加のスナップショットがありません。',
+      census_empty: 'まだセンサスのスナップショットがありません。',
       census_meta: '匿名スナップショット {n}件 · 対象: {board}',
       census_loading: 'センサス読み込み中…',
       saves_title: '保存したコレクション',
@@ -430,8 +430,8 @@
       noun_supporters: '個',
       unowned: '未持有',
       census_title: '社群普查',
-      census_blurb: '自願加入的匿名統計。顯示名稱須唯一。圖表不顯示名稱。',
-      census_optin: '將我的收藏納入匿名普查',
+      census_blurb: '匿名社群統計。顯示名稱須唯一。圖表不顯示名稱。儲存圖片、分享至 X 或產生分享代碼時也會更新普查。',
+      census_optin: '',
       census_submit: '送出／更新普查',
       census_hist_title: '玩家收藏深度',
       census_own_title: '最多持有{type}',
@@ -441,13 +441,13 @@
         '依持有點數由低到高（左→右）。高度＝普查內合計持有點數（未持有=0・突破界限 MAX=4）。懸停長條（手機點擊）可查看詳情。',
       census_own_tip: '{pts} 點 · 持有 {owned} 人 · 平均 {avg} / 4',
       census_y_owned: '點',
-      census_need_optin: '請先勾選同意納入普查。',
+      census_need_optin: '',
       census_need_name: '請先輸入顯示名稱（不可與其他人重複）。',
       census_ok: '已以「{name}」儲存普查 · {n} 筆快照。',
       census_updated: '已更新「{name}」的普查 · {n} 筆快照。',
       census_name_taken: '此顯示名稱已被使用，請換一個。',
       census_fail: '普查送出失敗。\n{err}',
-      census_empty: '尚無自願快照 — 歡迎成為第一位。',
+      census_empty: '尚無普查快照 — 歡迎成為第一位。',
       census_meta: '{n} 筆匿名快照 · 板面: {board}',
       census_loading: '正在載入普查…',
       saves_title: '已儲存的收藏',
@@ -569,8 +569,8 @@
       noun_supporters: '個',
       unowned: '未持有',
       census_title: '社群普查',
-      census_blurb: '自願加入的匿名統計。顯示名稱須唯一。圖表不顯示名稱。',
-      census_optin: '將我的收藏納入匿名普查',
+      census_blurb: '匿名社群統計。顯示名稱須唯一。圖表不顯示名稱。儲存圖片、分享至 X 或產生分享代碼時也會更新普查。',
+      census_optin: '',
       census_submit: '送出／更新普查',
       census_hist_title: '玩家收藏深度',
       census_own_title: '最多持有{type}',
@@ -580,13 +580,13 @@
         '依持有點數由低到高（左→右）。高度＝普查內合計持有點數（未持有=0・突破界限 MAX=4）。懸停長條（手機點擊）可查看詳情。',
       census_own_tip: '{pts} 點 · 持有 {owned} 人 · 平均 {avg} / 4',
       census_y_owned: '點',
-      census_need_optin: '請先勾選同意納入普查。',
+      census_need_optin: '',
       census_need_name: '請先輸入顯示名稱（不可與其他人重複）。',
       census_ok: '已以「{name}」儲存普查 · {n} 筆快照。',
       census_updated: '已更新「{name}」的普查 · {n} 筆快照。',
       census_name_taken: '此顯示名稱已被使用，請換一個。',
       census_fail: '普查送出失敗。\n{err}',
-      census_empty: '尚無自願快照 — 歡迎成為第一位。',
+      census_empty: '尚無普查快照 — 歡迎成為第一位。',
       census_meta: '{n} 筆匿名快照 · 板面: {board}',
       census_loading: '正在載入普查…',
       saves_title: '已儲存的收藏',
@@ -705,8 +705,8 @@
       noun_supporters: '서포터',
       unowned: '미보유',
       census_title: '커뮤니티 센서스',
-      census_blurb: '옵트인 익명 통계. 고유 표시 이름을 선택하세요. 그래프에 이름은 표시되지 않습니다.',
-      census_optin: '내 컬렉션을 익명 센서스에 포함',
+      census_blurb: '익명 커뮤니티 통계. 고유 표시 이름을 선택하세요. 그래프에 이름은 표시되지 않습니다. 이미지 저장·X 공유·공유 코드 생성 시에도 센서스가 갱신됩니다.',
+      census_optin: '',
       census_submit: '센서스 제출 / 갱신',
       census_hist_title: '플레이어 컬렉션 깊이',
       census_own_title: '가장 많이 모인 {type}',
@@ -714,13 +714,13 @@
       census_own_hint: '적게 모인 순 → 많이 모인 순（왼→오）. 높이 = 센서스 총 보유 포인트（미보유=0 · 최대 LB=4）. 막대 호버（모바일은 탭）로 상세.',
       census_own_tip: '{pts} pt · {owned}명 보유 · 평균 {avg} / 4',
       census_y_owned: 'Pt',
-      census_need_optin: '참여하려면 옵트인 체크를 하세요.',
+      census_need_optin: '',
       census_need_name: '먼저 고유 표시 이름을 입력하세요.',
       census_ok: '“{name}”으로 센서스 저장 · 스냅샷 {n}건.',
       census_updated: '“{name}” 센서스 갱신 · 스냅샷 {n}건.',
       census_name_taken: '이미 쓰인 표시 이름입니다. 다른 이름을 고르세요.',
       census_fail: '센서스 제출 실패.\n{err}',
-      census_empty: '아직 옵트인 스냅샷이 없습니다 — 첫 참여자가 되어 주세요.',
+      census_empty: '아직 센서스 스냅샷이 없습니다 — 첫 참여자가 되어 주세요.',
       census_meta: '익명 스냅샷 {n}건 · 보드: {board}',
       census_loading: '센서스 로딩 중…',
       saves_title: '저장된 컬렉션',
@@ -859,6 +859,27 @@
   function saveOwned() {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state.owned));
+    } catch (_) {}
+    refreshCollectionsCensusNotice();
+  }
+
+  function refreshCollectionsCensusNotice() {
+    try {
+      if (window.GgenContentNotices && typeof GgenContentNotices.updateCollectionsCensusNotice === 'function') {
+        GgenContentNotices.updateCollectionsCensusNotice();
+      }
+    } catch (_) {}
+  }
+
+  function markCollectionsCensusSubmittedLocal() {
+    try {
+      if (window.GgenContentNotices && typeof GgenContentNotices.markCollectionsCensusSubmitted === 'function') {
+        GgenContentNotices.markCollectionsCensusSubmitted();
+        return;
+      }
+    } catch (_) {}
+    try {
+      localStorage.setItem('ggen_collections_census_submitted', '1');
     } catch (_) {}
   }
 
@@ -1217,7 +1238,7 @@
     setText('colCopyShareCode', t('copy_share_code'));
     setText('colImportShareCode', t('import_share_code'));
     setText('colCensusTitle', t('census_title'));
-    setText('colCensusOptInLbl', t('census_optin'));
+    setText('colCensusBlurb', t('census_blurb'));
     setText('colCensusSubmit', t('census_submit'));
     setText('colCensusHistTitle', t('census_hist_title'));
     setText('colCensusOwnTitle', t('census_own_title', { type: typeTitle() }));
@@ -2056,7 +2077,7 @@
         '<img src="' +
         esc(imgUrl(LB_ICONS.Neutral)) +
         '" alt="" width="14" height="14" loading="lazy" decoding="async">';
-      return '<span class="collections-stat-stars" aria-hidden="true">' + lbStar + lbStar + lbStar + '</span>';
+      return '<span class="collections-stat-stars" aria-hidden="true">' + lbStar + lbStar + '</span>';
     }
     if (kind === 'limited') {
       return (
@@ -5041,6 +5062,7 @@
           link.click();
         } catch (_) {}
       }
+      maybeAutoSubmitCensus();
     } catch (err) {
       if (objectUrl) {
         try {
@@ -5619,6 +5641,7 @@
         history.replaceState(null, '', u.pathname + u.search + u.hash);
       } catch (_) {}
       showShareSavePrompt(code, payload);
+      maybeAutoSubmitCensus();
     } catch (err) {
       if (status) {
         status.textContent = t('share_code_fail', {
@@ -5684,20 +5707,6 @@
       localStorage.setItem('ggen_collections_census_ck', key);
     } catch (_) {}
     return key;
-  }
-
-  function loadCensusOptIn() {
-    try {
-      return localStorage.getItem('ggen_collections_census_optin') === '1';
-    } catch (_) {
-      return false;
-    }
-  }
-
-  function saveCensusOptIn(on) {
-    try {
-      localStorage.setItem('ggen_collections_census_optin', on ? '1' : '0');
-    } catch (_) {}
   }
 
   function catalogNameById(id) {
@@ -6054,25 +6063,23 @@
     }
   }
 
-  async function submitCensus(btn) {
+  async function submitCensus(btn, opts) {
+    var quiet = !!(opts && opts.quiet);
     var meta = document.getElementById('colCensusMeta');
-    var opt = document.getElementById('colCensusOptIn');
-    if (!opt || !opt.checked) {
-      if (meta) meta.textContent = t('census_need_optin');
-      return;
-    }
     var name = currentUsername();
     if (!name || name.length < 2) {
-      if (meta) meta.textContent = t('census_need_name');
-      var input = document.getElementById('colUsername');
-      if (input) {
-        input.focus();
-        input.classList.add('is-need-name');
-        setTimeout(function () {
-          input.classList.remove('is-need-name');
-        }, 1200);
+      if (!quiet) {
+        if (meta) meta.textContent = t('census_need_name');
+        var input = document.getElementById('colUsername');
+        if (input) {
+          input.focus();
+          input.classList.add('is-need-name');
+          setTimeout(function () {
+            input.classList.remove('is-need-name');
+          }, 1200);
+        }
       }
-      return;
+      return false;
     }
     var hp = document.getElementById('colCensusHp');
     var original = btn ? btn.textContent : '';
@@ -6098,50 +6105,53 @@
         return null;
       });
       if (res.status === 409) {
-        if (meta) meta.textContent = t('census_name_taken');
-        return;
+        if (!quiet && meta) meta.textContent = t('census_name_taken');
+        return false;
       }
       if (!res.ok || !data || !data.ok) {
         throw new Error((data && data.error) || 'HTTP ' + res.status);
       }
-      if (meta) {
+      if (!quiet && meta) {
         meta.textContent = t(data.updated ? 'census_updated' : 'census_ok', {
           name: data.name || name,
           n: data.snapshots | 0
         });
       }
+      markCollectionsCensusSubmittedLocal();
       await loadCensusStats();
+      return true;
     } catch (err) {
-      if (meta) {
+      if (!quiet && meta) {
         meta.textContent = t('census_fail', {
           err: (err && err.message) || String(err || 'error')
         });
       }
+      return false;
     } finally {
       if (btn) {
-        var still = document.getElementById('colCensusOptIn');
-        btn.disabled = !(still && still.checked);
+        btn.disabled = false;
         btn.textContent = original || t('census_submit');
       }
     }
   }
 
+  function maybeAutoSubmitCensus() {
+    var name = currentUsername();
+    if (!name || name.length < 2) return;
+    try {
+      submitCensus(null, { quiet: true });
+    } catch (_) {}
+  }
+
   function wireCensusUi() {
-    var opt = document.getElementById('colCensusOptIn');
     var btn = document.getElementById('colCensusSubmit');
-    if (opt) {
-      opt.checked = loadCensusOptIn();
-      if (btn) btn.disabled = !opt.checked;
-      opt.addEventListener('change', function () {
-        saveCensusOptIn(!!opt.checked);
-        if (btn) btn.disabled = !opt.checked;
-      });
-    }
     if (btn) {
+      btn.disabled = false;
       btn.addEventListener('click', function () {
         submitCensus(btn);
       });
     }
+    refreshCollectionsCensusNotice();
   }
 
   async function shareOnX(btn) {
@@ -6198,6 +6208,7 @@
       try {
         if (await tryShareWithImage(text, file)) {
           if (status) status.textContent = t('share_done');
+          maybeAutoSubmitCensus();
           return;
         }
       } catch (shareErr) {
@@ -6213,6 +6224,7 @@
       var intent = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text);
       window.open(intent, '_blank', 'noopener,noreferrer');
       if (status) status.textContent = copied ? t('share_paste_hint') : t('share_attach_hint');
+      maybeAutoSubmitCensus();
     } catch (err) {
       if (status) {
         status.textContent = t('share_fail', {

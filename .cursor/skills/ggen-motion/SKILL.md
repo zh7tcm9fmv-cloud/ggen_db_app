@@ -23,7 +23,7 @@ description: >-
 | `--motion-dur-modal` | `320ms` | Modals, overlays |
 | `--motion-interactive` | see `static/css/ui_motion.css` | Chrome controls (not `all`) |
 
-**Playful** spring (`--ui-spring`) is reserved for Ko-fi promo, notice pulse rings, and rubber-band range sliders only.
+**Playful** spring (`--ui-spring`) is reserved for Ko-fi promo, notice glow breathe, and rubber-band range sliders only.
 
 ## Hard rules (performance)
 

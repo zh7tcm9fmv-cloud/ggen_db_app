@@ -1708,94 +1708,27 @@ function scrollActiveNavTabIntoView(){
 function syncNavTabsOverflowHints(){const scroller=navTabScrollerEl(),shell=document.getElementById('navTabsShell'),hintL=document.getElementById('navTabsEdgeHintLeft'),hintR=document.getElementById('navTabsEdgeHintRight'),flareL=document.getElementById('navTabsEdgeFlareWrapLeft'),flareR=document.getElementById('navTabsEdgeFlareWrapRight');if(!scroller||!shell||!hintL||!hintR)return;const edgePad=8;const canScroll=scroller.scrollWidth>scroller.clientWidth+2;const hasLeft=canScroll&&scroller.scrollLeft>edgePad;const hasRight=canScroll&&scroller.scrollLeft+scroller.clientWidth<scroller.scrollWidth-edgePad;const hiddenLeft=navTabsHiddenLeftNoticeTabs(scroller);const hiddenRight=navTabsHiddenRightNoticeTabs(scroller);shell.classList.toggle('nav-tabs-shell--scroll-left',hasLeft);shell.classList.toggle('nav-tabs-shell--scroll-right',hasRight);shell.classList.toggle('nav-tabs-shell--hidden-notice-left',hiddenLeft.length>0);shell.classList.toggle('nav-tabs-shell--hidden-notice-right',hiddenRight.length>0);hintL.hidden=!hasLeft;hintR.hidden=!hasRight;if(flareL){flareL.classList.toggle('has-ui-notice',hiddenLeft.length>0);hintL.dataset.noticeTarget=hiddenLeft[0]?hiddenLeft[0].id:''}if(flareR){flareR.classList.toggle('has-ui-notice',hiddenRight.length>0);hintR.dataset.noticeTarget=hiddenRight[0]?hiddenRight[0].id:''}}
 function scrollNavTabsToHiddenNotice(side){const scroller=navTabScrollerEl();if(!scroller)return;const hidden=side==='left'?navTabsHiddenLeftNoticeTabs(scroller):navTabsHiddenRightNoticeTabs(scroller);const target=hidden[0]||null;if(target)target.scrollIntoView({behavior:'smooth',inline:'nearest',block:'nearest'});else scroller.scrollBy({left:side==='left'?-Math.max(120,scroller.clientWidth*.65):Math.max(120,scroller.clientWidth*.65),behavior:'smooth'})}
 function initNavTabsOverflowHints(){if(S._navTabsOverflowInit)return;S._navTabsOverflowInit=1;ensureNavTabsEdgeFlares();syncNavTabsEdgeHintLabels();const scroller=navTabScrollerEl(),hintL=document.getElementById('navTabsEdgeHintLeft'),hintR=document.getElementById('navTabsEdgeHintRight');if(!scroller||!hintL||!hintR)return;let raf=0;const sync=()=>{if(raf)return;raf=requestAnimationFrame(()=>{raf=0;syncNavTabsOverflowHints()})};scroller.addEventListener('scroll',sync,{passive:true});window.addEventListener('resize',sync,{passive:true});window.addEventListener('orientationchange',sync,{passive:true});try{if(window.visualViewport){window.visualViewport.addEventListener('resize',sync,{passive:true});window.visualViewport.addEventListener('scroll',sync,{passive:true})}}catch(_){ }try{if(typeof window.matchMedia==='function'){const mq=window.matchMedia('(screen-spanning: single-fold-vertical), (screen-spanning: single-fold-horizontal), (horizontal-viewport-segments: 2), (vertical-viewport-segments: 2)');if(mq){if(mq.addEventListener)mq.addEventListener('change',sync);else if(mq.addListener)mq.addListener(sync)}}}catch(_){ }hintL.addEventListener('click',()=>scrollNavTabsToHiddenNotice('left'));hintR.addEventListener('click',()=>scrollNavTabsToHiddenNotice('right'));sync();window.syncNavTabsOverflowHints=syncNavTabsOverflowHints}
-/* Auto-hide section tabs on page scroll-down; brand row stays. Strong upward swipe reveals. */
+/* Auto-hide section tabs — shared module (nav_tabs_auto_hide.js) for site-wide cohesion. */
 function setNavTabsCollapsed(collapsed){
-  if(document.body.classList.contains('tm-page'))return;
+  if(window.GgenNavTabsAutoHide&&typeof GgenNavTabsAutoHide.setCollapsed==='function'){
+    GgenNavTabsAutoHide.setCollapsed(collapsed);
+    return;
+  }
+  if(document.body.classList.contains('tm-page')||document.body.classList.contains('dm-page'))return;
   const want=!!collapsed;
   if(document.body.classList.contains('nav-tabs-collapsed')===want)return;
   document.body.classList.toggle('nav-tabs-collapsed',want);
-  /* Ignore scroll anchoring for a beat after chrome height changes */
   S._navTabsScrollIgnoreUntil=Date.now()+320;
   scheduleSyncListTheadStickyTop();
   requestAnimationFrame(()=>{scheduleSyncListTheadStickyTop();setTimeout(scheduleSyncListTheadStickyTop,120)});
 }
 function initNavTabsAutoHide(){
+  if(window.GgenNavTabsAutoHide&&typeof GgenNavTabsAutoHide.init==='function'){
+    GgenNavTabsAutoHide.init();
+    return;
+  }
   if(S._navTabsAutoHideInit)return;
   S._navTabsAutoHideInit=1;
-  if(!document.getElementById('navTabs')||document.body.classList.contains('tm-page'))return;
-  let lastY=window.scrollY||document.documentElement.scrollTop||0;
-  let upAccum=0;
-  let touchY0=null;
-  /* Landscape phones: hide sooner so gacha/browse regain vertical space. */
-  function thresholds(){
-    let shortLandscape=false;
-    try{shortLandscape=window.matchMedia('(orientation: landscape) and (max-height: 520px)').matches}catch(_){}
-    return shortLandscape
-      ?{HIDE_AFTER:4,REVEAL_UP:220,TOP_SHOW:16}
-      :{HIDE_AFTER:10,REVEAL_UP:400,TOP_SHOW:40};
-  }
-  function pageScrollY(){
-    const w=window.scrollY||0;
-    const d=document.documentElement?document.documentElement.scrollTop:0;
-    const b=document.body?document.body.scrollTop:0;
-    let vv=0;
-    try{if(window.visualViewport)vv=window.visualViewport.pageTop||0}catch(_){}
-    return Math.max(w,d,b,vv)||0;
-  }
-  function locked(){
-    return document.documentElement.classList.contains('page-scroll-lock')
-      ||document.body.classList.contains('detail-modal-open')
-      ||document.body.classList.contains('search-spotlight-open')
-      ||document.body.classList.contains('gacha-sim-stage-open')
-      ||(S._navTabsScrollIgnoreUntil&&Date.now()<S._navTabsScrollIgnoreUntil);
-  }
-  function onScroll(){
-    const y=pageScrollY();
-    if(locked()){lastY=y;return}
-    const dy=y-lastY;
-    lastY=y;
-    const t=thresholds();
-    if(y<=t.TOP_SHOW){upAccum=0;setNavTabsCollapsed(false);return}
-    if(dy>0){
-      upAccum=0;
-      if(dy>=t.HIDE_AFTER||y>t.TOP_SHOW+24)setNavTabsCollapsed(true);
-      return;
-    }
-    if(dy<0){
-      upAccum+=-dy;
-      if(upAccum>=t.REVEAL_UP){upAccum=0;setNavTabsCollapsed(false)}
-    }
-  }
-  window.addEventListener('scroll',onScroll,{passive:true});
-  /* iOS: some embeds scroll document / visualViewport instead of window alone */
-  document.addEventListener('scroll',onScroll,{passive:true,capture:true});
-  try{
-    if(window.visualViewport){
-      window.visualViewport.addEventListener('scroll',onScroll,{passive:true});
-      window.visualViewport.addEventListener('resize',onScroll,{passive:true});
-    }
-  }catch(_){}
-  window.addEventListener('touchstart',function(ev){
-    try{touchY0=ev.touches&&ev.touches[0]?ev.touches[0].clientY:null}catch(_){touchY0=null}
-  },{passive:true});
-  window.addEventListener('touchmove',function(ev){
-    if(touchY0==null||locked())return;
-    let cy=null;
-    try{cy=ev.touches&&ev.touches[0]?ev.touches[0].clientY:null}catch(_){}
-    if(cy==null)return;
-    const fingerUp=touchY0-cy; /* finger moves up → page scrolls down */
-    const y=pageScrollY();
-    const t=thresholds();
-    if(fingerUp>12&&y>t.TOP_SHOW){
-      upAccum=0;
-      setNavTabsCollapsed(true);
-      touchY0=cy;
-    }else if(fingerUp<-28){
-      touchY0=cy;
-    }
-  },{passive:true});
-  window.addEventListener('touchend',function(){touchY0=null},{passive:true});
-  window.addEventListener('orientationchange',()=>{upAccum=0;setNavTabsCollapsed(false)},{passive:true});
 }
 function updateGameNewsNavNotice(show){const tab=document.getElementById('navGameNewsTab');if(!tab)return;tab.classList.toggle('has-ui-notice',!!show);syncNavTabsOverflowHints()}
 async function bootstrapGameNewsNotices(){if(window.GgenContentNotices){GgenContentNotices.setLang(S.lang||'EN');return GgenContentNotices.bootstrapGameNews()}ensureNavGameNewsNoticeFlare();const lang=normalizeGameNewsLangKey(S.lang||'EN');const seen=readGameNewsSeen(lang);try{const r=await fetch('/api/game_news/status?lang='+encodeURIComponent(lang)+'&last_seen_at='+encodeURIComponent(String(seen.at||0))+'&last_seen_fp='+encodeURIComponent(seen.fp||''),{credentials:'same-origin',cache:'no-store'});if(!r.ok){updateGameNewsNavNotice(false);return}const d=await r.json();const hasNew=!!d.has_new;S._gameNewsStatus=d;updateGameNewsNavNotice(hasNew)}catch(_){updateGameNewsNavNotice(false)}}

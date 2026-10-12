@@ -20883,7 +20883,7 @@ def api_collections_share_get(code):
 
 
 
-# --- Collections census (opt-in anonymous possession stats) ---
+# --- Collections census (anonymous possession stats; client auto-submits on share/save) ---
 _COLLECTIONS_CENSUS_MAX_ENTRIES = 5000
 _COLLECTIONS_CENSUS_RATE_LIMIT_SEC = 30
 _collections_census_cache = {'mtime': None, 'data': None}

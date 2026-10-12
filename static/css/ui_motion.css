@@ -1,4 +1,4 @@
-/* Shared motion: spring switches, notice pulse rings, rubber-band sliders.
+/* Shared motion: spring switches, notice star-border trails, rubber-band sliders.
    Brand motion (Corporate): MD3-style ease-out entrances, snappy interactive feedback.
    Aligned with LottieFiles motion-design-skill — transform/opacity only on hot paths. */
 
@@ -6,8 +6,10 @@
   --ui-spring:cubic-bezier(0.34,1.56,0.64,1);
   --ui-spring-dur:.4s;
   --ui-spring-snap:.5s;
-  --ui-notice-ring:rgba(255,71,87,.72);
-  --ui-notice-ring-soft:rgba(255,149,0,.55);
+  /* Notice flare — subtle natural red glow on the center icon */
+  --ui-notice-glow:rgba(255,70,70,.55);
+  --ui-notice-glow-soft:rgba(253,8,8,.28);
+  --ui-notice-glow-dur:2.8s;
   /* Corporate motion identity — one easing family for 80% of UI */
   --motion-ease-enter:cubic-bezier(0.05,0.7,0.1,1);
   --motion-ease-exit:cubic-bezier(0.3,0,1,1);
@@ -111,43 +113,37 @@
   transition:var(--motion-interactive)!important;
 }
 
-/* —— Notification red-dot pulse rings —— */
+/* —— Notification flare: subtle breathing glow (no star-border) —— */
 .ui-notice-flare{
   overflow:visible;
+  border-radius:50%;
 }
 .ui-notice-flare::before,
 .ui-notice-flare::after{
-  content:'';
-  position:absolute;
-  inset:0;
-  border-radius:50%;
-  border:2px solid var(--ui-notice-ring);
-  pointer-events:none;
-  opacity:0;
-  z-index:0;
-  box-sizing:border-box;
-}
-.ui-notice-flare::after{
-  border-color:var(--ui-notice-ring-soft);
-}
-.has-ui-notice .ui-notice-flare::before,
-.has-ui-notice .ui-notice-flare::after,
-.has-ui-notice>.ui-notice-flare::before,
-.has-ui-notice>.ui-notice-flare::after{
-  animation:ui-notice-pulse-ring 2.8s ease-out infinite;
-}
-.has-ui-notice .ui-notice-flare::after,
-.has-ui-notice>.ui-notice-flare::after{
-  animation-delay:1.4s;
+  content:none;
+  display:none;
 }
 .ui-notice-flare-img{
   position:relative;
   z-index:1;
+  transition:filter var(--motion-dur-quick) var(--motion-ease-standard);
 }
-/* Rings carry the notice motion; image stays static (no scale loop) */
-@keyframes ui-notice-pulse-ring{
-  0%{transform:scale(1);opacity:.55}
-  100%{transform:scale(2.2);opacity:0}
+.has-ui-notice .ui-notice-flare-img,
+.has-ui-notice>.ui-notice-flare-img{
+  filter:drop-shadow(0 0 4px var(--ui-notice-glow)) drop-shadow(0 0 9px var(--ui-notice-glow-soft));
+  animation:ui-notice-glow-breathe var(--ui-notice-glow-dur) ease-in-out infinite;
+}
+.has-ui-notice:hover .ui-notice-flare-img,
+.has-ui-notice:focus-visible .ui-notice-flare-img{
+  filter:drop-shadow(0 0 6px var(--ui-notice-glow)) drop-shadow(0 0 12px var(--ui-notice-glow-soft)) brightness(1.08);
+}
+@keyframes ui-notice-glow-breathe{
+  0%,100%{
+    filter:drop-shadow(0 0 3px var(--ui-notice-glow)) drop-shadow(0 0 7px var(--ui-notice-glow-soft));
+  }
+  50%{
+    filter:drop-shadow(0 0 6px var(--ui-notice-glow)) drop-shadow(0 0 12px var(--ui-notice-glow-soft));
+  }
 }
 
 /* —— Rubber-band range sliders —— */
@@ -373,7 +369,7 @@ input[type=range].ui-range.ui-range-snap::-moz-range-thumb{
 /* Browse: auto-hide #navTabsShell on scroll-down; brand header stays.
    Height collapses instantly (avoids scroll-anchoring fights); opacity fades.
    Tag Matrix (/tm) has its own board-scroll chrome hide in tag_matrix.css. */
-body:not(.tm-page) #navTabsShell{
+body:not(.tm-page):not(.dm-page) #navTabsShell{
   overflow:hidden;
   opacity:1;
   transform:translateY(0);
@@ -381,7 +377,7 @@ body:not(.tm-page) #navTabsShell{
     opacity 180ms var(--motion-ease-standard,cubic-bezier(.2,0,0,1)),
     transform 180ms var(--motion-ease-standard,cubic-bezier(.2,0,0,1));
 }
-body:not(.tm-page).nav-tabs-collapsed #navTabsShell{
+body:not(.tm-page):not(.dm-page).nav-tabs-collapsed #navTabsShell{
   max-height:0 !important;
   min-height:0 !important;
   height:0 !important;
@@ -395,10 +391,10 @@ body:not(.tm-page).nav-tabs-collapsed #navTabsShell{
 }
 
 @media (prefers-reduced-motion:reduce){
-  body:not(.tm-page) #navTabsShell{
+  body:not(.tm-page):not(.dm-page) #navTabsShell{
     transition:none !important;
   }
-  body:not(.tm-page).nav-tabs-collapsed #navTabsShell{
+  body:not(.tm-page):not(.dm-page).nav-tabs-collapsed #navTabsShell{
     transform:none !important;
   }
   .whats-new-overlay{
@@ -425,10 +421,8 @@ body:not(.tm-page).nav-tabs-collapsed #navTabsShell{
   .ranking-exp-switch-thumb{
     transition:background .15s ease,border-color .15s ease,left .15s ease,box-shadow .15s ease!important;
   }
-  .has-ui-notice .ui-notice-flare::before,
-  .has-ui-notice .ui-notice-flare::after,
-  .has-ui-notice>.ui-notice-flare::before,
-  .has-ui-notice>.ui-notice-flare::after{
+  .has-ui-notice .ui-notice-flare-img,
+  .has-ui-notice>.ui-notice-flare-img{
     animation:none!important;
   }
   .ranking-dash-card.tier-1,

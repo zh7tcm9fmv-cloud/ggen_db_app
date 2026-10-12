@@ -84,11 +84,11 @@ Confirm file on the votes branch: `https://github.com/zh7tcm9fmv-cloud/ggen_db_a
 
 ## Collections census + share codes (no Railway volume)
 
-Opt-in census and short share codes use the **same GitHub backup** as banner / SPI votes (`banner-votes-data` branch + `GGEN_BANNER_VOTES_GITHUB_TOKEN`). No Railway volume required.
+Anonymous census and short share codes use the **same GitHub backup** as banner / SPI votes (`banner-votes-data` branch + `GGEN_BANNER_VOTES_GITHUB_TOKEN`). No Railway volume required. The client upserts on **Submit / update census**, and also quietly after **Save image**, **Share on X**, or **Generate share code** (when a display name is set).
 
 | File on votes branch | Role |
 |----------------------|------|
-| `data/published/collections_census_v1.json` | Opt-in possession snapshots (upsert by browser `client_key`) |
+| `data/published/collections_census_v1.json` | Possession snapshots (upsert by browser `client_key`) |
 | `data/published/collections_share_v1.json` | Short share codes |
 
 Also appends full census rows to local `data/persistent/collections_census.jsonl` (feedback-style log; ephemeral on Railway).

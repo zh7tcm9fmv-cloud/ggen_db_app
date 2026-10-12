@@ -6,6 +6,8 @@
   const STAGES_CATALOG_SEEN_KEY = 'ggen_stages_catalog_seen';
   const KOFI_NOTICE_SEEN_KEY = 'ggen_kofi_notice_seen';
   const PAGE_VISITS_KEY = 'ggen_page_visits';
+  const COLLECTIONS_OWNED_KEY = 'ggen_collections_v1';
+  const COLLECTIONS_CENSUS_SUBMITTED_KEY = 'ggen_collections_census_submitted';
   /**
    * Page-visit notices: flare until the user opens the page once.
    * Bump `version` to re-notify everyone.
@@ -184,6 +186,63 @@
 
   function hasUnreadPageVisitNotices() {
     return PAGE_VISIT_NOTICES.some(pageNeedsVisitNotice);
+  }
+
+  function hasLocalCollectionsOwned() {
+    try {
+      const raw = localStorage.getItem(COLLECTIONS_OWNED_KEY);
+      if (!raw) return false;
+      const o = JSON.parse(raw);
+      if (!o || typeof o !== 'object') return false;
+      const bags = [o.units, o.supporters];
+      for (let b = 0; b < bags.length; b++) {
+        const bag = bags[b];
+        if (!bag || typeof bag !== 'object') continue;
+        for (const id in bag) {
+          if (!Object.prototype.hasOwnProperty.call(bag, id)) continue;
+          const v = parseInt(bag[id], 10);
+          if (!Number.isNaN(v) && v >= 0) return true;
+        }
+      }
+      return false;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function collectionsCensusSubmitted() {
+    try {
+      return localStorage.getItem(COLLECTIONS_CENSUS_SUBMITTED_KEY) === '1';
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function collectionsCensusNeedsNotice() {
+    return hasLocalCollectionsOwned() && !collectionsCensusSubmitted();
+  }
+
+  function updateCollectionsCensusNotice() {
+    const show = collectionsCensusNeedsNotice();
+    const tab = document.getElementById('navCollectionsTab');
+    if (tab) {
+      tab.classList.add('ui-notice-anchor');
+      setNotice(tab, show);
+    }
+    const submit = document.getElementById('colCensusSubmit');
+    if (submit) {
+      submit.classList.add('ui-notice-anchor');
+      setNotice(submit, show);
+    }
+    syncOverflowHints();
+  }
+
+  function markCollectionsCensusSubmitted() {
+    try {
+      localStorage.setItem(COLLECTIONS_CENSUS_SUBMITTED_KEY, '1');
+    } catch (_) {}
+    updateCollectionsCensusNotice();
+    refreshHomeAggregate();
   }
 
   function syncOverflowHints() {
@@ -401,7 +460,8 @@
       !!(state.whatsNew && state.whatsNew.has_new) ||
       stagesCatalogHasNew() ||
       btUserNeedsVoteNotice() ||
-      hasUnreadPageVisitNotices()
+      hasUnreadPageVisitNotices() ||
+      collectionsCensusNeedsNotice()
     );
   }
 
@@ -685,6 +745,8 @@
         ev.key === STAGES_CATALOG_SEEN_KEY ||
         ev.key === KOFI_NOTICE_SEEN_KEY ||
         ev.key === PAGE_VISITS_KEY ||
+        ev.key === COLLECTIONS_OWNED_KEY ||
+        ev.key === COLLECTIONS_CENSUS_SUBMITTED_KEY ||
         ev.key === 'ggen_bt_vote_notice_off'
       ) {
         void bootstrapAll();
@@ -711,6 +773,7 @@
       bootstrapKofiNotice(),
     ]);
     bootstrapPageVisitNotices();
+    updateCollectionsCensusNotice();
     refreshHomeAggregate();
   }
 
@@ -735,6 +798,9 @@
     refreshStagesNavNotice,
     updateStagesCatalogNotice,
     updateBtVoteNotices,
+    updateCollectionsCensusNotice,
+    markCollectionsCensusSubmitted,
+    collectionsCensusNeedsNotice,
     uiNoticeFlareHtml,
     ensureNoticeFlare,
     setNotice,

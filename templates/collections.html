@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-ui-lang="EN">
+<html lang="en" data-ui-lang="EN" data-ggen-content-notices="manual">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -43,6 +43,7 @@ window.__ggenLoadGtm=function(){
 </script>
 <!-- End Google Tag Manager -->
 <link rel="stylesheet" href="{{ url_for('static', filename='css/app_shell.css') }}?v={{ app_js_version }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/ui_motion.css') }}?v={{ app_js_version }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/collections.css') }}?v={{ app_js_version }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/ggen_15.css') }}?v={{ app_js_version }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/collections_15.css') }}?v={{ app_js_version }}">
@@ -290,13 +291,10 @@ Never share account credentials with any third-party site</p>
   <section class="collections-census" id="colCensus" aria-labelledby="colCensusTitle">
     <div class="collections-census-head">
       <h2 id="colCensusTitle">Community census</h2>
+      <p class="collections-census-blurb" id="colCensusBlurb">Anonymous community stats. Choose a unique display name. Graphs never show names. Saving an image, sharing on X, or generating a share code also updates your census.</p>
     </div>
     <div class="collections-census-form">
-      <label class="collections-census-optin">
-        <input type="checkbox" id="colCensusOptIn">
-        <span id="colCensusOptInLbl">Include my Collections in the anonymous census</span>
-      </label>
-      <button type="button" class="collections-btn collections-btn--code" id="colCensusSubmit" disabled>Submit / update census</button>
+      <button type="button" class="collections-btn collections-btn--code" id="colCensusSubmit">Submit / update census</button>
       <p class="collections-census-meta" id="colCensusMeta" aria-live="polite"></p>
       <input type="text" id="colCensusHp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" class="collections-hp">
     </div>
@@ -337,6 +335,8 @@ Never share account credentials with any third-party site</p>
 </div>
 
 <script src="{{ url_for('static', filename='js/ggen_15.js') }}?v={{ app_js_version }}" defer></script>
+<script src="{{ url_for('static', filename='js/nav_tabs_auto_hide.js') }}?v={{ app_js_version }}" defer></script>
+<script src="{{ url_for('static', filename='js/content_notices.js') }}?v={{ app_js_version }}" defer></script>
 <script src="{{ url_for('static', filename='js/collections.js') }}?v={{ app_js_version }}" defer></script>
 {% include '_client_version_reload.html' %}
 </body>
