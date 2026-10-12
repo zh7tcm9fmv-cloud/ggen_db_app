@@ -382,6 +382,9 @@ def _apply_seo_and_static_cache_headers(response):
     # APIs / unlock endpoints must never look indexable (Google still discovers linked POST URLs).
     if path.startswith('/api/'):
         response.headers.setdefault('X-Robots-Tag', 'noindex, nofollow')
+    # Bundles/fonts/images are not pages — keep Google off /static (CDN for game art; allowlisted fonts stay same-origin for UI).
+    if path.startswith('/static/') or path.startswith('/font/'):
+        response.headers['X-Robots-Tag'] = 'noindex, nofollow'
     # CSS: rewrite /static/images → IMAGE_CDN before gzip (direct CDN fetch; no Railway image bytes/RTT).
     try:
         if (
@@ -18267,6 +18270,10 @@ def _serve_index():
         page_canonical = _page_canonical_path()
     except Exception:
         page_canonical = '/'
+    try:
+        page_title, page_description = _spa_seo_meta(page_canonical)
+    except Exception:
+        page_title, page_description = _SPA_SEO_DEFAULT
     r = make_response(render_template(
         'index.html',
         image_cdn=IMAGE_CDN or '',
@@ -18282,6 +18289,8 @@ def _serve_index():
         holo_js_bundle=_holo_js_served_bundle_name(),
         kofi_page_url=KOFI_PAGE_URL,
         page_canonical=page_canonical,
+        page_title=page_title,
+        page_description=page_description,
     ))
     if INDEX_HTML_CACHE_CONTROL:
         r.headers['Cache-Control'] = INDEX_HTML_CACHE_CONTROL
@@ -18289,7 +18298,44 @@ def _serve_index():
         r.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
         r.headers['Pragma'] = 'no-cache'
         r.headers['Expires'] = '0'
+    try:
+        abs_canon = _public_site_origin() + (page_canonical or '/')
+        r.headers['Link'] = f'<{abs_canon}>; rel="canonical"'
+    except Exception:
+        pass
     return r
+
+
+def _legacy_home_tab_query_redirect():
+    """301 legacy ``/?tab=ER|DS|TB|op`` bookmarks to short paths (stop query-string duplicates)."""
+    path = (request.path or '/')
+    if path not in ('/', ''):
+        return None
+    tab = (request.args.get('tab') or '').strip()
+    if not tab:
+        return None
+    dest = {
+        'ER': '/st',
+        'stages': '/st',
+        'DS': '/cal',
+        'calculator': '/cal',
+        'TB': '/tb',
+        'team_builder': '/tb',
+        'op': '/op',
+        'OP': '/op',
+        'modifications': '/op',
+    }.get(tab)
+    if not dest:
+        return None
+    # Keep Damage Simulator / Team Builder share payloads.
+    keep = []
+    for key in ('d', 'dc', 'team'):
+        if key in request.args:
+            keep.append((key, request.args.get(key)))
+    if keep:
+        from urllib.parse import urlencode
+        dest = dest + '?' + urlencode(keep)
+    return redirect(dest, code=301)
 
 @app.route('/health')
 def health_check():
@@ -18401,7 +18447,10 @@ def api_client_version():
 
 
 @app.route('/')
-def index(): 
+def index():
+    legacy = _legacy_home_tab_query_redirect()
+    if legacy is not None:
+        return legacy
     return _serve_index()
 
 
@@ -18619,9 +18668,14 @@ def stages_special_page():
 
 
 @app.route('/collab')
-@app.route('/collaboration')
 def stages_collaboration_page():
     return _serve_index()
+
+
+@app.route('/collaboration')
+def stages_collaboration_alias_redirect():
+    """Legacy alias → canonical /collab."""
+    return redirect('/collab', code=301)
 
 
 @app.route('/about')
@@ -19411,6 +19465,10 @@ def _render_sp_investment_public():
         spi_decision_ui=True,
     ))
     r.headers['Cache-Control'] = 'public, max-age=300'
+    try:
+        r.headers['Link'] = f'<{_public_site_origin()}/ip>; rel="canonical"'
+    except Exception:
+        pass
     return r
 
 
@@ -24307,12 +24365,26 @@ def api_site_feedback_submit():
     return jsonify({'ok': True})
 
 
-@app.route('/contact')
 @app.route('/feedback')
 def contact_page():
-    r = make_response(render_template('contact.html', image_cdn=IMAGE_CDN or '', game_images_use_cdn=GAME_IMAGES_USE_CDN))
+    r = make_response(render_template(
+        'contact.html',
+        image_cdn=IMAGE_CDN or '',
+        game_images_use_cdn=GAME_IMAGES_USE_CDN,
+        canonical_path='/feedback',
+    ))
     r.headers['Cache-Control'] = 'public, max-age=3600'
+    try:
+        r.headers['Link'] = f'<{_public_site_origin()}/feedback>; rel="canonical"'
+    except Exception:
+        pass
     return r
+
+
+@app.route('/contact')
+def contact_page_alias_redirect():
+    """Legacy /contact → canonical /feedback (same page; stop duplicate canonicals)."""
+    return redirect('/feedback', code=301)
 
 
 @app.route('/su')
@@ -34238,7 +34310,10 @@ def _is_spa_client_path(path):
 
 
 def _page_canonical_path():
-    """Stable path for <link rel=canonical> / og:url on the SPA shell."""
+    """Stable path for <link rel=canonical> / og:url on the SPA shell.
+
+    Query strings are never part of the canonical (share ``?d=`` / ``?tab=`` are alternates).
+    """
     path = (request.path or '/').replace('\\', '/')
     if path != '/' and path.endswith('/'):
         path = path.rstrip('/') or '/'
@@ -34257,6 +34332,160 @@ def _page_canonical_path():
             return '/' + parts[0].lower() + '/' + parts[1]
         return path
     return '/'
+
+
+_SPA_SEO_DEFAULT = (
+    'GGen Eternal Database',
+    'GGen Eternal Database — the most up-to-date reference for SD Gundam G Generation ETERNAL. '
+    'Units, pilots, supporters, stages, and tools with all the essential information you need.',
+)
+
+# Unique titles/descriptions per short path so Google stops collapsing tabs into `/`.
+_SPA_SEO_BY_PATH = {
+    '/': _SPA_SEO_DEFAULT,
+    '/c': (
+        'Characters — GGen Eternal Database',
+        'Browse playable pilots and characters in SD Gundam G Generation ETERNAL — stats, skills, abilities, and series.',
+    ),
+    '/u': (
+        'Units — GGen Eternal Database',
+        'Browse mobile suits and units in SD Gundam G Generation ETERNAL — weapons, traits, terrain, and synergy tools.',
+    ),
+    '/s': (
+        'Supporters — GGen Eternal Database',
+        'Browse supporters in SD Gundam G Generation ETERNAL — leader skills, actives, and tags.',
+    ),
+    '/st': (
+        'Eternal Road Stages — GGen Eternal Database',
+        'Eternal Road stage list for SD Gundam G Generation ETERNAL — rewards, enemies, and clear info.',
+    ),
+    '/gtower': (
+        'GTower Stages — GGen Eternal Database',
+        'GTower floors and rewards for SD Gundam G Generation ETERNAL.',
+    ),
+    '/challenge': (
+        'Challenge Stages — GGen Eternal Database',
+        'Challenge series stages for SD Gundam G Generation ETERNAL.',
+    ),
+    '/go': (
+        'Grand Offensive — GGen Eternal Database',
+        'Grand Offensive Score Attack stages for SD Gundam G Generation ETERNAL.',
+    ),
+    '/special': (
+        'Special Stages — GGen Eternal Database',
+        'Special stages for SD Gundam G Generation ETERNAL.',
+    ),
+    '/collab': (
+        'Collaboration Stages — GGen Eternal Database',
+        'Collaboration stages for SD Gundam G Generation ETERNAL.',
+    ),
+    '/op': (
+        'Option Parts — GGen Eternal Database',
+        'Option parts (Modifications) for SD Gundam G Generation ETERNAL — effects and browse filters.',
+    ),
+    '/cal': (
+        'Damage Simulator — GGen Eternal Database',
+        'Damage Calculator for SD Gundam G Generation ETERNAL — simulate unit and pilot combos against ER and Score Attack stages.',
+    ),
+    '/tb': (
+        'Team Builder — GGen Eternal Database',
+        'Team Builder for SD Gundam G Generation ETERNAL — assemble squads with units, pilots, and option parts.',
+    ),
+    '/tl': (
+        'Unit Assembly — GGen Eternal Database',
+        'Banner / Unit Assembly timeline for SD Gundam G Generation ETERNAL — drop rates and featured kits.',
+    ),
+    '/ml': (
+        'Master League — GGen Eternal Database',
+        'Master League tools and showcase for SD Gundam G Generation ETERNAL.',
+    ),
+    '/rk': (
+        'Ranking — GGen Eternal Database',
+        'Character and unit ranking lists for SD Gundam G Generation ETERNAL.',
+    ),
+    '/new': (
+        'Latest Release — GGen Eternal Database',
+        'Latest release units and characters for SD Gundam G Generation ETERNAL.',
+    ),
+    '/esim': (
+        'E-Simulator — GGen Eternal Database',
+        'E-Simulator for SD Gundam G Generation ETERNAL stage runs.',
+    ),
+    '/gacha-sim': (
+        'Gacha Simulator — GGen Eternal Database',
+        'Unit Assembly gacha simulator for SD Gundam G Generation ETERNAL — official proportion tables.',
+    ),
+    '/roadmap': (
+        '1.5 Anniversary Calendar — GGen Eternal Database',
+        '1.5 anniversary calendar and roadmap for SD Gundam G Generation ETERNAL.',
+    ),
+}
+
+
+def _seo_entity_display_name(kind, eid):
+    """Best-effort EN display name for detail URLs (empty if master not ready)."""
+    eid = normalize_id(eid)
+    if not eid:
+        return ''
+    try:
+        ld = LANG_DATA.get(DEFAULT_LANG) or LANG_DATA.get('EN') or {}
+    except Exception:
+        return ''
+    try:
+        if kind == 'unit':
+            lid = (ld.get('unit_id_map') or {}).get(eid) or eid
+            return str((ld.get('unit_text_map') or {}).get(lid, '') or '').strip()
+        if kind == 'character':
+            lid = (ld.get('char_id_map') or {}).get(eid) or eid
+            return str((ld.get('char_text_map') or {}).get(lid, '') or '').strip()
+        if kind == 'supporter':
+            lid = (ld.get('supporter_id_map') or {}).get(eid) or eid
+            return str((ld.get('supporter_text_map') or {}).get(lid, '') or '').strip()
+        if kind == 'option_part':
+            # Option-part names live in several maps depending on pack; keep generic if missing.
+            for mk in ('option_part_text_map', 'mod_text_map', 'equipment_text_map'):
+                m = ld.get(mk) or {}
+                if eid in m:
+                    return str(m.get(eid) or '').strip()
+            return ''
+    except Exception:
+        return ''
+    return ''
+
+
+def _spa_seo_meta(canon_path):
+    """Return (title, description) for the SPA shell at ``canon_path``."""
+    path = (canon_path or '/').replace('\\', '/')
+    if path != '/' and path.endswith('/'):
+        path = path.rstrip('/') or '/'
+    parts = [p for p in path.split('/') if p]
+    if len(parts) == 2:
+        prefix, eid = parts[0].lower(), parts[1]
+        kind = {
+            'u': 'unit',
+            'c': 'character',
+            's': 'supporter',
+            'op': 'option_part',
+            'pt': 'option_part',
+        }.get(prefix)
+        if prefix == 'gacha-sim':
+            return (
+                f'Gacha {eid} — GGen Eternal Database',
+                f'Unit Assembly simulator pool {eid} for SD Gundam G Generation ETERNAL.',
+            )
+        if kind:
+            name = _seo_entity_display_name(kind, eid)
+            label = {'unit': 'Unit', 'character': 'Character', 'supporter': 'Supporter', 'option_part': 'Option Part'}[kind]
+            if name:
+                return (
+                    f'{name} — {label} | GGen Eternal Database',
+                    f'{name} ({label}) in SD Gundam G Generation ETERNAL — GGen Eternal Database.',
+                )
+            return (
+                f'{label} {eid} — GGen Eternal Database',
+                f'{label} {eid} in SD Gundam G Generation ETERNAL — GGen Eternal Database.',
+            )
+    return _SPA_SEO_BY_PATH.get(path, _SPA_SEO_DEFAULT)
 
 
 def _not_found_page():
@@ -34280,15 +34509,20 @@ def _not_found_page():
 
 
 def _robots_txt_body(base):
+    # Block all /static (CSS/JS/fonts/images) — not indexable pages. Game art is on IMAGE_CDN;
+    # allowlisted UI fonts remain same-origin for the browser but must not be crawled as URLs.
     return (
         'User-agent: *\n'
         'Allow: /\n'
         'Disallow: /api/\n'
         'Disallow: /admin/\n'
-        'Disallow: /static/font/\n'
+        'Disallow: /static/\n'
         'Disallow: /font/\n'
         'Disallow: /sp-list-preview\n'
         'Disallow: /sp-list-demo\n'
+        'Disallow: /sp-list\n'
+        'Disallow: /investment-guide\n'
+        'Disallow: /investment-priority\n'
         f'Sitemap: {base}/sitemap.xml\n'
     )
 

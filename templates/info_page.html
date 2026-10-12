@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{% block title %}GGen Eternal Database{% endblock %}</title>
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="{{ public_origin }}{{ request.path }}">
+<link rel="canonical" href="{{ public_origin }}{{ canonical_path or request.path }}">
 <meta property="og:type" content="website">
-<meta property="og:url" content="{{ public_origin }}{{ request.path }}">
+<meta property="og:url" content="{{ public_origin }}{{ canonical_path or request.path }}">
 <meta property="og:site_name" content="GGen Eternal Database">
 <meta property="og:title" content="{% block og_title %}GGen Eternal Database{% endblock %}">
 <meta property="og:image" content="{{ og_image_url }}">
