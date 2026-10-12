@@ -24903,11 +24903,104 @@ def _latest_release_content_status_payload(last_seen_at=0, last_seen_fp=''):
 
 _LANG_ORDER = ('EN', 'TW', 'HK', 'JA', 'HR')
 
+# Soft first-visit locale (never overrides client localStorage `ggen_lang`):
+# Accept-Language → IP country header → EN. Display codes: JP / KR (not JA / HR).
+_COUNTRY_TO_INTERNAL_LANG = {
+    'JP': 'JA',
+    'TW': 'TW',
+    'HK': 'HK',
+    'KR': 'HR',
+}
+
+
+def _internal_lang_from_locale_tag(tag):
+    """Map BCP47 / Accept-Language tag → internal pack id (EN/TW/HK/JA/HR), or None to skip."""
+    t = (tag or '').strip().lower().replace('_', '-')
+    if not t:
+        return None
+    if t == 'ja' or t.startswith('ja-'):
+        return 'JA'
+    if t == 'ko' or t.startswith('ko-'):
+        return 'HR'
+    if t == 'zh-tw' or t.startswith('zh-tw') or t in ('zh-hant-tw',):
+        return 'TW'
+    if t == 'zh-hk' or t.startswith('zh-hk') or t in ('zh-hant-hk',):
+        return 'HK'
+    if t == 'zh-hant' or t.startswith('zh-hant'):
+        return 'TW'
+    # No Simplified Chinese pack — skip so IP / later tags / EN can win.
+    if t.startswith('zh-hans') or t in ('zh-cn', 'zh-sg') or t.startswith('zh-cn') or t.startswith('zh-sg'):
+        return None
+    if t == 'zh':
+        return None
+    if t == 'en' or t.startswith('en-'):
+        return 'EN'
+    return None
+
+
+def _request_accept_language_internal():
+    try:
+        for code, _q in request.accept_languages:
+            internal = _internal_lang_from_locale_tag(code)
+            if internal:
+                return internal
+    except Exception:
+        pass
+    return None
+
+
+def _request_country_code():
+    """Best-effort country from edge headers (Cloudflare / similar). No GeoIP lookup."""
+    for h in (
+        'CF-IPCountry',
+        'CloudFront-Viewer-Country',
+        'X-Vercel-IP-Country',
+        'X-Country-Code',
+        'X-Appengine-Country',
+    ):
+        v = (request.headers.get(h) or '').strip().upper()
+        if v and v not in ('XX', 'T1', 'ZZ', 'UNSPECIFIED'):
+            return v
+    return ''
+
+
+def suggest_ui_lang_for_request():
+    """Soft UI default for first visit: Accept-Language → IP country → EN.
+
+    Returns ``(display_code, source)`` where display_code is EN/TW/HK/JP/KR.
+    Skips JA when JP mode password lock is active. Does not read localStorage.
+    """
+    def _ok(internal):
+        if not internal:
+            return False
+        if internal == 'JA' and not jp_mode_unlocked():
+            return False
+        return internal in LANG_DATA
+
+    al = _request_accept_language_internal()
+    if _ok(al):
+        return display_lang_code(al), 'accept-language'
+    mapped = _COUNTRY_TO_INTERNAL_LANG.get(_request_country_code())
+    if _ok(mapped):
+        return display_lang_code(mapped), 'ip-country'
+    return display_lang_code(DEFAULT_LANG), 'default'
+
+
 @app.route('/api/languages')
 def get_languages():
     ordered = [lc for lc in _LANG_ORDER if lc in LANG_DATA]
     display_languages = [display_lang_code(lc) for lc in ordered]
-    return jsonify(convert_image_urls({'languages': display_languages, 'default': DEFAULT_LANG}))
+    suggested, source = suggest_ui_lang_for_request()
+    resp = jsonify(convert_image_urls({
+        'languages': display_languages,
+        'default': display_lang_code(DEFAULT_LANG),
+        'suggested': suggested,
+        'suggest_source': source,
+    }))
+    # Per-request (Accept-Language / country headers) — never share across users.
+    resp.headers['Cache-Control'] = 'private, no-store'
+    resp.headers['Vary'] = 'Accept-Language, CF-IPCountry'
+    return resp
 
 WHATS_NEW_JSON_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'whats_new.json')
 

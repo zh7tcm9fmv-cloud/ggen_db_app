@@ -631,7 +631,7 @@
       _pageLanguages = langs.map(function (l) {
         return normalizeLang(l);
       }).filter(function (l, i, a) { return l && a.indexOf(l) === i; });
-      def = normalizeLang(d.default || 'EN');
+      def = normalizeLang((d && (d.suggested || d.default)) || 'EN');
     } catch (e) {}
     if (!_langLockedByUser) {
       var savedNow = readPersistedLang();

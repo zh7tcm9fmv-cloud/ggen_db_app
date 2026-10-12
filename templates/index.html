@@ -87,17 +87,50 @@
   }catch(_){}
 })();
 </script>
-<!-- Deep-link early fetch: overlap API RTT with HTML/CSS/JS so /tl /new /ip often paint
-     without a spinner. Same endpoints — look/features unchanged. Never idle-prefetch /ip
-     (≈1.4MB) from browse — that races /u detail. -->
+<!-- Soft locale + deep-link early fetch: overlap API RTT with HTML/CSS/JS.
+     Locale priority (first visit): saved localStorage → navigator.languages
+     (Accept-Language) → /api/languages IP hint → EN. Never await languages
+     before browse. Never idle-prefetch /ip (≈1.4MB) — races /u detail. -->
 <script>
 (function(){
   try{
+    function normLang(x){
+      var l=String(x||'EN').trim().toUpperCase();
+      if(l==='JA')l='JP';
+      if(l==='HR')l='KR';
+      if(l!=='EN'&&l!=='TW'&&l!=='HK'&&l!=='JP'&&l!=='KR')l='EN';
+      return l;
+    }
+    function fromNavigator(){
+      var list=[],i,t;
+      try{
+        if(navigator.languages&&navigator.languages.length)list=navigator.languages;
+        else if(navigator.language)list=[navigator.language];
+      }catch(_){}
+      for(i=0;i<list.length;i++){
+        t=String(list[i]||'').toLowerCase().replace(/_/g,'-');
+        if(t==='ja'||t.indexOf('ja-')===0)return 'JP';
+        if(t==='ko'||t.indexOf('ko-')===0)return 'KR';
+        if(t==='zh-tw'||t.indexOf('zh-tw')===0||t==='zh-hant-tw')return 'TW';
+        if(t==='zh-hk'||t.indexOf('zh-hk')===0||t==='zh-hant-hk')return 'HK';
+        if(t==='zh-hant'||t.indexOf('zh-hant')===0)return 'TW';
+        if(t==='en'||t.indexOf('en-')===0)return 'EN';
+      }
+      return '';
+    }
+    var saved='';
+    try{saved=String(localStorage.getItem('ggen_lang')||'').trim()}catch(_){}
+    var nav=fromNavigator();
+    var source='default';
+    var l='EN';
+    if(saved){l=normLang(saved);source='saved'}
+    else if(nav){l=normLang(nav);source='accept-language'}
+    else{l='EN';source='default'}
+    try{document.documentElement.setAttribute('data-ui-lang',l)}catch(_){}
+    window.__GGEN_LANG_HINT__={suggested:l,source:source};
+    /* Tiny JSON; overlaps CSS/JS. IP country may refine when no saved lang. */
+    window.__GGEN_LANG_BOOT__=fetch('/api/languages',{credentials:'same-origin',cache:'no-store'}).then(function(r){return r.ok?r.json():null}).catch(function(){return null});
     var path=String(location.pathname||'');
-    var l=String(document.documentElement.getAttribute('data-ui-lang')||'EN').trim().toUpperCase();
-    if(l!=='EN'&&l!=='TW'&&l!=='HK'&&l!=='JP'&&l!=='JA'&&l!=='KR'&&l!=='HR')l='EN';
-    if(l==='JA')l='JP';
-    if(l==='HR')l='KR';
     if(/^\/(tl|banners)\/?$/i.test(path)){
       window.__GGEN_BT_BOOT__={
         lang:l,
