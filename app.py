@@ -2046,6 +2046,58 @@ def unit_weapon_range_filter_cache_fragment(expr):
 MAP_WEAPON_RANGE_TYPE_VALUES = frozenset(range(0, 7))
 MAP_WEAPON_RANGE_SUB_TAGS = frozenset({'am', '2:snipe'})
 MAP_WEAPON_RANGE_LEGACY_TAG_ALIASES = {'1:am': 'am'}
+# m_trait.Id — DescriptionLanguageId EN "Able to move after use" (TraitTypeIndex 115).
+# Weapon rows: WeaponTraitTypeIndex PassiveTrait (3) with TargetValue = this id.
+_MAP_WEAPON_ABLE_MOVE_AFTER_USE_TRAIT_ID = '300520101'
+_WEAPON_TRAIT_IDS_ABLE_MOVE_AFTER_USE = None
+
+
+def _weapon_trait_ids_able_to_move_after_use():
+    """WeaponTraitIds that apply the Able to move after use passive (master TargetValue)."""
+    global _WEAPON_TRAIT_IDS_ABLE_MOVE_AFTER_USE
+    if _WEAPON_TRAIT_IDS_ABLE_MOVE_AFTER_USE is not None:
+        return _WEAPON_TRAIT_IDS_ABLE_MOVE_AFTER_USE
+    out = set()
+    for item in extract_data_list(globals().get('weapon_trait_base_data') or []):
+        if not isinstance(item, dict):
+            continue
+        if normalize_id(item.get('TargetValue') or item.get('targetValue')) != _MAP_WEAPON_ABLE_MOVE_AFTER_USE_TRAIT_ID:
+            continue
+        tid = normalize_id(item.get('Id') or item.get('id'))
+        if tid != '0':
+            out.add(tid)
+    _WEAPON_TRAIT_IDS_ABLE_MOVE_AFTER_USE = frozenset(out)
+    return _WEAPON_TRAIT_IDS_ABLE_MOVE_AFTER_USE
+
+
+def weapon_has_able_to_move_after_use_trait(wid, wm=None):
+    """True when the weapon's trait pattern includes Able to move after use (not After-Move MAP)."""
+    able = _weapon_trait_ids_able_to_move_after_use()
+    if not able:
+        return False
+    w = normalize_id(wid) if wid else '0'
+    if w == '0':
+        return False
+    wm = wm or (globals().get('weapon_info_map') or {}).get(w) or {}
+    wsm = globals().get('weapon_status_map') or {}
+    wtcm = globals().get('weapon_trait_change_map') or {}
+    gpm = globals().get('growth_pattern_map') or {}
+    wsid = normalize_id(wm.get('weapon_status_id') or w)
+    ws = wsm.get(wsid) or wsm.get(w)
+    if not ws:
+        return False
+    tpi = normalize_id(ws.get('trait_correction_id') or '0')
+    if tpi == '0':
+        gi = normalize_id(ws.get('growth_pattern_id') or '0')
+        if gi != '0':
+            tpi = normalize_id((gpm.get(gi) or {}).get('trait_change_set_id') or '0')
+    if tpi == '0':
+        return False
+    for tids in (wtcm.get(tpi) or {}).values():
+        for tid in tids or []:
+            if normalize_id(tid) in able:
+                return True
+    return False
 
 
 def _weapon_is_ssp_custom_map_weapon(wid, wt):
@@ -2120,10 +2172,9 @@ def _weapon_map_filter_tags_for_weapon(wid, wm, ws, unit_id):
     tags = {str(mrt)}
     if is_map_weapon_after_move_unit_weapon(unit_id, wid, wt):
         tags.add('am')
-    if mrt == 2:
-        mc = ws.get('map_coords') or []
-        if len(mc) == 1:
-            tags.add('2:snipe')
+    # Snipe = Impact (2) + trait Able to move after use (distinct from After-Move MAP / am).
+    if mrt == 2 and weapon_has_able_to_move_after_use_trait(wid, wm):
+        tags.add('2:snipe')
     return frozenset(tags)
 
 
@@ -27914,8 +27965,8 @@ def list_units():
     want_stat_bounds_u = request.args.get('stat_bounds', '').strip().lower() in ('1', 'true', 'yes')
     sbu_ck = 'sbd1' if want_stat_bounds_u else 'sbd0'
     rb_u_ck = 'rb1' if ranking_bulk_u else 'rb0'
-    # ul62: auto-PEP crit when pilot grants Crit% (tag affinity), not only Crit 0→>0.
-    ck = f"ul62_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_attr_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    # ul63: Snipe MAP = Impact (2) + Able to move after use (not single-cell alone).
+    ck = f"ul63_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_attr_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached:
         return jsonify_preserialized(cached, ck, public=True, max_age=3600, convert_images=False)
