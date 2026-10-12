@@ -94,15 +94,25 @@ html.ggen-scrollbar-ready.is-scrolling ::-webkit-scrollbar-thumb:hover{backgroun
 .bt-gacha-pick-lbl{font-size:11px;color:var(--text-secondary);display:flex;flex-direction:column;gap:3px;min-width:120px;flex:1 1 140px}
 .bt-gacha-pick{padding:4px 6px;border-radius:var(--radius-sm);border:1px solid var(--border-color);background:var(--bg-input);color:var(--text-primary);font-size:11px;max-width:100%}
 .unit-portrait-wrap{position:relative;overflow:visible}
-.modal-content.unit-detail .detail-portrait-stack{overflow:visible}
+.modal-content.unit-detail .detail-portrait-stack{position:relative;overflow:visible}
 .modal-content.unit-detail .unit-portrait-wrap{padding:0 6px 8px 0;box-sizing:border-box}
-.modal-content.unit-detail .unit-portrait-wrap:has(#unitLbVideoBtnSlot .unit-lb-video-btn),
-.modal-content.unit-detail .unit-portrait-wrap:has(#unitLbVideoBtnSlot .unit-gacha-pull-video-btn){padding-bottom:26px}
-.modal-content.unit-detail .unit-portrait-wrap:has(#unitLbVideoBtnSlot .unit-lb-video-btn) #unitLbVideoBtnSlot,
-.modal-content.unit-detail .unit-portrait-wrap:has(#unitLbVideoBtnSlot .unit-gacha-pull-video-btn) #unitLbVideoBtnSlot{bottom:4px;right:8px}
-#unitLbVideoBtnSlot{position:absolute;right:10px;bottom:28px;z-index:4;line-height:0;padding:4px;pointer-events:none;display:flex;flex-direction:row;align-items:center;justify-content:flex-end;gap:8px}
+/*
+ * Movie / BSP chrome: absolute overlay on the portrait wrap (same corner as before).
+ * Shell is pointer-events:none; only the real buttons take hits so holo foil still works.
+ */
+.unit-portrait-wrap > .unit-portrait-overlay-btns{
+  position:absolute;left:0;right:0;top:0;bottom:0;z-index:40;pointer-events:none;
+}
+.modal-content.unit-detail .detail-portrait-stack:has(#unitLbVideoBtnSlot .unit-lb-video-btn) .unit-portrait-wrap,
+.modal-content.unit-detail .detail-portrait-stack:has(#unitLbVideoBtnSlot .unit-gacha-pull-video-btn) .unit-portrait-wrap{padding-bottom:26px}
+.modal-content.unit-detail .detail-portrait-stack:has(#unitLbVideoBtnSlot .unit-lb-video-btn) #unitLbVideoBtnSlot,
+.modal-content.unit-detail .detail-portrait-stack:has(#unitLbVideoBtnSlot .unit-gacha-pull-video-btn) #unitLbVideoBtnSlot{bottom:4px;right:8px}
+#unitLbVideoBtnSlot{position:absolute;right:10px;bottom:28px;z-index:41;line-height:0;padding:4px;pointer-events:none;display:flex;flex-direction:row;align-items:center;justify-content:flex-end;gap:8px}
 #unitLbVideoBtnSlot .unit-lb-video-btn,
-#unitLbVideoBtnSlot .unit-gacha-pull-video-btn{pointer-events:auto}
+#unitLbVideoBtnSlot .unit-gacha-pull-video-btn{
+  pointer-events:auto;position:relative;z-index:42;
+  touch-action:manipulation;-webkit-tap-highlight-color:transparent;
+}
 @media(prefers-reduced-motion:reduce){.unit-lb-video-btn:hover,.unit-lb-video-btn:active,.unit-gacha-pull-video-btn:hover,.unit-gacha-pull-video-btn:active{transform:none}.unit-gacha-pull-video-btn::before{animation:none}}
 .media-video-overlay{position:fixed;inset:0;width:100%;height:100%;min-height:100dvh;min-height:-webkit-fill-available;background:#000;z-index:10000;display:none;align-items:center;justify-content:center;overscroll-behavior:none;touch-action:manipulation;isolation:isolate}
 .media-video-overlay.active{display:flex}
@@ -1740,8 +1750,9 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
     0 0 28px 2px var(--glow-color-20);
 }
 .modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card > .detail-limited-banner--on-portrait{z-index:5}
-.modal-content.unit-detail .unit-holo-card > #unitLbVideoBtnSlot,
-.modal-content.unit-detail .unit-holo-card > #unitBestPilotBtnSlotPortrait{z-index:6}
+.modal-content.unit-detail .unit-portrait-wrap > .unit-portrait-overlay-btns{z-index:40}
+.modal-content.unit-detail .unit-portrait-wrap #unitLbVideoBtnSlot,
+.modal-content.unit-detail .unit-portrait-wrap #unitBestPilotBtnSlotPortrait{z-index:41}
 
 /* Supporter UR holo — keep wide art borderless; clicks hit the wrap */
 .modal-content.supporter-detail .unit-holo-card.unit-holo-card--armed .supporter-portrait{pointer-events:auto}

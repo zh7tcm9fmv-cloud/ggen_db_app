@@ -1918,6 +1918,10 @@
     var onRec = hasRecPilot(d);
     global.document.querySelectorAll('#unitBestPilotBtnSlotPortrait').forEach(function (slot) {
       slot.innerHTML = onRec ? '' : renderTriggerBtn();
+      slot.querySelectorAll('.unit-best-pilot-btn').forEach(function (btn) {
+        btn.addEventListener('pointerdown', function (ev) { ev.stopPropagation(); });
+        btn.addEventListener('touchstart', function (ev) { ev.stopPropagation(); }, { passive: true });
+      });
     });
     global.document.querySelectorAll('[data-unit-best-pilot-rec]').forEach(function (slot) {
       slot.innerHTML = onRec ? renderTriggerBtn() : '';

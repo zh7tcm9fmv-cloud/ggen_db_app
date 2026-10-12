@@ -22,6 +22,17 @@
     return n < a ? a : n > b ? b : n;
   }
 
+  /* Portrait overlay (MLB / gacha / BSP) — never capture those pointers for foil.
+   * Overlay is a sibling of the card; still guard if markup nests chrome again. */
+  function isCardChrome(el) {
+    if (!el || !el.closest) return false;
+    return !!el.closest(
+      'button,a,input,select,textarea,' +
+        '.unit-lb-video-btn,.unit-gacha-pull-video-btn,.unit-best-pilot-btn,' +
+        '.unit-portrait-overlay-btns'
+    );
+  }
+
   function isCoarsePointer() {
     try {
       if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) return true;
@@ -134,6 +145,15 @@
     card.appendChild(edge);
   }
 
+  /* Keep movie/BSP overlay last so it stays painted above stage / glow. */
+  function pinPortraitOverlay(card) {
+    if (!card) return;
+    var overlay = card.querySelector(':scope > .unit-portrait-overlay-btns');
+    if (overlay && overlay.parentNode === card && card.lastElementChild !== overlay) {
+      card.appendChild(overlay);
+    }
+  }
+
   function unwrapStage(card, stage) {
     if (!stage || !card) return;
     try {
@@ -154,6 +174,7 @@
     opts = opts || {};
     ensureEdge(card);
     var stage = ensureStage(card);
+    pinPortraitOverlay(card);
     var img = stage.querySelector('img.detail-portrait, img.supporter-portrait, img');
     if (!img) {
       unwrapStage(card, stage);
@@ -186,6 +207,7 @@
     function onDown(e) {
       if (e.isPrimary === false) return;
       if (e.button != null && e.button !== 0) return;
+      if (isCardChrome(e.target)) return;
       pressing = true;
       readClient(e.clientX, e.clientY);
       pointer.inside = true;
@@ -203,6 +225,7 @@
       syncGlow();
     }
     function onTouchStart(e) {
+      if (isCardChrome(e.target)) return;
       if (!e.changedTouches || !e.changedTouches.length) return;
       pressing = true;
       readClient(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
@@ -279,6 +302,7 @@
     if (!stage || !img) return null;
 
     ensureEdge(card);
+    pinPortraitOverlay(card);
 
     var canvas = stage.querySelector('canvas.unit-holo-card__canvas');
     if (!canvas) {
@@ -901,6 +925,7 @@
     function onDown(e) {
       if (e.isPrimary === false) return;
       if (e.button != null && e.button !== 0) return;
+      if (isCardChrome(e.target)) return;
       pressing = true;
       readPointer(e);
       pointer.inside = true;
@@ -947,6 +972,7 @@
 
     /* Native touch path — reliable foil drag on iOS Safari */
     function onTouchStart(e) {
+      if (isCardChrome(e.target)) return;
       if (!e.changedTouches || !e.changedTouches.length) return;
       var t = e.changedTouches[0];
       activeTouchId = t.identifier;
