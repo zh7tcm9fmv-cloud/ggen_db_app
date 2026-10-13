@@ -6,8 +6,8 @@
     "MapStageId": 907000100402000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001005001,
@@ -16,8 +16,8 @@
     "MapStageId": 907000100502000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001005002,
@@ -26,8 +26,8 @@
     "MapStageId": 907000100502000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001005003,
@@ -36,8 +36,8 @@
     "MapStageId": 907000100502000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001005004,
@@ -46,8 +46,8 @@
     "MapStageId": 907000100502000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001009001,
@@ -56,8 +56,8 @@
     "MapStageId": 907000100902000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001009002,
@@ -66,8 +66,8 @@
     "MapStageId": 907000100902000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001009003,
@@ -76,8 +76,8 @@
     "MapStageId": 907000100902000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001009004,
@@ -86,8 +86,8 @@
     "MapStageId": 907000100902000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001009005,
@@ -96,8 +96,8 @@
     "MapStageId": 907000100902000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001009006,
@@ -106,8 +106,8 @@
     "MapStageId": 907000100902000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001009007,
@@ -116,8 +116,8 @@
     "MapStageId": 907000100902000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001011001,
@@ -126,8 +126,8 @@
     "MapStageId": 907000101102000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001011002,
@@ -136,8 +136,8 @@
     "MapStageId": 907000101102000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001013001,
@@ -146,8 +146,8 @@
     "MapStageId": 907000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001013002,
@@ -156,8 +156,8 @@
     "MapStageId": 907000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001014001,
@@ -166,8 +166,8 @@
     "MapStageId": 907000101402000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001014002,
@@ -176,8 +176,8 @@
     "MapStageId": 907000101402000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001014003,
@@ -186,8 +186,8 @@
     "MapStageId": 907000101402000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001014004,
@@ -196,8 +196,8 @@
     "MapStageId": 907000101402000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001014005,
@@ -206,8 +206,8 @@
     "MapStageId": 907000101402000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001014006,
@@ -216,8 +216,8 @@
     "MapStageId": 907000101402000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001015001,
@@ -226,8 +226,8 @@
     "MapStageId": 907000101502000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001015002,
@@ -236,8 +236,8 @@
     "MapStageId": 907000101502000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001015005,
@@ -246,8 +246,8 @@
     "MapStageId": 907000101502000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001015006,
@@ -256,8 +256,8 @@
     "MapStageId": 907000101502000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001015007,
@@ -266,8 +266,8 @@
     "MapStageId": 907000101502000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001015008,
@@ -276,8 +276,8 @@
     "MapStageId": 907000101502000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001016001,
@@ -286,8 +286,8 @@
     "MapStageId": 907000101602000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001016002,
@@ -296,8 +296,8 @@
     "MapStageId": 907000101602000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001016003,
@@ -306,8 +306,8 @@
     "MapStageId": 907000101602000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001016004,
@@ -316,8 +316,8 @@
     "MapStageId": 907000101602000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001016005,
@@ -326,8 +326,8 @@
     "MapStageId": 907000101602000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001017001,
@@ -336,8 +336,8 @@
     "MapStageId": 907000101702000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001017002,
@@ -346,8 +346,8 @@
     "MapStageId": 907000101702000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001017005,
@@ -356,8 +356,8 @@
     "MapStageId": 907000101702000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001017006,
@@ -366,8 +366,8 @@
     "MapStageId": 907000101702000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001019002,
@@ -376,8 +376,8 @@
     "MapStageId": 907000101902000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001019003,
@@ -386,8 +386,8 @@
     "MapStageId": 907000101902000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001019005,
@@ -396,8 +396,8 @@
     "MapStageId": 907000101902000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001020001,
@@ -406,8 +406,8 @@
     "MapStageId": 907000102002000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001020002,
@@ -416,8 +416,8 @@
     "MapStageId": 907000102002000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001020003,
@@ -426,8 +426,8 @@
     "MapStageId": 907000102002000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070001020004,
@@ -436,8 +436,8 @@
     "MapStageId": 907000102002000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002003001,
@@ -446,8 +446,8 @@
     "MapStageId": 907000200302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002004001,
@@ -456,8 +456,8 @@
     "MapStageId": 907000200402000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002004002,
@@ -466,8 +466,8 @@
     "MapStageId": 907000200402000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002009001,
@@ -476,8 +476,8 @@
     "MapStageId": 907000200902000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002009002,
@@ -486,8 +486,8 @@
     "MapStageId": 907000200902000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002009003,
@@ -496,8 +496,8 @@
     "MapStageId": 907000200902000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002009004,
@@ -506,8 +506,8 @@
     "MapStageId": 907000200902000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002009005,
@@ -516,8 +516,8 @@
     "MapStageId": 907000200902000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002009006,
@@ -526,8 +526,8 @@
     "MapStageId": 907000200902000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002009007,
@@ -536,8 +536,8 @@
     "MapStageId": 907000200902000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002009008,
@@ -546,8 +546,8 @@
     "MapStageId": 907000200902000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002011002,
@@ -556,8 +556,8 @@
     "MapStageId": 907000201102000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002011003,
@@ -566,8 +566,8 @@
     "MapStageId": 907000201102000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002012001,
@@ -576,8 +576,8 @@
     "MapStageId": 907000201202000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002012002,
@@ -586,8 +586,8 @@
     "MapStageId": 907000201202000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002013001,
@@ -596,8 +596,8 @@
     "MapStageId": 907000201302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002013002,
@@ -606,8 +606,8 @@
     "MapStageId": 907000201302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002013004,
@@ -616,8 +616,8 @@
     "MapStageId": 907000201302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002013005,
@@ -626,8 +626,8 @@
     "MapStageId": 907000201302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002013006,
@@ -636,8 +636,8 @@
     "MapStageId": 907000201302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002013007,
@@ -646,8 +646,8 @@
     "MapStageId": 907000201302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002014001,
@@ -656,8 +656,8 @@
     "MapStageId": 907000201402000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002014002,
@@ -666,8 +666,8 @@
     "MapStageId": 907000201402000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002014003,
@@ -676,8 +676,8 @@
     "MapStageId": 907000201402000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002014004,
@@ -686,8 +686,8 @@
     "MapStageId": 907000201402000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002015001,
@@ -696,8 +696,8 @@
     "MapStageId": 907000201502000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002015002,
@@ -706,8 +706,8 @@
     "MapStageId": 907000201502000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002015003,
@@ -716,8 +716,8 @@
     "MapStageId": 907000201502000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002015004,
@@ -726,8 +726,8 @@
     "MapStageId": 907000201502000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002015005,
@@ -736,8 +736,8 @@
     "MapStageId": 907000201502000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002015006,
@@ -746,8 +746,8 @@
     "MapStageId": 907000201502000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002015007,
@@ -756,8 +756,8 @@
     "MapStageId": 907000201502000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002016001,
@@ -766,8 +766,8 @@
     "MapStageId": 907000201602000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002016002,
@@ -776,8 +776,8 @@
     "MapStageId": 907000201602000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002016003,
@@ -786,8 +786,8 @@
     "MapStageId": 907000201602000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002016004,
@@ -796,8 +796,8 @@
     "MapStageId": 907000201602000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002016005,
@@ -806,8 +806,8 @@
     "MapStageId": 907000201602000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002017001,
@@ -816,8 +816,8 @@
     "MapStageId": 907000201702000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002017002,
@@ -826,8 +826,8 @@
     "MapStageId": 907000201702000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002017003,
@@ -836,8 +836,8 @@
     "MapStageId": 907000201702000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002017004,
@@ -846,8 +846,8 @@
     "MapStageId": 907000201702000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002019001,
@@ -856,8 +856,8 @@
     "MapStageId": 907000201902000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002019002,
@@ -866,8 +866,8 @@
     "MapStageId": 907000201902000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002019003,
@@ -876,8 +876,8 @@
     "MapStageId": 907000201902000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002019004,
@@ -886,8 +886,8 @@
     "MapStageId": 907000201902000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002019005,
@@ -896,8 +896,8 @@
     "MapStageId": 907000201902000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002020001,
@@ -906,8 +906,8 @@
     "MapStageId": 907000202002000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002020002,
@@ -916,8 +916,8 @@
     "MapStageId": 907000202002000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002020003,
@@ -926,8 +926,8 @@
     "MapStageId": 907000202002000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002020004,
@@ -936,8 +936,8 @@
     "MapStageId": 907000202002000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9070002020005,
@@ -946,8 +946,8 @@
     "MapStageId": 907000202002000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013001,
@@ -956,8 +956,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013002,
@@ -966,8 +966,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013003,
@@ -976,8 +976,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013004,
@@ -986,8 +986,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013005,
@@ -996,8 +996,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013006,
@@ -1006,8 +1006,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013007,
@@ -1016,8 +1016,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013008,
@@ -1026,8 +1026,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013009,
@@ -1036,8 +1036,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013010,
@@ -1046,8 +1046,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013011,
@@ -1056,8 +1056,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013012,
@@ -1066,8 +1066,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013013,
@@ -1076,8 +1076,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013014,
@@ -1086,8 +1086,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013015,
@@ -1096,8 +1096,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013016,
@@ -1106,8 +1106,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013017,
@@ -1116,8 +1116,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013018,
@@ -1126,8 +1126,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013019,
@@ -1136,8 +1136,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013020,
@@ -1146,8 +1146,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013021,
@@ -1156,8 +1156,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013022,
@@ -1166,8 +1166,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013023,
@@ -1176,8 +1176,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013024,
@@ -1186,8 +1186,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013025,
@@ -1196,8 +1196,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013026,
@@ -1206,8 +1206,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013027,
@@ -1216,8 +1216,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013028,
@@ -1226,8 +1226,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013029,
@@ -1236,8 +1236,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013030,
@@ -1246,8 +1246,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013031,
@@ -1256,8 +1256,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013032,
@@ -1266,8 +1266,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013033,
@@ -1276,8 +1276,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013034,
@@ -1286,8 +1286,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013035,
@@ -1296,8 +1296,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013036,
@@ -1306,8 +1306,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013037,
@@ -1316,8 +1316,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013038,
@@ -1326,8 +1326,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013039,
@@ -1336,8 +1336,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013040,
@@ -1346,8 +1346,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013041,
@@ -1356,8 +1356,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013042,
@@ -1366,8 +1366,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013043,
@@ -1376,8 +1376,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013044,
@@ -1386,8 +1386,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013045,
@@ -1396,8 +1396,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013046,
@@ -1406,8 +1406,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013047,
@@ -1416,8 +1416,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013048,
@@ -1426,8 +1426,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013049,
@@ -1436,8 +1436,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013050,
@@ -1446,8 +1446,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013051,
@@ -1456,8 +1456,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013052,
@@ -1466,8 +1466,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013053,
@@ -1476,8 +1476,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013054,
@@ -1486,8 +1486,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013055,
@@ -1496,8 +1496,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013056,
@@ -1506,8 +1506,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013057,
@@ -1516,8 +1516,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013058,
@@ -1526,8 +1526,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013059,
@@ -1536,8 +1536,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013060,
@@ -1546,8 +1546,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013061,
@@ -1556,8 +1556,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013062,
@@ -1566,8 +1566,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013063,
@@ -1576,8 +1576,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013064,
@@ -1586,8 +1586,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013065,
@@ -1596,8 +1596,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013066,
@@ -1606,8 +1606,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013067,
@@ -1616,8 +1616,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013068,
@@ -1626,8 +1626,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013069,
@@ -1636,8 +1636,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013070,
@@ -1646,8 +1646,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013071,
@@ -1656,8 +1656,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013072,
@@ -1666,8 +1666,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013073,
@@ -1676,8 +1676,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013074,
@@ -1686,8 +1686,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013075,
@@ -1696,8 +1696,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013076,
@@ -1706,8 +1706,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013077,
@@ -1716,8 +1716,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013078,
@@ -1726,8 +1726,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013079,
@@ -1736,8 +1736,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013080,
@@ -1746,8 +1746,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013081,
@@ -1756,8 +1756,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013082,
@@ -1766,8 +1766,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013083,
@@ -1776,8 +1776,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013084,
@@ -1786,8 +1786,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013085,
@@ -1796,8 +1796,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013086,
@@ -1806,8 +1806,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013087,
@@ -1816,8 +1816,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013088,
@@ -1826,8 +1826,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013089,
@@ -1836,8 +1836,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013090,
@@ -1846,8 +1846,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013091,
@@ -1856,8 +1856,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013092,
@@ -1866,8 +1866,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013093,
@@ -1876,8 +1876,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013094,
@@ -1886,8 +1886,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013095,
@@ -1896,8 +1896,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013096,
@@ -1906,8 +1906,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013097,
@@ -1916,8 +1916,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013098,
@@ -1926,8 +1926,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013099,
@@ -1936,8 +1936,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013100,
@@ -1946,8 +1946,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013101,
@@ -1956,8 +1956,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013102,
@@ -1966,8 +1966,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013103,
@@ -1976,8 +1976,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013104,
@@ -1986,8 +1986,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013105,
@@ -1996,8 +1996,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013106,
@@ -2006,8 +2006,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013107,
@@ -2016,8 +2016,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013108,
@@ -2026,8 +2026,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013109,
@@ -2036,8 +2036,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013110,
@@ -2046,8 +2046,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013111,
@@ -2056,8 +2056,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013112,
@@ -2066,8 +2066,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013113,
@@ -2076,8 +2076,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013114,
@@ -2086,8 +2086,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013115,
@@ -2096,8 +2096,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013116,
@@ -2106,8 +2106,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013117,
@@ -2116,8 +2116,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013118,
@@ -2126,8 +2126,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013119,
@@ -2136,8 +2136,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013120,
@@ -2146,8 +2146,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013121,
@@ -2156,8 +2156,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013122,
@@ -2166,8 +2166,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013123,
@@ -2176,8 +2176,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013124,
@@ -2186,8 +2186,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013125,
@@ -2196,8 +2196,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013126,
@@ -2206,8 +2206,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013127,
@@ -2216,8 +2216,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013128,
@@ -2226,8 +2226,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013129,
@@ -2236,8 +2236,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013130,
@@ -2246,8 +2246,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013131,
@@ -2256,8 +2256,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013132,
@@ -2266,8 +2266,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013133,
@@ -2276,8 +2276,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013134,
@@ -2286,8 +2286,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013135,
@@ -2296,8 +2296,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013136,
@@ -2306,8 +2306,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013137,
@@ -2316,8 +2316,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 1,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013138,
@@ -2326,8 +2326,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013139,
@@ -2336,8 +2336,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013140,
@@ -2346,8 +2346,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 4,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013141,
@@ -2356,8 +2356,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013142,
@@ -2366,8 +2366,8 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   },
   {
     "Id": 9900001013143,
@@ -2376,7 +2376,7 @@
     "MapStageId": 990000101302000000,
     "InitDirectionTypeIndex": 3,
     "InitStandbyTypeIndex": 0,
-    "Unknown_Col_6": false,
-    "Unknown_Col_7": ""
+    "IsScriptPlaced": false,
+    "Name": ""
   }
 ]

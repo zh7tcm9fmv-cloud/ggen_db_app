@@ -3,21 +3,21 @@
     "MainStageSeriesChallengeId": 10,
     "LogoOffsetX": 0,
     "BromideScalePercent": 100,
-    "Unknown_Col_3": 0,
-    "Unknown_Col_4": 0
+    "BromideMovePositionX": 0,
+    "BromideMovePositionY": 0
   },
   {
     "MainStageSeriesChallengeId": 2100,
     "LogoOffsetX": -10,
     "BromideScalePercent": 100,
-    "Unknown_Col_3": 0,
-    "Unknown_Col_4": 0
+    "BromideMovePositionX": 0,
+    "BromideMovePositionY": 0
   },
   {
     "MainStageSeriesChallengeId": 3000,
     "LogoOffsetX": -30,
     "BromideScalePercent": 100,
-    "Unknown_Col_3": 0,
-    "Unknown_Col_4": 0
+    "BromideMovePositionX": 0,
+    "BromideMovePositionY": 0
   }
 ]

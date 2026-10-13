@@ -1,135 +1,135 @@
 [
-  [
-    1,
-    0,
-    240800000000000001,
-    "bronze_2",
-    1
-  ],
-  [
-    2,
-    10,
-    240800000000000002,
-    "bronze_2",
-    1
-  ],
-  [
-    3,
-    25,
-    240800000000000003,
-    "bronze_2",
-    1
-  ],
-  [
-    4,
-    45,
-    240800000000000004,
-    "silver_1",
-    2
-  ],
-  [
-    5,
-    70,
-    240800000000000005,
-    "silver_1",
-    2
-  ],
-  [
-    6,
-    100,
-    240800000000000006,
-    "silver_1",
-    2
-  ],
-  [
-    7,
-    135,
-    240800000000000007,
-    "silver_2",
-    2
-  ],
-  [
-    8,
-    180,
-    240800000000000008,
-    "silver_2",
-    2
-  ],
-  [
-    9,
-    230,
-    240800000000000009,
-    "silver_2",
-    2
-  ],
-  [
-    10,
-    300,
-    240800000000000010,
-    "gold_1",
-    3
-  ],
-  [
-    11,
-    400,
-    240800000000000011,
-    "gold_1",
-    3
-  ],
-  [
-    12,
-    550,
-    240800000000000012,
-    "gold_1",
-    3
-  ],
-  [
-    13,
-    750,
-    240800000000000013,
-    "gold_1",
-    3
-  ],
-  [
-    14,
-    1000,
-    240800000000000014,
-    "platinum_1",
-    4
-  ],
-  [
-    15,
-    1500,
-    240800000000000015,
-    "platinum_2",
-    4
-  ],
-  [
-    16,
-    2000,
-    240800000000000016,
-    "platinum_2",
-    4
-  ],
-  [
-    17,
-    2500,
-    240800000000000017,
-    "platinum_2",
-    4
-  ],
-  [
-    18,
-    3000,
-    240800000000000018,
-    "platinum_2",
-    4
-  ],
-  [
-    19,
-    3500,
-    240800000000000019,
-    "platinum_2",
-    4
-  ]
+  {
+    "RankId": 1,
+    "RequiredPoint": 0,
+    "NameLanguageId": 240800000000000001,
+    "ResourceId": "bronze_2",
+    "FontMaterialTypeIndex": 1
+  },
+  {
+    "RankId": 2,
+    "RequiredPoint": 10,
+    "NameLanguageId": 240800000000000002,
+    "ResourceId": "bronze_2",
+    "FontMaterialTypeIndex": 1
+  },
+  {
+    "RankId": 3,
+    "RequiredPoint": 25,
+    "NameLanguageId": 240800000000000003,
+    "ResourceId": "bronze_2",
+    "FontMaterialTypeIndex": 1
+  },
+  {
+    "RankId": 4,
+    "RequiredPoint": 45,
+    "NameLanguageId": 240800000000000004,
+    "ResourceId": "silver_1",
+    "FontMaterialTypeIndex": 2
+  },
+  {
+    "RankId": 5,
+    "RequiredPoint": 70,
+    "NameLanguageId": 240800000000000005,
+    "ResourceId": "silver_1",
+    "FontMaterialTypeIndex": 2
+  },
+  {
+    "RankId": 6,
+    "RequiredPoint": 100,
+    "NameLanguageId": 240800000000000006,
+    "ResourceId": "silver_1",
+    "FontMaterialTypeIndex": 2
+  },
+  {
+    "RankId": 7,
+    "RequiredPoint": 135,
+    "NameLanguageId": 240800000000000007,
+    "ResourceId": "silver_2",
+    "FontMaterialTypeIndex": 2
+  },
+  {
+    "RankId": 8,
+    "RequiredPoint": 180,
+    "NameLanguageId": 240800000000000008,
+    "ResourceId": "silver_2",
+    "FontMaterialTypeIndex": 2
+  },
+  {
+    "RankId": 9,
+    "RequiredPoint": 230,
+    "NameLanguageId": 240800000000000009,
+    "ResourceId": "silver_2",
+    "FontMaterialTypeIndex": 2
+  },
+  {
+    "RankId": 10,
+    "RequiredPoint": 300,
+    "NameLanguageId": 240800000000000010,
+    "ResourceId": "gold_1",
+    "FontMaterialTypeIndex": 3
+  },
+  {
+    "RankId": 11,
+    "RequiredPoint": 400,
+    "NameLanguageId": 240800000000000011,
+    "ResourceId": "gold_1",
+    "FontMaterialTypeIndex": 3
+  },
+  {
+    "RankId": 12,
+    "RequiredPoint": 550,
+    "NameLanguageId": 240800000000000012,
+    "ResourceId": "gold_1",
+    "FontMaterialTypeIndex": 3
+  },
+  {
+    "RankId": 13,
+    "RequiredPoint": 750,
+    "NameLanguageId": 240800000000000013,
+    "ResourceId": "gold_1",
+    "FontMaterialTypeIndex": 3
+  },
+  {
+    "RankId": 14,
+    "RequiredPoint": 1000,
+    "NameLanguageId": 240800000000000014,
+    "ResourceId": "platinum_1",
+    "FontMaterialTypeIndex": 4
+  },
+  {
+    "RankId": 15,
+    "RequiredPoint": 1500,
+    "NameLanguageId": 240800000000000015,
+    "ResourceId": "platinum_2",
+    "FontMaterialTypeIndex": 4
+  },
+  {
+    "RankId": 16,
+    "RequiredPoint": 2000,
+    "NameLanguageId": 240800000000000016,
+    "ResourceId": "platinum_2",
+    "FontMaterialTypeIndex": 4
+  },
+  {
+    "RankId": 17,
+    "RequiredPoint": 2500,
+    "NameLanguageId": 240800000000000017,
+    "ResourceId": "platinum_2",
+    "FontMaterialTypeIndex": 4
+  },
+  {
+    "RankId": 18,
+    "RequiredPoint": 3000,
+    "NameLanguageId": 240800000000000018,
+    "ResourceId": "platinum_2",
+    "FontMaterialTypeIndex": 4
+  },
+  {
+    "RankId": 19,
+    "RequiredPoint": 3500,
+    "NameLanguageId": 240800000000000019,
+    "ResourceId": "platinum_2",
+    "FontMaterialTypeIndex": 4
+  }
 ]

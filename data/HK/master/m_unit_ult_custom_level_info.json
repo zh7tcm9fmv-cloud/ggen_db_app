@@ -1,128 +1,128 @@
 [
   {
     "Id": 1,
-    "UnitBodyTypeIndex": 0,
-    "RoleTypeIndex": 0,
-    "BromideResourceId": 0
+    "Level": 0,
+    "Exp": 0,
+    "GrowthRate": 0
   },
   {
     "Id": 2,
-    "UnitBodyTypeIndex": 1,
-    "RoleTypeIndex": 100,
-    "BromideResourceId": 500
+    "Level": 1,
+    "Exp": 100,
+    "GrowthRate": 500
   },
   {
     "Id": 3,
-    "UnitBodyTypeIndex": 2,
-    "RoleTypeIndex": 200,
-    "BromideResourceId": 1000
+    "Level": 2,
+    "Exp": 200,
+    "GrowthRate": 1000
   },
   {
     "Id": 4,
-    "UnitBodyTypeIndex": 3,
-    "RoleTypeIndex": 300,
-    "BromideResourceId": 1500
+    "Level": 3,
+    "Exp": 300,
+    "GrowthRate": 1500
   },
   {
     "Id": 5,
-    "UnitBodyTypeIndex": 4,
-    "RoleTypeIndex": 400,
-    "BromideResourceId": 2000
+    "Level": 4,
+    "Exp": 400,
+    "GrowthRate": 2000
   },
   {
     "Id": 6,
-    "UnitBodyTypeIndex": 5,
-    "RoleTypeIndex": 600,
-    "BromideResourceId": 2500
+    "Level": 5,
+    "Exp": 600,
+    "GrowthRate": 2500
   },
   {
     "Id": 7,
-    "UnitBodyTypeIndex": 6,
-    "RoleTypeIndex": 800,
-    "BromideResourceId": 3000
+    "Level": 6,
+    "Exp": 800,
+    "GrowthRate": 3000
   },
   {
     "Id": 8,
-    "UnitBodyTypeIndex": 7,
-    "RoleTypeIndex": 1000,
-    "BromideResourceId": 3500
+    "Level": 7,
+    "Exp": 1000,
+    "GrowthRate": 3500
   },
   {
     "Id": 9,
-    "UnitBodyTypeIndex": 8,
-    "RoleTypeIndex": 1200,
-    "BromideResourceId": 4000
+    "Level": 8,
+    "Exp": 1200,
+    "GrowthRate": 4000
   },
   {
     "Id": 10,
-    "UnitBodyTypeIndex": 9,
-    "RoleTypeIndex": 1500,
-    "BromideResourceId": 4500
+    "Level": 9,
+    "Exp": 1500,
+    "GrowthRate": 4500
   },
   {
     "Id": 11,
-    "UnitBodyTypeIndex": 10,
-    "RoleTypeIndex": 1800,
-    "BromideResourceId": 5000
+    "Level": 10,
+    "Exp": 1800,
+    "GrowthRate": 5000
   },
   {
     "Id": 12,
-    "UnitBodyTypeIndex": 11,
-    "RoleTypeIndex": 2100,
-    "BromideResourceId": 5500
+    "Level": 11,
+    "Exp": 2100,
+    "GrowthRate": 5500
   },
   {
     "Id": 13,
-    "UnitBodyTypeIndex": 12,
-    "RoleTypeIndex": 2400,
-    "BromideResourceId": 6000
+    "Level": 12,
+    "Exp": 2400,
+    "GrowthRate": 6000
   },
   {
     "Id": 14,
-    "UnitBodyTypeIndex": 13,
-    "RoleTypeIndex": 2800,
-    "BromideResourceId": 6500
+    "Level": 13,
+    "Exp": 2800,
+    "GrowthRate": 6500
   },
   {
     "Id": 15,
-    "UnitBodyTypeIndex": 14,
-    "RoleTypeIndex": 3200,
-    "BromideResourceId": 7000
+    "Level": 14,
+    "Exp": 3200,
+    "GrowthRate": 7000
   },
   {
     "Id": 16,
-    "UnitBodyTypeIndex": 15,
-    "RoleTypeIndex": 3600,
-    "BromideResourceId": 7500
+    "Level": 15,
+    "Exp": 3600,
+    "GrowthRate": 7500
   },
   {
     "Id": 17,
-    "UnitBodyTypeIndex": 16,
-    "RoleTypeIndex": 4000,
-    "BromideResourceId": 8000
+    "Level": 16,
+    "Exp": 4000,
+    "GrowthRate": 8000
   },
   {
     "Id": 18,
-    "UnitBodyTypeIndex": 17,
-    "RoleTypeIndex": 4500,
-    "BromideResourceId": 8500
+    "Level": 17,
+    "Exp": 4500,
+    "GrowthRate": 8500
   },
   {
     "Id": 19,
-    "UnitBodyTypeIndex": 18,
-    "RoleTypeIndex": 5000,
-    "BromideResourceId": 9000
+    "Level": 18,
+    "Exp": 5000,
+    "GrowthRate": 9000
   },
   {
     "Id": 20,
-    "UnitBodyTypeIndex": 19,
-    "RoleTypeIndex": 5500,
-    "BromideResourceId": 9500
+    "Level": 19,
+    "Exp": 5500,
+    "GrowthRate": 9500
   },
   {
     "Id": 21,
-    "UnitBodyTypeIndex": 20,
-    "RoleTypeIndex": 6000,
-    "BromideResourceId": 10000
+    "Level": 20,
+    "Exp": 6000,
+    "GrowthRate": 10000
   }
 ]

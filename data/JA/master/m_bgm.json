@@ -8,7 +8,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100000079,
@@ -19,7 +19,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100000080,
@@ -30,7 +30,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100000081,
@@ -41,7 +41,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100000082,
@@ -52,7 +52,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100000083,
@@ -63,7 +63,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100000084,
@@ -74,7 +74,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100000085,
@@ -85,7 +85,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100000086,
@@ -96,7 +96,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100000087,
@@ -107,7 +107,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100000088,
@@ -118,7 +118,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100000089,
@@ -129,7 +129,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100000091,
@@ -140,7 +140,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100000093,
@@ -151,7 +151,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100000121,
@@ -162,7 +162,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100000122,
@@ -173,7 +173,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100000123,
@@ -184,7 +184,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100000124,
@@ -195,7 +195,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100000125,
@@ -206,7 +206,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100000127,
@@ -217,7 +217,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100000148,
@@ -228,7 +228,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100000149,
@@ -239,7 +239,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100109001,
@@ -250,7 +250,7 @@
     "SeriesId": 10,
     "HasLyrics": false,
     "SortOrder": 1001000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100109002,
@@ -261,7 +261,7 @@
     "SeriesId": 10,
     "HasLyrics": false,
     "SortOrder": 1001000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100109003,
@@ -272,7 +272,7 @@
     "SeriesId": 10,
     "HasLyrics": false,
     "SortOrder": 1001000030,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100109004,
@@ -283,7 +283,7 @@
     "SeriesId": 10,
     "HasLyrics": false,
     "SortOrder": 1001000040,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100109005,
@@ -294,7 +294,7 @@
     "SeriesId": 10,
     "HasLyrics": false,
     "SortOrder": 1001000050,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100109006,
@@ -305,7 +305,7 @@
     "SeriesId": 10,
     "HasLyrics": false,
     "SortOrder": 1001000060,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100109007,
@@ -316,7 +316,7 @@
     "SeriesId": 10,
     "HasLyrics": false,
     "SortOrder": 1001000070,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100109008,
@@ -327,7 +327,7 @@
     "SeriesId": 10,
     "HasLyrics": false,
     "SortOrder": 1001000080,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100109009,
@@ -338,7 +338,7 @@
     "SeriesId": 10,
     "HasLyrics": false,
     "SortOrder": 1001000090,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100109010,
@@ -349,7 +349,7 @@
     "SeriesId": 10,
     "HasLyrics": true,
     "SortOrder": 1001000100,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100109011,
@@ -360,7 +360,7 @@
     "SeriesId": 10,
     "HasLyrics": true,
     "SortOrder": 1001000110,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100109012,
@@ -371,7 +371,7 @@
     "SeriesId": 10,
     "HasLyrics": true,
     "SortOrder": 1001000120,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100109013,
@@ -382,7 +382,7 @@
     "SeriesId": 10,
     "HasLyrics": true,
     "SortOrder": 1001000130,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100309001,
@@ -393,7 +393,7 @@
     "SeriesId": 30,
     "HasLyrics": true,
     "SortOrder": 1003000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100700001,
@@ -404,7 +404,7 @@
     "SeriesId": 70,
     "HasLyrics": false,
     "SortOrder": 1007000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100700002,
@@ -415,7 +415,7 @@
     "SeriesId": 70,
     "HasLyrics": false,
     "SortOrder": 1007000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100900001,
@@ -426,7 +426,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100900002,
@@ -437,7 +437,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100900003,
@@ -448,7 +448,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100900004,
@@ -459,7 +459,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100900005,
@@ -470,7 +470,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100900006,
@@ -481,7 +481,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100900007,
@@ -492,7 +492,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100900008,
@@ -503,7 +503,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100909001,
@@ -514,7 +514,7 @@
     "SeriesId": 90,
     "HasLyrics": false,
     "SortOrder": 1009000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100909002,
@@ -525,7 +525,7 @@
     "SeriesId": 90,
     "HasLyrics": false,
     "SortOrder": 1009000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100909003,
@@ -536,7 +536,7 @@
     "SeriesId": 90,
     "HasLyrics": false,
     "SortOrder": 1009000030,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100909004,
@@ -547,7 +547,7 @@
     "SeriesId": 90,
     "HasLyrics": false,
     "SortOrder": 1009000040,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100909005,
@@ -558,7 +558,7 @@
     "SeriesId": 90,
     "HasLyrics": true,
     "SortOrder": 1009000050,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 100909006,
@@ -569,7 +569,7 @@
     "SeriesId": 90,
     "HasLyrics": true,
     "SortOrder": 1009000060,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 101209001,
@@ -580,7 +580,7 @@
     "SeriesId": 120,
     "HasLyrics": false,
     "SortOrder": 1012000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 101209002,
@@ -591,7 +591,7 @@
     "SeriesId": 120,
     "HasLyrics": false,
     "SortOrder": 1012000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 101209003,
@@ -602,7 +602,7 @@
     "SeriesId": 120,
     "HasLyrics": false,
     "SortOrder": 1012000030,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 101300001,
@@ -613,7 +613,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 101300002,
@@ -624,7 +624,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 101300003,
@@ -635,7 +635,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 101300004,
@@ -646,7 +646,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 101300005,
@@ -657,7 +657,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 101300006,
@@ -668,7 +668,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 101300007,
@@ -679,7 +679,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 101300008,
@@ -690,7 +690,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 101309001,
@@ -701,7 +701,7 @@
     "SeriesId": 130,
     "HasLyrics": true,
     "SortOrder": 1013000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 101309002,
@@ -712,7 +712,7 @@
     "SeriesId": 130,
     "HasLyrics": false,
     "SortOrder": 1013000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 101309003,
@@ -723,7 +723,7 @@
     "SeriesId": 130,
     "HasLyrics": false,
     "SortOrder": 1013000030,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 101309004,
@@ -734,7 +734,7 @@
     "SeriesId": 130,
     "HasLyrics": false,
     "SortOrder": 1013000040,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 101309005,
@@ -745,7 +745,7 @@
     "SeriesId": 130,
     "HasLyrics": false,
     "SortOrder": 1013000050,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 101509001,
@@ -756,7 +756,7 @@
     "SeriesId": 130,
     "HasLyrics": true,
     "SortOrder": 1015000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 101700001,
@@ -767,7 +767,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 101700002,
@@ -778,7 +778,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 101700003,
@@ -789,7 +789,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 101700004,
@@ -800,7 +800,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 101700005,
@@ -811,7 +811,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 101700006,
@@ -822,7 +822,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 101700007,
@@ -833,7 +833,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 101709001,
@@ -844,7 +844,7 @@
     "SeriesId": 170,
     "HasLyrics": false,
     "SortOrder": 1017000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 101709002,
@@ -855,7 +855,7 @@
     "SeriesId": 170,
     "HasLyrics": false,
     "SortOrder": 1017000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 101709003,
@@ -866,7 +866,7 @@
     "SeriesId": 170,
     "HasLyrics": false,
     "SortOrder": 1017000030,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 101709004,
@@ -877,7 +877,7 @@
     "SeriesId": 170,
     "HasLyrics": true,
     "SortOrder": 1017000040,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 102100001,
@@ -888,7 +888,7 @@
     "SeriesId": 210,
     "HasLyrics": false,
     "SortOrder": 1021000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 102100002,
@@ -899,7 +899,7 @@
     "SeriesId": 210,
     "HasLyrics": false,
     "SortOrder": 1021000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 102100003,
@@ -910,7 +910,7 @@
     "SeriesId": 210,
     "HasLyrics": false,
     "SortOrder": 1021000030,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 102100004,
@@ -921,7 +921,7 @@
     "SeriesId": 210,
     "HasLyrics": false,
     "SortOrder": 1021000040,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 102100005,
@@ -932,7 +932,7 @@
     "SeriesId": 210,
     "HasLyrics": false,
     "SortOrder": 1021000050,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 102100006,
@@ -943,7 +943,7 @@
     "SeriesId": 210,
     "HasLyrics": false,
     "SortOrder": 1021000060,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 102100007,
@@ -954,7 +954,7 @@
     "SeriesId": 210,
     "HasLyrics": false,
     "SortOrder": 1021000070,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 102200001,
@@ -965,7 +965,7 @@
     "SeriesId": 220,
     "HasLyrics": false,
     "SortOrder": 1022000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 102200002,
@@ -976,7 +976,7 @@
     "SeriesId": 220,
     "HasLyrics": false,
     "SortOrder": 1022000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 102200003,
@@ -987,7 +987,7 @@
     "SeriesId": 220,
     "HasLyrics": false,
     "SortOrder": 1022000030,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 102200004,
@@ -998,7 +998,7 @@
     "SeriesId": 220,
     "HasLyrics": false,
     "SortOrder": 1022000040,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 102200005,
@@ -1009,7 +1009,7 @@
     "SeriesId": 220,
     "HasLyrics": false,
     "SortOrder": 1022000050,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 102200006,
@@ -1020,7 +1020,7 @@
     "SeriesId": 220,
     "HasLyrics": false,
     "SortOrder": 1022000060,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 102200007,
@@ -1031,7 +1031,7 @@
     "SeriesId": 220,
     "HasLyrics": false,
     "SortOrder": 1022000070,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 102200008,
@@ -1042,7 +1042,7 @@
     "SeriesId": 220,
     "HasLyrics": false,
     "SortOrder": 1022000080,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 103200001,
@@ -1053,7 +1053,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 103200002,
@@ -1064,7 +1064,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 103200003,
@@ -1075,7 +1075,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 103200004,
@@ -1086,7 +1086,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 103200005,
@@ -1097,7 +1097,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 103200006,
@@ -1108,7 +1108,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 103209001,
@@ -1119,7 +1119,7 @@
     "SeriesId": 310,
     "HasLyrics": false,
     "SortOrder": 1032000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 103209002,
@@ -1130,7 +1130,7 @@
     "SeriesId": 310,
     "HasLyrics": false,
     "SortOrder": 1032000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 103209003,
@@ -1141,7 +1141,7 @@
     "SeriesId": 310,
     "HasLyrics": true,
     "SortOrder": 1032000030,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 103300001,
@@ -1152,7 +1152,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 103300002,
@@ -1163,7 +1163,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 103300003,
@@ -1174,7 +1174,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 103300004,
@@ -1185,7 +1185,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 103300005,
@@ -1196,7 +1196,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 103300006,
@@ -1207,7 +1207,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 103309001,
@@ -1218,7 +1218,7 @@
     "SeriesId": 310,
     "HasLyrics": false,
     "SortOrder": 1033000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 103309002,
@@ -1229,7 +1229,7 @@
     "SeriesId": 310,
     "HasLyrics": false,
     "SortOrder": 1033000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 103309003,
@@ -1240,7 +1240,7 @@
     "SeriesId": 310,
     "HasLyrics": false,
     "SortOrder": 1033000030,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 103309004,
@@ -1251,7 +1251,7 @@
     "SeriesId": 310,
     "HasLyrics": false,
     "SortOrder": 1033000040,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 103309005,
@@ -1262,7 +1262,7 @@
     "SeriesId": 310,
     "HasLyrics": false,
     "SortOrder": 1033000050,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 103309006,
@@ -1273,7 +1273,7 @@
     "SeriesId": 310,
     "HasLyrics": false,
     "SortOrder": 1033000060,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 105500001,
@@ -1284,7 +1284,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 105509001,
@@ -1295,7 +1295,7 @@
     "SeriesId": 550,
     "HasLyrics": false,
     "SortOrder": 1055000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 105509002,
@@ -1306,7 +1306,7 @@
     "SeriesId": 550,
     "HasLyrics": false,
     "SortOrder": 1055000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 105509003,
@@ -1317,7 +1317,7 @@
     "SeriesId": 550,
     "HasLyrics": false,
     "SortOrder": 1055000030,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 105509004,
@@ -1328,7 +1328,7 @@
     "SeriesId": 550,
     "HasLyrics": false,
     "SortOrder": 1055000040,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 105509005,
@@ -1339,7 +1339,7 @@
     "SeriesId": 550,
     "HasLyrics": true,
     "SortOrder": 1055000050,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 106000001,
@@ -1350,7 +1350,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 106000002,
@@ -1361,7 +1361,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 106000003,
@@ -1372,7 +1372,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 106000004,
@@ -1383,7 +1383,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 106000005,
@@ -1394,7 +1394,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 106000006,
@@ -1405,7 +1405,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 106000007,
@@ -1416,7 +1416,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 106000008,
@@ -1427,7 +1427,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 106009001,
@@ -1438,7 +1438,7 @@
     "SeriesId": 600,
     "HasLyrics": false,
     "SortOrder": 1060000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 106009002,
@@ -1449,7 +1449,7 @@
     "SeriesId": 600,
     "HasLyrics": false,
     "SortOrder": 1060000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 106009003,
@@ -1460,7 +1460,7 @@
     "SeriesId": 600,
     "HasLyrics": false,
     "SortOrder": 1060000030,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 106009004,
@@ -1471,7 +1471,7 @@
     "SeriesId": 600,
     "HasLyrics": false,
     "SortOrder": 1060000040,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 106009005,
@@ -1482,7 +1482,7 @@
     "SeriesId": 600,
     "HasLyrics": false,
     "SortOrder": 1060000050,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 106009006,
@@ -1493,7 +1493,7 @@
     "SeriesId": 600,
     "HasLyrics": false,
     "SortOrder": 1060000060,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 106009007,
@@ -1504,7 +1504,7 @@
     "SeriesId": 600,
     "HasLyrics": true,
     "SortOrder": 1060000070,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 106009009,
@@ -1515,7 +1515,7 @@
     "SeriesId": 600,
     "HasLyrics": true,
     "SortOrder": 1060000090,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 106010001,
@@ -1526,7 +1526,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 106010002,
@@ -1537,7 +1537,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 106010003,
@@ -1548,7 +1548,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 106010004,
@@ -1559,7 +1559,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 106010005,
@@ -1570,7 +1570,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 106010006,
@@ -1581,7 +1581,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 106010007,
@@ -1592,7 +1592,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 106010008,
@@ -1603,7 +1603,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 106010009,
@@ -1614,7 +1614,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 106010010,
@@ -1625,7 +1625,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 108009001,
@@ -1636,7 +1636,7 @@
     "SeriesId": 800,
     "HasLyrics": false,
     "SortOrder": 1080000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 108009002,
@@ -1647,7 +1647,7 @@
     "SeriesId": 800,
     "HasLyrics": false,
     "SortOrder": 1080000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 108009003,
@@ -1658,7 +1658,7 @@
     "SeriesId": 800,
     "HasLyrics": false,
     "SortOrder": 1080000030,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 108009004,
@@ -1669,7 +1669,7 @@
     "SeriesId": 800,
     "HasLyrics": false,
     "SortOrder": 1080000040,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 108009005,
@@ -1680,7 +1680,7 @@
     "SeriesId": 800,
     "HasLyrics": false,
     "SortOrder": 1080000050,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 108009006,
@@ -1691,7 +1691,7 @@
     "SeriesId": 800,
     "HasLyrics": true,
     "SortOrder": 1080000060,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 108109001,
@@ -1702,7 +1702,7 @@
     "SeriesId": 810,
     "HasLyrics": false,
     "SortOrder": 1081000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 108109002,
@@ -1713,7 +1713,7 @@
     "SeriesId": 810,
     "HasLyrics": false,
     "SortOrder": 1081000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 108109003,
@@ -1724,7 +1724,7 @@
     "SeriesId": 810,
     "HasLyrics": false,
     "SortOrder": 1081000030,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 108109004,
@@ -1735,7 +1735,7 @@
     "SeriesId": 810,
     "HasLyrics": false,
     "SortOrder": 1081000040,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 108109005,
@@ -1746,7 +1746,7 @@
     "SeriesId": 810,
     "HasLyrics": true,
     "SortOrder": 1081000050,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 108500001,
@@ -1757,7 +1757,7 @@
     "SeriesId": 850,
     "HasLyrics": false,
     "SortOrder": 1085000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 109509001,
@@ -1768,7 +1768,7 @@
     "SeriesId": 950,
     "HasLyrics": false,
     "SortOrder": 1095000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 109509002,
@@ -1779,7 +1779,7 @@
     "SeriesId": 950,
     "HasLyrics": false,
     "SortOrder": 1095000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 109509003,
@@ -1790,7 +1790,7 @@
     "SeriesId": 950,
     "HasLyrics": false,
     "SortOrder": 1095000030,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 109509004,
@@ -1801,7 +1801,7 @@
     "SeriesId": 950,
     "HasLyrics": false,
     "SortOrder": 1095000040,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 109509005,
@@ -1812,7 +1812,7 @@
     "SeriesId": 950,
     "HasLyrics": false,
     "SortOrder": 1095000050,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 109509006,
@@ -1823,7 +1823,7 @@
     "SeriesId": 950,
     "HasLyrics": true,
     "SortOrder": 1095000060,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 109509007,
@@ -1834,7 +1834,7 @@
     "SeriesId": 950,
     "HasLyrics": true,
     "SortOrder": 1095000070,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 111000001,
@@ -1845,7 +1845,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 111000007,
@@ -1856,7 +1856,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 111009001,
@@ -1867,7 +1867,7 @@
     "SeriesId": 1100,
     "HasLyrics": true,
     "SortOrder": 1110000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 111009002,
@@ -1878,7 +1878,7 @@
     "SeriesId": 1100,
     "HasLyrics": false,
     "SortOrder": 1110000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 111009003,
@@ -1889,7 +1889,7 @@
     "SeriesId": 1100,
     "HasLyrics": false,
     "SortOrder": 1110000030,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 111009004,
@@ -1900,7 +1900,7 @@
     "SeriesId": 1100,
     "HasLyrics": false,
     "SortOrder": 1110000040,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 111009005,
@@ -1911,7 +1911,7 @@
     "SeriesId": 1100,
     "HasLyrics": false,
     "SortOrder": 1110000050,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 111009006,
@@ -1922,7 +1922,7 @@
     "SeriesId": 1100,
     "HasLyrics": false,
     "SortOrder": 1110000060,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 111009007,
@@ -1933,7 +1933,7 @@
     "SeriesId": 1100,
     "HasLyrics": false,
     "SortOrder": 1110000070,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 112500001,
@@ -1944,7 +1944,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 112500002,
@@ -1955,7 +1955,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 112500003,
@@ -1966,7 +1966,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 112500004,
@@ -1977,7 +1977,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 112500005,
@@ -1988,7 +1988,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 112500006,
@@ -1999,7 +1999,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 112500007,
@@ -2010,7 +2010,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 112509001,
@@ -2021,7 +2021,7 @@
     "SeriesId": 1250,
     "HasLyrics": true,
     "SortOrder": 1125000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 112509002,
@@ -2032,7 +2032,7 @@
     "SeriesId": 1250,
     "HasLyrics": true,
     "SortOrder": 1125000110,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 112509003,
@@ -2043,7 +2043,7 @@
     "SeriesId": 1250,
     "HasLyrics": true,
     "SortOrder": 1125000120,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 112509004,
@@ -2054,7 +2054,7 @@
     "SeriesId": 1250,
     "HasLyrics": true,
     "SortOrder": 1125000130,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 112509005,
@@ -2065,7 +2065,7 @@
     "SeriesId": 1250,
     "HasLyrics": true,
     "SortOrder": 1125000140,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 112509006,
@@ -2076,7 +2076,7 @@
     "SeriesId": 1250,
     "HasLyrics": true,
     "SortOrder": 1125000150,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 112509007,
@@ -2087,7 +2087,7 @@
     "SeriesId": 1250,
     "HasLyrics": true,
     "SortOrder": 1125000160,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 112509008,
@@ -2098,7 +2098,7 @@
     "SeriesId": 1250,
     "HasLyrics": false,
     "SortOrder": 1125000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 112509009,
@@ -2109,7 +2109,7 @@
     "SeriesId": 1250,
     "HasLyrics": false,
     "SortOrder": 1125000030,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 112509010,
@@ -2120,7 +2120,7 @@
     "SeriesId": 1250,
     "HasLyrics": false,
     "SortOrder": 1125000040,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 112509011,
@@ -2131,7 +2131,7 @@
     "SeriesId": 1250,
     "HasLyrics": false,
     "SortOrder": 1125000050,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 112509012,
@@ -2142,7 +2142,7 @@
     "SeriesId": 1250,
     "HasLyrics": false,
     "SortOrder": 1125000060,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 112509013,
@@ -2153,7 +2153,7 @@
     "SeriesId": 1250,
     "HasLyrics": false,
     "SortOrder": 1125000070,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 112509014,
@@ -2164,7 +2164,7 @@
     "SeriesId": 1250,
     "HasLyrics": false,
     "SortOrder": 1125000080,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 112509015,
@@ -2175,7 +2175,7 @@
     "SeriesId": 1250,
     "HasLyrics": false,
     "SortOrder": 1125000090,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 112509016,
@@ -2186,7 +2186,7 @@
     "SeriesId": 1250,
     "HasLyrics": false,
     "SortOrder": 1125000100,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 112609001,
@@ -2197,7 +2197,7 @@
     "SeriesId": 1250,
     "HasLyrics": true,
     "SortOrder": 1126000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 114400001,
@@ -2208,7 +2208,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 114400002,
@@ -2219,7 +2219,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 114400003,
@@ -2230,7 +2230,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 114400004,
@@ -2241,7 +2241,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 114400005,
@@ -2252,7 +2252,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 114400006,
@@ -2263,7 +2263,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 114409001,
@@ -2274,7 +2274,7 @@
     "SeriesId": 1440,
     "HasLyrics": true,
     "SortOrder": 1144000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 114409002,
@@ -2285,7 +2285,7 @@
     "SeriesId": 1440,
     "HasLyrics": false,
     "SortOrder": 1144000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 114409003,
@@ -2296,7 +2296,7 @@
     "SeriesId": 1440,
     "HasLyrics": false,
     "SortOrder": 1144000030,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 114409004,
@@ -2307,7 +2307,7 @@
     "SeriesId": 1440,
     "HasLyrics": false,
     "SortOrder": 1144000040,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 114409005,
@@ -2318,7 +2318,7 @@
     "SeriesId": 1440,
     "HasLyrics": true,
     "SortOrder": 1144000050,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 115000001,
@@ -2329,7 +2329,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 115000002,
@@ -2340,7 +2340,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 115000003,
@@ -2351,7 +2351,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 115000004,
@@ -2362,7 +2362,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 115000005,
@@ -2373,7 +2373,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 115000006,
@@ -2384,7 +2384,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 115009001,
@@ -2395,7 +2395,7 @@
     "SeriesId": 1500,
     "HasLyrics": true,
     "SortOrder": 1150000060,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 115009002,
@@ -2406,7 +2406,7 @@
     "SeriesId": 1500,
     "HasLyrics": false,
     "SortOrder": 1150000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 115009003,
@@ -2417,7 +2417,7 @@
     "SeriesId": 1500,
     "HasLyrics": false,
     "SortOrder": 1150000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 115009004,
@@ -2428,7 +2428,7 @@
     "SeriesId": 1500,
     "HasLyrics": false,
     "SortOrder": 1150000030,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 115009005,
@@ -2439,7 +2439,7 @@
     "SeriesId": 1500,
     "HasLyrics": true,
     "SortOrder": 1150000070,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 115009006,
@@ -2450,7 +2450,7 @@
     "SeriesId": 1500,
     "HasLyrics": true,
     "SortOrder": 1150000080,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 115009007,
@@ -2461,7 +2461,7 @@
     "SeriesId": 1500,
     "HasLyrics": false,
     "SortOrder": 1150000040,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 115009008,
@@ -2472,7 +2472,7 @@
     "SeriesId": 1500,
     "HasLyrics": false,
     "SortOrder": 1150000050,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 115500001,
@@ -2483,7 +2483,7 @@
     "SeriesId": 1550,
     "HasLyrics": false,
     "SortOrder": 1155000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 115500002,
@@ -2494,7 +2494,7 @@
     "SeriesId": 1550,
     "HasLyrics": false,
     "SortOrder": 1155000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 115500003,
@@ -2505,7 +2505,7 @@
     "SeriesId": 1550,
     "HasLyrics": false,
     "SortOrder": 1155000030,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 115500004,
@@ -2516,7 +2516,7 @@
     "SeriesId": 1550,
     "HasLyrics": false,
     "SortOrder": 1155000040,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 116200001,
@@ -2527,7 +2527,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 116200002,
@@ -2538,7 +2538,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 116200003,
@@ -2549,7 +2549,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 116200004,
@@ -2560,7 +2560,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 116200005,
@@ -2571,7 +2571,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 116200006,
@@ -2582,7 +2582,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 116200007,
@@ -2593,7 +2593,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 116200008,
@@ -2604,7 +2604,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 116209001,
@@ -2615,7 +2615,7 @@
     "SeriesId": 1620,
     "HasLyrics": true,
     "SortOrder": 1162000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 116600001,
@@ -2626,7 +2626,7 @@
     "SeriesId": 1660,
     "HasLyrics": false,
     "SortOrder": 1166000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 116600002,
@@ -2637,7 +2637,7 @@
     "SeriesId": 1660,
     "HasLyrics": false,
     "SortOrder": 1166000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 117500001,
@@ -2648,7 +2648,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 117500002,
@@ -2659,7 +2659,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 117500003,
@@ -2670,7 +2670,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 117500004,
@@ -2681,7 +2681,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 117500005,
@@ -2692,7 +2692,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 117500006,
@@ -2703,7 +2703,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 117500007,
@@ -2714,7 +2714,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 117500008,
@@ -2725,7 +2725,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 117500009,
@@ -2736,7 +2736,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 117500010,
@@ -2747,7 +2747,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 120000001,
@@ -2758,7 +2758,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 120000002,
@@ -2769,7 +2769,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 120000003,
@@ -2780,7 +2780,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 120000004,
@@ -2791,7 +2791,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 120000005,
@@ -2802,7 +2802,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 120000006,
@@ -2813,7 +2813,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 120000007,
@@ -2824,7 +2824,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 120000008,
@@ -2835,7 +2835,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 120009001,
@@ -2846,7 +2846,7 @@
     "SeriesId": 2000,
     "HasLyrics": false,
     "SortOrder": 1200000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 120009002,
@@ -2857,7 +2857,7 @@
     "SeriesId": 2000,
     "HasLyrics": false,
     "SortOrder": 1200000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 120009003,
@@ -2868,7 +2868,7 @@
     "SeriesId": 2000,
     "HasLyrics": false,
     "SortOrder": 1200000030,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 120009004,
@@ -2879,7 +2879,7 @@
     "SeriesId": 2000,
     "HasLyrics": false,
     "SortOrder": 1200000040,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 120009005,
@@ -2890,7 +2890,7 @@
     "SeriesId": 2000,
     "HasLyrics": false,
     "SortOrder": 1200000050,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 120009006,
@@ -2901,7 +2901,7 @@
     "SeriesId": 2000,
     "HasLyrics": false,
     "SortOrder": 1200000060,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 120009007,
@@ -2912,7 +2912,7 @@
     "SeriesId": 2000,
     "HasLyrics": false,
     "SortOrder": 1200000070,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 120009008,
@@ -2923,7 +2923,7 @@
     "SeriesId": 2000,
     "HasLyrics": false,
     "SortOrder": 1200000080,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 120009009,
@@ -2934,7 +2934,7 @@
     "SeriesId": 2000,
     "HasLyrics": false,
     "SortOrder": 1200000090,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 120009010,
@@ -2945,7 +2945,7 @@
     "SeriesId": 2000,
     "HasLyrics": false,
     "SortOrder": 1200000100,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 120009011,
@@ -2956,7 +2956,7 @@
     "SeriesId": 2000,
     "HasLyrics": true,
     "SortOrder": 1200000110,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 120009012,
@@ -2967,7 +2967,7 @@
     "SeriesId": 2000,
     "HasLyrics": true,
     "SortOrder": 1200000120,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 121009001,
@@ -2978,7 +2978,7 @@
     "SeriesId": 2100,
     "HasLyrics": false,
     "SortOrder": 1210000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 121009002,
@@ -2989,7 +2989,7 @@
     "SeriesId": 2100,
     "HasLyrics": false,
     "SortOrder": 1210000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 121009003,
@@ -3000,7 +3000,7 @@
     "SeriesId": 2100,
     "HasLyrics": false,
     "SortOrder": 1210000030,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 121009004,
@@ -3011,7 +3011,7 @@
     "SeriesId": 2100,
     "HasLyrics": false,
     "SortOrder": 1210000040,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 121009005,
@@ -3022,7 +3022,7 @@
     "SeriesId": 2100,
     "HasLyrics": false,
     "SortOrder": 1210000050,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 121009006,
@@ -3033,7 +3033,7 @@
     "SeriesId": 2100,
     "HasLyrics": false,
     "SortOrder": 1210000060,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 121009007,
@@ -3044,7 +3044,7 @@
     "SeriesId": 2100,
     "HasLyrics": false,
     "SortOrder": 1210000070,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 121009008,
@@ -3055,7 +3055,7 @@
     "SeriesId": 2100,
     "HasLyrics": false,
     "SortOrder": 1210000080,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 121009009,
@@ -3066,7 +3066,7 @@
     "SeriesId": 2100,
     "HasLyrics": false,
     "SortOrder": 1210000090,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 121009010,
@@ -3077,7 +3077,7 @@
     "SeriesId": 2100,
     "HasLyrics": false,
     "SortOrder": 1210000100,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 121009011,
@@ -3088,7 +3088,7 @@
     "SeriesId": 2100,
     "HasLyrics": false,
     "SortOrder": 1210000110,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 121009012,
@@ -3099,7 +3099,7 @@
     "SeriesId": 2100,
     "HasLyrics": false,
     "SortOrder": 1210000120,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 121009013,
@@ -3110,7 +3110,7 @@
     "SeriesId": 2100,
     "HasLyrics": true,
     "SortOrder": 1210000130,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 121009014,
@@ -3121,7 +3121,7 @@
     "SeriesId": 2100,
     "HasLyrics": true,
     "SortOrder": 1210000140,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 121700001,
@@ -3132,7 +3132,7 @@
     "SeriesId": 2170,
     "HasLyrics": false,
     "SortOrder": 1217000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 121700002,
@@ -3143,7 +3143,7 @@
     "SeriesId": 2170,
     "HasLyrics": false,
     "SortOrder": 1217000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 121900001,
@@ -3154,7 +3154,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 121900002,
@@ -3165,7 +3165,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 121900003,
@@ -3176,7 +3176,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 121900004,
@@ -3187,7 +3187,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 121900005,
@@ -3198,7 +3198,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 121900006,
@@ -3209,7 +3209,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 121900007,
@@ -3220,7 +3220,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 121909001,
@@ -3231,7 +3231,7 @@
     "SeriesId": 2190,
     "HasLyrics": true,
     "SortOrder": 1219000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 121909002,
@@ -3242,7 +3242,7 @@
     "SeriesId": 2190,
     "HasLyrics": false,
     "SortOrder": 1219000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 121909003,
@@ -3253,7 +3253,7 @@
     "SeriesId": 2190,
     "HasLyrics": false,
     "SortOrder": 1219000030,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 121909004,
@@ -3264,7 +3264,7 @@
     "SeriesId": 2190,
     "HasLyrics": false,
     "SortOrder": 1219000040,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 121909005,
@@ -3275,7 +3275,7 @@
     "SeriesId": 2190,
     "HasLyrics": false,
     "SortOrder": 1219000050,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 121909006,
@@ -3286,7 +3286,7 @@
     "SeriesId": 2190,
     "HasLyrics": false,
     "SortOrder": 1219000060,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 121909007,
@@ -3297,7 +3297,7 @@
     "SeriesId": 2190,
     "HasLyrics": false,
     "SortOrder": 1219000070,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 121909008,
@@ -3308,7 +3308,7 @@
     "SeriesId": 2190,
     "HasLyrics": false,
     "SortOrder": 1219000080,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 121909009,
@@ -3319,7 +3319,7 @@
     "SeriesId": 2190,
     "HasLyrics": false,
     "SortOrder": 1219000090,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 121909010,
@@ -3330,7 +3330,7 @@
     "SeriesId": 2190,
     "HasLyrics": true,
     "SortOrder": 1219000100,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 123000001,
@@ -3341,7 +3341,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 123000002,
@@ -3352,7 +3352,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 123000003,
@@ -3363,7 +3363,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 123000004,
@@ -3374,7 +3374,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 123000005,
@@ -3385,7 +3385,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 123000006,
@@ -3396,7 +3396,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 123000007,
@@ -3407,7 +3407,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 123000008,
@@ -3418,7 +3418,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 123009001,
@@ -3429,7 +3429,7 @@
     "SeriesId": 2300,
     "HasLyrics": false,
     "SortOrder": 1230000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 123009002,
@@ -3440,7 +3440,7 @@
     "SeriesId": 2300,
     "HasLyrics": false,
     "SortOrder": 1230000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 123009003,
@@ -3451,7 +3451,7 @@
     "SeriesId": 2300,
     "HasLyrics": false,
     "SortOrder": 1230000030,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 123009004,
@@ -3462,7 +3462,7 @@
     "SeriesId": 2300,
     "HasLyrics": false,
     "SortOrder": 1230000040,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 123009005,
@@ -3473,7 +3473,7 @@
     "SeriesId": 2300,
     "HasLyrics": false,
     "SortOrder": 1230000050,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 123009006,
@@ -3484,7 +3484,7 @@
     "SeriesId": 2300,
     "HasLyrics": false,
     "SortOrder": 1230000060,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 123009007,
@@ -3495,7 +3495,7 @@
     "SeriesId": 2300,
     "HasLyrics": false,
     "SortOrder": 1230000070,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 123009008,
@@ -3506,7 +3506,7 @@
     "SeriesId": 2300,
     "HasLyrics": false,
     "SortOrder": 1230000080,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 123009009,
@@ -3517,7 +3517,7 @@
     "SeriesId": 2300,
     "HasLyrics": true,
     "SortOrder": 1230000090,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 123009010,
@@ -3528,7 +3528,7 @@
     "SeriesId": 2300,
     "HasLyrics": true,
     "SortOrder": 1230000100,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 130009001,
@@ -3539,7 +3539,7 @@
     "SeriesId": 3000,
     "HasLyrics": false,
     "SortOrder": 1300000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 130009002,
@@ -3550,7 +3550,7 @@
     "SeriesId": 3000,
     "HasLyrics": false,
     "SortOrder": 1300000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 130009003,
@@ -3561,7 +3561,7 @@
     "SeriesId": 3000,
     "HasLyrics": false,
     "SortOrder": 1300000030,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 130009004,
@@ -3572,7 +3572,7 @@
     "SeriesId": 3000,
     "HasLyrics": false,
     "SortOrder": 1300000040,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 130009005,
@@ -3583,7 +3583,7 @@
     "SeriesId": 3000,
     "HasLyrics": false,
     "SortOrder": 1300000050,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 130009006,
@@ -3594,7 +3594,7 @@
     "SeriesId": 3000,
     "HasLyrics": false,
     "SortOrder": 1300000060,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 130009007,
@@ -3605,7 +3605,7 @@
     "SeriesId": 3000,
     "HasLyrics": false,
     "SortOrder": 1300000070,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 130009008,
@@ -3616,7 +3616,7 @@
     "SeriesId": 3000,
     "HasLyrics": false,
     "SortOrder": 1300000080,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 130009009,
@@ -3627,7 +3627,7 @@
     "SeriesId": 3000,
     "HasLyrics": true,
     "SortOrder": 1300000090,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 130009010,
@@ -3638,7 +3638,7 @@
     "SeriesId": 3000,
     "HasLyrics": true,
     "SortOrder": 1300000100,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 130009011,
@@ -3649,7 +3649,7 @@
     "SeriesId": 3000,
     "HasLyrics": true,
     "SortOrder": 1300000110,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 130009012,
@@ -3660,7 +3660,7 @@
     "SeriesId": 3000,
     "HasLyrics": true,
     "SortOrder": 1300000120,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 130500001,
@@ -3671,7 +3671,7 @@
     "SeriesId": 3050,
     "HasLyrics": false,
     "SortOrder": 1305000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 130500002,
@@ -3682,7 +3682,7 @@
     "SeriesId": 3050,
     "HasLyrics": false,
     "SortOrder": 1305000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 130500003,
@@ -3693,7 +3693,7 @@
     "SeriesId": 3050,
     "HasLyrics": false,
     "SortOrder": 1305000030,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 130500004,
@@ -3704,7 +3704,7 @@
     "SeriesId": 3050,
     "HasLyrics": false,
     "SortOrder": 1305000040,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 130500005,
@@ -3715,7 +3715,7 @@
     "SeriesId": 3050,
     "HasLyrics": false,
     "SortOrder": 1305000050,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 130500006,
@@ -3726,7 +3726,7 @@
     "SeriesId": 3050,
     "HasLyrics": false,
     "SortOrder": 1305000060,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 130500007,
@@ -3737,7 +3737,7 @@
     "SeriesId": 3050,
     "HasLyrics": false,
     "SortOrder": 1305000070,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 130500008,
@@ -3748,7 +3748,7 @@
     "SeriesId": 3050,
     "HasLyrics": false,
     "SortOrder": 1305000080,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 130500009,
@@ -3759,7 +3759,7 @@
     "SeriesId": 3050,
     "HasLyrics": false,
     "SortOrder": 1305000090,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 130800001,
@@ -3770,7 +3770,7 @@
     "SeriesId": 3080,
     "HasLyrics": false,
     "SortOrder": 1308000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 130800002,
@@ -3781,7 +3781,7 @@
     "SeriesId": 3080,
     "HasLyrics": false,
     "SortOrder": 1308000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 130800003,
@@ -3792,7 +3792,7 @@
     "SeriesId": 3080,
     "HasLyrics": false,
     "SortOrder": 1308000030,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 130800004,
@@ -3803,7 +3803,7 @@
     "SeriesId": 3080,
     "HasLyrics": false,
     "SortOrder": 1308000040,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 130800005,
@@ -3814,7 +3814,7 @@
     "SeriesId": 3080,
     "HasLyrics": false,
     "SortOrder": 1308000050,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 130800006,
@@ -3825,7 +3825,7 @@
     "SeriesId": 3080,
     "HasLyrics": false,
     "SortOrder": 1308000060,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 130800007,
@@ -3836,7 +3836,7 @@
     "SeriesId": 3080,
     "HasLyrics": false,
     "SortOrder": 1308000070,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 133000001,
@@ -3847,7 +3847,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 133000002,
@@ -3858,7 +3858,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 133000003,
@@ -3869,7 +3869,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 133000004,
@@ -3880,7 +3880,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 133000005,
@@ -3891,7 +3891,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 133000006,
@@ -3902,7 +3902,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 133000007,
@@ -3913,7 +3913,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 133000008,
@@ -3924,7 +3924,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 133000009,
@@ -3935,7 +3935,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 133000010,
@@ -3946,7 +3946,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 133000011,
@@ -3957,7 +3957,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 133000012,
@@ -3968,7 +3968,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 133009001,
@@ -3979,7 +3979,7 @@
     "SeriesId": 3300,
     "HasLyrics": false,
     "SortOrder": 1330000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 133009002,
@@ -3990,7 +3990,7 @@
     "SeriesId": 3300,
     "HasLyrics": false,
     "SortOrder": 1330000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 133009003,
@@ -4001,7 +4001,7 @@
     "SeriesId": 3300,
     "HasLyrics": false,
     "SortOrder": 1330000030,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 133009004,
@@ -4012,7 +4012,7 @@
     "SeriesId": 3300,
     "HasLyrics": false,
     "SortOrder": 1330000040,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 133009005,
@@ -4023,7 +4023,7 @@
     "SeriesId": 3300,
     "HasLyrics": false,
     "SortOrder": 1330000050,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 133009006,
@@ -4034,7 +4034,7 @@
     "SeriesId": 3300,
     "HasLyrics": false,
     "SortOrder": 1330000060,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 133009007,
@@ -4045,7 +4045,7 @@
     "SeriesId": 3300,
     "HasLyrics": false,
     "SortOrder": 1330000070,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 133009008,
@@ -4056,7 +4056,7 @@
     "SeriesId": 3300,
     "HasLyrics": false,
     "SortOrder": 1330000080,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 133009009,
@@ -4067,7 +4067,7 @@
     "SeriesId": 3300,
     "HasLyrics": false,
     "SortOrder": 1330000090,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 133009010,
@@ -4078,7 +4078,7 @@
     "SeriesId": 3300,
     "HasLyrics": true,
     "SortOrder": 1330000100,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 133009011,
@@ -4089,7 +4089,7 @@
     "SeriesId": 3300,
     "HasLyrics": true,
     "SortOrder": 1330000110,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 133009012,
@@ -4100,7 +4100,7 @@
     "SeriesId": 3300,
     "HasLyrics": true,
     "SortOrder": 1330000120,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 133600001,
@@ -4111,7 +4111,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 133600002,
@@ -4122,7 +4122,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 133600003,
@@ -4133,7 +4133,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 133600004,
@@ -4144,7 +4144,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 133600005,
@@ -4155,7 +4155,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 133600006,
@@ -4166,7 +4166,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 133609001,
@@ -4177,7 +4177,7 @@
     "SeriesId": 3360,
     "HasLyrics": false,
     "SortOrder": 1336000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 133609002,
@@ -4188,7 +4188,7 @@
     "SeriesId": 3360,
     "HasLyrics": false,
     "SortOrder": 1336000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 133609003,
@@ -4199,7 +4199,7 @@
     "SeriesId": 3360,
     "HasLyrics": false,
     "SortOrder": 1336000030,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 133609004,
@@ -4210,7 +4210,7 @@
     "SeriesId": 3360,
     "HasLyrics": true,
     "SortOrder": 1336000040,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137000001,
@@ -4221,7 +4221,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137000002,
@@ -4232,7 +4232,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137000003,
@@ -4243,7 +4243,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137000004,
@@ -4254,7 +4254,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137000005,
@@ -4265,7 +4265,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137000006,
@@ -4276,7 +4276,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137000007,
@@ -4287,7 +4287,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137000008,
@@ -4298,7 +4298,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137000009,
@@ -4309,7 +4309,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137000010,
@@ -4320,7 +4320,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137000011,
@@ -4331,7 +4331,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137000012,
@@ -4342,7 +4342,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137000013,
@@ -4353,7 +4353,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137000014,
@@ -4364,7 +4364,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137000015,
@@ -4375,7 +4375,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137000016,
@@ -4386,7 +4386,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137009001,
@@ -4397,7 +4397,7 @@
     "SeriesId": 3700,
     "HasLyrics": false,
     "SortOrder": 1370000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137009002,
@@ -4408,7 +4408,7 @@
     "SeriesId": 3700,
     "HasLyrics": false,
     "SortOrder": 1370000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137009003,
@@ -4419,7 +4419,7 @@
     "SeriesId": 3700,
     "HasLyrics": false,
     "SortOrder": 1370000030,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137009004,
@@ -4430,7 +4430,7 @@
     "SeriesId": 3700,
     "HasLyrics": false,
     "SortOrder": 1370000040,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137009005,
@@ -4441,7 +4441,7 @@
     "SeriesId": 3700,
     "HasLyrics": false,
     "SortOrder": 1370000050,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137009006,
@@ -4452,7 +4452,7 @@
     "SeriesId": 3700,
     "HasLyrics": false,
     "SortOrder": 1370000060,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137009007,
@@ -4463,7 +4463,7 @@
     "SeriesId": 3700,
     "HasLyrics": false,
     "SortOrder": 1370000070,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137009008,
@@ -4474,7 +4474,7 @@
     "SeriesId": 3700,
     "HasLyrics": false,
     "SortOrder": 1370000080,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137009009,
@@ -4485,7 +4485,7 @@
     "SeriesId": 3700,
     "HasLyrics": false,
     "SortOrder": 1370000090,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137009010,
@@ -4496,7 +4496,7 @@
     "SeriesId": 3700,
     "HasLyrics": false,
     "SortOrder": 1370000100,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137009011,
@@ -4507,7 +4507,7 @@
     "SeriesId": 3700,
     "HasLyrics": false,
     "SortOrder": 1370000110,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137009012,
@@ -4518,7 +4518,7 @@
     "SeriesId": 3700,
     "HasLyrics": false,
     "SortOrder": 1370000120,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137009013,
@@ -4529,7 +4529,7 @@
     "SeriesId": 3700,
     "HasLyrics": false,
     "SortOrder": 1370000130,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137009014,
@@ -4540,7 +4540,7 @@
     "SeriesId": 3700,
     "HasLyrics": false,
     "SortOrder": 1370000140,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137009015,
@@ -4551,7 +4551,7 @@
     "SeriesId": 3700,
     "HasLyrics": false,
     "SortOrder": 1370000150,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137009016,
@@ -4562,7 +4562,7 @@
     "SeriesId": 3700,
     "HasLyrics": false,
     "SortOrder": 1370000160,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137009017,
@@ -4573,7 +4573,7 @@
     "SeriesId": 3700,
     "HasLyrics": true,
     "SortOrder": 1370000170,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137009018,
@@ -4584,7 +4584,7 @@
     "SeriesId": 3700,
     "HasLyrics": true,
     "SortOrder": 1370000180,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137009019,
@@ -4595,7 +4595,7 @@
     "SeriesId": 3700,
     "HasLyrics": false,
     "SortOrder": 1370000190,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137009020,
@@ -4606,7 +4606,7 @@
     "SeriesId": 3700,
     "HasLyrics": false,
     "SortOrder": 1370000200,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137009021,
@@ -4617,7 +4617,7 @@
     "SeriesId": 3700,
     "HasLyrics": false,
     "SortOrder": 1370000210,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137009022,
@@ -4628,7 +4628,7 @@
     "SeriesId": 3700,
     "HasLyrics": false,
     "SortOrder": 1370000220,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137009023,
@@ -4639,7 +4639,7 @@
     "SeriesId": 3700,
     "HasLyrics": false,
     "SortOrder": 1370000230,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137009024,
@@ -4650,7 +4650,7 @@
     "SeriesId": 3700,
     "HasLyrics": false,
     "SortOrder": 1370000240,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137009025,
@@ -4661,7 +4661,7 @@
     "SeriesId": 3700,
     "HasLyrics": false,
     "SortOrder": 1370000250,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137009026,
@@ -4672,7 +4672,7 @@
     "SeriesId": 3700,
     "HasLyrics": false,
     "SortOrder": 1370000260,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137009027,
@@ -4683,7 +4683,7 @@
     "SeriesId": 3700,
     "HasLyrics": false,
     "SortOrder": 1370000270,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137009028,
@@ -4694,7 +4694,7 @@
     "SeriesId": 3700,
     "HasLyrics": true,
     "SortOrder": 1370000280,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137009029,
@@ -4705,7 +4705,7 @@
     "SeriesId": 3700,
     "HasLyrics": true,
     "SortOrder": 1370000290,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137500001,
@@ -4716,7 +4716,7 @@
     "SeriesId": 3750,
     "HasLyrics": false,
     "SortOrder": 1375000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137500002,
@@ -4727,7 +4727,7 @@
     "SeriesId": 3750,
     "HasLyrics": false,
     "SortOrder": 1375000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137600001,
@@ -4738,7 +4738,7 @@
     "SeriesId": 3760,
     "HasLyrics": false,
     "SortOrder": 1376000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137600002,
@@ -4749,7 +4749,7 @@
     "SeriesId": 3760,
     "HasLyrics": false,
     "SortOrder": 1376000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137600003,
@@ -4760,7 +4760,7 @@
     "SeriesId": 3760,
     "HasLyrics": false,
     "SortOrder": 1376000030,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137600004,
@@ -4771,7 +4771,7 @@
     "SeriesId": 3760,
     "HasLyrics": false,
     "SortOrder": 1376000040,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137600005,
@@ -4782,7 +4782,7 @@
     "SeriesId": 3760,
     "HasLyrics": false,
     "SortOrder": 1376000050,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137600006,
@@ -4793,7 +4793,7 @@
     "SeriesId": 3760,
     "HasLyrics": false,
     "SortOrder": 1376000060,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137600007,
@@ -4804,7 +4804,7 @@
     "SeriesId": 3760,
     "HasLyrics": false,
     "SortOrder": 1376000070,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137600008,
@@ -4815,7 +4815,7 @@
     "SeriesId": 3760,
     "HasLyrics": false,
     "SortOrder": 1376000080,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 137600009,
@@ -4826,7 +4826,7 @@
     "SeriesId": 3760,
     "HasLyrics": false,
     "SortOrder": 1376000090,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 140000001,
@@ -4837,7 +4837,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 140000002,
@@ -4848,7 +4848,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 140000003,
@@ -4859,7 +4859,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 140000004,
@@ -4870,7 +4870,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 140000005,
@@ -4881,7 +4881,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 140000006,
@@ -4892,7 +4892,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 140000007,
@@ -4903,7 +4903,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 140000008,
@@ -4914,7 +4914,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 140000009,
@@ -4925,7 +4925,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 140000010,
@@ -4936,7 +4936,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 140000011,
@@ -4947,7 +4947,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 140000012,
@@ -4958,7 +4958,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 140000013,
@@ -4969,7 +4969,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 140000014,
@@ -4980,7 +4980,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 140000015,
@@ -4991,7 +4991,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 140009001,
@@ -5002,7 +5002,7 @@
     "SeriesId": 4000,
     "HasLyrics": false,
     "SortOrder": 1400000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 140009002,
@@ -5013,7 +5013,7 @@
     "SeriesId": 4000,
     "HasLyrics": false,
     "SortOrder": 1400000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 140009003,
@@ -5024,7 +5024,7 @@
     "SeriesId": 4000,
     "HasLyrics": false,
     "SortOrder": 1400000030,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 140009004,
@@ -5035,7 +5035,7 @@
     "SeriesId": 4000,
     "HasLyrics": false,
     "SortOrder": 1400000040,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 140009005,
@@ -5046,7 +5046,7 @@
     "SeriesId": 4000,
     "HasLyrics": false,
     "SortOrder": 1400000050,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 140009006,
@@ -5057,7 +5057,7 @@
     "SeriesId": 4000,
     "HasLyrics": false,
     "SortOrder": 1400000060,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 140009007,
@@ -5068,7 +5068,7 @@
     "SeriesId": 4000,
     "HasLyrics": false,
     "SortOrder": 1400000070,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 140009008,
@@ -5079,7 +5079,7 @@
     "SeriesId": 4000,
     "HasLyrics": false,
     "SortOrder": 1400000080,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 140009009,
@@ -5090,7 +5090,7 @@
     "SeriesId": 4000,
     "HasLyrics": false,
     "SortOrder": 1400000090,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 140009010,
@@ -5101,7 +5101,7 @@
     "SeriesId": 4000,
     "HasLyrics": true,
     "SortOrder": 1400000100,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 140009011,
@@ -5112,7 +5112,7 @@
     "SeriesId": 4000,
     "HasLyrics": true,
     "SortOrder": 1400000110,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 140109001,
@@ -5123,7 +5123,7 @@
     "SeriesId": 4010,
     "HasLyrics": true,
     "SortOrder": 1401000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 143000001,
@@ -5134,7 +5134,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 143000002,
@@ -5145,7 +5145,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 143000003,
@@ -5156,7 +5156,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 143000004,
@@ -5167,7 +5167,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 143000005,
@@ -5178,7 +5178,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 143000006,
@@ -5189,7 +5189,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 143000007,
@@ -5200,7 +5200,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 143000008,
@@ -5211,7 +5211,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 143000009,
@@ -5222,7 +5222,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 143000010,
@@ -5233,7 +5233,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 143000011,
@@ -5244,7 +5244,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 143000013,
@@ -5255,7 +5255,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 143005014,
@@ -5266,7 +5266,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 143009001,
@@ -5277,7 +5277,7 @@
     "SeriesId": 4300,
     "HasLyrics": false,
     "SortOrder": 1430000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 143009002,
@@ -5288,7 +5288,7 @@
     "SeriesId": 4300,
     "HasLyrics": false,
     "SortOrder": 1430000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 143009003,
@@ -5299,7 +5299,7 @@
     "SeriesId": 4300,
     "HasLyrics": false,
     "SortOrder": 1430000030,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 143009004,
@@ -5310,7 +5310,7 @@
     "SeriesId": 4300,
     "HasLyrics": false,
     "SortOrder": 1430000040,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 143009005,
@@ -5321,7 +5321,7 @@
     "SeriesId": 4300,
     "HasLyrics": false,
     "SortOrder": 1430000050,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 143009006,
@@ -5332,7 +5332,7 @@
     "SeriesId": 4300,
     "HasLyrics": false,
     "SortOrder": 1430000060,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 143009007,
@@ -5343,7 +5343,7 @@
     "SeriesId": 4300,
     "HasLyrics": false,
     "SortOrder": 1430000070,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 143009008,
@@ -5354,7 +5354,7 @@
     "SeriesId": 4300,
     "HasLyrics": false,
     "SortOrder": 1430000080,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 143009009,
@@ -5365,7 +5365,7 @@
     "SeriesId": 4300,
     "HasLyrics": true,
     "SortOrder": 1430000090,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 143009010,
@@ -5376,7 +5376,7 @@
     "SeriesId": 4300,
     "HasLyrics": true,
     "SortOrder": 1430000100,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 143009011,
@@ -5387,7 +5387,7 @@
     "SeriesId": 4300,
     "HasLyrics": true,
     "SortOrder": 1430000110,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 143009012,
@@ -5398,7 +5398,7 @@
     "SeriesId": 4300,
     "HasLyrics": true,
     "SortOrder": 1430000120,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 143100002,
@@ -5409,7 +5409,7 @@
     "SeriesId": 4310,
     "HasLyrics": false,
     "SortOrder": 1431000090,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 143100006,
@@ -5420,7 +5420,7 @@
     "SeriesId": 4310,
     "HasLyrics": false,
     "SortOrder": 1431000080,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 143100008,
@@ -5431,7 +5431,7 @@
     "SeriesId": 4310,
     "HasLyrics": false,
     "SortOrder": 1431000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 143100009,
@@ -5442,7 +5442,7 @@
     "SeriesId": 4310,
     "HasLyrics": false,
     "SortOrder": 1431000050,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 143100010,
@@ -5453,7 +5453,7 @@
     "SeriesId": 4310,
     "HasLyrics": false,
     "SortOrder": 1431000030,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 143100011,
@@ -5464,7 +5464,7 @@
     "SeriesId": 4310,
     "HasLyrics": false,
     "SortOrder": 1431000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 143100014,
@@ -5475,7 +5475,7 @@
     "SeriesId": 4310,
     "HasLyrics": false,
     "SortOrder": 1431000070,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 143100015,
@@ -5486,7 +5486,7 @@
     "SeriesId": 4310,
     "HasLyrics": false,
     "SortOrder": 1431000060,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 143100016,
@@ -5497,7 +5497,7 @@
     "SeriesId": 4310,
     "HasLyrics": false,
     "SortOrder": 1431000040,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 150100001,
@@ -5508,7 +5508,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 150100002,
@@ -5519,7 +5519,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 150100003,
@@ -5530,7 +5530,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 150100004,
@@ -5541,7 +5541,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 150100005,
@@ -5552,7 +5552,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 150100006,
@@ -5563,7 +5563,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 150100007,
@@ -5574,7 +5574,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 150109001,
@@ -5585,7 +5585,7 @@
     "SeriesId": 5010,
     "HasLyrics": false,
     "SortOrder": 1501000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 150109002,
@@ -5596,7 +5596,7 @@
     "SeriesId": 5010,
     "HasLyrics": false,
     "SortOrder": 1501000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 150109003,
@@ -5607,7 +5607,7 @@
     "SeriesId": 5010,
     "HasLyrics": false,
     "SortOrder": 1501000030,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 150109004,
@@ -5618,7 +5618,7 @@
     "SeriesId": 5010,
     "HasLyrics": false,
     "SortOrder": 1501000040,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 150109005,
@@ -5629,7 +5629,7 @@
     "SeriesId": 5010,
     "HasLyrics": false,
     "SortOrder": 1501000050,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 150109006,
@@ -5640,7 +5640,7 @@
     "SeriesId": 5010,
     "HasLyrics": false,
     "SortOrder": 1501000060,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 150109007,
@@ -5651,7 +5651,7 @@
     "SeriesId": 5010,
     "HasLyrics": false,
     "SortOrder": 1501000070,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 150109008,
@@ -5662,7 +5662,7 @@
     "SeriesId": 5010,
     "HasLyrics": false,
     "SortOrder": 1501000080,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 150109009,
@@ -5673,7 +5673,7 @@
     "SeriesId": 5010,
     "HasLyrics": true,
     "SortOrder": 1501000090,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 150109010,
@@ -5684,7 +5684,7 @@
     "SeriesId": 5010,
     "HasLyrics": false,
     "SortOrder": 1501000100,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 150109011,
@@ -5695,7 +5695,7 @@
     "SeriesId": 5010,
     "HasLyrics": false,
     "SortOrder": 1501000110,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 150109012,
@@ -5706,7 +5706,7 @@
     "SeriesId": 5010,
     "HasLyrics": false,
     "SortOrder": 1501000120,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 150109013,
@@ -5717,7 +5717,7 @@
     "SeriesId": 5010,
     "HasLyrics": false,
     "SortOrder": 1501000130,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 150109014,
@@ -5728,7 +5728,7 @@
     "SeriesId": 5010,
     "HasLyrics": true,
     "SortOrder": 1501000140,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 160409001,
@@ -5739,7 +5739,7 @@
     "SeriesId": 6040,
     "HasLyrics": true,
     "SortOrder": 1604000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 170500003,
@@ -5750,7 +5750,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 170500005,
@@ -5761,7 +5761,7 @@
     "SeriesId": 7050,
     "HasLyrics": false,
     "SortOrder": 1705000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 170500006,
@@ -5772,7 +5772,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 170500007,
@@ -5783,7 +5783,7 @@
     "SeriesId": 7050,
     "HasLyrics": false,
     "SortOrder": 1705000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 170500008,
@@ -5794,7 +5794,7 @@
     "SeriesId": 7050,
     "HasLyrics": false,
     "SortOrder": 1705000030,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 170500009,
@@ -5805,7 +5805,7 @@
     "SeriesId": 7050,
     "HasLyrics": false,
     "SortOrder": 1705000040,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 170500010,
@@ -5816,7 +5816,7 @@
     "SeriesId": 7050,
     "HasLyrics": false,
     "SortOrder": 1705000050,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 170500011,
@@ -5827,7 +5827,7 @@
     "SeriesId": 0,
     "HasLyrics": false,
     "SortOrder": 0,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 170509001,
@@ -5838,7 +5838,7 @@
     "SeriesId": 7050,
     "HasLyrics": false,
     "SortOrder": 1705000060,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 172509001,
@@ -5849,7 +5849,7 @@
     "SeriesId": 7250,
     "HasLyrics": true,
     "SortOrder": 1725000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 173000001,
@@ -5860,7 +5860,7 @@
     "SeriesId": 7300,
     "HasLyrics": false,
     "SortOrder": 1730000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 173000002,
@@ -5871,7 +5871,7 @@
     "SeriesId": 7300,
     "HasLyrics": false,
     "SortOrder": 1730000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 173000003,
@@ -5882,7 +5882,7 @@
     "SeriesId": 7300,
     "HasLyrics": false,
     "SortOrder": 1730000030,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 176400001,
@@ -5893,7 +5893,7 @@
     "SeriesId": 7640,
     "HasLyrics": false,
     "SortOrder": 1764000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 179500001,
@@ -5904,7 +5904,7 @@
     "SeriesId": 7950,
     "HasLyrics": false,
     "SortOrder": 1795000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 185000001,
@@ -5915,7 +5915,7 @@
     "SeriesId": 8500,
     "HasLyrics": false,
     "SortOrder": 1850000010,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 185000002,
@@ -5926,7 +5926,7 @@
     "SeriesId": 8500,
     "HasLyrics": false,
     "SortOrder": 1850000020,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 185000003,
@@ -5937,7 +5937,7 @@
     "SeriesId": 8500,
     "HasLyrics": false,
     "SortOrder": 1850000030,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 185000004,
@@ -5948,7 +5948,7 @@
     "SeriesId": 8500,
     "HasLyrics": false,
     "SortOrder": 1850000040,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 185000005,
@@ -5959,7 +5959,7 @@
     "SeriesId": 8500,
     "HasLyrics": false,
     "SortOrder": 1850000050,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 185000006,
@@ -5970,7 +5970,7 @@
     "SeriesId": 8500,
     "HasLyrics": false,
     "SortOrder": 1850000060,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 185000007,
@@ -5981,7 +5981,7 @@
     "SeriesId": 8500,
     "HasLyrics": false,
     "SortOrder": 1850000070,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 185000008,
@@ -5992,7 +5992,7 @@
     "SeriesId": 8500,
     "HasLyrics": false,
     "SortOrder": 1850000080,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 185000009,
@@ -6003,7 +6003,7 @@
     "SeriesId": 8500,
     "HasLyrics": false,
     "SortOrder": 1850000090,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 185000010,
@@ -6014,7 +6014,7 @@
     "SeriesId": 8500,
     "HasLyrics": false,
     "SortOrder": 1850000100,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   },
   {
     "Id": 185000011,
@@ -6025,6 +6025,6 @@
     "SeriesId": 8500,
     "HasLyrics": false,
     "SortOrder": 1850000110,
-    "Unknown_Col_8": 0
+    "ArtistNameLanguageId": 0
   }
 ]

@@ -11,7 +11,7 @@
     "IsDisplayUpDown": false,
     "ActiveTraitConditionSetId": 0,
     "OverrideTraitActionTimingTypeIndex": 0,
-    "Unknown_Col_11": 0
+    "TargetWeaponConditionId": 0
   },
   {
     "Id": 114400055011,
@@ -25,7 +25,7 @@
     "IsDisplayUpDown": false,
     "ActiveTraitConditionSetId": 0,
     "OverrideTraitActionTimingTypeIndex": 0,
-    "Unknown_Col_11": 0
+    "TargetWeaponConditionId": 0
   },
   {
     "Id": 114400055012,
@@ -39,7 +39,7 @@
     "IsDisplayUpDown": false,
     "ActiveTraitConditionSetId": 0,
     "OverrideTraitActionTimingTypeIndex": 0,
-    "Unknown_Col_11": 0
+    "TargetWeaponConditionId": 0
   },
   {
     "Id": 116300015011,
@@ -53,7 +53,7 @@
     "IsDisplayUpDown": false,
     "ActiveTraitConditionSetId": 0,
     "OverrideTraitActionTimingTypeIndex": 0,
-    "Unknown_Col_11": 0
+    "TargetWeaponConditionId": 0
   },
   {
     "Id": 116300015012,
@@ -67,7 +67,7 @@
     "IsDisplayUpDown": false,
     "ActiveTraitConditionSetId": 0,
     "OverrideTraitActionTimingTypeIndex": 11,
-    "Unknown_Col_11": 0
+    "TargetWeaponConditionId": 0
   },
   {
     "Id": 117500105011,
@@ -81,7 +81,7 @@
     "IsDisplayUpDown": false,
     "ActiveTraitConditionSetId": 0,
     "OverrideTraitActionTimingTypeIndex": 0,
-    "Unknown_Col_11": 0
+    "TargetWeaponConditionId": 0
   },
   {
     "Id": 117500105012,
@@ -95,7 +95,7 @@
     "IsDisplayUpDown": false,
     "ActiveTraitConditionSetId": 0,
     "OverrideTraitActionTimingTypeIndex": 3,
-    "Unknown_Col_11": 0
+    "TargetWeaponConditionId": 0
   },
   {
     "Id": 117500105013,
@@ -109,7 +109,7 @@
     "IsDisplayUpDown": false,
     "ActiveTraitConditionSetId": 1000005,
     "OverrideTraitActionTimingTypeIndex": 0,
-    "Unknown_Col_11": 0
+    "TargetWeaponConditionId": 0
   },
   {
     "Id": 117500105014,
@@ -123,7 +123,7 @@
     "IsDisplayUpDown": false,
     "ActiveTraitConditionSetId": 0,
     "OverrideTraitActionTimingTypeIndex": 0,
-    "Unknown_Col_11": 0
+    "TargetWeaponConditionId": 0
   },
   {
     "Id": 137000595011,
@@ -137,7 +137,7 @@
     "IsDisplayUpDown": false,
     "ActiveTraitConditionSetId": 0,
     "OverrideTraitActionTimingTypeIndex": 0,
-    "Unknown_Col_11": 0
+    "TargetWeaponConditionId": 0
   },
   {
     "Id": 137000595012,
@@ -151,6 +151,6 @@
     "IsDisplayUpDown": false,
     "ActiveTraitConditionSetId": 0,
     "OverrideTraitActionTimingTypeIndex": 0,
-    "Unknown_Col_11": 0
+    "TargetWeaponConditionId": 0
   }
 ]

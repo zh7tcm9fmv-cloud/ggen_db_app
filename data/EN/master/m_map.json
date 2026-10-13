@@ -13,7 +13,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 400,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1001002,
@@ -29,7 +29,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1001003,
@@ -45,7 +45,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 405,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1001004,
@@ -61,7 +61,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 404,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1001005,
@@ -77,7 +77,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 406,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1001007,
@@ -93,7 +93,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 407,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1001008,
@@ -109,7 +109,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 401,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1001009,
@@ -125,7 +125,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 402,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1001010,
@@ -141,7 +141,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1001011,
@@ -157,7 +157,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1001012,
@@ -173,7 +173,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1001013,
@@ -189,7 +189,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1001014,
@@ -205,7 +205,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1009001,
@@ -221,7 +221,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 405,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1009002,
@@ -237,7 +237,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1009003,
@@ -253,7 +253,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 300,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1009004,
@@ -269,7 +269,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 202,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1009005,
@@ -285,7 +285,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1013001,
@@ -301,7 +301,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 407,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1013002,
@@ -317,7 +317,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 401,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1013003,
@@ -333,7 +333,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 428,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1013004,
@@ -349,7 +349,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 405,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1013005,
@@ -365,7 +365,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 412,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1013006,
@@ -381,7 +381,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 401,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1017001,
@@ -397,7 +397,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 425,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1017002,
@@ -413,7 +413,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 412,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1017003,
@@ -429,7 +429,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 416,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1017004,
@@ -445,7 +445,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 412,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1021001,
@@ -461,7 +461,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 406,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1021002,
@@ -477,7 +477,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 404,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1022001,
@@ -493,7 +493,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 404,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1022003,
@@ -509,7 +509,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 404,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1022004,
@@ -525,7 +525,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 403,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1022005,
@@ -541,7 +541,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 403,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1022006,
@@ -557,7 +557,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1022007,
@@ -573,7 +573,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 206,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1031001,
@@ -589,7 +589,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1031003,
@@ -605,7 +605,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1031006,
@@ -621,7 +621,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1031007,
@@ -637,7 +637,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1033001,
@@ -653,7 +653,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 302,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1033002,
@@ -669,7 +669,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 430,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1033004,
@@ -685,7 +685,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 430,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1033005,
@@ -701,7 +701,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 407,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1033007,
@@ -717,7 +717,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 305,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1060001,
@@ -733,7 +733,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 404,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1060002,
@@ -749,7 +749,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 405,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1060003,
@@ -765,7 +765,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 405,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1060004,
@@ -781,7 +781,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1060005,
@@ -797,7 +797,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 202,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1060009,
@@ -813,7 +813,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1060011,
@@ -829,7 +829,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 204,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1081001,
@@ -845,7 +845,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 400,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1081002,
@@ -861,7 +861,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1081003,
@@ -877,7 +877,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 401,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1081004,
@@ -893,7 +893,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 402,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1081005,
@@ -909,7 +909,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 300,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1081006,
@@ -925,7 +925,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 403,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1081007,
@@ -941,7 +941,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 412,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1081010,
@@ -957,7 +957,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1081011,
@@ -973,7 +973,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1081012,
@@ -989,7 +989,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1081013,
@@ -1005,7 +1005,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1081015,
@@ -1021,7 +1021,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1095001,
@@ -1037,7 +1037,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 409,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1095006,
@@ -1053,7 +1053,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 401,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1095008,
@@ -1069,7 +1069,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 406,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1095009,
@@ -1085,7 +1085,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 404,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1095011,
@@ -1101,7 +1101,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 408,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1095014,
@@ -1117,7 +1117,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1095015,
@@ -1133,7 +1133,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1095017,
@@ -1149,7 +1149,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 404,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1095018,
@@ -1165,7 +1165,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1110001,
@@ -1181,7 +1181,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1110002,
@@ -1197,7 +1197,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1110003,
@@ -1213,7 +1213,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1125001,
@@ -1229,7 +1229,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1125004,
@@ -1245,7 +1245,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1125005,
@@ -1261,7 +1261,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1125006,
@@ -1277,7 +1277,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 408,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1125010,
@@ -1293,7 +1293,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1144002,
@@ -1309,7 +1309,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 210,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1144003,
@@ -1325,7 +1325,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1150001,
@@ -1341,7 +1341,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 424,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1150002,
@@ -1357,7 +1357,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 424,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1162001,
@@ -1373,7 +1373,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 431,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1162002,
@@ -1389,7 +1389,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 211,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1175001,
@@ -1405,7 +1405,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 401,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1175002,
@@ -1421,7 +1421,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 401,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1175003,
@@ -1437,7 +1437,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 401,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1175004,
@@ -1453,7 +1453,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 401,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1175005,
@@ -1469,7 +1469,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 211,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1175006,
@@ -1485,7 +1485,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1175007,
@@ -1501,7 +1501,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1175008,
@@ -1517,7 +1517,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 204,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1175009,
@@ -1533,7 +1533,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 302,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1200001,
@@ -1549,7 +1549,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 404,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1200002,
@@ -1565,7 +1565,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 700,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1200003,
@@ -1581,7 +1581,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 404,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1200004,
@@ -1597,7 +1597,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 404,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1200005,
@@ -1613,7 +1613,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 412,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1200006,
@@ -1629,7 +1629,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 412,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1200007,
@@ -1645,7 +1645,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 412,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1200008,
@@ -1661,7 +1661,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 401,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1200012,
@@ -1677,7 +1677,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 401,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1200013,
@@ -1693,7 +1693,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 422,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1200014,
@@ -1709,7 +1709,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 409,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1200015,
@@ -1725,7 +1725,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1200016,
@@ -1741,7 +1741,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 402,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1200017,
@@ -1757,7 +1757,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 421,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1210001,
@@ -1773,7 +1773,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 300,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1210002,
@@ -1789,7 +1789,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 408,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1210003,
@@ -1805,7 +1805,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 408,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1210004,
@@ -1821,7 +1821,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 408,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1210005,
@@ -1837,7 +1837,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 409,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1210007,
@@ -1853,7 +1853,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 410,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1210008,
@@ -1869,7 +1869,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 404,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1210009,
@@ -1885,7 +1885,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1210010,
@@ -1901,7 +1901,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1210011,
@@ -1917,7 +1917,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1210012,
@@ -1933,7 +1933,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 401,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1210014,
@@ -1949,7 +1949,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1210015,
@@ -1965,7 +1965,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1210016,
@@ -1981,7 +1981,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1219001,
@@ -1997,7 +1997,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 208,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1219002,
@@ -2013,7 +2013,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1219003,
@@ -2029,7 +2029,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 417,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1230001,
@@ -2045,7 +2045,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 407,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1230002,
@@ -2061,7 +2061,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 407,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1230003,
@@ -2077,7 +2077,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 404,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1230004,
@@ -2093,7 +2093,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 404,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1230005,
@@ -2109,7 +2109,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 407,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1230008,
@@ -2125,7 +2125,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 404,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1230009,
@@ -2141,7 +2141,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 410,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1230010,
@@ -2157,7 +2157,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 407,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1230014,
@@ -2173,7 +2173,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 403,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1230015,
@@ -2189,7 +2189,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1230016,
@@ -2205,7 +2205,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1230017,
@@ -2221,7 +2221,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1300001,
@@ -2237,7 +2237,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 400,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1300002,
@@ -2253,7 +2253,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1300003,
@@ -2269,7 +2269,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1300004,
@@ -2285,7 +2285,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1300005,
@@ -2301,7 +2301,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 201,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1300006,
@@ -2317,7 +2317,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 406,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1300007,
@@ -2333,7 +2333,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 401,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1300008,
@@ -2349,7 +2349,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 401,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1300009,
@@ -2365,7 +2365,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 500,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1300010,
@@ -2381,7 +2381,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 500,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1300011,
@@ -2397,7 +2397,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 412,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1300012,
@@ -2413,7 +2413,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 412,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1300013,
@@ -2429,7 +2429,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1300014,
@@ -2445,7 +2445,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1300015,
@@ -2461,7 +2461,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1300016,
@@ -2477,7 +2477,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1300017,
@@ -2493,7 +2493,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1305001,
@@ -2509,7 +2509,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 402,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1305003,
@@ -2525,7 +2525,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1305005,
@@ -2541,7 +2541,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1305006,
@@ -2557,7 +2557,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 413,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1310002,
@@ -2573,7 +2573,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 405,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1310005,
@@ -2589,7 +2589,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1310018,
@@ -2605,7 +2605,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 401,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1330001,
@@ -2621,7 +2621,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 418,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1330004,
@@ -2637,7 +2637,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 203,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1330005,
@@ -2653,7 +2653,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1330006,
@@ -2669,7 +2669,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 401,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1330009,
@@ -2685,7 +2685,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 405,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1330012,
@@ -2701,7 +2701,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 500,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1330013,
@@ -2717,7 +2717,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 417,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1330014,
@@ -2733,7 +2733,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 410,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1330016,
@@ -2749,7 +2749,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 425,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1330019,
@@ -2765,7 +2765,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 202,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1330020,
@@ -2781,7 +2781,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1330022,
@@ -2797,7 +2797,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 207,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1336001,
@@ -2813,7 +2813,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 432,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1336002,
@@ -2829,7 +2829,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 425,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1336003,
@@ -2845,7 +2845,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 430,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1336005,
@@ -2861,7 +2861,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1370001,
@@ -2877,7 +2877,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 414,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1370002,
@@ -2893,7 +2893,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 412,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1370003,
@@ -2909,7 +2909,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 403,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1370006,
@@ -2925,7 +2925,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 501,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1370007,
@@ -2941,7 +2941,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1370008,
@@ -2957,7 +2957,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 407,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1370009,
@@ -2973,7 +2973,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1370011,
@@ -2989,7 +2989,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1370012,
@@ -3005,7 +3005,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1370014,
@@ -3021,7 +3021,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 429,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1370015,
@@ -3037,7 +3037,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 401,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1370016,
@@ -3053,7 +3053,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1370017,
@@ -3069,7 +3069,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 209,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1370019,
@@ -3085,7 +3085,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 403,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1370023,
@@ -3101,7 +3101,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1376001,
@@ -3117,7 +3117,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 409,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1376002,
@@ -3133,7 +3133,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 409,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1376003,
@@ -3149,7 +3149,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1376004,
@@ -3165,7 +3165,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 403,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1376005,
@@ -3181,7 +3181,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 212,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1376006,
@@ -3197,7 +3197,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1376007,
@@ -3213,7 +3213,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 212,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1400001,
@@ -3229,7 +3229,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 427,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1400002,
@@ -3245,7 +3245,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1400005,
@@ -3261,7 +3261,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1400006,
@@ -3277,7 +3277,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 208,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1400007,
@@ -3293,7 +3293,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 401,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1400008,
@@ -3309,7 +3309,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1400010,
@@ -3325,7 +3325,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1400014,
@@ -3341,7 +3341,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1430001,
@@ -3357,7 +3357,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 415,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1430003,
@@ -3373,7 +3373,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1430004,
@@ -3389,7 +3389,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1430005,
@@ -3405,7 +3405,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1430006,
@@ -3421,7 +3421,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1430007,
@@ -3437,7 +3437,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1430009,
@@ -3453,7 +3453,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 401,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1430010,
@@ -3469,7 +3469,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 410,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1430011,
@@ -3485,7 +3485,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 401,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1430014,
@@ -3501,7 +3501,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 415,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1430016,
@@ -3517,7 +3517,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 415,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1430017,
@@ -3533,7 +3533,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 415,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1430018,
@@ -3549,7 +3549,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 205,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1430020,
@@ -3565,7 +3565,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 423,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1430021,
@@ -3581,7 +3581,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 204,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1431002,
@@ -3597,7 +3597,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1431003,
@@ -3613,7 +3613,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 202,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1431007,
@@ -3629,7 +3629,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1501001,
@@ -3645,7 +3645,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1501002,
@@ -3661,7 +3661,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 409,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1501003,
@@ -3677,7 +3677,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 407,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1501004,
@@ -3693,7 +3693,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 202,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1501005,
@@ -3709,7 +3709,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1501006,
@@ -3725,7 +3725,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 404,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1501007,
@@ -3741,7 +3741,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1501008,
@@ -3757,7 +3757,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 405,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1501011,
@@ -3773,7 +3773,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 408,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1501012,
@@ -3789,7 +3789,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1501013,
@@ -3805,7 +3805,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1705001,
@@ -3821,7 +3821,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 401,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1705002,
@@ -3837,7 +3837,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 419,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1705004,
@@ -3853,7 +3853,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 409,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1705005,
@@ -3869,7 +3869,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 420,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1705007,
@@ -3885,7 +3885,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 420,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1705201,
@@ -3901,7 +3901,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 406,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1705204,
@@ -3917,7 +3917,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 435,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1705206,
@@ -3933,7 +3933,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 406,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1705301,
@@ -3949,7 +3949,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 401,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1705302,
@@ -3965,7 +3965,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 434,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1705303,
@@ -3981,7 +3981,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 434,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1705305,
@@ -3997,7 +3997,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 435,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1705307,
@@ -4013,7 +4013,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 436,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1705308,
@@ -4029,7 +4029,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 436,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1705310,
@@ -4045,7 +4045,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 420,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1901001,
@@ -4061,7 +4061,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 401,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1907020,
@@ -4077,7 +4077,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 415,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1908001,
@@ -4093,7 +4093,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 406,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1920101,
@@ -4109,7 +4109,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 402,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1920102,
@@ -4125,7 +4125,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 433,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1999901,
@@ -4141,7 +4141,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 700,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1999902,
@@ -4157,7 +4157,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1999903,
@@ -4173,7 +4173,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1999904,
@@ -4189,7 +4189,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1999905,
@@ -4205,7 +4205,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 200,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1999906,
@@ -4221,7 +4221,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 501,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1999907,
@@ -4237,7 +4237,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 300,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1999908,
@@ -4253,7 +4253,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 301,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1999909,
@@ -4269,7 +4269,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 418,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1999910,
@@ -4285,7 +4285,7 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 426,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   },
   {
     "Id": 1999912,
@@ -4301,6 +4301,6 @@
     "SpaceTerrainTypeEffectAsset": "",
     "AllTerrainTypeEffectAsset": "",
     "BattleAnimeBackgroundId": 404,
-    "Unknown_Col_13": ""
+    "MinimapBgImageName": ""
   }
 ]

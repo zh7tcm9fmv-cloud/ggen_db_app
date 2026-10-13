@@ -1,38 +1,38 @@
 [
-  [
-    1,
-    "profile_achievements_button_ie_restriction",
-    "profile_logo_ie_restriction",
-    0
-  ],
-  [
-    2,
-    "profile_achievements_button_ie_challenge",
-    "profile_logo_ie_challenge",
-    0
-  ],
-  [
-    3,
-    "profile_achievements_button_tower_event",
-    "profile_logo_tower_event",
-    0
-  ],
-  [
-    4,
-    "profile_achievements_button_ml_event",
-    "profile_logo_ml_event",
-    0
-  ],
-  [
-    5,
-    "profile_achievements_button_developtree",
-    "",
-    240900000000000001
-  ],
-  [
-    6,
-    "profile_achievements_button_eternal_road",
-    "profile_logo_eternal_road",
-    0
-  ]
+  {
+    "AchievementCategoryTypeIndex": 1,
+    "BackgroundImageName": "profile_achievements_button_ie_restriction",
+    "LogoImageName": "profile_logo_ie_restriction",
+    "NameLanguageId": 0
+  },
+  {
+    "AchievementCategoryTypeIndex": 2,
+    "BackgroundImageName": "profile_achievements_button_ie_challenge",
+    "LogoImageName": "profile_logo_ie_challenge",
+    "NameLanguageId": 0
+  },
+  {
+    "AchievementCategoryTypeIndex": 3,
+    "BackgroundImageName": "profile_achievements_button_tower_event",
+    "LogoImageName": "profile_logo_tower_event",
+    "NameLanguageId": 0
+  },
+  {
+    "AchievementCategoryTypeIndex": 4,
+    "BackgroundImageName": "profile_achievements_button_ml_event",
+    "LogoImageName": "profile_logo_ml_event",
+    "NameLanguageId": 0
+  },
+  {
+    "AchievementCategoryTypeIndex": 5,
+    "BackgroundImageName": "profile_achievements_button_developtree",
+    "LogoImageName": "",
+    "NameLanguageId": 240900000000000001
+  },
+  {
+    "AchievementCategoryTypeIndex": 6,
+    "BackgroundImageName": "profile_achievements_button_eternal_road",
+    "LogoImageName": "profile_logo_eternal_road",
+    "NameLanguageId": 0
+  }
 ]
