@@ -270402,6 +270402,17 @@
     "LinkedCharacterLevel": 0
   },
   {
+    "Id": 9910261025000101,
+    "RewardTypeIndex": 1,
+    "TargetId": 191100000001,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 1,
+    "WeaponEnhancementStep": 0,
+    "LinkedCharacterLevel": 0
+  },
+  {
     "Id": 9911225082001101,
     "RewardTypeIndex": 10,
     "TargetId": 0,
