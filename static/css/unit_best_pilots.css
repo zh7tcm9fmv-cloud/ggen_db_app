@@ -63,9 +63,11 @@
 }
 
 /* Portrait BSP (no recommend char): straddle the portrait bottom edge halfway.
-   Slots live in .unit-portrait-overlay-btns (absolute overlay on the portrait wrap). */
-.detail-portrait-stack .unit-best-pilot-btn-slot,
-.unit-portrait-overlay-btns .unit-best-pilot-btn-slot {
+   Slots live in .unit-portrait-overlay-btns (absolute overlay on the portrait wrap).
+   Scope to #unitBestPilotBtnSlotPortrait only — mobile recommend card also lives
+   under .detail-portrait-stack and must keep .unit-best-pilot-btn-slot--rec layout. */
+#unitBestPilotBtnSlotPortrait.unit-best-pilot-btn-slot,
+.unit-portrait-overlay-btns #unitBestPilotBtnSlotPortrait {
   right: 8px;
   /* Default wrap padding-bottom is 8px — align to portrait bottom, then half below. */
   bottom: 8px;
@@ -79,44 +81,45 @@
   box-sizing: border-box;
 }
 
-.modal-content.unit-detail .detail-portrait-stack:has(#unitBestPilotBtnSlotPortrait .unit-best-pilot-btn) .unit-best-pilot-btn-slot {
+.modal-content.unit-detail .detail-portrait-stack:has(#unitBestPilotBtnSlotPortrait .unit-best-pilot-btn) #unitBestPilotBtnSlotPortrait {
   bottom: 26px;
   transform: translateY(50%);
 }
 
-.detail-portrait-stack .unit-best-pilot-btn,
-.unit-portrait-overlay-btns .unit-best-pilot-btn {
+#unitBestPilotBtnSlotPortrait .unit-best-pilot-btn,
+.unit-portrait-overlay-btns #unitBestPilotBtnSlotPortrait .unit-best-pilot-btn {
   width: 48px;
   height: 48px;
   border-radius: 14px;
 }
 
-.detail-portrait-stack .unit-best-pilot-btn-icon,
-.unit-portrait-overlay-btns .unit-best-pilot-btn-icon {
+#unitBestPilotBtnSlotPortrait .unit-best-pilot-btn-icon,
+.unit-portrait-overlay-btns #unitBestPilotBtnSlotPortrait .unit-best-pilot-btn-icon {
   width: 32px;
   height: 32px;
 }
 
 /* When LB/gacha cinematic sits on the portrait too, share its inset + size
-   (must beat the .modal-content.unit-detail … translateY(50%) straddle rule). */
-.modal-content.unit-detail .detail-portrait-stack:has(#unitLbVideoBtnSlot .unit-lb-video-btn) .unit-best-pilot-btn-slot,
-.modal-content.unit-detail .detail-portrait-stack:has(#unitLbVideoBtnSlot .unit-gacha-pull-video-btn) .unit-best-pilot-btn-slot {
+   (must beat the .modal-content.unit-detail … translateY(50%) straddle rule).
+   Never apply to recommend-card BSP under the mobile portrait stack. */
+.modal-content.unit-detail .detail-portrait-stack:has(#unitLbVideoBtnSlot .unit-lb-video-btn) #unitBestPilotBtnSlotPortrait,
+.modal-content.unit-detail .detail-portrait-stack:has(#unitLbVideoBtnSlot .unit-gacha-pull-video-btn) #unitBestPilotBtnSlotPortrait {
   right: calc(8px + 52px + 8px);
   bottom: 4px;
   padding: 4px;
   transform: none;
 }
-.modal-content.unit-detail .detail-portrait-stack:has(#unitLbVideoBtnSlot .unit-lb-video-btn):has(#unitLbVideoBtnSlot .unit-gacha-pull-video-btn) .unit-best-pilot-btn-slot {
+.modal-content.unit-detail .detail-portrait-stack:has(#unitLbVideoBtnSlot .unit-lb-video-btn):has(#unitLbVideoBtnSlot .unit-gacha-pull-video-btn) #unitBestPilotBtnSlotPortrait {
   right: calc(8px + 52px + 8px + 52px + 8px);
 }
-.modal-content.unit-detail .detail-portrait-stack:has(#unitLbVideoBtnSlot .unit-lb-video-btn) .unit-best-pilot-btn,
-.modal-content.unit-detail .detail-portrait-stack:has(#unitLbVideoBtnSlot .unit-gacha-pull-video-btn) .unit-best-pilot-btn {
+.modal-content.unit-detail .detail-portrait-stack:has(#unitLbVideoBtnSlot .unit-lb-video-btn) #unitBestPilotBtnSlotPortrait .unit-best-pilot-btn,
+.modal-content.unit-detail .detail-portrait-stack:has(#unitLbVideoBtnSlot .unit-gacha-pull-video-btn) #unitBestPilotBtnSlotPortrait .unit-best-pilot-btn {
   width: 52px;
   height: 52px;
   border-radius: 14px;
 }
-.modal-content.unit-detail .detail-portrait-stack:has(#unitLbVideoBtnSlot .unit-lb-video-btn) .unit-best-pilot-btn-icon,
-.modal-content.unit-detail .detail-portrait-stack:has(#unitLbVideoBtnSlot .unit-gacha-pull-video-btn) .unit-best-pilot-btn-icon {
+.modal-content.unit-detail .detail-portrait-stack:has(#unitLbVideoBtnSlot .unit-lb-video-btn) #unitBestPilotBtnSlotPortrait .unit-best-pilot-btn-icon,
+.modal-content.unit-detail .detail-portrait-stack:has(#unitLbVideoBtnSlot .unit-gacha-pull-video-btn) #unitBestPilotBtnSlotPortrait .unit-best-pilot-btn-icon {
   width: 36px;
   height: 36px;
 }
@@ -1159,37 +1162,37 @@
     height: 22px;
   }
 
-  .detail-portrait-stack .unit-best-pilot-btn,
-  .unit-portrait-overlay-btns .unit-best-pilot-btn {
+  #unitBestPilotBtnSlotPortrait .unit-best-pilot-btn,
+  .unit-portrait-overlay-btns #unitBestPilotBtnSlotPortrait .unit-best-pilot-btn {
     width: 40px;
     height: 40px;
     border-radius: 12px;
   }
 
-  .detail-portrait-stack .unit-best-pilot-btn-icon,
-  .unit-portrait-overlay-btns .unit-best-pilot-btn-icon {
+  #unitBestPilotBtnSlotPortrait .unit-best-pilot-btn-icon,
+  .unit-portrait-overlay-btns #unitBestPilotBtnSlotPortrait .unit-best-pilot-btn-icon {
     width: 26px;
     height: 26px;
   }
 
-  .modal-content.unit-detail .detail-portrait-stack:has(#unitLbVideoBtnSlot .unit-lb-video-btn) .unit-best-pilot-btn-slot,
-  .modal-content.unit-detail .detail-portrait-stack:has(#unitLbVideoBtnSlot .unit-gacha-pull-video-btn) .unit-best-pilot-btn-slot {
+  .modal-content.unit-detail .detail-portrait-stack:has(#unitLbVideoBtnSlot .unit-lb-video-btn) #unitBestPilotBtnSlotPortrait,
+  .modal-content.unit-detail .detail-portrait-stack:has(#unitLbVideoBtnSlot .unit-gacha-pull-video-btn) #unitBestPilotBtnSlotPortrait {
     right: calc(8px + 48px + 8px);
     bottom: 4px;
     padding: 4px;
     transform: none;
   }
-  .modal-content.unit-detail .detail-portrait-stack:has(#unitLbVideoBtnSlot .unit-lb-video-btn):has(#unitLbVideoBtnSlot .unit-gacha-pull-video-btn) .unit-best-pilot-btn-slot {
+  .modal-content.unit-detail .detail-portrait-stack:has(#unitLbVideoBtnSlot .unit-lb-video-btn):has(#unitLbVideoBtnSlot .unit-gacha-pull-video-btn) #unitBestPilotBtnSlotPortrait {
     right: calc(8px + 48px + 8px + 48px + 8px);
   }
-  .modal-content.unit-detail .detail-portrait-stack:has(#unitLbVideoBtnSlot .unit-lb-video-btn) .unit-best-pilot-btn,
-  .modal-content.unit-detail .detail-portrait-stack:has(#unitLbVideoBtnSlot .unit-gacha-pull-video-btn) .unit-best-pilot-btn {
+  .modal-content.unit-detail .detail-portrait-stack:has(#unitLbVideoBtnSlot .unit-lb-video-btn) #unitBestPilotBtnSlotPortrait .unit-best-pilot-btn,
+  .modal-content.unit-detail .detail-portrait-stack:has(#unitLbVideoBtnSlot .unit-gacha-pull-video-btn) #unitBestPilotBtnSlotPortrait .unit-best-pilot-btn {
     width: 48px;
     height: 48px;
     border-radius: 12px;
   }
-  .modal-content.unit-detail .detail-portrait-stack:has(#unitLbVideoBtnSlot .unit-lb-video-btn) .unit-best-pilot-btn-icon,
-  .modal-content.unit-detail .detail-portrait-stack:has(#unitLbVideoBtnSlot .unit-gacha-pull-video-btn) .unit-best-pilot-btn-icon {
+  .modal-content.unit-detail .detail-portrait-stack:has(#unitLbVideoBtnSlot .unit-lb-video-btn) #unitBestPilotBtnSlotPortrait .unit-best-pilot-btn-icon,
+  .modal-content.unit-detail .detail-portrait-stack:has(#unitLbVideoBtnSlot .unit-gacha-pull-video-btn) #unitBestPilotBtnSlotPortrait .unit-best-pilot-btn-icon {
     width: 30px;
     height: 30px;
   }
