@@ -1,15 +1,25 @@
-/* Rubber-band overshoot for site range inputs + pill toggles (design-only). */
+/* Rubber-band overshoot + Corporate micro-motion (snap/ripple/seg/xfade). Design-only; no browse-list work. */
 (function () {
   'use strict';
 
   var RUBBER = 0.32;
   var SNAP_MS = 520;
+  var RIPPLE_MS = 420;
   /* Hide scrollbar thumb as soon as scrolling stops (owner: not always-on). */
   var SCROLLBAR_HIDE_MS = 140;
   var reduced = false;
   try {
     reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   } catch (e) {}
+  try {
+    var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (mq && typeof mq.addEventListener === 'function') {
+      mq.addEventListener('change', function (ev) { reduced = !!ev.matches; });
+    }
+  } catch (e2) {}
+
+  var RIPPLE_SEL =
+    '.ggen-ripple, .bt-vote-submit, .support-feedback-btn, .kofi-header-link, .alipayhk-header-btn, .wn-added-btn, #panel-banner_timeline .bt-gacha-preview-btn';
 
   function initOverlayScrollbars() {
     var root = document.documentElement;
@@ -314,8 +324,119 @@
     for (var k = 0; k < toggles.length; k++) enhanceToggleSwitch(toggles[k]);
   }
 
+  /* —— Click ripple (pointerdown; primary CTAs only; no browse cells) —— */
+  function spawnRipple(host, clientX, clientY) {
+    if (!host || reduced) return;
+    if (host.disabled || host.getAttribute('aria-disabled') === 'true') return;
+    var rect = host.getBoundingClientRect();
+    var x = clientX - rect.left;
+    var y = clientY - rect.top;
+    var size = Math.ceil(Math.max(rect.width, rect.height) * 2.2);
+    var wave = document.createElement('span');
+    wave.className = 'ggen-ripple-wave';
+    wave.setAttribute('aria-hidden', 'true');
+    wave.style.width = size + 'px';
+    wave.style.height = size + 'px';
+    wave.style.left = x - size / 2 + 'px';
+    wave.style.top = y - size / 2 + 'px';
+    host.appendChild(wave);
+    window.setTimeout(function () {
+      if (wave.parentNode) wave.parentNode.removeChild(wave);
+    }, RIPPLE_MS + 40);
+  }
+
+  function initRipple() {
+    if (document.documentElement.dataset.ggenRipple === '1') return;
+    document.documentElement.dataset.ggenRipple = '1';
+    document.addEventListener(
+      'pointerdown',
+      function (e) {
+        if (reduced) return;
+        if (e.button != null && e.button !== 0) return;
+        var t = e.target;
+        if (!t || !t.closest) return;
+        var host = t.closest(RIPPLE_SEL);
+        if (!host) return;
+        spawnRipple(host, e.clientX, e.clientY);
+      },
+      { passive: true }
+    );
+  }
+
+  /**
+   * Brand title hover: takayu tx-center-out-reveal (replaces brand-frame nudge).
+   * Wrap chars once; replay centre→out on pointerenter (opacity + scale .86→1).
+   */
+  function initBrandCenterOutReveal() {
+    var brand = document.querySelector('header.app-header .header-brand');
+    var h1 = brand && brand.querySelector('h1.brand-text');
+    if (!h1 || h1.dataset.ggenTxCenterOut === '1') return;
+    h1.dataset.ggenTxCenterOut = '1';
+
+    var words = h1.querySelectorAll('.brand-word');
+    if (!words.length) return;
+
+    var letters = [];
+    for (var w = 0; w < words.length; w++) {
+      var word = words[w];
+      var text = word.textContent || '';
+      var frag = document.createDocumentFragment();
+      for (var i = 0; i < text.length; i++) {
+        var ch = text.charAt(i);
+        var span = document.createElement('span');
+        span.className = 'brand-char';
+        span.textContent = ch;
+        if (ch === ' ') span.classList.add('brand-char--space');
+        frag.appendChild(span);
+        if (ch !== ' ') letters.push(span);
+      }
+      word.textContent = '';
+      word.appendChild(frag);
+    }
+
+    var n = letters.length;
+    if (!n) return;
+
+    /* Reference ~30ms stagger / 450ms fade; slowed for elegant hover. */
+    var staggerMs = 32;
+    var durMs = 520;
+    var center = (n - 1) / 2;
+    var maxDist = 0;
+    for (var li = 0; li < n; li++) {
+      var dist = Math.abs(li - center);
+      if (dist > maxDist) maxDist = dist;
+      letters[li].style.setProperty('--d', String(dist));
+    }
+
+    if (reduced) return;
+
+    var clearTimer = 0;
+    var totalMs = Math.ceil(maxDist * staggerMs + durMs + 60);
+
+    function play() {
+      if (reduced) return;
+      if (clearTimer) {
+        window.clearTimeout(clearTimer);
+        clearTimer = 0;
+      }
+      h1.classList.remove('ggen-tx-center-out');
+      /* Restart CSS animation */
+      void h1.offsetWidth;
+      h1.classList.add('ggen-tx-center-out');
+      clearTimer = window.setTimeout(function () {
+        clearTimer = 0;
+        if (!h1.isConnected) return;
+        h1.classList.remove('ggen-tx-center-out');
+      }, totalMs);
+    }
+
+    brand.addEventListener('pointerenter', play, { passive: true });
+  }
+
   function boot() {
     scan(document);
+    initRipple();
+    initBrandCenterOutReveal();
     if (typeof MutationObserver === 'undefined') return;
     var mo = new MutationObserver(function (mutations) {
       for (var i = 0; i < mutations.length; i++) {
@@ -349,5 +470,10 @@
     boot();
   }
 
-  window.GgenUiMotion = { enhanceRange: enhanceRange, enhancePillSlider: enhancePillSlider, enhanceToggleSwitch: enhanceToggleSwitch, scan: scan };
+  window.GgenUiMotion = {
+    enhanceRange: enhanceRange,
+    enhancePillSlider: enhancePillSlider,
+    enhanceToggleSwitch: enhanceToggleSwitch,
+    scan: scan
+  };
 })();

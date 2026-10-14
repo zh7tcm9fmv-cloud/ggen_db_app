@@ -20,7 +20,10 @@ description: >-
 | `--motion-ease-standard` | `cubic-bezier(0.2, 0, 0, 1)` | Buttons, toggles, hover |
 | `--motion-dur-quick` | `120ms` | Hover, press feedback |
 | `--motion-dur-standard` | `220ms` | Icons, toggles |
-| `--motion-dur-modal` | `320ms` | Modals, overlays |
+| `--motion-dur-snap` | `280ms` | Snap-in popovers / filter panels |
+| `--motion-dur-crossfade` | `180ms` | Tab panel opacity enter |
+| `--motion-dur-modal` | `320ms` | Overlay wash |
+| `--motion-ease-snap` | `cubic-bezier(0.16, 1, 0.3, 1)` | Snap-in / tab indicator settle |
 | `--motion-interactive` | see `static/css/ui_motion.css` | Chrome controls (not `all`) |
 
 **Playful** spring (`--ui-spring`) is reserved for Ko-fi promo, notice glow breathe, and rubber-band range sliders only.
@@ -38,8 +41,17 @@ description: >-
 ## Where motion lives
 
 - `static/css/ui_motion.css` — tokens, modals, overlays, chrome transition overrides (bundled last)
+- `static/js/ui_motion.js` — rubber-band ranges, ripple, brand text reveal (no browse-list work)
 - `static/css/kofi_donate_promo.css` — Playful promo bubble (isolated)
 - Search spotlight — reference pattern for overlay + card entrance
+
+### Brand title — `tx-center-out-reveal` (hover)
+
+- Target: `header .header-brand` → `h1.brand-text` (replaces old `brand-frame-*` nudge)
+- Feel: centre glyph first, then symmetric outward; opacity + `scale(.86→1)` (takayu recipe)
+- Trigger: `pointerenter` replay; chars wrapped once at boot (idle-safe, no entrance hide)
+- Timing: `--motion-dur-brand-reveal` 520ms + `--motion-brand-reveal-stagger` 32ms (elegant hover)
+- Reduced-motion / no-hover: static title (cyan text-shadow hover kept)
 
 ## Checklist before shipping motion
 

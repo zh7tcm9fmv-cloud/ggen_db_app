@@ -6,23 +6,50 @@
   --ui-spring:cubic-bezier(0.34,1.56,0.64,1);
   --ui-spring-dur:.4s;
   --ui-spring-snap:.5s;
-  /* Notice flare — subtle natural red glow on the center icon */
-  --ui-notice-glow:rgba(255,70,70,.55);
-  --ui-notice-glow-soft:rgba(253,8,8,.28);
-  --ui-notice-glow-dur:2.8s;
+  /* Notice flare — steady glow + attention-bounce (takayu #motion=attention-bounce) */
+  --ui-notice-glow:rgba(255,64,64,.78);
+  --ui-notice-glow-soft:rgba(255,36,36,.42);
+  --ui-notice-glow-hot:rgba(255,48,48,.32);
+  --ui-notice-bounce-dur:2.6s; /* ~620ms bounce + idle rest */
   /* Corporate motion identity — one easing family for 80% of UI */
   --motion-ease-enter:cubic-bezier(0.05,0.7,0.1,1);
   --motion-ease-exit:cubic-bezier(0.3,0,1,1);
   --motion-ease-standard:cubic-bezier(0.2,0,0,1);
+  /* Snap-in (easeOutExpo-ish) — popovers / filter panels only */
+  --motion-ease-snap:cubic-bezier(0.16,1,0.3,1);
+  --motion-dur-snap:280ms;
+  --motion-dur-crossfade:180ms;
+  --motion-dur-nudge:480ms;
+  --motion-dur-ripple:420ms;
   --motion-dur-quick:120ms;
   --motion-dur-standard:220ms;
   --motion-dur-modal:320ms;
+  /* Brand title center-out (takayu tx-center-out-reveal) — elegant hover */
+  --motion-dur-brand-reveal:520ms;
+  --motion-brand-reveal-stagger:32ms;
   --motion-interactive:border-color var(--motion-dur-quick) var(--motion-ease-standard),color var(--motion-dur-quick) var(--motion-ease-standard),background var(--motion-dur-quick) var(--motion-ease-standard),background-color var(--motion-dur-quick) var(--motion-ease-standard),box-shadow var(--motion-dur-quick) var(--motion-ease-standard),transform var(--motion-dur-quick) var(--motion-ease-standard),opacity var(--motion-dur-quick) var(--motion-ease-standard),filter var(--motion-dur-quick) var(--motion-ease-standard);
   /* Alias legacy token — never transition:all (paint-cost / surprise props) */
   --transition:var(--motion-interactive);
 }
 
-/* —— What's New / feedback / AlipayHK overlays (Corporate entrance) —— */
+/* —— Brand h1 hover: tx-center-out-reveal (replaces brand-frame nudge) —— */
+@keyframes ggen-tx-center-out-reveal{
+  from{opacity:0;transform:scale(.86)}
+  to{opacity:1;transform:none}
+}
+.brand-text .brand-char{
+  display:inline-block;
+}
+@media (hover:hover){
+  .brand-text.ggen-tx-center-out .brand-char{
+    transform-origin:center center;
+    animation:ggen-tx-center-out-reveal var(--motion-dur-brand-reveal) var(--motion-ease-enter) both;
+    animation-delay:calc(var(--d, 0) * var(--motion-brand-reveal-stagger));
+    will-change:transform,opacity;
+  }
+}
+
+/* —— What's New / feedback / AlipayHK overlays (Corporate enter) —— */
 .whats-new-overlay{
   transition:opacity var(--motion-dur-modal) var(--motion-ease-standard);
 }
@@ -36,7 +63,7 @@
   opacity:1;
 }
 
-/* —— Modal / dialog entrance (Premium/Corporate card: rise + fade, decelerate) —— */
+/* —— Modal / dialog entrance (Corporate rise + fade) —— */
 @keyframes ggen-modal-enter{
   from{opacity:0;transform:translate3d(0,14px,0) scale(0.985)}
   to{opacity:1;transform:translate3d(0,0,0) scale(1)}
@@ -113,7 +140,7 @@
   transition:var(--motion-interactive)!important;
 }
 
-/* —— Notification flare: subtle breathing glow (no star-border) —— */
+/* —— Notification flare: steady glow + attention-bounce (no filter pulse) —— */
 .ui-notice-flare{
   overflow:visible;
   border-radius:50%;
@@ -126,24 +153,31 @@
 .ui-notice-flare-img{
   position:relative;
   z-index:1;
-  transition:filter var(--motion-dur-quick) var(--motion-ease-standard);
+  transition:none;
 }
 .has-ui-notice .ui-notice-flare-img,
 .has-ui-notice>.ui-notice-flare-img{
-  filter:drop-shadow(0 0 4px var(--ui-notice-glow)) drop-shadow(0 0 9px var(--ui-notice-glow-soft));
-  animation:ui-notice-glow-breathe var(--ui-notice-glow-dur) ease-in-out infinite;
+  /* Steady glow (no filter pulse) + attention-bounce hop */
+  filter:drop-shadow(0 0 4px var(--ui-notice-glow)) drop-shadow(0 0 10px var(--ui-notice-glow-soft));
+  animation:ui-notice-attention-bounce var(--ui-notice-bounce-dur) linear infinite;
 }
 .has-ui-notice:hover .ui-notice-flare-img,
 .has-ui-notice:focus-visible .ui-notice-flare-img{
-  filter:drop-shadow(0 0 6px var(--ui-notice-glow)) drop-shadow(0 0 12px var(--ui-notice-glow-soft)) brightness(1.08);
+  filter:drop-shadow(0 0 6px var(--ui-notice-glow)) drop-shadow(0 0 14px var(--ui-notice-glow-soft)) drop-shadow(0 0 20px var(--ui-notice-glow-hot)) brightness(1.08);
 }
-@keyframes ui-notice-glow-breathe{
-  0%,100%{
-    filter:drop-shadow(0 0 3px var(--ui-notice-glow)) drop-shadow(0 0 7px var(--ui-notice-glow-soft));
-  }
-  50%{
-    filter:drop-shadow(0 0 6px var(--ui-notice-glow)) drop-shadow(0 0 12px var(--ui-notice-glow-soft));
-  }
+/*
+  Attention bounce (ref: 620ms easeOutBounce) — one upward hop + short landings,
+  then idle for the rest of the cycle so it does not feel like a blink.
+  Bounce shape is baked into keyframes; timing is linear.
+*/
+@keyframes ui-notice-attention-bounce{
+  0%{transform:translate3d(0,0,0)}
+  6%{transform:translate3d(0,-7px,0)}
+  12%{transform:translate3d(0,0,0)}
+  17%{transform:translate3d(0,-3.5px,0)}
+  22%{transform:translate3d(0,0,0)}
+  26%{transform:translate3d(0,-1.5px,0)}
+  30%,100%{transform:translate3d(0,0,0)}
 }
 
 /* —— Rubber-band range sliders —— */
@@ -191,13 +225,14 @@ input[type=range].ui-range.ui-range-snap::-moz-range-thumb{
 .site-feedback-lang-dropdown{
   opacity:1;
   translate:0 0;
+  /* Open: short Corporate enter. Close overridden below — snap-in exit felt sluggish. */
   transition:
     opacity var(--motion-dur-standard) var(--motion-ease-enter),
     translate var(--motion-dur-standard) var(--motion-ease-enter),
     display var(--motion-dur-standard) allow-discrete,
     overlay var(--motion-dur-standard) allow-discrete;
 }
-/* Closed: [hidden] panels + lang menus without .active */
+/* Closed: [hidden] panels + lang menus without .active — fast dismiss */
 .rarity-filter-panel[hidden],
 .role-filter-panel[hidden],
 .source-filter-panel[hidden],
@@ -207,8 +242,9 @@ input[type=range].ui-range.ui-range-snap::-moz-range-thumb{
 .lang-dropdown:not(.active),
 .site-feedback-lang-dropdown:not(.active){
   opacity:0;
-  translate:0 -8px;
+  translate:0 -6px;
   display:none;
+  transition-duration:100ms,100ms,100ms,100ms;
   transition-timing-function:var(--motion-ease-exit),var(--motion-ease-exit),var(--motion-ease-exit),var(--motion-ease-exit);
 }
 /* Open states (display must be set so allow-discrete can animate in) */
@@ -237,7 +273,7 @@ input[type=range].ui-range.ui-range-snap::-moz-range-thumb{
   .lang-dropdown.active,
   .site-feedback-lang-dropdown.active{
     opacity:0;
-    translate:0 -8px;
+    translate:0 -6px;
   }
 }
 .rarity-filter-row,
@@ -246,7 +282,7 @@ input[type=range].ui-range.ui-range-snap::-moz-range-thumb{
   transition:background var(--motion-dur-quick) var(--motion-ease-standard),color var(--motion-dur-quick) var(--motion-ease-standard),box-shadow var(--motion-dur-quick) var(--motion-ease-standard),opacity var(--motion-dur-quick) var(--motion-ease-standard),filter var(--motion-dur-quick) var(--motion-ease-standard),border-color var(--motion-dur-quick) var(--motion-ease-standard);
 }
 
-/* —— Nav underline: GPU scaleX instead of width (Transitions pill cue, keep cyan bar) —— */
+/* —— Nav underline: GPU scaleX only (no settle keyframes — those fought tab clicks) —— */
 .nav-tab::after{
   width:80%!important;
   transform:translateX(-50%) scaleX(0);
@@ -260,7 +296,7 @@ input[type=range].ui-range.ui-range-snap::-moz-range-thumb{
   transform:translateX(-50%) scaleX(1);
 }
 
-/* —— Search spotlight: same Corporate enter tokens as What's New / modals —— */
+/* —— Search spotlight: Corporate enter —— */
 .search-spotlight-backdrop{
   transition:opacity var(--motion-dur-modal) var(--motion-ease-standard)!important;
 }
@@ -271,6 +307,45 @@ input[type=range].ui-range.ui-range-snap::-moz-range-thumb{
 .search-spotlight-overlay.active .search-spotlight-card{
   transform:translate3d(0,0,0) scale(1)!important;
   opacity:1;
+}
+
+/* —— Click ripple: primary CTAs only (wave spawned by ui_motion.js) ——
+   Never overflow:hidden on notice anchors — clips flare + drop-shadow glow. */
+.ggen-ripple,
+.bt-vote-submit,
+.wn-added-btn,
+#panel-banner_timeline .bt-gacha-preview-btn{
+  position:relative;
+  overflow:hidden;
+  -webkit-tap-highlight-color:transparent;
+}
+.support-feedback-btn,
+.kofi-header-link,
+.alipayhk-header-btn{
+  position:relative;
+  -webkit-tap-highlight-color:transparent;
+}
+.ui-notice-anchor,
+.ui-notice-anchor.has-ui-notice{
+  overflow:visible!important;
+}
+.ggen-ripple-wave{
+  position:absolute;
+  border-radius:50%;
+  pointer-events:none;
+  z-index:2;
+  background:radial-gradient(circle,rgba(0,212,255,.45) 0%,rgba(0,212,255,.18) 42%,transparent 70%);
+  transform:scale(0);
+  opacity:.85;
+  animation:ggen-ripple-expand var(--motion-dur-ripple) var(--motion-ease-exit) forwards;
+  will-change:transform,opacity;
+}
+.bt-vote-submit .ggen-ripple-wave{
+  background:radial-gradient(circle,rgba(255,255,255,.42) 0%,rgba(255,255,255,.12) 45%,transparent 70%);
+  z-index:2;
+}
+@keyframes ggen-ripple-expand{
+  to{transform:scale(1);opacity:0}
 }
 
 /* —— Spotlight border beam (beam.jakubantalik pattern, CSS-only, active overlay only) —— */
@@ -391,6 +466,18 @@ body:not(.tm-page):not(.dm-page).nav-tabs-collapsed #navTabsShell{
 }
 
 @media (prefers-reduced-motion:reduce){
+  /* Brand center-out hover: no stagger */
+  .brand-text.ggen-tx-center-out .brand-char{
+    animation:none!important;
+    opacity:1!important;
+    transform:none!important;
+    will-change:auto!important;
+  }
+  /* DC HP ghost bars: snap to remaining % (no drain motion) */
+  .dc-hp-bar-fill,
+  .dc-hp-bar-ghost{
+    transition:none!important;
+  }
   body:not(.tm-page):not(.dm-page) #navTabsShell{
     transition:none !important;
   }
@@ -414,6 +501,10 @@ body:not(.tm-page):not(.dm-page).nav-tabs-collapsed #navTabsShell{
   .cmp-picker,
   .dc-modal{
     animation:ggen-modal-enter-reduced 150ms ease both!important;
+  }
+  .ggen-ripple-wave{
+    display:none!important;
+    animation:none!important;
   }
   .toggle-switch,
   .toggle-switch::after,

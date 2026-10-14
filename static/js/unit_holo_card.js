@@ -443,9 +443,10 @@
     var visible = true;
     var alive = true;
     var calm = 0;
-    /* Full spring idle after interaction; then cheap light-only drift so foil stays alive. */
+    /* Auto idle loop while holo is on (reactbits-style continuous cycle). */
     var ambienceUntil = 0;
     var idleSkip = 0;
+    var lastIdleCss = 0;
     var bake = document.createElement('canvas');
     var bakeCtx = bake.getContext('2d', { alpha: true });
 
@@ -760,10 +761,8 @@
       var lift = 1;
       var usingGyro = gyro.live && !pointer.inside;
       var active = pointer.inside || usingGyro;
-      /* Rich idle for a few seconds after interaction; then light-only drift forever
-         (cracked ice reads dead if the loop fully stops — that looked like “no effect”). */
-      var richIdle = settings.idle && !active && now < ambienceUntil;
-      var softIdle = settings.idle && !active && !richIdle;
+      /* Reactbits-style: keep an automatic tilt/light cycle looping while holo is on. */
+      var autoIdle = settings.idle && !active;
       var tiltCap = settings.tiltMax > 0 ? settings.tiltMax : 16;
       if (pointer.inside) {
         targetX = (0.5 - pointer.y) * 2 * (settings.tiltMax || tiltCap);
@@ -786,21 +785,18 @@
         }
         lightX = clamp(0.5 + gyro.gamma / 36, 0.05, 0.95);
         lightY = clamp(0.5 - gyro.beta / 36, 0.05, 0.95);
-      } else if (richIdle) {
+      } else if (autoIdle) {
         state.clock += dt;
         var t = state.clock;
-        targetX = Math.sin(t * 0.7) * settings.tiltMax * 0.28;
-        targetY = Math.sin(t * 0.53 + 1.2) * settings.tiltMax * 0.4;
+        if (!settings.reduced && settings.tiltMax > 0) {
+          targetX = Math.sin(t * 0.7) * settings.tiltMax * 0.32;
+          targetY = Math.sin(t * 0.53 + 1.2) * settings.tiltMax * 0.45;
+        } else {
+          targetX = 0;
+          targetY = 0;
+        }
         lightX = 0.5 + Math.sin(t * 0.41) * 0.42;
         lightY = 0.38 + Math.sin(t * 0.33 + 0.6) * 0.3;
-      } else if (softIdle) {
-        state.clock += dt;
-        var ts = state.clock;
-        /* Light-only — no CSS 3D tilt thrash; draw every 3rd frame below */
-        targetX = 0;
-        targetY = 0;
-        lightX = 0.5 + Math.sin(ts * 0.28) * 0.34;
-        lightY = 0.4 + Math.sin(ts * 0.22 + 0.8) * 0.26;
         idleSkip++;
       }
       var steps = Math.ceil(dt / (1 / 240));
@@ -823,9 +819,10 @@
         state.lift = a[0];
         state.liftV = a[1];
       }
+      var idleTick = autoIdle && idleSkip % 2 !== 0;
       if (settings.reduced) {
         stage.style.transform = '';
-      } else {
+      } else if (!idleTick) {
         stage.style.transform =
           'perspective(' +
           PERSPECTIVE +
@@ -837,9 +834,10 @@
           state.tiltY +
           'deg)';
       }
-      if (!(softIdle && idleSkip % 3 !== 0)) draw();
+      /* Idle: ~30fps draw/transform — full-rate WebGL+CSS every frame burned detail open */
+      if (!idleTick) draw();
 
-      /* Border-glow CSS vars (edge cone) — finger or gyro */
+      /* Border-glow CSS vars — pointer/gyro every frame; idle orbit throttled */
       var edge = 0;
       if (pointer.inside || usingGyro) {
         var nx;
@@ -859,6 +857,17 @@
         card.style.setProperty('--edge-proximity', edge.toFixed(2));
         card.style.setProperty('--cursor-angle', deg.toFixed(2) + 'deg');
         card.classList.add('is-holo-active');
+        lastIdleCss = now;
+      } else if (autoIdle) {
+        if (now - lastIdleCss > 48) {
+          lastIdleCss = now;
+          var orbit = (state.clock * 48) % 360;
+          if (orbit < 0) orbit += 360;
+          edge = 48 + Math.sin(state.clock * 0.85) * 28;
+          card.style.setProperty('--edge-proximity', edge.toFixed(2));
+          card.style.setProperty('--cursor-angle', orbit.toFixed(2) + 'deg');
+          card.classList.add('is-holo-active');
+        }
       } else {
         card.style.setProperty('--edge-proximity', '0');
         card.classList.remove('is-holo-active');
@@ -869,7 +878,7 @@
         raf = requestAnimationFrame(tick);
         return;
       }
-      if (!active && !richIdle && !softIdle && !settings.idle) {
+      if (!active && !autoIdle && !settings.idle) {
         var motion =
           Math.abs(state.tiltVX) +
           Math.abs(state.tiltVY) +

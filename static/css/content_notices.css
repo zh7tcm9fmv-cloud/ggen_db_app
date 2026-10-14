@@ -3,9 +3,10 @@
   position:absolute;top:-4px;right:-4px;width:22px;height:22px;
   pointer-events:none;z-index:5;display:none;line-height:0;
   overflow:visible;border-radius:50%;
-  --ui-notice-glow:rgba(255,70,70,.55);
-  --ui-notice-glow-soft:rgba(253,8,8,.28);
-  --ui-notice-glow-dur:2.8s;
+  --ui-notice-glow:rgba(255,64,64,.78);
+  --ui-notice-glow-soft:rgba(255,36,36,.42);
+  --ui-notice-glow-hot:rgba(255,48,48,.32);
+  --ui-notice-bounce-dur:2.6s;
 }
 .nav-tab .ui-notice-flare{top:4px;right:8px;width:24px;height:24px}
 .nav-tab.ui-notice-anchor{display:inline-flex}
@@ -15,20 +16,25 @@
   width:100%;height:100%;object-fit:contain;display:block;
   filter:drop-shadow(0 0 4px rgba(255,40,40,.75));
   transform-origin:center center;position:relative;z-index:1;
-  transition:filter .12s cubic-bezier(.2,0,0,1);
+  transition:none;
 }
 .has-ui-notice .ui-notice-flare-img,
 .has-ui-notice>.ui-notice-flare-img{
-  filter:drop-shadow(0 0 4px var(--ui-notice-glow)) drop-shadow(0 0 9px var(--ui-notice-glow-soft));
-  animation:ui-notice-glow-breathe var(--ui-notice-glow-dur) ease-in-out infinite;
+  filter:drop-shadow(0 0 4px var(--ui-notice-glow)) drop-shadow(0 0 10px var(--ui-notice-glow-soft));
+  animation:ui-notice-attention-bounce var(--ui-notice-bounce-dur,2.6s) linear infinite;
 }
 .has-ui-notice:hover .ui-notice-flare-img,
 .has-ui-notice:focus-visible .ui-notice-flare-img{
-  filter:drop-shadow(0 0 6px var(--ui-notice-glow)) drop-shadow(0 0 12px var(--ui-notice-glow-soft)) brightness(1.08);
+  filter:drop-shadow(0 0 6px var(--ui-notice-glow)) drop-shadow(0 0 14px var(--ui-notice-glow-soft)) drop-shadow(0 0 20px var(--ui-notice-glow-hot)) brightness(1.08);
 }
-@keyframes ui-notice-glow-breathe{
-  0%,100%{filter:drop-shadow(0 0 3px var(--ui-notice-glow)) drop-shadow(0 0 7px var(--ui-notice-glow-soft))}
-  50%{filter:drop-shadow(0 0 6px var(--ui-notice-glow)) drop-shadow(0 0 12px var(--ui-notice-glow-soft))}
+@keyframes ui-notice-attention-bounce{
+  0%{transform:translate3d(0,0,0)}
+  6%{transform:translate3d(0,-7px,0)}
+  12%{transform:translate3d(0,0,0)}
+  17%{transform:translate3d(0,-3.5px,0)}
+  22%{transform:translate3d(0,0,0)}
+  26%{transform:translate3d(0,-1.5px,0)}
+  30%,100%{transform:translate3d(0,0,0)}
 }
 @media (prefers-reduced-motion:reduce){
   .has-ui-notice .ui-notice-flare-img,

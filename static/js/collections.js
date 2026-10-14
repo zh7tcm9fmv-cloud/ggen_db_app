@@ -1445,6 +1445,23 @@
   };
   var _liveDonutHits = [];
   var _donutHoverBound = false;
+  var _donutAnimRaf = 0;
+  var _donutAnimTypeKey = '';
+  var _donutAnimating = false;
+
+  function cancelDonutSegmentAnim() {
+    if (_donutAnimRaf) {
+      cancelAnimationFrame(_donutAnimRaf);
+      _donutAnimRaf = 0;
+    }
+    _donutAnimating = false;
+  }
+
+  /** Ease-in-out so the fill stays readable (not a snap at the start). */
+  function donutEaseOut(t) {
+    var x = Math.max(0, Math.min(1, t));
+    return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+  }
 
   function donutBucketsFromStats(st) {
     if (state.type === 'supporters') {
@@ -1557,7 +1574,7 @@
   /**
    * Amicro-style rounded donut.
    * Slice angle = catalog share. Owned = solid bright bar.
-   * Owned = solid bright bar (no Max LB overlay on the ring).
+   * opts.segProgress: optional 0–1 per visible segment (donut-segments reveal).
    */
   function drawRoundedRoleDonut(ctx, cx, cy, size, buckets, opts) {
     opts = opts || {};
@@ -1568,6 +1585,7 @@
     var complete = !!opts.complete;
     var perfect = !!opts.perfect;
     var iconImg = opts.iconImg || null;
+    var segProgress = opts.segProgress;
     var hits = [];
 
     ctx.save();
@@ -1618,33 +1636,42 @@
         var a0 = start + g * 0.5;
         var a1 = start + sweep - g * 0.5;
         var span = a1 - a0;
+        var p = 1;
+        if (segProgress && segProgress.length) {
+          p = Number(segProgress[j]);
+          if (!Number.isFinite(p)) p = 1;
+          p = Math.max(0, Math.min(1, p));
+        }
         if (span > 0.02) {
           var baseColor = b.color || '#00d4ff';
-          /* Catalog slot — quiet track */
-          ctx.beginPath();
-          ctx.arc(cx, cy, trackR, a0, a1);
-          ctx.strokeStyle = donutHexToRgba(baseColor, 0.14);
-          ctx.lineWidth = stroke;
-          ctx.lineCap = 'round';
-          ctx.shadowBlur = 0;
-          ctx.stroke();
+          if (p > 0.001) {
+            var aVis = a0 + span * p;
+            /* Catalog slot — quiet track (grows with segment reveal) */
+            ctx.beginPath();
+            ctx.arc(cx, cy, trackR, a0, aVis);
+            ctx.strokeStyle = donutHexToRgba(baseColor, 0.14);
+            ctx.lineWidth = stroke;
+            ctx.lineCap = 'round';
+            ctx.shadowBlur = 0;
+            ctx.stroke();
 
-          if (owned > 0 && tot > 0) {
-            var ownFrac = owned / tot;
-            var aOwn = a0 + span * ownFrac;
-            if (aOwn > a0 + 0.015) {
-              /* Possession — bright clear solid bar */
-              ctx.beginPath();
-              ctx.arc(cx, cy, trackR, a0, aOwn);
-              ctx.strokeStyle = donutHexToRgba(baseColor, 0.92);
-              ctx.lineWidth = stroke;
-              ctx.lineCap = 'round';
-              ctx.shadowBlur = 0;
-              ctx.stroke();
-
+            if (owned > 0 && tot > 0) {
+              var ownFrac = owned / tot;
+              var aOwn = a0 + span * ownFrac * p;
+              if (aOwn > a0 + 0.015) {
+                /* Possession — bright clear solid bar */
+                ctx.beginPath();
+                ctx.arc(cx, cy, trackR, a0, aOwn);
+                ctx.strokeStyle = donutHexToRgba(baseColor, 0.92);
+                ctx.lineWidth = stroke;
+                ctx.lineCap = 'round';
+                ctx.shadowBlur = 0;
+                ctx.stroke();
+              }
             }
           }
 
+          /* Final angles for hit-testing (even mid-anim) */
           hits.push({
             a0: a0,
             a1: a1,
@@ -1722,6 +1749,7 @@
   }
 
   function showDonutTip(hit, clientX, clientY) {
+    if (_donutAnimating) return;
     if (!hit) {
       hideDonutTip();
       return;
@@ -1833,6 +1861,8 @@
   function paintLiveRoleDonut(st) {
     var canvas = document.getElementById('colRoleDonut');
     if (!canvas) return;
+    cancelDonutSegmentAnim();
+    hideDonutTip();
     var buckets = donutBucketsFromStats(st);
     var complete = st.total > 0 && st.owned >= st.total;
     var perfect = complete && st.maxed >= (st.lbEligible || 0);
@@ -1843,29 +1873,77 @@
     canvas.style.width = css + 'px';
     canvas.style.height = css + 'px';
     var ctx = canvas.getContext('2d');
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.clearRect(0, 0, css, css);
     var ic = document.getElementById('colGaugeTypeIc');
-    if (ic && !ic.complete) {
+    /* Supporter/unit motif swap loads a new src — must not re-enter paint and kill the reveal. */
+    if (ic) {
       ic.onload = function () {
+        if (_donutAnimating) return;
         paintLiveRoleDonut(computeStats(activeList()));
       };
     }
-    _liveDonutHits = drawRoundedRoleDonut(ctx, css / 2, css / 2, css, buckets, {
-      complete: complete,
-      perfect: perfect,
-      iconImg: ic && ic.complete ? ic : null,
-      stroke: 9,
-      gap: 0.16
-    });
+    var segCount = buckets.filter(function (b) {
+      return b && (Number(b.total) > 0 || Number(b.value) > 0);
+    }).length;
+    var typeKey = String(state.type || 'units');
+    var shouldAnim =
+      segCount > 0 && typeKey !== _donutAnimTypeKey && !prefersReducedMotion();
+    _donutAnimTypeKey = typeKey;
+
+    function paintFrame(segProgress) {
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, css, css);
+      var icNow = document.getElementById('colGaugeTypeIc');
+      var opts = {
+        complete: complete,
+        perfect: perfect,
+        iconImg: icNow && icNow.complete ? icNow : null,
+        stroke: 9,
+        gap: 0.16
+      };
+      if (segProgress) opts.segProgress = segProgress;
+      _liveDonutHits = drawRoundedRoleDonut(ctx, css / 2, css / 2, css, buckets, opts);
+    }
+
     canvas.setAttribute('aria-label', donutAriaSummary(buckets));
     bindDonutHover(canvas, css);
-    hideDonutTip();
     var leg = document.getElementById('colDonutLegend');
     if (leg) {
       leg.innerHTML = '';
       leg.hidden = true;
     }
+
+    if (!shouldAnim) {
+      paintFrame(null);
+      return;
+    }
+
+    /* Donut-segments: staggered arc grow-in — slow enough to read (collections HUD only). */
+    var DUR = 900;
+    var STAGGER = 120;
+    var segDur = Math.max(420, DUR - STAGGER * Math.max(0, segCount - 1));
+    var zeros = [];
+    var z;
+    for (z = 0; z < segCount; z++) zeros.push(0);
+    _donutAnimating = true;
+    paintFrame(zeros);
+    var t0 = performance.now();
+    function tick(now) {
+      var elapsed = now - t0;
+      var progs = [];
+      var i;
+      for (i = 0; i < segCount; i++) {
+        progs.push(donutEaseOut((elapsed - i * STAGGER) / segDur));
+      }
+      paintFrame(progs);
+      if (elapsed < DUR) {
+        _donutAnimRaf = requestAnimationFrame(tick);
+      } else {
+        _donutAnimRaf = 0;
+        _donutAnimating = false;
+        paintFrame(null);
+      }
+    }
+    _donutAnimRaf = requestAnimationFrame(tick);
   }
 
   var wasComplete = false;
