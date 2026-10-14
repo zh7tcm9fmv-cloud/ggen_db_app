@@ -12358,10 +12358,10 @@ const sl={unitData:ud,charData:S.dc.atkCharData,unitId:S.dc.atkUnit,charId:S.dc.
 const uid=String(S.dc.atkUnit);
 const needSup=!Array.isArray(S.dc.supporters)||!S.dc.supporters.length;
 const needOp=!Array.isArray(S.dc.optionParts)||!S.dc.optionParts.length;
-/* One batch supporter payload + one OP list — never N× /api/supporter/<id> (gthread starvation). */
+/* One batch supporter payload + shared OP cache (TB/DC prefetch) — never N× /api/supporter/<id>. */
 const [supDetails,opRows]=await Promise.all([
 needSup?_dcFetchAutofitSupporterDetails():Promise.resolve([]),
-needOp?_dcFetchAllListRows('/api/option_parts','rarity=ALL&effect=ALL&unit_id='+encodeURIComponent(uid)):Promise.resolve([])
+needOp?_tbEnsureOpRowsForUnit(uid):Promise.resolve([])
 ]);
 let bestSup=null,bestAtk=-1;
 if(needSup){
@@ -16943,6 +16943,34 @@ ev.preventDefault();
 const id=item.getAttribute('data-dc-pick-id');
 if(id!=null&&id!=='')pickDcItem(id);
 });
+/* Hover/focus prefetch so pick often hits detail + OP cache (same class as browse). */
+body.addEventListener('pointerenter',function(ev){
+const item=ev.target.closest('.tb-picker-item[data-dc-pick-id]');
+if(!item)return;
+const id=item.getAttribute('data-dc-pick-id');
+if(id!=null&&id!=='')_dcPrefetchPickerEntity(id);
+},true);
+body.addEventListener('focusin',function(ev){
+const item=ev.target.closest('.tb-picker-item[data-dc-pick-id]');
+if(!item)return;
+const id=item.getAttribute('data-dc-pick-id');
+if(id!=null&&id!=='')_dcPrefetchPickerEntity(id);
+});
+}
+function _dcPrefetchPickerEntity(id){
+const type=S._dcPickerType;
+const sid=String(id||'').trim();
+if(!sid)return;
+if(type==='unit'||type==='def_unit'){
+_tbPrefetchOpRowsForUnit(sid);
+void fetchDetailPayload('unit',sid,{}).then(d=>{
+if(!d||d.error)return;
+const rc=d.recommend_character;
+if(rc&&rc.id)void fetchDetailPayload('character',String(rc.id),{});
+}).catch(()=>{});
+}else if(type==='character'||type==='def_character'){
+void fetchDetailPayload('character',sid,{}).catch(()=>{});
+}
 }
 function _dcPickerEntityKind(type){
 return(type==='character'||type==='def_character')?'char':'unit';
@@ -16990,16 +17018,67 @@ if(myGen!==_dcPickerSearchGen)return;
 if(body)body.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted)">Search failed</div>';
 }
 }
+const _dcPickerSearchResultCache=new Map();
+const _DC_PICKER_SEARCH_CACHE_MAX=32;
+function _dcPickerSearchCacheKey(type,qExp){return String(S.lang||'EN')+'|'+String(type||'')+'|'+String(qExp||'')}
+function _dcPickerSearchCacheGet(type,qExp){
+const k=_dcPickerSearchCacheKey(type,qExp);
+const hit=_dcPickerSearchResultCache.get(k);
+if(hit==null)return null;
+_dcPickerSearchResultCache.delete(k);
+_dcPickerSearchResultCache.set(k,hit);
+return hit;
+}
+function _dcPickerSearchCachePut(type,qExp,rows){
+const k=_dcPickerSearchCacheKey(type,qExp);
+if(_dcPickerSearchResultCache.has(k))_dcPickerSearchResultCache.delete(k);
+_dcPickerSearchResultCache.set(k,rows||[]);
+while(_dcPickerSearchResultCache.size>_DC_PICKER_SEARCH_CACHE_MAX){
+const oldest=_dcPickerSearchResultCache.keys().next().value;
+_dcPickerSearchResultCache.delete(oldest);
+}
+}
+function _dcPickerSearchCachePrefixHit(type,qExp){
+const qe=String(qExp||'');
+if(qe.length<2)return null;
+let bestQ='',bestRows=null;
+_dcPickerSearchResultCache.forEach((rows,k)=>{
+const pref=String(S.lang||'EN')+'|'+String(type||'')+'|';
+if(k.indexOf(pref)!==0)return;
+const cq=k.slice(pref.length);
+if(!cq||qe.indexOf(cq)!==0)return;
+if(cq.length>bestQ.length){bestQ=cq;bestRows=rows}
+});
+if(!bestRows||!bestRows.length)return null;
+if(bestQ===qe)return bestRows;
+const qLow=qe.toLowerCase();
+return bestRows.filter(r=>{
+const hay=((r&&r.name)||'')+' '+((r&&r.id)||'');
+return hay.toLowerCase().indexOf(qLow)>=0||String((r&&r.id)||'').indexOf(qe)>=0;
+});
+}
 async function _dcDoPickerSearch(){
-const q=document.getElementById('dcPickerSearch').value.trim();
+const qRaw=document.getElementById('dcPickerSearch').value.trim();
 const body=document.getElementById('dcPickerBody');
 const type=S._dcPickerType;
 if(type==='option_parts'||type==='supporter'||type==='def_option_parts'||type==='def_supporter'){_dcFilterDcPickerClientSide();return}
 if(_dcPickerSearchAbort){try{_dcPickerSearchAbort.abort()}catch(_){}_dcPickerSearchAbort=null}
-if(q.length<2){
+if(qRaw.length<2){
 _dcPickerSearchGen++;
 body.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px">Type at least 2 characters to search</div>';
 return
+}
+const qExp=(type==='character'||type==='def_character'||type==='unit'||type==='def_unit')?expandUnitSearchQuery(qRaw):qRaw;
+const exact=_dcPickerSearchCacheGet(type,qExp);
+if(exact){
+S._dcPickerCache=_tbSortPickerEntityRows(exact);
+renderDcPickerList();
+return;
+}
+const prefixCached=_dcPickerSearchCachePrefixHit(type,qExp);
+if(prefixCached&&prefixCached.length){
+S._dcPickerCache=_tbSortPickerEntityRows(prefixCached);
+renderDcPickerList();
 }
 const ac=new AbortController();
 _dcPickerSearchAbort=ac;
@@ -17008,15 +17087,17 @@ const base=(type==='character'||type==='def_character')?'/api/characters':'/api/
 const haveVisible=!!(S._dcPickerCache&&S._dcPickerCache.length);
 if(!haveVisible)body.innerHTML='<div style="padding:10px;text-align:center;color:var(--text-muted);font-size:12px">Searching...</div>';
 try{
-const r=await fetch(`${base}?lang=${S.lang}&page=1&per_page=50&sort=rarity&dir=desc&q=${encodeURIComponent(q)}`,{signal:ac.signal});
+const r=await fetch(`${base}?lang=${S.lang}&page=1&per_page=50&sort=rarity&dir=desc&q=${encodeURIComponent(qExp)}`,{signal:ac.signal});
 const d=await r.json();
 if(myGen!==_dcPickerSearchGen)return;
-S._dcPickerCache=_tbSortPickerEntityRows(d.rows||[]);
+const rows=_tbSortPickerEntityRows(d.rows||[]);
+_dcPickerSearchCachePut(type,qExp,rows);
+S._dcPickerCache=rows;
 renderDcPickerList();
 }catch(e){
 if(e&&e.name==='AbortError')return;
 if(myGen!==_dcPickerSearchGen)return;
-body.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted)">Search failed</div>'}
+if(!haveVisible&&!(prefixCached&&prefixCached.length))body.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted)">Search failed</div>'}
 }
 function renderDcPickerList(){
 const items=S._dcPickerCache;
@@ -17052,18 +17133,18 @@ return`<div class="cmp-picker-item" onclick='pickDcItem(${JSON.stringify(String(
 
 async function pickDcItem(id){
 const type=S._dcPickerType;
+const sid=String(id==null?'':id).trim();
 closeDcPicker();
+if(!sid)return;
 try{
 if(type==='def_unit'){
-const r=await fetch(`/api/unit/${encodeURIComponent(id)}?lang=${S.lang}`);const d=await r.json();
-if(d.error)return;
+const d=await fetchDetailPayload('unit',sid,{});
+if(!d||d.error)return;
 S.dc.defUnitData=d;S.dc.defOptionParts=[];S.dc.defSupporters=[];S.dc.defUnitCondPassive=false;S.dc.defCharCondPassive=false;
 const rec=d.recommend_character;const isSD=String(d.body_type||'')==='3';
 if(rec&&rec.id){
-if(isSD){
-try{const cr=await fetch(`/api/character/${encodeURIComponent(rec.id)}?lang=${S.lang}`);const cd=await cr.json();if(!cd.error)S.dc.defCharData=cd}catch(_){}
-}else if(!S.dc.defCharData){
-try{const cr=await fetch(`/api/character/${encodeURIComponent(rec.id)}?lang=${S.lang}`);const cd=await cr.json();if(!cd.error)S.dc.defCharData=cd}catch(_){}
+if(isSD||!S.dc.defCharData){
+try{const cd=await fetchDetailPayload('character',String(rec.id),{});if(cd&&!cd.error)S.dc.defCharData=cd}catch(_){}
 }
 }
 _dcSyncDefNpcFromDatabase();
@@ -17072,20 +17153,21 @@ return;
 if(type==='def_character'){
 const ud=S.dc.defUnitData;
 if(ud&&String(ud.body_type||'')==='3')return;
-const r=await fetch(`/api/character/${encodeURIComponent(id)}?lang=${S.lang}`);const d=await r.json();
-if(d.error)return;
+const d=await fetchDetailPayload('character',sid,{});
+if(!d||d.error)return;
 S.dc.defCharData=d;S.dc.defCharCondPassive=false;
 _dcSyncDefNpcFromDatabase();
 return;
 }
-if(type==='option_parts'){await selectDcOptionPart(id);return}
-if(type==='supporter'){await selectDcSupporter(id);return}
-if(type==='def_option_parts'){await selectDcDefOptionPart(id);return}
-if(type==='def_supporter'){await selectDcDefSupporter(id);return}
-const url=type==='character'?`/api/character/${encodeURIComponent(id)}?lang=${S.lang}`:`/api/unit/${encodeURIComponent(id)}?lang=${S.lang}`;
-const r=await fetch(url);const d=await r.json();
+if(type==='option_parts'){await selectDcOptionPart(sid);return}
+if(type==='supporter'){await selectDcSupporter(sid);return}
+if(type==='def_option_parts'){await selectDcDefOptionPart(sid);return}
+if(type==='def_supporter'){await selectDcDefSupporter(sid);return}
 if(type==='unit'){
-S.dc.atkUnit=id;S.dc.atkUnitData=d;
+_tbPrefetchOpRowsForUnit(sid);
+const d=await fetchDetailPayload('unit',sid,{});
+if(!d||d.error)return;
+S.dc.atkUnit=sid;S.dc.atkUnitData=d;
 const _bw=_dcPickBestWeaponIndices(d);
 S.dc.wpnIdx=_bw.wpnIdx;S.dc.wpnLv=_bw.wpnLv;
 S.dc.unitStatMode='normal';S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false;
@@ -17096,12 +17178,20 @@ if(S.dc.unitCondPassive)_dcInitUnitCondControls(d);else{S.dc.unitCondStackCount=
 S.dc.optionParts=[];S.dc.supporters=[];
 const rec=d.recommend_character;const isSD=d.body_type==='3';
 S.dc._unitIsSD=isSD;
-if(rec&&rec.id&&(!S.dc.atkCharData||S.dc.atkCharData.id!==rec.id)){
-try{const cr=await fetch(`/api/character/${rec.id}?lang=${S.lang}`);const cd=await cr.json();
-S.dc.atkChar=rec.id;S.dc.atkCharData=cd;S.dc.charStatMode='normal';S.dc.dcSuperchargedExTier=0;S.dc._dcSuperchargedExManual=false;}catch(_){}
+/* Paint unit shell immediately — do not wait on recommend char / autofit. */
+renderDcAtkUnit();
+renderDcOptionParts();renderDcSupporters();
+_dcSyncAtkModeUiFromState();
+if(rec&&rec.id&&(!S.dc.atkCharData||String(S.dc.atkCharData.id)!==String(rec.id))){
+try{
+const cd=await fetchDetailPayload('character',String(rec.id),{});
+if(cd&&!cd.error){S.dc.atkChar=String(rec.id);S.dc.atkCharData=cd;S.dc.charStatMode='normal';S.dc.dcSuperchargedExTier=0;S.dc._dcSuperchargedExManual=false;}
+}catch(_){}
 }
 }else{
-S.dc.atkChar=id;S.dc.atkCharData=d;S.dc.charStatMode='normal';S.dc.dcSuperchargedExTier=0;S.dc._dcSuperchargedExManual=false;
+const d=await fetchDetailPayload('character',sid,{});
+if(!d||d.error)return;
+S.dc.atkChar=sid;S.dc.atkCharData=d;S.dc.charStatMode='normal';S.dc.dcSuperchargedExTier=0;S.dc._dcSuperchargedExManual=false;
 S.dc.optionParts=[];S.dc.supporters=[];
 }
 _dcSyncCharCondPassiveFromPair();
