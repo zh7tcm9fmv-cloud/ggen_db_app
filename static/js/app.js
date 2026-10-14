@@ -12330,18 +12330,41 @@ if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses(true);
 else onDcParamChange();
 });
 }
+const _dcAutofitSupCache=new Map();
+const _dcAutofitSupInflight=new Map();
+const _DC_AUTOFIT_SUP_CACHE_MAX=24;
+function _dcAutofitSupCacheKey(uid,cid){return String(S.lang||'EN')+'|'+String(uid||'')+'|'+String(cid||'')}
 async function _dcFetchAutofitSupporterDetails(){
 const uid=String(S.dc.atkUnit||'');
 if(!uid||uid==='__manual__')return[];
 const cid=(S.dc.atkChar&&S.dc.atkChar!=='__manual__'&&!(S.dc.atkCharData&&S.dc.atkCharData._manual))?String(S.dc.atkChar):'';
+const ck=_dcAutofitSupCacheKey(uid,cid);
+if(_dcAutofitSupCache.has(ck)){
+const hit=_dcAutofitSupCache.get(ck);
+_dcAutofitSupCache.delete(ck);_dcAutofitSupCache.set(ck,hit);
+return hit;
+}
+const infl=_dcAutofitSupInflight.get(ck);
+if(infl)return infl;
 let q=`lang=${encodeURIComponent(S.lang)}&level=100&lb_tier=3&unit_id=${encodeURIComponent(uid)}`;
 if(cid)q+=`&character_id=${encodeURIComponent(cid)}`;
+const p=(async()=>{
 try{
 const r=await fetch(`/api/dc_autofit_supporters?${q}`);
 if(!r.ok)return[];
 const d=await r.json();
-return Array.isArray(d&&d.rows)?d.rows:[];
+const rows=Array.isArray(d&&d.rows)?d.rows:[];
+_dcAutofitSupCache.set(ck,rows);
+while(_dcAutofitSupCache.size>_DC_AUTOFIT_SUP_CACHE_MAX){
+const k=_dcAutofitSupCache.keys().next().value;
+_dcAutofitSupCache.delete(k);
+}
+return rows;
 }catch(_){return[]}
+finally{_dcAutofitSupInflight.delete(ck)}
+})();
+_dcAutofitSupInflight.set(ck,p);
+return p;
 }
 async function dcAutoFitOptionPartAndSupporter(fitGen){
 if(typeof S==='undefined'||!S.dc)return;
@@ -13494,29 +13517,29 @@ const cd=await fetchDetailPayload('character',String(rc.id),{});
 if(cd&&!cd.error){sl.charId=String(rc.id);sl.charData=cd;_tbSyncSlotCondPassives(sl)}
 }catch(_){}
 }
+/* Shared OP list cache for TB + /cal autofit — must not require S.tb (null until Team Builder opens). */
+const _ggenOpRowsByUnitCache=Object.create(null);
+const _ggenOpRowsByUnitInflight=Object.create(null);
 function _tbPrefetchOpRowsForUnit(uid){
 const id=String(uid||'').trim();
-if(!id||typeof S==='undefined'||!S.tb)return;
-const cache=S.tb._tbOpAllRowsByUnit||(S.tb._tbOpAllRowsByUnit={});
-if(cache[id])return;
-const inflight=S.tb._tbOpPrefetchInflight||(S.tb._tbOpPrefetchInflight={});
-if(inflight[id])return;
-inflight[id]=_dcFetchAllListRows('/api/option_parts','rarity=ALL&effect=ALL&unit_id='+encodeURIComponent(id)).then(rows=>{
-cache[id]=rows||[];
-}).catch(()=>{}).finally(()=>{delete inflight[id]});
+if(!id)return;
+if(_ggenOpRowsByUnitCache[id])return;
+if(_ggenOpRowsByUnitInflight[id])return;
+_ggenOpRowsByUnitInflight[id]=_dcFetchAllListRows('/api/option_parts','rarity=ALL&effect=ALL&unit_id='+encodeURIComponent(id)).then(rows=>{
+_ggenOpRowsByUnitCache[id]=rows||[];
+}).catch(()=>{if(!_ggenOpRowsByUnitCache[id])_ggenOpRowsByUnitCache[id]=[]}).finally(()=>{delete _ggenOpRowsByUnitInflight[id]});
 }
 async function _tbEnsureOpRowsForUnit(uid){
 const id=String(uid||'').trim();
 if(!id)return[];
-const cache=S.tb._tbOpAllRowsByUnit||(S.tb._tbOpAllRowsByUnit={});
-if(cache[id])return cache[id];
+if(_ggenOpRowsByUnitCache[id])return _ggenOpRowsByUnitCache[id];
 _tbPrefetchOpRowsForUnit(id);
-const inflight=S.tb._tbOpPrefetchInflight||{};
-if(inflight[id]){try{await inflight[id]}catch(_){}}
-if(cache[id])return cache[id];
+const infl=_ggenOpRowsByUnitInflight[id];
+if(infl){try{await infl}catch(_){}}
+if(_ggenOpRowsByUnitCache[id])return _ggenOpRowsByUnitCache[id];
 const rows=await _dcFetchAllListRows('/api/option_parts','rarity=ALL&effect=ALL&unit_id='+encodeURIComponent(id));
-cache[id]=rows||[];
-return cache[id];
+_ggenOpRowsByUnitCache[id]=rows||[];
+return _ggenOpRowsByUnitCache[id];
 }
 async function _tbAssignUnitDataToSlot(sl,d,sidStr){
 _tbApplyUnitPayloadToSlot(sl,d,sidStr);
@@ -17182,17 +17205,31 @@ S.dc._unitIsSD=isSD;
 renderDcAtkUnit();
 renderDcOptionParts();renderDcSupporters();
 _dcSyncAtkModeUiFromState();
-if(rec&&rec.id&&(!S.dc.atkCharData||String(S.dc.atkCharData.id)!==String(rec.id))){
+const recId=rec&&rec.id?String(rec.id):'';
+if(recId&&(!S.dc.atkCharData||String(S.dc.atkCharData.id)!==recId)){
+/* Set char id early so OP + best-supporter fetches overlap the char detail GET. */
+const prevAtkChar=S.dc.atkChar;
+S.dc.atkChar=recId;
+void _tbEnsureOpRowsForUnit(sid);
+void _dcFetchAutofitSupporterDetails();
 try{
-const cd=await fetchDetailPayload('character',String(rec.id),{});
-if(cd&&!cd.error){S.dc.atkChar=String(rec.id);S.dc.atkCharData=cd;S.dc.charStatMode='normal';S.dc.dcSuperchargedExTier=0;S.dc._dcSuperchargedExManual=false;}
-}catch(_){}
+const cd=await fetchDetailPayload('character',recId,{});
+if(cd&&!cd.error){S.dc.atkChar=recId;S.dc.atkCharData=cd;S.dc.charStatMode='normal';S.dc.dcSuperchargedExTier=0;S.dc._dcSuperchargedExManual=false;}
+else S.dc.atkChar=prevAtkChar;
+}catch(_){S.dc.atkChar=prevAtkChar}
+}else if(recId){
+S.dc.atkChar=recId;
+void _tbEnsureOpRowsForUnit(sid);
+void _dcFetchAutofitSupporterDetails();
+}else{
+void _tbEnsureOpRowsForUnit(sid);
 }
 }else{
 const d=await fetchDetailPayload('character',sid,{});
 if(!d||d.error)return;
 S.dc.atkChar=sid;S.dc.atkCharData=d;S.dc.charStatMode='normal';S.dc.dcSuperchargedExTier=0;S.dc._dcSuperchargedExManual=false;
 S.dc.optionParts=[];S.dc.supporters=[];
+if(S.dc.atkUnit){void _tbEnsureOpRowsForUnit(String(S.dc.atkUnit));void _dcFetchAutofitSupporterDetails()}
 }
 _dcSyncCharCondPassiveFromPair();
 const autoV=S.dc.atkCharData&&_dcShouldAutoSuperchargedVigorOnCharCp(S.dc.atkCharData);
@@ -17205,6 +17242,7 @@ renderDcOptionParts();renderDcSupporters();
 _dcSyncAtkModeUiFromState();
 if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses(true);
 else onDcParamChange();
+/* Snappy unit/char paint first; autofit applies best OP + supporter as soon as warm fetches finish. */
 _dcScheduleAutoFitOptionPartAndSupporter();
 }catch(e){}
 }
