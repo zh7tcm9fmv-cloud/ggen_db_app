@@ -1596,13 +1596,6 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
   background:rgba(10,14,23,.22);
   border-color:rgba(255,255,255,.12);
 }
-.modal-content.supporter-detail .detail-header.supporter-detail-header .unit-holo-card.is-holo-on .unit-holo-card__stage{
-  background:transparent;
-}
-.modal-content.unit-detail:not(.detail-ranking-view) .detail-header.unit-detail-header .unit-holo-card.is-holo-on .unit-holo-card__stage,
-.modal-content.char-detail:not(.detail-ranking-view) .detail-header.char-detail-header .unit-holo-card.is-holo-on .unit-holo-card__stage{
-  background:rgba(10,14,23,.22);
-}
 .modal-content.supporter-detail .detail-header.supporter-detail-header .unit-holo-card.is-holo-on{
   --card-bg:transparent;
   --fill-opacity:0;
@@ -1662,12 +1655,7 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
   transition:none!important;
   animation:none!important;
 }
-/* Tap feedback before WebGL mounts (iOS lazy script) */
-.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-on > .detail-portrait,
-.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-on > .detail-portrait-placeholder{
-  border-color:rgba(0,212,255,.5);
-  box-shadow:0 0 0 1px rgba(0,212,255,.22);
-}
+/* No extra ring on activate — box-shadow added outer pixels and looked like a jump */
 .modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.unit-holo-card--armed:focus-visible{
   outline:2px solid rgba(0,212,255,.65);
   outline-offset:3px;
@@ -1699,25 +1687,38 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
   --gradient-six:radial-gradient(at 82% 18%,hsla(320,100%,70%,1) 0px,transparent 50%);
   --gradient-seven:radial-gradient(at 51% 4%,hsla(200,100%,75%,1) 0px,transparent 50%);
   --gradient-base:linear-gradient(#00d4ff 0 100%);
-  perspective:1000px;
+  /* Perspective lives on the stage transform only — CSS perspective here popped layout on toggle */
   isolation:isolate;
   overflow:visible;
 }
-.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-on .unit-holo-card__stage{
-  /* Same outer box as cold .detail-portrait — no size jump on toggle */
+/*
+ * Stage = size-neutral wrap. Portrait keeps cold .detail-portrait sizing at every
+ * breakpoint. Activate only tilts the stage — never overrides width/height/border.
+ * (visibility:hidden under WebGL still reserves the same box, so foil can’t squeeze.)
+ */
+.modal-content:is(.unit-detail,.char-detail) .unit-holo-card.unit-holo-card--armed .unit-holo-card__stage{
   position:relative;
   display:block;
   width:100%;
   max-width:100%;
   line-height:0;
+  border:none;
+  background:transparent;
   border-radius:var(--radius-md);
-  border:2px solid var(--border-color);
-  background:rgba(13,19,33,.8);
   overflow:hidden;
-  transform-style:preserve-3d;
   transform-origin:center center;
-  will-change:transform;
   z-index:1;
+}
+.modal-content:is(.unit-detail,.char-detail) .unit-holo-card.unit-holo-card--armed .unit-holo-card__stage .detail-portrait,
+.modal-content:is(.unit-detail,.char-detail) .unit-holo-card.unit-holo-card--armed .unit-holo-card__stage .detail-portrait-placeholder{
+  /* Intentionally no size/chrome overrides — cold rules win */
+  display:block;
+  position:relative;
+  z-index:1;
+}
+.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-on .unit-holo-card__stage{
+  transform-style:preserve-3d;
+  will-change:transform;
 }
 .modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-on .unit-holo-card__canvas{
   position:absolute;
@@ -1739,16 +1740,7 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
   visibility:hidden;
   transition:none!important;
 }
-.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-on .unit-holo-card__stage .detail-portrait,
-.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-on .unit-holo-card__stage .detail-portrait-placeholder{
-  /* Keep cold width/height/aspect-ratio; only move chrome to the stage */
-  display:block;
-  border:none;
-  border-radius:0;
-  background:transparent;
-  position:relative;
-  z-index:1;
-}
+/* Portrait-in-stage chrome already set on --armed (above) */
 .modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-on::before,
 .modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-on::after{
   content:"";
@@ -1830,12 +1822,19 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 
 /* Supporter UR holo — keep wide art borderless; clicks hit the wrap */
 .modal-content.supporter-detail .unit-holo-card.unit-holo-card--armed .supporter-portrait{pointer-events:auto}
-.modal-content.supporter-detail .unit-holo-card.is-holo-on .unit-holo-card__stage{
+.modal-content.supporter-detail .unit-holo-card.unit-holo-card--armed .unit-holo-card__stage{
+  position:relative;
+  display:block;
+  width:100%;
+  max-width:100%;
+  line-height:0;
   border:none;
   background:transparent;
   box-shadow:none;
-  /* Wide art: keep a stable box even while the <img> is visibility:hidden under WebGL */
-  width:100%;
+  overflow:hidden;
+  transform-origin:center center;
+  z-index:1;
+  /* Wide art: stable box while <img> is visibility:hidden under WebGL */
   aspect-ratio:900/504;
 }
 .modal-content.supporter-detail .unit-holo-card.is-holo-webgl .supporter-portrait,
@@ -1844,8 +1843,8 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
   visibility:hidden;
   transition:none!important;
 }
-.modal-content.supporter-detail .unit-holo-card.is-holo-on .unit-holo-card__stage .supporter-portrait,
-.modal-content.supporter-detail .unit-holo-card.is-holo-on .unit-holo-card__stage .supporter-portrait-placeholder{
+.modal-content.supporter-detail .unit-holo-card.unit-holo-card--armed .unit-holo-card__stage .supporter-portrait,
+.modal-content.supporter-detail .unit-holo-card.unit-holo-card--armed .unit-holo-card__stage .supporter-portrait-placeholder{
   display:block;
   border:none;
   border-radius:0;
@@ -1855,12 +1854,6 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
   width:100%;
   height:auto;
   filter:none;
-}
-.modal-content.supporter-detail .unit-holo-card.is-holo-on > .supporter-portrait,
-.modal-content.supporter-detail .unit-holo-card.is-holo-on > .supporter-portrait-placeholder{
-  border:none;
-  box-shadow:0 0 0 1px rgba(0,212,255,.28);
-  filter:drop-shadow(0 4px 8px rgba(0,0,0,0.6));
 }
 .stage-portrait{width:240px;height:240px;object-fit:contain;border-radius:var(--radius-md);border:2px solid var(--border-color);background:rgba(13,19,33,0.8)}
 .supporter-portrait{border:none;background:transparent;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.6));pointer-events:none;display:block}

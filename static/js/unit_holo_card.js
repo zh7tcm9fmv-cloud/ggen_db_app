@@ -425,7 +425,7 @@
       lightVY: 0,
       lift: 1,
       liftV: 0,
-      clock: Math.random() * 40
+      clock: 0
     };
     var pointer = { x: 0.5, y: 0.5, inside: false };
     var gyro = {
@@ -447,6 +447,9 @@
     var ambienceUntil = 0;
     var idleSkip = 0;
     var lastIdleCss = 0;
+    /* Soft-start idle tilt after activate/resume — avoids first-frame jump */
+    var idleAmp = 0;
+    var IDLE_AMP_MS = 420;
     var bake = document.createElement('canvas');
     var bakeCtx = bake.getContext('2d', { alpha: true });
 
@@ -787,16 +790,19 @@
         lightY = clamp(0.5 - gyro.beta / 36, 0.05, 0.95);
       } else if (autoIdle) {
         state.clock += dt;
+        if (idleAmp < 1) idleAmp = Math.min(1, idleAmp + dt * (1000 / IDLE_AMP_MS));
         var t = state.clock;
+        var amp = idleAmp * idleAmp * (3 - 2 * idleAmp); /* smoothstep */
         if (!settings.reduced && settings.tiltMax > 0) {
-          targetX = Math.sin(t * 0.7) * settings.tiltMax * 0.32;
-          targetY = Math.sin(t * 0.53 + 1.2) * settings.tiltMax * 0.45;
+          targetX = Math.sin(t * 0.7) * settings.tiltMax * 0.32 * amp;
+          targetY = Math.sin(t * 0.53 + 1.2) * settings.tiltMax * 0.45 * amp;
         } else {
           targetX = 0;
           targetY = 0;
         }
-        lightX = 0.5 + Math.sin(t * 0.41) * 0.42;
-        lightY = 0.38 + Math.sin(t * 0.33 + 0.6) * 0.3;
+        /* Light drifts gently from the seed pose — no hard snap from cold */
+        lightX = 0.5 + Math.sin(t * 0.41) * 0.42 * amp;
+        lightY = 0.38 + Math.sin(t * 0.33 + 0.6) * 0.3 * amp;
         idleSkip++;
       }
       var steps = Math.ceil(dt / (1 / 240));
@@ -823,16 +829,25 @@
       if (settings.reduced) {
         stage.style.transform = '';
       } else if (!idleTick) {
-        stage.style.transform =
-          'perspective(' +
-          PERSPECTIVE +
-          'px) scale(' +
-          state.lift +
-          ') rotateX(' +
-          state.tiltX +
-          'deg) rotateY(' +
-          state.tiltY +
-          'deg)';
+        /* Skip identity 3D string — applying perspective() alone pops the plate */
+        var nearId =
+          Math.abs(state.tiltX) < 0.02 &&
+          Math.abs(state.tiltY) < 0.02 &&
+          Math.abs(state.lift - 1) < 0.002;
+        if (nearId) {
+          stage.style.transform = '';
+        } else {
+          stage.style.transform =
+            'perspective(' +
+            PERSPECTIVE +
+            'px) scale(' +
+            state.lift +
+            ') rotateX(' +
+            state.tiltX +
+            'deg) rotateY(' +
+            state.tiltY +
+            'deg)';
+        }
       }
       /* Idle: ~30fps draw/transform — full-rate WebGL+CSS every frame burned detail open */
       if (!idleTick) draw();
@@ -1077,6 +1092,13 @@
       activeTouchId = null;
       card.style.setProperty('--edge-proximity', '0');
       stage.style.transform = '';
+      state.tiltX = 0;
+      state.tiltY = 0;
+      state.tiltVX = 0;
+      state.tiltVY = 0;
+      state.lift = 1;
+      state.liftV = 0;
+      idleAmp = 0;
       /* Hide foil first, then clear holo classes — no opacity tween / double-image flash. */
       if (canvas) {
         canvas.style.display = 'none';
@@ -1096,6 +1118,16 @@
       }
       if (textureReady) card.classList.add('is-holo-webgl');
       else loadTexture();
+      /* Fresh soft-start — no mid-cycle idle pose on activate */
+      state.tiltX = 0;
+      state.tiltY = 0;
+      state.tiltVX = 0;
+      state.tiltVY = 0;
+      state.lift = 1;
+      state.liftV = 0;
+      state.clock = 0;
+      idleAmp = 0;
+      stage.style.transform = '';
       ambienceUntil = performance.now() + 2400;
       wake();
     }
@@ -1164,6 +1196,7 @@
 
   global.GgenUnitHoloCard = {
     mount: mount,
+    ensureStage: ensureStage,
     requestGyroPermission: requestGyroPermission,
     isCoarsePointer: isCoarsePointer,
     DEFAULT_FOIL: DEFAULT_FOIL,
