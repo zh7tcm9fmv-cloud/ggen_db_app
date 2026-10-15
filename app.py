@@ -4236,6 +4236,19 @@ def series_filter_cache_fragment(sid):
     return 's' + str(sid)[:32]
 
 
+def lineage_tag_ids_for_browse_row(lin_map, eid):
+    """Compact short lineage ids for InstantBrowse client-side tag filters (no display names)."""
+    out = []
+    seen = set()
+    for lid in lin_map.get(eid, []) or []:
+        s = str(lid).strip()
+        if not s or s == '0' or s in seen:
+            continue
+        seen.add(s)
+        out.append(s)
+    return out
+
+
 def _entity_matches_one_lineage(lin_map, eid, want_lid):
     """Single lineage id match; want_lid is full lineage id from m_lineage; lin_map stores short ids."""
     want = str(want_lid).strip()
@@ -27712,8 +27725,8 @@ def list_characters():
     want_stat_bounds = request.args.get('stat_bounds', '').strip().lower() in ('1', 'true', 'yes')
     sb_ck = 'sbd1' if want_stat_bounds else 'sbd0'
     rb_ck = 'rb1' if ranking_bulk else 'rb0'
-    # cl34: list rows include is_limited_time for client-side rarity filter (omit series/rarity_icon).
-    ck = f"cl36_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_{ability_ck}_lop{_cbc['lineage_combine']}_sop{_cbc['series_combine']}_skop{_cbc['skill_combine']}_abop{_cbc['trait_combine']}_gs{1 if grid_skills else 0}_{sb_ck}_{rb_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    # cl37: list rows include tag_ids for InstantBrowse client-side lineage filters.
+    ck = f"cl37_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_{ability_ck}_lop{_cbc['lineage_combine']}_sop{_cbc['series_combine']}_skop{_cbc['skill_combine']}_abop{_cbc['trait_combine']}_gs{1 if grid_skills else 0}_{sb_ck}_{rb_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached:
         return jsonify_preserialized(cached, ck, public=True, max_age=3600, convert_images=False)
@@ -27819,7 +27832,7 @@ def list_characters():
         acq = acq_route; acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
         # Omit series / rarity_icon — unused by browse/ranking/TB list UI.
         # is_limited_time is on the row so Units/Characters can filter rarity locally.
-        row = {'id': cid, 'name': name, 'role': resolve_role_label(role_id, lc), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'thum': thum or '', 'acquisition_icon': acq_icon or '', 'is_limited_time': cid in LIMITED_TIME_CHARACTER_IDS, 'is_schedule_shell': entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')), 'Ranged': totals.get('Ranged', 0), 'Melee': totals.get('Melee', 0), 'Awaken': totals.get('Awaken', 0), 'Defense': totals.get('Defense', 0), 'Reaction': totals.get('Reaction', 0), 'Ranged_base': base_src.get('Ranged', 0), 'Melee_base': base_src.get('Melee', 0), 'Awaken_base': base_src.get('Awaken', 0), 'Defense_base': base_src.get('Defense', 0), 'Reaction_base': base_src.get('Reaction', 0)}
+        row = {'id': cid, 'name': name, 'role': resolve_role_label(role_id, lc), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'thum': thum or '', 'acquisition_icon': acq_icon or '', 'is_limited_time': cid in LIMITED_TIME_CHARACTER_IDS, 'is_schedule_shell': entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')), 'tag_ids': lineage_tag_ids_for_browse_row(char_lin_map, cid), 'Ranged': totals.get('Ranged', 0), 'Melee': totals.get('Melee', 0), 'Awaken': totals.get('Awaken', 0), 'Defense': totals.get('Defense', 0), 'Reaction': totals.get('Reaction', 0), 'Ranged_base': base_src.get('Ranged', 0), 'Melee_base': base_src.get('Melee', 0), 'Awaken_base': base_src.get('Awaken', 0), 'Defense_base': base_src.get('Defense', 0), 'Reaction_base': base_src.get('Reaction', 0)}
         rows.append(row)
     rows, sort_priority_band = sort_rows_with_priority_band(
         rows,
@@ -27910,8 +27923,8 @@ def list_units():
     want_stat_bounds_u = request.args.get('stat_bounds', '').strip().lower() in ('1', 'true', 'yes')
     sbu_ck = 'sbd1' if want_stat_bounds_u else 'sbd0'
     rb_u_ck = 'rb1' if ranking_bulk_u else 'rb0'
-    # ul63: Snipe MAP = Impact (2) + Able to move after use (not single-cell alone).
-    ck = f"ul63_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_attr_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    # ul64: list rows include tag_ids for InstantBrowse client-side lineage filters.
+    ck = f"ul64_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_attr_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached:
         return jsonify_preserialized(cached, ck, public=True, max_age=3600, convert_images=False)
@@ -28060,7 +28073,7 @@ def list_units():
         thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
         # Omit series / rarity_icon / recommend_character — unused by browse/ranking/TB list UI.
         # is_limited_time is on the row so Units can filter rarity locally (Soshage-style).
-        urow = {'id': uid, 'name': name, 'role': resolve_role_label(role_id, lc), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'special_icons': si, 'thum': thum or '', 'acquisition_icon': ai or '', 'is_ultimate': bool(info.get('is_ultimate', False)), 'is_limited_time': uid in LIMITED_TIME_UNIT_IDS, 'is_schedule_shell': entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')), 'ATK': fs.get('Attack', fs.get('ATK', 0)), 'DEF': fs.get('Defense', fs.get('DEF', 0)), 'MOB': fs.get('Mobility', fs.get('MOB', 0)), 'HP': fs.get('HP', 0), 'EN': fs.get('EN', 0), 'MOV': fs.get('Move', fs.get('MOV', 0))}
+        urow = {'id': uid, 'name': name, 'role': resolve_role_label(role_id, lc), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'special_icons': si, 'thum': thum or '', 'acquisition_icon': ai or '', 'is_ultimate': bool(info.get('is_ultimate', False)), 'is_limited_time': uid in LIMITED_TIME_UNIT_IDS, 'is_schedule_shell': entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')), 'tag_ids': lineage_tag_ids_for_browse_row(unit_lin_map, uid), 'ATK': fs.get('Attack', fs.get('ATK', 0)), 'DEF': fs.get('Defense', fs.get('DEF', 0)), 'MOB': fs.get('Mobility', fs.get('MOB', 0)), 'HP': fs.get('HP', 0), 'EN': fs.get('EN', 0), 'MOV': fs.get('Move', fs.get('MOV', 0))}
         display_uid = uid
         if not wide_seek:
             display_uid = _unit_browse_form_filter_display_id(
