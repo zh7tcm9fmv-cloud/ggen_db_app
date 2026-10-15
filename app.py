@@ -4249,6 +4249,143 @@ def lineage_tag_ids_for_browse_row(lin_map, eid):
     return out
 
 
+def char_instant_browse_facets(cid, info, ld, lc, include_sp=False):
+    """Compact InstantBrowse facets for character ranking_bulk rows."""
+    cid = normalize_id(cid)
+    ser = []
+    seen_s = set()
+    for s in resolve_series((ld.get('char_ser_map') or {}).get(cid, ''), lc) or []:
+        sid = normalize_id(s.get('id', ''))
+        if sid and sid != '0' and sid not in seen_s:
+            seen_s.add(sid)
+            ser.append(sid)
+    skills = []
+    seen_sk = set()
+    for sk in extract_data_list(char_skill):
+        if normalize_id(sk.get('CharacterId', '')) != cid:
+            continue
+        for key in ('CharacterSkillId', 'SkillId', 'SpCharacterSkillId', 'spCharacterSkillId'):
+            sid = normalize_id(sk.get(key) or '')
+            if sid and sid not in ('0', 'None') and sid not in seen_sk:
+                seen_sk.add(sid)
+                skills.append(sid)
+    abils = []
+    seen_ab = set()
+    for ab_row in extract_data_list(char_abil):
+        if normalize_id(ab_row.get('CharacterId', '')) != cid:
+            continue
+        keys = ('AbilityId', 'SpAbilityId', 'spAbilityId') if include_sp else ('AbilityId',)
+        for key in keys:
+            aid = normalize_id(ab_row.get(key) or '')
+            if aid and aid not in ('0', 'None') and aid not in seen_ab:
+                seen_ab.add(aid)
+                abils.append(aid)
+    # Cheap special-filter markers (no text regex for chance_step_ex / support x2).
+    aid_set = set(abils)
+    if aid_set & GUARANTEED_CHANCE_STEP_ABILITY_IDS:
+        if GUARANTEED_CHANCE_STEP_FILTER_ID not in seen_ab:
+            abils.append(GUARANTEED_CHANCE_STEP_FILTER_ID)
+            seen_ab.add(GUARANTEED_CHANCE_STEP_FILTER_ID)
+    try:
+        tag_rep = normalize_id(SDC_TAG_REPRESENTATIVE_ID)
+        if tag_rep and (aid_set & SDC_TAG_ABILITY_IDS) and tag_rep not in seen_ab:
+            abils.append(tag_rep)
+            seen_ab.add(tag_rep)
+        ser_rep = normalize_id(SDC_SERIES_REPRESENTATIVE_ID)
+        if ser_rep and (aid_set & SDC_SERIES_ABILITY_IDS) and ser_rep not in seen_ab:
+            abils.append(ser_rep)
+            seen_ab.add(ser_rep)
+    except Exception:
+        pass
+    return {
+        'acq': str(info.get('acquisition_route', '0') or '0'),
+        'ser': ser,
+        'skill': skills,
+        'abil': abils,
+    }
+
+
+def unit_instant_browse_facets(
+        uid, info, ld, lc, stat_mode='normal', cond_active=False, pilot_cond_active=False, _debuff_memo=None):
+    """Compact InstantBrowse facets for unit ranking_bulk rows (per-form shape OR)."""
+    uid = normalize_id(uid)
+    ser = []
+    seen_s = set()
+    for s in resolve_series(unit_ser_map.get(uid, ''), lc) or []:
+        sid = normalize_id(s.get('id', ''))
+        if sid and sid != '0' and sid not in seen_s:
+            seen_s.add(sid)
+            ser.append(sid)
+    mech = sorted(collect_unit_mechanism_mids(info, uid))
+    abil = []
+    seen_a = set()
+    ua = unit_abil_map.get(uid, []) or []
+    rm = unit_ssp_abil_replace_map.get(uid, {}) or {}
+    for ab in ua:
+        aid = normalize_id(str(ab.get('id') or ''))
+        if aid and aid != '0' and aid not in seen_a:
+            seen_a.add(aid)
+            abil.append(aid)
+        raw = str(ab.get('id') or '')
+        if raw in rm:
+            rid = normalize_id(rm[raw])
+            if rid and rid != '0' and rid not in seen_a:
+                seen_a.add(rid)
+                abil.append(rid)
+    for gain_aid in unit_ssp_abil_gain_list.get(uid, []) or []:
+        gid = normalize_id(str(gain_aid))
+        if gid and gid != '0' and gid not in seen_a:
+            seen_a.add(gid)
+            abil.append(gid)
+    if _debuff_memo is None:
+        _debuff_memo = {}
+    forms = []
+    for fid in _unit_ids_for_terrain_filter(uid, info):
+        finfo = unit_info_map.get(fid) or {}
+        levels = _unit_terrain_levels_for_mode(fid, finfo, stat_mode)
+        terr = {}
+        for tn, lv in (levels or {}).items():
+            try:
+                terr[str(tn)] = int(_terrain_tier_norm(lv))
+            except Exception:
+                continue
+        wdeb = sorted(
+            _unit_form_weapon_debuff_keys(
+                fid, ld, lc, stat_mode, _debuff_memo,
+                cond_active=cond_active, pilot_cond_active=pilot_cond_active,
+            )
+        )
+        wrn = sorted(
+            _unit_weapon_subset_effective_ranges(
+                fid, ld, lc, stat_mode, 'non_map', cond_active, pilot_cond_active)
+        )
+        wre = sorted(
+            _unit_weapon_subset_effective_ranges(
+                fid, ld, lc, stat_mode, 'ssp_ex', cond_active, pilot_cond_active)
+        )
+        wra = sorted(
+            _unit_weapon_subset_effective_ranges(
+                fid, ld, lc, stat_mode, 'all', cond_active, pilot_cond_active)
+        )
+        mwr = sorted(str(x) for x in collect_unit_map_weapon_range_tags(fid, stat_mode, ld, lc))
+        forms.append({
+            'role': str(finfo.get('role', '0') or '0'),
+            'terr': terr,
+            'wdeb': wdeb,
+            'wrn': wrn,
+            'wre': wre,
+            'wra': wra,
+            'mwr': mwr,
+        })
+    return {
+        'acq': str(info.get('acquisition_route', '0') or '0'),
+        'ser': ser,
+        'mech': mech,
+        'abil': abil,
+        'forms': forms,
+    }
+
+
 def _entity_matches_one_lineage(lin_map, eid, want_lid):
     """Single lineage id match; want_lid is full lineage id from m_lineage; lin_map stores short ids."""
     want = str(want_lid).strip()
@@ -27725,8 +27862,8 @@ def list_characters():
     want_stat_bounds = request.args.get('stat_bounds', '').strip().lower() in ('1', 'true', 'yes')
     sb_ck = 'sbd1' if want_stat_bounds else 'sbd0'
     rb_ck = 'rb1' if ranking_bulk else 'rb0'
-    # cl37: list rows include tag_ids for InstantBrowse client-side lineage filters.
-    ck = f"cl37_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_{ability_ck}_lop{_cbc['lineage_combine']}_sop{_cbc['series_combine']}_skop{_cbc['skill_combine']}_abop{_cbc['trait_combine']}_gs{1 if grid_skills else 0}_{sb_ck}_{rb_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    # cl38: InstantBrowse facets on ranking_bulk (source/series/skills/abilities + tag_ids).
+    ck = f"cl38_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_{ability_ck}_lop{_cbc['lineage_combine']}_sop{_cbc['series_combine']}_skop{_cbc['skill_combine']}_abop{_cbc['trait_combine']}_gs{1 if grid_skills else 0}_{sb_ck}_{rb_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached:
         return jsonify_preserialized(cached, ck, public=True, max_age=3600, convert_images=False)
@@ -27833,6 +27970,8 @@ def list_characters():
         # Omit series / rarity_icon — unused by browse/ranking/TB list UI.
         # is_limited_time is on the row so Units/Characters can filter rarity locally.
         row = {'id': cid, 'name': name, 'role': resolve_role_label(role_id, lc), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'thum': thum or '', 'acquisition_icon': acq_icon or '', 'is_limited_time': cid in LIMITED_TIME_CHARACTER_IDS, 'is_schedule_shell': entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')), 'tag_ids': lineage_tag_ids_for_browse_row(char_lin_map, cid), 'Ranged': totals.get('Ranged', 0), 'Melee': totals.get('Melee', 0), 'Awaken': totals.get('Awaken', 0), 'Defense': totals.get('Defense', 0), 'Reaction': totals.get('Reaction', 0), 'Ranged_base': base_src.get('Ranged', 0), 'Melee_base': base_src.get('Melee', 0), 'Awaken_base': base_src.get('Awaken', 0), 'Defense_base': base_src.get('Defense', 0), 'Reaction_base': base_src.get('Reaction', 0)}
+        if ranking_bulk:
+            row['ib'] = char_instant_browse_facets(cid, info, ld, lc, include_sp=bool(sp_list))
         rows.append(row)
     rows, sort_priority_band = sort_rows_with_priority_band(
         rows,
@@ -27923,8 +28062,8 @@ def list_units():
     want_stat_bounds_u = request.args.get('stat_bounds', '').strip().lower() in ('1', 'true', 'yes')
     sbu_ck = 'sbd1' if want_stat_bounds_u else 'sbd0'
     rb_u_ck = 'rb1' if ranking_bulk_u else 'rb0'
-    # ul64: list rows include tag_ids for InstantBrowse client-side lineage filters.
-    ck = f"ul64_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_attr_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    # ul65: InstantBrowse facets on ranking_bulk (source/series/mech/abil/forms + tag_ids).
+    ck = f"ul65_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_attr_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached:
         return jsonify_preserialized(cached, ck, public=True, max_age=3600, convert_images=False)
@@ -28096,6 +28235,9 @@ def list_units():
             if _map_prevs:
                 urow['map_weapon_previews'] = _map_prevs
                 urow['map_weapon_preview'] = _map_prevs[0]
+        if ranking_bulk_u:
+            urow['ib'] = unit_instant_browse_facets(
+                uid, info, ld, lc, stat_mode, cond_list, pilot_cond_list, _debuff_memo)
         rows.append(urow)
     sort_priority_band = None
     if tb_boost:
