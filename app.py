@@ -16304,12 +16304,6 @@ def resolve_unit_skill(usid, ld, sv):
     if desc:
         details.append(desc)
     tnf = ld.get('unit_skill_trait_name_fallback', {}); tdf = ld.get('unit_skill_trait_desc_fallback', {})
-    attr_labels = ld.get('weapon_attr_type_labels') or _WEAPON_ATTR_TRAIT_SHORT['EN']
-    atk_labels = ld.get('weapon_attack_type_labels') if isinstance(ld.get('weapon_attack_type_labels'), dict) else None
-    if not isinstance(atk_labels, dict) or not atk_labels:
-        atk_labels = {
-            'ranged': 'Ranged', 'melee': 'Melee', 'awaken': 'Awaken',
-        }
     traits_out = []
     for tr in unit_skill_trait_by_skill.get(usid, []):
         tlid = normalize_id(tr.get('desc_lang_id', ''))
@@ -16337,23 +16331,8 @@ def resolve_unit_skill(usid, ld, sv):
         cond = unit_skill_trait_condition_map.get(cond_id, {}) or {}
         wattrs = list(cond.get('weapon_attrs') or [])
         atypes = list(cond.get('attack_types') or [])
-        cond_tags = []
-        for ak in wattrs:
-            lab = (attr_labels.get(ak) if isinstance(attr_labels, dict) else None) or _WEAPON_ATTR_TRAIT_SHORT['EN'].get(ak, ak)
-            cond_tags.append({
-                'id': ak,
-                'name': lab,
-                'type': 'weapon_attribute',
-                'source': 'unit_skill_trait_condition',
-            })
-        for atk in atypes:
-            lab = (atk_labels.get(atk) if isinstance(atk_labels, dict) else None) or atk
-            cond_tags.append({
-                'id': atk,
-                'name': lab,
-                'type': 'attack_attribute',
-                'source': 'unit_skill_trait_condition',
-            })
+        # WeaponAttributeTypes / AttackAttributeTypes are combat gates, not game Tags.
+        # Keep them on traits_out only — never invent MS/Chara tag pills (e.g. fake "Beam").
         traits_out.append({
             'id': tid,
             'name': tname,
@@ -16364,45 +16343,11 @@ def resolve_unit_skill(usid, ld, sv):
             'active_attack_types': atypes,
         })
         tnorm = (tdesc or '').strip()
-        if not tnorm and not cond_tags:
+        if not tnorm:
             continue
-
-        def _attach_cond_tags_to_details(tags):
-            if not tags:
-                return False
-            needle = tnorm.lower().replace('\n', ' ')
-            for i, d0 in enumerate(details):
-                if isinstance(d0, str):
-                    hay = d0.strip().lower().replace('\n', ' ')
-                    if (needle and needle in hay) or (not needle and i == 0):
-                        details[i] = {'text': d0, 'conditions': list(tags)}
-                        return True
-                elif isinstance(d0, dict):
-                    hay = str(d0.get('text') or '').strip().lower().replace('\n', ' ')
-                    if (needle and needle in hay) or (not needle and i == 0):
-                        prev = list(d0.get('conditions') or [])
-                        seen = {(c.get('id'), c.get('source')) for c in prev}
-                        for c in tags:
-                            key = (c.get('id'), c.get('source'))
-                            if key not in seen:
-                                prev.append(c)
-                                seen.add(key)
-                        d0['conditions'] = prev
-                        return True
-            return False
-
-        if tnorm and tnorm not in blob:
-            if cond_tags:
-                details.append({'text': tdesc, 'conditions': cond_tags})
-            else:
-                details.append(tdesc)
+        if tnorm not in blob:
+            details.append(tdesc)
             blob = (blob + '\n' + tnorm).strip() if blob else tnorm
-        elif cond_tags:
-            # Skill-level description already includes this trait line; still expose structured gates.
-            if not _attach_cond_tags_to_details(cond_tags):
-                details.append({'text': tdesc or tname or '', 'conditions': cond_tags})
-                if tnorm:
-                    blob = (blob + '\n' + tnorm).strip() if blob else tnorm
     ri = str(info.get('resource_id', '') or '').strip() or str(ld.get('skill_resource_map', {}).get(usid, '') or '').strip()
     icf = find_trait_icon(ri) if ri else None
     if not icf:

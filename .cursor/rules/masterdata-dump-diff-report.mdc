@@ -1,0 +1,60 @@
+---
+description: "Report on dump — full bilingual MasterData dump/update diff reports"
+alwaysApply: true
+---
+
+# Report on dump
+
+**Feature name (owner):** **Report on dump**
+
+When the owner says **Report on dump**, **dump report**, **update diff**, **vX.Y changelog from MasterData**, or hands you a dump/HTML diff after a client import — do a **deep dive**. List **all** diffs clearly. Explain every player-facing term in **EN + TW/HK in-game LANG** (not free translation).
+
+Typical inputs: `Desktop/dump/dump*.cs`, `Diff Report - dumpA vs dumpB.html`, current `ggen_db_app/data/{EN,TW,HK}/{master,lang}/`.
+
+Output location (default): `Desktop/dump/` as bilingual markdown companions (Detail + Not-live), unless the owner names another path.
+
+## Hard rule
+
+1. **List all diffs** — not only flashy player-facing items (new units, skills, banners). Include:
+   - New / removed / renamed **master tables** (MemoryTables)
+   - **Schema field** additions/removals/renames on existing tables (even if every row is still default `0` / `false` / `""`)
+   - New **enum / TypeIndex** values (TraitType, ConditionType, ConfigType, UnitSkillTraitType, FunctionType, …) with counts and sample IDs
+   - New / changed **content rows** (abilities, traits, conditions, skills, stages, drops, …)
+   - LANG-only string changes when relevant
+2. **Do not omit “scaffolded” fields** — if a column exists but is unused in this dump (e.g. `RangeMin`/`RangeMax` all 0, `IsHpDamaged` all false), **still report it** and say unused / no content yet.
+3. **Separate combat gates from game Tags** — fields like `WeaponAttributeTypes` / `AttackAttributeTypes` / `TargetWeaponConditionId` are **武裝屬性** filters (Beam / Physical / Special), **not** unit/character **Tags（標籤）**. In the report:
+   - Name the master file + field
+   - Give LANG attribute names (EN Beam·Physical·Special · TW 光束·物理·特殊 · HK 鐳射·物理·特殊)
+   - Say whether content is LIVE or scaffold
+   - **Never** describe them as inventing a Tag named “Beam” (or similar)
+4. **Bilingual output — in-game LANG only** — every explained player-facing term must use official strings from:
+   - EN: `data/EN/lang/`
+   - Trad Chinese: prefer **TW** `data/TW/lang/`; also note **HK** when it differs (e.g. Beam→鐳射)
+   - Start each report with a **LANG glossary table** (EN | TW/HK | source file) for terms used in that report
+   - Never invent fan translations. If no LANG string exists, keep the **client EN enum/name** and mark **`LANG missing` / `LANG 未進包`**
+   - Known traps (use LANG, not community shorthand): Chance Step→**額外行動** (not CS); Preemptive Strike→**先發攻擊** (not 先制); Skip Great Success→**超成功** (not 大成功); Ult Custom→**ULT改造**; Profile tip→**簡介**; Stage Skip→**略過關卡**; Tags→**標籤**; weapon attributes→**武裝屬性**
+5. Prefer a structured report: LANG glossary → Summary → Schema → Enums/TypeIndex → Content (LIVE) → Unused scaffolds → Not-live vs MasterData → Open questions / watch next MD.
+6. Cite **file + field names** (`m_trait.json` / `RangeMin`, `m_trait_condition.json` / `IsHpDamaged`, `m_unit_skill_trait_condition.json` / `WeaponAttributeTypes`, `m_trait_condition_target_weapon.json`, etc.) so the owner can verify.
+7. Pair a **Detail** report with a **Not live yet** companion when client ships systems without MasterData / with scaffolds only.
+
+## Anti-patterns
+
+- Shipping only “6 new unit abilities” and skipping schema/condition/target-weapon diffs
+- EN-only report when the owner asked for an update dump / Report on dump
+- Free-translating TW/HK labels instead of copying from LANG
+- Calling scaffold fields “not in the dump” because no row uses them yet
+- Treating `WeaponAttributeTypes: Beam` as a game **Tag（標籤）** pill / inventing a “Beam” tag in UI or in the written report
+
+## Lessons
+
+### v2.7 scaffolds (owner catch)
+
+Beyond the six unit abilities, also report:
+
+- Trait attribute **Range** → `m_trait.RangeMin` / `RangeMax`
+- Condition **unit damaged** → `m_trait_condition.IsHpDamaged`
+- Unit skill / trait **target weapon** → `TargetWeaponConditionId` + `m_trait_condition_target_weapon.json`
+
+### Weapon attribute ≠ Tag (owner catch, Oct 2026)
+
+Unit skill trait row with `ActiveTraitConditionSetId` → `m_unit_skill_trait_condition.WeaponAttributeTypes = "Beam"` is a **combat gate** (LANG: beam weapon / 光束武裝 / 鐳射武裝). It is **not** a Tag. DB UI must not render it as an MS/Chara tag composite; Report on dump must classify it under **武裝屬性**, not **標籤**.
