@@ -20990,8 +20990,7 @@ def _tag_matrix_playable_supporter_iter(ld, lc):
             continue
         if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')):
             continue
-        name_lid = ld.get('supporter_id_map', {}).get(sid, '')
-        name = ld.get('supporter_text_map', {}).get(name_lid, '') if name_lid else ''
+        name = _matrix_supporter_display_name(sid, ld, lc)
         if not name:
             continue
         tag_ids = supporter_leader_tag_ids(sid, ld, lc)
@@ -21037,6 +21036,51 @@ def _tag_matrix_discover_extra_rows(ld, lc, playable=None):
             return (1, str(x))
 
     return sorted(series_ids, key=_sid_sort), sorted(extra_other, key=_sid_sort)
+
+
+def _matrix_unit_display_name(uid, ld, lc):
+    """Unit name for /tm+/dm — fall back across locales so empty LANG never drops a kit."""
+    u = normalize_id(uid)
+    for try_lc in (lc, 'EN', 'JA', 'TW', 'HK'):
+        fld = ld if try_lc == lc else get_lang_data(try_lc)
+        if not fld:
+            continue
+        name_lid = (fld.get('unit_id_map') or {}).get(u, '')
+        name = (fld.get('unit_text_map') or {}).get(name_lid, '') if name_lid else ''
+        if name:
+            return name
+    return ''
+
+
+def _matrix_supporter_display_name(sid, ld, lc):
+    """Supporter name for /tm+/dm — same cross-locale fallback as units."""
+    s = normalize_id(sid)
+    for try_lc in (lc, 'EN', 'JA', 'TW', 'HK'):
+        fld = ld if try_lc == lc else get_lang_data(try_lc)
+        if not fld:
+            continue
+        name_lid = (fld.get('supporter_id_map') or {}).get(s, '')
+        name = (fld.get('supporter_text_map') or {}).get(name_lid, '') if name_lid else ''
+        if name:
+            return name
+    return ''
+
+
+def _matrix_unit_board_eligible(uid):
+    """Locale-independent board pool: playable MS with lineage and/or series links.
+
+    Do not use resolve_tags / LANG names here — empty EN lineage strings used to
+    drop kits from published EN boards while JA/TW/HK still included them.
+    Row placement still uses raw lineage/series ids below.
+    """
+    u = normalize_id(uid)
+    if u not in unit_list_playable_ids:
+        return False
+    lids = unit_lin_map.get(u) or []
+    if any(normalize_id(x) not in ('', '0') for x in lids):
+        return True
+    ser = unit_ser_map.get(u, '')
+    return bool(ser and normalize_id(ser) not in ('', '0'))
 
 
 def _tag_matrix_entity_card(eid, name, rarity_id, thum, acq, role_icon='', **extra):
@@ -21232,7 +21276,7 @@ def api_tag_matrix():
                 _muid = uid
             if uid != _muid:
                 continue
-            if not unit_qualifies_for_unit_tag_series_modals(uid, lc):
+            if not _matrix_unit_board_eligible(uid):
                 continue
             lids = [
                 str(x).strip()
@@ -21249,8 +21293,7 @@ def api_tag_matrix():
             hit_ser = [sid for sid in series_want if sid in unit_sids]
             if not hit_lin and not hit_ser:
                 continue
-            name_lid = ld.get('unit_id_map', {}).get(uid, '')
-            name = ld.get('unit_text_map', {}).get(name_lid, '') if name_lid else ''
+            name = _matrix_unit_display_name(uid, ld, lc)
             if not name:
                 continue
             ri = info.get('rarity', '1')
@@ -21790,8 +21833,6 @@ def api_debuff_matrix():
         wmap = UNIT_WEAPON_DEBUFF_KEYS_CACHE.get(lc) or UNIT_WEAPON_DEBUFF_KEYS_CACHE.get('EN')
         want_keys = _DEBUFF_MATRIX_KEYS
         key_order = [k for _, k in _DEBUFF_MATRIX_SPEC]
-        uim = ld.get('unit_id_map', {}) or {}
-        utm = ld.get('unit_text_map', {}) or {}
         ssm = ld.get('ser_set_map', {}) or {}
 
         for uid, info in unit_info_map.items():
@@ -21807,10 +21848,9 @@ def api_debuff_matrix():
                 _muid = uid
             if uid != _muid:
                 continue
-            if not unit_qualifies_for_unit_tag_series_modals(uid, lc):
+            if not _matrix_unit_board_eligible(uid):
                 continue
-            name_lid = uim.get(uid, '')
-            name = utm.get(name_lid, '') if name_lid else ''
+            name = _matrix_unit_display_name(uid, ld, lc)
             if not name:
                 continue
             # Live scan for matrix columns — do not trust UNIT_WEAPON_DEBUFF_KEYS_CACHE
