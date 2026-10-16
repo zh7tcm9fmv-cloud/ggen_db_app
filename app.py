@@ -23540,6 +23540,26 @@ def gacha_sim_page(gasha_id=None):
 _GACHA_SIM_POOL_CACHE = {}
 
 
+def _gacha_sim_enrich_pity(data):
+    """Ensure pool JSON has cumulative hard-pity table + count (old shards omit these)."""
+    if not isinstance(data, dict):
+        return data
+    gid = normalize_id(data.get('gasha_id') or '0')
+    if not data.get('pity') or not isinstance(data.get('pity'), list):
+        data = dict(data)
+        data['pity'] = [['URU', 100.0], ['URS', 0.0], ['SSRU', 0.0], ['SSRS', 0.0]]
+    try:
+        pc = int(data.get('pity_count') or 0)
+    except (TypeError, ValueError):
+        pc = 0
+    if pc <= 0:
+        pity = (gasha_pity_by_id or {}).get(gid) or {}
+        pc = safe_int(pity.get('fix_count'), 0) or 100
+        data = dict(data)
+        data['pity_count'] = pc
+    return data
+
+
 @app.route('/api/gacha_sim/pool')
 def api_gacha_sim_pool():
     """Gacha-sim pool for a banner (official rates + master ids).
@@ -23580,7 +23600,8 @@ def api_gacha_sim_pool():
                     data = mod.build(gid, lang=lang)
             except Exception:
                 pass
-        return jsonify_cacheable(data, f'gacha_sim_pool:{lang}:{os.path.getmtime(path)}', public=True, max_age=600)
+        data = _gacha_sim_enrich_pity(data)
+        return jsonify_cacheable(data, f'gacha_sim_pool:{lang}:pity1:{os.path.getmtime(path)}', public=True, max_age=600)
 
     pub_dir = os.path.join(_APP_ROOT, 'data', 'published', 'gacha_sim')
     pub_path = os.path.join(pub_dir, f'pool_{gasha_id}_{lang}.json')
@@ -23589,9 +23610,10 @@ def api_gacha_sim_pool():
         try:
             with open(pub_path, 'r', encoding='utf-8') as f:
                 data = json.load(f)
+            data = _gacha_sim_enrich_pity(data)
             return jsonify_cacheable(
                 data,
-                f'gacha_sim_pool:{gasha_id}:{lang}:{os.path.getmtime(pub_path)}',
+                f'gacha_sim_pool:{gasha_id}:{lang}:pity1:{os.path.getmtime(pub_path)}',
                 public=True,
                 max_age=600,
             )
@@ -23601,9 +23623,10 @@ def api_gacha_sim_pool():
         try:
             with open(pub_path_legacy, 'r', encoding='utf-8') as f:
                 data = json.load(f)
+            data = _gacha_sim_enrich_pity(data)
             return jsonify_cacheable(
                 data,
-                f'gacha_sim_pool:{gasha_id}:EN:{os.path.getmtime(pub_path_legacy)}',
+                f'gacha_sim_pool:{gasha_id}:EN:pity1:{os.path.getmtime(pub_path_legacy)}',
                 public=True,
                 max_age=600,
             )
@@ -23613,7 +23636,12 @@ def api_gacha_sim_pool():
     cache_key = f'{gasha_id}:{lang}'
     cached = _GACHA_SIM_POOL_CACHE.get(cache_key)
     if cached is not None:
-        return jsonify_cacheable(cached, f'gacha_sim_pool:mem:{cache_key}', public=True, max_age=300)
+        return jsonify_cacheable(
+            _gacha_sim_enrich_pity(cached),
+            f'gacha_sim_pool:mem:pity1:{cache_key}',
+            public=True,
+            max_age=300,
+        )
 
     default_path = os.path.join(_APP_ROOT, 'data', 'published', 'gacha_sim_pool.json')
     if os.path.isfile(default_path) and lang == 'EN':
@@ -23621,9 +23649,10 @@ def api_gacha_sim_pool():
             with open(default_path, 'r', encoding='utf-8') as f:
                 data = json.load(f)
             if str(data.get('gasha_id') or '') == gasha_id:
+                data = _gacha_sim_enrich_pity(data)
                 _GACHA_SIM_POOL_CACHE[cache_key] = data
                 return jsonify_cacheable(
-                    data, f'gacha_sim_pool:{gasha_id}:default', public=True, max_age=600
+                    data, f'gacha_sim_pool:{gasha_id}:default:pity1', public=True, max_age=600
                 )
         except Exception:
             pass
@@ -23636,7 +23665,7 @@ def api_gacha_sim_pool():
         mod = importlib.util.module_from_spec(spec)
         assert spec and spec.loader
         spec.loader.exec_module(mod)
-        data = mod.build(gasha_id, lang=lang)
+        data = _gacha_sim_enrich_pity(mod.build(gasha_id, lang=lang))
         _GACHA_SIM_POOL_CACHE[cache_key] = data
         try:
             os.makedirs(pub_dir, exist_ok=True)
@@ -23644,7 +23673,7 @@ def api_gacha_sim_pool():
                 json.dump(data, f, ensure_ascii=False)
         except Exception:
             pass
-        return jsonify_cacheable(data, f'gacha_sim_pool:built:{cache_key}', public=True, max_age=300)
+        return jsonify_cacheable(data, f'gacha_sim_pool:built:pity1:{cache_key}', public=True, max_age=300)
     except Exception as e:
         return jsonify({'error': 'pool_build_failed', 'detail': str(e), 'gasha_id': gasha_id, 'lang': lang}), 500
 

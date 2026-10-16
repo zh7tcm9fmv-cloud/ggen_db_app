@@ -1,5 +1,6 @@
 {
   "gasha_id": "2609300302",
+  "name": "New Unit Featured Unit Assembly",
   "lang": "EN",
   "logo_resource_id": "gasha_logo_2609300302",
   "appeal_banner_id": "2609300101",
@@ -11,6 +12,7 @@
   "required_tickets": 3000,
   "guarantee_tail": 1,
   "bulk_mode": false,
+  "pity_count": 50,
   "normal": [
     [
       "URU",
@@ -53,6 +55,24 @@
     [
       "SSRS",
       3.0
+    ]
+  ],
+  "pity": [
+    [
+      "URU",
+      100.0
+    ],
+    [
+      "URS",
+      0.0
+    ],
+    [
+      "SSRU",
+      0.0
+    ],
+    [
+      "SSRS",
+      0.0
     ]
   ],
   "pool": {

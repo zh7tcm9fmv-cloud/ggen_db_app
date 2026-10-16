@@ -520,8 +520,12 @@ window.GgenGachaSim = (function () {
   var TENTH = [
     ["URU", 3], ["URS", 1], ["SSRU", 80], ["SSRS", 16]
   ];
+  /* Cumulative Nth-pull guaranteed UR (official pity_100 / 累計100回目). */
+  var PITY = [
+    ["URU", 100], ["URS", 0], ["SSRU", 0], ["SSRS", 0]
+  ];
   var POOL = { URU: [], URS: [], SSRU: [], SSRS: [], SR: [], R: [] };
-  var poolMeta = { gasha_id: "", source: "pending" };
+  var poolMeta = { gasha_id: "", source: "pending", pity_count: 100 };
 
   function poolBucketOk(pool) {
     if (!pool) return false;
@@ -551,6 +555,29 @@ window.GgenGachaSim = (function () {
     var t = Number(poolMeta && poolMeta.guarantee_tail);
     if (t > 0) return t;
     return isBulkTicketPool() ? 2 : 1;
+  }
+
+  function hardPityCount() {
+    var n = Number(poolMeta && poolMeta.pity_count);
+    if (n > 0) return n;
+    return 100;
+  }
+
+  /** Pulls since last UR in this session (0 right after a UR). */
+  function pullsSinceLastUr() {
+    if (sim.pullsSinceUr != null && Number.isFinite(Number(sim.pullsSinceUr))) {
+      return Math.max(0, Number(sim.pullsSinceUr) || 0);
+    }
+    var draws = sim.draws || [];
+    var since = 0;
+    for (var i = draws.length - 1; i >= 0; i--) {
+      var d = draws[i];
+      if (!d) continue;
+      if (String(d.rarity || "").toLowerCase() === "ur") break;
+      since++;
+    }
+    sim.pullsSinceUr = since;
+    return since;
   }
 
   function pullButtonLabel(n) {
@@ -631,6 +658,7 @@ window.GgenGachaSim = (function () {
     POOL = data.pool;
     if (data.normal && data.normal.length) NORMAL = data.normal;
     if (data.tenth && data.tenth.length) TENTH = data.tenth;
+    if (data.pity && data.pity.length) PITY = data.pity;
     var logo = data.logo_resource_id || "";
     if (!logo && data.gasha_id) logo = "gasha_logo_" + data.gasha_id;
     poolMeta = {
@@ -646,6 +674,7 @@ window.GgenGachaSim = (function () {
       display_pull_n: Number(data.display_pull_n) || 0,
       required_tickets: Number(data.required_tickets) || 0,
       guarantee_tail: Number(data.guarantee_tail) || 0,
+      pity_count: Number(data.pity_count) > 0 ? Number(data.pity_count) : 100,
       bulk_mode: !!data.bulk_mode
     };
     try { syncPullButtons(); } catch (e0) {}
@@ -777,6 +806,7 @@ window.GgenGachaSim = (function () {
     return {
       pulls: 0,
       pts: 0,
+      pullsSinceUr: 0,
       history: [],
       draws: [],
       firstPickupAt: {},
@@ -820,9 +850,10 @@ window.GgenGachaSim = (function () {
           });
         });
       }
-      return {
+      var loaded = {
         pulls: Number(o.pulls) || 0,
         pts: Number(o.pts) || 0,
+        pullsSinceUr: o.pullsSinceUr != null ? Math.max(0, Number(o.pullsSinceUr) || 0) : null,
         history: history,
         draws: draws,
         firstPickupAt: o.firstPickupAt && typeof o.firstPickupAt === "object" ? o.firstPickupAt : {},
@@ -837,6 +868,15 @@ window.GgenGachaSim = (function () {
           : { ur: 0, ssr: 0, sr: 0, r: 0 },
         bulkSpent: !!o.bulkSpent
       };
+      if (loaded.pullsSinceUr == null) {
+        var since = 0;
+        for (var di = draws.length - 1; di >= 0; di--) {
+          if (draws[di] && String(draws[di].rarity || "").toLowerCase() === "ur") break;
+          since++;
+        }
+        loaded.pullsSinceUr = since;
+      }
+      return loaded;
     } catch (e) {
       return emptySim();
     }
@@ -870,6 +910,7 @@ window.GgenGachaSim = (function () {
       localStorage.setItem(simStorageKey(), JSON.stringify({
         pulls: sim.pulls,
         pts: pts,
+        pullsSinceUr: Math.max(0, Number(sim.pullsSinceUr) || 0),
         history: sim.history.slice(0, HIST_CAP),
         draws: (sim.draws || []).slice(0, DRAW_CAP),
         firstPickupAt: sim.firstPickupAt,
@@ -1759,10 +1800,15 @@ window.GgenGachaSim = (function () {
     var seenThisPull = {};
     var pullsBefore = sim.pulls;
     var tail = guaranteeTailN();
-    var pityStart = Math.max(0, n - tail);
+    var softStart = Math.max(0, n - tail);
+    var hardN = hardPityCount();
+    var sinceUr = pullsSinceLastUr();
     for (var i = 0; i < n; i++) {
-      var usePity = (n === 10 && i === 9) || (n >= 20 && i >= pityStart);
-      var table = usePity ? TENTH : NORMAL;
+      /* Soft: last of a 10-pull / last guarantee_tail of bulk ticket pulls. */
+      var useSoft = (n === 10 && i === 9) || (n >= 20 && i >= softStart);
+      /* Hard: cumulative pulls since last UR hit FixCount (usually 100) — mid-pack OK. */
+      var useHard = hardN > 0 && (sinceUr + 1) >= hardN;
+      var table = useHard ? PITY : (useSoft ? TENTH : NORMAL);
       var bucket = pickWeighted(table);
       var item = pickItem(bucket);
       var rarity = bucket.indexOf("UR") === 0 ? "ur" : bucket.indexOf("SSR") === 0 ? "ssr" : bucket === "SR" ? "sr" : "r";
@@ -1774,6 +1820,8 @@ window.GgenGachaSim = (function () {
       var isNew = canNew && uid && !isAlreadyOwned(uid) && !seenThisPull[uid];
       if (uid) seenThisPull[uid] = true;
       if (isNew && sim.firstPickupAt[uid] == null) sim.firstPickupAt[uid] = pullIndex;
+      if (rarity === "ur") sinceUr = 0;
+      else sinceUr += 1;
       out.push({
         id: uid,
         name: item.name,
@@ -1787,9 +1835,11 @@ window.GgenGachaSim = (function () {
         kind: kind,
         pickup: !!item.pickup,
         isNew: isNew,
-        promo: rarity === "ur"
+        promo: rarity === "ur",
+        hardPity: !!useHard
       });
     }
+    sim.pullsSinceUr = sinceUr;
     Object.keys(seenThisPull).forEach(function (id) { sim.simOwned[id] = true; });
     return out;
   }

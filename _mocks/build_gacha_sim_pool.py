@@ -384,6 +384,16 @@ def build(gasha_id: str, lang: str = "EN") -> dict:
         ["SSRU", cat_row("multi_10th", "SSR", "unit")],
         ["SSRS", cat_row("multi_10th", "SSR", "supporter")],
     ]
+    # Cumulative Nth-pull guaranteed UR (official "100th Total" / 累計100回目 table).
+    pity = [
+        ["URU", cat_row("pity_100", "UR", "unit")],
+        ["URS", cat_row("pity_100", "UR", "supporter")],
+        ["SSRU", cat_row("pity_100", "SSR", "unit")],
+        ["SSRS", cat_row("pity_100", "SSR", "supporter")],
+    ]
+    if sum(float(r[1] or 0) for r in pity) <= 0:
+        # Fallback when proportion JSON omits the pity section: force UR unit.
+        pity = [["URU", 100.0], ["URS", 0.0], ["SSRU", 0.0], ["SSRS", 0.0]]
 
     # Banner meta
     gasha_rows = _load("m_gasha.json", MASTER)
@@ -438,6 +448,21 @@ def build(gasha_id: str, lang: str = "EN") -> dict:
     guarantee_tail = 2 if display_pull_n >= 47 else (1 if display_pull_n == 10 else 0)
     bulk_mode = display_pull_n >= 20 and required_tickets >= display_pull_n
 
+    # Hard pity count: official proportion title (50/100) → m_gasha_pity FixCount → 100.
+    pity_count = 0
+    try:
+        pity_count = int((rates or {}).get("pity_count") or parsed.get("pity_count") or 0)
+    except (TypeError, ValueError):
+        pity_count = 0
+    if pity_count <= 0:
+        for prow in _load("m_gasha_pity_system_setting.json", MASTER):
+            if str(prow.get("GashaId") or "") != str(gasha_id):
+                continue
+            pity_count = int(prow.get("FixCount") or prow.get("fixCount") or 0)
+            break
+    if pity_count <= 0:
+        pity_count = 100
+
     return {
         "gasha_id": str(gasha_id),
         "name": gasha_name,
@@ -452,8 +477,10 @@ def build(gasha_id: str, lang: str = "EN") -> dict:
         "required_tickets": required_tickets,
         "guarantee_tail": guarantee_tail,
         "bulk_mode": bulk_mode,
+        "pity_count": pity_count,
         "normal": normal,
         "tenth": tenth,
+        "pity": pity,
         "pool": pool,
         "pickup_ids": sorted(pickup_ids),
         "counts": {k: len(v) for k, v in pool.items()},

@@ -1,42 +1,34 @@
 {
-  "gasha_id": "2609400505",
+  "gasha_id": "2609300302",
+  "name": "New Unit Featured Unit Assembly",
   "lang": "EN",
-  "logo_resource_id": "gasha_logo_2609400505",
-  "appeal_banner_id": "2609400101",
-  "gasha_movie_setting_id": "1000000003",
-  "gasha_movie_setting": {
-    "id": "1000000003",
-    "bgm_resource_id": "bgm_0000_0090",
-    "bgm_delay_ms": 4000,
-    "sortie_movie_id": "c01_d",
-    "fall_movie_id": "c03_1",
-    "bonus_cutin_movie_id": "",
-    "bonus_special_movie_id": "",
-    "should_use_special_assault_button": true,
-    "bonus_destroy_anim_index": 0
-  },
-  "once_roll_count": 47,
+  "logo_resource_id": "gasha_logo_2609300302",
+  "appeal_banner_id": "2609300101",
+  "gasha_movie_setting_id": "",
+  "gasha_movie_setting": null,
+  "once_roll_count": 10,
   "fake_once_roll_count": 0,
-  "display_pull_n": 47,
-  "required_tickets": 47,
-  "guarantee_tail": 2,
-  "bulk_mode": true,
+  "display_pull_n": 10,
+  "required_tickets": 3000,
+  "guarantee_tail": 1,
+  "bulk_mode": false,
+  "pity_count": 50,
   "normal": [
     [
       "URU",
-      1.5
+      3.0
     ],
     [
       "URS",
-      0.5
+      1.0
     ],
     [
       "SSRU",
-      7.5
+      15.0
     ],
     [
       "SSRS",
-      1.5
+      3.0
     ],
     [
       "SR",
@@ -44,10 +36,28 @@
     ],
     [
       "R",
-      59.0
+      48.0
     ]
   ],
   "tenth": [
+    [
+      "URU",
+      3.0
+    ],
+    [
+      "URS",
+      1.0
+    ],
+    [
+      "SSRU",
+      93.0
+    ],
+    [
+      "SSRS",
+      3.0
+    ]
+  ],
+  "pity": [
     [
       "URU",
       100.0
@@ -68,6 +78,19 @@
   "pool": {
     "URU": [
       {
+        "id": "1001000150",
+        "name": "Gundam (EX)",
+        "role": "Durability",
+        "art": "unit_portraits/ub_g0010u00150.webp",
+        "charArt": "portraits/cb_g0010c00100.webp",
+        "recommend_character_id": "1001000100",
+        "por_y": "24%",
+        "bromide_height": "3",
+        "limited": false,
+        "pickup": false,
+        "w": 0.0181818
+      },
+      {
         "id": "1001003050",
         "name": "Zeong (EX)",
         "role": "Attack",
@@ -77,8 +100,8 @@
         "por_y": "14%",
         "bromide_height": "2",
         "limited": false,
-        "pickup": true,
-        "w": 0.0405405
+        "pickup": false,
+        "w": 0.0181818
       },
       {
         "id": "1003000250",
@@ -90,8 +113,8 @@
         "por_y": "14%",
         "bromide_height": "2",
         "limited": false,
-        "pickup": true,
-        "w": 0.0405405
+        "pickup": false,
+        "w": 0.0181818
       },
       {
         "id": "1009000550",
@@ -103,8 +126,21 @@
         "por_y": "14%",
         "bromide_height": "2",
         "limited": false,
-        "pickup": true,
-        "w": 0.0405405
+        "pickup": false,
+        "w": 0.0181818
+      },
+      {
+        "id": "1013000350",
+        "name": "Gundam Ez8 (EX)",
+        "role": "Attack",
+        "art": "unit_portraits/ub_g0130u00350.webp",
+        "charArt": "portraits/cb_g0130c00100.webp",
+        "recommend_character_id": "1013000100",
+        "por_y": "14%",
+        "bromide_height": "2",
+        "limited": false,
+        "pickup": false,
+        "w": 0.0181818
       },
       {
         "id": "1013000850",
@@ -116,8 +152,8 @@
         "por_y": "14%",
         "bromide_height": "2",
         "limited": false,
-        "pickup": true,
-        "w": 0.0405405
+        "pickup": false,
+        "w": 0.0181818
       },
       {
         "id": "1017000950",
@@ -129,8 +165,8 @@
         "por_y": "24%",
         "bromide_height": "3",
         "limited": false,
-        "pickup": true,
-        "w": 0.0405405
+        "pickup": false,
+        "w": 0.0181818
       },
       {
         "id": "1022000150",
@@ -142,8 +178,8 @@
         "por_y": "12%",
         "bromide_height": "1",
         "limited": false,
-        "pickup": true,
-        "w": 0.0405405
+        "pickup": false,
+        "w": 0.0181818
       },
       {
         "id": "1031000150",
@@ -155,8 +191,8 @@
         "por_y": "24%",
         "bromide_height": "3",
         "limited": false,
-        "pickup": true,
-        "w": 0.0405405
+        "pickup": false,
+        "w": 0.0181818
       },
       {
         "id": "1031000350",
@@ -168,8 +204,8 @@
         "por_y": "44%",
         "bromide_height": "5",
         "limited": false,
-        "pickup": true,
-        "w": 0.0405405
+        "pickup": false,
+        "w": 0.0181818
       },
       {
         "id": "1031001250",
@@ -181,8 +217,8 @@
         "por_y": "14%",
         "bromide_height": "2",
         "limited": false,
-        "pickup": true,
-        "w": 0.0405405
+        "pickup": false,
+        "w": 0.0181818
       },
       {
         "id": "1060001850",
@@ -194,8 +230,34 @@
         "por_y": "24%",
         "bromide_height": "3",
         "limited": false,
-        "pickup": true,
-        "w": 0.0405405
+        "pickup": false,
+        "w": 0.0181818
+      },
+      {
+        "id": "1068000150",
+        "name": "Striker Custom (EX)",
+        "role": "Attack",
+        "art": "unit_portraits/ub_g0680u00150.webp",
+        "charArt": "portraits/cb_g0680c00100.webp",
+        "recommend_character_id": "1068000100",
+        "por_y": "24%",
+        "bromide_height": "3",
+        "limited": false,
+        "pickup": false,
+        "w": 0.0181818
+      },
+      {
+        "id": "1069000150",
+        "name": "Le Cygne (EX)",
+        "role": "Support",
+        "art": "unit_portraits/ub_g0690u00150.webp",
+        "charArt": "portraits/cb_g0690c00100.webp",
+        "recommend_character_id": "1069000100",
+        "por_y": "24%",
+        "bromide_height": "3",
+        "limited": false,
+        "pickup": false,
+        "w": 0.0181818
       },
       {
         "id": "1080003250",
@@ -207,8 +269,8 @@
         "por_y": "24%",
         "bromide_height": "3",
         "limited": false,
-        "pickup": true,
-        "w": 0.0405405
+        "pickup": false,
+        "w": 0.0181818
       },
       {
         "id": "1095000350",
@@ -220,8 +282,47 @@
         "por_y": "14%",
         "bromide_height": "2",
         "limited": false,
-        "pickup": true,
-        "w": 0.0405405
+        "pickup": false,
+        "w": 0.0181818
+      },
+      {
+        "id": "1101000350",
+        "name": "D Gundam Third (EX)",
+        "role": "Support",
+        "art": "unit_portraits/ub_g1010u00350.webp",
+        "charArt": "portraits/cb_g1010c00100.webp",
+        "recommend_character_id": "1101000100",
+        "por_y": "24%",
+        "bromide_height": "3",
+        "limited": false,
+        "pickup": false,
+        "w": 0.0181818
+      },
+      {
+        "id": "1110000150",
+        "name": "Nu Gundam (EX)",
+        "role": "Support",
+        "art": "unit_portraits/ub_g1100u00150.webp",
+        "charArt": "portraits/cb_g1100c00100.webp",
+        "recommend_character_id": "1110000100",
+        "por_y": "24%",
+        "bromide_height": "3",
+        "limited": false,
+        "pickup": false,
+        "w": 0.0181818
+      },
+      {
+        "id": "1110000550",
+        "name": "Sazabi (EX)",
+        "role": "Attack",
+        "art": "unit_portraits/ub_g1100u00550.webp",
+        "charArt": "portraits/cb_g1100c00200.webp",
+        "recommend_character_id": "1110000200",
+        "por_y": "14%",
+        "bromide_height": "2",
+        "limited": false,
+        "pickup": false,
+        "w": 0.0181818
       },
       {
         "id": "1114000450",
@@ -233,8 +334,21 @@
         "por_y": "34%",
         "bromide_height": "4",
         "limited": false,
-        "pickup": true,
-        "w": 0.0405405
+        "pickup": false,
+        "w": 0.0181818
+      },
+      {
+        "id": "1125000250",
+        "name": "Unicorn Gundam (Destroy Mode) (EX)",
+        "role": "Attack",
+        "art": "unit_portraits/ub_g1250u00250.webp",
+        "charArt": "portraits/cb_g1250c00100.webp",
+        "recommend_character_id": "1125000100",
+        "por_y": "34%",
+        "bromide_height": "4",
+        "limited": false,
+        "pickup": false,
+        "w": 0.0181818
       },
       {
         "id": "1125001250",
@@ -246,8 +360,21 @@
         "por_y": "12%",
         "bromide_height": "1",
         "limited": false,
-        "pickup": true,
-        "w": 0.0405405
+        "pickup": false,
+        "w": 0.0181818
+      },
+      {
+        "id": "1144000150",
+        "name": "Narrative Gundam A-Packs (EX)",
+        "role": "Durability",
+        "art": "unit_portraits/ub_g1440u00150.webp",
+        "charArt": "portraits/cb_g1440c00100.webp",
+        "recommend_character_id": "1144000100",
+        "por_y": "24%",
+        "bromide_height": "3",
+        "limited": false,
+        "pickup": false,
+        "w": 0.0181818
       },
       {
         "id": "1150000250",
@@ -259,8 +386,8 @@
         "por_y": "24%",
         "bromide_height": "3",
         "limited": false,
-        "pickup": true,
-        "w": 0.0405405
+        "pickup": false,
+        "w": 0.0181818
       },
       {
         "id": "1155000250",
@@ -272,8 +399,8 @@
         "por_y": "24%",
         "bromide_height": "3",
         "limited": false,
-        "pickup": true,
-        "w": 0.0405405
+        "pickup": false,
+        "w": 0.0181818
       },
       {
         "id": "1162000150",
@@ -285,8 +412,21 @@
         "por_y": "24%",
         "bromide_height": "3",
         "limited": false,
-        "pickup": true,
-        "w": 0.0405405
+        "pickup": false,
+        "w": 0.0181818
+      },
+      {
+        "id": "1166000250",
+        "name": "Crossbone Gundam X1 Custom (EX)",
+        "role": "Attack",
+        "art": "unit_portraits/ub_g1660u00250.webp",
+        "charArt": "portraits/cb_g1660c00100.webp",
+        "recommend_character_id": "1166000100",
+        "por_y": "24%",
+        "bromide_height": "3",
+        "limited": false,
+        "pickup": false,
+        "w": 0.0181818
       },
       {
         "id": "1200001350",
@@ -298,8 +438,8 @@
         "por_y": "24%",
         "bromide_height": "3",
         "limited": false,
-        "pickup": true,
-        "w": 0.0405405
+        "pickup": false,
+        "w": 0.0181818
       },
       {
         "id": "1219000250",
@@ -311,8 +451,8 @@
         "por_y": "34%",
         "bromide_height": "4",
         "limited": false,
-        "pickup": true,
-        "w": 0.0405405
+        "pickup": false,
+        "w": 0.0181818
       },
       {
         "id": "1219000350",
@@ -324,8 +464,21 @@
         "por_y": "24%",
         "bromide_height": "3",
         "limited": false,
-        "pickup": true,
-        "w": 0.0405405
+        "pickup": false,
+        "w": 0.0181818
+      },
+      {
+        "id": "1219000450",
+        "name": "Gundam Heavyarms Custom (EW) (EX)",
+        "role": "Attack",
+        "art": "unit_portraits/ub_g2190u00450.webp",
+        "charArt": "portraits/cb_g2190c00301.webp",
+        "recommend_character_id": "1219000301",
+        "por_y": "24%",
+        "bromide_height": "3",
+        "limited": false,
+        "pickup": false,
+        "w": 0.0181818
       },
       {
         "id": "1230003950",
@@ -337,8 +490,21 @@
         "por_y": "34%",
         "bromide_height": "4",
         "limited": false,
-        "pickup": true,
-        "w": 0.0405405
+        "pickup": false,
+        "w": 0.0181818
+      },
+      {
+        "id": "1300004250",
+        "name": "Freedom Gundam (EX)",
+        "role": "Support",
+        "art": "unit_portraits/ub_g3000u04250.webp",
+        "charArt": "portraits/cb_g3000c00101.webp",
+        "recommend_character_id": "1300000101",
+        "por_y": "34%",
+        "bromide_height": "4",
+        "limited": false,
+        "pickup": false,
+        "w": 0.0181818
       },
       {
         "id": "1300004450",
@@ -350,8 +516,8 @@
         "por_y": "24%",
         "bromide_height": "3",
         "limited": false,
-        "pickup": true,
-        "w": 0.0405405
+        "pickup": false,
+        "w": 0.0181818
       },
       {
         "id": "1300004650",
@@ -363,8 +529,8 @@
         "por_y": "14%",
         "bromide_height": "2",
         "limited": false,
-        "pickup": true,
-        "w": 0.0405405
+        "pickup": false,
+        "w": 0.0181818
       },
       {
         "id": "1305000350",
@@ -376,8 +542,8 @@
         "por_y": "24%",
         "bromide_height": "3",
         "limited": false,
-        "pickup": true,
-        "w": 0.0405405
+        "pickup": false,
+        "w": 0.0181818
       },
       {
         "id": "1330000350",
@@ -389,8 +555,8 @@
         "por_y": "44%",
         "bromide_height": "5",
         "limited": false,
-        "pickup": true,
-        "w": 0.0405405
+        "pickup": false,
+        "w": 0.0181818
       },
       {
         "id": "1330002850",
@@ -402,8 +568,8 @@
         "por_y": "24%",
         "bromide_height": "3",
         "limited": false,
-        "pickup": true,
-        "w": 0.0405405
+        "pickup": false,
+        "w": 0.0181818
       },
       {
         "id": "1336000150",
@@ -415,8 +581,47 @@
         "por_y": "14%",
         "bromide_height": "2",
         "limited": false,
+        "pickup": false,
+        "w": 0.0181818
+      },
+      {
+        "id": "1370000150",
+        "name": "Gundam Exia (EX)",
+        "role": "Attack",
+        "art": "unit_portraits/ub_g3700u00150.webp",
+        "charArt": "portraits/cb_g3700c00100.webp",
+        "recommend_character_id": "1370000100",
+        "por_y": "14%",
+        "bromide_height": "2",
+        "limited": false,
         "pickup": true,
-        "w": 0.0405405
+        "w": 0.5
+      },
+      {
+        "id": "1370010150",
+        "name": "Susanowo (EX)",
+        "role": "Attack",
+        "art": "unit_portraits/ub_g3700u10150.webp",
+        "charArt": "portraits/cb_g3700c04501.webp",
+        "recommend_character_id": "1370004501",
+        "por_y": "24%",
+        "bromide_height": "3",
+        "limited": false,
+        "pickup": true,
+        "w": 0.75
+      },
+      {
+        "id": "1375001550",
+        "name": "Gundam Avalanche Astraea Type-F' (EX)",
+        "role": "Durability",
+        "art": "unit_portraits/ub_g3750u01550.webp",
+        "charArt": "portraits/cb_g3760c00100.webp",
+        "recommend_character_id": "1376000100",
+        "por_y": "12%",
+        "bromide_height": "1",
+        "limited": false,
+        "pickup": true,
+        "w": 0.75
       },
       {
         "id": "1400000150",
@@ -428,8 +633,21 @@
         "por_y": "34%",
         "bromide_height": "4",
         "limited": false,
-        "pickup": true,
-        "w": 0.0405405
+        "pickup": false,
+        "w": 0.0181818
+      },
+      {
+        "id": "1430000350",
+        "name": "Gundam Barbatos 6th Form (EX)",
+        "role": "Durability",
+        "art": "unit_portraits/ub_g4300u00350.webp",
+        "charArt": "portraits/cb_g4300c00105.webp",
+        "recommend_character_id": "1430000105",
+        "por_y": "24%",
+        "bromide_height": "3",
+        "limited": false,
+        "pickup": false,
+        "w": 0.0181818
       },
       {
         "id": "1430004850",
@@ -441,8 +659,8 @@
         "por_y": "14%",
         "bromide_height": "2",
         "limited": false,
-        "pickup": true,
-        "w": 0.0405405
+        "pickup": false,
+        "w": 0.0181818
       },
       {
         "id": "1431000550",
@@ -454,8 +672,21 @@
         "por_y": "14%",
         "bromide_height": "2",
         "limited": false,
-        "pickup": true,
-        "w": 0.0405405
+        "pickup": false,
+        "w": 0.0181818
+      },
+      {
+        "id": "1501000150",
+        "name": "Gundam Aerial (EX)",
+        "role": "Support",
+        "art": "unit_portraits/ub_g5010u00150.webp",
+        "charArt": "portraits/cb_g5010c00101.webp",
+        "recommend_character_id": "1501000101",
+        "por_y": "14%",
+        "bromide_height": "2",
+        "limited": false,
+        "pickup": false,
+        "w": 0.0181818
       },
       {
         "id": "1501001650",
@@ -467,8 +698,8 @@
         "por_y": "14%",
         "bromide_height": "2",
         "limited": false,
-        "pickup": true,
-        "w": 0.0405405
+        "pickup": false,
+        "w": 0.0181818
       },
       {
         "id": "1501002450",
@@ -480,8 +711,34 @@
         "por_y": "14%",
         "bromide_height": "2",
         "limited": false,
-        "pickup": true,
-        "w": 0.0405405
+        "pickup": false,
+        "w": 0.0181818
+      },
+      {
+        "id": "1501002550",
+        "name": "Michaelis (Season 2) (EX)",
+        "role": "Durability",
+        "art": "unit_portraits/ub_g5010u02550.webp",
+        "charArt": "portraits/cb_g5010c00502.webp",
+        "recommend_character_id": "1501000502",
+        "por_y": "14%",
+        "bromide_height": "2",
+        "limited": false,
+        "pickup": false,
+        "w": 0.0181818
+      },
+      {
+        "id": "1501003450",
+        "name": "Darilbalde (Season 2) (EX)",
+        "role": "Attack",
+        "art": "unit_portraits/ub_g5010u03450.webp",
+        "charArt": "portraits/cb_g5010c00303.webp",
+        "recommend_character_id": "1501000303",
+        "por_y": "24%",
+        "bromide_height": "3",
+        "limited": false,
+        "pickup": false,
+        "w": 0.0181818
       },
       {
         "id": "1604000150",
@@ -493,8 +750,21 @@
         "por_y": "14%",
         "bromide_height": "2",
         "limited": false,
-        "pickup": true,
-        "w": 0.0405405
+        "pickup": false,
+        "w": 0.0181818
+      },
+      {
+        "id": "1700000250",
+        "name": "Sandaime Gundam Daishogun (EX)",
+        "role": "Support",
+        "art": "unit_portraits/ub_g7000u00250.webp",
+        "charArt": "",
+        "recommend_character_id": "",
+        "por_y": "24%",
+        "bromide_height": "3",
+        "limited": false,
+        "pickup": false,
+        "w": 0.0181818
       },
       {
         "id": "1725000150",
@@ -506,8 +776,21 @@
         "por_y": "44%",
         "bromide_height": "5",
         "limited": false,
-        "pickup": true,
-        "w": 0.0405405
+        "pickup": false,
+        "w": 0.0181818
+      },
+      {
+        "id": "1850000250",
+        "name": "Phoenix Gundam (Power Unleashed) (EX)",
+        "role": "Support",
+        "art": "unit_portraits/ub_g8500u00250.webp",
+        "charArt": "portraits/cb_g8500c00100.webp",
+        "recommend_character_id": "1850000100",
+        "por_y": "34%",
+        "bromide_height": "4",
+        "limited": false,
+        "pickup": false,
+        "w": 0.0181818
       },
       {
         "id": "1850000650",
@@ -519,8 +802,8 @@
         "por_y": "24%",
         "bromide_height": "3",
         "limited": false,
-        "pickup": true,
-        "w": 0.0405405
+        "pickup": false,
+        "w": 0.0181818
       },
       {
         "id": "1850001350",
@@ -532,8 +815,8 @@
         "por_y": "34%",
         "bromide_height": "4",
         "limited": false,
-        "pickup": true,
-        "w": 0.0405405
+        "pickup": false,
+        "w": 0.0181818
       },
       {
         "id": "1850001650",
@@ -545,8 +828,8 @@
         "por_y": "14%",
         "bromide_height": "2",
         "limited": false,
-        "pickup": true,
-        "w": 0.0405405
+        "pickup": false,
+        "w": 0.0181818
       }
     ],
     "URS": [
@@ -558,7 +841,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.0131578
+        "w": 0.0190476
       },
       {
         "id": "1001000250",
@@ -568,7 +851,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.0131578
+        "w": 0.0190476
       },
       {
         "id": "1001000750",
@@ -578,7 +861,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.0131578
+        "w": 0.0190476
       },
       {
         "id": "1013000150",
@@ -588,7 +871,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.0131578
+        "w": 0.0190476
       },
       {
         "id": "1031000150",
@@ -597,8 +880,8 @@
         "art": "Supporters/sb_g0310s00100.webp",
         "charArt": "",
         "limited": false,
-        "pickup": true,
-        "w": 0.0131578
+        "pickup": false,
+        "w": 0.0190476
       },
       {
         "id": "1031000250",
@@ -608,7 +891,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.0131578
+        "w": 0.0190476
       },
       {
         "id": "1060000150",
@@ -618,7 +901,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.0131578
+        "w": 0.0190476
       },
       {
         "id": "1060000250",
@@ -628,7 +911,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.0131578
+        "w": 0.0190476
       },
       {
         "id": "1080000150",
@@ -638,7 +921,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.0131578
+        "w": 0.0190476
       },
       {
         "id": "1080000250",
@@ -648,7 +931,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.0131578
+        "w": 0.0190476
       },
       {
         "id": "1080000550",
@@ -658,7 +941,17 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.0131578
+        "w": 0.0190476
+      },
+      {
+        "id": "1080000650",
+        "name": "Bright Noa & Gryps II",
+        "role": "",
+        "art": "Supporters/sb_g0800s00600.webp",
+        "charArt": "",
+        "limited": false,
+        "pickup": false,
+        "w": 0.0190476
       },
       {
         "id": "1095000150",
@@ -668,7 +961,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.0131578
+        "w": 0.0190476
       },
       {
         "id": "1095000350",
@@ -677,8 +970,8 @@
         "art": "Supporters/sb_g0950s00300.webp",
         "charArt": "",
         "limited": false,
-        "pickup": true,
-        "w": 0.0131578
+        "pickup": false,
+        "w": 0.0190476
       },
       {
         "id": "1110000350",
@@ -688,7 +981,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.0131578
+        "w": 0.0190476
       },
       {
         "id": "1125000450",
@@ -698,7 +991,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.0131578
+        "w": 0.0190476
       },
       {
         "id": "1144000150",
@@ -708,7 +1001,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.0131578
+        "w": 0.0190476
       },
       {
         "id": "1150000150",
@@ -718,7 +1011,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.0131578
+        "w": 0.0190476
       },
       {
         "id": "1200000150",
@@ -728,7 +1021,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.0131578
+        "w": 0.0190476
       },
       {
         "id": "1200000350",
@@ -738,7 +1031,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.0131578
+        "w": 0.0190476
       },
       {
         "id": "1210000150",
@@ -748,7 +1041,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.0131578
+        "w": 0.0190476
       },
       {
         "id": "1210000350",
@@ -758,7 +1051,17 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.0131578
+        "w": 0.0190476
+      },
+      {
+        "id": "1210000550",
+        "name": "Milliardo Peacecraft & Libra",
+        "role": "",
+        "art": "Supporters/sb_g2100s00500.webp",
+        "charArt": "",
+        "limited": false,
+        "pickup": false,
+        "w": 0.0190476
       },
       {
         "id": "1230000150",
@@ -768,7 +1071,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.0131578
+        "w": 0.0190476
       },
       {
         "id": "1230000350",
@@ -778,7 +1081,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.0131578
+        "w": 0.0190476
       },
       {
         "id": "1300000150",
@@ -788,7 +1091,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.0131578
+        "w": 0.0190476
       },
       {
         "id": "1300000550",
@@ -798,7 +1101,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.0131578
+        "w": 0.0190476
       },
       {
         "id": "1300000650",
@@ -808,7 +1111,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.0131578
+        "w": 0.0190476
       },
       {
         "id": "1305000250",
@@ -818,7 +1121,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.0131578
+        "w": 0.0190476
       },
       {
         "id": "1330000450",
@@ -828,7 +1131,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.0131578
+        "w": 0.0190476
       },
       {
         "id": "1370000150",
@@ -837,8 +1140,8 @@
         "art": "Supporters/sb_g3700s00100.webp",
         "charArt": "",
         "limited": false,
-        "pickup": false,
-        "w": 0.0131578
+        "pickup": true,
+        "w": 0.0190476
       },
       {
         "id": "1370000450",
@@ -848,7 +1151,17 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.0131578
+        "w": 0.0190476
+      },
+      {
+        "id": "1376000150",
+        "name": "Sherilyn Hyde & Euclides",
+        "role": "",
+        "art": "Supporters/sb_g3760s00100.webp",
+        "charArt": "",
+        "limited": false,
+        "pickup": true,
+        "w": 0.2
       },
       {
         "id": "1400000150",
@@ -857,8 +1170,8 @@
         "art": "Supporters/sb_g4000s00100.webp",
         "charArt": "",
         "limited": false,
-        "pickup": true,
-        "w": 0.0131578
+        "pickup": false,
+        "w": 0.0190476
       },
       {
         "id": "1430000150",
@@ -868,7 +1181,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.0131578
+        "w": 0.0190476
       },
       {
         "id": "1430000350",
@@ -878,7 +1191,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.0131578
+        "w": 0.0190476
       },
       {
         "id": "1430000450",
@@ -888,7 +1201,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.0131578
+        "w": 0.0190476
       },
       {
         "id": "1430000550",
@@ -898,7 +1211,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.0131578
+        "w": 0.0190476
       },
       {
         "id": "1501000150",
@@ -908,7 +1221,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.0131578
+        "w": 0.0190476
       },
       {
         "id": "1501000450",
@@ -918,7 +1231,17 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.0131578
+        "w": 0.0190476
+      },
+      {
+        "id": "1501000550",
+        "name": "Lauda Neill & Academy Ship",
+        "role": "",
+        "art": "Supporters/sb_g5010s00500.webp",
+        "charArt": "",
+        "limited": false,
+        "pickup": false,
+        "w": 0.0190476
       },
       {
         "id": "1705000150",
@@ -928,7 +1251,17 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.0131578
+        "w": 0.0190476
+      },
+      {
+        "id": "1705000350",
+        "name": "Knight Amuro (Dijeh Armor)",
+        "role": "",
+        "art": "Supporters/sb_g7050s00300.webp",
+        "charArt": "",
+        "limited": false,
+        "pickup": false,
+        "w": 0.0190476
       }
     ],
     "SSRU": [
@@ -943,7 +1276,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1003000310",
@@ -956,7 +1289,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1005000210",
@@ -969,7 +1302,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1007000410",
@@ -982,7 +1315,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1007000710",
@@ -995,7 +1328,7 @@
         "bromide_height": "1",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1009000110",
@@ -1008,7 +1341,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1009000210",
@@ -1021,7 +1354,7 @@
         "bromide_height": "5",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1009000510",
@@ -1034,7 +1367,7 @@
         "bromide_height": "1",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1017000110",
@@ -1047,7 +1380,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1017000510",
@@ -1060,7 +1393,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1017000610",
@@ -1073,7 +1406,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1017001210",
@@ -1086,7 +1419,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1021000110",
@@ -1099,7 +1432,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1021000210",
@@ -1112,7 +1445,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1022000210",
@@ -1125,7 +1458,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1029000210",
@@ -1138,7 +1471,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1044000410",
@@ -1151,7 +1484,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1055000610",
@@ -1164,7 +1497,7 @@
         "bromide_height": "1",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1060001410",
@@ -1177,7 +1510,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1060002110",
@@ -1190,7 +1523,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1063000110",
@@ -1203,7 +1536,7 @@
         "bromide_height": "1",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1067000110",
@@ -1216,7 +1549,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1070000210",
@@ -1229,7 +1562,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1070000510",
@@ -1242,7 +1575,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1082000110",
@@ -1255,7 +1588,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1083000510",
@@ -1268,7 +1601,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1084000110",
@@ -1281,7 +1614,7 @@
         "bromide_height": "4",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1085000110",
@@ -1294,7 +1627,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1085000310",
@@ -1307,7 +1640,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1085000910",
@@ -1320,7 +1653,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1085001010",
@@ -1333,7 +1666,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1085001110",
@@ -1346,7 +1679,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1085001210",
@@ -1359,7 +1692,7 @@
         "bromide_height": "1",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1095003110",
@@ -1372,7 +1705,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1098000310",
@@ -1385,7 +1718,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1098000610",
@@ -1398,7 +1731,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1099000110",
@@ -1411,7 +1744,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1099000210",
@@ -1424,7 +1757,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1101000110",
@@ -1437,7 +1770,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1110000810",
@@ -1450,7 +1783,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1125000510",
@@ -1463,7 +1796,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1125003310",
@@ -1476,7 +1809,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1125005110",
@@ -1489,7 +1822,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1144001110",
@@ -1502,7 +1835,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1150000410",
@@ -1515,7 +1848,7 @@
         "bromide_height": "1",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1155000110",
@@ -1528,7 +1861,7 @@
         "bromide_height": "1",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1155000610",
@@ -1541,7 +1874,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1159000110",
@@ -1554,7 +1887,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1162001310",
@@ -1567,7 +1900,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1162001510",
@@ -1580,7 +1913,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1175000110",
@@ -1593,7 +1926,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1200000410",
@@ -1606,7 +1939,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1200000610",
@@ -1619,7 +1952,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1200000810",
@@ -1632,7 +1965,7 @@
         "bromide_height": "1",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1200001010",
@@ -1645,7 +1978,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1200002210",
@@ -1658,7 +1991,20 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
+      },
+      {
+        "id": "1211001210",
+        "name": "Gundam Epyon (EW)",
+        "role": "Durability",
+        "art": "unit_portraits/ub_g2110u01200.webp",
+        "charArt": "",
+        "recommend_character_id": "",
+        "por_y": "14%",
+        "bromide_height": "2",
+        "limited": false,
+        "pickup": false,
+        "w": 0.0753968
       },
       {
         "id": "1217000110",
@@ -1671,7 +2017,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1217000310",
@@ -1684,7 +2030,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1217000510",
@@ -1697,7 +2043,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1230001910",
@@ -1710,7 +2056,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1230004510",
@@ -1723,7 +2069,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1230005510",
@@ -1736,7 +2082,7 @@
         "bromide_height": "4",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1230005610",
@@ -1749,7 +2095,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1240000110",
@@ -1762,7 +2108,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1240001110",
@@ -1775,7 +2121,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1300002810",
@@ -1788,7 +2134,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1304000110",
@@ -1801,7 +2147,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1304001210",
@@ -1814,7 +2160,7 @@
         "bromide_height": "4",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1306000110",
@@ -1827,7 +2173,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1306000310",
@@ -1840,7 +2186,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1307000310",
@@ -1853,7 +2199,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1307000410",
@@ -1866,7 +2212,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1308000710",
@@ -1879,7 +2225,7 @@
         "bromide_height": "4",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1330003110",
@@ -1892,7 +2238,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1330003210",
@@ -1905,7 +2251,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1330003610",
@@ -1918,7 +2264,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1330003710",
@@ -1931,7 +2277,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1330004910",
@@ -1944,7 +2290,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1330005310",
@@ -1957,7 +2303,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1330006010",
@@ -1970,7 +2316,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1330006110",
@@ -1983,7 +2329,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1330006510",
@@ -1996,7 +2342,7 @@
         "bromide_height": "1",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1350000110",
@@ -2009,7 +2355,20 @@
         "bromide_height": "1",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
+      },
+      {
+        "id": "1370008610",
+        "name": "GN-X III (E.S.F. Type)",
+        "role": "Durability",
+        "art": "unit_portraits/ub_g3700u08600.webp",
+        "charArt": "portraits/cb_g3700c04000.webp",
+        "recommend_character_id": "1370004000",
+        "por_y": "12%",
+        "bromide_height": "1",
+        "limited": false,
+        "pickup": true,
+        "w": 2.75
       },
       {
         "id": "1370009810",
@@ -2022,7 +2381,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1370010410",
@@ -2035,7 +2394,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1370010610",
@@ -2048,7 +2407,7 @@
         "bromide_height": "1",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1375000210",
@@ -2061,7 +2420,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1375000410",
@@ -2074,7 +2433,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1378000110",
@@ -2087,7 +2446,7 @@
         "bromide_height": "1",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1379000510",
@@ -2100,7 +2459,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1379000610",
@@ -2113,7 +2472,20 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
+      },
+      {
+        "id": "1379002010",
+        "name": "Jagd Arche Gundam",
+        "role": "Attack",
+        "art": "unit_portraits/ub_g3790u02000.webp",
+        "charArt": "portraits/cb_g3700c03602.webp",
+        "recommend_character_id": "1370003602",
+        "por_y": "14%",
+        "bromide_height": "2",
+        "limited": false,
+        "pickup": true,
+        "w": 2.75
       },
       {
         "id": "1400000110",
@@ -2126,7 +2498,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1400003810",
@@ -2139,7 +2511,7 @@
         "bromide_height": "1",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1400008110",
@@ -2152,7 +2524,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1401000110",
@@ -2165,7 +2537,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1408000110",
@@ -2178,7 +2550,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1408000410",
@@ -2191,7 +2563,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1420000110",
@@ -2204,7 +2576,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1420004710",
@@ -2217,7 +2589,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1430001110",
@@ -2230,7 +2602,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1430002310",
@@ -2243,7 +2615,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1430004110",
@@ -2256,7 +2628,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1430005310",
@@ -2269,7 +2641,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1430005410",
@@ -2282,7 +2654,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1431000110",
@@ -2295,7 +2667,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1431001310",
@@ -2308,7 +2680,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1431001710",
@@ -2321,7 +2693,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1431001810",
@@ -2334,7 +2706,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1501003010",
@@ -2347,7 +2719,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1501003310",
@@ -2360,7 +2732,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1501003910",
@@ -2373,7 +2745,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1600000110",
@@ -2386,7 +2758,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1600000210",
@@ -2399,7 +2771,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1650000110",
@@ -2412,7 +2784,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1705001510",
@@ -2425,7 +2797,33 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
+      },
+      {
+        "id": "1705003010",
+        "name": "Golden Knight",
+        "role": "Support",
+        "art": "unit_portraits/ub_g7050u03000.webp",
+        "charArt": "",
+        "recommend_character_id": "",
+        "por_y": "34%",
+        "bromide_height": "4",
+        "limited": false,
+        "pickup": false,
+        "w": 0.0753968
+      },
+      {
+        "id": "1705004310",
+        "name": "Giant Mud Golem",
+        "role": "Attack",
+        "art": "unit_portraits/ub_g7050u04300.webp",
+        "charArt": "",
+        "recommend_character_id": "",
+        "por_y": "24%",
+        "bromide_height": "3",
+        "limited": false,
+        "pickup": false,
+        "w": 0.0753968
       },
       {
         "id": "1750000110",
@@ -2438,7 +2836,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1764000110",
@@ -2451,7 +2849,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1764000310",
@@ -2464,7 +2862,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1850000610",
@@ -2477,7 +2875,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1850001210",
@@ -2490,7 +2888,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1850002410",
@@ -2503,7 +2901,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1850002510",
@@ -2516,7 +2914,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       },
       {
         "id": "1850005310",
@@ -2529,7 +2927,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.0609756
+        "w": 0.0753968
       }
     ],
     "SSRS": [
@@ -2541,7 +2939,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.06
+        "w": 0.0833333
       },
       {
         "id": "1001000550",
@@ -2551,7 +2949,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.06
+        "w": 0.0833333
       },
       {
         "id": "1001000650",
@@ -2561,7 +2959,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.06
+        "w": 0.0833333
       },
       {
         "id": "1022000150",
@@ -2570,8 +2968,8 @@
         "art": "Supporters/sb_g0220s00100.webp",
         "charArt": "",
         "limited": false,
-        "pickup": true,
-        "w": 0.06
+        "pickup": false,
+        "w": 0.0833333
       },
       {
         "id": "1080000450",
@@ -2581,7 +2979,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.06
+        "w": 0.0833333
       },
       {
         "id": "1095000250",
@@ -2591,7 +2989,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.06
+        "w": 0.0833333
       },
       {
         "id": "1095000450",
@@ -2601,7 +2999,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.06
+        "w": 0.0833333
       },
       {
         "id": "1110000250",
@@ -2611,7 +3009,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.06
+        "w": 0.0833333
       },
       {
         "id": "1125000150",
@@ -2621,7 +3019,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.06
+        "w": 0.0833333
       },
       {
         "id": "1125000350",
@@ -2631,7 +3029,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.06
+        "w": 0.0833333
       },
       {
         "id": "1162000250",
@@ -2641,7 +3039,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.06
+        "w": 0.0833333
       },
       {
         "id": "1200000250",
@@ -2651,7 +3049,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.06
+        "w": 0.0833333
       },
       {
         "id": "1210000250",
@@ -2661,7 +3059,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.06
+        "w": 0.0833333
       },
       {
         "id": "1230000250",
@@ -2671,7 +3069,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.06
+        "w": 0.0833333
       },
       {
         "id": "1300000250",
@@ -2681,7 +3079,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.06
+        "w": 0.0833333
       },
       {
         "id": "1300000350",
@@ -2691,7 +3089,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.06
+        "w": 0.0833333
       },
       {
         "id": "1305000150",
@@ -2701,7 +3099,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.06
+        "w": 0.0833333
       },
       {
         "id": "1305000350",
@@ -2710,8 +3108,8 @@
         "art": "Supporters/sb_g3050s00300.webp",
         "charArt": "",
         "limited": false,
-        "pickup": true,
-        "w": 0.06
+        "pickup": false,
+        "w": 0.0833333
       },
       {
         "id": "1330000150",
@@ -2721,7 +3119,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.06
+        "w": 0.0833333
       },
       {
         "id": "1336000150",
@@ -2730,8 +3128,8 @@
         "art": "Supporters/sb_g3360s00100.webp",
         "charArt": "",
         "limited": false,
-        "pickup": true,
-        "w": 0.06
+        "pickup": false,
+        "w": 0.0833333
       },
       {
         "id": "1370000250",
@@ -2740,8 +3138,8 @@
         "art": "Supporters/sb_g3700s00200.webp",
         "charArt": "",
         "limited": false,
-        "pickup": false,
-        "w": 0.06
+        "pickup": true,
+        "w": 1.0
       },
       {
         "id": "1400000250",
@@ -2751,7 +3149,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.06
+        "w": 0.0833333
       },
       {
         "id": "1430000250",
@@ -2761,7 +3159,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.06
+        "w": 0.0833333
       },
       {
         "id": "1431000150",
@@ -2771,7 +3169,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.06
+        "w": 0.0833333
       },
       {
         "id": "1501000250",
@@ -2781,7 +3179,7 @@
         "charArt": "",
         "limited": false,
         "pickup": false,
-        "w": 0.06
+        "w": 0.0833333
       }
     ],
     "SR": [
@@ -2796,7 +3194,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1001002110",
@@ -2809,7 +3207,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1003000110",
@@ -2822,7 +3220,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1005000110",
@@ -2835,7 +3233,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1007000310",
@@ -2848,7 +3246,7 @@
         "bromide_height": "1",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1007000510",
@@ -2861,7 +3259,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1008000210",
@@ -2874,7 +3272,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1009000310",
@@ -2887,7 +3285,7 @@
         "bromide_height": "5",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1009000410",
@@ -2900,7 +3298,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1009000710",
@@ -2913,7 +3311,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1009000810",
@@ -2926,7 +3324,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1012000110",
@@ -2939,7 +3337,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1013000110",
@@ -2952,7 +3350,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1013000210",
@@ -2965,7 +3363,7 @@
         "bromide_height": "1",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1013000510",
@@ -2978,7 +3376,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1023000110",
@@ -2991,7 +3389,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1026000110",
@@ -3004,7 +3402,7 @@
         "bromide_height": "1",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1029002110",
@@ -3017,7 +3415,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1060002010",
@@ -3030,7 +3428,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1070000110",
@@ -3043,7 +3441,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1070000310",
@@ -3056,7 +3454,7 @@
         "bromide_height": "4",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1081000110",
@@ -3069,7 +3467,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1083000310",
@@ -3082,7 +3480,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1085001310",
@@ -3095,7 +3493,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1085001710",
@@ -3108,7 +3506,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1095001510",
@@ -3121,7 +3519,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1095002910",
@@ -3134,7 +3532,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1098000110",
@@ -3147,7 +3545,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1098000210",
@@ -3160,7 +3558,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1098000510",
@@ -3173,7 +3571,7 @@
         "bromide_height": "1",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1133001310",
@@ -3186,7 +3584,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1133001410",
@@ -3199,7 +3597,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1162001010",
@@ -3212,7 +3610,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1166000510",
@@ -3225,7 +3623,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1175000410",
@@ -3238,7 +3636,7 @@
         "bromide_height": "1",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1175000510",
@@ -3251,7 +3649,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1175000910",
@@ -3264,7 +3662,7 @@
         "bromide_height": "1",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1210002010",
@@ -3277,7 +3675,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1210003110",
@@ -3290,7 +3688,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1230001410",
@@ -3303,7 +3701,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1230002310",
@@ -3316,7 +3714,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1230002610",
@@ -3329,7 +3727,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1230004910",
@@ -3342,7 +3740,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1240001010",
@@ -3355,7 +3753,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1305000810",
@@ -3368,7 +3766,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1307000110",
@@ -3381,7 +3779,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1307000210",
@@ -3394,7 +3792,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1330005710",
@@ -3407,7 +3805,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1370001710",
@@ -3420,7 +3818,7 @@
         "bromide_height": "4",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1370001810",
@@ -3433,7 +3831,7 @@
         "bromide_height": "4",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1370002510",
@@ -3446,7 +3844,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1370002710",
@@ -3459,7 +3857,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1370003610",
@@ -3472,7 +3870,7 @@
         "bromide_height": "1",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1370003710",
@@ -3485,7 +3883,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1370004010",
@@ -3498,7 +3896,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1370007410",
@@ -3511,7 +3909,7 @@
         "bromide_height": "4",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1370007510",
@@ -3524,7 +3922,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1370007610",
@@ -3537,7 +3935,7 @@
         "bromide_height": "1",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1370009710",
@@ -3550,7 +3948,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1375000310",
@@ -3563,7 +3961,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1400001710",
@@ -3576,7 +3974,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1400002810",
@@ -3589,7 +3987,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1400002910",
@@ -3602,7 +4000,7 @@
         "bromide_height": "4",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1400003010",
@@ -3615,7 +4013,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1400003110",
@@ -3628,7 +4026,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1400003310",
@@ -3641,7 +4039,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1400004210",
@@ -3654,7 +4052,7 @@
         "bromide_height": "1",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1400007310",
@@ -3667,7 +4065,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1420001810",
@@ -3680,7 +4078,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1420004910",
@@ -3693,7 +4091,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1420005310",
@@ -3706,7 +4104,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1420005810",
@@ -3719,7 +4117,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1420005910",
@@ -3732,7 +4130,7 @@
         "bromide_height": "1",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1430001610",
@@ -3745,7 +4143,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1430001810",
@@ -3758,7 +4156,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1430002210",
@@ -3771,7 +4169,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1430004910",
@@ -3784,7 +4182,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1430005010",
@@ -3797,7 +4195,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1430005910",
@@ -3810,7 +4208,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1430006010",
@@ -3823,7 +4221,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1430007610",
@@ -3836,7 +4234,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1431000410",
@@ -3849,7 +4247,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1431001910",
@@ -3862,7 +4260,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1501001710",
@@ -3875,7 +4273,33 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
+      },
+      {
+        "id": "1705004910",
+        "name": "Swordsman Gelgoog",
+        "role": "Durability",
+        "art": "unit_portraits/ub_g7050u04900.webp",
+        "charArt": "",
+        "recommend_character_id": "",
+        "por_y": "24%",
+        "bromide_height": "3",
+        "limited": false,
+        "pickup": false,
+        "w": 0.3191489
+      },
+      {
+        "id": "1705005010",
+        "name": "Warrior Rick Dom II",
+        "role": "Attack",
+        "art": "unit_portraits/ub_g7050u05000.webp",
+        "charArt": "",
+        "recommend_character_id": "",
+        "por_y": "24%",
+        "bromide_height": "3",
+        "limited": false,
+        "pickup": false,
+        "w": 0.3191489
       },
       {
         "id": "1760000110",
@@ -3888,7 +4312,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1771000110",
@@ -3901,7 +4325,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1771000210",
@@ -3914,7 +4338,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1779000110",
@@ -3927,7 +4351,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1850000310",
@@ -3940,7 +4364,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1850002110",
@@ -3953,7 +4377,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1850002910",
@@ -3966,7 +4390,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       },
       {
         "id": "1850003010",
@@ -3979,7 +4403,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.3260869
+        "w": 0.3191489
       }
     ],
     "R": [
@@ -3994,7 +4418,7 @@
         "bromide_height": "4",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1001000610",
@@ -4007,7 +4431,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1001000710",
@@ -4020,7 +4444,7 @@
         "bromide_height": "4",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1001000810",
@@ -4033,7 +4457,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1001000910",
@@ -4046,7 +4470,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1001003110",
@@ -4059,7 +4483,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1001003410",
@@ -4072,7 +4496,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1001003710",
@@ -4085,7 +4509,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1008000110",
@@ -4098,7 +4522,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1009000610",
@@ -4111,7 +4535,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1011000110",
@@ -4124,7 +4548,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1013000610",
@@ -4137,7 +4561,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1013000710",
@@ -4150,7 +4574,7 @@
         "bromide_height": "4",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1013001410",
@@ -4163,7 +4587,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1013001510",
@@ -4176,7 +4600,7 @@
         "bromide_height": "4",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1017000310",
@@ -4189,7 +4613,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1017000410",
@@ -4202,7 +4626,7 @@
         "bromide_height": "1",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1069000210",
@@ -4215,7 +4639,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1080001110",
@@ -4228,7 +4652,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1080001310",
@@ -4241,7 +4665,7 @@
         "bromide_height": "1",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1080001410",
@@ -4254,7 +4678,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1080001510",
@@ -4267,7 +4691,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1080001610",
@@ -4280,7 +4704,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1080001710",
@@ -4293,7 +4717,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1080001810",
@@ -4306,7 +4730,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1080001910",
@@ -4319,7 +4743,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1080002010",
@@ -4332,7 +4756,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1080003310",
@@ -4345,7 +4769,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1083000610",
@@ -4358,7 +4782,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1085001810",
@@ -4371,7 +4795,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1085001910",
@@ -4384,7 +4808,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1095000410",
@@ -4397,7 +4821,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1095000510",
@@ -4410,7 +4834,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1095000910",
@@ -4423,7 +4847,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1095001010",
@@ -4436,7 +4860,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1095003510",
@@ -4449,7 +4873,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1095003810",
@@ -4462,7 +4886,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1095003910",
@@ -4475,7 +4899,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1095004010",
@@ -4488,7 +4912,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1095004110",
@@ -4501,7 +4925,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1095004410",
@@ -4514,7 +4938,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1200001710",
@@ -4527,7 +4951,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1200003310",
@@ -4540,7 +4964,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1200003410",
@@ -4553,7 +4977,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1200003510",
@@ -4566,7 +4990,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1210001310",
@@ -4579,7 +5003,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1210001410",
@@ -4592,7 +5016,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1210001510",
@@ -4605,7 +5029,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1210001610",
@@ -4618,7 +5042,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1210001710",
@@ -4631,7 +5055,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1210001810",
@@ -4644,7 +5068,7 @@
         "bromide_height": "4",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1230001210",
@@ -4657,7 +5081,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1230001310",
@@ -4670,7 +5094,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1230001710",
@@ -4683,7 +5107,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1230001810",
@@ -4696,7 +5120,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1230002110",
@@ -4709,7 +5133,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1230002910",
@@ -4722,7 +5146,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1230003510",
@@ -4735,7 +5159,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1300001710",
@@ -4748,7 +5172,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1300002110",
@@ -4761,7 +5185,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1300002210",
@@ -4774,7 +5198,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1300002310",
@@ -4787,7 +5211,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1300002410",
@@ -4800,7 +5224,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1300003210",
@@ -4813,7 +5237,7 @@
         "bromide_height": "4",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1300003910",
@@ -4826,7 +5250,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1305000610",
@@ -4839,7 +5263,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1370002310",
@@ -4852,7 +5276,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1370002410",
@@ -4865,7 +5289,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1370002810",
@@ -4878,7 +5302,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1370003110",
@@ -4891,7 +5315,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1370003810",
@@ -4904,7 +5328,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1370004910",
@@ -4917,7 +5341,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1370005210",
@@ -4930,7 +5354,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1370005410",
@@ -4943,7 +5367,7 @@
         "bromide_height": "1",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1420005710",
@@ -4956,7 +5380,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1430001410",
@@ -4969,7 +5393,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1430002910",
@@ -4982,7 +5406,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1430003110",
@@ -4995,7 +5419,7 @@
         "bromide_height": "3",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1430003310",
@@ -5008,7 +5432,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1430005610",
@@ -5021,7 +5445,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1430005710",
@@ -5034,7 +5458,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1430006210",
@@ -5047,7 +5471,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1501001010",
@@ -5060,7 +5484,7 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       },
       {
         "id": "1763000110",
@@ -5073,55 +5497,25 @@
         "bromide_height": "2",
         "limited": false,
         "pickup": false,
-        "w": 0.7023809
+        "w": 0.5714285
       }
     ]
   },
   "pickup_ids": [
-    "1001003050",
-    "1003000250",
-    "1009000550",
-    "1013000850",
-    "1017000950",
-    "1022000150",
-    "1031000150",
-    "1031000350",
-    "1031001250",
-    "1060001850",
-    "1080003250",
-    "1095000350",
-    "1114000450",
-    "1125001250",
-    "1150000250",
-    "1155000250",
-    "1162000150",
-    "1200001350",
-    "1219000250",
-    "1219000350",
-    "1230003950",
-    "1300004450",
-    "1300004650",
-    "1305000350",
-    "1330000350",
-    "1330002850",
-    "1336000150",
-    "1400000150",
-    "1430004850",
-    "1431000550",
-    "1501001650",
-    "1501002450",
-    "1604000150",
-    "1725000150",
-    "1850000650",
-    "1850001350",
-    "1850001650"
+    "1370000150",
+    "1370000250",
+    "1370008610",
+    "1370010150",
+    "1375001550",
+    "1376000150",
+    "1379002010"
   ],
   "counts": {
-    "URU": 37,
-    "URS": 38,
-    "SSRU": 123,
+    "URU": 58,
+    "URS": 43,
+    "SSRU": 128,
     "SSRS": 25,
-    "SR": 92,
+    "SR": 94,
     "R": 84
   }
 }
