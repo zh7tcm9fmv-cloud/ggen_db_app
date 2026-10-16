@@ -19082,21 +19082,6 @@
   {
     "ItemId": 222000020001,
     "AcquisitionMethodTypeIndex": 16,
-    "TargetId": 2402001
-  },
-  {
-    "ItemId": 222000020001,
-    "AcquisitionMethodTypeIndex": 16,
-    "TargetId": 2402002
-  },
-  {
-    "ItemId": 222000020001,
-    "AcquisitionMethodTypeIndex": 16,
-    "TargetId": 2402003
-  },
-  {
-    "ItemId": 222000020001,
-    "AcquisitionMethodTypeIndex": 16,
     "TargetId": 30500103
   },
   {
@@ -19143,21 +19128,6 @@
     "ItemId": 222000020001,
     "AcquisitionMethodTypeIndex": 16,
     "TargetId": 30501001
-  },
-  {
-    "ItemId": 222000020002,
-    "AcquisitionMethodTypeIndex": 16,
-    "TargetId": 2402001
-  },
-  {
-    "ItemId": 222000020002,
-    "AcquisitionMethodTypeIndex": 16,
-    "TargetId": 2402002
-  },
-  {
-    "ItemId": 222000020002,
-    "AcquisitionMethodTypeIndex": 16,
-    "TargetId": 2402003
   },
   {
     "ItemId": 222000030001,
@@ -19917,6 +19887,21 @@
   {
     "ItemId": 222000180001,
     "AcquisitionMethodTypeIndex": 16,
+    "TargetId": 2402001
+  },
+  {
+    "ItemId": 222000180001,
+    "AcquisitionMethodTypeIndex": 16,
+    "TargetId": 2402002
+  },
+  {
+    "ItemId": 222000180001,
+    "AcquisitionMethodTypeIndex": 16,
+    "TargetId": 2402003
+  },
+  {
+    "ItemId": 222000180001,
+    "AcquisitionMethodTypeIndex": 16,
     "TargetId": 2403001
   },
   {
@@ -19928,6 +19913,21 @@
     "ItemId": 222000180001,
     "AcquisitionMethodTypeIndex": 16,
     "TargetId": 2403003
+  },
+  {
+    "ItemId": 222000180002,
+    "AcquisitionMethodTypeIndex": 16,
+    "TargetId": 2402001
+  },
+  {
+    "ItemId": 222000180002,
+    "AcquisitionMethodTypeIndex": 16,
+    "TargetId": 2402002
+  },
+  {
+    "ItemId": 222000180002,
+    "AcquisitionMethodTypeIndex": 16,
+    "TargetId": 2402003
   },
   {
     "ItemId": 222000180003,

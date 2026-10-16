@@ -173230,7 +173230,7 @@
   {
     "Id": 3002402001020001,
     "RewardTypeIndex": 1,
-    "TargetId": 222000020001,
+    "TargetId": 222000180001,
     "LimitBreakStep": 0,
     "Level": 0,
     "UnitAbilitySetId": 0,
@@ -173241,7 +173241,7 @@
   {
     "Id": 3002402001030001,
     "RewardTypeIndex": 1,
-    "TargetId": 222000020002,
+    "TargetId": 222000180002,
     "LimitBreakStep": 0,
     "Level": 0,
     "UnitAbilitySetId": 0,
@@ -173263,7 +173263,7 @@
   {
     "Id": 3002402002020001,
     "RewardTypeIndex": 1,
-    "TargetId": 222000020001,
+    "TargetId": 222000180001,
     "LimitBreakStep": 0,
     "Level": 0,
     "UnitAbilitySetId": 0,
@@ -173274,7 +173274,7 @@
   {
     "Id": 3002402002030001,
     "RewardTypeIndex": 1,
-    "TargetId": 222000020002,
+    "TargetId": 222000180002,
     "LimitBreakStep": 0,
     "Level": 0,
     "UnitAbilitySetId": 0,
@@ -173296,7 +173296,7 @@
   {
     "Id": 3002402003020001,
     "RewardTypeIndex": 1,
-    "TargetId": 222000020001,
+    "TargetId": 222000180001,
     "LimitBreakStep": 0,
     "Level": 0,
     "UnitAbilitySetId": 0,
@@ -173307,7 +173307,7 @@
   {
     "Id": 3002402003030001,
     "RewardTypeIndex": 1,
-    "TargetId": 222000020002,
+    "TargetId": 222000180002,
     "LimitBreakStep": 0,
     "Level": 0,
     "UnitAbilitySetId": 0,

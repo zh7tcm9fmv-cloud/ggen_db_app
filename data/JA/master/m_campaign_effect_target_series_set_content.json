@@ -38,5 +38,35 @@
     "Id": 126093002,
     "CampaignEffectTargetSeriesSetId": 126093002,
     "SeriesId": 3760
+  },
+  {
+    "Id": 126103001,
+    "CampaignEffectTargetSeriesSetId": 126103001,
+    "SeriesId": 240
+  },
+  {
+    "Id": 126103002,
+    "CampaignEffectTargetSeriesSetId": 126103002,
+    "SeriesId": 240
+  },
+  {
+    "Id": 126103005,
+    "CampaignEffectTargetSeriesSetId": 126103005,
+    "SeriesId": 240
+  },
+  {
+    "Id": 126103006,
+    "CampaignEffectTargetSeriesSetId": 126103006,
+    "SeriesId": 240
+  },
+  {
+    "Id": 126103009,
+    "CampaignEffectTargetSeriesSetId": 126103009,
+    "SeriesId": 240
+  },
+  {
+    "Id": 126103010,
+    "CampaignEffectTargetSeriesSetId": 126103010,
+    "SeriesId": 240
   }
 ]

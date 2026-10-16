@@ -2921,7 +2921,7 @@
   {
     "MapNpcId": 905100003902000003,
     "StrategyHintTypeIndex": 1,
-    "StrategyHintTargetValue": 117500550003,
+    "StrategyHintTargetValue": 117500556003,
     "AttentionResourceId": "strategy_hint_0000",
     "DisplayTypeIndex": 0
   },
@@ -4328,7 +4328,7 @@
   {
     "MapNpcId": 905200003202000003,
     "StrategyHintTypeIndex": 1,
-    "StrategyHintTargetValue": 117500550003,
+    "StrategyHintTargetValue": 117500556003,
     "AttentionResourceId": "strategy_hint_0000",
     "DisplayTypeIndex": 0
   },

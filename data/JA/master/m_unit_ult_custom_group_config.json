@@ -1,0 +1,38 @@
+[
+  {
+    "Id": 1308000501,
+    "UnitUltGroupId": 13080005,
+    "ScheduleId": 2610309901,
+    "UnitUltCustomMaterialSetId": 1308000501
+  },
+  {
+    "Id": 1379000101,
+    "UnitUltGroupId": 13790001,
+    "ScheduleId": 2610309901,
+    "UnitUltCustomMaterialSetId": 1379000101
+  },
+  {
+    "Id": 1750000301,
+    "UnitUltGroupId": 17500003,
+    "ScheduleId": 2610309901,
+    "UnitUltCustomMaterialSetId": 1750000301
+  },
+  {
+    "Id": 1761000101,
+    "UnitUltGroupId": 17610001,
+    "ScheduleId": 2610309901,
+    "UnitUltCustomMaterialSetId": 1761000101
+  },
+  {
+    "Id": 1764000201,
+    "UnitUltGroupId": 17640002,
+    "ScheduleId": 2610309901,
+    "UnitUltCustomMaterialSetId": 1764000201
+  },
+  {
+    "Id": 1850003201,
+    "UnitUltGroupId": 18500032,
+    "ScheduleId": 2610309901,
+    "UnitUltCustomMaterialSetId": 1850003201
+  }
+]

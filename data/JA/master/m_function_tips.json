@@ -135,6 +135,11 @@
     "FunctionTipsDetailSetId": 3201
   },
   {
+    "Id": 3301,
+    "FunctionTypeIndex": 67,
+    "FunctionTipsDetailSetId": 3301
+  },
+  {
     "Id": 5001,
     "FunctionTypeIndex": 17,
     "FunctionTipsDetailSetId": 5001
@@ -273,6 +278,21 @@
     "Id": 9008,
     "FunctionTypeIndex": 13,
     "FunctionTipsDetailSetId": 9008
+  },
+  {
+    "Id": 9009,
+    "FunctionTypeIndex": 66,
+    "FunctionTipsDetailSetId": 9009
+  },
+  {
+    "Id": 9010,
+    "FunctionTypeIndex": 68,
+    "FunctionTipsDetailSetId": 9010
+  },
+  {
+    "Id": 9011,
+    "FunctionTypeIndex": 70,
+    "FunctionTipsDetailSetId": 9011
   },
   {
     "Id": 9101,

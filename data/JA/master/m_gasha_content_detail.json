@@ -2120,6 +2120,14 @@
     "IsLimitedTime": false
   },
   {
+    "Id": 11370000350,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1370000350,
+    "LimitBreakStep": 0,
+    "Level": 1,
+    "IsLimitedTime": false
+  },
+  {
     "Id": 11370001710,
     "RewardTypeIndex": 3,
     "RewardTargetId": 1370001710,
@@ -2342,6 +2350,14 @@
     "LimitBreakStep": 0,
     "Level": 1,
     "IsLimitedTime": false
+  },
+  {
+    "Id": 11370011150,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1370011150,
+    "LimitBreakStep": 0,
+    "Level": 1,
+    "IsLimitedTime": true
   },
   {
     "Id": 11375000210,
@@ -3288,6 +3304,14 @@
     "IsLimitedTime": false
   },
   {
+    "Id": 21024000150,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1024000150,
+    "LimitBreakStep": 0,
+    "Level": 1,
+    "IsLimitedTime": false
+  },
+  {
     "Id": 21031000150,
     "RewardTypeIndex": 21,
     "RewardTargetId": 1031000150,
@@ -3710,6 +3734,14 @@
     "LimitBreakStep": 0,
     "Level": 1,
     "IsLimitedTime": true
+  },
+  {
+    "Id": 21370000750,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1370000750,
+    "LimitBreakStep": 0,
+    "Level": 1,
+    "IsLimitedTime": false
   },
   {
     "Id": 21376000150,

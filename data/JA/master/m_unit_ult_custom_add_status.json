@@ -1,0 +1,130 @@
+[
+  {
+    "Id": 1308000501,
+    "MaxHp": 9360,
+    "MaxEn": 27,
+    "MaxAttack": 852,
+    "MaxDefense": 787,
+    "MaxMobility": 637
+  },
+  {
+    "Id": 1308000502,
+    "MaxHp": 10800,
+    "MaxEn": 32,
+    "MaxAttack": 983,
+    "MaxDefense": 909,
+    "MaxMobility": 735
+  },
+  {
+    "Id": 1379000101,
+    "MaxHp": 7471,
+    "MaxEn": 32,
+    "MaxAttack": 783,
+    "MaxDefense": 671,
+    "MaxMobility": 748
+  },
+  {
+    "Id": 1379000102,
+    "MaxHp": 8621,
+    "MaxEn": 37,
+    "MaxAttack": 903,
+    "MaxDefense": 775,
+    "MaxMobility": 863
+  },
+  {
+    "Id": 1379000201,
+    "MaxHp": 7471,
+    "MaxEn": 32,
+    "MaxAttack": 744,
+    "MaxDefense": 638,
+    "MaxMobility": 823
+  },
+  {
+    "Id": 1379000202,
+    "MaxHp": 8621,
+    "MaxEn": 37,
+    "MaxAttack": 858,
+    "MaxDefense": 736,
+    "MaxMobility": 949
+  },
+  {
+    "Id": 1750000301,
+    "MaxHp": 7443,
+    "MaxEn": 32,
+    "MaxAttack": 792,
+    "MaxDefense": 674,
+    "MaxMobility": 747
+  },
+  {
+    "Id": 1750000302,
+    "MaxHp": 8588,
+    "MaxEn": 37,
+    "MaxAttack": 914,
+    "MaxDefense": 777,
+    "MaxMobility": 862
+  },
+  {
+    "Id": 1750000401,
+    "MaxHp": 7443,
+    "MaxEn": 32,
+    "MaxAttack": 753,
+    "MaxDefense": 640,
+    "MaxMobility": 822
+  },
+  {
+    "Id": 1750000402,
+    "MaxHp": 8588,
+    "MaxEn": 37,
+    "MaxAttack": 869,
+    "MaxDefense": 738,
+    "MaxMobility": 948
+  },
+  {
+    "Id": 1761000101,
+    "MaxHp": 8680,
+    "MaxEn": 28,
+    "MaxAttack": 853,
+    "MaxDefense": 859,
+    "MaxMobility": 632
+  },
+  {
+    "Id": 1761000102,
+    "MaxHp": 10015,
+    "MaxEn": 32,
+    "MaxAttack": 985,
+    "MaxDefense": 991,
+    "MaxMobility": 730
+  },
+  {
+    "Id": 1764000201,
+    "MaxHp": 7488,
+    "MaxEn": 28,
+    "MaxAttack": 868,
+    "MaxDefense": 710,
+    "MaxMobility": 744
+  },
+  {
+    "Id": 1764000202,
+    "MaxHp": 8640,
+    "MaxEn": 32,
+    "MaxAttack": 1001,
+    "MaxDefense": 819,
+    "MaxMobility": 858
+  },
+  {
+    "Id": 1850003201,
+    "MaxHp": 7170,
+    "MaxEn": 32,
+    "MaxAttack": 786,
+    "MaxDefense": 710,
+    "MaxMobility": 744
+  },
+  {
+    "Id": 1850003202,
+    "MaxHp": 8273,
+    "MaxEn": 37,
+    "MaxAttack": 907,
+    "MaxDefense": 819,
+    "MaxMobility": 858
+  }
+]

@@ -1,0 +1,110 @@
+[
+  {
+    "Id": 1308000501,
+    "UnitUltCustomSkillSetId": 13080005,
+    "SortOrder": 3,
+    "UnitSkillId": 200120100001
+  },
+  {
+    "Id": 1308000502,
+    "UnitUltCustomSkillSetId": 13080005,
+    "SortOrder": 2,
+    "UnitSkillId": 200040100001
+  },
+  {
+    "Id": 1308000503,
+    "UnitUltCustomSkillSetId": 13080005,
+    "SortOrder": 1,
+    "UnitSkillId": 200060100001
+  },
+  {
+    "Id": 1379000101,
+    "UnitUltCustomSkillSetId": 13790001,
+    "SortOrder": 3,
+    "UnitSkillId": 200110100001
+  },
+  {
+    "Id": 1379000102,
+    "UnitUltCustomSkillSetId": 13790001,
+    "SortOrder": 2,
+    "UnitSkillId": 200030100001
+  },
+  {
+    "Id": 1379000103,
+    "UnitUltCustomSkillSetId": 13790001,
+    "SortOrder": 1,
+    "UnitSkillId": 200070100001
+  },
+  {
+    "Id": 1750000301,
+    "UnitUltCustomSkillSetId": 17500003,
+    "SortOrder": 3,
+    "UnitSkillId": 200110100001
+  },
+  {
+    "Id": 1750000302,
+    "UnitUltCustomSkillSetId": 17500003,
+    "SortOrder": 2,
+    "UnitSkillId": 200030100001
+  },
+  {
+    "Id": 1750000303,
+    "UnitUltCustomSkillSetId": 17500003,
+    "SortOrder": 1,
+    "UnitSkillId": 200100100001
+  },
+  {
+    "Id": 1761000101,
+    "UnitUltCustomSkillSetId": 17610001,
+    "SortOrder": 3,
+    "UnitSkillId": 200120100001
+  },
+  {
+    "Id": 1761000102,
+    "UnitUltCustomSkillSetId": 17610001,
+    "SortOrder": 2,
+    "UnitSkillId": 200040100001
+  },
+  {
+    "Id": 1761000103,
+    "UnitUltCustomSkillSetId": 17610001,
+    "SortOrder": 1,
+    "UnitSkillId": 200020100001
+  },
+  {
+    "Id": 1764000201,
+    "UnitUltCustomSkillSetId": 17640002,
+    "SortOrder": 3,
+    "UnitSkillId": 200110100001
+  },
+  {
+    "Id": 1764000202,
+    "UnitUltCustomSkillSetId": 17640002,
+    "SortOrder": 2,
+    "UnitSkillId": 200130100001
+  },
+  {
+    "Id": 1764000203,
+    "UnitUltCustomSkillSetId": 17640002,
+    "SortOrder": 1,
+    "UnitSkillId": 200070100001
+  },
+  {
+    "Id": 1850003201,
+    "UnitUltCustomSkillSetId": 18500032,
+    "SortOrder": 3,
+    "UnitSkillId": 200110100001
+  },
+  {
+    "Id": 1850003202,
+    "UnitUltCustomSkillSetId": 18500032,
+    "SortOrder": 2,
+    "UnitSkillId": 200030100001
+  },
+  {
+    "Id": 1850003203,
+    "UnitUltCustomSkillSetId": 18500032,
+    "SortOrder": 1,
+    "UnitSkillId": 200100100001
+  }
+]

@@ -224,6 +224,34 @@
     "SortOrder": 1
   },
   {
+    "SupporterLeaderSkillContentSetId": 102400015000,
+    "SupporterLeaderSkillTraitSetId": 100180,
+    "DescriptionLanguageId": 160700000000100180,
+    "TraitConditionSetId": 1000670,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillContentSetId": 102400015001,
+    "SupporterLeaderSkillTraitSetId": 100220,
+    "DescriptionLanguageId": 160700000000100220,
+    "TraitConditionSetId": 1000670,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillContentSetId": 102400015002,
+    "SupporterLeaderSkillTraitSetId": 100240,
+    "DescriptionLanguageId": 160700000000100240,
+    "TraitConditionSetId": 1000670,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillContentSetId": 102400015003,
+    "SupporterLeaderSkillTraitSetId": 100260,
+    "DescriptionLanguageId": 160700000000100260,
+    "TraitConditionSetId": 1000670,
+    "SortOrder": 1
+  },
+  {
     "SupporterLeaderSkillContentSetId": 103100015000,
     "SupporterLeaderSkillTraitSetId": 100250,
     "DescriptionLanguageId": 160700000000100250,
@@ -1484,6 +1512,34 @@
     "SortOrder": 2
   },
   {
+    "SupporterLeaderSkillContentSetId": 123000046000,
+    "SupporterLeaderSkillTraitSetId": 100100,
+    "DescriptionLanguageId": 160700000000100100,
+    "TraitConditionSetId": 1000687,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillContentSetId": 123000046001,
+    "SupporterLeaderSkillTraitSetId": 100120,
+    "DescriptionLanguageId": 160700000000100120,
+    "TraitConditionSetId": 1000687,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillContentSetId": 123000046002,
+    "SupporterLeaderSkillTraitSetId": 100130,
+    "DescriptionLanguageId": 160700000000100130,
+    "TraitConditionSetId": 1000687,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillContentSetId": 123000046003,
+    "SupporterLeaderSkillTraitSetId": 100140,
+    "DescriptionLanguageId": 160700000000100140,
+    "TraitConditionSetId": 1000687,
+    "SortOrder": 1
+  },
+  {
     "SupporterLeaderSkillContentSetId": 130000015000,
     "SupporterLeaderSkillTraitSetId": 100250,
     "DescriptionLanguageId": 160700000000100250,
@@ -2041,6 +2097,62 @@
     "SupporterLeaderSkillTraitSetId": 100220,
     "DescriptionLanguageId": 160700000000100220,
     "TraitConditionSetId": 1000498,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillContentSetId": 137000075000,
+    "SupporterLeaderSkillTraitSetId": 100200,
+    "DescriptionLanguageId": 160700000000100200,
+    "TraitConditionSetId": 1000199,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillContentSetId": 137000075000,
+    "SupporterLeaderSkillTraitSetId": 100300,
+    "DescriptionLanguageId": 160700000000100300,
+    "TraitConditionSetId": 1000663,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillContentSetId": 137000075001,
+    "SupporterLeaderSkillTraitSetId": 100240,
+    "DescriptionLanguageId": 160700000000100240,
+    "TraitConditionSetId": 1000199,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillContentSetId": 137000075001,
+    "SupporterLeaderSkillTraitSetId": 100360,
+    "DescriptionLanguageId": 160700000000100360,
+    "TraitConditionSetId": 1000663,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillContentSetId": 137000075002,
+    "SupporterLeaderSkillTraitSetId": 100260,
+    "DescriptionLanguageId": 160700000000100260,
+    "TraitConditionSetId": 1000199,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillContentSetId": 137000075002,
+    "SupporterLeaderSkillTraitSetId": 100400,
+    "DescriptionLanguageId": 160700000000100400,
+    "TraitConditionSetId": 1000663,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillContentSetId": 137000075003,
+    "SupporterLeaderSkillTraitSetId": 100280,
+    "DescriptionLanguageId": 160700000000100280,
+    "TraitConditionSetId": 1000199,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillContentSetId": 137000075003,
+    "SupporterLeaderSkillTraitSetId": 100440,
+    "DescriptionLanguageId": 160700000000100440,
+    "TraitConditionSetId": 1000663,
     "SortOrder": 1
   },
   {

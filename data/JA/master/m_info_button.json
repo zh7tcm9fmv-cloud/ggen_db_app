@@ -283,5 +283,20 @@
     "InfoButtonTypeIndex": 63,
     "FunctionTipsDetailSetId": 9008,
     "TitleLanguageId": 170700000000900801
+  },
+  {
+    "InfoButtonTypeIndex": 65,
+    "FunctionTipsDetailSetId": 9009,
+    "TitleLanguageId": 170700000000900901
+  },
+  {
+    "InfoButtonTypeIndex": 66,
+    "FunctionTipsDetailSetId": 3301,
+    "TitleLanguageId": 170700000000330101
+  },
+  {
+    "InfoButtonTypeIndex": 67,
+    "FunctionTipsDetailSetId": 9010,
+    "TitleLanguageId": 170700000000901001
   }
 ]

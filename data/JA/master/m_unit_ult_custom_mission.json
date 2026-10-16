@@ -1,0 +1,542 @@
+[
+  {
+    "Id": 13080005001,
+    "UnitUltGroupId": 13080005,
+    "PhaseNumber": 1,
+    "SortOrder": 1,
+    "GameEventConditionId": 320030000101,
+    "TargetProgressCount": 56,
+    "DescriptionLanguageId": 180700320030000101,
+    "TransitionId": 39000000003000
+  },
+  {
+    "Id": 13080005002,
+    "UnitUltGroupId": 13080005,
+    "PhaseNumber": 1,
+    "SortOrder": 2,
+    "GameEventConditionId": 320030000102,
+    "TargetProgressCount": 10,
+    "DescriptionLanguageId": 180700320030000102,
+    "TransitionId": 39000000003000
+  },
+  {
+    "Id": 13080005003,
+    "UnitUltGroupId": 13080005,
+    "PhaseNumber": 1,
+    "SortOrder": 3,
+    "GameEventConditionId": 320030000103,
+    "TargetProgressCount": 10,
+    "DescriptionLanguageId": 180700320030000103,
+    "TransitionId": 21000000000000
+  },
+  {
+    "Id": 13080005004,
+    "UnitUltGroupId": 13080005,
+    "PhaseNumber": 1,
+    "SortOrder": 4,
+    "GameEventConditionId": 320030000104,
+    "TargetProgressCount": 1,
+    "DescriptionLanguageId": 180700320030000104,
+    "TransitionId": 14000090510009
+  },
+  {
+    "Id": 13080005005,
+    "UnitUltGroupId": 13080005,
+    "PhaseNumber": 2,
+    "SortOrder": 1,
+    "GameEventConditionId": 320030000201,
+    "TargetProgressCount": 30,
+    "DescriptionLanguageId": 180700320030000201,
+    "TransitionId": 39000000003000
+  },
+  {
+    "Id": 13080005006,
+    "UnitUltGroupId": 13080005,
+    "PhaseNumber": 2,
+    "SortOrder": 2,
+    "GameEventConditionId": 320030000202,
+    "TargetProgressCount": 30,
+    "DescriptionLanguageId": 180700320030000202,
+    "TransitionId": 21000000000000
+  },
+  {
+    "Id": 13080005007,
+    "UnitUltGroupId": 13080005,
+    "PhaseNumber": 2,
+    "SortOrder": 3,
+    "GameEventConditionId": 320030000203,
+    "TargetProgressCount": 1,
+    "DescriptionLanguageId": 180700320030000203,
+    "TransitionId": 55000000000000
+  },
+  {
+    "Id": 13080005008,
+    "UnitUltGroupId": 13080005,
+    "PhaseNumber": 2,
+    "SortOrder": 4,
+    "GameEventConditionId": 320030000204,
+    "TargetProgressCount": 100,
+    "DescriptionLanguageId": 180700320030000204,
+    "TransitionId": 21000000000000
+  },
+  {
+    "Id": 13080005009,
+    "UnitUltGroupId": 13080005,
+    "PhaseNumber": 2,
+    "SortOrder": 5,
+    "GameEventConditionId": 320030000205,
+    "TargetProgressCount": 5000000,
+    "DescriptionLanguageId": 180700320030000205,
+    "TransitionId": 21000000000000
+  },
+  {
+    "Id": 13790001001,
+    "UnitUltGroupId": 13790001,
+    "PhaseNumber": 1,
+    "SortOrder": 1,
+    "GameEventConditionId": 320037000101,
+    "TargetProgressCount": 63,
+    "DescriptionLanguageId": 180700320037000101,
+    "TransitionId": 39000000003700
+  },
+  {
+    "Id": 13790001002,
+    "UnitUltGroupId": 13790001,
+    "PhaseNumber": 1,
+    "SortOrder": 2,
+    "GameEventConditionId": 320037000102,
+    "TargetProgressCount": 10,
+    "DescriptionLanguageId": 180700320037000102,
+    "TransitionId": 39000000003700
+  },
+  {
+    "Id": 13790001003,
+    "UnitUltGroupId": 13790001,
+    "PhaseNumber": 1,
+    "SortOrder": 3,
+    "GameEventConditionId": 320037000103,
+    "TargetProgressCount": 10,
+    "DescriptionLanguageId": 180700320037000103,
+    "TransitionId": 21000000000000
+  },
+  {
+    "Id": 13790001004,
+    "UnitUltGroupId": 13790001,
+    "PhaseNumber": 1,
+    "SortOrder": 4,
+    "GameEventConditionId": 320037000104,
+    "TargetProgressCount": 1,
+    "DescriptionLanguageId": 180700320037000104,
+    "TransitionId": 14000090510014
+  },
+  {
+    "Id": 13790001005,
+    "UnitUltGroupId": 13790001,
+    "PhaseNumber": 2,
+    "SortOrder": 1,
+    "GameEventConditionId": 320037000201,
+    "TargetProgressCount": 30,
+    "DescriptionLanguageId": 180700320037000201,
+    "TransitionId": 39000000003700
+  },
+  {
+    "Id": 13790001006,
+    "UnitUltGroupId": 13790001,
+    "PhaseNumber": 2,
+    "SortOrder": 2,
+    "GameEventConditionId": 320037000202,
+    "TargetProgressCount": 30,
+    "DescriptionLanguageId": 180700320037000202,
+    "TransitionId": 21000000000000
+  },
+  {
+    "Id": 13790001007,
+    "UnitUltGroupId": 13790001,
+    "PhaseNumber": 2,
+    "SortOrder": 3,
+    "GameEventConditionId": 320037000203,
+    "TargetProgressCount": 1,
+    "DescriptionLanguageId": 180700320037000203,
+    "TransitionId": 55000000000000
+  },
+  {
+    "Id": 13790001008,
+    "UnitUltGroupId": 13790001,
+    "PhaseNumber": 2,
+    "SortOrder": 4,
+    "GameEventConditionId": 320037000204,
+    "TargetProgressCount": 100,
+    "DescriptionLanguageId": 180700320037000204,
+    "TransitionId": 21000000000000
+  },
+  {
+    "Id": 13790001009,
+    "UnitUltGroupId": 13790001,
+    "PhaseNumber": 2,
+    "SortOrder": 5,
+    "GameEventConditionId": 320037000205,
+    "TargetProgressCount": 5000000,
+    "DescriptionLanguageId": 180700320037000205,
+    "TransitionId": 21000000000000
+  },
+  {
+    "Id": 17500003001,
+    "UnitUltGroupId": 17500003,
+    "PhaseNumber": 1,
+    "SortOrder": 1,
+    "GameEventConditionId": 320008100101,
+    "TargetProgressCount": 33,
+    "DescriptionLanguageId": 180700320008100101,
+    "TransitionId": 39000000000810
+  },
+  {
+    "Id": 17500003002,
+    "UnitUltGroupId": 17500003,
+    "PhaseNumber": 1,
+    "SortOrder": 2,
+    "GameEventConditionId": 320008100102,
+    "TargetProgressCount": 10,
+    "DescriptionLanguageId": 180700320008100102,
+    "TransitionId": 39000000000810
+  },
+  {
+    "Id": 17500003003,
+    "UnitUltGroupId": 17500003,
+    "PhaseNumber": 1,
+    "SortOrder": 3,
+    "GameEventConditionId": 320008100103,
+    "TargetProgressCount": 10,
+    "DescriptionLanguageId": 180700320008100103,
+    "TransitionId": 21000000000000
+  },
+  {
+    "Id": 17500003004,
+    "UnitUltGroupId": 17500003,
+    "PhaseNumber": 1,
+    "SortOrder": 4,
+    "GameEventConditionId": 320008100104,
+    "TargetProgressCount": 1,
+    "DescriptionLanguageId": 180700320008100104,
+    "TransitionId": 14000090510006
+  },
+  {
+    "Id": 17500003005,
+    "UnitUltGroupId": 17500003,
+    "PhaseNumber": 2,
+    "SortOrder": 1,
+    "GameEventConditionId": 320008100201,
+    "TargetProgressCount": 30,
+    "DescriptionLanguageId": 180700320008100201,
+    "TransitionId": 39000000000810
+  },
+  {
+    "Id": 17500003006,
+    "UnitUltGroupId": 17500003,
+    "PhaseNumber": 2,
+    "SortOrder": 2,
+    "GameEventConditionId": 320008100202,
+    "TargetProgressCount": 30,
+    "DescriptionLanguageId": 180700320008100202,
+    "TransitionId": 21000000000000
+  },
+  {
+    "Id": 17500003007,
+    "UnitUltGroupId": 17500003,
+    "PhaseNumber": 2,
+    "SortOrder": 3,
+    "GameEventConditionId": 320008100203,
+    "TargetProgressCount": 1,
+    "DescriptionLanguageId": 180700320008100203,
+    "TransitionId": 55000000000000
+  },
+  {
+    "Id": 17500003008,
+    "UnitUltGroupId": 17500003,
+    "PhaseNumber": 2,
+    "SortOrder": 4,
+    "GameEventConditionId": 320008100204,
+    "TargetProgressCount": 100,
+    "DescriptionLanguageId": 180700320008100204,
+    "TransitionId": 21000000000000
+  },
+  {
+    "Id": 17500003009,
+    "UnitUltGroupId": 17500003,
+    "PhaseNumber": 2,
+    "SortOrder": 5,
+    "GameEventConditionId": 320008100205,
+    "TargetProgressCount": 5000000,
+    "DescriptionLanguageId": 180700320008100205,
+    "TransitionId": 21000000000000
+  },
+  {
+    "Id": 17610001001,
+    "UnitUltGroupId": 17610001,
+    "PhaseNumber": 1,
+    "SortOrder": 1,
+    "GameEventConditionId": 320009500101,
+    "TargetProgressCount": 34,
+    "DescriptionLanguageId": 180700320009500101,
+    "TransitionId": 39000000000950
+  },
+  {
+    "Id": 17610001002,
+    "UnitUltGroupId": 17610001,
+    "PhaseNumber": 1,
+    "SortOrder": 2,
+    "GameEventConditionId": 320009500102,
+    "TargetProgressCount": 10,
+    "DescriptionLanguageId": 180700320009500102,
+    "TransitionId": 39000000000950
+  },
+  {
+    "Id": 17610001003,
+    "UnitUltGroupId": 17610001,
+    "PhaseNumber": 1,
+    "SortOrder": 3,
+    "GameEventConditionId": 320009500103,
+    "TargetProgressCount": 10,
+    "DescriptionLanguageId": 180700320009500103,
+    "TransitionId": 21000000000000
+  },
+  {
+    "Id": 17610001004,
+    "UnitUltGroupId": 17610001,
+    "PhaseNumber": 1,
+    "SortOrder": 4,
+    "GameEventConditionId": 320009500104,
+    "TargetProgressCount": 1,
+    "DescriptionLanguageId": 180700320009500104,
+    "TransitionId": 14000090510007
+  },
+  {
+    "Id": 17610001005,
+    "UnitUltGroupId": 17610001,
+    "PhaseNumber": 2,
+    "SortOrder": 1,
+    "GameEventConditionId": 320009500201,
+    "TargetProgressCount": 30,
+    "DescriptionLanguageId": 180700320009500201,
+    "TransitionId": 39000000000950
+  },
+  {
+    "Id": 17610001006,
+    "UnitUltGroupId": 17610001,
+    "PhaseNumber": 2,
+    "SortOrder": 2,
+    "GameEventConditionId": 320009500202,
+    "TargetProgressCount": 30,
+    "DescriptionLanguageId": 180700320009500202,
+    "TransitionId": 21000000000000
+  },
+  {
+    "Id": 17610001007,
+    "UnitUltGroupId": 17610001,
+    "PhaseNumber": 2,
+    "SortOrder": 3,
+    "GameEventConditionId": 320009500203,
+    "TargetProgressCount": 1,
+    "DescriptionLanguageId": 180700320009500203,
+    "TransitionId": 55000000000000
+  },
+  {
+    "Id": 17610001008,
+    "UnitUltGroupId": 17610001,
+    "PhaseNumber": 2,
+    "SortOrder": 4,
+    "GameEventConditionId": 320009500204,
+    "TargetProgressCount": 100,
+    "DescriptionLanguageId": 180700320009500204,
+    "TransitionId": 21000000000000
+  },
+  {
+    "Id": 17610001009,
+    "UnitUltGroupId": 17610001,
+    "PhaseNumber": 2,
+    "SortOrder": 5,
+    "GameEventConditionId": 320009500205,
+    "TargetProgressCount": 5000000,
+    "DescriptionLanguageId": 180700320009500205,
+    "TransitionId": 21000000000000
+  },
+  {
+    "Id": 17640002001,
+    "UnitUltGroupId": 17640002,
+    "PhaseNumber": 1,
+    "SortOrder": 1,
+    "GameEventConditionId": 320000100101,
+    "TargetProgressCount": 41,
+    "DescriptionLanguageId": 180700320000100101,
+    "TransitionId": 39000000000010
+  },
+  {
+    "Id": 17640002002,
+    "UnitUltGroupId": 17640002,
+    "PhaseNumber": 1,
+    "SortOrder": 2,
+    "GameEventConditionId": 320000100102,
+    "TargetProgressCount": 10,
+    "DescriptionLanguageId": 180700320000100102,
+    "TransitionId": 39000000000010
+  },
+  {
+    "Id": 17640002003,
+    "UnitUltGroupId": 17640002,
+    "PhaseNumber": 1,
+    "SortOrder": 3,
+    "GameEventConditionId": 320000100103,
+    "TargetProgressCount": 10,
+    "DescriptionLanguageId": 180700320000100103,
+    "TransitionId": 21000000000000
+  },
+  {
+    "Id": 17640002004,
+    "UnitUltGroupId": 17640002,
+    "PhaseNumber": 1,
+    "SortOrder": 4,
+    "GameEventConditionId": 320000100104,
+    "TargetProgressCount": 1,
+    "DescriptionLanguageId": 180700320000100104,
+    "TransitionId": 14000090510005
+  },
+  {
+    "Id": 17640002005,
+    "UnitUltGroupId": 17640002,
+    "PhaseNumber": 2,
+    "SortOrder": 1,
+    "GameEventConditionId": 320000100201,
+    "TargetProgressCount": 30,
+    "DescriptionLanguageId": 180700320000100201,
+    "TransitionId": 39000000000010
+  },
+  {
+    "Id": 17640002006,
+    "UnitUltGroupId": 17640002,
+    "PhaseNumber": 2,
+    "SortOrder": 2,
+    "GameEventConditionId": 320000100202,
+    "TargetProgressCount": 30,
+    "DescriptionLanguageId": 180700320000100202,
+    "TransitionId": 21000000000000
+  },
+  {
+    "Id": 17640002007,
+    "UnitUltGroupId": 17640002,
+    "PhaseNumber": 2,
+    "SortOrder": 3,
+    "GameEventConditionId": 320000100203,
+    "TargetProgressCount": 1,
+    "DescriptionLanguageId": 180700320000100203,
+    "TransitionId": 55000000000000
+  },
+  {
+    "Id": 17640002008,
+    "UnitUltGroupId": 17640002,
+    "PhaseNumber": 2,
+    "SortOrder": 4,
+    "GameEventConditionId": 320000100204,
+    "TargetProgressCount": 100,
+    "DescriptionLanguageId": 180700320000100204,
+    "TransitionId": 21000000000000
+  },
+  {
+    "Id": 17640002009,
+    "UnitUltGroupId": 17640002,
+    "PhaseNumber": 2,
+    "SortOrder": 5,
+    "GameEventConditionId": 320000100205,
+    "TargetProgressCount": 5000000,
+    "DescriptionLanguageId": 180700320000100205,
+    "TransitionId": 21000000000000
+  },
+  {
+    "Id": 18500032001,
+    "UnitUltGroupId": 18500032,
+    "PhaseNumber": 1,
+    "SortOrder": 1,
+    "GameEventConditionId": 320021000101,
+    "TargetProgressCount": 24,
+    "DescriptionLanguageId": 180700320021000101,
+    "TransitionId": 39000000002100
+  },
+  {
+    "Id": 18500032002,
+    "UnitUltGroupId": 18500032,
+    "PhaseNumber": 1,
+    "SortOrder": 2,
+    "GameEventConditionId": 320021000102,
+    "TargetProgressCount": 10,
+    "DescriptionLanguageId": 180700320021000102,
+    "TransitionId": 39000000002100
+  },
+  {
+    "Id": 18500032003,
+    "UnitUltGroupId": 18500032,
+    "PhaseNumber": 1,
+    "SortOrder": 3,
+    "GameEventConditionId": 320021000103,
+    "TargetProgressCount": 10,
+    "DescriptionLanguageId": 180700320021000103,
+    "TransitionId": 21000000000000
+  },
+  {
+    "Id": 18500032004,
+    "UnitUltGroupId": 18500032,
+    "PhaseNumber": 1,
+    "SortOrder": 4,
+    "GameEventConditionId": 320021000104,
+    "TargetProgressCount": 1,
+    "DescriptionLanguageId": 180700320021000104,
+    "TransitionId": 14000090510008
+  },
+  {
+    "Id": 18500032005,
+    "UnitUltGroupId": 18500032,
+    "PhaseNumber": 2,
+    "SortOrder": 1,
+    "GameEventConditionId": 320021000201,
+    "TargetProgressCount": 30,
+    "DescriptionLanguageId": 180700320021000201,
+    "TransitionId": 39000000002100
+  },
+  {
+    "Id": 18500032006,
+    "UnitUltGroupId": 18500032,
+    "PhaseNumber": 2,
+    "SortOrder": 2,
+    "GameEventConditionId": 320021000202,
+    "TargetProgressCount": 30,
+    "DescriptionLanguageId": 180700320021000202,
+    "TransitionId": 21000000000000
+  },
+  {
+    "Id": 18500032007,
+    "UnitUltGroupId": 18500032,
+    "PhaseNumber": 2,
+    "SortOrder": 3,
+    "GameEventConditionId": 320021000203,
+    "TargetProgressCount": 1,
+    "DescriptionLanguageId": 180700320021000203,
+    "TransitionId": 55000000000000
+  },
+  {
+    "Id": 18500032008,
+    "UnitUltGroupId": 18500032,
+    "PhaseNumber": 2,
+    "SortOrder": 4,
+    "GameEventConditionId": 320021000204,
+    "TargetProgressCount": 100,
+    "DescriptionLanguageId": 180700320021000204,
+    "TransitionId": 21000000000000
+  },
+  {
+    "Id": 18500032009,
+    "UnitUltGroupId": 18500032,
+    "PhaseNumber": 2,
+    "SortOrder": 5,
+    "GameEventConditionId": 320021000205,
+    "TargetProgressCount": 5000000,
+    "DescriptionLanguageId": 180700320021000205,
+    "TransitionId": 21000000000000
+  }
+]

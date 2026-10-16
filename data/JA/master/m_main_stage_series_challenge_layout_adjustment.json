@@ -19,5 +19,12 @@
     "BromideScalePercent": 100,
     "BromideMovePositionX": 0,
     "BromideMovePositionY": 0
+  },
+  {
+    "MainStageSeriesChallengeId": 3700,
+    "LogoOffsetX": -35,
+    "BromideScalePercent": 100,
+    "BromideMovePositionX": 0,
+    "BromideMovePositionY": 0
   }
 ]
