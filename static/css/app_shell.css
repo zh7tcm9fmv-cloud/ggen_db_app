@@ -4994,6 +4994,14 @@ display:flex;flex-direction:column;gap:12px;align-items:stretch;width:100%;min-w
   gap:10px;
   min-width:0;
 }
+.ult-alt-mission-icon{
+  flex-shrink:0;
+  width:36px;
+  height:36px;
+  object-fit:contain;
+  border-radius:4px;
+  background:rgba(0,0,0,.25);
+}
 .ult-alt-mission-desc{
   flex:1;
   min-width:0;

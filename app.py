@@ -30405,6 +30405,19 @@ def _build_unit_ult_alteration(unit_id, lc):
             if not series_name:
                 series_name = resolve_challenge_series_name(ld, t1)
 
+        # Deliver-item / Capital missions: attach the same icons used in-game.
+        mission_icon = ''
+        mission_icon_name = ''
+        if ctype == 42 and tv1 != '0':
+            brief = _item_reward_brief(tv1, lc)
+            if brief:
+                mission_icon = brief.get('icon') or ''
+                mission_icon_name = brief.get('name') or ''
+        elif ctype == 43:
+            mission_icon = '/static/images/UI/UI_Common_Icon_Capital_M.webp'
+            # Official m_help short title: EN Capital; JA/TW/HK CAPITAL.
+            mission_icon_name = 'Capital' if lc == 'EN' else 'CAPITAL'
+
         mph = safe_int(m.get('phase'), 0)
         missions_out.append({
             'id': m.get('id'),
@@ -30413,6 +30426,8 @@ def _build_unit_ult_alteration(unit_id, lc):
             'target_count': m.get('target_count'),
             'description': desc,
             'condition_type': ctype,
+            'icon': mission_icon or None,
+            'icon_name': mission_icon_name or None,
             'unlock_total_alt_lv': phase_unlock_by_phase.get(mph) or 0,
             'stage': stage_link,
             'challenge_series_id': challenge_series_id or None,
@@ -35512,7 +35527,7 @@ def get_unit(unit_id):
         if stat_mode_arg not in ('normal', 'sp', 'ssp'):
             stat_mode_arg = 'normal'
         cond_for_ranking = request.args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
-        ck = f"u_{unit_id}_{lc}_ssp20_ult4_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_bp3_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        ck = f"u_{unit_id}_{lc}_ssp20_ult5_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_bp3_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_preserialized(cached, ck, private=True, max_age=3600, convert_images=False)

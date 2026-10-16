@@ -5793,8 +5793,9 @@ function renderUltAlterationSectionHtml(d){
         listOpen=true;
       }
       const target=m.target_count!=null
-        ?`<span class="ult-alt-mission-target">${escN(m.target_count)}</span>`
+        ?`<span class="ult-alt-mission-target">${esc(typeof fmtN==='function'?fmtN(m.target_count):escN(m.target_count))}</span>`
         :'';
+      const ic=m.icon?`<img class="ult-alt-mission-icon" src="${imgUrl(m.icon)}" alt="${escAttr(m.icon_name||'')}" title="${escAttr(m.icon_name||'')}" width="36" height="36" loading="lazy" decoding="async" onerror="this.style.display='none'">`:'';
       let meta='';
       if(m.stage&&m.stage.id){
         const sn=esc(m.stage.name||m.stage.id);
@@ -5812,7 +5813,7 @@ function renderUltAlterationSectionHtml(d){
         });
         meta+=`</div></details></div>`;
       }
-      misInner+=`<div class="ult-alt-mission-cell"><div class="ult-alt-mission-cell-main"><p class="ult-alt-mission-desc">${esc(m.description||'')}</p>${target}</div>${meta?`<div class="ult-alt-mission-meta">${meta}</div>`:''}</div>`;
+      misInner+=`<div class="ult-alt-mission-cell"><div class="ult-alt-mission-cell-main">${ic}<p class="ult-alt-mission-desc">${esc(m.description||'')}</p>${target}</div>${meta?`<div class="ult-alt-mission-meta">${meta}</div>`:''}</div>`;
     });
     closeList();
     body+=sectionBox(tf('ult_alt_missions','Alteration Missions'),tf('ult_alt_missions_hint','Complete Alteration Missions to earn alteration bonuses.'),misInner,'mission');
