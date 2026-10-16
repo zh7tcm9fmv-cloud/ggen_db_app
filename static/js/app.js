@@ -5728,11 +5728,29 @@ function renderUltAlterationSectionHtml(d){
     if(!ul)return'';
     return`<div class="ability-detail mod-details-cell" style="margin:0 0 10px;padding:10px 12px;border:1px solid rgba(180,60,80,.4);background:rgba(40,12,22,.35);display:flex;align-items:center;gap:12px;flex-wrap:wrap">${lockCluster(missionCount||3)}<div style="min-width:0;flex:1"><div style="font-weight:600;line-height:1.35">${esc(ul)}</div></div></div>`;
   };
-  const skillChipHtml=(op)=>{
+  const skillCellHtml=(op)=>{
     const frame=ultUi('UI_ULT_SkillSelect');
     const ic=op&&op.icon?imgUrl(op.icon):'';
     const name=esc(op&&op.name||'');
-    return`<div style="display:flex;flex-direction:column;align-items:center;gap:4px;width:72px;flex-shrink:0" title="${name}"><div style="position:relative;width:56px;height:56px"><img src="${frame}" alt="" width="56" height="56" loading="lazy" decoding="async" style="position:absolute;inset:0;width:56px;height:56px;object-fit:contain;pointer-events:none" onerror="this.style.display='none'">${ic?`<img src="${ic}" alt="" width="40" height="40" loading="lazy" decoding="async" style="position:absolute;left:50%;top:50%;width:40px;height:40px;margin:-20px 0 0 -20px;object-fit:contain;border-radius:50%" onerror="this.style.display='none'">`:''}</div><div style="font-size:.72em;line-height:1.2;text-align:center;opacity:.9;max-width:72px;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">${name}</div></div>`;
+    /* Skill desc and its trait line often restate the same effect (trait drops "(once per battle)"). Keep the fuller line. */
+    const _fold=s=>String(s||'').toLowerCase().replace(/\([^)]*\)/g,'').replace(/[^\p{L}\p{N}]+/gu,'');
+    const raw=Array.isArray(op&&op.details)?op.details.map(x=>String(x||'').trim()).filter(Boolean):[];
+    if(!raw.length&&op&&op.description)raw.push(String(op.description));
+    const kept=[];
+    raw.forEach(line=>{
+      const n=_fold(line);
+      if(!n)return;
+      for(let i=0;i<kept.length;i++){
+        const kn=_fold(kept[i]);
+        if(!kn)continue;
+        if(kn.includes(n))return;
+        if(n.includes(kn)){kept[i]=line;return;}
+      }
+      kept.push(line);
+    });
+    const det=kept.join('\n');
+    const icon=`<div class="ult-alt-skill-icon"><img class="ult-alt-skill-frame" src="${frame}" alt="" width="56" height="56" loading="lazy" decoding="async" onerror="this.style.display='none'">${ic?`<img class="ult-alt-skill-glyph" src="${ic}" alt="" width="40" height="40" loading="lazy" decoding="async" onerror="this.style.display='none'">`:''}</div>`;
+    return`<div class="ult-alt-skill-cell"><div class="ult-alt-skill-rail">${icon}<div class="ult-alt-skill-name">${name}</div></div><div class="ability-info"><div class="ability-detail ult-alt-skill-desc">${esc(det)}</div></div></div>`;
   };
   let body='';
   if(!u.live){body+=`<div class="ability-detail" style="margin:0 0 8px;opacity:.85">${esc(tf('ult_alt_pending','Stat caps configured — missions not live yet'))}</div>`}
@@ -5821,16 +5839,6 @@ function renderUltAlterationSectionHtml(d){
     closeList();
     body+=sectionBox(tf('ult_alt_missions','Alteration Missions'),tf('ult_alt_missions_hint','Complete Alteration Missions to earn alteration bonuses.'),misInner,'mission');
   }
-  const wps=Array.isArray(u.weapons)?u.weapons:[];
-  if(wps.length){
-    const maskIc=imgUrl('/static/images/Rarity/UI_Common_Icon_ULT_Mask.webp');
-    body+=`<div class="ability-detail" style="margin:12px 0 6px;opacity:.85;display:flex;align-items:center;gap:6px"><img src="${maskIc}" alt="" width="18" height="18" style="width:18px;height:18px;object-fit:contain" onerror="this.style.display='none'"><span>${esc(tf('ult_alt_weapons','Alteration weapons'))}</span></div>`;
-    body+=`<div class="ability-detail" style="margin:0 0 6px;opacity:.8;font-size:.92em;line-height:1.35">${esc(tf('ult_alt_weapons_hint','Turn on ULT Alteration (mask) above to show the full card in Weapons.'))}</div>`;
-    wps.forEach(w=>{
-      const wp=w.weapon||{};
-      body+=`<div class="ability-detail mod-details-cell" style="margin:0 0 4px">${esc(phLabel(w.phase))} — ${esc(wp.name||wp.id||'')}</div>`;
-    });
-  }
   const sks=Array.isArray(u.skills)?u.skills:[];
   if(sks.length){
     body+=`<div class="ability-detail" style="margin:12px 0 4px;opacity:.85">${esc(tf('ult_alt_bonus','Alteration Bonus'))}</div>`;
@@ -5842,14 +5850,8 @@ function renderUltAlterationSectionHtml(d){
       body+=unlockGateHtml(ul,3);
       const opts=Array.isArray(s.options)?s.options:[];
       if(opts.length){
-        body+=`<div style="display:flex;flex-wrap:wrap;gap:10px 12px;margin:0 0 10px;align-items:flex-start">${opts.map(skillChipHtml).join('')}</div>`;
+        body+=`<div class="ult-alt-skill-list">${opts.map(skillCellHtml).join('')}</div>`;
       }
-      opts.forEach(op=>{
-        body+=`<div class="ability-detail mod-details-cell" style="margin:0 0 6px"><div style="font-weight:600">${esc(op.name||'')}</div>`;
-        if(op.details&&op.details.length){body+=`<div style="opacity:.9;white-space:pre-wrap;margin-top:2px">${esc(String(op.details[0]||''))}</div>`}
-        else if(op.description){body+=`<div style="opacity:.9;white-space:pre-wrap;margin-top:2px">${esc(op.description)}</div>`}
-        body+=`</div>`;
-      });
     });
   }
   const sibs=Array.isArray(u.siblings)?u.siblings:[];
