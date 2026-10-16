@@ -4964,6 +4964,80 @@ display:flex;flex-direction:column;gap:12px;align-items:stretch;width:100%;min-w
   filter:brightness(1.2) saturate(1.35) drop-shadow(0 0 1px rgba(255,255,255,.55)) drop-shadow(0 0 2px rgba(84,209,190,.9)) drop-shadow(0 0 2px rgba(198,92,196,.75));
 }
 
+/* ULT Alteration — mission rows (in-game list cells) */
+.ult-alt-mission-phase{
+  margin:12px 0 6px;
+  font-weight:700;
+  letter-spacing:.02em;
+  color:var(--text-primary, #e8eef5);
+}
+.ult-alt-mission-list{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  margin:0 0 4px;
+}
+.ult-alt-mission-cell{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  padding:10px 12px;
+  border:1px solid rgba(0,180,220,.32);
+  border-radius:6px;
+  background:linear-gradient(180deg,rgba(12,36,52,.72),rgba(8,22,34,.88));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+}
+.ult-alt-mission-cell-main{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+  min-width:0;
+}
+.ult-alt-mission-desc{
+  flex:1;
+  min-width:0;
+  margin:0;
+  line-height:1.45;
+  color:rgba(232,238,245,.94);
+  white-space:pre-wrap;
+}
+.ult-alt-mission-target{
+  flex-shrink:0;
+  align-self:flex-start;
+  padding:3px 8px;
+  border-radius:4px;
+  border:1px solid rgba(255,196,80,.35);
+  background:rgba(40,28,8,.45);
+  color:#ffc450;
+  font-variant-numeric:tabular-nums;
+  font-size:.85em;
+  font-weight:700;
+  line-height:1.2;
+}
+.ult-alt-mission-meta{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  padding-top:2px;
+  border-top:1px solid rgba(255,255,255,.08);
+  font-size:.92em;
+}
+.ult-alt-mission-meta .linkish{
+  background:none;
+  border:0;
+  padding:0;
+  color:var(--accent-cyan,#00d4ff);
+  cursor:pointer;
+  text-align:left;
+  line-height:1.35;
+}
+.ult-alt-mission-series{
+  opacity:.8;
+}
+.ult-alt-mission-ch details{margin:0}
+.ult-alt-mission-ch summary{cursor:pointer;color:rgba(232,238,245,.9)}
+.ult-alt-mission-ch-list{display:grid;gap:4px;margin-top:6px}
 
 @media(max-width:768px){
 .list-toolbar .rarity-filter-panel:has(.rarity-star-grid):not([hidden]){width:max-content!important;min-width:0!important;max-width:min(220px,calc(100vw - 24px))!important;padding:6px!important}

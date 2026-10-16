@@ -5779,35 +5779,42 @@ function renderUltAlterationSectionHtml(d){
   const missions=Array.isArray(u.missions)?u.missions:[];
   if(missions.length){
     let misInner='';
-    let curPh=null;let phMissionCount=0;
+    let curPh=null;let listOpen=false;
+    const closeList=()=>{if(listOpen){misInner+='</div>';listOpen=false}};
     missions.forEach(m=>{
       if(m.phase!==curPh){
+        closeList();
         curPh=m.phase;
-        phMissionCount=missions.filter(x=>x.phase===curPh).length;
+        const phMissionCount=missions.filter(x=>x.phase===curPh).length;
         const ul=unlockLabel(m.unlock_total_alt_lv);
-        misInner+=`<div class="ability-detail" style="margin:8px 0 4px;font-weight:600">${esc(phLabel(curPh))}</div>`;
+        misInner+=`<div class="ult-alt-mission-phase">${esc(phLabel(curPh))}</div>`;
         misInner+=unlockGateHtml(ul,phMissionCount);
+        misInner+='<div class="ult-alt-mission-list">';
+        listOpen=true;
       }
-      const cnt=m.target_count!=null?` <span style="opacity:.75">×${escN(m.target_count)}</span>`:'';
-      misInner+=`<div class="ability-detail mod-details-cell" style="margin:0 0 8px;line-height:1.45;opacity:.92">${esc(m.description||'')}${cnt}`;
+      const target=m.target_count!=null
+        ?`<span class="ult-alt-mission-target">${escN(m.target_count)}</span>`
+        :'';
+      let meta='';
       if(m.stage&&m.stage.id){
         const sn=esc(m.stage.name||m.stage.id);
-        misInner+=`<div style="margin-top:4px"><button type="button" class="linkish" style="background:none;border:0;padding:0;color:var(--accent-cyan,#00d4ff);cursor:pointer;text-align:left" onclick="event.stopPropagation();openDetail('stage','${escJs(String(m.stage.id))}')">${esc(tf('ult_alt_open_stage','Open stage'))}: ${sn}</button></div>`;
+        meta+=`<button type="button" class="linkish" onclick="event.stopPropagation();openDetail('stage','${escJs(String(m.stage.id))}')">${esc(tf('ult_alt_open_stage','Open stage'))}: ${sn}</button>`;
       }
-      if(m.series_name){misInner+=`<div style="margin-top:2px;opacity:.8;font-size:.92em">${esc(m.series_name)}</div>`}
+      if(m.series_name){meta+=`<div class="ult-alt-mission-series">${esc(m.series_name)}</div>`}
       const ch=Array.isArray(m.challenge_stages)?m.challenge_stages:[];
       if(ch.length){
         const sname=esc(m.challenge_series_name||tf('ult_alt_challenge_stages','Challenge stages'));
-        misInner+=`<details style="margin-top:6px"><summary style="cursor:pointer">${sname} (${ch.length})</summary><div style="margin-top:6px;display:grid;gap:4px">`;
+        meta+=`<div class="ult-alt-mission-ch"><details><summary>${sname} (${ch.length})</summary><div class="ult-alt-mission-ch-list">`;
         ch.forEach(st=>{
           const hard=st.is_hard?' <span class="stage-hard-badge" style="font-size:.75em">HARD</span>':'';
           const label=`No.${escN(st.stage_number)} ${esc(st.name||st.id)}${hard}`;
-          misInner+=`<button type="button" class="linkish" style="background:none;border:0;padding:0;color:var(--accent-cyan,#00d4ff);cursor:pointer;text-align:left" onclick="event.stopPropagation();openDetail('stage','${escJs(String(st.id))}')">${label}</button>`;
+          meta+=`<button type="button" class="linkish" onclick="event.stopPropagation();openDetail('stage','${escJs(String(st.id))}')">${label}</button>`;
         });
-        misInner+=`</div></details>`;
+        meta+=`</div></details></div>`;
       }
-      misInner+=`</div>`;
+      misInner+=`<div class="ult-alt-mission-cell"><div class="ult-alt-mission-cell-main"><p class="ult-alt-mission-desc">${esc(m.description||'')}</p>${target}</div>${meta?`<div class="ult-alt-mission-meta">${meta}</div>`:''}</div>`;
     });
+    closeList();
     body+=sectionBox(tf('ult_alt_missions','Alteration Missions'),tf('ult_alt_missions_hint','Complete Alteration Missions to earn alteration bonuses.'),misInner,'mission');
   }
   const wps=Array.isArray(u.weapons)?u.weapons:[];
