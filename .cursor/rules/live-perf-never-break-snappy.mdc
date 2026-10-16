@@ -41,7 +41,8 @@ Owner lesson (**Oct 2026**): `/tl` slim+hydrate, InstantBrowse `ranking_bulk` wa
 - Pin timeline cache keys so eviction does not force cold rebuild under traffic
 - Pre-serialized raw+gzip bodies for large warm JSON (`/tl`, published `/tm` `/dm`) — no re-jsonify under GIL
 - Published matrix gzip served as bytes (never keep decoded multi‑MB boards in `_api_cache`)
-- Cap refillable MSY pair cache (default 6k). Never sync-trim on `/health` (Railway probes freeze the worker)
+- Cap refillable MSY pair cache (ceiling 6k, floor ~1.5k). **Adaptive budget** (`MSY_ADAPTIVE_CACHE`, default on): when RSS ≥ ~1050MB or real traffic is high, shrink the warm set; when RSS and traffic are calm for two ticks, grow back to the ceiling. Misses recompute — rankings, damage, and UI stay the same. Shrink/grow on a background thread only. Never sync-trim or `gc.collect()` on `/health` (Railway probes freeze the worker)
+- **Feature + snappy together.** A change that keeps features but makes browse/detail/`/tl` laggy is not done. A change that gets speed by dropping a feature, slim-hydrate, or idle megabyte fetch is not done either. Warm less under pressure; do not delete the feature.
 - Gate deferred work behind detail-closed + long idle / user intent
 - Remove FX/decoration that burns bandwidth without product value (e.g. pedestal area spirals)
 

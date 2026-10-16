@@ -1,7 +1,8 @@
 """Regression: DC correction rounding (Firered ⑦ + in-game spot checks).
 
-Graze Ein (hard DEF): per-slice round-away — float-sum overshoots +2.
-Soft-DEF: combined float round-away when sum fraction ≥ HYBRID_FLOAT_FRAC (0.03).
+Graze Ein (hard DEF, DEF>ATK, tiny frac): per-slice round-away — float-sum overshoots +2.
+Soft-DEF / ATK-favored: combined float round-away when sum fraction ≥ HYBRID_FLOAT_FRAC
+(0.03) OR unit_atk ≥ unit_def (Freedom shares Graze’s tiny frac but needs float → 108249).
 
 Run: python scripts/dc_correction_round_away_test.py
 """
@@ -24,7 +25,7 @@ def round_away_0(x: float) -> int:
     return C(x) if x >= 0 else F(x)
 
 
-def damage_correction(off: float, deff: float, base: int, *, mode: str) -> int:
+def damage_correction(off: float, deff: float, base: int, *, mode: str, unit_atk: int = 0, unit_def: int = 0) -> int:
     off_raw = off * base
     def_raw = deff * base
     sum_raw = off_raw + def_raw
@@ -37,7 +38,8 @@ def damage_correction(off: float, deff: float, base: int, *, mode: str) -> int:
         return split
     if mode == "hybrid":
         frac = sum_raw - F(sum_raw)
-        return round_away_0(sum_raw) if frac >= HYBRID_FLOAT_FRAC else split
+        use_float = frac >= HYBRID_FLOAT_FRAC or unit_atk >= unit_def
+        return round_away_0(sum_raw) if use_float else split
     raise ValueError(mode)
 
 
@@ -62,7 +64,7 @@ def normal_dmg(
     def_c = C((unit_def + 2 * char_def) / 10)
     off = 100 / (EXP(((5000 - atk_c) * 30) / 100000) + 1)
     deff = -40 / (EXP(((5000 - def_c) * 3) / 100000) + 1)
-    corr = damage_correction(off, deff, base, mode=mode)
+    corr = damage_correction(off, deff, base, mode=mode, unit_atk=unit_atk, unit_def=unit_def)
     battle = C(base + corr)
     return MX(0, C(battle + C((di + vigor) * battle / 100)))
 
@@ -84,6 +86,10 @@ def main() -> None:
     susa_patulia = dict(
         unit_atk=14056, char_atk=891, unit_def=20910, char_def=709, wpn=7920, di=30, vigor=10
     )
+    # Reborns EX vs Freedom (stage 90520027) — in-game 108249; tiny frac + ATK>DEF needs float
+    freedom = dict(
+        unit_atk=18280, char_atk=808, unit_def=17047, char_def=668, wpn=6600, di=15, vigor=10
+    )
 
     assert normal_dmg(**ge, mode="hybrid") == 218515
     assert normal_dmg(**ge, mode="float") == 218517
@@ -97,8 +103,14 @@ def main() -> None:
     assert normal_dmg(**susa_dark, mode="hybrid") == 82634
     assert normal_dmg(**susa_patulia, mode="hybrid") == 73177
     assert normal_dmg(**susa_patulia, mode="away0") == 73176
+    assert normal_dmg(**freedom, mode="hybrid") == 108249
+    assert normal_dmg(**freedom, mode="away0") == 108248
 
-    print("dc_correction_round_away_test: OK (Graze 218515, Xi 182303, Sandaime Aerial 62454, Susanowo Dark 82634, Patulia 73177)")
+    print(
+        "dc_correction_round_away_test: OK "
+        "(Graze 218515, Xi 182303, Sandaime Aerial 62454, Susanowo Dark 82634, "
+        "Patulia 73177, Freedom 108249)"
+    )
 
 
 if __name__ == "__main__":

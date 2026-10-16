@@ -12,10 +12,11 @@ import json
 import math
 import os
 import re
+import sys
 import tempfile
 import threading
 import time
-from collections import OrderedDict
+from collections import OrderedDict, deque
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
 from functools import lru_cache
 
@@ -1918,8 +1919,12 @@ _bounded_cache_lock = threading.Lock()
 # /health often; sync trim+gc blocked the worker for multi‑seconds and made /c /u detail
 # unusable (Oct 2026). Keep trim opt-in only (RSS_TRIM_ENABLED=1) for rare manual ops.
 _UNIT_WEAPON_CACHE_MAX = max(256, min(8192, int(os.environ.get('MSY_UNIT_WEAPON_CACHE_MAX', '2048') or '2048')))
+# Ceiling when the process is calm. Floor is the warm set kept under RSS/traffic pressure.
 # Default 6k: enough warm Top 10 /cal hits without sitting at ~1GB+ and inviting thrash.
 _CHAR_PAIR_CACHE_MAX = max(1024, min(200000, int(os.environ.get('MSY_CHAR_PAIR_CACHE_MAX', '6000') or '6000')))
+_CHAR_PAIR_CACHE_FLOOR = max(1024, min(_CHAR_PAIR_CACHE_MAX, int(os.environ.get('MSY_CHAR_PAIR_CACHE_FLOOR', '1500') or '1500')))
+_UNIT_WEAPON_CACHE_FLOOR = max(256, min(_UNIT_WEAPON_CACHE_MAX, int(os.environ.get('MSY_UNIT_WEAPON_CACHE_FLOOR', '512') or '512')))
+_ADAPTIVE_CACHE_ENABLED = os.environ.get('MSY_ADAPTIVE_CACHE', '1').strip().lower() not in ('0', 'false', 'no', 'off')
 _rankings_result_cache = {}
 _rankings_browse_payload_cache = {}
 _MSY_BROWSE_PAYLOAD_CACHE_TTL = max(15, min(300, int(os.environ.get('MSY_BROWSE_CACHE_TTL', '60') or '60')))
@@ -2314,6 +2319,158 @@ def trim_runtime_caches_for_rss(*, rss_mb=None, force=False):
         _RSS_TRIM_LOCK.release()
 
 
+# Adaptive warm budget: shrink refillable MSY caches when RSS or real traffic is high,
+# grow back toward the ceiling when the process is calm. Features stay the same —
+# a miss recomputes. Never runs on /health (Railway probes). No gc.collect() here.
+_ADAPTIVE_BANDS = ('pressure', 'mid', 'calm')
+_adaptive_band = 'calm'
+_adaptive_pair_max = _CHAR_PAIR_CACHE_MAX
+_adaptive_wpn_max = _UNIT_WEAPON_CACHE_MAX
+_adaptive_up_streak = 0
+_adaptive_lock = threading.Lock()
+_adaptive_started = False
+_adaptive_req_times = deque()
+_ADAPTIVE_TICK_SEC = max(15.0, float(os.environ.get('MSY_ADAPTIVE_TICK_SEC', '30') or '30'))
+
+
+def note_http_request(path):
+    """Count user requests for the adaptive budget. Skip probes and static."""
+    if not _ADAPTIVE_CACHE_ENABLED:
+        return
+    p = str(path or '')
+    if p == '/health' or p.startswith('/static/'):
+        return
+    now = time.monotonic()
+    with _adaptive_lock:
+        _adaptive_req_times.append(now)
+        if len(_adaptive_req_times) > 8000:
+            cutoff = now - 60.0
+            while _adaptive_req_times and _adaptive_req_times[0] < cutoff:
+                _adaptive_req_times.popleft()
+
+
+def _adaptive_requests_per_min():
+    now = time.monotonic()
+    cutoff = now - 60.0
+    with _adaptive_lock:
+        while _adaptive_req_times and _adaptive_req_times[0] < cutoff:
+            _adaptive_req_times.popleft()
+        return len(_adaptive_req_times)
+
+
+def read_process_rss_mb():
+    """Current RSS in MB. Linux uses VmRSS (not the ru_maxrss high-water mark)."""
+    try:
+        if sys.platform.startswith('linux'):
+            with open('/proc/self/status', 'r', encoding='utf-8', errors='ignore') as sf:
+                for line in sf:
+                    if line.startswith('VmRSS:'):
+                        return int(line.split()[1]) / 1024.0
+        import resource
+        rss = int(getattr(resource.getrusage(resource.RUSAGE_SELF), 'ru_maxrss', 0) or 0)
+        if sys.platform == 'darwin':
+            return rss / (1024 * 1024)
+        return rss / 1024.0
+    except Exception:
+        return None
+
+
+def adaptive_band_for(rss_mb, rpm):
+    """pressure < mid < calm. High RSS or request rate steps down."""
+    rss = None if rss_mb is None else float(rss_mb)
+    rpm = int(rpm or 0)
+    if (rss is not None and rss >= 1050) or rpm >= 180:
+        return 'pressure'
+    if (rss is not None and rss >= 900) or rpm >= 80:
+        return 'mid'
+    return 'calm'
+
+
+def _adaptive_limits(band):
+    if band == 'pressure':
+        return _CHAR_PAIR_CACHE_FLOOR, _UNIT_WEAPON_CACHE_FLOOR
+    if band == 'mid':
+        return (
+            (_CHAR_PAIR_CACHE_FLOOR + _CHAR_PAIR_CACHE_MAX) // 2,
+            (_UNIT_WEAPON_CACHE_FLOOR + _UNIT_WEAPON_CACHE_MAX) // 2,
+        )
+    return _CHAR_PAIR_CACHE_MAX, _UNIT_WEAPON_CACHE_MAX
+
+
+def effective_char_pair_cache_max():
+    return _adaptive_pair_max if _ADAPTIVE_CACHE_ENABLED else _CHAR_PAIR_CACHE_MAX
+
+
+def effective_unit_weapon_cache_max():
+    return _adaptive_wpn_max if _ADAPTIVE_CACHE_ENABLED else _UNIT_WEAPON_CACHE_MAX
+
+
+def adaptive_cache_status():
+    return {
+        'enabled': bool(_ADAPTIVE_CACHE_ENABLED),
+        'band': _adaptive_band,
+        'pair_max': effective_char_pair_cache_max(),
+        'pair_len': len(_char_pair_cache),
+        'pair_ceiling': _CHAR_PAIR_CACHE_MAX,
+        'weapon_max': effective_unit_weapon_cache_max(),
+        'weapon_len': len(_unit_weapon_cache),
+        'requests_per_min': _adaptive_requests_per_min(),
+    }
+
+
+def _adaptive_tick():
+    """Apply one budget step. Shrink immediately; grow only after two calm ticks."""
+    global _adaptive_band, _adaptive_pair_max, _adaptive_wpn_max, _adaptive_up_streak
+    if not _ADAPTIVE_CACHE_ENABLED:
+        return None
+    rss = read_process_rss_mb()
+    rpm = _adaptive_requests_per_min()
+    want = adaptive_band_for(rss, rpm)
+    cur_i = _ADAPTIVE_BANDS.index(_adaptive_band)
+    want_i = _ADAPTIVE_BANDS.index(want)
+    if want_i < cur_i:
+        band = want
+        _adaptive_up_streak = 0
+    elif want_i > cur_i:
+        _adaptive_up_streak += 1
+        band = want if _adaptive_up_streak >= 2 else _adaptive_band
+        if band == want:
+            _adaptive_up_streak = 0
+    else:
+        band = _adaptive_band
+        _adaptive_up_streak = 0
+    pair_max, wpn_max = _adaptive_limits(band)
+    _adaptive_band = band
+    _adaptive_pair_max = pair_max
+    _adaptive_wpn_max = wpn_max
+    dropped_pair = _trim_bounded_cache_to(_char_pair_cache, pair_max) if len(_char_pair_cache) > pair_max else 0
+    dropped_wpn = _trim_bounded_cache_to(_unit_weapon_cache, wpn_max) if len(_unit_weapon_cache) > wpn_max else 0
+    if dropped_pair or dropped_wpn:
+        print(
+            f'MSY adaptive cache {band}: pair→{pair_max} (-{dropped_pair}), '
+            f'wpn→{wpn_max} (-{dropped_wpn}), rpm={rpm}, rss={rss}'
+        )
+    return band
+
+
+def _adaptive_loop():
+    time.sleep(20)
+    while True:
+        try:
+            _adaptive_tick()
+        except Exception as exc:
+            print(f'MSY adaptive cache tick failed: {exc}')
+        time.sleep(_ADAPTIVE_TICK_SEC)
+
+
+def start_adaptive_cache_budget():
+    global _adaptive_started
+    if not _ADAPTIVE_CACHE_ENABLED or _adaptive_started:
+        return
+    _adaptive_started = True
+    threading.Thread(target=_adaptive_loop, name='msy-adaptive-cache', daemon=True).start()
+
+
 def _cached_best_ex_weapon(uid, stat_mode, lc):
     del stat_mode  # weapon pick derives per-weapon stat mode internally
     key = (str(uid), str(lc))
@@ -2321,7 +2478,7 @@ def _cached_best_ex_weapon(uid, stat_mode, lc):
     if hit is not None:
         return hit
     return _cache_put_bounded(
-        _unit_weapon_cache, key, _best_ex_weapon(uid, None, lc), _UNIT_WEAPON_CACHE_MAX
+        _unit_weapon_cache, key, _best_ex_weapon(uid, None, lc), effective_unit_weapon_cache_max()
     )
 
 
@@ -2337,7 +2494,7 @@ def _cached_char_pair_totals(cid, uid, lc, *, cp_on=True, vigor='super'):
         if cp_on
         else _char_totals_for_pair_no_cp(cid, uid, lc)
     )
-    return _cache_put_bounded(_char_pair_cache, key, value, _CHAR_PAIR_CACHE_MAX)
+    return _cache_put_bounded(_char_pair_cache, key, value, effective_char_pair_cache_max())
 
 
 def compute_pair_damage(uid, cid, lc='EN', *, lb_tier=3, vigor='super', def_tier=1,

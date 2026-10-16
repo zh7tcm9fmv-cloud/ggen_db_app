@@ -15436,7 +15436,8 @@ const defPairBuff=defShow!==defS;
 const atkExtraOn=!!(exSq>0||leaderOn||atkSupportOn||pairActive||counterActive||supCntActive||advantageTagActive||unitTurnAtkOn);
 const defExtraOn=!!(leaderOn||defPairBuff||advDefFlat>0||unitTurnDefOn);
 const hpExtraOn=!!(leaderOn||hpSupportOn);
-const mobExtraOn=!!leaderOn;
+const unitTurnMobOn=S.dc.unitTurnBuffAtk&&(utb.mobPct|0)>0;
+const mobExtraOn=!!(leaderOn||unitTurnMobOn);
 const atkSpanClass=_dcMainStatBuffCls(hAtk,atkBonusInline,atkExtraOn);
 const spHpCls=_dcMainStatBuffCls(hHp,hpBonusIn,hpExtraOn);
 const spDefCls=_dcMainStatBuffCls(hDef,defBonusIn,defExtraOn);
@@ -15458,11 +15459,24 @@ const counterNote=(cPct>0)?'<div style="font-size:10px;color:var(--accent-cyan);
 const unitModNote=pairNote+counterNote;
 const vigorCondNote=_dcIsVigorCondActive()?'<div style="margin-top:4px;padding:4px 8px;background:rgba(250,204,21,0.08);border:1px solid rgba(250,204,21,0.28);border-radius:4px;font-size:11px;color:#eab308">Vigor condition met — see unit abilities for in-battle effects.</div>':'';
 let unitTurnBuffHtml='';
-if((utb.atkPct|0)>0||(utb.defPct|0)>0){
+if((utb.atkPct|0)>0||(utb.defPct|0)>0||(utb.mobPct|0)>0){
+const uskIcon=utb.icon?`<img src="${imgUrl(utb.icon)}" alt="" width="20" height="20" style="flex:0 0 auto;border-radius:50%;object-fit:cover" loading="lazy" decoding="async">`:'';
+const uskHint=esc(String(utb.skillText||'').trim());
 unitTurnBuffHtml=`<div class="dc-section-label" style="margin-top:10px;color:var(--accent-cyan)">Unit skill (1 turn)</div><div style="font-size:12px;line-height:1.6">`;
-if((utb.atkPct|0)>0)unitTurnBuffHtml+=`<label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin-bottom:4px"><input type="checkbox" ${S.dc.unitTurnBuffAtk?'checked':''} onchange="setDcUnitTurnBuffAtk(this.checked)"><span>MS ATK +${utb.atkPct}% (1 turn)</span></label>`;
-if((utb.defPct|0)>0)unitTurnBuffHtml+=`<label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin-bottom:4px"><input type="checkbox" ${S.dc.unitTurnBuffDef?'checked':''} onchange="setDcUnitTurnBuffDef(this.checked)"><span>MS DEF +${utb.defPct}% (1 turn)</span></label>`;
-unitTurnBuffHtml+=`<div style="font-size:10px;color:var(--text-muted);margin-top:4px;line-height:1.35">Detected from this unit’s skill descriptions. MS ATK +% (1 turn) stacks in the same % bucket as other MS Attack lines; the panel uses integer floor on that bucket to match the in-game MS sheet (same value used in damage ⑧). MS DEF toggle updates the panel only (damage uses the <strong>defender</strong>’s MS DEF).</div></div>`;
+if((utb.atkPct|0)>0||(utb.mobPct|0)>0){
+const bits=[];
+if((utb.atkPct|0)>0)bits.push(`MS ATK +${utb.atkPct}%`);
+if((utb.mobPct|0)>0)bits.push(`MS MOB +${utb.mobPct}%`);
+unitTurnBuffHtml+=`<label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin-bottom:4px"><input type="checkbox" ${S.dc.unitTurnBuffAtk?'checked':''} onchange="setDcUnitTurnBuffAtk(this.checked)">${uskIcon}<span>${bits.join(' · ')} (1 turn)</span></label>`;
+}
+if((utb.defPct|0)>0)unitTurnBuffHtml+=`<label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin-bottom:4px"><input type="checkbox" ${S.dc.unitTurnBuffDef?'checked':''} onchange="setDcUnitTurnBuffDef(this.checked)">${uskIcon}<span>MS DEF +${utb.defPct}% (1 turn)</span></label>`;
+if(uskHint)unitTurnBuffHtml+=`<div style="font-size:10px;color:var(--text-muted);margin-top:4px;line-height:1.45;white-space:pre-wrap">${uskHint}</div>`;
+unitTurnBuffHtml+=`</div>`;
+}
+/* Unit-skill MP (MpBoost) feeds starting vigor — show when present so users see why vigor auto-raised. */
+const uskMp=_dcAccumMpBonusFromUnitSkills(ud)|0;
+if(uskMp>0){
+unitTurnBuffHtml+=`<div class="dc-section-label" style="margin-top:10px;color:var(--accent-cyan)">Unit skill (MP)</div><div style="font-size:12px;line-height:1.6"><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px"><span>MP +${uskMp} (starting vigor)</span></div></div>`;
 }
 const uGridBase=`stats-grid dc-atk-ers dc-stat-visual--${uMode} dc-stat-grid-4`;
 const uGridCls=sheetBuffOn?`${uGridBase} dc-stats-mini--ml-buff`:uGridBase;
@@ -16313,6 +16327,28 @@ if(condMet)totalMp+=v;
 });
 return totalMp;
 }
+function _dcMpBonusFromUnitSkillText(blob){
+const txt=String(blob||'').replace(/\n/g,' ');
+let m=txt.match(/[Ii]ncrease\s+(?:own\s+)?MP\s+by\s+(\d+)/i);
+if(!m&&_dcIsZhCalcLang())m=txt.match(/自身MP(?:增加|提升)(\d+)/);
+if(!m&&_dcIsJaCalcLang())m=txt.match(/自身のMPが(\d+)上昇/);
+if(!m)m=txt.match(/自身MP提升(\d+)/);
+return m?parseInt(m[1],10)||0:0;
+}
+/** Unit-skill MpBoost (type 12) + EN/JA/TW text — stacks into starting vigor MP total. */
+function _dcAccumMpBonusFromUnitSkills(ud){
+if(!ud||ud._manual)return 0;
+let total=0;
+(ud.skills||[]).forEach(sk=>{
+let fromTrait=0;
+(sk.traits||[]).forEach(tr=>{
+if(String(tr.trait_type_index||'')==='12')fromTrait+=Math.max(0,parseInt(tr.trait_value,10)||0);
+});
+if(fromTrait>0){total+=fromTrait;return}
+total+=_dcMpBonusFromUnitSkillText(_dcJoinUnitSkillTextBlob(sk));
+});
+return total;
+}
 function _dcCalcStartingVigor(){
 const cd=S.dc.atkCharData;const ud=S.dc.atkUnitData;
 if(!cd&&!ud)return 'medium';
@@ -16327,6 +16363,7 @@ ud.abilities.forEach(ab=>{
 totalMp+=_dcAccumMpBonusFromResolved(_dcResolveUnitAbilityForMode(ab),ud,cd);
 });
 }
+totalMp+=_dcAccumMpBonusFromUnitSkills(ud);
 let level='medium';
 for(const t of DC_MP_THRESHOLDS){if(totalMp>=t.min)level=t.level}
 return level;
@@ -16869,7 +16906,8 @@ const want=String(S.dc.defNpc.npc_id);
 for(let j=0;j<sel.options.length;j++){if(sel.options[j].value===want){sel.selectedIndex=j;break}}
 }
 }
-renderDcDefStats();_dcAutoSetVigor();if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses(true);else onDcParamChange();
+/* Keep attacker vigor — switching preset defender must not call _dcAutoSetVigor(). */
+renderDcDefStats();if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses(true);else onDcParamChange();
 }
 
 /** Weapon / manual “enemy DEF % down on this attack”: keep map/team buff intact and apply
@@ -16894,8 +16932,9 @@ return MX(0,tot-base+kept);
 const DC_QUB_PLUS_ONE=false;
 /** Firered sheet: unitStatRatio = RoundUp((UnAtk/10)−(UnDef/10))/5000. Set false to use legacy floor−floor tenths (older Qubeley gold). */
 const DC_SHEET_UNIT_STAT_RATIO=true;
-/** Soft-DEF combined float round-away when correction sum fraction ≥ this.
- *  Graze Ein hard-DEF frac≈0.005 → per-slice (float overshoots final +2).
+/** Soft-DEF combined float round-away when correction sum fraction ≥ this,
+ *  OR when sheet MS ATK ≥ MS DEF (attacker-favored; Freedom frac≈0.005 still needs float).
+ *  Graze Ein hard-DEF (DEF>ATK, frac≈0.005) → per-slice (float overshoots final +2).
  *  Patulia / Susanowo Dark / Sandaime Aerial soft-DEF fracs≈0.032–0.095 → combined. */
 const DC_CORR_HYBRID_FLOAT_FRAC=0.03;
 /** In-game super for some totalCritMult=125% hits (e.g. Exia vs Throne) matches ceil((combined−trim)×1.3) with trim=floor(max(0,B−W)/1181), only when ⑧ is high enough; avoids changing older BD rows that still use trim=0. */
@@ -18418,33 +18457,60 @@ function _dcJoinUnitSkillTextBlob(sk){
 const lines=(sk.details||[]).map(d=>typeof d==='string'?d:(d&&d.text)||'').join('\n');
 return[sk.name,lines].filter(Boolean).join('\n');
 }
-/** Scan unit skill text for short self-buffs like "Increase ATK by 25% [1 turn]" (EN/JP/TW-style). Max per stat across skills. */
+/** Scan unit skill text for short self-buffs like "Increase ATK by 25% (1 turn(s))" (EN/JA/TW). Max per stat across skills. */
 function _dcParseUnitTurnStatBuffPercents(blob){
 const s=String(blob||'');
-const hasTurn=/\[\s*1\s*turns?\s*\]|(?:^|[\s\n])for\s+1\s+turn\b|1ターン|１ターン|1\s*回合/i.test(s);
-if(!hasTurn)return{atk:0,def:0};
-let atk=0,def=0;
-const mAtk=s.match(/\b(?:Increase|Increases)\s+(?:MS\s+)?ATK\s+by\s+(\d+)%/i);
+/* Official EN uses "(1 turn(s))" — older packs used "[1 turn]" / "for 1 turn". */
+const hasTurn=/\(\s*1\s*turns?(?:\(s\))?\s*\)|\[\s*1\s*turns?\s*\]|(?:^|[\s\n])for\s+1\s+turn\b|（\s*1\s*ターン\s*）|\(\s*1\s*ターン\s*\)|1ターン|１ターン|（\s*1\s*回合\s*）|\(\s*1\s*回合\s*\)|1\s*回合/i.test(s);
+if(!hasTurn)return{atk:0,def:0,mob:0};
+let atk=0,def=0,mob=0;
+const mAtk=s.match(/\b(?:Increase|Increases)\s+(?:MS\s+)?ATK\s+by\s+(\d+)\s*%/i);
 if(mAtk)atk=Math.max(atk,parseInt(mAtk[1],10)||0);
-const mAtk2=s.match(/\b(?:Increase|Increases)\s+(?:MS\s+)?Attack\s+by\s+(\d+)%/i);
+const mAtk2=s.match(/\b(?:Increase|Increases)\s+(?:MS\s+)?Attack\s+by\s+(\d+)\s*%/i);
 if(mAtk2)atk=Math.max(atk,parseInt(mAtk2[1],10)||0);
-const mDef=s.match(/\b(?:Increase|Increases)\s+(?:MS\s+)?DEF(?:ense)?\s+by\s+(\d+)%/i);
+const mDef=s.match(/\b(?:Increase|Increases)\s+(?:MS\s+)?DEF(?:ense)?\s+by\s+(\d+)\s*%/i);
 if(mDef)def=Math.max(def,parseInt(mDef[1],10)||0);
+const mMob=s.match(/\b(?:Increase|Increases)\s+(?:own\s+)?(?:MS\s+)?MOB(?:ility)?\s+by\s+(\d+)\s*%/i);
+if(mMob)mob=Math.max(mob,parseInt(mMob[1],10)||0);
 const mj=s.match(/攻(?:擊|撃|击)力[^%]*?(\d+)\s*%/);
 if(mj)atk=Math.max(atk,parseInt(mj[1],10)||0);
 const dj=s.match(/防(?:禦|御|卫)力[^%]*?(\d+)\s*%/);
 if(dj)def=Math.max(def,parseInt(dj[1],10)||0);
-return{atk,def};
+const mbj=s.match(/機動力[^%]*?(\d+)\s*%/)||s.match(/機動值[^%]*?(\d+)\s*%/);
+if(mbj)mob=Math.max(mob,parseInt(mbj[1],10)||0);
+return{atk,def,mob};
 }
 function _dcGetDetectedUnitTurnBuffPercents(ud){
 const skills=(ud&&!ud._manual&&ud.skills)||[];
-let atkPct=0,defPct=0;
+let atkPct=0,defPct=0,mobPct=0,icon='',skillText='',skillName='';
 skills.forEach(sk=>{
-const x=_dcParseUnitTurnStatBuffPercents(_dcJoinUnitSkillTextBlob(sk));
-atkPct=Math.max(atkPct,x.atk);
-defPct=Math.max(defPct,x.def);
+const blob=_dcJoinUnitSkillTextBlob(sk);
+const hasTurn=/\(\s*1\s*turns?(?:\(s\))?\s*\)|\[\s*1\s*turns?\s*\]|(?:^|[\s\n])for\s+1\s+turn\b|（\s*1\s*ターン\s*）|\(\s*1\s*ターン\s*\)|1ターン|１ターン|（\s*1\s*回合\s*）|\(\s*1\s*回合\s*\)|1\s*回合/i.test(blob);
+let skAtk=0,skDef=0,skMob=0;
+/* Prefer master UnitSkillTraitType (2=ATK turn%, 3=DEF turn%, 7=MOB%). */
+(sk.traits||[]).forEach(tr=>{
+const typ=String(tr.trait_type_index||'');
+const val=Math.max(0,parseInt(tr.trait_value,10)||0);
+if(val<=0)return;
+if(typ==='2')skAtk=Math.max(skAtk,val);
+else if(typ==='3')skDef=Math.max(skDef,val);
+else if(typ==='7'&&hasTurn)skMob=Math.max(skMob,val);
 });
-return{atkPct,defPct};
+const x=_dcParseUnitTurnStatBuffPercents(blob);
+skAtk=Math.max(skAtk,x.atk);skDef=Math.max(skDef,x.def);skMob=Math.max(skMob,x.mob);
+if(skAtk<=0&&skDef<=0&&skMob<=0)return;
+const better=skAtk>atkPct||skDef>defPct||skMob>mobPct;
+if(skAtk>atkPct)atkPct=skAtk;
+if(skDef>defPct)defPct=skDef;
+if(skMob>mobPct)mobPct=skMob;
+if(better||!skillText){
+if(sk.icon)icon=sk.icon;
+skillName=String(sk.name||'').trim();
+const dets=(sk.details||[]).map(d=>typeof d==='string'?d:(d&&d.text)||'').filter(Boolean);
+skillText=dets.join('\n').trim()||blob;
+}
+});
+return{atkPct,defPct,mobPct,icon,skillText,skillName};
 }
 function _dcApplyUnitTurnBuffDefToMsDef(unitDef,ud){
 const F=Math.floor;
@@ -18689,14 +18755,20 @@ const pMob=_dcStatPassivePctFromEntry(mobEnt);
 const pMove=_dcStatPassivePctFromEntry(moveEnt);
 let unitHp=_dcMsGrowthFromPct(hpBase,pHp+(opPct.HP|0)+lp+sheetBuffPct,'HP')+(opFlat.HP|0)+hpSupport;
 let unitDefVal=_dcMsGrowthFromPct(defBase,pDef+(opPct.Defense|0)+lp+lpAd+sheetBuffPct+(scDef|0),'Defense')+(opFlat.Defense|0);
-let unitMob=_dcMsGrowthFromPct(mobBase,pMob+(opPct.Mobility|0)+lp+sheetBuffPct,'Mobility')+(opFlat.Mobility|0);
 /* Move is never sheet-buffed (no ML/GO/leader/OP) — only unit base + own passive %. */
 let unitMove=_dcMsGrowthFromPct(moveBase,pMove,'Move');
 const opAt=opPct.Attack||0;
 const exSq=_dcEffectiveExSquadAtkPctFromCtx(c);
-let turnAtkPct=0;
-if(c.unitTurnBuffAtk&&c.atkUnitData&&!c.atkUnitData._manual)turnAtkPct=Math.max(0,_dcGetDetectedUnitTurnBuffPercents(c.atkUnitData).atkPct|0);
+let turnAtkPct=0,turnMobPct=0;
+if(c.unitTurnBuffAtk&&c.atkUnitData&&!c.atkUnitData._manual){
+const ut=_dcGetDetectedUnitTurnBuffPercents(c.atkUnitData);
+turnAtkPct=Math.max(0,ut.atkPct|0);
+/* Same 1-turn unit-skill toggle also applies MOB% (panel + accuracy; not a damage ⑧ factor). */
+turnMobPct=Math.max(0,ut.mobPct|0);
+}
 const tAtk=turnAtkPct|0;
+const tMob=turnMobPct|0;
+let unitMob=_dcMsGrowthFromPct(mobBase,pMob+(opPct.Mobility|0)+lp+sheetBuffPct+tMob,'Mobility')+(opFlat.Mobility|0);
 const unitAtkExSquadBase=_dcMsGrowthFromPct(atkBase,pAtk+sheetBuffPct,'Attack');
 const unitDefExSquadBase=_dcMsGrowthFromPct(defBase,pDef+sheetBuffPct,'Defense');
 const unitAtkGrowthAfterOptions=_dcMsGrowthFromPct(atkBase,pAtk+opAt+tAtk+sheetBuffPct,'Attack');
@@ -18818,15 +18890,17 @@ const defExp=((5000-defCombined)*3)/100000;
 const offenseComponent=(10000/100)/(EXP(offExp)+1);
 const defenseComponent=(-4000/100)/(EXP(defExp)+1);
 /** ⑦ Correction rounding (Firered ⑦ + in-game spot checks):
- *  - Hard-DEF (Graze Ein): sum fraction ≪ 1 → round each slice away from 0, then add.
- *  - Soft-DEF (Versal vs Xi/Nu/Wing, Sandaime vs Aerial, Susanowo vs Dark Gundam / Patulia): when float sum fraction ≥ DC_CORR_HYBRID_FLOAT_FRAC (0.03), round away on combined float. */
+ *  - Hard-DEF (Graze Ein, DEF>ATK + tiny frac): round each slice away from 0, then add.
+ *  - Soft-DEF / ATK-favored (Freedom, Versal vs Xi, Sandaime Aerial, Susanowo…): round away on combined float
+ *    when frac ≥ DC_CORR_HYBRID_FLOAT_FRAC OR unitAtk ≥ unitDef (Freedom shares Graze’s tiny frac but needs float). */
 const _dcRoundAway0=(x)=>x>=0?C(x):F(x);
 const _offCorrRaw=offenseComponent*baseDamage;
 const _defCorrRaw=defenseComponent*baseDamage;
 const _corrSumRaw=_offCorrRaw+_defCorrRaw;
 const _corrSplit=_dcRoundAway0(_offCorrRaw)+_dcRoundAway0(_defCorrRaw);
 const _corrFrac=_corrSumRaw-F(_corrSumRaw);
-const damageCorrection=_corrFrac>=DC_CORR_HYBRID_FLOAT_FRAC?_dcRoundAway0(_corrSumRaw):_corrSplit;
+const _corrUseFloat=_corrFrac>=DC_CORR_HYBRID_FLOAT_FRAC||unitAtk>=unitDef;
+const damageCorrection=_corrUseFloat?_dcRoundAway0(_corrSumRaw):_corrSplit;
 const offenseCorrection=_dcRoundAway0(_offCorrRaw);
 const defenseCorrection=_dcRoundAway0(_defCorrRaw);
 const isExWeapon=!!wpn.is_ex;

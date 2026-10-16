@@ -384,6 +384,14 @@ def _apply_seo_and_static_cache_headers(response):
         path = request.path or ''
     except RuntimeError:
         return response
+    try:
+        note = getattr(_apply_seo_and_static_cache_headers, '_msy_note', None)
+        if note is None:
+            from meta_synergy_rank import note_http_request as note
+            _apply_seo_and_static_cache_headers._msy_note = note
+        note(path)
+    except Exception:
+        pass
     # APIs / unlock endpoints must never look indexable (Google still discovers linked POST URLs).
     if path.startswith('/api/'):
         response.headers.setdefault('X-Robots-Tag', 'noindex, nofollow')
@@ -11948,6 +11956,15 @@ def create_unit_skill_trait_by_skill_lookup(d):
             'active_cond_set_id': normalize_id(
                 item.get('ActiveTraitConditionSetId') or item.get('activeTraitConditionSetId') or '0'
             ),
+            # UnitSkillTraitType — AttackChangeRateDurationTurn=2, DefenseChangeRateDurationTurn=3,
+            # MobilityChangeRate=7, MpBoost=12 (client /cal + detail; see dump.cs UnitSkillTraitType).
+            'trait_type_index': normalize_id(
+                item.get('UnitSkillTraitTypeIndex')
+                or item.get('unitSkillTraitTypeIndex')
+                or item.get('TraitTypeIndex')
+                or '0'
+            ),
+            'trait_value': safe_int(item.get('TraitValue') or item.get('traitValue'), 0),
         })
     for k in lk:
         lk[k].sort(key=lambda x: x['id'])
@@ -13728,6 +13745,7 @@ def _preload_bsp_published_cache_bg():
     """
     try:
         import meta_synergy_rank as _msr_boot
+        _msr_boot.start_adaptive_cache_budget()
         _ck_boot = _msr_boot._bsp_published_cache_key('EN', {'lb_tier': 3, 'top_pilots': 10})
         _disk = _msr_boot._load_bsp_published_cache(_ck_boot, use_memory=True)
         _n = _msr_boot._bsp_published_unit_count(_disk) if _disk else 0
@@ -16746,6 +16764,9 @@ def resolve_unit_skill(usid, ld, sv):
     blob = (desc or '').strip()
     if desc:
         details.append(desc)
+    def _uskill_detail_key(s):
+        return re.sub(r'\s+', '', str(s or '').strip().lower())
+    blob_key = _uskill_detail_key(blob)
     tnf = ld.get('unit_skill_trait_name_fallback', {}); tdf = ld.get('unit_skill_trait_desc_fallback', {})
     traits_out = []
     for tr in unit_skill_trait_by_skill.get(usid, []):
@@ -16784,13 +16805,17 @@ def resolve_unit_skill(usid, ld, sv):
             'active_cond_set_id': cond_id if cond_id != '0' else '',
             'active_weapon_attrs': wattrs,
             'active_attack_types': atypes,
+            'trait_type_index': normalize_id(tr.get('trait_type_index') or '0'),
+            'trait_value': safe_int(tr.get('trait_value'), 0),
         })
         tnorm = (tdesc or '').strip()
         if not tnorm:
             continue
-        if tnorm not in blob:
+        # Collapse whitespace so "15% (1 turn" vs "15%(1 turn" does not double the in-game line.
+        if _uskill_detail_key(tnorm) not in blob_key:
             details.append(tdesc)
             blob = (blob + '\n' + tnorm).strip() if blob else tnorm
+            blob_key = _uskill_detail_key(blob)
     ri = str(info.get('resource_id', '') or '').strip() or str(ld.get('skill_resource_map', {}).get(usid, '') or '').strip()
     icf = find_trait_icon(ri) if ri else None
     if not icf:
@@ -18852,8 +18877,10 @@ def health_check():
         # sync trim+gc held the gthread worker for multi‑seconds and made browse/detail look dead
         # (Oct 2026 — health returned rss_trim while /c /u sat at 5–11s). Cap caches instead.
         mem['msy_char_pair_cache'] = len(getattr(_msr_h, '_char_pair_cache', {}) or {})
-        mem['msy_char_pair_cache_max'] = int(getattr(_msr_h, '_CHAR_PAIR_CACHE_MAX', 0) or 0)
+        mem['msy_char_pair_cache_max'] = int(_msr_h.effective_char_pair_cache_max())
+        mem['msy_char_pair_cache_ceiling'] = int(getattr(_msr_h, '_CHAR_PAIR_CACHE_MAX', 0) or 0)
         mem['msy_unit_weapon_cache'] = len(getattr(_msr_h, '_unit_weapon_cache', {}) or {})
+        mem['msy_adaptive'] = _msr_h.adaptive_cache_status()
         mem['bsp_published_memory_keys'] = len(getattr(_msr_h, '_BSP_PUBLISHED_MEMORY', {}) or {})
         mem['bsp_group_lru'] = len(getattr(_msr_h, '_BSP_GROUP_LRU', {}) or {})
         mem['bsp_group_lru_max'] = int(getattr(_msr_h, '_BSP_GROUP_LRU_MAX', 0) or 0)
@@ -29065,15 +29092,16 @@ def browse_filters():
         if entity not in ('characters', 'units', 'supporters', 'option_parts'):
             entity = 'characters'
         filter_mode = (request.args.get('filter_mode') or '').strip().lower()
+        # v14: jsonify_cacheable (ETag/304) — bare jsonify re-serialized every filter open under live RTT.
         if entity == 'supporters':
             if filter_mode == 'current':
                 sig = browse_filters_pool_signature(request.args, 'supporters')
-                ck = f"browse_filters_v13_{lc}_{entity}_cur_{sig}"
+                ck = f"browse_filters_v14_{lc}_{entity}_cur_{sig}"
             else:
-                ck = f"browse_filters_v13_{lc}_{entity}"
+                ck = f"browse_filters_v14_{lc}_{entity}"
             cached = get_cached_response(ck)
             if cached:
-                return jsonify(cached)
+                return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
             ld = get_lang_data(lc)
             if filter_mode == 'current':
                 lineages = lineages_for_supporter_browse_filtered(ld, lc, request.args)
@@ -29081,16 +29109,16 @@ def browse_filters():
                 lineages = lineages_for_supporter_browse(ld, lc)
             result = {'lineages': lineages, 'series': [], 'skills': [], 'abilities': []}
             set_cached_response(ck, result)
-            return jsonify(convert_image_urls(result))
+            return jsonify_cacheable(result, ck, public=True, max_age=3600, convert_images=True)
         if entity == 'option_parts':
             if filter_mode == 'current':
                 sig = browse_filters_pool_signature(request.args, 'option_parts')
-                ck = f"browse_filters_v13_{lc}_{entity}_cur_{sig}"
+                ck = f"browse_filters_v14_{lc}_{entity}_cur_{sig}"
             else:
-                ck = f"browse_filters_v13_{lc}_{entity}"
+                ck = f"browse_filters_v14_{lc}_{entity}"
             cached = get_cached_response(ck)
             if cached:
-                return jsonify(cached)
+                return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
             ld = get_lang_data(lc)
             if filter_mode == 'current':
                 lineages = lineages_for_option_part_browse_filtered(ld, lc, request.args)
@@ -29098,15 +29126,15 @@ def browse_filters():
                 lineages = lineages_for_option_part_browse(ld)
             result = {'lineages': lineages, 'series': [], 'skills': [], 'abilities': []}
             set_cached_response(ck, result)
-            return jsonify(convert_image_urls(result))
+            return jsonify_cacheable(result, ck, public=True, max_age=3600, convert_images=True)
         if filter_mode == 'current':
             sig = browse_filters_pool_signature(request.args, entity)
-            ck = f"browse_filters_v13_{lc}_{entity}_cur_{sig}"
+            ck = f"browse_filters_v14_{lc}_{entity}_cur_{sig}"
         else:
-            ck = f"browse_filters_v13_{lc}_{entity}"
+            ck = f"browse_filters_v14_{lc}_{entity}"
         cached = get_cached_response(ck)
         if cached:
-            return jsonify(cached)
+            return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
         ld = get_lang_data(lc)
         if filter_mode == 'current':
             if entity == 'characters':
@@ -29133,7 +29161,7 @@ def browse_filters():
                 extra = {'abilities': abilities_for_unit_browse(ld, lc)}
         result = {'lineages': lineages, 'series': series, **extra}
         set_cached_response(ck, result)
-        return jsonify(convert_image_urls(result))
+        return jsonify_cacheable(result, ck, public=True, max_age=3600, convert_images=True)
     except Exception as e:
         import traceback; traceback.print_exc()
         return jsonify({'lineages': [], 'series': [], 'skills': [], 'abilities': []}), 500
@@ -31036,7 +31064,11 @@ def _haro_option_part_acq_label(lc):
 
 
 def _infer_option_part_acquisition_from_rewards(opid, lc, ld):
-    """When m_option_parts_acquisition_method has no row, recover Story Event / Carddass sources from rewards."""
+    """When m_option_parts_acquisition_method has no row, recover sources from reward sets.
+
+    Covers Story Event first-clear, CARDDASS binder missions, and other event/missions
+    (e.g. Rise from the Ashes «Clear Premium Disc Battle.» → High-Performance Sensor SSR).
+    """
     oid = normalize_id(opid)
     methods = []
     binder_types = {232, 233, 234}  # TotalBinderCount / NumberCount / Register
@@ -31050,14 +31082,18 @@ def _infer_option_part_acquisition_from_rewards(opid, lc, ld):
             cond_id = normalize_id(m.get('GameEventConditionId') or m.get('gameEventConditionId'))
             cond = (game_event_condition_map or {}).get(cond_id) or {}
             ctype = safe_int(cond.get('GameEventConditionTypeIndex') or cond.get('gameEventConditionTypeIndex'), 0)
-            if ctype not in binder_types:
+            if ctype in binder_types:
+                binder_id = normalize_id(cond.get('TargetValue1') or cond.get('targetValue1'))
+                event_name = _resolve_binder_event_name(binder_id, ld)
+                if not event_name:
+                    event_name = _quoted_lang_span(resolve_mission_title(ld, m))
+                label = _carddass_event_acq_label(lc)
+                methods.append(f'{label}: {event_name}' if event_name else label)
                 continue
-            binder_id = normalize_id(cond.get('TargetValue1') or cond.get('targetValue1'))
-            event_name = _resolve_binder_event_name(binder_id, ld)
-            if not event_name:
-                event_name = _quoted_lang_span(resolve_mission_title(ld, m))
-            label = _carddass_event_acq_label(lc)
-            methods.append(f'{label}: {event_name}' if event_name else label)
+            # Event / daily / other missions: show official mission title (LANG).
+            title = str(resolve_mission_title(ld, m) or '').strip()
+            if title:
+                methods.append(title)
     return methods
 
 
@@ -35598,7 +35634,7 @@ def get_unit(unit_id):
         if stat_mode_arg not in ('normal', 'sp', 'ssp'):
             stat_mode_arg = 'normal'
         cond_for_ranking = request.args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
-        ck = f"u_{unit_id}_{lc}_ssp20_ult5_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_bp3_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        ck = f"u_{unit_id}_{lc}_ssp20_ult5_usk1_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_bp3_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_preserialized(cached, ck, private=True, max_age=3600, convert_images=False)
