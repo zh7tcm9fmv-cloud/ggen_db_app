@@ -380,6 +380,26 @@
     "value": "Marion Whelch"
   },
   {
+    "id": 100100001024000100,
+    "value": "Master Pierce Rayer"
+  },
+  {
+    "id": 100100001024000200,
+    "value": "Leung Lee-Fai"
+  },
+  {
+    "id": 100100001024000300,
+    "value": "Maximilian Berger"
+  },
+  {
+    "id": 100100001024000400,
+    "value": "Anita Julianne"
+  },
+  {
+    "id": 100100001024000500,
+    "value": "Visch Donahue"
+  },
+  {
     "id": 100100001031000100,
     "value": "Io Fleming"
   },
@@ -2540,6 +2560,10 @@
     "value": "Lockon Stratos"
   },
   {
+    "id": 100100001370000203,
+    "value": "Lockon Stratos"
+  },
+  {
     "id": 100100001370000300,
     "value": "Allelujah Haptism"
   },
@@ -2790,6 +2814,10 @@
   {
     "id": 100100001370006101,
     "value": "Revive Revival"
+  },
+  {
+    "id": 100100001370006200,
+    "value": "Nena Trinity"
   },
   {
     "id": 100100001375000100,
@@ -4946,6 +4974,26 @@
   {
     "id": 100200001022000700,
     "value": "A Newtype girl used for EXAM system experiments by Chlust Moses, who was like a father to her.\nShe had a kind personality and wished for peace, joining Chlust in his research because she agreed with his philosophy of preventing Newtypes from being used in war.\nHowever, she was rendered permanently unconscious by an accident during an EXAM system experiment."
+  },
+  {
+    "id": 100200001024000100,
+    "value": "Commander of the Federation Forces' special mobile suit raiding team White Dingo. He operates under the code name Fang 1.\nHe is a gifted leader who puts his duties as a soldier above his feelings as a human. He makes decisions calmly and gives precise orders, keeping an open mind to consider all opportunities on the battlefield.\nHis prior experience as a fighter pilot gives him an edge as an MS pilot. He joined the Zeon mopping-up operation in his native Australia and carried out many difficult missions."
+  },
+  {
+    "id": 100200001024000200,
+    "value": "A member of the Federation Forces' special mobile suit raiding team White Dingo. He operates under the code name Fang 2.\nHe has a serious and direct personality, but is by no means a hardened man. He may not speak often, but when he does, it is usually with great insight, although occasionally he has surprising gossip.\nHis prior experience as a tank soldier has carried over to his piloting skills in melee combat, which are the best on the team."
+  },
+  {
+    "id": 100200001024000300,
+    "value": "A member of the Federation Forces' special mobile suit raiding team White Dingo. He operates under the code name Fang 3.\nHe is called Mike by his comrades and appears to have a breezy personality, yet while he complains a lot, he accomplishes difficult missions and does so with great enthusiasm.\nHe was plucked out of the military band to be trained as an MS pilot after an aptitude test and boasts the best marksmanship skills on the team, particularly when it comes to sniping."
+  },
+  {
+    "id": 100200001024000400,
+    "value": "A member of the Federation's special MS raiding team \"White\nDingo.\" She mainly works as a sonar operator.\nShe has a strong personality, and is always fighting with\ncomrade and MS pilot Maximilian Berger, but her skills in\nelectronic and information warfare are exceptional. She\nis a highly valued member who can operate as the eyes and\nears of the group, as well as a combat operator."
+  },
+  {
+    "id": 100200001024000500,
+    "value": "Commander of the Alice Springs detachment of Zeon's Australian occupation forces. He is an ace pilot also known as the Thunderclap of the Wilderness.\nHis exceptional piloting skills and sensible battle tactics make him a proud soldier, but he also has a soft side, often calling for ceasefires to prevent civilians from getting hurt.\nHe has a mantra, \"Be a soldier, not a warrior,\" that makes him focus on group tactics, and he teaches his subordinates the importance of fighting and strategizing as a team."
   },
   {
     "id": 100200001031000100,
@@ -7108,6 +7156,10 @@
     "value": "One of Celestial Being's Gundam Meisters.\nAn expert marksman capable of sniping an orbital target from the ground, Lockon is the Meister of Gundam Dynames, which resides aboard the Ptolemaios.\nTerrorists killed his parents 10 years ago, causing him to have a strong hatred of terrorism. This eventually led to him becoming a member of Celestial Being, which seeks to eliminate conflict.\nA cheerful and caring young man, he frequently helps support the other members of Celestial Being as something of a big brother figure, particularly the oft-troubled Setsuna F. Seiei.\nLockon Stratos is just his codename within Celestial Being; his real name is Neil Dylandy."
   },
   {
+    "id": 100200001370000203,
+    "value": "One of Celestial Being's Gundam Meisters.\nAn expert marksman capable of sniping an orbital target from the ground, Lockon is the Meister of Gundam Dynames, which resides aboard the Ptolemaios.\nTerrorists killed his parents 10 years ago, causing him to have a strong hatred of terrorism. This eventually led to him becoming a member of Celestial Being, which seeks to eliminate conflict.\nA cheerful and caring young man, he frequently helps support the other members of Celestial Being as something of a big brother figure, particularly the oft-troubled Setsuna F. Seiei.\nLockon Stratos is just his codename within Celestial Being; his real name is Neil Dylandy."
+  },
+  {
     "id": 100200001370000300,
     "value": "One of Celestial Being's Gundam Meisters.\nThe Meister for Gundam Kyrios, which resides aboard the Ptolemaios.\nAllelujah underwent physical modifications and mental conditioning at the Human Reform League's Super Human Research Institute that made him stronger than the average human, and later fled the facility to join Celestial Being.\nThough normally a warm and caring young man, one of the side effects of his conditioning was the formation of a violent, opposite split personality named Hallelujah Haptism.\nHe continues participating in armed interventions while struggling against Hallelujah's violent outbursts.\nThe existence of Soma Peries, an enemy soldier, makes him realize that the Super Human Research Institute is still in operation. This led him to propose an operation to destroy the Institute and end the vicious cycle."
   },
@@ -7358,6 +7410,10 @@
   {
     "id": 100200001370006101,
     "value": "A self-proclaimed Innovator affiliated with the Autonomous Peacekeeping Force A-LAWS.\nRevive is actually an Innovade, an artificial version of an Innovator (an evolved class of humans).\nHe looks down on human beings in general, but does respect the abilities of exceptional people such as Kati Mannequin.\nHe is calm and intelligent overall, but also quick to let loose in battle and has a passionate side as well.\nHe often operates alongside Hiling Care.\nRevive was assigned to the A-LAWS with a special license enabling him to operate independently, and fought in many battles with Gundams under Ribbons Almark's orders.\nIn addition, Revive has the same genetic pattern as Anew Returner, who is positioned as a sleeper agent within Celestial Being.\nHe intentionally gets himself captured by them so he can awaken her personality as an Innovade and steal Celestial Being's confidential data."
+  },
+  {
+    "id": 100200001370006200,
+    "value": "An agent of Celestial Being.\nShe has served under Celestial Being agent Wang Liu Mei since being saved by Setsuna F. Seiei from Ali al-Saachez, who killed her two older brothers during a battle with the United Nations Forces.\nAlthough the passage of time has left her looking more mature, her artless and sadistic personality remains unchanged, and she harbors profound hatred and resentment against Saachez for killing her brothers.\nIn addition, although she seems to follow Wang Liu Mei on missions, Nena secretly hates her due to the way she seeks global reform in an effort to start over on her own life in spite of her position of privilege."
   },
   {
     "id": 100200001375000100,
@@ -9514,6 +9570,26 @@
   {
     "id": 100300001022000700,
     "value": "Marion Whelch"
+  },
+  {
+    "id": 100300001024000100,
+    "value": "Master Pierce Rayer"
+  },
+  {
+    "id": 100300001024000200,
+    "value": "Leung Lee-Fai"
+  },
+  {
+    "id": 100300001024000300,
+    "value": "Maximilian Berger"
+  },
+  {
+    "id": 100300001024000400,
+    "value": "Anita Julianne"
+  },
+  {
+    "id": 100300001024000500,
+    "value": "Visch Donahue"
   },
   {
     "id": 100300001031000100,
@@ -11676,6 +11752,10 @@
     "value": "Lockon Stratos"
   },
   {
+    "id": 100300001370000203,
+    "value": "Lockon Stratos"
+  },
+  {
     "id": 100300001370000300,
     "value": "Allelujah Haptism"
   },
@@ -11926,6 +12006,10 @@
   {
     "id": 100300001370006101,
     "value": "Revive Revival"
+  },
+  {
+    "id": 100300001370006200,
+    "value": "Nena Trinity"
   },
   {
     "id": 100300001375000100,
@@ -14082,6 +14166,26 @@
   {
     "id": 100400001022000700,
     "value": "Marion Whelch"
+  },
+  {
+    "id": 100400001024000100,
+    "value": "Master Pierce Rayer"
+  },
+  {
+    "id": 100400001024000200,
+    "value": "Leung Lee-Fai"
+  },
+  {
+    "id": 100400001024000300,
+    "value": "Maximilian Berger"
+  },
+  {
+    "id": 100400001024000400,
+    "value": "Anita Julianne"
+  },
+  {
+    "id": 100400001024000500,
+    "value": "Visch Donahue"
   },
   {
     "id": 100400001031000100,
@@ -16244,6 +16348,10 @@
     "value": "Lockon Stratos"
   },
   {
+    "id": 100400001370000203,
+    "value": "Lockon Stratos"
+  },
+  {
     "id": 100400001370000300,
     "value": "Allelujah Haptism"
   },
@@ -16494,6 +16602,10 @@
   {
     "id": 100400001370006101,
     "value": "Revive Revival"
+  },
+  {
+    "id": 100400001370006200,
+    "value": "Nena Trinity"
   },
   {
     "id": 100400001375000100,
@@ -18564,6 +18676,22 @@
     "value": "Argh! The hatred's closing in on me!"
   },
   {
+    "id": 101100001024000100,
+    "value": "This mobile suit is done for!\nSorry, I need to get outta here!"
+  },
+  {
+    "id": 101100001024000200,
+    "value": "I can't continue the operation..."
+  },
+  {
+    "id": 101100001024000300,
+    "value": "Grah, how can it end like this?"
+  },
+  {
+    "id": 101100001024000500,
+    "value": "A direct hit?!"
+  },
+  {
     "id": 101100001031000100,
     "value": "I messed up big time..."
   },
@@ -20016,6 +20144,10 @@
     "value": "Urgh! Sorry guys, this is it for me!"
   },
   {
+    "id": 101100001370000203,
+    "value": "Urgh! Sorry guys, this is it for me!"
+  },
+  {
     "id": 101100001370000300,
     "value": "I'm sorry, everyone...!"
   },
@@ -20062,6 +20194,10 @@
   {
     "id": 101100001370003400,
     "value": "I'll never forget this humiliation...!"
+  },
+  {
+    "id": 101100001370003501,
+    "value": "You're an insolent one, you know that?"
   },
   {
     "id": 101100001370003502,
@@ -20150,6 +20286,10 @@
   {
     "id": 101100001370006101,
     "value": "How could they defeat an Innovator...?!"
+  },
+  {
+    "id": 101100001370006200,
+    "value": "H-Hold on a sec!\nThis has to be a joke...!"
   },
   {
     "id": 101100001375000100,
@@ -21318,6 +21458,26 @@
   {
     "id": 101400001022000700,
     "value": "Megumi Hayashibara"
+  },
+  {
+    "id": 101400001024000100,
+    "value": "Koichi Yamadera"
+  },
+  {
+    "id": 101400001024000200,
+    "value": "Yuji Mikimoto"
+  },
+  {
+    "id": 101400001024000300,
+    "value": "Mitsuru Miyamoto"
+  },
+  {
+    "id": 101400001024000400,
+    "value": "-"
+  },
+  {
+    "id": 101400001024000500,
+    "value": "Hiroaki Hirata"
   },
   {
     "id": 101400001031000100,
@@ -23476,6 +23636,10 @@
     "value": "Shin-ichiro Miki"
   },
   {
+    "id": 101400001370000203,
+    "value": "Shin-ichiro Miki"
+  },
+  {
     "id": 101400001370000300,
     "value": "Hiroyuki Yoshino"
   },
@@ -23726,6 +23890,10 @@
   {
     "id": 101400001370006101,
     "value": "Mitsuki Saiga"
+  },
+  {
+    "id": 101400001370006200,
+    "value": "Rie Kugimiya"
   },
   {
     "id": 101400001375000100,

@@ -1,0 +1,12 @@
+# Local PaddleOCR env for /profile Sorties OCR experiments.
+# Requires Python 3.12 (paddlepaddle has no Windows wheel for 3.14).
+#
+#   py -3.12 -m venv .venv-paddle
+#   .\.venv-paddle\Scripts\python.exe -m pip install -r scripts/requirements-paddle-ocr.txt
+#   .\.venv-paddle\Scripts\python.exe scripts/bench_local_ocr_sorties.py
+#
+paddlepaddle==3.2.2
+paddleocr==3.7.0
+numpy>=1.24,<2.4
+Pillow>=10
+rapidocr-onnxruntime>=1.3

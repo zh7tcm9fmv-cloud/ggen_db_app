@@ -1,0 +1,146 @@
+[
+  {
+    "Id": 1308000500,
+    "UnitId": 1308000500,
+    "PhaseNumber": 1,
+    "WeaponId": 130800050170
+  },
+  {
+    "Id": 1308000501,
+    "UnitId": 1308000501,
+    "PhaseNumber": 1,
+    "WeaponId": 130800050170
+  },
+  {
+    "Id": 1308000502,
+    "UnitId": 1308000502,
+    "PhaseNumber": 1,
+    "WeaponId": 130800050270
+  },
+  {
+    "Id": 1379000100,
+    "UnitId": 1379000100,
+    "PhaseNumber": 1,
+    "WeaponId": 137900010170
+  },
+  {
+    "Id": 1379000101,
+    "UnitId": 1379000101,
+    "PhaseNumber": 1,
+    "WeaponId": 137900010170
+  },
+  {
+    "Id": 1379000102,
+    "UnitId": 1379000102,
+    "PhaseNumber": 1,
+    "WeaponId": 137900010270
+  },
+  {
+    "Id": 1379000200,
+    "UnitId": 1379000200,
+    "PhaseNumber": 1,
+    "WeaponId": 137900020170
+  },
+  {
+    "Id": 1379000201,
+    "UnitId": 1379000201,
+    "PhaseNumber": 1,
+    "WeaponId": 137900020170
+  },
+  {
+    "Id": 1379000202,
+    "UnitId": 1379000202,
+    "PhaseNumber": 1,
+    "WeaponId": 137900020270
+  },
+  {
+    "Id": 1750000300,
+    "UnitId": 1750000300,
+    "PhaseNumber": 1,
+    "WeaponId": 175000030170
+  },
+  {
+    "Id": 1750000301,
+    "UnitId": 1750000301,
+    "PhaseNumber": 1,
+    "WeaponId": 175000030170
+  },
+  {
+    "Id": 1750000302,
+    "UnitId": 1750000302,
+    "PhaseNumber": 1,
+    "WeaponId": 175000030270
+  },
+  {
+    "Id": 1750000400,
+    "UnitId": 1750000400,
+    "PhaseNumber": 1,
+    "WeaponId": 175000040170
+  },
+  {
+    "Id": 1750000401,
+    "UnitId": 1750000401,
+    "PhaseNumber": 1,
+    "WeaponId": 175000040170
+  },
+  {
+    "Id": 1750000402,
+    "UnitId": 1750000402,
+    "PhaseNumber": 1,
+    "WeaponId": 175000040270
+  },
+  {
+    "Id": 1761000100,
+    "UnitId": 1761000100,
+    "PhaseNumber": 1,
+    "WeaponId": 176100010170
+  },
+  {
+    "Id": 1761000101,
+    "UnitId": 1761000101,
+    "PhaseNumber": 1,
+    "WeaponId": 176100010170
+  },
+  {
+    "Id": 1761000102,
+    "UnitId": 1761000102,
+    "PhaseNumber": 1,
+    "WeaponId": 176100010270
+  },
+  {
+    "Id": 1764000200,
+    "UnitId": 1764000200,
+    "PhaseNumber": 1,
+    "WeaponId": 176400020170
+  },
+  {
+    "Id": 1764000201,
+    "UnitId": 1764000201,
+    "PhaseNumber": 1,
+    "WeaponId": 176400020170
+  },
+  {
+    "Id": 1764000202,
+    "UnitId": 1764000202,
+    "PhaseNumber": 1,
+    "WeaponId": 176400020270
+  },
+  {
+    "Id": 1850003200,
+    "UnitId": 1850003200,
+    "PhaseNumber": 1,
+    "WeaponId": 185000320170
+  },
+  {
+    "Id": 1850003201,
+    "UnitId": 1850003201,
+    "PhaseNumber": 1,
+    "WeaponId": 185000320170
+  },
+  {
+    "Id": 1850003202,
+    "UnitId": 1850003202,
+    "PhaseNumber": 1,
+    "WeaponId": 185000320270
+  }
+]

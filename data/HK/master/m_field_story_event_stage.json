@@ -1,0 +1,178 @@
+[
+  {
+    "Id": 2000181001,
+    "FieldStoryEventId": 200018,
+    "ScenarioStageId": 2400104,
+    "FieldStoryEventStageTypeIndex": 0,
+    "CoordinateX": 150,
+    "CoordinateY": 400,
+    "PremiumUnitImageName": "",
+    "FlavorImageName1": "field_story_event_stage_flavor_200018_01",
+    "FlavorImageName2": "field_story_event_stage_flavor_200018_17"
+  },
+  {
+    "Id": 2000181002,
+    "FieldStoryEventId": 200018,
+    "ScenarioStageId": 2400202,
+    "FieldStoryEventStageTypeIndex": 0,
+    "CoordinateX": -240,
+    "CoordinateY": 510,
+    "PremiumUnitImageName": "",
+    "FlavorImageName1": "field_story_event_stage_flavor_200018_02",
+    "FlavorImageName2": "field_story_event_stage_flavor_200018_18"
+  },
+  {
+    "Id": 2000181003,
+    "FieldStoryEventId": 200018,
+    "ScenarioStageId": 2400303,
+    "FieldStoryEventStageTypeIndex": 0,
+    "CoordinateX": 420,
+    "CoordinateY": -490,
+    "PremiumUnitImageName": "",
+    "FlavorImageName1": "field_story_event_stage_flavor_200018_03",
+    "FlavorImageName2": "field_story_event_stage_flavor_200018_19"
+  },
+  {
+    "Id": 2000181004,
+    "FieldStoryEventId": 200018,
+    "ScenarioStageId": 2400404,
+    "FieldStoryEventStageTypeIndex": 0,
+    "CoordinateX": 1220,
+    "CoordinateY": -410,
+    "PremiumUnitImageName": "",
+    "FlavorImageName1": "field_story_event_stage_flavor_200018_04",
+    "FlavorImageName2": "field_story_event_stage_flavor_200018_20"
+  },
+  {
+    "Id": 2000181005,
+    "FieldStoryEventId": 200018,
+    "ScenarioStageId": 2400503,
+    "FieldStoryEventStageTypeIndex": 0,
+    "CoordinateX": 970,
+    "CoordinateY": 125,
+    "PremiumUnitImageName": "",
+    "FlavorImageName1": "field_story_event_stage_flavor_200018_05",
+    "FlavorImageName2": "field_story_event_stage_flavor_200018_21"
+  },
+  {
+    "Id": 2000181006,
+    "FieldStoryEventId": 200018,
+    "ScenarioStageId": 2400603,
+    "FieldStoryEventStageTypeIndex": 0,
+    "CoordinateX": 680,
+    "CoordinateY": 670,
+    "PremiumUnitImageName": "",
+    "FlavorImageName1": "field_story_event_stage_flavor_200018_06",
+    "FlavorImageName2": "field_story_event_stage_flavor_200018_22"
+  },
+  {
+    "Id": 2000182001,
+    "FieldStoryEventId": 200018,
+    "ScenarioStageId": 2400701,
+    "FieldStoryEventStageTypeIndex": 0,
+    "CoordinateX": -370,
+    "CoordinateY": 1140,
+    "PremiumUnitImageName": "",
+    "FlavorImageName1": "field_story_event_stage_flavor_200018_07",
+    "FlavorImageName2": "field_story_event_stage_flavor_200018_23"
+  },
+  {
+    "Id": 2000182002,
+    "FieldStoryEventId": 200018,
+    "ScenarioStageId": 2400801,
+    "FieldStoryEventStageTypeIndex": 0,
+    "CoordinateX": -1240,
+    "CoordinateY": 650,
+    "PremiumUnitImageName": "",
+    "FlavorImageName1": "field_story_event_stage_flavor_200018_08",
+    "FlavorImageName2": "field_story_event_stage_flavor_200018_24"
+  },
+  {
+    "Id": 2000182003,
+    "FieldStoryEventId": 200018,
+    "ScenarioStageId": 2400901,
+    "FieldStoryEventStageTypeIndex": 0,
+    "CoordinateX": -670,
+    "CoordinateY": 275,
+    "PremiumUnitImageName": "",
+    "FlavorImageName1": "field_story_event_stage_flavor_200018_09",
+    "FlavorImageName2": "field_story_event_stage_flavor_200018_25"
+  },
+  {
+    "Id": 2000184001,
+    "FieldStoryEventId": 200018,
+    "ScenarioStageId": 2403001,
+    "FieldStoryEventStageTypeIndex": 0,
+    "CoordinateX": -540,
+    "CoordinateY": 550,
+    "PremiumUnitImageName": "",
+    "FlavorImageName1": "field_story_event_stage_flavor_200018_13",
+    "FlavorImageName2": "field_story_event_stage_flavor_200018_29"
+  },
+  {
+    "Id": 2000184002,
+    "FieldStoryEventId": 200018,
+    "ScenarioStageId": 2403002,
+    "FieldStoryEventStageTypeIndex": 0,
+    "CoordinateX": 300,
+    "CoordinateY": -400,
+    "PremiumUnitImageName": "",
+    "FlavorImageName1": "field_story_event_stage_flavor_200018_14",
+    "FlavorImageName2": "field_story_event_stage_flavor_200018_30"
+  },
+  {
+    "Id": 2000184003,
+    "FieldStoryEventId": 200018,
+    "ScenarioStageId": 2403003,
+    "FieldStoryEventStageTypeIndex": 0,
+    "CoordinateX": 680,
+    "CoordinateY": 670,
+    "PremiumUnitImageName": "",
+    "FlavorImageName1": "field_story_event_stage_flavor_200018_15",
+    "FlavorImageName2": "field_story_event_stage_flavor_200018_31"
+  },
+  {
+    "Id": 2000185001,
+    "FieldStoryEventId": 200018,
+    "ScenarioStageId": 2404001,
+    "FieldStoryEventStageTypeIndex": 2,
+    "CoordinateX": 1220,
+    "CoordinateY": -410,
+    "PremiumUnitImageName": "field_story_event_premium_stage_s_200018",
+    "FlavorImageName1": "field_story_event_stage_flavor_200018_16",
+    "FlavorImageName2": "field_story_event_stage_flavor_200018_32"
+  },
+  {
+    "Id": 2000186001,
+    "FieldStoryEventId": 200018,
+    "ScenarioStageId": 2402001,
+    "FieldStoryEventStageTypeIndex": 1,
+    "CoordinateX": 0,
+    "CoordinateY": 0,
+    "PremiumUnitImageName": "",
+    "FlavorImageName1": "field_story_event_stage_flavor_200018_10",
+    "FlavorImageName2": "field_story_event_stage_flavor_200018_26"
+  },
+  {
+    "Id": 2000186002,
+    "FieldStoryEventId": 200018,
+    "ScenarioStageId": 2402002,
+    "FieldStoryEventStageTypeIndex": 1,
+    "CoordinateX": 0,
+    "CoordinateY": 0,
+    "PremiumUnitImageName": "",
+    "FlavorImageName1": "field_story_event_stage_flavor_200018_11",
+    "FlavorImageName2": "field_story_event_stage_flavor_200018_27"
+  },
+  {
+    "Id": 2000186003,
+    "FieldStoryEventId": 200018,
+    "ScenarioStageId": 2402003,
+    "FieldStoryEventStageTypeIndex": 1,
+    "CoordinateX": 0,
+    "CoordinateY": 0,
+    "PremiumUnitImageName": "",
+    "FlavorImageName1": "field_story_event_stage_flavor_200018_12",
+    "FlavorImageName2": "field_story_event_stage_flavor_200018_28"
+  }
+]

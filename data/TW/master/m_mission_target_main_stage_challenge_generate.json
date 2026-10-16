@@ -25,9 +25,19 @@
     "MissionId": 310009500201
   },
   {
+    "Id": 519875146,
+    "MainStageChallengeId": 37002901,
+    "MissionId": 310037000901
+  },
+  {
     "Id": 671410988,
     "MainStageChallengeId": 101501,
     "MissionId": 300010200101
+  },
+  {
+    "Id": 878903208,
+    "MainStageChallengeId": 37001201,
+    "MissionId": 310037000101
   },
   {
     "Id": 893564539,
@@ -38,6 +48,11 @@
     "Id": 1033582213,
     "MainStageChallengeId": 101601,
     "MissionId": 300010200301
+  },
+  {
+    "Id": 1096235571,
+    "MainStageChallengeId": 37002601,
+    "MissionId": 310037000301
   },
   {
     "Id": 1148501481,
@@ -65,9 +80,19 @@
     "MissionId": 300010200501
   },
   {
+    "Id": 1519413776,
+    "MainStageChallengeId": 37002801,
+    "MissionId": 310037000801
+  },
+  {
     "Id": 1589966665,
     "MainStageChallengeId": 30001901,
     "MissionId": 300010301001
+  },
+  {
+    "Id": 1918990604,
+    "MainStageChallengeId": 37002701,
+    "MissionId": 310037000501
   },
   {
     "Id": 2022296257,
@@ -90,6 +115,16 @@
     "MissionId": 310008100501
   },
   {
+    "Id": 2384126440,
+    "MainStageChallengeId": 37002901,
+    "MissionId": 310037001001
+  },
+  {
+    "Id": 2499425945,
+    "MainStageChallengeId": 37001201,
+    "MissionId": 310037000201
+  },
+  {
     "Id": 2597125366,
     "MainStageChallengeId": 21001901,
     "MissionId": 310021000401
@@ -103,6 +138,11 @@
     "Id": 2651050033,
     "MainStageChallengeId": 9501901,
     "MissionId": 310009500101
+  },
+  {
+    "Id": 2676793717,
+    "MainStageChallengeId": 37002801,
+    "MissionId": 310037000701
   },
   {
     "Id": 2716306925,
@@ -140,9 +180,19 @@
     "MissionId": 310008100301
   },
   {
+    "Id": 3617975226,
+    "MainStageChallengeId": 37002601,
+    "MissionId": 310037000401
+  },
+  {
     "Id": 3822946040,
     "MainStageChallengeId": 9502101,
     "MissionId": 310009500501
+  },
+  {
+    "Id": 4076397149,
+    "MainStageChallengeId": 37002701,
+    "MissionId": 310037000601
   },
   {
     "Id": 4251356313,

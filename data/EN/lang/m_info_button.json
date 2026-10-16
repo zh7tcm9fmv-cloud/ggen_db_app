@@ -108,8 +108,20 @@
     "value": "SSP Conversion"
   },
   {
+    "id": 170700000000330101,
+    "value": "ULT Alteration"
+  },
+  {
     "id": 170700000000900801,
     "value": "Item Shop"
+  },
+  {
+    "id": 170700000000900901,
+    "value": "Story Events (Field Events)"
+  },
+  {
+    "id": 170700000000901001,
+    "value": "Combat Power Upgrade"
   },
   {
     "id": 170700000000910004,

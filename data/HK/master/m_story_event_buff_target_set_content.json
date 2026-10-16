@@ -1,0 +1,20 @@
+[
+  {
+    "Id": 200180101,
+    "TargetSetId": 2001801,
+    "TargetTypeIndex": 1,
+    "TargetId": 240
+  },
+  {
+    "Id": 200180201,
+    "TargetSetId": 2001802,
+    "TargetTypeIndex": 1,
+    "TargetId": 240
+  },
+  {
+    "Id": 200180202,
+    "TargetSetId": 2001802,
+    "TargetTypeIndex": 2,
+    "TargetId": 1116
+  }
+]

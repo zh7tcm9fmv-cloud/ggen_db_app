@@ -224,6 +224,20 @@
     "ScheduleId": 2511109901
   },
   {
+    "CharacterId": 1024000200,
+    "RegisterConditionTypeIndex": 1,
+    "TargetId": 0,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2610309901
+  },
+  {
+    "CharacterId": 1024000300,
+    "RegisterConditionTypeIndex": 1,
+    "TargetId": 0,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2610309901
+  },
+  {
     "CharacterId": 1031000103,
     "RegisterConditionTypeIndex": 1,
     "TargetId": 0,

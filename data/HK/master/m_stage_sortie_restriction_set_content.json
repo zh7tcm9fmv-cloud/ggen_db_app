@@ -204,6 +204,12 @@
     "StageSortieRestrictionSetGroupId": 120022
   },
   {
+    "StageSortieRestrictionSetId": 120023,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 120023
+  },
+  {
     "StageSortieRestrictionSetId": 130001,
     "SortieRestrictionTargetTypeIndex": 1,
     "IsAnd": false,
@@ -268,6 +274,12 @@
     "SortieRestrictionTargetTypeIndex": 1,
     "IsAnd": false,
     "StageSortieRestrictionSetGroupId": 130013
+  },
+  {
+    "StageSortieRestrictionSetId": 130022,
+    "SortieRestrictionTargetTypeIndex": 1,
+    "IsAnd": false,
+    "StageSortieRestrictionSetGroupId": 130029
   },
   {
     "StageSortieRestrictionSetId": 150001,

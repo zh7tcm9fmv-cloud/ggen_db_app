@@ -336,6 +336,12 @@
     "DamagedEffectId": "ef_mpd_0003_006_beambuster"
   },
   {
+    "Id": 120029,
+    "WeaponEffectPrefabPairSetId": 120029,
+    "WeaponEffectId": "ef_mpa_0003_011_beambuster_gn",
+    "DamagedEffectId": "ef_mpd_0003_001_beambuster"
+  },
+  {
     "Id": 130002,
     "WeaponEffectPrefabPairSetId": 130002,
     "WeaponEffectId": "ef_mpa_0004_002_spreadbeam",
@@ -2118,6 +2124,18 @@
     "DamagedEffectId": "ef_mpd_0023_000_beamshield_v2"
   },
   {
+    "Id": 290181,
+    "WeaponEffectPrefabPairSetId": 290181,
+    "WeaponEffectId": "ef_mpa_0023_000_missile_dynames",
+    "DamagedEffectId": "ef_mpd_0000_000_cmnexplosionhit"
+  },
+  {
+    "Id": 290182,
+    "WeaponEffectPrefabPairSetId": 290182,
+    "WeaponEffectId": "ef_mpa_0023_000_sniperrifle_dynames",
+    "DamagedEffectId": "ef_mpd_0023_000_sniperrifle_dynames"
+  },
+  {
     "Id": 310001,
     "WeaponEffectPrefabPairSetId": 310001,
     "WeaponEffectId": "ef_mpa_0029_001_funnelbeam",
@@ -3552,6 +3570,12 @@
     "DamagedEffectId": "ef_mpd_0038_002_twinbeamcanon"
   },
   {
+    "Id": 480006,
+    "WeaponEffectPrefabPairSetId": 480006,
+    "WeaponEffectId": "ef_mpa_0038_006_twinbeamcanon",
+    "DamagedEffectId": "ef_mpd_0038_006_twinbeamcanon"
+  },
+  {
     "Id": 480008,
     "WeaponEffectPrefabPairSetId": 480008,
     "WeaponEffectId": "ef_mpa_0038_015_twinbeamcanon",
@@ -4773,6 +4797,30 @@
     "Id": 900237,
     "WeaponEffectPrefabPairSetId": 900237,
     "WeaponEffectId": "ef_mpw_112_01_milchstrasse",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900238,
+    "WeaponEffectPrefabPairSetId": 900238,
+    "WeaponEffectId": "ef_mpw_061_10_tackle",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900239,
+    "WeaponEffectPrefabPairSetId": 900239,
+    "WeaponEffectId": "ef_mpw_004_02_threelinemegabeam_gn",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900241,
+    "WeaponEffectPrefabPairSetId": 900241,
+    "WeaponEffectId": "ef_mpw_003_03_snipe",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900242,
+    "WeaponEffectPrefabPairSetId": 900242,
+    "WeaponEffectId": "ef_mpw_018_06_multipleburst_rhinocerostypeb",
     "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
   },
   {
@@ -9824,6 +9872,126 @@
   {
     "Id": 8008710,
     "WeaponEffectPrefabPairSetId": 80087,
+    "WeaponEffectId": "ef_mpa_1000_000_null",
+    "DamagedEffectId": "ef_mpd_1000_000_null"
+  },
+  {
+    "Id": 8008801,
+    "WeaponEffectPrefabPairSetId": 80088,
+    "WeaponEffectId": "ef_mpsc_1000_000_dynames",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8008802,
+    "WeaponEffectPrefabPairSetId": 80088,
+    "WeaponEffectId": "ef_mpa_1000_000_vernier_dynames",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8008803,
+    "WeaponEffectPrefabPairSetId": 80088,
+    "WeaponEffectId": "ef_mpa_1000_000_beam_dynames_ex1",
+    "DamagedEffectId": "ef_mpd_1000_000_beam_dynames_ex1"
+  },
+  {
+    "Id": 8008804,
+    "WeaponEffectPrefabPairSetId": 80088,
+    "WeaponEffectId": "ef_mpa_1000_000_beam_dynames_ex2",
+    "DamagedEffectId": "ef_mpd_1000_000_beam_dynames_ex2"
+  },
+  {
+    "Id": 8008805,
+    "WeaponEffectPrefabPairSetId": 80088,
+    "WeaponEffectId": "ef_mpa_1000_000_beam_dynames_ex3",
+    "DamagedEffectId": "ef_mpd_1000_000_beam_dynames_ex3"
+  },
+  {
+    "Id": 8008806,
+    "WeaponEffectPrefabPairSetId": 80088,
+    "WeaponEffectId": "ef_mpa_1000_000_slash_dynames_ex1",
+    "DamagedEffectId": "ef_mpd_1000_000_slash_dynames_ex1"
+  },
+  {
+    "Id": 8008807,
+    "WeaponEffectPrefabPairSetId": 80088,
+    "WeaponEffectId": "ef_mpa_1000_000_slash_dynames_ex2",
+    "DamagedEffectId": "ef_mpd_1000_000_slash_dynames_ex2"
+  },
+  {
+    "Id": 8008808,
+    "WeaponEffectPrefabPairSetId": 80088,
+    "WeaponEffectId": "ef_mpa_1000_000_lockon_dynames",
+    "DamagedEffectId": "ef_mpd_1000_000_lockon_dynames"
+  },
+  {
+    "Id": 8008809,
+    "WeaponEffectPrefabPairSetId": 80088,
+    "WeaponEffectId": "ef_mpa_1000_000_finishbeam_dynames",
+    "DamagedEffectId": "ef_mpd_1000_000_finishbeam_dynames"
+  },
+  {
+    "Id": 8008901,
+    "WeaponEffectPrefabPairSetId": 80089,
+    "WeaponEffectId": "ef_mpa_1000_000_gnparticlevernier_reborns",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8008902,
+    "WeaponEffectPrefabPairSetId": 80089,
+    "WeaponEffectId": "ef_mpa_1000_000_crossslash_reborns_ex1",
+    "DamagedEffectId": "ef_mpd_1000_000_crossslash_reborns_ex1"
+  },
+  {
+    "Id": 8008903,
+    "WeaponEffectPrefabPairSetId": 80089,
+    "WeaponEffectId": "ef_mpa_1000_000_crossslash_reborns_ex2",
+    "DamagedEffectId": "ef_mpd_1000_000_crossslash_reborns_ex2"
+  },
+  {
+    "Id": 8008904,
+    "WeaponEffectPrefabPairSetId": 80089,
+    "WeaponEffectId": "ef_mpa_1000_000_beamsaber_reborns_ex1",
+    "DamagedEffectId": "ef_mpd_1000_000_beamsaber_reborns_ex1"
+  },
+  {
+    "Id": 8008905,
+    "WeaponEffectPrefabPairSetId": 80089,
+    "WeaponEffectId": "ef_mpa_1000_000_beamsaber_reborns_ex2",
+    "DamagedEffectId": "ef_mpd_1000_000_beamsaber_reborns_ex2"
+  },
+  {
+    "Id": 8008906,
+    "WeaponEffectPrefabPairSetId": 80089,
+    "WeaponEffectId": "ef_mpa_1000_000_beamrifle_reborns",
+    "DamagedEffectId": "ef_mpd_1000_000_beamrifle_reborns"
+  },
+  {
+    "Id": 8008907,
+    "WeaponEffectPrefabPairSetId": 80089,
+    "WeaponEffectId": "ef_mpa_1000_000_stab_reborns",
+    "DamagedEffectId": "ef_mpd_1000_000_stab_reborns"
+  },
+  {
+    "Id": 8008908,
+    "WeaponEffectPrefabPairSetId": 80089,
+    "WeaponEffectId": "ef_mpa_1000_000_fang_reborns",
+    "DamagedEffectId": "ef_mpd_1000_000_fang_reborns"
+  },
+  {
+    "Id": 8008909,
+    "WeaponEffectPrefabPairSetId": 80089,
+    "WeaponEffectId": "ef_mpa_1000_000_tranzam_reborns",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8008910,
+    "WeaponEffectPrefabPairSetId": 80089,
+    "WeaponEffectId": "ef_mpa_1000_000_finishbeam_reborns",
+    "DamagedEffectId": "ef_mpd_1000_000_finishbeam_reborns"
+  },
+  {
+    "Id": 8008911,
+    "WeaponEffectPrefabPairSetId": 80089,
     "WeaponEffectId": "ef_mpa_1000_000_null",
     "DamagedEffectId": "ef_mpd_1000_000_null"
   },

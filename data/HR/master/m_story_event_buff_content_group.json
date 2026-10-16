@@ -1,0 +1,50 @@
+[
+  {
+    "Id": 2001801,
+    "StoryEventBuffId": 200018,
+    "StoryEventBuffReleaseConditionTargetSetId": 2001801,
+    "ReleaseConditionOperatorTypeIndex": 0,
+    "NameLanguageId": 251500000002001801,
+    "SortOrder": 1
+  },
+  {
+    "Id": 2001802,
+    "StoryEventBuffId": 200018,
+    "StoryEventBuffReleaseConditionTargetSetId": 2001802,
+    "ReleaseConditionOperatorTypeIndex": 2,
+    "NameLanguageId": 251500000002001802,
+    "SortOrder": 2
+  },
+  {
+    "Id": 2001803,
+    "StoryEventBuffId": 200018,
+    "StoryEventBuffReleaseConditionTargetSetId": 2001803,
+    "ReleaseConditionOperatorTypeIndex": 0,
+    "NameLanguageId": 251500000002001803,
+    "SortOrder": 3
+  },
+  {
+    "Id": 2001804,
+    "StoryEventBuffId": 200018,
+    "StoryEventBuffReleaseConditionTargetSetId": 2001804,
+    "ReleaseConditionOperatorTypeIndex": 0,
+    "NameLanguageId": 251500000002001804,
+    "SortOrder": 4
+  },
+  {
+    "Id": 2001805,
+    "StoryEventBuffId": 200018,
+    "StoryEventBuffReleaseConditionTargetSetId": 2001805,
+    "ReleaseConditionOperatorTypeIndex": 0,
+    "NameLanguageId": 251500000002001805,
+    "SortOrder": 5
+  },
+  {
+    "Id": 2001806,
+    "StoryEventBuffId": 200018,
+    "StoryEventBuffReleaseConditionTargetSetId": 2001806,
+    "ReleaseConditionOperatorTypeIndex": 0,
+    "NameLanguageId": 251500000002001806,
+    "SortOrder": 6
+  }
+]

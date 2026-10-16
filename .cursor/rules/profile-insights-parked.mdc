@@ -1,0 +1,11 @@
+# Profile Insights — parked (Oct 2026)
+
+`/profile` screenshot OCR is a **parked local experiment**, not a live product.
+
+## Hard rule
+
+1. **Never** enable Profile Insights on Railway / production.
+2. `_profile_insights_ship_enabled()` must stay **Railway-hard-off**; local only with explicit `GGEN_PROFILE_ENABLED=1`.
+3. **Do not** reintroduce GOT-OCR, Surya, llama.cpp, or other heavy VLM servers into the Flask request path for live traffic.
+4. **Do not** add `/profile` to sitemap, main nav, or ship gates.
+5. See `experiments/profile_insights/README.md`.

@@ -515,6 +515,41 @@
     "AfterAbilityId": 1000302
   },
   {
+    "Id": 102400010001,
+    "BeforeAbilityId": 0,
+    "AfterAbilityId": 1000302
+  },
+  {
+    "Id": 102400020001,
+    "BeforeAbilityId": 0,
+    "AfterAbilityId": 1000402
+  },
+  {
+    "Id": 102400030001,
+    "BeforeAbilityId": 1000301,
+    "AfterAbilityId": 1000302
+  },
+  {
+    "Id": 102400040001,
+    "BeforeAbilityId": 0,
+    "AfterAbilityId": 1000302
+  },
+  {
+    "Id": 102400050001,
+    "BeforeAbilityId": 0,
+    "AfterAbilityId": 1000501
+  },
+  {
+    "Id": 102400050002,
+    "BeforeAbilityId": 0,
+    "AfterAbilityId": 1000501
+  },
+  {
+    "Id": 102400090001,
+    "BeforeAbilityId": 1000401,
+    "AfterAbilityId": 1000402
+  },
+  {
     "Id": 102600011001,
     "BeforeAbilityId": 1000401,
     "AfterAbilityId": 1000402

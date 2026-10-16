@@ -36,6 +36,10 @@
     "value": "HP Restoration"
   },
   {
+    "id": 160400001024000150,
+    "value": "HP Restoration"
+  },
+  {
     "id": 160400001031000150,
     "value": "HP Restoration"
   },
@@ -204,6 +208,10 @@
     "value": "HP Restoration"
   },
   {
+    "id": 160400001230000460,
+    "value": "EN Restoration"
+  },
+  {
     "id": 160400001300000150,
     "value": "HP Restoration"
   },
@@ -281,6 +289,10 @@
   },
   {
     "id": 160400001370000660,
+    "value": "HP Restoration"
+  },
+  {
+    "id": 160400001370000750,
     "value": "HP Restoration"
   },
   {
@@ -397,6 +409,10 @@
   },
   {
     "id": 160500001022000150,
+    "value": "Allies in range:\nRestore HP by 35%"
+  },
+  {
+    "id": 160500001024000150,
     "value": "Allies in range:\nRestore HP by 35%"
   },
   {
@@ -568,6 +584,10 @@
     "value": "Allies in range:\nRestore HP by 40%"
   },
   {
+    "id": 160500001230000460,
+    "value": "Allies in range:\nRestore EN by 30%"
+  },
+  {
     "id": 160500001300000150,
     "value": "Allies in range:\nRestore HP by 40%"
   },
@@ -646,6 +666,10 @@
   {
     "id": 160500001370000660,
     "value": "Allies in range:\nRestore HP by 35%"
+  },
+  {
+    "id": 160500001370000750,
+    "value": "Allies in range:\nRestore HP by 40%"
   },
   {
     "id": 160500001376000150,
@@ -986,6 +1010,10 @@
   {
     "id": 160900001370000550,
     "value": "Time for a frontal breakthrough!"
+  },
+  {
+    "id": 160900001370000750,
+    "value": "Bring them down!"
   },
   {
     "id": 160900001376000150,

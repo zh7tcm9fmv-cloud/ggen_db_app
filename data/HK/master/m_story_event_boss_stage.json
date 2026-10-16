@@ -312,6 +312,45 @@
     "MaxFieldRewardCount": 0
   },
   {
+    "Id": 2405001,
+    "StoryEventId": 200018,
+    "StageId": 2405001,
+    "StoryEventBossDifficultyTypeIndex": 1,
+    "IsRareBoss": false,
+    "BossMapNpcId": 24005000102000001,
+    "ConsumeBossChallengePoint": 60,
+    "TurnCountLimit": 3,
+    "HpGaugeCount": 12,
+    "StageNameLanguageId": 130100000002405001,
+    "MaxFieldRewardCount": 0
+  },
+  {
+    "Id": 2405002,
+    "StoryEventId": 200018,
+    "StageId": 2405002,
+    "StoryEventBossDifficultyTypeIndex": 2,
+    "IsRareBoss": false,
+    "BossMapNpcId": 24005000202000001,
+    "ConsumeBossChallengePoint": 90,
+    "TurnCountLimit": 3,
+    "HpGaugeCount": 24,
+    "StageNameLanguageId": 130100000002405002,
+    "MaxFieldRewardCount": 0
+  },
+  {
+    "Id": 2405003,
+    "StoryEventId": 200018,
+    "StageId": 2405003,
+    "StoryEventBossDifficultyTypeIndex": 3,
+    "IsRareBoss": false,
+    "BossMapNpcId": 24005000302000001,
+    "ConsumeBossChallengePoint": 120,
+    "TurnCountLimit": 3,
+    "HpGaugeCount": 36,
+    "StageNameLanguageId": 130100000002405003,
+    "MaxFieldRewardCount": 0
+  },
+  {
     "Id": 3205001,
     "StoryEventId": 200001,
     "StageId": 3205001,

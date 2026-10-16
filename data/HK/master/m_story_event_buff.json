@@ -1,0 +1,12 @@
+[
+  {
+    "Id": 200018,
+    "StoryEventId": 200018,
+    "BuffItemId": 222000180003,
+    "TopResourceId": "field_story_event_button_buff_t_200018",
+    "MapButtonPrefabName": "field_story_event_buff_button_200018",
+    "NameLanguageId": 251400000000200018,
+    "BgPrefabName": "field_story_event_buff_bg_200018",
+    "BgmName": "bgm_0240_0002"
+  }
+]

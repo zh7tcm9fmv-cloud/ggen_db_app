@@ -7,54 +7,59 @@ alwaysApply: true
 
 **Feature name (owner):** **Report on dump**
 
-When the owner says **Report on dump**, **dump report**, **update diff**, **vX.Y changelog from MasterData**, or hands you a dump/HTML diff after a client import — do a **deep dive**. List **all** diffs clearly. Explain every player-facing term in **EN + TW/HK in-game LANG** (not free translation).
+When the owner says **Report on dump**, **dump report**, **update diff**, **vX.Y changelog from MasterData**, or hands you a dump/HTML diff after a client import — do a **deep dive**. List **all** meaningful diffs clearly. Explain every player-facing term in **EN + TW/HK in-game LANG** (not free translation).
 
-Typical inputs: `Desktop/dump/dump*.cs`, `Diff Report - dumpA vs dumpB.html`, current `ggen_db_app/data/{EN,TW,HK}/{master,lang}/`.
-
-Output location (default): `Desktop/dump/` as bilingual markdown companions (Detail + Not-live), unless the owner names another path.
+Typical inputs: `Desktop/dump/dump*.cs`, `Diff Report - dumpA vs dumpB.html`, current `ggen_db_app/data/{EN,TW,HK}/{master,lang}/`.  
+Default output: `Desktop/dump/` bilingual markdown (Detail + Not-live companion).
 
 ## Hard rule
 
-1. **List all diffs** — not only flashy player-facing items (new units, skills, banners). Include:
-   - New / removed / renamed **master tables** (MemoryTables)
-   - **Schema field** additions/removals/renames on existing tables (even if every row is still default `0` / `false` / `""`)
-   - New **enum / TypeIndex** values (TraitType, ConditionType, ConfigType, UnitSkillTraitType, FunctionType, …) with counts and sample IDs
-   - New / changed **content rows** (abilities, traits, conditions, skills, stages, drops, …)
-   - LANG-only string changes when relevant
-2. **Do not omit “scaffolded” fields** — if a column exists but is unused in this dump (e.g. `RangeMin`/`RangeMax` all 0, `IsHpDamaged` all false), **still report it** and say unused / no content yet.
-3. **Separate combat gates from game Tags** — fields like `WeaponAttributeTypes` / `AttackAttributeTypes` / `TargetWeaponConditionId` are **武裝屬性** filters (Beam / Physical / Special), **not** unit/character **Tags（標籤）**. In the report:
-   - Name the master file + field
-   - Give LANG attribute names (EN Beam·Physical·Special · TW 光束·物理·特殊 · HK 鐳射·物理·特殊)
-   - Say whether content is LIVE or scaffold
-   - **Never** describe them as inventing a Tag named “Beam” (or similar)
-4. **Bilingual output — in-game LANG only** — every explained player-facing term must use official strings from:
-   - EN: `data/EN/lang/`
-   - Trad Chinese: prefer **TW** `data/TW/lang/`; also note **HK** when it differs (e.g. Beam→鐳射)
-   - Start each report with a **LANG glossary table** (EN | TW/HK | source file) for terms used in that report
-   - Never invent fan translations. If no LANG string exists, keep the **client EN enum/name** and mark **`LANG missing` / `LANG 未進包`**
-   - Known traps (use LANG, not community shorthand): Chance Step→**額外行動** (not CS); Preemptive Strike→**先發攻擊** (not 先制); Skip Great Success→**超成功** (not 大成功); Ult Custom→**ULT改造**; Profile tip→**簡介**; Stage Skip→**略過關卡**; Tags→**標籤**; weapon attributes→**武裝屬性**
-5. Prefer a structured report: LANG glossary → Summary → Schema → Enums/TypeIndex → Content (LIVE) → Unused scaffolds → Not-live vs MasterData → Open questions / watch next MD.
-6. Cite **file + field names** (`m_trait.json` / `RangeMin`, `m_trait_condition.json` / `IsHpDamaged`, `m_unit_skill_trait_condition.json` / `WeaponAttributeTypes`, `m_trait_condition_target_weapon.json`, etc.) so the owner can verify.
-7. Pair a **Detail** report with a **Not live yet** companion when client ships systems without MasterData / with scaffolds only.
+1. **Write for reading** — prefer a community-note shape:
+   - Lead with **insights the owner would not already have** (mission condition enums, swap tables, dual SSP/Ult channels, Style product, battle-power on buffs, …) — not a restatement of a six-bullet community note
+   - New effects / skills (numbered list)
+   - New fields on traits / conditions / Unit Skills (what each enables)
+   - Big systems (ULT改造, events, Profile, …)
+   - Then MD status (LIVE / PARTIAL / SCAFFOLD / CLIENT ONLY)
+   - Section titles must be **plain language**. Never opaque labels like “A6 Schema”.
+2. **Actually deep-dive the dump** — parse MemoryTable + Enum diffs (`_mt_diff_key` / `_enum_diff_key` / HTML / CS). Cross-check live `data/*/master` row usage. Surface **every** new `GameEventConditionType`, function/payload enum, user table, and schema field — not only headline features. If the report only repeats what a short community list already said, it failed.
+3. **List all diffs** — not only flashy items. Include new/removed tables, schema fields (even if all default), new enums/TypeIndex with counts, new content rows, LANG-only changes when relevant.
+4. **Do not omit scaffolds** — column exists but unused → still report, say unused / no content yet, and what it is *for* when inferable from sibling live content (e.g. `TargetWeaponConditionId` + max-range Unit Skill ≈ “Beam／光束／鐳射 weapons max range +1”).
+5. **Substance over labels** — empty one-liners (“Profile 2.0 — partial”) are not enough. For Profile / systems: list real table counts, LANG examples (ranks, records, titles, styles), and what is still blocked.
+6. **Bilingual — in-game LANG only**
+   - EN: `data/EN/lang/` · Trad Chinese: prefer **TW**; note **HK** when different (Beam→鐳射)
+   - Start with a **LANG glossary** for terms used in that report
+   - No fan translations. Missing mode/item **title** → keep client EN + mark **`LANG missing` / `LANG 未進包`**
+   - Traps: Chance Step→**額外行動** (not CS); Preemptive Strike→**先發攻擊** (not 先制); Skip Great Success→**超成功**; Ult Custom→**ULT改造**; Profile→**簡介**; Style→**風格**; Stage Skip→**略過關卡**; Tags→**標籤**; weapon attributes→**武裝屬性**; damage noun→**損傷**
+7. **LANG missing ≠ omit the feature** — many client diffs are not in the live update / LANG pack yet. Still **list them in full**. Explain with **in-game LANG vocabulary** already used elsewhere (e.g. **故事事件**, **增幅**, **編制**, **標籤**, **系列**, **單位技能**, **損傷**, **額外行動**, **簡介**). Pattern:
+   - Keep client EN name as the temporary title (`Invasion Restriction`, …) + `LANG 未進包`
+   - Body: describe flow/effects using existing help/trait words in **EN | TW/HK**
+   - Never drop a whole system because its menu title string is absent
+8. Cite **file + field** (`m_trait.RangeMin`, `m_trait_condition.IsHpDamaged`, `m_unit_skill_trait.TargetWeaponConditionId`, …).
+9. Pair Detail with a **Not live yet** companion when client ships systems without MD / with scaffolds only.
+10. **Do not put website-only bugs in Report on dump** (e.g. UI inventing a Tag from a field). Fix the site separately; the dump report stays MasterData / client content.
 
 ## Anti-patterns
 
-- Shipping only “6 new unit abilities” and skipping schema/condition/target-weapon diffs
-- EN-only report when the owner asked for an update dump / Report on dump
-- Free-translating TW/HK labels instead of copying from LANG
-- Calling scaffold fields “not in the dump” because no row uses them yet
-- Treating `WeaponAttributeTypes: Beam` as a game **Tag（標籤）** pill / inventing a “Beam” tag in UI or in the written report
+- Only “6 new abilities” without the new trait/condition/Unit Skill fields
+- Restating a short community list with nicer formatting and calling it a deep dive
+- EN-only report
+- Free-translated TW/HK
+- Calling scaffolds “not in the dump”
+- **Skipping** Invasion / Field Story / Buff systems (or similar) just because the **title** has no LANG yet
+- One-liner stubs for LANG-pending features (“client only, title pending”) with no player-facing explanation
+- Section titles nobody can parse (“Schema”, “A6b”, internal enum soup as the only heading)
+- Padding the dump report with site-bug writeups
 
 ## Lessons
 
-### v2.7 scaffolds (owner catch)
+### v2.7 (owner)
 
-Beyond the six unit abilities, also report:
+Must include, beyond six Unit Skill types:
 
-- Trait attribute **Range** → `m_trait.RangeMin` / `RangeMax`
+- Trait **range** → `m_trait.RangeMin` / `RangeMax`
 - Condition **unit damaged** → `m_trait_condition.IsHpDamaged`
-- Unit skill / trait **target weapon** → `TargetWeaponConditionId` + `m_trait_condition_target_weapon.json`
+- Unit Skill **target weapon** → `TargetWeaponConditionId` (+ link to max-range / Beam·光束·鐳射 wording already live on normal traits)
 
-### Weapon attribute ≠ Tag (owner catch, Oct 2026)
+### Profile
 
-Unit skill trait row with `ActiveTraitConditionSetId` → `m_unit_skill_trait_condition.WeaponAttributeTypes = "Beam"` is a **combat gate** (LANG: beam weapon / 光束武裝 / 鐳射武裝). It is **not** a Tag. DB UI must not render it as an MS/Chara tag composite; Report on dump must classify it under **武裝屬性**, not **標籤**.
+“Profile partial” needs the actual **簡介** pieces: ranks, achievement tiers, user/cumulative records, titles, Style tips — and what LANG/MD is still missing — not a one-line stub.

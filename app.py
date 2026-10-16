@@ -298,11 +298,14 @@ def _app_js_bundle_version_tag():
         ('css', 'collections.css'),
         ('css', 'collections_15.css'),
         ('css', 'ggen_15.css'),
+        ('css', 'dossier_film.css'),
         ('css', 'ggen_teko.css'),
         ('css', 'tag_matrix.css'),
         ('css', 'tag_matrix_15.css'),
         ('css', 'debuff_matrix.css'),
         ('css', 'debuff_matrix_15.css'),
+        ('js', 'profile.js'),
+        ('css', 'profile.css'),
     )
     # Include brand fonts so long-cache ?v= busts when an OTF/TTF is replaced.
     font_assets = (
@@ -458,6 +461,10 @@ def _apply_seo_and_static_cache_headers(response):
     if not path.startswith('/static/'):
         return response
     ext = os.path.splitext(path)[1].lower()
+    # Profile Insights iterates fast locally — never let the browser keep a stale profile.js
+    if path.endswith('/js/profile.js') or path.endswith('/css/profile.css'):
+        response.headers['Cache-Control'] = 'no-store'
+        return response
     if (
         path.endswith('/js/app.js')
         or path.endswith('/js/app.min.js')
@@ -706,12 +713,23 @@ def _env_flag(val, default=False):
 
 
 # When True (and IMAGE_CDN is set), API JSON rewrites /static/images/* to the CDN.
-# If IMAGE_CDN is set but GAME_IMAGES_USE_CDN is unset, default True so deploys (e.g. Railway) offload
-# thumbnails/portraits to the CDN instead of hammering the app server. Set GAME_IMAGES_USE_CDN=0 to force
-# same-origin /static/images (e.g. local edits without a CDN mirror).
+# If IMAGE_CDN is set but GAME_IMAGES_USE_CDN is unset:
+#   Railway / production → True (egress offload)
+#   Local desktop preview → False (same-origin disk; jsDelivr RTT from TW/HK was ~300–1100ms
+#   per portrait and made detail feel slower than live even when /api was faster)
+# Explicit GAME_IMAGES_USE_CDN=0|1 always wins.
 _gicdn_env = os.environ.get('GAME_IMAGES_USE_CDN')
+_on_railway = bool(
+    (os.environ.get('RAILWAY_ENVIRONMENT') or os.environ.get('RAILWAY_PROJECT_ID') or '').strip()
+)
+_local_master_hint = os.path.exists(r'C:\Users\Mikew0911\Desktop\GGen_Database')
 if _gicdn_env is None or str(_gicdn_env).strip() == '':
-    GAME_IMAGES_USE_CDN = bool(IMAGE_CDN)
+    if _on_railway:
+        GAME_IMAGES_USE_CDN = bool(IMAGE_CDN)
+    elif _local_master_hint:
+        GAME_IMAGES_USE_CDN = False
+    else:
+        GAME_IMAGES_USE_CDN = bool(IMAGE_CDN)
 else:
     GAME_IMAGES_USE_CDN = bool(IMAGE_CDN) and _env_flag(_gicdn_env, default=False)
 
@@ -4247,6 +4265,7 @@ def lineage_tag_ids_for_browse_row(lin_map, eid):
         seen.add(s)
         out.append(s)
     return out
+
 
 
 def char_instant_browse_facets(cid, info, ld, lc, include_sp=False):
@@ -19642,6 +19661,882 @@ def collections_short():
     return redirect('/collections', code=301)
 
 
+def _profile_insights_ship_enabled():
+    """Parked local experiment — never on Railway; local only with GGEN_PROFILE_ENABLED=1.
+
+    See experiments/profile_insights/README.md. Screenshot OCR is not a live product path.
+    """
+    # Hard block on Railway / any hosted deploy — ignore accidental env flags.
+    if (os.environ.get('RAILWAY_ENVIRONMENT') or os.environ.get('RAILWAY_PROJECT_ID') or '').strip():
+        return False
+    flag = (os.environ.get('GGEN_PROFILE_ENABLED') or '').strip().lower()
+    return flag in ('1', 'true', 'yes', 'on')
+
+
+@app.route('/profile')
+@app.route('/profile/')
+def profile_insights_page():
+    """Profile Insights — LANG-first screenshot ingest + personal Sorties/tag/supporter insights."""
+    if not _profile_insights_ship_enabled():
+        return redirect('/', code=302)
+    ver = _app_js_bundle_version_tag()
+    # Explicit profile.js mtime so Simple Browser cannot keep a stale confirm UI
+    pf_js = os.path.join(app_dir, 'static', 'js', 'profile.js')
+    try:
+        pf_build = f"{int(os.path.getmtime(pf_js))}-{os.path.getsize(pf_js)}"
+    except OSError:
+        pf_build = ver
+    r = make_response(render_template(
+        'profile.html',
+        image_cdn=IMAGE_CDN or '',
+        game_images_use_cdn=GAME_IMAGES_USE_CDN,
+        app_js_version=ver,
+        profile_js_build=pf_build,
+        font_cdn=FONT_CDN or '',
+        public_origin=_public_site_origin(),
+    ))
+    # Always fresh while /profile is in active local iteration (JS mix bugs look like "old Flask")
+    r.headers['Cache-Control'] = 'no-store'
+    r.headers['Pragma'] = 'no-cache'
+    return r
+
+
+def _profile_insights_demo_path():
+    return os.path.join(app_dir, 'data', 'published', 'profile_insights_demo_v1.json')
+
+
+def _profile_insights_census_path():
+    return os.path.join(app_dir, 'data', 'published', 'profile_insights_census_v1.json')
+
+
+def _load_profile_insights_census():
+    path = _profile_insights_census_path()
+    try:
+        with open(path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        return data.get('metrics') or {}
+    except Exception:
+        return {}
+
+
+# m_profile_cumulative_record NameLanguageId → Battle Results metric keys
+_PROFILE_CUMULATIVE_LANG_IDS = {
+    '240700000000000001': 'total_sorties',
+    '240700000000000002': 'dismantled_units',
+    '240700000000000003': 'max_combat_power',
+    '240700000000000004': 'stages_cleared',
+    '240700000000000005': 'total_skips',
+    '240700000000000006': 'max_damage',
+    '240700000000000010': 'skip_great_success',
+    '240700000000000011': 'total_captures',
+    '240700000000000012': 'unit_sp',
+    '240700000000000013': 'unit_ssp',
+    '240700000000000014': 'char_sp',
+    '240700000000000015': 'unit_limit_breaks',
+    '240700000000000018': 'haro_cruises',
+    '240700000000000019': 'database_units',
+    '240700000000000022': 'database_characters',
+}
+
+
+def _profile_cumulative_record_labels(lang_code):
+    """In-game LANG labels for Battle Results cumulative records (m_profile_cumulative_record)."""
+    lc = str(lang_code or 'EN').upper()
+    if lc == 'JP':
+        lc = 'JA'
+    out = {}
+    try:
+        _base, lang_dir = get_lang_paths(lc)
+        path = os.path.join(lang_dir, 'm_profile_cumulative_record.json') if lang_dir else ''
+        if not path or not os.path.isfile(path):
+            return out
+        for row in extract_data_list(load_json(path)):
+            lid = str(row.get('id') or row.get('Id') or '')
+            key = _PROFILE_CUMULATIVE_LANG_IDS.get(lid)
+            if not key:
+                continue
+            val = row.get('value') or row.get('text') or ''
+            if isinstance(val, list) and val:
+                val = val[0].get('text') if isinstance(val[0], dict) else val[0]
+            val = str(val or '').strip()
+            if val:
+                out[key] = val
+    except Exception:
+        return out
+    return out
+
+
+@app.route('/api/profile_insights/demo')
+def api_profile_insights_demo():
+    """Demo snapshot fixture (owner Profile screens, approximate IDs)."""
+    if not _profile_insights_ship_enabled():
+        return jsonify({'error': 'not_available'}), 404
+    path = _profile_insights_demo_path()
+    try:
+        with open(path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+    except Exception as e:
+        return jsonify({'error': 'demo_missing', 'detail': str(e)}), 404
+    return jsonify_cacheable(data, 'profile_insights_demo_v1', max_age=300)
+
+
+def _profile_paddle_python() -> str | None:
+    """Prefer GGEN_PADDLE_PYTHON, else local .venv-paddle (cv2 + RapidOCR)."""
+    py = (os.environ.get('GGEN_PADDLE_PYTHON') or '').strip()
+    if py and os.path.isfile(py):
+        return py
+    cand = os.path.join(app_dir, '.venv-paddle', 'Scripts', 'python.exe')
+    if os.path.isfile(cand):
+        return cand
+    cand2 = os.path.join(app_dir, '.venv-paddle', 'bin', 'python')
+    if os.path.isfile(cand2):
+        return cand2
+    return None
+
+
+def _profile_rapidocr_text_from_path(img_path: str) -> tuple[str, str]:
+    """Run RapidOCR on a local image path. Returns (text, engine_tag).
+
+    Tries in-process import first; falls back to ``.venv-paddle`` worker (Windows
+    local) when system Python cannot load rapidocr/cv2.
+    """
+    # 1) In-process
+    try:
+        from rapidocr_onnxruntime import RapidOCR
+
+        engine = RapidOCR()
+        result, _ = engine(str(img_path))
+        lines = []
+        for item in result or []:
+            if len(item) >= 2 and item[1]:
+                lines.append(str(item[1]))
+        return '\n'.join(lines), 'rapidocr'
+    except Exception:
+        pass
+    # 2) Subprocess → .venv-paddle (or GGEN_PADDLE_PYTHON)
+    import subprocess
+
+    py = _profile_paddle_python()
+    if not py:
+        raise RuntimeError('rapidocr_unavailable')
+    worker = os.path.join(app_dir, 'scripts', 'profile_rapidocr_worker.py')
+    proc = subprocess.run(
+        [py, worker, str(img_path)],
+        capture_output=True,
+        text=True,
+        encoding='utf-8',
+        errors='replace',
+        timeout=120,
+        cwd=app_dir,
+    )
+    if proc.returncode != 0:
+        raise RuntimeError((proc.stderr or proc.stdout or 'rapidocr_worker_fail')[:400])
+    return (proc.stdout or '').strip(), 'rapidocr_venv'
+
+
+def _profile_sorties_worker_json(worker_name: str, img_path: str, extra_args: list | None = None) -> dict | None:
+    """Run a paddle-venv Sorties OCR worker that prints JSON on stdout."""
+    import subprocess
+
+    py = _profile_paddle_python()
+    if not py:
+        return None
+    worker = os.path.join(app_dir, 'scripts', worker_name)
+    if not os.path.isfile(worker):
+        return None
+    cmd = [py, worker, str(img_path)]
+    if extra_args:
+        cmd.extend(str(a) for a in extra_args)
+    try:
+        proc = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            encoding='utf-8',
+            errors='replace',
+            timeout=90,
+            cwd=app_dir,
+        )
+    except Exception:
+        return None
+    raw = (proc.stdout or '').strip()
+    if not raw:
+        return None
+    try:
+        data = json.loads(raw)
+    except Exception:
+        return None
+    if not isinstance(data, dict) or not data.get('ok'):
+        return None
+    rows = data.get('rows') or []
+    if not isinstance(rows, list) or len(rows) < 5:
+        return None
+    return data
+
+
+def _profile_sorties_layout_ocr(img_path: str) -> dict | None:
+    """Primary: normalize canvas + 10 Y rows + white threshold + X columns + icon RGB."""
+    return _profile_sorties_worker_json('profile_sorties_layout_ocr.py', img_path)
+
+
+def _profile_sorties_box_ocr(img_path: str) -> dict | None:
+    """Fallback: RapidOCR boxes → pair left names with right Sorties."""
+    return _profile_sorties_worker_json('profile_sorties_box_ocr.py', img_path)
+
+
+def _profile_sorties_column_ocr(img_path: str, n_rows: int = 10) -> dict | None:
+    """Last resort: projection row crops + digit column."""
+    return _profile_sorties_worker_json(
+        'profile_sorties_column_ocr.py',
+        img_path,
+        [str(max(5, min(12, int(n_rows or 10))))],
+    )
+
+
+@app.route('/api/profile_insights/ocr', methods=['POST'])
+def api_profile_insights_ocr():
+    """Local-experiment OCR only (gated). Sorties: RapidOCR cascade. Not for live.
+
+    multipart: file=<image>
+    optional form: slot=units_1_10|main|battle|haro|…
+    """
+    if not _profile_insights_ship_enabled():
+        return jsonify({'error': 'not_available'}), 404
+    f = request.files.get('file') or request.files.get('image')
+    if not f:
+        return jsonify({'error': 'file_required'}), 400
+    import tempfile
+
+    slot = str(request.form.get('slot') or request.args.get('slot') or '').strip()
+    suffix = os.path.splitext(getattr(f, 'filename', '') or '')[1] or '.png'
+    if len(suffix) > 8:
+        suffix = '.png'
+    tmp = tempfile.NamedTemporaryFile(delete=False, suffix=suffix)
+    text = ''
+    engine = None
+    rows = []
+    slot_l = (slot or '').lower()
+    is_sorties_slot = bool(
+        re.match(r'^(units|chars|characters?)(_|$)', slot_l)
+        or slot_l in ('sortie', 'sorties')
+    )
+    try:
+        f.save(tmp.name)
+        tmp.close()
+        if is_sorties_slot:
+            # RapidOCR cascade (layout → box → full → column). GOT parked — not product.
+            laid = _profile_sorties_layout_ocr(tmp.name)
+            if laid and (laid.get('rows') or []):
+                rows = laid['rows']
+                text = str(laid.get('text') or '')
+                engine = str(laid.get('engine') or 'rapidocr_layout')
+            if not rows:
+                boxed = _profile_sorties_box_ocr(tmp.name)
+                if boxed and (boxed.get('rows') or []):
+                    rows = boxed['rows']
+                    text = str(boxed.get('text') or '')
+                    engine = str(boxed.get('engine') or 'rapidocr_boxes')
+            if not rows:
+                text, engine = _profile_rapidocr_text_from_path(tmp.name)
+        else:
+            text, engine = _profile_rapidocr_text_from_path(tmp.name)
+    except Exception as e:
+        try:
+            os.unlink(tmp.name)
+        except Exception:
+            pass
+        return jsonify({'error': 'ocr_failed', 'detail': str(e)[:300], 'engine': None}), 503
+    import profile_insights as PI
+
+    # ONLY Sorties list slots get ordered name/sorties rows.
+    # Never parse Main / Battle / Haro as a Sorties board (that mixed ranks into Profile · Main).
+    if is_sorties_slot and not rows:
+        try:
+            rows = PI.parse_sorties_list_ordered(text)
+        except Exception:
+            rows = []
+        solid = sum(
+            1
+            for r in (rows or [])
+            if str(r.get('name') or '').strip() and int(r.get('sorties') or 0) >= 80
+        )
+        if solid < 8:
+            col = _profile_sorties_column_ocr(tmp.name, n_rows=10)
+            if col and len(col.get('rows') or []) >= 5:
+                rows = col['rows']
+                text = str(col.get('text') or text)
+                engine = str(col.get('engine') or 'rapidocr_columns')
+    try:
+        os.unlink(tmp.name)
+    except Exception:
+        pass
+    return jsonify(
+        {
+            'ok': True,
+            'engine': engine,
+            'slot': slot or None,
+            'text': text,
+            'chars': len(text or ''),
+            'rows': rows if is_sorties_slot else [],
+            'screen_kind': (
+                'sorties'
+                if is_sorties_slot
+                else (
+                    'main'
+                    if slot_l == 'main'
+                    else (
+                        'haro'
+                        if slot_l == 'haro'
+                        else ('battle' if slot_l == 'battle' else 'other')
+                    )
+                )
+            ),
+        }
+    )
+
+
+@app.route('/api/profile_insights/parse_sorties', methods=['POST'])
+def api_profile_insights_parse_sorties():
+    """Re-parse a Sorties OCR blob into screen-order name/sorties rows (Grok-audit path)."""
+    if not _profile_insights_ship_enabled():
+        return jsonify({'error': 'not_available'}), 404
+    import profile_insights as PI
+
+    body = request.get_json(silent=True) or {}
+    text = str(body.get('text') or body.get('ocr') or '')
+    rows = []
+    if text.strip():
+        try:
+            rows = PI.parse_sorties_list_ordered(text)
+        except Exception:
+            rows = []
+    return jsonify({'ok': True, 'rows': rows, 'n': len(rows)})
+
+
+@app.route('/api/profile_insights/parse_screens', methods=['POST'])
+def api_profile_insights_parse_screens():
+    """Parse main / battle / haro OCR blobs into structured Profile fields."""
+    if not _profile_insights_ship_enabled():
+        return jsonify({'error': 'not_available'}), 404
+    import profile_insights as PI
+
+    body = request.get_json(silent=True) or {}
+    lc = str(body.get('lang') or 'EN').upper()
+    if lc == 'JP':
+        lc = 'JA'
+    main_ocr = str(body.get('main_ocr') or body.get('main') or '')
+    battle_ocr = str(body.get('battle_ocr') or body.get('battle') or '')
+    haro_ocr = str(body.get('haro_ocr') or body.get('haro') or '')
+    # Guard: never parse a Sorties list blob as Profile · Main
+    main_wrong = None
+    if main_ocr and PI.ocr_looks_like_sorties_list(main_ocr) and not PI.ocr_looks_like_profile_main(
+        main_ocr
+    ):
+        main_wrong = 'sorties'
+        main_ocr = ''
+    meta = PI.parse_profile_main_ocr(main_ocr, lang=lc) if main_ocr else {
+        'player_name': None,
+        'player_level': None,
+        'profile_rank_title': None,
+        'achievement_pts': None,
+        'haro': {'gold': None, 'silver': None, 'bronze': None},
+        'wrong_screen': main_wrong,
+    }
+    if main_wrong and not meta.get('wrong_screen'):
+        meta['wrong_screen'] = main_wrong
+    if haro_ocr:
+        haro_parsed = PI.parse_profile_main_ocr(haro_ocr, lang=lc)
+        meta['haro'] = meta.get('haro') or {}
+        for k in ('gold', 'silver', 'bronze'):
+            if meta['haro'].get(k) is None and (haro_parsed.get('haro') or {}).get(k) is not None:
+                meta['haro'][k] = haro_parsed['haro'][k]
+        if not meta.get('player_name') and haro_parsed.get('player_name'):
+            meta['player_name'] = haro_parsed['player_name']
+    labels = _profile_cumulative_record_labels(lc)
+    battle = PI.parse_battle_results_ocr(battle_ocr, labels) if battle_ocr else {}
+    haro = {
+        'gold': (meta.get('haro') or {}).get('gold'),
+        'silver': (meta.get('haro') or {}).get('silver'),
+        'bronze': (meta.get('haro') or {}).get('bronze'),
+    }
+    return jsonify(
+        {
+            'lang': lc,
+            'meta': {
+                'player_name': meta.get('player_name'),
+                'rank': meta.get('player_level'),
+                'player_level': meta.get('player_level'),
+                'profile_rank_title': meta.get('profile_rank_title'),
+                'achievement_pts': meta.get('achievement_pts'),
+                'achievement_pts_next': meta.get('achievement_pts_next'),
+                'wrong_screen': meta.get('wrong_screen'),
+            },
+            'battle_results': battle,
+            'haro_trophies': haro,
+        }
+    )
+
+
+@app.route('/api/profile_insights/match', methods=['POST'])
+def api_profile_insights_match():
+    """Match OCR / typed names to unit or character ids for the chosen LANG.
+
+    Optional per-row ``role`` / ``role_id`` (1=Attack, 2=Durability, 3=Support) from the
+    Sorties role-icon color — strongly preferred when scoring character/unit variants.
+    """
+    if not _profile_insights_ship_enabled():
+        return jsonify({'error': 'not_available'}), 404
+    import profile_insights as PI
+    body = request.get_json(silent=True) or {}
+    lc = str(body.get('lang') or 'EN').upper()
+    if lc == 'JP':
+        lc = 'JA'
+    kind = str(body.get('kind') or 'unit').lower()
+    names = body.get('names') or []
+    if not isinstance(names, list):
+        return jsonify({'error': 'names_must_be_list'}), 400
+    ld = get_lang_data(lc)
+    if kind == 'character':
+        id_map = ld.get('char_id_map') or {}
+        text_map = ld.get('char_text_map') or {}
+        info_map = char_info_map or {}
+        portrait_folder = 'images/portraits'
+    else:
+        id_map = ld.get('unit_id_map') or {}
+        text_map = ld.get('unit_text_map') or {}
+        info_map = unit_info_map or {}
+        portrait_folder = 'Unit'
+    pairs = []
+    entity_roles = {}
+    for eid, lid in (id_map or {}).items():
+        eid = normalize_id(eid)
+        if not eid or eid == '0':
+            continue
+        uname = text_map.get(lid) if lid else ''
+        if isinstance(uname, list) and uname:
+            uname = uname[0].get('text') if isinstance(uname[0], dict) else uname[0]
+        uname = str(uname or '').strip()
+        if uname:
+            pairs.append((eid, uname))
+        info = info_map.get(eid) or {}
+        rid = str(info.get('role') or '0')
+        if rid and rid != '0':
+            entity_roles[eid] = rid
+    out = []
+    mode = str(body.get('mode') or '').strip().lower()
+    # Full-screenshot scan: find all catalog hits + Sorties (demo-style ranking)
+    if mode == 'scan':
+        blob = ''
+        if names and isinstance(names[0], dict):
+            blob = str(names[0].get('ocr_raw') or names[0].get('name') or names[0].get('text') or '')
+        elif names:
+            blob = str(names[0] or '')
+        scanned = PI.scan_ocr_for_entities(
+            blob,
+            pairs,
+            limit=max(20, safe_int(body.get('limit'), 20)),
+            entity_roles=entity_roles,
+        )
+        enriched = []
+        for c in scanned:
+            eid = normalize_id(c.get('id'))
+            info = info_map.get(eid) or {}
+            role = str(c.get('role_id') or info.get('role') or '0')
+            th = find_list_thumb(info.get('resource_ids') or [], eid, portrait_folder)
+            thumb = game_image_public_url(th) if th else ''
+            enriched.append(
+                {
+                    **c,
+                    'role_id': role,
+                    'role': resolve_role_label(role, lc) if role and role != '0' else '',
+                    'role_icon': game_image_public_url(ROLE_ICON_MAP.get(role, ''))
+                    if ROLE_ICON_MAP.get(role)
+                    else '',
+                    'thumb': thumb,
+                }
+            )
+        return jsonify(
+            {
+                'lang': lc,
+                'kind': kind,
+                'mode': 'scan',
+                'results': [
+                    {
+                        'query': blob[:200],
+                        'candidates': enriched,
+                        'rows': enriched,
+                    }
+                ],
+            }
+        )
+
+    for raw in names[:40]:
+        if isinstance(raw, dict):
+            label = str(raw.get('name') or raw.get('text') or '')
+            ocr_raw = str(raw.get('ocr_raw') or '')
+            role_hint = str(raw.get('role') or raw.get('role_id') or '').strip()
+            extra = {
+                k: raw[k]
+                for k in raw
+                if k not in ('name', 'text', 'role', 'role_id', 'ocr_raw')
+            }
+        else:
+            label = str(raw or '')
+            ocr_raw = ''
+            role_hint = ''
+            extra = {}
+        lim = 24 if kind == 'character' else 20
+        blob_src = ocr_raw or label
+        # Noisy HUD OCR → search catalog tokens inside the blob (not exact name fuzzy)
+        if ocr_raw or mode == 'ocr_blob' or len(re.sub(r'[A-Za-z0-9\s\(\)\-]', '', label)) >= 3:
+            cands = PI.match_ocr_blob(
+                blob_src,
+                pairs,
+                limit=lim,
+                role_id=role_hint or None,
+                entity_roles=entity_roles,
+            )
+            if not cands and label and label != ocr_raw:
+                cands = PI.match_entity_name(
+                    label,
+                    pairs,
+                    limit=lim,
+                    role_id=role_hint or None,
+                    entity_roles=entity_roles,
+                )
+        else:
+            cands = PI.match_entity_name(
+                label,
+                pairs,
+                limit=lim,
+                role_id=role_hint or None,
+                entity_roles=entity_roles,
+            )
+        sorties_guess = PI.extract_sorties_from_ocr(blob_src)
+        # Attach role + list thumb so the client can re-rank by portrait similarity
+        enriched = []
+        for c in cands:
+            eid = normalize_id(c.get('id'))
+            info = info_map.get(eid) or {}
+            role = str(c.get('role_id') or info.get('role') or '0')
+            th = find_list_thumb(info.get('resource_ids') or [], eid, portrait_folder)
+            thumb = game_image_public_url(th) if th else ''
+            row = {
+                **c,
+                'role_id': role,
+                'role': resolve_role_label(role, lc) if role and role != '0' else '',
+                'role_icon': game_image_public_url(ROLE_ICON_MAP.get(role, ''))
+                if ROLE_ICON_MAP.get(role)
+                else '',
+                'thumb': thumb,
+            }
+            if sorties_guess and not row.get('sorties'):
+                row['sorties'] = sorties_guess
+            enriched.append(row)
+        out.append(
+            {
+                'query': label or ocr_raw,
+                'role_hint': role_hint or None,
+                'sorties': sorties_guess,
+                'candidates': enriched,
+                **extra,
+            }
+        )
+    return jsonify({'lang': lc, 'kind': kind, 'results': out})
+
+
+def _profile_ability_icon_url(ab_id):
+    """Trait icon for an ability id (same path as detail)."""
+    try:
+        rid = ''
+        if ability_resource_map:
+            rid = ability_resource_map.get(normalize_id(ab_id), '') or ''
+        if not rid:
+            rid = normalize_id(ab_id)
+        fn = find_trait_icon(rid) if rid else None
+        if fn:
+            return game_image_public_url(f'/static/images/Trait/{fn}')
+    except Exception:
+        pass
+    return ''
+
+
+def _profile_char_kit_summary(cid, lc):
+    """Lightweight abilities / skills / series / role / thumb for Profile Insights."""
+    cid = normalize_id(cid)
+    ld = get_lang_data(lc)
+    info = char_info_map.get(cid) or {}
+    lid = ld.get('char_id_map', {}).get(cid, '')
+    name = ld.get('char_text_map', {}).get(lid, '') if lid else ''
+    if isinstance(name, list) and name:
+        name = name[0].get('text') if isinstance(name[0], dict) else name[0]
+    name = str(name or cid)
+    th = find_list_thumb(info.get('resource_ids') or [], cid, 'images/portraits')
+    thumb = game_image_public_url(th) if th else ''
+    role_id = str(info.get('role') or '0')
+    abilities = []
+    for ab in sorted(
+        [x for x in extract_data_list(char_abil) if normalize_id(x.get('CharacterId', '')) == cid],
+        key=lambda x: int(x.get('SortOrder', 0) or 0),
+    ):
+        aid = normalize_id(ab.get('AbilityId', ''))
+        if not aid or aid == '0':
+            continue
+        aname = resolve_ability_display_name_from_maps(
+            aid, ld.get('abil_name_map') or {}, abil_link_map
+        ) or aid
+        abilities.append(
+            {
+                'id': aid,
+                'name': aname,
+                'icon': _profile_ability_icon_url(aid),
+            }
+        )
+    skills = []
+    for sk in sorted(
+        [x for x in extract_data_list(char_skill) if normalize_id(x.get('CharacterId', '')) == cid],
+        key=lambda x: int(x.get('SortOrder', 0) or 0),
+    ):
+        sid = normalize_id(sk.get('CharacterSkillId', '') or sk.get('SkillId', ''))
+        if not sid or sid == '0':
+            continue
+        resolved = resolve_char_skill(sid, ld, int(sk.get('SortOrder', 0) or 0), False)
+        sname = str(resolved.get('name') or sid)
+        icon = resolved.get('icon') or ''
+        if icon and str(icon).startswith('/static'):
+            icon = game_image_public_url(icon)
+        skills.append({'id': sid, 'name': sname, 'icon': icon})
+    series = []
+    for s in resolve_series(ld.get('char_ser_map', {}).get(cid, ''), lc) or []:
+        ic = s.get('icon') or ''
+        if ic and str(ic).startswith('/static'):
+            ic = game_image_public_url(ic)
+        series.append({'id': s.get('id'), 'name': s.get('name'), 'icon': ic})
+    return {
+        'id': cid,
+        'name': name,
+        'thumb': thumb,
+        'role': resolve_role_label(role_id, lc),
+        'role_id': role_id,
+        'role_icon': game_image_public_url(ROLE_ICON_MAP.get(role_id, '')) if ROLE_ICON_MAP.get(role_id) else '',
+        'abilities': abilities,
+        'skills': skills,
+        'series': series,
+        'tags': resolve_tags(char_lin_map, cid, lc, 'character'),
+    }
+
+
+def _profile_unit_kit_summary(uid, lc):
+    """Series + Mechanisms for a Sorties unit (Profile Insights)."""
+    uid = normalize_id(uid)
+    ld = get_lang_data(lc)
+    info = unit_info_map.get(uid) or {}
+    series = []
+    for s in resolve_series(info.get('series_set') or '', lc) or []:
+        ic = s.get('icon') or ''
+        if ic and str(ic).startswith('/static'):
+            ic = game_image_public_url(ic)
+        series.append({'id': s.get('id'), 'name': s.get('name'), 'icon': ic})
+    mechs = []
+    for mid in sorted(collect_unit_mechanism_mids(info, uid)):
+        mid = str(mid)
+        if mid == '2x2':
+            mechs.append(
+                {
+                    'id': '2x2',
+                    'name': '2x2',
+                    'icon': game_image_public_url('/static/images/mechanism/mechanism_0002.webp'),
+                }
+            )
+            continue
+        mm = ld.get('mechanism_map') or {}
+        hit = None
+        for rmm in mm.get(mid, []) or []:
+            if str(rmm.get('id')) == mid:
+                hit = rmm
+                break
+        if not hit and mm.get(mid):
+            hit = mm[mid][0]
+        name = (hit or {}).get('name') or mid
+        rid = (hit or {}).get('resource_id') or ''
+        fn = find_mechanism_icon(rid) if rid else None
+        icon = ''
+        if fn:
+            icon = game_image_public_url(f'/static/images/mechanism/{fn}')
+        elif mid == '3':
+            icon = game_image_public_url('/static/images/mechanism/mechanism_0003.webp')
+        mechs.append({'id': mid, 'name': name, 'icon': icon})
+    return {'id': uid, 'series': series, 'mechanisms': mechs}
+
+
+@app.route('/api/profile_insights/analyze', methods=['POST'])
+def api_profile_insights_analyze():
+    """Analyze a confirmed Profile snapshot → concentration, tags, supporter recommendations."""
+    if not _profile_insights_ship_enabled():
+        return jsonify({'error': 'not_available'}), 404
+    import profile_insights as PI
+    body = request.get_json(silent=True) or {}
+    snap = body.get('snapshot') if isinstance(body.get('snapshot'), dict) else body
+    if not isinstance(snap, dict):
+        return jsonify({'error': 'invalid_snapshot'}), 400
+    lc = str(snap.get('lang') or body.get('lang') or 'EN').upper()
+    if lc == 'JP':
+        lc = 'JA'
+    top_n = safe_int(body.get('top_n'), 20)
+    ld = get_lang_data(lc)
+    stm = ld.get('supporter_text_map') or {}
+    sim = ld.get('supporter_id_map') or {}
+    supp_leader_tm = ld.get('supporter_leader_text_map') or {}
+
+    def _supp_name(sid):
+        sid = normalize_id(sid)
+        lid = sim.get(sid) or sim.get(str(sid)) or ''
+        name = stm.get(lid, '') if lid else ''
+        if isinstance(name, list) and name:
+            name = name[0].get('text') if isinstance(name[0], dict) else name[0]
+        name = str(name or '').strip()
+        return name or str(sid)
+
+    def _supp_pct(sid):
+        # Same path as _supporter_max_tier3_leader_pct: desc_lang_id → leader text map
+        return float(_supporter_max_tier3_leader_pct(sid, supp_leader_tm) or 0)
+
+    # Enrich unit display names from LANG when missing
+    uim = ld.get('unit_id_map') or {}
+    utm = ld.get('unit_text_map') or {}
+    for row in (snap.get('sortie_units') or []):
+        if not isinstance(row, dict):
+            continue
+        if row.get('name'):
+            continue
+        uid = normalize_id(row.get('unit_id') or row.get('id'))
+        lid = uim.get(uid)
+        uname = utm.get(lid) if lid else ''
+        if isinstance(uname, list) and uname:
+            uname = uname[0].get('text') if isinstance(uname[0], dict) else uname[0]
+        if uname:
+            row['name'] = str(uname)
+
+    ctx = {
+        'lang': lc,
+        'top_n': top_n,
+        'unit_info_map': unit_info_map,
+        'unit_lin_map': unit_lin_map,
+        'unit_ter_map': unit_ter_map,
+        'resolve_tags': resolve_tags,
+        'resolve_role_label': resolve_role_label,
+        'role_icon_map': {k: game_image_public_url(v) for k, v in (ROLE_ICON_MAP or {}).items()},
+        'terrain_type_icon_map': TERRAIN_TYPE_ICON_MAP,
+        'terrain_level_icon_map': TERRAIN_LEVEL_ICON_MAP,
+        'game_image_public_url': game_image_public_url,
+        'supporter_list': [{'id': sid} for sid in (supporter_info_map or {})],
+        'supporter_leader_tag_ids': lambda sid: supporter_leader_tag_ids(sid, ld, lc),
+        'supporter_name': _supp_name,
+        'supporter_leader_pct': _supp_pct,
+        'census': _load_profile_insights_census(),
+        'cumulative_record_labels': _profile_cumulative_record_labels(lc),
+        'char_kit': lambda cid: _profile_char_kit_summary(cid, lc),
+        'unit_kit': lambda uid: _profile_unit_kit_summary(uid, lc),
+        'collections_owned': body.get('collections_owned')
+        if isinstance(body.get('collections_owned'), dict)
+        else {},
+        'limited_unit_ids': list(LIMITED_TIME_UNIT_IDS or []),
+        'limited_char_ids': list(LIMITED_TIME_CHARACTER_IDS or []),
+    }
+    try:
+        result = PI.analyze_snapshot(snap, ctx)
+    except Exception as e:
+        return jsonify({'error': 'analyze_failed', 'detail': str(e)}), 500
+
+    # Player level / military title progression (main Profile page)
+    try:
+        pr_path = os.path.join(BASE_DIR, 'm_player_rank.json')
+        player_rank_rows = extract_data_list(load_json(pr_path) or [])
+        # Profile military ranks (LCDR etc.) with LANG titles
+        rank_master = extract_data_list(
+            load_json(os.path.join(BASE_DIR, 'm_profile_rank.json')) or []
+        )
+        rank_lang = {}
+        _lang_dir = (LANG_PATHS.get(lc) or LANG_PATHS.get(DEFAULT_LANG) or {}).get('lang') or ''
+        for item in extract_data_list(
+            load_json(os.path.join(_lang_dir, 'm_profile_rank.json')) or []
+        ):
+            if isinstance(item, dict):
+                rank_lang[normalize_id(item.get('id') or item.get('Id'))] = str(
+                    item.get('value') or item.get('Value') or ''
+                ).strip()
+        profile_rank_rows = []
+        for item in rank_master:
+            if not isinstance(item, dict):
+                continue
+            lid = normalize_id(item.get('NameLanguageId') or item.get('nameLanguageId'))
+            title = rank_lang.get(lid) or ''
+            profile_rank_rows.append(
+                {
+                    'title': title,
+                    'RequiredPoint': safe_int(item.get('RequiredPoint'), 0),
+                    'RankId': safe_int(item.get('RankId'), 0),
+                    'ResourceId': str(item.get('ResourceId') or ''),
+                }
+            )
+        meta = dict(result.get('meta') or snap.get('meta') or {})
+        level_info = PI.player_level_insights(
+            meta,
+            snap.get('battle_results') or {},
+            player_rank_rows,
+            profile_rank_rows,
+        )
+        result['player_progress'] = level_info
+        # Rank icon for military title
+        title = str(meta.get('profile_rank_title') or '').strip().upper()
+        for pr in profile_rank_rows:
+            if str(pr.get('title') or '').strip().upper() == title and pr.get('ResourceId'):
+                rid = pr['ResourceId']
+                # ResourceId like silver_2 → profile_rank_icon_silver_2.webp
+                icon_name = f"profile_rank_icon_{rid}.webp"
+                level_info['profile_rank_icon'] = game_image_public_url(
+                    f'/static/images/UI/Profile/{icon_name}'
+                )
+                break
+    except Exception:
+        result['player_progress'] = {}
+
+    # Attach thumbs via game_image helpers when possible
+    for u in result.get('units_resolved') or []:
+        uid = normalize_id(u.get('unit_id'))
+        info = unit_info_map.get(uid) or {}
+        th = find_list_thumb(info.get('resource_ids') or [], uid, 'Unit')
+        if th:
+            u['thumb'] = game_image_public_url(th)
+        elif info.get('resource_ids'):
+            rid = str((info.get('resource_ids') or [''])[0] or '')
+            if rid:
+                u['thumb'] = game_image_public_url(f'/static/images/Unit/{rid}_thum.webp')
+        if u.get('role_icon') and str(u['role_icon']).startswith('/static'):
+            u['role_icon'] = game_image_public_url(u['role_icon'])
+    for ch in result.get('chars_resolved') or []:
+        if ch.get('role_icon') and str(ch['role_icon']).startswith('/static'):
+            ch['role_icon'] = game_image_public_url(ch['role_icon'])
+        if ch.get('thumb') and str(ch['thumb']).startswith('/static'):
+            ch['thumb'] = game_image_public_url(ch['thumb'])
+    for role in result.get('roles') or []:
+        ic = role.get('role_icon') or ''
+        if ic and str(ic).startswith('/static'):
+            role['role_icon'] = game_image_public_url(ic)
+    for s in result.get('supporter_recommendations') or []:
+        sid = normalize_id(s.get('id'))
+        info = (supporter_info_map or {}).get(sid) or {}
+        rid = str(info.get('resource_id') or '')
+        th = find_supporter_portrait(rid, sid)
+        if th:
+            s['thumb'] = game_image_public_url(th)
+        else:
+            full = find_supporter_full_portrait(rid)
+            if full:
+                s['thumb'] = game_image_public_url(full)
+    return jsonify(result)
+
+
 @app.route('/tag-matrix')
 @app.route('/tag-matrix/')
 @app.route('/tm')
@@ -34674,6 +35569,9 @@ def _robots_txt_body(base):
         'Disallow: /sp-list\n'
         'Disallow: /investment-guide\n'
         'Disallow: /investment-priority\n'
+        'Disallow: /profile\n'
+        'Disallow: /profile/\n'
+        'Disallow: /api/profile_insights/\n'
         f'Sitemap: {base}/sitemap.xml\n'
     )
 

@@ -2,6 +2,10 @@ __pycache__/
 *.pyc
 .env
 venv/
+.venv-paddle/
+.venv-got/
+.venv-surya/
+tools/llama-cpp/
 *.log
 .magicpath-work/
 node_modules/

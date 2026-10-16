@@ -3772,6 +3772,246 @@
     "value": "I can see it!"
   },
   {
+    "id": 101000102400010001,
+    "value": "Target acquired!\nCommencing strike!"
+  },
+  {
+    "id": 101000102400010002,
+    "value": "You're a sitting duck!\nLet me show you!"
+  },
+  {
+    "id": 101000102400010003,
+    "value": "Time to press the attack!\nI'll finish this right here!"
+  },
+  {
+    "id": 101000102400010004,
+    "value": "Target in sight...\nIt's time to end this!"
+  },
+  {
+    "id": 101000102400010005,
+    "value": "There's no getting away!"
+  },
+  {
+    "id": 101000102400010006,
+    "value": "You're mine!"
+  },
+  {
+    "id": 101000102400010007,
+    "value": "You're in my sights now!"
+  },
+  {
+    "id": 101000102400010008,
+    "value": "There you are!"
+  },
+  {
+    "id": 101000102400010009,
+    "value": "Dammit!"
+  },
+  {
+    "id": 101000102400010010,
+    "value": "It only grazed me!"
+  },
+  {
+    "id": 101000102400010011,
+    "value": "They hit me?!\nI screwed up!"
+  },
+  {
+    "id": 101000102400010012,
+    "value": "This mobile suit is done for!\nSorry, I need to get outta here!"
+  },
+  {
+    "id": 101000102400010013,
+    "value": "Can I pull this off?!"
+  },
+  {
+    "id": 101000102400010014,
+    "value": "All right, time to continue the mission!"
+  },
+  {
+    "id": 101000102400010015,
+    "value": "Fang 1 here!\nTarget acquired! I'll take 'em out!"
+  },
+  {
+    "id": 101000102400020001,
+    "value": "War? I prefer to call it the dance of death!"
+  },
+  {
+    "id": 101000102400020002,
+    "value": "A frontal assault is too risky, huh?!"
+  },
+  {
+    "id": 101000102400020003,
+    "value": "This enemy is gravely untrained!"
+  },
+  {
+    "id": 101000102400020004,
+    "value": "Rumors are rumors. We decide what to believe!"
+  },
+  {
+    "id": 101000102400020005,
+    "value": "I've got you!"
+  },
+  {
+    "id": 101000102400020006,
+    "value": "Sloppy!"
+  },
+  {
+    "id": 101000102400020007,
+    "value": "You're done for!"
+  },
+  {
+    "id": 101000102400020008,
+    "value": "Too damn slow!"
+  },
+  {
+    "id": 101000102400020009,
+    "value": "Rgh!"
+  },
+  {
+    "id": 101000102400020010,
+    "value": "Oh, no!"
+  },
+  {
+    "id": 101000102400020011,
+    "value": "Aaargh!"
+  },
+  {
+    "id": 101000102400020012,
+    "value": "I can't continue the operation..."
+  },
+  {
+    "id": 101000102400020013,
+    "value": "Pressing the attack!"
+  },
+  {
+    "id": 101000102400020014,
+    "value": "I'm not wasting this chance!"
+  },
+  {
+    "id": 101000102400020015,
+    "value": "Fang 2, intercepting the enemy!"
+  },
+  {
+    "id": 101000102400030001,
+    "value": "Bingo! This oughta do it!"
+  },
+  {
+    "id": 101000102400030002,
+    "value": "If I knew things would end up this way,\nI would've been a singer or something!"
+  },
+  {
+    "id": 101000102400030003,
+    "value": "Good grief, you're a tricky bugger!"
+  },
+  {
+    "id": 101000102400030004,
+    "value": "At this rate, the rest is as good as dead!"
+  },
+  {
+    "id": 101000102400030005,
+    "value": "You're mine!"
+  },
+  {
+    "id": 101000102400030006,
+    "value": "How'd ya like this?!"
+  },
+  {
+    "id": 101000102400030007,
+    "value": "There you are!"
+  },
+  {
+    "id": 101000102400030008,
+    "value": "Time to blow you away!"
+  },
+  {
+    "id": 101000102400030009,
+    "value": "Damn you!"
+  },
+  {
+    "id": 101000102400030010,
+    "value": "You're kidding me!"
+  },
+  {
+    "id": 101000102400030011,
+    "value": "Waaah!"
+  },
+  {
+    "id": 101000102400030012,
+    "value": "Grah, how can it end like this?"
+  },
+  {
+    "id": 101000102400030013,
+    "value": "Hit that target! There we go!"
+  },
+  {
+    "id": 101000102400030014,
+    "value": "A fatal blow!"
+  },
+  {
+    "id": 101000102400030015,
+    "value": "Fang 3, attacking head-on!\nCome on, already!"
+  },
+  {
+    "id": 101000102400050001,
+    "value": "Sorry! No more running away for you!"
+  },
+  {
+    "id": 101000102400050002,
+    "value": "Okay, let's see what they can do!"
+  },
+  {
+    "id": 101000102400050003,
+    "value": "Noblesse oblige...\nWe officers have responsibilities to uphold!"
+  },
+  {
+    "id": 101000102400050004,
+    "value": "Well, I doubt we'll have much trouble now."
+  },
+  {
+    "id": 101000102400050005,
+    "value": "Careless!"
+  },
+  {
+    "id": 101000102400050006,
+    "value": "You are mine!"
+  },
+  {
+    "id": 101000102400050007,
+    "value": "Hyaaah!"
+  },
+  {
+    "id": 101000102400050008,
+    "value": "Pointless!"
+  },
+  {
+    "id": 101000102400050009,
+    "value": "Ugh!"
+  },
+  {
+    "id": 101000102400050010,
+    "value": "Not too shabby!"
+  },
+  {
+    "id": 101000102400050011,
+    "value": "Aaargh!"
+  },
+  {
+    "id": 101000102400050012,
+    "value": "A direct hit?!"
+  },
+  {
+    "id": 101000102400050013,
+    "value": "Don't miss!"
+  },
+  {
+    "id": 101000102400050014,
+    "value": "There's no such thing as fairness in this war!"
+  },
+  {
+    "id": 101000102400050015,
+    "value": "For the great victory to come!"
+  },
+  {
     "id": 101000103100010001,
     "value": "This is Io Fleming, launching!"
   },
@@ -24484,6 +24724,26 @@
     "value": "We'll keep doing things our way!"
   },
   {
+    "id": 101000137000020019,
+    "value": "This machine's got Lyle written all over it."
+  },
+  {
+    "id": 101000137000020020,
+    "value": "Erupting! Burning Finger!!"
+  },
+  {
+    "id": 101000137000020021,
+    "value": "This is vicious..."
+  },
+  {
+    "id": 101000137000020022,
+    "value": "I'll accept my due for killing people after I change the world."
+  },
+  {
+    "id": 101000137000020023,
+    "value": "Picking off the enemy troops with the Dynames!"
+  },
+  {
     "id": 101000137000030001,
     "value": "This mobility should give me an edge.\nI'm going in!"
   },
@@ -24556,6 +24816,18 @@
     "value": "I won't hesitate! I'm a Gundam Meister!"
   },
   {
+    "id": 101000137000030019,
+    "value": "That's it? You're no match for the Kyrios!"
+  },
+  {
+    "id": 101000137000030020,
+    "value": "I don't think someone as peaceful\nby nature as me is cut out for this..."
+  },
+  {
+    "id": 101000137000030021,
+    "value": "Must've picked the wrong pilot..."
+  },
+  {
     "id": 101000137000030201,
     "value": "Nobody assists a war on my watch!"
   },
@@ -24626,6 +24898,14 @@
   {
     "id": 101000137000030218,
     "value": "I ain't like Allelujah.\nI don't do things in half-measures!"
+  },
+  {
+    "id": 101000137000030219,
+    "value": "Finally, time to be a hellraiser again!"
+  },
+  {
+    "id": 101000137000030220,
+    "value": "Sorry, man. Heat End's the best I got."
   },
   {
     "id": 101000137000040001,
@@ -25052,6 +25332,38 @@
     "value": "They call this one the Graham Special!"
   },
   {
+    "id": 101000137000260019,
+    "value": "That's right! That's what makes me an idiot!"
+  },
+  {
+    "id": 101000137000260020,
+    "value": "Do not stand in my way!\nBurning! Graham! FINGER!!"
+  },
+  {
+    "id": 101000137000260021,
+    "value": "Heat... END!!"
+  },
+  {
+    "id": 101000137000260022,
+    "value": "My Flag has the power of a Gundam now!"
+  },
+  {
+    "id": 101000137000260023,
+    "value": "This is...my Gundam!"
+  },
+  {
+    "id": 101000137000260024,
+    "value": "A Gundam with a life of its own! Now THAT gets my heart racing!"
+  },
+  {
+    "id": 101000137000260025,
+    "value": "I, Graham Aker, will have the final word!"
+  },
+  {
+    "id": 101000137000260026,
+    "value": "Let me say this! I am Graham Aker!"
+  },
+  {
     "id": 101000137000310001,
     "value": "I'm gonna rip you to shreds!"
   },
@@ -25124,6 +25436,18 @@
     "value": "I've decided to rip you to shreds!"
   },
   {
+    "id": 101000137000310019,
+    "value": "Holy crap! What the heck?!"
+  },
+  {
+    "id": 101000137000310020,
+    "value": "Special Fangs!!"
+  },
+  {
+    "id": 101000137000310021,
+    "value": "That's a special ace at work, right there!"
+  },
+  {
     "id": 101000137000330001,
     "value": "This battle will settle this for good!"
   },
@@ -25180,6 +25504,30 @@
     "value": "Go!"
   },
   {
+    "id": 101000137000330015,
+    "value": "Here's this Gundam's ace in the hole!"
+  },
+  {
+    "id": 101000137000330016,
+    "value": "You don't scare me!"
+  },
+  {
+    "id": 101000137000330017,
+    "value": "I'm not leaving emptyhanded!"
+  },
+  {
+    "id": 101000137000330018,
+    "value": "The Shining Finger is just incredible!"
+  },
+  {
+    "id": 101000137000330019,
+    "value": "Is this the power of a Gundam?!"
+  },
+  {
+    "id": 101000137000330020,
+    "value": "You're nothing to fear!"
+  },
+  {
     "id": 101000137000340001,
     "value": "I won't allow any further advances!"
   },
@@ -25234,6 +25582,26 @@
   {
     "id": 101000137000340014,
     "value": "I'll bring them down!"
+  },
+  {
+    "id": 101000137000340015,
+    "value": "It's moving even faster than my reaction speeds!"
+  },
+  {
+    "id": 101000137000340016,
+    "value": "I am a perfect Gundam Fighter!"
+  },
+  {
+    "id": 101000137000340017,
+    "value": "So this is the power of the Burning Gundam..."
+  },
+  {
+    "id": 101000137000340018,
+    "value": "No issues here. It was never going\nto be a contest for a supersoldier."
+  },
+  {
+    "id": 101000137000340019,
+    "value": "Time for you to experience...\nthe true power of a Super Soldier!"
   },
   {
     "id": 101000137000350201,
@@ -25336,6 +25704,26 @@
     "value": "This is the power of the Twin Drive!"
   },
   {
+    "id": 101000137000350226,
+    "value": "GUND-Bits!"
+  },
+  {
+    "id": 101000137000350227,
+    "value": "This is a Gundam fit for me!"
+  },
+  {
+    "id": 101000137000350228,
+    "value": "Switching modes...\nTake a look at this!"
+  },
+  {
+    "id": 101000137000350229,
+    "value": "Let's see if you can dodge this. Fin Fang!"
+  },
+  {
+    "id": 101000137000350230,
+    "value": "This is the machine, the Gundam\nthat will guide humanity!"
+  },
+  {
     "id": 101000137000360001,
     "value": "See if you can squirm your way outta this!"
   },
@@ -25406,6 +25794,34 @@
   {
     "id": 101000137000360018,
     "value": "This is fun! Ain't war a riot!?"
+  },
+  {
+    "id": 101000137000360019,
+    "value": "The Arche's not moving like it should!"
+  },
+  {
+    "id": 101000137000360020,
+    "value": "I can see you! Funnels!"
+  },
+  {
+    "id": 101000137000360021,
+    "value": "These ain't just some decorations!"
+  },
+  {
+    "id": 101000137000360022,
+    "value": "Erupting...whatever the name is!!"
+  },
+  {
+    "id": 101000137000360023,
+    "value": "Trans-Am!"
+  },
+  {
+    "id": 101000137000360024,
+    "value": "War is all about naked steel!"
+  },
+  {
+    "id": 101000137000360025,
+    "value": "This is fun! Ain't war a riot?!"
   },
   {
     "id": 101000137000360201,
@@ -26674,6 +27090,90 @@
   {
     "id": 101000137000610118,
     "value": "Trans-Am!"
+  },
+  {
+    "id": 101000137000620001,
+    "value": "You can just die!"
+  },
+  {
+    "id": 101000137000620002,
+    "value": "My nails are always immaculate!"
+  },
+  {
+    "id": 101000137000620003,
+    "value": "You're standing between me and my happiness!"
+  },
+  {
+    "id": 101000137000620004,
+    "value": "I'm not even close to avenging my brothers yet!"
+  },
+  {
+    "id": 101000137000620005,
+    "value": "You! This is for my brothers!!"
+  },
+  {
+    "id": 101000137000620006,
+    "value": "Get lost!"
+  },
+  {
+    "id": 101000137000620007,
+    "value": "Get trashed!"
+  },
+  {
+    "id": 101000137000620008,
+    "value": "Die already!"
+  },
+  {
+    "id": 101000137000620009,
+    "value": "Nice try!"
+  },
+  {
+    "id": 101000137000620010,
+    "value": "Rgh?!"
+  },
+  {
+    "id": 101000137000620011,
+    "value": "Aagh?!"
+  },
+  {
+    "id": 101000137000620012,
+    "value": "AIEEE!!"
+  },
+  {
+    "id": 101000137000620013,
+    "value": "Tch... God DAMMIT!!"
+  },
+  {
+    "id": 101000137000620014,
+    "value": "Everything is clear to me!"
+  },
+  {
+    "id": 101000137000620015,
+    "value": "Funnels, go!"
+  },
+  {
+    "id": 101000137000620016,
+    "value": "Get 'em, Fangs!"
+  },
+  {
+    "id": 101000137000620017,
+    "value": "Trans-Am!"
+  },
+  {
+    "id": 101000137000620018,
+    "value": "Burn bright and red just like Nena Trinity! ♪"
+  },
+  {
+    "id": 101000137000620019,
+    "value": "Umm... This is the BEST! ♪"
+  },
+  {
+    "id": 101000137000620020,
+    "value": "Ahahahahaha! Ahahahahaha!!"
+  },
+  {
+    "id": 101000137000620021,
+    "value": "This is revenge on the world that made us!"
   },
   {
     "id": 101000137500010001,

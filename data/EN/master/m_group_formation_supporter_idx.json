@@ -774,6 +774,12 @@
     "PositionNumber": 1
   },
   {
+    "Id": 1583605671,
+    "GroupFormationIdxId": 3672296080,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
     "Id": 1586336065,
     "GroupFormationIdxId": 4026467887,
     "ForceNumber": 1,
@@ -1101,6 +1107,12 @@
     "Id": 2335650368,
     "GroupFormationIdxId": 336278238,
     "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
+    "Id": 2346502850,
+    "GroupFormationIdxId": 3672296080,
+    "ForceNumber": 1,
     "PositionNumber": 1
   },
   {

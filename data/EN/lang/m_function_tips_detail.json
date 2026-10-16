@@ -160,6 +160,22 @@
     "value": "You can change the units and characters displayed on the Profile screen. You can also\nchange your player name and title."
   },
   {
+    "id": 170800000000230102,
+    "value": "You can check your play status on your Profile.\nYou can also change your player name and title, save screenshots, and share them on social media."
+  },
+  {
+    "id": 170800000000230103,
+    "value": "You can check the number of your units/characters' sorties.\nUse filters to refine your searches by series, tags, and other criteria."
+  },
+  {
+    "id": 170800000000230104,
+    "value": "In Battle Results, you can track your gameplay progress. Earn Battle Result Pts by\nmeeting specific criteria and accumulate them to be promoted to higher ranks."
+  },
+  {
+    "id": 170800000000230105,
+    "value": "In Haro Trophy, you can check the accomplishment rates of various contents throughout the game.\nWhen you achieve specific objectives, you will earn Gold, Silver, and Bronze Haro Trophies."
+  },
+  {
     "id": 170800000000240101,
     "value": "See the various databases for detailed information on the units and characters that you\nhave obtained as well as the series in which they appear."
   },
@@ -246,6 +262,18 @@
   {
     "id": 170800000000320103,
     "value": "Once all pulls have been received and used,\nyou will be able to claim the last result you kept."
+  },
+  {
+    "id": 170800000000330101,
+    "value": "An upgrade function unlocked by raising\nan Ultimate Unit to UR and leveling it up to 100."
+  },
+  {
+    "id": 170800000000330102,
+    "value": "Raising a unit's Alteration Level increases its stats.\nReaching specific Alteration Levels unlocks Alteration Missions."
+  },
+  {
+    "id": 170800000000330103,
+    "value": "Completing Alteration Missions lets you obtain new weapons and unit skills, further enhancing Ultimate Units.\n*You can set and use one unit skill at a time."
   },
   {
     "id": 170800000000500101,
@@ -510,6 +538,46 @@
   {
     "id": 170800000000900801,
     "value": "Gold can primarily be obtained in missions where you can obtain Carddass cards.\nMissions where you can acquire Gold will become available by\nprogressing through missions with Carddass cards as rewards."
+  },
+  {
+    "id": 170800000000900901,
+    "value": "This event offers players the chance to experience various stories from the anime series, OVAs, comics, and video games.\nProgress through stages, acquire units, and battle your way to victory in boss stages."
+  },
+  {
+    "id": 170800000000900902,
+    "value": "Use the tickets you've earned to attempt the boss battle and win Unit Assembly Medals.\n*In this event, you will also be able to get Combat Power Upgrade Supplies"
+  },
+  {
+    "id": 170800000000900903,
+    "value": "Any damage dealt to the boss unit carries over between attempts. If you manage to clear\na boss battle in a single attempt, you will be able to skip that stage."
+  },
+  {
+    "id": 170800000000900904,
+    "value": "You can use Unit Assembly Medals to obtain a variety of event rewards."
+  },
+  {
+    "id": 170800000000900905,
+    "value": "Earn more Boss Challenge Tickets with event\nbonus-eligible units in your formation."
+  },
+  {
+    "id": 170800000000900906,
+    "value": "Clear NORMAL to unlock ANOTHER, where\nselect units and characters get x10 EXP."
+  },
+  {
+    "id": 170800000000901001,
+    "value": "Upgrade Combat Power with Combat Power Upgrade Supplies\nto enhance units with various effects."
+  },
+  {
+    "id": 170800000000901002,
+    "value": "Clear stages to earn Combat Power Upgrade Supplies for Combat Power Upgrades. Daily stages offer more."
+  },
+  {
+    "id": 170800000000901101,
+    "value": "Clear stages to earn Combat Power Upgrade Supplies for Combat Power Upgrades. Daily stages offer more."
+  },
+  {
+    "id": 170800000000901201,
+    "value": "Collect Combat Power Upgrade Supplies to upgrade Combat Power.\nDevelop eligible units through events."
   },
   {
     "id": 170800000000910001,

@@ -965,6 +965,156 @@
     "StageId": 2201001
   },
   {
+    "ScenarioStageId": 2400104,
+    "SortOrder": 1,
+    "StageId": 2400101
+  },
+  {
+    "ScenarioStageId": 2400104,
+    "SortOrder": 2,
+    "StageId": 2400102
+  },
+  {
+    "ScenarioStageId": 2400104,
+    "SortOrder": 3,
+    "StageId": 2400103
+  },
+  {
+    "ScenarioStageId": 2400104,
+    "SortOrder": 4,
+    "StageId": 2400104
+  },
+  {
+    "ScenarioStageId": 2400202,
+    "SortOrder": 1,
+    "StageId": 2400201
+  },
+  {
+    "ScenarioStageId": 2400202,
+    "SortOrder": 2,
+    "StageId": 2400202
+  },
+  {
+    "ScenarioStageId": 2400303,
+    "SortOrder": 1,
+    "StageId": 2400301
+  },
+  {
+    "ScenarioStageId": 2400303,
+    "SortOrder": 2,
+    "StageId": 2400302
+  },
+  {
+    "ScenarioStageId": 2400303,
+    "SortOrder": 3,
+    "StageId": 2400303
+  },
+  {
+    "ScenarioStageId": 2400404,
+    "SortOrder": 1,
+    "StageId": 2400401
+  },
+  {
+    "ScenarioStageId": 2400404,
+    "SortOrder": 2,
+    "StageId": 2400402
+  },
+  {
+    "ScenarioStageId": 2400404,
+    "SortOrder": 3,
+    "StageId": 2400403
+  },
+  {
+    "ScenarioStageId": 2400404,
+    "SortOrder": 4,
+    "StageId": 2400404
+  },
+  {
+    "ScenarioStageId": 2400503,
+    "SortOrder": 1,
+    "StageId": 2400501
+  },
+  {
+    "ScenarioStageId": 2400503,
+    "SortOrder": 2,
+    "StageId": 2400502
+  },
+  {
+    "ScenarioStageId": 2400503,
+    "SortOrder": 3,
+    "StageId": 2400503
+  },
+  {
+    "ScenarioStageId": 2400603,
+    "SortOrder": 1,
+    "StageId": 2400601
+  },
+  {
+    "ScenarioStageId": 2400603,
+    "SortOrder": 2,
+    "StageId": 2400602
+  },
+  {
+    "ScenarioStageId": 2400603,
+    "SortOrder": 3,
+    "StageId": 2400603
+  },
+  {
+    "ScenarioStageId": 2400603,
+    "SortOrder": 4,
+    "StageId": 2400604
+  },
+  {
+    "ScenarioStageId": 2400701,
+    "SortOrder": 1,
+    "StageId": 2400701
+  },
+  {
+    "ScenarioStageId": 2400801,
+    "SortOrder": 1,
+    "StageId": 2400801
+  },
+  {
+    "ScenarioStageId": 2400901,
+    "SortOrder": 1,
+    "StageId": 2400901
+  },
+  {
+    "ScenarioStageId": 2402001,
+    "SortOrder": 1,
+    "StageId": 2402001
+  },
+  {
+    "ScenarioStageId": 2402002,
+    "SortOrder": 1,
+    "StageId": 2402002
+  },
+  {
+    "ScenarioStageId": 2402003,
+    "SortOrder": 1,
+    "StageId": 2402003
+  },
+  {
+    "ScenarioStageId": 2403001,
+    "SortOrder": 1,
+    "StageId": 2403001
+  },
+  {
+    "ScenarioStageId": 2403002,
+    "SortOrder": 1,
+    "StageId": 2403002
+  },
+  {
+    "ScenarioStageId": 2403003,
+    "SortOrder": 1,
+    "StageId": 2403003
+  },
+  {
+    "ScenarioStageId": 2404001,
+    "SortOrder": 1,
+    "StageId": 2404001
+  },
+  {
     "ScenarioStageId": 3200103,
     "SortOrder": 1,
     "StageId": 3200101

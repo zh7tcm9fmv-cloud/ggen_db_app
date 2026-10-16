@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en" data-ui-lang="EN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Profile Insights — GGen Eternal Database</title>
+<meta name="description" content="Upload in-game Profile screenshots — Sorties, Battle Results, Haro Trophy, tag and supporter insights.">
+<link rel="canonical" href="{{ public_origin }}/profile">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{ public_origin }}/profile">
+<meta property="og:site_name" content="GGen Eternal Database">
+<meta property="og:title" content="Profile Insights — GGen Eternal Database">
+<meta property="og:description" content="LANG-first Profile screenshot insights — Sorties tags and supporter recommendations.">
+<meta property="og:image" content="{{ og_image_url }}">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/webp" href="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Gallery_Comics_Logo_Eternalbase.webp{% else %}/static/images/UI/UI_Gallery_Comics_Logo_Eternalbase.webp{% endif %}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/app_shell.css') }}?v={{ app_js_version }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/ui_motion.css') }}?v={{ app_js_version }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}?v={{ app_js_version }}">
+{% if image_cdn %}
+<link rel="preconnect" href="{{ image_cdn }}" crossorigin>
+{% endif %}
+{% include '_defer_brand_fonts.html' %}
+<script>
+window.__GGEN_IMAGE_CDN__={{ (image_cdn or '')|tojson }};
+window.__GGEN_GAME_IMAGES_USE_CDN__={{ game_images_use_cdn|tojson }};
+</script>
+</head>
+<body class="app-shell profile-page">
+<header class="app-header">
+  <div class="header-brand-row">
+    <a class="brand-link" href="/" aria-label="Home">
+      <img class="brand-logo" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Gallery_Comics_Logo_Eternalbase.webp{% else %}/static/images/UI/UI_Gallery_Comics_Logo_Eternalbase.webp{% endif %}" alt="" width="40" height="40" decoding="async">
+      <span class="brand-title">GGen Eternal Database</span>
+    </a>
+  </div>
+  <div class="nav-tabs-shell">
+    <div class="nav-tabs" aria-label="Section">
+      <a class="nav-tab" href="/"><span class="nav-tab-label">Home</span></a>
+      <a class="nav-tab" href="/collections"><span class="nav-tab-label">Collections</span></a>
+      <span class="nav-tab active" id="navProfileTab" aria-current="page"><img class="nav-tab-icon" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_MenuIcon_Profile.webp{% else %}/static/images/UI/UI_Common_MenuIcon_Profile.webp{% endif %}" alt="" width="24" height="24" loading="lazy" decoding="async"><span class="nav-tab-label">Profile</span></span>
+      <a class="nav-tab" href="/s"><span class="nav-tab-label">Supporters</span></a>
+    </div>
+  </div>
+</header>
+
+<main class="profile-main">
+  <header class="profile-intro profile-intro--hero">
+    <div class="profile-hero-mark" aria-hidden="true">
+      <img class="profile-hero-rank" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Home_Header_PalyerRank.webp{% else %}/static/images/UI/UI_Home_Header_PalyerRank.webp{% endif %}" alt="" width="160" height="48" decoding="async">
+    </div>
+    <div>
+      <div class="profile-eyebrow" id="pfEyebrow">Profile · 簡介</div>
+      <h1 id="pfTitle">Profile Insights</h1>
+      <p class="profile-build" id="pfBuildBadge" style="margin:6px 0 0;font-size:12px;opacity:.75;font-family:ui-monospace,monospace">build: loading…</p>
+      <p class="profile-sub" id="pfSub">Pick LANG first, upload all shots, then place each in a slot (drag or pick from the list).
+Uses Sorties, Battle Results, and Haro Trophy — same panels as the in-game Profile main page.</p>
+    </div>
+    <aside class="profile-disclaimer">
+      <div class="profile-disclaimer-title" id="pfDiscTitle">Disclaimer</div>
+      <p class="profile-disclaimer-body" id="pfDisc">We never read your Bandai Namco account.
+Upload screenshots you take yourself.
+OCR can misread names — always confirm matches before analyzing.</p>
+    </aside>
+  </header>
+
+  <section class="profile-step" id="pfStepLang">
+    <h2 class="profile-step-h"><span class="profile-step-n">1</span> <span id="pfLangTitle">Screenshot language</span></h2>
+    <p class="profile-hint" id="pfLangHint">Choose the LANG shown on your Profile UI (EN / JA / TW / HK). Matching uses that locale’s official names.</p>
+    <div class="profile-lang-grid" id="pfLangGrid" role="group" aria-label="Profile screenshot language">
+      <button type="button" class="profile-lang-btn" data-lang="EN">EN</button>
+      <button type="button" class="profile-lang-btn" data-lang="JA">JA</button>
+      <button type="button" class="profile-lang-btn" data-lang="TW">TW</button>
+      <button type="button" class="profile-lang-btn" data-lang="HK">HK</button>
+    </div>
+  </section>
+
+  <section class="profile-step" id="pfStepUpload" hidden>
+    <h2 class="profile-step-h"><span class="profile-step-n">2</span> <span id="pfUpTitle">Upload &amp; assign screenshots</span></h2>
+    <ol class="profile-flow" id="pfFlow">
+      <li id="pfFlow1">Upload all Profile screenshots</li>
+      <li id="pfFlow2">Assign each shot (large preview) to a category</li>
+      <li id="pfFlow3">Confirm assigned previews, then Read screenshots</li>
+    </ol>
+    <p class="profile-hint" id="pfUpHint">Units #1–10 is required. Other categories only appear after you assign them.</p>
+
+    <div class="profile-bulk" id="pfBulk">
+      <div class="profile-bulk-drop" id="pfBulkDrop" tabindex="0" role="button" aria-label="Upload all screenshots">
+        <span class="profile-bulk-title" id="pfBulkTitle">Drop all screenshots here</span>
+        <span class="profile-bulk-sub" id="pfBulkSub">or click to choose multiple files</span>
+      </div>
+      <input type="file" class="profile-file" id="pfBulkFile" accept="image/*" multiple>
+    </div>
+
+    <div class="profile-unsorted" id="pfUnsorted" hidden>
+      <h3 class="profile-unsorted-title" id="pfInboxTitle">Inbox — assign each shot</h3>
+      <p class="profile-unsorted-hint" id="pfInboxHint">Pick a category from the list. Preview is large so you can tell which screen it is. × removes.</p>
+      <div class="profile-inbox-list" id="pfUnsortedRow"></div>
+    </div>
+
+    <div class="profile-assigned" id="pfAssigned" hidden>
+      <h3 class="profile-assigned-title" id="pfAssignedTitle">Assigned — confirm before reading</h3>
+      <p class="profile-hint" id="pfAssignedHint">Only categories you picked show here. Click a preview to zoom. Change category or remove if wrong.</p>
+      <div class="profile-slot-grid" id="pfSlotGrid">
+        <article class="profile-slot" data-slot="main" data-kind="main" hidden>
+          <header class="profile-slot-head">
+            <span class="profile-slot-badge">Optional</span>
+            <h3 class="profile-slot-title">Profile · Main</h3>
+          </header>
+          <p class="profile-slot-ex">Player name (any script), Rank / level, title (LCDR…), Pts, Haro counts</p>
+          <div class="profile-slot-body" data-slot-body="main"></div>
+        </article>
+
+        <article class="profile-slot" data-slot="units_1_10" data-kind="units" data-required="1" hidden>
+          <header class="profile-slot-head">
+            <span class="profile-slot-badge profile-slot-badge--need">Needed</span>
+            <h3 class="profile-slot-title">Sorties · Units #1–10</h3>
+          </header>
+          <p class="profile-slot-ex">Profile → Sorties → Units · ranks 1–10</p>
+          <div class="profile-slot-body" data-slot-body="units_1_10"></div>
+        </article>
+
+        <article class="profile-slot" data-slot="units_11_20" data-kind="units" hidden>
+          <header class="profile-slot-head">
+            <span class="profile-slot-badge">Optional</span>
+            <h3 class="profile-slot-title">Sorties · Units #11–20</h3>
+          </header>
+          <p class="profile-slot-ex">Units page 2</p>
+          <div class="profile-slot-body" data-slot-body="units_11_20"></div>
+        </article>
+
+        <article class="profile-slot" data-slot="chars_1_10" data-kind="chars" hidden>
+          <header class="profile-slot-head">
+            <span class="profile-slot-badge">Optional</span>
+            <h3 class="profile-slot-title">Sorties · Characters #1–10</h3>
+          </header>
+          <p class="profile-slot-ex">Profile → Sorties → Characters · ranks 1–10</p>
+          <div class="profile-slot-body" data-slot-body="chars_1_10"></div>
+        </article>
+
+        <article class="profile-slot" data-slot="chars_11_20" data-kind="chars" hidden>
+          <header class="profile-slot-head">
+            <span class="profile-slot-badge">Optional</span>
+            <h3 class="profile-slot-title">Sorties · Characters #11–20</h3>
+          </header>
+          <p class="profile-slot-ex">Characters page 2</p>
+          <div class="profile-slot-body" data-slot-body="chars_11_20"></div>
+        </article>
+
+        <article class="profile-slot" data-slot="haro" data-kind="haro" hidden>
+          <header class="profile-slot-head">
+            <span class="profile-slot-badge">Optional</span>
+            <img class="profile-slot-ic" src="{% if image_cdn %}{{ image_cdn }}/images/UI/Profile/UI_Common_Icon_Haro_Gold.webp{% else %}/static/images/UI/Profile/UI_Common_Icon_Haro_Gold.webp{% endif %}" alt="" width="22" height="22" loading="lazy">
+            <h3 class="profile-slot-title">Haro Trophy</h3>
+          </header>
+          <p class="profile-slot-ex">Gold / Silver / Bronze counts</p>
+          <div class="profile-slot-body" data-slot-body="haro"></div>
+        </article>
+
+        <article class="profile-slot" data-slot="battle" data-kind="battle" hidden>
+          <header class="profile-slot-head">
+            <span class="profile-slot-badge">Optional</span>
+            <h3 class="profile-slot-title">Battle Results</h3>
+          </header>
+          <p class="profile-slot-ex">Total Sorties, Skips, SP…</p>
+          <div class="profile-slot-body" data-slot-body="battle"></div>
+        </article>
+      </div>
+    </div>
+
+    <div class="profile-zoom" id="pfZoom" hidden role="dialog" aria-modal="true" aria-label="Screenshot zoom">
+      <button type="button" class="profile-zoom-close" id="pfZoomClose" aria-label="Close"><img src="{% if image_cdn %}{{ image_cdn }}/images/UI/close-50.webp{% else %}/static/images/UI/close-50.webp{% endif %}" alt="" width="22" height="22" decoding="async"></button>
+      <img id="pfZoomImg" alt="">
+    </div>
+
+    <div class="profile-actions">
+      <button type="button" class="profile-btn profile-btn--primary" id="pfRunOcr" disabled>Read screenshots</button>
+      <button type="button" class="profile-btn profile-btn--ghost" id="pfLoadDemo">Load demo snapshot</button>
+    </div>
+    <div class="profile-status" id="pfStatus" aria-live="polite"></div>
+  </section>
+
+  <section class="profile-step" id="pfStepConfirm" hidden>
+    <h2 class="profile-step-h"><span class="profile-step-n">3</span> <span id="pfConfTitle">Confirm matches</span></h2>
+    <p class="profile-step-note" id="pfConfNote">Rows follow screenshot rank order. Locked matches show name + Sorties + thumb — tap ✎ only to correct. Character kits that share a display name keep a short kit picker. Long Unicorn names use role icon + thumb color when OCR truncates.</p>
+    <p class="profile-confirm-fp" id="pfConfirmFp" style="margin:0 0 10px;font-size:12px;font-family:ui-monospace,monospace;opacity:.85">confirm fp: —</p>
+    <div id="pfConfirmMeta" class="profile-confirm-meta-host" hidden></div>
+    <div class="profile-table-wrap">
+      <table class="profile-table" id="pfUnitTable">
+        <thead><tr><th>#</th><th>Name</th><th>Role</th><th>Sorties</th><th>Match</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="profile-table-wrap" style="margin-top:12px">
+      <table class="profile-table" id="pfCharTable">
+        <thead><tr><th>#</th><th>Name</th><th>Role</th><th>Sorties</th><th>Match</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="profile-actions profile-topn-row">
+      <span class="profile-hint" id="pfTopNHint" style="margin:0">Weight tags from</span>
+      <button type="button" class="profile-lang-btn" id="pfTop10" data-topn="10">Top 10</button>
+      <button type="button" class="profile-lang-btn is-on" id="pfTop20" data-topn="20">Top 20</button>
+      <button type="button" class="profile-btn profile-btn--primary" id="pfAnalyze">Analyze</button>
+    </div>
+  </section>
+
+  <section class="profile-step" id="pfStepInsights" hidden>
+    <h2 class="profile-step-h"><span class="profile-step-n">4</span> <span id="pfInsTitle">Insights</span></h2>
+    <div class="profile-insights" id="pfInsights"></div>
+  </section>
+</main>
+
+<script src="{{ url_for('static', filename='js/profile.js') }}?v={{ app_js_version }}&pb={{ profile_js_build }}" defer></script>
+</body>
+</html>

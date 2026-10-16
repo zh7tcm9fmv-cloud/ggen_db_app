@@ -1,0 +1,542 @@
+[
+  {
+    "Id": 20018010101,
+    "StoryEventBuffContentId": 200180101,
+    "Level": 1,
+    "TraitTypeIndex": 5,
+    "TraitValue1": 10,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 10,
+    "ReleaseBuffItemCount": 100
+  },
+  {
+    "Id": 20018010201,
+    "StoryEventBuffContentId": 200180102,
+    "Level": 1,
+    "TraitTypeIndex": 7,
+    "TraitValue1": 10,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 10,
+    "ReleaseBuffItemCount": 100
+  },
+  {
+    "Id": 20018010401,
+    "StoryEventBuffContentId": 200180104,
+    "Level": 1,
+    "TraitTypeIndex": 1,
+    "TraitValue1": 10,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 10,
+    "ReleaseBuffItemCount": 100
+  },
+  {
+    "Id": 20018010501,
+    "StoryEventBuffContentId": 200180105,
+    "Level": 1,
+    "TraitTypeIndex": 3,
+    "TraitValue1": 10,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 10,
+    "ReleaseBuffItemCount": 100
+  },
+  {
+    "Id": 20018010601,
+    "StoryEventBuffContentId": 200180106,
+    "Level": 1,
+    "TraitTypeIndex": 12,
+    "TraitValue1": 100,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 1,
+    "ReleaseBuffItemCount": 600
+  },
+  {
+    "Id": 20018020101,
+    "StoryEventBuffContentId": 200180201,
+    "Level": 1,
+    "TraitTypeIndex": 5,
+    "TraitValue1": 15,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 15,
+    "ReleaseBuffItemCount": 100
+  },
+  {
+    "Id": 20018020102,
+    "StoryEventBuffContentId": 200180201,
+    "Level": 2,
+    "TraitTypeIndex": 5,
+    "TraitValue1": 30,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 30,
+    "ReleaseBuffItemCount": 200
+  },
+  {
+    "Id": 20018020201,
+    "StoryEventBuffContentId": 200180202,
+    "Level": 1,
+    "TraitTypeIndex": 7,
+    "TraitValue1": 15,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 15,
+    "ReleaseBuffItemCount": 100
+  },
+  {
+    "Id": 20018020202,
+    "StoryEventBuffContentId": 200180202,
+    "Level": 2,
+    "TraitTypeIndex": 7,
+    "TraitValue1": 30,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 30,
+    "ReleaseBuffItemCount": 200
+  },
+  {
+    "Id": 20018020401,
+    "StoryEventBuffContentId": 200180204,
+    "Level": 1,
+    "TraitTypeIndex": 1,
+    "TraitValue1": 15,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 15,
+    "ReleaseBuffItemCount": 100
+  },
+  {
+    "Id": 20018020402,
+    "StoryEventBuffContentId": 200180204,
+    "Level": 2,
+    "TraitTypeIndex": 1,
+    "TraitValue1": 30,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 30,
+    "ReleaseBuffItemCount": 200
+  },
+  {
+    "Id": 20018020501,
+    "StoryEventBuffContentId": 200180205,
+    "Level": 1,
+    "TraitTypeIndex": 3,
+    "TraitValue1": 15,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 15,
+    "ReleaseBuffItemCount": 100
+  },
+  {
+    "Id": 20018020502,
+    "StoryEventBuffContentId": 200180205,
+    "Level": 2,
+    "TraitTypeIndex": 3,
+    "TraitValue1": 30,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 30,
+    "ReleaseBuffItemCount": 200
+  },
+  {
+    "Id": 20018020601,
+    "StoryEventBuffContentId": 200180206,
+    "Level": 1,
+    "TraitTypeIndex": 12,
+    "TraitValue1": 100,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 1,
+    "ReleaseBuffItemCount": 600
+  },
+  {
+    "Id": 20018020602,
+    "StoryEventBuffContentId": 200180206,
+    "Level": 2,
+    "TraitTypeIndex": 12,
+    "TraitValue1": 200,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 2,
+    "ReleaseBuffItemCount": 1200
+  },
+  {
+    "Id": 20018030101,
+    "StoryEventBuffContentId": 200180301,
+    "Level": 1,
+    "TraitTypeIndex": 16,
+    "TraitValue1": 1,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 1,
+    "ReleaseBuffItemCount": 1000
+  },
+  {
+    "Id": 20018030201,
+    "StoryEventBuffContentId": 200180302,
+    "Level": 1,
+    "TraitTypeIndex": 17,
+    "TraitValue1": 1,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 1,
+    "ReleaseBuffItemCount": 1000
+  },
+  {
+    "Id": 20018030301,
+    "StoryEventBuffContentId": 200180303,
+    "Level": 1,
+    "TraitTypeIndex": 18,
+    "TraitValue1": 1,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 1,
+    "ReleaseBuffItemCount": 1000
+  },
+  {
+    "Id": 20018030401,
+    "StoryEventBuffContentId": 200180304,
+    "Level": 1,
+    "TraitTypeIndex": 11,
+    "TraitValue1": 1,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 1,
+    "ReleaseBuffItemCount": 500
+  },
+  {
+    "Id": 20018030501,
+    "StoryEventBuffContentId": 200180305,
+    "Level": 1,
+    "TraitTypeIndex": 13,
+    "TraitValue1": 1,
+    "TraitValue2": 7,
+    "BattlePowerValueRatePercent": 1,
+    "ReleaseBuffItemCount": 500
+  },
+  {
+    "Id": 20018040101,
+    "StoryEventBuffContentId": 200180401,
+    "Level": 1,
+    "TraitTypeIndex": 5,
+    "TraitValue1": 20,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 20,
+    "ReleaseBuffItemCount": 300
+  },
+  {
+    "Id": 20018040102,
+    "StoryEventBuffContentId": 200180401,
+    "Level": 2,
+    "TraitTypeIndex": 5,
+    "TraitValue1": 40,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 40,
+    "ReleaseBuffItemCount": 500
+  },
+  {
+    "Id": 20018040103,
+    "StoryEventBuffContentId": 200180401,
+    "Level": 3,
+    "TraitTypeIndex": 5,
+    "TraitValue1": 60,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 60,
+    "ReleaseBuffItemCount": 700
+  },
+  {
+    "Id": 20018040201,
+    "StoryEventBuffContentId": 200180402,
+    "Level": 1,
+    "TraitTypeIndex": 7,
+    "TraitValue1": 20,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 20,
+    "ReleaseBuffItemCount": 300
+  },
+  {
+    "Id": 20018040202,
+    "StoryEventBuffContentId": 200180402,
+    "Level": 2,
+    "TraitTypeIndex": 7,
+    "TraitValue1": 40,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 40,
+    "ReleaseBuffItemCount": 500
+  },
+  {
+    "Id": 20018040203,
+    "StoryEventBuffContentId": 200180402,
+    "Level": 3,
+    "TraitTypeIndex": 7,
+    "TraitValue1": 60,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 60,
+    "ReleaseBuffItemCount": 700
+  },
+  {
+    "Id": 20018040401,
+    "StoryEventBuffContentId": 200180404,
+    "Level": 1,
+    "TraitTypeIndex": 1,
+    "TraitValue1": 20,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 20,
+    "ReleaseBuffItemCount": 300
+  },
+  {
+    "Id": 20018040402,
+    "StoryEventBuffContentId": 200180404,
+    "Level": 2,
+    "TraitTypeIndex": 1,
+    "TraitValue1": 40,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 40,
+    "ReleaseBuffItemCount": 500
+  },
+  {
+    "Id": 20018040403,
+    "StoryEventBuffContentId": 200180404,
+    "Level": 3,
+    "TraitTypeIndex": 1,
+    "TraitValue1": 60,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 60,
+    "ReleaseBuffItemCount": 700
+  },
+  {
+    "Id": 20018040501,
+    "StoryEventBuffContentId": 200180405,
+    "Level": 1,
+    "TraitTypeIndex": 3,
+    "TraitValue1": 20,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 20,
+    "ReleaseBuffItemCount": 300
+  },
+  {
+    "Id": 20018040502,
+    "StoryEventBuffContentId": 200180405,
+    "Level": 2,
+    "TraitTypeIndex": 3,
+    "TraitValue1": 40,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 40,
+    "ReleaseBuffItemCount": 500
+  },
+  {
+    "Id": 20018040503,
+    "StoryEventBuffContentId": 200180405,
+    "Level": 3,
+    "TraitTypeIndex": 3,
+    "TraitValue1": 60,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 60,
+    "ReleaseBuffItemCount": 700
+  },
+  {
+    "Id": 20018040601,
+    "StoryEventBuffContentId": 200180406,
+    "Level": 1,
+    "TraitTypeIndex": 14,
+    "TraitValue1": 5,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 5,
+    "ReleaseBuffItemCount": 1000
+  },
+  {
+    "Id": 20018040602,
+    "StoryEventBuffContentId": 200180406,
+    "Level": 2,
+    "TraitTypeIndex": 14,
+    "TraitValue1": 10,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 10,
+    "ReleaseBuffItemCount": 2000
+  },
+  {
+    "Id": 20018050101,
+    "StoryEventBuffContentId": 200180501,
+    "Level": 1,
+    "TraitTypeIndex": 7,
+    "TraitValue1": 50,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 50,
+    "ReleaseBuffItemCount": 1000
+  },
+  {
+    "Id": 20018050102,
+    "StoryEventBuffContentId": 200180501,
+    "Level": 2,
+    "TraitTypeIndex": 7,
+    "TraitValue1": 100,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 100,
+    "ReleaseBuffItemCount": 1250
+  },
+  {
+    "Id": 20018050103,
+    "StoryEventBuffContentId": 200180501,
+    "Level": 3,
+    "TraitTypeIndex": 7,
+    "TraitValue1": 150,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 150,
+    "ReleaseBuffItemCount": 1500
+  },
+  {
+    "Id": 20018050104,
+    "StoryEventBuffContentId": 200180501,
+    "Level": 4,
+    "TraitTypeIndex": 7,
+    "TraitValue1": 200,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 200,
+    "ReleaseBuffItemCount": 2000
+  },
+  {
+    "Id": 20018050201,
+    "StoryEventBuffContentId": 200180502,
+    "Level": 1,
+    "TraitTypeIndex": 1,
+    "TraitValue1": 50,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 50,
+    "ReleaseBuffItemCount": 1000
+  },
+  {
+    "Id": 20018050202,
+    "StoryEventBuffContentId": 200180502,
+    "Level": 2,
+    "TraitTypeIndex": 1,
+    "TraitValue1": 100,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 100,
+    "ReleaseBuffItemCount": 1250
+  },
+  {
+    "Id": 20018050203,
+    "StoryEventBuffContentId": 200180502,
+    "Level": 3,
+    "TraitTypeIndex": 1,
+    "TraitValue1": 150,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 150,
+    "ReleaseBuffItemCount": 1500
+  },
+  {
+    "Id": 20018050204,
+    "StoryEventBuffContentId": 200180502,
+    "Level": 4,
+    "TraitTypeIndex": 1,
+    "TraitValue1": 200,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 200,
+    "ReleaseBuffItemCount": 2000
+  },
+  {
+    "Id": 20018050301,
+    "StoryEventBuffContentId": 200180503,
+    "Level": 1,
+    "TraitTypeIndex": 11,
+    "TraitValue1": 1,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 1,
+    "ReleaseBuffItemCount": 1000
+  },
+  {
+    "Id": 20018050401,
+    "StoryEventBuffContentId": 200180504,
+    "Level": 1,
+    "TraitTypeIndex": 15,
+    "TraitValue1": 1,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 1,
+    "ReleaseBuffItemCount": 1000
+  },
+  {
+    "Id": 20018060101,
+    "StoryEventBuffContentId": 200180601,
+    "Level": 1,
+    "TraitTypeIndex": 5,
+    "TraitValue1": 50,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 50,
+    "ReleaseBuffItemCount": 1000
+  },
+  {
+    "Id": 20018060102,
+    "StoryEventBuffContentId": 200180601,
+    "Level": 2,
+    "TraitTypeIndex": 5,
+    "TraitValue1": 100,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 100,
+    "ReleaseBuffItemCount": 1250
+  },
+  {
+    "Id": 20018060103,
+    "StoryEventBuffContentId": 200180601,
+    "Level": 3,
+    "TraitTypeIndex": 5,
+    "TraitValue1": 150,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 150,
+    "ReleaseBuffItemCount": 1500
+  },
+  {
+    "Id": 20018060104,
+    "StoryEventBuffContentId": 200180601,
+    "Level": 4,
+    "TraitTypeIndex": 5,
+    "TraitValue1": 200,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 200,
+    "ReleaseBuffItemCount": 2000
+  },
+  {
+    "Id": 20018060201,
+    "StoryEventBuffContentId": 200180602,
+    "Level": 1,
+    "TraitTypeIndex": 16,
+    "TraitValue1": 1,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 1,
+    "ReleaseBuffItemCount": 2000
+  },
+  {
+    "Id": 20018060301,
+    "StoryEventBuffContentId": 200180603,
+    "Level": 1,
+    "TraitTypeIndex": 17,
+    "TraitValue1": 1,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 1,
+    "ReleaseBuffItemCount": 2000
+  },
+  {
+    "Id": 20018060401,
+    "StoryEventBuffContentId": 200180604,
+    "Level": 1,
+    "TraitTypeIndex": 18,
+    "TraitValue1": 1,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 1,
+    "ReleaseBuffItemCount": 2000
+  },
+  {
+    "Id": 20018060501,
+    "StoryEventBuffContentId": 200180605,
+    "Level": 1,
+    "TraitTypeIndex": 13,
+    "TraitValue1": 1,
+    "TraitValue2": 7,
+    "BattlePowerValueRatePercent": 1,
+    "ReleaseBuffItemCount": 1000
+  },
+  {
+    "Id": 20018060502,
+    "StoryEventBuffContentId": 200180605,
+    "Level": 2,
+    "TraitTypeIndex": 13,
+    "TraitValue1": 2,
+    "TraitValue2": 7,
+    "BattlePowerValueRatePercent": 2,
+    "ReleaseBuffItemCount": 2000
+  },
+  {
+    "Id": 20018060601,
+    "StoryEventBuffContentId": 200180606,
+    "Level": 1,
+    "TraitTypeIndex": 12,
+    "TraitValue1": 200,
+    "TraitValue2": 0,
+    "BattlePowerValueRatePercent": 2,
+    "ReleaseBuffItemCount": 3000
+  }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "Id": 13080005,
+    "UnitUltGroupId": 13080005,
+    "PhaseNumber": 2,
+    "UnitUltCustomSkillSetId": 13080005
+  },
+  {
+    "Id": 13790001,
+    "UnitUltGroupId": 13790001,
+    "PhaseNumber": 2,
+    "UnitUltCustomSkillSetId": 13790001
+  },
+  {
+    "Id": 17500003,
+    "UnitUltGroupId": 17500003,
+    "PhaseNumber": 2,
+    "UnitUltCustomSkillSetId": 17500003
+  },
+  {
+    "Id": 17610001,
+    "UnitUltGroupId": 17610001,
+    "PhaseNumber": 2,
+    "UnitUltCustomSkillSetId": 17610001
+  },
+  {
+    "Id": 17640002,
+    "UnitUltGroupId": 17640002,
+    "PhaseNumber": 2,
+    "UnitUltCustomSkillSetId": 17640002
+  },
+  {
+    "Id": 18500032,
+    "UnitUltGroupId": 18500032,
+    "PhaseNumber": 2,
+    "UnitUltCustomSkillSetId": 18500032
+  }
+]

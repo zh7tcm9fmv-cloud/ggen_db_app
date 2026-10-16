@@ -1192,6 +1192,70 @@
     "LimitBreakBonusDamageUpRatePercent": 2
   },
   {
+    "EventBonusRaritySetId": 20001805,
+    "RarityTypeIndex": 1,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 0,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 0
+  },
+  {
+    "EventBonusRaritySetId": 20001805,
+    "RarityTypeIndex": 2,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 0,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 0
+  },
+  {
+    "EventBonusRaritySetId": 20001805,
+    "RarityTypeIndex": 3,
+    "ItemDropUpRatePercent": 7,
+    "DamageUpRatePercent": 0,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 0
+  },
+  {
+    "EventBonusRaritySetId": 20001806,
+    "RarityTypeIndex": 1,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 0,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 0
+  },
+  {
+    "EventBonusRaritySetId": 20001806,
+    "RarityTypeIndex": 2,
+    "ItemDropUpRatePercent": 5,
+    "DamageUpRatePercent": 0,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 0
+  },
+  {
+    "EventBonusRaritySetId": 20001806,
+    "RarityTypeIndex": 3,
+    "ItemDropUpRatePercent": 7,
+    "DamageUpRatePercent": 0,
+    "LimitBreakBonusItemDropUpRatePercent": 1,
+    "LimitBreakBonusDamageUpRatePercent": 0
+  },
+  {
+    "EventBonusRaritySetId": 20001806,
+    "RarityTypeIndex": 4,
+    "ItemDropUpRatePercent": 10,
+    "DamageUpRatePercent": 0,
+    "LimitBreakBonusItemDropUpRatePercent": 2,
+    "LimitBreakBonusDamageUpRatePercent": 0
+  },
+  {
+    "EventBonusRaritySetId": 20001806,
+    "RarityTypeIndex": 5,
+    "ItemDropUpRatePercent": 12,
+    "DamageUpRatePercent": 0,
+    "LimitBreakBonusItemDropUpRatePercent": 2,
+    "LimitBreakBonusDamageUpRatePercent": 0
+  },
+  {
     "EventBonusRaritySetId": 25000101,
     "RarityTypeIndex": 1,
     "ItemDropUpRatePercent": 0,

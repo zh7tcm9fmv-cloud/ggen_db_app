@@ -888,6 +888,12 @@
     "GroupFormationNumber": 1
   },
   {
+    "Id": 3672296080,
+    "GroupFormationTypeIndex": 17,
+    "ContentTargetId": 99000116,
+    "GroupFormationNumber": 1
+  },
+  {
     "Id": 3718660099,
     "GroupFormationTypeIndex": 1,
     "ContentTargetId": 3700,

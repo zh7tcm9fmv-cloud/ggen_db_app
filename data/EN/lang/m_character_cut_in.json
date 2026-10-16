@@ -2288,6 +2288,166 @@
     "value": "I can see it!"
   },
   {
+    "id": 100701024000100001,
+    "value": "There's no getting away!"
+  },
+  {
+    "id": 100701024000100002,
+    "value": "There's no getting away!"
+  },
+  {
+    "id": 100701024000100003,
+    "value": "You're mine!"
+  },
+  {
+    "id": 100701024000100004,
+    "value": "You're mine!"
+  },
+  {
+    "id": 100701024000100005,
+    "value": "You're in my sights now!"
+  },
+  {
+    "id": 100701024000100006,
+    "value": "You're in my sights now!"
+  },
+  {
+    "id": 100701024000100007,
+    "value": "There you are!"
+  },
+  {
+    "id": 100701024000100008,
+    "value": "There you are!"
+  },
+  {
+    "id": 100701024000100009,
+    "value": "Can I pull this off?!"
+  },
+  {
+    "id": 100701024000100010,
+    "value": "Can I pull this off?!"
+  },
+  {
+    "id": 100701024000200001,
+    "value": "I've got you!"
+  },
+  {
+    "id": 100701024000200002,
+    "value": "I've got you!"
+  },
+  {
+    "id": 100701024000200003,
+    "value": "Sloppy!"
+  },
+  {
+    "id": 100701024000200004,
+    "value": "Sloppy!"
+  },
+  {
+    "id": 100701024000200005,
+    "value": "You're done for!"
+  },
+  {
+    "id": 100701024000200006,
+    "value": "You're done for!"
+  },
+  {
+    "id": 100701024000200007,
+    "value": "Too damn slow!"
+  },
+  {
+    "id": 100701024000200008,
+    "value": "Too damn slow!"
+  },
+  {
+    "id": 100701024000200009,
+    "value": "Pressing the attack!"
+  },
+  {
+    "id": 100701024000200010,
+    "value": "Pressing the attack!"
+  },
+  {
+    "id": 100701024000300001,
+    "value": "You're mine!"
+  },
+  {
+    "id": 100701024000300002,
+    "value": "You're mine!"
+  },
+  {
+    "id": 100701024000300003,
+    "value": "How'd ya like this?!"
+  },
+  {
+    "id": 100701024000300004,
+    "value": "How'd ya like this?!"
+  },
+  {
+    "id": 100701024000300005,
+    "value": "There you are!"
+  },
+  {
+    "id": 100701024000300006,
+    "value": "There you are!"
+  },
+  {
+    "id": 100701024000300007,
+    "value": "Time to blow you away!"
+  },
+  {
+    "id": 100701024000300008,
+    "value": "Time to blow you away!"
+  },
+  {
+    "id": 100701024000300009,
+    "value": "Hit that target! There we go!"
+  },
+  {
+    "id": 100701024000300010,
+    "value": "Hit that target! There we go!"
+  },
+  {
+    "id": 100701024000500001,
+    "value": "Careless!"
+  },
+  {
+    "id": 100701024000500002,
+    "value": "Careless!"
+  },
+  {
+    "id": 100701024000500003,
+    "value": "You are mine!"
+  },
+  {
+    "id": 100701024000500004,
+    "value": "You are mine!"
+  },
+  {
+    "id": 100701024000500005,
+    "value": "Hyaaah!"
+  },
+  {
+    "id": 100701024000500006,
+    "value": "Hyaaah!"
+  },
+  {
+    "id": 100701024000500007,
+    "value": "Pointless!"
+  },
+  {
+    "id": 100701024000500008,
+    "value": "Pointless!"
+  },
+  {
+    "id": 100701024000500009,
+    "value": "Don't miss!"
+  },
+  {
+    "id": 100701024000500010,
+    "value": "Don't miss!"
+  },
+  {
     "id": 100701031000100001,
     "value": "Amazing!"
   },
@@ -11689,11 +11849,11 @@
   },
   {
     "id": 100701230000500003,
-    "value": "HAAAH!"
+    "value": "Haah!"
   },
   {
     "id": 100701230000500004,
-    "value": "HAAAH!"
+    "value": "Haah!"
   },
   {
     "id": 100701230000500005,
@@ -15181,11 +15341,11 @@
   },
   {
     "id": 100701370000200001,
-    "value": "I've got you in my sights now!"
+    "value": "Caught you!"
   },
   {
     "id": 100701370000200002,
-    "value": "I've got you in my sights now!"
+    "value": "Caught you!"
   },
   {
     "id": 100701370000200003,
@@ -15197,11 +15357,11 @@
   },
   {
     "id": 100701370000200005,
-    "value": "Shoot 'em down!"
+    "value": "Hit!"
   },
   {
     "id": 100701370000200006,
-    "value": "Shoot 'em down!"
+    "value": "Hit!"
   },
   {
     "id": 100701370000200007,
@@ -15684,6 +15844,14 @@
     "value": "Go, Special Funnels!"
   },
   {
+    "id": 100701370003100013,
+    "value": "Special Fangs!!"
+  },
+  {
+    "id": 100701370003100014,
+    "value": "Special Fangs!!"
+  },
+  {
     "id": 100701370003300001,
     "value": "Gotcha!"
   },
@@ -15820,6 +15988,30 @@
     "value": "Fin Fangs!"
   },
   {
+    "id": 100701370003502015,
+    "value": "All too predictable!"
+  },
+  {
+    "id": 100701370003502016,
+    "value": "All too predictable!"
+  },
+  {
+    "id": 100701370003502017,
+    "value": "To battle! Fin Funnels!"
+  },
+  {
+    "id": 100701370003502018,
+    "value": "To battle! Fin Funnels!"
+  },
+  {
+    "id": 100701370003502019,
+    "value": "Fin Fangs!"
+  },
+  {
+    "id": 100701370003502020,
+    "value": "Fin Fangs!"
+  },
+  {
     "id": 100701370003600001,
     "value": "Rest in peace."
   },
@@ -15850,6 +16042,22 @@
   {
     "id": 100701370003600008,
     "value": "Time to die!"
+  },
+  {
+    "id": 100701370003600009,
+    "value": "I can see you! Funnels!"
+  },
+  {
+    "id": 100701370003600010,
+    "value": "I can see you! Funnels!"
+  },
+  {
+    "id": 100701370003600011,
+    "value": "These ain't just some decorations!"
+  },
+  {
+    "id": 100701370003600012,
+    "value": "These ain't just some decorations!"
   },
   {
     "id": 100701370003602001,
@@ -16634,6 +16842,62 @@
   {
     "id": 100701370006101012,
     "value": "Fangs!"
+  },
+  {
+    "id": 100701370006200001,
+    "value": "Get lost!"
+  },
+  {
+    "id": 100701370006200002,
+    "value": "Get lost!"
+  },
+  {
+    "id": 100701370006200003,
+    "value": "Get trashed!"
+  },
+  {
+    "id": 100701370006200004,
+    "value": "Get trashed!"
+  },
+  {
+    "id": 100701370006200005,
+    "value": "Die already!"
+  },
+  {
+    "id": 100701370006200006,
+    "value": "Die already!"
+  },
+  {
+    "id": 100701370006200007,
+    "value": "Nice try!"
+  },
+  {
+    "id": 100701370006200008,
+    "value": "Nice try!"
+  },
+  {
+    "id": 100701370006200009,
+    "value": "Everything is clear to me!"
+  },
+  {
+    "id": 100701370006200010,
+    "value": "Everything is clear to me!"
+  },
+  {
+    "id": 100701370006200011,
+    "value": "Funnels, go!"
+  },
+  {
+    "id": 100701370006200012,
+    "value": "Funnels, go!"
+  },
+  {
+    "id": 100701370006200013,
+    "value": "Get 'em, Fangs!"
+  },
+  {
+    "id": 100701370006200014,
+    "value": "Get 'em, Fangs!"
   },
   {
     "id": 100701375000100001,

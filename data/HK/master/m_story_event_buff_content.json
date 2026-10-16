@@ -1,0 +1,302 @@
+[
+  {
+    "Id": 200180101,
+    "StoryEventBuffContentGroupId": 2001801,
+    "TargetOperatorTypeIndex": 2,
+    "TargetSetId": 2001801,
+    "NameLanguageId": 251600000200180101,
+    "IconResourceId": "trait_10030102",
+    "GradeTypeIndex": 1,
+    "SortOrder": 1
+  },
+  {
+    "Id": 200180102,
+    "StoryEventBuffContentGroupId": 2001801,
+    "TargetOperatorTypeIndex": 2,
+    "TargetSetId": 2001801,
+    "NameLanguageId": 251600000200180102,
+    "IconResourceId": "trait_10050102",
+    "GradeTypeIndex": 1,
+    "SortOrder": 2
+  },
+  {
+    "Id": 200180104,
+    "StoryEventBuffContentGroupId": 2001801,
+    "TargetOperatorTypeIndex": 2,
+    "TargetSetId": 2001801,
+    "NameLanguageId": 251600000200180104,
+    "IconResourceId": "trait_10010102",
+    "GradeTypeIndex": 1,
+    "SortOrder": 4
+  },
+  {
+    "Id": 200180105,
+    "StoryEventBuffContentGroupId": 2001801,
+    "TargetOperatorTypeIndex": 2,
+    "TargetSetId": 2001801,
+    "NameLanguageId": 251600000200180105,
+    "IconResourceId": "trait_10020102",
+    "GradeTypeIndex": 1,
+    "SortOrder": 5
+  },
+  {
+    "Id": 200180106,
+    "StoryEventBuffContentGroupId": 2001801,
+    "TargetOperatorTypeIndex": 2,
+    "TargetSetId": 2001801,
+    "NameLanguageId": 251600000200180106,
+    "IconResourceId": "trait_10360100",
+    "GradeTypeIndex": 1,
+    "SortOrder": 6
+  },
+  {
+    "Id": 200180201,
+    "StoryEventBuffContentGroupId": 2001802,
+    "TargetOperatorTypeIndex": 2,
+    "TargetSetId": 2001801,
+    "NameLanguageId": 251600000200180201,
+    "IconResourceId": "trait_10030102",
+    "GradeTypeIndex": 1,
+    "SortOrder": 1
+  },
+  {
+    "Id": 200180202,
+    "StoryEventBuffContentGroupId": 2001802,
+    "TargetOperatorTypeIndex": 2,
+    "TargetSetId": 2001801,
+    "NameLanguageId": 251600000200180202,
+    "IconResourceId": "trait_10050102",
+    "GradeTypeIndex": 1,
+    "SortOrder": 2
+  },
+  {
+    "Id": 200180204,
+    "StoryEventBuffContentGroupId": 2001802,
+    "TargetOperatorTypeIndex": 2,
+    "TargetSetId": 2001801,
+    "NameLanguageId": 251600000200180204,
+    "IconResourceId": "trait_10010102",
+    "GradeTypeIndex": 1,
+    "SortOrder": 4
+  },
+  {
+    "Id": 200180205,
+    "StoryEventBuffContentGroupId": 2001802,
+    "TargetOperatorTypeIndex": 2,
+    "TargetSetId": 2001801,
+    "NameLanguageId": 251600000200180205,
+    "IconResourceId": "trait_10020102",
+    "GradeTypeIndex": 1,
+    "SortOrder": 5
+  },
+  {
+    "Id": 200180206,
+    "StoryEventBuffContentGroupId": 2001802,
+    "TargetOperatorTypeIndex": 2,
+    "TargetSetId": 2001801,
+    "NameLanguageId": 251600000200180206,
+    "IconResourceId": "trait_10360100",
+    "GradeTypeIndex": 1,
+    "SortOrder": 6
+  },
+  {
+    "Id": 200180301,
+    "StoryEventBuffContentGroupId": 2001803,
+    "TargetOperatorTypeIndex": 2,
+    "TargetSetId": 2001802,
+    "NameLanguageId": 251600000200180301,
+    "IconResourceId": "trait_10070102",
+    "GradeTypeIndex": 2,
+    "SortOrder": 1
+  },
+  {
+    "Id": 200180302,
+    "StoryEventBuffContentGroupId": 2001803,
+    "TargetOperatorTypeIndex": 2,
+    "TargetSetId": 2001802,
+    "NameLanguageId": 251600000200180302,
+    "IconResourceId": "trait_10180102",
+    "GradeTypeIndex": 2,
+    "SortOrder": 2
+  },
+  {
+    "Id": 200180303,
+    "StoryEventBuffContentGroupId": 2001803,
+    "TargetOperatorTypeIndex": 2,
+    "TargetSetId": 2001802,
+    "NameLanguageId": 251600000200180303,
+    "IconResourceId": "trait_10210102",
+    "GradeTypeIndex": 2,
+    "SortOrder": 3
+  },
+  {
+    "Id": 200180304,
+    "StoryEventBuffContentGroupId": 2001803,
+    "TargetOperatorTypeIndex": 2,
+    "TargetSetId": 2001802,
+    "NameLanguageId": 251600000200180304,
+    "IconResourceId": "trait_10270100",
+    "GradeTypeIndex": 2,
+    "SortOrder": 4
+  },
+  {
+    "Id": 200180305,
+    "StoryEventBuffContentGroupId": 2001803,
+    "TargetOperatorTypeIndex": 2,
+    "TargetSetId": 2001802,
+    "NameLanguageId": 251600000200180305,
+    "IconResourceId": "trait_10280100",
+    "GradeTypeIndex": 2,
+    "SortOrder": 5
+  },
+  {
+    "Id": 200180401,
+    "StoryEventBuffContentGroupId": 2001804,
+    "TargetOperatorTypeIndex": 2,
+    "TargetSetId": 2001801,
+    "NameLanguageId": 251600000200180401,
+    "IconResourceId": "trait_10030102",
+    "GradeTypeIndex": 1,
+    "SortOrder": 1
+  },
+  {
+    "Id": 200180402,
+    "StoryEventBuffContentGroupId": 2001804,
+    "TargetOperatorTypeIndex": 2,
+    "TargetSetId": 2001801,
+    "NameLanguageId": 251600000200180402,
+    "IconResourceId": "trait_10050102",
+    "GradeTypeIndex": 1,
+    "SortOrder": 2
+  },
+  {
+    "Id": 200180404,
+    "StoryEventBuffContentGroupId": 2001804,
+    "TargetOperatorTypeIndex": 2,
+    "TargetSetId": 2001801,
+    "NameLanguageId": 251600000200180404,
+    "IconResourceId": "trait_10010102",
+    "GradeTypeIndex": 1,
+    "SortOrder": 4
+  },
+  {
+    "Id": 200180405,
+    "StoryEventBuffContentGroupId": 2001804,
+    "TargetOperatorTypeIndex": 2,
+    "TargetSetId": 2001801,
+    "NameLanguageId": 251600000200180405,
+    "IconResourceId": "trait_10020102",
+    "GradeTypeIndex": 1,
+    "SortOrder": 5
+  },
+  {
+    "Id": 200180406,
+    "StoryEventBuffContentGroupId": 2001804,
+    "TargetOperatorTypeIndex": 2,
+    "TargetSetId": 2001801,
+    "NameLanguageId": 251600000200180406,
+    "IconResourceId": "trait_10770100",
+    "GradeTypeIndex": 1,
+    "SortOrder": 6
+  },
+  {
+    "Id": 200180501,
+    "StoryEventBuffContentGroupId": 2001805,
+    "TargetOperatorTypeIndex": 2,
+    "TargetSetId": 2001801,
+    "NameLanguageId": 251600000200180501,
+    "IconResourceId": "trait_10050102",
+    "GradeTypeIndex": 1,
+    "SortOrder": 1
+  },
+  {
+    "Id": 200180502,
+    "StoryEventBuffContentGroupId": 2001805,
+    "TargetOperatorTypeIndex": 2,
+    "TargetSetId": 2001801,
+    "NameLanguageId": 251600000200180502,
+    "IconResourceId": "trait_10010102",
+    "GradeTypeIndex": 1,
+    "SortOrder": 2
+  },
+  {
+    "Id": 200180503,
+    "StoryEventBuffContentGroupId": 2001805,
+    "TargetOperatorTypeIndex": 2,
+    "TargetSetId": 2001802,
+    "NameLanguageId": 251600000200180503,
+    "IconResourceId": "trait_10270100",
+    "GradeTypeIndex": 1,
+    "SortOrder": 3
+  },
+  {
+    "Id": 200180504,
+    "StoryEventBuffContentGroupId": 2001805,
+    "TargetOperatorTypeIndex": 2,
+    "TargetSetId": 2001802,
+    "NameLanguageId": 251600000200180504,
+    "IconResourceId": "trait_11200100",
+    "GradeTypeIndex": 1,
+    "SortOrder": 4
+  },
+  {
+    "Id": 200180601,
+    "StoryEventBuffContentGroupId": 2001806,
+    "TargetOperatorTypeIndex": 2,
+    "TargetSetId": 2001801,
+    "NameLanguageId": 251600000200180601,
+    "IconResourceId": "trait_10030102",
+    "GradeTypeIndex": 1,
+    "SortOrder": 1
+  },
+  {
+    "Id": 200180602,
+    "StoryEventBuffContentGroupId": 2001806,
+    "TargetOperatorTypeIndex": 2,
+    "TargetSetId": 2001802,
+    "NameLanguageId": 251600000200180602,
+    "IconResourceId": "trait_10070102",
+    "GradeTypeIndex": 2,
+    "SortOrder": 2
+  },
+  {
+    "Id": 200180603,
+    "StoryEventBuffContentGroupId": 2001806,
+    "TargetOperatorTypeIndex": 2,
+    "TargetSetId": 2001802,
+    "NameLanguageId": 251600000200180603,
+    "IconResourceId": "trait_10180102",
+    "GradeTypeIndex": 2,
+    "SortOrder": 3
+  },
+  {
+    "Id": 200180604,
+    "StoryEventBuffContentGroupId": 2001806,
+    "TargetOperatorTypeIndex": 2,
+    "TargetSetId": 2001802,
+    "NameLanguageId": 251600000200180604,
+    "IconResourceId": "trait_10210102",
+    "GradeTypeIndex": 2,
+    "SortOrder": 4
+  },
+  {
+    "Id": 200180605,
+    "StoryEventBuffContentGroupId": 2001806,
+    "TargetOperatorTypeIndex": 2,
+    "TargetSetId": 2001802,
+    "NameLanguageId": 251600000200180605,
+    "IconResourceId": "trait_10280100",
+    "GradeTypeIndex": 2,
+    "SortOrder": 5
+  },
+  {
+    "Id": 200180606,
+    "StoryEventBuffContentGroupId": 2001806,
+    "TargetOperatorTypeIndex": 2,
+    "TargetSetId": 2001801,
+    "NameLanguageId": 251600000200180606,
+    "IconResourceId": "trait_10360100",
+    "GradeTypeIndex": 1,
+    "SortOrder": 6
+  }
+]

@@ -44,6 +44,50 @@
     "value": "Increased DEF"
   },
   {
+    "id": 141500137001115011,
+    "value": "Increased ATK"
+  },
+  {
+    "id": 141500137001115012,
+    "value": "Increased MOB"
+  },
+  {
+    "id": 141500200020100001,
+    "value": "Guaranteed Bonus Action"
+  },
+  {
+    "id": 141500200030100001,
+    "value": "Support Attack Count Increase"
+  },
+  {
+    "id": 141500200040100001,
+    "value": "Support Defense Count Increase"
+  },
+  {
+    "id": 141500200060100001,
+    "value": "Initial Damage Nullification"
+  },
+  {
+    "id": 141500200070100001,
+    "value": "High Speed"
+  },
+  {
+    "id": 141500200100100001,
+    "value": "Boost Range"
+  },
+  {
+    "id": 141500200110100001,
+    "value": "Attack Burst"
+  },
+  {
+    "id": 141500200120100001,
+    "value": "Force Guard"
+  },
+  {
+    "id": 141500200130100001,
+    "value": "MP Up"
+  },
+  {
     "id": 141600111400045011,
     "value": "Grants a barrier that absorbs damage up to 20% of this unit's Max HP."
   },
@@ -86,5 +130,49 @@
   {
     "id": 141600137000595012,
     "value": "Increase DEF by 15% (1 turn(s))."
+  },
+  {
+    "id": 141600137001115011,
+    "value": "Increase ATK by 25% (1 turn(s))."
+  },
+  {
+    "id": 141600137001115012,
+    "value": "Increase MOB by 15%(1 turn(s))."
+  },
+  {
+    "id": 141600200020100001,
+    "value": "Guaranteed Chance +1 time(s).\n*Any count increase granted by this skill will remain until used."
+  },
+  {
+    "id": 141600200030100001,
+    "value": "Support Attack/Counter +1 time(s).\n*Any count increase granted by this skill will remain until used."
+  },
+  {
+    "id": 141600200040100001,
+    "value": "Support Defense +1 time(s).\n*Any count increase granted by this skill will remain until used."
+  },
+  {
+    "id": 141600200060100001,
+    "value": "Grant Initial Damage Nullification effect."
+  },
+  {
+    "id": 141600200070100001,
+    "value": "During the next movement after activating the effect, increase MOV by 1."
+  },
+  {
+    "id": 141600200100100001,
+    "value": "During the next combat after activating the effect,\nincrease max range of weapons by 1."
+  },
+  {
+    "id": 141600200110100001,
+    "value": "Increase damage dealt to enemies by 20% (1 turn(s))."
+  },
+  {
+    "id": 141600200120100001,
+    "value": "Reduce damage taken by 20% (1 turn(s))."
+  },
+  {
+    "id": 141600200130100001,
+    "value": "Increase MP by 6."
   }
 ]

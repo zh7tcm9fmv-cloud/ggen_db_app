@@ -4836,6 +4836,60 @@
     "RequiredLevel": 30
   },
   {
+    "Id": 20240100001,
+    "StartUnitDevelopmentPieceId": 202401000000,
+    "EndUnitDevelopmentPieceId": 202401002000,
+    "RequiredLevel": 5
+  },
+  {
+    "Id": 20240100002,
+    "StartUnitDevelopmentPieceId": 202401002000,
+    "EndUnitDevelopmentPieceId": 202401004000,
+    "RequiredLevel": 15
+  },
+  {
+    "Id": 20240100003,
+    "StartUnitDevelopmentPieceId": 202401002000,
+    "EndUnitDevelopmentPieceId": 202401004002,
+    "RequiredLevel": 15
+  },
+  {
+    "Id": 20240100004,
+    "StartUnitDevelopmentPieceId": 202401004000,
+    "EndUnitDevelopmentPieceId": 202401006000,
+    "RequiredLevel": 30
+  },
+  {
+    "Id": 20240100005,
+    "StartUnitDevelopmentPieceId": 202401004002,
+    "EndUnitDevelopmentPieceId": 202401006000,
+    "RequiredLevel": 30
+  },
+  {
+    "Id": 20240100006,
+    "StartUnitDevelopmentPieceId": 202401002006,
+    "EndUnitDevelopmentPieceId": 202401004004,
+    "RequiredLevel": 15
+  },
+  {
+    "Id": 20240100007,
+    "StartUnitDevelopmentPieceId": 202401004004,
+    "EndUnitDevelopmentPieceId": 202401006004,
+    "RequiredLevel": 30
+  },
+  {
+    "Id": 20240100008,
+    "StartUnitDevelopmentPieceId": 202401004004,
+    "EndUnitDevelopmentPieceId": 202401006006,
+    "RequiredLevel": 30
+  },
+  {
+    "Id": 20240100009,
+    "StartUnitDevelopmentPieceId": 202401002006,
+    "EndUnitDevelopmentPieceId": 202401006006,
+    "RequiredLevel": 30
+  },
+  {
     "Id": 20320100001,
     "StartUnitDevelopmentPieceId": 203201000000,
     "EndUnitDevelopmentPieceId": 203201002000,

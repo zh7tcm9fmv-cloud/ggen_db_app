@@ -1,0 +1,16 @@
+[
+  {
+    "Id": 200018,
+    "StoryEventId": 200018,
+    "FieldResourceId": "field_story_event_stage_select_bg_200018",
+    "PremiumPrefabResourceId": "field_story_event_premium_release_200018",
+    "FlavorBackgroundResourceId": "",
+    "FieldBgmId": 102400004,
+    "AnotherFieldBgmId": 102400004,
+    "ViewButtonPrefabName": "field_story_event_next_button_200018",
+    "BossBattleButtonPrefabName": "field_story_event_boss_next_button_200018",
+    "FieldFramePrefabName": "field_story_event_stage_select_flame_200018",
+    "StageDetailLeftDirectionPrefabName": "field_story_event_stage_preview_200018",
+    "FirstEntranceDirectionPrefabName": "field_story_event_first_admission_200018"
+  }
+]

@@ -20,6 +20,46 @@
     "value": "Unit Skill [00 Raiser Final Battle Type (EX)]"
   },
   {
+    "id": 141300137001115000,
+    "value": "Unit Skill [Reborns Gundam (EX)]"
+  },
+  {
+    "id": 141300200020100001,
+    "value": "Unit Skills [Guaranteed Bonus Action]"
+  },
+  {
+    "id": 141300200030100001,
+    "value": "Unit Skill [Support Attack Count Increase]"
+  },
+  {
+    "id": 141300200040100001,
+    "value": "Unit Skill [Support Defense Count Increase]"
+  },
+  {
+    "id": 141300200060100001,
+    "value": "Unit Skill [Initial Damage Nullification]"
+  },
+  {
+    "id": 141300200070100001,
+    "value": "Unit Skill [High Speed]"
+  },
+  {
+    "id": 141300200100100001,
+    "value": "Unit Skill [Boost Range]"
+  },
+  {
+    "id": 141300200110100001,
+    "value": "Unit Skill [Attack Burst]"
+  },
+  {
+    "id": 141300200120100001,
+    "value": "Unit Skill [Force Guard]"
+  },
+  {
+    "id": 141300200130100001,
+    "value": "Unit Skill [MP Up]"
+  },
+  {
     "id": 141400111400045000,
     "value": "Applies to self and 1 ally within range.\nGrants a barrier that absorbs damage up to 20% of this unit's Max HP.\n(Once per battle)"
   },
@@ -38,5 +78,45 @@
   {
     "id": 141400137000595000,
     "value": "Increase ATK by 25% (1 turn(s)).\nIncrease DEF by 15% (1 turn(s)).\nLimit of 1 time(s) per battle."
+  },
+  {
+    "id": 141400137001115000,
+    "value": "Increase ATK by 25% (1 turn(s)).\nIncrease MOB by 15% (1 turn(s)).\n(Once per battle)"
+  },
+  {
+    "id": 141400200020100001,
+    "value": "Guaranteed Chance +1 time(s) (once per battle).\n*Any count increase granted by this skill will remain until used."
+  },
+  {
+    "id": 141400200030100001,
+    "value": "Support Attack/Counter +1 time(s) (once per battle).\n*Any count increase granted by this skill will remain until used.\n*This effect requires a pilot with the same type as this unit."
+  },
+  {
+    "id": 141400200040100001,
+    "value": "Support Defense +1 time(s) (once per battle).\n*Any count increase granted by this skill will remain until used.\n*This effect requires a pilot with the same type as this unit."
+  },
+  {
+    "id": 141400200060100001,
+    "value": "Grant Initial Damage Nullification effect (once per battle)."
+  },
+  {
+    "id": 141400200070100001,
+    "value": "During the next movement after activating the effect, increase MOV by 1 (once per battle)."
+  },
+  {
+    "id": 141400200100100001,
+    "value": "During the next combat after activating the effect,\nincrease max range of weapons by 1 (once per battle)."
+  },
+  {
+    "id": 141400200110100001,
+    "value": "Increase damage dealt to enemies by 20% (1 turn(s)) (once per battle)."
+  },
+  {
+    "id": 141400200120100001,
+    "value": "Reduce damage taken by 20% (1 turn(s)) (once per battle)."
+  },
+  {
+    "id": 141400200130100001,
+    "value": "Increase MP by 6 (once per battle)."
   }
 ]

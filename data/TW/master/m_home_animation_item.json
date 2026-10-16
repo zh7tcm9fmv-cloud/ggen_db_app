@@ -40,5 +40,12 @@
     "ThumbnailResourceId": "sha_i_280230000001",
     "SortOrder": 30001,
     "ForcedDisplayScheduleId": 2604303206
+  },
+  {
+    "ItemId": 280237000001,
+    "MovieResourceId": "sha_a_280237000001",
+    "ThumbnailResourceId": "sha_i_280237000001",
+    "SortOrder": 37001,
+    "ForcedDisplayScheduleId": 2610303202
   }
 ]

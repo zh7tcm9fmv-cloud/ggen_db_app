@@ -1,0 +1,58 @@
+[
+  {
+    "Id": 200180101,
+    "ReleaseConditionTargetSetId": 2001801,
+    "ReleaseConditionTargetTypeIndex": 1,
+    "TargetValue1": 2400603,
+    "TargetValue2": 0
+  },
+  {
+    "Id": 200180201,
+    "ReleaseConditionTargetSetId": 2001802,
+    "ReleaseConditionTargetTypeIndex": 1,
+    "TargetValue1": 2402001,
+    "TargetValue2": 0
+  },
+  {
+    "Id": 200180202,
+    "ReleaseConditionTargetSetId": 2001802,
+    "ReleaseConditionTargetTypeIndex": 1,
+    "TargetValue1": 2402002,
+    "TargetValue2": 0
+  },
+  {
+    "Id": 200180203,
+    "ReleaseConditionTargetSetId": 2001802,
+    "ReleaseConditionTargetTypeIndex": 1,
+    "TargetValue1": 2402003,
+    "TargetValue2": 0
+  },
+  {
+    "Id": 200180301,
+    "ReleaseConditionTargetSetId": 2001803,
+    "ReleaseConditionTargetTypeIndex": 1,
+    "TargetValue1": 2403001,
+    "TargetValue2": 0
+  },
+  {
+    "Id": 200180401,
+    "ReleaseConditionTargetSetId": 2001804,
+    "ReleaseConditionTargetTypeIndex": 1,
+    "TargetValue1": 2403003,
+    "TargetValue2": 0
+  },
+  {
+    "Id": 200180501,
+    "ReleaseConditionTargetSetId": 2001805,
+    "ReleaseConditionTargetTypeIndex": 2,
+    "TargetValue1": 34,
+    "TargetValue2": 0
+  },
+  {
+    "Id": 200180601,
+    "ReleaseConditionTargetSetId": 2001806,
+    "ReleaseConditionTargetTypeIndex": 2,
+    "TargetValue1": 44,
+    "TargetValue2": 0
+  }
+]

@@ -42,6 +42,12 @@
     "TargetId": 3000
   },
   {
+    "ItemId": 240000023700,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 2,
+    "TargetId": 3700
+  },
+  {
     "ItemId": 250000010810,
     "TargetIndex": 1,
     "TargetTypeIndex": 2,
@@ -96,9 +102,21 @@
     "TargetId": 1210002400
   },
   {
+    "ItemId": 251230000501,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 1,
+    "TargetId": 1230000501
+  },
+  {
     "ItemId": 251300002502,
     "TargetIndex": 1,
     "TargetTypeIndex": 1,
     "TargetId": 1300002502
+  },
+  {
+    "ItemId": 251370006200,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 1,
+    "TargetId": 1370006200
   }
 ]

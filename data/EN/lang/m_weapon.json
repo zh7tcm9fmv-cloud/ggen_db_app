@@ -2296,6 +2296,150 @@
     "value": "2-Barrel Beam Cannon SSP"
   },
   {
+    "id": 120100102400010001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100102400010002,
+    "value": "100mm Machine Gun"
+  },
+  {
+    "id": 120100102400010003,
+    "value": "Rocket Launcher"
+  },
+  {
+    "id": 120100102400010090,
+    "value": "Rocket Launcher SSP"
+  },
+  {
+    "id": 120100102400020001,
+    "value": "Beam Spray Gun"
+  },
+  {
+    "id": 120100102400020002,
+    "value": "240mm Shoulder Cannon"
+  },
+  {
+    "id": 120100102400020090,
+    "value": "240mm Shoulder Cannon SSP"
+  },
+  {
+    "id": 120100102400030001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100102400030002,
+    "value": "100mm Machine Gun"
+  },
+  {
+    "id": 120100102400030003,
+    "value": "Rocket Launcher"
+  },
+  {
+    "id": 120100102400030090,
+    "value": "Rocket Launcher SSP"
+  },
+  {
+    "id": 120100102400040001,
+    "value": "Heat Saber"
+  },
+  {
+    "id": 120100102400040002,
+    "value": "Heat Rod"
+  },
+  {
+    "id": 120100102400040003,
+    "value": "Triple 35mm Gatling Cannon"
+  },
+  {
+    "id": 120100102400040090,
+    "value": "Heat Rod SSP"
+  },
+  {
+    "id": 120100102400050001,
+    "value": "100mm Machine Gun"
+  },
+  {
+    "id": 120100102400050002,
+    "value": "240mm Cannon"
+  },
+  {
+    "id": 120100102400050090,
+    "value": "240mm Cannon SSP"
+  },
+  {
+    "id": 120100102400060001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100102400060002,
+    "value": "100mm Machine Gun"
+  },
+  {
+    "id": 120100102400060003,
+    "value": "Long-Range Beam Rifle"
+  },
+  {
+    "id": 120100102400060004,
+    "value": "Snipe"
+  },
+  {
+    "id": 120100102400060090,
+    "value": "Long-Range Beam Rifle SSP"
+  },
+  {
+    "id": 120100102400070001,
+    "value": "Beam Naginata"
+  },
+  {
+    "id": 120100102400070002,
+    "value": "Arm Grenade Launcher"
+  },
+  {
+    "id": 120100102400070003,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100102400070004,
+    "value": "Beam Naginata"
+  },
+  {
+    "id": 120100102400070090,
+    "value": "Beam Naginata SSP"
+  },
+  {
+    "id": 120100102400080001,
+    "value": "Multi-Tube Missile Launcher"
+  },
+  {
+    "id": 120100102400080002,
+    "value": "High-Output Beam Cannon"
+  },
+  {
+    "id": 120100102400080003,
+    "value": "Barrage"
+  },
+  {
+    "id": 120100102400080090,
+    "value": "High-Output Beam Cannon SSP"
+  },
+  {
+    "id": 120100102400090001,
+    "value": "Twin Mega Particle Cannon"
+  },
+  {
+    "id": 120100102400090002,
+    "value": "Adzam Leader"
+  },
+  {
+    "id": 120100102400090090,
+    "value": "Twin Mega Particle Cannon SSP"
+  },
+  {
+    "id": 120100102400100001,
+    "value": "20mm Chain Gun"
+  },
+  {
     "id": 120100102600011001,
     "value": "Beam Saber"
   },
@@ -15068,6 +15212,10 @@
     "value": "Beam Cannon \"Forfanterie\""
   },
   {
+    "id": 120100130800050170,
+    "value": "Beam Cannon \"Forfanterie\" ULT"
+  },
+  {
     "id": 120100130800050201,
     "value": "Beam Knife \"Romteknica RBW Type 7001\""
   },
@@ -15082,6 +15230,10 @@
   {
     "id": 120100130800050204,
     "value": "Beam Cannon \"Forfanterie\""
+  },
+  {
+    "id": 120100130800050270,
+    "value": "Beam Cannon \"Forfanterie\" ULT"
   },
   {
     "id": 120100130800060001,
@@ -16800,6 +16952,30 @@
     "value": "GN Sniper Rifle SSP"
   },
   {
+    "id": 120100137000035001,
+    "value": "GN Beam Pistol"
+  },
+  {
+    "id": 120100137000035002,
+    "value": "GN Missile"
+  },
+  {
+    "id": 120100137000035003,
+    "value": "GN Sniper Rifle"
+  },
+  {
+    "id": 120100137000035004,
+    "value": "Trans-Am"
+  },
+  {
+    "id": 120100137000035005,
+    "value": "Extra-High Altitude Sniper Rifle EX"
+  },
+  {
+    "id": 120100137000035006,
+    "value": "Snipe"
+  },
+  {
     "id": 120100137000036001,
     "value": "GN Missile"
   },
@@ -17705,6 +17881,22 @@
   },
   {
     "id": 120100137000560090,
+    "value": "GN Beam Saber SSP"
+  },
+  {
+    "id": 120100137000566001,
+    "value": "GN Beam Saber"
+  },
+  {
+    "id": 120100137000566002,
+    "value": "20mm Machine Gun"
+  },
+  {
+    "id": 120100137000566003,
+    "value": "GN Beam Saber"
+  },
+  {
+    "id": 120100137000566090,
     "value": "GN Beam Saber SSP"
   },
   {
@@ -18668,6 +18860,34 @@
     "value": "GN Fin Fang SSP"
   },
   {
+    "id": 120100137001115001,
+    "value": "Large GN Beam Saber"
+  },
+  {
+    "id": 120100137001115002,
+    "value": "GN Buster Rifle"
+  },
+  {
+    "id": 120100137001115003,
+    "value": "GN Fin Fang"
+  },
+  {
+    "id": 120100137001115004,
+    "value": "GN Cannon (Max Output)"
+  },
+  {
+    "id": 120100137001115005,
+    "value": "Trans-Am"
+  },
+  {
+    "id": 120100137001115006,
+    "value": "Trans-Am EX"
+  },
+  {
+    "id": 120100137001115007,
+    "value": "GN Cannon"
+  },
+  {
     "id": 120100137001130001,
     "value": "Egner Whip"
   },
@@ -19108,6 +19328,10 @@
     "value": "GN Missile Container"
   },
   {
+    "id": 120100137900010170,
+    "value": "Turbulenz ULT"
+  },
+  {
     "id": 120100137900010201,
     "value": "GN Missile Container"
   },
@@ -19126,6 +19350,10 @@
   {
     "id": 120100137900010205,
     "value": "GN Missile Container"
+  },
+  {
+    "id": 120100137900010270,
+    "value": "Turbulenz ULT"
   },
   {
     "id": 120100137900020001,
@@ -19160,6 +19388,10 @@
     "value": "GN Missile Container"
   },
   {
+    "id": 120100137900020170,
+    "value": "Turbulenz ULT"
+  },
+  {
     "id": 120100137900020201,
     "value": "GN Missile Container"
   },
@@ -19174,6 +19406,10 @@
   {
     "id": 120100137900020204,
     "value": "GN Missile Container"
+  },
+  {
+    "id": 120100137900020270,
+    "value": "Turbulenz ULT"
   },
   {
     "id": 120100137900030001,
@@ -23540,6 +23776,10 @@
     "value": "Psycho Neutralizer (Funnels)"
   },
   {
+    "id": 120100175000030170,
+    "value": "Psycho Neutralizer (Funnels) ULT"
+  },
+  {
     "id": 120100175000030201,
     "value": "Beam Saber"
   },
@@ -23552,6 +23792,10 @@
     "value": "Psycho Neutralizer (Funnels)"
   },
   {
+    "id": 120100175000030270,
+    "value": "Psycho Neutralizer (Funnels) ULT"
+  },
+  {
     "id": 120100175000040001,
     "value": "Beam Pistol"
   },
@@ -23560,8 +23804,16 @@
     "value": "Beam Pistol"
   },
   {
+    "id": 120100175000040170,
+    "value": "Psycho Neutralizer (Funnels) ULT"
+  },
+  {
     "id": 120100175000040201,
     "value": "Beam Pistol"
+  },
+  {
+    "id": 120100175000040270,
+    "value": "Psycho Neutralizer (Funnels) ULT"
   },
   {
     "id": 120100176000010001,
@@ -23640,6 +23892,10 @@
     "value": "Mega Beam Attack"
   },
   {
+    "id": 120100176100010170,
+    "value": "Blast Upper ULT"
+  },
+  {
     "id": 120100176100010201,
     "value": "Blast Upper"
   },
@@ -23654,6 +23910,10 @@
   {
     "id": 120100176100010205,
     "value": "Mega Beam Attack"
+  },
+  {
+    "id": 120100176100010270,
+    "value": "Blast Upper ULT"
   },
   {
     "id": 120100176300011001,
@@ -23740,6 +24000,10 @@
     "value": "Hyper Bazooka"
   },
   {
+    "id": 120100176400020170,
+    "value": "Hyper Bazooka ULT"
+  },
+  {
     "id": 120100176400020202,
     "value": "Kick"
   },
@@ -23750,6 +24014,10 @@
   {
     "id": 120100176400020204,
     "value": "Hyper Bazooka"
+  },
+  {
+    "id": 120100176400020270,
+    "value": "Hyper Bazooka ULT"
   },
   {
     "id": 120100176400030001,
@@ -24280,6 +24548,10 @@
     "value": "Dober Gun (Beam)"
   },
   {
+    "id": 120100185000320170,
+    "value": "Dober Gun (Beam) ULT"
+  },
+  {
     "id": 120100185000320201,
     "value": "Heat Rod"
   },
@@ -24290,6 +24562,10 @@
   {
     "id": 120100185000320203,
     "value": "Dober Gun (Beam)"
+  },
+  {
+    "id": 120100185000320270,
+    "value": "Dober Gun (Beam) ULT"
   },
   {
     "id": 120100185000330001,

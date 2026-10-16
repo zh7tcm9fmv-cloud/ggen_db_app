@@ -2224,8 +2224,16 @@
     "value": "(Cond: HP) Increased ATK LV 2"
   },
   {
+    "id": 140100000101790101,
+    "value": "(Cond: HP) Beam Weapon Max Range Up LV 1"
+  },
+  {
     "id": 140100000101800101,
     "value": "(Cond: Vigor) Beam Weapons Max Range Up LV 1"
+  },
+  {
+    "id": 140100000101820250,
+    "value": "(Cond: Combat - Count) Increased ATK LV 2"
   },
   {
     "id": 140100000101830101,
@@ -2234,6 +2242,10 @@
   {
     "id": 140100000101830102,
     "value": "Chance Step Increase LV 1"
+  },
+  {
+    "id": 140100000101830201,
+    "value": "(Cond: Combat - Count) Increased ATK"
   },
   {
     "id": 140100000200010101,
@@ -5394,6 +5406,38 @@
   {
     "id": 140100000203030101,
     "value": "(Series conditions) Support Attack / Counter Support LV 1"
+  },
+  {
+    "id": 140100000203040101,
+    "value": "(Cond: Tag) Auto Chance Step LV 1"
+  },
+  {
+    "id": 140100000203050100,
+    "value": "(Cond: Tag & Series) Apply Increased ATK & DEF LV 1"
+  },
+  {
+    "id": 140100000203050301,
+    "value": "(Cond: Tag & Series) Increased ATK LV 1"
+  },
+  {
+    "id": 140100000203050401,
+    "value": "(Cond: Tag & Series) Increased DEF LV 1"
+  },
+  {
+    "id": 140100000203060101,
+    "value": "(Cond: Squad) Increased ATK LV 1"
+  },
+  {
+    "id": 140100000203070100,
+    "value": "EX Character Ability"
+  },
+  {
+    "id": 140100000203080100,
+    "value": "EX Character Ability"
+  },
+  {
+    "id": 140100000203090500,
+    "value": "Support Attack / Counter Support LV 5"
   },
   {
     "id": 140100000203100100,
@@ -11228,6 +11272,18 @@
     "value": "Limiter OFF SR(Mobile Suit Gundam 00F)"
   },
   {
+    "id": 140100000407160100,
+    "value": "High-Performance Sensor SSR (Gundam Side Story 0079: Rise from the Ashes)"
+  },
+  {
+    "id": 140100000407170101,
+    "value": "Add-On Armor SR (Gundam Side Story 0079: Rise from the Ashes)"
+  },
+  {
+    "id": 140100000407180101,
+    "value": "Limiter OFF SR (Gundam Side Story 0079: Rise from the Ashes)"
+  },
+  {
     "id": 140100000510010101,
     "value": "Increased ATK LV 1"
   },
@@ -12656,6 +12712,14 @@
     "value": "Revival"
   },
   {
+    "id": 140100000511490101,
+    "value": "Limit Damage Taken (max 150000 damage)"
+  },
+  {
+    "id": 140100000511490102,
+    "value": "Limit Damage Taken (max 150000 damage)"
+  },
+  {
     "id": 140100000511500101,
     "value": "Decreased DEF (All Units)"
   },
@@ -12710,6 +12774,18 @@
   {
     "id": 140100000511570201,
     "value": "(Cond: Defeat) Increased ATK & DEF"
+  },
+  {
+    "id": 140100000511580101,
+    "value": "Increased ATK(All Units)"
+  },
+  {
+    "id": 140100000511590101,
+    "value": "Increased ATK(All Units)"
+  },
+  {
+    "id": 140100000511600101,
+    "value": "(Cond: Range) Increased ATK"
   },
   {
     "id": 140100000511610101,
@@ -14720,6 +14796,18 @@
     "value": "Increased ATK"
   },
   {
+    "id": 140100000612590101,
+    "value": "(Cond: Defeat) Increased ATK"
+  },
+  {
+    "id": 140100000612600101,
+    "value": "(Cond: Defeat) Increased ATK"
+  },
+  {
+    "id": 140100000612610101,
+    "value": "HP Restoration (Squad Units) "
+  },
+  {
     "id": 140100000612620101,
     "value": "Supercharged EX"
   },
@@ -14766,6 +14854,18 @@
   {
     "id": 140100000612630111,
     "value": "Decreased MP"
+  },
+  {
+    "id": 140100000612920101,
+    "value": "(Cond: Character) Increased MOB & DEF"
+  },
+  {
+    "id": 140100000612930101,
+    "value": "Increased DEF"
+  },
+  {
+    "id": 140100000612930102,
+    "value": "Increased MOB"
   },
   {
     "id": 140100000699000101,

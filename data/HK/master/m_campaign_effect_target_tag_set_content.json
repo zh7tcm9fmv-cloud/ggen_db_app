@@ -13,5 +13,30 @@
     "Id": 126093003,
     "CampaignEffectTargetTagSetId": 126093003,
     "LineageId": 1041
+  },
+  {
+    "Id": 126103003,
+    "CampaignEffectTargetTagSetId": 126103003,
+    "LineageId": 1014
+  },
+  {
+    "Id": 126103004,
+    "CampaignEffectTargetTagSetId": 126103004,
+    "LineageId": 1014
+  },
+  {
+    "Id": 126103007,
+    "CampaignEffectTargetTagSetId": 126103007,
+    "LineageId": 1015
+  },
+  {
+    "Id": 126103008,
+    "CampaignEffectTargetTagSetId": 126103008,
+    "LineageId": 1015
+  },
+  {
+    "Id": 126103011,
+    "CampaignEffectTargetTagSetId": 126103011,
+    "LineageId": 1116
   }
 ]

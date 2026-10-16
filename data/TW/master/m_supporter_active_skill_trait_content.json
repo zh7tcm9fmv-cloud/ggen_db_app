@@ -48,6 +48,12 @@
     "TargetCountLteThreshold": 0
   },
   {
+    "Id": 1024000150,
+    "SupporterActiveSkillTraitId": 1024000150,
+    "TraitConditionSetId": 0,
+    "TargetCountLteThreshold": 0
+  },
+  {
     "Id": 1031000150,
     "SupporterActiveSkillTraitId": 1031000150,
     "TraitConditionSetId": 0,
@@ -318,6 +324,12 @@
     "TargetCountLteThreshold": 0
   },
   {
+    "Id": 1230000460,
+    "SupporterActiveSkillTraitId": 1230000460,
+    "TraitConditionSetId": 0,
+    "TargetCountLteThreshold": 0
+  },
+  {
     "Id": 1300000150,
     "SupporterActiveSkillTraitId": 1300000150,
     "TraitConditionSetId": 0,
@@ -446,6 +458,12 @@
   {
     "Id": 1370000660,
     "SupporterActiveSkillTraitId": 1370000660,
+    "TraitConditionSetId": 0,
+    "TargetCountLteThreshold": 0
+  },
+  {
+    "Id": 1370000750,
+    "SupporterActiveSkillTraitId": 1370000750,
     "TraitConditionSetId": 0,
     "TargetCountLteThreshold": 0
   },

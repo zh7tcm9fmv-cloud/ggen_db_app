@@ -1,0 +1,122 @@
+[
+  {
+    "id": 251600000200180101,
+    "value": "Increased ATK I"
+  },
+  {
+    "id": 251600000200180102,
+    "value": "Increased DEF I"
+  },
+  {
+    "id": 251600000200180104,
+    "value": "Increased Max HP I"
+  },
+  {
+    "id": 251600000200180105,
+    "value": "Increased Max EN I"
+  },
+  {
+    "id": 251600000200180106,
+    "value": "Increased Weapon Power I"
+  },
+  {
+    "id": 251600000200180201,
+    "value": "Increased ATK II"
+  },
+  {
+    "id": 251600000200180202,
+    "value": "Increased DEF II"
+  },
+  {
+    "id": 251600000200180204,
+    "value": "Increased Max HP II"
+  },
+  {
+    "id": 251600000200180205,
+    "value": "Increased Max EN II"
+  },
+  {
+    "id": 251600000200180206,
+    "value": "Increased Weapon Power I"
+  },
+  {
+    "id": 251600000200180301,
+    "value": "(Cond: Type) Increased Chance Step"
+  },
+  {
+    "id": 251600000200180302,
+    "value": "(Cond: Type) Support Attack / Counter Support"
+  },
+  {
+    "id": 251600000200180303,
+    "value": "(Cond: Type) Support Defense"
+  },
+  {
+    "id": 251600000200180304,
+    "value": "Space Movement Up"
+  },
+  {
+    "id": 251600000200180305,
+    "value": "Regular Weapon Range Up"
+  },
+  {
+    "id": 251600000200180401,
+    "value": "Increased ATK III"
+  },
+  {
+    "id": 251600000200180402,
+    "value": "Increased DEF III"
+  },
+  {
+    "id": 251600000200180404,
+    "value": "Increased Max HP III"
+  },
+  {
+    "id": 251600000200180405,
+    "value": "Increased Max EN III"
+  },
+  {
+    "id": 251600000200180406,
+    "value": "Increased Weapon Critical Rate"
+  },
+  {
+    "id": 251600000200180501,
+    "value": "Increased DEF IV"
+  },
+  {
+    "id": 251600000200180502,
+    "value": "Increased Max HP IV"
+  },
+  {
+    "id": 251600000200180503,
+    "value": "Space Movement Up"
+  },
+  {
+    "id": 251600000200180504,
+    "value": "Increased MAP Weapon Ammo"
+  },
+  {
+    "id": 251600000200180601,
+    "value": "Increased ATK IV"
+  },
+  {
+    "id": 251600000200180602,
+    "value": "(Cond: Type) Increased Chance Step"
+  },
+  {
+    "id": 251600000200180603,
+    "value": "(Cond: Type) Support Attack / Counter Support"
+  },
+  {
+    "id": 251600000200180604,
+    "value": "(Cond: Type) Support Defense"
+  },
+  {
+    "id": 251600000200180605,
+    "value": "Regular Weapon Range Up"
+  },
+  {
+    "id": 251600000200180606,
+    "value": "Increased Weapon Power II"
+  }
+]

@@ -16,6 +16,10 @@
     "value": "Fereshte"
   },
   {
+    "id": 240110200018000002,
+    "value": "Rise from the Ashes"
+  },
+  {
     "id": 240110230002000002,
     "value": "Holo-Actor"
   },
@@ -750,6 +754,14 @@
   {
     "id": 240210200017000002,
     "value": "Fereshte"
+  },
+  {
+    "id": 240210200018000001,
+    "value": "Gundam Side Story 0079: Rise from the Ashes"
+  },
+  {
+    "id": 240210200018000002,
+    "value": "Rise from the Ashes"
   },
   {
     "id": 240210210003000001,
@@ -1544,6 +1556,14 @@
     "value": "Clear \"[Special] Total War: Hard-4\" from the story event Mobile Suit Gundam 00F with only Mobile Suit Gundam 00F-series or Celestial Being-tagged mobile suits in your formation."
   },
   {
+    "id": 240310200018000001,
+    "value": "Clear \"VS. Visch Donahue's Gelgoog Ground Type EXPERT\" from the story event \"Gundam Side Story 0079: Rise from the Ashes\"."
+  },
+  {
+    "id": 240310200018000002,
+    "value": "Clear \"ANOTHER: 3\" from the story event Gundam Side Story 0079: Rise from the Ashes with only Gundam Side Story 0079: Rise from the Ashes-series or Mass-Produced-tagged mobile suits in your formation."
+  },
+  {
     "id": 240310210001000001,
     "value": "Clear [Area3] Area Boss Stage of \"Map Event Vol.1.\""
   },
@@ -2278,6 +2298,42 @@
   {
     "id": 240310300020000009,
     "value": "Master League Season 17 - Gundam Fight: Master League Top Score 200000 Reward"
+  },
+  {
+    "id": 240310300021000001,
+    "value": "Master League Season 18 - Gundam Fight: Gold League Reward"
+  },
+  {
+    "id": 240310300021000002,
+    "value": "Master League Season 18 - Gundam Fight: Platinum League Reward"
+  },
+  {
+    "id": 240310300021000003,
+    "value": "Master League Season 18 - Gundam Fight: Diamond League Reward"
+  },
+  {
+    "id": 240310300021000004,
+    "value": "Master League Season 18 - Gundam Fight: Master League Reward"
+  },
+  {
+    "id": 240310300021000005,
+    "value": "Master League Season 18 - Gundam Fight: Master League Top Score 160000 Reward"
+  },
+  {
+    "id": 240310300021000006,
+    "value": "Master League Season 18 - Gundam Fight: Master League Top Score 170000 Reward"
+  },
+  {
+    "id": 240310300021000007,
+    "value": "Master League Season 18 - Gundam Fight: Master League Top Score 180000 Reward"
+  },
+  {
+    "id": 240310300021000008,
+    "value": "Master League Season 18 - Gundam Fight: Master League Top Score 190000 Reward"
+  },
+  {
+    "id": 240310300021000009,
+    "value": "Master League Season 18 - Gundam Fight: Master League Top Score 200000 Reward"
   },
   {
     "id": 240311001000000001,

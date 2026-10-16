@@ -1,0 +1,42 @@
+/* Unit + character dossier: larger portrait, no card frame.
+   Header stays the side-by-side layout (name, role, stats beside the art). */
+
+html .modal-content.char-detail:not(.detail-ranking-view) .detail-portrait-stack > .detail-portrait-wrap,
+html .modal-content.unit-detail:not(.detail-ranking-view) .detail-portrait-stack > .detail-portrait-wrap{
+  width:400px;
+  max-width:100%;
+}
+
+html .modal-content.char-detail:not(.detail-ranking-view) .detail-header .detail-portrait,
+html .modal-content.unit-detail:not(.detail-ranking-view) .detail-header .detail-portrait,
+html .modal-content.char-detail:not(.detail-ranking-view) .detail-header .detail-portrait-placeholder,
+html .modal-content.unit-detail:not(.detail-ranking-view) .detail-header .detail-portrait-placeholder{
+  width:100%;
+  max-width:100%;
+  height:auto;
+  aspect-ratio:3/4;
+  object-fit:contain;
+  object-position:center calc(50% + var(--portrait-optical-y));
+  border:none;
+  border-radius:0;
+  background:transparent;
+  box-shadow:none;
+}
+
+@media(max-width:1024px){
+  html .modal-content.char-detail:not(.detail-ranking-view) .detail-portrait-stack > .detail-portrait-wrap,
+  html .modal-content.unit-detail:not(.detail-ranking-view) .detail-portrait-stack > .detail-portrait-wrap{
+    width:320px;
+  }
+}
+
+@media(max-width:768px){
+  html .modal-content.char-detail:not(.detail-ranking-view) .detail-portrait-stack,
+  html .modal-content.unit-detail:not(.detail-ranking-view) .detail-portrait-stack{
+    width:min(180px,46vw);
+    max-width:min(180px,46vw);
+  }
+  html .modal-content.unit-detail:not(.detail-ranking-view) .unit-model-stage{
+    --stage:calc(min(180px, 46vw) * 232 / 300);
+  }
+}

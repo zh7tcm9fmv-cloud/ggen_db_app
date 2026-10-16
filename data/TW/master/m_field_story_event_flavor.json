@@ -1,0 +1,58 @@
+[
+  {
+    "Id": 20001801,
+    "FieldStoryEventId": 200018,
+    "ReleaseConditionStageId": 0,
+    "TextLanguageId": 251300000020001801,
+    "DisplayIndex": 1
+  },
+  {
+    "Id": 20001802,
+    "FieldStoryEventId": 200018,
+    "ReleaseConditionStageId": 2400104,
+    "TextLanguageId": 251300000020001802,
+    "DisplayIndex": 1
+  },
+  {
+    "Id": 20001803,
+    "FieldStoryEventId": 200018,
+    "ReleaseConditionStageId": 2400202,
+    "TextLanguageId": 251300000020001803,
+    "DisplayIndex": 1
+  },
+  {
+    "Id": 20001804,
+    "FieldStoryEventId": 200018,
+    "ReleaseConditionStageId": 2400303,
+    "TextLanguageId": 251300000020001804,
+    "DisplayIndex": 1
+  },
+  {
+    "Id": 20001805,
+    "FieldStoryEventId": 200018,
+    "ReleaseConditionStageId": 2400404,
+    "TextLanguageId": 251300000020001805,
+    "DisplayIndex": 1
+  },
+  {
+    "Id": 20001806,
+    "FieldStoryEventId": 200018,
+    "ReleaseConditionStageId": 2400503,
+    "TextLanguageId": 251300000020001806,
+    "DisplayIndex": 1
+  },
+  {
+    "Id": 20001807,
+    "FieldStoryEventId": 200018,
+    "ReleaseConditionStageId": 2400503,
+    "TextLanguageId": 251300000020001807,
+    "DisplayIndex": 2
+  },
+  {
+    "Id": 20001808,
+    "FieldStoryEventId": 200018,
+    "ReleaseConditionStageId": 2400603,
+    "TextLanguageId": 251300000020001808,
+    "DisplayIndex": 1
+  }
+]

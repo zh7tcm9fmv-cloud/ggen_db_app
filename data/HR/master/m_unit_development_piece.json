@@ -7030,6 +7030,96 @@
     "BeforeUnitDevelopmentPieceId": 202201006002
   },
   {
+    "Id": 202401000000,
+    "UnitDevelopmentDiagramId": 202401,
+    "RowNumber": 0,
+    "ColNumber": 0,
+    "UnitId": 1024000100,
+    "IsMultipleUnitDevelopment": false,
+    "InitialLevel": 1,
+    "BeforeUnitDevelopmentPieceId": 0
+  },
+  {
+    "Id": 202401002000,
+    "UnitDevelopmentDiagramId": 202401,
+    "RowNumber": 0,
+    "ColNumber": 2,
+    "UnitId": 1024000200,
+    "IsMultipleUnitDevelopment": false,
+    "InitialLevel": 1,
+    "BeforeUnitDevelopmentPieceId": 202401000000
+  },
+  {
+    "Id": 202401002006,
+    "UnitDevelopmentDiagramId": 202401,
+    "RowNumber": 6,
+    "ColNumber": 2,
+    "UnitId": 1024000400,
+    "IsMultipleUnitDevelopment": false,
+    "InitialLevel": 1,
+    "BeforeUnitDevelopmentPieceId": 0
+  },
+  {
+    "Id": 202401004000,
+    "UnitDevelopmentDiagramId": 202401,
+    "RowNumber": 0,
+    "ColNumber": 4,
+    "UnitId": 1024000300,
+    "IsMultipleUnitDevelopment": false,
+    "InitialLevel": 1,
+    "BeforeUnitDevelopmentPieceId": 202401002000
+  },
+  {
+    "Id": 202401004002,
+    "UnitDevelopmentDiagramId": 202401,
+    "RowNumber": 2,
+    "ColNumber": 4,
+    "UnitId": 1024000500,
+    "IsMultipleUnitDevelopment": false,
+    "InitialLevel": 1,
+    "BeforeUnitDevelopmentPieceId": 202401002000
+  },
+  {
+    "Id": 202401004004,
+    "UnitDevelopmentDiagramId": 202401,
+    "RowNumber": 4,
+    "ColNumber": 4,
+    "UnitId": 1024000900,
+    "IsMultipleUnitDevelopment": false,
+    "InitialLevel": 1,
+    "BeforeUnitDevelopmentPieceId": 202401002006
+  },
+  {
+    "Id": 202401006000,
+    "UnitDevelopmentDiagramId": 202401,
+    "RowNumber": 0,
+    "ColNumber": 6,
+    "UnitId": 1024000600,
+    "IsMultipleUnitDevelopment": true,
+    "InitialLevel": 1,
+    "BeforeUnitDevelopmentPieceId": 202401004000
+  },
+  {
+    "Id": 202401006004,
+    "UnitDevelopmentDiagramId": 202401,
+    "RowNumber": 4,
+    "ColNumber": 6,
+    "UnitId": 1024000800,
+    "IsMultipleUnitDevelopment": false,
+    "InitialLevel": 1,
+    "BeforeUnitDevelopmentPieceId": 202401004004
+  },
+  {
+    "Id": 202401006006,
+    "UnitDevelopmentDiagramId": 202401,
+    "RowNumber": 6,
+    "ColNumber": 6,
+    "UnitId": 1024000700,
+    "IsMultipleUnitDevelopment": true,
+    "InitialLevel": 1,
+    "BeforeUnitDevelopmentPieceId": 202401004004
+  },
+  {
     "Id": 203201000000,
     "UnitDevelopmentDiagramId": 203201,
     "RowNumber": 0,

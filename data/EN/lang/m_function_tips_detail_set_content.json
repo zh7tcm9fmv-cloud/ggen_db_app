@@ -188,8 +188,20 @@
     "value": "Shop"
   },
   {
-    "id": 170700000000230101,
+    "id": 170700000000230102,
     "value": "Profile"
+  },
+  {
+    "id": 170700000000230103,
+    "value": "Sorties"
+  },
+  {
+    "id": 170700000000230104,
+    "value": "Battle Results"
+  },
+  {
+    "id": 170700000000230105,
+    "value": "Haro Trophy"
   },
   {
     "id": 170700000000240101,
@@ -262,6 +274,10 @@
   {
     "id": 170700000000320101,
     "value": "What is the Select & Keep Unit Assembly?"
+  },
+  {
+    "id": 170700000000330101,
+    "value": "ULT Alteration"
   },
   {
     "id": 170700000000500101,
@@ -454,6 +470,46 @@
   {
     "id": 170700000000900801,
     "value": "Item Shop"
+  },
+  {
+    "id": 170700000000900901,
+    "value": "Story Events (Field Events)"
+  },
+  {
+    "id": 170700000000900902,
+    "value": "Boss Battle"
+  },
+  {
+    "id": 170700000000900903,
+    "value": "Boss Battle"
+  },
+  {
+    "id": 170700000000900904,
+    "value": "Medal Unit Assembly"
+  },
+  {
+    "id": 170700000000900905,
+    "value": "Event Bonus"
+  },
+  {
+    "id": 170700000000900906,
+    "value": "ANOTHER"
+  },
+  {
+    "id": 170700000000901001,
+    "value": "Combat Power Upgrade"
+  },
+  {
+    "id": 170700000000901002,
+    "value": "Combat Power Upgrade Supplies"
+  },
+  {
+    "id": 170700000000901101,
+    "value": "Combat Power Upgrade Supplies"
+  },
+  {
+    "id": 170700000000901201,
+    "value": "Combat Power Upgrade"
   },
   {
     "id": 170700000000910001,

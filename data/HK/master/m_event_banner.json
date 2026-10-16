@@ -240,6 +240,12 @@
     "TransitionId": 10000000200017
   },
   {
+    "Id": 200018,
+    "EventId": 200018,
+    "Priority": 26103001,
+    "TransitionId": 10000000200018
+  },
+  {
     "Id": 210001,
     "EventId": 210001,
     "Priority": 25061001,
@@ -310,6 +316,12 @@
     "EventId": 220011,
     "Priority": 26091001,
     "TransitionId": 48000000220011
+  },
+  {
+    "Id": 220012,
+    "EventId": 220012,
+    "Priority": 26103002,
+    "TransitionId": 48000000220012
   },
   {
     "Id": 220013,

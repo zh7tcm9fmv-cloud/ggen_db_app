@@ -932,6 +932,190 @@
     "value": "All of your units are defeated.\nLimit: 3 turns."
   },
   {
+    "id": 130300000240010401,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300000240010402,
+    "value": "Defeat 8 enemies."
+  },
+  {
+    "id": 130300000240010404,
+    "value": "All of your units defeated.\nGuest force Master Pierce Rayer defeated."
+  },
+  {
+    "id": 130300000240010405,
+    "value": "All of your units defeated.\nGuest force Master Pierce Rayer defeated."
+  },
+  {
+    "id": 130300000240020201,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300000240020202,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300000240020204,
+    "value": "All of your units defeated.\nGuest force Master Pierce Rayer defeated."
+  },
+  {
+    "id": 130300000240020205,
+    "value": "All of your units defeated.\nGuest force Master Pierce Rayer defeated."
+  },
+  {
+    "id": 130300000240030301,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300000240030304,
+    "value": "All of your units defeated.\nGuest force Master Pierce Rayer defeated."
+  },
+  {
+    "id": 130300000240040401,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300000240040404,
+    "value": "All of your units defeated.\nGuest force Master Pierce Rayer defeated."
+  },
+  {
+    "id": 130300000240050301,
+    "value": "Defeat Adzam Olga."
+  },
+  {
+    "id": 130300000240050302,
+    "value": "Defeat all Pillbox(s)."
+  },
+  {
+    "id": 130300000240050304,
+    "value": "All of your units defeated.\nGuest force Master Pierce Rayer defeated."
+  },
+  {
+    "id": 130300000240050305,
+    "value": "All of your units defeated.\nGuest force Master Pierce Rayer defeated."
+  },
+  {
+    "id": 130300000240060301,
+    "value": "Defeat Visch Donahue."
+  },
+  {
+    "id": 130300000240060302,
+    "value": "Defeat Rhinoceros Type B."
+  },
+  {
+    "id": 130300000240060304,
+    "value": "All of your units defeated.\nGuest force Master Pierce Rayer defeated."
+  },
+  {
+    "id": 130300000240060305,
+    "value": "All of your units defeated.\nGuest force Master Pierce Rayer defeated."
+  },
+  {
+    "id": 130300000240070101,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300000240070102,
+    "value": "All of your units are defeated."
+  },
+  {
+    "id": 130300000240080101,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300000240080102,
+    "value": "All of your units are defeated."
+  },
+  {
+    "id": 130300000240090101,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300000240090102,
+    "value": "All of your units are defeated."
+  },
+  {
+    "id": 130300000240200101,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300000240200104,
+    "value": "All of your units are defeated."
+  },
+  {
+    "id": 130300000240200201,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300000240200204,
+    "value": "All of your units are defeated."
+  },
+  {
+    "id": 130300000240200301,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300000240200304,
+    "value": "All of your units are defeated."
+  },
+  {
+    "id": 130300000240300101,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300000240300102,
+    "value": "All of your units are defeated."
+  },
+  {
+    "id": 130300000240300201,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300000240300202,
+    "value": "All of your units are defeated."
+  },
+  {
+    "id": 130300000240300301,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300000240300302,
+    "value": "All of your units are defeated."
+  },
+  {
+    "id": 130300000240400101,
+    "value": "Amuro Ray and enemy units defeated."
+  },
+  {
+    "id": 130300000240400104,
+    "value": "All of your units are defeated.\nLimit: 3 turns."
+  },
+  {
+    "id": 130300000240500101,
+    "value": "Defeat Visch Donahue."
+  },
+  {
+    "id": 130300000240500104,
+    "value": "All of your units are defeated.\nLimit: 3 turns."
+  },
+  {
+    "id": 130300000240500201,
+    "value": "Defeat Visch Donahue."
+  },
+  {
+    "id": 130300000240500204,
+    "value": "All of your units are defeated.\nLimit: 3 turns."
+  },
+  {
+    "id": 130300000240500301,
+    "value": "Defeat Visch Donahue."
+  },
+  {
+    "id": 130300000240500304,
+    "value": "All of your units are defeated.\nLimit: 3 turns."
+  },
+  {
     "id": 130300000320010301,
     "value": "Defeat all enemy units."
   },
@@ -10782,6 +10966,22 @@
   {
     "id": 130300009900011502,
     "value": "All of your units are defeated.\nAmuro Ray and Guest force defeated."
+  },
+  {
+    "id": 130300009900011601,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300009900011602,
+    "value": "All of your units defeated.\nGuest force Beside Pain defeated."
+  },
+  {
+    "id": 130300009900011604,
+    "value": "All of your units defeated.\nGuest force Beside Pain defeated."
+  },
+  {
+    "id": 130300009900011605,
+    "value": "Guest force Beside Pain reaches the target area."
   },
   {
     "id": 130300009900011701,

@@ -204,6 +204,12 @@
     "SlotIndex": 0
   },
   {
+    "StageSortieRestrictionSetGroupId": 120023,
+    "SortieRestrictionTypeIndex": 1,
+    "TargetId": 240,
+    "SlotIndex": 0
+  },
+  {
     "StageSortieRestrictionSetGroupId": 130001,
     "SortieRestrictionTypeIndex": 2,
     "TargetId": 1001,
@@ -369,6 +375,12 @@
     "StageSortieRestrictionSetGroupId": 130028,
     "SortieRestrictionTypeIndex": 2,
     "TargetId": 1103,
+    "SlotIndex": 0
+  },
+  {
+    "StageSortieRestrictionSetGroupId": 130029,
+    "SortieRestrictionTypeIndex": 2,
+    "TargetId": 1116,
     "SlotIndex": 0
   },
   {

@@ -1,0 +1,130 @@
+[
+  {
+    "Id": 33186760,
+    "FieldStoryEventId": 200018,
+    "DayCount": 16,
+    "ScenarioStageId": 2402001,
+    "CoordinateX": -1480,
+    "CoordinateY": 170
+  },
+  {
+    "Id": 92925954,
+    "FieldStoryEventId": 200018,
+    "DayCount": 12,
+    "ScenarioStageId": 2402003,
+    "CoordinateX": 1500,
+    "CoordinateY": -500
+  },
+  {
+    "Id": 135416336,
+    "FieldStoryEventId": 200018,
+    "DayCount": 11,
+    "ScenarioStageId": 2402002,
+    "CoordinateX": 1240,
+    "CoordinateY": -1300
+  },
+  {
+    "Id": 142257276,
+    "FieldStoryEventId": 200018,
+    "DayCount": 15,
+    "ScenarioStageId": 2402002,
+    "CoordinateX": 1240,
+    "CoordinateY": -1300
+  },
+  {
+    "Id": 499905670,
+    "FieldStoryEventId": 200018,
+    "DayCount": 6,
+    "ScenarioStageId": 2402002,
+    "CoordinateX": 1240,
+    "CoordinateY": -1300
+  },
+  {
+    "Id": 1654289276,
+    "FieldStoryEventId": 200018,
+    "DayCount": 5,
+    "ScenarioStageId": 2402003,
+    "CoordinateX": 1500,
+    "CoordinateY": -500
+  },
+  {
+    "Id": 1875006611,
+    "FieldStoryEventId": 200018,
+    "DayCount": 1,
+    "ScenarioStageId": 2402002,
+    "CoordinateX": 1240,
+    "CoordinateY": -1300
+  },
+  {
+    "Id": 2009780892,
+    "FieldStoryEventId": 200018,
+    "DayCount": 14,
+    "ScenarioStageId": 2402003,
+    "CoordinateX": 1500,
+    "CoordinateY": -500
+  },
+  {
+    "Id": 2043144199,
+    "FieldStoryEventId": 200018,
+    "DayCount": 13,
+    "ScenarioStageId": 2402001,
+    "CoordinateX": -1480,
+    "CoordinateY": 170
+  },
+  {
+    "Id": 2077999637,
+    "FieldStoryEventId": 200018,
+    "DayCount": 4,
+    "ScenarioStageId": 2402001,
+    "CoordinateX": -1480,
+    "CoordinateY": 170
+  },
+  {
+    "Id": 2387328070,
+    "FieldStoryEventId": 200018,
+    "DayCount": 10,
+    "ScenarioStageId": 2402001,
+    "CoordinateX": -1480,
+    "CoordinateY": 170
+  },
+  {
+    "Id": 2629294945,
+    "FieldStoryEventId": 200018,
+    "DayCount": 8,
+    "ScenarioStageId": 2402001,
+    "CoordinateX": -1480,
+    "CoordinateY": 170
+  },
+  {
+    "Id": 3002082919,
+    "FieldStoryEventId": 200018,
+    "DayCount": 2,
+    "ScenarioStageId": 2402001,
+    "CoordinateX": -1480,
+    "CoordinateY": 170
+  },
+  {
+    "Id": 3028444395,
+    "FieldStoryEventId": 200018,
+    "DayCount": 9,
+    "ScenarioStageId": 2402002,
+    "CoordinateX": 1240,
+    "CoordinateY": -1300
+  },
+  {
+    "Id": 3404610274,
+    "FieldStoryEventId": 200018,
+    "DayCount": 3,
+    "ScenarioStageId": 2402003,
+    "CoordinateX": 1500,
+    "CoordinateY": -500
+  },
+  {
+    "Id": 3961871950,
+    "FieldStoryEventId": 200018,
+    "DayCount": 7,
+    "ScenarioStageId": 2402003,
+    "CoordinateX": 1500,
+    "CoordinateY": -500
+  }
+]

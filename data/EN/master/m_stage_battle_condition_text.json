@@ -1715,6 +1715,328 @@
     "UnitId": 0
   },
   {
+    "StageBattleConditionSetId": 2400104,
+    "CategoryTypeIndex": 1,
+    "SortOrder": 1,
+    "TextLanguageId": 130300000240010401,
+    "UnitId": 1024000400
+  },
+  {
+    "StageBattleConditionSetId": 2400104,
+    "CategoryTypeIndex": 2,
+    "SortOrder": 5,
+    "TextLanguageId": 130300000240010402,
+    "UnitId": 1001000900
+  },
+  {
+    "StageBattleConditionSetId": 2400104,
+    "CategoryTypeIndex": 3,
+    "SortOrder": 4,
+    "TextLanguageId": 130300000240010404,
+    "UnitId": 0
+  },
+  {
+    "StageBattleConditionSetId": 2400104,
+    "CategoryTypeIndex": 5,
+    "SortOrder": 2,
+    "TextLanguageId": 130300000240010405,
+    "UnitId": 0
+  },
+  {
+    "StageBattleConditionSetId": 2400202,
+    "CategoryTypeIndex": 1,
+    "SortOrder": 1,
+    "TextLanguageId": 130300000240020201,
+    "UnitId": 2001000300
+  },
+  {
+    "StageBattleConditionSetId": 2400202,
+    "CategoryTypeIndex": 2,
+    "SortOrder": 5,
+    "TextLanguageId": 130300000240020202,
+    "UnitId": 1001001200
+  },
+  {
+    "StageBattleConditionSetId": 2400202,
+    "CategoryTypeIndex": 3,
+    "SortOrder": 4,
+    "TextLanguageId": 130300000240020204,
+    "UnitId": 0
+  },
+  {
+    "StageBattleConditionSetId": 2400202,
+    "CategoryTypeIndex": 5,
+    "SortOrder": 2,
+    "TextLanguageId": 130300000240020205,
+    "UnitId": 0
+  },
+  {
+    "StageBattleConditionSetId": 2400303,
+    "CategoryTypeIndex": 1,
+    "SortOrder": 1,
+    "TextLanguageId": 130300000240030301,
+    "UnitId": 1001001800
+  },
+  {
+    "StageBattleConditionSetId": 2400303,
+    "CategoryTypeIndex": 3,
+    "SortOrder": 4,
+    "TextLanguageId": 130300000240030304,
+    "UnitId": 0
+  },
+  {
+    "StageBattleConditionSetId": 2400404,
+    "CategoryTypeIndex": 1,
+    "SortOrder": 1,
+    "TextLanguageId": 130300000240040401,
+    "UnitId": 1001001300
+  },
+  {
+    "StageBattleConditionSetId": 2400404,
+    "CategoryTypeIndex": 3,
+    "SortOrder": 4,
+    "TextLanguageId": 130300000240040404,
+    "UnitId": 0
+  },
+  {
+    "StageBattleConditionSetId": 2400503,
+    "CategoryTypeIndex": 1,
+    "SortOrder": 1,
+    "TextLanguageId": 130300000240050301,
+    "UnitId": 1024000900
+  },
+  {
+    "StageBattleConditionSetId": 2400503,
+    "CategoryTypeIndex": 2,
+    "SortOrder": 5,
+    "TextLanguageId": 130300000240050302,
+    "UnitId": 1013001700
+  },
+  {
+    "StageBattleConditionSetId": 2400503,
+    "CategoryTypeIndex": 3,
+    "SortOrder": 4,
+    "TextLanguageId": 130300000240050304,
+    "UnitId": 0
+  },
+  {
+    "StageBattleConditionSetId": 2400503,
+    "CategoryTypeIndex": 5,
+    "SortOrder": 2,
+    "TextLanguageId": 130300000240050305,
+    "UnitId": 0
+  },
+  {
+    "StageBattleConditionSetId": 2400603,
+    "CategoryTypeIndex": 1,
+    "SortOrder": 1,
+    "TextLanguageId": 130300000240060301,
+    "UnitId": 1024000700
+  },
+  {
+    "StageBattleConditionSetId": 2400603,
+    "CategoryTypeIndex": 2,
+    "SortOrder": 5,
+    "TextLanguageId": 130300000240060302,
+    "UnitId": 1024000800
+  },
+  {
+    "StageBattleConditionSetId": 2400603,
+    "CategoryTypeIndex": 3,
+    "SortOrder": 4,
+    "TextLanguageId": 130300000240060304,
+    "UnitId": 0
+  },
+  {
+    "StageBattleConditionSetId": 2400603,
+    "CategoryTypeIndex": 5,
+    "SortOrder": 2,
+    "TextLanguageId": 130300000240060305,
+    "UnitId": 0
+  },
+  {
+    "StageBattleConditionSetId": 2400701,
+    "CategoryTypeIndex": 1,
+    "SortOrder": 1,
+    "TextLanguageId": 130300000240070101,
+    "UnitId": 1024000100
+  },
+  {
+    "StageBattleConditionSetId": 2400701,
+    "CategoryTypeIndex": 3,
+    "SortOrder": 2,
+    "TextLanguageId": 130300000240070102,
+    "UnitId": 0
+  },
+  {
+    "StageBattleConditionSetId": 2400801,
+    "CategoryTypeIndex": 1,
+    "SortOrder": 1,
+    "TextLanguageId": 130300000240080101,
+    "UnitId": 1024000400
+  },
+  {
+    "StageBattleConditionSetId": 2400801,
+    "CategoryTypeIndex": 3,
+    "SortOrder": 2,
+    "TextLanguageId": 130300000240080102,
+    "UnitId": 0
+  },
+  {
+    "StageBattleConditionSetId": 2400901,
+    "CategoryTypeIndex": 1,
+    "SortOrder": 1,
+    "TextLanguageId": 130300000240090101,
+    "UnitId": 1024000600
+  },
+  {
+    "StageBattleConditionSetId": 2400901,
+    "CategoryTypeIndex": 3,
+    "SortOrder": 2,
+    "TextLanguageId": 130300000240090102,
+    "UnitId": 0
+  },
+  {
+    "StageBattleConditionSetId": 2402001,
+    "CategoryTypeIndex": 1,
+    "SortOrder": 1,
+    "TextLanguageId": 130300000240200101,
+    "UnitId": 2001000500
+  },
+  {
+    "StageBattleConditionSetId": 2402001,
+    "CategoryTypeIndex": 3,
+    "SortOrder": 4,
+    "TextLanguageId": 130300000240200104,
+    "UnitId": 0
+  },
+  {
+    "StageBattleConditionSetId": 2402002,
+    "CategoryTypeIndex": 1,
+    "SortOrder": 1,
+    "TextLanguageId": 130300000240200201,
+    "UnitId": 1001001300
+  },
+  {
+    "StageBattleConditionSetId": 2402002,
+    "CategoryTypeIndex": 3,
+    "SortOrder": 4,
+    "TextLanguageId": 130300000240200204,
+    "UnitId": 0
+  },
+  {
+    "StageBattleConditionSetId": 2402003,
+    "CategoryTypeIndex": 1,
+    "SortOrder": 1,
+    "TextLanguageId": 130300000240200301,
+    "UnitId": 1001001200
+  },
+  {
+    "StageBattleConditionSetId": 2402003,
+    "CategoryTypeIndex": 3,
+    "SortOrder": 4,
+    "TextLanguageId": 130300000240200304,
+    "UnitId": 0
+  },
+  {
+    "StageBattleConditionSetId": 2403001,
+    "CategoryTypeIndex": 1,
+    "SortOrder": 1,
+    "TextLanguageId": 130300000240300101,
+    "UnitId": 1024000100
+  },
+  {
+    "StageBattleConditionSetId": 2403001,
+    "CategoryTypeIndex": 3,
+    "SortOrder": 2,
+    "TextLanguageId": 130300000240300102,
+    "UnitId": 0
+  },
+  {
+    "StageBattleConditionSetId": 2403002,
+    "CategoryTypeIndex": 1,
+    "SortOrder": 1,
+    "TextLanguageId": 130300000240300201,
+    "UnitId": 1024000700
+  },
+  {
+    "StageBattleConditionSetId": 2403002,
+    "CategoryTypeIndex": 3,
+    "SortOrder": 2,
+    "TextLanguageId": 130300000240300202,
+    "UnitId": 0
+  },
+  {
+    "StageBattleConditionSetId": 2403003,
+    "CategoryTypeIndex": 1,
+    "SortOrder": 1,
+    "TextLanguageId": 130300000240300301,
+    "UnitId": 1024000600
+  },
+  {
+    "StageBattleConditionSetId": 2403003,
+    "CategoryTypeIndex": 3,
+    "SortOrder": 2,
+    "TextLanguageId": 130300000240300302,
+    "UnitId": 0
+  },
+  {
+    "StageBattleConditionSetId": 2404001,
+    "CategoryTypeIndex": 1,
+    "SortOrder": 1,
+    "TextLanguageId": 130300000240400101,
+    "UnitId": 1001000100
+  },
+  {
+    "StageBattleConditionSetId": 2404001,
+    "CategoryTypeIndex": 3,
+    "SortOrder": 4,
+    "TextLanguageId": 130300000240400104,
+    "UnitId": 0
+  },
+  {
+    "StageBattleConditionSetId": 2405001,
+    "CategoryTypeIndex": 1,
+    "SortOrder": 1,
+    "TextLanguageId": 130300000240500101,
+    "UnitId": 1024000700
+  },
+  {
+    "StageBattleConditionSetId": 2405001,
+    "CategoryTypeIndex": 3,
+    "SortOrder": 4,
+    "TextLanguageId": 130300000240500104,
+    "UnitId": 0
+  },
+  {
+    "StageBattleConditionSetId": 2405002,
+    "CategoryTypeIndex": 1,
+    "SortOrder": 1,
+    "TextLanguageId": 130300000240500201,
+    "UnitId": 1024000700
+  },
+  {
+    "StageBattleConditionSetId": 2405002,
+    "CategoryTypeIndex": 3,
+    "SortOrder": 4,
+    "TextLanguageId": 130300000240500204,
+    "UnitId": 0
+  },
+  {
+    "StageBattleConditionSetId": 2405003,
+    "CategoryTypeIndex": 1,
+    "SortOrder": 1,
+    "TextLanguageId": 130300000240500301,
+    "UnitId": 1024000700
+  },
+  {
+    "StageBattleConditionSetId": 2405003,
+    "CategoryTypeIndex": 3,
+    "SortOrder": 4,
+    "TextLanguageId": 130300000240500304,
+    "UnitId": 0
+  },
+  {
     "StageBattleConditionSetId": 3200103,
     "CategoryTypeIndex": 1,
     "SortOrder": 1,
@@ -19128,6 +19450,34 @@
     "CategoryTypeIndex": 3,
     "SortOrder": 2,
     "TextLanguageId": 130300009900011502,
+    "UnitId": 0
+  },
+  {
+    "StageBattleConditionSetId": 99000116,
+    "CategoryTypeIndex": 1,
+    "SortOrder": 1,
+    "TextLanguageId": 130300009900011601,
+    "UnitId": 1850003700
+  },
+  {
+    "StageBattleConditionSetId": 99000116,
+    "CategoryTypeIndex": 2,
+    "SortOrder": 5,
+    "TextLanguageId": 130300009900011605,
+    "UnitId": 1850003700
+  },
+  {
+    "StageBattleConditionSetId": 99000116,
+    "CategoryTypeIndex": 3,
+    "SortOrder": 4,
+    "TextLanguageId": 130300009900011604,
+    "UnitId": 0
+  },
+  {
+    "StageBattleConditionSetId": 99000116,
+    "CategoryTypeIndex": 5,
+    "SortOrder": 2,
+    "TextLanguageId": 130300009900011602,
     "UnitId": 0
   },
   {

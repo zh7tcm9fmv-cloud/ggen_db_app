@@ -5204,6 +5204,30 @@
     "value": "Increased Critical Rate LV 9"
   },
   {
+    "id": 140700000301000401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301000402,
+    "value": "Piercing LV 4"
+  },
+  {
+    "id": 140700000301000501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301000502,
+    "value": "Piercing LV 5"
+  },
+  {
+    "id": 140700000301000601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301000602,
+    "value": "Piercing LV 6"
+  },
+  {
     "id": 140700000301010101,
     "value": "Absolute Hit"
   },
@@ -16570,6 +16594,30 @@
   {
     "id": 140800000300990904,
     "value": ""
+  },
+  {
+    "id": 140800000301000401,
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction"
+  },
+  {
+    "id": 140800000301000402,
+    "value": "When this unit attacks, reduce enemy's DEF by 15% for this attack."
+  },
+  {
+    "id": 140800000301000501,
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction"
+  },
+  {
+    "id": 140800000301000502,
+    "value": "When this unit attacks, reduce enemy's DEF by 20% for this attack."
+  },
+  {
+    "id": 140800000301000601,
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction"
+  },
+  {
+    "id": 140800000301000602,
+    "value": "When this unit attacks, reduce enemy's DEF by 25% for this attack."
   },
   {
     "id": 140800000301010101,

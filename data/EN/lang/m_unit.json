@@ -612,6 +612,46 @@
     "value": "GM Dominance"
   },
   {
+    "id": 110100001024000100,
+    "value": "GM (White Dingo)"
+  },
+  {
+    "id": 110100001024000200,
+    "value": "GM Cannon (White Dingo)"
+  },
+  {
+    "id": 110100001024000300,
+    "value": "GM Sniper II (White Dingo / Rocket Launcher)"
+  },
+  {
+    "id": 110100001024000400,
+    "value": "Visch Donahue's Gouf"
+  },
+  {
+    "id": 110100001024000500,
+    "value": "Guncannon Mass Production Type (White Dingo)"
+  },
+  {
+    "id": 110100001024000600,
+    "value": "GM Sniper II (White Dingo)"
+  },
+  {
+    "id": 110100001024000700,
+    "value": "Visch Donahue's Gelgoog Ground Type"
+  },
+  {
+    "id": 110100001024000800,
+    "value": "Rhinoceros Type B"
+  },
+  {
+    "id": 110100001024000900,
+    "value": "Adzam Olga"
+  },
+  {
+    "id": 110100001024001000,
+    "value": "Oasis"
+  },
+  {
     "id": 110100001026000110,
     "value": "Gundam Ground Type"
   },
@@ -1210,6 +1250,10 @@
   {
     "id": 110100001080004760,
     "value": "Modified Dodai"
+  },
+  {
+    "id": 110100001080004900,
+    "value": "HLV"
   },
   {
     "id": 110100001080004960,
@@ -4444,6 +4488,10 @@
     "value": "Gundam Dynames"
   },
   {
+    "id": 110100001370000350,
+    "value": "Gundam Dynames (EX)"
+  },
+  {
     "id": 110100001370000360,
     "value": "Gundam Dynames"
   },
@@ -4700,6 +4748,10 @@
     "value": "Graham's Union Flag Custom II \"GN Flag\""
   },
   {
+    "id": 110100001370005660,
+    "value": "Graham's Union Flag Custom II \"GN Flag\""
+  },
+  {
     "id": 110100001370005700,
     "value": "00 Raiser"
   },
@@ -4914,6 +4966,10 @@
   {
     "id": 110100001370011100,
     "value": "Reborns Gundam"
+  },
+  {
+    "id": 110100001370011150,
+    "value": "Reborns Gundam (EX)"
   },
   {
     "id": 110100001370011300,
@@ -7676,6 +7732,46 @@
     "value": "A high-performance unit based on the late-stage mass production GMs, this model was developed to gather data for the purpose of improving the GM series of mobile suits.\nAs these suits were produced to collect actual combat data on various types of experimental equipment, they do not possess any notable characteristics.\nThey do boast high-level, well-balanced suit performance, however, as well as multiple hardpoints that allow for extensive equipment expansion."
   },
   {
+    "id": 110200001024000100,
+    "value": "The Federation Forces developed the melee combat mobile suit Gundam based on the development plan known as Operation V, which was intended to turn the tide of the war.\nThis general-purpose mass-produced MS was created as a simplified version of the Gundam, omitting the Core Block system and other advanced features.\nDue to the emphasis placed on mass production during its development, its performance and generator output are relatively low.\nThough unable to carry the Gundam's beam rifle, it can use beam weapons despite its low output, and has fine performance for a mass-produced machine.\nThis particular unit has been customized for use by the White Dingo special forces team assigned to the Australian front, with tuning for the local environment and minor performance improvements made by the team's trusty engineers.\nIts armament is also optimized for ground combat, and consists mainly of projectile weapons such as machine guns and rocket launchers."
+  },
+  {
+    "id": 110200001024000200,
+    "value": "A simplified mass-produced version of the Federation Forces medium-range support mobile suit Guncannon.\nIt uses the production lines of the GM series, taking the concept of the Guncannon while achieving better weight balance and stable firing.\nThis was done by removing the left cannon while adding armor to the lower half of the body.\nIts mobility is mediocre, with melee combat a virtual impossibility.\nHowever, medium-range bombardment coupled with tactical movement made this machine a coveted support asset.\nThis particular unit has been customized for use by the White Dingo special forces team assigned to the Australian front, with tuning for the local environment and minor performance improvements made by the team's trusty engineers."
+  },
+  {
+    "id": 110200001024000300,
+    "value": "Used by the Earth Federation Forces' mobile suit special operations unit White Dingo in Australia during the final phase of the Australian counteroffensive.\nDespite its \"Sniper\" moniker, the GM Sniper II is a versatile, high-performance machine. Specially modified on site to suit the White Dingo Team's combat style and mission requirements, it forgoes various sniper mechanisms and space-specific equipment, focusing instead on enhanced ground combat capabilities and situational adaptability.\nOne notable external equipment modification is its head-mounted Vulcan Cannon for ground assaults and suppressing fire.\nThe GM Sniper II is also equipped with hand grenades for ground-clearing operations and a custom shield created by combining a ground shield with a large shield.\nDrawing on front-line combat data and the support of a trusted, highly skilled mechanic, this improvised suit proved remarkably effective, maximizing the base unit's inherent performance while preserving its practicality. It was called GM Sniper Custom II by team members."
+  },
+  {
+    "id": 110200001024000400,
+    "value": "A ground combat mobile suit manufactured by the Federation Forces using the production lines of the Gundam Ground Type.\nThis version was modified with special weaponry and coloring.\nBecause its intended role was different of that of other machines, it was given the name \"Sniper.\"\nBut rather than being specially customized, it was merely tuned to match its primary weapon, the long-range beam rifle.\nThis rifle gave it firepower equal to that of a warship's main gun.\nWith an extremely long range exceeding that of existing beam rifles, this proved a very formidable weapon.\nBut because the energy that passed through the body of the machine exceeded the limit estimates, it required a heat sink with special energy circuits that could cool the body and barrel, and it was tuned with this in mind."
+  },
+  {
+    "id": 110200001024000500,
+    "value": "The Federation Forces developed the medium-range support mobile suit Guncannon based on the development plan known as Operation V, which was intended to turn the tide of the war.\nThis mass-produced type omits the Core Block system, uses components from the standard GM series, and changes the armor materials to titanium ceramic composite.\nThis greatly reduces costs, while retaining the powerful bombardment capabilities and sturdy armor of the base machine.\nThough it has no melee weapons, this machine performs very well as a support MS.\nThis particular unit has been customized for use by the White Dingo special forces team assigned to the Australian front, with tuning for the local environment and minor performance improvements made by the team's trusty engineers, and carries a machine gun in each hand."
+  },
+  {
+    "id": 110200001024000600,
+    "value": "The final variation of the Federation Forces general-purpose mass-produced mobile suit GM to be developed during the One Year War.\nBased on the GM Command series, this custom machine is enhanced to the very limit, making it the pinnacle of the GM family.\nIts head visor contains a combination optical sensor and precision targeting laser.\nThis also serves to protect the main camera, cool the head unit, and reduce noise levels to enhance long-range sniping.\nThe machine is not designed exclusively for sniping, however.\nInstead, it is meant to improve overall performance while retaining versatility.\nThis particular unit has been customized for use by the White Dingo special forces team assigned to the Australian front, with modifications for the local environment.\nA pod containing vulcan guns is attached to the head, while the left arm carries a unique shield created by combining two different types.\nIts output is limited in order to facilitate the use of a long-range beam rifle.\nAll these advances are based on data from the front lines that enabled the team's trusty engineers to create a highly practical custom machine."
+  },
+  {
+    "id": 110200001024000700,
+    "value": "A variation of the Principality of Zeon general-purpose mass-produced mobile suit Gelgoog.\nWhile the base machine was deployed mainly in space, this G type is modified for use on Earth.\nThe auxiliary generators in its arms have been replaced by a grenade launcher and a gatling, the shield has been downscaled to a nimbler size, and dust-proofing has been applied throughout its body.\nThis is the personal machine of Lieutenant JG Visch Donahue of the Australian occupation force, also known as the \"Thunderbolt of the Wilderness.\"\nUnlike most G types, it has no backpack, making it visually indistinguishable from the pre-production Gelgoog.\nIt has all the other modifications of the standard G type, however, suggesting it is either an early prototype or a reserve unit."
+  },
+  {
+    "id": 110200001024000800,
+    "value": "A large mobile weapon independently developed by the Principality of Zeon's Australian forces to defend key bases.\nCloser to a mobile armor than a mobile suit, its hulking frame houses a high-output generator and the thermonuclear hover units of a land ship, repurposed as a propulsion system.\nIt uses its surplus output to power a prototype Bustliner cannon captured from the Federation Forces, which serves as its main weapon.\nThis machine is intended mainly for use over flat terrain, and can achieve impressive speeds despite its heavy armor.\nIts arsenal also includes revolving anti-air machine guns and missile launchers, making the Rhinoceros a veritable moving fortress.\nHowever, it has difficultly handling long-range exchanges of fire.\nMuch about this machine is still unknown, with no databanks of the era containing an image of it.\nThe Zaku II-like head module suggests that it could be a prototype related to the Apsaras series."
+  },
+  {
+    "id": 110200001024000900,
+    "value": "A Principality of Zeon weapon described as a heavy mobile gun platform, and equipped with an experimental Minovsky craft system that allows it to float for a short period of time.\nIts unique shape and four freely-moving legs also make vertical take-off and landing possible.\nArmed with twin mega particle cannons above and below, it is also equipped with an anti-MS electromagnetic wave weapon known as the Adzam Leader, and other advanced technology that would become the basis for later mobile armors.\nThis particular unit was used by Zeon's Australian forces.\nIts legs and other components differ from the prototype deployed at Odessa."
+  },
+  {
+    "id": 110200001024001000,
+    "value": "One of these combat support vehicles was assigned to every Federation Ground Force mobile suit team.\nIts main mission was to provide rear support, perform enemy recon, and gather data.\nIts most distinctive feature is its sonar system, used to detect foes based on the sounds transmitted through the ground.\nEven in the presence of Minovsky particles, which disrupt radio waves and neutralize radar, this can determine enemy positions at long distances, enabling early warning and precise tactical planning.\nIt is also equipped with a retractable antenna, a rotating periscope, and a rear storage rack for carrying ammunition and extra weapons.\nThis particular hover truck belongs to the White Dingo special forces team assigned to the Australian front.\nMany of its sensor systems have been automated, allowing Petty Officer Anita Julianne to handle all intelligence support duties on her own."
+  },
+  {
     "id": 110200001026000100,
     "value": "As the mobile suit development project steadily progressed to mass production while utilizing feedback from Operation V, this model was developed in response to repeated mobile suit deployment requests from the front lines, where soldiers lacked the means to fight back against Zeon's mobile suits and were desperate for their own units.\nThough only a limited number was manufactured, these units entered early production as ground type mobile suits and were assembled using parts left over from the prototype Gundam development.\nThough its development details give the impression of a primitive unit, owing to its components having been sourced from Gundams, these models were actually high-performance mobile suits that achieved impressive results on the battlefield."
   },
@@ -8221,6 +8317,10 @@
   },
   {
     "id": 110200001080004760,
+    "value": "-"
+  },
+  {
+    "id": 110200001080004900,
     "value": "-"
   },
   {
@@ -11144,6 +11244,10 @@
     "value": "A Celestial Being 3rd-generation Gundam, developed for actual combat based on the 2nd-gen Gundams' test data.\nWith a solar-powered GN Drive to provide virtually limitless amounts of energy and heretofore unseen handheld Beam Weapons, its performance far exceeds any current Mobile Suit.\nIt is also equipped with a Trans-Am System, which releases stored, highly-compressed particles from every surface to boost its output to nearly three times its specifications for a short time.\nOut of all the 3rd-generation Gundams, the Dynames excels most as a long-range support unit.\nIt is equipped with a variety of weapons for engaging hostiles at mid-to-long ranges depending on the mission, including the GN Sniper Rifle, which fires a high-powered beam of compressed GN Particles.\nIn situations demanding that extra level of precision, the head's camera eye can extend in its Gun Camera Mode, with the pilot using a specialized rifle-shaped controller from the cockpit to make the shot."
   },
   {
+    "id": 110200001370000350,
+    "value": "A Celestial Being 3rd-generation Gundam, developed for actual combat based on the 2nd-gen Gundams' test data.\nWith a solar-powered GN Drive to provide virtually limitless amounts of energy and heretofore unseen handheld Beam Weapons, its performance far exceeds any current Mobile Suit.\nIt is also equipped with a Trans-Am System, which releases stored, highly-compressed particles from every surface to boost its output to nearly three times its specifications for a short time.\nOut of all the 3rd-generation Gundams, the Dynames excels most as a long-range support unit.\nIt is equipped with a variety of weapons for engaging hostiles at mid-to-long ranges depending on the mission, including the GN Sniper Rifle, which fires a high-powered beam of compressed GN Particles.\nIn situations demanding that extra level of precision, the head's camera eye can extend in its Gun Camera Mode, with the pilot using a specialized rifle-shaped controller from the cockpit to make the shot."
+  },
+  {
     "id": 110200001370000360,
     "value": "A Celestial Being 3rd-generation Gundam, developed for actual combat based on the 2nd-gen Gundams' test data.\nWith a solar-powered GN Drive to provide virtually limitless amounts of energy and heretofore unseen handheld Beam Weapons, its performance far exceeds any current Mobile Suit.\nIt is also equipped with a Trans-Am System, which releases stored, highly-compressed particles from every surface to boost its output to nearly three times its specifications for a short time.\nOut of all the 3rd-generation Gundams, the Dynames excels most as a long-range support unit.\nIt is equipped with a variety of weapons for engaging hostiles at mid-to-long ranges depending on the mission, including the GN Sniper Rifle, which fires a high-powered beam of compressed GN Particles.\nIn situations demanding that extra level of precision, the head's camera eye can extend in its Gun Camera Mode, with the pilot using a specialized rifle-shaped controller from the cockpit to make the shot."
   },
@@ -11325,6 +11429,10 @@
   },
   {
     "id": 110200001370005600,
+    "value": "A new and improved Union Flag used exclusively by Union ace Graham Aker.\nIt is also known as a GN Flag.\nInstalled with a pseudo solar reactor from a GN-X acquired by Union technical adviser Billy Katagiri, the GN Flag boasts incredible speed and maneuverability.\nHowever, this was only accomplished by ignoring the original design.\nThe end result is a highly unbalanced machine that is nearly impossible to handle for normal pilots.\nIts main weapon is a GN Beam Saber stolen from the Gundam Throne Eins, but using it requires moving the pseudo solar reactor from the GN Flag's back to its left shoulder in order to connect the saber directly."
+  },
+  {
+    "id": 110200001370005660,
     "value": "A new and improved Union Flag used exclusively by Union ace Graham Aker.\nIt is also known as a GN Flag.\nInstalled with a pseudo solar reactor from a GN-X acquired by Union technical adviser Billy Katagiri, the GN Flag boasts incredible speed and maneuverability.\nHowever, this was only accomplished by ignoring the original design.\nThe end result is a highly unbalanced machine that is nearly impossible to handle for normal pilots.\nIts main weapon is a GN Beam Saber stolen from the Gundam Throne Eins, but using it requires moving the pseudo solar reactor from the GN Flag's back to its left shoulder in order to connect the saber directly."
   },
   {
@@ -11521,6 +11629,10 @@
   },
   {
     "id": 110200001370011100,
+    "value": "A generic transforming Mobile Suit belonging to the Innovators.\nIt is capable of activating a Trans-Am System thanks to Anew Returner's stolen intel, and it also integrates a Twin Drive System that synchronizes two pseudo solar reactors to give it output on par with that of the 00 Raiser.\nIt carries multiple dangerous armaments, including a Large GN Beam Saber, a GN Buster Rifle that hooks directly to the pseudo solar reactor in its elbow to fire out a powerful particle beam, and the remote-controlled GN Fin Fangs.\nIts transformation mechanism allows it to transform from the all-rounder Gundam mode to a cannon mode that specializes in long-range fire.\nIt was fielded in the final battle against Celestial Being, where it fought a hard battle against Setsuna F. Seiei's 00 Raiser."
+  },
+  {
+    "id": 110200001370011150,
     "value": "A generic transforming Mobile Suit belonging to the Innovators.\nIt is capable of activating a Trans-Am System thanks to Anew Returner's stolen intel, and it also integrates a Twin Drive System that synchronizes two pseudo solar reactors to give it output on par with that of the 00 Raiser.\nIt carries multiple dangerous armaments, including a Large GN Beam Saber, a GN Buster Rifle that hooks directly to the pseudo solar reactor in its elbow to fire out a powerful particle beam, and the remote-controlled GN Fin Fangs.\nIts transformation mechanism allows it to transform from the all-rounder Gundam mode to a cannon mode that specializes in long-range fire.\nIt was fielded in the final battle against Celestial Being, where it fought a hard battle against Setsuna F. Seiei's 00 Raiser."
   },
   {
@@ -14260,6 +14372,46 @@
     "value": "GM Dominance"
   },
   {
+    "id": 110300001024000100,
+    "value": "GM (White Dingo)"
+  },
+  {
+    "id": 110300001024000200,
+    "value": "GM Cannon (White Dingo)"
+  },
+  {
+    "id": 110300001024000300,
+    "value": "GM Sniper II (White Dingo / Rocket Launcher)"
+  },
+  {
+    "id": 110300001024000400,
+    "value": "Visch Donahue's Gouf"
+  },
+  {
+    "id": 110300001024000500,
+    "value": "Guncannon Mass Production Type (White Dingo)"
+  },
+  {
+    "id": 110300001024000600,
+    "value": "GM Sniper II (White Dingo)"
+  },
+  {
+    "id": 110300001024000700,
+    "value": "Visch Donahue's Gelgoog Ground Type"
+  },
+  {
+    "id": 110300001024000800,
+    "value": "Rhinoceros Type B"
+  },
+  {
+    "id": 110300001024000900,
+    "value": "Adzam Olga"
+  },
+  {
+    "id": 110300001024001000,
+    "value": "Oasis"
+  },
+  {
     "id": 110300001026000110,
     "value": "Gundam Ground Type"
   },
@@ -14858,6 +15010,10 @@
   {
     "id": 110300001080004760,
     "value": "Modified Dodai"
+  },
+  {
+    "id": 110300001080004900,
+    "value": "-"
   },
   {
     "id": 110300001080004960,
@@ -18092,6 +18248,10 @@
     "value": "Gundam Dynames"
   },
   {
+    "id": 110300001370000350,
+    "value": "Gundam Dynames (EX)"
+  },
+  {
     "id": 110300001370000360,
     "value": "Gundam Dynames"
   },
@@ -18348,6 +18508,10 @@
     "value": "Graham's Union Flag Custom II \"GN Flag\""
   },
   {
+    "id": 110300001370005660,
+    "value": "Graham's Union Flag Custom II \"GN Flag\""
+  },
+  {
     "id": 110300001370005700,
     "value": "00 Raiser"
   },
@@ -18562,6 +18726,10 @@
   {
     "id": 110300001370011100,
     "value": "Reborns Gundam"
+  },
+  {
+    "id": 110300001370011150,
+    "value": "Reborns Gundam (EX)"
   },
   {
     "id": 110300001370011300,
@@ -21480,6 +21648,46 @@
     "value": "GM Dominance"
   },
   {
+    "id": 110400001024000100,
+    "value": "GM (White Dingo)"
+  },
+  {
+    "id": 110400001024000200,
+    "value": "GM Cannon (White Dingo)"
+  },
+  {
+    "id": 110400001024000300,
+    "value": "GM Sniper II (White Dingo / Rocket Launcher)"
+  },
+  {
+    "id": 110400001024000400,
+    "value": "Visch Donahue's Gouf"
+  },
+  {
+    "id": 110400001024000500,
+    "value": "Guncannon Mass Production Type (White Dingo)"
+  },
+  {
+    "id": 110400001024000600,
+    "value": "GM Sniper II (White Dingo)"
+  },
+  {
+    "id": 110400001024000700,
+    "value": "Visch Donahue's Gelgoog Ground Type"
+  },
+  {
+    "id": 110400001024000800,
+    "value": "Rhinoceros Type B"
+  },
+  {
+    "id": 110400001024000900,
+    "value": "Adzam Olga"
+  },
+  {
+    "id": 110400001024001000,
+    "value": "Oasis"
+  },
+  {
     "id": 110400001026000110,
     "value": "Gundam Ground Type"
   },
@@ -22078,6 +22286,10 @@
   {
     "id": 110400001080004760,
     "value": "Modified Dodai"
+  },
+  {
+    "id": 110400001080004900,
+    "value": "-"
   },
   {
     "id": 110400001080004960,
@@ -25312,6 +25524,10 @@
     "value": "Gundam Dynames"
   },
   {
+    "id": 110400001370000350,
+    "value": "Gundam Dynames (EX)"
+  },
+  {
     "id": 110400001370000360,
     "value": "Gundam Dynames"
   },
@@ -25568,6 +25784,10 @@
     "value": "Graham's Union Flag Custom II \"GN Flag\""
   },
   {
+    "id": 110400001370005660,
+    "value": "Graham's Union Flag Custom II \"GN Flag\""
+  },
+  {
     "id": 110400001370005700,
     "value": "00 Raiser"
   },
@@ -25782,6 +26002,10 @@
   {
     "id": 110400001370011100,
     "value": "Reborns Gundam"
+  },
+  {
+    "id": 110400001370011150,
+    "value": "Reborns Gundam (EX)"
   },
   {
     "id": 110400001370011300,

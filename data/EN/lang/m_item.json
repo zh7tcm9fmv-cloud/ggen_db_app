@@ -796,6 +796,42 @@
     "value": "SR GM Dominance Limit Break Material"
   },
   {
+    "id": 150100171024000100,
+    "value": "N GM (White Dingo) Limit Break Material"
+  },
+  {
+    "id": 150100171024000200,
+    "value": "R GM Cannon (White Dingo) Limit Break Material"
+  },
+  {
+    "id": 150100171024000300,
+    "value": "SR GM Sniper II (White Dingo / Rocket Launcher) Limit Break Material"
+  },
+  {
+    "id": 150100171024000400,
+    "value": "R Visch Donahue's Gouf Limit Break Material"
+  },
+  {
+    "id": 150100171024000500,
+    "value": "SR Guncannon Mass Production Type (White Dingo) Limit Break Material"
+  },
+  {
+    "id": 150100171024000600,
+    "value": "SSR GM Sniper II (White Dingo) Limit Break Material"
+  },
+  {
+    "id": 150100171024000700,
+    "value": "SSR Visch Donahue's Gelgoog Ground Type Limit Break Material"
+  },
+  {
+    "id": 150100171024000800,
+    "value": "SSR Rhinoceros Type B Limit Break Material"
+  },
+  {
+    "id": 150100171024000900,
+    "value": "SR Adzam Olga Limit Break Material"
+  },
+  {
     "id": 150100171026000110,
     "value": "SR Gundam Ground Type Limit Break Material"
   },
@@ -3784,6 +3820,10 @@
     "value": "SR Gundam Dynames Limit Break Material"
   },
   {
+    "id": 150100171370000350,
+    "value": "UR Gundam Dynames (EX) Limit Break Material"
+  },
+  {
     "id": 150100171370000360,
     "value": "SR Gundam Dynames Limit Break Material"
   },
@@ -4008,6 +4048,10 @@
     "value": "SR Graham's Union Flag Custom II \"GN Flag\" Limit Break Material"
   },
   {
+    "id": 150100171370005660,
+    "value": "SSR Graham's Union Flag Custom II \"GN Flag\" Limit Break Material"
+  },
+  {
     "id": 150100171370005700,
     "value": "SSR 00 Raiser Limit Break Material"
   },
@@ -4166,6 +4210,10 @@
   {
     "id": 150100171370011100,
     "value": "SSR Reborns Gundam Limit Break Material"
+  },
+  {
+    "id": 150100171370011150,
+    "value": "UR Reborns Gundam (EX) Limit Break Material"
   },
   {
     "id": 150100171375000100,
@@ -5396,6 +5444,10 @@
     "value": "Development Material (The Blue Destiny)"
   },
   {
+    "id": 150100180000000240,
+    "value": "Development Material (Gundam Side Story 0079: Rise from the Ashes)"
+  },
+  {
     "id": 150100180000000320,
     "value": "Development Material (Mobile Suit Gundam Thunderbolt: December Sky)"
   },
@@ -5538,6 +5590,18 @@
   {
     "id": 150100181022000700,
     "value": "Blue Destiny Unit-3 [EXAM] Technical Journal"
+  },
+  {
+    "id": 150100181024000600,
+    "value": "GM Sniper II (White Dingo)'s Technical Journal"
+  },
+  {
+    "id": 150100181024000700,
+    "value": "Visch Donahue's Gelgoog Ground Type's Technical Journal"
+  },
+  {
+    "id": 150100181024000800,
+    "value": "Rhinoceros Type B's Technical Journal"
   },
   {
     "id": 150100181031000100,
@@ -6212,6 +6276,10 @@
     "value": "[Limited-Time] Featured Unit Assembly Ticket (9/17/2026 JST)"
   },
   {
+    "id": 150100191100000018,
+    "value": "[Limited-Time] Featured Unit Assembly Ticket (10/16/2026 JST)"
+  },
+  {
     "id": 150100191100000019,
     "value": "[Limited-Time] Featured Unit Assembly Ticket (9/30/2026 JST)"
   },
@@ -6472,6 +6540,18 @@
     "value": "Unit Assembly Medal(00F)"
   },
   {
+    "id": 150100222000180001,
+    "value": "Boss Challenge Ticket(Gundam Side Story 0079: Rise from the Ashes)"
+  },
+  {
+    "id": 150100222000180002,
+    "value": "Unit Assembly Medal(Gundam Side Story 0079: Rise from the Ashes)"
+  },
+  {
+    "id": 150100222000180003,
+    "value": "Combat Power Upgrade Supplies"
+  },
+  {
     "id": 150100222100010001,
     "value": "Map Medal"
   },
@@ -6640,6 +6720,10 @@
     "value": "Mobile Suit Gundam SEED Series SP Conversion Badge"
   },
   {
+    "id": 150100240000023700,
+    "value": "Mobile Suit Gundam 00 Series SP Conversion Badge"
+  },
+  {
     "id": 150100241003000200,
     "value": "Char's Zaku II (THE ORIGIN) SP Conversion Chips"
   },
@@ -6658,6 +6742,10 @@
   {
     "id": 150100241305000300,
     "value": "Gundam Astray Gold Frame Amatsu Mina SP Conversion Chips"
+  },
+  {
+    "id": 150100241370005660,
+    "value": "Graham's Union Flag Custom II \"GN Flag\" SP Conversion Chips"
   },
   {
     "id": 150100250000010810,
@@ -6696,8 +6784,16 @@
     "value": "Dorothy Catalonia SP Conversion Badge"
   },
   {
+    "id": 150100251230000501,
+    "value": "Jamil Neate SP Conversion Badge"
+  },
+  {
     "id": 150100251300002502,
     "value": "Andrew Waldfeld SP Conversion Badge"
+  },
+  {
+    "id": 150100251370006200,
+    "value": "Nena Trinity SP Conversion Badge"
   },
   {
     "id": 150100260099000106,
@@ -6748,6 +6844,14 @@
     "value": "Jachin Due Area"
   },
   {
+    "id": 150100270001370001,
+    "value": "AEU Military Training Grounds Area"
+  },
+  {
+    "id": 150100270001370023,
+    "value": "Celestial Being Area"
+  },
+  {
     "id": 150100280126043001,
     "value": "1st Anniv. Home Screen Animation"
   },
@@ -6770,6 +6874,10 @@
   {
     "id": 150100280230000001,
     "value": "Mobile Suit Gundam SEED Challenge"
+  },
+  {
+    "id": 150100280237000001,
+    "value": "Mobile Suit Gundam 00 Challenge"
   },
   {
     "id": 150100290000250001,
@@ -7594,6 +7702,42 @@
   {
     "id": 150200171023000110,
     "value": "An item used to perform Limit Break on SR GM Dominance"
+  },
+  {
+    "id": 150200171024000100,
+    "value": "An item used to perform Limit Break on N GM (White Dingo)"
+  },
+  {
+    "id": 150200171024000200,
+    "value": "An item used to perform Limit Break on R GM Cannon (White Dingo)"
+  },
+  {
+    "id": 150200171024000300,
+    "value": "An item used to perform Limit Break on SR GM Sniper II (White Dingo / Rocket Launcher)"
+  },
+  {
+    "id": 150200171024000400,
+    "value": "An item used to perform Limit Break on R Visch Donahue's Gouf"
+  },
+  {
+    "id": 150200171024000500,
+    "value": "An item used to perform Limit Break on SR Guncannon Mass Production Type (White Dingo)"
+  },
+  {
+    "id": 150200171024000600,
+    "value": "An item used to perform Limit Break on SSR GM Sniper II (White Dingo)"
+  },
+  {
+    "id": 150200171024000700,
+    "value": "An item used to perform Limit Break on SSR Visch Donahue's Gelgoog Ground Type"
+  },
+  {
+    "id": 150200171024000800,
+    "value": "An item used to perform Limit Break on SSR Rhinoceros Type B"
+  },
+  {
+    "id": 150200171024000900,
+    "value": "An item used to perform Limit Break on SR Adzam Olga"
   },
   {
     "id": 150200171026000110,
@@ -10584,6 +10728,10 @@
     "value": "An item used to perform Limit Break on SR Gundam Dynames"
   },
   {
+    "id": 150200171370000350,
+    "value": "An item used to perform Limit Break on UR Gundam Dynames (EX)"
+  },
+  {
     "id": 150200171370000360,
     "value": "An item used to perform Limit Break on SR Gundam Dynames"
   },
@@ -10808,6 +10956,10 @@
     "value": "An item used to perform Limit Break on SR Graham's Union Flag Custom II \"GN Flag\""
   },
   {
+    "id": 150200171370005660,
+    "value": "An item used to perform Limit Break on SSR Graham's Union Flag Custom II \"GN Flag\""
+  },
+  {
     "id": 150200171370005700,
     "value": "An item used to perform Limit Break on SSR 00 Raiser"
   },
@@ -10966,6 +11118,10 @@
   {
     "id": 150200171370011100,
     "value": "An item used to perform Limit Break on SSR Reborns Gundam"
+  },
+  {
+    "id": 150200171370011150,
+    "value": "An item used to perform Limit Break on UR Reborns Gundam (EX)"
   },
   {
     "id": 150200171375000100,
@@ -12196,6 +12352,10 @@
     "value": "Material required for developing units that appear on \"Mobile Suit Gundam Side Story: The Blue Destiny\" diagram."
   },
   {
+    "id": 150200180000000240,
+    "value": "Material required for developing units that appear on the [Gundam Side Story 0079: Rise from the Ashes] diagram."
+  },
+  {
     "id": 150200180000000320,
     "value": "Material required for developing units that appear on [Mobile Suit Gundam Thunderbolt: December Sky] diagram."
   },
@@ -12338,6 +12498,18 @@
   {
     "id": 150200181022000700,
     "value": "Material required to develop Blue Destiny Unit-3 [EXAM] appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181024000600,
+    "value": "Material required to develop GM Sniper II (White Dingo) appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181024000700,
+    "value": "Material required to develop Visch Donahue's Gelgoog Ground Type appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181024000800,
+    "value": "Material required to develop Rhinoceros Type B appearing in the Development Diagram."
   },
   {
     "id": 150200181031000100,
@@ -13012,6 +13184,10 @@
     "value": "A ticket that lets you pull from the ticket-only Unit Assembly featuring the Gundam Avalanche Astraea Type-F' (EX) and Susanowo (EX)."
   },
   {
+    "id": 150200191100000018,
+    "value": "A ticket that lets you pull from the ticket-only Unit Assembly featuring the Reborns Gundam (EX) and Gundam Dynames (EX)."
+  },
+  {
     "id": 150200191100000019,
     "value": "A ticket that lets you pull from the ticket-only Unit Assembly featuring the V2 Assault Buster Gundam (EX), Zanspine (EX) and Gottrlatan (EX)."
   },
@@ -13272,6 +13448,18 @@
     "value": "A medal that can be obtained in the story event \"Mobile Suit Gundam 00F\".\nCan be used in the Medal Unit Assembly."
   },
   {
+    "id": 150200222000180001,
+    "value": "A ticket needed to challenge the boss in story event \"Gundam Side Story 0079: Rise from the Ashes\"."
+  },
+  {
+    "id": 150200222000180002,
+    "value": "A medal that can be obtained in the story event \"Gundam Side Story 0079: Rise from the Ashes\".\nCan be used in the Medal Unit Assembly."
+  },
+  {
+    "id": 150200222000180003,
+    "value": "An item obtainable from the Gundam Side Story 0079: Rise from the Ashes story event.\nCan be used to upgrade Combat Power in Gundam Side Story 0079: Rise from the Ashes."
+  },
+  {
     "id": 150200222100010001,
     "value": "Medal that can be acquired in map events.\nCan be used in the Exchange."
   },
@@ -13440,6 +13628,10 @@
     "value": "Usable on non-UR characters from the specified series.\nAn SP conversion item that boosts stats and raises Max Level to 100."
   },
   {
+    "id": 150200240000023700,
+    "value": "Usable on non-UR characters from the specified series.\nAn SP conversion item that boosts stats and raises Max Level to 100."
+  },
+  {
     "id": 150200241003000200,
     "value": "Usable on Char's Zaku II (THE ORIGIN)  (SSR/ Support / Mobile Suit Gundam).\nAn SP conversion item that boosts stats and raises Max Level to 100."
   },
@@ -13458,6 +13650,10 @@
   {
     "id": 150200241305000300,
     "value": "Usable on Gundam Astray Gold Frame Amatsu Mina (SSR / Support / Mobile Suit Gundam SEED).\nAn SP conversion item that boosts stats and raises Max Level to 100."
+  },
+  {
+    "id": 150200241370005660,
+    "value": "Usable on Graham's Union Flag Custom II \"GN Flag\" (SSR / Attack / Mobile Suit Gundam 00).\nAn SP conversion item that boosts stats and raises Max Level to 100."
   },
   {
     "id": 150200250000010810,
@@ -13496,8 +13692,16 @@
     "value": "Usable on Dorothy Catalonia (SSR / Attack / Mobile Suit Gundam Wing).\nAn SP conversion item that boosts stats and raises Max Level to 100."
   },
   {
+    "id": 150200251230000501,
+    "value": "Usable on Jamil Neate (SSR / Support / After War Gundam X).\nAn SP conversion item that boosts stats and raises Max Level to 100."
+  },
+  {
     "id": 150200251300002502,
     "value": "Usable on Andrew Waldfeld (SSR / Support / Mobile Suit Gundam SEED).\nAn SP conversion item that boosts stats and raises Max Level to 100."
+  },
+  {
+    "id": 150200251370006200,
+    "value": "Usable on Nena Trinity (SSR / Attack / Mobile Suit Gundam 00).\nAn SP conversion item that boosts stats and raises Max Level to 100."
   },
   {
     "id": 150200260099000106,
@@ -13548,6 +13752,14 @@
     "value": "Battle maps that can be set as Home screen backgrounds."
   },
   {
+    "id": 150200270001370001,
+    "value": "Battle maps that can be set as Home screen backgrounds."
+  },
+  {
+    "id": 150200270001370023,
+    "value": "Battle maps that can be set as Home screen backgrounds."
+  },
+  {
     "id": 150200280126043001,
     "value": "A special Home screen animation celebrating the first anniversary."
   },
@@ -13569,6 +13781,10 @@
   },
   {
     "id": 150200280230000001,
+    "value": "A Home screen animation that you can acquire as a Challenge Main Stage completion reward."
+  },
+  {
+    "id": 150200280237000001,
     "value": "A Home screen animation that you can acquire as a Challenge Main Stage completion reward."
   },
   {

@@ -28,5 +28,11 @@
     "NameLanguageId": 190122606500200001,
     "Priority": 11000061,
     "ScheduleId": 2606502001
+  },
+  {
+    "Id": 18010226103001,
+    "NameLanguageId": 190122610300100001,
+    "Priority": 11000051,
+    "ScheduleId": 2610302001
   }
 ]

@@ -60,6 +60,16 @@
     "ScheduleId": 2511109901
   },
   {
+    "Id": 1024000600,
+    "ResourceId": "g0240u00600",
+    "NameLanguageId": 110100001024000600,
+    "ProfileLanguageId": 110200001024000600,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 240,
+    "ModelNumber": "RGM-79SP",
+    "ScheduleId": 2610309901
+  },
+  {
     "Id": 1031000100,
     "ResourceId": "g0310u00100",
     "NameLanguageId": 110100001031000100,
