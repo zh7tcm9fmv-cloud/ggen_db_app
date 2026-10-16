@@ -17,10 +17,12 @@
     { pageId: 'master_league', tabId: 'navMasterLeagueTab', version: '1' },
     { pageId: 'e_simulator', tabId: 'navStageTab', extraIds: ['stageSourceEsimBtn'], version: '1' },
   ];
-  /** Stage source buttons that flare for today's Eternal / Collaboration openings. */
+  /** Stage source buttons that flare for today's openings (by browse category). */
   const STAGES_CATEGORY_BTN_IDS = {
     eternal: 'stageSourceEternalBtn',
     collaboration_stage: 'stageSourceCollabBtn',
+    challenge_stage: 'stageSourceChallengeBtn',
+    special_stage: 'stageSourceSpecialBtn',
   };
   const LANG_STORAGE_KEY = 'ggen_lang';
   const UI_NOTICE_FLARE_PATH = '/static/images/UI/UI_MapEventEffect_FlareCircleRed.webp';

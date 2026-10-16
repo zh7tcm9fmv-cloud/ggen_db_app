@@ -810,6 +810,28 @@ STATIC_ROOT = os.path.join(os.path.dirname(__file__), 'static')
 # (mtime, merged filenames) per folder under static/images/* — invalidated when that folder changes
 _MERGED_IMAGE_FOLDER_CACHE = {}
 
+
+def _local_ggen_images_root():
+    """Dev checkout of ggen_db_images/images (unpushed WebPs) for local preview when CDN is off.
+
+    Prefer GGEN_IMAGES_DIR; else sibling Desktop/ggen_db_images/images next to this repo.
+    Production (Railway) has neither — returns ''.
+    """
+    env = (os.environ.get('GGEN_IMAGES_DIR') or '').strip().strip('"').strip("'")
+    if env:
+        return env if os.path.isdir(env) else ''
+    sibling = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        'ggen_db_images',
+        'images',
+    )
+    return sibling if os.path.isdir(sibling) else ''
+
+
+_LOCAL_GGEN_IMAGES_ROOT = _local_ggen_images_root()
+if _LOCAL_GGEN_IMAGES_ROOT and not (IMAGE_CDN and GAME_IMAGES_USE_CDN):
+    print(f"  Local image checkout: {_LOCAL_GGEN_IMAGES_ROOT} (serves missing /static/images for preview)")
+
 # Same-origin only: tiny brand/UI fonts. Multi-MB CJK OTFs/TTFs must never leave Railway as bytes
 # (bots + scrapers hitting /static/font/*.otf historically burned GB-scale egress).
 _RAILWAY_SAME_ORIGIN_FONTS = frozenset({
@@ -833,6 +855,16 @@ def static_game_images_cdn_offload(filename):
         # Short-lived so flipping GAME_IMAGES_USE_CDN takes effect quickly.
         resp.headers['Cache-Control'] = 'public, max-age=300'
         return resp
+    # Local CDN-off preview: serve from app static, else Desktop ggen_db_images checkout.
+    name = (filename or '').replace('\\', '/').lstrip('/')
+    if name and '..' not in name.split('/'):
+        app_path = os.path.join(STATIC_ROOT, 'images', *name.split('/'))
+        if os.path.isfile(app_path):
+            return send_from_directory(os.path.join(STATIC_ROOT, 'images'), filename)
+        if _LOCAL_GGEN_IMAGES_ROOT:
+            local_path = os.path.join(_LOCAL_GGEN_IMAGES_ROOT, *name.split('/'))
+            if os.path.isfile(local_path):
+                return send_from_directory(_LOCAL_GGEN_IMAGES_ROOT, filename)
     return send_from_directory(os.path.join(STATIC_ROOT, 'images'), filename)
 
 
@@ -864,20 +896,28 @@ def static_font_cdn_offload(filename):
 
 
 def _list_disk_image_files(rel_path):
-    """List image filenames under static/<rel_path> (e.g. images/portraits)."""
-    d = os.path.join(STATIC_ROOT, *rel_path.split('/'))
-    if not os.path.isdir(d):
-        return []
+    """List image filenames under static/<rel_path> and local ggen_db_images checkout when present."""
+    dirs = [os.path.join(STATIC_ROOT, *rel_path.split('/'))]
+    # folder_key is e.g. images/portraits → under checkout that is portraits/
+    if _LOCAL_GGEN_IMAGES_ROOT and rel_path.startswith('images/'):
+        dirs.append(os.path.join(_LOCAL_GGEN_IMAGES_ROOT, *rel_path.split('/')[1:]))
+    elif _LOCAL_GGEN_IMAGES_ROOT and not rel_path.startswith('images/'):
+        dirs.append(os.path.join(_LOCAL_GGEN_IMAGES_ROOT, *rel_path.split('/')))
     out = []
-    try:
-        for fn in os.listdir(d):
-            if fn.startswith('.') or fn.startswith('_'):
-                continue
-            low = fn.lower()
-            if low.endswith(('.webp', '.png', '.jpg', '.jpeg')):
-                out.append(fn)
-    except OSError:
-        return []
+    seen = set()
+    for d in dirs:
+        if not os.path.isdir(d):
+            continue
+        try:
+            for fn in os.listdir(d):
+                if fn.startswith('.') or fn.startswith('_') or fn in seen:
+                    continue
+                low = fn.lower()
+                if low.endswith(('.webp', '.png', '.jpg', '.jpeg')):
+                    seen.add(fn)
+                    out.append(fn)
+        except OSError:
+            continue
     return out
 
 
@@ -889,6 +929,12 @@ def _merged_index_disk(folder_key):
         mtime = os.path.getmtime(d)
     except OSError:
         mtime = 0
+    if _LOCAL_GGEN_IMAGES_ROOT and folder_key.startswith('images/'):
+        ld = os.path.join(_LOCAL_GGEN_IMAGES_ROOT, *folder_key.split('/')[1:])
+        try:
+            mtime = max(mtime, os.path.getmtime(ld))
+        except OSError:
+            pass
     cached = _MERGED_IMAGE_FOLDER_CACHE.get(folder_key)
     if cached and cached[0] == mtime:
         return cached[1]
@@ -7346,15 +7392,21 @@ def _find_trait_thum_list_asset(resource_ids, entity_id):
 
 
 def _static_images_path_on_disk(path):
-    """True when /static/images/... exists under STATIC_ROOT."""
+    """True when /static/images/... exists under STATIC_ROOT or local ggen_db_images checkout."""
     if not path or not isinstance(path, str) or not path.startswith('/static/images/'):
         return False
     rel = path[len('/static/'):].replace('\\', '/').lstrip('/')
-    return os.path.isfile(os.path.join(STATIC_ROOT, *rel.split('/')))
+    parts = rel.split('/')
+    if os.path.isfile(os.path.join(STATIC_ROOT, *parts)):
+        return True
+    # Local preview: Desktop CDN checkout (images/…) without duplicating into app static.
+    if _LOCAL_GGEN_IMAGES_ROOT and parts and parts[0] == 'images':
+        return os.path.isfile(os.path.join(_LOCAL_GGEN_IMAGES_ROOT, *parts[1:]))
+    return False
 
 
 def _image_path_servable(path):
-    """CDN can serve index-only assets; without CDN require an on-disk file."""
+    """CDN can serve index-only assets; without CDN require an on-disk file (app or local checkout)."""
     if not path:
         return False
     if IMAGE_CDN and GAME_IMAGES_USE_CDN:
@@ -7447,7 +7499,7 @@ _LANG_DISPLAY_FALLBACK_KEYS = (
     'supporter_leader_text_map', 'supporter_active_text_map',
     'stage_text_map', 'scenario_stage_text_map', 'scenario_stage_series_text_map', 'tower_event_text_map', 'tower_stage_group_text_map', 'tower_stage_text_map', 'special_event_stage_text_map', 'item_text_map', 'profile_title_text_map',
     'stage_master_text_map', 'stage_condition_text_map', 'map_stage_condition_text_map',
-    'weapon_text_map', 'op_text_map', 'mission_text_map', 'binder_text_map',
+    'weapon_text_map', 'op_text_map', 'mission_text_map', 'ult_custom_mission_text_map', 'binder_text_map',
 )
 
 
@@ -8708,6 +8760,7 @@ def create_main_stage_challenge_map(d):
             'first_clear_reward_set_id': normalize_id(item.get('FirstClearRewardSetId') or item.get('firstClearRewardSetId')),
             'secret_clear_reward_set_id': normalize_id(item.get('SecretClearRewardSetId') or item.get('secretClearRewardSetId')),
             'recommended_combat_power': safe_int(item.get('RecommendedCombatPower') or item.get('recommendedCombatPower'), 0),
+            'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0'),
         }
     return lookup
 
@@ -9640,6 +9693,14 @@ def create_occupied_area_lookup(d):
             'id': oid,
             'pivot_square_size': max(1, safe_int(item.get('PivotSquareSize') or item.get('pivotSquareSize'), 1)),
             'forward_area': max(0, safe_int(item.get('ForwardArea') or item.get('forwardArea'), 0)),
+            'rear_area': max(0, safe_int(item.get('RearArea') or item.get('rearArea'), 0)),
+            'left_area': max(0, safe_int(item.get('LeftArea') or item.get('leftArea'), 0)),
+            'right_area': max(0, safe_int(item.get('RightArea') or item.get('rightArea'), 0)),
+            'required_turn_around': bool(
+                item.get('RequiredTurnAround')
+                if item.get('RequiredTurnAround') is not None
+                else item.get('requiredTurnAround')
+            ),
         }
     return lk
 
@@ -10301,7 +10362,7 @@ def map_coords_already_2x2_footprint_aware(coords):
 
 
 def is_haro_map_unit(unit_id):
-    """True for Haro family units (OccupiedAreaId 2 in m_unit)."""
+    """True for Haro family units (model HARO*; map footprint is OccupiedAreaId 10 / 3×3)."""
     uid = normalize_id(unit_id, '0')
     if uid == '0':
         return False
@@ -11526,6 +11587,20 @@ unit_skill_trait_master_data = load_json(os.path.join(BASE_DIR, "m_unit_skill_tr
 unit_skill_trait_condition_data = load_json(os.path.join(BASE_DIR, "m_unit_skill_trait_condition.json"))
 unit_ssp_config_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_config.json"))
 unit_ssp_stat_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_add_status.json"))
+# ULT Alteration (Unit Ult Custom) — Oct 2026 content
+unit_ult_group_data = load_json(os.path.join(BASE_DIR, "m_unit_ult_group.json"))
+unit_ult_custom_config_data = load_json(os.path.join(BASE_DIR, "m_unit_ult_custom_config.json"))
+unit_ult_custom_add_status_data = load_json(os.path.join(BASE_DIR, "m_unit_ult_custom_add_status.json"))
+unit_ult_custom_group_config_data = load_json(os.path.join(BASE_DIR, "m_unit_ult_custom_group_config.json"))
+unit_ult_custom_material_set_data = load_json(os.path.join(BASE_DIR, "m_unit_ult_custom_material_set.json"))
+unit_ult_custom_available_material_data = load_json(os.path.join(BASE_DIR, "m_unit_ult_custom_available_material.json"))
+unit_ult_custom_mission_data = load_json(os.path.join(BASE_DIR, "m_unit_ult_custom_mission.json"))
+unit_ult_custom_phase_data = load_json(os.path.join(BASE_DIR, "m_unit_ult_custom_phase.json"))
+unit_ult_custom_level_info_data = load_json(os.path.join(BASE_DIR, "m_unit_ult_custom_level_info.json"))
+unit_ult_custom_weapon_data = load_json(os.path.join(BASE_DIR, "m_unit_ult_custom_weapon.json"))
+unit_ult_custom_skill_data = load_json(os.path.join(BASE_DIR, "m_unit_ult_custom_skill.json"))
+unit_ult_custom_skill_set_content_data = load_json(os.path.join(BASE_DIR, "m_unit_ult_custom_skill_set_content.json"))
+transition_master_data = load_json(os.path.join(BASE_DIR, "m_transition.json"))
 ssp_abil_replace_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_custom_core_ability_change.json"))
 ssp_custom_core_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_custom_core.json"))
 ssp_custom_core_status_up_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_custom_core_status_up.json"))
@@ -12181,6 +12256,179 @@ if unit_ssp_config_data:
         if uid != '0':
             unit_ssp_config_full[uid] = item
 
+# --- ULT Alteration (m_unit_ult_custom_*) indexes ---
+unit_ult_group_by_unit = {}
+unit_ult_group_members = {}
+for item in extract_data_list(unit_ult_group_data or []):
+    if not isinstance(item, dict):
+        continue
+    mid = normalize_id(item.get('MainUnitId') or item.get('mainUnitId'))
+    gid = normalize_id(item.get('UnitUltGroupId') or item.get('unitUltGroupId'))
+    tix = safe_int(item.get('UnitUltTypeIndex') or item.get('unitUltTypeIndex'), 0)
+    if mid == '0' or gid == '0':
+        continue
+    unit_ult_group_by_unit[mid] = {'group_id': gid, 'ult_type_index': tix}
+    unit_ult_group_members.setdefault(gid, []).append({'unit_id': mid, 'ult_type_index': tix})
+for gid in unit_ult_group_members:
+    unit_ult_group_members[gid].sort(key=lambda r: (r.get('ult_type_index') or 0, r.get('unit_id') or ''))
+
+unit_ult_custom_config_by_unit = {}
+for item in extract_data_list(unit_ult_custom_config_data or []):
+    if not isinstance(item, dict):
+        continue
+    uid = normalize_id(item.get('UnitId') or item.get('unitId'))
+    if uid == '0':
+        continue
+    unit_ult_custom_config_by_unit[uid] = {
+        'add_status_id': normalize_id(item.get('UnitUltCustomAddStatusId') or item.get('unitUltCustomAddStatusId')),
+    }
+
+unit_ult_custom_add_status_by_id = {}
+for item in extract_data_list(unit_ult_custom_add_status_data or []):
+    if not isinstance(item, dict):
+        continue
+    aid = normalize_id(item.get('Id') or item.get('id'))
+    if aid == '0':
+        continue
+    unit_ult_custom_add_status_by_id[aid] = {
+        'max_hp': safe_int(item.get('MaxHp') or item.get('maxHp'), 0),
+        'max_en': safe_int(item.get('MaxEn') or item.get('maxEn'), 0),
+        'max_attack': safe_int(item.get('MaxAttack') or item.get('maxAttack'), 0),
+        'max_defense': safe_int(item.get('MaxDefense') or item.get('maxDefense'), 0),
+        'max_mobility': safe_int(item.get('MaxMobility') or item.get('maxMobility'), 0),
+    }
+
+unit_ult_custom_group_config_by_group = {}
+for item in extract_data_list(unit_ult_custom_group_config_data or []):
+    if not isinstance(item, dict):
+        continue
+    gid = normalize_id(item.get('UnitUltGroupId') or item.get('unitUltGroupId'))
+    if gid == '0':
+        continue
+    unit_ult_custom_group_config_by_group[gid] = {
+        'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0'),
+        'material_set_id': normalize_id(item.get('UnitUltCustomMaterialSetId') or item.get('unitUltCustomMaterialSetId')),
+    }
+
+unit_ult_custom_material_set_by_id = {}
+for item in extract_data_list(unit_ult_custom_material_set_data or []):
+    if not isinstance(item, dict):
+        continue
+    mid = normalize_id(item.get('Id') or item.get('id'))
+    if mid == '0':
+        continue
+    unit_ult_custom_material_set_by_id[mid] = {
+        'item_id': normalize_id(item.get('ItemId') or item.get('itemId')),
+        'add_exp': safe_int(item.get('AddExp') or item.get('addExp'), 0),
+    }
+
+unit_ult_custom_available_materials = []
+for item in extract_data_list(unit_ult_custom_available_material_data or []):
+    if not isinstance(item, dict):
+        continue
+    iid = normalize_id(item.get('ItemId') or item.get('itemId'))
+    if iid == '0':
+        continue
+    unit_ult_custom_available_materials.append({
+        'item_id': iid,
+        'add_exp': safe_int(item.get('AddExp') or item.get('addExp'), 0),
+    })
+
+unit_ult_custom_missions_by_group = {}
+for item in extract_data_list(unit_ult_custom_mission_data or []):
+    if not isinstance(item, dict):
+        continue
+    gid = normalize_id(item.get('UnitUltGroupId') or item.get('unitUltGroupId'))
+    if gid == '0':
+        continue
+    unit_ult_custom_missions_by_group.setdefault(gid, []).append({
+        'id': normalize_id(item.get('Id') or item.get('id')),
+        'phase': safe_int(item.get('PhaseNumber') or item.get('phaseNumber'), 0),
+        'sort_order': safe_int(item.get('SortOrder') or item.get('sortOrder'), 0),
+        'condition_id': normalize_id(item.get('GameEventConditionId') or item.get('gameEventConditionId')),
+        'target_count': safe_int(item.get('TargetProgressCount') or item.get('targetProgressCount'), 0),
+        'desc_lang_id': normalize_id(item.get('DescriptionLanguageId') or item.get('descriptionLanguageId')),
+        'transition_id': normalize_id(item.get('TransitionId') or item.get('transitionId')),
+    })
+for gid in unit_ult_custom_missions_by_group:
+    unit_ult_custom_missions_by_group[gid].sort(key=lambda r: (r.get('phase') or 0, r.get('sort_order') or 0))
+
+unit_ult_custom_phases = []
+for item in extract_data_list(unit_ult_custom_phase_data or []):
+    if not isinstance(item, dict):
+        continue
+    unit_ult_custom_phases.append({
+        'phase': safe_int(item.get('PhaseNumber') or item.get('phaseNumber'), 0),
+        'max_level': safe_int(item.get('MaxLevel') or item.get('maxLevel'), 0),
+    })
+unit_ult_custom_phases.sort(key=lambda r: r.get('phase') or 0)
+
+unit_ult_custom_level_curve = []
+for item in extract_data_list(unit_ult_custom_level_info_data or []):
+    if not isinstance(item, dict):
+        continue
+    gr = safe_int(item.get('GrowthRate') or item.get('growthRate'), 0)
+    unit_ult_custom_level_curve.append({
+        'level': safe_int(item.get('Level') or item.get('level'), 0),
+        'exp': safe_int(item.get('Exp') or item.get('exp'), 0),
+        'growth_rate': gr,
+        'growth_pct': round(gr / 100.0, 2),  # master stores 0.01% units (500 → 5%)
+    })
+unit_ult_custom_level_curve.sort(key=lambda r: r.get('level') or 0)
+
+unit_ult_custom_weapons_by_unit = {}
+for item in extract_data_list(unit_ult_custom_weapon_data or []):
+    if not isinstance(item, dict):
+        continue
+    uid = normalize_id(item.get('UnitId') or item.get('unitId'))
+    wid = normalize_id(item.get('WeaponId') or item.get('weaponId'))
+    if uid == '0' or wid == '0':
+        continue
+    unit_ult_custom_weapons_by_unit.setdefault(uid, []).append({
+        'phase': safe_int(item.get('PhaseNumber') or item.get('phaseNumber'), 0),
+        'weapon_id': wid,
+    })
+
+unit_ult_custom_skills_by_group = {}
+for item in extract_data_list(unit_ult_custom_skill_data or []):
+    if not isinstance(item, dict):
+        continue
+    gid = normalize_id(item.get('UnitUltGroupId') or item.get('unitUltGroupId'))
+    if gid == '0':
+        continue
+    unit_ult_custom_skills_by_group.setdefault(gid, []).append({
+        'phase': safe_int(item.get('PhaseNumber') or item.get('phaseNumber'), 0),
+        'skill_set_id': normalize_id(item.get('UnitUltCustomSkillSetId') or item.get('unitUltCustomSkillSetId')),
+    })
+
+unit_ult_custom_skill_options_by_set = {}
+for item in extract_data_list(unit_ult_custom_skill_set_content_data or []):
+    if not isinstance(item, dict):
+        continue
+    sid = normalize_id(item.get('UnitUltCustomSkillSetId') or item.get('unitUltCustomSkillSetId'))
+    usid = normalize_id(item.get('UnitSkillId') or item.get('unitSkillId'))
+    if sid == '0' or usid == '0':
+        continue
+    unit_ult_custom_skill_options_by_set.setdefault(sid, []).append({
+        'sort_order': safe_int(item.get('SortOrder') or item.get('sortOrder'), 0),
+        'unit_skill_id': usid,
+    })
+for sid in unit_ult_custom_skill_options_by_set:
+    unit_ult_custom_skill_options_by_set[sid].sort(key=lambda r: r.get('sort_order') or 0)
+
+transition_map = {}
+for item in extract_data_list(transition_master_data or []):
+    if not isinstance(item, dict):
+        continue
+    tid = normalize_id(item.get('Id') or item.get('id'))
+    if tid == '0':
+        continue
+    transition_map[tid] = {
+        'type_index': safe_int(item.get('TransitionTypeIndex') or item.get('transitionTypeIndex'), 0),
+        'target_id1': normalize_id(item.get('TargetId1') or item.get('targetId1'), '0'),
+        'target_id2': normalize_id(item.get('TargetId2') or item.get('targetId2'), '0'),
+    }
+
 # Acquisition / pity / SSP material indexes (feature: obtain + banner exchange + SSP mats)
 def _index_acq_rows(data, id_keys):
     out = {}
@@ -12622,6 +12870,7 @@ for lang_code, paths in LANG_PATHS.items():
     item_lang_text = load_json(os.path.join(lang_dir, "m_item.json"))
     profile_title_lang_text = load_json(os.path.join(lang_dir, "m_profile_title.json"))
     mission_lang_text = load_json(os.path.join(lang_dir, "m_mission.json"))
+    ult_custom_mission_lang_text = load_json(os.path.join(lang_dir, "m_unit_ult_custom_mission.json"))
     stage_master_lang_text = load_json(os.path.join(lang_dir, "m_stage.json"))
     mech_lang = load_json(os.path.join(lang_dir, "m_mechanism.json"))
     op_lang_data = load_json(os.path.join(lang_dir, "m_option_parts.json"))
@@ -12645,6 +12894,7 @@ for lang_code, paths in LANG_PATHS.items():
     item_text_map = create_lang_text_map(item_lang_text) if item_lang_text else {}
     profile_title_text_map = create_lang_text_map(profile_title_lang_text) if profile_title_lang_text else {}
     mission_text_map = create_lang_text_map(mission_lang_text) if mission_lang_text else {}
+    ult_custom_mission_text_map = create_lang_text_map(ult_custom_mission_lang_text) if ult_custom_mission_lang_text else {}
     binder_text_map = create_lang_text_map(binder_lang_text) if binder_lang_text else {}
     stage_master_text_map = create_lang_text_map(stage_master_lang_text) if stage_master_lang_text else {}
     stage_condition_text_map = {}
@@ -12762,7 +13012,7 @@ for lang_code, paths in LANG_PATHS.items():
                 si = normalize_id(item.get('Id') or item.get('id')); ri = normalize_id(item.get('ResourceId') or item.get('resourceId'))
                 if si != '0' and ri != '0': srm[si] = ri
     
-    LANG_DATA[lang_code] = {'abil_name_map': anm, 'abil_desc_map': adm, 'lineage_list': ll, 'lineage_lookup': llk, 'series_name_map': snm, 'lang_text_map': ltm, 'char_id_map': cim, 'char_text_map': ctm, 'char_ser_map': csm, 'ser_set_map': ssm, 'series_list': sl, 'skill_text_map': stm, 'skill_trait_name_fallback': skill_trait_name_fallback, 'skill_trait_desc_fallback': skill_trait_desc_fallback, 'unit_skill_name_fallback': unit_skill_name_fallback, 'unit_skill_desc_fallback': unit_skill_desc_fallback, 'unit_skill_trait_name_fallback': unit_skill_trait_name_fallback, 'unit_skill_trait_desc_fallback': unit_skill_trait_desc_fallback, 'skill_resource_map': srm, 'unit_id_map': uim, 'unit_text_map': utm, 'supporter_id_map': supp_im, 'supporter_text_map': supp_tm, 'supporter_leader_text_map': supp_leader_tm, 'supporter_active_text_map': supp_active_tm, 'stage_text_map': stage_text_map, 'scenario_stage_text_map': scenario_stage_text_map, 'scenario_stage_series_text_map': scenario_stage_series_text_map, 'tower_event_text_map': tower_event_text_map, 'tower_stage_group_text_map': tower_stage_group_text_map, 'tower_stage_text_map': tower_stage_text_map, 'special_event_stage_text_map': special_event_stage_text_map, 'item_text_map': item_text_map, 'profile_title_text_map': profile_title_text_map, 'mission_text_map': mission_text_map, 'stage_master_text_map': stage_master_text_map, 'stage_condition_text_map': stage_condition_text_map, 'map_stage_condition_text_map': map_stage_condition_text_map, 'stage_event_area_skill_name_map': stage_event_area_skill_name_map, 'stage_event_area_skill_desc_map': stage_event_area_skill_desc_map, 'weapon_text_map': wtm2, 'weapon_attr_type_labels': weapon_attr_type_labels, 'weapon_attack_type_labels': weapon_attack_type_labels, 'weapon_trait_map': wtrm, 'weapon_capability_map': wcam, 'weapon_trait_detail_map': wtdm, 'mechanism_map': mech_map, 'op_text_map': op_text_map, 'binder_text_map': binder_text_map}
+    LANG_DATA[lang_code] = {'abil_name_map': anm, 'abil_desc_map': adm, 'lineage_list': ll, 'lineage_lookup': llk, 'series_name_map': snm, 'lang_text_map': ltm, 'char_id_map': cim, 'char_text_map': ctm, 'char_ser_map': csm, 'ser_set_map': ssm, 'series_list': sl, 'skill_text_map': stm, 'skill_trait_name_fallback': skill_trait_name_fallback, 'skill_trait_desc_fallback': skill_trait_desc_fallback, 'unit_skill_name_fallback': unit_skill_name_fallback, 'unit_skill_desc_fallback': unit_skill_desc_fallback, 'unit_skill_trait_name_fallback': unit_skill_trait_name_fallback, 'unit_skill_trait_desc_fallback': unit_skill_trait_desc_fallback, 'skill_resource_map': srm, 'unit_id_map': uim, 'unit_text_map': utm, 'supporter_id_map': supp_im, 'supporter_text_map': supp_tm, 'supporter_leader_text_map': supp_leader_tm, 'supporter_active_text_map': supp_active_tm, 'stage_text_map': stage_text_map, 'scenario_stage_text_map': scenario_stage_text_map, 'scenario_stage_series_text_map': scenario_stage_series_text_map, 'tower_event_text_map': tower_event_text_map, 'tower_stage_group_text_map': tower_stage_group_text_map, 'tower_stage_text_map': tower_stage_text_map, 'special_event_stage_text_map': special_event_stage_text_map, 'item_text_map': item_text_map, 'profile_title_text_map': profile_title_text_map, 'mission_text_map': mission_text_map, 'ult_custom_mission_text_map': ult_custom_mission_text_map, 'stage_master_text_map': stage_master_text_map, 'stage_condition_text_map': stage_condition_text_map, 'map_stage_condition_text_map': map_stage_condition_text_map, 'stage_event_area_skill_name_map': stage_event_area_skill_name_map, 'stage_event_area_skill_desc_map': stage_event_area_skill_desc_map, 'weapon_text_map': wtm2, 'weapon_attr_type_labels': weapon_attr_type_labels, 'weapon_attack_type_labels': weapon_attack_type_labels, 'weapon_trait_map': wtrm, 'weapon_capability_map': wcam, 'weapon_trait_detail_map': wtdm, 'mechanism_map': mech_map, 'op_text_map': op_text_map, 'binder_text_map': binder_text_map}
     if lang_code != DEFAULT_LANG:
         apply_en_lang_data_fallback(LANG_DATA[lang_code], LANG_DATA.get(DEFAULT_LANG))
     print(f"  {lang_code}: {len(ctm)} chars, {len(utm)} units")
@@ -17684,17 +17934,47 @@ def get_large_unit_cells(x, y):
     return [{'x': x, 'y': y}, {'x': x + 1, 'y': y}, {'x': x, 'y': y + 1}, {'x': x + 1, 'y': y + 1}]
 
 
+def get_pivot_square_cells(x, y, size):
+    """Axis-aligned square footprint: pivot at (x,y), extend +x/+y for PivotSquareSize (OA 1/2/10…)."""
+    ax = safe_int(x, 0)
+    ay = safe_int(y, 0)
+    n = max(1, safe_int(size, 1))
+    if n <= 1:
+        return [{'x': ax, 'y': ay}]
+    return [{'x': ax + dx, 'y': ay + dy} for dy in range(n) for dx in range(n)]
+
+
+def _occupied_area_row(occupied_area_id):
+    oaid = normalize_id(occupied_area_id)
+    if oaid == '0':
+        return None
+    return (occupied_area_lookup or {}).get(oaid)
+
+
 def get_map_unit_footprint_cells(unit_id, x, y, direction=None, for_buff=False):
-    """Footprint from m_unit OccupiedAreaId (2×2 large, 3 warship oriented)."""
+    """Footprint from m_unit OccupiedAreaId + m_occupied_area (square pivot, warship OA 3)."""
     uid = normalize_id(unit_id, '0')
     if uid == '0':
         return [{'x': x, 'y': y}]
     info = unit_info_map.get(uid, {})
     occupied_area_id = safe_int(info.get('occupied_area_id'), 1)
-    if occupied_area_id == 2:
-        return get_large_unit_cells(x, y)
+    # Warship / oriented OA 3 keeps dedicated facing math (PivotSquareSize 2 + ForwardArea 1).
     if occupied_area_id == 3:
         return get_warship_footprint_cells(x, y, direction, for_buff=for_buff)
+    oa = _occupied_area_row(occupied_area_id)
+    if oa:
+        psz = max(1, safe_int(oa.get('pivot_square_size'), 1))
+        directional = (
+            safe_int(oa.get('forward_area'), 0)
+            + safe_int(oa.get('rear_area'), 0)
+            + safe_int(oa.get('left_area'), 0)
+            + safe_int(oa.get('right_area'), 0)
+        )
+        # Axis-aligned squares: OA 1 (1×1), OA 2 (2×2), OA 10 Haro/props (3×3), etc.
+        if directional == 0:
+            return get_pivot_square_cells(x, y, psz)
+    if occupied_area_id == 2:
+        return get_large_unit_cells(x, y)
     return [{'x': x, 'y': y}]
 
 
@@ -17775,6 +18055,7 @@ def get_map_npc_unit_footprint_cells(npc_id, x, y, direction=None, for_buff=Fals
 
 
 def is_large_map_npc(npc_id, npc_entry=None):
+    """True when map footprint spans more than one cell (2×2, warship, Haro 3×3 / OA 10, …)."""
     npc_id = normalize_id(npc_id)
     if npc_entry is None: npc_entry = map_npc_lookup.get(npc_id, {})
     if str(npc_id) == '905200000102000002': return False
@@ -17788,7 +18069,12 @@ def is_large_map_npc(npc_id, npc_entry=None):
     if uid == '1095003400': return False
     ui = unit_info_map.get(uid, {})
     oaid = safe_int(ui.get('occupied_area_id'), 1)
-    return oaid in (2, 3)
+    if oaid in (2, 3):
+        return True
+    oa = _occupied_area_row(oaid)
+    if oa and safe_int(oa.get('pivot_square_size'), 1) > 1:
+        return True
+    return False
 
 def get_npc_unit_display(uid, usr, lc):
     uid = normalize_id(uid, '0')
@@ -25896,14 +26182,27 @@ def api_whats_new_status():
 
 
 def _jst_calendar_date_from_epoch_ms(ms):
-    """Asia/Tokyo calendar date for schedule StartDatetime (epoch ms), or None."""
+    """Asia/Tokyo calendar date for schedule StartDatetime (epoch ms), or None.
+
+    Windows often lacks tzdata: ZoneInfo('Asia/Tokyo') raises even when the
+    ZoneInfo class exists — must fall back to UTC+9 (same as _jst_today_date).
+    """
     if ms is None or ms <= 0:
         return None
     try:
+        ms_i = int(ms)
+    except (TypeError, ValueError):
+        return None
+    if ms_i <= 0:
+        return None
+    try:
         if ZoneInfo is not None:
-            dt = datetime.fromtimestamp(ms / 1000.0, tz=timezone.utc).astimezone(ZoneInfo('Asia/Tokyo'))
-        else:
-            dt = datetime.utcfromtimestamp(ms / 1000.0) + timedelta(hours=9)
+            try:
+                dt = datetime.fromtimestamp(ms_i / 1000.0, tz=timezone.utc).astimezone(ZoneInfo('Asia/Tokyo'))
+                return dt.date()
+            except Exception:
+                pass
+        dt = datetime.fromtimestamp(ms_i / 1000.0, tz=timezone.utc) + timedelta(hours=9)
         return dt.date()
     except Exception:
         return None
@@ -25915,7 +26214,7 @@ def _jst_today_date():
             return datetime.now(ZoneInfo('Asia/Tokyo')).date()
     except Exception:
         pass
-    return (datetime.utcnow() + timedelta(hours=9)).date()
+    return (datetime.now(timezone.utc) + timedelta(hours=9)).date()
 
 
 def _schedule_starts_on_jst_day(schedule_id, day):
@@ -25928,15 +26227,24 @@ def _schedule_starts_on_jst_day(schedule_id, day):
 
 
 def _stages_notice_ids_by_category_today():
-    """Eternal Road + Collaboration stages whose schedule starts today (JST) — /st pulse scope."""
+    """Browse categories whose stages open today (JST) — /st pulse scope.
+
+    Covers Eternal, Collaboration, Challenge (m_main_stage_challenge.ScheduleId),
+    and Special (m_stage.ScheduleId on special-event rows). Gacha/unit schedules
+    alone do not pulse Stages.
+    """
     today = _jst_today_date()
     eternal_ids = []
     for sid in (eternal_stage_map or {}):
         sid_n = normalize_id(sid)
         if sid_n in ('', '0'):
             continue
+        est = (eternal_stage_map or {}).get(sid_n, {})
         sm = (stage_map or {}).get(sid_n, {})
-        if _schedule_starts_on_jst_day(sm.get('schedule_id', '0'), today):
+        sched = normalize_id(
+            est.get('strategy_info_schedule_id') or sm.get('schedule_id') or '0'
+        )
+        if _schedule_starts_on_jst_day(sched, today):
             eternal_ids.append(sid_n)
     collab_ids = []
     for sid in (lite_scenario_event_stage_map or {}):
@@ -25948,9 +26256,29 @@ def _stages_notice_ids_by_category_today():
         sched = normalize_id(ssc.get('schedule_id') or sm.get('schedule_id') or '0')
         if _schedule_starts_on_jst_day(sched, today):
             collab_ids.append(sid_n)
+    challenge_ids = []
+    for sid in (main_scenario_stage_challenge_map or {}):
+        sid_n = normalize_id(sid)
+        if sid_n in ('', '0'):
+            continue
+        mc = (main_stage_challenge_map or {}).get(sid_n, {})
+        sm = (stage_map or {}).get(sid_n, {})
+        sched = normalize_id(mc.get('schedule_id') or sm.get('schedule_id') or '0')
+        if _schedule_starts_on_jst_day(sched, today):
+            challenge_ids.append(sid_n)
+    special_ids = []
+    for sid in (special_event_stage_map or {}):
+        sid_n = normalize_id(sid)
+        if sid_n in ('', '0'):
+            continue
+        sm = (stage_map or {}).get(sid_n, {})
+        if _schedule_starts_on_jst_day(sm.get('schedule_id', '0'), today):
+            special_ids.append(sid_n)
     return {
         'eternal': sorted(set(eternal_ids)),
         'collaboration_stage': sorted(set(collab_ids)),
+        'challenge_stage': sorted(set(challenge_ids)),
+        'special_stage': sorted(set(special_ids)),
     }
 
 
@@ -25958,7 +26286,7 @@ _STAGES_CATALOG_STATUS_CACHE = None  # (jst_date_iso, payload_base)
 
 
 def _stages_catalog_status_payload(last_seen_fp=''):
-    """Unread /st pulse for Eternal + Collaboration stages that open today (JST)."""
+    """Unread /st pulse for stages that open today (JST) — ER / Collab / Challenge / Special."""
     global _STAGES_CATALOG_STATUS_CACHE
     today = _jst_today_date()
     today_iso = today.isoformat()
@@ -25995,7 +26323,7 @@ def _stages_catalog_status_payload(last_seen_fp=''):
 
 @app.route('/api/stages/status')
 def api_stages_status():
-    """Unread Stages (/st) — Eternal Road + Collaboration stages opening today (JST)."""
+    """Unread Stages (/st) — categories with stages opening today (JST)."""
     last_seen_fp = request.args.get('last_seen_fp', '')
     payload = _stages_catalog_status_payload(last_seen_fp)
     r = jsonify(payload)
@@ -29833,6 +30161,313 @@ def _build_unit_ssp_materials(unit_id, lc):
     if not unlock and not cores:
         return None
     return {'unlock': unlock, 'custom_core': cores}
+
+
+def _ult_weapon_brief(weapon_id, lc, ld):
+    wid = normalize_id(weapon_id)
+    if wid == '0':
+        return None
+    wtm = ld.get('weapon_text_map') or {}
+    name = ''
+    # create_weapon_text_map: weapon id → [{full_id, text}, ...] (name first)
+    for k in (wid, wid[:-2] if len(wid) > 2 else None, wid[:-4] if len(wid) > 4 else None):
+        if not k:
+            continue
+        entries = wtm.get(k)
+        if entries and isinstance(entries, list) and entries:
+            name = str(entries[0].get('text') or '').strip()
+            if name:
+                break
+        elif isinstance(entries, str) and entries.strip():
+            name = entries.strip()
+            break
+    if not name:
+        wm = (weapon_info_map or {}).get(wid) or {}
+        nlid = normalize_id(wm.get('name_lang_id') or '0')
+        if nlid != '0':
+            entries = wtm.get(nlid)
+            if entries and isinstance(entries, list) and entries:
+                name = str(entries[0].get('text') or '').strip()
+            elif isinstance(entries, str):
+                name = entries.strip()
+    if not name:
+        name = f'Weapon {wid}'
+    return {'id': wid, 'name': name}
+
+
+def _ult_scale_add_stats(caps, growth_pct):
+    """Apply GrowthRate of Max* caps (dossier preview).
+
+    Master GrowthRate is 0.01% units (500 → 5%, 10000 → 100%). We store
+    growth_pct as GrowthRate/100 (so 50.0 == 50%). Client-style add uses
+    integer division: max * GrowthRate // 10000.
+    """
+    growth_rate = int(round(float(growth_pct or 0) * 100.0))
+    out = {}
+    for k, v in (caps or {}).items():
+        out[k] = (safe_int(v, 0) * growth_rate) // 10000
+    return out
+
+
+def _ult_challenge_stages_for_series(series_challenge_id, lc):
+    """All Challenge Main Stages for a series (incl. HARD) — Alteration clear-all missions."""
+    sid = normalize_id(series_challenge_id)
+    if sid == '0':
+        return []
+    ld = get_lang_data(lc)
+    rows = []
+    for stid, ch in (main_scenario_stage_challenge_map or {}).items():
+        if normalize_id(ch.get('main_stage_series_challenge_id', '0')) != sid:
+            continue
+        ssc = (scenario_stage_map or {}).get(normalize_id(stid), {})
+        sn = safe_int(ch.get('stage_number'), 0)
+        name = resolve_scenario_stage_name(ld, ssc.get('title_name_lang_id', '0'), stid)
+        is_hard = _challenge_stage_is_hard(ssc.get('thumbnail_resource_id'))
+        rows.append({
+            'id': normalize_id(stid),
+            'stage_number': sn,
+            'name': name,
+            'is_hard': bool(is_hard),
+            'challenge_series_id': sid,
+        })
+    rows.sort(key=lambda r: ((1 if r.get('is_hard') else 0), r.get('stage_number') or 0, r.get('id') or ''))
+    return rows
+
+
+# Ult Custom distributes Alteration Level across 5 status tracks (HP/EN/ATK/DEF/MOB).
+# Client GetPhaseMissionUnlockTotalLevel ≈ phase MaxLevel × these tracks (Phase 2 → 100).
+_ULT_CUSTOM_STATUS_TRACKS = 5
+
+
+def _ult_phase_mission_unlock_total_lv(max_level):
+    """Total Alt Lv required to unlock that phase's Alteration Missions (in-game gate)."""
+    ml = safe_int(max_level, 0)
+    if ml <= 0:
+        return 0
+    return ml * _ULT_CUSTOM_STATUS_TRACKS
+
+
+def _build_unit_ult_alteration(unit_id, lc):
+    """ULT Alteration (Unit Ult Custom) dossier for UR Ultimate forms."""
+    uid = normalize_id(unit_id)
+    cfg = (unit_ult_custom_config_by_unit or {}).get(uid)
+    if not cfg:
+        return None
+    ug = (unit_ult_group_by_unit or {}).get(uid) or {}
+    gid = normalize_id(ug.get('group_id') or '0')
+    if gid == '0':
+        # Config without group row — still show stats if present
+        for mid, meta in (unit_ult_group_by_unit or {}).items():
+            if mid == uid:
+                gid = normalize_id(meta.get('group_id') or '0')
+                ug = meta
+                break
+    ld = get_lang_data(lc)
+    group_cfg = (unit_ult_custom_group_config_by_group or {}).get(gid) or {}
+    add_caps = (unit_ult_custom_add_status_by_id or {}).get(cfg.get('add_status_id') or '0') or {}
+    # Level previews at phase caps
+    curve_by_lv = {r['level']: r for r in (unit_ult_custom_level_curve or [])}
+    phase_unlock_by_phase = {}
+    phase_previews = []
+    for ph in (unit_ult_custom_phases or []):
+        max_lv = safe_int(ph.get('max_level'), 0)
+        unlock_total = _ult_phase_mission_unlock_total_lv(max_lv)
+        phase_unlock_by_phase[safe_int(ph.get('phase'), 0)] = unlock_total
+        crow = curve_by_lv.get(max_lv) or {}
+        gp = crow.get('growth_pct') or 0
+        scaled = _ult_scale_add_stats(add_caps, gp)
+        phase_previews.append({
+            'phase': ph.get('phase'),
+            'max_level': max_lv,
+            'growth_pct': gp,
+            'unlock_total_alt_lv': unlock_total,
+            'stats': {
+                'HP': scaled.get('max_hp', 0),
+                'EN': scaled.get('max_en', 0),
+                'ATK': scaled.get('max_attack', 0),
+                'DEF': scaled.get('max_defense', 0),
+                'MOB': scaled.get('max_mobility', 0),
+            },
+        })
+
+    # Materials
+    primary = None
+    mat_set_id = normalize_id(group_cfg.get('material_set_id') or '0')
+    if mat_set_id != '0':
+        ms = (unit_ult_custom_material_set_by_id or {}).get(mat_set_id) or {}
+        brief = _item_reward_brief(ms.get('item_id'), lc)
+        if brief:
+            brief = dict(brief)
+            brief['add_exp'] = safe_int(ms.get('add_exp'), 0)
+            primary = brief
+    available = []
+    for row in (unit_ult_custom_available_materials or []):
+        brief = _item_reward_brief(row.get('item_id'), lc)
+        if not brief:
+            continue
+        brief = dict(brief)
+        brief['add_exp'] = safe_int(row.get('add_exp'), 0)
+        available.append(brief)
+
+    # Weapons (this UR form)
+    weapons_out = []
+    for wrow in (unit_ult_custom_weapons_by_unit or {}).get(uid) or []:
+        wb = _ult_weapon_brief(wrow.get('weapon_id'), lc, ld)
+        if wb:
+            weapons_out.append({'phase': wrow.get('phase'), 'weapon': wb})
+
+    # Skills (group-shared pick-one) — Alteration Bonus after that phase's missions
+    skills_out = []
+    for srow in (unit_ult_custom_skills_by_group or {}).get(gid) or []:
+        opts = []
+        for opt in (unit_ult_custom_skill_options_by_set or {}).get(srow.get('skill_set_id') or '0') or []:
+            sk = resolve_unit_skill(opt.get('unit_skill_id'), ld, opt.get('sort_order') or 0)
+            if sk:
+                opts.append(sk)
+        sph = safe_int(srow.get('phase'), 0)
+        skills_out.append({
+            'phase': srow.get('phase'),
+            'unlock_total_alt_lv': phase_unlock_by_phase.get(sph) or _ult_phase_mission_unlock_total_lv(
+                next((p.get('max_level') for p in (unit_ult_custom_phases or []) if safe_int(p.get('phase'), 0) == sph), 0)
+            ),
+            'options': opts,
+        })
+
+    # Missions + stage links
+    mission_tm = ld.get('ult_custom_mission_text_map') or {}
+    en_tm = (LANG_DATA.get(DEFAULT_LANG) or {}).get('ult_custom_mission_text_map') or {}
+    missions_out = []
+    for m in (unit_ult_custom_missions_by_group or {}).get(gid) or []:
+        dlid = normalize_id(m.get('desc_lang_id') or '0')
+        desc = str(mission_tm.get(dlid) or en_tm.get(dlid) or '').strip()
+        cond = (game_event_condition_map or {}).get(normalize_id(m.get('condition_id') or '0')) or {}
+        ctype = safe_int(cond.get('GameEventConditionTypeIndex') or cond.get('gameEventConditionTypeIndex'), 0)
+        tv1 = normalize_id(cond.get('TargetValue1') or cond.get('targetValue1') or '0')
+        trans = (transition_map or {}).get(normalize_id(m.get('transition_id') or '0')) or {}
+        ttype = safe_int(trans.get('type_index'), 0)
+        t1 = normalize_id(trans.get('target_id1') or '0')
+
+        stage_link = None
+        challenge_stages = []
+        challenge_series_id = ''
+        challenge_series_name = ''
+
+        # Eternal Road Hard clear (transition type 5 / condition 110)
+        stage_id_hit = '0'
+        if ttype == 5 and t1 != '0':
+            stage_id_hit = t1
+        elif ctype == 110 and tv1 != '0':
+            stage_id_hit = tv1
+        if stage_id_hit != '0':
+            st_name = _find_eternal_stage_name(stage_id_hit, ld) or ''
+            if not st_name:
+                ssc = (scenario_stage_map or {}).get(stage_id_hit, {})
+                st_name = resolve_scenario_stage_name(ld, ssc.get('title_name_lang_id', '0'), stage_id_hit)
+            stage_link = {
+                'id': stage_id_hit,
+                'name': st_name or stage_id_hit,
+                'kind': 'eternal' if stage_id_hit in (eternal_stage_map or {}) else 'stage',
+            }
+
+        # Clear all Challenge Main Stages incl. HARD (condition 330 / transition 54)
+        series_for_challenge = '0'
+        if ctype == 330 and tv1 != '0':
+            ch = (main_scenario_stage_challenge_map or {}).get(tv1) or {}
+            series_for_challenge = normalize_id(ch.get('main_stage_series_challenge_id') or '0')
+        elif ttype == 54:
+            # Prefer series pad from sibling deliver/raise missions (transition 30)
+            for sib in (unit_ult_custom_missions_by_group or {}).get(gid) or []:
+                st = (transition_map or {}).get(normalize_id(sib.get('transition_id') or '0')) or {}
+                if safe_int(st.get('type_index'), 0) == 30:
+                    series_for_challenge = normalize_id(st.get('target_id1') or '0')
+                    if series_for_challenge != '0':
+                        break
+            if series_for_challenge == '0':
+                for sib in (unit_ult_custom_missions_by_group or {}).get(gid) or []:
+                    sc = (game_event_condition_map or {}).get(normalize_id(sib.get('condition_id') or '0')) or {}
+                    if safe_int(sc.get('GameEventConditionTypeIndex') or 0, 0) == 330:
+                        ref = normalize_id(sc.get('TargetValue1') or '0')
+                        ch = (main_scenario_stage_challenge_map or {}).get(ref) or {}
+                        series_for_challenge = normalize_id(ch.get('main_stage_series_challenge_id') or '0')
+                        break
+        if series_for_challenge != '0':
+            challenge_series_id = series_for_challenge
+            challenge_series_name = resolve_challenge_series_name(ld, series_for_challenge)
+            challenge_stages = _ult_challenge_stages_for_series(series_for_challenge, lc)
+
+        # Series pad for development-diagram / deliver missions (transition 30)
+        series_id = ''
+        series_name = ''
+        if ttype == 30 and t1 != '0':
+            series_id = t1
+            series_name = str((ld.get('series_name_map') or {}).get(t1) or '').strip()
+            if not series_name:
+                series_name = resolve_challenge_series_name(ld, t1)
+
+        mph = safe_int(m.get('phase'), 0)
+        missions_out.append({
+            'id': m.get('id'),
+            'phase': m.get('phase'),
+            'sort_order': m.get('sort_order'),
+            'target_count': m.get('target_count'),
+            'description': desc,
+            'condition_type': ctype,
+            'unlock_total_alt_lv': phase_unlock_by_phase.get(mph) or 0,
+            'stage': stage_link,
+            'challenge_series_id': challenge_series_id or None,
+            'challenge_series_name': challenge_series_name or None,
+            'challenge_stages': challenge_stages or None,
+            'series_id': series_id or None,
+            'series_name': series_name or None,
+        })
+
+    # Sibling UR forms
+    siblings = []
+    for mem in (unit_ult_group_members or {}).get(gid) or []:
+        mid = normalize_id(mem.get('unit_id') or '0')
+        if mid == '0' or mid == uid:
+            continue
+        tix = safe_int(mem.get('ult_type_index'), 0)
+        if tix not in (2, 3):  # UR1 / UR2 only
+            continue
+        uinfo = (unit_info_map or {}).get(mid) or {}
+        lid = ld.get('unit_id_map', {}).get(mid, '')
+        name = ld.get('unit_text_map', {}).get(lid, '') if lid else ''
+        siblings.append({
+            'id': mid,
+            'name': name or mid,
+            'ult_type_index': tix,
+            'thum': find_list_thumb(uinfo.get('resource_ids', []), mid, 'images/unit_portraits') or '',
+        })
+
+    ult_type = safe_int(ug.get('ult_type_index'), 0)
+    live = bool(group_cfg)  # has schedule + material set
+    final_max_lv = 0
+    for ph in (unit_ult_custom_phases or []):
+        final_max_lv = max(final_max_lv, safe_int(ph.get('max_level'), 0))
+    return {
+        'group_id': gid,
+        'ult_type_index': ult_type,
+        'live': live,
+        'schedule_id': group_cfg.get('schedule_id') or '0',
+        'status_tracks': _ULT_CUSTOM_STATUS_TRACKS,
+        'total_alt_lv_max': final_max_lv * _ULT_CUSTOM_STATUS_TRACKS,
+        'max_add_stats': {
+            'HP': add_caps.get('max_hp', 0),
+            'EN': add_caps.get('max_en', 0),
+            'ATK': add_caps.get('max_attack', 0),
+            'DEF': add_caps.get('max_defense', 0),
+            'MOB': add_caps.get('max_mobility', 0),
+        },
+        'phases': phase_previews,
+        'level_curve': list(unit_ult_custom_level_curve or []),
+        'primary_material': primary,
+        'available_materials': available,
+        'weapons': weapons_out,
+        'skills': skills_out,
+        'missions': missions_out,
+        'siblings': siblings,
+    }
 
 
 def _banner_exchange_item_label(row, lc, ld):
@@ -34876,7 +35511,7 @@ def get_unit(unit_id):
         if stat_mode_arg not in ('normal', 'sp', 'ssp'):
             stat_mode_arg = 'normal'
         cond_for_ranking = request.args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
-        ck = f"u_{unit_id}_{lc}_ssp19_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_bp3_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        ck = f"u_{unit_id}_{lc}_ssp20_ult2_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_bp3_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_preserialized(cached, ck, private=True, max_age=3600, convert_images=False)
@@ -35312,6 +35947,9 @@ def get_unit(unit_id):
             ssp_mats = _build_unit_ssp_materials(unit_id, lc)
             if ssp_mats:
                 result['ssp_materials'] = ssp_mats
+            ult_alt = _build_unit_ult_alteration(unit_id, lc)
+            if ult_alt:
+                result['ult_alteration'] = ult_alt
         if _tpid:
             result['transform_partner_id'] = _tpid
         if view_ranking:
