@@ -6422,9 +6422,10 @@ mods.push({wpnTypes,inc:parseInt(inc,10)||0});
 sources.forEach(txt=>{
 const s=String(txt||'');
 let m;
-const reAndVigor=/when\s+piloting\s+(.+?)\s+and\s+vigor\s+is\s+["'“”]?\w+["'“”]?\s+or\s+(?:higher|greater|above),?\s*increase\s+max\s+range\s+of\s+(.+?)\s+by\s+(\d+)/gi;
+/* Allow intervening lines (e.g. Support Attack/Counter +1) between vigor gate and range-up — Ribbons / Reborns EX. */
+const reAndVigor=/when\s+piloting\s+(.+?)\s+and\s+vigor\s+is\s+["'“”]?\w+["'“”]?\s+or\s+(?:higher|greater|above),?[\s\S]{0,280}?increase\s+max\s+range\s+of\s+(.+?)\s+by\s+(\d+)/gi;
 while((m=reAndVigor.exec(s))!==null)push(m[1],m[2],m[3]);
-const reIfVigor=/when\s+piloting\s+(.+?),\s*if\s+vigor\s+is\s+["'“”]?\w+["'“”]?\s+or\s+(?:higher|greater|above),?\s*(?:the\s+)?max\s+range\s+of\s+(.+?)\s+(?:weapons?\s+)?is\s+increased\s+by\s+(\d+)/gi;
+const reIfVigor=/when\s+piloting\s+(.+?),\s*if\s+vigor\s+is\s+["'“”]?\w+["'“”]?\s+or\s+(?:higher|greater|above),?[\s\S]{0,280}?(?:the\s+)?max\s+range\s+of\s+(.+?)\s+(?:weapons?\s+)?is\s+increased\s+by\s+(\d+)/gi;
 while((m=reIfVigor.exec(s))!==null)push(m[1],m[2],m[3]);
 const reSimple=/when\s+piloting\s+(.+?),[\s\S]{0,160}?increase\s+max\s+range\s+of\s+(.+?)\s+by\s+(\d+)/gi;
 while((m=reSimple.exec(s))!==null){if(/\band\s+vigor\b/i.test(m[1]))continue;push(m[1],m[2],m[3])}
@@ -16190,7 +16191,7 @@ if(unitName.includes(reqUnit)||reqUnit.includes(unitBare)){
 mods.push({reqVigor,wpnTypes,rangeInc});
 }
 }
-const reAndVigor=/when\s+piloting\s+(.+?)\s+and\s+vigor\s+is\s+["'“”]?(\w+)["'“”]?\s+or\s+(?:higher|greater|above),?\s*increase\s+max\s+range\s+of\s+(.+?)\s+by\s+(\d+)/gi;
+const reAndVigor=/when\s+piloting\s+(.+?)\s+and\s+vigor\s+is\s+["'“”]?(\w+)["'“”]?\s+or\s+(?:higher|greater|above),?[\s\S]{0,280}?increase\s+max\s+range\s+of\s+(.+?)\s+by\s+(\d+)/gi;
 while((m=reAndVigor.exec(txt))!==null){
 const reqUnit=m[1].trim().toLowerCase();
 const reqVigor=m[2].trim().toLowerCase();

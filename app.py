@@ -6213,7 +6213,8 @@ def _collect_unit_combat_count_atk_meta(ac):
             mx = int(m.group(2))
             if per <= 0 or mx <= 0:
                 continue
-            max_stacks = max(1, min(5, (mx + per - 1) // per))
+            # Stacks from trait text only — do not hard-cap at 5 (e.g. +3% up to 18% ⇒ 6).
+            max_stacks = max(1, (mx + per - 1) // per)
             return {
                 'per': per,
                 'max': mx,
@@ -6249,7 +6250,8 @@ def _collect_unit_damage_taken_def_meta(ac):
             mx = int(m.group(2))
             if per <= 0 or mx <= 0:
                 continue
-            max_stacks = max(1, min(5, (mx + per - 1) // per))
+            # Same as combat-count ATK: derive stacks from (up to N%), not a fixed 5-stack ceiling.
+            max_stacks = max(1, (mx + per - 1) // per)
             return {
                 'per': per,
                 'max': mx,
@@ -9807,23 +9809,42 @@ def create_skill_text_map(d):
 def calc_growth_char(base, mx, ri):
     gr = GROWTH_MAP.get(str(ri), 60); return math.floor(base + ((mx - base) * gr / 100))
 
+def _char_ability_blob_mentions_support_counter(full_text):
+    """True when trait blob is Support Attack / Counter–themed (EN slash or \"or\", JA/TW/HK)."""
+    if not full_text or not isinstance(full_text, str):
+        return False
+    tl = full_text.lower()
+    if 'support attack/counter' in tl:
+        return True
+    # Official EN LV traits: "When … executing Support Attack or Counter, …"
+    if re.search(r'support\s+attack\s+or\s+counter\b', tl):
+        return True
+    if re.search(r'when executing a counter or support counter', tl):
+        return True
+    if 'support counter' in tl and 'support attack' in tl:
+        return True
+    if '支援攻撃' in full_text or '支援反撃' in full_text:
+        return True
+    if '支援攻擊' in full_text or '支援反擊' in full_text:
+        return True
+    if re.search(r'「支援攻[擊撃][／/]反[擊撃]」', full_text):
+        return True
+    return False
+
+
 def _char_support_counter_atk_excluded_from_dossier_stats(full_text):
     """Support Attack/Counter-themed ability text with non-squad MS ATK% — combat situational; omit from dossier pilot ATK shorthand.
 
     Excludes wording like \"Increase own ATK …\" / MS ATK bundled with SA/C traits. Pure \"Increase squad ATK …\"
-    (no intervening squad token before ATK when using the canonical pattern) stays eligible for map-NPC merges."""
+    (no intervening squad token before ATK when using the canonical pattern) stays eligible for map-NPC merges.
+
+    Damage-dealt % (tag affinity / A-Laws) is never parsed as Ranged/Melee by extract_stat_percent_char;
+    SA/C \"increase ATK by N%\" must not either — it is Combat/DC only."""
     if not full_text or not isinstance(full_text, str):
         return False
-    tl = full_text.lower()
-    support_ctx = (
-        'support attack/counter' in tl
-        or '支援攻擊' in full_text
-        or '支援反擊' in full_text
-        or '支援攻撃' in full_text
-        or '支援反撃' in full_text
-    )
-    if not support_ctx:
+    if not _char_ability_blob_mentions_support_counter(full_text):
         return False
+    tl = full_text.lower()
     # Exclude non-squad MS ATK boosts only (Increase squad ATK uses \"squad\" before atk).
     atk_pct = bool(re.search(r'increases?\s+(?!squad\s)(?:own\s+|ms\s+)?(?:atk|attack)\b', tl))
     atk_pct = atk_pct or '攻擊力' in full_text or '攻击力' in full_text or '攻撃力' in full_text
@@ -17135,7 +17156,7 @@ def _npc_map_own_ms_attack_line_in_sa_counter_blob(line, trait_blob_full):
     Leaves \"Increase squad ATK …\" lines untouched even in the same multi-line blob as Support Attack/Counter."""
     if not trait_blob_full or not line:
         return False
-    if 'support attack/counter' not in trait_blob_full.lower():
+    if not _char_ability_blob_mentions_support_counter(trait_blob_full):
         return False
     if _is_conditional_stat_text(line):
         return False
@@ -34722,8 +34743,8 @@ def get_character(char_id):
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
         view_ranking = request.args.get('view', '').strip().lower() == 'ranking'
-        # r18: Max EX Evasion/回避率 is not a dossier CP column — skip it; Ranged+Accuracy (PEP) only.
-        ck = f"c_{char_id}_{lc}_r18_{1 if view_ranking else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        # r19: SA/C \"Support Attack or Counter\" + ATK% must not inflate dossier Ranged/Melee (Combat/DC only).
+        ck = f"c_{char_id}_{lc}_r19_{1 if view_ranking else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             # Images already CDN-converted when cached; skip re-walk + re-jsonify under GIL.

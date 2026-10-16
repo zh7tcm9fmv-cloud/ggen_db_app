@@ -91,7 +91,11 @@ def main() -> int:
     os.chdir(ROOT)
     os.environ.setdefault("GGEN_TIER_USE_BUNDLED_EN", "1")
 
-    from app import extract_stat_percent_char, _extract_pilot_weapon_stat_pct_from_text  # noqa: E402
+    from app import (  # noqa: E402
+        extract_stat_percent_char,
+        _extract_pilot_weapon_stat_pct_from_text,
+        _char_support_counter_atk_excluded_from_dossier_stats,
+    )
 
     if not args.traits.is_file():
         print(f"Missing traits file: {args.traits}", file=sys.stderr)
@@ -165,6 +169,25 @@ def main() -> int:
         fails.append(
             f"Sthesia Max EX legacy canary: expected Ranged=15 Reaction=15 from {legacy_line!r}, got {got_legacy}"
         )
+
+    # Ribbons Support LV: "Support Attack or Counter" + increase ATK — Combat/DC only, not dossier Ranged/Melee.
+    checked += 1
+    sa_blob = (
+        "When piloting units with the specified types and executing Support Attack or Counter,\n"
+        "increase ATK by 15%,\n"
+        "and reduce weapon EN consumption by 15%."
+    )
+    if not _char_support_counter_atk_excluded_from_dossier_stats(sa_blob):
+        fails.append("SA/C canary: Support Attack or Counter blob must exclude ATK from dossier")
+    got_sa = extract_stat_percent_char("increase ATK by 15%,", sa_blob)
+    if got_sa.get("Ranged") or got_sa.get("Melee"):
+        fails.append(f"SA/C canary: ATK% must not map to Ranged/Melee, got {got_sa}")
+    # A-Laws damage dealt must never look like dossier ATK.
+    checked += 1
+    dmg_line = "increase damage dealt to enemies by 15%."
+    got_dmg = extract_stat_percent_char(dmg_line, dmg_line)
+    if got_dmg:
+        fails.append(f"A-Laws damage-dealt canary: expected empty dict, got {got_dmg}")
 
     # Scan EN traits: Evasion in increase lists must never inflate dossier Reaction.
     _EVASION_INCREASE = re.compile(
