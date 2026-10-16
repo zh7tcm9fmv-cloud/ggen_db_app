@@ -16,7 +16,14 @@
         <img class="banner-logo" id="bannerLogo" alt="" decoding="async">
       </div>
       <div class="hud">
-        <div class="pity">Exchange pts <b id="pts">0</b></div>
+        <div class="hud-pity-stack">
+          <div class="hard-pity" id="hardPityHud">
+            <img class="hard-pity-ur tier-icon" alt="UR" data-rarity="ur" width="22" height="22" decoding="async" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_RarityIcon_UR.webp{% else %}/static/images/UI/UI_Common_RarityIcon_UR.webp{% endif %}">
+            <span class="hard-pity-label" id="hardPityLabel">Unit Guaranteed</span>
+            <b id="hardPityLeft">100</b>
+          </div>
+          <div class="pity">Exchange pts <b id="pts">0</b></div>
+        </div>
         <div class="actions">
           <button class="pull btn-designline" type="button" id="one"><small>DRAW ONCE</small></button>
           <button class="pull pull--ten btn-designline" type="button" id="ten"><small>DRAW 10</small></button>

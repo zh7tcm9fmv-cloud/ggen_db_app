@@ -285,6 +285,8 @@ def _app_js_bundle_version_tag():
         ('js', 'ggen_15.js'),
         ('js', 'tag_matrix.js'),
         ('js', 'debuff_matrix.js'),
+        ('js', 'gacha_sim.js'),
+        ('css', 'gacha_sim.css'),
         ('css', 'app_shell.css'),
         ('css', 'app_shell_bundle.min.css'),
         ('css', 'unit_best_pilots.css'),
@@ -23581,7 +23583,7 @@ _GACHA_SIM_POOL_CACHE = {}
 
 
 def _gacha_sim_enrich_pity(data):
-    """Ensure pool JSON has cumulative hard-pity table + count (old shards omit these)."""
+    """Ensure pool JSON has one-shot Nth-pull UR pity table + count (old shards omit these)."""
     if not isinstance(data, dict):
         return data
     gid = normalize_id(data.get('gasha_id') or '0')

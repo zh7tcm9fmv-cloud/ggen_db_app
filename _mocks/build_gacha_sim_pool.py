@@ -384,7 +384,7 @@ def build(gasha_id: str, lang: str = "EN") -> dict:
         ["SSRU", cat_row("multi_10th", "SSR", "unit")],
         ["SSRS", cat_row("multi_10th", "SSR", "supporter")],
     ]
-    # Cumulative Nth-pull guaranteed UR (official "100th Total" / 累計100回目 table).
+    # One-shot Nth total pull guaranteed UR (official "100th Total" / 累計100回目 table).
     pity = [
         ["URU", cat_row("pity_100", "UR", "unit")],
         ["URS", cat_row("pity_100", "UR", "supporter")],

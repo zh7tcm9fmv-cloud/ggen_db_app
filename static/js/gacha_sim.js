@@ -121,10 +121,13 @@ window.GgenGachaSim = (function () {
     if (rot) rot.setAttribute("aria-label", tt("gs_rotate_hint_aria"));
     var pity = root.querySelector(".hud .pity");
     if (pity) {
-      var pts = pity.querySelector("#pts");
-      var n = pts ? pts.textContent : "0";
+      var ptsEl = pity.querySelector("#pts");
+      var n = ptsEl ? ptsEl.textContent : "0";
       pity.innerHTML = tt("gs_exchange_pts") + " <b id=\"pts\">" + n + "</b>";
     }
+    var hardLbl = document.getElementById("hardPityLabel");
+    if (hardLbl) hardLbl.textContent = tt("gs_hard_pity_unit");
+    try { syncHardPityUi(); } catch (eHp) {}
     syncPullButtons();
     var optCol = root.querySelector("label.opt-row[for], label.opt-row");
     var optRows = root.querySelectorAll("label.opt-row");
@@ -295,7 +298,7 @@ window.GgenGachaSim = (function () {
     ur: CDN + "UI/UI_Common_RarityIcon_UR.webp"
   };
   (function wireSessionTierIcons() {
-    var root = document.getElementById("sessionPanel") || document;
+    var root = document.getElementById("gachaSimRoot") || document;
     root.querySelectorAll(".tier-icon[data-rarity]").forEach(function (img) {
       var r = String(img.getAttribute("data-rarity") || "").toLowerCase();
       if (RARITY_ICON[r]) {
@@ -520,7 +523,9 @@ window.GgenGachaSim = (function () {
   var TENTH = [
     ["URU", 3], ["URS", 1], ["SSRU", 80], ["SSRS", 16]
   ];
-  /* Cumulative Nth-pull guaranteed UR (official pity_100 / 累計100回目). */
+  /* One-shot Nth total pull guaranteed UR (official pity_100 / 累計100回目).
+     Only the first FixCount pull in the session (Exchange Pts / pull index) —
+     not recurring at 200/300, and not “since last UR”. */
   var PITY = [
     ["URU", 100], ["URS", 0], ["SSRU", 0], ["SSRS", 0]
   ];
@@ -561,23 +566,6 @@ window.GgenGachaSim = (function () {
     var n = Number(poolMeta && poolMeta.pity_count);
     if (n > 0) return n;
     return 100;
-  }
-
-  /** Pulls since last UR in this session (0 right after a UR). */
-  function pullsSinceLastUr() {
-    if (sim.pullsSinceUr != null && Number.isFinite(Number(sim.pullsSinceUr))) {
-      return Math.max(0, Number(sim.pullsSinceUr) || 0);
-    }
-    var draws = sim.draws || [];
-    var since = 0;
-    for (var i = draws.length - 1; i >= 0; i--) {
-      var d = draws[i];
-      if (!d) continue;
-      if (String(d.rarity || "").toLowerCase() === "ur") break;
-      since++;
-    }
-    sim.pullsSinceUr = since;
-    return since;
   }
 
   function pullButtonLabel(n) {
@@ -678,6 +666,7 @@ window.GgenGachaSim = (function () {
       bulk_mode: !!data.bulk_mode
     };
     try { syncPullButtons(); } catch (e0) {}
+    try { syncHardPityUi(); } catch (eHp0) {}
     var logoEl = document.getElementById("bannerLogo");
     if (logoEl) {
       if (logo) {
@@ -739,8 +728,9 @@ window.GgenGachaSim = (function () {
       SR: [{ name: "Char's Zaku II", role: "Durability", art: "unit_portraits/ub_g0010u00100.webp", w: 1 }],
       R: [{ name: "GM", role: "Attack", art: "unit_portraits/ub_g0010u00300.webp", w: 1 }]
     };
-    poolMeta = { gasha_id: "", source: "demo", bulk_mode: false, display_pull_n: 0 };
+    poolMeta = { gasha_id: "", source: "demo", bulk_mode: false, display_pull_n: 0, pity_count: 100 };
     try { syncPullButtons(); } catch (e1) {}
+    try { syncHardPityUi(); } catch (eHp1) {}
     renderLiveGallery();
     if (typeof renderSession === "function") renderSession();
   }
@@ -806,7 +796,6 @@ window.GgenGachaSim = (function () {
     return {
       pulls: 0,
       pts: 0,
-      pullsSinceUr: 0,
       history: [],
       draws: [],
       firstPickupAt: {},
@@ -850,10 +839,9 @@ window.GgenGachaSim = (function () {
           });
         });
       }
-      var loaded = {
+      return {
         pulls: Number(o.pulls) || 0,
         pts: Number(o.pts) || 0,
-        pullsSinceUr: o.pullsSinceUr != null ? Math.max(0, Number(o.pullsSinceUr) || 0) : null,
         history: history,
         draws: draws,
         firstPickupAt: o.firstPickupAt && typeof o.firstPickupAt === "object" ? o.firstPickupAt : {},
@@ -868,15 +856,6 @@ window.GgenGachaSim = (function () {
           : { ur: 0, ssr: 0, sr: 0, r: 0 },
         bulkSpent: !!o.bulkSpent
       };
-      if (loaded.pullsSinceUr == null) {
-        var since = 0;
-        for (var di = draws.length - 1; di >= 0; di--) {
-          if (draws[di] && String(draws[di].rarity || "").toLowerCase() === "ur") break;
-          since++;
-        }
-        loaded.pullsSinceUr = since;
-      }
-      return loaded;
     } catch (e) {
       return emptySim();
     }
@@ -910,7 +889,6 @@ window.GgenGachaSim = (function () {
       localStorage.setItem(simStorageKey(), JSON.stringify({
         pulls: sim.pulls,
         pts: pts,
-        pullsSinceUr: Math.max(0, Number(sim.pullsSinceUr) || 0),
         history: sim.history.slice(0, HIST_CAP),
         draws: (sim.draws || []).slice(0, DRAW_CAP),
         firstPickupAt: sim.firstPickupAt,
@@ -922,8 +900,42 @@ window.GgenGachaSim = (function () {
   }
 
   function syncPtsUi() {
-    document.getElementById("pts").textContent = String(pts);
-    document.getElementById("ptsAfter").textContent = String(pts);
+    var p = document.getElementById("pts");
+    if (p) p.textContent = String(pts);
+    var pa = document.getElementById("ptsAfter");
+    if (pa) pa.textContent = String(pts);
+    syncHardPityUi();
+  }
+
+  /** Pulls done this session — Pts and sim.pulls stay in sync (Pts = pull count). */
+  function sessionPullsDone() {
+    return Math.max(0, Number(sim.pulls) || 0, Number(pts) || 0);
+  }
+
+  /** Remaining pulls until one-shot Nth-total UR (counts down from FixCount). */
+  function hardPityRemaining() {
+    var hardN = hardPityCount();
+    if (!(hardN > 0)) return 0;
+    return Math.max(0, hardN - sessionPullsDone());
+  }
+
+  function syncHardPityUi() {
+    var el = document.getElementById("hardPityHud");
+    var left = document.getElementById("hardPityLeft");
+    if (!el || !left) return;
+    var hardN = hardPityCount();
+    var rem = hardPityRemaining();
+    /* Always visible for normal pools — countdown stays at 0 after the one-shot Nth pull. */
+    var show = hardN > 0 && !isBulkTicketPool();
+    el.hidden = !show;
+    el.classList.toggle("is-spent", show && rem === 0);
+    left.textContent = String(rem);
+    var urImg = el.querySelector(".hard-pity-ur");
+    if (urImg && RARITY_ICON.ur) {
+      urImg.src = RARITY_ICON.ur;
+    }
+    var lbl = document.getElementById("hardPityLabel");
+    if (lbl) lbl.textContent = tt("gs_hard_pity_unit");
   }
   syncPtsUi();
 
@@ -1737,6 +1749,7 @@ window.GgenGachaSim = (function () {
     saveSim();
     renderSession();
     try { syncPullButtons(); } catch (eR) {}
+    try { syncHardPityUi(); } catch (eHpR) {}
     hideCardHover();
     hideUrAcqPop();
   };
@@ -1802,26 +1815,24 @@ window.GgenGachaSim = (function () {
     var tail = guaranteeTailN();
     var softStart = Math.max(0, n - tail);
     var hardN = hardPityCount();
-    var sinceUr = pullsSinceLastUr();
     for (var i = 0; i < n; i++) {
+      var pullIndex = pullsBefore + i + 1;
       /* Soft: last of a 10-pull / last guarantee_tail of bulk ticket pulls. */
       var useSoft = (n === 10 && i === 9) || (n >= 20 && i >= softStart);
-      /* Hard: cumulative pulls since last UR hit FixCount (usually 100) — mid-pack OK. */
-      var useHard = hardN > 0 && (sinceUr + 1) >= hardN;
+      /* Hard: only the first FixCount-th total pull this session (Pts/pull index).
+         Mid-pack OK (e.g. 91 + 10 → slot that lands on 100). Never 200/300. */
+      var useHard = hardN > 0 && pullIndex === hardN;
       var table = useHard ? PITY : (useSoft ? TENTH : NORMAL);
       var bucket = pickWeighted(table);
       var item = pickItem(bucket);
       var rarity = bucket.indexOf("UR") === 0 ? "ur" : bucket.indexOf("SSR") === 0 ? "ssr" : bucket === "SR" ? "sr" : "r";
       var kind = (bucket === "URS" || bucket === "SSRS") ? "supp" : "unit";
       var uid = unitKey(item);
-      var pullIndex = pullsBefore + i + 1;
       /* New = first acquire of a UR/SSR unit this session (pilot inset when charArt exists). */
       var canNew = kind === "unit" && (rarity === "ur" || rarity === "ssr");
       var isNew = canNew && uid && !isAlreadyOwned(uid) && !seenThisPull[uid];
       if (uid) seenThisPull[uid] = true;
       if (isNew && sim.firstPickupAt[uid] == null) sim.firstPickupAt[uid] = pullIndex;
-      if (rarity === "ur") sinceUr = 0;
-      else sinceUr += 1;
       out.push({
         id: uid,
         name: item.name,
@@ -1839,7 +1850,6 @@ window.GgenGachaSim = (function () {
         hardPity: !!useHard
       });
     }
-    sim.pullsSinceUr = sinceUr;
     Object.keys(seenThisPull).forEach(function (id) { sim.simOwned[id] = true; });
     return out;
   }
