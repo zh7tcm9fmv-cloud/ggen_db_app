@@ -5159,6 +5159,7 @@ def is_map_weapon_after_move_unit_weapon(unit_id, wid, wt):
     u = normalize_id(unit_id) if unit_id else ''
     return bool(u and (u, w) in MAP_WEAPON_AFTER_MOVE_PAIRS)
 EX_WEAPON_OVERLAY = '/static/images/WeaponIcon/UI_Battle_Button_FooterList_IconBaseEX_MiniIcon.webp'
+ULT_WEAPON_OVERLAY = '/static/images/Rarity/UI_Common_Icon_ULT_Mask.webp'
 ABILITY_FRAME_OVERLAY = '/static/images/UI/UI_CharaAbilities_Tmb_Square_Normal_Frame.webp'
 ABILITY_FRAME_BASE = '/static/images/UI/UI_CharaAbilities_Tmb_Square_Normal_Base.webp'
 DEFAULT_CORRECTION = {'power_rate': 120, 'en_rate': 90, 'hit_rate': 100, 'crit_rate': 100, 'map_ammo': 1}
@@ -35511,7 +35512,7 @@ def get_unit(unit_id):
         if stat_mode_arg not in ('normal', 'sp', 'ssp'):
             stat_mode_arg = 'normal'
         cond_for_ranking = request.args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
-        ck = f"u_{unit_id}_{lc}_ssp20_ult2_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_bp3_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        ck = f"u_{unit_id}_{lc}_ssp20_ult4_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_bp3_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_preserialized(cached, ck, private=True, max_age=3600, convert_images=False)
@@ -35781,13 +35782,27 @@ def get_unit(unit_id):
         terr_ssp = [{'name': tn, 'symbol': TERRAIN_SYMBOLS.get(str(terr_ssp_levels.get(tn,1)), TERRAIN_SYMBOLS['1']), 'level': terr_ssp_levels.get(tn,1), 'type_icon': f"/static/images/Terrain/{TERRAIN_TYPE_ICON_MAP.get(tn,'')}" if TERRAIN_TYPE_ICON_MAP.get(tn) else '', 'level_icon': _ssp_level_icon(tn), 'ssp_enhanced': tn in ssp_enhanced_terrains} for tn in ['Space','Atmospheric','Ground','Sea','Underwater']]
         weapons = []
         if not view_ranking:
+            _ult_wpn_ids = {
+                normalize_id(r.get('weapon_id') or '0')
+                for r in (unit_ult_custom_weapons_by_unit or {}).get(unit_id) or []
+                if normalize_id(r.get('weapon_id') or '0') != '0'
+            }
             for wp in unit_weapon_map.get(unit_id, []):
                 wid = wp['id']; wm = weapon_info_map.get(wid, {}); wn = ld['weapon_text_map'].get(wm.get('name_lang_id','0'), 'Unknown')
                 ai = wm.get('attribute','0'); wt = wm.get('weapon_type','1'); ainfo = WEAPON_ATTR_MAP.get(ai, {'label':'Unknown','icon':''})
                 attr_label = resolve_weapon_attribute_label(ai, ld)
                 at = resolve_attack_attribute_types(wm.get('attack_attribute', '0'), ld)
                 ws = resolve_weapon_stats(wm, weapon_status_map, weapon_correction_map, ld['weapon_trait_map'], ld['weapon_capability_map'], growth_pattern_map, weapon_trait_change_map, ld['weapon_trait_detail_map'], wid, lang_code=lc, unit_id=unit_id)
-                ic = resolve_weapon_icon(wt, ai, ubr, info.get('resource_ids'), wid=wid, unit_id=unit_id)
+                is_ult_wpn = normalize_id(wid) in _ult_wpn_ids
+                # ULT Alteration weapons: same portrait + rainbow frame as EX, ULT Mask corner (not EX mini).
+                ic = resolve_weapon_icon('2' if is_ult_wpn else wt, ai, ubr, info.get('resource_ids'), wid=wid, unit_id=unit_id)
+                if is_ult_wpn:
+                    ic = {
+                        'icon': ic.get('icon') or '',
+                        'overlay': ULT_WEAPON_OVERLAY,
+                        'is_ex': False,
+                        'is_map': False,
+                    }
                 if is_map_weapon_recovery_supply_mp(unit_id, wid, wt):
                     at = [{'label': 'MP', 'icon': game_image_public_url(MAP_WEAPON_SUPPLY_TYPE_MP_ICON), 'is_supply': True}]
                 pw, en, acc, crit = ws.get('power',0), ws.get('en',0), ws.get('accuracy',0), ws.get('critical',0)
@@ -35819,6 +35834,9 @@ def get_unit(unit_id):
                 lv5t = trl
                 ip = any(_trait_text_indicates_preemptive_strike(tr) for tr in lv5t + sat)
                 icc = eval_icon_color(lv5t, wt); sicc = eval_icon_color(lv5t + sat, wt)
+                if is_ult_wpn:
+                    icc = 'ex'
+                    sicc = 'ex'
                 isw = wid.endswith('90') or wid.endswith('80')
                 siu = ''
                 if isw:
@@ -35834,7 +35852,7 @@ def get_unit(unit_id):
                             break
                     if not siu:
                         siu = portrait or ''
-                weapons.append({'id': wid, 'name': wn, 'attribute': attr_label, 'attribute_id': ai, 'weapon_type': wt, 'attack_attribute': str(wm.get('attack_attribute', '0') or '0'), 'attack_types': at, 'levels': levels, 'power': pw, 'min_range': ws['range_min'], 'max_range': ws['range_max'], 'en_cost': en, 'accuracy': acc, 'critical': crit, 'ammo': am, 'traits': trl, 'usage_restrictions': ws['usage_restrictions'], 'sort': wp['sort'], 'icon': ic['icon'], 'overlay': ic['overlay'], 'is_ex': ic['is_ex'], 'is_map': ic['is_map'], 'icon_color': icc, 'ssp_icon_color': sicc, 'map_range_type': wm.get('map_range_type', '0'), 'map_coords': ws.get('map_coords', []), 'shooting_coords': ws.get('shooting_coords', []), 'is_dash': ws.get('is_dash', False), 'map_dash_dual_wide': ws.get('map_dash_dual_wide', False), 'map_dash_dual_end_coords': ws.get('map_dash_dual_end_coords', []), 'map_single_pou': ws.get('map_single_pou', False), 'is_ssp_weapon': isw, 'ssp_icon': siu, 'ssp_power_bonus': ssp_power, 'ssp_ammo_bonus': ssp_ammo, 'ssp_range_bonus': ssp_range, 'ssp_traits': sat, 'is_preemptive': ip})
+                weapons.append({'id': wid, 'name': wn, 'attribute': attr_label, 'attribute_id': ai, 'weapon_type': wt, 'attack_attribute': str(wm.get('attack_attribute', '0') or '0'), 'attack_types': at, 'levels': levels, 'power': pw, 'min_range': ws['range_min'], 'max_range': ws['range_max'], 'en_cost': en, 'accuracy': acc, 'critical': crit, 'ammo': am, 'traits': trl, 'usage_restrictions': ws['usage_restrictions'], 'sort': wp['sort'], 'icon': ic['icon'], 'overlay': ic['overlay'], 'is_ex': ic['is_ex'], 'is_map': ic['is_map'], 'icon_color': icc, 'ssp_icon_color': sicc, 'map_range_type': wm.get('map_range_type', '0'), 'map_coords': ws.get('map_coords', []), 'shooting_coords': ws.get('shooting_coords', []), 'is_dash': ws.get('is_dash', False), 'map_dash_dual_wide': ws.get('map_dash_dual_wide', False), 'map_dash_dual_end_coords': ws.get('map_dash_dual_end_coords', []), 'map_single_pou': ws.get('map_single_pou', False), 'is_ssp_weapon': isw, 'is_ult_weapon': is_ult_wpn, 'ssp_icon': siu, 'ssp_power_bonus': ssp_power, 'ssp_ammo_bonus': ssp_ammo, 'ssp_range_bonus': ssp_range, 'ssp_traits': sat, 'is_preemptive': ip})
             weapons.sort(key=lambda w: (0 if w['weapon_type']=='3' else 1, w['sort']))
         sicons = []
         if info.get('is_ultimate', False): sicons.append(ULT_ICON)
