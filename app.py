@@ -35634,7 +35634,7 @@ def get_unit(unit_id):
         if stat_mode_arg not in ('normal', 'sp', 'ssp'):
             stat_mode_arg = 'normal'
         cond_for_ranking = request.args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
-        ck = f"u_{unit_id}_{lc}_ssp20_ult5_usk1_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_bp3_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        ck = f"u_{unit_id}_{lc}_ssp20_ult6_usk1_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_bp3_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_preserialized(cached, ck, private=True, max_age=3600, convert_images=False)
@@ -35916,15 +35916,9 @@ def get_unit(unit_id):
                 at = resolve_attack_attribute_types(wm.get('attack_attribute', '0'), ld)
                 ws = resolve_weapon_stats(wm, weapon_status_map, weapon_correction_map, ld['weapon_trait_map'], ld['weapon_capability_map'], growth_pattern_map, weapon_trait_change_map, ld['weapon_trait_detail_map'], wid, lang_code=lc, unit_id=unit_id)
                 is_ult_wpn = normalize_id(wid) in _ult_wpn_ids
-                # ULT Alteration weapons: same portrait + rainbow frame as EX, ULT Mask corner (not EX mini).
-                ic = resolve_weapon_icon('2' if is_ult_wpn else wt, ai, ubr, info.get('resource_ids'), wid=wid, unit_id=unit_id)
-                if is_ult_wpn:
-                    ic = {
-                        'icon': ic.get('icon') or '',
-                        'overlay': ULT_WEAPON_OVERLAY,
-                        'is_ex': False,
-                        'is_map': False,
-                    }
+                # ULT Alteration weapons: SSP-style unit portrait + corner ULT badge (not EX/ULT_Mask overlay —
+                # overlay collided with Preemptive Strike corner badge).
+                ic = resolve_weapon_icon(wt, ai, ubr, info.get('resource_ids'), wid=wid, unit_id=unit_id)
                 if is_map_weapon_recovery_supply_mp(unit_id, wid, wt):
                     at = [{'label': 'MP', 'icon': game_image_public_url(MAP_WEAPON_SUPPLY_TYPE_MP_ICON), 'is_supply': True}]
                 pw, en, acc, crit = ws.get('power',0), ws.get('en',0), ws.get('accuracy',0), ws.get('critical',0)
@@ -35956,12 +35950,10 @@ def get_unit(unit_id):
                 lv5t = trl
                 ip = any(_trait_text_indicates_preemptive_strike(tr) for tr in lv5t + sat)
                 icc = eval_icon_color(lv5t, wt); sicc = eval_icon_color(lv5t + sat, wt)
-                if is_ult_wpn:
-                    icc = 'ex'
-                    sicc = 'ex'
                 isw = wid.endswith('90') or wid.endswith('80')
                 siu = ''
-                if isw:
+                # Portrait chip for SSP custom-core weapons and ULT Alteration weapons (client SSP layout).
+                if isw or is_ult_wpn:
                     siu = ''
                     _ssp_cands = [ubr] + list(info.get('resource_ids') or [])
                     for _c in _ssp_cands:
