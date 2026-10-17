@@ -23934,8 +23934,9 @@ _SPI_API_PAYLOAD_CACHE = {
 _SPI_HTTP_BODY_CACHE = {}
 _SPI_HTTP_BODY_CACHE_LOCK = threading.Lock()
 _SPI_HTTP_BODY_CACHE_MAX = 12
-_SPI_DROP_ROW_KEYS = frozenset({'meta', 'detail_lines', 'calibration'})
-# Always keep these breakdown axes even at 0 so the dossier does not look like they were unscored.
+# Row lean / wire dedupe live in sp_investment_rank (strip_spi_wire_bloat).
+# Kept names for any residual imports/tests that referenced the old frozensets.
+_SPI_DROP_ROW_KEYS = frozenset({'meta', 'detail_lines', 'calibration', 'rarity_icon'})
 _SPI_KEEP_BREAKDOWN_ZERO = frozenset({'terrain', 'max_debuff'})
 
 _SPI_ER_UI = {
@@ -24254,8 +24255,11 @@ def _sp_investment_localize_payload(payload, lc):
     if units:
         _spi_localize_board_rows(units.get('sp'), 'unit', lc, tag_map)
         _spi_localize_board_rows(units.get('ssp'), 'unit', lc, tag_map)
-        out['sp'] = units.get('sp') or out.get('sp') or {}
-        out['ssp'] = units.get('ssp') or out.get('ssp') or {}
+        # Keep wire single-copy (same as _sp_investment_prepare_payload).
+        if isinstance(units.get('sp'), dict):
+            out.pop('sp', None)
+        if isinstance(units.get('ssp'), dict):
+            out.pop('ssp', None)
     else:
         _spi_localize_board_rows(out.get('sp'), 'unit', lc, tag_map)
         _spi_localize_board_rows(out.get('ssp'), 'unit', lc, tag_map)
@@ -24266,47 +24270,23 @@ def _sp_investment_localize_payload(payload, lc):
 
 
 def _sp_investment_lean_row(row):
-    if not isinstance(row, dict):
-        return row
-    out = {k: v for k, v in row.items() if k not in _SPI_DROP_ROW_KEYS}
-    bd = out.get('breakdown')
-    if isinstance(bd, dict):
-        out['breakdown'] = {
-            k: v
-            for k, v in bd.items()
-            if v or k in _SPI_KEEP_BREAKDOWN_ZERO
-        }
-    recs = out.get('recommended_units')
-    if isinstance(recs, list) and not recs:
-        out.pop('recommended_units', None)
-    rec_ch = out.get('recommended_characters')
-    if isinstance(rec_ch, list) and not rec_ch:
-        out.pop('recommended_characters', None)
-    return out
+    """Delegate to sp_investment_rank.lean_spi_board_row (wire slim + rec cards)."""
+    try:
+        import sp_investment_rank as _sir
+        return _sir.lean_spi_board_row(row)
+    except Exception:
+        if not isinstance(row, dict):
+            return row
+        return {k: v for k, v in row.items() if k not in _SPI_DROP_ROW_KEYS}
 
 
 def _sp_investment_strip_payload_bloat(payload):
-    """Drop unused scorer debug fields from older published builds."""
-    if not isinstance(payload, dict):
+    """Lean rows + drop duplicate top-level sp/ssp when units.* is present."""
+    try:
+        import sp_investment_rank as _sir
+        return _sir.strip_spi_wire_bloat(payload)
+    except Exception:
         return payload
-    for side_key in ('units', 'characters', 'sp', 'ssp'):
-        side = payload.get(side_key)
-        if not isinstance(side, dict):
-            continue
-        # units/characters: {sp:{bucket:[rows]}} or legacy flat buckets
-        sample = next(iter(side.values()), None) if side else None
-        if isinstance(sample, dict) and any(isinstance(v, list) for v in sample.values()):
-            for mode, buckets in side.items():
-                if not isinstance(buckets, dict):
-                    continue
-                for bname, rows in list(buckets.items()):
-                    if isinstance(rows, list):
-                        buckets[bname] = [_sp_investment_lean_row(r) for r in rows]
-        else:
-            for bname, rows in list(side.items()):
-                if isinstance(rows, list):
-                    side[bname] = [_sp_investment_lean_row(r) for r in rows]
-    return payload
 
 
 def _spi_entity_is_nonplayable_shell(eid, kind):
@@ -24451,8 +24431,12 @@ def _sp_investment_prepare_payload(path):
         # Always run attach: fills missing thumbs only (skips rows that already have thum).
         _sp_investment_attach_board(units.get('sp'), 'unit')
         _sp_investment_attach_board(units.get('ssp'), 'unit')
-        payload['sp'] = units.get('sp') or payload.get('sp') or {}
-        payload['ssp'] = units.get('ssp') or payload.get('ssp') or {}
+        # Do NOT re-alias payload['sp']/['ssp'] to units boards — json.dumps would
+        # serialize the same rows twice (~+0.5MB gzip). Client prefers units.*.
+        if isinstance(units.get('sp'), dict):
+            payload.pop('sp', None)
+        if isinstance(units.get('ssp'), dict):
+            payload.pop('ssp', None)
     else:
         for board_key in ('sp', 'ssp'):
             _sp_investment_attach_board(payload.get(board_key), 'unit')
@@ -24477,6 +24461,8 @@ def _sp_investment_prepare_payload(path):
     except Exception:
         if not payload.get('scoring_guide'):
             payload['scoring_guide'] = {}
+    # Attach may re-stamp thumb+thum; re-run wire slim so gzip stays single-copy.
+    _sp_investment_strip_payload_bloat(payload)
     # Convert CDN image URLs once so jsonify_cacheable can skip re-walking.
     payload = convert_image_urls(payload)
     cached['mtime'] = mtime
@@ -24514,8 +24500,8 @@ def api_sp_investment():
     votes_data = _spi_votes_load()
     votes_mtime = int(_SPI_VOTES_CACHE.get('mtime') or 0)
     payload = _spi_payload_with_community_votes(payload, votes_data)
-    # kr_rec_loc: localize recommended_* names + KR dossier i18n (2026-10).
-    ck = f"sp_investment_v1_lean_sdgate_abil_details_kr_rec_loc_{lc}_{int(mtime)}_{votes_mtime}"
+    # wire_nodup: drop duplicate top-level sp/ssp + slim recommended_* (2026-10 audit).
+    ck = f"sp_investment_v1_wire_nodup_recslim_{lc}_{int(mtime)}_{votes_mtime}"
     etag = _api_etag_from_cache_key(ck) if (_API_ETAG_ENABLED and ck) else None
     cc = _api_cache_control_header(public=True, max_age=300, private=False, no_store=False)
     if etag and _api_if_none_match_matches(request.headers.get('If-None-Match'), etag):

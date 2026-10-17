@@ -44,3 +44,7 @@ This database is mostly static. Browse + Top 10 must feel instant. If performanc
 - Nested-quote `outerHTML='<div…'>` inside template-literal `onerror` on huge `app.js` lines (breaks parse → site dead)
 - Reintroducing a cold `/tl` spinner on every open (dropping early boot fetch, session soft paint, delayed spinner, or nav/idle timeline prefetch)
 - Idle `/tl` prefetch that `JSON.stringify`s the full timeline into `sessionStorage` (or fires within ~2s of browse paint) and races `/u` `/c` detail opens
+
+## Performance audit loop
+
+When the owner asks to audit or optimize load: follow `.cursor/rules/performance-audit-optimize.mdc` — re-measure live, refresh the GGen load performance canvas, then optimize from that priority list (feature-safe, one lever, before/after numbers).

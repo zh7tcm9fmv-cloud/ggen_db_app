@@ -1,0 +1,33 @@
+# Performance audit → optimize (reusable bar)
+
+Owner workflow (Oct 2026): when asking to **audit website performance** or **optimize load**, do not invent a one-off checklist. Re-measure live, refresh the load dashboard canvas, then pick **one** safe lever from that audit.
+
+## Hard rule
+
+1. **Measure first** — probe live `ggendb.up.railway.app` (or owner’s local target):
+   - `GET /health` → `memory.rss_mb`, `msy_adaptive.band`, browse_cache
+   - Critical APIs cold + warm TTFB + gzip body: `/api/characters`, `/api/units`, `/api/banner_timeline`, `/api/sp_investment`, `/api/tag_matrix`, `/api/debuff_matrix`, `/`, shell JS/CSS
+2. **Dashboard** — update or recreate the Cursor canvas **GGen load performance** with the new numbers (charts + priority table). Link it in the reply. This is the standing load audit artifact for the project.
+3. **Optimize from the dashboard** — start at the highest priority that is **feature-safe** (no look/UX change, no banned Oct-outage patterns). One lever per change set when possible; verify before the next.
+4. **Never break snappy** — honor `snappy-static-cache.mdc` + `live-perf-never-break-snappy.mdc`. Feature-complete ≠ done if browse/detail/`/tl` feel worse.
+5. **Re-probe after the fix** — same paths; report before/after gzip and TTFB. Say **local vs live** honestly.
+
+## Default priority order (update when audit says otherwise)
+
+| Priority | Lever | Notes |
+|---|---|---|
+| P0 | SPI `/api/sp_investment` wire size | Slim/dedupe only; keep board + dossier features (`strip_spi_wire_bloat`) |
+| P1 | Cold timeline / units TTFB | Prewarm / published path — never slim+hydrate `/tl` |
+| P2 | `app.min.js` weight | No TB lazy-split without proven snappy UX |
+| P3 | RSS / MSY pressure | Adaptive cache already; never sync-trim on `/health` |
+| Keep | CDN images + published matrix gzip | Do not boot-prewarm `/tm` `/dm` into RAM |
+
+## Banned “optimizations”
+
+Idle `ranking_bulk`, idle SPI prefetch, `/tl` slim+hydrate, full-viewport blur, VIDEO_PROXY, stripping `convert_image_urls`, font-stack “speed” edits, Railway portrait catalogs.
+
+## Reply habit
+
+- Open with the canvas link + top 3 findings.
+- State the lever you will take next (or took).
+- After shipping: before/after numbers; **fixed locally; not live yet** until deploy.
