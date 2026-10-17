@@ -4149,6 +4149,8 @@ page_path:p,
 page_location:loc,
 page_title:document.title||'GGen Eternal Database'
 });
+/* First SPA hit should not wait on idle — boot GTM so the queued event can flush. */
+try{if(typeof window.__ggenLoadGtm==='function')window.__ggenLoadGtm()}catch(_){}
 }catch(_){}
 }
 function ggenSyncDocumentTitleForTab(tab){

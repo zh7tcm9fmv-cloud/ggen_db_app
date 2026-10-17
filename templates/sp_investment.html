@@ -18,29 +18,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="{{ og_image_url }}">
 <link rel="icon" type="image/webp" href="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Gallery_Comics_Logo_Eternalbase.webp{% else %}/static/images/UI/UI_Gallery_Comics_Logo_Eternalbase.webp{% endif %}">
-<!-- Google Tag Manager (after first paint) -->
-<script>
-window.dataLayer=window.dataLayer||[];
-window.__ggenLoadGtm=function(){
-  if(window.__ggenGtmStarted)return;
-  window.__ggenGtmStarted=1;
-  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-NJB85F92');
-};
-(function(){
-  function go(){try{window.__ggenLoadGtm()}catch(_){}}
-  function schedule(){
-    if(window.requestIdleCallback)requestIdleCallback(go,{timeout:2500});
-    else setTimeout(go,1);
-  }
-  if(document.readyState==='complete')schedule();
-  else window.addEventListener('load',schedule);
-})();
-</script>
-<!-- End Google Tag Manager -->
+{% include '_gtm.html' %}
 {% if spi_soft_launch %}
 <meta name="robots" content="noindex, nofollow">
 {% else %}
@@ -81,10 +59,7 @@ try {
 </script>
 </head>
 <body class="spi-page">
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJB85F92"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
+{% include '_gtm_noscript.html' %}
 <div class="bg-pattern" aria-hidden="true"></div>
 
 <header class="app-header spi-app-header">

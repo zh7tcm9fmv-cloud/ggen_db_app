@@ -158,29 +158,7 @@
   }catch(_){}
 })();
 </script>
-<!-- Google Tag Manager (after first paint — keeps character browse boot snappy) -->
-<script>
-window.dataLayer=window.dataLayer||[];
-window.__ggenLoadGtm=function(){
-  if(window.__ggenGtmStarted)return;
-  window.__ggenGtmStarted=1;
-  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-NJB85F92');
-};
-(function(){
-  function go(){try{window.__ggenLoadGtm()}catch(_){}}
-  function schedule(){
-    if(window.requestIdleCallback)requestIdleCallback(go,{timeout:8000});
-    else setTimeout(go,4000);
-  }
-  if(document.readyState==='complete')schedule();
-  else window.addEventListener('load',schedule);
-})();
-</script>
-<!-- End Google Tag Manager -->
+{% include '_gtm.html' %}
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -272,10 +250,7 @@ window.__ggenLoadGtm=function(){
 {% include '_defer_brand_fonts.html' %}
 </head>
 <body>
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJB85F92"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
+{% include '_gtm_noscript.html' %}
 <div class="bg-pattern"></div>
 <header class="app-header">
 <div class="header-inner">

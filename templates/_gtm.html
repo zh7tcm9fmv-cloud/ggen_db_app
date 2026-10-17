@@ -1,0 +1,35 @@
+{# Google Tag Manager — after first paint; same container on every public surface.
+   SPA tabs push dataLayer event `ggen_spa_page_view` (see ggenTrackSpaPageView in app.js).
+   GTM must map that Custom Event → GA4 page_view with page_path / page_location / page_title.
+   Put {% include '_gtm_noscript.html' %} near top of <body> where possible. #}
+<script>
+window.dataLayer=window.dataLayer||[];
+window.__ggenLoadGtm=function(){
+  if(window.__ggenGtmStarted)return;
+  window.__ggenGtmStarted=1;
+  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-NJB85F92');
+};
+(function(){
+  function go(){try{window.__ggenLoadGtm()}catch(_){}}
+  function schedule(){
+    /* Idle after load so browse first paint stays snappy; timeout caps wait (was 8s on / — undercounted bounce days). */
+    if(window.requestIdleCallback)requestIdleCallback(go,{timeout:2500});
+    else setTimeout(go,1200);
+  }
+  /* Engaged users: load on first interaction so SPA hits are not waiting on idle. */
+  ['pointerdown','keydown','scroll','touchstart'].forEach(function(ev){
+    window.addEventListener(ev,go,{once:true,passive:true,capture:true});
+  });
+  /* Leaving before idle: still try to boot GTM so queued dataLayer events can flush. */
+  window.addEventListener('pagehide',go,{once:true});
+  document.addEventListener('visibilitychange',function(){
+    if(document.visibilityState==='hidden')go();
+  },{once:true});
+  if(document.readyState==='complete')schedule();
+  else window.addEventListener('load',schedule);
+})();
+</script>

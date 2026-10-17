@@ -40,8 +40,10 @@
   .site-footer-links .site-footer-sep { opacity: 0.45; user-select: none; }
   .site-footer-disclaimer { display: block; margin: 10px auto 0; max-width: 42rem; padding: 0 8px; font-size: 10px; line-height: 1.45; color: #64748b; }
 </style>
+{% include '_gtm.html' %}
 </head>
 <body>
+{% include '_gtm_noscript.html' %}
 <div class="wrap">
 {% block content %}{% endblock %}
 <p class="back"><a class="ui-notice-anchor" href="/">← Back to GGen Eternal Database</a></p>
