@@ -7833,3 +7833,103 @@ def attach_ssp_gains_to_unit_boards(sp_rows: list[dict], ssp_rows: list[dict]) -
             sp["ssp_gains"] = gains
             sp["paired_letter"] = ssp.get("letter") or ""
             ssp["paired_letter"] = sp.get("letter") or ""
+
+
+# ── Wire payload slim (API /ip) ──────────────────────────────────────────────
+# Published JSON historically duplicated units.sp/ssp as top-level sp/ssp and
+# shipped full recommended_* dossiers. Client prefers units.*; recommended cards
+# only need thumb/meta fields (see static/js/sp_investment.js renderRecommended*).
+
+_SPI_DROP_ROW_KEYS = frozenset({"meta", "detail_lines", "calibration", "rarity_icon"})
+_SPI_KEEP_BREAKDOWN_ZERO = frozenset({"terrain", "max_debuff"})
+_SPI_REC_KEEP_KEYS = (
+    "id",
+    "name",
+    "letter",
+    "role",
+    "rarity",
+    "is_ultimate",
+    "acquisition_icon",
+    "specialty",
+    "thum",
+    "thumb",
+    "role_icon",
+)
+
+
+def _spi_dedupe_thumb_fields(row: dict) -> None:
+    """Keep `thum`; drop identical `thumb` (API historically set both)."""
+    thum = row.get("thum")
+    thumb = row.get("thumb")
+    if thum and thumb == thum:
+        row.pop("thumb", None)
+    elif thumb and not thum:
+        row["thum"] = row.pop("thumb")
+
+
+def lean_spi_recommended_entry(rec: Any) -> Any:
+    if not isinstance(rec, dict):
+        return rec
+    out = {k: rec[k] for k in _SPI_REC_KEEP_KEYS if k in rec}
+    _spi_dedupe_thumb_fields(out)
+    return out
+
+
+def lean_spi_board_row(row: Any) -> Any:
+    """Drop scorer debug + unused chrome; slim recommended_* for dossier cards."""
+    if not isinstance(row, dict):
+        return row
+    out = {k: v for k, v in row.items() if k not in _SPI_DROP_ROW_KEYS}
+    bd = out.get("breakdown")
+    if isinstance(bd, dict):
+        out["breakdown"] = {
+            k: v for k, v in bd.items() if v or k in _SPI_KEEP_BREAKDOWN_ZERO
+        }
+    for rk in ("recommended_units", "recommended_characters"):
+        recs = out.get(rk)
+        if not isinstance(recs, list):
+            continue
+        if not recs:
+            out.pop(rk, None)
+        else:
+            out[rk] = [lean_spi_recommended_entry(x) for x in recs]
+    _spi_dedupe_thumb_fields(out)
+    return out
+
+
+def _spi_map_board_rows(side: dict, mapper) -> None:
+    if not isinstance(side, dict):
+        return
+    sample = next(iter(side.values()), None) if side else None
+    if isinstance(sample, dict) and any(isinstance(v, list) for v in sample.values()):
+        for _mode, buckets in side.items():
+            if not isinstance(buckets, dict):
+                continue
+            for bname, rows in list(buckets.items()):
+                if isinstance(rows, list):
+                    buckets[bname] = [mapper(r) for r in rows]
+    else:
+        for bname, rows in list(side.items()):
+            if isinstance(rows, list):
+                side[bname] = [mapper(r) for r in rows]
+
+
+def strip_spi_wire_bloat(payload: dict | None) -> dict | None:
+    """Lean rows + drop top-level sp/ssp when units.* already holds the boards.
+
+    Safe for feature parity: JS reads ((payload.units||{}).sp)||payload.sp.
+    Removing the duplicate top-level keys cuts ~40% gzip on current published JSON.
+    """
+    if not isinstance(payload, dict):
+        return payload
+    for side_key in ("units", "characters", "sp", "ssp"):
+        side = payload.get(side_key)
+        if isinstance(side, dict):
+            _spi_map_board_rows(side, lean_spi_board_row)
+    units = payload.get("units")
+    if isinstance(units, dict):
+        if isinstance(units.get("sp"), dict):
+            payload.pop("sp", None)
+        if isinstance(units.get("ssp"), dict):
+            payload.pop("ssp", None)
+    return payload
