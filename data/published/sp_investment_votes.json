@@ -17333,7 +17333,8 @@
     "ip_8d8ee4cd9b50012717b057e93f28136e:character:1031001900:sp": "down",
     "ip_8d8ee4cd9b50012717b057e93f28136e:unit:1850002000:ssp": "down",
     "ip_975242387e642bf2a64c8e08823a7c0a:character:1024000500:sp": "up",
-    "ip_853b52efd20cb41ffafe2e1095e3ecd8:unit:1144000400:sp": "up"
+    "ip_853b52efd20cb41ffafe2e1095e3ecd8:unit:1144000400:sp": "up",
+    "ip_b4d6c42fe4a354832396d91feae8d676:unit:1024000600:ssp": "down"
   },
   "targets": {
     "unit:1155000700:sp": {
@@ -28491,6 +28492,10 @@
     "character:1024000100:sp": {
       "up": 1,
       "down": 0
+    },
+    "unit:1024000600:ssp": {
+      "up": 0,
+      "down": 1
     }
   }
 }
