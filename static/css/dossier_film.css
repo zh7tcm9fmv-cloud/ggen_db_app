@@ -31,12 +31,12 @@ html .modal-content.unit-detail:not(.detail-ranking-view) .detail-header .detail
 }
 
 @media(max-width:768px){
-  html .modal-content.char-detail:not(.detail-ranking-view) .detail-portrait-stack,
-  html .modal-content.unit-detail:not(.detail-ranking-view) .detail-portrait-stack{
-    width:min(180px,46vw);
-    max-width:min(180px,46vw);
+  html .modal-content.char-detail:not(.detail-ranking-view) .detail-portrait-stack > .detail-portrait-wrap,
+  html .modal-content.unit-detail:not(.detail-ranking-view) .detail-portrait-stack > .detail-portrait-wrap{
+    width:min(300px,78vw);
+    max-width:min(300px,78vw);
   }
   html .modal-content.unit-detail:not(.detail-ranking-view) .unit-model-stage{
-    --stage:calc(min(180px, 46vw) * 232 / 300);
+    --stage:calc(min(140px,34vw) * 232 / 300);
   }
 }
