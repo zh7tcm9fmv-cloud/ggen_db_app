@@ -1959,6 +1959,27 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
   .unit-model-stage{transition:none}
 }
 .unit-detail-head-main>.unit-model-stage{align-self:flex-start}
+/* Koma + model/series cluster (series sits in aside when no recommend char) */
+.unit-detail-koma-row{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:6px;
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  margin-top:2px;
+}
+.unit-detail-koma-aside{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:6px;
+  min-width:0;
+  max-width:100%;
+}
+.unit-detail-koma-aside>.detail-model{margin-top:0;margin-bottom:0;width:auto;max-width:100%}
+.unit-detail-koma-aside>.detail-series-row{margin:0;width:auto;max-width:100%;justify-content:flex-start}
 .modal-content.unit-detail .unit-detail-title-area,
 .modal-content.unit-detail .unit-detail-head-row,
 .modal-content.unit-detail .unit-detail-head-main{overflow:visible}
@@ -2040,10 +2061,12 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
   order:0;
   flex-shrink:0;
 }
+/* ~240/62vw: keep the large centered mobile hero (was ~132/36vw), but below
+   full 300/78vw so decode/paint + header layout stay snappy on open. */
 .modal-content.char-detail:not(.detail-ranking-view) .detail-portrait-wrap,
 .modal-content.unit-detail:not(.detail-ranking-view) .detail-portrait-wrap{
-  width:min(300px,78vw)!important;
-  max-width:min(300px,78vw)!important;
+  width:min(240px,62vw)!important;
+  max-width:min(240px,62vw)!important;
   height:auto!important;
   overflow:visible!important;
   flex-shrink:0;
@@ -2176,6 +2199,26 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 /* Stage size for the compact name column under a large centered portrait. */
 .modal-content.unit-detail:not(.detail-ranking-view) .unit-model-stage{
   --stage:calc(min(140px,34vw) * 232 / 300);
+}
+/* No recommend char: model ID + series sit beside the koma stage (fill empty right). */
+.modal-content.unit-detail:not(.detail-ranking-view) .detail-header:not(:has(.detail-rec-shortcut--mobile .detail-rec-link-card)) .unit-detail-koma-row{
+  flex-direction:row;
+  align-items:flex-start;
+  gap:10px;
+}
+.modal-content.unit-detail:not(.detail-ranking-view) .detail-header:not(:has(.detail-rec-shortcut--mobile .detail-rec-link-card)) .unit-detail-koma-aside{
+  flex:1 1 auto;
+  min-width:0;
+  padding-top:2px;
+}
+.modal-content.unit-detail:not(.detail-ranking-view) .detail-header:not(:has(.detail-rec-shortcut--mobile .detail-rec-link-card)) .unit-detail-koma-aside>.detail-model{
+  font-size:clamp(12px,3.4vw,14px);
+  line-height:1.25;
+}
+.modal-content.unit-detail:not(.detail-ranking-view) .detail-header:not(:has(.detail-rec-shortcut--mobile .detail-rec-link-card)) .unit-detail-koma-aside .series-icon-img{
+  height:28px;
+  width:auto;
+  max-width:min(140px,42vw);
 }
 }
 @media(max-width:480px){

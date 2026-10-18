@@ -6969,16 +6969,43 @@ def jsonify_cacheable(data, cache_key, *, public=True, max_age=3600, private=Fal
 _HTTP_JSON_BODY_CACHE = {}
 _HTTP_JSON_BODY_CACHE_LOCK = threading.Lock()
 _HTTP_JSON_BODY_CACHE_MAX = max(8, min(64, int(os.environ.get('HTTP_JSON_BODY_CACHE_MAX', '32') or '32')))
+# Small dossier/detail responses get their own LRU so SPI/timeline do not thrash them out.
+_HTTP_JSON_DETAIL_BODY_CACHE = {}
+_HTTP_JSON_DETAIL_BODY_CACHE_MAX = max(32, min(256, int(os.environ.get('HTTP_JSON_DETAIL_BODY_CACHE_MAX', '128') or '128')))
+_HTTP_JSON_DETAIL_BODY_MAX_RAW = max(8192, min(262144, int(os.environ.get('HTTP_JSON_DETAIL_BODY_MAX_RAW', '65536') or '65536')))
+_HTTP_JSON_DETAIL_KEY_PREFIXES = (
+    'c_', 'u_', 's8_', 's_', 'op_', 'opd3_', 'item_', 'pt_', 'ubp_',
+)
+
+
+def _http_json_is_detail_body_key(cache_key):
+    k = str(cache_key or '')
+    return any(k.startswith(p) for p in _HTTP_JSON_DETAIL_KEY_PREFIXES)
 
 
 def _http_json_body_cache_get(cache_key):
     with _HTTP_JSON_BODY_CACHE_LOCK:
+        if _http_json_is_detail_body_key(cache_key):
+            hit = _HTTP_JSON_DETAIL_BODY_CACHE.get(cache_key)
+            if hit is not None:
+                return hit
         return _HTTP_JSON_BODY_CACHE.get(cache_key)
 
 
 def _http_json_body_cache_put(cache_key, raw, compressed, etag):
     with _HTTP_JSON_BODY_CACHE_LOCK:
-        _HTTP_JSON_BODY_CACHE[cache_key] = {'raw': raw, 'gzip': compressed, 'etag': etag}
+        entry = {'raw': raw, 'gzip': compressed, 'etag': etag}
+        raw_len = len(raw) if raw is not None else 0
+        if _http_json_is_detail_body_key(cache_key) and raw_len <= _HTTP_JSON_DETAIL_BODY_MAX_RAW:
+            _HTTP_JSON_DETAIL_BODY_CACHE[cache_key] = entry
+            while len(_HTTP_JSON_DETAIL_BODY_CACHE) > _HTTP_JSON_DETAIL_BODY_CACHE_MAX:
+                try:
+                    oldest = next(iter(_HTTP_JSON_DETAIL_BODY_CACHE))
+                except StopIteration:
+                    break
+                _HTTP_JSON_DETAIL_BODY_CACHE.pop(oldest, None)
+            return
+        _HTTP_JSON_BODY_CACHE[cache_key] = entry
         while len(_HTTP_JSON_BODY_CACHE) > _HTTP_JSON_BODY_CACHE_MAX:
             try:
                 oldest = next(iter(_HTTP_JSON_BODY_CACHE))
@@ -6993,9 +7020,10 @@ def _http_json_body_cache_drop_prefix(prefix):
         return 0
     dropped = 0
     with _HTTP_JSON_BODY_CACHE_LOCK:
-        for k in [x for x in _HTTP_JSON_BODY_CACHE if str(x).startswith(pref)]:
-            _HTTP_JSON_BODY_CACHE.pop(k, None)
-            dropped += 1
+        for store in (_HTTP_JSON_BODY_CACHE, _HTTP_JSON_DETAIL_BODY_CACHE):
+            for k in [x for x in store if str(x).startswith(pref)]:
+                store.pop(k, None)
+                dropped += 1
     return dropped
 
 
@@ -18918,6 +18946,7 @@ def health_check():
     try:
         with _HTTP_JSON_BODY_CACHE_LOCK:
             mem['http_json_body_cache_keys'] = len(_HTTP_JSON_BODY_CACHE)
+            mem['http_json_detail_body_cache_keys'] = len(_HTTP_JSON_DETAIL_BODY_CACHE)
     except Exception:
         pass
     payload = {
@@ -19661,6 +19690,10 @@ def api_unit_best_synergy_pilots(unit_id):
             f'_{payload.get("source") or "x"}_{int(bool(payload.get("modes")))}'
             f'_{_app_js_bundle_version_tag()}'
         )
+        # Published boards: pre-serialize + gzip once (skip convert+jsonify under GIL on warm hits).
+        # Same JSON shape/features as before — convert_images still runs on first body-cache miss.
+        if (payload.get('source') or '') == 'published_dc':
+            return jsonify_preserialized(payload, ck, public=True, max_age=0, convert_images=True)
         return jsonify_cacheable(payload, ck, public=True, max_age=0, convert_images=True)
     except Exception as e:
         print(f'api/unit/{unit_id}/best_synergy_pilots failed: {e}')

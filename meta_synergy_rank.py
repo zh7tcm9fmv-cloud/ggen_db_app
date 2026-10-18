@@ -2375,13 +2375,20 @@ def read_process_rss_mb():
         return None
 
 
+# Baseline MasterData+LANG+sharded BSP already sits ~1.0–1.1GB with workers=1.
+# Old 1050/900 thresholds left the process stuck in "pressure" forever at the MSY floor.
+_ADAPTIVE_RSS_PRESSURE_MB = max(900.0, float(os.environ.get('MSY_ADAPTIVE_RSS_PRESSURE', '1250') or '1250'))
+_ADAPTIVE_RSS_MID_MB = max(700.0, float(os.environ.get('MSY_ADAPTIVE_RSS_MID', '1100') or '1100'))
+
+
 def adaptive_band_for(rss_mb, rpm):
     """pressure < mid < calm. High RSS or request rate steps down."""
     rss = None if rss_mb is None else float(rss_mb)
     rpm = int(rpm or 0)
-    if (rss is not None and rss >= 1050) or rpm >= 180:
+    mid_thr = min(_ADAPTIVE_RSS_MID_MB, _ADAPTIVE_RSS_PRESSURE_MB - 1.0)
+    if (rss is not None and rss >= _ADAPTIVE_RSS_PRESSURE_MB) or rpm >= 180:
         return 'pressure'
-    if (rss is not None and rss >= 900) or rpm >= 80:
+    if (rss is not None and rss >= mid_thr) or rpm >= 80:
         return 'mid'
     return 'calm'
 

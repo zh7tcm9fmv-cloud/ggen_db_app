@@ -55,6 +55,8 @@
     cache: {},
     // lang:unitId -> in-flight Promise<entry|null> (shared by prefetch + panel open)
     inflight: {},
+    // AbortController for the latest Top‑10 fetch (cancel on unit switch / close)
+    fetchAbort: null,
     defenderTiers: null,
     defenderTiersPromise: null,
     // { name, power, ... } from published BSP weapon_info
@@ -83,7 +85,15 @@
     state.cache[cacheKey(unitId)] = entry;
   }
 
+  function abortActiveFetch() {
+    try {
+      if (state.fetchAbort) state.fetchAbort.abort();
+    } catch (_) {}
+    state.fetchAbort = null;
+  }
+
   function clearLocaleCaches() {
+    abortActiveFetch();
     state.cache = {};
     state.inflight = {};
     state.defenderTiers = null;
@@ -1596,6 +1606,8 @@
       + '&_v=' + encodeURIComponent(appVersion() || '0');
     var fetchOpts = { credentials: 'same-origin', cache: 'no-store' };
     if (opts.priority === 'high') fetchOpts.priority = 'high';
+    else if (opts.priority === 'low') fetchOpts.priority = 'low';
+    if (opts.signal) fetchOpts.signal = opts.signal;
     var res = await fetch('/api/unit/' + encodeURIComponent(unitId) + '/best_synergy_pilots?' + q, fetchOpts);
     if (!res.ok) throw new Error('HTTP ' + res.status);
     var payload = await res.json();
@@ -1876,10 +1888,25 @@
       if (state.inflight[ck]) {
         entry = await state.inflight[ck];
       } else {
-        entry = await fetchPublishedPilots(unitId, lang, {
+        abortActiveFetch();
+        var ctrl = typeof AbortController === 'function' ? new AbortController() : null;
+        if (ctrl) state.fetchAbort = ctrl;
+        var p = fetchPublishedPilots(unitId, lang, {
           allModes: false,
-          priority: state.open ? 'high' : undefined
+          priority: state.open ? 'high' : 'low',
+          signal: ctrl ? ctrl.signal : undefined
+        }).then(function (e) {
+          delete state.inflight[ck];
+          if (state.fetchAbort === ctrl) state.fetchAbort = null;
+          return e;
+        }).catch(function (err) {
+          delete state.inflight[ck];
+          if (state.fetchAbort === ctrl) state.fetchAbort = null;
+          if (err && err.name === 'AbortError') return null;
+          throw err;
         });
+        state.inflight[ck] = p;
+        entry = await p;
       }
       if (gen !== state.loadGen) return;
       if (!entry) {
@@ -2100,15 +2127,15 @@
     }
   }
 
-  /** Top-10 JSON — defer slightly so detail portraits win, but start before panel open. */
+  /** Top-10 JSON — wait ~1.6s so detail JSON + portraits win bandwidth/GIL (snappy bar). */
   function scheduleDetailPrefetch(fn) {
     global.setTimeout(function () {
       if (typeof global.requestIdleCallback === 'function') {
-        global.requestIdleCallback(fn, { timeout: 1200 });
+        global.requestIdleCallback(fn, { timeout: 2000 });
       } else {
         fn();
       }
-    }, 350);
+    }, 1600);
   }
 
   function prefetchRankings(unitId) {
@@ -2116,9 +2143,17 @@
     var ck = cacheKey(uid);
     if (getCachedEntry(uid) && getCachedEntry(uid).pilots && getCachedEntry(uid).pilots.length) return;
     if (state.inflight[ck]) return;
+    abortActiveFetch();
+    var ctrl = typeof AbortController === 'function' ? new AbortController() : null;
+    if (ctrl) state.fetchAbort = ctrl;
     var lang = currentLang();
-    var promise = fetchPublishedPilots(unitId, lang, { allModes: false }).then(function (entry) {
+    var promise = fetchPublishedPilots(unitId, lang, {
+      allModes: false,
+      priority: 'low',
+      signal: ctrl ? ctrl.signal : undefined
+    }).then(function (entry) {
       delete state.inflight[ck];
+      if (state.fetchAbort === ctrl) state.fetchAbort = null;
       if (!entry || !entry.pilots || !entry.pilots.length) return null;
       // Keep result even if user navigated away — next open of same unit is instant.
       setCachedEntry(uid, entry);
@@ -2127,8 +2162,10 @@
         void enrichAffinityMatches(entry, unitId, lang);
       });
       return entry;
-    }).catch(function () {
+    }).catch(function (err) {
       delete state.inflight[ck];
+      if (state.fetchAbort === ctrl) state.fetchAbort = null;
+      if (err && (err.name === 'AbortError' || err.name === 'TimeoutError')) return null;
       return null;
     });
     state.inflight[ck] = promise;
@@ -2150,6 +2187,7 @@
     state.open = false;
     closeMetricDropdown();
     closeRoleDropdown();
+    abortActiveFetch();
     state.unitId = d ? String(d.id) : null;
     state.loaded = false;
     state.loading = false;
@@ -2181,6 +2219,7 @@
     state.loaded = false;
     state.loading = false;
     state.loadGen++;
+    abortActiveFetch();
   }
 
   bindClickDelegation();
