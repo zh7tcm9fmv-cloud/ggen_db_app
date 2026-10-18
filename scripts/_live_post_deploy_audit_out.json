@@ -1,0 +1,150 @@
+{
+  "health": {
+    "ms": 16619,
+    "rss": 765.6,
+    "band": "pressure",
+    "pair_len": 252,
+    "pair_max": 1500,
+    "pair_ceiling": 6000,
+    "rpm": 121,
+    "detail_body": 23,
+    "body": 18,
+    "browse": true
+  },
+  "assets": {
+    "css_240": true,
+    "css_300_78": false,
+    "css_koma": true,
+    "js_abort": true,
+    "js_1600": true,
+    "appmin_koma": true,
+    "css_ms": 1421,
+    "js_ms": 2381
+  },
+  "unit_cold": {
+    "n": 3,
+    "p50": 1075,
+    "mean": 975,
+    "max": 1475,
+    "min": 375,
+    "gzip": 2854
+  },
+  "unit_warm": {
+    "n": 6,
+    "p50": 410,
+    "mean": 736,
+    "max": 1492,
+    "min": 365,
+    "gzip": 2854
+  },
+  "char_warm": {
+    "n": 4,
+    "p50": 248,
+    "mean": 249,
+    "max": 255,
+    "min": 246,
+    "gzip": 1368
+  },
+  "bsp_cold": {
+    "n": 1,
+    "p50": 2208,
+    "mean": 2208,
+    "max": 2208,
+    "min": 2208,
+    "gzip": 50902
+  },
+  "bsp_warm": {
+    "n": 3,
+    "p50": 277,
+    "mean": 279,
+    "max": 283,
+    "min": 277,
+    "gzip": 50902
+  },
+  "bsp_feat": {
+    "source": "published_dc",
+    "pilots": 10,
+    "modes": [
+      "crit",
+      "normal",
+      "super_crit"
+    ],
+    "no_ur": 20,
+    "same_role": 20,
+    "eligible": true
+  },
+  "unit_feat": {
+    "name": "Gundam (EX)",
+    "abilities": 3,
+    "weapons": 4,
+    "model": "RX-78-2",
+    "portrait": true
+  },
+  "storm_unit": {
+    "n": 5,
+    "p50": 296,
+    "mean": 308,
+    "max": 364,
+    "min": 260,
+    "gzip": 2854
+  },
+  "storm_bsp": {
+    "n": 5,
+    "p50": 2185,
+    "mean": 2427,
+    "max": 4379,
+    "min": 306,
+    "gzip": 50902
+  },
+  "parallel": {
+    "wall": 1104,
+    "unit_max": 762,
+    "unit_p50": 642,
+    "bsp_max": 1096,
+    "bsp_p50": 971
+  },
+  "critical": {
+    "/": {
+      "cold": 397,
+      "warm": 402,
+      "gzip": 33154
+    },
+    "/api/characters?lang=EN": {
+      "cold": 249,
+      "warm": 308,
+      "gzip": 3685
+    },
+    "/api/units?lang=EN": {
+      "cold": 257,
+      "warm": 1113,
+      "gzip": 9829
+    },
+    "/api/banner_timeline?lang=EN&sv=23": {
+      "cold": 355,
+      "warm": 361,
+      "gzip": 37716
+    }
+  },
+  "health_after": {
+    "ms": 301,
+    "rss": 853.0,
+    "band": "pressure",
+    "pair_len": 1253,
+    "pair_max": 1500,
+    "pair_ceiling": 6000,
+    "rpm": 365,
+    "detail_body": 51,
+    "body": 32,
+    "browse": true
+  },
+  "gate": {
+    "detail_body_present": true,
+    "css_240": true,
+    "css_not_300_78": true,
+    "js_abort": true,
+    "js_1600": true,
+    "appmin_koma": true,
+    "bsp_features_ok": true,
+    "band_not_stuck_pressure_only": true
+  }
+}

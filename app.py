@@ -3336,6 +3336,20 @@ def _unit_matches_ability_condition_group(uid, lc, group):
             return False
         return True
 
+    if any(str((c or {}).get('join') or '') in ('and', 'or') for c in conds if isinstance(c, dict)):
+        acc = None
+        for c in conds:
+            if not isinstance(c, dict):
+                continue
+            ok = _match_one(c)
+            j = str(c.get('join') or '')
+            if acc is None:
+                acc = ok
+            elif j == 'or':
+                acc = acc or ok
+            else:
+                acc = acc and ok
+        return True if acc is None else acc
     tag_part = not tag_conds or any(_match_one(c) for c in tag_conds)
     other_part = not other or all(_match_one(c) for c in other)
     return tag_part and other_part
@@ -7953,72 +7967,102 @@ def create_lang_text_map(d):
     return lookup
 
 
+def _empty_trait_condition_bucket():
+    return {
+        'char_tags': [], 'unit_tags': [], 'group_tags': [], 'series': [],
+        'character_series': [], 'types': [], 'target_types': [], 'unit_ids': [],
+        'character_ids': [], 'rows': [],
+    }
+
+
+def _split_cond_csv(val, *, normalize=False):
+    out = []
+    s = str(val or '').strip()
+    if not s or s == '0':
+        return out
+    for part in s.split(','):
+        v = part.strip()
+        if normalize:
+            v = normalize_id(v)
+        if v and v != '0' and v not in out:
+            out.append(v)
+    return out
+
+
+def _trait_condition_group_is_or(group_id):
+    """In-game GroupId token ``or`` (e.g. 耐久orWシリーズ) = alternatives inside that group.
+
+    Different GroupId buckets are alternatives of each other. Rows that share an empty
+    GroupId (Land + Zeon on set 1000654) are AND. A comma list inside one field is OR.
+    """
+    g = str(group_id or '').strip()
+    if not g or '&' in g or '＆' in g:
+        return False
+    # 「耐久orWシリーズ」 glues the series initial onto "or", so do not require a non-letter after it.
+    low = g.lower()
+    i = 0
+    while True:
+        j = low.find('or', i)
+        if j < 0:
+            return False
+        prev = low[j - 1] if j else ''
+        if not (prev.isascii() and prev.isalpha()):
+            return True
+        i = j + 2
+
+
 def create_trait_condition_raw_map(d, key_field=None):
     raw = {}
     for item in extract_data_list(d):
-        if not isinstance(item, dict): continue
+        if not isinstance(item, dict):
+            continue
         if key_field:
             sid = normalize_id(item.get(key_field) or item.get('Id') or item.get('id'))
         else:
             sid = normalize_id(item.get('TraitConditionSetId') or item.get('traitConditionSetId') or item.get('Id') or item.get('id'))
-        if sid == '0': continue
-        if sid not in raw: raw[sid] = {'char_tags': [], 'unit_tags': [], 'group_tags': [], 'series': [], 'character_series': [], 'types': [], 'target_types': [], 'unit_ids': [], 'character_ids': []}
-        for key in ['UnitTags', 'unitTags']:
-            val = str(item.get(key) or '')
-            if val and val != '0':
-                for v in val.split(','):
-                    v = v.strip()
-                    if v and v != '0' and v not in raw[sid]['unit_tags']: raw[sid]['unit_tags'].append(v)
-        for key in ['CharacterTags', 'characterTags']:
-            val = str(item.get(key) or '')
-            if val and val != '0':
-                for v in val.split(','):
-                    v = v.strip()
-                    if v and v != '0' and v not in raw[sid]['char_tags']: raw[sid]['char_tags'].append(v)
-        for key in ['CharacterSeries', 'characterSeries']:
-            val = str(item.get(key) or '')
-            if val and val != '0':
-                for v in val.split(','):
-                    v = v.strip()
-                    if v and v != '0' and v not in raw[sid]['character_series']: raw[sid]['character_series'].append(v)
-        for key in ['GroupTags', 'groupTags', 'GroupTag', 'groupTag']:
-            val = str(item.get(key) or '')
-            if val and val != '0':
-                for v in val.split(','):
-                    v = v.strip()
-                    if v and v != '0' and v not in raw[sid]['group_tags']: raw[sid]['group_tags'].append(v)
-        for key in ['UnitSeries', 'unitSeries']:
-            val = str(item.get(key) or '')
-            if val and val != '0':
-                for v in val.split(','):
-                    v = v.strip()
-                    if v and v != '0' and v not in raw[sid]['series']: raw[sid]['series'].append(v)
-        for key in ['UnitRoleTypes', 'unitRoleTypes']:
-            val = str(item.get(key) or '')
-            if val and val != '0':
-                for v in val.split(','):
-                    v = v.strip()
-                    if v and v != '0' and v not in raw[sid]['types']: raw[sid]['types'].append(v)
-        for key in ['TargetTypes', 'targetTypes']:
-            val = str(item.get(key) or '')
-            if val and val != '0':
-                for v in val.split(','):
-                    v = v.strip()
-                    if v and v not in raw[sid]['target_types']: raw[sid]['target_types'].append(v)
-        for key in ['UnitIds', 'unitIds']:
-            val = str(item.get(key) or '')
-            if val and val != '0':
-                for v in val.split(','):
-                    v = normalize_id(v.strip())
-                    if v and v != '0' and v not in raw[sid]['unit_ids']:
-                        raw[sid]['unit_ids'].append(v)
-        for key in ['CharacterIds', 'characterIds']:
-            val = str(item.get(key) or '')
-            if val and val != '0':
-                for v in val.split(','):
-                    v = normalize_id(v.strip())
-                    if v and v != '0' and v not in raw[sid]['character_ids']:
-                        raw[sid]['character_ids'].append(v)
+        if sid == '0':
+            continue
+        if sid not in raw:
+            raw[sid] = _empty_trait_condition_bucket()
+        bucket = raw[sid]
+        row = {
+            'group_id': str(item.get('GroupId') or item.get('groupId') or '').strip(),
+            'unit_tags': [],
+            'char_tags': [],
+            'character_series': [],
+            'group_tags': [],
+            'series': [],
+            'types': [],
+            'unit_ids': [],
+            'character_ids': [],
+        }
+        field_keys = (
+            ('unit_tags', ('UnitTags', 'unitTags'), False),
+            ('char_tags', ('CharacterTags', 'characterTags'), False),
+            ('character_series', ('CharacterSeries', 'characterSeries'), False),
+            ('group_tags', ('GroupTags', 'groupTags', 'GroupTag', 'groupTag'), False),
+            ('series', ('UnitSeries', 'unitSeries'), False),
+            ('types', ('UnitRoleTypes', 'unitRoleTypes'), False),
+            ('unit_ids', ('UnitIds', 'unitIds'), True),
+            ('character_ids', ('CharacterIds', 'characterIds'), True),
+        )
+        for dest, keys, do_norm in field_keys:
+            vals = []
+            for key in keys:
+                vals = _split_cond_csv(item.get(key), normalize=do_norm)
+                if vals:
+                    break
+            for v in vals:
+                if v not in row[dest]:
+                    row[dest].append(v)
+                if v not in bucket[dest]:
+                    bucket[dest].append(v)
+        for key in ('TargetTypes', 'targetTypes'):
+            for v in _split_cond_csv(item.get(key)):
+                if v not in bucket['target_types']:
+                    bucket['target_types'].append(v)
+        if any(row[k] for k in ('unit_tags', 'char_tags', 'character_series', 'group_tags', 'series', 'types', 'unit_ids', 'character_ids')):
+            bucket['rows'].append(row)
     return raw
 
 def merge_trait_condition_raw_maps(*maps):
@@ -8028,20 +8072,79 @@ def merge_trait_condition_raw_maps(*maps):
             continue
         for sid, row in mp.items():
             if sid not in out:
-                out[sid] = {'char_tags': [], 'unit_tags': [], 'group_tags': [], 'series': [], 'character_series': [], 'types': [], 'target_types': [], 'unit_ids': [], 'character_ids': []}
+                out[sid] = _empty_trait_condition_bucket()
             for k in ['char_tags', 'unit_tags', 'group_tags', 'series', 'character_series', 'types', 'target_types', 'unit_ids', 'character_ids']:
                 vals = row.get(k, []) if isinstance(row, dict) else []
                 for v in vals:
                     if v and v not in out[sid][k]:
                         out[sid][k].append(v)
+            for r in (row.get('rows') or []) if isinstance(row, dict) else []:
+                if isinstance(r, dict):
+                    out[sid]['rows'].append(r)
     return out
+
+def _condition_tag_display_key(tag):
+    """In-game CreateDisplayOrderedList sorts a HashSet by numeric id (Zeon 1015 before Land 1131)."""
+    raw = str((tag or {}).get('id') or '')
+    if raw.startswith('role_'):
+        raw = raw[5:]
+    try:
+        return (0, int(raw))
+    except (TypeError, ValueError):
+        return (1, raw)
+
+
+def _condition_tags_display_order(tags):
+    """Reorder a same-source run to numeric id order; keep the run's joiner and cross-source order."""
+    if not tags or len(tags) < 2:
+        return tags
+    out = []
+    i = 0
+    n = len(tags)
+    while i < n:
+        src = str(tags[i].get('source') or '')
+        j = i + 1
+        run_join = None
+        while j < n and str(tags[j].get('source') or '') == src:
+            jj = str(tags[j].get('join') or '')
+            if jj not in ('and', 'or'):
+                break
+            if run_join is None:
+                run_join = jj
+            elif jj != run_join:
+                break
+            j += 1
+        run = tags[i:j]
+        if len(run) > 1 and run_join:
+            first_join = str(tags[i].get('join') or '')
+            ordered = sorted(run, key=_condition_tag_display_key)
+            rebuilt = []
+            for k, tag in enumerate(ordered):
+                nt = dict(tag)
+                if k == 0:
+                    if first_join in ('and', 'or'):
+                        nt['join'] = first_join
+                    else:
+                        nt.pop('join', None)
+                else:
+                    nt['join'] = run_join
+                rebuilt.append(nt)
+            out.extend(rebuilt)
+        else:
+            out.extend(run)
+        i = j
+    return out
+
 
 def resolve_condition_tags(cond_id, trait_condition_raw_map, lineage_lookup, series_name_map, lang_code='EN'):
     if cond_id == '0': return []
     raw = trait_condition_raw_map.get(cond_id, {}); res = []; seen = set()
-    def at(tid, tn, tt, src=''):
+    def at(tid, tn, tt, src='', join=''):
         if tn and tn not in seen:
-            res.append({'id': tid, 'name': tn, 'type': tt, 'source': src})
+            tag = {'id': tid, 'name': tn, 'type': tt, 'source': src}
+            if join in ('and', 'or'):
+                tag['join'] = join
+            res.append(tag)
             seen.add(tn)
     def fn(tid, pm, sm=None):
         n = pm.get(tid)
@@ -8054,44 +8157,106 @@ def resolve_condition_tags(cond_id, trait_condition_raw_map, lineage_lookup, ser
                 for k, v in sm.items():
                     if k.endswith(p) or k == tid: return v
         return n
+    rtm = UNIT_ROLE_TYPE_LANG_MAP.get(lang_code, UNIT_ROLE_TYPE_LANG_MAP['EN'])
+    ld = LANG_DATA.get(lang_code) or LANG_DATA.get(DEFAULT_LANG) or {}
+    utm, uim = ld.get('unit_text_map') or {}, ld.get('unit_id_map') or {}
+    ctm, cim = ld.get('char_text_map') or {}, ld.get('char_id_map') or {}
+
+    def _name_for(field, tid):
+        if field == 'types':
+            return rtm.get(tid) or ''
+        if field == 'unit_ids':
+            uid = normalize_id(str(tid))
+            ulid = uim.get(uid, '')
+            return (utm.get(ulid, '') if ulid else '') or uid
+        if field == 'character_ids':
+            chid = normalize_id(str(tid))
+            clid = cim.get(chid, '')
+            return (ctm.get(clid, '') if clid else '') or chid
+        if field in ('character_series', 'series'):
+            return fn(tid, series_name_map) or ''
+        return fn(tid, lineage_lookup, series_name_map) or ''
+
+    def _emit_specs(specs, join_for_first):
+        """specs: list of (field, id, type, source). Join first chip with join_for_first; CSV = or; next field = and."""
+        emitted = False
+        idx_in_field = 0
+        prev_field = None
+        first_join = join_for_first
+        for field, tid, typ, src in specs:
+            nm = _name_for(field, tid)
+            if not nm or nm in seen:
+                continue
+            if not emitted:
+                j = first_join
+            elif field == prev_field:
+                j = 'or'
+            else:
+                j = 'and'
+            at(tid if field != 'types' else ('role_' + str(tid)), nm, typ, src, j if emitted or j in ('and', 'or') else '')
+            emitted = True
+            prev_field = field
+            idx_in_field += 1
+        return emitted
+
+    rows = raw.get('rows') or []
+    if rows:
+        started = False
+        prev_group = None
+        for row in rows:
+            if not isinstance(row, dict):
+                continue
+            specs = []
+            for field, typ, src in (
+                ('unit_tags', 'unit', 'unit_tags'),
+                ('character_series', 'series', 'character_series'),
+                ('char_tags', 'character', 'char_tags'),
+                ('group_tags', 'group', 'group_tags'),
+                ('series', 'series', 'series'),
+                ('types', 'unit_role', 'types'),
+                ('unit_ids', 'unit', 'unit_ids'),
+                ('character_ids', 'character', 'character_ids'),
+            ):
+                for tid in row.get(field) or []:
+                    specs.append((field, tid, typ, src))
+            if not specs:
+                continue
+            gk = str(row.get('group_id') or '').strip()
+            if not started:
+                row_join = ''
+            elif prev_group is None or gk != prev_group:
+                row_join = 'or'
+            elif _trait_condition_group_is_or(gk):
+                row_join = 'or'
+            else:
+                row_join = 'and'
+            if _emit_specs(specs, row_join):
+                started = True
+                prev_group = gk
+        return _condition_tags_display_order(res)
     for t in raw.get('unit_tags', []): n = fn(t, lineage_lookup, series_name_map); (n and at(t, n, 'unit', 'unit_tags'))
     for s in raw.get('character_series') or []: n = fn(s, series_name_map); (n and at(s, n, 'series', 'character_series'))
     for t in raw.get('char_tags', []): n = fn(t, lineage_lookup, series_name_map); (n and at(t, n, 'character', 'char_tags'))
     for t in raw.get('group_tags', []): n = fn(t, lineage_lookup, series_name_map); (n and at(t, n, 'group', 'group_tags'))
     for s in raw.get('series', []): n = fn(s, series_name_map); (n and at(s, n, 'series', 'series'))
-    rtm = UNIT_ROLE_TYPE_LANG_MAP.get(lang_code, UNIT_ROLE_TYPE_LANG_MAP['EN'])
     for t in raw.get('types', []): n = rtm.get(t); (n and at('role_' + t, n, 'unit_role', 'types'))
-    seen_pair = set()
-    ld = LANG_DATA.get(lang_code) or LANG_DATA.get(DEFAULT_LANG) or {}
-    utm, uim = ld.get('unit_text_map') or {}, ld.get('unit_id_map') or {}
-    ctm, cim = ld.get('char_text_map') or {}, ld.get('char_id_map') or {}
     for uid in raw.get('unit_ids') or []:
         uid = normalize_id(str(uid))
         if not uid or uid == '0':
             continue
-        pk = ('u', uid)
-        if pk in seen_pair:
-            continue
-        seen_pair.add(pk)
         ulid = uim.get(uid, '')
         nm = utm.get(ulid, '') if ulid else uid
-        if not nm:
-            nm = uid
-        res.append({'id': uid, 'name': nm, 'type': 'unit', 'source': 'unit_ids'})
+        if nm:
+            at(uid, nm, 'unit', 'unit_ids')
     for chid in raw.get('character_ids') or []:
         chid = normalize_id(str(chid))
         if not chid or chid == '0':
             continue
-        pk = ('c', chid)
-        if pk in seen_pair:
-            continue
-        seen_pair.add(pk)
         clid = cim.get(chid, '')
         nm = ctm.get(clid, '') if clid else chid
-        if not nm:
-            nm = chid
-        res.append({'id': chid, 'name': nm, 'type': 'character', 'source': 'character_ids'})
-    return res
+        if nm:
+            at(chid, nm, 'character', 'character_ids')
+    return _condition_tags_display_order(res)
 
 def create_char_info_map(m):
     lookup = {}
@@ -35522,8 +35687,8 @@ def get_character(char_id):
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
         view_ranking = request.args.get('view', '').strip().lower() == 'ranking'
-        # r19: SA/C \"Support Attack or Counter\" + ATK% must not inflate dossier Ranged/Melee (Combat/DC only).
-        ck = f"c_{char_id}_{lc}_r19_{1 if view_ranking else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        # r21: condition chips use in-game id order (Zeon & Land, not file order).
+        ck = f"c_{char_id}_{lc}_r21_{1 if view_ranking else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             # Images already CDN-converted when cached; skip re-walk + re-jsonify under GIL.
@@ -35655,7 +35820,7 @@ def get_unit(unit_id):
         if stat_mode_arg not in ('normal', 'sp', 'ssp'):
             stat_mode_arg = 'normal'
         cond_for_ranking = request.args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
-        ck = f"u_{unit_id}_{lc}_ssp20_ult8_cpwr1_usk1_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_bp3_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        ck = f"u_{unit_id}_{lc}_ssp20_ult8_cpwr1_usk3_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_bp3_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_preserialized(cached, ck, private=True, max_age=3600, convert_images=False)

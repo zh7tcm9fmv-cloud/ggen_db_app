@@ -1158,6 +1158,20 @@ def _msy_condition_group_matches(uid, cid, lc, grp):
         return True
     tag_conds = [c for c in conds if str((c or {}).get('source') or '') in ('unit_tags', 'group_tags')]
     other = [c for c in conds if c not in tag_conds]
+    if any(str((c or {}).get('join') or '') in ('and', 'or') for c in conds if isinstance(c, dict)):
+        acc = None
+        for c in conds:
+            if not isinstance(c, dict):
+                continue
+            ok = _msy_match_one_condition(c, uid, cid, lc)
+            j = str(c.get('join') or '')
+            if acc is None:
+                acc = ok
+            elif j == 'or':
+                acc = acc or ok
+            else:
+                acc = acc and ok
+        return True if acc is None else acc
     tag_part = (not tag_conds) or any(_msy_match_one_condition(c, uid, cid, lc) for c in tag_conds)
     other_part = (not other) or all(_msy_match_one_condition(c, uid, cid, lc) for c in other)
     return tag_part and other_part
