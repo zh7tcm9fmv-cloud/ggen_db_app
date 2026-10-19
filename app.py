@@ -19131,7 +19131,10 @@ def _serve_index():
         r.headers['Expires'] = '0'
     try:
         abs_canon = _public_site_origin() + (page_canonical or '/')
-        r.headers['Link'] = f'<{abs_canon}>; rel="canonical"'
+        # Gunicorn / HTTP/1.1 header values must be latin-1; non-ASCII here causes
+        # "Invalid HTTP Header" when crawlers echo Link back on the next request.
+        if abs_canon.isascii() and '<' not in abs_canon and '>' not in abs_canon:
+            r.headers['Link'] = f'<{abs_canon}>; rel="canonical"'
     except Exception:
         pass
     return r
@@ -36455,6 +36458,11 @@ _SPA_TAB_PATHS = frozenset({
     'gtower', 'gt', 'challenge', 'challenges', 'ch', 'go', 'score', 'score-attack', 'grand-offensive', 'special',
 })
 _SPA_DETAIL_PREFIXES = frozenset({'u', 'c', 's', 'op', 'pt', 'es', 'item'})
+# Entity detail ids are numeric MasterData ids. Reject glued CJK/junk
+# (e.g. /u/1017000510有這台最優先派) so we 404/301 instead of emitting a non-ASCII Link header
+# that crawlers echo back and Gunicorn rejects as "Invalid HTTP Header".
+_SPA_DETAIL_ID_RE = re.compile(r'^\d{6,20}$')
+_SPA_DETAIL_ID_PREFIX_RE = re.compile(r'^(\d{6,20})')
 # Alternate public URLs that should never be self-canonical (301 elsewhere or map here).
 _SPA_CANONICAL_ALIASES = {
     '/banners': '/tl',
@@ -36483,9 +36491,10 @@ def _is_spa_client_path(path):
     if len(parts) == 1:
         return parts[0].lower() in _SPA_TAB_PATHS
     if len(parts) == 2 and parts[0].lower() == 'gacha-sim' and parts[1]:
-        return True
-    if len(parts) == 2 and parts[0].lower() in _SPA_DETAIL_PREFIXES and parts[1]:
-        return True
+        # Pool ids are numeric / alphanumeric tokens — keep ASCII-only.
+        return bool(re.fullmatch(r'[A-Za-z0-9_-]{1,64}', parts[1] or ''))
+    if len(parts) == 2 and parts[0].lower() in _SPA_DETAIL_PREFIXES:
+        return bool(_SPA_DETAIL_ID_RE.fullmatch(parts[1] or ''))
     return False
 
 
@@ -36493,6 +36502,7 @@ def _page_canonical_path():
     """Stable path for <link rel=canonical> / og:url on the SPA shell.
 
     Query strings are never part of the canonical (share ``?d=`` / ``?tab=`` are alternates).
+    Detail ids are digits-only so Link headers stay ASCII-safe for Gunicorn/proxies.
     """
     path = (request.path or '/').replace('\\', '/')
     if path != '/' and path.endswith('/'):
@@ -36511,6 +36521,10 @@ def _page_canonical_path():
         if len(parts) == 2:
             return '/' + parts[0].lower() + '/' + parts[1]
         return path
+    # Mangling like /u/1017000510有這台… → canonical tab root (not the junk URL).
+    parts = [p for p in rel.split('/') if p]
+    if len(parts) == 2 and parts[0].lower() in _SPA_DETAIL_PREFIXES:
+        return '/' + parts[0].lower()
     return '/'
 
 
@@ -36829,6 +36843,16 @@ def serve_spa(path):
             return app.send_static_file(rel)
         except NotFound:
             return _not_found_page()
+    # /u/1017000510有這台最優先派 → 301 /u/1017000510 (digits prefix only).
+    parts = [p for p in (path or '').replace('\\', '/').split('/') if p]
+    if (
+        len(parts) == 2
+        and parts[0].lower() in _SPA_DETAIL_PREFIXES
+        and not _SPA_DETAIL_ID_RE.fullmatch(parts[1] or '')
+    ):
+        m = _SPA_DETAIL_ID_PREFIX_RE.match(parts[1] or '')
+        if m:
+            return redirect('/' + parts[0].lower() + '/' + m.group(1), code=301)
     if not _is_spa_client_path(path):
         return _not_found_page()
     return _serve_index()

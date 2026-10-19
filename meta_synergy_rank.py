@@ -2496,22 +2496,23 @@ def _adaptive_tick():
                     aux['rankings_full_dropped'] = int(aux.get('rankings_full_dropped') or 0) + 1
         except Exception:
             pass
-    # Quiet by default: routine detail-body / BSP LRU churn under a stuck pressure floor
-    # flooded Railway logs without changing health. Log only owner-actionable transitions.
+    # Quiet by default. Oct 2026: mid↔pressure flaps from rpm (while RSS stays ~1.1–1.2GB)
+    # logged every tick with huge pair→floor drops — noise, not owner action. Log only when:
+    #   • aux trim actually freed retained bodies / API dicts / err, or
+    #   • band changes while RSS is in the true pressure zone (≥1250).
+    # Routine rpm floor trim (dropped_pair / dropped_wpn) is silent.
     band_changed = band != prev_band
     stripped = int(aux.get('stripped_raw') or 0)
     api_evicted = int(aux.get('api_evicted') or 0)
     rankings_dropped = int(aux.get('rankings_full_dropped') or 0)
-    notable = (
-        band_changed
-        or dropped_pair > 0
-        or dropped_wpn > 0
-        or stripped > 0
+    rss_hot = rss is not None and float(rss) >= _ADAPTIVE_RSS_PRESSURE_MB
+    notable_aux = (
+        stripped > 0
         or api_evicted > 0
         or rankings_dropped > 0
         or bool(aux.get('err'))
     )
-    if notable:
+    if notable_aux or (band_changed and rss_hot):
         print(
             f'MSY adaptive cache {prev_band}→{band}: pair→{pair_max} (-{dropped_pair}), '
             f'wpn→{wpn_max} (-{dropped_wpn}), bsp_lru=-{dropped_lru}, '
