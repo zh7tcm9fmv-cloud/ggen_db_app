@@ -865,16 +865,17 @@ def static_game_images_cdn_offload(filename):
         # Short-lived so flipping GAME_IMAGES_USE_CDN takes effect quickly.
         resp.headers['Cache-Control'] = 'public, max-age=300'
         return resp
-    # Local CDN-off preview: serve from app static, else Desktop ggen_db_images checkout.
+    # Local CDN-off preview: prefer Desktop ggen_db_images checkout (source of truth for
+    # freshly updated WebPs) over stale copies under app/static/images.
     name = (filename or '').replace('\\', '/').lstrip('/')
     if name and '..' not in name.split('/'):
-        app_path = os.path.join(STATIC_ROOT, 'images', *name.split('/'))
-        if os.path.isfile(app_path):
-            return send_from_directory(os.path.join(STATIC_ROOT, 'images'), filename)
         if _LOCAL_GGEN_IMAGES_ROOT:
             local_path = os.path.join(_LOCAL_GGEN_IMAGES_ROOT, *name.split('/'))
             if os.path.isfile(local_path):
                 return send_from_directory(_LOCAL_GGEN_IMAGES_ROOT, filename)
+        app_path = os.path.join(STATIC_ROOT, 'images', *name.split('/'))
+        if os.path.isfile(app_path):
+            return send_from_directory(os.path.join(STATIC_ROOT, 'images'), filename)
     return send_from_directory(os.path.join(STATIC_ROOT, 'images'), filename)
 
 

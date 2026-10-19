@@ -1,0 +1,19 @@
+[
+  {
+    "at": "2026-10-19T21:27:36+08:00",
+    "rss_mb": 1065.7,
+    "body_mb": 4.11,
+    "detail_mb": 2.91,
+    "band": "pressure",
+    "rpm": 305,
+    "pair_len": 1500,
+    "pair_max": 1500,
+    "body_budget_mb": 8.0,
+    "bsp_lru": 34,
+    "bsp_lru_max": 64,
+    "api_cache_keys": 174,
+    "bsp_sharded": true,
+    "weapon_len": 512,
+    "weapon_max": 512
+  }
+]

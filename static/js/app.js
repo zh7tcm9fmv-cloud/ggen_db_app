@@ -5811,9 +5811,11 @@ function renderUltAlterationSectionHtml(d){
         seen.add(src);
         stackSrc.push(src);
       });
-      const show=stackSrc;
-      const stack=show.map((src,i)=>`<img src="${imgUrl(src)}" alt="" width="36" height="36" loading="lazy" decoding="async" style="width:36px;height:36px;object-fit:contain;margin-left:${i?'-14px':'0'};position:relative;z-index:${show.length-i};filter:drop-shadow(0 1px 2px rgba(0,0,0,.45))" onerror="this.style.display='none'">`).join('');
-      matInner+=`<details class="ult-alt-mat-drop"><summary style="cursor:pointer"><span style="display:inline-flex;align-items:center;gap:10px;vertical-align:middle;max-width:100%"><span style="display:inline-flex;align-items:center;max-width:100%;overflow-x:auto">${stack}</span><span style="opacity:.85;font-size:.92em">${esc(tf('ult_alt_available_mats','Usable materials'))} (${avail.length})</span></span></summary><div style="display:grid;gap:6px;margin-top:8px;max-height:240px;overflow:auto;padding-right:4px">${avail.map(matRow).join('')}</div></details>`;
+      /* Cap summary fan so it cannot widen the detail modal (overflow-x:hidden then clips mission text). */
+      const previewN=8;
+      const show=stackSrc.slice(0,previewN);
+      const stack=show.map((src,i)=>`<img src="${imgUrl(src)}" alt="" width="36" height="36" loading="lazy" decoding="async" style="z-index:${show.length-i}" onerror="this.style.display='none'">`).join('');
+      matInner+=`<details class="ult-alt-mat-drop"><summary class="ult-alt-mat-drop-sum"><span class="ult-alt-mat-drop-stack">${stack}</span><span class="ult-alt-mat-drop-label">${esc(tf('ult_alt_available_mats','Usable materials'))} (${avail.length})</span></summary><div class="ult-alt-mat-drop-list">${avail.map(matRow).join('')}</div></details>`;
     }
     body+=sectionBox(tf('ult_alt_materials','Ultimate Unit materials'),tf('ult_alt_materials_hint','Used to raise Alteration Level.'),matInner,'mats');
   }
