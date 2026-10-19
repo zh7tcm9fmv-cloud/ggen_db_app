@@ -54,6 +54,10 @@
         /* Android / desktop: no prompt */
         return Promise.resolve('granted');
       }
+      /* iOS only allows the prompt in a secure context (https / localhost). */
+      if (typeof window.isSecureContext === 'boolean' && !window.isSecureContext) {
+        return Promise.resolve('unavailable');
+      }
       return Promise.resolve(req.call(window.DeviceOrientationEvent)).then(function (state) {
         return state === 'granted' ? 'granted' : 'denied';
       }).catch(function () {
@@ -96,17 +100,30 @@
     return [value + next * dt, next];
   }
 
+  function sourceSize(img) {
+    if (!img) return null;
+    /* HTMLImageElement.width/height are the CSS box. A collapsed box baked the thin band. */
+    if (typeof img.naturalWidth === 'number') {
+      if (img.naturalWidth > 0 && img.naturalHeight > 0) return [img.naturalWidth, img.naturalHeight];
+      return null;
+    }
+    if (img.width > 0 && img.height > 0) return [img.width, img.height];
+    return null;
+  }
+
   function drawContain(ctx, img, w, h) {
     ctx.clearRect(0, 0, w, h);
-    var iw = img.naturalWidth || img.width;
-    var ih = img.naturalHeight || img.height;
-    if (!iw || !ih) return;
+    var sz = sourceSize(img);
+    if (!sz) return false;
+    var iw = sz[0];
+    var ih = sz[1];
     var scale = Math.min(w / iw, h / ih);
     var dw = iw * scale;
     var dh = ih * scale;
     var dx = (w - dw) * 0.5;
     var dy = (h - dh) * 0.5;
     ctx.drawImage(img, dx, dy, dw, dh);
+    return true;
   }
 
   /**
@@ -154,8 +171,32 @@
     }
   }
 
+  /* Tilt the wrap, never the measured stage. Rotating the stage made later resizes bake a short box. */
+  function ensureTiltPlate(stage) {
+    if (!stage || !stage.parentNode) return null;
+    var parent = stage.parentNode;
+    if (parent.classList && parent.classList.contains('unit-holo-card__tilt')) return parent;
+    var tilt = document.createElement('div');
+    tilt.className = 'unit-holo-card__tilt';
+    parent.insertBefore(tilt, stage);
+    tilt.appendChild(stage);
+    return tilt;
+  }
+
+  function detachTiltPlate(stage) {
+    if (!stage) return;
+    stage.style.transform = '';
+    var tilt = stage.parentNode;
+    if (!tilt || !tilt.classList || !tilt.classList.contains('unit-holo-card__tilt')) return;
+    tilt.style.transform = '';
+    var host = tilt.parentNode;
+    if (host) host.insertBefore(stage, tilt);
+    if (tilt.parentNode) tilt.parentNode.removeChild(tilt);
+  }
+
   function unwrapStage(card, stage) {
     if (!stage || !card) return;
+    detachTiltPlate(stage);
     try {
       var kids = stage.querySelectorAll('img.detail-portrait, img.supporter-portrait, .detail-portrait-placeholder, .supporter-portrait-placeholder');
       for (var ki = 0; ki < kids.length; ki++) {
@@ -298,8 +339,12 @@
     if (!glProbe) return mountCssOnly(card, opts, reduced);
 
     var stage = ensureStage(card);
+    var plate = ensureTiltPlate(stage);
     var img = stage.querySelector('img.detail-portrait, img.supporter-portrait, img');
-    if (!stage || !img) return null;
+    if (!stage || !img) {
+      detachTiltPlate(stage);
+      return null;
+    }
 
     ensureEdge(card);
     pinPortraitOverlay(card);
@@ -452,6 +497,8 @@
     var IDLE_AMP_MS = 420;
     var bake = document.createElement('canvas');
     var bakeCtx = bake.getContext('2d', { alpha: true });
+    /* First good portrait box. Later tilt/resize must not replace it with a short one. */
+    var boxLock = null;
 
     function draw() {
       var w = canvas.width;
@@ -484,26 +531,33 @@
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     }
 
-    function stageCssSize() {
-      var r = stage.getBoundingClientRect();
-      var w = r.width;
-      var h = r.height;
-      if (w < 2 || h < 2) {
-        var ir = img.getBoundingClientRect();
-        w = ir.width;
-        h = ir.height;
+    function layoutBox() {
+      /* client size ignores the 3D tilt. getBoundingClientRect shrinks after the idle rotate. */
+      var w = img.offsetWidth || img.clientWidth || 0;
+      var h = img.offsetHeight || img.clientHeight || 0;
+      if (w < 24 || h < 24) {
+        w = stage.clientWidth || 0;
+        h = stage.clientHeight || 0;
       }
-      if (w < 2 || h < 2) {
-        w = img.clientWidth || 0;
-        h = img.clientHeight || 0;
-      }
-      if (w < 2 || h < 2) {
-        var nw = img.naturalWidth || 300;
-        var nh = img.naturalHeight || 400;
-        w = Math.min(300, nw);
-        h = w * (nh / nw);
-      }
+      if (w < 24 || h < 24) return null;
       return { w: w, h: h };
+    }
+
+    function stageCssSize() {
+      var box = layoutBox();
+      if (box) {
+        if (!boxLock || box.h >= boxLock.h * 0.85) boxLock = box;
+        else box = boxLock;
+      } else if (boxLock) {
+        box = boxLock;
+      }
+      return box || { w: 0, h: 0 };
+    }
+
+    function lockStageBox(box) {
+      if (!box) return;
+      stage.style.minWidth = box.w + 'px';
+      stage.style.minHeight = box.h + 'px';
     }
 
     function uploadFromImg(sourceImg) {
@@ -519,8 +573,9 @@
       var dpr = Math.min(window.devicePixelRatio || 1, settings.dprMax);
       var cw = Math.max(1, Math.round(css.w * dpr));
       var ch = Math.max(1, Math.round(css.h * dpr));
-      canvas.style.width = css.w + 'px';
-      canvas.style.height = css.h + 'px';
+      lockStageBox(css);
+      canvas.style.width = '100%';
+      canvas.style.height = '100%';
       if (canvas.width !== cw || canvas.height !== ch) {
         canvas.width = cw;
         canvas.height = ch;
@@ -537,7 +592,11 @@
         bakeCtx = bake.getContext('2d', { alpha: true });
       }
       try {
-        drawContain(bakeCtx, sourceImg, cw, ch);
+        if (!drawContain(bakeCtx, sourceImg, cw, ch)) {
+          textureReady = false;
+          card.classList.remove('is-holo-webgl');
+          return;
+        }
       } catch (_) {
         textureReady = false;
         card.classList.remove('is-holo-webgl');
@@ -701,8 +760,9 @@
       var dpr = Math.min(window.devicePixelRatio || 1, settings.dprMax);
       var w = Math.max(1, Math.round(css.w * dpr));
       var h = Math.max(1, Math.round(css.h * dpr));
-      canvas.style.width = css.w + 'px';
-      canvas.style.height = css.h + 'px';
+      lockStageBox(css);
+      canvas.style.width = '100%';
+      canvas.style.height = '100%';
       if (canvas.width !== w || canvas.height !== h) {
         canvas.width = w;
         canvas.height = h;
@@ -736,15 +796,17 @@
       if (!settings.gyro || typeof window.DeviceOrientationEvent === 'undefined') return;
       if (gyro.ok) return;
       var perm = permissionPromise != null ? permissionPromise : opts.gyroPermission;
+      var needsPrompt =
+        typeof window.DeviceOrientationEvent.requestPermission === 'function';
       if (perm && typeof perm.then === 'function') {
         perm.then(function (state) {
           if (state === 'granted') startGyroListener();
         });
         return;
       }
-      requestGyroPermission().then(function (state) {
-        if (state === 'granted') startGyroListener();
-      });
+      /* iOS: never call requestPermission from idle premount — that burns the gesture and blocks the real tap. */
+      if (needsPrompt) return;
+      startGyroListener();
     }
 
     function bindGyro() {
@@ -826,8 +888,10 @@
         state.liftV = a[1];
       }
       var idleTick = autoIdle && idleSkip % 2 !== 0;
-      if (settings.reduced) {
-        stage.style.transform = '';
+      /* Stage stays unrotated. Tilt the plate so layout size and the foil bake never follow the gyro. */
+      stage.style.transform = '';
+      if (settings.reduced || !plate) {
+        if (plate) plate.style.transform = '';
       } else if (!idleTick) {
         /* Skip identity 3D string — applying perspective() alone pops the plate */
         var nearId =
@@ -835,9 +899,9 @@
           Math.abs(state.tiltY) < 0.02 &&
           Math.abs(state.lift - 1) < 0.002;
         if (nearId) {
-          stage.style.transform = '';
+          plate.style.transform = '';
         } else {
-          stage.style.transform =
+          plate.style.transform =
             'perspective(' +
             PERSPECTIVE +
             'px) scale(' +
@@ -1092,6 +1156,10 @@
       activeTouchId = null;
       card.style.setProperty('--edge-proximity', '0');
       stage.style.transform = '';
+      if (plate) plate.style.transform = '';
+      stage.style.minWidth = '';
+      stage.style.minHeight = '';
+      boxLock = null;
       state.tiltX = 0;
       state.tiltY = 0;
       state.tiltVX = 0;
@@ -1128,6 +1196,7 @@
       state.clock = 0;
       idleAmp = 0;
       stage.style.transform = '';
+      if (plate) plate.style.transform = '';
       ambienceUntil = performance.now() + 2400;
       wake();
     }
@@ -1159,6 +1228,8 @@
       if (io) io.disconnect();
       card.classList.remove('is-holo-webgl', 'is-holo-active');
       stage.style.transform = '';
+      if (plate) plate.style.transform = '';
+      detachTiltPlate(stage);
       try {
         if (canvas && canvas.parentNode) canvas.parentNode.removeChild(canvas);
       } catch (_) {}

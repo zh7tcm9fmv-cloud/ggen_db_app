@@ -8,7 +8,7 @@
   'use strict';
 
   const ROLE = {
-    EN: { Attack: 'Attack Type', Defense: 'Defense Type', Support: 'Support Type', all: 'All Types' },
+    EN: { Attack: 'Attack Type', Defense: 'Durability Type', Support: 'Support Type', all: 'All Types' },
     JA: { Attack: '攻撃型', Defense: '耐久型', Support: '支援型', all: '全タイプ' },
     TW: { Attack: '攻擊型', Defense: '耐久型', Support: '支援型', all: '全部類型' },
     HK: { Attack: '攻擊型', Defense: '耐久型', Support: '支援型', all: '全部類型' },

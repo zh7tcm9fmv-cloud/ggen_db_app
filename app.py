@@ -1158,13 +1158,13 @@ UI_LABELS = {
 }
 UI_LABELS['KR'] = dict(UI_LABELS['HR'])
 UNIT_ROLE_TYPE_LANG_MAP = {
-    'EN': {'1': 'Attack Type', '2': 'Defense Type', '3': 'Support Type'},
+    'EN': {'1': 'Attack Type', '2': 'Durability Type', '3': 'Support Type'},
     'TW': {'1': '攻擊型', '2': '耐久型', '3': '支援型'},
     'HK': {'1': '攻擊型', '2': '耐久型', '3': '支援型'},
     'JA': {'1': '攻撃型', '2': '耐久型', '3': '支援型'},
     'HR': {'1': '공격형', '2': '내구형', '3': '지원형'},
 }
-ROLE_NAME_MAP_CHARS = {'EN': {'Attack': 'Attack', 'Defense': 'Defense', 'Support': 'Support'}, 'TW': {'Attack': '攻擊型', 'Defense': '耐久型', 'Support': '支援型'}, 'JA': {'Attack': '攻撃型', 'Defense': '耐久型', 'Support': '支援型'}, 'HR': {'Attack': '공격형', 'Defense': '내구형', 'Support': '지원형'}}
+ROLE_NAME_MAP_CHARS = {'EN': {'Attack': 'Attack', 'Defense': 'Durability', 'Support': 'Support'}, 'TW': {'Attack': '攻擊型', 'Defense': '耐久型', 'Support': '支援型'}, 'JA': {'Attack': '攻撃型', 'Defense': '耐久型', 'Support': '支援型'}, 'HR': {'Attack': '공격형', 'Defense': '내구형', 'Support': '지원형'}}
 ROLE_NAME_MAP_CHARS['HK'] = dict(ROLE_NAME_MAP_CHARS['TW'])
 ROLE_NAME_MAP_CHARS['KR'] = dict(ROLE_NAME_MAP_CHARS['HR'])
 
@@ -36675,6 +36675,155 @@ def _seo_entity_display_name(kind, eid):
     return ''
 
 
+def _seo_xml_text(value):
+    return (
+        str(value or '')
+        .replace('&', '&amp;')
+        .replace('<', '&lt;')
+        .replace('>', '&gt;')
+        .replace('"', '&quot;')
+    )
+
+
+def _seo_listed_ids(kind):
+    """Playable browse ids only. Schedule shells and locked rows stay out of the sitemap."""
+    if kind == 'unit':
+        src, info_map = unit_list_playable_ids, unit_info_map
+    elif kind == 'character':
+        src, info_map = char_list_playable_ids, char_info_map
+    elif kind == 'supporter':
+        src, info_map = list((supporter_info_map or {}).keys()), supporter_info_map
+    else:
+        return []
+    out = []
+    for eid in src:
+        eid = normalize_id(eid)
+        if not eid or eid == '0':
+            continue
+        info = (info_map or {}).get(eid) or {}
+        sched = info.get('schedule_id', '0')
+        try:
+            if entity_is_nonplayable_schedule_shell(sched):
+                continue
+            if entity_hidden_by_lr_schedule_lock(sched):
+                continue
+        except Exception:
+            pass
+        if kind == 'supporter' and not _seo_entity_display_name('supporter', eid):
+            continue
+        out.append(eid)
+    out.sort()
+    return out
+
+
+def _seo_public_stage_ids():
+    ids = []
+    seen = set()
+
+    def add(sid):
+        sid = normalize_id(sid)
+        if not sid or sid == '0' or sid in seen:
+            return
+        seen.add(sid)
+        ids.append(sid)
+
+    for sid, est in (eternal_stage_map or {}).items():
+        try:
+            if not eternal_stage_content_visible(sid, est):
+                continue
+        except Exception:
+            pass
+        add(sid)
+    for sid in (lite_scenario_event_stage_map or {}):
+        try:
+            if eternal_stage_before_mstage_schedule_release(sid):
+                continue
+        except Exception:
+            pass
+        add(sid)
+    for sid in (main_scenario_stage_challenge_map or {}):
+        add(sid)
+    for sid in (special_event_stage_map or {}):
+        try:
+            if stage_is_password_gated(sid) and not password_gated_stage_content_visible(sid):
+                continue
+        except Exception:
+            pass
+        add(sid)
+    for sid in (map_event_score_attack_stage_map or {}):
+        add(sid)
+    for tid in (tower_event_stage_map or {}):
+        add(tid)
+    return ids
+
+
+def _seo_series_name(kind, eid):
+    try:
+        if kind == 'unit':
+            series = resolve_series(unit_ser_map.get(eid, ''), 'EN')
+        elif kind == 'character':
+            ld = LANG_DATA.get('EN') or {}
+            series = resolve_series((ld.get('char_ser_map') or {}).get(eid, ''), 'EN')
+        else:
+            series = []
+    except Exception:
+        series = []
+    if series:
+        return str((series[0] or {}).get('name') or '').strip()
+    return ''
+
+
+def _seo_rarity_letter(kind, eid):
+    if kind == 'unit':
+        info = (unit_info_map or {}).get(eid) or {}
+    elif kind == 'character':
+        info = (char_info_map or {}).get(eid) or {}
+    elif kind == 'supporter':
+        info = (supporter_info_map or {}).get(eid) or {}
+    else:
+        return ''
+    return RARITY_MAP.get(str(info.get('rarity') or ''), '')
+
+
+def _seo_stage_display_name(eid):
+    eid = normalize_id(eid)
+    ld = LANG_DATA.get(DEFAULT_LANG) or LANG_DATA.get('EN') or {}
+    est = (eternal_stage_map or {}).get(eid) or {}
+    if est:
+        nm = str((ld.get('stage_text_map') or {}).get(est.get('stage_name_lang_id', ''), '') or '').strip()
+        if nm:
+            return nm
+    try:
+        ssc = (scenario_stage_map or {}).get(eid) or {}
+        if ssc:
+            nm = str(resolve_scenario_stage_name(ld, ssc.get('title_name_lang_id', '0'), eid) or '').strip()
+            if nm and not nm.lower().startswith('unknown'):
+                return nm
+    except Exception:
+        pass
+    return ''
+
+
+def _seo_entity_paragraph(kind, eid, name, label):
+    """One sentence: official name, rarity, and series when master has them."""
+    rarity = _seo_rarity_letter(kind, eid)
+    series = _seo_series_name(kind, eid)
+    kind_word = label.lower()
+    if kind == 'stage':
+        stage_name = name or _seo_stage_display_name(eid)
+        if stage_name:
+            return f'{stage_name} is a stage in SD Gundam G Generation ETERNAL.'
+        return f'Stage {eid} in SD Gundam G Generation ETERNAL.'
+    if not name:
+        return f'{label} {eid} in SD Gundam G Generation ETERNAL — GGen Eternal Database.'
+    rarity_bit = f'{rarity} ' if rarity else ''
+    if series:
+        return f'{name} is a {rarity_bit}{kind_word} from {series} in SD Gundam G Generation ETERNAL.'
+    if rarity:
+        return f'{name} is a {rarity} {kind_word} in SD Gundam G Generation ETERNAL.'
+    return f'{name} is a {kind_word} in SD Gundam G Generation ETERNAL.'
+
+
 def _spa_seo_meta(canon_path):
     """Return (title, description) for the SPA shell at ``canon_path``."""
     path = (canon_path or '/').replace('\\', '/')
@@ -36687,6 +36836,7 @@ def _spa_seo_meta(canon_path):
             'u': 'unit',
             'c': 'character',
             's': 'supporter',
+            'es': 'stage',
             'op': 'option_part',
             'pt': 'option_part',
         }.get(prefix)
@@ -36697,11 +36847,13 @@ def _spa_seo_meta(canon_path):
             )
         if kind:
             name = _seo_entity_display_name(kind, eid)
-            label = {'unit': 'Unit', 'character': 'Character', 'supporter': 'Supporter', 'option_part': 'Option Part'}[kind]
+            label = {'unit': 'Unit', 'character': 'Character', 'supporter': 'Supporter', 'stage': 'Stage', 'option_part': 'Option Part'}[kind]
+            if kind == 'stage' and not name:
+                name = _seo_stage_display_name(eid)
             if name:
                 return (
                     f'{name} — {label} | GGen Eternal Database',
-                    f'{name} ({label}) in SD Gundam G Generation ETERNAL — GGen Eternal Database.',
+                    _seo_entity_paragraph(kind, eid, name, label),
                 )
             return (
                 f'{label} {eid} — GGen Eternal Database',
@@ -36761,41 +36913,108 @@ def robots_txt():
     return r
 
 
+_SEO_SITEMAP_CACHE = {}
+_SEO_SITEMAP_LOCK = threading.Lock()
+_SEO_SITEMAP_URL_CAP = 40000
+_SEO_PAGE_PATHS = (
+    '/', '/ip', '/collections', '/game-news', '/tm', '/dm', '/about', '/contact', '/privacy-policy',
+    '/c', '/u', '/s', '/st', '/gtower', '/challenge', '/go', '/special', '/collab',
+    '/cal', '/tb', '/tl', '/ml', '/rk', '/op', '/new', '/esim', '/gacha-sim',
+)
+
+
+def _seo_urlset_xml(locs, priority='0.6'):
+    today = date.today().isoformat()
+    chunks = []
+    for loc in locs:
+        chunks.append(
+            f'<url><loc>{_seo_xml_text(loc)}</loc><lastmod>{today}</lastmod>'
+            f'<changefreq>weekly</changefreq><priority>{priority}</priority></url>'
+        )
+    return (
+        '<?xml version="1.0" encoding="UTF-8"?>'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+        + ''.join(chunks)
+        + '</urlset>'
+    )
+
+
+def _seo_build_sitemap_bodies(base):
+    """Index plus typed urlsets. Split a type past the cap so one file never becomes huge."""
+    groups = {
+        'pages': [f'{base}{p}' for p in _SEO_PAGE_PATHS],
+        'units': [f'{base}/u/{quote(eid, safe="")}' for eid in _seo_listed_ids('unit')],
+        'characters': [f'{base}/c/{quote(eid, safe="")}' for eid in _seo_listed_ids('character')],
+        'supporters': [f'{base}/s/{quote(eid, safe="")}' for eid in _seo_listed_ids('supporter')],
+        'stages': [f'{base}/es/{quote(eid, safe="")}' for eid in _seo_public_stage_ids()],
+    }
+    files = {}
+    index_names = []
+    for key, locs in groups.items():
+        if not locs:
+            continue
+        slices = [locs[i:i + _SEO_SITEMAP_URL_CAP] for i in range(0, len(locs), _SEO_SITEMAP_URL_CAP)]
+        for n, chunk in enumerate(slices, start=1):
+            name = key if len(slices) == 1 else f'{key}-{n}'
+            pri = '0.8' if key == 'pages' else '0.6'
+            files[name] = _seo_urlset_xml(chunk, priority=pri)
+            index_names.append(name)
+    today = date.today().isoformat()
+    index_rows = ''.join(
+        f'<sitemap><loc>{_seo_xml_text(base + "/sitemap-" + name + ".xml")}</loc><lastmod>{today}</lastmod></sitemap>'
+        for name in index_names
+    )
+    files['index'] = (
+        '<?xml version="1.0" encoding="UTF-8"?>'
+        '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+        f'{index_rows}</sitemapindex>'
+    )
+    return files
+
+
+def _seo_sitemap_body(part):
+    base = _public_site_origin()
+    with _SEO_SITEMAP_LOCK:
+        cached = _SEO_SITEMAP_CACHE.get(base)
+        if cached is None:
+            cached = _seo_build_sitemap_bodies(base)
+            _SEO_SITEMAP_CACHE[base] = cached
+    if part == 'index':
+        return cached.get('index') or ''
+    return cached.get(part) or ''
+
+
+def _seo_xml_response(body, empty_ok=False):
+    if not body and not empty_ok:
+        body = (
+            '<?xml version="1.0" encoding="UTF-8"?>'
+            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></urlset>'
+        )
+    r = make_response(body)
+    r.headers['Content-Type'] = 'application/xml; charset=utf-8'
+    r.headers['Cache-Control'] = 'public, max-age=3600'
+    return r
+
+
 @app.route('/sitemap.xml')
 def sitemap_xml():
     try:
-        base = _public_site_origin()
-        # Canonical public URLs only (aliases like /sp-list and /banners 301 elsewhere).
-        paths = [
-            '/', '/ip', '/collections', '/game-news', '/tm', '/dm', '/about', '/contact', '/privacy-policy',
-            '/c', '/u', '/s', '/st', '/gtower', '/challenge', '/go', '/special', '/collab',
-            '/cal', '/tb', '/tl', '/ml', '/rk', '/op', '/new', '/esim', '/gacha-sim',
-        ]
-        today = date.today().isoformat()
-        urls = ''.join(
-            f'<url><loc>{base}{p}</loc><lastmod>{today}</lastmod>'
-            f'<changefreq>daily</changefreq><priority>{"1.0" if p == "/" else "0.8"}</priority></url>'
-            for p in paths
-        )
-        body = (
-            '<?xml version="1.0" encoding="UTF-8"?>'
-            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
-            f'{urls}</urlset>'
-        )
-        r = make_response(body)
-        r.headers['Content-Type'] = 'application/xml; charset=utf-8'
-        r.headers['Cache-Control'] = 'public, max-age=3600'
-        return r
+        return _seo_xml_response(_seo_sitemap_body('index'))
     except Exception as e:
         print(f'sitemap.xml failed: {e}')
-        r = make_response(
-            '<?xml version="1.0" encoding="UTF-8"?>'
-            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></urlset>',
-            200,
-        )
-        r.headers['Content-Type'] = 'application/xml; charset=utf-8'
-        r.headers['Cache-Control'] = 'no-store'
-        return r
+        return _seo_xml_response('', empty_ok=False)
+
+
+@app.route('/sitemap-<part>.xml')
+def sitemap_part_xml(part):
+    try:
+        body = _seo_sitemap_body(part)
+        if not body:
+            return _not_found_page()
+        return _seo_xml_response(body)
+    except Exception as e:
+        print(f'sitemap-{part}.xml failed: {e}')
+        return _not_found_page()
 
 
 @app.route('/static/font')

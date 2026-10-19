@@ -1717,10 +1717,21 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
   position:relative;
   z-index:1;
 }
-.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-on .unit-holo-card__stage{
+/* Gyro / idle tilt sits on the plate. The stage stays axis-aligned so client size never follows the rotate. */
+.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card__tilt{
+  display:block;
+  width:100%;
+  max-width:100%;
+  transform-origin:center center;
+  overflow:visible;
+}
+.modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-on .unit-holo-card__tilt{
   transform-style:preserve-3d;
   will-change:transform;
 }
+a.seo-entity-link{color:inherit;text-decoration:none;font:inherit;cursor:pointer}
+.name-text > a.seo-entity-link{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:inherit;text-decoration:none}
+.list-grid-card-name > a.seo-entity-link,.stage-browse-thumb__title > a.seo-entity-link{display:contents;color:inherit;text-decoration:none}
 .modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-on .unit-holo-card__canvas{
   position:absolute;
   inset:0;
@@ -1738,7 +1749,8 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-webgl .detail-portrait,
 .modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card.is-holo-webgl .detail-portrait-placeholder{
   opacity:0!important;
-  visibility:hidden;
+  /* Keep the layout box. visibility:hidden let the desktop/iOS portrait collapse, then the foil rebake squeezed it. */
+  visibility:visible!important;
   transition:none!important;
 }
 /* Portrait-in-stage chrome already set on --armed (above) */
@@ -1841,7 +1853,7 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .modal-content.supporter-detail .unit-holo-card.is-holo-webgl .supporter-portrait,
 .modal-content.supporter-detail .unit-holo-card.is-holo-webgl .supporter-portrait-placeholder{
   opacity:0!important;
-  visibility:hidden;
+  visibility:visible!important;
   transition:none!important;
 }
 .modal-content.supporter-detail .unit-holo-card.unit-holo-card--armed .unit-holo-card__stage .supporter-portrait,
