@@ -6980,9 +6980,22 @@ def jsonify_cacheable(data, cache_key, *, public=True, max_age=3600, private=Fal
 
 # Pre-serialized JSON bodies (raw + gzip). Warm hits skip jsonify + gzip under GIL —
 # critical when RSS is high (/tl ~0.5MB JSON, /tm+/dm multi‑MB). Look/features unchanged.
+#
+# Large boards (/tm /dm ~7–9MB decompressed each) MUST NOT keep `raw` in this LRU —
+# Oct 2026 lesson: 8 locales × raw alone ≈ 70MB+ of retainable heap on top of baseline.
 _HTTP_JSON_BODY_CACHE = {}
 _HTTP_JSON_BODY_CACHE_LOCK = threading.Lock()
 _HTTP_JSON_BODY_CACHE_MAX = max(8, min(64, int(os.environ.get('HTTP_JSON_BODY_CACHE_MAX', '32') or '32')))
+# Above this, store gzip only; decompress on demand for rare non-gzip clients.
+_HTTP_JSON_BODY_RAW_KEEP_MAX = max(
+    32768,
+    min(2 * 1024 * 1024, int(os.environ.get('HTTP_JSON_BODY_RAW_KEEP_MAX', '262144') or '262144')),
+)
+# Soft byte budget for the large-body store (gzip + kept raw). Evict oldest when over.
+_HTTP_JSON_BODY_CACHE_BUDGET = max(
+    2 * 1024 * 1024,
+    min(64 * 1024 * 1024, int(os.environ.get('HTTP_JSON_BODY_CACHE_BUDGET', '8388608') or '8388608')),
+)
 # Small dossier/detail responses get their own LRU so SPI/timeline do not thrash them out.
 _HTTP_JSON_DETAIL_BODY_CACHE = {}
 _HTTP_JSON_DETAIL_BODY_CACHE_MAX = max(32, min(256, int(os.environ.get('HTTP_JSON_DETAIL_BODY_CACHE_MAX', '128') or '128')))
@@ -6997,6 +7010,37 @@ def _http_json_is_detail_body_key(cache_key):
     return any(k.startswith(p) for p in _HTTP_JSON_DETAIL_KEY_PREFIXES)
 
 
+def _http_json_entry_bytes(entry):
+    if not entry:
+        return 0
+    n = 0
+    raw = entry.get('raw')
+    gz = entry.get('gzip')
+    if raw is not None:
+        n += len(raw)
+    if gz is not None:
+        n += len(gz)
+    return n
+
+
+def _http_json_body_cache_stats():
+    with _HTTP_JSON_BODY_CACHE_LOCK:
+        body_bytes = sum(_http_json_entry_bytes(v) for v in _HTTP_JSON_BODY_CACHE.values())
+        detail_bytes = sum(_http_json_entry_bytes(v) for v in _HTTP_JSON_DETAIL_BODY_CACHE.values())
+        large_raw = sum(
+            1 for v in _HTTP_JSON_BODY_CACHE.values()
+            if v.get('raw') is not None and len(v.get('raw') or b'') > _HTTP_JSON_BODY_RAW_KEEP_MAX
+        )
+        return {
+            'body_keys': len(_HTTP_JSON_BODY_CACHE),
+            'body_bytes': body_bytes,
+            'detail_keys': len(_HTTP_JSON_DETAIL_BODY_CACHE),
+            'detail_bytes': detail_bytes,
+            'body_budget': _HTTP_JSON_BODY_CACHE_BUDGET,
+            'large_raw_kept': large_raw,
+        }
+
+
 def _http_json_body_cache_get(cache_key):
     with _HTTP_JSON_BODY_CACHE_LOCK:
         if _http_json_is_detail_body_key(cache_key):
@@ -7008,16 +7052,22 @@ def _http_json_body_cache_get(cache_key):
 
 def _http_json_body_cache_put(cache_key, raw, compressed, etag):
     with _HTTP_JSON_BODY_CACHE_LOCK:
-        entry = {'raw': raw, 'gzip': compressed, 'etag': etag}
         raw_len = len(raw) if raw is not None else 0
+        # Never retain multi‑MB decompressed boards in the warm store.
+        keep_raw = raw if (raw is not None and raw_len <= _HTTP_JSON_BODY_RAW_KEEP_MAX) else None
+        entry = {'raw': keep_raw, 'gzip': compressed, 'etag': etag}
         if _http_json_is_detail_body_key(cache_key) and raw_len <= _HTTP_JSON_DETAIL_BODY_MAX_RAW:
-            _HTTP_JSON_DETAIL_BODY_CACHE[cache_key] = entry
+            _HTTP_JSON_DETAIL_BODY_CACHE[cache_key] = {
+                'raw': raw, 'gzip': compressed, 'etag': etag,
+            }
             while len(_HTTP_JSON_DETAIL_BODY_CACHE) > _HTTP_JSON_DETAIL_BODY_CACHE_MAX:
                 try:
                     oldest = next(iter(_HTTP_JSON_DETAIL_BODY_CACHE))
                 except StopIteration:
                     break
                 _HTTP_JSON_DETAIL_BODY_CACHE.pop(oldest, None)
+            return
+        if compressed is None and keep_raw is None:
             return
         _HTTP_JSON_BODY_CACHE[cache_key] = entry
         while len(_HTTP_JSON_BODY_CACHE) > _HTTP_JSON_BODY_CACHE_MAX:
@@ -7026,6 +7076,15 @@ def _http_json_body_cache_put(cache_key, raw, compressed, etag):
             except StopIteration:
                 break
             _HTTP_JSON_BODY_CACHE.pop(oldest, None)
+        # Byte budget: drop oldest until under cap (gzip-only matrix stays cheap).
+        total = sum(_http_json_entry_bytes(v) for v in _HTTP_JSON_BODY_CACHE.values())
+        while total > _HTTP_JSON_BODY_CACHE_BUDGET and _HTTP_JSON_BODY_CACHE:
+            try:
+                oldest = next(iter(_HTTP_JSON_BODY_CACHE))
+            except StopIteration:
+                break
+            gone = _HTTP_JSON_BODY_CACHE.pop(oldest, None)
+            total -= _http_json_entry_bytes(gone)
 
 
 def _http_json_body_cache_drop_prefix(prefix):
@@ -7039,6 +7098,84 @@ def _http_json_body_cache_drop_prefix(prefix):
                 store.pop(k, None)
                 dropped += 1
     return dropped
+
+
+def _http_json_body_cache_strip_large_raw():
+    """Drop retained multi‑MB `raw` blobs; keep gzip so responses stay snappy."""
+    stripped = 0
+    with _HTTP_JSON_BODY_CACHE_LOCK:
+        for k, entry in list(_HTTP_JSON_BODY_CACHE.items()):
+            raw = entry.get('raw') if isinstance(entry, dict) else None
+            if raw is None:
+                continue
+            if len(raw) <= _HTTP_JSON_BODY_RAW_KEEP_MAX:
+                continue
+            entry['raw'] = None
+            stripped += 1
+            if entry.get('gzip') is None:
+                _HTTP_JSON_BODY_CACHE.pop(k, None)
+    return stripped
+
+
+def pressure_trim_aux_caches(*, rss_mb=None):
+    """Background-only: free retainable warm bytes without changing API features.
+
+    Never call from the /health request path (Railway probes). Safe to call from the
+    adaptive cache tick when RSS is already at the MSY floor.
+    """
+    info = {'stripped_raw': 0, 'api_evicted': 0, 'detail_evicted': 0}
+    try:
+        info['stripped_raw'] = int(_http_json_body_cache_strip_large_raw() or 0)
+    except Exception:
+        pass
+    try:
+        rss = float(rss_mb) if rss_mb is not None else None
+    except (TypeError, ValueError):
+        rss = None
+    # Hard pressure: shrink detail-body LRU and unpinned API dicts (misses recompute).
+    if rss is not None and rss >= 1250.0:
+        try:
+            with _HTTP_JSON_BODY_CACHE_LOCK:
+                while len(_HTTP_JSON_DETAIL_BODY_CACHE) > 64:
+                    try:
+                        oldest = next(iter(_HTTP_JSON_DETAIL_BODY_CACHE))
+                    except StopIteration:
+                        break
+                    _HTTP_JSON_DETAIL_BODY_CACHE.pop(oldest, None)
+                    info['detail_evicted'] += 1
+        except Exception:
+            pass
+        try:
+            with _api_cache_lock:
+                keys = list(_api_cache.keys())
+                victims = [k for k in keys if not _api_cache_key_pinned(k)]
+                # Keep a small warm set of unpinned detail/option blobs.
+                drop_n = max(0, len(victims) - 40)
+                for k in victims[:drop_n]:
+                    _api_cache.pop(k, None)
+                    info['api_evicted'] += 1
+        except Exception:
+            pass
+    return info
+
+
+def _http_json_resolve_body(hit, want_gzip):
+    """Pick response bytes from a body-cache hit (gzip-only entries decompress on demand)."""
+    if not hit:
+        return None, False
+    gz = hit.get('gzip')
+    raw = hit.get('raw')
+    if want_gzip and gz is not None:
+        return gz, True
+    if raw is not None:
+        return raw, False
+    if gz is not None:
+        try:
+            import gzip as _gzip
+            return _gzip.decompress(gz), False
+        except Exception:
+            return None, False
+    return None, False
 
 
 def jsonify_preserialized(data, cache_key, *, public=True, max_age=3600, private=False,
@@ -7060,14 +7197,14 @@ def jsonify_preserialized(data, cache_key, *, public=True, max_age=3600, private
     hit = _http_json_body_cache_get(cache_key) if cache_key else None
     accept = (request.headers.get('Accept-Encoding') or '').lower()
     want_gzip = 'gzip' in accept
-    if hit and hit.get('raw') is not None:
-        body = hit.get('gzip') if want_gzip and hit.get('gzip') else hit['raw']
+    body, as_gzip = _http_json_resolve_body(hit, want_gzip)
+    if body is not None:
         resp = make_response(body)
         resp.headers['Content-Type'] = 'application/json; charset=utf-8'
         resp.headers['Cache-Control'] = cc
         if etag:
             resp.headers['ETag'] = etag
-        if want_gzip and hit.get('gzip') and body is hit.get('gzip'):
+        if as_gzip:
             resp.headers['Content-Encoding'] = 'gzip'
             vary = resp.headers.get('Vary') or ''
             if 'Accept-Encoding' not in vary:
@@ -7117,9 +7254,10 @@ def _serve_published_gzip_json(path, cache_key, *, max_age=3600, public=True):
         resp.headers['Cache-Control'] = cc
         return resp
     hit = _http_json_body_cache_get(cache_key) if cache_key else None
-    gz = hit.get('gzip') if hit else None
-    raw = hit.get('raw') if hit else None
-    if gz is None:
+    accept = (request.headers.get('Accept-Encoding') or '').lower()
+    want_gzip = 'gzip' in accept
+    body, as_gzip = _http_json_resolve_body(hit, want_gzip)
+    if body is None:
         try:
             with open(path, 'rb') as f:
                 gz = f.read()
@@ -7128,18 +7266,18 @@ def _serve_published_gzip_json(path, cache_key, *, max_age=3600, public=True):
             return None
         if not gz:
             return None
-        # Decompress once for non-gzip clients; keep both in the small body cache.
-        try:
-            import gzip as _gzip
-            raw = _gzip.decompress(gz)
-        except Exception as e:
-            print(f'published gzip decompress failed ({path}): {e}', flush=True)
-            return None
+        # Cache gzip only for multi‑MB boards; decompress on demand for non-gzip clients.
         if cache_key:
-            _http_json_body_cache_put(cache_key, raw, gz, etag)
-    accept = (request.headers.get('Accept-Encoding') or '').lower()
-    want_gzip = 'gzip' in accept
-    body = gz if want_gzip and gz else raw
+            _http_json_body_cache_put(cache_key, None, gz, etag)
+        if want_gzip:
+            body, as_gzip = gz, True
+        else:
+            try:
+                import gzip as _gzip
+                body, as_gzip = _gzip.decompress(gz), False
+            except Exception as e:
+                print(f'published gzip decompress failed ({path}): {e}', flush=True)
+                return None
     if body is None:
         return None
     resp = make_response(body)
@@ -7147,7 +7285,7 @@ def _serve_published_gzip_json(path, cache_key, *, max_age=3600, public=True):
     resp.headers['Cache-Control'] = cc
     if etag:
         resp.headers['ETag'] = etag
-    if want_gzip and gz and body is gz:
+    if as_gzip:
         resp.headers['Content-Encoding'] = 'gzip'
         resp.headers['Vary'] = 'Accept-Encoding'
     resp.headers['Content-Length'] = str(len(body))
@@ -19112,6 +19250,10 @@ def health_check():
         with _HTTP_JSON_BODY_CACHE_LOCK:
             mem['http_json_body_cache_keys'] = len(_HTTP_JSON_BODY_CACHE)
             mem['http_json_detail_body_cache_keys'] = len(_HTTP_JSON_DETAIL_BODY_CACHE)
+        _bc = _http_json_body_cache_stats()
+        mem['http_json_body_cache_mb'] = round((_bc.get('body_bytes') or 0) / (1024 * 1024), 2)
+        mem['http_json_detail_body_cache_mb'] = round((_bc.get('detail_bytes') or 0) / (1024 * 1024), 2)
+        mem['http_json_body_cache_budget_mb'] = round((_bc.get('body_budget') or 0) / (1024 * 1024), 2)
     except Exception:
         pass
     payload = {

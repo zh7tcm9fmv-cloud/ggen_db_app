@@ -1,0 +1,78 @@
+[
+  {
+    "path": "/health",
+    "ms": 340,
+    "status": 200,
+    "gzip": 324,
+    "ok": true,
+    "booting": false,
+    "browse_ready": true,
+    "rss_mb": 1321.1,
+    "band": "pressure",
+    "pair_len": 1500,
+    "pair_max": 1500,
+    "pair_ceiling": 6000,
+    "rpm": 106,
+    "detail_body": 128,
+    "body_cache": 32
+  },
+  {
+    "path": "/",
+    "ms": 744,
+    "status": 200,
+    "gzip": 33158
+  },
+  {
+    "path": "/api/characters?lang=EN",
+    "ms": 456,
+    "status": 200,
+    "gzip": 3685
+  },
+  {
+    "path": "/api/units?lang=EN",
+    "ms": 797,
+    "status": 200,
+    "gzip": 9829
+  },
+  {
+    "path": "/api/banner_timeline?lang=EN&sv=23",
+    "ms": 818,
+    "status": 200,
+    "gzip": 37716
+  },
+  {
+    "path": "/api/unit/1001000150?lang=EN",
+    "ms": 264,
+    "status": 200,
+    "gzip": 2854
+  },
+  {
+    "path": "/api/character/1001000100?lang=EN",
+    "ms": 262,
+    "status": 200,
+    "gzip": 1469
+  },
+  {
+    "path": "/api/unit/1001000150/best_synergy_pilots?lang=EN",
+    "ms": 359,
+    "status": 200,
+    "gzip": 50921
+  },
+  {
+    "path": "/health",
+    "ms": 271,
+    "status": 200,
+    "gzip": 325,
+    "ok": true,
+    "booting": false,
+    "browse_ready": true,
+    "rss_mb": 1321.1,
+    "band": "pressure",
+    "pair_len": 1500,
+    "pair_max": 1500,
+    "pair_ceiling": 6000,
+    "rpm": 104,
+    "detail_body": 128,
+    "body_cache": 32
+  }
+]

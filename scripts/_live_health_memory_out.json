@@ -1,0 +1,36 @@
+{
+  "booting": false,
+  "browse_cache": {
+    "building": false,
+    "chars": 1153,
+    "units": 1829
+  },
+  "browse_ready": true,
+  "memory": {
+    "api_cache_keys": 176,
+    "bsp_group_lru": 64,
+    "bsp_group_lru_max": 64,
+    "bsp_published_memory_keys": 1,
+    "bsp_sharded": true,
+    "bsp_unit_count": 1465,
+    "http_json_body_cache_keys": 32,
+    "http_json_detail_body_cache_keys": 128,
+    "msy_adaptive": {
+      "band": "pressure",
+      "enabled": true,
+      "pair_ceiling": 6000,
+      "pair_len": 1500,
+      "pair_max": 1500,
+      "requests_per_min": 103,
+      "weapon_len": 512,
+      "weapon_max": 512
+    },
+    "msy_char_pair_cache": 1500,
+    "msy_char_pair_cache_ceiling": 6000,
+    "msy_char_pair_cache_max": 1500,
+    "msy_unit_weapon_cache": 512,
+    "rss_mb": 1321.1
+  },
+  "ok": true,
+  "phase": "ready"
+}
