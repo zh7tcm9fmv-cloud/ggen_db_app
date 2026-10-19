@@ -2447,6 +2447,7 @@ def _adaptive_tick():
     global _adaptive_band, _adaptive_pair_max, _adaptive_wpn_max, _adaptive_up_streak
     if not _ADAPTIVE_CACHE_ENABLED:
         return None
+    prev_band = _adaptive_band
     rss = read_process_rss_mb()
     rpm = _adaptive_requests_per_min()
     want = adaptive_band_for(rss, rpm)
@@ -2495,11 +2496,28 @@ def _adaptive_tick():
                     aux['rankings_full_dropped'] = int(aux.get('rankings_full_dropped') or 0) + 1
         except Exception:
             pass
-    if dropped_pair or dropped_wpn or dropped_lru or aux:
+    # Quiet by default: routine detail-body / BSP LRU churn under a stuck pressure floor
+    # flooded Railway logs without changing health. Log only owner-actionable transitions.
+    band_changed = band != prev_band
+    stripped = int(aux.get('stripped_raw') or 0)
+    api_evicted = int(aux.get('api_evicted') or 0)
+    rankings_dropped = int(aux.get('rankings_full_dropped') or 0)
+    notable = (
+        band_changed
+        or dropped_pair > 0
+        or dropped_wpn > 0
+        or stripped > 0
+        or api_evicted > 0
+        or rankings_dropped > 0
+        or bool(aux.get('err'))
+    )
+    if notable:
         print(
-            f'MSY adaptive cache {band}: pair→{pair_max} (-{dropped_pair}), '
+            f'MSY adaptive cache {prev_band}→{band}: pair→{pair_max} (-{dropped_pair}), '
             f'wpn→{wpn_max} (-{dropped_wpn}), bsp_lru=-{dropped_lru}, '
-            f'aux={aux}, rpm={rpm}, rss={rss}'
+            f'stripped_raw={stripped}, api_evicted={api_evicted}, '
+            f'rankings_full_dropped={rankings_dropped}, rpm={rpm}, rss={rss}',
+            flush=True,
         )
     return band
 

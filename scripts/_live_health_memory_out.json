@@ -7,21 +7,27 @@
   },
   "browse_ready": true,
   "memory": {
-    "api_cache_keys": 176,
-    "bsp_group_lru": 64,
+    "api_cache_keys": 197,
+    "bsp_group_lru": 32,
     "bsp_group_lru_max": 64,
     "bsp_published_memory_keys": 1,
     "bsp_sharded": true,
     "bsp_unit_count": 1465,
+    "http_json_body_cache_budget_mb": 8.0,
     "http_json_body_cache_keys": 32,
-    "http_json_detail_body_cache_keys": 128,
+    "http_json_body_cache_mb": 3.59,
+    "http_json_detail_body_cache_keys": 67,
+    "http_json_detail_body_cache_mb": 2.11,
     "msy_adaptive": {
       "band": "pressure",
+      "bsp_group_lru": 32,
+      "bsp_group_lru_max": 64,
       "enabled": true,
       "pair_ceiling": 6000,
       "pair_len": 1500,
       "pair_max": 1500,
-      "requests_per_min": 103,
+      "rankings_result_keys": 0,
+      "requests_per_min": 130,
       "weapon_len": 512,
       "weapon_max": 512
     },
@@ -29,7 +35,7 @@
     "msy_char_pair_cache_ceiling": 6000,
     "msy_char_pair_cache_max": 1500,
     "msy_unit_weapon_cache": 512,
-    "rss_mb": 1321.1
+    "rss_mb": 1299.4
   },
   "ok": true,
   "phase": "ready"

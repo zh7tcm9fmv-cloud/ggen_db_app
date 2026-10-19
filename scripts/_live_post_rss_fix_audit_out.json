@@ -1,0 +1,171 @@
+{
+  "health": {
+    "ms": 939,
+    "ok": true,
+    "booting": false,
+    "browse_ready": true,
+    "rss_mb": 841.1,
+    "band": "pressure",
+    "pair_len": 1500,
+    "pair_max": 1500,
+    "pair_ceiling": 6000,
+    "weapon_len": 512,
+    "weapon_max": 512,
+    "rpm": 279,
+    "api_cache_keys": 106,
+    "detail_body_keys": 62,
+    "body_keys": 32,
+    "body_mb": 3.68,
+    "detail_mb": 1.51,
+    "body_budget_mb": 8.0,
+    "bsp_lru": 9,
+    "bsp_lru_max": 64,
+    "bsp_sharded": true,
+    "err": null
+  },
+  "gate": {
+    "body_mb_field_present": true,
+    "body_budget_present": true,
+    "browse_ready": true,
+    "not_booting": true,
+    "bsp_sharded": true
+  },
+  "/api/tag_matrix?lang=EN": {
+    "n": 2,
+    "p50": 450,
+    "mean": 450,
+    "max": 593,
+    "min": 307,
+    "gzip": 214907
+  },
+  "/api/debuff_matrix?lang=EN": {
+    "n": 2,
+    "p50": 319,
+    "mean": 319,
+    "max": 322,
+    "min": 317,
+    "gzip": 296867
+  },
+  "/api/tag_matrix?lang=JA": {
+    "n": 2,
+    "p50": 346,
+    "mean": 346,
+    "max": 361,
+    "min": 332,
+    "gzip": 236135
+  },
+  "/api/debuff_matrix?lang=JA": {
+    "n": 2,
+    "p50": 481,
+    "mean": 481,
+    "max": 588,
+    "min": 374,
+    "gzip": 320554
+  },
+  "critical": {
+    "/": {
+      "cold_ms": 739,
+      "warm_ms": 878,
+      "gzip": 33154,
+      "status": 200,
+      "err": null
+    },
+    "/api/characters?lang=EN": {
+      "cold_ms": 321,
+      "warm_ms": 444,
+      "gzip": 3685,
+      "status": 200,
+      "err": null
+    },
+    "/api/units?lang=EN": {
+      "cold_ms": 391,
+      "warm_ms": 554,
+      "gzip": 9829,
+      "status": 200,
+      "err": null
+    },
+    "/api/banner_timeline?lang=EN&sv=23": {
+      "cold_ms": 300,
+      "warm_ms": 270,
+      "gzip": 37716,
+      "status": 200,
+      "err": null
+    },
+    "/api/unit/1001000150?lang=EN": {
+      "cold_ms": 266,
+      "warm_ms": 322,
+      "gzip": 2854,
+      "status": 200,
+      "err": null
+    },
+    "/api/character/1001000100?lang=EN": {
+      "cold_ms": 337,
+      "warm_ms": 313,
+      "gzip": 1469,
+      "status": 200,
+      "err": null
+    },
+    "/api/unit/1001000150/best_synergy_pilots?lang=EN": {
+      "cold_ms": 5968,
+      "warm_ms": 283,
+      "gzip": 50921,
+      "status": 200,
+      "err": null
+    }
+  },
+  "unit_warm": {
+    "n": 6,
+    "p50": 257,
+    "mean": 259,
+    "max": 277,
+    "min": 241,
+    "gzip": 2854
+  },
+  "char_warm": {
+    "n": 4,
+    "p50": 248,
+    "mean": 249,
+    "max": 256,
+    "min": 244,
+    "gzip": 1469
+  },
+  "bsp_warm": {
+    "n": 4,
+    "p50": 293,
+    "mean": 344,
+    "max": 506,
+    "min": 283,
+    "gzip": 50921
+  },
+  "health_after": {
+    "ms": 232,
+    "ok": true,
+    "booting": false,
+    "browse_ready": true,
+    "rss_mb": 849.2,
+    "band": "pressure",
+    "pair_len": 1500,
+    "pair_max": 1500,
+    "pair_ceiling": 6000,
+    "weapon_len": 512,
+    "weapon_max": 512,
+    "rpm": 306,
+    "api_cache_keys": 126,
+    "detail_body_keys": 81,
+    "body_keys": 32,
+    "body_mb": 3.89,
+    "detail_mb": 2.05,
+    "body_budget_mb": 8.0,
+    "bsp_lru": 11,
+    "bsp_lru_max": 64,
+    "bsp_sharded": true,
+    "err": null
+  },
+  "vs_pre_fix": {
+    "rss_before_mb": 1321.1,
+    "rss_after_mb": 849.2,
+    "rss_delta_mb": -471.9,
+    "body_mb_after": 3.89,
+    "detail_mb_after": 2.05
+  }
+}
