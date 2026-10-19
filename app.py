@@ -25344,8 +25344,32 @@ def _spi_votes_fetch_github():
     if not cfg:
         return None
     token, repo, path, branch = cfg
-    # Prefer raw body — Contents JSON+base64 truncates on Railway like banner/collections.
+    # Contents raw GET truncates past ~1MB on Railway (JSON then dies mid-string:
+    # "Unterminated string starting at: line …"). Same class as collections share.
+    # Directory listing is tiny and carries the blob sha; Git Data raw returns the file.
     api_raw_url = f'https://api.github.com/repos/{repo}/contents/{quote(path)}?ref={quote(branch)}'
+    size = 0
+    try:
+        sha, size = _collections_github_resolve_blob_sha(token, repo, path, branch)
+        if sha:
+            _SPI_VOTES_GITHUB_SHA = sha
+            raw = _collections_github_fetch_blob_bytes(token, repo, sha)
+            if raw:
+                data = json.loads(raw.decode('utf-8'))
+                if isinstance(data, dict):
+                    print(f'spi_votes: fetched via git-data ({size or len(raw)} bytes)')
+                    return data
+    except HTTPError as e:
+        if e.code == 404:
+            print(f'spi_votes: vote file not on {branch} yet (first save pending)')
+            return None
+        print(f'spi_votes: GitHub git-data fetch failed: {e}')
+    except (URLError, OSError, IncompleteRead, json.JSONDecodeError, ValueError, TimeoutError, RuntimeError) as e:
+        print(f'spi_votes: GitHub git-data fetch failed: {e}')
+    # Contents raw/base64 both truncate past ~1MB — do not fall through on a large blob.
+    if size >= 900_000:
+        return None
+    # Small-file fallback only.
     try:
         raw = _banner_pool_votes_http_get_bytes(
             api_raw_url,
@@ -25358,29 +25382,6 @@ def _spi_votes_fetch_github():
         )
         data = json.loads(raw.decode('utf-8'))
         if isinstance(data, dict):
-            try:
-                parent = path.rsplit('/', 1)[0] if '/' in path else ''
-                name = path.rsplit('/', 1)[-1]
-                dir_url = (
-                    f'https://api.github.com/repos/{repo}/contents/{quote(parent)}?ref={quote(branch)}'
-                    if parent
-                    else f'https://api.github.com/repos/{repo}/contents?ref={quote(branch)}'
-                )
-                listing = json.loads(
-                    _banner_pool_votes_http_get_bytes(
-                        dir_url,
-                        headers=_banner_pool_votes_github_api_headers(token),
-                        timeout=15,
-                        retries=2,
-                    ).decode('utf-8')
-                )
-                if isinstance(listing, list):
-                    for ent in listing:
-                        if isinstance(ent, dict) and ent.get('name') == name and ent.get('sha'):
-                            _SPI_VOTES_GITHUB_SHA = str(ent['sha'])
-                            break
-            except Exception:
-                pass
             return data
     except HTTPError as e:
         if e.code == 404:
@@ -25423,6 +25424,32 @@ def _spi_votes_push_github(data, *, retries=2):
     _banner_pool_votes_ensure_github_branch()
     url = f'https://api.github.com/repos/{repo}/contents/{quote(path)}'
     payload = json.dumps(data, ensure_ascii=False, indent=2).encode('utf-8') + b'\n'
+    # Contents PUT rejects files over 1MB. SPI ballots are already past that.
+    if len(payload) >= 900_000:
+        with _SPI_VOTES_GITHUB_PUSH_LOCK:
+            attempts = max(2, int(retries) + 1)
+            for attempt in range(attempts):
+                try:
+                    return _collections_github_push_via_git_data(
+                        token,
+                        repo,
+                        path,
+                        branch,
+                        payload,
+                        'chore: snapshot SP investment community votes',
+                        '_SPI_VOTES_GITHUB_SHA',
+                    )
+                except (HTTPError, URLError, OSError, IncompleteRead, json.JSONDecodeError, RuntimeError, ValueError, TimeoutError) as e:
+                    msg = str(e)
+                    if attempt < attempts - 1 and (
+                        'update-ref-stale' in msg or 'HTTP 409' in msg or 'HTTP 422' in msg
+                        or 'IncompleteRead' in msg
+                    ):
+                        time.sleep(0.3 * (attempt + 1))
+                        continue
+                    print(f'spi_votes: GitHub git-data push failed: {e}')
+                    return False
+        return False
     headers = {
         **_banner_pool_votes_github_api_headers(token),
         'Content-Type': 'application/json',
