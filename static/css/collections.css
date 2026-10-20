@@ -1375,38 +1375,50 @@ body.collections-page .bg-pattern::after{
   body.collections-page.nav-tabs-collapsed .collections-intro{
     transform:none !important;
   }
-  .collections-pct-sticky.is-on{
-    animation:none !important;
-  }
 }
 
-/* Possession sticky — richer HUD strip when gauge scrolls off (mobile + desktop).
-   top offset = sticky .app-header height (--col-pct-sticky-top). */
+/* Possession sticky — scroll-up reveal only (JS). Park fully above header when off
+   so box-shadow / chips cannot leak into the viewport (esp. desktop). */
 .collections-pct-sticky{
   position:fixed;
   top:var(--col-pct-sticky-top,0px);
   left:0;right:0;
-  z-index:90;
+  z-index:90; /* under .app-header (100) so 2px tuck seals the seam */
   display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;
   padding:8px 12px 10px;
-  background:linear-gradient(180deg,rgba(10,14,23,.97) 0%,rgba(17,24,39,.94) 100%);
+  max-width:100%;
+  box-sizing:border-box;
+  overflow-x:hidden;
+  overflow-y:hidden;
+  background:linear-gradient(180deg,#0f1522 0%,rgba(17,24,39,.97) 28%,rgba(17,24,39,.94) 100%);
   border-bottom:1px solid rgba(0,212,255,.22);
-  box-shadow:0 8px 20px rgba(0,0,0,.4);
-  transform:translateY(-110%);
+  box-shadow:none;
+  /* Park above viewport: own height + header offset (top is under .app-header). */
+  transform:translate3d(0,calc(-100% - var(--col-pct-sticky-top,80px) - 24px),0);
   opacity:0;
   pointer-events:none;
   visibility:hidden;
+  clip-path:inset(0 0 100% 0);
+  transition:
+    transform 280ms cubic-bezier(.33,1,.68,1),
+    opacity 200ms ease,
+    visibility 0s linear 280ms,
+    box-shadow 200ms ease,
+    clip-path 0s linear 280ms;
 }
 .collections-pct-sticky.is-on{
-  transform:translateY(0);
+  transform:translate3d(0,0,0);
   opacity:1;
   pointer-events:auto;
   visibility:visible;
-  animation:colPctStickyIn 600ms cubic-bezier(.33,1,.68,1) both;
-}
-@keyframes colPctStickyIn{
-  from{opacity:.65;transform:translateY(-12px)}
-  to{opacity:1;transform:translateY(0)}
+  clip-path:inset(0 0 0 0);
+  box-shadow:0 8px 20px rgba(0,0,0,.4);
+  transition:
+    transform 320ms cubic-bezier(.33,1,.68,1),
+    opacity 220ms ease,
+    visibility 0s linear 0s,
+    box-shadow 220ms ease,
+    clip-path 0s linear 0s;
 }
 .collections-pct-sticky-lead{
   display:flex;align-items:center;gap:8px;min-width:0;flex:0 1 auto;
@@ -1497,21 +1509,26 @@ body.collections-page:has(.collections-hud.is-perfect) .collections-pct-sticky-v
 @media(min-width:721px){
   .collections-pct-sticky{
     flex-wrap:nowrap;
-    gap:16px 18px;
+    gap:12px 16px;
     padding:10px 20px 12px;
     max-width:100%;
+    align-items:center;
   }
-  .collections-pct-sticky-lead{gap:12px;flex:0 0 auto}
+  .collections-pct-sticky-lead{gap:12px;flex:0 1 auto;min-width:0;max-width:42%}
   .collections-pct-sticky-donut-wrap{width:64px;height:64px}
   .collections-pct-sticky-val{font-size:28px;letter-spacing:.01em}
   .collections-pct-sticky-label{font-size:12px}
-  .collections-pct-sticky-meta{gap:4px}
+  .collections-pct-sticky-meta{gap:4px;min-width:0}
   .collections-pct-sticky-badge{font-size:10px;padding:4px 10px}
   .collections-pct-sticky-stats{
-    flex-wrap:wrap;
-    overflow:visible;
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    overflow-y:hidden;
     gap:8px;
     justify-content:flex-end;
+    flex:1 1 auto;
+    min-width:0;
+    max-width:100%;
   }
   .collections-pct-sticky-chip{
     min-width:76px;
@@ -1528,6 +1545,8 @@ body.collections-page:has(.collections-hud.is-perfect) .collections-pct-sticky-v
 }
 
 @media(prefers-reduced-motion:reduce){
+  .collections-pct-sticky,
+  .collections-pct-sticky.is-on{transition:none !important}
   .collections-stat-bar>i,.col-card{transition:none}
   .collections-gauge-ring-fill{transition:none}
   .collections-stat-bar>i::after{animation:none;opacity:0}

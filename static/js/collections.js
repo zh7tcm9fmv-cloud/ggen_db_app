@@ -1440,7 +1440,7 @@
     bar.setAttribute('aria-hidden', want ? 'false' : 'true');
   }
 
-  /** Sit the sticky % bar just under the sticky app-header (+ nav tabs). */
+  /** Sit the sticky % bar flush under .app-header (tuck 2px to seal the seam). */
   function syncPctStickyTop() {
     var bar = document.getElementById('colPctSticky');
     var header = document.querySelector('body.collections-page > .app-header');
@@ -1448,26 +1448,24 @@
     var h = 0;
     if (header) {
       try {
-        h = Math.ceil(header.getBoundingClientRect().height || 0);
+        /* Use bottom edge, not height — ceil(height) was 83 while header-inner ended at 82. */
+        var bottom = header.getBoundingClientRect().bottom;
+        h = Math.max(0, Math.round(bottom) - 2);
       } catch (_) {
         h = 0;
       }
     }
-    bar.style.setProperty('--col-pct-sticky-top', Math.max(0, h) + 'px');
+    bar.style.setProperty('--col-pct-sticky-top', h + 'px');
     return h;
   }
 
-  function pctStickyShouldShow() {
+  /** True when the in-page gauge is fully above the sticky header (eligible for sticky HUD). */
+  function pctStickyGaugeOffscreen() {
     var gauge = document.getElementById('colGauge');
     if (!gauge) return false;
     var headerH = syncPctStickyTop();
     var r = gauge.getBoundingClientRect();
-    /* Gauge fully scrolled above the bottom edge of the sticky header */
     return r.bottom <= headerH + 4;
-  }
-
-  function updatePctStickyVisibility() {
-    setPctStickyVisible(pctStickyShouldShow());
   }
 
   var _stickyDonutPaintCss = 0;
@@ -1480,16 +1478,60 @@
     } catch (_) {}
   }
 
+  /**
+   * Sticky possession strip: only after gauge is off-screen AND user scrolls up.
+   * Scroll-down (or gauge back in view / near top) hides it — no always-on while deep in page.
+   */
   function initPctStickyObserver() {
     var gauge = document.getElementById('colGauge');
     var bar = document.getElementById('colPctSticky');
     if (!gauge || !bar) return;
     syncPctStickyTop();
-    updatePctStickyVisibility();
+    setPctStickyVisible(false);
+
+    var lastY = pageScrollYCol();
+    var upAccum = 0;
+    var shown = false;
+    var UP_NEED = 48; /* gentle upward pull */
+    var DOWN_HIDE = 18; /* small down movement dismisses */
+    var TOP_FORCE_HIDE = 40;
+
+    function applyShown(want) {
+      want = !!want;
+      if (want === shown) return;
+      shown = want;
+      setPctStickyVisible(shown);
+    }
+
+    function updatePctStickyVisibility() {
+      var y = pageScrollYCol();
+      var d = y - lastY;
+      lastY = y;
+
+      if (y <= TOP_FORCE_HIDE || !pctStickyGaugeOffscreen()) {
+        upAccum = 0;
+        applyShown(false);
+        return;
+      }
+
+      if (d < 0) {
+        upAccum += -d;
+        if (upAccum >= UP_NEED) applyShown(true);
+      } else if (d > DOWN_HIDE) {
+        upAccum = 0;
+        applyShown(false);
+      }
+    }
+
     function onResizeSticky() {
-      updatePctStickyVisibility();
+      syncPctStickyTop();
+      if (!pctStickyGaugeOffscreen()) {
+        upAccum = 0;
+        applyShown(false);
+      }
       maybeRepaintStickyDonutOnResize();
     }
+
     window.addEventListener('scroll', updatePctStickyVisibility, { passive: true });
     window.addEventListener('resize', onResizeSticky, { passive: true });
     try {
@@ -1502,7 +1544,10 @@
     if (typeof IntersectionObserver === 'function') {
       var io = new IntersectionObserver(
         function () {
-          updatePctStickyVisibility();
+          if (!pctStickyGaugeOffscreen()) {
+            upAccum = 0;
+            applyShown(false);
+          }
         },
         { root: null, threshold: [0, 0.01, 0.1, 1] }
       );
