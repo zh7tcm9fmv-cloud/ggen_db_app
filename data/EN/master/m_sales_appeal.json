@@ -1354,7 +1354,7 @@
   {
     "Id": 2610300201,
     "DisplayConditionSetId": 18001226103001,
-    "ScheduleId": 2610309903,
+    "ScheduleId": 2610359901,
     "IsInfiniteDisplay": false,
     "SalesAppealDisplaySourceSetId": 2610300201,
     "TransitionId": 46000226103001,
@@ -1367,7 +1367,7 @@
   {
     "Id": 2610300202,
     "DisplayConditionSetId": 18001226103002,
-    "ScheduleId": 2610309903,
+    "ScheduleId": 2610359901,
     "IsInfiniteDisplay": false,
     "SalesAppealDisplaySourceSetId": 2610300202,
     "TransitionId": 46000226103002,
