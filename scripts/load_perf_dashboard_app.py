@@ -35,11 +35,13 @@ except ModuleNotFoundError:
 from load_perf_lib import (  # noqa: E402
     LIVE_BASE,
     LOCAL_BASE,
+    LOCAL_RANGE_EX_CANARY_UID,
     build_dashboard,
     build_verdict,
     chart_bars,
     load_history,
     load_report,
+    restart_local_flask,
     run_audit,
     save_report,
 )
@@ -111,8 +113,36 @@ class LoadPerfApp(ctk.CTk):
             self._apply_report(last, error=None)
 
     def _build(self) -> None:
+        # Top action strip — Restart first so local code changes are easy to pick up
+        action = ctk.CTkFrame(self, fg_color=PANEL, corner_radius=10, border_width=1, border_color=BORDER)
+        action.pack(fill="x", padx=20, pady=(14, 0))
+        action_inner = ctk.CTkFrame(action, fg_color="transparent")
+        action_inner.pack(fill="x", padx=12, pady=10)
+        self.restart_btn = ctk.CTkButton(
+            action_inner,
+            text="Restart local flask",
+            height=40,
+            width=200,
+            fg_color="#3b6ea5",
+            hover_color="#2f5a87",
+            text_color="#f5f8fc",
+            font=("Segoe UI", 14, "bold"),
+            command=self.run_restart_local,
+        )
+        self.restart_btn.pack(side="left")
+        self.restart_status = ctk.CTkLabel(
+            action_inner,
+            text="Kills :5000 → python wsgi.py → waits /health → Range-5 EX canary (no SSP)",
+            font=("Segoe UI", 11),
+            text_color=MUTED,
+            anchor="w",
+            justify="left",
+            wraplength=680,
+        )
+        self.restart_status.pack(side="left", fill="x", expand=True, padx=(14, 0))
+
         top = ctk.CTkFrame(self, fg_color=BG)
-        top.pack(fill="x", padx=20, pady=(16, 0))
+        top.pack(fill="x", padx=20, pady=(12, 0))
 
         left = ctk.CTkFrame(top, fg_color="transparent")
         left.pack(side="left", fill="both", expand=True)
@@ -332,6 +362,59 @@ class LoadPerfApp(ctk.CTk):
         self._busy = busy
         self.update_btn.configure(state="disabled" if busy else "normal")
         self.update_btn.configure(text="Running…" if busy else "Update")
+        if hasattr(self, "restart_btn"):
+            self.restart_btn.configure(state="disabled" if busy else "normal")
+            self.restart_btn.configure(text="Restarting…" if busy else "Restart local flask")
+
+    def run_restart_local(self) -> None:
+        if self._busy:
+            return
+        self._set_busy(True)
+        self.restart_status.configure(
+            text="Stopping :5000 and starting wsgi.py — waiting for Database ready…",
+            text_color=ACCENT,
+        )
+        self.verdict_title.configure(text="Restarting local Flask…", text_color=ACCENT)
+        self.verdict_body.configure(
+            text="Kill listeners on :5000 → python wsgi.py → /health ready → "
+            f"canary {LOCAL_RANGE_EX_CANARY_UID} in Seed+Range5 without SSP."
+        )
+
+        def work() -> None:
+            err = None
+            result: dict | None = None
+            try:
+                result = restart_local_flask(base=self._local_base)
+            except Exception as e:
+                err = str(e)[:400]
+
+            def done() -> None:
+                ok = bool(result and result.get("ok"))
+                msg = ""
+                if result:
+                    msg = result.get("message") or result.get("err") or ""
+                if err:
+                    msg = (msg + " · " if msg else "") + err
+                if ok:
+                    self.restart_status.configure(text=msg or "Local Flask ready.", text_color=OK)
+                    self.verdict_title.configure(text="Local Flask restarted", text_color=OK)
+                    canary = (result or {}).get("canary") or {}
+                    self.verdict_body.configure(
+                        text=(
+                            f"pid {(result or {}).get('pid')} · canary uid {LOCAL_RANGE_EX_CANARY_UID} "
+                            f"present={canary.get('present')} total={canary.get('total')} · "
+                            "Hard-refresh the browser (Ctrl+F5) so InstantBrowse picks up app.min.js."
+                        )
+                    )
+                else:
+                    self.restart_status.configure(text=msg or "Restart failed.", text_color=DANGER)
+                    self.verdict_title.configure(text="Local Flask restart failed", text_color=DANGER)
+                    self.verdict_body.configure(text=msg or "See restart status.")
+                self._set_busy(False)
+
+            self.after(0, done)
+
+        threading.Thread(target=work, name="load-perf-restart-flask", daemon=True).start()
 
     def _redraw_chart(self, bars: list) -> None:
         self._bars = bars or []

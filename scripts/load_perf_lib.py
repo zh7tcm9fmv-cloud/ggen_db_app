@@ -3,7 +3,10 @@ from __future__ import annotations
 
 import gzip
 import json
+import os
 import statistics
+import subprocess
+import sys
 import time
 import urllib.error
 import urllib.request
@@ -14,6 +17,10 @@ from typing import Any
 LIVE_BASE = "https://ggendb.up.railway.app"
 LOCAL_BASE = "http://127.0.0.1:5000"
 UA = "ggen-load-perf-dashboard/1.0"
+APP_ROOT = Path(__file__).resolve().parent.parent
+# Canary: EX type-2 Range 5 must match without list SSP (Build Strike Full Package EX + SEED).
+LOCAL_RANGE_EX_CANARY_UID = "1604000150"
+LOCAL_RANGE_EX_CANARY_SERIES = "3000"
 
 CRITICAL_PATHS = (
     "/",
@@ -761,6 +768,169 @@ def _compare_rows(live: dict[str, Any], local: dict[str, Any] | None) -> list[di
         lc = lc.get("p50") if isinstance(lc, dict) else None
         rows.append({"name": name, "path": key, "live_ms": lv, "local_ms": lc})
     return rows
+
+
+def _kill_local_port_listeners(port: int = 5000) -> list[int]:
+    """Stop whatever is listening on ``port`` (Windows NetTCPConnection / POSIX fuser)."""
+    killed: list[int] = []
+    if sys.platform.startswith("win"):
+        ps = (
+            f"$pids = (Get-NetTCPConnection -LocalPort {int(port)} -State Listen "
+            f"-ErrorAction SilentlyContinue).OwningProcess | Select-Object -Unique; "
+            f"foreach ($p in $pids) {{ if ($p -and $p -ne 0) {{ "
+            f"Stop-Process -Id $p -Force -ErrorAction SilentlyContinue; Write-Output $p }} }}"
+        )
+        try:
+            r = subprocess.run(
+                ["powershell", "-NoProfile", "-Command", ps],
+                capture_output=True,
+                text=True,
+                timeout=30,
+                check=False,
+            )
+            for line in (r.stdout or "").splitlines():
+                line = line.strip()
+                if line.isdigit():
+                    killed.append(int(line))
+        except Exception:
+            pass
+        return killed
+    try:
+        r = subprocess.run(
+            ["fuser", "-k", f"{int(port)}/tcp"],
+            capture_output=True,
+            text=True,
+            timeout=15,
+            check=False,
+        )
+        if r.returncode == 0:
+            killed.append(0)
+    except Exception:
+        pass
+    return killed
+
+
+def wait_local_flask_ready(
+    base: str = LOCAL_BASE,
+    *,
+    timeout_s: float = 120.0,
+) -> dict[str, Any]:
+    """Poll /health until ok and not booting."""
+    base = base.rstrip("/")
+    t0 = time.perf_counter()
+    last: dict[str, Any] = {"ok": False, "err": "not started"}
+    while (time.perf_counter() - t0) < timeout_s:
+        row = fetch(base, "/health", timeout=4.0)
+        h = parse_health(row)
+        last = h
+        if h.get("reachable") and h.get("ok") and not h.get("booting"):
+            last["ready"] = True
+            last["wait_ms"] = int((time.perf_counter() - t0) * 1000)
+            return last
+        time.sleep(1.0)
+    last["ready"] = False
+    last["wait_ms"] = int((time.perf_counter() - t0) * 1000)
+    last["err"] = last.get("err") or "timeout waiting for Database ready"
+    return last
+
+
+def verify_local_weapon_range_ex_canary(base: str = LOCAL_BASE) -> dict[str, Any]:
+    """Range 5 + SEED must include Build Strike Full Package EX without stat_mode=ssp."""
+    base = base.rstrip("/")
+    uid = LOCAL_RANGE_EX_CANARY_UID
+    path = (
+        f"/api/units?lang=EN&page=1&per_page=100&weapon_range_non_map=5"
+        f"&series_id={LOCAL_RANGE_EX_CANARY_SERIES}"
+    )
+    row = fetch(base, path, timeout=60.0)
+    out: dict[str, Any] = {
+        "path": path,
+        "ms": row.get("ms"),
+        "ok": bool(row.get("ok")),
+        "uid": uid,
+        "present": False,
+        "total": None,
+    }
+    if not row.get("ok") or not row.get("body"):
+        out["err"] = row.get("err") or f"status {row.get('status')}"
+        return out
+    try:
+        data = json.loads(row["body"])
+    except Exception as e:
+        out["err"] = f"json: {e}"
+        return out
+    ids = [str(r.get("id")) for r in (data.get("rows") or [])]
+    out["total"] = data.get("total")
+    out["present"] = uid in ids
+    out["cache_key_hint"] = "ul66"  # units list cache after EX-in-all-weapon fix
+    return out
+
+
+def restart_local_flask(
+    *,
+    port: int = 5000,
+    base: str = LOCAL_BASE,
+    app_root: Path | None = None,
+) -> dict[str, Any]:
+    """Kill :5000, start ``python wsgi.py`` from the app root, wait until ready, run EX canary."""
+    root = Path(app_root or APP_ROOT)
+    wsgi = root / "wsgi.py"
+    out: dict[str, Any] = {
+        "app_root": str(root),
+        "wsgi": str(wsgi),
+        "port": port,
+        "base": base.rstrip("/"),
+    }
+    if not wsgi.is_file():
+        out["ok"] = False
+        out["err"] = f"missing {wsgi}"
+        return out
+
+    out["killed_pids"] = _kill_local_port_listeners(port)
+    time.sleep(2.0)
+
+    env = os.environ.copy()
+    env["PYTHONIOENCODING"] = "utf-8"
+    try:
+        proc = subprocess.Popen(
+            [sys.executable, str(wsgi)],
+            cwd=str(root),
+            env=env,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            creationflags=getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0)
+            if sys.platform.startswith("win")
+            else 0,
+        )
+        out["pid"] = proc.pid
+    except Exception as e:
+        out["ok"] = False
+        out["err"] = f"start failed: {e}"
+        return out
+
+    health = wait_local_flask_ready(base, timeout_s=150.0)
+    out["health"] = health
+    if not health.get("ready"):
+        out["ok"] = False
+        out["err"] = health.get("err") or "Flask did not become ready"
+        return out
+
+    canary = verify_local_weapon_range_ex_canary(base)
+    out["canary"] = canary
+    out["ok"] = bool(canary.get("present"))
+    if not out["ok"]:
+        out["err"] = (
+            f"Flask ready but Range-5 EX canary missing uid {LOCAL_RANGE_EX_CANARY_UID} "
+            f"(total={canary.get('total')}). Hard-refresh the browser after restart."
+        )
+    else:
+        out["err"] = None
+        out["message"] = (
+            f"Local Flask ready (pid {out.get('pid')}, rss={health.get('rss_mb')} MB). "
+            f"Canary ok: {LOCAL_RANGE_EX_CANARY_UID} in Seed+Range5 without SSP "
+            f"(total {canary.get('total')}). Hard-refresh http://127.0.0.1:5000"
+        )
+    return out
 
 
 def save_report(report: dict[str, Any], path: Path | None = None) -> Path:

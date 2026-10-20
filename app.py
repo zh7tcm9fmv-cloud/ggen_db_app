@@ -2376,7 +2376,12 @@ def parse_weapon_range_non_map_ssp_ex_flag(val):
 
 
 def _weapon_is_ssp_ex_grid_weapon(wid, wt):
-    """EX weapons and SSP custom-core ids (…80 / …90) — not counted in default range filter."""
+    """EX weapons (type 2) or SSP custom-core ids (…80 / …90).
+
+    Used to exclude these from the old base-grid-only ``non_map`` subset / from
+    the SSP/EX-only footer board. All weapon All Ranges uses subset ``all`` so
+    EX type-2 rows count without list SSP mode.
+    """
     w = normalize_id(wid)
     return str(wt) == '2' or w.endswith('90') or w.endswith('80')
 
@@ -3566,12 +3571,18 @@ def _unit_weapon_subset_effective_ranges(
 
 
 def _weapon_range_non_map_filter_subset(stat_mode, ssp_ex_only=False):
-    """Subset for the non-MAP weapon-range filter."""
+    """Subset for the non-MAP weapon-range filter (All weapon All Ranges).
+
+    Include EX weapons (weapon type 2) and SSP Custom Core (…80/…90) unless the
+    footer is SSP/EX-only. EX range is not an SSP mode — e.g. Build Strike Full
+    Package EX has a type-2 weapon at range 5 with no SSP toggle required.
+    Previously ``normal``/``sp`` used ``non_map`` (base grid only) and hid those
+    kits. ``stat_mode=ssp`` still applies SSP range bonuses on top of this subset.
+    """
     if ssp_ex_only:
         return 'ssp_ex'
-    if (stat_mode or 'normal').strip().lower() == 'ssp':
-        return 'all'
-    return 'non_map'
+    del stat_mode  # EX/Custom Core inclusion does not depend on SP/SSP list mode
+    return 'all'
 
 
 def unit_weapon_subset_max_range(
@@ -29766,7 +29777,8 @@ def list_units():
     sbu_ck = 'sbd1' if want_stat_bounds_u else 'sbd0'
     rb_u_ck = 'rb1' if ranking_bulk_u else 'rb0'
     # ul65: InstantBrowse facets on ranking_bulk (source/series/mech/abil/forms + tag_ids).
-    ck = f"ul65_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_attr_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    # ul66: All-weapon range filter includes EX (type 2) without list SSP mode
+    ck = f"ul66_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_attr_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached:
         return jsonify_preserialized(cached, ck, public=True, max_age=3600, convert_images=False)
