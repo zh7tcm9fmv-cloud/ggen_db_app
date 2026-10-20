@@ -151,11 +151,35 @@ Then generate a share code and save it as your collection
 Never share account credentials with any third-party site</p>
     </aside>
   </header>
+  <div class="collections-pct-sticky" id="colPctSticky" aria-live="polite" aria-hidden="true">
+    <div class="collections-pct-sticky-lead">
+      <div class="collections-pct-sticky-donut-wrap" aria-hidden="true">
+        <canvas class="collections-pct-sticky-donut" id="colRoleDonutSticky" width="64" height="64"></canvas>
+      </div>
+      <span class="collections-pct-sticky-val" id="colPctStickyVal">0%</span>
+      <div class="collections-pct-sticky-meta">
+        <span class="collections-pct-sticky-label" id="colPctStickyLabel">Possession</span>
+        <div class="collections-pct-sticky-meta-row">
+          <button type="button" class="collections-ult-chip is-on" id="colUltChipSticky" hidden aria-pressed="true" title="Include Ultimate Units in possession %">
+            <img class="collections-ult-chip-ic" id="colUltChipStickyIc" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_Icon_ULT.webp{% else %}/static/images/UI/UI_Common_Icon_ULT.webp{% endif %}" alt="" width="14" height="14" decoding="async">
+            <span class="collections-ult-chip-txt" id="colUltChipStickyTxt">incl. ULT</span>
+          </button>
+          <span class="collections-pct-sticky-badge" id="colPctStickyBadge" hidden></span>
+        </div>
+      </div>
+    </div>
+    <div class="collections-pct-sticky-stats" id="colPctStickyStats"></div>
+  </div>
+
   <section class="collections-hud" id="colHud" aria-label="Possession summary">
     <div class="collections-gauge" id="colGauge">
       <div class="collections-gauge-head">
         <div class="collections-gauge-pct" id="colPct">0<span>%</span></div>
         <div class="collections-gauge-label" id="colPctLabel">Possession</div>
+        <button type="button" class="collections-ult-chip is-on" id="colUltChip" hidden aria-pressed="true" title="Include Ultimate Units in possession %">
+          <img class="collections-ult-chip-ic" id="colUltChipIc" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_Icon_ULT.webp{% else %}/static/images/UI/UI_Common_Icon_ULT.webp{% endif %}" alt="" width="16" height="16" decoding="async">
+          <span class="collections-ult-chip-txt" id="colUltChipTxt">incl. ULT</span>
+        </button>
         <div class="collections-complete-badge" id="colCompleteBadge" hidden></div>
       </div>
       <div class="collections-gauge-emblem" aria-hidden="false">
@@ -291,6 +315,10 @@ Never share account credentials with any third-party site</p>
 <footer class="collections-foot">
   <p id="colFoot">UR units exclude Ultimate and transform alternates. Progress is saved in this browser only.</p>
 </footer>
+
+<button type="button" id="colScrollTopFab" class="scroll-top-fab" title="Back to top" aria-label="Back to top" hidden>
+  <img src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Battle_Button_Skill_Base.webp{% else %}/static/images/UI/UI_Battle_Button_Skill_Base.webp{% endif %}" alt="" aria-hidden="true" class="scroll-top-fab-ic" width="22" height="22" decoding="async" loading="lazy">
+</button>
 
 <div id="colPreviewModal" class="collections-preview-modal" hidden>
   <p class="collections-preview-msg" id="colPreviewMsg">If download does not start, long-press (mobile) or right-click the image and choose Save image.</p>

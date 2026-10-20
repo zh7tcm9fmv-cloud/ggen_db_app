@@ -173,6 +173,34 @@ html[data-ui-lang="HK"] .collections-page.collections-15 .collections-stat-lim-b
     linear-gradient(90deg,rgb(var(--g15-cyan)),rgb(var(--g15-blue)) 40%,transparent);
   clip-path:polygon(0 0,100% 0,calc(100% - 10px) 100%,0 100%);
 }
+/* Mobile: no inflated flex boxes; keep Teko title but content-sized */
+@media(max-width:720px){
+  .collections-page.collections-15 .collections-intro{
+    padding-bottom:8px;margin-bottom:10px;
+  }
+  .collections-page.collections-15 .collections-intro h1{
+    font-size:clamp(22px,6.5vw,30px);line-height:1.05;
+  }
+  .collections-page.collections-15 .collections-eyebrow{
+    font-size:13px;letter-spacing:.1em;margin-bottom:2px;
+  }
+  .collections-page.collections-15 .collections-sub{
+    font-size:12px;line-height:1.35;max-width:none;
+  }
+  .collections-page.collections-15 .collections-disclaimer{
+    max-width:none;gap:2px;
+  }
+  .collections-page.collections-15 .collections-disclaimer-title{font-size:10px}
+  .collections-page.collections-15 .collections-disclaimer-body{
+    font-size:11px;line-height:1.35;
+  }
+  .collections-page.collections-15 .collections-intro::after{
+    margin-top:8px;height:2px;
+  }
+  body.collections-page.collections-15.nav-tabs-collapsed .collections-intro::after{
+    margin-top:0;height:0;opacity:0;
+  }
+}
 
 /* Chamfer chrome on HUD panels — site fonts unchanged */
 .collections-page.collections-15 .collections-gauge,
@@ -195,6 +223,12 @@ html[data-ui-lang="HK"] .collections-page.collections-15 .collections-stat-lim-b
   font-family:var(--font-teko);
   font-size:14px;font-weight:500;letter-spacing:.1em;
   color:rgb(var(--g15-gray));
+}
+.collections-page.collections-15 .collections-ult-chip{
+  border-radius:0;
+  font-family:var(--font-teko);
+  letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+  clip-path:polygon(4px 0,100% 0,100% calc(100% - 4px),calc(100% - 4px) 100%,0 100%,0 4px);
 }
 .collections-page.collections-15 .collections-gauge-pct{
   font-family:var(--font-teko);

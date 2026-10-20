@@ -59,6 +59,27 @@
 
 .collections-main{max-width:1600px;margin:0 auto;padding:16px 20px 40px;min-width:0}
 
+/*
+ * Faded hangar BG — same opacity as /u /s tab-panel::before (.15).
+ * Painted on .bg-pattern (fixed, z-index:-1) so it cannot cover the grid
+ * via collections-main stacking (overflow-x:clip + ::before z-index:-1).
+ */
+body.collections-page .bg-pattern{
+  background-color:var(--bg-primary);
+  background-image:
+    radial-gradient(ellipse at 18% 16%,rgba(0,212,255,0.055) 0%,transparent 52%),
+    radial-gradient(ellipse at 82% 78%,rgba(201,169,98,0.045) 0%,transparent 50%);
+}
+body.collections-page .bg-pattern::after{
+  content:"";
+  position:absolute;inset:0;pointer-events:none;
+  background-image:url('/static/images/Background/BG_MsDock_3.webp');
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  opacity:.15;
+}
+
 /* Horizontal HUD */
 .collections-hud{
   display:grid;
@@ -96,6 +117,30 @@
 }
 .collections-gauge-pct .t-digit--pct{font-size:.48em;margin-left:2px;color:var(--accent-cyan)}
 .collections-gauge-label{font-size:12px;font-weight:700;color:var(--text-muted);letter-spacing:.04em;text-transform:uppercase}
+/* Glanceable ULT incl/excl on Possession cell — also toggles the setting */
+.collections-ult-chip{
+  display:inline-flex;align-items:center;gap:5px;
+  margin-top:4px;padding:3px 8px 3px 5px;
+  border-radius:999px;border:1px solid rgba(0,212,255,.45);
+  background:rgba(0,212,255,.12);
+  color:#7af0ff;font-size:10px;font-weight:800;letter-spacing:.04em;
+  line-height:1.2;cursor:pointer;
+  font-family:inherit;text-transform:none;
+  transition:background .15s ease,border-color .15s ease,color .15s ease,opacity .15s ease;
+}
+.collections-ult-chip:hover{background:rgba(0,212,255,.2);border-color:rgba(0,212,255,.7)}
+.collections-ult-chip:focus-visible{outline:2px solid rgba(0,212,255,.75);outline-offset:2px}
+.collections-ult-chip[hidden]{display:none !important}
+.collections-ult-chip.is-off{
+  border-color:rgba(132,148,174,.45);
+  background:rgba(20,28,44,.85);
+  color:#8494ae;
+}
+.collections-ult-chip.is-off .collections-ult-chip-ic{opacity:.45;filter:grayscale(.35)}
+.collections-ult-chip-ic{
+  width:16px;height:16px;object-fit:contain;flex:0 0 auto;display:block;
+}
+.collections-ult-chip-txt{white-space:nowrap}
 .collections-complete-badge{
   display:inline-flex;align-items:center;margin-top:4px;
   padding:3px 10px 4px;border-radius:999px;
@@ -1205,13 +1250,107 @@
   margin:8px 0 4px;font-size:12px;color:var(--text-muted);
 }
 
-/* Mobile: fit viewport — no horizontal page scroll / clipped cards */
+/*
+ * Mobile: compact intro + soft scroll chrome hide.
+ * Soft feel = opacity + short slide only (Takayu scroll-reveal easeOutCubic).
+ * Height/margin collapse is INSTANT — never transition max-height (scroll-anchoring
+ * fights; halfway scroll then hide↔reveal loops). Same rule as ui_motion #navTabsShell.
+ * https://motion-reference.takayustudio.jp/#motion=scroll-reveal
+ */
 @media(max-width:720px){
-  .collections-main{padding:12px 12px 36px}
+  .collections-main{padding:10px 12px 36px}
   .collections-foot{padding:8px 12px 24px}
-  .collections-intro{margin-bottom:12px;flex-direction:column;gap:10px}
-  .collections-disclaimer{text-align:left;max-width:none;align-self:stretch}
+  /* Kill desktop flex basis/grow that inflated empty boxes (~280 / ~420px) */
+  .collections-intro{
+    --col-reveal-dur:600ms;
+    --col-reveal-ease:cubic-bezier(.33,1,.68,1); /* easeOutCubic */
+    margin-bottom:8px;
+    flex-direction:column;
+    flex-wrap:nowrap;
+    align-items:stretch;
+    gap:6px;
+    overflow:hidden;
+    opacity:1;
+    transform:translateY(0);
+    max-height:none;
+    transition:
+      opacity var(--col-reveal-dur) var(--col-reveal-ease),
+      transform var(--col-reveal-dur) var(--col-reveal-ease);
+  }
+  .collections-intro-main{
+    flex:0 0 auto !important;
+    flex-basis:auto !important;
+    min-height:0 !important;
+    height:auto !important;
+    max-width:none;
+  }
+  .collections-eyebrow{margin-bottom:2px;font-size:10px;letter-spacing:.06em}
+  .collections-intro h1{font-size:clamp(18px,5vw,24px);line-height:1.15}
+  .collections-sub{
+    margin-top:4px;font-size:12px;line-height:1.35;max-width:none;
+  }
+  .collections-disclaimer{
+    flex:0 0 auto !important;
+    flex-basis:auto !important;
+    min-height:0 !important;
+    height:auto !important;
+    text-align:left;
+    max-width:none;
+    align-self:stretch;
+    gap:2px;
+  }
   .collections-disclaimer-title,.collections-disclaimer-body{text-align:left}
+  .collections-disclaimer-title{font-size:10px;margin:0}
+  .collections-disclaimer-body{font-size:11px;line-height:1.35;margin:0}
+  /* Match Takayu scroll-reveal on brand + nav shell (collections mobile only) */
+  body.collections-page{
+    --col-reveal-dur:600ms;
+    --col-reveal-ease:cubic-bezier(.33,1,.68,1);
+  }
+  body.collections-page #navTabsShell{
+    transition:
+      opacity var(--col-reveal-dur) var(--col-reveal-ease),
+      transform var(--col-reveal-dur) var(--col-reveal-ease) !important;
+  }
+  body.collections-page.nav-tabs-collapsed #navTabsShell{
+    transform:translateY(-12px);
+  }
+  /* Scroll-down (nav_tabs_auto_hide → .nav-tabs-collapsed): brand + intro/disclaimer */
+  body.collections-page > .app-header .header-inner{
+    overflow:hidden;
+    opacity:1;transform:translateY(0);
+    transition:
+      opacity var(--col-reveal-dur) var(--col-reveal-ease),
+      transform var(--col-reveal-dur) var(--col-reveal-ease);
+  }
+  body.collections-page.nav-tabs-collapsed > .app-header .header-inner{
+    max-height:0 !important;
+    min-height:0 !important;
+    height:0 !important;
+    opacity:0;
+    padding-top:0 !important;
+    padding-bottom:0 !important;
+    margin:0 !important;
+    border:none !important;
+    transform:translateY(-12px);
+    pointer-events:none;
+  }
+  body.collections-page.nav-tabs-collapsed > .app-header{
+    border-bottom-width:0;
+    box-shadow:none;
+  }
+  body.collections-page.nav-tabs-collapsed .collections-intro{
+    max-height:0 !important;
+    min-height:0 !important;
+    height:0 !important;
+    opacity:0;
+    margin:0 !important;
+    gap:0 !important;
+    padding:0 !important;
+    border:none !important;
+    transform:translateY(-14px); /* short slide + fade (scroll-reveal exit) */
+    pointer-events:none;
+  }
   .collections-grid{
     grid-template-columns:repeat(auto-fill,minmax(96px,1fr));
     gap:8px;
@@ -1226,6 +1365,166 @@
   .collections-code-field{flex:1 1 100%;max-width:100%}
   .collections-census{padding:12px 10px 14px;margin:20px 0 10px}
   .collections-census-vhist-detail-thumb{width:52px;height:52px}
+}
+@media(max-width:720px) and (prefers-reduced-motion:reduce){
+  body.collections-page > .app-header .header-inner,
+  body.collections-page .collections-intro{
+    transition:none !important;
+  }
+  body.collections-page.nav-tabs-collapsed > .app-header .header-inner,
+  body.collections-page.nav-tabs-collapsed .collections-intro{
+    transform:none !important;
+  }
+  .collections-pct-sticky.is-on{
+    animation:none !important;
+  }
+}
+
+/* Possession sticky — richer HUD strip when gauge scrolls off (mobile + desktop).
+   top offset = sticky .app-header height (--col-pct-sticky-top). */
+.collections-pct-sticky{
+  position:fixed;
+  top:var(--col-pct-sticky-top,0px);
+  left:0;right:0;
+  z-index:90;
+  display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;
+  padding:8px 12px 10px;
+  background:linear-gradient(180deg,rgba(10,14,23,.97) 0%,rgba(17,24,39,.94) 100%);
+  border-bottom:1px solid rgba(0,212,255,.22);
+  box-shadow:0 8px 20px rgba(0,0,0,.4);
+  transform:translateY(-110%);
+  opacity:0;
+  pointer-events:none;
+  visibility:hidden;
+}
+.collections-pct-sticky.is-on{
+  transform:translateY(0);
+  opacity:1;
+  pointer-events:auto;
+  visibility:visible;
+  animation:colPctStickyIn 600ms cubic-bezier(.33,1,.68,1) both;
+}
+@keyframes colPctStickyIn{
+  from{opacity:.65;transform:translateY(-12px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.collections-pct-sticky-lead{
+  display:flex;align-items:center;gap:8px;min-width:0;flex:0 1 auto;
+}
+.collections-pct-sticky-donut-wrap{
+  display:block;
+  flex:0 0 auto;
+  width:44px;height:44px;
+  position:relative;
+  overflow:hidden; /* clip if JS ever sets a larger canvas */
+}
+.collections-pct-sticky-donut{
+  display:block;width:100%;height:100%;
+  max-width:100%;max-height:100%;
+  filter:drop-shadow(0 0 6px rgba(0,212,255,.22));
+}
+.collections-pct-sticky-val{
+  font-size:22px;font-weight:800;line-height:1;letter-spacing:.02em;
+  color:var(--accent-gold);font-variant-numeric:tabular-nums;flex:0 0 auto;
+  position:relative;z-index:1; /* stay above wrap if anything overflows */
+}
+.collections-pct-sticky-meta{
+  display:flex;flex-direction:column;align-items:flex-start;gap:3px;min-width:0;
+}
+.collections-pct-sticky-meta-row{
+  display:flex;flex-wrap:wrap;align-items:center;gap:6px;
+}
+.collections-pct-sticky-label{
+  font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;
+}
+.collections-pct-sticky .collections-ult-chip{flex:0 0 auto;margin:0}
+.collections-pct-sticky-badge{
+  display:inline-flex;align-items:center;
+  font-size:9px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+  padding:3px 8px;border-radius:999px;
+  color:#0a0e17;background:linear-gradient(90deg,#ffd700,#00d4ff);
+  white-space:nowrap;
+}
+.collections-pct-sticky-badge[hidden]{display:none !important}
+.collections-pct-sticky-badge:not(.is-perfect){
+  background:linear-gradient(90deg,#c9a962,#ffe08a);color:#1a1408;
+}
+.collections-pct-sticky-stats{
+  display:flex;flex-wrap:nowrap;align-items:stretch;gap:6px;
+  flex:1 1 auto;min-width:0;
+  overflow-x:auto;overflow-y:hidden;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+  padding-bottom:1px;
+}
+.collections-pct-sticky-stats::-webkit-scrollbar{display:none}
+.collections-pct-sticky-chip{
+  flex:0 0 auto;
+  display:flex;flex-direction:column;align-items:flex-start;justify-content:center;
+  gap:1px;min-width:64px;
+  padding:4px 8px;
+  border-radius:6px;
+  border:1px solid rgba(42,54,84,.85);
+  background:rgba(8,12,22,.55);
+}
+.collections-pct-sticky-chip-k{
+  font-size:9px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;
+  color:var(--text-muted);line-height:1.15;
+  max-width:9.5em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.collections-pct-sticky-chip-v{
+  font-size:13px;font-weight:800;line-height:1.15;
+  color:var(--text-primary);font-variant-numeric:tabular-nums;
+}
+.collections-pct-sticky-chip-v em{
+  font-style:normal;font-weight:600;font-size:.78em;color:var(--text-muted);
+}
+.collections-pct-sticky-chip.is-accent .collections-pct-sticky-chip-v{color:var(--accent-cyan)}
+.collections-pct-sticky-chip.is-gold .collections-pct-sticky-chip-v,
+.collections-pct-sticky-chip.is-lb .collections-pct-sticky-chip-v{color:var(--accent-gold)}
+.collections-pct-sticky-chip.is-orange .collections-pct-sticky-chip-v{color:var(--accent-orange)}
+.collections-pct-sticky-chip.is-role-1 .collections-pct-sticky-chip-v{color:#f87171}
+.collections-pct-sticky-chip.is-role-3 .collections-pct-sticky-chip-v{color:#fde047}
+.collections-pct-sticky-chip.is-role-2 .collections-pct-sticky-chip-v{color:#93c5fd}
+.collections-pct-sticky-chip.is-skill-hp .collections-pct-sticky-chip-v{color:#6ee7b7}
+.collections-pct-sticky-chip.is-skill-en .collections-pct-sticky-chip-v{color:#facc15}
+.collections-pct-sticky-chip.is-skill-hybrid .collections-pct-sticky-chip-v{color:#d8b4fe}
+body.collections-page:has(.collections-hud.is-perfect) .collections-pct-sticky-val{
+  background:linear-gradient(90deg,#ffd700,#00d4ff);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+@media(min-width:721px){
+  .collections-pct-sticky{
+    flex-wrap:nowrap;
+    gap:16px 18px;
+    padding:10px 20px 12px;
+    max-width:100%;
+  }
+  .collections-pct-sticky-lead{gap:12px;flex:0 0 auto}
+  .collections-pct-sticky-donut-wrap{width:64px;height:64px}
+  .collections-pct-sticky-val{font-size:28px;letter-spacing:.01em}
+  .collections-pct-sticky-label{font-size:12px}
+  .collections-pct-sticky-meta{gap:4px}
+  .collections-pct-sticky-badge{font-size:10px;padding:4px 10px}
+  .collections-pct-sticky-stats{
+    flex-wrap:wrap;
+    overflow:visible;
+    gap:8px;
+    justify-content:flex-end;
+  }
+  .collections-pct-sticky-chip{
+    min-width:76px;
+    padding:6px 10px;
+  }
+  .collections-pct-sticky-chip-k{font-size:10px;max-width:12em}
+  .collections-pct-sticky-chip-v{font-size:15px}
+}
+@media(max-width:720px){
+  .collections-pct-sticky-stats{
+    flex:1 1 100%;
+    width:100%;
+  }
 }
 
 @media(prefers-reduced-motion:reduce){

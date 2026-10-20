@@ -4,6 +4,7 @@
   var STORAGE_KEY = 'ggen_collections_v1';
   var USERNAME_KEY = 'ggen_collections_username';
   var SAVES_KEY = 'ggen_collections_saves_v1';
+  var INCLUDE_ULT_KEY = 'ggen_collections_include_ult';
   var SAVE_SLOT_COUNT = 5;
   var LANG_STORAGE_KEY = 'ggen_lang';
   var MAX_LB = 3; /* unowned = -1, owned LB0..LB3 */
@@ -116,6 +117,10 @@
       share_fail: 'Could not share.\n{err}',
       share_cancel: 'Share cancelled.',
       possession: 'Possession',
+      /* m_help: Ultimate Units — short ULT matches in-game ULT Alteration label */
+      ult_incl: 'incl. ULT',
+      ult_excl: 'excl. ULT',
+      ult_toggle_aria: 'Include Ultimate Units in possession %',
       complete: 'COMPLETE',
       complete_max: 'MAX LIMIT BREAK',
       owned: 'Possessed',
@@ -138,7 +143,7 @@
       preview_msg: 'If download does not start, long-press (mobile) or right-click the image and choose Save image.',
       download: 'Download',
       close: 'Close',
-      foot: 'UR units (including Ultimate). Ultimate cycles form ids (not Limit Break). Transform alternates excluded. Progress is saved in this browser only.',
+      foot: 'UR units. Tap ULT on the Possession cell to include or exclude Ultimate Units from the %. Ultimate cycles form ids (not Limit Break). Transform alternates excluded. Progress is saved in this browser only.',
       report_title: 'Collections Report',
       brand_line: 'GGEN ETERNAL DATABASE  ·  SD Gundam G Generation',
       owned_line: 'Possessed {owned} / {total} · Limit Break {lb} / {lbMax}',
@@ -256,6 +261,10 @@
       share_fail: 'シェアできませんでした。\n{err}',
       share_cancel: 'シェアをキャンセルしました。',
       possession: '所持率',
+      /* m_help: アルティメットユニット · ULT改造 */
+      ult_incl: 'ULT含む',
+      ult_excl: 'ULT除く',
+      ult_toggle_aria: '所持率にアルティメットユニットを含める',
       complete: 'コンプリート',
       complete_max: '限界突破コンプリート',
       owned: '所持',
@@ -278,7 +287,7 @@
       preview_msg: 'ダウンロードが始まらない場合は、長押し（スマホ）または右クリックで画像を保存してください。',
       download: 'ダウンロード',
       close: '閉じる',
-      foot: 'URユニット（ULT含む）。ULTは限界突破ではなく形態ID切替。変形形態は除外。記録はこのブラウザのみ。',
+      foot: 'URユニット。所持率セルのULTでアルティメットユニットの含め／除外を切替。ULTは限界突破ではなく形態ID切替。変形形態は除外。記録はこのブラウザのみ。',
       report_title: 'コレクションレポート',
       brand_line: 'GGEN ETERNAL DATABASE  ·  SD Gundam G Generation',
       owned_line: '所持 {owned} / {total} · 限界突破 {lb} / {lbMax}',
@@ -396,6 +405,10 @@
       share_fail: '無法分享。\n{err}',
       share_cancel: '已取消分享。',
       possession: '持有率',
+      /* m_help: 終極單位 · ULT改造 */
+      ult_incl: '含ULT',
+      ult_excl: '不含ULT',
+      ult_toggle_aria: '持有率是否包含終極單位',
       complete: '全收集',
       complete_max: '突破界限全滿',
       owned: '持有',
@@ -418,7 +431,7 @@
       preview_msg: '若未開始下載，請長按（手機）或右鍵選擇儲存圖片。',
       download: '下載',
       close: '關閉',
-      foot: 'UR 單位（含終極單位）。終極單位以形態 ID 切換（非突破界限）。不含變形形態。進度僅保存在此瀏覽器。',
+      foot: 'UR 單位。點持有率上的 ULT 可切換是否計入終極單位。終極單位以形態 ID 切換（非突破界限）。不含變形形態。進度僅保存在此瀏覽器。',
       report_title: '收藏報告',
       brand_line: 'GGEN ETERNAL DATABASE  ·  SD Gundam G Generation',
       owned_line: '持有 {owned} / {total} · 突破界限 {lb} / {lbMax}',
@@ -535,6 +548,10 @@
       share_fail: '無法分享。\n{err}',
       share_cancel: '已取消分享。',
       possession: '持有率',
+      /* m_help: 終極單位 · ULT改造 */
+      ult_incl: '含ULT',
+      ult_excl: '不含ULT',
+      ult_toggle_aria: '持有率是否包含終極單位',
       complete: '全收集',
       complete_max: '突破界限全滿',
       owned: '持有',
@@ -557,7 +574,7 @@
       download: '下載',
       close: '關閉',
       preview_msg: '若未開始下載，請長按（手機）或右鍵選擇儲存圖片。',
-      foot: 'UR 單位（含終極單位）。終極單位以形態 ID 切換（非突破界限）。不含變形形態。進度僅保存在此瀏覽器。',
+      foot: 'UR 單位。點持有率上的 ULT 可切換是否計入終極單位。終極單位以形態 ID 切換（非突破界限）。不含變形形態。進度僅保存在此瀏覽器。',
       report_title: '收藏報告',
       brand_line: 'GGEN ETERNAL DATABASE  ·  SD Gundam G Generation',
       owned_line: '持有 {owned} / {total} · 突破界限 {lb} / {lbMax}',
@@ -673,6 +690,9 @@
       share_fail: '공유하지 못했습니다.\n{err}',
       share_cancel: '공유를 취소했습니다.',
       possession: '보유율',
+      ult_incl: 'ULT 포함',
+      ult_excl: 'ULT 제외',
+      ult_toggle_aria: '보유율에 얼티밋 유닛 포함',
       complete: 'COMPLETE',
       complete_max: '최대 한계돌파',
       owned: '보유',
@@ -695,7 +715,7 @@
       preview_msg: '다운로드가 시작되지 않으면 길게 누르기（모바일）또는 이미지를 우클릭해 저장하세요.',
       download: '다운로드',
       close: '닫기',
-      foot: 'UR 유닛（얼티밋 포함）. 얼티밋은 형태 ID를 순환（한계돌파 아님）. 변형 교체는 제외. 진행도는 이 브라우저에만 저장됩니다.',
+      foot: 'UR 유닛. 보유율의 ULT를 눌러 얼티밋 포함/제외를 전환. 얼티밋은 형태 ID를 순환（한계돌파 아님）. 변형 교체는 제외. 진행도는 이 브라우저에만 저장됩니다.',
       report_title: '컬렉션 리포트',
       brand_line: 'GGEN ETERNAL DATABASE  ·  SD Gundam G Generation',
       owned_line: '보유 {owned} / {total} · 한계돌파 {lb} / {lbMax}',
@@ -764,6 +784,15 @@
   })();
   var USE_CDN = window.__GGEN_GAME_IMAGES_USE_CDN__ !== false && !!IMAGE_CDN;
 
+  function loadIncludeUlt() {
+    try {
+      var v = localStorage.getItem(INCLUDE_ULT_KEY);
+      if (v === '0' || v === 'false') return false;
+      if (v === '1' || v === 'true') return true;
+    } catch (e) {}
+    return true; /* default: include ULT (prior HUD behavior) */
+  }
+
   var state = {
     lang: (function () {
       try {
@@ -779,11 +808,18 @@
     type: 'units',
     role: 'ALL',
     q: '',
+    includeUlt: loadIncludeUlt(),
     catalog: { units: [], supporters: [] },
     owned: loadOwned(),
     busy: false,
     pendingShare: null
   };
+
+  function persistIncludeUlt() {
+    try {
+      localStorage.setItem(INCLUDE_ULT_KEY, state.includeUlt ? '1' : '0');
+    } catch (e) {}
+  }
 
   function normLang(lc) {
     lc = String(lc || 'EN').toUpperCase();
@@ -1005,6 +1041,23 @@
 
   function activeList() {
     return state.catalog[state.type] || [];
+  }
+
+  /** Rows used for Possession % / HUD stats / share head (optional ULT exclude on units). */
+  function statsRows() {
+    var rows = activeList();
+    if (state.type !== 'units' || state.includeUlt) return rows;
+    return rows.filter(function (row) {
+      return !isUltRow(row);
+    });
+  }
+
+  function unitStatsRows() {
+    var rows = state.catalog.units || [];
+    if (state.includeUlt) return rows;
+    return rows.filter(function (row) {
+      return !isUltRow(row);
+    });
   }
 
   function filteredList() {
@@ -1271,6 +1324,243 @@
     var prevMsg = document.getElementById('colPreviewMsg');
     if (prevMsg) prevMsg.textContent = t('preview_msg');
     syncSpecialDesignIcon();
+    syncUltChipUi();
+  }
+
+  function syncUltChipEl(chip, txt, ic) {
+    if (!chip) return;
+    var show = state.type === 'units';
+    chip.hidden = !show;
+    if (!show) return;
+    var on = !!state.includeUlt;
+    chip.classList.toggle('is-on', on);
+    chip.classList.toggle('is-off', !on);
+    chip.setAttribute('aria-pressed', on ? 'true' : 'false');
+    chip.title = t('ult_toggle_aria');
+    chip.setAttribute('aria-label', t('ult_toggle_aria') + ' — ' + (on ? t('ult_incl') : t('ult_excl')));
+    if (txt) txt.textContent = on ? t('ult_incl') : t('ult_excl');
+    if (ic) {
+      ic.src = imgUrl(ULT_ICON);
+      ic.alt = 'ULT';
+    }
+  }
+
+  function syncUltChipUi() {
+    syncUltChipEl(
+      document.getElementById('colUltChip'),
+      document.getElementById('colUltChipTxt'),
+      document.getElementById('colUltChipIc')
+    );
+    syncUltChipEl(
+      document.getElementById('colUltChipSticky'),
+      document.getElementById('colUltChipStickyTxt'),
+      document.getElementById('colUltChipStickyIc')
+    );
+    var gauge = document.getElementById('colGauge');
+    if (gauge) gauge.setAttribute('data-ult', state.includeUlt ? 'incl' : 'excl');
+  }
+
+  function stickyStatChipHtml(k, num, den, mod) {
+    var n = Number(num) || 0;
+    var d = Number(den) || 0;
+    return (
+      '<div class="collections-pct-sticky-chip' +
+      (mod ? ' ' + mod : '') +
+      '"><span class="collections-pct-sticky-chip-k">' +
+      esc(k) +
+      '</span><span class="collections-pct-sticky-chip-v">' +
+      n +
+      '<em>/' +
+      d +
+      '</em></span></div>'
+    );
+  }
+
+  function syncPctSticky(st) {
+    var val = document.getElementById('colPctStickyVal');
+    var label = document.getElementById('colPctStickyLabel');
+    var badge = document.getElementById('colPctStickyBadge');
+    var statsEl = document.getElementById('colPctStickyStats');
+    if (val) {
+      var n = st && st.pct != null ? Math.round(Number(st.pct)) : 0;
+      if (!Number.isFinite(n)) n = 0;
+      val.textContent = n + '%';
+    }
+    if (label) label.textContent = t('possession') + ' · ' + typeTitle();
+    if (badge) {
+      if (!st) {
+        badge.hidden = true;
+      } else {
+        var complete = st.total > 0 && st.owned >= st.total;
+        var perfect = complete && st.maxed >= (st.lbEligible || 0);
+        badge.hidden = !complete;
+        badge.textContent = perfect ? t('complete_max') : t('complete');
+        badge.classList.toggle('is-perfect', perfect);
+      }
+    }
+    if (statsEl && st) {
+      var html = '';
+      html += stickyStatChipHtml(t('owned'), st.owned, st.total, 'is-accent');
+      html += stickyStatChipHtml(t('max_lb'), st.maxed, st.total, 'is-gold');
+      html += stickyStatChipHtml(t('lb_progress'), st.lbTotal, st.lbMax, 'is-lb');
+      if (st.limTotal > 0) {
+        html += stickyStatChipHtml(t('limited'), st.limOwned, st.limTotal, 'is-orange');
+      }
+      if (state.type !== 'supporters') {
+        var byRole = st.byRole || {};
+        ['1', '3', '2'].forEach(function (rid) {
+          var b = byRole[rid] || { t: 0, o: 0, m: 0 };
+          if (!b.t) return;
+          html += stickyStatChipHtml(roleLabel(rid), b.o, b.t, 'is-role-' + rid);
+        });
+      } else {
+        var bySkill = st.bySkill || {};
+        [
+          { id: 'hp', key: 'skill_hp' },
+          { id: 'en', key: 'skill_en' },
+          { id: 'hybrid', key: 'skill_hybrid' }
+        ].forEach(function (sk) {
+          var b = bySkill[sk.id] || { t: 0, o: 0, m: 0 };
+          if (!b.t) return;
+          html += stickyStatChipHtml(t(sk.key), b.o, b.t, 'is-skill-' + sk.id);
+        });
+      }
+      statsEl.innerHTML = html;
+    } else if (statsEl) {
+      statsEl.innerHTML = '';
+    }
+    if (st) paintStickyRoleDonut(st);
+  }
+
+  function setPctStickyVisible(on) {
+    var bar = document.getElementById('colPctSticky');
+    if (!bar) return;
+    var want = !!on;
+    bar.classList.toggle('is-on', want);
+    bar.setAttribute('aria-hidden', want ? 'false' : 'true');
+  }
+
+  /** Sit the sticky % bar just under the sticky app-header (+ nav tabs). */
+  function syncPctStickyTop() {
+    var bar = document.getElementById('colPctSticky');
+    var header = document.querySelector('body.collections-page > .app-header');
+    if (!bar) return;
+    var h = 0;
+    if (header) {
+      try {
+        h = Math.ceil(header.getBoundingClientRect().height || 0);
+      } catch (_) {
+        h = 0;
+      }
+    }
+    bar.style.setProperty('--col-pct-sticky-top', Math.max(0, h) + 'px');
+    return h;
+  }
+
+  function pctStickyShouldShow() {
+    var gauge = document.getElementById('colGauge');
+    if (!gauge) return false;
+    var headerH = syncPctStickyTop();
+    var r = gauge.getBoundingClientRect();
+    /* Gauge fully scrolled above the bottom edge of the sticky header */
+    return r.bottom <= headerH + 4;
+  }
+
+  function updatePctStickyVisibility() {
+    setPctStickyVisible(pctStickyShouldShow());
+  }
+
+  var _stickyDonutPaintCss = 0;
+  function maybeRepaintStickyDonutOnResize() {
+    var next = stickyDonutCssSize();
+    if (next === _stickyDonutPaintCss) return;
+    _stickyDonutPaintCss = next;
+    try {
+      paintStickyRoleDonut(computeStats(statsRows()));
+    } catch (_) {}
+  }
+
+  function initPctStickyObserver() {
+    var gauge = document.getElementById('colGauge');
+    var bar = document.getElementById('colPctSticky');
+    if (!gauge || !bar) return;
+    syncPctStickyTop();
+    updatePctStickyVisibility();
+    function onResizeSticky() {
+      updatePctStickyVisibility();
+      maybeRepaintStickyDonutOnResize();
+    }
+    window.addEventListener('scroll', updatePctStickyVisibility, { passive: true });
+    window.addEventListener('resize', onResizeSticky, { passive: true });
+    try {
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', onResizeSticky, {
+          passive: true
+        });
+      }
+    } catch (_) {}
+    if (typeof IntersectionObserver === 'function') {
+      var io = new IntersectionObserver(
+        function () {
+          updatePctStickyVisibility();
+        },
+        { root: null, threshold: [0, 0.01, 0.1, 1] }
+      );
+      io.observe(gauge);
+    }
+  }
+
+  function pageScrollYCol() {
+    return Math.max(
+      window.scrollY || 0,
+      document.documentElement ? document.documentElement.scrollTop || 0 : 0,
+      document.body ? document.body.scrollTop || 0 : 0
+    );
+  }
+
+  function initCollectionsScrollTopFab() {
+    var fab = document.getElementById('colScrollTopFab');
+    if (!fab || fab.dataset.bound) return;
+    fab.dataset.bound = '1';
+    var lastSt = pageScrollYCol();
+    var shown = false;
+    var downAccum = 0;
+    function update() {
+      var st = pageScrollYCol();
+      var topTol = 56;
+      var jitUp = 14;
+      var downNeed = 36;
+      var d = st - lastSt;
+      lastSt = st;
+      if (st <= topTol) {
+        shown = false;
+        downAccum = 0;
+      } else {
+        if (d > 0) downAccum += d;
+        if (d < -jitUp) {
+          shown = false;
+          downAccum = 0;
+        } else if (downAccum >= downNeed) shown = true;
+      }
+      fab.hidden = !shown;
+    }
+    fab.addEventListener('click', function () {
+      try {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } catch (_) {
+        window.scrollTo(0, 0);
+      }
+    });
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update, { passive: true });
+    update();
+  }
+
+  function toggleIncludeUlt() {
+    if (state.type !== 'units') return;
+    state.includeUlt = !state.includeUlt;
+    persistIncludeUlt();
+    refresh();
   }
 
   /** Locale WebP for Special Design mark — IMAGE_CDN when enabled (same as other UI art). */
@@ -1464,36 +1754,39 @@
   }
 
   function donutBucketsFromStats(st) {
+    st = st || {};
     if (state.type === 'supporters') {
+      var bySkill = st.bySkill || {};
       return [
         {
           id: 'hp',
           label: t('skill_hp'),
-          value: (st.bySkill.hp && st.bySkill.hp.o) || 0,
-          maxed: (st.bySkill.hp && st.bySkill.hp.m) || 0,
-          total: (st.bySkill.hp && st.bySkill.hp.t) || 0,
+          value: (bySkill.hp && bySkill.hp.o) || 0,
+          maxed: (bySkill.hp && bySkill.hp.m) || 0,
+          total: (bySkill.hp && bySkill.hp.t) || 0,
           color: DONUT_SKILL_COLORS.hp
         },
         {
           id: 'en',
           label: t('skill_en'),
-          value: (st.bySkill.en && st.bySkill.en.o) || 0,
-          maxed: (st.bySkill.en && st.bySkill.en.m) || 0,
-          total: (st.bySkill.en && st.bySkill.en.t) || 0,
+          value: (bySkill.en && bySkill.en.o) || 0,
+          maxed: (bySkill.en && bySkill.en.m) || 0,
+          total: (bySkill.en && bySkill.en.t) || 0,
           color: DONUT_SKILL_COLORS.en
         },
         {
           id: 'hybrid',
           label: t('skill_hybrid'),
-          value: (st.bySkill.hybrid && st.bySkill.hybrid.o) || 0,
-          maxed: (st.bySkill.hybrid && st.bySkill.hybrid.m) || 0,
-          total: (st.bySkill.hybrid && st.bySkill.hybrid.t) || 0,
+          value: (bySkill.hybrid && bySkill.hybrid.o) || 0,
+          maxed: (bySkill.hybrid && bySkill.hybrid.m) || 0,
+          total: (bySkill.hybrid && bySkill.hybrid.t) || 0,
           color: DONUT_SKILL_COLORS.hybrid
         }
       ];
     }
+    var byRole = st.byRole || {};
     return ['1', '3', '2'].map(function (rid) {
-      var b = st.byRole[rid] || { o: 0, m: 0, t: 0 };
+      var b = byRole[rid] || { o: 0, m: 0, t: 0 };
       return {
         id: rid,
         label: roleLabel(rid),
@@ -1858,6 +2151,57 @@
     return list.length * rowH;
   }
 
+  /** Sticky bar donut CSS px — match .collections-pct-sticky-donut-wrap (44 mobile / 64 desktop). */
+  function stickyDonutCssSize() {
+    var wrap = document.querySelector('.collections-pct-sticky-donut-wrap');
+    if (wrap) {
+      var w = 0;
+      try {
+        w = Math.round(wrap.getBoundingClientRect().width || 0);
+      } catch (_) {
+        w = 0;
+      }
+      if (w >= 32) return w;
+    }
+    try {
+      if (window.matchMedia && window.matchMedia('(min-width:721px)').matches) return 64;
+    } catch (_) {}
+    return 44;
+  }
+
+  /** Mini role / budget ring for the sticky possession bar. */
+  function paintStickyRoleDonut(st) {
+    try {
+      var canvas = document.getElementById('colRoleDonutSticky');
+      if (!canvas || !st) return;
+      var buckets = donutBucketsFromStats(st);
+      var complete = st.total > 0 && st.owned >= st.total;
+      var perfect = complete && st.maxed >= (st.lbEligible || 0);
+      var dpr = window.devicePixelRatio || 1;
+      var css = stickyDonutCssSize();
+      _stickyDonutPaintCss = css;
+      canvas.width = css * dpr;
+      canvas.height = css * dpr;
+      /* Size via wrap CSS — do not force inline 64px (overlaps % on mobile). */
+      canvas.style.width = '';
+      canvas.style.height = '';
+      var ctx = canvas.getContext('2d');
+      if (!ctx) return;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, css, css);
+      var icNow = document.getElementById('colGaugeTypeIc');
+      var stroke = css >= 56 ? 5 : 4;
+      drawRoundedRoleDonut(ctx, css / 2, css / 2, css, buckets, {
+        complete: complete,
+        perfect: perfect,
+        iconImg: icNow && icNow.complete ? icNow : null,
+        stroke: stroke,
+        gap: 0.16
+      });
+      canvas.setAttribute('aria-label', donutAriaSummary(buckets));
+    } catch (_) {}
+  }
+
   function paintLiveRoleDonut(st) {
     var canvas = document.getElementById('colRoleDonut');
     if (!canvas) return;
@@ -1878,7 +2222,9 @@
     if (ic) {
       ic.onload = function () {
         if (_donutAnimating) return;
-        paintLiveRoleDonut(computeStats(activeList()));
+        var next = computeStats(statsRows());
+        paintLiveRoleDonut(next);
+        paintStickyRoleDonut(next);
       };
     }
     var segCount = buckets.filter(function (b) {
@@ -1914,6 +2260,7 @@
 
     if (!shouldAnim) {
       paintFrame(null);
+      paintStickyRoleDonut(st);
       return;
     }
 
@@ -1926,6 +2273,7 @@
     for (z = 0; z < segCount; z++) zeros.push(0);
     _donutAnimating = true;
     paintFrame(zeros);
+    paintStickyRoleDonut(st);
     var t0 = performance.now();
     function tick(now) {
       var elapsed = now - t0;
@@ -1941,6 +2289,7 @@
         _donutAnimRaf = 0;
         _donutAnimating = false;
         paintFrame(null);
+        paintStickyRoleDonut(st);
       }
     }
     _donutAnimRaf = requestAnimationFrame(tick);
@@ -2216,7 +2565,7 @@
   }
 
   function renderStats() {
-    var rows = activeList();
+    var rows = statsRows();
     var st = computeStats(rows);
     var pctEl = document.getElementById('colPct');
     var label = document.getElementById('colPctLabel');
@@ -2240,6 +2589,8 @@
       }
     }
     if (label) label.textContent = t('possession') + ' · ' + typeTitle();
+    syncUltChipUi();
+    syncPctSticky(st);
     if (badge) {
       badge.hidden = !complete;
       badge.textContent = perfect ? t('complete_max') : t('complete');
@@ -2595,7 +2946,9 @@
 
   function refresh(opts) {
     opts = opts || {};
-    renderStats();
+    try {
+      renderStats();
+    } catch (_) {}
     syncSaveFanOptions();
     if (opts.patchId && patchCard(opts.patchId)) {
       syncRoleTabsVisibility();
@@ -2708,6 +3061,18 @@
         loadCensusStats();
       });
     });
+    function bindUltChip(el) {
+      if (!el) return;
+      el.addEventListener('click', function (ev) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        toggleIncludeUlt();
+      });
+    }
+    bindUltChip(document.getElementById('colUltChip'));
+    bindUltChip(document.getElementById('colUltChipSticky'));
+    initPctStickyObserver();
+    initCollectionsScrollTopFab();
     document.querySelectorAll('#colRoleTabs button').forEach(function (btn) {
       btn.addEventListener('click', function () {
         document.querySelectorAll('#colRoleTabs button').forEach(function (b) {
@@ -3263,7 +3628,17 @@
     return label;
   }
 
-  function measureSharePossessionHead(ctx, pctStr, complete, perfect, numSizeOpt, maxWOpt) {
+  function shareUltChipOpts(iconImg) {
+    if (state.type !== 'units') return { show: false };
+    return {
+      show: true,
+      include: !!state.includeUlt,
+      label: state.includeUlt ? t('ult_incl') : t('ult_excl'),
+      icon: iconImg || null
+    };
+  }
+
+  function measureSharePossessionHead(ctx, pctStr, complete, perfect, numSizeOpt, maxWOpt, ultOpts) {
     var padX = 14;
     var padY = 12;
     var gap = 6;
@@ -3282,6 +3657,16 @@
     var label = shareFitText(ctx, sharePossessionLabelText(), innerMax || 9999);
     var labelW = ctx.measureText(label).width;
     h += shareTextLineH(labelSize) + 6;
+    var ultChipW = 0;
+    if (ultOpts && ultOpts.show) {
+      ctx.font = uiCanvasFont(10, 'bold');
+      var ultLab = shareFitText(ctx, ultOpts.label || '', innerMax || 9999);
+      ultChipW = Math.min(
+        innerMax || 9999,
+        Math.max(72, 5 + 16 + 5 + ctx.measureText(ultLab).width + 10)
+      );
+      h += 22 + 4;
+    }
     var badgeW = 0;
     if (complete) {
       ctx.font = uiCanvasFont(11, 'bold');
@@ -3302,13 +3687,14 @@
         h += shareTextLineH(10) + 6;
       }
     }
-    var w = Math.max(row1W, labelW, badgeW) + padX * 2;
+    var w = Math.max(row1W, labelW, ultChipW, badgeW) + padX * 2;
     if (maxWOpt > 40) w = Math.min(w, maxWOpt);
     return {
       w: w,
       h: h + padY - 2,
       numSize: numSize,
-      label: label
+      label: label,
+      ultOpts: ultOpts || null
     };
   }
 
@@ -3376,7 +3762,7 @@
    * Draw compact Possession % block like the live HUD head.
    * Returns { w, h } of the painted content box.
    */
-  function drawSharePossessionHead(ctx, x, y, pctStr, complete, perfect, numSizeOpt, maxWOpt) {
+  function drawSharePossessionHead(ctx, x, y, pctStr, complete, perfect, numSizeOpt, maxWOpt, ultOpts) {
     var padX = 14;
     var padY = 12;
     var gap = 6;
@@ -3384,7 +3770,7 @@
     var pctSize = Math.round(numSize * 0.5);
     var labelSize = 13;
     var innerMax = maxWOpt > 40 ? maxWOpt - padX * 2 : 0;
-    var box = measureSharePossessionHead(ctx, pctStr, complete, perfect, numSize, maxWOpt);
+    var box = measureSharePossessionHead(ctx, pctStr, complete, perfect, numSize, maxWOpt, ultOpts);
     var contentW = box.w;
     var contentH = box.h;
 
@@ -3449,6 +3835,44 @@
       box.label || shareFitText(ctx, sharePossessionLabelText(), innerMax || contentW - padX * 2);
     ctx.fillText(label, x + padX, cursorY);
     cursorY += shareTextLineH(labelSize) + 6;
+
+    if (ultOpts && ultOpts.show) {
+      ctx.font = uiCanvasFont(10, 'bold');
+      var ultLab = shareFitText(ctx, ultOpts.label || '', innerMax || contentW - padX * 2);
+      var iconSz = 16;
+      var chipPadL = 5;
+      var chipPadR = 10;
+      var chipGap = 5;
+      var chipH = 20;
+      var chipW = Math.min(
+        innerMax || contentW - padX * 2,
+        Math.max(72, chipPadL + iconSz + chipGap + ctx.measureText(ultLab).width + chipPadR)
+      );
+      var cx = x + padX;
+      var cy = cursorY;
+      var ultOn = !!ultOpts.include;
+      drawRoundRect(ctx, cx, cy, chipW, chipH, 999);
+      ctx.fillStyle = ultOn ? 'rgba(0,212,255,0.16)' : 'rgba(20,28,44,0.92)';
+      ctx.fill();
+      ctx.strokeStyle = ultOn ? 'rgba(0,212,255,0.55)' : 'rgba(132,148,174,0.45)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      var icon = ultOpts.icon;
+      var ix = cx + chipPadL;
+      var iy = cy + (chipH - iconSz) / 2;
+      if (icon && icon.width) {
+        ctx.save();
+        if (!ultOn) ctx.globalAlpha = 0.45;
+        ctx.drawImage(icon, ix, iy, iconSz, iconSz);
+        ctx.restore();
+      }
+      ctx.fillStyle = ultOn ? '#7af0ff' : '#8494ae';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(ultLab, ix + iconSz + chipGap, cy + chipH / 2 + 0.5);
+      ctx.textBaseline = 'top';
+      cursorY += chipH + 4;
+    }
 
     if (complete) {
       var badge = perfect ? t('complete_max') : t('complete');
@@ -3944,9 +4368,10 @@
 
   async function generateShareImage() {
     var rows = activeList();
-    var st = computeStats(rows);
+    var st = computeStats(statsRows());
     var complete = st.total > 0 && st.owned >= st.total;
     var perfect = complete && st.maxed >= (st.lbEligible || 0);
+    var ultShareEarly = shareUltChipOpts(null);
     var pad = 44;
     var W = SHARE_REPORT_TARGET_W;
     var H = SHARE_REPORT_TARGET_H;
@@ -3996,7 +4421,8 @@
       complete,
       perfect,
       sharePctNumSize,
-      maxPctW
+      maxPctW,
+      ultShareEarly
     );
     var pctPanelY = titleBottom + 6;
     var legendRowH = Math.max(18, shareTextLineH(13) + 2);
@@ -4096,6 +4522,7 @@
       loadImage(imgUrl(suppFr.tb)),
       loadImage(imgUrl('/static/images/UI/UI_Common_MenuIcon_Language.webp')),
       loadImage(imgUrl(LIMITED_UR_LABEL_BASE)),
+      loadImage(imgUrl(ULT_ICON)),
       Promise.all(
         rows.map(function (row) {
           var media = rowDisplayMedia(row);
@@ -4128,7 +4555,9 @@
     var suppTbImg = packed[18];
     var langIcon = packed[19];
     var limLabelImg = packed[20];
-    var thumbs = packed[21];
+    var ultIconImg = packed[21];
+    var thumbs = packed[22];
+    var ultShareOpts = shareUltChipOpts(ultIconImg);
 
     var headerArtH = Math.max(120, subY - 6);
     drawShareHeaderSceneArt(ctx, sceneArt, W, headerArtH);
@@ -4149,7 +4578,8 @@
       complete,
       perfect,
       sharePctNumSize,
-      maxPctW
+      maxPctW,
+      ultShareOpts
     );
 
     var shareBuckets = donutBucketsFromStats(st);
@@ -4593,9 +5023,10 @@
   async function generateShareImage15() {
     /* Same report chrome + frame as Regular/supporter — pyramid body densifies to fit. */
     var rows = activeList();
-    var st = computeStats(rows);
+    var st = computeStats(statsRows());
     var complete = st.total > 0 && st.owned >= st.total;
     var perfect = complete && st.maxed >= (st.lbEligible || 0);
+    var ultShareEarly15 = shareUltChipOpts(null);
     var n = rows.length;
     var pad = 44;
     var edge = 48;
@@ -4645,7 +5076,8 @@
       complete,
       perfect,
       sharePctNumSize,
-      maxPctW15
+      maxPctW15,
+      ultShareEarly15
     );
     var pctPanelY = titleBottom + 6;
     var legendRowH15 = Math.max(18, shareTextLineH(13) + 2);
@@ -4758,6 +5190,7 @@
       loadImage(imgUrl(LB_ICONS.Max)),
       loadImage(imgUrl('/static/images/UI/UI_Common_MenuIcon_Language.webp')),
       loadImage(imgUrl(LIMITED_UR_LABEL_BASE)),
+      loadImage(imgUrl(ULT_ICON)),
       Promise.all(
         rows.map(function (row) {
           var media = rowDisplayMedia(row);
@@ -4786,8 +5219,10 @@
     var iconNeutral = packed[14];
     var iconMax = packed[15];
     var langIcon = packed[16];
-    var thumbs = packed[18];
+    var ultIconImg15 = packed[18];
+    var thumbs = packed[19];
     var pipIcons = { none: iconNone, neutral: iconNeutral, max: iconMax };
+    var ultShareOpts15 = shareUltChipOpts(ultIconImg15);
 
     var headerArtH = Math.max(120, subY - 6);
     drawShareHeaderSceneArt(ctx, sceneArt, W, headerArtH);
@@ -4815,7 +5250,8 @@
       complete,
       perfect,
       sharePctNumSize,
-      maxPctW15
+      maxPctW15,
+      ultShareOpts15
     );
 
     var shareBuckets = donutBucketsFromStats(st);
@@ -5130,7 +5566,9 @@
           (exportMode === '15' ? '15-' : 'report-') +
           state.type +
           '-' +
-          String(computeStats(activeList()).pct).replace('.', '_') +
+          String(computeStats(statsRows()).pct).replace('.', '_') +
+          (state.type === 'units' ? (state.includeUlt ? '_ult' : '_nult') : '') +
+          '_' +
           'pct.png';
         link.textContent = t('download');
       }
@@ -6247,9 +6685,9 @@
       }
       return;
     }
-    var uSt = computeStats(state.catalog.units || []);
+    var uSt = computeStats(unitStatsRows());
     var sSt = computeStats(state.catalog.supporters || []);
-    var st = computeStats(activeList());
+    var st = computeStats(statsRows());
     var text = t('share_body_named', {
       name: name,
       u_pct: uSt.pct,
@@ -6319,7 +6757,17 @@
 
   state.lang = normLang(state.lang);
   applyUiLang();
-  bind();
+  try {
+    bind();
+  } catch (bindErr) {
+    try {
+      console.error('[collections] bind failed', bindErr);
+    } catch (_) {}
+  }
+  /* Never block catalog load on sticky chrome — incomplete st used to throw on byRole. */
+  try {
+    syncPctSticky({ pct: 0, owned: 0, total: 0, maxed: 0, lbTotal: 0, lbMax: 0, limOwned: 0, limTotal: 0, byRole: {}, bySkill: {} });
+  } catch (_) {}
   loadCatalog().then(function () {
     return maybeImportShareCodeFromUrl();
   }).then(function () {
