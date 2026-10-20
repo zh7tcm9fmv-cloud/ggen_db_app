@@ -1062,7 +1062,8 @@
 
   function filteredList() {
     var q = String(state.q || '').trim().toLowerCase();
-    return activeList().filter(function (row) {
+    /* Same pool as possession % — ULT excluded from the grid when chip is off. */
+    return statsRows().filter(function (row) {
       if (state.type !== 'supporters' && state.role !== 'ALL') {
         if (String(row.role_id || '') !== String(state.role)) return false;
       }
@@ -2906,7 +2907,7 @@
     if (status) {
       status.textContent = t('showing', {
         n: rows.length,
-        total: activeList().length,
+        total: statsRows().length,
         type: typeTitle()
       });
     }
