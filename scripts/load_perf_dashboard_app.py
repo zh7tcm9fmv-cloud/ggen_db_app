@@ -281,7 +281,11 @@ class LoadPerfApp(ctk.CTk):
             justify="left",
         )
         self.chart_cap.pack(fill="x", padx=14, pady=(0, 12))
-        self.chart.bind("<Configure>", lambda _e: self._redraw_chart(getattr(self, "_bars", [])))
+        # Scroll jank: CTkScrollableFrame fires Configure on the canvas while
+        # scrolling; redrawing every tick freezes the wheel. Only redraw on width change.
+        self._chart_drawn_w = 0
+        self._chart_configure_after: str | None = None
+        self.chart.bind("<Configure>", self._on_chart_configure)
 
         # Tables
         for key, title in (
@@ -416,11 +420,27 @@ class LoadPerfApp(ctk.CTk):
 
         threading.Thread(target=work, name="load-perf-restart-flask", daemon=True).start()
 
+    def _on_chart_configure(self, event) -> None:
+        # Ignore height-only Configure events from the scrollable parent.
+        w = int(getattr(event, "width", 0) or 0)
+        if w <= 1 or w == self._chart_drawn_w:
+            return
+        if self._chart_configure_after is not None:
+            try:
+                self.after_cancel(self._chart_configure_after)
+            except Exception:
+                pass
+        self._chart_configure_after = self.after(
+            80, lambda: self._redraw_chart(getattr(self, "_bars", []))
+        )
+
     def _redraw_chart(self, bars: list) -> None:
         self._bars = bars or []
+        self._chart_configure_after = None
         c = self.chart
         c.delete("all")
         w = max(int(c.winfo_width()), 40)
+        self._chart_drawn_w = w
         h = max(int(c.winfo_height()), 120)
         if not self._bars:
             c.create_text(w // 2, h // 2, text="No chart data yet — press Update", fill=MUTED, font=("Segoe UI", 12))

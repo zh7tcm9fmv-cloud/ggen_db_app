@@ -49,5 +49,39 @@
     "bsp_sharded": true,
     "weapon_len": 1280,
     "weapon_max": 1280
+  },
+  {
+    "at": "2026-10-21T14:46:30+08:00",
+    "rss_mb": 1265.4,
+    "body_mb": 4.63,
+    "detail_mb": 1.73,
+    "band": "pressure",
+    "rpm": 129,
+    "pair_len": 1500,
+    "pair_max": 1500,
+    "body_budget_mb": 8.0,
+    "bsp_lru": 32,
+    "bsp_lru_max": 64,
+    "api_cache_keys": 196,
+    "bsp_sharded": true,
+    "weapon_len": 512,
+    "weapon_max": 512
+  },
+  {
+    "at": "2026-10-21T14:54:06+08:00",
+    "rss_mb": 1265.3,
+    "body_mb": 4.4,
+    "detail_mb": 1.31,
+    "band": "pressure",
+    "rpm": 164,
+    "pair_len": 1500,
+    "pair_max": 1500,
+    "body_budget_mb": 8.0,
+    "bsp_lru": 32,
+    "bsp_lru_max": 64,
+    "api_cache_keys": 199,
+    "bsp_sharded": true,
+    "weapon_len": 512,
+    "weapon_max": 512
   }
 ]

@@ -212,7 +212,8 @@ def build_insights(live: dict[str, Any], local: dict[str, Any] | None) -> list[s
         if float(rss) >= 1250:
             tips.append(
                 f"Live RSS {rss} MB is in the pressure zone (≥1250). "
-                "Expect GIL thrash if browse/detail feel laggy; restart Railway if it stays stuck high."
+                "Adaptive pair cache should already be floored — normal under load. "
+                "Act only if browse/detail feel laggy or RSS keeps climbing past ~1.4 GB with no relief."
             )
         elif float(rss) >= 1100:
             tips.append(f"Live RSS {rss} MB is elevated (mid band). Watch if it keeps climbing.")
@@ -292,11 +293,25 @@ def build_verdict(live: dict[str, Any], insights: list[str]) -> dict[str, str]:
     rpm = lh.get("rpm")
 
     body = " ".join(insights[:3]) if insights else ""
+    warm_ok = (unit is None or unit <= 600) and (bsp is None or bsp <= 600)
 
-    if rss is not None and float(rss) >= 1250:
+    if rss is not None and float(rss) >= 1400:
         return {
             "tone": "bad",
-            "title": "Verdict: live under RSS pressure — snappy bar at risk",
+            "title": "Verdict: live RSS very high — check for stuck heap / lag",
+            "body": body,
+        }
+    if rss is not None and float(rss) >= 1250:
+        # Pressure band with healthy warm paths = adaptive doing its job, not an emergency.
+        if warm_ok:
+            return {
+                "tone": "warn",
+                "title": "Verdict: RSS pressure band — adaptive holding; no action needed",
+                "body": body,
+            }
+        return {
+            "tone": "bad",
+            "title": "Verdict: live under RSS pressure — warm paths heavy",
             "body": body,
         }
     if body_mb is not None and float(body_mb) > 8:
@@ -692,8 +707,11 @@ def _rss_tone(rss: Any) -> str:
         v = float(rss)
     except (TypeError, ValueError):
         return "muted"
-    if v >= 1250:
+    # 1250 = pressure band (adaptive floors caches) → warn; 1400+ = escalate.
+    if v >= 1400:
         return "bad"
+    if v >= 1250:
+        return "warn"
     if v >= 1100:
         return "warn"
     return "ok"

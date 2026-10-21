@@ -2631,10 +2631,11 @@ _PILOT_COND_PASSIVE_CACHE = {}
 
 def _normalize_piloting_name(s):
     # Keep Latin + CJK + Hangul (KR unit/pilot names); strip punctuation only.
+    # Official EN typo: Gumdam ↔ Gundam (Infinite Justice EX, etc.).
     return re.sub(
         r'\s+', ' ',
         re.sub(r'[^a-z0-9\u3040-\u9fff\uac00-\ud7a3]+', ' ', str(s or '').lower()),
-    ).strip()
+    ).strip().replace('gumdam', 'gundam')
 
 
 def _unit_name_matches_piloting_phrase(unit_id, ld, phrase):
@@ -2719,6 +2720,24 @@ def _char_ability_entries_for_pilot_cond(char_id, ld, lc, stat_mode='normal'):
     return rows
 
 
+def _ability_detail_condition_unit_ids(d2):
+    """Unit ids from trait-condition chips on an ability detail (source=unit_ids)."""
+    out = []
+    if not isinstance(d2, dict):
+        return out
+    seen = set()
+    for c in d2.get('conditions') or []:
+        if not isinstance(c, dict):
+            continue
+        if str(c.get('type') or '').lower() != 'unit':
+            continue
+        uid = normalize_id(c.get('id') or '')
+        if uid and uid != '0' and uid not in seen:
+            seen.add(uid)
+            out.append(uid)
+    return out
+
+
 def _pilot_text_targets_unit(uid, ld, text):
     """True when pilot-gated ability line applies to this unit MS."""
     uid = normalize_id(uid)
@@ -2729,11 +2748,26 @@ def _pilot_text_targets_unit(uid, ld, text):
     uname = ld.get('unit_text_map', {}).get(lid, '') if lid else ''
     if not uname:
         return False
-    sl = str(text).lower()
-    ul = uname.lower()
+    sl = _normalize_piloting_name(text)
+    ul = _normalize_piloting_name(uname)
     if ul not in sl:
         return False
-    return bool(re.search(r'when\s+piloting|搭乘|搭乗|탑승', sl, re.I))
+    return bool(re.search(r'when\s+piloting|搭乘|搭乗|탑승', str(text or ''), re.I))
+
+
+def _pilot_detail_targets_unit(uid, ld, d2_or_txt):
+    """Prefer trait UnitIds on the detail; fall back to piloting-phrase text match."""
+    uid = normalize_id(uid)
+    if isinstance(d2_or_txt, dict):
+        if uid in _ability_detail_condition_unit_ids(d2_or_txt):
+            return True
+        return _pilot_text_targets_unit(uid, ld, d2_or_txt.get('text', '') or '')
+    return _pilot_text_targets_unit(uid, ld, d2_or_txt)
+
+
+def _ability_text_implies_pilot_gated_flat_move(txt):
+    """Pilot exclusive: flat own MOV when piloting a named unit (Master Asia / Athrun / Duo / Nigel…)."""
+    return _extract_stat_flat_move(txt or '', skip_conditional=False) > 0
 
 
 def _collect_pilot_weapon_range_modifiers(uid, ld, lc, stat_mode):
@@ -3418,19 +3452,24 @@ def _unit_ability_text_implies_pilot_cond_passive(txt):
     return _ability_text_implies_pilot_gated_squad_stat(txt)
 
 
-def _unit_has_pilot_cond_passive(uid, ld, lc, stat_mode='normal'):
+def _unit_has_pilot_cond_passive(uid, ld, lc, stat_mode='normal', include_flat_move=True):
     """Recommend pilot grants detail-card-visible PEP for this unit.
 
-    Eligible: ATK/DEF/squad stats, weapon ACC/Crit (tag or series affinity),
-    weapon range, weapon-effect additives, weapon EN cost, Guaranteed Chance
-    Step when piloting this unit. Not eligible: tag-affinity damage dealt/taken
-    only (those never appear on the unit detail card).
+    Eligible: ATK/DEF/squad stats, flat own MOV when piloting this unit,
+    weapon ACC/Crit (tag or series affinity), weapon range, weapon-effect
+    additives, weapon EN cost, Guaranteed Chance Step when piloting this unit.
+    Not eligible: tag-affinity damage dealt/taken only (those never appear on
+    the unit detail card).
 
     Series-gated Max EX ACC (any rarity recommend, e.g. SSR collab) lights PEP.
     Named-unit / tag exclusives still require a UR recommend pilot.
+    Prefer trait UnitIds over EN display-name match (Gumdam typo class).
+
+    include_flat_move=False: used to detect “other PEP” so vigor-gated MOV can
+    require a separate CP toggle (Master Asia) vs PEP-only MOV (Athrun).
     """
     uid = normalize_id(uid)
-    cache_key = (uid, lc)
+    cache_key = (uid, lc, bool(include_flat_move))
     hit = _PILOT_COND_PASSIVE_CACHE.get(cache_key)
     if hit is not None:
         return hit
@@ -3482,7 +3521,7 @@ def _unit_has_pilot_cond_passive(uid, ld, lc, stat_mode='normal'):
                     _PILOT_COND_PASSIVE_CACHE[cache_key] = True
                     return True
             if re.search(r'when\s+piloting|搭乘|搭乗|탑승', txt, re.I):
-                if not _pilot_text_targets_unit(uid, ld, txt):
+                if not _pilot_detail_targets_unit(uid, ld, d2 if isinstance(d2, dict) else txt):
                     continue
                 if _ability_text_implies_pilot_gated_squad_stat(txt):
                     _PILOT_COND_PASSIVE_CACHE[cache_key] = True
@@ -3491,6 +3530,9 @@ def _unit_has_pilot_cond_passive(uid, ld, lc, stat_mode='normal'):
                     _PILOT_COND_PASSIVE_CACHE[cache_key] = True
                     return True
                 if _ability_text_implies_pilot_gated_pilot_stat(txt):
+                    _PILOT_COND_PASSIVE_CACHE[cache_key] = True
+                    return True
+                if include_flat_move and _ability_text_implies_pilot_gated_flat_move(txt):
                     _PILOT_COND_PASSIVE_CACHE[cache_key] = True
                     return True
                 if _ability_text_implies_pilot_en_consumption(txt):
@@ -3519,7 +3561,7 @@ def _unit_has_pilot_cond_passive(uid, ld, lc, stat_mode='normal'):
             continue
         for d2 in ad.get('details', []) or []:
             txt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
-            if re.search(r'when\s+piloting|搭乘|搭乗|탑승', str(txt or ''), re.I) and _pilot_text_targets_unit(uid, ld, txt):
+            if re.search(r'when\s+piloting|搭乘|搭乗|탑승', str(txt or ''), re.I) and _pilot_detail_targets_unit(uid, ld, d2 if isinstance(d2, dict) else txt):
                 _PILOT_COND_PASSIVE_CACHE[cache_key] = True
                 return True
     _PILOT_COND_PASSIVE_CACHE[cache_key] = False
@@ -5863,7 +5905,8 @@ def _strip_trailing_ex_markers_from_unit_title(name):
 
 
 def _unit_display_core_key(disp):
-    return _strip_trailing_ex_markers_from_unit_title(str(disp or '').strip()).lower()
+    # Gumdam↔Gundam: same official EN typo class as _normalize_piloting_name.
+    return _strip_trailing_ex_markers_from_unit_title(str(disp or '').strip()).lower().replace('gumdam', 'gundam')
 
 
 def _piloting_named_ex_fragment_from_trait_blob(txt):
@@ -5925,6 +5968,51 @@ def _trait_blob_piloting_named_ex_unit_id(txt, ldc):
     return _resolve_unit_id_from_pilot_display_fragment(frag, ldc, prefer_ex_variant=prefer_ex)
 
 
+def _ability_text_implies_supercharged_vigor_gate(txt):
+    """True when the line is gated on Supercharged / 超一撃 / 超一擊 (or greater)."""
+    return bool(re.search(r'supercharged|超一撃|超一擊', txt or '', re.I))
+
+
+def _collect_char_pair_unit_mov_meta(abilities, ldc=None):
+    """Named-unit (or UnitIds) piloting EX → flat own MOV meta.
+
+    Returns {unit_id: {'flat': int, 'vigor_super': bool}}.
+    """
+    out = {}
+    for bab in abilities or []:
+        if not isinstance(bab, dict):
+            continue
+        for d2 in bab.get('details') or []:
+            if not isinstance(d2, dict):
+                continue
+            txt = (d2.get('text') or '').strip()
+            if not txt:
+                continue
+            if not re.search(r'when\s+piloting|搭乘|搭乗|탑승', txt, re.I):
+                continue
+            fm = _extract_stat_flat_move(txt, skip_conditional=False)
+            if not fm:
+                continue
+            uids = _ability_detail_condition_unit_ids(d2)
+            if not uids and ldc is not None:
+                pu = _trait_blob_piloting_named_ex_unit_id(txt, ldc)
+                if pu:
+                    uids = [pu]
+            vigor_super = _ability_text_implies_supercharged_vigor_gate(txt)
+            for uid in uids:
+                prev = out.get(uid) or {'flat': 0, 'vigor_super': False}
+                prev['flat'] = int(prev.get('flat', 0) or 0) + int(fm)
+                prev['vigor_super'] = bool(prev.get('vigor_super')) or vigor_super
+                out[uid] = prev
+    return out
+
+
+def _collect_char_pair_unit_mov_flat(abilities, ldc=None):
+    """Named-unit (or UnitIds) piloting EX → flat own MOV. Keys are unit ids."""
+    meta = _collect_char_pair_unit_mov_meta(abilities, ldc)
+    return {uid: int(m.get('flat', 0) or 0) for uid, m in meta.items() if int(m.get('flat', 0) or 0)}
+
+
 def _add_char_trait_pct_to_buckets(bab, d2, u_map, c_map, pair_c_map, ex_map, pair_ex_map, carry_ref, char_id=None, ldc=None, trait_pair_unit_ids=None):
     """carry_ref[0] is True when a prior line/detail set up a conditional clause (e.g. 'When Vigor…' then stat line)."""
     if not isinstance(d2, dict):
@@ -5932,7 +6020,13 @@ def _add_char_trait_pct_to_buckets(bab, d2, u_map, c_map, pair_c_map, ex_map, pa
     txt = (d2.get('text') or '').strip()
     if not txt:
         return
+    cond_uids = _ability_detail_condition_unit_ids(d2)
+    if trait_pair_unit_ids is not None:
+        for uid in cond_uids:
+            trait_pair_unit_ids.add(uid)
     pair_uid = _trait_blob_piloting_named_ex_unit_id(txt, ldc) if ldc else None
+    if not pair_uid and cond_uids:
+        pair_uid = cond_uids[0]
     if pair_uid and trait_pair_unit_ids is not None:
         trait_pair_unit_ids.add(pair_uid)
     if _char_trait_text_is_support_defense_action(txt):
@@ -35873,7 +35967,7 @@ def get_character(char_id):
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
         view_ranking = request.args.get('view', '').strip().lower() == 'ranking'
         # r21: condition chips use in-game id order (Zeon & Land, not file order).
-        ck = f"c_{char_id}_{lc}_r21_{1 if view_ranking else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        ck = f"c_{char_id}_{lc}_r23_{1 if view_ranking else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             # Images already CDN-converted when cached; skip re-walk + re-jsonify under GIL.
@@ -35978,14 +36072,40 @@ def get_character(char_id):
                 elif sk['name'].strip().lower() in spn: sk['replaced_by_sp'] = True
         pair_mod = CHAR_PAIR_UNIT_STAT_MOD_PCT.get(char_id)
         counter_atk_mod = CHAR_PAIR_UNIT_COUNTER_ATK_PCT.get(char_id)
+        # Pair MOV: always exposed for PEP apply. CP gate only when Supercharged+ and
+        # the unit already has other PEP (Master Asia); PEP-only MOV (Athrun) skips CP.
+        pair_mov_meta = _collect_char_pair_unit_mov_meta(ac, ldc)
+        pair_mov_meta_ui = _collect_char_pair_unit_mov_meta(abilities, ld)
+        for uid_m, meta_ui in (pair_mov_meta_ui or {}).items():
+            prev = pair_mov_meta.get(uid_m) or {'flat': 0, 'vigor_super': False}
+            prev['flat'] = max(int(prev.get('flat', 0) or 0), int(meta_ui.get('flat', 0) or 0))
+            prev['vigor_super'] = bool(prev.get('vigor_super')) or bool(meta_ui.get('vigor_super'))
+            pair_mov_meta[uid_m] = prev
+        pair_mov_flat = {
+            uid_m: int(m.get('flat', 0) or 0)
+            for uid_m, m in pair_mov_meta.items()
+            if int(m.get('flat', 0) or 0)
+        }
+        pair_unit_mov_cp_gate = {}
+        if pair_mov_meta:
+            trait_pair_unit_ids |= set(pair_mov_flat.keys())
+            pair_ok, pair_units, _ = _character_trait_pair_gate(char_id, trait_pair_unit_ids)
+            for uid_m, meta in pair_mov_meta.items():
+                if not meta.get('vigor_super') or not int(meta.get('flat', 0) or 0):
+                    continue
+                if _unit_has_pilot_cond_passive(uid_m, ld, lc, include_flat_move=False):
+                    pair_unit_mov_cp_gate[uid_m] = True
         # pair_units / pair_ok computed above (manual CHAR_PAIR_* ∪ trait-derived pilot-(EX) gates).
         # Still show toggle for UR EX-slot % (spen/spes) when recommend does not match.
         has_ex_slot_only = any(spen[s] + (spen_pair[s] if pair_ok else 0) != 0 for s in CHAR_STAT_ORDER) or any(spes[s] + (spes_pair[s] if pair_ok else 0) != 0 for s in CHAR_STAT_ORDER) or bool(ex_supercharged_tiers)
+        has_mov_cp = bool(pair_unit_mov_cp_gate) and (
+            pair_ok or any(normalize_id(u) == normalize_id(rec_uid_for_pair or '') for u in pair_unit_mov_cp_gate)
+        )
         if pair_units and not pair_ok:
-            has_conditional_passive = has_ex_slot_only
+            has_conditional_passive = has_ex_slot_only or has_mov_cp
         else:
-            has_conditional_passive = has_ex_stats
-        result = {'id': char_id, 'name': cn, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'acquisition_icon': acq_icon or '', 'stats': stats, 'stats_with_ex': stats_with_ex, 'ex_supercharged_tiers': ex_supercharged_tiers_payload, 'has_ex_stats': has_ex_stats, 'has_conditional_passive': has_conditional_passive, 'has_sp': has_sp, 'sp_stats': sp_stats, 'sp_stats_with_ex': sp_stats_with_ex, 'pair_unit_stat_mod': pair_mod, 'pair_unit_counter_atk_mod': counter_atk_mod, 'tags': resolve_tags(char_lin_map, char_id, lc, 'character'), 'series': resolve_series(ld['char_ser_map'].get(char_id, ''), lc), 'abilities': abilities, 'skills': skills, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'recommend_unit': recommend_unit, 'is_limited_time': char_id in LIMITED_TIME_CHARACTER_IDS, 'is_schedule_shell': entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0'))}
+            has_conditional_passive = has_ex_stats or has_mov_cp
+        result = {'id': char_id, 'name': cn, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'acquisition_icon': acq_icon or '', 'stats': stats, 'stats_with_ex': stats_with_ex, 'ex_supercharged_tiers': ex_supercharged_tiers_payload, 'has_ex_stats': has_ex_stats, 'has_conditional_passive': has_conditional_passive, 'has_sp': has_sp, 'sp_stats': sp_stats, 'sp_stats_with_ex': sp_stats_with_ex, 'pair_unit_stat_mod': pair_mod, 'pair_unit_counter_atk_mod': counter_atk_mod, 'pair_unit_mov_flat': pair_mov_flat or None, 'pair_unit_mov_cp_gate': pair_unit_mov_cp_gate or None, 'tags': resolve_tags(char_lin_map, char_id, lc, 'character'), 'series': resolve_series(ld['char_ser_map'].get(char_id, ''), lc), 'abilities': abilities, 'skills': skills, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'recommend_unit': recommend_unit, 'is_limited_time': char_id in LIMITED_TIME_CHARACTER_IDS, 'is_schedule_shell': entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0'))}
         if view_ranking:
             result['abilities'] = []
             result['skills'] = []

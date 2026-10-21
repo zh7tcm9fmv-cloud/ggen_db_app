@@ -6310,13 +6310,16 @@ c.insertAdjacentHTML('beforeend',renderDetailInlineRankRadial(meta));
 kickDetailRankRadialAnimation(c.querySelector('.stat-inline-rank'));
 });
 }
+function _normPilotUnitNameCmp(s){
+return String(s||'').toLowerCase().replace(/gumdam/g,'gundam').replace(/\s*\(ex\)\s*/gi,' ').replace(/\s+/g,' ').trim();
+}
 function _pilotTextTargetsUnit(ud,reqUnitRaw){
 if(!ud)return false;
-const unitName=(ud.name||'').toLowerCase();
-const unitBare=(ud.name||'').replace(/\s*\(EX\)\s*/gi,'').trim().toLowerCase();
-const ru=(reqUnitRaw||'').trim().toLowerCase();
+const unitName=_normPilotUnitNameCmp(ud.name||'');
+const unitBare=_normPilotUnitNameCmp((ud.name||'').replace(/\s*\(EX\)\s*/gi,''));
+const ru=_normPilotUnitNameCmp(reqUnitRaw||'');
 if(!ru)return true;
-const ruBare=ru.replace(/\s*\(ex\)\s*/g,'').trim();
+const ruBare=_normPilotUnitNameCmp(String(reqUnitRaw||'').replace(/\s*\(ex\)\s*/gi,''));
 return unitName.includes(ru)||ru.includes(unitBare)||unitBare.includes(ruBare)||ruBare.includes(unitBare);
 }
 function _abilityPhraseToWeaponEffectKeys(phrase){
@@ -6670,6 +6673,7 @@ if(/improve\s+.+?\s+weapon effects by\s+\d+\s*%\s+additively/i.test(tx))return t
 if(/additively\s+increase\s+.+?\s+weapon effects by\s+\d+\s*%/i.test(tx))return true;
 if(/武装効果値が\d+%加算/.test(tx)||/武裝效果.*?加算/.test(tx)||/武裝效果值增加\d+%/.test(tx))return true;
 if(/increase\s+(?:own\s+)?(?:Melee|Ranged|Awaken|Defense|Reaction)\s+by\s+\d+\s*%|(?:格闘|射撃|覚醒|防御|反応)値が\d+%上昇|(?:格鬥|射擊|覺醒|防禦|反應)值提升\d+%/i.test(tx))return true;
+if(/(?:increase\s+(?:own\s+)?(?:squad\s+)?|and\s+)(?:Move|Movement|MOV)\s+by\s*\d+|移動力が\d+上昇|移動力提升\d+/i.test(tx))return true;
 if(/reduce\s+(?:own\s+)?(?:weapon\s+)?EN\s+consumption|消費ENが\d+%軽減|消耗EN減輕\d+%/i.test(tx))return true;
 /* Auto / Guaranteed Chance Step + Support Atk/Def count lines (pilot-gated) */
 if(/Chance\s*Step|チャンスステップ|額外行動|찬스 스텝|guaranteed\s+chance|auto[- ]?chance|force[- ]?activate\s+chance|regardless of whether or not (?:an\s+)?enem(?:y|ies)\s+ha(?:s|ve)\s+been\s+defeated|敵を撃破しなくても|無条件チャンス|オートチャンス|無條件額外|自動額外|即使未擊敗|무조건 찬스|오토 찬스|Support\s*Defen[cs]e|支援防[禦御]|지원 방어|Support\s*Attack|支援攻[撃擊]|지원 공격/i.test(tx))return true;
@@ -6991,11 +6995,35 @@ z.atk+=Math.min(info.maxPct,info.per*n);
 }
 return z;
 }
+function _detailUnitPilotMovCpGate(ud){
+const cd=S.pilotCondCharData;
+if(!cd||!ud)return false;
+const g=cd.pair_unit_mov_cp_gate;
+return !!(g&&g[String(ud.id||'')]);
+}
+function _detailPilotFlatMoveBonus(ud){
+if(!S.pilotConditionalPassiveActive||!ud||!S.pilotCondCharData)return 0;
+const pm=S.pilotCondCharData.pair_unit_mov_flat;
+if(!pm)return 0;
+const uid=String(ud.id||'');
+const v=pm[uid];
+const add=Number.isFinite(v)?(v|0):0;
+if(!add)return 0;
+/* Dual-gate MOV (PEP + Supercharged CP): both toggles must be on. PEP-only MOV skips CP. */
+if(_detailUnitPilotMovCpGate(ud)&&!S.conditionalPassiveActive)return 0;
+return add;
+}
 function _detailApplyPilotStatBonusRows(sr,ud){
 const p=_detailPilotStatBonusPcts(ud);
-if(!p.atk&&!p.def)return sr;
+const movFlat=_detailPilotFlatMoveBonus(ud);
+if(!p.atk&&!p.def&&!movFlat)return sr;
 const F=Math.floor;
 return sr.map(s=>{
+if(s.name==='Move'&&movFlat){
+const base=s.base|0;
+const tot=(s.total|0)+movFlat;
+return Object.assign({},s,{total:tot,bonus:Math.max(0,tot-base),pilot_mov_flat:movFlat});
+}
 if(s.name!=='Attack'&&s.name!=='Defense')return s;
 const pct=s.name==='Attack'?p.atk:p.def;
 if(!pct)return s;
@@ -7037,7 +7065,11 @@ el.addEventListener('animationend',()=>{el.classList.remove('detail-pilot-stack-
 syncPilotCondHighlights();
 };
 const finish=()=>{
-if(c&&d&&S.pilotCondCharData)_detailInitPilotCondStackCount(d);
+if(c&&d&&S.pilotCondCharData){
+_detailInitPilotCondStackCount(d);
+/* Dual-gate MOV (e.g. Master Asia): PEP on → auto-arm Supercharged CP. PEP-only MOV (Athrun) skips. */
+if(_detailUnitPilotMovCpGate(d))S.conditionalPassiveActive=true;
+}
 updateDetailDynamicSections(S.currentDetailType);
 afterRender();
 };
@@ -7049,7 +7081,7 @@ finish();
 }
 function updateDetailDynamicSections(type){const d=S.currentDetailData;if(type!=='supporter'&&type!=='stage'){const _sp=renderStatsWrapper(d,type);const _tog=document.getElementById('detailStatsToggles');const _st=document.getElementById('detailStatsWrapper');if(_tog)_tog.innerHTML=_sp.head||'';if(_st)_st.innerHTML=_tog?(_sp.grid||''):((_sp.head||'')+(_sp.grid||''));ensureDetailRankingToggleDom(type);applyDetailRankingInline(type)}if(type==='character'){const extra=document.getElementById('charExtraInfo');if(extra)extra.innerHTML=renderCharacterExtraInfo(d);const ucHost=document.getElementById('npcUnitCondTargets');if(ucHost)ucHost.innerHTML=renderNpcUnitConditionTargetsRow(d);document.getElementById('detailAbilitiesContainer').innerHTML=renderAbilsDynamic(d.abilities,t('sec_abilities'),false,S.spActive);document.getElementById('detailSkillsContainer').innerHTML=renderSkills(d.skills,S.spActive);syncNpcUnitConditionHighlights();syncAffinityExPairHighlights();syncPilotCondHighlights()}else if(type==='unit'){syncUnitLbVideoUi();void ensureUnitBestPilotsLoaded().then(api=>{if(api&&typeof api.syncUi==='function'&&S.currentDetailType==='unit'&&S.currentDetailData&&String(S.currentDetailData.id)===String(d&&d.id))api.syncUi(S.currentDetailData)});document.getElementById('detailAbilitiesContainer').innerHTML=renderAbilsDynamic(d.abilities,t('sec_abilities'),S.sspActive,false);document.getElementById('detailUnitSkillsContainer').innerHTML=renderSkills(d.skills||[],false);const modEl=document.getElementById('detailModifiersContainer');if(modEl)modEl.innerHTML=renderModifiers(d.modifiers||[]);setDetailWeaponsHtml(renderWeaponsDynamic(withNpcMapWeaponStrategyHints(d.weapons,d),S.sspActive,d));document.getElementById('detailMechanismsContainer').innerHTML=renderMechanisms(d.mechanisms);fillDetailSspMaterials('unit');fillDetailUltAlteration('unit');const tr=document.getElementById('detailUnitTerrainRow');if(tr){const base=d.terrain||[];const ter=S.sspActive&&(d.terrain_ssp&&d.terrain_ssp.length)?d.terrain_ssp:base;const hasTerrainEnh=!!(S.sspActive&&(d.has_terrain_enhancement===true||(d.terrain_ssp&&d.terrain&&d.terrain_ssp.some((ts,i)=>ts.level!==(d.terrain[i]?.level??-1)))));tr.innerHTML=renderHeaderTerrain(ter,S.sspActive,hasTerrainEnh)}syncPilotCondHighlights();syncUnitCondAbilityHighlights()}else if(type==='supporter'){let lh='';if(d.leader_skills&&d.leader_skills.length){lh=`<div class="detail-section"><div class="section-title">${t('sec_leader_skill')}</div><div class="ability-list">${d.leader_skills.map(ls=>{let ts2=ls.tags.map(t=>t.name).join(',');return`<div class="ability-item" style="flex-direction:column;gap:10px;cursor:pointer;" onclick="openTagModal('${esc(ts2)}','${ls.separator}')"><div class="ability-detail" style="margin:0;">${esc(ls.desc)}</div>${ls.tags&&ls.tags.length?`<div class="detail-tags-row" style="margin-top:0;align-items:center;">${renderSkillTags([{tags:ls.tags,separator:ls.separator}])}</div>`:''}</div>`}).join('')}</div></div>`}document.getElementById('detailLeaderSkillContainer').innerHTML=lh;let ah='';if(d.active_skills&&d.active_skills.length){ah=`<div class="detail-section"><div class="section-title">${t('sec_active_skills')}</div><div class="ability-list">${d.active_skills.map(sk=>`<div class="ability-item"><div class="ability-icon-wrap">${renderAbilIcon({icon:sk.icon})}</div><div class="ability-info"><div class="ability-name">${esc(sk.name)}</div><div class="ability-detail" style="margin:0;white-space:pre-wrap;">${esc(sk.desc)}</div></div></div>`).join('')}</div></div>`}document.getElementById('detailAbilitiesContainer').innerHTML=ah}else if(type==='stage'){document.getElementById('detailStageRestrictionsContainer').innerHTML=renderStageRestrictions(d);document.getElementById('detailStageMapContainer').innerHTML=renderStageMapSection(d);document.getElementById('detailNpcContainer').innerHTML=renderNpcDetails(d.npc_details||[],d.id,S._stageDetailUiRestore);ensureStageMapNpcHoverBound();ensureStageNpcCompactHoverBound();hideStageNpcHoverPop();scheduleWarmStageNpcHoverThumbs();syncNpcUnitConditionHighlights();const kickTape=()=>kickStageHazardTapeAnimations(document.getElementById('detailStageRestrictionsContainer'));requestAnimationFrame(()=>requestAnimationFrame(kickTape));setTimeout(kickTape,400)}if(type==='character'||type==='unit')requestAnimationFrame(adjustDetailModalLayout)}
 function renderStatsWrapper(d,type){
-let hcf=type==='character'?(d.has_conditional_passive!=null?d.has_conditional_passive:d.has_ex_stats):((d.has_cond_stats)||_detailUnitHasCondWeaponRange(d));
+let hcf=type==='character'?(d.has_conditional_passive!=null?d.has_conditional_passive:d.has_ex_stats):((d.has_cond_stats)||_detailUnitHasCondWeaponRange(d)||_detailUnitPilotMovCpGate(d));
 if(type==='character'&&characterHasConditionalChanceOrSupportAbility(d))hcf=true;
 const cp=hcf&&S.conditionalPassiveActive;
 let sr,bs;
@@ -11012,7 +11044,7 @@ const t=String(txt||'');
 if(!t.trim())return null;
 const low=t.toLowerCase();
 if(!low.includes('supercharged')&&!/超一撃|超一擊/.test(t)&&!/\(vigor conditions\)|\bvigor conditions\b|テンション条件|戰意條件|战意条件/i.test(t))return null;
-if(!/(awaken|reaction|\bdef\b|ranged|melee|attack stat|射擊|格鬥|覺醒|防御|攻撃)/i.test(t))return null;
+if(!/(awaken|reaction|\bdef\b|ranged|melee|attack stat|射擊|格鬥|覺醒|防御|攻撃|\bmov\b|move|movement|移動)/i.test(t))return null;
 let x=_dcVigorTierFromAbilityText(t);
 if(!x&&/\(vigor conditions\)|\bvigor conditions\b|テンション条件|戰意條件|战意条件/i.test(t)){
 if(low.includes('supercharged')||/超一撃|超一擊/.test(t))x='super';
@@ -12847,7 +12879,7 @@ else supporters=[supEnt.data];
 }
 const sqP=_tbComputeSquadConditionSheetPcts(sl,side);
 const mlOn=!!S.tb.masterLeague;
-const fullCtx={masterLeagueBuff:mlOn,grandOffensiveBuff:!!S.tb.grandOffensive,optionParts:optionParts||[],supporters,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,atkUnitData:ud,atkCharData:sl.charData||null,exSquadAtkPct:_tbEffectiveExSquadAtkPctForTb(sl,side),squadCondAtkPct:sqP.atk|0,squadCondDefPct:sqP.def|0};
+const fullCtx={masterLeagueBuff:mlOn,grandOffensiveBuff:!!S.tb.grandOffensive,optionParts:optionParts||[],supporters,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,atkUnitData:ud,atkCharData:sl.charData||null,charCondPassive:!!sl.charCondPassive,exSquadAtkPct:_tbEffectiveExSquadAtkPctForTb(sl,side),squadCondAtkPct:sqP.atk|0,squadCondDefPct:sqP.def|0};
 const f=_dcGetModifiedAttackerUnitStatsFromCtx(fullCtx,stats,true);
 let fatk=f.unitAtk,fdef=f.unitDefVal;
 const prf=_tbPilotPairUnitAtkDef(sl.charData,ud,!!sl.charCondPassive,fatk,fdef);
@@ -12916,7 +12948,7 @@ const td=(lb&&lb[tier])||(ud.stats&&{stats_no_cond:ud.stats});
 const stats=td?td[statKey]||td.stats_no_cond:[];
 let supporters=[];
 if(supporterObj&&!supporterObj.error)supporters=[supporterObj];
-const fullCtx={masterLeagueBuff:!!S.dc.masterLeagueBuff,grandOffensiveBuff:!!S.dc.grandOffensiveBuff,optionParts:optionParts||[],supporters,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,atkUnitData:ud,atkCharData:sl.charData||null,exSquadAtkPct:_dcEffectiveExSquadAtkPct(),squadCondAtkPct:S.dc.squadCondAtkPct|0,squadCondDefPct:S.dc.squadCondDefPct|0};
+const fullCtx={masterLeagueBuff:!!S.dc.masterLeagueBuff,grandOffensiveBuff:!!S.dc.grandOffensiveBuff,optionParts:optionParts||[],supporters,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,atkUnitData:ud,atkCharData:sl.charData||null,charCondPassive:!!sl.charCondPassive,exSquadAtkPct:_dcEffectiveExSquadAtkPct(),squadCondAtkPct:S.dc.squadCondAtkPct|0,squadCondDefPct:S.dc.squadCondDefPct|0};
 const f=_dcGetModifiedAttackerUnitStatsFromCtx(fullCtx,stats,true);
 let fatk=f.unitAtk,fdef=f.unitDefVal;
 const prf=_tbPilotPairUnitAtkDef(sl.charData,ud,!!sl.charCondPassive,fatk,fdef);
@@ -13107,8 +13139,8 @@ else supporters=[supEnt.data];
 }
 const sqP=_tbComputeSquadConditionSheetPcts(sl,side);
 const mlOn=!!S.tb.masterLeague;
-const fullCtx={masterLeagueBuff:mlOn,grandOffensiveBuff:!!S.tb.grandOffensive,optionParts:sl.optionParts||[],supporters,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,atkUnitData:ud,atkCharData:sl.charData||null,exSquadAtkPct:_tbEffectiveExSquadAtkPctForTb(sl,side),squadCondAtkPct:sqP.atk|0,squadCondDefPct:sqP.def|0};
-const baseCtx={masterLeagueBuff:false,grandOffensiveBuff:false,optionParts:[],supporters:[],unitTurnBuffAtk:false,atkUnitData:ud,atkCharData:sl.charData||null,exSquadAtkPct:0,squadCondAtkPct:0,squadCondDefPct:0};
+const fullCtx={masterLeagueBuff:mlOn,grandOffensiveBuff:!!S.tb.grandOffensive,optionParts:sl.optionParts||[],supporters,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,atkUnitData:ud,atkCharData:sl.charData||null,charCondPassive:!!sl.charCondPassive,exSquadAtkPct:_tbEffectiveExSquadAtkPctForTb(sl,side),squadCondAtkPct:sqP.atk|0,squadCondDefPct:sqP.def|0};
+const baseCtx={masterLeagueBuff:false,grandOffensiveBuff:false,optionParts:[],supporters:[],unitTurnBuffAtk:false,atkUnitData:ud,atkCharData:sl.charData||null,charCondPassive:false,exSquadAtkPct:0,squadCondAtkPct:0,squadCondDefPct:0};
 const b=_dcGetModifiedAttackerUnitStatsFromCtx(baseCtx,stats,true);
 const f=_dcGetModifiedAttackerUnitStatsFromCtx(fullCtx,stats,true);
 let batk=b.unitAtk,bdef=b.unitDefVal;
@@ -14689,6 +14721,9 @@ const pm=cd.pair_unit_stat_mod;
 if(pm&&Object.keys(pm).length)return true;
 const cm=cd.pair_unit_counter_atk_mod;
 if(cm&&Object.keys(cm).length)return true;
+/* Dual-gate MOV only (Master Asia). PEP-only MOV is not a CP pair requirement. */
+const mg=cd.pair_unit_mov_cp_gate;
+if(mg&&Object.keys(mg).length)return true;
 return false;
 }
 /** True when the selected unit and pilot satisfy pair-gated CP criteria. */
@@ -14701,6 +14736,10 @@ const pm=cd.pair_unit_stat_mod;
 if(pm&&pm[uid])return true;
 const cm=cd.pair_unit_counter_atk_mod;
 if(cm&&cm[uid]!=null)return true;
+const mg=cd.pair_unit_mov_cp_gate;
+if(mg&&mg[uid])return true;
+const mm=cd.pair_unit_mov_flat;
+if(mm&&mm[uid]!=null&&(mm[uid]|0)>0)return true;
 if(_dcParseCounterOwnAtkPctFromChar(cd,ud)>0)return true;
 return false;
 }
@@ -18366,6 +18405,21 @@ if(row.atk_pct)a=F(a*(100+row.atk_pct)/100);
 if(row.def_pct)d=F(d*(100+row.def_pct)/100);
 return{unitAtk:a,unitDefVal:d};
 }
+/** Named-unit EX flat MOV. Dual-gate (pair_unit_mov_cp_gate) needs CP; PEP-only MOV applies when pair matches. */
+function _dcPilotPairUnitMovFlat(unitMove,ctx){
+const c=ctx||S.dc;
+const cd=c.atkCharData,ud=c.atkUnitData;
+if(!cd||!ud||ud._manual)return unitMove;
+const pm=cd.pair_unit_mov_flat;
+if(!pm)return unitMove;
+const uid=String(ud.id||'');
+const add=pm[uid]|0;
+if(!add)return unitMove;
+if(!_dcUnitCharPairMatch(cd,ud))return unitMove;
+const gate=!!(cd.pair_unit_mov_cp_gate&&cd.pair_unit_mov_cp_gate[uid]);
+if(gate&&!c.charCondPassive)return unitMove;
+return Math.floor(Number(unitMove)||0)+add;
+}
 /** True for "increase own ATK by X% when countering" (not Support Attack/Counter ATK %). */
 function _dcTextIsOwnAtkWhenCountering(tx){
 const s=String(tx||'');
@@ -18877,6 +18931,8 @@ const hpDbCorePassive=F(hpBase*(100+pHp)/100);
 const defDbCorePassive=F(defBase*(100+pDef)/100);
 const mobDbCorePassive=F(mobBase*(100+pMob)/100);
 const atkDbCorePassive=F(atkBase*(100+pAtk)/100);
+/* Named-unit EX flat MOV (dual-gate needs CP; PEP-only when pair matches). */
+unitMove=_dcPilotPairUnitMovFlat(unitMove,c);
 return{unitAtk,unitHp,unitDefVal,unitMob,unitMove,atkSupport,hpSupport,leaderPct,leaderSameGroupAdBonusPct:lpAd|0,supportCounterPct:supCnt|0,unitAtkExSquadBase,unitAtkGrowthAfterOptions,unitDefExSquadBase,deltaExAtk,advantageFlatGrowthAtk:atkBase,advantageFlatGrowthDef:defBase,hpGrowthBase:hpBase,mobGrowthBase:mobBase,hpDbCorePassive,defDbCorePassive,mobDbCorePassive,atkDbCorePassive};
 }
 function _dcGetModifiedAttackerUnitStatsForPanel(atkUnitStats){return _dcGetModifiedAttackerUnitStatsFromCtx(S.dc,atkUnitStats,true);}
