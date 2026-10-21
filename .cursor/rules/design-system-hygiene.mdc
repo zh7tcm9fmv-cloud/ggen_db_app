@@ -1,0 +1,68 @@
+---
+description: Design-token hygiene + sacred holo/portrait DOM (SEO lesson)
+alwaysApply: true
+---
+
+# Design-system hygiene (tokens + sacred portrait DOM)
+
+Zyzz-style lesson for this Flask + CSS site: **prefer named tokens and finite chrome**, without a styling-library rewrite. Fonts stay locked (owner rule).
+
+## Tokens (source of truth)
+
+Primary palette lives on `:root` in `static/css/app_shell.css`:
+
+| Domain | Examples |
+|---|---|
+| Surfaces | `--bg-primary`, `--bg-secondary`, `--bg-card`, `--bg-modal` |
+| Text | `--text-primary`, `--text-secondary`, `--text-muted` |
+| Accents | `--accent-cyan`, `--accent-gold`, `--accent-orange`, `--accent-blue`, `--accent-red`, `--accent-green`, `--accent-purple` |
+| Borders / radius | `--border-color`, `--radius-sm/md/lg` |
+| Motion | `--motion-*` in `static/css/ui_motion.css` |
+| Chrome polish | `--chrome-focus-ring`, `--chrome-hover-ring` (end of `app_shell.css`) |
+
+### Hard rules for new / edited CSS
+
+1. **Reuse tokens** — new chrome colors/spacing/radius must use existing `var(--…)` when the value matches the system.
+2. **No parallel palettes** — do not invent a second cyan/gold/navy hex family for one page. Section scopes may add thin `--col-*` aliases that **point at** shell tokens.
+3. **Finite chrome sizes** — prefer existing chip/button padding patterns; do not add a third “almost the same” button height.
+4. **State in DOM** — prefer `aria-*` / `data-*` (+ CSS) over piles of one-off `is-foo` classes when adding UI.
+5. **One-off hex** — only when it is a true special (multi-stop foil gradient, role colors, canvas fill). Prefer `var(--accent-*)` inside gradients when stops are exactly those tokens.
+
+## Sacred: detail portrait + holo (Oct 2026 SEO lesson)
+
+SEO / polish once **wrapped the portrait** (or reparented under links) and **broke UR holo** (foil squeeze, tilt/stage mismatch). Fix was: name-only browse links, **locked portrait layout box**, tilt on an inner wrapper — not wrapping the portrait.
+
+### Never do (for SEO, a11y, polish, or “hygiene”)
+
+| Forbidden | Why |
+|---|---|
+| Wrap `img.detail-portrait` / `.unit-holo-card` in `<a>` or extra layout shells for SEO | Breaks holo sizing / foil bake |
+| Change `.unit-holo-card` / `__stage` / `__tilt` / `__canvas` box model “for consistency” | Foil + gyro depend on locked size |
+| Reparent portrait for schema.org / sitemap / browse deep-links | Put links on **name text** (or elsewhere), not the portrait |
+| Drive-by edits to `unit_holo_card.js` while doing CSS token cleanup | Out of scope |
+
+### Allowed near detail
+
+- Token swaps that do **not** touch holo selectors or portrait dimensions
+- Name / meta link polish outside the holo card tree
+- New features that call existing `ensureStage` / tilt APIs without changing layout contracts
+
+## Out of scope for “hygiene” passes
+
+- Migrating to Zyzz / Tailwind / CSS-in-JS
+- Font stack or `@font-face` changes
+- Mass hex→token rewrites across `app_shell.css` holo/detail blocks
+- Performance “simplify” that removes `convert_image_urls` or CDN helpers
+
+## Visible site chrome polish (Oct 2026)
+
+Token renames alone are **invisible**. Visible hygiene lives at the end of `app_shell.css` (bundled): cyan selection, shared `:focus-visible` rings, soft hover rings on cyan-family toolbar chrome, inset wash on active cyan chips. Do **not** apply those rings to orange view-toggle / gold save / danger buttons.
+
+## Checklist before shipping a hygiene PR
+
+- [ ] No edits under `.unit-holo-card*` layout / portrait wrap dimensions (unless owner asked for holo work)
+- [ ] No new wrapper around detail portrait for links/SEO
+- [ ] New colors use shell tokens (or documented exception)
+- [ ] `node scripts/build_shell_css.mjs` if `app_shell.css` / `ui_motion.css` / `mobile_layout.css` changed
+- [ ] Spot-check: `/` hover filter chips + Tab focus ring; UR unit detail → holo toggle + tilt still works
+- [ ] Spot-check: `/collections` type tabs hover/active (loads `app_shell.css`)

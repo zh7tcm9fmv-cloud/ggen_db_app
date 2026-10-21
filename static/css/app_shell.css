@@ -1,9 +1,11 @@
 /* Extracted shell CSS — static only. Fonts stay inline in index.html for ?v= bust. */
 /* Pre–July 31 stacks: Noto body sitewide; FOTK only on brand title. Same-origin files (no CDN font force). */
-
-
-
-
+/*
+ * Design tokens (:root below) — prefer var(--…) in new CSS.
+ * Surfaces: --bg-* · Text: --text-* · Accents: --accent-* · Chrome: --border-*, --radius-*.
+ * Motion: --motion-* in ui_motion.css. Do not invent parallel hex for the same roles.
+ * Holo/portrait layout is sacred — see .cursor/rules/design-system-hygiene.mdc.
+ */
 
 :root{--bg-primary:#0a0e17;--bg-secondary:#111827;--bg-card:#1a2236;--bg-card-hover:#1f2a42;--bg-input:#0d1321;--bg-modal:#141c2e;--border-color:#2a3654;--border-accent:#3b5998;--text-primary:#f0f2f7;--text-secondary:#b4bfd4;--text-muted:#8494ae;--accent-blue:#4a90d9;--accent-cyan:#00d4ff;--accent-gold:#ffd700;--accent-orange:#ff9500;--accent-red:#ff4757;--accent-green:#2ed573;--accent-purple:#a855f7;--shadow-surface-inset:inset 0 1px 0 rgba(255,255,255,.02);--shadow-surface-drop:0 1px 0 rgba(0,0,0,.25);--shadow-surface:var(--shadow-surface-inset),var(--shadow-surface-drop);--shadow-lg:var(--shadow-surface),0 8px 30px rgba(0,0,0,.6);--radius-sm:6px;--radius-md:10px;--radius-lg:14px;--transition:border-color 0.2s cubic-bezier(0.2,0,0,1),color 0.2s cubic-bezier(0.2,0,0,1),background 0.2s cubic-bezier(0.2,0,0,1),background-color 0.2s cubic-bezier(0.2,0,0,1),box-shadow 0.2s cubic-bezier(0.2,0,0,1),transform 0.2s cubic-bezier(0.2,0,0,1),opacity 0.2s cubic-bezier(0.2,0,0,1),filter 0.2s cubic-bezier(0.2,0,0,1);--list-thead-sticky-top:124px;--dvh:100dvh;--app-vh:100dvh;--layout-vh:100vh;--visual-vv-offset-top:0px;--cmp-browser-inset-bottom:0px;--toggle-depth-inset:var(--shadow-surface-inset);--toggle-depth-rim:var(--shadow-surface-drop);--toggle-depth-active-inset:inset 0 1px 0 rgba(255,255,255,.06),inset 0 0 0 1px rgba(255,255,255,.04);--brand-title-optical-x:1px;--brand-emblem-optical-x:0.5px;--brand-logo-optical-x:1px;--brand-logo-optical-y:-1px;--icon-optical-y:-0.5px;--icon-close-optical-x:-0.35px;--icon-close-optical-y:-0.35px;--portrait-optical-y:-1px;--ability-ex-inner-mask:url('/static/images/UI/UI_CharaAbilities_Tmb_Square_Normal_Base.webp');color-scheme:dark}
 /* EN: Roboto/system (+ OS CJK for JP names) — no multi-MB CJK download on EN.
@@ -5337,3 +5339,94 @@ display:flex;flex-direction:column;gap:12px;align-items:stretch;width:100%;min-w
   margin-left:auto;
 }
 }
+
+/* === Site chrome polish (design-system hygiene; visible; no holo/portrait layout) === */
+:root{
+  --chrome-focus-ring:0 0 0 2px rgba(0,212,255,.5);
+  --chrome-hover-ring:0 0 0 1px rgba(0,212,255,.3);
+}
+::selection{
+  background:rgba(0,212,255,.34);
+  color:var(--text-primary);
+}
+::-moz-selection{
+  background:rgba(0,212,255,.34);
+  color:var(--text-primary);
+}
+.nav-tab:focus-visible,
+.ranking-mode-btn:focus-visible,
+.ranking-view-btn:focus-visible,
+.ranking-stat-pill:focus-visible,
+.whats-new-btn:focus-visible,
+.support-feedback-btn:focus-visible,
+.lang-option:focus-visible,
+.modal-close:focus-visible,
+.page-btn:focus-visible,
+.browse-filters-clear-btn:focus-visible,
+.stage-source-toggle-btn:focus-visible,
+.rarity-filter-btn:focus-visible,
+.role-filter-dd-btn:focus-visible,
+.view-toggle-btn:focus-visible,
+.search-recall-fab:focus-visible,
+.search-spotlight-close:focus-visible,
+.lr-load-more-btn:focus-visible,
+#panel-banner_timeline .bt-gacha-preview-btn:focus-visible,
+.wn-added-btn:focus-visible,
+.collections-type-tabs button:focus-visible,
+.collections-role-tabs button:focus-visible,
+.collections-ult-chip:focus-visible,
+.collections-btn:focus-visible,
+.collections-pct-sticky .collections-ult-chip:focus-visible{
+  outline:none;
+  box-shadow:var(--chrome-focus-ring);
+}
+input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+#colSearch:focus-visible{
+  outline:none;
+  border-color:var(--accent-cyan);
+  box-shadow:var(--chrome-focus-ring);
+}
+@media (hover:hover){
+  .browse-filters-clear-btn:hover,
+  .rarity-filter-btn:hover,
+  .role-filter-dd-btn:hover,
+  .stage-source-toggle-btn:hover,
+  .page-btn:hover,
+  .ranking-mode-btn:hover,
+  .ranking-stat-pill:hover,
+  .whats-new-btn:hover,
+  .support-feedback-btn:hover,
+  .lr-load-more-btn:hover,
+  #panel-banner_timeline .bt-gacha-preview-btn:hover,
+  .collections-type-tabs button:hover,
+  .collections-role-tabs button:hover,
+  .collections-btn:hover:not(:disabled):not(.collections-btn--save):not(.collections-btn--danger):not(.collections-btn--warn),
+  .collections-ult-chip:hover{
+    box-shadow:var(--chrome-hover-ring);
+  }
+  .browse-filters-clear-btn:hover,
+  .rarity-filter-btn:hover,
+  .role-filter-dd-btn:hover,
+  .stage-source-toggle-btn:hover,
+  .page-btn:hover,
+  .ranking-mode-btn:hover,
+  .ranking-stat-pill:hover,
+  .whats-new-btn:hover,
+  .support-feedback-btn:hover,
+  .lr-load-more-btn:hover,
+  #panel-banner_timeline .bt-gacha-preview-btn:hover{
+    border-color:rgba(0,212,255,.55);
+  }
+}
+.ranking-mode-btn.active,
+.ranking-stat-pill.active,
+.rarity-filter-btn.active,
+.role-filter-dd-btn.active,
+.stage-source-toggle-btn.active,
+.collections-type-tabs button.is-active,
+.collections-role-tabs button.is-active{
+  box-shadow:inset 0 0 0 1px rgba(0,212,255,.22);
+}
+
