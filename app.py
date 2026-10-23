@@ -3570,7 +3570,12 @@ def _unit_has_pilot_cond_passive(uid, ld, lc, stat_mode='normal', include_flat_m
 
 def _unit_weapon_subset_effective_ranges(
         uid, ld, lc, stat_mode, subset, cond_active=False, pilot_cond_active=False):
-    """Effective max-range values for each eligible non-MAP weapon in subset."""
+    """Effective max-range values for each eligible non-MAP weapon in subset.
+
+    Custom Core (…80/…90) and SSP type-4 range bonuses apply only when
+    ``stat_mode=ssp``. Pilot / unit CP range bonuses follow the cond flags.
+    Turning list SSP or PEP off must drop kits that only reach the tier that way.
+    """
     sm = (stat_mode or 'normal').strip().lower()
     if sm not in ('normal', 'sp', 'ssp'):
         sm = 'normal'
@@ -3586,6 +3591,9 @@ def _unit_weapon_subset_effective_ranges(
         wm = weapon_info_map.get(wid, {})
         wt = str(wm.get('weapon_type', '1') or '1')
         if wt == '3':
+            continue
+        # Custom Core weapons exist only after SSP (same as detail / trait text).
+        if sm != 'ssp' and _weapon_id_is_ssp_custom_core(wid):
             continue
         if subset == 'ssp_ex':
             if not _weapon_is_ssp_ex_grid_weapon(wid, wt):
@@ -3615,15 +3623,16 @@ def _unit_weapon_subset_effective_ranges(
 def _weapon_range_non_map_filter_subset(stat_mode, ssp_ex_only=False):
     """Subset for the non-MAP weapon-range filter (All weapon All Ranges).
 
-    Include EX weapons (weapon type 2) and SSP Custom Core (…80/…90) unless the
-    footer is SSP/EX-only. EX range is not an SSP mode — e.g. Build Strike Full
-    Package EX has a type-2 weapon at range 5 with no SSP toggle required.
-    Previously ``normal``/``sp`` used ``non_map`` (base grid only) and hid those
-    kits. ``stat_mode=ssp`` still applies SSP range bonuses on top of this subset.
+    Include EX weapons (weapon type 2) always. Custom Core (…80/…90) is included
+    in the ``all`` / ``ssp_ex`` weapon lists but only counts when ``stat_mode=ssp``
+    (see ``_unit_weapon_subset_effective_ranges``). EX range is not an SSP mode —
+    e.g. Build Strike Full Package EX has a type-2 weapon at range 5 with no SSP
+    toggle required. Previously ``normal``/``sp`` used ``non_map`` (base grid only)
+    and hid EX kits.
     """
     if ssp_ex_only:
         return 'ssp_ex'
-    del stat_mode  # EX/Custom Core inclusion does not depend on SP/SSP list mode
+    del stat_mode
     return 'all'
 
 
@@ -4075,6 +4084,8 @@ def unit_has_non_map_weapon_max_range_ge(
         wm = weapon_info_map.get(wid, {})
         wt = str(wm.get('weapon_type', '1') or '1')
         if wt == '3':
+            continue
+        if sm != 'ssp' and _weapon_id_is_ssp_custom_core(wid):
             continue
         ws = resolve_weapon_stats(
             wm, weapon_status_map, weapon_correction_map,
@@ -28462,6 +28473,124 @@ WEAPON_RANGE_SSP_EX_SSP_FULL_COND_VALUES_PRESENT = _precompute_weapon_range_valu
     'ssp_ex', 'ssp', cond_active=True, pilot_cond_active=True)
 
 
+_WEAPON_RANGE_NM_AUTO_SSP_TIERS_CACHE = None
+_WEAPON_RANGE_NM_AUTO_PEP_TIERS_CACHE = None
+
+
+def _unit_all_weapon_hits_range_tier_via_custom_core_only(uid, ld, lc, tier):
+    """True when the unit reaches ``tier`` under normal/all only via SSP Custom Core (…80/…90) weapons.
+
+    Those kits match the All-weapon range filter without list SSP, but detail hides
+    Custom Core rows until SSP is on — so selecting the tier should auto-arm SSP.
+    """
+    try:
+        want = int(tier)
+    except Exception:
+        return False
+    if want < 1 or want > 6:
+        return False
+    uid = normalize_id(uid)
+    wtm = ld.get('weapon_trait_map', {}) or {}
+    wcm = ld.get('weapon_capability_map', {}) or {}
+    wtdm = ld.get('weapon_trait_detail_map', {}) or {}
+    hit_cc = False
+    hit_other = False
+    for wp in unit_weapon_map.get(uid, []) or []:
+        wid = normalize_id(wp.get('id'))
+        if not wid or wid == '0':
+            continue
+        wm = weapon_info_map.get(wid, {}) or {}
+        wt = str(wm.get('weapon_type', '1') or '1')
+        if wt == '3':
+            continue
+        ws = resolve_weapon_stats(
+            wm, weapon_status_map, weapon_correction_map,
+            wtm, wcm, growth_pattern_map, weapon_trait_change_map, wtdm,
+            wid=wid, lang_code=lc, unit_id=uid,
+        )
+        rx = int(ws.get('range_max', 0) or 0)
+        if rx != want:
+            continue
+        if _weapon_id_is_ssp_custom_core(wid):
+            hit_cc = True
+        else:
+            hit_other = True
+            break
+    return hit_cc and not hit_other
+
+
+def _precompute_weapon_range_non_map_auto_arm_tiers():
+    """Single pass: tiers needing list SSP and/or PEP auto-arm for All-weapon range filter."""
+    global _WEAPON_RANGE_NM_AUTO_SSP_TIERS_CACHE, _WEAPON_RANGE_NM_AUTO_PEP_TIERS_CACHE
+    if (
+            _WEAPON_RANGE_NM_AUTO_SSP_TIERS_CACHE is not None
+            and _WEAPON_RANGE_NM_AUTO_PEP_TIERS_CACHE is not None):
+        return
+    ld = LANG_DATA.get('EN') or next(iter(LANG_DATA.values()), None)
+    lc = 'EN' if LANG_DATA.get('EN') else next(iter(LANG_DATA.keys()), 'EN')
+    if not ld:
+        _WEAPON_RANGE_NM_AUTO_SSP_TIERS_CACHE = frozenset({'6'})
+        _WEAPON_RANGE_NM_AUTO_PEP_TIERS_CACHE = frozenset()
+        return
+    playable = unit_list_playable_ids or frozenset(unit_info_map.keys())
+    ssp_out = {'6'}
+    pep_out = set()
+    ssp_done = set()
+    pep_done = set()
+    for uid in playable:
+        if len(ssp_done) >= 6 and len(pep_done) >= 6:
+            break
+        for tier in range(1, 7):
+            ts = str(tier)
+            need_ssp = ts not in ssp_done
+            need_pep = ts not in pep_done
+            if not need_ssp and not need_pep:
+                continue
+            n = unit_weapon_subset_has_range_tier(
+                uid, ld, lc, 'normal', 'all', tier, False, False)
+            if need_ssp:
+                s = unit_weapon_subset_has_range_tier(
+                    uid, ld, lc, 'ssp', 'all', tier, False, False)
+                if (s and not n) or (
+                        n and _unit_all_weapon_hits_range_tier_via_custom_core_only(
+                            uid, ld, lc, tier)):
+                    ssp_out.add(ts)
+                    ssp_done.add(ts)
+            if need_pep:
+                p = unit_weapon_subset_has_range_tier(
+                    uid, ld, lc, 'normal', 'all', tier, False, True)
+                if p and not n:
+                    pep_out.add(ts)
+                    pep_done.add(ts)
+                    continue
+                s2 = unit_weapon_subset_has_range_tier(
+                    uid, ld, lc, 'ssp', 'all', tier, False, False)
+                sp = unit_weapon_subset_has_range_tier(
+                    uid, ld, lc, 'ssp', 'all', tier, False, True)
+                if sp and not s2 and not n:
+                    pep_out.add(ts)
+                    pep_done.add(ts)
+    _WEAPON_RANGE_NM_AUTO_SSP_TIERS_CACHE = frozenset(ssp_out)
+    _WEAPON_RANGE_NM_AUTO_PEP_TIERS_CACHE = frozenset(pep_out)
+
+
+def weapon_range_non_map_auto_ssp_tiers():
+    """Range tiers that should auto-arm list SSP when selected (All weapon All Ranges).
+
+    Covers: SSP type-4 range bonus kits, Custom Core-only matches (detail visibility),
+    and Range 6 (full SSP board). EX-only (type 2) kits are intentionally omitted —
+    All-weapon already counts them without SSP.
+    """
+    _precompute_weapon_range_non_map_auto_arm_tiers()
+    return _WEAPON_RANGE_NM_AUTO_SSP_TIERS_CACHE
+
+
+def weapon_range_non_map_auto_pep_tiers():
+    """Range tiers that should auto-arm list PEP when selected (pilot max-range bonuses)."""
+    _precompute_weapon_range_non_map_auto_arm_tiers()
+    return _WEAPON_RANGE_NM_AUTO_PEP_TIERS_CACHE
+
+
 def resolve_npc_map_terrain(unit_id, map_npc_id, lc):
     uid = normalize_id(unit_id, '0')
     info = unit_info_map.get(uid, {}) if uid != '0' else {}
@@ -29872,7 +30001,9 @@ def list_units():
     rb_u_ck = 'rb1' if ranking_bulk_u else 'rb0'
     # ul65: InstantBrowse facets on ranking_bulk (source/series/mech/abil/forms + tag_ids).
     # ul66: All-weapon range filter includes EX (type 2) without list SSP mode
-    ck = f"ul66_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_attr_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    # ul67: weapon_range_auto_ssp_tiers / weapon_range_auto_pep_tiers for list toggle auto-arm
+    # ul68: All-weapon range filter skips Custom Core unless list SSP is on
+    ck = f"ul68_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_attr_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached:
         return jsonify_preserialized(cached, ck, public=True, max_age=3600, convert_images=False)
@@ -30083,8 +30214,10 @@ def list_units():
             urow['grid_abilities'] = collect_unit_grid_abilities(_uid, ld, ldc, lc, stat_mode)
     _wbp = sorted(WEAPON_DEBUFF_KEYS_PRESENT_UNION)
     _wb_auto_pep = sorted(weapon_debuff_auto_pep_keys())
+    _wr_auto_ssp = sorted(weapon_range_non_map_auto_ssp_tiers(), key=int)
+    _wr_auto_pep = sorted(weapon_range_non_map_auto_pep_tiers(), key=int)
     _mech_rows = mechanism_list_filter_rows_from_ids(mechanism_union, ld)
-    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'ability_filter': ability_arg, 'terrain_filter': terrain_arg, 'weapon_debuff': weapon_debuff_arg, 'weapon_range': weapon_range_arg, 'weapon_range_non_map': weapon_range_non_map_arg, 'map_weapon_range': map_weapon_range_arg, 'weapon_debuff_present_keys': _wbp, 'weapon_debuff_auto_pep_keys': _wb_auto_pep, 'terrain_present_tokens': sorted(UNIT_TERRAIN_FILTER_TOKENS_PRESENT), 'weapon_range_ssp_ex_present': sorted(WEAPON_RANGE_SSP_EX_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_present': sorted(WEAPON_RANGE_SSP_EX_SSP_VALUES_PRESENT, key=int), 'weapon_range_non_map_present': sorted(WEAPON_RANGE_NON_MAP_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_present': sorted(WEAPON_RANGE_NON_MAP_SSP_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_present': sorted(WEAPON_RANGE_ALL_SSP_VALUES_PRESENT, key=int), 'weapon_range_non_map_cond_present': sorted(WEAPON_RANGE_NON_MAP_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_cond_present': sorted(WEAPON_RANGE_ALL_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_cond_present': sorted(WEAPON_RANGE_SSP_EX_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_pilot_cond_present': sorted(WEAPON_RANGE_NON_MAP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_pilot_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_pilot_cond_present': sorted(WEAPON_RANGE_ALL_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_pilot_cond_present': sorted(WEAPON_RANGE_SSP_EX_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_pilot_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_full_cond_present': sorted(WEAPON_RANGE_NON_MAP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_full_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_full_cond_present': sorted(WEAPON_RANGE_ALL_SSP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_full_cond_present': sorted(WEAPON_RANGE_SSP_EX_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_full_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_FULL_COND_VALUES_PRESENT, key=int), 'mechanism': mechanism_arg, 'mechanism_present': _mech_rows, 'stat_bounds': stat_bounds, 'sort_priority_band': sort_priority_band}
+    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'ability_filter': ability_arg, 'terrain_filter': terrain_arg, 'weapon_debuff': weapon_debuff_arg, 'weapon_range': weapon_range_arg, 'weapon_range_non_map': weapon_range_non_map_arg, 'map_weapon_range': map_weapon_range_arg, 'weapon_debuff_present_keys': _wbp, 'weapon_debuff_auto_pep_keys': _wb_auto_pep, 'weapon_range_auto_ssp_tiers': _wr_auto_ssp, 'weapon_range_auto_pep_tiers': _wr_auto_pep, 'terrain_present_tokens': sorted(UNIT_TERRAIN_FILTER_TOKENS_PRESENT), 'weapon_range_ssp_ex_present': sorted(WEAPON_RANGE_SSP_EX_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_present': sorted(WEAPON_RANGE_SSP_EX_SSP_VALUES_PRESENT, key=int), 'weapon_range_non_map_present': sorted(WEAPON_RANGE_NON_MAP_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_present': sorted(WEAPON_RANGE_NON_MAP_SSP_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_present': sorted(WEAPON_RANGE_ALL_SSP_VALUES_PRESENT, key=int), 'weapon_range_non_map_cond_present': sorted(WEAPON_RANGE_NON_MAP_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_cond_present': sorted(WEAPON_RANGE_ALL_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_cond_present': sorted(WEAPON_RANGE_SSP_EX_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_pilot_cond_present': sorted(WEAPON_RANGE_NON_MAP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_pilot_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_pilot_cond_present': sorted(WEAPON_RANGE_ALL_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_pilot_cond_present': sorted(WEAPON_RANGE_SSP_EX_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_pilot_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_full_cond_present': sorted(WEAPON_RANGE_NON_MAP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_full_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_full_cond_present': sorted(WEAPON_RANGE_ALL_SSP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_full_cond_present': sorted(WEAPON_RANGE_SSP_EX_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_full_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_FULL_COND_VALUES_PRESENT, key=int), 'mechanism': mechanism_arg, 'mechanism_present': _mech_rows, 'stat_bounds': stat_bounds, 'sort_priority_band': sort_priority_band}
     if not sq:
         result['transform_alt_browse_rows'] = _build_transform_alt_browse_rows(ld, lc, stat_mode, cond_list)
     result = convert_image_urls(result)
