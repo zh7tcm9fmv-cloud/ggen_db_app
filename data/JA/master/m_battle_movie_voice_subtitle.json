@@ -45235,13 +45235,6 @@
   },
   {
     "BattleMovieVoiceSetId": 1370003600,
-    "BattleMovieVoiceId": "Q0101",
-    "PlayTimeLength": 4000,
-    "SubtitleLanguageId": 101000137000360018,
-    "OverrideCharacterNameLanguageId": 0
-  },
-  {
-    "BattleMovieVoiceSetId": 1370003600,
     "BattleMovieVoiceId": "T0101",
     "PlayTimeLength": 4000,
     "SubtitleLanguageId": 101000137000360023,

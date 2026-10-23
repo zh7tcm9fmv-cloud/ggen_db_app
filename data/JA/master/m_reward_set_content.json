@@ -49425,11 +49425,6 @@
     "RewardId": 1800022610300301
   },
   {
-    "RewardSetId": 18000226111001,
-    "SortOrder": 1,
-    "RewardId": 1800022611100101
-  },
-  {
     "RewardSetId": 18000325041001,
     "SortOrder": 1,
     "RewardId": 1800032504100101
@@ -127263,6 +127258,16 @@
     "RewardSetId": 99102610250001,
     "SortOrder": 1,
     "RewardId": 9910261025000101
+  },
+  {
+    "RewardSetId": 99102610400001,
+    "SortOrder": 1,
+    "RewardId": 9910261040000101
+  },
+  {
+    "RewardSetId": 99102610400003,
+    "SortOrder": 1,
+    "RewardId": 9910261040000301
   },
   {
     "RewardSetId": 99112250820011,

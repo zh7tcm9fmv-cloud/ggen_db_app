@@ -5250,6 +5250,20 @@
     "IsSimpleThumbnail": false
   },
   {
+    "Id": 15022610400001,
+    "ProfileTitleTypeIndex": 2,
+    "ProfileTitleRarityTypeIndex": 1,
+    "BackgroundResourceId": "",
+    "TitleImageDisplayLanguageId": 240115022610400001,
+    "TitleNameLanguageId": 240215022610400001,
+    "AcquisitionRouteLanguageId": 240315022610400001,
+    "SortOrder": 151000008,
+    "ScheduleId": 0,
+    "BaseBackgroundResourceId": "",
+    "RarityTypeIndex": 2,
+    "IsSimpleThumbnail": false
+  },
+  {
     "Id": 16905200010001,
     "ProfileTitleTypeIndex": 1,
     "ProfileTitleRarityTypeIndex": 5,

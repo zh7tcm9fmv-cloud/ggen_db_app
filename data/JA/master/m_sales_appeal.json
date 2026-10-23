@@ -1534,6 +1534,19 @@
     "ContentImageResourceId": "99000116"
   },
   {
+    "Id": 2610400801,
+    "DisplayConditionSetId": 18001226104001,
+    "ScheduleId": 2610409901,
+    "IsInfiniteDisplay": false,
+    "SalesAppealDisplaySourceSetId": 2610400801,
+    "TransitionId": 0,
+    "SalesAppealTargetTypeIndex": 3,
+    "TargetId": 0,
+    "Priority": 20,
+    "ShouldTransition": false,
+    "ContentImageResourceId": "2610400801"
+  },
+  {
     "Id": 35260730040301,
     "DisplayConditionSetId": 35260730040301,
     "ScheduleId": 2607301703,

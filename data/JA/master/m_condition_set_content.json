@@ -510,6 +510,16 @@
     "SortOrder": 0
   },
   {
+    "ConditionSetId": 18001226104001,
+    "ConditionId": 1800122610400101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 18001226104001,
+    "ConditionId": 1800122610400102,
+    "SortOrder": 1
+  },
+  {
     "ConditionSetId": 19100000010022,
     "ConditionId": 1910000001002201,
     "SortOrder": 0
