@@ -463,7 +463,7 @@ dc_hp_remaining_crit:'남은 HP（크리티컬）',dc_hp_remaining_normal:'HP Re
 dc_in_range:'사정거리 안',dc_lb_tier:'한계돌파 단계',dc_mp_level:'MP 레벨',dc_normal_dmg:'통상 대미지',dc_off:'Off',dc_on:'On',dc_out_range:'사정거리 밖',
 dc_panel_attacker_heading:'ATTACKER',dc_panel_defender_heading:'디펜더（목표）',dc_pick_char:'캐릭터 선택',dc_pick_unit:'유닛 선택',dc_power:'PWR',dc_range:'Range',
 dc_range_check:'사정거리 확인',dc_score_attack_preset:'스코어 #{n}',dc_select_both:'공격 측과 방어 측을 선택하세요',dc_select_npc:'-- NPC 선택 --',
-dc_sheet_buff_hint:'+50% / +100% apply to unit sheet stats (HP, ATK, DEF, 기동력) in the same order as options and leader skills; not EN or Move.',
+dc_sheet_buff_hint:'+50% / +100% apply to unit sheet stats (HP, EN, ATK, DEF, Mobility) in the same order as options; leader % follows skill text (often except EN). Move is never sheet-buffed.',
 dc_shield:'Shield',dc_squad_buff_applied:'Applied',dc_squad_buff_applied_split:'%atk +%a% · %def +%d%',dc_squad_buff_atk_def_pct:'%atk & %def +%n%',
 dc_squad_buff_atk_pct:'%atk +%n%',dc_squad_buff_def_pct:'%def +%n%',dc_squad_buff_ex_atk_pct:'EX %atk +%n%',dc_squad_buff_ex_squad_label:'EX 분대 공격력 %',
 dc_squad_buff_from_ally:'다른 공격측',dc_squad_buff_from_ex_squad:'EX 분대 공격력',dc_squad_buff_from_self:'이 공격측',dc_squad_buff_from_squad:'소대 aura',
@@ -650,13 +650,13 @@ Object.assign(T.EN,{supp_combat_power:'Combat Power',supp_gacha_quote:'Obtained 
 Object.assign(T.TW,{supp_combat_power:'戰力',supp_gacha_quote:'獲得台詞'});
 Object.assign(T.HK,{supp_combat_power:'戰力',supp_gacha_quote:'獲得台詞'});
 Object.assign(T.JA,{supp_combat_power:'戦力',supp_gacha_quote:'獲得セリフ'});
-Object.assign(T.EN,{stage_map_spawn_order_toggle:'Spawn order',stage_map_spawn_order_label:'Spawn order',npc_unit_cond_targets:'Conditional Passive — buffed squad units',npc_unit_cond_target_short:'Buffed unit',feedback_title:'How was your experience on our website?',feedback_intro:'Rate each area from 1 (lowest) to 5 (highest). Your answers help us improve GGen Eternal Database.',feedback_q1_title:'Overall Experience',feedback_q1_prompt:'How would you rate your overall experience on our website?',feedback_q1_lo:'Very Poor',feedback_q1_hi:'Excellent',feedback_q2_title:'Ease of Navigation',feedback_q2_prompt:'How easy was it to find what you were looking for?',feedback_q2_lo:'Very Difficult',feedback_q2_hi:'Very Easy',feedback_q3_title:'Visual Design',feedback_q3_prompt:'How would you rate the visual design and layout of the website?',feedback_q3_lo:'Poor',feedback_q3_hi:'Excellent',feedback_q4_title:'Content Quality',feedback_q4_prompt:'How useful, clear, and relevant was the information on the website?',feedback_q4_lo:'Not Useful',feedback_q4_hi:'Extremely Useful',feedback_q5_title:'Page Loading Speed',feedback_q5_prompt:'How fast did the pages load?',feedback_q5_lo:'Very Slow',feedback_q5_hi:'Very Fast',feedback_q6_title:'Mobile Experience',feedback_q6_prompt:'How well did the website work on your mobile/tablet?',feedback_q6_lo:'Poor',feedback_q6_hi:'Excellent',feedback_q7_title:'Functionality & Reliability',feedback_q7_prompt:'Did you encounter any bugs, broken links, or technical issues?',feedback_q7_lo:'Many issues',feedback_q7_hi:'No issues at all',feedback_q8_section_title:'Tool usage',feedback_q8_damage_title:'Damage Simulator',feedback_q8_damage_prompt:'How often do you use the Damage Simulator?',feedback_q8_team_title:'Team Builder',feedback_q8_team_prompt:'How often do you use the Team Builder?',feedback_q8_lo:'Never',feedback_q8_hi:'Very often',feedback_device_label:'I visited on',feedback_device_desktop:'Desktop',feedback_device_mobile:'Mobile',feedback_device_tablet:'Tablet',feedback_liked_label:'What did you like most about the website?',feedback_improve_label:'What new features would you like to see implemented?',feedback_submit:'Submit feedback',feedback_submitting:'Sending…',feedback_success:'Thank you — your feedback was submitted.',feedback_err_required:'Please rate every question from 1 to 5.',feedback_err_submit:'Could not submit feedback. Please try again later.',feedback_err_rate_limit:'You already submitted feedback recently. Please try again later.',feedback_privacy_note:'Anonymous feedback only — no account required.',feedback_close:'Close',tb_front_deploy:'Front Deployment',tb_rear_deploy:'Rear Deployment',tb_squad1:'Squad 1',tb_squad2:'Squad 2',tb_op_label:'OP',tb_option_part:'Option Part',tb_op_swap:'Change option part',tb_op_clear:'Clear',tb_pick_pilot_unit:'Choose pilot for this unit',tb_stat_normal:'Normal',tb_stat_sp:'SP',tb_stat_ssp:'SSP',tb_change_unit:'Change unit',tb_supp_level_adjust:'Adjust',tb_supp_level_slider:'Supporter level from 1 to 100 (drag to match your game)',tb_copy_link:'Copy link',tb_link_copied:'Copied!',tb_screenshot:'Save screenshot',tb_screenshot_fail:'Could not save screenshot',tb_formation_modal_title:'Formation',tb_option_parts_used:'Option parts in use',tb_squad_name_ph:'Squad name (optional)',tb_clear_supporter:'Clear supporter',tb_clear_squad:'Clear squad (units & pilots)',tb_clear_formation_slot:'Clear',tb_formation_name_placeholder:'Formation name',tb_master_league:'Master League Buff +50%',tb_grand_offensive:'Grand Offensive Buff +100%',dc_toggle_master_league:'Master League Buff +50%',dc_toggle_grand_offensive:'Grand Offensive Buff +100%',dc_sheet_buff_hint:'+50% / +100% apply to unit sheet stats (HP, ATK, DEF, Mobility) in the same order as options and leader skills; not EN or Move.',dc_squad_buff_section:'Squad buff',dc_squad_cond_label:'Squad conditions',dc_squad_cond_tip:'Manual % for EX / unit passives that scale with allies in the same squad (including yourself). Team Builder applies this automatically from tags. Default on pick is the maximum the ability allows.',dc_squad_cond_manual_tip:'No auto binding for this pilot+unit pair: enter a % to model squad bonuses (ATK-only, max 100%).',dc_squad_cond_flat_ad_chk:'Apply +%n%% MS ATK & DEF',dc_squad_cond_flat_ad_tip:'Flat MS ATK/DEF % in the same bucket as Squad conditions — on when this unit meets the passive receiver tags (e.g. NT-D).',dc_def_npc_squad_buff:'NPC squad buff',dc_def_npc_squad_buff_tip:'When off, strips MS bonuses from other map NPCs’ squad-wide / all-units passives only. This unit’s own abilities stay (including “squad” lines on this MS or pilot). Applies to HP, EN, ATK, DEF, Mobility, and Move in the panel and in damage / hit rate. Pilot stat cards use this pilot’s passives only.',
+Object.assign(T.EN,{stage_map_spawn_order_toggle:'Spawn order',stage_map_spawn_order_label:'Spawn order',npc_unit_cond_targets:'Conditional Passive — buffed squad units',npc_unit_cond_target_short:'Buffed unit',feedback_title:'How was your experience on our website?',feedback_intro:'Rate each area from 1 (lowest) to 5 (highest). Your answers help us improve GGen Eternal Database.',feedback_q1_title:'Overall Experience',feedback_q1_prompt:'How would you rate your overall experience on our website?',feedback_q1_lo:'Very Poor',feedback_q1_hi:'Excellent',feedback_q2_title:'Ease of Navigation',feedback_q2_prompt:'How easy was it to find what you were looking for?',feedback_q2_lo:'Very Difficult',feedback_q2_hi:'Very Easy',feedback_q3_title:'Visual Design',feedback_q3_prompt:'How would you rate the visual design and layout of the website?',feedback_q3_lo:'Poor',feedback_q3_hi:'Excellent',feedback_q4_title:'Content Quality',feedback_q4_prompt:'How useful, clear, and relevant was the information on the website?',feedback_q4_lo:'Not Useful',feedback_q4_hi:'Extremely Useful',feedback_q5_title:'Page Loading Speed',feedback_q5_prompt:'How fast did the pages load?',feedback_q5_lo:'Very Slow',feedback_q5_hi:'Very Fast',feedback_q6_title:'Mobile Experience',feedback_q6_prompt:'How well did the website work on your mobile/tablet?',feedback_q6_lo:'Poor',feedback_q6_hi:'Excellent',feedback_q7_title:'Functionality & Reliability',feedback_q7_prompt:'Did you encounter any bugs, broken links, or technical issues?',feedback_q7_lo:'Many issues',feedback_q7_hi:'No issues at all',feedback_q8_section_title:'Tool usage',feedback_q8_damage_title:'Damage Simulator',feedback_q8_damage_prompt:'How often do you use the Damage Simulator?',feedback_q8_team_title:'Team Builder',feedback_q8_team_prompt:'How often do you use the Team Builder?',feedback_q8_lo:'Never',feedback_q8_hi:'Very often',feedback_device_label:'I visited on',feedback_device_desktop:'Desktop',feedback_device_mobile:'Mobile',feedback_device_tablet:'Tablet',feedback_liked_label:'What did you like most about the website?',feedback_improve_label:'What new features would you like to see implemented?',feedback_submit:'Submit feedback',feedback_submitting:'Sending…',feedback_success:'Thank you — your feedback was submitted.',feedback_err_required:'Please rate every question from 1 to 5.',feedback_err_submit:'Could not submit feedback. Please try again later.',feedback_err_rate_limit:'You already submitted feedback recently. Please try again later.',feedback_privacy_note:'Anonymous feedback only — no account required.',feedback_close:'Close',tb_front_deploy:'Front Deployment',tb_rear_deploy:'Rear Deployment',tb_squad1:'Squad 1',tb_squad2:'Squad 2',tb_op_label:'OP',tb_option_part:'Option Part',tb_op_swap:'Change option part',tb_op_clear:'Clear',tb_pick_pilot_unit:'Choose pilot for this unit',tb_stat_normal:'Normal',tb_stat_sp:'SP',tb_stat_ssp:'SSP',tb_change_unit:'Change unit',tb_supp_level_adjust:'Adjust',tb_supp_level_slider:'Supporter level from 1 to 100 (drag to match your game)',tb_copy_link:'Copy link',tb_link_copied:'Copied!',tb_screenshot:'Save screenshot',tb_screenshot_fail:'Could not save screenshot',tb_formation_modal_title:'Formation',tb_option_parts_used:'Option parts in use',tb_squad_name_ph:'Squad name (optional)',tb_clear_supporter:'Clear supporter',tb_clear_squad:'Clear squad (units & pilots)',tb_clear_formation_slot:'Clear',tb_formation_name_placeholder:'Formation name',tb_master_league:'Master League Buff +50%',tb_grand_offensive:'Grand Offensive Buff +100%',dc_toggle_master_league:'Master League Buff +50%',dc_toggle_grand_offensive:'Grand Offensive Buff +100%',dc_sheet_buff_hint:'+50% / +100% apply to unit sheet stats (HP, EN, ATK, DEF, Mobility) in the same order as options; leader % follows skill text (often except EN). Move is never sheet-buffed.',dc_squad_buff_section:'Squad buff',dc_squad_cond_label:'Squad conditions',dc_squad_cond_tip:'Manual % for EX / unit passives that scale with allies in the same squad (including yourself). Team Builder applies this automatically from tags. Default on pick is the maximum the ability allows.',dc_squad_cond_manual_tip:'No auto binding for this pilot+unit pair: enter a % to model squad bonuses (ATK-only, max 100%).',dc_squad_cond_flat_ad_chk:'Apply +%n%% MS ATK & DEF',dc_squad_cond_flat_ad_tip:'Flat MS ATK/DEF % in the same bucket as Squad conditions — on when this unit meets the passive receiver tags (e.g. NT-D).',dc_def_npc_squad_buff:'NPC squad buff',dc_def_npc_squad_buff_tip:'When off, strips MS bonuses from other map NPCs’ squad-wide / all-units passives only. This unit’s own abilities stay (including “squad” lines on this MS or pilot). Applies to HP, EN, ATK, DEF, Mobility, and Move in the panel and in damage / hit rate. Pilot stat cards use this pilot’s passives only.',
 dc_def_npc_map_bonuses:'NPC squad buff',dc_def_npc_map_bonuses_tip:'When off, strips MS bonuses from other map NPCs’ squad-wide / all-units passives only. This unit’s own abilities stay (including “squad” lines on this MS or pilot). Applies to HP, EN, ATK, DEF, Mobility, and Move in the panel and in damage / hit rate. Pilot stat cards use this pilot’s passives only.',tb_stats_hint_squad:' Squad tag passives (ATK stack or ATK+DEF) are applied from your formation when tags match.',dc_wpn_trait_effects:'Weapon power from effects',dc_wpn_trait_dist:'Distance scaling',dc_wpn_trait_custom_core:'Custom Core (SSP)',dc_wpn_trait_hp:'HP scaling',dc_wpn_trait_mp:'MP / battle-start scaling',dc_wpn_trait_en:'EN scaling',dc_wpn_trait_max_applied:'max, applied automatically in damage',dc_wpn_trait_ssp_hint:'Turn on SSP (unit mode) to apply Custom Core weapon effect lines.',dc_wpn_trait_lines:'Trait:',dc_wpn_trait_override_note:'Final weapon power override is on; breakdown below is the auto trait math (not used for damage).',unit_filter_weapon_range_nm_ssp_ex_only:'SSP/EX Only',unit_filter_weapon_range_nm_ssp_ex_all:'SSP/EX Only All Ranges',unit_filter_map_weapon_range:'MAP Weapon Type',unit_filter_map_weapon_range_all:'All MAP Types',unit_filter_map_weapon_range_multi:'{n} MAP types',unit_filter_mwrt_none:'All',unit_filter_mwrt_around_myself:'Omni-directional',unit_filter_mwrt_impact_range:'Impact Range',unit_filter_mwrt_specify_direction:'Specify Direction',unit_filter_mwrt_moving_attack:'Moving Attack',unit_filter_mwrt_whole_map:'Whole Map',unit_filter_mwrt_fixed_position:'Fixed Position'});
-Object.assign(T.TW,{stage_map_spawn_order_toggle:'出生順序',stage_map_spawn_order_label:'出生順序',tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛部署',tb_squad1:'小隊 1',tb_squad2:'小隊 2',tb_op_label:'OP',tb_option_part:'選擇性零件',tb_op_swap:'更換選擇性零件',tb_op_clear:'移除',tb_pick_pilot_unit:'選擇此單位的駕駛員',tb_stat_normal:'一般',tb_stat_sp:'SP',tb_stat_ssp:'SSP',tb_change_unit:'更換單位',tb_supp_level_adjust:'調整',tb_supp_level_slider:'支援人員等級 1–100（拖曳以配合遊戲內等級）',tb_copy_link:'複製連結',tb_link_copied:'已複製！',tb_screenshot:'儲存截圖',tb_screenshot_fail:'無法儲存截圖',tb_formation_modal_title:'編成',tb_option_parts_used:'使用的選擇性零件',tb_squad_name_ph:'小隊名稱（選填）',tb_clear_supporter:'清除支援人員',tb_clear_squad:'清除小隊（單位與駕駛員）',tb_clear_formation_slot:'清除',tb_formation_name_placeholder:'編成名稱',tb_master_league:'大師聯盟補正 +50%',tb_grand_offensive:'大規模攻略戰補正 +100%',dc_toggle_master_league:'大師聯盟補正 +50%',dc_toggle_grand_offensive:'大規模攻略戰補正 +100%',dc_sheet_buff_hint:'+50%／+100% 套用於單位面板數值（HP、攻擊力、守備力、機動力），計算順序與改造與隊長技能相同；不含 EN 與移動力。',dc_squad_buff_section:'小隊加成',dc_squad_cond_label:'小隊條件',dc_squad_cond_tip:'因應「同小隊」條件而變動的 EX／單位被動加成（含自身）。編隊頁會依標籤自動計算。選擇單位後預設為該能力允許的最大值。',dc_squad_cond_manual_tip:'此駕駛員＋單位無法自動套用：請手動輸入 %（僅攻擊，最高 100%）。',dc_squad_cond_flat_ad_chk:'套用 +%n%% 單位攻防',dc_squad_cond_flat_ad_tip:'與「小隊條件」％相同計算；依被動接收標籤（例 NT‑D）套用。',dc_def_npc_squad_buff:'NPC 小隊加成',dc_def_npc_squad_buff_tip:'關閉時只移除「其他地圖敵方」的小隊／己方全體類被動帶來的 MS 加成；此單位與其駕駛員自己的被動保留（含此單位上的「小隊」敘述）。影響 HP、EN、攻擊力、守備力、機動力、移動力的顯示與損傷／命中。駕駛員面板仍僅依該駕駛員被動。',
+Object.assign(T.TW,{stage_map_spawn_order_toggle:'出生順序',stage_map_spawn_order_label:'出生順序',tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛部署',tb_squad1:'小隊 1',tb_squad2:'小隊 2',tb_op_label:'OP',tb_option_part:'選擇性零件',tb_op_swap:'更換選擇性零件',tb_op_clear:'移除',tb_pick_pilot_unit:'選擇此單位的駕駛員',tb_stat_normal:'一般',tb_stat_sp:'SP',tb_stat_ssp:'SSP',tb_change_unit:'更換單位',tb_supp_level_adjust:'調整',tb_supp_level_slider:'支援人員等級 1–100（拖曳以配合遊戲內等級）',tb_copy_link:'複製連結',tb_link_copied:'已複製！',tb_screenshot:'儲存截圖',tb_screenshot_fail:'無法儲存截圖',tb_formation_modal_title:'編成',tb_option_parts_used:'使用的選擇性零件',tb_squad_name_ph:'小隊名稱（選填）',tb_clear_supporter:'清除支援人員',tb_clear_squad:'清除小隊（單位與駕駛員）',tb_clear_formation_slot:'清除',tb_formation_name_placeholder:'編成名稱',tb_master_league:'大師聯盟補正 +50%',tb_grand_offensive:'大規模攻略戰補正 +100%',dc_toggle_master_league:'大師聯盟補正 +50%',dc_toggle_grand_offensive:'大規模攻略戰補正 +100%',dc_sheet_buff_hint:'+50%／+100% 套用於單位面板數值（HP、EN、攻擊力、守備力、機動力），計算順序與改造相同；隊長％依技能文（常不含 EN）。移動力不套用面板補正。',dc_squad_buff_section:'小隊加成',dc_squad_cond_label:'小隊條件',dc_squad_cond_tip:'因應「同小隊」條件而變動的 EX／單位被動加成（含自身）。編隊頁會依標籤自動計算。選擇單位後預設為該能力允許的最大值。',dc_squad_cond_manual_tip:'此駕駛員＋單位無法自動套用：請手動輸入 %（僅攻擊，最高 100%）。',dc_squad_cond_flat_ad_chk:'套用 +%n%% 單位攻防',dc_squad_cond_flat_ad_tip:'與「小隊條件」％相同計算；依被動接收標籤（例 NT‑D）套用。',dc_def_npc_squad_buff:'NPC 小隊加成',dc_def_npc_squad_buff_tip:'關閉時只移除「其他地圖敵方」的小隊／己方全體類被動帶來的 MS 加成；此單位與其駕駛員自己的被動保留（含此單位上的「小隊」敘述）。影響 HP、EN、攻擊力、守備力、機動力、移動力的顯示與損傷／命中。駕駛員面板仍僅依該駕駛員被動。',
 dc_def_npc_map_bonuses:'NPC 小隊加成',dc_def_npc_map_bonuses_tip:'關閉時只移除「其他地圖敵方」的小隊／己方全體類被動帶來的 MS 加成；此單位與其駕駛員自己的被動保留（含此單位上的「小隊」敘述）。影響 HP、EN、攻擊力、守備力、機動力、移動力的顯示與損傷／命中。駕駛員面板仍僅依該駕駛員被動。',tb_stats_hint_squad:' 符合標籤的小隊被動（攻擊力堆疊或攻擊力+守備力）會依編隊自動套用。',dc_wpn_trait_effects:'武裝威力（效果加成）',dc_wpn_trait_dist:'距離加成',dc_wpn_trait_custom_core:'自訂核心（SSP）',dc_wpn_trait_hp:'依剩餘 HP',dc_wpn_trait_mp:'依 MP／戰鬥開始',dc_wpn_trait_en:'依剩餘 EN',dc_wpn_trait_max_applied:'已套用上限（損傷計算）',dc_wpn_trait_ssp_hint:'請在上方將單位模式切換為 SSP，以套用自訂核心武裝效果。',dc_wpn_trait_lines:'特性：',dc_wpn_trait_override_note:'已設定最終武裝威力；下列為自動解析的效果加總（損傷計算未使用）。',unit_filter_weapon_range_nm_ssp_ex_only:'僅 SSP/EX',unit_filter_weapon_range_nm_ssp_ex_all:'僅 SSP/EX 全部射程',unit_filter_map_weapon_range:'地圖武裝類型',unit_filter_map_weapon_range_all:'全部MAP武装類型',unit_filter_map_weapon_range_multi:'{n} 種地圖類型',unit_filter_mwrt_none:'全部',unit_filter_mwrt_around_myself:'全方位',unit_filter_mwrt_impact_range:'指定區域',unit_filter_mwrt_specify_direction:'指定方向',unit_filter_mwrt_moving_attack:'移動攻擊',unit_filter_mwrt_whole_map:'全地圖',unit_filter_mwrt_fixed_position:'固定位置'});
-Object.assign(T.HK,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'小隊 1',tb_squad2:'小隊 2',tb_op_label:'OP',tb_option_part:'選擇性零件',tb_op_swap:'更換選擇性零件',tb_op_clear:'移除',tb_pick_pilot_unit:'選擇此單位的駕駛員',tb_stat_normal:'一般',tb_stat_sp:'SP',tb_stat_ssp:'SSP',tb_change_unit:'更換單位',tb_supp_level_adjust:'調整',tb_supp_level_slider:'支援人員等級 1–100（拖曳以配合遊戲內等級）',tb_copy_link:'複製連結',tb_link_copied:'已複製！',tb_screenshot:'儲存截圖',tb_screenshot_fail:'無法儲存截圖',tb_formation_modal_title:'編成',tb_option_parts_used:'使用的選擇性零件',tb_squad_name_ph:'小隊名稱（選填）',tb_clear_supporter:'清除支援人員',tb_clear_squad:'清除小隊（單位與駕駛員）',tb_clear_formation_slot:'清除',tb_formation_name_placeholder:'編成名稱',tb_master_league:'大師聯盟補正 +50%',tb_grand_offensive:'大規模攻略戰補正 +100%',dc_toggle_master_league:'大師聯盟補正 +50%',dc_toggle_grand_offensive:'大規模攻略戰補正 +100%',dc_sheet_buff_hint:'+50%／+100% 套用於單位面板數值（HP、攻擊力、守備力、機動力），計算順序與改造與隊長技能相同；不含 EN 與移動力。',dc_squad_buff_section:'小隊加成',dc_squad_cond_label:'小隊條件',dc_squad_cond_tip:'因應「同小隊」條件而變動的 EX／單位被動加成（含自身）。編隊頁會依標籤自動計算。選擇單位後預設為該能力允許的最大值。',dc_squad_cond_manual_tip:'此駕駛員＋單位無法自動套用：請手動輸入 %（僅攻擊，最高 100%）。',dc_squad_cond_flat_ad_chk:'套用 +%n%% 單位攻防',dc_squad_cond_flat_ad_tip:'與「小隊條件」％相同計算；依被動接收標籤（例 NT‑D）套用。',dc_def_npc_squad_buff:'NPC 小隊加成',dc_def_npc_squad_buff_tip:'關閉時只移除「其他地圖敵方」的小隊／己方全體類被動帶來的 MS 加成；此單位與其駕駛員自己的被動保留（含此單位上的「小隊」敘述）。影響 HP、EN、攻擊力、守備力、機動力、移動力的顯示與損傷／命中。駕駛員面板仍僅依該駕駛員被動。',
+Object.assign(T.HK,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'小隊 1',tb_squad2:'小隊 2',tb_op_label:'OP',tb_option_part:'選擇性零件',tb_op_swap:'更換選擇性零件',tb_op_clear:'移除',tb_pick_pilot_unit:'選擇此單位的駕駛員',tb_stat_normal:'一般',tb_stat_sp:'SP',tb_stat_ssp:'SSP',tb_change_unit:'更換單位',tb_supp_level_adjust:'調整',tb_supp_level_slider:'支援人員等級 1–100（拖曳以配合遊戲內等級）',tb_copy_link:'複製連結',tb_link_copied:'已複製！',tb_screenshot:'儲存截圖',tb_screenshot_fail:'無法儲存截圖',tb_formation_modal_title:'編成',tb_option_parts_used:'使用的選擇性零件',tb_squad_name_ph:'小隊名稱（選填）',tb_clear_supporter:'清除支援人員',tb_clear_squad:'清除小隊（單位與駕駛員）',tb_clear_formation_slot:'清除',tb_formation_name_placeholder:'編成名稱',tb_master_league:'大師聯盟補正 +50%',tb_grand_offensive:'大規模攻略戰補正 +100%',dc_toggle_master_league:'大師聯盟補正 +50%',dc_toggle_grand_offensive:'大規模攻略戰補正 +100%',dc_sheet_buff_hint:'+50%／+100% 套用於單位面板數值（HP、EN、攻擊力、守備力、機動力），計算順序與改造相同；隊長％依技能文（常不含 EN）。移動力不套用面板補正。',dc_squad_buff_section:'小隊加成',dc_squad_cond_label:'小隊條件',dc_squad_cond_tip:'因應「同小隊」條件而變動的 EX／單位被動加成（含自身）。編隊頁會依標籤自動計算。選擇單位後預設為該能力允許的最大值。',dc_squad_cond_manual_tip:'此駕駛員＋單位無法自動套用：請手動輸入 %（僅攻擊，最高 100%）。',dc_squad_cond_flat_ad_chk:'套用 +%n%% 單位攻防',dc_squad_cond_flat_ad_tip:'與「小隊條件」％相同計算；依被動接收標籤（例 NT‑D）套用。',dc_def_npc_squad_buff:'NPC 小隊加成',dc_def_npc_squad_buff_tip:'關閉時只移除「其他地圖敵方」的小隊／己方全體類被動帶來的 MS 加成；此單位與其駕駛員自己的被動保留（含此單位上的「小隊」敘述）。影響 HP、EN、攻擊力、守備力、機動力、移動力的顯示與損傷／命中。駕駛員面板仍僅依該駕駛員被動。',
 dc_def_npc_map_bonuses:'NPC 小隊加成',dc_def_npc_map_bonuses_tip:'關閉時只移除「其他地圖敵方」的小隊／己方全體類被動帶來的 MS 加成；此單位與其駕駛員自己的被動保留（含此單位上的「小隊」敘述）。影響 HP、EN、攻擊力、守備力、機動力、移動力的顯示與損傷／命中。駕駛員面板仍僅依該駕駛員被動。',tb_stats_hint_squad:' 符合標籤的小隊被動（攻擊力堆疊或攻擊力+守備力）會依編隊自動套用。',dc_wpn_trait_effects:'武裝威力（效果加成）',dc_wpn_trait_dist:'距離加成',dc_wpn_trait_custom_core:'自訂核心（SSP）',dc_wpn_trait_hp:'依剩餘 HP',dc_wpn_trait_mp:'依 MP／戰鬥開始',dc_wpn_trait_en:'依剩餘 EN',dc_wpn_trait_max_applied:'已套用上限（損傷計算）',dc_wpn_trait_ssp_hint:'請在上方將單位模式切換為 SSP，以套用自訂核心武裝效果。',dc_wpn_trait_lines:'特性：',dc_wpn_trait_override_note:'已設定最終武裝威力；下列為自動解析的效果加總（損傷計算未使用）。',unit_filter_weapon_range_nm_ssp_ex_only:'僅 SSP/EX',unit_filter_weapon_range_nm_ssp_ex_all:'僅 SSP/EX 全部射程',unit_filter_map_weapon_range:'地圖武裝類型',unit_filter_map_weapon_range_all:'全部MAP武装類型',unit_filter_map_weapon_range_multi:'{n} 種地圖類型',unit_filter_mwrt_none:'全部',unit_filter_mwrt_around_myself:'全方位',unit_filter_mwrt_impact_range:'指定區域',unit_filter_mwrt_specify_direction:'指定方向',unit_filter_mwrt_moving_attack:'移動攻擊',unit_filter_mwrt_whole_map:'全地圖',unit_filter_mwrt_fixed_position:'固定位置'});
-Object.assign(T.JA,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'分隊1',tb_squad2:'分隊2',tb_op_label:'OP',tb_option_part:'オプションパーツ',tb_op_swap:'オプションパーツを変更',tb_op_clear:'解除',tb_pick_pilot_unit:'このユニットのパイロットを選択',tb_stat_normal:'通常',tb_stat_sp:'SP',tb_stat_ssp:'SSP',tb_change_unit:'ユニット変更',tb_supp_level_adjust:'変更',tb_supp_level_slider:'サポーターのレベルを 1～100 で変更（ゲームに合わせて調整）',tb_copy_link:'リンクをコピー',tb_link_copied:'コピーしました',tb_screenshot:'画像を保存',tb_screenshot_fail:'スクリーンショットに失敗しました',tb_formation_modal_title:'編成',tb_option_parts_used:'使用中のオプションパーツ',tb_squad_name_ph:'分隊名（任意）',tb_clear_supporter:'サポーターを解除',tb_clear_squad:'分隊を空にする（ユニット・パイロット）',tb_clear_formation_slot:'クリア',tb_formation_name_placeholder:'編成名',tb_master_league:'マスターリーグ補正 +50%',tb_grand_offensive:'グランド攻勢補正 +100%',dc_toggle_master_league:'マスターリーグ補正 +50%',dc_toggle_grand_offensive:'グランド攻勢補正 +100%',dc_sheet_buff_hint:'+50%／+100%はユニットの基礎ステータス（HP・攻撃力・防御力・機動力）に適用されます（OP・リーダー等と同じ計算順）。EN・移動力には適用されません。',dc_squad_buff_section:'分隊補正',dc_squad_cond_label:'分隊条件',dc_squad_cond_tip:'同部隊の味方（自身を含む）のタグで変動するEX／ユニット被動の%を手動入力します。チーム編成ではタグ一致で自動計算。選択直後は能力の上限が既定値です。',dc_squad_cond_manual_tip:'自動判定できない組み合わせ：分隊補正を手動で入力（攻撃力のみ、最大100%）。',dc_squad_cond_flat_ad_chk:'ユニット攻撃力・防御力 +%n%%',dc_squad_cond_flat_ad_tip:'「分隊条件」と同じ枠での扁平補正。受動の付与標準（NT-D など）を満たす機体のみ。',dc_def_npc_squad_buff:'NPC分隊バフ',dc_def_npc_squad_buff_tip:'オフにすると、マップ上の「他の敵NPC」が付与する分隊／味方全体系のMS%加算だけを外します。この機体・搭乗パイロット自身のパッシブ（この機体側の「分隊」表現を含む）は残ります。HP・EN・攻撃力・防御力・機動力・移動力の表示とダメージ／命中に反映。パイロット欄は従来どおり当該パイロットのパッシブのみ。',
+Object.assign(T.JA,{tb_front_deploy:'前衛配置',tb_rear_deploy:'後衛配置',tb_squad1:'分隊1',tb_squad2:'分隊2',tb_op_label:'OP',tb_option_part:'オプションパーツ',tb_op_swap:'オプションパーツを変更',tb_op_clear:'解除',tb_pick_pilot_unit:'このユニットのパイロットを選択',tb_stat_normal:'通常',tb_stat_sp:'SP',tb_stat_ssp:'SSP',tb_change_unit:'ユニット変更',tb_supp_level_adjust:'変更',tb_supp_level_slider:'サポーターのレベルを 1～100 で変更（ゲームに合わせて調整）',tb_copy_link:'リンクをコピー',tb_link_copied:'コピーしました',tb_screenshot:'画像を保存',tb_screenshot_fail:'スクリーンショットに失敗しました',tb_formation_modal_title:'編成',tb_option_parts_used:'使用中のオプションパーツ',tb_squad_name_ph:'分隊名（任意）',tb_clear_supporter:'サポーターを解除',tb_clear_squad:'分隊を空にする（ユニット・パイロット）',tb_clear_formation_slot:'クリア',tb_formation_name_placeholder:'編成名',tb_master_league:'マスターリーグ補正 +50%',tb_grand_offensive:'グランド攻勢補正 +100%',dc_toggle_master_league:'マスターリーグ補正 +50%',dc_toggle_grand_offensive:'グランド攻勢補正 +100%',dc_sheet_buff_hint:'+50%／+100%はユニットの基礎ステータス（HP・EN・攻撃力・防御力・機動力）に適用（OPと同じ計算順）。リーダー％はスキル文に従い（EN除外が多い）。移動力には適用されません。',dc_squad_buff_section:'分隊補正',dc_squad_cond_label:'分隊条件',dc_squad_cond_tip:'同部隊の味方（自身を含む）のタグで変動するEX／ユニット被動の%を手動入力します。チーム編成ではタグ一致で自動計算。選択直後は能力の上限が既定値です。',dc_squad_cond_manual_tip:'自動判定できない組み合わせ：分隊補正を手動で入力（攻撃力のみ、最大100%）。',dc_squad_cond_flat_ad_chk:'ユニット攻撃力・防御力 +%n%%',dc_squad_cond_flat_ad_tip:'「分隊条件」と同じ枠での扁平補正。受動の付与標準（NT-D など）を満たす機体のみ。',dc_def_npc_squad_buff:'NPC分隊バフ',dc_def_npc_squad_buff_tip:'オフにすると、マップ上の「他の敵NPC」が付与する分隊／味方全体系のMS%加算だけを外します。この機体・搭乗パイロット自身のパッシブ（この機体側の「分隊」表現を含む）は残ります。HP・EN・攻撃力・防御力・機動力・移動力の表示とダメージ／命中に反映。パイロット欄は従来どおり当該パイロットのパッシブのみ。',
 dc_def_npc_map_bonuses:'NPC分隊バフ',dc_def_npc_map_bonuses_tip:'オフにすると、マップ上の「他の敵NPC」が付与する分隊／味方全体系のMS%加算だけを外します。この機体・搭乗パイロット自身のパッシブ（この機体側の「分隊」表現を含む）は残ります。HP・EN・攻撃力・防御力・機動力・移動力の表示とダメージ／命中に反映。パイロット欄は従来どおり当該パイロットのパッシブのみ。',tb_stats_hint_squad:' タグが一致する分隊被動（攻撃力の積み上げまたは攻撃力＋防御力）は編成から自動反映されます。',dc_wpn_trait_effects:'武装威力（効果による加算）',dc_wpn_trait_dist:'距離による加算',dc_wpn_trait_custom_core:'カスタムコア（SSP）',dc_wpn_trait_hp:'残りHPによる加算',dc_wpn_trait_mp:'MP／戦闘開始時による加算',dc_wpn_trait_en:'残りENによる加算',dc_wpn_trait_max_applied:'上限まで自動反映（ダメージ計算）',dc_wpn_trait_ssp_hint:'カスタムコアの武装効果を反映するには、上の機体モードをSSPにしてください。',dc_wpn_trait_lines:'特性：',dc_wpn_trait_override_note:'最終武装威力を上書き中です。以下は自動計算の特効内訳（ダメージには反映されません）。',unit_filter_weapon_range_nm_ssp_ex_only:'SSP/EXのみ',unit_filter_weapon_range_nm_ssp_ex_all:'SSP/EXのみ 全射程',unit_filter_map_weapon_range:'マップ武装タイプ',unit_filter_map_weapon_range_all:'全てのMAP武器タイプ',unit_filter_map_weapon_range_multi:'{n} 種類のマップタイプ',unit_filter_mwrt_none:'すべて',unit_filter_mwrt_around_myself:'全方位',unit_filter_mwrt_impact_range:'指定区域',unit_filter_mwrt_specify_direction:'方向指定',unit_filter_mwrt_moving_attack:'移動攻撃',unit_filter_mwrt_whole_map:'マップ全体',unit_filter_mwrt_fixed_position:'固定位置'});
 Object.assign(T.TW,{npc_unit_cond_targets:'條件被動 — 加成對象單位',npc_unit_cond_target_short:'加成單位',schedule_shell_flag:'NPC／未排程'});
 Object.assign(T.HK,{npc_unit_cond_targets:'條件被動 — 加成對象單位',npc_unit_cond_target_short:'加成單位',schedule_shell_flag:'NPC／未排程'});
@@ -6251,7 +6251,7 @@ if(!slot)return;
 if(!(d&&d.ranking_available&&(type==='character'||type==='unit')&&!d.detail_npc_context)){slot.innerHTML='';return}
 slot.innerHTML=renderDetailRankingToggle(d,type)||'';
 }
-function detailStatRowsForCurrentState(d,type){let hcf=type==='character'?(d.has_conditional_passive!=null?d.has_conditional_passive:d.has_ex_stats):d.has_cond_stats;const cp=hcf&&S.conditionalPassiveActive;let sr;if(type==='unit'){const td=(d.lb_data&&d.lb_data[S.currentLbTier])||(d.stats&&{stats_no_cond:d.stats,stats_with_cond:d.stats,sp_stats_no_cond:d.stats,sp_stats_with_cond:d.stats,ssp_stats_no_cond:d.stats,ssp_stats_with_cond:d.stats});if(!td)return[];if(d.has_sp){if(S.sspActive)sr=cp?td.ssp_stats_with_cond:td.ssp_stats_no_cond;else if(S.spActive)sr=cp?td.sp_stats_with_cond:td.sp_stats_no_cond;else sr=cp?td.stats_with_cond:td.stats_no_cond}else sr=cp?td.stats_with_cond:td.stats_no_cond}else{const exTiers=d.ex_supercharged_tiers;if(cp&&exTiers&&exTiers.length>1){const ti=Math.min(Math.max(0,S.charSuperchargedExTier|0),exTiers.length-1);sr=exTiers[ti].stats}else if(d.has_sp){if(S.spActive)sr=cp?d.sp_stats_with_ex:d.sp_stats;else sr=cp?d.stats_with_ex:d.stats}else sr=cp?d.stats_with_ex:d.stats}if(type==='unit')sr=_detailApplyUltAltMaxStatRows(sr,d);return Array.isArray(sr)?sr:[]}
+function detailStatRowsForCurrentState(d,type){let hcf=type==='character'?(!!(d.has_ex_stats||d.has_conditional_passive||(d.ex_supercharged_tiers&&d.ex_supercharged_tiers.length>1))):d.has_cond_stats;const cp=hcf&&S.conditionalPassiveActive;let sr;if(type==='unit'){const td=(d.lb_data&&d.lb_data[S.currentLbTier])||(d.stats&&{stats_no_cond:d.stats,stats_with_cond:d.stats,sp_stats_no_cond:d.stats,sp_stats_with_cond:d.stats,ssp_stats_no_cond:d.stats,ssp_stats_with_cond:d.stats});if(!td)return[];if(d.has_sp){if(S.sspActive)sr=cp?td.ssp_stats_with_cond:td.ssp_stats_no_cond;else if(S.spActive)sr=cp?td.sp_stats_with_cond:td.sp_stats_no_cond;else sr=cp?td.stats_with_cond:td.stats_no_cond}else sr=cp?td.stats_with_cond:td.stats_no_cond}else{const exTiers=d.ex_supercharged_tiers;if(cp&&exTiers&&exTiers.length>1){const ti=Math.min(Math.max(0,S.charSuperchargedExTier|0),exTiers.length-1);sr=exTiers[ti].stats}else if(d.has_sp){if(S.spActive)sr=cp?d.sp_stats_with_ex:d.sp_stats;else sr=cp?d.stats_with_ex:d.stats}else sr=cp?d.stats_with_ex:d.stats}if(type==='unit')sr=_detailApplyUltAltMaxStatRows(sr,d);return Array.isArray(sr)?sr:[]}
 function renderDetailInlineRankRadial(meta){
 if(!meta||!meta.rank||!meta.total)return`<div class="stat-inline-rank is-loading"><div class="radial-loading">...</div></div>`;
 const rk=Math.max(1,Number(meta.rank)||1);
@@ -7090,7 +7090,8 @@ finish();
 }
 function updateDetailDynamicSections(type){const d=S.currentDetailData;if(type!=='supporter'&&type!=='stage'){const _sp=renderStatsWrapper(d,type);const _tog=document.getElementById('detailStatsToggles');const _st=document.getElementById('detailStatsWrapper');if(_tog)_tog.innerHTML=_sp.head||'';if(_st)_st.innerHTML=_tog?(_sp.grid||''):((_sp.head||'')+(_sp.grid||''));ensureDetailRankingToggleDom(type);applyDetailRankingInline(type)}if(type==='character'){const extra=document.getElementById('charExtraInfo');if(extra)extra.innerHTML=renderCharacterExtraInfo(d);const ucHost=document.getElementById('npcUnitCondTargets');if(ucHost)ucHost.innerHTML=renderNpcUnitConditionTargetsRow(d);document.getElementById('detailAbilitiesContainer').innerHTML=renderAbilsDynamic(d.abilities,t('sec_abilities'),false,S.spActive);document.getElementById('detailSkillsContainer').innerHTML=renderSkills(d.skills,S.spActive);syncNpcUnitConditionHighlights();syncAffinityExPairHighlights();syncPilotCondHighlights()}else if(type==='unit'){syncUnitLbVideoUi();void ensureUnitBestPilotsLoaded().then(api=>{if(api&&typeof api.syncUi==='function'&&S.currentDetailType==='unit'&&S.currentDetailData&&String(S.currentDetailData.id)===String(d&&d.id))api.syncUi(S.currentDetailData)});document.getElementById('detailAbilitiesContainer').innerHTML=renderAbilsDynamic(d.abilities,t('sec_abilities'),S.sspActive,false);document.getElementById('detailUnitSkillsContainer').innerHTML=renderSkills(d.skills||[],false);const modEl=document.getElementById('detailModifiersContainer');if(modEl)modEl.innerHTML=renderModifiers(d.modifiers||[]);setDetailWeaponsHtml(renderWeaponsDynamic(withNpcMapWeaponStrategyHints(d.weapons,d),S.sspActive,d));document.getElementById('detailMechanismsContainer').innerHTML=renderMechanisms(d.mechanisms);fillDetailSspMaterials('unit');fillDetailUltAlteration('unit');const tr=document.getElementById('detailUnitTerrainRow');if(tr){const base=d.terrain||[];const ter=S.sspActive&&(d.terrain_ssp&&d.terrain_ssp.length)?d.terrain_ssp:base;const hasTerrainEnh=!!(S.sspActive&&(d.has_terrain_enhancement===true||(d.terrain_ssp&&d.terrain&&d.terrain_ssp.some((ts,i)=>ts.level!==(d.terrain[i]?.level??-1)))));tr.innerHTML=renderHeaderTerrain(ter,S.sspActive,hasTerrainEnh)}syncPilotCondHighlights();syncUnitCondAbilityHighlights()}else if(type==='supporter'){let lh='';if(d.leader_skills&&d.leader_skills.length){lh=`<div class="detail-section"><div class="section-title">${t('sec_leader_skill')}</div><div class="ability-list">${d.leader_skills.map(ls=>{let ts2=ls.tags.map(t=>t.name).join(',');return`<div class="ability-item" style="flex-direction:column;gap:10px;cursor:pointer;" onclick="openTagModal('${esc(ts2)}','${ls.separator}')"><div class="ability-detail" style="margin:0;">${esc(ls.desc)}</div>${ls.tags&&ls.tags.length?`<div class="detail-tags-row" style="margin-top:0;align-items:center;">${renderSkillTags([{tags:ls.tags,separator:ls.separator}])}</div>`:''}</div>`}).join('')}</div></div>`}document.getElementById('detailLeaderSkillContainer').innerHTML=lh;let ah='';if(d.active_skills&&d.active_skills.length){ah=`<div class="detail-section"><div class="section-title">${t('sec_active_skills')}</div><div class="ability-list">${d.active_skills.map(sk=>`<div class="ability-item"><div class="ability-icon-wrap">${renderAbilIcon({icon:sk.icon})}</div><div class="ability-info"><div class="ability-name">${esc(sk.name)}</div><div class="ability-detail" style="margin:0;white-space:pre-wrap;">${esc(sk.desc)}</div></div></div>`).join('')}</div></div>`}document.getElementById('detailAbilitiesContainer').innerHTML=ah}else if(type==='stage'){document.getElementById('detailStageRestrictionsContainer').innerHTML=renderStageRestrictions(d);document.getElementById('detailStageMapContainer').innerHTML=renderStageMapSection(d);document.getElementById('detailNpcContainer').innerHTML=renderNpcDetails(d.npc_details||[],d.id,S._stageDetailUiRestore);ensureStageMapNpcHoverBound();ensureStageNpcCompactHoverBound();hideStageNpcHoverPop();scheduleWarmStageNpcHoverThumbs();syncNpcUnitConditionHighlights();const kickTape=()=>kickStageHazardTapeAnimations(document.getElementById('detailStageRestrictionsContainer'));requestAnimationFrame(()=>requestAnimationFrame(kickTape));setTimeout(kickTape,400)}if(type==='character'||type==='unit')requestAnimationFrame(adjustDetailModalLayout)}
 function renderStatsWrapper(d,type){
-let hcf=type==='character'?(d.has_conditional_passive!=null?d.has_conditional_passive:d.has_ex_stats):((d.has_cond_stats)||_detailUnitHasCondWeaponRange(d)||_detailUnitPilotMovCpGate(d));
+/* Prefer has_ex_stats over a false has_conditional_passive (API can clear the latter on unmet pair gates while Vigor Extended etc. still apply). */
+let hcf=type==='character'?(!!(d.has_ex_stats||d.has_conditional_passive||(d.ex_supercharged_tiers&&d.ex_supercharged_tiers.length>1))):((d.has_cond_stats)||_detailUnitHasCondWeaponRange(d)||_detailUnitPilotMovCpGate(d));
 if(type==='character'&&characterHasConditionalChanceOrSupportAbility(d))hcf=true;
 const cp=hcf&&S.conditionalPassiveActive;
 let sr,bs;
@@ -10915,7 +10916,7 @@ if(_dcSlotNeedsAutoFit(S.dc.atkSlots[S.dc.atkSlotIndex|0]))_dcScheduleAutoFitOpt
 function initDmgCalc(){
 S._dcAtkPresetBackup=null;S._dcAtkManualPackBackup=null;S._dcDefPresetNpcBackup=null;S._dcDefDbBackup=null;S._dcDefCustomPackBackup=null;
 S.dc.atkUnit=null;S.dc.atkChar=null;S.dc.atkUnitData=null;S.dc.atkCharData=null;S.dc.lbTier=3;
-S.dc.defNpc=null;S.dc.defTargetMode='preset';S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defLbTier=3;S.dc.defUnitCondPassive=false;S.dc.defCharCondPassive=false;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.exSquadAtkPct=0;S.dc.exSquadAtkPctExplicitZero=false;S.dc.squadCondPct=0;S.dc.squadCondAtkPct=0;S.dc.squadCondDefPct=0;S.dc.bigRangZeonSquadBuff=false;S.dc.defNpcMapBonusesOn=true;S.dc.atkCounterOwnAtk=false;S.dc.supportCounterAtk=false;S.dc._supportCounterAtkPct=0;S.dc.applyAdvantageEnemyTag=true;S.dc.applyZeonEnemyTag=true;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.unitCondStackCount=0;S.dc.unitHpAtkTierIndex=0;S.dc.unitDamageTakenDefStacks=0;S.dc.dcSuperchargedExTier=0;S.dc._dcSuperchargedExManual=false;S.dc.optionParts=[];S.dc.supporters=[];S.dc.defOptionParts=[];S.dc.defSupporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._wpnCritDmgUp=0;S.dc._integratedWpnCritDmgUp=0;S.dc._vigorCondThreshold=null;S.dc._activeSkills={};S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false;S.dc.masterLeagueBuff=false;S.dc.grandOffensiveBuff=false;S.dc.multiPctCompare=false;S.dc._dcAutoFitGen=0;S.dc._supportCntAtkPairSnapBySlot={};
+S.dc.defNpc=null;S.dc.defTargetMode='preset';S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defLbTier=3;S.dc.defUnitCondPassive=false;S.dc.defCharCondPassive=false;S.dc.defUnitSkillActive=false;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.exSquadAtkPct=0;S.dc.exSquadAtkPctExplicitZero=false;S.dc.squadCondPct=0;S.dc.squadCondAtkPct=0;S.dc.squadCondDefPct=0;S.dc.bigRangZeonSquadBuff=false;S.dc.defNpcMapBonusesOn=true;S.dc.atkCounterOwnAtk=false;S.dc.supportCounterAtk=false;S.dc._supportCounterAtkPct=0;S.dc.applyAdvantageEnemyTag=true;S.dc.applyZeonEnemyTag=true;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.unitCondStackCount=0;S.dc.unitHpAtkTierIndex=0;S.dc.unitDamageTakenDefStacks=0;S.dc.dcSuperchargedExTier=0;S.dc._dcSuperchargedExManual=false;S.dc.optionParts=[];S.dc.supporters=[];S.dc.defOptionParts=[];S.dc.defSupporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._wpnCritDmgUp=0;S.dc._integratedWpnCritDmgUp=0;S.dc._vigorCondThreshold=null;S.dc._activeSkills={};S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false;S.dc.masterLeagueBuff=false;S.dc.grandOffensiveBuff=false;S.dc.multiPctCompare=false;S.dc._dcAutoFitGen=0;S.dc._supportCntAtkPairSnapBySlot={};
 renderDcDefDbPicks();
 const _drp=document.getElementById('dcDefModePreset'),_drc=document.getElementById('dcDefModeCustom'),_ddb=document.getElementById('dcDefModeDatabase'),_dpw=document.getElementById('dcDefPresetWrap'),_dcw=document.getElementById('dcDefCustomWrap'),_ddbw=document.getElementById('dcDefDatabaseWrap');
 if(_drp)_drp.checked=true;if(_drc)_drc.checked=false;if(_ddb)_ddb.checked=false;if(_dpw)_dpw.style.display='';if(_dcw)_dcw.style.display='none';if(_ddbw)_ddbw.style.display='none';
@@ -11267,27 +11268,24 @@ lbMenu+=`<button type="button" class="cmp-lb-opt${tt===tier?' is-active':''}" on
 }
 lbBlock=`<div class="dc-lb-inline-wrap"><details id="dcDefLbTierDetails" class="cmp-lb-details dc-lb-tier-details"><summary class="cmp-lb-summary" title="${esc(t('cmp_lb'))}">${cmpLbPipsRow(cur[0],cur[1],cur[2])}</summary><div class="cmp-lb-menu" role="listbox" aria-label="${esc(t('cmp_lb'))}">${lbMenu}</div></details></div>`;
 }
-let unitCpToggle='';
+let unitCpBeside='';
 if(ud.has_cond_stats||_detailUnitHasCondWeaponRange(ud,!!(S.dc&&S.dc.unitStatMode==='ssp'))){
-const _cpL=t('conditional_passive');
-unitCpToggle=`<div class="dc-picked-controls"><div class="conditional-toggle dc-dc-cond-toggle"><div class="toggle-clickable${S.dc.defUnitCondPassive?' active':''}" role="button" tabindex="0" title="${escAttr(_cpL)}" aria-label="${escAttr(_cpL)}" onclick="toggleDcDefUnitCondPassive()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDcDefUnitCondPassive()}"><span class="toggle-label toggle-label--cp-chip">${_dcCpChipSpanHtml(!!S.dc.defUnitCondPassive)}</span></div></div></div>`;
+unitCpBeside=_dcPickedCpBesideRoleHtml(!!S.dc.defUnitCondPassive,'toggleDcDefUnitCondPassive');
 }
 const lbStatCluster=lbBlock?`<div class="dc-unit-lb-stat-cluster">${lbBlock}</div>`:'';
-const belowPortrait=(unitCpToggle||lbStatCluster)?`<div class="dc-atk-unit-below-portrait">${unitCpToggle}${lbStatCluster}</div>`:'';
-uEl.innerHTML=`<div class="dc-picked">${_dcPickedEntityThumbHtml(ud,'unit',52)}<div class="dc-picked-info"><div class="dc-picked-name">${esc(ud.name)}</div><div class="dc-picked-badges">${ud.rarity_icon?`<img src="${imgUrl(ud.rarity_icon)}">`:''}${ud.role_icon?`<img src="${imgUrl(ud.role_icon)}">`:''}</div></div>${belowPortrait}<button type="button" class="dc-picked-change" onclick="openDcPicker('def_unit')">${t('dc_change')}</button></div>`;
+const belowPortrait=lbStatCluster?`<div class="dc-atk-unit-below-portrait">${lbStatCluster}</div>`:'';
+uEl.innerHTML=`<div class="dc-picked">${_dcPickedEntityThumbHtml(ud,'unit',52)}<div class="dc-picked-info"><div class="dc-picked-name">${esc(ud.name)}</div><div class="dc-picked-badges">${ud.rarity_icon?`<img src="${imgUrl(ud.rarity_icon)}">`:''}${ud.role_icon?`<img src="${imgUrl(ud.role_icon)}">`:''}${unitCpBeside}</div></div>${belowPortrait}<button type="button" class="dc-picked-change" onclick="openDcPicker('def_unit')">${t('dc_change')}</button></div>`;
 }else{
 uEl.innerHTML=`<button type="button" class="dc-pick-btn" onclick="openDcPicker('def_unit')">${t('dc_pick_unit')}</button>`;
 }
 if(cd&&!cd.error){
 const chBtn=isSD?`<span class="dc-picked-change dc-picked-change--static" style="font-size:11px;color:var(--text-muted);padding:4px 8px">Locked</span>`:`<button type="button" class="dc-picked-change" onclick="openDcPicker('def_character')">${t('dc_change')}</button>`;
-let charCpToggle='';
+let charCpBeside='';
 if(_dcCharHasConditional(cd)){
-const _cpl=t('conditional_passive');
-charCpToggle=`<div class="dc-picked-controls"><div class="conditional-toggle dc-dc-cond-toggle"><div class="toggle-clickable${S.dc.defCharCondPassive?' active':''}" role="button" tabindex="0" title="${escAttr(_cpl)}" aria-label="${escAttr(_cpl)}" onclick="toggleDcDefCharCondPassive()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDcDefCharCondPassive()}"><span class="toggle-label toggle-label--cp-chip">${_dcCpChipSpanHtml(!!S.dc.defCharCondPassive)}</span></div></div></div>`;
+charCpBeside=_dcPickedCpBesideRoleHtml(!!S.dc.defCharCondPassive,'toggleDcDefCharCondPassive');
 }
-const charBelowPortrait=charCpToggle?`<div class="dc-atk-char-below-portrait">${charCpToggle}</div>`:'';
 const sdNote=isSD?`<div style="font-size:10px;color:var(--text-muted);margin-top:4px">SD — paired pilot from unit</div>`:'';
-cEl.innerHTML=`<div class="dc-atk-char-wrap"><div class="dc-picked">${_dcPickedEntityThumbHtml(cd,'char',52)}<div class="dc-picked-info"><div class="dc-picked-name">${esc(cd.name)}</div><div class="dc-picked-badges">${cd.rarity_icon?`<img src="${imgUrl(cd.rarity_icon)}">`:''}${cd.role_icon?`<img src="${imgUrl(cd.role_icon)}">`:''}</div>${sdNote}</div>${charBelowPortrait}${chBtn}</div></div>`;
+cEl.innerHTML=`<div class="dc-atk-char-wrap"><div class="dc-picked">${_dcPickedEntityThumbHtml(cd,'char',52)}<div class="dc-picked-info"><div class="dc-picked-name">${esc(cd.name)}</div><div class="dc-picked-badges">${cd.rarity_icon?`<img src="${imgUrl(cd.rarity_icon)}">`:''}${cd.role_icon?`<img src="${imgUrl(cd.role_icon)}">`:''}${charCpBeside}</div>${sdNote}</div>${chBtn}</div></div>`;
 }else if(isSD){
 cEl.innerHTML='<div style="font-size:11px;color:var(--text-muted)">Select an SD unit to load its pilot.</div>';
 }else{
@@ -11343,7 +11341,7 @@ if(pw)pw.style.display=mode==='preset'?'':'none';
 if(cw)cw.style.display=mode==='custom'?'':'none';
 if(dbw)dbw.style.display=mode==='database'?'':'none';
 if(mode==='custom'){
-S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defOptionParts=[];S.dc.defSupporters=[];
+S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defOptionParts=[];S.dc.defSupporters=[];S.dc.defUnitSkillActive=false;
 if(S._dcDefCustomPackBackup)_dcFillManualDefDomFromPack(S._dcDefCustomPackBackup);
 S.dc.defNpc=_dcBuildManualDefNpcFromDom();
 renderDcDefStats();
@@ -11364,7 +11362,7 @@ _dcSyncDefNpcFromDatabase();
 renderDcDefStats();
 onDcParamChange();
 }else{
-S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defOptionParts=[];S.dc.defSupporters=[];
+S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defOptionParts=[];S.dc.defSupporters=[];S.dc.defUnitSkillActive=false;
 if(S._dcDefPresetNpcBackup){
 try{S.dc.defNpc=JSON.parse(JSON.stringify(S._dcDefPresetNpcBackup))}catch(_){S.dc.defNpc=S._dcDefPresetNpcBackup}
 const sel=document.getElementById('dcNpcSelect');
@@ -11617,6 +11615,9 @@ out.defSp=String(_dsp.id);
 if((_dsp._dcLevel||100)!==100)out.defSpl=_dsp._dcLevel|0;
 if((_dsp._dcLbTier!==undefined?_dsp._dcLbTier:0)!==0)out.defSpb=_dsp._dcLbTier|0;
 }
+if(S.dc.defUnitSkillActive)out.defUsk=1;
+if(S.dc.defCharCondPassive)out.defCcp=1;
+if(S.dc.defUnitCondPassive)out.defUcp=1;
 }
 if(_dtm==='custom'){out.defM=1;out.defC=_dcDefManualStatsToPack()}
 return out;
@@ -11771,6 +11772,9 @@ fetch(`/api/character/${encodeURIComponent(cid)}?lang=${S.lang}`).then(r=>r.json
 if(!ur.error&&!cr.error){
 S.dc.defUnitData=ur;S.dc.defCharData=cr;
 S.dc.defOptionParts=[];S.dc.defSupporters=[];
+S.dc.defUnitSkillActive=!!obj.defUsk;
+S.dc.defCharCondPassive=obj.defCcp!=null?!!obj.defCcp:_dcShouldAutoCharCondPassive(cr,ur);
+S.dc.defUnitCondPassive=!!obj.defUcp;
 if(obj.defOp){
 try{
 const rOp=await fetch(`/api/option_parts?lang=${S.lang}&page=1&per_page=100&q=${encodeURIComponent(String(obj.defOp))}&unit_id=${encodeURIComponent(uid)}`);
@@ -14721,7 +14725,21 @@ function _dcCpChipSpanHtml(active){
 const ac=active?' active':'';
 return`<span class="list-cond-toggle dc-dc-cp-chip${ac}"><span class="cp-word-pad"><span class="cp-wide"><span class="cp-wide-c" aria-hidden="true">C</span><span aria-hidden="true">P</span></span></span></span>`;
 }
-function _dcCharHasConditional(cd){if(!cd)return false;return cd.has_conditional_passive!=null?cd.has_conditional_passive:!!cd.has_ex_stats}
+/** Compact CP chip for DC picked-card badges (beside rarity/role). `onclickName` = global handler name, e.g. toggleDcCharCondPassive. */
+function _dcPickedCpBesideRoleHtml(active,onclickName,titleExtra){
+const _cpL=t('conditional_passive');
+const tip=titleExtra?`${_cpL} — ${titleExtra}`:_cpL;
+const on=!!active;
+return`<div class="dc-picked-cp-inline" title="${escAttr(tip)}"><div class="conditional-toggle dc-dc-cond-toggle"><div class="toggle-clickable${on?' active':''}" role="button" tabindex="0" title="${escAttr(_cpL)}" aria-label="${escAttr(_cpL)}" aria-pressed="${on?'true':'false'}" onclick="${onclickName}()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();${onclickName}()}"><span class="toggle-label toggle-label--cp-chip">${_dcCpChipSpanHtml(on)}</span></div></div></div>`;
+}
+/** CP toggle: prefer has_ex_stats (Newtype (V) etc. live in stats_with_ex). Do not trust has_conditional_passive===false when has_ex_stats — API can set that when pair_units exist but pair_ok is false. */
+function _dcCharHasConditional(cd){
+if(!cd)return false;
+if(cd.has_ex_stats)return true;
+if(cd.ex_supercharged_tiers&&cd.ex_supercharged_tiers.length)return true;
+if(cd.has_conditional_passive)return true;
+return false;
+}
 /** Character EX/CP is tied to a specific MS (recommend unit or pair maps from API). */
 function _dcCharHasPairRequirement(cd){
 if(!cd||cd._manual)return false;
@@ -15489,11 +15507,10 @@ lbMenu+=`<button type="button" class="cmp-lb-opt${tt===tier?' is-active':''}" on
 }
 lbBlock=`<div class="dc-lb-inline-wrap"><details id="dcLbTierDetails" class="cmp-lb-details dc-lb-tier-details"><summary class="cmp-lb-summary" title="${esc(t('cmp_lb'))}">${cmpLbPipsRow(cur[0],cur[1],cur[2])}</summary><div class="cmp-lb-menu" role="listbox" aria-label="${esc(t('cmp_lb'))}">${lbMenu}</div></details></div>`;
 }
-let unitCpToggle='';
+let unitCpBeside='';
 if(ud.has_cond_stats||_detailUnitHasCondWeaponRange(ud,!!(S.dc&&S.dc.unitStatMode==='ssp'))){
-const vGated=!!S.dc._vigorCondThreshold;
-const vHint=vGated?` title="${escAttr('Default: on when Vigor is Max or Supercharged (or higher than text if ability requires Supercharged only). Changing vigor updates the default; you can still toggle for comparisons.')}"`:'';
-{const _cpL=t('conditional_passive');unitCpToggle=`<div class="dc-picked-controls"${vHint}><div class="conditional-toggle dc-dc-cond-toggle"><div class="toggle-clickable${S.dc.unitCondPassive?' active':''}" role="button" tabindex="0" title="${escAttr(_cpL)}" aria-label="${escAttr(_cpL)}" onclick="toggleDcUnitCondPassive()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDcUnitCondPassive()}"><span class="toggle-label toggle-label--cp-chip">${_dcCpChipSpanHtml(!!S.dc.unitCondPassive)}</span></div></div></div>`;}
+const vExtra=S.dc._vigorCondThreshold?'Default: on when Vigor is Max or Supercharged (or higher than text if ability requires Supercharged only). Changing vigor updates the default; you can still toggle for comparisons.':'';
+unitCpBeside=_dcPickedCpBesideRoleHtml(!!S.dc.unitCondPassive,'toggleDcUnitCondPassive',vExtra||undefined);
 }
 const hasSp=ud.has_sp!==undefined?ud.has_sp:(parseInt(ud.rarity_id||'5')<=4);
 let unitStatModeHtml='';
@@ -15504,8 +15521,8 @@ if(spModeBtns||tfBtn){
 unitStatModeHtml=`<div class="dc-lb-row dc-unit-stat-mode-row" style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">${spModeBtns||''}${tfBtn||''}</div>`;
 }
 const lbStatCluster=(lbBlock||unitStatModeHtml)?`<div class="dc-unit-lb-stat-cluster">${lbBlock}${unitStatModeHtml}</div>`:'';
-const atkBelowPortrait=(unitCpToggle||lbStatCluster)?`<div class="dc-atk-unit-below-portrait">${unitCpToggle}${lbStatCluster}</div>`:'';
-area.innerHTML=`<div class="dc-picked">${_dcPickedEntityThumbHtml(ud,'unit',52)}<div class="dc-picked-info"><div class="dc-picked-name">${esc(ud.name)}</div><div class="dc-picked-badges">${ud.rarity_icon?`<img src="${imgUrl(ud.rarity_icon)}">`:''}${ud.role_icon?`<img src="${imgUrl(ud.role_icon)}">`:''}</div></div>${atkBelowPortrait}<button type="button" class="dc-picked-change" onclick="openDcPicker('unit')">${t('dc_change')}</button></div>`;
+const atkBelowPortrait=lbStatCluster?`<div class="dc-atk-unit-below-portrait">${lbStatCluster}</div>`:'';
+area.innerHTML=`<div class="dc-picked">${_dcPickedEntityThumbHtml(ud,'unit',52)}<div class="dc-picked-info"><div class="dc-picked-name">${esc(ud.name)}</div><div class="dc-picked-badges">${ud.rarity_icon?`<img src="${imgUrl(ud.rarity_icon)}">`:''}${ud.role_icon?`<img src="${imgUrl(ud.role_icon)}">`:''}${unitCpBeside}</div></div>${atkBelowPortrait}<button type="button" class="dc-picked-change" onclick="openDcPicker('unit')">${t('dc_change')}</button></div>`;
 _dcUpdateExSquadAtkGroupVisibility();
 _dcUpdateSquadConditionGroupVisibility();
 _dcSyncSquadCondEffectiveFromState();
@@ -15755,11 +15772,29 @@ return`<div class="dc-sheet-buff-wrap" style="margin-top:10px;display:flex;flex-
 <div style="font-size:10px;color:var(--text-muted);line-height:1.35">${esc(t('dc_sheet_buff_hint'))}</div>
 </div>`;
 }
+/** Defender Unit Skill damage-taken reduction (trait type 11), e.g. V2AB beam −20% — applies vs EX. */
+function _dcHtmlDefUnitSkillToggle(){
+const det=_dcGetDetectedUnitSkillDmgTakenDown(S.dc.defUnitData);
+if((det.pct|0)<=0)return'';
+const on=!!S.dc.defUnitSkillActive;
+const uskIcon=det.icon?`<img src="${imgUrl(det.icon)}" alt="" style="width:18px;height:18px;object-fit:contain;flex-shrink:0" loading="lazy" onerror="this.style.display='none'">`:'';
+const attrLab=(det.weaponAttrs||[]).map(weaponAttrKeyLabel).filter(Boolean).join('/');
+const atkLab=(det.attackTypes||[]).map(k=>DC_ATK_TYPE_LABEL_MAP[String(k).toLowerCase()]||String(k)).filter(Boolean).join('/');
+const gate=[attrLab,atkLab].filter(Boolean).join(' · ')||'weapon';
+const tip=String(det.skillText||det.skillName||'').trim();
+const tipAttr=tip?` title="${escAttr(tip)}"`:'';
+return`<div class="dc-section-label" style="margin-top:10px;color:var(--accent-cyan)">Unit skill (1 turn)</div><div style="font-size:12px;line-height:1.6"><label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin-bottom:4px"${tipAttr}><input type="checkbox" ${on?'checked':''} onchange="setDcDefUnitSkillActive(this.checked)">${uskIcon}<span>Damage taken −${det.pct|0}% vs ${esc(gate)} (incl. EX)</span></label>${tip?`<div style="font-size:10px;color:var(--text-muted);margin-top:2px;line-height:1.45;white-space:pre-wrap">${esc(tip)}</div>`:''}</div>`;
+}
+function setDcDefUnitSkillActive(on){
+S.dc.defUnitSkillActive=!!on;
+renderDcDefSheetBuffToggles();
+onDcParamChange();
+}
 function renderDcDefSheetBuffToggles(){
 const el=document.getElementById('dcDefSheetBuffSlot');
 if(!el)return;
 if((S.dc.defTargetMode||'preset')!=='database'){el.innerHTML='';return}
-el.innerHTML=_dcHtmlDefMasterLeagueToggle();
+el.innerHTML=_dcHtmlDefMasterLeagueToggle()+_dcHtmlDefUnitSkillToggle();
 }
 function setDcMasterLeagueBuff(on){S.dc.masterLeagueBuff=!!on;renderDcAtkUnit();renderDcAtkChar();if((S.dc.defTargetMode||'preset')==='database'){renderDcDefSheetBuffToggles();renderDcDefStats()}onDcParamChange()}
 function setDcGrandOffensiveBuff(on){S.dc.grandOffensiveBuff=!!on;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
@@ -15788,10 +15823,9 @@ return;
 S.dc._pilotSkills=_dcPilotSkillsVisibleForDc(cd)||[];
 const stats=_dcGetCharStats();
 const changeBtn=isSD?`<span class="dc-picked-change dc-picked-change--static" style="font-size:11px;color:var(--text-muted);padding:4px 8px">Locked</span>`:`<button type="button" class="dc-picked-change" onclick="openDcPicker('character')">${t('dc_change')}</button>`;
-let charCpToggle='';
+let charCpBeside='';
 if(_dcCharHasConditional(cd)){
-const _cpl=t('conditional_passive');
-charCpToggle=`<div class="dc-picked-controls"><div class="conditional-toggle dc-dc-cond-toggle"><div class="toggle-clickable${S.dc.charCondPassive?' active':''}" role="button" tabindex="0" title="${escAttr(_cpl)}" aria-label="${escAttr(_cpl)}" onclick="toggleDcCharCondPassive()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDcCharCondPassive()}"><span class="toggle-label toggle-label--cp-chip">${_dcCpChipSpanHtml(!!S.dc.charCondPassive)}</span></div></div></div>`;
+charCpBeside=_dcPickedCpBesideRoleHtml(!!S.dc.charCondPassive,'toggleDcCharCondPassive');
 }
 let charExTierRow='';
 if(_dcCharHasConditional(cd)&&S.dc.charCondPassive&&cd.ex_supercharged_tiers&&cd.ex_supercharged_tiers.length>1){
@@ -15805,8 +15839,8 @@ if(hasSpChar){
 const cModeRow=S.dc.charStatMode||'normal';
 charStatModeHtml=`<div class="dc-lb-row dc-char-stat-mode-row"><button type="button" class="dc-lb-btn${cModeRow==='normal'?' active':''}" onclick="setDcCharStatMode('normal')">Normal</button><button type="button" class="dc-lb-btn${cModeRow==='sp'?' active':''}" onclick="setDcCharStatMode('sp')">SP</button></div>`;
 }
-const charBelowPortrait=(charCpToggle||charStatModeHtml)?`<div class="dc-atk-char-below-portrait">${charCpToggle}${charStatModeHtml}</div>`:'';
-area.innerHTML=`<div class="dc-atk-char-wrap"><div class="dc-picked">${_dcPickedEntityThumbHtml(cd,'char',52)}<div class="dc-picked-info"><div class="dc-picked-name">${esc(cd.name)}</div><div class="dc-picked-badges">${cd.rarity_icon?`<img src="${imgUrl(cd.rarity_icon)}">`:''}${cd.role_icon?`<img src="${imgUrl(cd.role_icon)}">`:''}</div></div>${charBelowPortrait}${changeBtn}</div>${charExTierRow}</div>`;
+const charBelowPortrait=charStatModeHtml?`<div class="dc-atk-char-below-portrait">${charStatModeHtml}</div>`:'';
+area.innerHTML=`<div class="dc-atk-char-wrap"><div class="dc-picked">${_dcPickedEntityThumbHtml(cd,'char',52)}<div class="dc-picked-info"><div class="dc-picked-name">${esc(cd.name)}</div><div class="dc-picked-badges">${cd.rarity_icon?`<img src="${imgUrl(cd.rarity_icon)}">`:''}${cd.role_icon?`<img src="${imgUrl(cd.role_icon)}">`:''}${charCpBeside}</div></div>${charBelowPortrait}${changeBtn}</div>${charExTierRow}</div>`;
 const statsNoCp=_dcGetCharStatsForCp(false);
 const skPct=_dcGetActiveSkillStatPct();
 const skB=_dcGetActiveSkillBonuses();
@@ -16740,7 +16774,7 @@ if(c>0)noteHit(raw);
 allTraits.forEach(raw=>{
 const txt=String(raw).replace(/\n/g,' ');
 if(/absolute\s+hit/i.test(txt)||txt.includes('絕對命中'))traits.absoluteHit=true;
-if(/weapon\s+attribute\s+damage\s+reduction\s+null/i.test(txt)||txt.includes('武裝屬性損傷減輕無效'))traits.dmgReductionNull=true;
+if(/weapon\s+attribute\s+damage\s+reduction\s+null/i.test(txt)||/ignore\s+weapon\s+attribute\s+damage\s+reduction/i.test(txt)||txt.includes('武裝屬性損傷減輕無效')||txt.includes('武装属性ダメージ軽減無効'))traits.dmgReductionNull=true;
 let m=txt.match(/Increase\s+Critical\s+Damage\s+by\s+(\d+)%/i);
 if(!m)m=txt.match(/[Ii]ncrease\s+(?:own\s+)?[Cc]ritical\s+[Dd]amage(?:\s+dealt)?\s+by\s+(\d+)%/i);
 if(!m&&zh)m=txt.match(/自身爆擊損傷提升(\d+)%/);
@@ -17143,6 +17177,7 @@ const sheetBuffOn=!!S.dc.masterLeagueBuff&&dbMode;
 if(_defSheetMod){
 /* OP / supporter / Master League sheet mods — match damage-calc path for database defenders. */
 if(_defSheetMod.unitHp!=null)us.HP=Math.max(0,_defSheetMod.unitHp|0);
+if(_defSheetMod.unitEn!=null)us.EN=Math.max(0,_defSheetMod.unitEn|0);
 if(_defSheetMod.unitAtk!=null)us.Attack=Math.max(0,_defSheetMod.unitAtk|0);
 if(_defSheetMod.unitDefVal!=null)us.Defense=Math.max(0,_defSheetMod.unitDefVal|0);
 if(_defSheetMod.unitMob!=null)us.Mobility=Math.max(0,_defSheetMod.unitMob|0);
@@ -17495,8 +17530,11 @@ const td=(lb&&lb[tier])||(ud.stats&&{stats_no_cond:ud.stats});
 const uCp=!!(ud.has_cond_stats&&S.dc.defUnitCondPassive);
 const uKey=uCp?'stats_with_cond':'stats_no_cond';
 const defUnitStats=td?(td[uKey]||td.stats_no_cond||td.stats||[]):[];
+/* Unit Skill (1 turn) MOB%/ATK% when defender skill toggle is on (e.g. V2AB MOB +10%). */
+const usk=_dcGetDetectedUnitTurnBuffPercents(ud);
+const uskOn=!!S.dc.defUnitSkillActive&&((usk.atkPct|0)>0||(usk.mobPct|0)>0||(usk.defPct|0)>0);
 /* Always run sheet formula for database defenders (ML / OP / supporter). forPanel skips attacker-only support-counter. */
-const ctx={optionParts:S.dc.defOptionParts||[],supporters:S.dc.defSupporters||[],atkUnitData:ud,masterLeagueBuff:!!S.dc.masterLeagueBuff,grandOffensiveBuff:false};
+const ctx={optionParts:S.dc.defOptionParts||[],supporters:S.dc.defSupporters||[],atkUnitData:ud,masterLeagueBuff:!!S.dc.masterLeagueBuff,grandOffensiveBuff:false,unitTurnBuffAtk:uskOn};
 return _dcGetModifiedAttackerUnitStatsFromCtx(ctx,defUnitStats,true);
 }
 
@@ -17930,13 +17968,15 @@ try{
 if(type==='def_unit'){
 const d=await fetchDetailPayload('unit',sid,{});
 if(!d||d.error)return;
-S.dc.defUnitData=d;S.dc.defOptionParts=[];S.dc.defSupporters=[];S.dc.defUnitCondPassive=false;S.dc.defCharCondPassive=false;
+S.dc.defUnitData=d;S.dc.defOptionParts=[];S.dc.defSupporters=[];S.dc.defUnitCondPassive=false;
+S.dc.defUnitSkillActive=(_dcGetDetectedUnitSkillDmgTakenDown(d).pct|0)>0;
 const rec=d.recommend_character;const isSD=String(d.body_type||'')==='3';
 if(rec&&rec.id){
 if(isSD||!S.dc.defCharData){
 try{const cd=await fetchDetailPayload('character',String(rec.id),{});if(cd&&!cd.error)S.dc.defCharData=cd}catch(_){}
 }
 }
+S.dc.defCharCondPassive=_dcShouldAutoCharCondPassive(S.dc.defCharData,d);
 _dcSyncDefNpcFromDatabase();
 return;
 }
@@ -17945,7 +17985,8 @@ const ud=S.dc.defUnitData;
 if(ud&&String(ud.body_type||'')==='3')return;
 const d=await fetchDetailPayload('character',sid,{});
 if(!d||d.error)return;
-S.dc.defCharData=d;S.dc.defCharCondPassive=false;
+S.dc.defCharData=d;
+S.dc.defCharCondPassive=_dcShouldAutoCharCondPassive(d,ud);
 _dcSyncDefNpcFromDatabase();
 return;
 }
@@ -18671,6 +18712,57 @@ skillText=dets.join('\n').trim()||blob;
 });
 return{atkPct,defPct,mobPct,icon,skillText,skillName};
 }
+/** Unit Skill trait type 11 — inbound damage taken reduction (e.g. V2AB “Beam Damage Reduction” 20%). */
+function _dcGetDetectedUnitSkillDmgTakenDown(ud){
+const skills=(ud&&!ud._manual&&ud.skills)||[];
+let pct=0,weaponAttrs=[],attackTypes=[],icon='',skillName='',skillText='';
+skills.forEach(sk=>{
+(sk.traits||[]).forEach(tr=>{
+const typ=String(tr.trait_type_index||'');
+const val=Math.max(0,parseInt(tr.trait_value,10)||0);
+if(val<=0||typ!=='11')return;
+if(val<=pct)return;
+pct=val;
+weaponAttrs=(tr.active_weapon_attrs||[]).map(k=>String(k).toLowerCase()).filter(Boolean);
+attackTypes=(tr.active_attack_types||[]).map(k=>String(k).toLowerCase()).filter(Boolean);
+if(sk.icon)icon=sk.icon;
+skillName=String(sk.name||'').trim();
+skillText=String(tr.desc||'').trim()||_dcJoinUnitSkillTextBlob(sk);
+});
+});
+if(pct<=0){
+skills.forEach(sk=>{
+const blob=_dcJoinUnitSkillTextBlob(sk);
+const m=blob.match(/reduce\s+damage\s+taken\s+by\s+(\d+)\s*%/i)||blob.match(/被ダメージ(?:を)?(?:軽減|減少)[^0-9]*(\d+)\s*%/)||blob.match(/(?:受到的)?損傷(?:減輕|減少)[^0-9]*(\d+)\s*%/);
+if(!m)return;
+const val=parseInt(m[1],10)||0;
+if(val<=pct)return;
+pct=val;
+weaponAttrs=[];
+if(/\bbeam\b|ビーム|光束|鐳射/i.test(blob))weaponAttrs.push('beam');
+if(/\bphysical\b|物理/i.test(blob))weaponAttrs.push('physical');
+if(/\bspecial\b|特殊/i.test(blob))weaponAttrs.push('special');
+attackTypes=[];
+if(sk.icon)icon=sk.icon;
+skillName=String(sk.name||'').trim();
+skillText=blob;
+});
+}
+return{pct,weaponAttrs,attackTypes,icon,skillText,skillName};
+}
+/** Defender Unit Skill DTD when toggled on and incoming weapon matches attrs/types. Applies to EX (unlike I-Field / manual Unit DTD). */
+function _dcDefenderUnitSkillDmgTakenDownPct(ud,incomingWpn,skillOn){
+if(!skillOn||!ud||ud._manual||!incomingWpn)return 0;
+const det=_dcGetDetectedUnitSkillDmgTakenDown(ud);
+if((det.pct|0)<=0)return 0;
+const wKeys=new Set(_dcWeaponAttributeKeys(incomingWpn||{})||[]);
+const wAtkKeys=new Set(_dcWeaponAtkStatKeys(incomingWpn).map(s=>String(s).toLowerCase()));
+const wantAttrs=(det.weaponAttrs||[]).map(k=>String(k).toLowerCase());
+const wantAtk=(det.attackTypes||[]).map(k=>String(k).toLowerCase());
+if(wantAttrs.length&&!wantAttrs.some(k=>wKeys.has(k)))return 0;
+if(wantAtk.length&&!wantAtk.some(k=>wAtkKeys.has(k)))return 0;
+return Math.min(80,det.pct|0);
+}
 function _dcApplyUnitTurnBuffDefToMsDef(unitDef,ud){
 const F=Math.floor;
 if(!ud||ud._manual||!S.dc.unitTurnBuffDef)return unitDef;
@@ -18900,20 +18992,25 @@ const lpAd=_lf.sameGroupAdBonusPct|0;
 const atkEnt=_dcFindStatEntry(atkUnitStats,'Attack');
 const defEnt=_dcFindStatEntry(atkUnitStats,'Defense');
 const hpEnt=_dcFindStatEntry(atkUnitStats,'HP');
+const enEnt=_dcFindStatEntry(atkUnitStats,'EN');
 const mobEnt=_dcFindStatEntry(atkUnitStats,'Mobility');
 const moveEnt=_dcFindStatEntry(atkUnitStats,'Move')||_dcFindStatEntry(atkUnitStats,'MOV')||_dcFindStatEntry(atkUnitStats,'Movement');
 const atkBase=F(Math.max(0,atkEnt?atkEnt.base:0));
 const defBase=F(Math.max(0,defEnt?defEnt.base:0));
 const hpBase=F(Math.max(0,hpEnt?hpEnt.base:0));
+const enBase=F(Math.max(0,enEnt?enEnt.base:0));
 const mobBase=F(Math.max(0,mobEnt?mobEnt.base:0));
 const moveBase=F(Math.max(0,moveEnt?moveEnt.base:0));
 const pAtk=_dcStatPassivePctFromEntry(atkEnt);
 const pDef=_dcStatPassivePctFromEntry(defEnt);
 const pHp=_dcStatPassivePctFromEntry(hpEnt);
+const pEn=_dcStatPassivePctFromEntry(enEnt);
 const pMob=_dcStatPassivePctFromEntry(mobEnt);
 const pMove=_dcStatPassivePctFromEntry(moveEnt);
 let unitHp=_dcMsGrowthFromPct(hpBase,pHp+(opPct.HP|0)+lp+sheetBuffPct,'HP')+(opFlat.HP|0)+hpSupport;
 let unitDefVal=_dcMsGrowthFromPct(defBase,pDef+(opPct.Defense|0)+lp+lpAd+sheetBuffPct+(scDef|0),'Defense')+(opFlat.Defense|0);
+/* ML/GO buff EN (in-game); leader skills that say “except EN” stay excluded — no leaderPct on EN. */
+let unitEn=_dcMsGrowthFromPct(enBase,pEn+(opPct.EN|0)+sheetBuffPct,'EN')+(opFlat.EN|0);
 /* Move is never sheet-buffed (no ML/GO/leader/OP) — only unit base + own passive %. */
 let unitMove=_dcMsGrowthFromPct(moveBase,pMove,'Move');
 const opAt=opPct.Attack||0;
@@ -18942,7 +19039,7 @@ const mobDbCorePassive=F(mobBase*(100+pMob)/100);
 const atkDbCorePassive=F(atkBase*(100+pAtk)/100);
 /* Named-unit EX flat MOV (dual-gate needs CP; PEP-only when pair matches). */
 unitMove=_dcPilotPairUnitMovFlat(unitMove,c);
-return{unitAtk,unitHp,unitDefVal,unitMob,unitMove,atkSupport,hpSupport,leaderPct,leaderSameGroupAdBonusPct:lpAd|0,supportCounterPct:supCnt|0,unitAtkExSquadBase,unitAtkGrowthAfterOptions,unitDefExSquadBase,deltaExAtk,advantageFlatGrowthAtk:atkBase,advantageFlatGrowthDef:defBase,hpGrowthBase:hpBase,mobGrowthBase:mobBase,hpDbCorePassive,defDbCorePassive,mobDbCorePassive,atkDbCorePassive};
+return{unitAtk,unitHp,unitEn,unitDefVal,unitMob,unitMove,atkSupport,hpSupport,leaderPct,leaderSameGroupAdBonusPct:lpAd|0,supportCounterPct:supCnt|0,unitAtkExSquadBase,unitAtkGrowthAfterOptions,unitDefExSquadBase,deltaExAtk,advantageFlatGrowthAtk:atkBase,advantageFlatGrowthDef:defBase,hpGrowthBase:hpBase,enGrowthBase:enBase,mobGrowthBase:mobBase,hpDbCorePassive,defDbCorePassive,mobDbCorePassive,atkDbCorePassive};
 }
 function _dcGetModifiedAttackerUnitStatsForPanel(atkUnitStats){return _dcGetModifiedAttackerUnitStatsFromCtx(S.dc,atkUnitStats,true);}
 function _dcGetModifiedAttackerUnitStats(atkUnitStats){return _dcGetModifiedAttackerUnitStatsFromCtx(S.dc,atkUnitStats,false);}
@@ -19029,6 +19126,7 @@ const vigorDmgBonusPct=_dcVigorDmgBonusPct(S.dc.mpLevel);
 const vigorCritPct=Math.round((mp.critMult||0)*100);
 let defendMult=1.0;
 if(S.dc.defending)defendMult=S.dc.shield?0.6:0.8;
+/* Unit Skill type-11 DTD is a post-⑧ multiply like Defend (not ⑨ additive). Defend × Unit Skill stack. */
 
 const characterStatRatio=MX(0,charAtk-charDef)/5000;
 /** Unit slice: Firered RoundUp((UnAtk/10)−(UnDef/10))/5000 when DC_SHEET_UNIT_STAT_RATIO; else floor each tenth (legacy). */
@@ -19076,22 +19174,28 @@ const opDefDtdFromDef=_dcOptionPartIncomingDmgTakenDownPct(S.dc.defOptionParts||
 const manualDefDtd=S.dc.dmgTakenDownUnit||0;
 const autoDefDtd=opDefDtdFromDef+opDefDtdFromAtk;
 const dmgTakenDownUnitPct=manualDefDtd>0?manualDefDtd:autoDefDtd;
+/* Unit Skill type-11 (e.g. V2AB beam −20%): post-⑧ ×(1−pct/100), applies vs EX (unlike I-Field).
+ * Not ⑨ additive — additive canceled Damage Dealt Up and overshot in-game (154117 vs ~144609).
+ * Weapon “Ignore weapon attribute damage reduction” still nullifies I-Field/unit DTD only (existing EX path). */
+const unitSkillDtdPct=_dcDefenderUnitSkillDmgTakenDownPct(S.dc.defUnitData,wpn,!!S.dc.defUnitSkillActive);
+const unitSkillMult=(unitSkillDtdPct|0)>0?(100-Math.min(80,unitSkillDtdPct|0))/100:1;
 const takenDown=dmgTakenDownPilotPct+(isExWeapon?0:dmgTakenDownUnitPct);
 let battleDamage=C((baseDamage+damageCorrection)*terrainCorrection);
+const postDmgMult=defendMult*unitSkillMult;
 
 const totalNormalMultPct=userDmgIncreasePct+vigorDmgBonusPct+dmgTakenUpPct-takenDown;
 const scaledNormal=C(totalNormalMultPct*battleDamage/100);
-const combinedNormal=(battleDamage+scaledNormal)*defendMult;
+const combinedNormal=(battleDamage+scaledNormal)*postDmgMult;
 let normalDmg=MX(0,C(combinedNormal));
 
 const totalCritMultPct=userDmgIncreasePct+vigorDmgBonusPct+userCritDmgUpPct+dmgTakenUpPct-takenDown;
 const critCorrectionPct=vigorCritPct;
 const scaledCrit=C(totalCritMultPct*battleDamage/100);
 let crit125Trim=0;
-if((totalCritMultPct|0)===125&&defendMult===1&&(battleDamage|0)>=DC_CRIT125_TRIM_MIN_BATTLE_DAMAGE&&(combatWeaponPower|0)>0){
+if((totalCritMultPct|0)===125&&postDmgMult===1&&(battleDamage|0)>=DC_CRIT125_TRIM_MIN_BATTLE_DAMAGE&&(combatWeaponPower|0)>0){
 crit125Trim=F(MX(0,battleDamage-combatWeaponPower)/DC_CRIT125_TRIM_DIV);
 }
-const combinedCrit=MX(0,(battleDamage+scaledCrit)*defendMult-crit125Trim);
+const combinedCrit=MX(0,(battleDamage+scaledCrit)*postDmgMult-crit125Trim);
 const critPreVigor=MX(0,combinedCrit);
 let critDmg=MX(0,C(critPreVigor*(critCorrectionPct+100)/100-1e-9));
 
@@ -19111,9 +19215,9 @@ const squadCondAtkPct=S.dc.squadCondAtkPct|0,squadCondDefPct=S.dc.squadCondDefPc
 return{normalDmg,critDmg,inRange,npcHp,accuracy,critical,baseDamage,battleDamage,weaponPower,combatWeaponPower,rawWpnPower,charAtk,charDef,unitAtk,unitDef,unitMob,
 characterStatRatio,unitStatRatio,charSigmoid,unitSigmoid,
 atkCombined,defCombined,offenseComponent,defenseComponent,
-damageCorrection:C(damageCorrection),terrainCorrection,totalNormalMultPct,totalCritMultPct,critCorrectionPct,critPreVigor,crit125Trim,scaledNormal,scaledCrit,defendMult,isExWeapon,
+damageCorrection:C(damageCorrection),terrainCorrection,totalNormalMultPct,totalCritMultPct,critCorrectionPct,critPreVigor,crit125Trim,scaledNormal,scaledCrit,defendMult,unitSkillMult,postDmgMult,isExWeapon,
 defMsDefensePair,defMsStatsRawDefense,defMsBonusDefense,defDebuffFlatSubtract,qubPlusOneApplied,
-traitDistPow,traitHpPow,traitMpPow,traitWpnDistBasePct:wtTraits.distPowerMax|0,traitWpnCoreBonusPct:wtTraits.distCoreMax|0,finalWpnPowOverride,vigorDmgBonusPct,userDmgIncreasePct,exSquadAtkPct,squadCondAtkPct,squadCondDefPct,counterOwnAtkPct,supportCounterAtkPctApplied,advantageTagAtkPct,advantageGrowthFlatOmitted:false,userCritDmgUpPct,dmgTakenUpPct,dmgTakenUpGeneric,dmgTakenUpTyped,takenDown,defDebuffPct,
+traitDistPow,traitHpPow,traitMpPow,traitWpnDistBasePct:wtTraits.distPowerMax|0,traitWpnCoreBonusPct:wtTraits.distCoreMax|0,finalWpnPowOverride,vigorDmgBonusPct,userDmgIncreasePct,exSquadAtkPct,squadCondAtkPct,squadCondDefPct,counterOwnAtkPct,supportCounterAtkPctApplied,advantageTagAtkPct,advantageGrowthFlatOmitted:false,userCritDmgUpPct,dmgTakenUpPct,dmgTakenUpGeneric,dmgTakenUpTyped,takenDown,unitSkillDtdPct,defDebuffPct,
 pilotBoostPct:0,pilotAtkDownPct:0,unitAtkDownPct:0,accDownPct,mobDownPct,wpnElem:_dcWeaponAttributeKeys(wpn).join('/'),
 hitRate:accResult.finalHitRate,hitRateDetails:accResult,isSuperVigor:_dcNormMpLevel(S.dc.mpLevel)==='super'};
 }
@@ -19411,6 +19515,7 @@ h+=_dcBattleStatsRow('Unit DEF',fmtN(uDefEff)+(deb>0?` (${deb}% debuff)`:''));
 h+=_dcBattleStatsRow('Pilot DEF',fmtN(cDef));
 h+=_dcBattleStatsRow('Damage Taken Up',String(r.dmgTakenUpTyped|0)+'%');
 h+=_dcBattleStatsRow('Damage Taken Down',String(r.takenDown|0)+'%');
+if((r.unitSkillDtdPct|0)>0)h+=_dcBattleStatsRow('Unit Skill DR',`×${((r.unitSkillMult!=null?r.unitSkillMult:1)).toFixed(2)} (−${r.unitSkillDtdPct|0}%)`);
 h+=_dcBattleStatsRow('Hit rate',String(r.hitRate)+'%');
 h+=_dcBattleStatsRow('Max HP',fmtN(hp));
 h+='</div>';
@@ -19481,13 +19586,13 @@ const supLbl=rr.isSuperVigor?t('dc_super_crit_dmg'):t('dc_crit_dmg');
 return['',
 'Damage formulas (Firered sheet order):',
 '  scaledNormal = ceil(totalNormalMultPct × battleDamage / 100)',
-'  combinedNormal = (battleDamage + scaledNormal) × defendMult',
+'  combinedNormal = (battleDamage + scaledNormal) × defendMult × unitSkillMult',
 '  Normal damage = max(0, ceil(combinedNormal))',
 '  totalNormalMultPct = (passive Damage Dealt Up%) + (vigor damage bonus%) + (weapon Damage Taken Up%) − (Damage Taken Down%)',
-`  Plugged in: battleDamage=${fmtN(rr.battleDamage)}, scaledNormal=${fmtN(rr.scaledNormal)}, totalNormalMultPct=${rr.totalNormalMultPct|0}% (passive ${rr.userDmgIncreasePct|0}% + vigor ${rr.vigorDmgBonusPct|0}% + taken up ${rr.dmgTakenUpPct|0}% − taken down ${rr.takenDown|0}%), defendMult=${rr.defendMult}`,
+`  Plugged in: battleDamage=${fmtN(rr.battleDamage)}, scaledNormal=${fmtN(rr.scaledNormal)}, totalNormalMultPct=${rr.totalNormalMultPct|0}% (passive ${rr.userDmgIncreasePct|0}% + vigor ${rr.vigorDmgBonusPct|0}% + taken up ${rr.dmgTakenUpPct|0}% − taken down ${rr.takenDown|0}%), defendMult=${rr.defendMult}, unitSkillMult=${rr.unitSkillMult!=null?rr.unitSkillMult:1}`,
 `  → Normal damage = ${fmtN(rr.normalDmg)}`,
-'  scaledCrit = ceil(totalCritMultPct × battleDamage / 100); crit125Trim = (totalCritMult=125% ∧ defendMult=1 ∧ ⑧≥threshold ∧ W>0) ? floor(max(0,⑧−combatWeaponPower)/1181) : 0',
-'  combinedCrit = max(0, (battleDamage + scaledCrit) × defendMult − crit125Trim)',
+'  scaledCrit = ceil(totalCritMultPct × battleDamage / 100); crit125Trim = (totalCritMult=125% ∧ postDmgMult=1 ∧ ⑧≥threshold ∧ W>0) ? floor(max(0,⑧−combatWeaponPower)/1181) : 0',
+'  combinedCrit = max(0, (battleDamage + scaledCrit) × defendMult × unitSkillMult − crit125Trim)',
 `  ${supLbl} = max(0, ceil(combinedCrit × (vigorCritMultPct+100) / 100))`,
 '  totalCritMultPct = same pool as normal plus (Critical Damage Up % from Attacker Parameters)',
 `  Plugged in: totalCritMultPct=${rr.totalCritMultPct|0}% (includes crit dmg up input ${rr.userCritDmgUpPct|0}%), vigorCritMultPct=${rr.critCorrectionPct|0}%, scaledCrit=${fmtN(rr.scaledCrit)}, crit125Trim=${fmtN(rr.crit125Trim|0)}, combinedCrit=${fmtN(rr.critPreVigor)}`,

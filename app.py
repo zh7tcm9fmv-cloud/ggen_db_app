@@ -18099,7 +18099,11 @@ def compute_char_stat_totals_with_abilities(char_id, ri, ldc, grown):
     return totals
 
 def compute_char_stat_totals_sp_list(char_id, ri, ldc, grown_sp):
-    """SP growth column + SP ability bonuses (same as get_character sp_stats / non-EX)."""
+    """SP growth + unconditional SP ability % only — same as get_character `sp_stats` (ssne).
+
+    Must use _accumulate_character_trait_percent_buckets (spbs_u), not a naive line scan.
+    Title-only skips miss vigor/Max Extended lines, so SP-off-CP wrongly matched SP+CP
+    and the CP toggle looked broken in table/list view."""
     fa = [x for x in extract_data_list(char_abil) if normalize_id(x.get('CharacterId', '')) == char_id]
     def build_ab(ab):
         bid = normalize_id(ab.get('AbilityId', '')); spid = normalize_id(ab.get('SpAbilityId') or ab.get('spAbilityId'))
@@ -18109,27 +18113,11 @@ def compute_char_stat_totals_sp_list(char_id, ri, ldc, grown_sp):
             bab['sp_replacement'] = build_ability_entry(spid, d['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map, d['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, d['lineage_lookup'], d['series_name_map'], ability_resource_map, d['abil_desc_map'], sort_order=int(ab.get('SortOrder', 0)), lang_code=CALC_LANG)
         return bab
     ac = [build_ab(ab) for ab in sorted(fa, key=lambda x: int(x.get('SortOrder', 0)))]
-    spbs = {s: 0 for s in CHAR_STAT_ORDER}
-    for bab in ac:
-        sab = bab.get('sp_replacement', bab)
-        if trait_title_implies_conditional_stat_bonuses((sab.get('name') or '')):
-            continue
-        for d2 in sab.get('details', []):
-            rawt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
-            spl = [ln.strip() for ln in re.split(r'\r?\n+', rawt) if ln.strip()]
-            if not spl:
-                spl = [rawt]
-            for line in spl:
-                if _char_trait_line_is_squad_unit_effect(line, sab):
-                    continue
-                for s, p in extract_stat_percent_char(line, rawt, char_id=char_id).items():
-                    if sab.get('is_ex', False):
-                        continue
-                    spbs[s] = spbs.get(s, 0) + p
+    spbs_u = _accumulate_character_trait_percent_buckets(ac, char_id, ldc)[5]
     totals = {}
     for s in CHAR_STAT_ORDER:
         sbv = grown_sp.get(s, 0)
-        sbon = math.floor(sbv * spbs[s] / 100) if sbv > 0 else 0
+        sbon = math.floor(sbv * spbs_u[s] / 100) if sbv > 0 else 0
         totals[s] = sbv + sbon
     return totals
 
@@ -29814,8 +29802,8 @@ def list_characters():
     want_stat_bounds = request.args.get('stat_bounds', '').strip().lower() in ('1', 'true', 'yes')
     sb_ck = 'sbd1' if want_stat_bounds else 'sbd0'
     rb_ck = 'rb1' if ranking_bulk else 'rb0'
-    # cl38: InstantBrowse facets on ranking_bulk (source/series/skills/abilities + tag_ids).
-    ck = f"cl38_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_{ability_ck}_lop{_cbc['lineage_combine']}_sop{_cbc['series_combine']}_skop{_cbc['skill_combine']}_abop{_cbc['trait_combine']}_gs{1 if grid_skills else 0}_{sb_ck}_{rb_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    # cl39: SP list totals use spbs_u only (CP toggle no longer a no-op when SP is on).
+    ck = f"cl39_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_{ability_ck}_lop{_cbc['lineage_combine']}_sop{_cbc['series_combine']}_skop{_cbc['skill_combine']}_abop{_cbc['trait_combine']}_gs{1 if grid_skills else 0}_{sb_ck}_{rb_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached:
         return jsonify_preserialized(cached, ck, public=True, max_age=3600, convert_images=False)
@@ -36244,15 +36232,14 @@ def get_character(char_id):
                 if _unit_has_pilot_cond_passive(uid_m, ld, lc, include_flat_move=False):
                     pair_unit_mov_cp_gate[uid_m] = True
         # pair_units / pair_ok computed above (manual CHAR_PAIR_* ∪ trait-derived pilot-(EX) gates).
-        # Still show toggle for UR EX-slot % (spen/spes) when recommend does not match.
+        # Show CP when any of: non-pair conditionals (Vigor Extended etc. → has_ex_stats),
+        # UR EX-slot % (has_ex_slot_only; still when recommend unit does not match), or MOV CP gate.
+        # Do not hide has_ex_stats just because an unmet pair gate exists (Auel Neider / Extended).
         has_ex_slot_only = any(spen[s] + (spen_pair[s] if pair_ok else 0) != 0 for s in CHAR_STAT_ORDER) or any(spes[s] + (spes_pair[s] if pair_ok else 0) != 0 for s in CHAR_STAT_ORDER) or bool(ex_supercharged_tiers)
         has_mov_cp = bool(pair_unit_mov_cp_gate) and (
             pair_ok or any(normalize_id(u) == normalize_id(rec_uid_for_pair or '') for u in pair_unit_mov_cp_gate)
         )
-        if pair_units and not pair_ok:
-            has_conditional_passive = has_ex_slot_only or has_mov_cp
-        else:
-            has_conditional_passive = has_ex_stats or has_mov_cp
+        has_conditional_passive = bool(has_ex_stats or has_ex_slot_only or has_mov_cp)
         result = {'id': char_id, 'name': cn, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'acquisition_icon': acq_icon or '', 'stats': stats, 'stats_with_ex': stats_with_ex, 'ex_supercharged_tiers': ex_supercharged_tiers_payload, 'has_ex_stats': has_ex_stats, 'has_conditional_passive': has_conditional_passive, 'has_sp': has_sp, 'sp_stats': sp_stats, 'sp_stats_with_ex': sp_stats_with_ex, 'pair_unit_stat_mod': pair_mod, 'pair_unit_counter_atk_mod': counter_atk_mod, 'pair_unit_mov_flat': pair_mov_flat or None, 'pair_unit_mov_cp_gate': pair_unit_mov_cp_gate or None, 'tags': resolve_tags(char_lin_map, char_id, lc, 'character'), 'series': resolve_series(ld['char_ser_map'].get(char_id, ''), lc), 'abilities': abilities, 'skills': skills, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'recommend_unit': recommend_unit, 'is_limited_time': char_id in LIMITED_TIME_CHARACTER_IDS, 'is_schedule_shell': entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0'))}
         if view_ranking:
             result['abilities'] = []

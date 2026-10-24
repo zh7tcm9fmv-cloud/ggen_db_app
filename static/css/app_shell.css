@@ -3665,8 +3665,14 @@ html.cmp-bar-open:has(#cmpFloat.visible) .main-content{padding-bottom:calc(56px 
 .dc-picked .list-thumb-composite--picker{flex-shrink:0}
 .dc-picked-info{flex:1;min-width:0}
 .dc-picked-name{font-size:14px;font-weight:700;color:var(--text-primary);line-height:1.25;overflow-wrap:anywhere;word-break:break-word}
-.dc-picked-badges{display:flex;gap:4px;align-items:center;margin-top:2px}
+.dc-picked-badges{display:flex;gap:4px;align-items:center;margin-top:2px;flex-wrap:wrap}
 .dc-picked-badges img{height:20px}
+/* CP chip beside rarity/role — not a full-width below-portrait row */
+.dc-picked-badges .dc-picked-cp-inline{display:inline-flex;align-items:center;flex-shrink:0;margin-left:2px}
+.dc-picked-badges .dc-picked-cp-inline .dc-dc-cond-toggle{margin:0!important;justify-content:flex-start}
+.dc-picked-badges .dc-picked-cp-inline .dc-dc-cond-toggle .toggle-label.toggle-label--cp-chip{min-height:22px}
+.dc-picked-badges .dc-picked-cp-inline .list-cond-toggle.dc-dc-cp-chip{width:36px;height:22px;padding:1px}
+.dc-picked-badges .dc-picked-cp-inline .list-cond-toggle.dc-dc-cp-chip .cp-wide{font-size:13px}
 .dc-picked-controls{flex:1 1 140px;min-width:0;display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:4px}
 .dc-dc-cond-toggle{margin:0!important;justify-content:flex-end}
 .dc-dc-cond-toggle .toggle-label{font-size:11px;font-weight:600;max-width:min(160px,28vw);text-align:right;line-height:1.25}
