@@ -3667,12 +3667,20 @@ html.cmp-bar-open:has(#cmpFloat.visible) .main-content{padding-bottom:calc(56px 
 .dc-picked-name{font-size:14px;font-weight:700;color:var(--text-primary);line-height:1.25;overflow-wrap:anywhere;word-break:break-word}
 .dc-picked-badges{display:flex;gap:4px;align-items:center;margin-top:2px;flex-wrap:wrap}
 .dc-picked-badges img{height:20px}
-/* CP chip beside rarity/role — not a full-width below-portrait row */
+/* CP chip + LB pips beside rarity/role — compact badge-row height (not a full-width LB bar) */
 .dc-picked-badges .dc-picked-cp-inline{display:inline-flex;align-items:center;flex-shrink:0;margin-left:2px}
 .dc-picked-badges .dc-picked-cp-inline .dc-dc-cond-toggle{margin:0!important;justify-content:flex-start}
 .dc-picked-badges .dc-picked-cp-inline .dc-dc-cond-toggle .toggle-label.toggle-label--cp-chip{min-height:22px}
 .dc-picked-badges .dc-picked-cp-inline .list-cond-toggle.dc-dc-cp-chip{width:36px;height:22px;padding:1px}
 .dc-picked-badges .dc-picked-cp-inline .list-cond-toggle.dc-dc-cp-chip .cp-wide{font-size:13px}
+.dc-picked-badges .dc-lb-inline-wrap--badge{display:inline-flex;align-items:center;flex-shrink:0;margin-left:2px;align-self:center}
+.dc-picked-badges .dc-lb-inline-wrap--badge .dc-lb-tier-details{max-width:none;width:max-content;min-width:0}
+.dc-picked-badges .dc-lb-inline-wrap--badge .cmp-lb-summary{min-height:22px;height:22px;padding:1px 6px;gap:2px;width:auto;justify-content:center;box-sizing:border-box}
+.dc-picked-badges .dc-lb-inline-wrap--badge .cmp-lb-summary img{width:14px;height:14px}
+#dcAtkUnitArea .dc-picked-badges .cmp-lb-details.dc-lb-tier-details,
+#dcDefDbUnitSlot .dc-picked-badges .cmp-lb-details.dc-lb-tier-details{width:max-content;min-width:0;max-width:none;z-index:50}
+#dcAtkUnitArea .dc-picked-badges .cmp-lb-menu,
+#dcDefDbUnitSlot .dc-picked-badges .cmp-lb-menu{left:0;right:auto;min-width:max(100%,120px);width:max-content}
 .dc-picked-controls{flex:1 1 140px;min-width:0;display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:4px}
 .dc-dc-cond-toggle{margin:0!important;justify-content:flex-end}
 .dc-dc-cond-toggle .toggle-label{font-size:11px;font-weight:600;max-width:min(160px,28vw);text-align:right;line-height:1.25}
@@ -3950,8 +3958,7 @@ html.cmp-bar-open:has(#cmpFloat.visible) .main-content{padding-bottom:calc(56px 
 #dcAtkUnitArea .cmp-lb-details.dc-lb-tier-details,#dcDefDbUnitSlot .cmp-lb-details.dc-lb-tier-details{width:max-content;min-width:148px;max-width:none;z-index:50}
 #dcAtkUnitArea .cmp-lb-menu{left:0;right:auto;min-width:100%;width:max-content;box-sizing:border-box;z-index:100}
 #dcAtkUnitArea details.cmp-lb-details.dc-lb-tier-details{overflow:visible}
-/* 2-row picked card (all widths): thumb|name|Change on row 1; CP/LB below on row 2.
-   Avoid display:contents — it dumped LB into the flex row and crushed names to ~24px. */
+/* Picked card: thumb | name+badges(CP+LB) | Change. Optional row 2 = Normal/SP/SSP only. */
 #dcAtkUnitArea .dc-picked,#dcDefDbUnitSlot .dc-picked,#dcAtkCharArea .dc-picked,#dcDefDbCharSlot .dc-picked{display:grid;grid-template-columns:auto minmax(0,1fr) auto;grid-template-rows:auto auto;align-items:start;column-gap:12px;row-gap:8px}
 #dcAtkUnitArea .dc-picked>.list-thumb-composite--picker,#dcDefDbUnitSlot .dc-picked>.list-thumb-composite--picker,
 #dcAtkCharArea .dc-picked>.list-thumb-composite--picker,#dcDefDbCharSlot .dc-picked>.list-thumb-composite--picker{grid-column:1;grid-row:1}
@@ -3963,10 +3970,7 @@ html.cmp-bar-open:has(#cmpFloat.visible) .main-content{padding-bottom:calc(56px 
 #dcAtkCharArea .dc-picked>.dc-picked-change,#dcDefDbCharSlot .dc-picked>.dc-picked-change{grid-column:3;grid-row:1;align-self:start;margin-left:0}
 .dc-atk-unit-below-portrait,.dc-atk-char-below-portrait{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;justify-content:flex-start;grid-column:1/-1;grid-row:2;width:100%;min-width:0;box-sizing:border-box}
 #dcAtkUnitArea .dc-picked>.dc-atk-unit-below-portrait .dc-picked-controls,#dcDefDbUnitSlot .dc-picked>.dc-atk-unit-below-portrait .dc-picked-controls{flex:0 1 auto;min-width:0;align-items:flex-start;justify-content:flex-start}
-#dcAtkUnitArea .dc-picked>.dc-atk-unit-below-portrait .dc-unit-lb-stat-cluster,#dcDefDbUnitSlot .dc-picked>.dc-atk-unit-below-portrait .dc-unit-lb-stat-cluster{flex:1 1 100%;min-width:0;justify-content:flex-start}
-#dcAtkUnitArea .dc-picked>.dc-atk-unit-below-portrait .dc-lb-inline-wrap,#dcDefDbUnitSlot .dc-picked>.dc-atk-unit-below-portrait .dc-lb-inline-wrap{width:100%;max-width:100%}
-#dcAtkUnitArea .dc-picked>.dc-atk-unit-below-portrait .cmp-lb-details.dc-lb-tier-details,#dcDefDbUnitSlot .dc-picked>.dc-atk-unit-below-portrait .cmp-lb-details.dc-lb-tier-details{width:100%!important;min-width:0;max-width:100%}
-#dcAtkUnitArea .dc-picked>.dc-atk-unit-below-portrait .cmp-lb-summary,#dcDefDbUnitSlot .dc-picked>.dc-atk-unit-below-portrait .cmp-lb-summary{width:100%;box-sizing:border-box;justify-content:center}
+#dcAtkUnitArea .dc-picked>.dc-atk-unit-below-portrait .dc-unit-lb-stat-cluster,#dcDefDbUnitSlot .dc-picked>.dc-atk-unit-below-portrait .dc-unit-lb-stat-cluster{flex:1 1 auto;min-width:0;justify-content:flex-start}
 #dcAtkCharArea .dc-picked>.dc-atk-char-below-portrait .dc-picked-controls,#dcDefDbCharSlot .dc-picked>.dc-atk-char-below-portrait .dc-picked-controls{flex:0 1 auto;min-width:0;align-items:flex-start;justify-content:flex-start}
 #dcAtkCharArea .dc-picked>.dc-atk-char-below-portrait .dc-dc-cond-toggle .toggle-label,#dcDefDbCharSlot .dc-picked>.dc-atk-char-below-portrait .dc-dc-cond-toggle .toggle-label{max-width:none;text-align:left;white-space:normal}
 /* Defender Database mode: same vertical stack as attacker (unit → pilot → OP → supporter). */

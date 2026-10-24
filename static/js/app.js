@@ -11266,15 +11266,13 @@ for(let tt=0;tt<=maxTier;tt++){
 const p=cmpLbPipsAtTier(tt);
 lbMenu+=`<button type="button" class="cmp-lb-opt${tt===tier?' is-active':''}" onclick="setDcDefLbTier(${tt});var _ddb=document.getElementById('dcDefLbTierDetails');if(_ddb)_ddb.open=false" role="option" aria-selected="${tt===tier}">${cmpLbPipsRow(p[0],p[1],p[2])}</button>`;
 }
-lbBlock=`<div class="dc-lb-inline-wrap"><details id="dcDefLbTierDetails" class="cmp-lb-details dc-lb-tier-details"><summary class="cmp-lb-summary" title="${esc(t('cmp_lb'))}">${cmpLbPipsRow(cur[0],cur[1],cur[2])}</summary><div class="cmp-lb-menu" role="listbox" aria-label="${esc(t('cmp_lb'))}">${lbMenu}</div></details></div>`;
+lbBlock=`<div class="dc-lb-inline-wrap dc-lb-inline-wrap--badge"><details id="dcDefLbTierDetails" class="cmp-lb-details dc-lb-tier-details"><summary class="cmp-lb-summary" title="${esc(t('cmp_lb'))}">${cmpLbPipsRow(cur[0],cur[1],cur[2])}</summary><div class="cmp-lb-menu" role="listbox" aria-label="${esc(t('cmp_lb'))}">${lbMenu}</div></details></div>`;
 }
 let unitCpBeside='';
 if(ud.has_cond_stats||_detailUnitHasCondWeaponRange(ud,!!(S.dc&&S.dc.unitStatMode==='ssp'))){
 unitCpBeside=_dcPickedCpBesideRoleHtml(!!S.dc.defUnitCondPassive,'toggleDcDefUnitCondPassive');
 }
-const lbStatCluster=lbBlock?`<div class="dc-unit-lb-stat-cluster">${lbBlock}</div>`:'';
-const belowPortrait=lbStatCluster?`<div class="dc-atk-unit-below-portrait">${lbStatCluster}</div>`:'';
-uEl.innerHTML=`<div class="dc-picked">${_dcPickedEntityThumbHtml(ud,'unit',52)}<div class="dc-picked-info"><div class="dc-picked-name">${esc(ud.name)}</div><div class="dc-picked-badges">${ud.rarity_icon?`<img src="${imgUrl(ud.rarity_icon)}">`:''}${ud.role_icon?`<img src="${imgUrl(ud.role_icon)}">`:''}${unitCpBeside}</div></div>${belowPortrait}<button type="button" class="dc-picked-change" onclick="openDcPicker('def_unit')">${t('dc_change')}</button></div>`;
+uEl.innerHTML=`<div class="dc-picked">${_dcPickedEntityThumbHtml(ud,'unit',52)}<div class="dc-picked-info"><div class="dc-picked-name">${esc(ud.name)}</div><div class="dc-picked-badges">${ud.rarity_icon?`<img src="${imgUrl(ud.rarity_icon)}">`:''}${ud.role_icon?`<img src="${imgUrl(ud.role_icon)}">`:''}${unitCpBeside}${lbBlock}</div></div><button type="button" class="dc-picked-change" onclick="openDcPicker('def_unit')">${t('dc_change')}</button></div>`;
 }else{
 uEl.innerHTML=`<button type="button" class="dc-pick-btn" onclick="openDcPicker('def_unit')">${t('dc_pick_unit')}</button>`;
 }
@@ -15505,7 +15503,7 @@ for(let tt=0;tt<=maxTier;tt++){
 const p=cmpLbPipsAtTier(tt);
 lbMenu+=`<button type="button" class="cmp-lb-opt${tt===tier?' is-active':''}" onclick="setDcLbTier(${tt});var _dlb=document.getElementById('dcLbTierDetails');if(_dlb)_dlb.open=false" role="option" aria-selected="${tt===tier}">${cmpLbPipsRow(p[0],p[1],p[2])}</button>`;
 }
-lbBlock=`<div class="dc-lb-inline-wrap"><details id="dcLbTierDetails" class="cmp-lb-details dc-lb-tier-details"><summary class="cmp-lb-summary" title="${esc(t('cmp_lb'))}">${cmpLbPipsRow(cur[0],cur[1],cur[2])}</summary><div class="cmp-lb-menu" role="listbox" aria-label="${esc(t('cmp_lb'))}">${lbMenu}</div></details></div>`;
+lbBlock=`<div class="dc-lb-inline-wrap dc-lb-inline-wrap--badge"><details id="dcLbTierDetails" class="cmp-lb-details dc-lb-tier-details"><summary class="cmp-lb-summary" title="${esc(t('cmp_lb'))}">${cmpLbPipsRow(cur[0],cur[1],cur[2])}</summary><div class="cmp-lb-menu" role="listbox" aria-label="${esc(t('cmp_lb'))}">${lbMenu}</div></details></div>`;
 }
 let unitCpBeside='';
 if(ud.has_cond_stats||_detailUnitHasCondWeaponRange(ud,!!(S.dc&&S.dc.unitStatMode==='ssp'))){
@@ -15520,9 +15518,8 @@ const tfBtn=ud.transform_partner_id?`<button type="button" class="sp-toggle-btn$
 if(spModeBtns||tfBtn){
 unitStatModeHtml=`<div class="dc-lb-row dc-unit-stat-mode-row" style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">${spModeBtns||''}${tfBtn||''}</div>`;
 }
-const lbStatCluster=(lbBlock||unitStatModeHtml)?`<div class="dc-unit-lb-stat-cluster">${lbBlock}${unitStatModeHtml}</div>`:'';
-const atkBelowPortrait=lbStatCluster?`<div class="dc-atk-unit-below-portrait">${lbStatCluster}</div>`:'';
-area.innerHTML=`<div class="dc-picked">${_dcPickedEntityThumbHtml(ud,'unit',52)}<div class="dc-picked-info"><div class="dc-picked-name">${esc(ud.name)}</div><div class="dc-picked-badges">${ud.rarity_icon?`<img src="${imgUrl(ud.rarity_icon)}">`:''}${ud.role_icon?`<img src="${imgUrl(ud.role_icon)}">`:''}${unitCpBeside}</div></div>${atkBelowPortrait}<button type="button" class="dc-picked-change" onclick="openDcPicker('unit')">${t('dc_change')}</button></div>`;
+const atkBelowPortrait=unitStatModeHtml?`<div class="dc-atk-unit-below-portrait"><div class="dc-unit-lb-stat-cluster">${unitStatModeHtml}</div></div>`:'';
+area.innerHTML=`<div class="dc-picked">${_dcPickedEntityThumbHtml(ud,'unit',52)}<div class="dc-picked-info"><div class="dc-picked-name">${esc(ud.name)}</div><div class="dc-picked-badges">${ud.rarity_icon?`<img src="${imgUrl(ud.rarity_icon)}">`:''}${ud.role_icon?`<img src="${imgUrl(ud.role_icon)}">`:''}${unitCpBeside}${lbBlock}</div></div>${atkBelowPortrait}<button type="button" class="dc-picked-change" onclick="openDcPicker('unit')">${t('dc_change')}</button></div>`;
 _dcUpdateExSquadAtkGroupVisibility();
 _dcUpdateSquadConditionGroupVisibility();
 _dcSyncSquadCondEffectiveFromState();
@@ -15606,14 +15603,17 @@ const counterNote=(cPct>0)?'<div style="font-size:10px;color:var(--accent-cyan);
 const unitModNote=pairNote+counterNote;
 const vigorCondNote=_dcIsVigorCondActive()?'<div style="margin-top:4px;padding:4px 8px;background:rgba(250,204,21,0.08);border:1px solid rgba(250,204,21,0.28);border-radius:4px;font-size:11px;color:#eab308">Vigor condition met — see unit abilities for in-battle effects.</div>':'';
 let unitTurnBuffHtml='';
-if((utb.atkPct|0)>0||(utb.defPct|0)>0||(utb.mobPct|0)>0){
-const uskIcon=utb.icon?`<img src="${imgUrl(utb.icon)}" alt="" width="20" height="20" style="flex:0 0 auto;border-radius:50%;object-fit:cover" loading="lazy" decoding="async">`:'';
-const uskHint=esc(String(utb.skillText||'').trim());
+const uskDealt=_dcGetDetectedUnitSkillDmgDealtUp(ud);
+if((utb.atkPct|0)>0||(utb.defPct|0)>0||(utb.mobPct|0)>0||(uskDealt.pct|0)>0){
+const uskIconSrc=utb.icon||uskDealt.icon||'';
+const uskIcon=uskIconSrc?`<img src="${imgUrl(uskIconSrc)}" alt="" width="20" height="20" style="flex:0 0 auto;border-radius:50%;object-fit:cover" loading="lazy" decoding="async">`:'';
+const uskHint=esc(String(utb.skillText||uskDealt.skillText||'').trim());
 unitTurnBuffHtml=`<div class="dc-section-label" style="margin-top:10px;color:var(--accent-cyan)">Unit skill (1 turn)</div><div style="font-size:12px;line-height:1.6">`;
-if((utb.atkPct|0)>0||(utb.mobPct|0)>0){
+if((utb.atkPct|0)>0||(utb.mobPct|0)>0||(uskDealt.pct|0)>0){
 const bits=[];
 if((utb.atkPct|0)>0)bits.push(`MS ATK +${utb.atkPct}%`);
 if((utb.mobPct|0)>0)bits.push(`MS MOB +${utb.mobPct}%`);
+if((uskDealt.pct|0)>0)bits.push(`Damage dealt +${uskDealt.pct|0}%`);
 unitTurnBuffHtml+=`<label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin-bottom:4px"><input type="checkbox" ${S.dc.unitTurnBuffAtk?'checked':''} onchange="setDcUnitTurnBuffAtk(this.checked)">${uskIcon}<span>${bits.join(' · ')} (1 turn)</span></label>`;
 }
 if((utb.defPct|0)>0)unitTurnBuffHtml+=`<label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin-bottom:4px"><input type="checkbox" ${S.dc.unitTurnBuffDef?'checked':''} onchange="setDcUnitTurnBuffDef(this.checked)">${uskIcon}<span>MS DEF +${utb.defPct}% (1 turn)</span></label>`;
@@ -15772,18 +15772,33 @@ return`<div class="dc-sheet-buff-wrap" style="margin-top:10px;display:flex;flex-
 <div style="font-size:10px;color:var(--text-muted);line-height:1.35">${esc(t('dc_sheet_buff_hint'))}</div>
 </div>`;
 }
-/** Defender Unit Skill damage-taken reduction (trait type 11), e.g. V2AB beam −20% — applies vs EX. */
+/** Defender Unit Skill combat effects (type 11 DR, type 6 barrier, type 8 nullify, turn ATK/DEF/MOB). */
 function _dcHtmlDefUnitSkillToggle(){
-const det=_dcGetDetectedUnitSkillDmgTakenDown(S.dc.defUnitData);
-if((det.pct|0)<=0)return'';
+const ud=S.dc.defUnitData;
+if(!_dcUnitSkillHasCombatEffect(ud))return'';
+const det=_dcGetDetectedUnitSkillDmgTakenDown(ud);
+const bar=_dcGetDetectedUnitSkillBarrier(ud);
+const nul=_dcGetDetectedUnitSkillInitialNull(ud);
+const turn=_dcGetDetectedUnitTurnBuffPercents(ud);
 const on=!!S.dc.defUnitSkillActive;
-const uskIcon=det.icon?`<img src="${imgUrl(det.icon)}" alt="" style="width:18px;height:18px;object-fit:contain;flex-shrink:0" loading="lazy" onerror="this.style.display='none'">`:'';
+const iconSrc=det.icon||bar.icon||nul.icon||turn.icon||'';
+const uskIcon=iconSrc?`<img src="${imgUrl(iconSrc)}" alt="" style="width:18px;height:18px;object-fit:contain;flex-shrink:0" loading="lazy" onerror="this.style.display='none'">`:'';
+const bits=[];
+if((det.pct|0)>0){
 const attrLab=(det.weaponAttrs||[]).map(weaponAttrKeyLabel).filter(Boolean).join('/');
 const atkLab=(det.attackTypes||[]).map(k=>DC_ATK_TYPE_LABEL_MAP[String(k).toLowerCase()]||String(k)).filter(Boolean).join('/');
 const gate=[attrLab,atkLab].filter(Boolean).join(' · ')||'weapon';
-const tip=String(det.skillText||det.skillName||'').trim();
+bits.push(`Damage taken −${det.pct|0}% vs ${gate} (nullified if weapon ignores attribute DR)`);
+}
+if((bar.pct|0)>0)bits.push(`Barrier absorbs up to ${bar.pct|0}% Max HP`);
+if(nul.on)bits.push('Initial damage nullification (this hit → 0)');
+if((turn.atkPct|0)>0)bits.push(`MS ATK +${turn.atkPct|0}%`);
+if((turn.defPct|0)>0)bits.push(`MS DEF +${turn.defPct|0}%`);
+if((turn.mobPct|0)>0)bits.push(`MS MOB +${turn.mobPct|0}%`);
+if(!bits.length)return'';
+const tip=String(det.skillText||bar.skillText||nul.skillText||turn.skillText||det.skillName||bar.skillName||nul.skillName||turn.skillName||'').trim();
 const tipAttr=tip?` title="${escAttr(tip)}"`:'';
-return`<div class="dc-section-label" style="margin-top:10px;color:var(--accent-cyan)">Unit skill (1 turn)</div><div style="font-size:12px;line-height:1.6"><label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin-bottom:4px"${tipAttr}><input type="checkbox" ${on?'checked':''} onchange="setDcDefUnitSkillActive(this.checked)">${uskIcon}<span>Damage taken −${det.pct|0}% vs ${esc(gate)} (incl. EX)</span></label>${tip?`<div style="font-size:10px;color:var(--text-muted);margin-top:2px;line-height:1.45;white-space:pre-wrap">${esc(tip)}</div>`:''}</div>`;
+return`<div class="dc-section-label" style="margin-top:10px;color:var(--accent-cyan)">Unit skill (1 turn)</div><div style="font-size:12px;line-height:1.6"><label style="display:flex;align-items:flex-start;gap:6px;cursor:pointer;margin-bottom:4px"${tipAttr}><input type="checkbox" style="margin-top:3px" ${on?'checked':''} onchange="setDcDefUnitSkillActive(this.checked)">${uskIcon}<span>${esc(bits.join(' · '))}</span></label>${tip?`<div style="font-size:10px;color:var(--text-muted);margin-top:2px;line-height:1.45;white-space:pre-wrap">${esc(tip)}</div>`:''}</div>`;
 }
 function setDcDefUnitSkillActive(on){
 S.dc.defUnitSkillActive=!!on;
@@ -17969,7 +17984,7 @@ if(type==='def_unit'){
 const d=await fetchDetailPayload('unit',sid,{});
 if(!d||d.error)return;
 S.dc.defUnitData=d;S.dc.defOptionParts=[];S.dc.defSupporters=[];S.dc.defUnitCondPassive=false;
-S.dc.defUnitSkillActive=(_dcGetDetectedUnitSkillDmgTakenDown(d).pct|0)>0;
+S.dc.defUnitSkillActive=_dcUnitSkillHasCombatEffect(d);
 const rec=d.recommend_character;const isSD=String(d.body_type||'')==='3';
 if(rec&&rec.id){
 if(isSD||!S.dc.defCharData){
@@ -18001,7 +18016,10 @@ if(!d||d.error)return;
 S.dc.atkUnit=sid;S.dc.atkUnitData=d;
 const _bw=_dcPickBestWeaponIndices(d);
 S.dc.wpnIdx=_bw.wpnIdx;S.dc.wpnLv=_bw.wpnLv;
-S.dc.unitStatMode='normal';S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false;
+S.dc.unitStatMode='normal';
+{const _ut=_dcGetDetectedUnitTurnBuffPercents(d);const _dd=_dcGetDetectedUnitSkillDmgDealtUp(d);
+S.dc.unitTurnBuffAtk=((_ut.atkPct|0)>0||(_ut.mobPct|0)>0||(_dd.pct|0)>0);
+S.dc.unitTurnBuffDef=(_ut.defPct|0)>0;}
 _dcDetectVigorCondAbilities(d);
 S.dc.unitCondPassive=_dcShouldAutoUnitCondPassive(d);
 _dcSyncUnitCondPassiveFromVigor();
@@ -18750,9 +18768,111 @@ skillText=blob;
 }
 return{pct,weaponAttrs,attackTypes,icon,skillText,skillName};
 }
-/** Defender Unit Skill DTD when toggled on and incoming weapon matches attrs/types. Applies to EX (unlike I-Field / manual Unit DTD). */
-function _dcDefenderUnitSkillDmgTakenDownPct(ud,incomingWpn,skillOn){
+/** Unit Skill trait type 6 — barrier absorbs up to N% of Max HP (e.g. Nu Double Fin Funnels EX). */
+function _dcGetDetectedUnitSkillBarrier(ud){
+const skills=(ud&&!ud._manual&&ud.skills)||[];
+let pct=0,icon='',skillName='',skillText='';
+skills.forEach(sk=>{
+(sk.traits||[]).forEach(tr=>{
+const typ=String(tr.trait_type_index||'');
+const val=Math.max(0,parseInt(tr.trait_value,10)||0);
+if(val<=0||typ!=='6')return;
+if(val<=pct)return;
+pct=val;
+if(sk.icon)icon=sk.icon;
+skillName=String(sk.name||'').trim();
+skillText=String(tr.desc||tr.name||'').trim()||_dcJoinUnitSkillTextBlob(sk);
+});
+});
+if(pct<=0){
+skills.forEach(sk=>{
+const blob=_dcJoinUnitSkillTextBlob(sk);
+const m=blob.match(/absorbs?\s+damage\s+up\s+to\s+(\d+)\s*%\s+of\s+(?:this\s+unit'?s\s+)?Max\s*HP/i)||blob.match(/バリア[^0-9]*(\d+)\s*%/)||blob.match(/屏障[^0-9]*(\d+)\s*%/)||blob.match(/吸收[^0-9]*(\d+)\s*%[^。\n]*最大\s*HP/i);
+if(!m)return;
+const val=parseInt(m[1],10)||0;
+if(val<=pct)return;
+pct=val;
+if(sk.icon)icon=sk.icon;
+skillName=String(sk.name||'').trim();
+skillText=blob;
+});
+}
+return{pct,icon,skillText,skillName};
+}
+/** Unit Skill trait type 8 — Initial Damage Nullification (first hit → 0 in single-hit sim). */
+function _dcGetDetectedUnitSkillInitialNull(ud){
+const skills=(ud&&!ud._manual&&ud.skills)||[];
+let on=false,icon='',skillName='',skillText='';
+skills.forEach(sk=>{
+(sk.traits||[]).forEach(tr=>{
+if(String(tr.trait_type_index||'')!=='8')return;
+on=true;
+if(sk.icon)icon=sk.icon;
+skillName=String(sk.name||'').trim();
+skillText=String(tr.desc||tr.name||'').trim()||_dcJoinUnitSkillTextBlob(sk);
+});
+});
+if(!on){
+skills.forEach(sk=>{
+const blob=_dcJoinUnitSkillTextBlob(sk);
+if(!/Initial\s+Damage\s+Nullification|初回ダメージ無効|初次損傷無效|初次傷害無效/i.test(blob))return;
+on=true;
+if(sk.icon)icon=sk.icon;
+skillName=String(sk.name||'').trim();
+skillText=blob;
+});
+}
+return{on,icon,skillText,skillName};
+}
+/** Unit Skill trait type 14 — Increase damage dealt by N% (1 turn), e.g. Attack Burst. */
+function _dcGetDetectedUnitSkillDmgDealtUp(ud){
+const skills=(ud&&!ud._manual&&ud.skills)||[];
+let pct=0,icon='',skillName='',skillText='';
+skills.forEach(sk=>{
+(sk.traits||[]).forEach(tr=>{
+const typ=String(tr.trait_type_index||'');
+const val=Math.max(0,parseInt(tr.trait_value,10)||0);
+if(val<=0||typ!=='14')return;
+if(val<=pct)return;
+pct=val;
+if(sk.icon)icon=sk.icon;
+skillName=String(sk.name||'').trim();
+skillText=String(tr.desc||tr.name||'').trim()||_dcJoinUnitSkillTextBlob(sk);
+});
+});
+if(pct<=0){
+skills.forEach(sk=>{
+const blob=_dcJoinUnitSkillTextBlob(sk);
+const m=blob.match(/Increase\s+damage\s+dealt(?:\s+to\s+enemies)?\s+by\s+(\d+)\s*%/i)||blob.match(/与(?:える)?ダメージ(?:を)?(\d+)\s*%(?:アップ|上昇)/)||blob.match(/造成的?損傷(?:提高|增加)[^0-9]*(\d+)\s*%/);
+if(!m)return;
+const val=parseInt(m[1],10)||0;
+if(val<=pct)return;
+pct=val;
+if(sk.icon)icon=sk.icon;
+skillName=String(sk.name||'').trim();
+skillText=blob;
+});
+}
+return{pct,icon,skillText,skillName};
+}
+/** True when this unit’s Unit Skill can change combat damage / sheet stats used by DC. */
+function _dcUnitSkillHasCombatEffect(ud){
+if(!ud||ud._manual)return false;
+const turn=_dcGetDetectedUnitTurnBuffPercents(ud);
+if((turn.atkPct|0)>0||(turn.defPct|0)>0||(turn.mobPct|0)>0)return true;
+if((_dcGetDetectedUnitSkillDmgTakenDown(ud).pct|0)>0)return true;
+if((_dcGetDetectedUnitSkillBarrier(ud).pct|0)>0)return true;
+if(_dcGetDetectedUnitSkillInitialNull(ud).on)return true;
+if((_dcGetDetectedUnitSkillDmgDealtUp(ud).pct|0)>0)return true;
+if((_dcAccumMpBonusFromUnitSkills(ud)|0)>0)return true;
+return false;
+}
+/** Defender Unit Skill DTD when toggled on and incoming weapon matches attrs/types.
+ * Weapon-attribute DR (beam/physical/special) — nullified by “Ignore weapon attribute damage reduction”
+ * (same class as I-Field). Generic DTD (pilot EX “reduce own damage taken”) is separate. */
+function _dcDefenderUnitSkillDmgTakenDownPct(ud,incomingWpn,skillOn,dmgReductionNull){
 if(!skillOn||!ud||ud._manual||!incomingWpn)return 0;
+if(dmgReductionNull)return 0;
 const det=_dcGetDetectedUnitSkillDmgTakenDown(ud);
 if((det.pct|0)<=0)return 0;
 const wKeys=new Set(_dcWeaponAttributeKeys(incomingWpn||{})||[]);
@@ -18762,6 +18882,33 @@ const wantAtk=(det.attackTypes||[]).map(k=>String(k).toLowerCase());
 if(wantAttrs.length&&!wantAttrs.some(k=>wKeys.has(k)))return 0;
 if(wantAtk.length&&!wantAtk.some(k=>wAtkKeys.has(k)))return 0;
 return Math.min(80,det.pct|0);
+}
+/** Database defender pilot “reduce own damage taken” % (e.g. Uso EX −15% with tags). Not weapon-attribute I-Field. */
+function _dcDefenderCharDmgTakenDownPct(){
+const manual=S.dc.dmgTakenDownPilot|0;
+if((S.dc.defTargetMode||'preset')!=='database')return manual;
+if(manual>0)return manual;
+const cd=S.dc.defCharData,ud=S.dc.defUnitData;
+if(!cd||cd._manual||!ud||ud._manual)return 0;
+const saveUd=S.dc.atkUnitData,saveCd=S.dc.atkCharData,saveCcp=S.dc.charCondPassive;
+let pct=0;
+try{
+S.dc.atkUnitData=ud;
+S.dc.atkCharData=cd;
+S.dc.charCondPassive=!!S.dc.defCharCondPassive;
+const b=_dcParsePilotAbilBonuses(cd);
+(b.items||[]).forEach(it=>{
+if(!it||it.key!=='dmgTaken'||it.src!=='char')return;
+if(it.cond)return;
+if(it.abilityHasCond&&!S.dc.defCharCondPassive)return;
+pct+=(it.val|0);
+});
+}finally{
+S.dc.atkUnitData=saveUd;
+S.dc.atkCharData=saveCd;
+S.dc.charCondPassive=saveCcp;
+}
+return Math.min(80,Math.max(0,pct|0));
 }
 function _dcApplyUnitTurnBuffDefToMsDef(unitDef,ud){
 const F=Math.floor;
@@ -19163,21 +19310,23 @@ const damageCorrection=_corrUseFloat?_dcRoundAway0(_corrSumRaw):_corrSplit;
 const offenseCorrection=_dcRoundAway0(_offCorrRaw);
 const defenseCorrection=_dcRoundAway0(_defCorrRaw);
 const isExWeapon=!!wpn.is_ex;
-const userDmgIncreasePct=S.dc.dmgIncrease||0;
+/* Attacker Unit Skill type-14 (Attack Burst): +N% damage dealt into ⑧ bucket when 1-turn skill toggle is on. */
+const unitSkillDmgDealtPct=(S.dc.unitTurnBuffAtk&&ud&&!ud._manual)?(_dcGetDetectedUnitSkillDmgDealtUp(ud).pct|0):0;
+const userDmgIncreasePct=(S.dc.dmgIncrease||0)+(unitSkillDmgDealtPct|0);
 const userCritDmgUpPct=S.dc.critDmgUp||0;
 const dmgTakenUpPct=_dcWeaponDtuSumPct(wpn);
 const dmgTakenUpTyped=dmgTakenUpPct||0;
 const dmgTakenUpGeneric=0;
-const dmgTakenDownPilotPct=S.dc.dmgTakenDownPilot||0;
+const dmgTakenDownPilotPct=_dcDefenderCharDmgTakenDownPct();
 const opDefDtdFromAtk=_dcOptionPartIncomingDmgTakenDownPct(S.dc.optionParts,wpn,ud);
 const opDefDtdFromDef=_dcOptionPartIncomingDmgTakenDownPct(S.dc.defOptionParts||[],wpn,S.dc.defUnitData);
 const manualDefDtd=S.dc.dmgTakenDownUnit||0;
 const autoDefDtd=opDefDtdFromDef+opDefDtdFromAtk;
 const dmgTakenDownUnitPct=manualDefDtd>0?manualDefDtd:autoDefDtd;
-/* Unit Skill type-11 (e.g. V2AB beam −20%): post-⑧ ×(1−pct/100), applies vs EX (unlike I-Field).
- * Not ⑨ additive — additive canceled Damage Dealt Up and overshot in-game (154117 vs ~144609).
- * Weapon “Ignore weapon attribute damage reduction” still nullifies I-Field/unit DTD only (existing EX path). */
-const unitSkillDtdPct=_dcDefenderUnitSkillDmgTakenDownPct(S.dc.defUnitData,wpn,!!S.dc.defUnitSkillActive);
+/* Unit Skill type-11 (beam/phys/special DR): post-⑧ ×(1−pct/100) when it applies.
+ * Nullified by weapon “Ignore weapon attribute damage reduction” (same class as I-Field).
+ * Pilot generic DTD (Uso EX −15%) stays in ⑨ takenDown and still applies vs EX. */
+const unitSkillDtdPct=_dcDefenderUnitSkillDmgTakenDownPct(S.dc.defUnitData,wpn,!!S.dc.defUnitSkillActive,!!wtTraits.dmgReductionNull);
 const unitSkillMult=(unitSkillDtdPct|0)>0?(100-Math.min(80,unitSkillDtdPct|0))/100:1;
 const takenDown=dmgTakenDownPilotPct+(isExWeapon?0:dmgTakenDownUnitPct);
 let battleDamage=C((baseDamage+damageCorrection)*terrainCorrection);
@@ -19202,6 +19351,22 @@ let critDmg=MX(0,C(critPreVigor*(critCorrectionPct+100)/100-1e-9));
 const effRange=_dcGetEffectiveRange(wpn);
 const inRange=dist>=effRange.min_range&&dist<=effRange.max_range;
 const npcHp=defModHp!=null?defModHp:(defUnit?Math.max(0,Number(us.HP)||0):0);
+/* Defender Unit Skill type-6 barrier (Nu EX…): absorb up to N% Max HP after post-⑧ / Defend / type-11.
+ * Type-8 Initial Damage Nullification: this single-hit sim → 0 when skill toggle is on. */
+let unitSkillBarrierPct=0,unitSkillBarrierCap=0,unitSkillBarrierAbsorb=0,unitSkillInitialNull=false;
+if(S.dc.defUnitSkillActive&&S.dc.defUnitData&&!S.dc.defUnitData._manual){
+const _bar=_dcGetDetectedUnitSkillBarrier(S.dc.defUnitData);
+unitSkillBarrierPct=_bar.pct|0;
+if(unitSkillBarrierPct>0&&npcHp>0){
+unitSkillBarrierCap=F(npcHp*unitSkillBarrierPct/100);
+const preN=normalDmg|0,preC=critDmg|0;
+unitSkillBarrierAbsorb=MN(preN,unitSkillBarrierCap);
+normalDmg=MX(0,preN-unitSkillBarrierCap);
+critDmg=MX(0,preC-unitSkillBarrierCap);
+}
+unitSkillInitialNull=!!_dcGetDetectedUnitSkillInitialNull(S.dc.defUnitData).on;
+if(unitSkillInitialNull){normalDmg=0;critDmg=0}
+}
 const accuracy=lvData.accuracy;
 const critical=lvData.critical;
 
@@ -19217,7 +19382,7 @@ characterStatRatio,unitStatRatio,charSigmoid,unitSigmoid,
 atkCombined,defCombined,offenseComponent,defenseComponent,
 damageCorrection:C(damageCorrection),terrainCorrection,totalNormalMultPct,totalCritMultPct,critCorrectionPct,critPreVigor,crit125Trim,scaledNormal,scaledCrit,defendMult,unitSkillMult,postDmgMult,isExWeapon,
 defMsDefensePair,defMsStatsRawDefense,defMsBonusDefense,defDebuffFlatSubtract,qubPlusOneApplied,
-traitDistPow,traitHpPow,traitMpPow,traitWpnDistBasePct:wtTraits.distPowerMax|0,traitWpnCoreBonusPct:wtTraits.distCoreMax|0,finalWpnPowOverride,vigorDmgBonusPct,userDmgIncreasePct,exSquadAtkPct,squadCondAtkPct,squadCondDefPct,counterOwnAtkPct,supportCounterAtkPctApplied,advantageTagAtkPct,advantageGrowthFlatOmitted:false,userCritDmgUpPct,dmgTakenUpPct,dmgTakenUpGeneric,dmgTakenUpTyped,takenDown,unitSkillDtdPct,defDebuffPct,
+traitDistPow,traitHpPow,traitMpPow,traitWpnDistBasePct:wtTraits.distPowerMax|0,traitWpnCoreBonusPct:wtTraits.distCoreMax|0,finalWpnPowOverride,vigorDmgBonusPct,userDmgIncreasePct,unitSkillDmgDealtPct,exSquadAtkPct,squadCondAtkPct,squadCondDefPct,counterOwnAtkPct,supportCounterAtkPctApplied,advantageTagAtkPct,advantageGrowthFlatOmitted:false,userCritDmgUpPct,dmgTakenUpPct,dmgTakenUpGeneric,dmgTakenUpTyped,takenDown,unitSkillDtdPct,unitSkillBarrierPct,unitSkillBarrierCap,unitSkillBarrierAbsorb,unitSkillInitialNull,defDebuffPct,
 pilotBoostPct:0,pilotAtkDownPct:0,unitAtkDownPct:0,accDownPct,mobDownPct,wpnElem:_dcWeaponAttributeKeys(wpn).join('/'),
 hitRate:accResult.finalHitRate,hitRateDetails:accResult,isSuperVigor:_dcNormMpLevel(S.dc.mpLevel)==='super'};
 }
@@ -19516,6 +19681,8 @@ h+=_dcBattleStatsRow('Pilot DEF',fmtN(cDef));
 h+=_dcBattleStatsRow('Damage Taken Up',String(r.dmgTakenUpTyped|0)+'%');
 h+=_dcBattleStatsRow('Damage Taken Down',String(r.takenDown|0)+'%');
 if((r.unitSkillDtdPct|0)>0)h+=_dcBattleStatsRow('Unit Skill DR',`×${((r.unitSkillMult!=null?r.unitSkillMult:1)).toFixed(2)} (−${r.unitSkillDtdPct|0}%)`);
+if(r.unitSkillInitialNull)h+=_dcBattleStatsRow('Unit Skill Nullify','Initial hit → 0');
+else if((r.unitSkillBarrierPct|0)>0)h+=_dcBattleStatsRow('Unit Skill Barrier',`−${fmtN(r.unitSkillBarrierAbsorb|0)} (cap ${fmtN(r.unitSkillBarrierCap|0)} = ${r.unitSkillBarrierPct|0}% Max HP)`);
 h+=_dcBattleStatsRow('Hit rate',String(r.hitRate)+'%');
 h+=_dcBattleStatsRow('Max HP',fmtN(hp));
 h+='</div>';
