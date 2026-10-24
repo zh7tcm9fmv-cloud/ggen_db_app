@@ -1344,6 +1344,21 @@ def safe_int(value, default=0):
     try: return int(value)
     except (TypeError, ValueError): return default
 
+def request_arg_int(name, default=0, minimum=None, maximum=None):
+    """Parse a query int; junk values (bots sending ``$pp``) fall back to default."""
+    n = safe_int(request.args.get(name, default), default)
+    if minimum is not None:
+        n = max(minimum, n)
+    if maximum is not None:
+        n = min(maximum, n)
+    return n
+
+def request_list_page():
+    return request_arg_int('page', 1, minimum=1)
+
+def request_list_per_page(default=50, lo=10, hi=100):
+    return request_arg_int('per_page', default, minimum=lo, maximum=hi)
+
 def format_start_datetime_jst(ms):
     """Format epoch milliseconds (UTC) as JST local time string."""
     if ms is None or ms <= 0:
@@ -29761,13 +29776,13 @@ def browse_filters():
 
 @app.route('/api/characters')
 def list_characters():
-    lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); page = max(1, int(request.args.get('page', 1)))
+    lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); page = request_list_page()
     ranking_bulk = request.args.get('ranking_bulk', '').strip().lower() in ('1', 'true', 'yes')
     if ranking_bulk:
         # Detail "show ranking" warms a full sorted pool in one round-trip (avoids dozens of capped page fetches).
-        pp = min(50000, max(10, int(request.args.get('per_page', 50000))))
+        pp = request_list_per_page(default=50000, lo=10, hi=50000)
     else:
-        pp = min(100, max(10, int(request.args.get('per_page', 50))))
+        pp = request_list_per_page(default=50, lo=10, hi=100)
     sb = request.args.get('sort', 'rarity'); sd = request.args.get('dir', 'desc')
     _char_valid_sorts = {'name', 'role', 'rarity', 'Ranged', 'Melee', 'Awaken', 'Defense', 'Reaction'}
     sort_chain = _parse_list_sort_chain(request.args.get('sort_chain', ''), _char_valid_sorts)
@@ -29934,7 +29949,7 @@ def list_characters():
 
 @app.route('/api/units')
 def list_units():
-    lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); page = max(1, int(request.args.get('page', 1)))
+    lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); page = request_list_page()
     sb = request.args.get('sort', 'rarity'); sd = request.args.get('dir', 'desc')
     _unit_valid_sorts = {'name', 'role', 'rarity', 'ATK', 'DEF', 'MOB', 'HP', 'EN', 'MOV'}
     sort_chain = _parse_list_sort_chain(request.args.get('sort_chain', ''), _unit_valid_sorts)
@@ -29991,10 +30006,10 @@ def list_units():
     ranking_bulk_u = request.args.get('ranking_bulk', '').strip().lower() in ('1', 'true', 'yes')
     # Team builder: boosted-only lists can exceed 100 rows (UR first); raise cap so SSR etc. are not truncated.
     if ranking_bulk_u:
-        pp = min(50000, max(10, int(request.args.get('per_page', 50000))))
+        pp = request_list_per_page(default=50000, lo=10, hi=50000)
     else:
         _pp_cap = 600 if tb_boost else 100
-        pp = min(_pp_cap, max(10, int(request.args.get('per_page', 50))))
+        pp = request_list_per_page(default=50, lo=10, hi=_pp_cap)
     tb_boost_ck = f'tb{tb_boost}' if tb_boost else 'tb0'
     want_stat_bounds_u = request.args.get('stat_bounds', '').strip().lower() in ('1', 'true', 'yes')
     sbu_ck = 'sbd1' if want_stat_bounds_u else 'sbd0'
@@ -30462,12 +30477,12 @@ def get_option_part_effect_filter_icons(lc):
 @app.route('/api/option_parts')
 def list_option_parts():
     try:
-        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); page = max(1, int(request.args.get('page', 1)))
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); page = request_list_page()
         ranking_bulk = request.args.get('ranking_bulk', '').strip().lower() in ('1', 'true', 'yes')
         if ranking_bulk:
-            pp = min(50000, max(10, int(request.args.get('per_page', 50000))))
+            pp = request_list_per_page(default=50000, lo=10, hi=50000)
         else:
-            pp = min(100, max(10, int(request.args.get('per_page', 50))))
+            pp = request_list_per_page(default=50, lo=10, hi=100)
         sb = request.args.get('sort', 'rarity'); sd = request.args.get('dir', 'desc')
         sq = request.args.get('q', '').strip().lower()
         rav = request.args.get('rarity', '').strip()
@@ -31862,12 +31877,12 @@ def get_item(item_id):
 @app.route('/api/supporters')
 def list_supporters():
     try:
-        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); page = max(1, int(request.args.get('page', 1)))
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); page = request_list_page()
         ranking_bulk = request.args.get('ranking_bulk', '').strip().lower() in ('1', 'true', 'yes')
         if ranking_bulk:
-            pp = min(50000, max(10, int(request.args.get('per_page', 50000))))
+            pp = request_list_per_page(default=50000, lo=10, hi=50000)
         else:
-            pp = min(100, max(10, int(request.args.get('per_page', 50))))
+            pp = request_list_per_page(default=50, lo=10, hi=100)
         sb = request.args.get('sort', 'rarity'); sd = request.args.get('dir', 'desc')
         sq = request.args.get('q', '').strip().lower()
         rav = request.args.get('rarity', '').strip(); rarity_filter = parse_list_rarity_filter(rav); rk = rarity_filter_cache_fragment(rarity_filter)
@@ -35205,12 +35220,12 @@ def _populate_stage_list_row_portraits(page_rows):
 @app.route('/api/stages')
 def list_stages():
     try:
-        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); page = max(1, int(request.args.get('page', 1)))
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); page = request_list_page()
         ranking_bulk = request.args.get('ranking_bulk', '').strip().lower() in ('1', 'true', 'yes')
         if ranking_bulk:
-            pp = min(50000, max(10, int(request.args.get('per_page', 50000))))
+            pp = request_list_per_page(default=50000, lo=10, hi=50000)
         else:
-            pp = min(100, max(10, int(request.args.get('per_page', 50))))
+            pp = request_list_per_page(default=50, lo=10, hi=100)
         sq = request.args.get('q', '').strip().lower()
         df = request.args.get('difficulty', 'ALL').lower(); sb = request.args.get('sort', 'stage_number'); sd = request.args.get('dir', 'asc')
         cat = (request.args.get('category') or 'eternal').strip().lower()
