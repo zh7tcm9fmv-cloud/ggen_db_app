@@ -14,7 +14,8 @@
   var debuffDefs = [];
   var loadSeq = 0;
   var EAGER_THUMB_BUDGET = 24;
-  var API_SV = 14;
+  var API_SV = 15;
+  var terrainById = Object.create(null);
   var itemByKey = Object.create(null);
   var hoverPortalEl = null;
   var hoverPortalKey = null;
@@ -996,12 +997,25 @@
     });
   }
 
-  function terrainRowHtml(item) {
-    var list = (item && item.terrain) || [];
-    if (!list.length) {
-      /* Synthesize from levels map if present */
-      return '';
+  function resolveUnitTerrainList(item) {
+    var legacy = (item && item.terrain) || [];
+    if (legacy.length) return legacy;
+    var id = item && item.id != null ? String(item.id) : '';
+    var levels = id ? terrainById[id] : null;
+    if (!levels || !levels.length) return [];
+    var out = [];
+    for (var i = 0; i < TERRAIN_ORDER.length; i++) {
+      var lv = intPct(levels[i]);
+      if (lv < 1) lv = 1;
+      if (lv > 3) lv = 3;
+      out.push({ name: TERRAIN_ORDER[i], level: lv });
     }
+    return out;
+  }
+
+  function terrainRowHtml(item) {
+    var list = resolveUnitTerrainList(item);
+    if (!list.length) return '';
     var parts = [];
     for (var i = 0; i < list.length; i++) {
       var tr = list[i] || {};
@@ -1831,6 +1845,7 @@
     if (cacheByLang[lang]) {
       rows = cacheByLang[lang].rows || [];
       debuffDefs = cacheByLang[lang].debuff_defs || [];
+      terrainById = cacheByLang[lang].terrains || Object.create(null);
       if (seq === loadSeq) renderBoard();
       return;
     }
@@ -1847,12 +1862,18 @@
       if (seq !== loadSeq) return;
       rows = Array.isArray(data.rows) ? data.rows : [];
       debuffDefs = Array.isArray(data.debuff_defs) ? data.debuff_defs : [];
+      terrainById = data.terrains && typeof data.terrains === 'object' ? data.terrains : Object.create(null);
       if (!debuffDefs.length) {
         try {
           console.warn('[dm] debuff_defs empty — using known keys');
         } catch (_) {}
       }
-      cacheByLang[lang] = { rows: rows, debuff_defs: debuffDefs, v: data.v || API_SV };
+      cacheByLang[lang] = {
+        rows: rows,
+        debuff_defs: debuffDefs,
+        terrains: terrainById,
+        v: data.v || API_SV
+      };
       renderBoard();
     } catch (err) {
       if (seq !== loadSeq) return;

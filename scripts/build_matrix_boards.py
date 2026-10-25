@@ -2,8 +2,8 @@
 """Build published /tm + /dm JSON boards (gzip) for snappy cold opens.
 
 Writes (committed under data/published/matrix_boards/):
-  tag_matrix_v8_{LANG}.json.gz
-  debuff_matrix_v14_{LANG}.json.gz
+  tag_matrix_v9_{LANG}.json.gz
+  debuff_matrix_v15_{LANG}.json.gz
 
 Same payload shape/CDN URLs as the live API (look/features unchanged).
 Railway serves these from disk on first miss — no boot prewarm, no extra egress
@@ -34,8 +34,8 @@ import urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT_DIR = os.path.join(ROOT, 'data', 'published', 'matrix_boards')
-TAG_V = 8
-DEBUFF_V = 14
+TAG_V = 9
+DEBUFF_V = 15
 LANGS_DEFAULT = ('EN', 'JA', 'TW', 'HK')
 PARITY_RETRIES = 3
 PARITY_RETRY_SLEEP_S = 2.0

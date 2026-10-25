@@ -10,7 +10,7 @@
   var cacheByLang = {};
   var rows = [];
   var loadSeq = 0;
-  var API_SV = 8;
+  var API_SV = 9;
   var _colBags = { units: {}, supporters: {} };
 
   var TERRAIN_TYPE_ICONS = {
@@ -127,6 +127,8 @@
 
   /* In-memory payload + O(1) hover lookup (avoid baking hover HTML into every tile). */
   var matrixPayload = null;
+  /* unitId → [Space,Atmospheric,Ground,Sea,Underwater] levels (from payload.terrains). */
+  var terrainById = Object.create(null);
   var itemByKey = Object.create(null);
   var rowByTagId = Object.create(null);
   var searchDebounceTimer = null;
@@ -892,8 +894,24 @@
     );
   }
 
+  function resolveUnitTerrainList(item) {
+    var legacy = (item && item.terrain) || [];
+    if (legacy.length) return legacy;
+    var id = item && item.id != null ? String(item.id) : '';
+    var levels = id ? terrainById[id] : null;
+    if (!levels || !levels.length) return [];
+    var out = [];
+    for (var i = 0; i < TERRAIN_ORDER.length; i++) {
+      var lv = parseInt(levels[i], 10) || 1;
+      if (lv < 1) lv = 1;
+      if (lv > 3) lv = 3;
+      out.push({ name: TERRAIN_ORDER[i], level: lv });
+    }
+    return out;
+  }
+
   function terrainRowHtml(item) {
-    var list = (item && item.terrain) || [];
+    var list = resolveUnitTerrainList(item);
     if (!list.length) return '';
     var parts = [];
     for (var i = 0; i < list.length; i++) {
@@ -2448,8 +2466,10 @@
     var st = document.getElementById('tmStatus');
     if (st) st.textContent = t('loading');
     var lang = state.lang;
-    if (cacheByLang[lang] && cacheByLang[lang].length) {
-      rows = cacheByLang[lang];
+    if (cacheByLang[lang] && cacheByLang[lang].rows && cacheByLang[lang].rows.length) {
+      rows = cacheByLang[lang].rows;
+      terrainById = cacheByLang[lang].terrains || Object.create(null);
+      matrixPayload = cacheByLang[lang].payload || null;
       rebuildItemIndex();
       renderBoard();
       /* Soft refresh in background so HTTP 304 / CDN cache can win */
@@ -2463,13 +2483,16 @@
       var data = await res.json();
       if (seq !== loadSeq) return;
       rows = Array.isArray(data.rows) ? data.rows : [];
-      cacheByLang[lang] = rows;
+      terrainById = data.terrains && typeof data.terrains === 'object' ? data.terrains : Object.create(null);
       matrixPayload = data;
+      cacheByLang[lang] = { rows: rows, terrains: terrainById, payload: data, v: data.v || API_SV };
       rebuildItemIndex();
       renderBoard();
     } catch (e) {
       if (seq !== loadSeq) return;
-      rows = cacheByLang[lang] || [];
+      var cached = cacheByLang[lang];
+      rows = (cached && cached.rows) || [];
+      terrainById = (cached && cached.terrains) || Object.create(null);
       rebuildItemIndex();
       if (st) st.textContent = t('err');
       renderBoard();

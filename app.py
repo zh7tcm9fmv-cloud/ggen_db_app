@@ -21649,8 +21649,10 @@ def _tag_matrix_build_supporter_card(sid, info, name, ld, lc, resolved_tags=None
 # (CDN URLs already applied). Avoids multi-second cold rebuild + boot RAM prewarm.
 # Browser bytes unchanged vs live API; files ship in the deploy artifact (not a new CDN hop).
 _MATRIX_PUBLISHED_DIR = os.path.join(app_dir, 'data', 'published', 'matrix_boards')
-_TAG_MATRIX_PUBLISHED_V = 8
-_DEBUFF_MATRIX_PUBLISHED_V = 14
+# v9/v15: terrain levels once at payload root (not per-card). Per-card terrain
+# duplicated icons across every tag placement and blew iOS Safari past jetsam (~7–9MB JSON).
+_TAG_MATRIX_PUBLISHED_V = 9
+_DEBUFF_MATRIX_PUBLISHED_V = 15
 
 
 def _matrix_force_live_build():
@@ -21689,7 +21691,7 @@ def api_tag_matrix():
     """One-shot board for /tm: major + Other-Series rows × supports + units by role."""
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-        ck = f'tag_matrix_v8_{lc}_{lr_schedule_cache_key_fragment()}'
+        ck = f'tag_matrix_v9_{lc}_{lr_schedule_cache_key_fragment()}'
         # Prefer published gzip bytes — never keep decoded multi‑MB boards in `_api_cache`.
         if not _matrix_force_live_build():
             pub_resp = _serve_published_gzip_json(
@@ -21755,6 +21757,7 @@ def api_tag_matrix():
 
         # Units — lineage tags + official series affinity (resolve series set once per unit)
         ssm = ld.get('ser_set_map', {}) or {}
+        terrains_map = {}
         for uid, info in unit_info_map.items():
             if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
                 continue
@@ -21792,11 +21795,13 @@ def api_tag_matrix():
             thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
             acq = info.get('acquisition_route', '0')
             is_ult = bool(info.get('is_ultimate', False))
+            nuid = normalize_id(uid)
+            if nuid not in terrains_map:
+                terrains_map[nuid] = _matrix_unit_terrain_levels_list(info)
             card = _tag_matrix_entity_card(
                 uid, name, ri, thum, acq,
                 is_ultimate=is_ult,
                 is_limited_time=uid in LIMITED_TIME_UNIT_IDS,
-                terrain=_debuff_matrix_unit_terrain_payload(info),
             )
             for lid in hit_lin:
                 buckets[lid]['units'][ri2].append(card)
@@ -21843,7 +21848,7 @@ def api_tag_matrix():
                 row['units'][r].sort(key=lambda x: (x.get('rarity_sort', 99), safe_int(x.get('id'), 0)))
             rows.append(row)
 
-        payload = {'lang': lc, 'v': 7, 'rows': rows}
+        payload = {'lang': lc, 'v': 9, 'rows': rows, 'terrains': terrains_map}
         # Convert CDN URLs once at cache write — 304 path must not deep-copy again
         payload = convert_image_urls(payload)
         set_cached_response(ck, payload)
@@ -22237,7 +22242,7 @@ def _debuff_matrix_defs_payload(lc):
 
 
 def _debuff_matrix_unit_terrain_payload(info):
-    """Compact base terrain row for /dm and /tm hover cards (type + level icons)."""
+    """Full terrain row (name + icons) — prefer `_matrix_unit_terrain_levels_list` on boards."""
     levels = _unit_base_terrain_levels(info or {})
     out = []
     for tn in UNIT_TERRAIN_NAMES:
@@ -22253,13 +22258,19 @@ def _debuff_matrix_unit_terrain_payload(info):
     return out
 
 
+def _matrix_unit_terrain_levels_list(info):
+    """Five ints in UNIT_TERRAIN_NAMES order — clients expand icons from constants."""
+    levels = _unit_base_terrain_levels(info or {})
+    return [_terrain_tier_norm(levels.get(tn, 1)) for tn in UNIT_TERRAIN_NAMES]
+
+
 # UI labels — kept as fallback; live tips come from LANG via _debuff_matrix_build_ingame_labels.
 @app.route('/api/debuff_matrix')
 def api_debuff_matrix():
     """Tag rows (Four/Six/New/…) × supporters + units by Inflict debuff — same left axis as /tm."""
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-        ck = f'debuff_matrix_v14_{lc}_{lr_schedule_cache_key_fragment()}'
+        ck = f'debuff_matrix_v15_{lc}_{lr_schedule_cache_key_fragment()}'
         if not _matrix_force_live_build():
             pub_resp = _serve_published_gzip_json(
                 _matrix_published_gz_path('debuff', lc), ck, max_age=3600, public=True,
@@ -22326,6 +22337,7 @@ def api_debuff_matrix():
         want_keys = _DEBUFF_MATRIX_KEYS
         key_order = [k for _, k in _DEBUFF_MATRIX_SPEC]
         ssm = ld.get('ser_set_map', {}) or {}
+        terrains_map = {}
 
         for uid, info in unit_info_map.items():
             if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
@@ -22372,6 +22384,9 @@ def api_debuff_matrix():
             thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
             acq = info.get('acquisition_route', '0')
             debuffs = [k for k in key_order if k in hit]
+            nuid = normalize_id(uid)
+            if nuid not in terrains_map:
+                terrains_map[nuid] = _matrix_unit_terrain_levels_list(info)
             card = _tag_matrix_entity_card(
                 uid, name, ri, thum, acq,
                 is_ultimate=bool(info.get('is_ultimate', False)),
@@ -22379,7 +22394,6 @@ def api_debuff_matrix():
                 debuffs=debuffs,
                 debuff_pct=pct_by,
                 role=ri2,
-                terrain=_debuff_matrix_unit_terrain_payload(info),
             )
             for lid in hit_lin:
                 buckets[lid]['units'][ri2].append(card)
@@ -22462,9 +22476,10 @@ def api_debuff_matrix():
 
         payload = {
             'lang': lc,
-            'v': 13,
+            'v': 15,
             'debuff_defs': _debuff_matrix_defs_payload(lc),
             'rows': rows,
+            'terrains': terrains_map,
             'note': (
                 'Left = supporters + tag (same axis as /tm). '
                 'Columns = Stats / Power Type / Range Type / Special. '
