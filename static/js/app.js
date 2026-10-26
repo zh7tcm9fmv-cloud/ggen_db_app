@@ -10873,17 +10873,9 @@ S.dc._dcSlotCalcNoDom=true;
 S.dc._dcCalcSlotIndex=slotIdx;
 _dcWriteAttackerToDc(slot,slotIdx);
 _dcDetectVigorCondAbilities(S.dc.atkUnitData);
-if(!(slot.atkCharData&&slot.atkCharData._manual)&&!(slot.atkUnitData&&slot.atkUnitData._manual)){
-/* Share load used to auto-CP against the active slot’s vigor (often Normal). Re-evaluate with this slot’s own vigor so EX pair ATK matches the open panel. */
-if(_dcShouldAutoCharCondPassive(slot.atkCharData,slot.atkUnitData,S.dc.mpLevel)){
-S.dc.charCondPassive=true;
-slot.charCondPassive=true;
-}else if(!(slot.atkCharData&&slot.atkCharData._manual)&&!(slot.atkUnitData&&slot.atkUnitData._manual)){
-S.dc.charCondPassive=false;
-slot.charCondPassive=false;
-slot.dcSuperchargedExTier=0;
-}
-}
+/* Respect slot.charCondPassive (written above). Do NOT re-run _dcShouldAutoCharCondPassive
+   here — that forced CP on/off every calc and made the CP chip a no-op for final damage.
+   Auto-CP belongs on pick / vigor / share via _dcSyncCharCondPassiveFromPair only. */
 const wc=_dcCritDmgUpFromWeapon(S.dc.atkUnitData,S.dc.wpnIdx,S.dc.wpnLv);
 S.dc._wpnCritDmgUp=wc;
 if(!(slot.atkCharData&&slot.atkCharData._manual)){
@@ -14524,8 +14516,13 @@ function setDcUnitCondStackCount(n){
 const ud=S.dc.atkUnitData;
 const cc=ud&&ud.unit_combat_count_atk;
 if(!cc)return;
-S.dc.unitCondStackCount=Math.max(1,Math.min(cc.max_stacks|0,Number(n)||0));
+/* 0 = no prior combat damage (Cond: Combat inactive); 1..max = stacks after dealing damage. */
+S.dc.unitCondStackCount=Math.max(0,Math.min(cc.max_stacks|0,Number(n)||0));
+/* Combat-count is the CP for these kits — chip tracks whether any stacks are active. */
+S.dc.unitCondPassive=S.dc.unitCondStackCount>0;
 _dcSyncUnitCondSliderLabels();
+renderDcAtkUnit();
+renderDcAtkChar();
 onDcParamChange();
 }
 function setDcUnitHpAtkTierIndex(i){
@@ -14549,7 +14546,7 @@ const ud=S.dc.atkUnitData;
 const cc=ud&&ud.unit_combat_count_atk;
 if(cc){
 const max=Math.max(1,cc.max_stacks|0);
-const cur=Math.max(1,Math.min(max,S.dc.unitCondStackCount|0||max));
+const cur=Math.max(0,Math.min(max,S.dc.unitCondStackCount|0));
 const pct=Math.min(cc.max|0,cc.per*cur);
 document.querySelectorAll('.dc-unit-cond-stack-row .detail-pilot-stack-val').forEach(el=>{el.textContent='+'+pct+'%'});
 document.querySelectorAll('.dc-unit-cond-stack-row input[type=range]').forEach(inp=>{inp.value=String(cur);inp.setAttribute('aria-valuenow',String(cur))});
@@ -14572,12 +14569,12 @@ document.querySelectorAll('.dc-unit-dmg-taken-def-row input[type=range]').forEac
 }
 }
 function _dcUnitCombatStackSliderHtml(cc){
-if(!S.dc.unitCondPassive||!cc)return'';
+if(!cc)return'';
 const max=Math.max(1,cc.max_stacks|0);
-const cur=Math.max(1,Math.min(max,S.dc.unitCondStackCount|0||max));
+const cur=Math.max(0,Math.min(max,S.dc.unitCondStackCount|0));
 const pct=Math.min(cc.max|0,cc.per*cur);
 const stackLab=t('unit_combat_stack_label')||'Combat stack level';
-return`<div class="detail-pilot-stack-row is-open detail-unit-cond-stack-row dc-unit-cond-stack-row" onclick="event.stopPropagation()"><input type="range" class="detail-pilot-stack-slider" min="1" max="${max}" step="1" value="${cur}" aria-valuemin="1" aria-valuemax="${max}" aria-valuenow="${cur}" aria-label="${escAttr(stackLab)}" oninput="setDcUnitCondStackCount(this.value)"><span class="detail-pilot-stack-val">+${pct}%</span></div>`;
+return`<div class="detail-pilot-stack-row is-open detail-unit-cond-stack-row dc-unit-cond-stack-row" onclick="event.stopPropagation()"><input type="range" class="detail-pilot-stack-slider" min="0" max="${max}" step="1" value="${cur}" aria-valuemin="0" aria-valuemax="${max}" aria-valuenow="${cur}" aria-label="${escAttr(stackLab)}" oninput="setDcUnitCondStackCount(this.value)"><span class="detail-pilot-stack-val">+${pct}%</span></div>`;
 }
 function _dcUnitHpAtkSliderHtml(hp){
 if(!S.dc.unitCondPassive||!hp||!hp.tiers||hp.tiers.length<2)return'';
@@ -14596,12 +14593,15 @@ const stackLab=t('unit_damage_taken_def_label')||'Damage taken DEF stacks';
 return`<div class="detail-pilot-stack-row is-open detail-unit-cond-stack-row dc-unit-dmg-taken-def-row" onclick="event.stopPropagation()"><input type="range" class="detail-pilot-stack-slider" min="1" max="${max}" step="1" value="${cur}" aria-valuemin="1" aria-valuemax="${max}" aria-valuenow="${cur}" aria-label="${escAttr(stackLab)}" oninput="setDcUnitDamageTakenDefStacks(this.value)"><span class="detail-pilot-stack-val">+${pct}%</span></div>`;
 }
 function _dcUnitCombatStackPassiveBonusRowHtml(cc){
-if(!S.dc.unitCondPassive||!cc)return'';
+if(!cc)return'';
 const slider=_dcUnitCombatStackSliderHtml(cc);
 if(!slider)return'';
-const mainLab=`MS Attack +${cc.per|0}% per combat`;
-const detail=cc.ability_name?String(cc.ability_name):'';
-return`<div class="dc-pilot-bonus-row dc-pilot-bonus-row--unit-combat-stack" onclick="event.stopPropagation()"><span class="dc-pilot-bonus-line"><span class="dc-pilot-bonus-main">${esc(mainLab)} <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--incl">(Included in unit stats)</span></span>${detail?`<span class="dc-pilot-bonus-detail">${esc(detail)}</span>`:''}</span>${slider}</div>`;
+const maxPct=cc.max|0;
+const cur=Math.max(0,Math.min(cc.max_stacks|0,S.dc.unitCondStackCount|0));
+const offTag=cur<=0?` <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--cond">(Off — no combat damage yet)</span>`:` <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--incl">(Included in unit stats)</span>`;
+const mainLab=`MS Attack +${cc.per|0}% per combat (max +${maxPct}%)`;
+const detail=cc.ability_name?String(cc.ability_name):'(Cond: Combat)';
+return`<div class="dc-pilot-bonus-row dc-pilot-bonus-row--unit-combat-stack${cur<=0?' dc-pilot-bonus--off':''}" onclick="event.stopPropagation()"><span class="dc-pilot-bonus-line"><span class="dc-pilot-bonus-main">${esc(mainLab)}${offTag}</span>${detail?`<span class="dc-pilot-bonus-detail">${esc(detail)}</span>`:''}</span>${slider}</div>`;
 }
 function _dcUnitHpAtkPassiveBonusRowHtml(hp){
 if(!S.dc.unitCondPassive||!hp||!hp.tiers||hp.tiers.length<2)return'';
@@ -14630,8 +14630,10 @@ const statsOn=td[keyOn]||td.stats_with_cond||[];
 const statsOff=td[keyOff]||td.stats_no_cond||[];
 if(!statsOn.length||!statsOff.length)return'';
 const names=['HP','EN','Attack','Defense','Mobility','Move'];
+const skipAtk=!!ud.unit_combat_count_atk; /* Combat ATK is the slider row, not a fixed sheet delta. */
 let html='';
 names.forEach(nm=>{
+if(skipAtk&&nm==='Attack')return;
 const a=Math.round(_dcFindStat(statsOff,nm)||0),b=Math.round(_dcFindStat(statsOn,nm)||0);
 const d=b-a;if(!d)return;
 const offRow=(statsOff||[]).find(s=>s&&s.name===nm)||{};
@@ -14646,28 +14648,33 @@ html+=`<div class="dc-pilot-bonus-row dc-pilot-bonus-row--cp-delta dc-pilot-bonu
 return html;
 }
 function _dcUnitCondPassiveBonusRowsHtml(ud){
-if(!ud||!S.dc.unitCondPassive)return'';
-return _dcUnitCpStatDeltaBonusRowsHtml(ud)+_dcUnitCombatStackPassiveBonusRowHtml(ud.unit_combat_count_atk)+_dcUnitHpAtkPassiveBonusRowHtml(ud.unit_hp_atk_tiers)+_dcUnitDamageTakenDefPassiveBonusRowHtml(ud.unit_damage_taken_def);
+if(!ud)return'';
+/* Cond: Combat slider is always listed (0 = off). Other CP rows need the chip on. */
+const combat=_dcUnitCombatStackPassiveBonusRowHtml(ud.unit_combat_count_atk);
+if(!S.dc.unitCondPassive)return combat;
+return _dcUnitCpStatDeltaBonusRowsHtml(ud)+combat+_dcUnitHpAtkPassiveBonusRowHtml(ud.unit_hp_atk_tiers)+_dcUnitDamageTakenDefPassiveBonusRowHtml(ud.unit_damage_taken_def);
 }
 function _dcApplyUnitCondStatAdjustments(stats,statsNoCond,ud,cpOn){
-if(!cpOn||!ud||!stats||!stats.length)return stats;
+if(!ud||!stats||!stats.length)return stats;
 const cc=ud.unit_combat_count_atk;
 const hp=ud.unit_hp_atk_tiers;
 const dd=ud.unit_damage_taken_def;
-const hasAtk=!!(cc&&cc.per>0)||!!(hp&&hp.tiers&&hp.tiers.length>1);
-const hasDef=!!(dd&&dd.per>0);
-if(!hasAtk&&!hasDef)return stats;
+const hasCombat=!!(cc&&cc.per>0);
+const hasHp=!!(cpOn&&hp&&hp.tiers&&hp.tiers.length>1);
+const hasDef=!!(cpOn&&dd&&dd.per>0);
+/* Combat stacks apply from the slider even when the CP chip is off (stack 0). */
+if(!hasCombat&&!hasHp&&!hasDef)return stats;
 let out=stats;
-if(hasAtk){
+if(hasCombat||hasHp){
 const atkNo=(statsNoCond||[]).find(s=>s.name==='Attack');
 if(atkNo){
 const base=atkNo.base|0;
 let passivePct=atkNo.passive_pct|0;
-if(cc&&cc.per>0){
+if(hasCombat){
 const max=Math.max(1,cc.max_stacks|0);
-const n=Math.max(1,Math.min(max,S.dc.unitCondStackCount|0||max));
+const n=Math.max(0,Math.min(max,S.dc.unitCondStackCount|0));
 passivePct=(atkNo.passive_pct|0)+cc.per*n;
-}else if(hp&&hp.tiers&&hp.tiers.length>1){
+}else if(hasHp){
 const ti=Math.min(Math.max(0,S.dc.unitHpAtkTierIndex|0),hp.tiers.length-1);
 passivePct=(atkNo.passive_pct|0)+(hp.tiers[ti].atk_pct|0);
 }
@@ -14694,11 +14701,70 @@ return Object.assign({},s,{total:tot,bonus:Math.max(0,tot-base),passive_pct:pass
 }
 return out;
 }
-/** Default unit CP on for HP-tier ATK (stats_with_cond max tier). Combat-count units stay off unless toggled or share ucp=1. Vigor-gated cond stats still sync below. */
+/**
+ * Parse an ability line’s own-HP gate. DC assumes 100% HP.
+ * Returns {dir:'above'|'below', pct} or null.
+ */
+function _dcParseOwnHpPercentGate(txt){
+const t=String(txt||'').replace(/\n/g,' ');
+if(!t||!/HP|ヒットポイント|耐久/i.test(t))return null;
+let m;
+/* HP ≥ / or above / or higher */
+m=t.match(/HP\s*(?:is\s*)?(\d+)\s*%\s*or\s+(?:above|higher|greater)/i);
+if(!m)m=t.match(/HP\s*(?:is\s*)?(?:at\s+least|≥|>=)\s*(\d+)\s*%/i);
+if(!m)m=t.match(/HP(?:が|為|为)\s*(\d+)\s*%\s*以上/);
+if(!m)m=t.match(/HP\s*(\d+)\s*%\s*以上/);
+if(m)return{dir:'above',pct:parseInt(m[1],10)||0};
+/* HP ≤ / or below / or less / under / less than */
+m=t.match(/HP\s*(?:is\s*)?(\d+)\s*%\s*or\s+(?:below|less|lower)/i);
+if(!m)m=t.match(/HP\s*(?:is\s*)?(?:below|under|less\s+than|≤|<=)\s*(\d+)\s*%/i);
+if(!m)m=t.match(/HP(?:が|為|为)\s*(\d+)\s*%\s*(?:以下|未満)/);
+if(!m)m=t.match(/HP\s*(\d+)\s*%\s*(?:以下|未満)/);
+if(!m)m=t.match(/HP(?:が|為|为)?\s*(?:未滿|未满|低於|低于)\s*(\d+)\s*%/);
+if(m)return{dir:'below',pct:parseInt(m[1],10)||0};
+return null;
+}
+/** 'met' = full HP satisfies every own-HP gate found; 'unmet' = a below/low gate fails at 100%; 'none' = no own-HP gate. */
+function _dcOwnHpGatesAtFullHpFromAbilities(abilities,resolveFn){
+let sawAbove=false,sawBelow=false;
+(abilities||[]).forEach(ab=>{
+const r=typeof resolveFn==='function'?resolveFn(ab):ab;
+if(!r)return;
+(r.details||[]).forEach(ln=>{
+const g=_dcParseOwnHpPercentGate((ln&&ln.text)||'');
+if(!g)return;
+if(g.dir==='above')sawAbove=true;
+else if(g.dir==='below')sawBelow=true;
+});
+});
+if(sawBelow&&!sawAbove)return'unmet';
+if(sawBelow&&sawAbove)return'met'; /* mixed: full HP still meets the ≥ side baked into stats_with_cond */
+if(sawAbove)return'met';
+return'none';
+}
+function _dcUnitOwnHpGateAtFullHp(ud){
+if(!ud||ud._manual)return'none';
+return _dcOwnHpGatesAtFullHpFromAbilities(ud.abilities,_dcResolveUnitAbilityForMode);
+}
+function _dcCharOwnHpGateAtFullHp(cd){
+if(!cd||cd._manual)return'none';
+return _dcOwnHpGatesAtFullHpFromAbilities(cd.abilities,_dcResolveCharAbilityForMode);
+}
+/**
+ * Default unit CP on when DC assumes full HP:
+ * - HP ≥ X% gates (e.g. F91 Cond: HP) → on
+ * - unit_hp_atk_tiers (legacy tier path) → on
+ * - HP ≤ / below gates only → off
+ * - Combat-count (Cond: Combat) alone → off (0 stacks; activates only after dealing damage — use slider / CP chip)
+ */
 function _dcShouldAutoUnitCondPassive(ud,mpOpt){
 if(!ud||ud._manual)return false;
-const hp=ud.unit_hp_atk_tiers;
-if(!hp||!hp.tiers||!hp.tiers.length)return false;
+if(!ud.has_cond_stats)return false;
+const hpGate=_dcUnitOwnHpGateAtFullHp(ud);
+if(hpGate==='unmet')return false;
+const hpTiers=ud.unit_hp_atk_tiers;
+const hasHpTiers=!!(hpTiers&&hpTiers.tiers&&hpTiers.tiers.length);
+if(!hasHpTiers&&hpGate!=='met')return false;
 const thr=_dcVigorThresholdFromUnit(ud);
 if(thr||_detailUnitHasCondWeaponRange(ud,!!(S.dc&&S.dc.unitStatMode==='ssp'))){
 const prevUd=S.dc.atkUnitData;
@@ -14710,7 +14776,7 @@ if(req&&!_dcVigorAtLeast(mpOpt!=null&&mpOpt!==''?mpOpt:S.dc.mpLevel,req))return 
 }
 return true;
 }
-/** When unit conditional stats are vigor-gated, sync CP from vigor (Max+). HP-tier units default on via _dcShouldAutoUnitCondPassive. */
+/** When unit conditional stats are vigor-gated, sync CP from vigor (Max+). HP≥ / hp-tier units default on via _dcShouldAutoUnitCondPassive. */
 function _dcSyncUnitCondPassiveFromVigor(){
 const ud=S.dc.atkUnitData;
 if(!ud||ud._manual)return;
@@ -14795,10 +14861,11 @@ if(mm&&mm[uid]!=null&&(mm[uid]|0)>0)return true;
 if(_dcParseCounterOwnAtkPctFromChar(cd,ud)>0)return true;
 return false;
 }
-/** Default pilot CP on in DC when pairing matches (or when CP is not pair-gated) and vigor meets any CP gate. */
+/** Default pilot CP on in DC when pairing matches (or when CP is not pair-gated) and vigor meets any CP gate. Full HP assumed: HP≥ gates on, HP≤ / below gates off. */
 function _dcShouldAutoCharCondPassive(cd,ud,mpOpt){
 if(!cd||!ud||cd._manual||ud._manual)return false;
 if(!_dcCharHasConditional(cd))return false;
+if(_dcCharOwnHpGateAtFullHp(cd)==='unmet')return false;
 const mp=_dcNormMpLevel(mpOpt!=null&&mpOpt!==''?mpOpt:S.dc.mpLevel);
 if(_dcIsShinnAsukaCharacter(cd)&&mp==='super')return true;
 if(cd.ex_supercharged_tiers&&cd.ex_supercharged_tiers.length>1){
@@ -15647,10 +15714,14 @@ if((utb.defPct|0)>0)unitTurnBuffHtml+=`<label style="display:flex;align-items:ce
 if(uskHint)unitTurnBuffHtml+=`<div style="font-size:10px;color:var(--text-muted);margin-top:4px;line-height:1.45;white-space:pre-wrap">${uskHint}</div>`;
 unitTurnBuffHtml+=`</div>`;
 }
-/* Unit-skill MP (MpBoost) feeds starting vigor — show when present so users see why vigor auto-raised. */
+/* Unit-skill MpBoost (often “1 time(s)” on skill use) — counts for auto vigor only while unit skill is active. */
 const uskMp=_dcAccumMpBonusFromUnitSkills(ud)|0;
 if(uskMp>0){
-unitTurnBuffHtml+=`<div class="dc-section-label" style="margin-top:10px;color:var(--accent-cyan)">Unit skill (MP)</div><div style="font-size:12px;line-height:1.6"><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px"><span>MP +${uskMp} (starting vigor)</span></div></div>`;
+const uskMpOn=_dcUnitSkillActiveForStartingMp(ud);
+const uskMpHint=_dcUnitSkillHasTurnBuffUi(ud)
+?(uskMpOn?' (with unit skill — included in auto vigor)':' (toggle unit skill above to include in auto vigor)')
+:' (included in auto vigor)';
+unitTurnBuffHtml+=`<div class="dc-section-label" style="margin-top:10px;color:var(--accent-cyan)">Unit skill (MP)</div><div style="font-size:12px;line-height:1.6"><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;${uskMpOn?'':'opacity:.65'}"><span>MP +${uskMp} (starting vigor)${uskMpHint}</span></div></div>`;
 }
 const uGridBase=`stats-grid dc-atk-ers dc-stat-visual--${uMode} dc-stat-grid-4`;
 const uGridCls=sheetBuffOn?`${uGridBase} dc-stats-mini--ml-buff`:uGridBase;
@@ -15660,10 +15731,9 @@ const defValBlue=spDefCls==='has-bonus-val'?' has-bonus-val':'';
 const mobValBlue=spMobCls==='has-bonus-val'?' has-bonus-val':'';
 /* MOV omitted in DC — does not affect final damage (CP Move deltas still listed under Conditional Bonuses). */
 sa.innerHTML=`<div class="dc-section-label">${t('dc_unit_stats')}</div><div class="${uGridCls}"><div class="stat-card${_uCpCell('HP')}"><div class="stat-card-label">HP</div><div class="stat-card-value${hpValBlue}"><span${spHp}>${fmtN(hpS)}</span>${hpInlineBonus}${_uCpBonusHtml('HP')}${msEnh.hpHtml}</div></div><div class="stat-card${_uCpCell('Attack')}"><div class="stat-card-label">${t('col_atk')}</div><div class="stat-card-value${atkValBlue}">${atkMainSpan}${_uCpBonusHtml('Attack')}${msEnh.atkHtml}${atkExSub}</div></div><div class="stat-card${_uCpCell('Defense')}"><div class="stat-card-label">${t('col_def')}</div><div class="stat-card-value${defValBlue}"><span${spDefFinal}>${fmtN(defShowAdv)}</span>${defInlineBonus}${_uCpBonusHtml('Defense')}${msEnh.defHtml}</div></div><div class="stat-card${_uCpCell('Mobility')}"><div class="stat-card-label">${t('col_mob')}</div><div class="stat-card-value${mobValBlue}"><span${spMob}>${fmtN(mobS)}</span>${mobInlineBonus}${_uCpBonusHtml('Mobility')}${msEnh.mobHtml}</div></div></div>${unitModNote}${vigorCondNote}${unitTurnBuffHtml}`;
-if(!S.dc.atkCharData){
+/* Unit Cond (Combat / HP ATK / dmg-taken DEF) always under unit stats — not only when pilot is empty. */
 const unitCondHtml=_dcUnitCondPassiveBonusRowsHtml(ud);
 if(unitCondHtml)sa.innerHTML+=`<div class="dc-section-label" style="margin-top:10px;color:var(--accent-cyan)">${esc(t('dc_conditional_bonuses')||'Conditional Bonuses')}</div><div class="dc-pilot-bonus-list dc-pilot-bonus-list--cond">${unitCondHtml}</div>`;
-}
 renderDcWeaponArea();
 _dcUpdateAdvantageEnemyTagUi();_dcUpdateZeonEnemyTagUi();
 _dcUpdateSupportCounterAtkUi();
@@ -15778,8 +15848,8 @@ renderDcAtkUnit();renderDcAtkChar();
 if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses(true);else onDcParamChange();
 }
 function setDcUnitCondPassive(on){S.dc.unitCondPassive=!!on;if(!on){S.dc.unitCondStackCount=0;S.dc.unitHpAtkTierIndex=0;S.dc.unitDamageTakenDefStacks=0}else if(S.dc.atkUnitData)_dcInitUnitCondControls(S.dc.atkUnitData);renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
-function setDcUnitTurnBuffAtk(on){S.dc.unitTurnBuffAtk=!!on;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
-function setDcUnitTurnBuffDef(on){S.dc.unitTurnBuffDef=!!on;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
+function setDcUnitTurnBuffAtk(on){S.dc.unitTurnBuffAtk=!!on;renderDcAtkUnit();renderDcAtkChar();if((_dcAccumMpBonusFromUnitSkills(S.dc.atkUnitData)|0)>0)_dcAutoSetVigor();else onDcParamChange()}
+function setDcUnitTurnBuffDef(on){S.dc.unitTurnBuffDef=!!on;renderDcAtkUnit();renderDcAtkChar();if((_dcAccumMpBonusFromUnitSkills(S.dc.atkUnitData)|0)>0)_dcAutoSetVigor();else onDcParamChange()}
 function _dcHtmlSheetBuffToggles(){
 const ml=!!S.dc.masterLeagueBuff,go=!!S.dc.grandOffensiveBuff;
 const kdMl='if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();toggleDcMasterLeagueBuff();}';
@@ -16301,12 +16371,9 @@ return true;
 function _dcRenderPilotBonuses(area,cd){
 const b=_dcParsePilotAbilBonuses(cd);
 S.dc._pilotBonuses=b;
-const ud=S.dc.atkUnitData;
-const unitCondHtml=_dcUnitCondPassiveBonusRowsHtml(ud);
-if(!b.items.length&&!unitCondHtml)return;
-let h='';
-if(b.items.length){
-h=`<div class="dc-section-label" style="margin-top:10px;color:var(--accent-cyan)">Passive Bonuses</div><div class="dc-pilot-bonus-list">`;
+/* Unit Cond: Combat / HP ATK / dmg-taken DEF live under unit stats (renderDcAtkUnit) — not duplicated here. */
+if(!b.items.length)return;
+let h=`<div class="dc-section-label" style="margin-top:10px;color:var(--accent-cyan)">Passive Bonuses</div><div class="dc-pilot-bonus-list">`;
 b.items.forEach((it,i)=>{
 const condTag=it.cond?` <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--cond">${it.attackRoleOnly?'(Attack-role pilots only)':'(Conditional)'}</span>`:it.autoMet?` <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--match">(Tag Matched)</span>`:'';
 let inclTag=it.key==='atkPct'&&!it.cond?` <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--incl">(Included in pilot stats)</span>`:(it.key==='atkPct'&&it.cond?` <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--cond">(Not in stats — tags unmet)</span>`:'');
@@ -16334,11 +16401,6 @@ const rowOff=!!it.cond;
 h+=`<label class="dc-pilot-bonus-row${rowOff?' dc-pilot-bonus--off':''}"><input type="checkbox" id="${togId}" ${checked?'checked':''} onchange="_dcRecalcPilotBonuses(true)"><span class="dc-pilot-bonus-line"><span class="dc-pilot-bonus-main">${esc(it.label)}${condTag}</span><span class="dc-pilot-bonus-detail">${esc(it.name)}</span></span></label>`;
 });
 h+=`</div>`;
-}
-if(unitCondHtml){
-h+=`<div class="dc-section-label dc-section-label--cond-bonuses" style="margin-top:10px;color:var(--accent-cyan)">${esc(t('dc_conditional_bonuses')||'Conditional Bonuses')}</div><div class="dc-pilot-bonus-list dc-pilot-bonus-list--cond">${unitCondHtml}</div>`;
-}
-
 area.innerHTML+=h;
 }
 /** fullRefresh: recompute Damage Dealt Up / Crit Dmg Up from pilot toggles, skills, and current weapon crit trait. Otherwise only swap the weapon crit trait portion of Crit Dmg Up so manual fields persist when changing weapon/form on the same unit. */
@@ -16528,7 +16590,8 @@ return 900+(p>0?_dcPilotActiveSkillPctBonus(base,p):0);
 }
 
 const VIGOR_LEVEL_ORDER={normal:0,medium:0,high:1,max:2,super:3,supercharged:3};
-const DC_MP_THRESHOLDS=[{min:0,level:'medium'},{min:5,level:'high'},{min:12,level:'max'},{min:18,level:'super'}];
+/* In-game MP → Vigor (Game8 / gget-db / community): Normal 0–3, High 4–7, Max 8–11, Supercharged 12. */
+const DC_MP_THRESHOLDS=[{min:0,level:'medium'},{min:4,level:'high'},{min:8,level:'max'},{min:12,level:'super'}];
 function _dcAccumMpBonusFromResolved(resolved,ud,cd){
 if(!resolved)return 0;
 let totalMp=0;
@@ -16555,7 +16618,7 @@ if(!m&&_dcIsJaCalcLang())m=txt.match(/自身のMPが(\d+)上昇/);
 if(!m)m=txt.match(/自身MP提升(\d+)/);
 return m?parseInt(m[1],10)||0:0;
 }
-/** Unit-skill MpBoost (type 12) + EN/JA/TW text — stacks into starting vigor MP total. */
+/** Unit-skill MpBoost (type 12) + EN/JA/TW text — raw MP from unit skills (not gated). */
 function _dcAccumMpBonusFromUnitSkills(ud){
 if(!ud||ud._manual)return 0;
 let total=0;
@@ -16568,6 +16631,18 @@ if(fromTrait>0){total+=fromTrait;return}
 total+=_dcMpBonusFromUnitSkillText(_dcJoinUnitSkillTextBlob(sk));
 });
 return total;
+}
+/** True when the unit skill panel has a 1-turn ATK/DEF/MOB/dealt checkbox. */
+function _dcUnitSkillHasTurnBuffUi(ud){
+if(!ud||ud._manual)return false;
+const utb=_dcGetDetectedUnitTurnBuffPercents(ud)||{};
+const dealt=_dcGetDetectedUnitSkillDmgDealtUp(ud)||{};
+return (utb.atkPct|0)>0||(utb.defPct|0)>0||(utb.mobPct|0)>0||(dealt.pct|0)>0;
+}
+/** MpBoost on unit skills is usually “on skill use (1 time(s))” — only count while unit skill is toggled on. MP-only skills (no turn-buff UI) always count. */
+function _dcUnitSkillActiveForStartingMp(ud){
+if(!_dcUnitSkillHasTurnBuffUi(ud))return true;
+return !!(S.dc.unitTurnBuffAtk||S.dc.unitTurnBuffDef);
 }
 function _dcCalcStartingVigor(){
 const cd=S.dc.atkCharData;const ud=S.dc.atkUnitData;
@@ -16583,7 +16658,7 @@ ud.abilities.forEach(ab=>{
 totalMp+=_dcAccumMpBonusFromResolved(_dcResolveUnitAbilityForMode(ab),ud,cd);
 });
 }
-totalMp+=_dcAccumMpBonusFromUnitSkills(ud);
+if(_dcUnitSkillActiveForStartingMp(ud))totalMp+=_dcAccumMpBonusFromUnitSkills(ud);
 let level='medium';
 for(const t of DC_MP_THRESHOLDS){if(totalMp>=t.min)level=t.level}
 return level;
@@ -16595,7 +16670,7 @@ setDcMp(lv);
 const hint=document.getElementById('dcVigorAutoHint');
 if(hint){
 const MP_LABEL={medium:'Normal',high:'High',max:'Max',super:'Supercharged'};
-if(lv!=='medium')hint.textContent=`(Auto: ${MP_LABEL[lv]||lv} from character MP bonus)`;
+if(lv!=='medium')hint.textContent=`(Auto: ${MP_LABEL[lv]||lv} from starting MP bonus)`;
 else hint.textContent='';
 }
 }
@@ -19141,8 +19216,10 @@ const coreMob=_dcMsGrowthFromPct(mobBase,pMob,'Mobility');
 const pctMob=_dcMsGrowthFromPct(mobBase,pMob+(opPct.Mobility|0)+lp+sheetBuffPct,'Mobility')-coreMob;
 const mobHtml=L(pctMob,'Option part %, leader skill %, Master League / Grand Offensive (MOB)')+L(opFlat.Mobility|0,'Option part flat Mobility');
 const coreAtk=_dcMsGrowthFromPct(atkBase,pAtk,'Attack');
-const pctAtkNoEx=_dcMsGrowthFromPct(atkBase,pAtk+opAt+tAtk+sheetBuffPct+lp+lpAd+(scAtk|0),'Attack')-coreAtk;
-const atkHtml=L(pctAtkNoEx,'Option part %, 1-turn MS ATK %, leader %, SameGroup +2% ATK/DEF (Support-role MS), ML/GO, squad conditions (EX squad % is on the EX line below; Support Attack/Counter % is combat-only)')+L(opFlat.Attack|0,'Option part flat Attack')+L(atkSupport|0,'Supporter ATK support','stat-card-bonus--supporter-flat');
+const supCnt=_dcEffectiveSupportCounterAtkPctFromCtx(c)|0;
+const pctAtkNoSup=_dcMsGrowthFromPct(atkBase,pAtk+opAt+tAtk+sheetBuffPct+lp+lpAd+(scAtk|0),'Attack')-coreAtk;
+const pctAtkSupOnly=supCnt>0?(_dcMsGrowthFromPct(atkBase,pAtk+opAt+tAtk+sheetBuffPct+lp+lpAd+(scAtk|0)+supCnt,'Attack')-_dcMsGrowthFromPct(atkBase,pAtk+opAt+tAtk+sheetBuffPct+lp+lpAd+(scAtk|0),'Attack')):0;
+const atkHtml=L(pctAtkNoSup,'Option part %, 1-turn MS ATK %, leader %, SameGroup +2% ATK/DEF (Support-role MS), ML/GO, squad conditions (EX squad % is on the EX line below)')+L(pctAtkSupOnly,`Support Attack/Counter +${supCnt}% MS ATK (same bucket as damage calc)`)+L(opFlat.Attack|0,'Option part flat Attack')+L(atkSupport|0,'Supporter ATK support','stat-card-bonus--supporter-flat');
 return{hpHtml,atkHtml,defHtml,mobHtml};
 }
 /** MS growth % buckets: integer floor. V2 AB EX LB3 +36% leader: HP 145859 / ATK 19856 with OP 12% + Carozzo flats. */
@@ -19151,7 +19228,8 @@ const F=Math.floor;
 const c=ctx||{};
 const scAtk=c.squadCondAtkPct|0;
 const scDef=c.squadCondDefPct|0;
-const supCnt=forPanel?0:_dcEffectiveSupportCounterAtkPctFromCtx(c);
+/* Include Support Attack/Counter % in panel ATK when the toggle is on (same as damage ⑧). */
+const supCnt=_dcEffectiveSupportCounterAtkPctFromCtx(c);
 const mlPct=c.masterLeagueBuff?50:0;
 const goPct=c.grandOffensiveBuff?100:0;
 const sheetBuffPct=mlPct+goPct;
