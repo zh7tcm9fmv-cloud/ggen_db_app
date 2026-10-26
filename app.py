@@ -1814,6 +1814,7 @@ def browse_combo_from_unit_args(args):
         'ability_combine': normalize_filter_combine_op(args.get('ability_op'), 'and'),
         'terrain_combine': normalize_filter_combine_op(args.get('terrain_op'), 'and'),
         'weapon_debuff_combine': normalize_filter_combine_op(args.get('weapon_debuff_op'), 'and'),
+        'weapon_attr_combine': normalize_filter_combine_op(args.get('weapon_attr_op'), 'and'),
         'weapon_range_combine': normalize_filter_combine_op(args.get('weapon_range_op'), 'and'),
         'weapon_range_non_map_combine': normalize_filter_combine_op(args.get('weapon_range_non_map_op'), 'and'),
         'map_weapon_range_combine': normalize_filter_combine_op(args.get('map_weapon_range_op'), 'and'),
@@ -2124,22 +2125,21 @@ def _unit_has_multi_damage_type_weapon(uid):
     return False
 
 
-def unit_matches_weapon_attr_filter(uid, want_tokens):
-    """OR across tokens: type keys (presence) and/or exact WeaponAttributeSetIds."""
+def unit_matches_weapon_attr_filter(uid, want_tokens, combine='and'):
+    """Type keys (presence) and/or exact WeaponAttributeSetIds; combine and/or/and_or."""
     if not want_tokens:
         return True
     have_keys = UNIT_WEAPON_ATTR_KEYS_CACHE.get(uid) or frozenset()
     have_sets = UNIT_WEAPON_ATTR_SET_IDS_CACHE.get(uid) or frozenset()
-    for tok in want_tokens:
+
+    def _one(tok):
         t = str(tok)
         if t in UNIT_WEAPON_ATTR_FILTER_KEYS:
-            if t in have_keys:
-                return True
-        else:
-            sid = _normalize_weapon_attr_set_id(t)
-            if sid in have_sets:
-                return True
-    return False
+            return t in have_keys
+        sid = _normalize_weapon_attr_set_id(t)
+        return sid in have_sets
+
+    return apply_browse_combine_match(want_tokens, _one, combine)
 
 
 def parse_unit_weapon_range_filter(val):
@@ -4593,11 +4593,14 @@ def unit_instant_browse_facets(
             'wra': wra,
             'mwr': mwr,
         })
+    # Unit-level exact WeaponAttributeSetIds (non-MAP; 8→4) — matches unit_matches_weapon_attr_filter.
+    was = sorted(UNIT_WEAPON_ATTR_SET_IDS_CACHE.get(uid) or [])
     return {
         'acq': str(info.get('acquisition_route', '0') or '0'),
         'ser': ser,
         'mech': mech,
         'abil': abil,
+        'was': was,
         'forms': forms,
     }
 
@@ -30078,13 +30081,15 @@ def list_units():
     tb_boost_ck = f'tb{tb_boost}' if tb_boost else 'tb0'
     want_stat_bounds_u = request.args.get('stat_bounds', '').strip().lower() in ('1', 'true', 'yes')
     sbu_ck = 'sbd1' if want_stat_bounds_u else 'sbd0'
-    rb_u_ck = 'rb1' if ranking_bulk_u else 'rb0'
+    rb_u_ck = 'rb2' if ranking_bulk_u else 'rb0'
     # ul65: InstantBrowse facets on ranking_bulk (source/series/mech/abil/forms + tag_ids).
     # ul66: All-weapon range filter includes EX (type 2) without list SSP mode
     # ul67: weapon_range_auto_ssp_tiers / weapon_range_auto_pep_tiers for list toggle auto-arm
     # ul68: All-weapon range filter skips Custom Core unless list SSP is on
     # ul69: weapon_attr accepts exact WeaponAttributeSetIds (1–8) for /u attribute droplist
-    ck = f"ul69_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_attr_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    # ul70: InstantBrowse ib.was (weapon attr set ids) for snappy /u attribute droplist
+    # ul71: weapon_attr_op and/or/and_or combine for /u attribute droplist
+    ck = f"ul71_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_attr_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_waop{_cbu['weapon_attr_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached:
         return jsonify_preserialized(cached, ck, public=True, max_age=3600, convert_images=False)
@@ -30139,7 +30144,8 @@ def list_units():
             if not (direct_seek or npc123_list) and not entity_matches_unit_abilities_filter(uid, ability_filter, _cbu['ability_combine']):
                 continue
         if weapon_attr_filter is not None:
-            if not (direct_seek or npc123_list) and not unit_matches_weapon_attr_filter(uid, weapon_attr_filter):
+            if not (direct_seek or npc123_list) and not unit_matches_weapon_attr_filter(
+                    uid, weapon_attr_filter, _cbu['weapon_attr_combine']):
                 continue
         _shape_kw = dict(
             role_filter=role_filter,
