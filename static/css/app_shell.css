@@ -3716,7 +3716,10 @@ html.cmp-bar-open:has(#cmpFloat.visible) .main-content{padding-bottom:calc(56px 
 #panel-calculator .dc-def-ers .stat-card-label,#panel-calculator .dc-atk-ers .stat-card-label{font-size:10px;letter-spacing:.04em;color:var(--text-muted);font-weight:600;text-transform:none}
 #panel-calculator .dc-def-ers .stat-card-bonus,#panel-calculator .dc-atk-ers .stat-card-bonus{font-size:11px}
 #panel-calculator .dc-atk-ers .stat-card-value{display:flex;flex-direction:column;align-items:center;white-space:normal;gap:2px}
-#panel-calculator .dc-atk-ers .stat-card-bonus{white-space:normal;overflow:visible;text-overflow:clip;line-height:1.25;max-width:100%}
+#panel-calculator .dc-atk-ers .stat-card-bonus{display:inline-flex;align-items:center;justify-content:center;gap:3px;white-space:normal;overflow:visible;text-overflow:clip;line-height:1.25;max-width:100%}
+#panel-calculator .dc-atk-ers .dc-stat-bonus-ico{width:11px;height:11px;object-fit:contain;flex-shrink:0;opacity:.88;vertical-align:middle}
+#panel-calculator .dc-atk-ers .dc-stat-bonus-ico--op{width:12px;height:12px;border-radius:2px;object-fit:cover;opacity:.92}
+#panel-calculator .dc-atk-ers .dc-stat-bonus-ico--cp{display:inline-flex;align-items:center;justify-content:center;min-width:14px;height:11px;padding:0 2px;border-radius:3px;font-size:7px;font-weight:800;letter-spacing:.02em;line-height:1;color:var(--accent-cyan);background:rgba(45,212,191,.14);border:1px solid rgba(45,212,191,.4);box-sizing:border-box}
 .dc-stat-mini{text-align:center;padding:8px;background:rgba(0,0,0,.2);border-radius:6px}
 .dc-stat-mini-label{font-size:10px;color:var(--text-muted);font-weight:600}
 .dc-stat-mini-val{font-size:15px;font-weight:800;color:var(--text-primary);font-family:'RobotoMediumNumbers',monospace}

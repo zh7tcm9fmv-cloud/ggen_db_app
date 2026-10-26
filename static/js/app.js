@@ -11720,6 +11720,12 @@ if(o.cex!==undefined){const n=parseInt(o.cex,10);if(!Number.isNaN(n)&&n>=0){slot
 if(slot.atkCharData&&!slot.atkCharData._manual){const _xt=slot.atkCharData.ex_supercharged_tiers;if(_xt&&_xt.length>1)slot.dcSuperchargedExTier=Math.min(Math.max(0,slot.dcSuperchargedExTier|0),_xt.length-1);else{slot.dcSuperchargedExTier=0;slot._dcSuperchargedExManual=false}}
 if(o.acoa)slot.atkCounterOwnAtk=true;
 if(o.sac)slot.supportCounterAtk=true;
+/* Action:Support unit CP ≡ Support Attack/Counter — keep packed flags equal when either is on. */
+if(!o.atkM&&slot.atkUnitData&&_dcUnitCpIsSupportActionAtkOnly(slot.atkUnitData)){
+const _sacOn=!!(slot.unitCondPassive||slot.supportCounterAtk);
+slot.unitCondPassive=_sacOn;
+slot.supportCounterAtk=_sacOn;
+}
 slot.supportCntPairSnap=_dcSupportCntEligiblePairSnap(slot.atkCharData,slot.atkUnitData)||null;
 if(o.uta)slot.unitTurnBuffAtk=true;
 if(o.utd)slot.unitTurnBuffDef=true;
@@ -15630,7 +15636,7 @@ statsNoCp=td[kn]||stats;
 }
 function _uCpCell(nm){if(!uCp)return'';const a=Math.round(_dcFindStat(statsNoCp,nm)||0),b=Math.round(_dcFindStat(stats,nm)||0);if(a===b)return'';return b>a?' dc-stat-mini--cp':' dc-stat-mini--cp-penalty'}
 function _uCpValBuff(nm){if(!uCp)return'';const a=Math.round(_dcFindStat(statsNoCp,nm)||0),b=Math.round(_dcFindStat(stats,nm)||0);if(a===b)return'';return b>a?'dc-stat-val--buffed':'dc-stat-val--penalized'}
-function _uCpBonusHtml(nm){if(!uCp)return'';const a=Math.round(_dcFindStat(statsNoCp,nm)||0),b=Math.round(_dcFindStat(stats,nm)||0);const d=b-a;if(d===0)return'';const tipUp='Conditional passive — extra growth stat vs off (LB row; main number may include modifiers).';const tipDn='Conditional passive — stat change vs off (LB row; main number may include modifiers).';if(d>0)return`<div class="stat-card-bonus" style="margin-top:2px" title="${escAttr(tipUp)}">(+${fmtN(d)})</div>`;return`<div class="stat-card-bonus stat-card-penalty" style="margin-top:2px" title="${escAttr(tipDn)}">(${fmtN(d)})</div>`}
+function _uCpBonusHtml(nm){if(!uCp)return'';const a=Math.round(_dcFindStat(statsNoCp,nm)||0),b=Math.round(_dcFindStat(stats,nm)||0);const d=b-a;if(d===0)return'';const tipUp='Conditional passive — extra growth stat vs off (LB row; main number may include modifiers).';const tipDn='Conditional passive — stat change vs off (LB row; main number may include modifiers).';const ico=_dcStatBonusSrcIconHtml('cp');if(d>0)return`<div class="stat-card-bonus" style="margin-top:2px" title="${escAttr(tipUp)}">${ico}(+${fmtN(d)})</div>`;return`<div class="stat-card-bonus stat-card-penalty" style="margin-top:2px" title="${escAttr(tipDn)}">${ico}(${fmtN(d)})</div>`}
 const hHp=_uCpValBuff('HP'),hAtk=_uCpValBuff('Attack'),hDef=_uCpValBuff('Defense'),hMob=_uCpValBuff('Mobility');
 const sheetBuffOn=!!S.dc.masterLeagueBuff||!!S.dc.grandOffensiveBuff;
 const leaderOn=(uEff.leaderPct|0)>0;
@@ -15847,7 +15853,13 @@ if(S.dc._activeSkills)Object.keys(S.dc._activeSkills).forEach(k=>{if(!visIds.has
 renderDcAtkUnit();renderDcAtkChar();
 if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses(true);else onDcParamChange();
 }
-function setDcUnitCondPassive(on){S.dc.unitCondPassive=!!on;if(!on){S.dc.unitCondStackCount=0;S.dc.unitHpAtkTierIndex=0;S.dc.unitDamageTakenDefStacks=0}else if(S.dc.atkUnitData)_dcInitUnitCondControls(S.dc.atkUnitData);renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
+function setDcUnitCondPassive(on){
+S.dc.unitCondPassive=!!on;
+if(!on){S.dc.unitCondStackCount=0;S.dc.unitHpAtkTierIndex=0;S.dc.unitDamageTakenDefStacks=0}
+else if(S.dc.atkUnitData)_dcInitUnitCondControls(S.dc.atkUnitData);
+_dcSyncLinkedUnitCpAndSupportCounter('cp');
+renderDcAtkUnit();renderDcAtkChar();onDcParamChange();
+}
 function setDcUnitTurnBuffAtk(on){S.dc.unitTurnBuffAtk=!!on;renderDcAtkUnit();renderDcAtkChar();if((_dcAccumMpBonusFromUnitSkills(S.dc.atkUnitData)|0)>0)_dcAutoSetVigor();else onDcParamChange()}
 function setDcUnitTurnBuffDef(on){S.dc.unitTurnBuffDef=!!on;renderDcAtkUnit();renderDcAtkChar();if((_dcAccumMpBonusFromUnitSkills(S.dc.atkUnitData)|0)>0)_dcAutoSetVigor();else onDcParamChange()}
 function _dcHtmlSheetBuffToggles(){
@@ -16239,10 +16251,71 @@ if(abMax>0)total+=abMax;
 });
 return total;
 }
-/** Pilot + MS: Support Attack/Counter ATK % (stacks). Includes unit traits like "(When Supporting) Increased ATK". */
-function _dcParseMaxSupportCounterAtkPctFromChar(cd,ud){
+/** Unit Action:Support ATK % already baked into stats_with_cond (has_cond_stats). */
+function _dcUnitSupportAtkPctInCondSheet(ud){
+if(!ud||ud._manual||!ud.has_cond_stats)return 0;
+const unitSup=_dcSumSupportCounterAtkPctFromAbilities(
+ud.abilities,
+_dcResolveUnitAbilityForMode,
+ud,
+null,
+false
+)|0;
+if(unitSup<=0)return 0;
+const lb=ud.lb_data;if(!lb||!lb.length)return unitSup;
+const tier=Math.min(Math.max(0,(S.dc&&S.dc.lbTier)|0),lb.length-1);
+const td=lb[tier]||lb[lb.length-1];
+const atkOn=(td.stats_with_cond||[]).find(s=>s&&s.name==='Attack');
+const atkOff=(td.stats_no_cond||[]).find(s=>s&&s.name==='Attack');
+const dPct=((atkOn&&atkOn.passive_pct)|0)-((atkOff&&atkOff.passive_pct)|0);
+/* CP Attack % covers this Support ATK trait — do not also add it via the SAC toggle. */
+if(dPct>=unitSup)return unitSup;
+return 0;
+}
+/** True when unit CP Attack delta is exactly Action:Support ATK (same condition as Support Attack/Counter). */
+function _dcUnitCpIsSupportActionAtkOnly(ud){
+if(!ud||ud._manual||!ud.has_cond_stats)return false;
+if(String(ud.role_id||'')!=='3')return false;
+const unitSup=_dcSumSupportCounterAtkPctFromAbilities(
+ud.abilities,
+_dcResolveUnitAbilityForMode,
+ud,
+null,
+false
+)|0;
+if(unitSup<=0)return false;
+const lb=ud.lb_data;if(!lb||!lb.length)return false;
+const tier=Math.min(Math.max(0,(S.dc&&S.dc.lbTier)|0),lb.length-1);
+const td=lb[tier]||lb[lb.length-1];
+const atkOn=(td.stats_with_cond||[]).find(s=>s&&s.name==='Attack');
+const atkOff=(td.stats_no_cond||[]).find(s=>s&&s.name==='Attack');
+const dPct=((atkOn&&atkOn.passive_pct)|0)-((atkOff&&atkOff.passive_pct)|0);
+return dPct===unitSup;
+}
+/** Keep unit CP and Support Attack/Counter locked together when they are the same Action:Support condition. */
+function _dcSyncLinkedUnitCpAndSupportCounter(driver){
+const ud=S.dc.atkUnitData;
+if(!_dcUnitCpIsSupportActionAtkOnly(ud))return;
+const fullPct=_dcParseMaxSupportCounterAtkPctFromChar(S.dc.atkCharData,ud,{unitCondPassive:false})|0;
+if(fullPct<=0)return;
+if(driver==='cp'){
+const want=!!S.dc.unitCondPassive;
+if(!!S.dc.supportCounterAtk!==want)S.dc.supportCounterAtk=want;
+}else if(driver==='sac'){
+const want=!!S.dc.supportCounterAtk;
+if(!!S.dc.unitCondPassive!==want){
+S.dc.unitCondPassive=want;
+if(!want){S.dc.unitCondStackCount=0;S.dc.unitHpAtkTierIndex=0;S.dc.unitDamageTakenDefStacks=0}
+else _dcInitUnitCondControls(ud);
+}
+}
+}
+/** Pilot + MS: Support Attack/Counter ATK % (stacks). Unit Action:Support ATK is omitted when unit CP already applies it via the sheet. */
+function _dcParseMaxSupportCounterAtkPctFromChar(cd,ud,opts){
 if((!cd||cd._manual)&&(!ud||ud._manual))return 0;
 const unitRef=ud||S.dc.atkUnitData;
+const o=opts||{};
+const unitCpOn=o.unitCondPassive!=null?!!o.unitCondPassive:!!(S.dc&&S.dc.unitCondPassive);
 let total=0;
 if(cd&&!cd._manual){
 total+=_dcSumSupportCounterAtkPctFromAbilities(
@@ -16254,19 +16327,24 @@ _dcCharIsSupportRole(cd)
 );
 }
 if(unitRef&&!unitRef._manual){
-total+=_dcSumSupportCounterAtkPctFromAbilities(
+let unitPct=_dcSumSupportCounterAtkPctFromAbilities(
 unitRef.abilities,
 _dcResolveUnitAbilityForMode,
 unitRef,
 cd&&!cd._manual?cd:null,
 false
-);
+)|0;
+if(unitCpOn){
+const baked=_dcUnitSupportAtkPctInCondSheet(unitRef)|0;
+if(baked>0)unitPct=Math.max(0,unitPct-baked);
+}
+total+=unitPct;
 }
 return total;
 }
 function _dcSupportCntEligiblePairSnap(cd,ud){
 if(!cd||cd._manual||!ud||ud._manual||String(ud.role_id)!=='3')return '';
-const rawPct=_dcParseMaxSupportCounterAtkPctFromChar(cd,ud)|0;
+const rawPct=_dcParseMaxSupportCounterAtkPctFromChar(cd,ud,{unitCondPassive:false})|0;
 if(rawPct<=0)return '';
 return `${String(cd.id||'')}|${String(ud.id||'')}|${rawPct}`;
 }
@@ -16275,9 +16353,8 @@ const c=ctx||{};
 if(!c.supportCounterAtk)return 0;
 const cd=c.atkCharData,ud=c.atkUnitData;
 if(!cd||cd._manual||!ud||ud._manual||String(ud.role_id)!=='3')return 0;
-const stored=c._supportCounterAtkPct|0;
-if(stored>0)return stored;
-return _dcParseMaxSupportCounterAtkPctFromChar(cd,ud)|0;
+/* Recompute with current unit CP so Action:Support MS ATK is not double-counted vs stats_with_cond. */
+return _dcParseMaxSupportCounterAtkPctFromChar(cd,ud,{unitCondPassive:!!c.unitCondPassive})|0;
 }
 function _dcEffectiveSupportCounterAtkPct(){return _dcEffectiveSupportCounterAtkPctFromCtx(S.dc);}
 /** Legacy post-multiply path — support-counter % is combat-only (see _dcGetModifiedAttackerUnitStatsFromCtx forPanel). */
@@ -17737,9 +17814,11 @@ if(pilotNote)pilotNote.classList.toggle('is-highlighted',on);
 }
 function setDcSupportCounterAtk(v){
 S.dc.supportCounterAtk=!!v;
+_dcSyncLinkedUnitCpAndSupportCounter('sac');
 const tog=document.getElementById('dcAtkSupportCounterToggle');
 if(tog){tog.classList.toggle('active',!!v);tog.setAttribute('aria-pressed',v?'true':'false')}
 _dcSyncSupportCounterHighlight();
+renderDcAtkUnit();renderDcAtkChar();
 onDcParamChange();
 }
 function toggleDcSupportCounterAtk(){
@@ -18520,27 +18599,20 @@ m=s.match(/能力值(\d+)\s*[%％]/);
 if(m)return parseInt(m[1],10)||0;
 return 0;
 }
-/** Leader % on HP/MOB (not EN/Move — game never buffs Move from leaders/ML/GO/OP).
- * SameGroup leaders add +2% ATK/DEF only for Support-role MS (e.g. Tenacious → D Gundam Third),
- * not Attack/Durability (Susanowo + Sumeragi Shippujinrai is plain leader %). */
+/** Leader % on HP/ATK/DEF/MOB (not EN/Move — game never buffs Move from leaders/ML/GO/OP).
+ * SameGroup is only a tag-matching scope for which leader % applies — no extra ATK/DEF %. */
 function _dcLeaderSkillPctAndFlags(supporters,atkUnitData){
 let pct=0;
-let sameGroupAdBonusPct=0;
 (supporters||[]).forEach(s=>{
 let best=0;
-let bestSameGroup=false;
 (s.leader_skills||[]).forEach(ls=>{
 if(ls.applies===false)return;
 const v=_dcLeaderPctFromLeaderSkillDesc(ls.desc||'');
-if(v>best){best=v;bestSameGroup=!!ls.same_group}
-else if(v===best&&ls.same_group)bestSameGroup=true;
+if(v>best)best=v;
 });
 pct+=best;
-if(best>0&&bestSameGroup)sameGroupAdBonusPct=2;
 });
-const isSupportMs=String(atkUnitData&&atkUnitData.role_id||'')==='3';
-if(!isSupportMs)sameGroupAdBonusPct=0;
-return{pct,sameGroupAdBonusPct};
+return{pct,sameGroupAdBonusPct:0};
 }
 /** EX squad ATK % applies to the MS growth Attack line after option-part Attack % (if any), not raw LB alone — not MS ability Attack bonuses. Supporter leader % on Attack applies after EX on that growth line. */
 function _dcApplyExSquadToUnitAtk(unitAtkFull,unitAtkExBase,exPct){
@@ -19048,12 +19120,14 @@ if(!w||!tog)return;
 const cd=S.dc.atkCharData,ud=S.dc.atkUnitData;
 const si=Math.min(Math.max(S.dc.atkSlotIndex|0,0),DC_ATK_SLOT_COUNT-1);
 const snapMap=S.dc._supportCntAtkPairSnapBySlot=S.dc._supportCntAtkPairSnapBySlot||{};
-const rawPct=_dcParseMaxSupportCounterAtkPctFromChar(cd,ud)|0;
-S.dc._supportCounterAtkPct=rawPct;
-const pctOk=rawPct>0;
+/* Full pilot+MS parse for eligibility/snap; effective omits MS Action:Support ATK when unit CP sheet already has it. */
+const fullPct=_dcParseMaxSupportCounterAtkPctFromChar(cd,ud,{unitCondPassive:false})|0;
+const effPct=_dcParseMaxSupportCounterAtkPctFromChar(cd,ud)|0;
+S.dc._supportCounterAtkPct=effPct;
+const pctOk=fullPct>0;
 const unitOk=!!(ud&&!ud._manual&&String(ud.role_id)==='3');
 const cid=cd&&!cd._manual?String(cd.id||''):'';
-if(!pctOk||rawPct<=0){
+if(!pctOk||fullPct<=0){
 w.style.display='none';
 w.classList.remove('is-disabled');
 w.style.opacity='';
@@ -19075,9 +19149,9 @@ tog.setAttribute('aria-pressed','false');
 w.classList.add('is-disabled');
 w.style.opacity='0.55';
 tog.tabIndex=-1;
-_dcApplySupportCounterLang(rawPct);
+_dcApplySupportCounterLang(fullPct);
 if(lbl){
-lbl.textContent=t('dc_support_counter_desc').replace('{pct}',String(rawPct));
+lbl.textContent=t('dc_support_counter_desc').replace('{pct}',String(fullPct));
 lbl.title=t('dc_support_counter_tip_disabled');
 }
 _dcSyncSupportCounterHighlight();
@@ -19085,15 +19159,18 @@ return;
 }
 w.style.opacity='';
 w.classList.remove('is-disabled');
-const kNow=`${cid}|${String(ud.id||'')}|${rawPct}`;
+const kNow=`${cid}|${String(ud.id||'')}|${fullPct}`;
 const prev=snapMap[si]!=null?String(snapMap[si]):null;
 snapMap[si]=kNow;
 if(prev!==null&&prev!==kNow)S.dc.supportCounterAtk=false;
 tog.tabIndex=0;
-_dcApplySupportCounterLang(rawPct);
+_dcApplySupportCounterLang(effPct);
 if(lbl){
-lbl.textContent=t('dc_support_counter_desc').replace('{pct}',String(rawPct));
-lbl.title=t('dc_support_counter_tip_enabled');
+const baked=S.dc.unitCondPassive?(_dcUnitSupportAtkPctInCondSheet(ud)|0):0;
+lbl.textContent=t('dc_support_counter_desc').replace('{pct}',String(effPct));
+let tip=t('dc_support_counter_tip_enabled');
+if(baked>0)tip+=` Unit CP already includes +${baked}% Action:Support MS ATK — not added again here.`;
+lbl.title=tip;
 }
 const onv=!!S.dc.supportCounterAtk;
 tog.classList.toggle('active',onv);
@@ -19172,6 +19249,22 @@ const b=F(Math.max(0,Number(base)||0));
 const p=F(Number(pctSum)||0);
 return F(b*(100+p)/100);
 }
+/** Tiny source marker beside DC MS bonus lines (CP / OP·leader / Support Attack / supporter). */
+function _dcStatBonusSrcIconHtml(kind){
+if(kind==='cp')return`<span class="dc-stat-bonus-ico dc-stat-bonus-ico--cp" aria-hidden="true">CP</span>`;
+/* OP lines use a real Option Part sprite thumb (same art as the OP picker), not the UI menu glyph. */
+const opThumb='/static/images/Option-Part (Modification)/Sprite/op_000000004.webp';
+const paths={
+sheet:opThumb,
+op:opThumb,
+sac:'/static/images/UI/UI_Common_TypeIcon_Support_S.webp',
+supporter:'/static/images/UI/UI_Common_Icon_Category_Supporter_Main.webp'
+};
+const p=paths[kind];
+if(!p)return'';
+const opCls=(kind==='sheet'||kind==='op')?' dc-stat-bonus-ico--op':'';
+return`<img class="dc-stat-bonus-ico${opCls}" src="${imgUrl(p)}" alt="" width="12" height="12" loading="lazy" decoding="async" aria-hidden="true">`;
+}
 /** Breakdown +lines under MS HP/ATK/DEF/MOB: same per-stat rounding as panel totals. Supporter flats use a distinct color. */
 function _dcMsStatEnhancementLinesHtml(ctx,atkUnitStats){
 const F=Math.floor;
@@ -19203,23 +19296,23 @@ const opAt=opPct.Attack||0;
 let turnAtkPct=0;
 if(c.unitTurnBuffAtk&&c.atkUnitData&&!c.atkUnitData._manual)turnAtkPct=Math.max(0,_dcGetDetectedUnitTurnBuffPercents(c.atkUnitData).atkPct|0);
 const tAtk=turnAtkPct|0;
-function L(n,longT,cls){const v=Math.max(0,Math.floor(Number(n)||0));if(!v)return'';const isSupp=cls&&String(cls).indexOf('supporter-flat')>=0;const cName=cls?`stat-card-bonus ${cls}`:'stat-card-bonus';const style=isSupp?' style="color:var(--accent-orange)!important;text-shadow:0 0 8px rgba(255,149,0,.4)"':'';return`<div class="${cName}"${style} title="${escAttr(longT)}">+${fmtN(v)}</div>`}
+function L(n,longT,cls,ico){const v=Math.max(0,Math.floor(Number(n)||0));if(!v)return'';const isSupp=cls&&String(cls).indexOf('supporter-flat')>=0;const cName=cls?`stat-card-bonus ${cls}`:'stat-card-bonus';const style=isSupp?' style="color:var(--accent-orange)!important;text-shadow:0 0 8px rgba(255,149,0,.4)"':'';return`<div class="${cName}"${style} title="${escAttr(longT)}">${_dcStatBonusSrcIconHtml(ico)}+${fmtN(v)}</div>`}
 const coreHp=_dcMsGrowthFromPct(hpBase,pHp,'HP');
 const pctHp=_dcMsGrowthFromPct(hpBase,pHp+(opPct.HP|0)+lp+sheetBuffPct,'HP')-coreHp;
-const hpHtml=L(pctHp,'Option part %, leader skill %, Master League / Grand Offensive (HP)')+L(opFlat.HP|0,'Option part flat HP')+L(hpSupport|0,'Supporter HP support','stat-card-bonus--supporter-flat');
+const hpHtml=L(pctHp,'Option part %, leader skill %, Master League / Grand Offensive (HP)','','sheet')+L(opFlat.HP|0,'Option part flat HP','','op')+L(hpSupport|0,'Supporter HP support','stat-card-bonus--supporter-flat','supporter');
 const scAtk=c.squadCondAtkPct|0;
 const scDef=c.squadCondDefPct|0;
 const coreDef=_dcMsGrowthFromPct(defBase,pDef,'Defense');
 const pctDef=_dcMsGrowthFromPct(defBase,pDef+(opPct.Defense|0)+lp+lpAd+sheetBuffPct+(scDef|0),'Defense')-coreDef;
-const defHtml=L(pctDef,'Option part %, leader skill %, SameGroup +2% ATK/DEF (Support-role MS), Master League / Grand Offensive (DEF)'+(scDef?' · Squad conditions':''))+L(opFlat.Defense|0,'Option part flat Defense');
+const defHtml=L(pctDef,'Option part %, leader skill %, Master League / Grand Offensive (DEF)'+(scDef?' · Squad conditions':''),'','sheet')+L(opFlat.Defense|0,'Option part flat Defense','','op');
 const coreMob=_dcMsGrowthFromPct(mobBase,pMob,'Mobility');
 const pctMob=_dcMsGrowthFromPct(mobBase,pMob+(opPct.Mobility|0)+lp+sheetBuffPct,'Mobility')-coreMob;
-const mobHtml=L(pctMob,'Option part %, leader skill %, Master League / Grand Offensive (MOB)')+L(opFlat.Mobility|0,'Option part flat Mobility');
+const mobHtml=L(pctMob,'Option part %, leader skill %, Master League / Grand Offensive (MOB)','','sheet')+L(opFlat.Mobility|0,'Option part flat Mobility','','op');
 const coreAtk=_dcMsGrowthFromPct(atkBase,pAtk,'Attack');
 const supCnt=_dcEffectiveSupportCounterAtkPctFromCtx(c)|0;
 const pctAtkNoSup=_dcMsGrowthFromPct(atkBase,pAtk+opAt+tAtk+sheetBuffPct+lp+lpAd+(scAtk|0),'Attack')-coreAtk;
 const pctAtkSupOnly=supCnt>0?(_dcMsGrowthFromPct(atkBase,pAtk+opAt+tAtk+sheetBuffPct+lp+lpAd+(scAtk|0)+supCnt,'Attack')-_dcMsGrowthFromPct(atkBase,pAtk+opAt+tAtk+sheetBuffPct+lp+lpAd+(scAtk|0),'Attack')):0;
-const atkHtml=L(pctAtkNoSup,'Option part %, 1-turn MS ATK %, leader %, SameGroup +2% ATK/DEF (Support-role MS), ML/GO, squad conditions (EX squad % is on the EX line below)')+L(pctAtkSupOnly,`Support Attack/Counter +${supCnt}% MS ATK (same bucket as damage calc)`)+L(opFlat.Attack|0,'Option part flat Attack')+L(atkSupport|0,'Supporter ATK support','stat-card-bonus--supporter-flat');
+const atkHtml=L(pctAtkNoSup,'Option part %, 1-turn MS ATK %, leader %, ML/GO, squad conditions (EX squad % is on the EX line below)','','sheet')+L(pctAtkSupOnly,`Support Attack/Counter +${supCnt}% MS ATK (same bucket as damage calc)`,'','sac')+L(opFlat.Attack|0,'Option part flat Attack','','op')+L(atkSupport|0,'Supporter ATK support','stat-card-bonus--supporter-flat','supporter');
 return{hpHtml,atkHtml,defHtml,mobHtml};
 }
 /** MS growth % buckets: integer floor. V2 AB EX LB3 +36% leader: HP 145859 / ATK 19856 with OP 12% + Carozzo flats. */
@@ -19638,6 +19731,19 @@ const pct=_dcPctDelta(cur,base);
 if(pct==null||!Number.isFinite(pct)||Math.abs(pct)<0.01)return'';
 return pct>=0?'dc-battle-stats-row--diff-pos':'dc-battle-stats-row--diff-neg';
 }
+/** Percentage-point delta for rates already shown as % (Support Attack/Counter MS ATK). */
+function _dcBattleStatsPpDeltaBadge(cur,base){
+const c=Math.round(Number(cur)||0),b=Math.round(Number(base)||0);
+if(c===b)return'';
+const d=c-b;
+const cls=d>=0?'dc-bs-delta--pos':'dc-bs-delta--neg';
+return`<span class="dc-bs-delta ${cls}">${d>=0?'+':''}${d}pp</span>`;
+}
+function _dcBattleStatsPpDeltaRowClass(cur,base){
+const c=Math.round(Number(cur)||0),b=Math.round(Number(base)||0);
+if(c===b)return'';
+return c>b?'dc-battle-stats-row--diff-pos':'dc-battle-stats-row--diff-neg';
+}
 
 function renderDcResult(){
 const area=document.getElementById('dcResultArea');
@@ -19822,7 +19928,12 @@ h+=_dcBattleStatsRow('Damage delta vs active',`Normal ${_dcFmtPctDelta(nd)} · $
 h+=_dcBattleStatsRow('Unit',esc(ud?.name||'—'));
 h+=_dcBattleStatsRow('Pilot',esc(cd?.name||'—'));
 h+=_dcBattleStatsRow('MS ATK',fmtN(r.unitAtk)+_dcBattleStatsDeltaBadge(r.unitAtk,r0.unitAtk),_dcBattleStatsDeltaRowClass(r.unitAtk,r0.unitAtk));
-if((r.supportCounterAtkPctApplied|0)>0)h+=_dcBattleStatsRow('Support Attack/Counter MS ATK',`+${r.supportCounterAtkPctApplied|0}% applied`);
+{const sacA=r.supportCounterAtkPctApplied|0,sacB=r0.supportCounterAtkPctApplied|0;
+if(sacA>0||sacB>0){
+const sacLab=t('dc_support_counter_battle_stat')||'Support Attack/Counter MS ATK';
+const sacVal=sacA>0?`+${sacA}% applied`:(t('dc_off')||'Off');
+h+=_dcBattleStatsRow(sacLab,sacVal+_dcBattleStatsPpDeltaBadge(sacA,sacB),_dcBattleStatsPpDeltaRowClass(sacA,sacB));
+}}
 h+=_dcBattleStatsRow('Pilot stat ('+esc(atkLab)+')',fmtN(r.charAtk)+_dcBattleStatsDeltaBadge(r.charAtk,r0.charAtk),_dcBattleStatsDeltaRowClass(r.charAtk,r0.charAtk));
 h+=_dcBattleStatsRow('Weapon',wName);
 h+=_dcBattleStatsRow('Weapon Power',fmtN(r.weaponPower)+_dcBattleStatsDeltaBadge(r.weaponPower,r0.weaponPower),_dcBattleStatsDeltaRowClass(r.weaponPower,r0.weaponPower));
