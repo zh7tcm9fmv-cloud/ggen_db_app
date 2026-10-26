@@ -565,7 +565,7 @@
 <div class="tb-picker-overlay" id="tbPickerOverlay" role="dialog" aria-modal="true" aria-hidden="true">
 <div class="tb-picker-scrim" onclick="closeTbPicker()" aria-hidden="true"></div>
 <div class="tb-picker-dialog" onclick="event.stopPropagation()">
-<div class="tb-picker-head"><input type="search" id="tbPickerSearch" placeholder="Search…" autocomplete="off" oninput="filterTbPicker()"><button type="button" class="cmp-picker-close" onclick="closeTbPicker()" aria-label="Close">{{ ui_close_icon() }}</button></div>
+<div class="tb-picker-head"><input type="search" id="tbPickerSearch" name="ggen_tb_picker_q" placeholder="Search…" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="search" oninput="filterTbPicker()"><button type="button" class="cmp-picker-close" onclick="closeTbPicker()" aria-label="Close">{{ ui_close_icon() }}</button></div>
 <div class="tb-picker-body" id="tbPickerBody"></div>
 </div>
 </div>
@@ -629,14 +629,14 @@
 </div>
 <div class="cmp-picker-overlay" id="cmpPickerOverlay" onclick="if(event.target===event.currentTarget)closeCompPicker()">
 <div class="cmp-picker">
-<div class="cmp-picker-header"><input type="text" id="cmpPickerSearch" placeholder="Search..." oninput="filterCompPicker()"><button type="button" class="cmp-picker-close" onclick="closeCompPicker()" aria-label="Close">{{ ui_close_icon() }}</button></div>
+<div class="cmp-picker-header"><input type="search" id="cmpPickerSearch" name="ggen_cmp_picker_q" placeholder="Search..." autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="search" oninput="filterCompPicker()"><button type="button" class="cmp-picker-close" onclick="closeCompPicker()" aria-label="Close">{{ ui_close_icon() }}</button></div>
 <div class="cmp-picker-body" id="cmpPickerBody"></div>
 </div>
 </div>
 <!-- Old overlay removed - calculator is now in its own tab -->
 <div class="dc-overlay" id="dcPickerOverlay" onclick="if(event.target===event.currentTarget)closeDcPicker()" style="z-index:510">
 <div class="cmp-picker">
-<div class="cmp-picker-header"><input type="text" id="dcPickerSearch" placeholder="Search..." oninput="filterDcPicker()"><button type="button" class="cmp-picker-close" onclick="closeDcPicker()" aria-label="Close">{{ ui_close_icon() }}</button></div>
+<div class="cmp-picker-header"><input type="search" id="dcPickerSearch" name="ggen_dc_picker_q" placeholder="Search..." autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="search" oninput="filterDcPicker()"><button type="button" class="cmp-picker-close" onclick="closeDcPicker()" aria-label="Close">{{ ui_close_icon() }}</button></div>
 <div class="cmp-picker-body" id="dcPickerBody"></div>
 </div>
 </div>
@@ -644,7 +644,7 @@
 <div class="lr-lock-modal" onclick="event.stopPropagation()">
 <h3 id="lrLockTitleEl"></h3>
 <p id="lrLockHintEl"></p>
-<input type="password" id="lrLockInput" autocomplete="current-password" maxlength="200" onkeydown="if(event.key==='Enter')submitLrUnlock()">
+<input type="password" id="lrLockInput" name="ggen_lr_unlock" autocomplete="off" maxlength="200" onkeydown="if(event.key==='Enter')submitLrUnlock()">
 <div class="lr-lock-actions"><button type="button" class="lr-unlock-btn" id="lrUnlockBtn" onclick="submitLrUnlock()">Unlock</button></div>
 <div class="lr-lock-err" id="lrLockErr"></div>
 </div>
