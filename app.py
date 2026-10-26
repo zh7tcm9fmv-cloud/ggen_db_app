@@ -28333,6 +28333,8 @@ def browse_filters_pool_signature(args, entity=None):
             parts.append(normalize_filter_combine_op(args.get('terrain_op'), 'and'))
             parts.append(args.get('weapon_debuff', '').strip())
             parts.append(normalize_filter_combine_op(args.get('weapon_debuff_op'), 'and'))
+            parts.append(args.get('weapon_attr', '').strip())
+            parts.append(normalize_filter_combine_op(args.get('weapon_attr_op'), 'and'))
             parts.append(args.get('weapon_range', '').strip())
             parts.append(normalize_filter_combine_op(args.get('weapon_range_op'), 'and'))
             parts.append(args.get('weapon_range_non_map', '').strip())
@@ -29038,11 +29040,14 @@ def unit_passes_browse_pool_filters(
     uid, info, ld, lc, sq, role_filter, rarity_filter, source_filter,
     lineage_filter, series_filter, ability_filter, terrain_filter=None, stat_mode='normal',
     weapon_debuff_filter=None,
+    weapon_attr_filter=None,
     *, q_scope='name_id', apply_lineage=True, apply_series=True, apply_ability=True, apply_terrain=True, apply_weapon_debuff=True,
+    apply_weapon_attr=True,
     weapon_range_filter=None, apply_weapon_range=True, weapon_range_non_map_filter=None, apply_weapon_range_non_map=True,
     weapon_range_non_map_ssp_ex=False,
     map_weapon_range_filter=None, apply_map_weapon_range=True,
-    lineage_combine='and', series_combine='or', ability_combine='and', terrain_combine='and', weapon_debuff_combine='and', weapon_range_combine='and',     weapon_range_non_map_combine='and', map_weapon_range_combine='and',
+    lineage_combine='and', series_combine='or', ability_combine='and', terrain_combine='and', weapon_debuff_combine='and',
+    weapon_attr_combine='and', weapon_range_combine='and', weapon_range_non_map_combine='and', map_weapon_range_combine='and',
     cond_active=False,
     pilot_cond_active=False,
 ):
@@ -29111,6 +29116,10 @@ def unit_passes_browse_pool_filters(
             return False
     if apply_ability and ability_filter is not None:
         if not (direct_seek or npc123_list) and not entity_matches_unit_abilities_filter(uid, ability_filter, ability_combine):
+            return False
+    if apply_weapon_attr and weapon_attr_filter is not None:
+        if not (direct_seek or npc123_list) and not unit_matches_weapon_attr_filter(
+                uid, weapon_attr_filter, weapon_attr_combine):
             return False
     lid = ld['unit_id_map'].get(uid, '')
     name = ld['unit_text_map'].get(lid, '') if lid else ''
@@ -29255,6 +29264,7 @@ def lineages_for_unit_browse_filtered(ld, lc, args):
     if stat_mode not in ('normal', 'sp', 'ssp'):
         stat_mode = 'normal'
     weapon_debuff_filter = parse_unit_weapon_debuff_filter(args.get('weapon_debuff', '').strip())
+    weapon_attr_filter = parse_unit_weapon_attr_filter(args.get('weapon_attr', '').strip())
     weapon_range_filter = parse_unit_weapon_range_filter(args.get('weapon_range', '').strip())
     weapon_range_non_map_filter = parse_unit_weapon_range_filter(args.get('weapon_range_non_map', '').strip())
     weapon_range_non_map_ssp_ex = parse_weapon_range_non_map_ssp_ex_flag(args.get('weapon_range_non_map_ssp_ex'))
@@ -29267,7 +29277,7 @@ def lineages_for_unit_browse_filtered(ld, lc, args):
         if not unit_passes_browse_pool_filters(
             uid, info, ld, lc, sq, role_filter, rarity_filter, source_filter,
             lineage_filter, series_filter, ability_filter, terrain_filter, stat_mode,
-            weapon_debuff_filter, weapon_range_filter=weapon_range_filter, weapon_range_non_map_filter=weapon_range_non_map_filter,
+            weapon_debuff_filter, weapon_attr_filter, weapon_range_filter=weapon_range_filter, weapon_range_non_map_filter=weapon_range_non_map_filter,
             weapon_range_non_map_ssp_ex=weapon_range_non_map_ssp_ex,
             map_weapon_range_filter=map_weapon_range_filter,
             q_scope=_qsc, apply_lineage=False, apply_series=True, apply_ability=True, apply_terrain=True,
@@ -29297,6 +29307,7 @@ def series_for_unit_browse_filtered(ld, lc, args):
     if stat_mode not in ('normal', 'sp', 'ssp'):
         stat_mode = 'normal'
     weapon_debuff_filter = parse_unit_weapon_debuff_filter(args.get('weapon_debuff', '').strip())
+    weapon_attr_filter = parse_unit_weapon_attr_filter(args.get('weapon_attr', '').strip())
     weapon_range_filter = parse_unit_weapon_range_filter(args.get('weapon_range', '').strip())
     weapon_range_non_map_filter = parse_unit_weapon_range_filter(args.get('weapon_range_non_map', '').strip())
     weapon_range_non_map_ssp_ex = parse_weapon_range_non_map_ssp_ex_flag(args.get('weapon_range_non_map_ssp_ex'))
@@ -29312,7 +29323,7 @@ def series_for_unit_browse_filtered(ld, lc, args):
         if not unit_passes_browse_pool_filters(
             uid, info, ld, lc, sq, role_filter, rarity_filter, source_filter,
             lineage_filter, series_filter, ability_filter, terrain_filter, stat_mode,
-            weapon_debuff_filter, weapon_range_filter=weapon_range_filter, weapon_range_non_map_filter=weapon_range_non_map_filter,
+            weapon_debuff_filter, weapon_attr_filter, weapon_range_filter=weapon_range_filter, weapon_range_non_map_filter=weapon_range_non_map_filter,
             weapon_range_non_map_ssp_ex=weapon_range_non_map_ssp_ex,
             map_weapon_range_filter=map_weapon_range_filter,
             q_scope=_qsc, apply_lineage=True, apply_series=False, apply_ability=True, apply_terrain=True,
@@ -29687,6 +29698,7 @@ def abilities_for_unit_browse_filtered(ld, lc, args):
     if stat_mode not in ('normal', 'sp', 'ssp'):
         stat_mode = 'normal'
     weapon_debuff_filter = parse_unit_weapon_debuff_filter(args.get('weapon_debuff', '').strip())
+    weapon_attr_filter = parse_unit_weapon_attr_filter(args.get('weapon_attr', '').strip())
     weapon_range_filter = parse_unit_weapon_range_filter(args.get('weapon_range', '').strip())
     weapon_range_non_map_filter = parse_unit_weapon_range_filter(args.get('weapon_range_non_map', '').strip())
     weapon_range_non_map_ssp_ex = parse_weapon_range_non_map_ssp_ex_flag(args.get('weapon_range_non_map_ssp_ex'))
@@ -29703,7 +29715,7 @@ def abilities_for_unit_browse_filtered(ld, lc, args):
         if not unit_passes_browse_pool_filters(
             uid, info, ld, lc, sq, role_filter, rarity_filter, source_filter,
             lineage_filter, series_filter, ability_filter, terrain_filter, stat_mode,
-            weapon_debuff_filter, weapon_range_filter=weapon_range_filter, weapon_range_non_map_filter=weapon_range_non_map_filter,
+            weapon_debuff_filter, weapon_attr_filter, weapon_range_filter=weapon_range_filter, weapon_range_non_map_filter=weapon_range_non_map_filter,
             weapon_range_non_map_ssp_ex=weapon_range_non_map_ssp_ex,
             map_weapon_range_filter=map_weapon_range_filter,
             q_scope=_qsc, apply_ability=False, apply_terrain=True,
