@@ -1222,7 +1222,10 @@ html.cmp-bar-open:has(#cmpFloat.visible) body:has(.search-recall-fab.visible) .s
 .lr-lock-modal{background:var(--bg-modal);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:24px 28px;max-width:400px;width:100%;box-shadow:var(--shadow-lg)}
 .lr-lock-modal h3{font-size:20px;color:var(--accent-cyan);margin-bottom:8px}
 .lr-lock-modal p{color:var(--text-secondary);font-size:14px;margin-bottom:14px}
-.lr-lock-modal input[type=password]{width:100%;padding:10px 12px;border-radius:var(--radius-sm);border:1px solid var(--border-color);background:var(--bg-input);color:var(--text-primary);font-size:16px;margin-bottom:12px;box-sizing:border-box}
+/* Gate unlock fields use type=text + .ggen-gate-pw (not type=password) so Firefox
+   does not treat the whole SPA as a login page and spam “Manage passwords” on DC/TB search. */
+.ggen-gate-pw{-webkit-text-security:disc;text-security:disc}
+.lr-lock-modal input.ggen-gate-pw,.lr-lock-modal input[type=password]{width:100%;padding:10px 12px;border-radius:var(--radius-sm);border:1px solid var(--border-color);background:var(--bg-input);color:var(--text-primary);font-size:16px;margin-bottom:12px;box-sizing:border-box}
 .lr-lock-modal .lr-lock-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .lr-lock-modal button.lr-unlock-btn{padding:10px 20px;background:var(--accent-cyan);color:#0a0e1a;border:none;border-radius:var(--radius-sm);font-weight:800;cursor:pointer}
 .lr-lock-modal button.lr-unlock-btn:hover{filter:brightness(1.05)}
