@@ -2022,10 +2022,24 @@ def unit_weapon_debuff_filter_cache_fragment(expr):
 
 
 UNIT_WEAPON_ATTR_FILTER_KEYS = frozenset({'physical', 'beam', 'special'})
+# WeaponAttributeSetId tokens (8 aliases to 4 = Beam/Physical). Exact set match for /u droplist.
+UNIT_WEAPON_ATTR_SET_ID_TOKENS = frozenset({'1', '2', '3', '4', '5', '6', '7', '8'})
+
+
+def _normalize_weapon_attr_set_id(ai):
+    """Canonical WeaponAttributeSetId; 8 → 4 (same Beam/Physical combo)."""
+    sid = normalize_id(ai)
+    if sid == '8':
+        return '4'
+    return sid
 
 
 def parse_unit_weapon_attr_filter(val):
-    """Comma-separated Beam/Physical/Special keys; OR semantics (any selected attr on any non-MAP weapon)."""
+    """Comma-separated Beam/Physical/Special keys and/or WeaponAttributeSetIds 1–8.
+
+    Type keys (TB): OR — any selected type present on a non-MAP weapon (incl. multi sets).
+    Set ids (/u droplist): OR — any non-MAP weapon with that exact attribute set (8→4).
+    """
     if val is None:
         return None
     s = (val or '').strip()
@@ -2034,11 +2048,15 @@ def parse_unit_weapon_attr_filter(val):
     out = []
     seen = set()
     for token in [p.strip().lower() for p in s.replace(';', ',').split(',') if p.strip()]:
-        if token not in UNIT_WEAPON_ATTR_FILTER_KEYS:
+        if token in UNIT_WEAPON_ATTR_FILTER_KEYS:
+            canon = token
+        elif token in UNIT_WEAPON_ATTR_SET_ID_TOKENS:
+            canon = _normalize_weapon_attr_set_id(token)
+        else:
             continue
-        if token not in seen:
-            seen.add(token)
-            out.append(token)
+        if canon not in seen:
+            seen.add(canon)
+            out.append(canon)
     if not out:
         return None
     return tuple(out)
@@ -2065,10 +2083,32 @@ def _unit_non_map_weapon_attr_keys(uid):
     return frozenset(keys)
 
 
+def _unit_non_map_weapon_attr_set_ids(uid):
+    """frozenset of canonical WeaponAttributeSetIds on non-MAP weapons (8→4)."""
+    ids = set()
+    for wp in unit_weapon_map.get(uid, []) or []:
+        wid = normalize_id(wp.get('id'))
+        wm = weapon_info_map.get(wid, {}) or {}
+        wt = str(wm.get('weapon_type', '1') or '1')
+        if wt == '3':
+            continue
+        sid = _normalize_weapon_attr_set_id(wm.get('attribute', '0'))
+        if sid in {'1', '2', '3', '4', '5', '6', '7'}:
+            ids.add(sid)
+    return frozenset(ids)
+
+
 def _build_unit_weapon_attr_keys_cache():
     out = {}
     for uid in unit_info_map.keys():
         out[uid] = _unit_non_map_weapon_attr_keys(uid)
+    return out
+
+
+def _build_unit_weapon_attr_set_ids_cache():
+    out = {}
+    for uid in unit_info_map.keys():
+        out[uid] = _unit_non_map_weapon_attr_set_ids(uid)
     return out
 
 
@@ -2084,14 +2124,21 @@ def _unit_has_multi_damage_type_weapon(uid):
     return False
 
 
-def unit_matches_weapon_attr_filter(uid, want_keys):
-    """OR: unit has at least one selected damage-type on a non-MAP weapon."""
-    if not want_keys:
+def unit_matches_weapon_attr_filter(uid, want_tokens):
+    """OR across tokens: type keys (presence) and/or exact WeaponAttributeSetIds."""
+    if not want_tokens:
         return True
-    have = UNIT_WEAPON_ATTR_KEYS_CACHE.get(uid) or frozenset()
-    for k in want_keys:
-        if k in have:
-            return True
+    have_keys = UNIT_WEAPON_ATTR_KEYS_CACHE.get(uid) or frozenset()
+    have_sets = UNIT_WEAPON_ATTR_SET_IDS_CACHE.get(uid) or frozenset()
+    for tok in want_tokens:
+        t = str(tok)
+        if t in UNIT_WEAPON_ATTR_FILTER_KEYS:
+            if t in have_keys:
+                return True
+        else:
+            sid = _normalize_weapon_attr_set_id(t)
+            if sid in have_sets:
+                return True
     return False
 
 
@@ -14166,6 +14213,7 @@ def _precompute_weapon_debuff_keys_present_by_lang():
 
 # Present-key precompute (incl. PEP Crit) runs after MANUAL_UNIT_RECOMMEND_CHARACTER_MAP is filled.
 UNIT_WEAPON_ATTR_KEYS_CACHE = _build_unit_weapon_attr_keys_cache()
+UNIT_WEAPON_ATTR_SET_IDS_CACHE = _build_unit_weapon_attr_set_ids_cache()
 
 
 def _compute_supporter_dual_tag_44_cond_ids():
@@ -30021,7 +30069,8 @@ def list_units():
     # ul66: All-weapon range filter includes EX (type 2) without list SSP mode
     # ul67: weapon_range_auto_ssp_tiers / weapon_range_auto_pep_tiers for list toggle auto-arm
     # ul68: All-weapon range filter skips Custom Core unless list SSP is on
-    ck = f"ul68_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_attr_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    # ul69: weapon_attr accepts exact WeaponAttributeSetIds (1–8) for /u attribute droplist
+    ck = f"ul69_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_attr_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached:
         return jsonify_preserialized(cached, ck, public=True, max_age=3600, convert_images=False)
