@@ -674,6 +674,7 @@ Object.assign(T.EN,{dc_battle_stats:'Battle Stats',dc_preset_database:'Preset (D
 Object.assign(T.TW,{dc_battle_stats:'戰鬥數值',dc_preset_database:'預設（資料庫）',dc_custom_stats:'自訂數值',dc_database_mode:'資料庫（單位＋駕駛）',dc_select_stage:'-- 選擇關卡 --',dc_terrain_normal:'一般',dc_terrain_halved:'減半（50%）',dc_terrain_penalty:'地形減益',dc_vigor_level:'戰意等級',dc_final_weapon_power:'最終武裝威力',dc_crit_dmg_up:'爆擊損傷上升 %',dc_dmg_dealt_up:'造成損傷上升 %',dc_def_debuff_pct:'守備力減益（目標）%',dc_total_debuffs:'負面效果合計 %',dc_dtd_char:'受到損傷減輕（角色）%',dc_dtd_unit:'受到損傷減輕（單位）%',dc_inflicted_debuffs:'賦予的負面效果類型',dc_attr_beam:'光束',dc_attr_physical:'物理',dc_attr_special:'特殊',dc_what_affects_dmg:'影響最終損傷的因素？',dc_copy_results:'複製結果',dc_bs_unit:'單位',dc_bs_pilot:'駕駛',dc_bs_ms_atk:'機體攻擊力',dc_bs_weapon:'武裝',dc_bs_weapon_power:'武裝威力',dc_bs_dmg_dealt_total:'造成損傷％合計',dc_bs_crit_rate_wpn:'爆擊率（武裝％）',dc_bs_vigor_state:'戰意狀態',dc_bs_active:'使用中',dc_bs_attacker_n:'攻擊方 {n}',dc_bs_damage_delta:'相對使用中的損傷差',dc_option_part_section:'選擇性零件',dc_supporter_section:'支援人員'});
 Object.assign(T.HK,{dc_battle_stats:'戰鬥數值',dc_preset_database:'預設（資料庫）',dc_custom_stats:'自訂數值',dc_database_mode:'資料庫（單位＋駕駛）',dc_select_stage:'-- 選擇關卡 --',dc_terrain_normal:'一般',dc_terrain_halved:'減半（50%）',dc_terrain_penalty:'地形減益',dc_vigor_level:'戰意等級',dc_final_weapon_power:'最終武裝威力',dc_crit_dmg_up:'爆擊損傷上升 %',dc_dmg_dealt_up:'造成損傷上升 %',dc_def_debuff_pct:'守備力減益（目標）%',dc_total_debuffs:'負面效果合計 %',dc_dtd_char:'受到損傷減輕（角色）%',dc_dtd_unit:'受到損傷減輕（單位）%',dc_inflicted_debuffs:'賦予的負面效果類型',dc_attr_beam:'鐳射',dc_attr_physical:'物理',dc_attr_special:'特殊',dc_what_affects_dmg:'影響最終損傷的因素？',dc_copy_results:'複製結果',dc_bs_unit:'單位',dc_bs_pilot:'駕駛',dc_bs_ms_atk:'機體攻擊力',dc_bs_weapon:'武裝',dc_bs_weapon_power:'武裝威力',dc_bs_dmg_dealt_total:'造成損傷％合計',dc_bs_crit_rate_wpn:'爆擊率（武裝％）',dc_bs_vigor_state:'戰意狀態',dc_bs_active:'使用中',dc_bs_attacker_n:'攻擊方 {n}',dc_bs_damage_delta:'相對使用中的損傷差',dc_option_part_section:'選擇性零件',dc_supporter_section:'支援人員'});
 Object.assign(T.JA,{dc_battle_stats:'バトルステータス',dc_preset_database:'プリセット（データベース）',dc_custom_stats:'カスタム数値',dc_database_mode:'データベース（ユニット＋パイロット）',dc_select_stage:'-- ステージを選択 --',dc_terrain_normal:'通常',dc_terrain_halved:'半減（50%）',dc_terrain_penalty:'地形ペナルティ',dc_vigor_level:'テンション',dc_final_weapon_power:'最終武装威力',dc_crit_dmg_up:'クリティカルダメージ上昇 %',dc_dmg_dealt_up:'与ダメージ上昇 %',dc_def_debuff_pct:'防御力デバフ（対象）%',dc_total_debuffs:'デバフ合計 %',dc_dtd_char:'被ダメージ軽減（キャラ）%',dc_dtd_unit:'被ダメージ軽減（ユニット）%',dc_inflicted_debuffs:'付与するデバフ種別',dc_attr_beam:'ビーム',dc_attr_physical:'物理',dc_attr_special:'特殊',dc_what_affects_dmg:'最終ダメージに影響する要素',dc_copy_results:'結果をコピー',dc_bs_unit:'ユニット',dc_bs_pilot:'パイロット',dc_bs_ms_atk:'機体攻撃力',dc_bs_weapon:'武装',dc_bs_weapon_power:'武装威力',dc_bs_dmg_dealt_total:'与ダメージ％合計',dc_bs_crit_rate_wpn:'クリティカル率（武装％）',dc_bs_vigor_state:'テンション状態',dc_bs_active:'使用中',dc_bs_attacker_n:'攻撃側 {n}',dc_bs_damage_delta:'使用中とのダメージ差',dc_option_part_section:'オプションパーツ',dc_supporter_section:'サポーター'});
+Object.assign(T.JP,{dc_attr_beam:T.JA.dc_attr_beam,dc_attr_physical:T.JA.dc_attr_physical,dc_attr_special:T.JA.dc_attr_special});
 Object.assign(T.EN,{dc_passive_bonuses:'Passive Bonuses',dc_skills:'Skills',dc_bonus_dmg_dealt:'Damage Dealt +{n}%',dc_bonus_dmg_taken:'Damage Taken -{n}%',dc_bonus_crit_dmg:'Critical Damage +{n}%',dc_bonus_crit_dmg_ms_atk:'Critical Damage +{n}% (MS ATK +{n}% on growth line)',dc_bonus_mp_start:'MP +{n} (starting vigor)',dc_bonus_atk_stat:'Attack Stat +{n}%',dc_bonus_awaken_floor:'Pilot Awaken minimum 900 (MS ability)',dc_tag_always:'(Always active)',dc_tag_matched:'(Tag Matched)',dc_tag_conditional:'(Conditional)',dc_tag_attack_role:'(Attack-role pilots only)',dc_tag_in_pilot_stats:'(Included in pilot stats)',dc_tag_not_in_stats:'(Not in stats — tags unmet)',dc_tag_in_auto_vigor:'(Included in auto vigor)',dc_tag_tags_unmet:'(Tags unmet)',dc_tag_awaken_gate:'(Pilot Awaken ≥ 900)',dc_tag_sp_pilot:'(SP pilot stats)',dc_unit_skill_1turn:'Unit skill (1 turn)',dc_unit_skill_mp:'Unit skill (MP)',dc_ms_atk_pct:'MS ATK +{n}%',dc_ms_def_pct:'MS DEF +{n}%',dc_ms_mob_pct:'MS MOB +{n}%',dc_dmg_dealt_pct:'Damage dealt +{n}%',dc_one_turn:'(1 turn)',dc_usk_mp_with:' (with unit skill — included in auto vigor)',dc_usk_mp_toggle:' (toggle unit skill above to include in auto vigor)',dc_usk_mp_incl:' (included in auto vigor)',dc_wpn_absolute_hit:'Absolute Hit',dc_wpn_attr_dr_null:'Ignore weapon attribute damage reduction',dc_vigor_auto_hint:'(Auto: {label} from starting MP bonus)',dc_dmg_eff_total:'Effective ⑨ total: {total}% ({user}% passive{vigPart}) — same value used in damage.',dc_dmg_eff_vig_part:' + {vig}% vigor',dc_dmg_eff_title:'Damage Dealt Up % passive plus vigor bonus share one pool; they are not applied twice.'});
 Object.assign(T.TW,{dc_passive_bonuses:'被動加成',dc_skills:'技能',dc_bonus_dmg_dealt:'造成的損傷 +{n}%',dc_bonus_dmg_taken:'受到的損傷 -{n}%',dc_bonus_crit_dmg:'爆擊損傷 +{n}%',dc_bonus_crit_dmg_ms_atk:'爆擊損傷 +{n}%（機體攻擊力成長列 +{n}%）',dc_bonus_mp_start:'MP +{n}（起始戰意）',dc_bonus_atk_stat:'攻擊能力值 +{n}%',dc_bonus_awaken_floor:'駕駛覺醒值下限 900（單位能力）',dc_tag_always:'（常時生效）',dc_tag_matched:'（標籤符合）',dc_tag_conditional:'（條件）',dc_tag_attack_role:'（僅限攻擊型駕駛）',dc_tag_in_pilot_stats:'（已含於駕駛能力值）',dc_tag_not_in_stats:'（未計入能力值 — 標籤未符合）',dc_tag_in_auto_vigor:'（已含於自動戰意）',dc_tag_tags_unmet:'（標籤未符合）',dc_tag_awaken_gate:'（駕駛覺醒值 ≥ 900）',dc_tag_sp_pilot:'（SP 駕駛能力值）',dc_unit_skill_1turn:'單位技能（1回合）',dc_unit_skill_mp:'單位技能（MP）',dc_ms_atk_pct:'機體攻擊力 +{n}%',dc_ms_def_pct:'機體守備力 +{n}%',dc_ms_mob_pct:'機體機動力 +{n}%',dc_dmg_dealt_pct:'造成的損傷 +{n}%',dc_one_turn:'（1回合）',dc_usk_mp_with:'（含單位技能 — 已含於自動戰意）',dc_usk_mp_toggle:'（請開啟上方單位技能以計入自動戰意）',dc_usk_mp_incl:'（已含於自動戰意）',dc_wpn_absolute_hit:'絕對命中',dc_wpn_attr_dr_null:'武裝屬性損傷減輕無效',dc_vigor_auto_hint:'（自動：依起始 MP 加成 → {label}）',dc_dmg_eff_total:'有效⑨合計：{total}%（被動 {user}%{vigPart}）— 與損傷計算相同。',dc_dmg_eff_vig_part:' + 戰意 {vig}%',dc_dmg_eff_title:'造成損傷上升％的被動與戰意加成共用同一池，不會重複計算。'});
 Object.assign(T.HK,{dc_passive_bonuses:'被動加成',dc_skills:'技能',dc_bonus_dmg_dealt:'造成的損傷 +{n}%',dc_bonus_dmg_taken:'受到的損傷 -{n}%',dc_bonus_crit_dmg:'爆擊損傷 +{n}%',dc_bonus_crit_dmg_ms_atk:'爆擊損傷 +{n}%（機體攻擊力成長列 +{n}%）',dc_bonus_mp_start:'MP +{n}（起始戰意）',dc_bonus_atk_stat:'攻擊能力值 +{n}%',dc_bonus_awaken_floor:'駕駛覺醒值下限 900（單位能力）',dc_tag_always:'（常時生效）',dc_tag_matched:'（標籤符合）',dc_tag_conditional:'（條件）',dc_tag_attack_role:'（僅限攻擊型駕駛）',dc_tag_in_pilot_stats:'（已含於駕駛能力值）',dc_tag_not_in_stats:'（未計入能力值 — 標籤未符合）',dc_tag_in_auto_vigor:'（已含於自動戰意）',dc_tag_tags_unmet:'（標籤未符合）',dc_tag_awaken_gate:'（駕駛覺醒值 ≥ 900）',dc_tag_sp_pilot:'（SP 駕駛能力值）',dc_unit_skill_1turn:'單位技能（1回合）',dc_unit_skill_mp:'單位技能（MP）',dc_ms_atk_pct:'機體攻擊力 +{n}%',dc_ms_def_pct:'機體守備力 +{n}%',dc_ms_mob_pct:'機體機動力 +{n}%',dc_dmg_dealt_pct:'造成的損傷 +{n}%',dc_one_turn:'（1回合）',dc_usk_mp_with:'（含單位技能 — 已含於自動戰意）',dc_usk_mp_toggle:'（請開啟上方單位技能以計入自動戰意）',dc_usk_mp_incl:'（已含於自動戰意）',dc_wpn_absolute_hit:'絕對命中',dc_wpn_attr_dr_null:'武裝屬性損傷減輕無效',dc_vigor_auto_hint:'（自動：依起始 MP 加成 → {label}）',dc_dmg_eff_total:'有效⑨合計：{total}%（被動 {user}%{vigPart}）— 與損傷計算相同。',dc_dmg_eff_vig_part:' + 戰意 {vig}%',dc_dmg_eff_title:'造成損傷上升％的被動與戰意加成共用同一池，不會重複計算。'});
@@ -724,6 +725,8 @@ const CMP_LB_TIER_PIPS=[[LB_ICONS.None,LB_ICONS.None,LB_ICONS.None],[LB_ICONS.Ne
 function cmpLbPipsRow(a0,a1,a2){return [a0,a1,a2].map(src=>{const a=imgSrcAttr(src);return a?`<img${a} alt="" loading="lazy" decoding="async" fetchpriority="low">`:''}).join('')}
 function cmpLbPipsAtTier(tt){const i=Math.min(Math.max(0,tt|0),CMP_LB_TIER_PIPS.length-1);return CMP_LB_TIER_PIPS[i]}
 T.KR=Object.assign({},T.EN,KR_CORE_LABELS);T.HR=T.KR;
+/* LANG m_help 무장 속성: 빔 / 물리 / 특수 */
+Object.assign(T.KR,{dc_attr_beam:'빔',dc_attr_physical:'물리',dc_attr_special:'특수'});T.HR=T.KR;
 Object.assign(T.KR,{
 ult_alteration:'ULT 개조',ult_alt_level:'개조 LV',ult_alt_missions:'개조 미션',ult_alt_bonus:'개조 보너스',ult_alt_selectable_skills:'선택식 유닛 스킬 습득',ult_alt_pick_one:'※유닛 스킬은 하나를 골라 세팅해서 사용할 수 있습니다.',ult_alt_unlock_at:'합계 개조 LV{n} 달성 시 해방',ult_alt_missions_hint:'개조 미션을 클리어해서 개조 보너스를 획득하자',ult_alt_phase:'단계 {n}',ult_alt_max_stats:'스테이터스 상한 보너스（Lv{n}）',ult_alt_materials:'ULT 유닛 전용 재료 아이템',ult_alt_materials_hint:'개조 LV를 올리는 데 사용합니다.',ult_alt_primary_mat:'전용 재료',ult_alt_available_mats:'사용 가능한 재료',ult_alt_weapons:'개조 무장',ult_alt_weapons_hint:'위의 ULT 개조를 켜면 무장 항목에서 전체 무장 정보를 확인할 수 있습니다.',ult_alt_skills:'선택식 유닛 스킬（하나 선택）',ult_alt_siblings:'다른 UR 형태',ult_alt_challenge_stages:'챌린지 스테이지',ult_alt_open_stage:'스테이지 열기',ult_alt_growth:'상한의 {pct}%',ult_alt_pending:'스테이터스 상한은 설정됨 — 개조 미션은 아직 개방되지 않음',ult_alt_phase_exp:'{each} EXP × {n}노드 = {exp} EXP',
 bt_gacha_hub_hint:'결과별로 출격·컷인을 고른 뒤 전체 시퀀스를 미리봅니다（오픈 → 컷인 → 클로즈 → 공개）.',bt_gacha_hub_regular:'일반 가챠 연출',bt_gacha_hub_title:'가챠 연출',
@@ -1485,7 +1488,8 @@ function onUnitWeaponRangeRowKey(ev,v){if(ev.key!=='Enter'&&ev.key!==' ')return;
 function updateUnitWeaponRangeFilterLabel(forcePfx){const pfx=forcePfx||unitWeaponRangeDomPrefix();const sk=pfx==='rankUnit'?'listRankUnitWeaponRange':'listUnitWeaponRange';const label=document.getElementById(pfx+'WeaponRangeFilterLabel');const btn=document.getElementById(pfx+'WeaponRangeFilterBtn');if(!label||!btn)return;const p=weaponRangeLabelPrefix();btn.title=weaponRangeFilterName();let sel=S[sk];if(!Array.isArray(sel))sel=[];if(!sel.length){label.innerHTML=`<span class="source-filter-btn-plain">${esc(weaponRangeAllText())}</span>`;btn.classList.remove('active');return}btn.classList.add('active');label.innerHTML=`<span class="source-filter-btn-plain" style="font-size:13px;font-weight:600">${esc(p+' '+String(sel[0]))}</span>`}
 
 function unitWeaponAttrSetStateKey(){return S.currentTab==='ranking'&&S.ranking&&S.ranking.mode==='units'?'listRankUnitWeaponAttrSet':'listUnitWeaponAttrSet'}
-const UNIT_WEAPON_ATTR_SET_DEFS=[{id:'1',keys:['physical']},{id:'2',keys:['beam']},{id:'3',keys:['special']},{id:'4',keys:['beam','physical']},{id:'5',keys:['physical','special']},{id:'6',keys:['beam','special']},{id:'7',keys:['beam','physical','special']}];
+/* WeaponAttributeSetId 1–6 only — set 7 (Beam/Physical/Special) has 0 weapons in current MasterData. */
+const UNIT_WEAPON_ATTR_SET_DEFS=[{id:'1',keys:['physical']},{id:'2',keys:['beam']},{id:'3',keys:['special']},{id:'4',keys:['beam','physical']},{id:'5',keys:['physical','special']},{id:'6',keys:['beam','special']}];
 function unitWeaponAttrSetLabel(id){const def=UNIT_WEAPON_ATTR_SET_DEFS.find(d=>d.id===String(id));if(!def)return String(id);return def.keys.map(k=>_tbWeaponAttrChipLabel(k)).join('/')}
 function buildUnitWeaponAttrSetFilterHtml(skOpt){const sk=skOpt||unitWeaponAttrSetStateKey();const selArr=Array.isArray(S[sk])?S[sk]:[];const selSet=new Set(selArr.map(v=>String(v)));const defs=UNIT_WEAPON_ATTR_SET_DEFS;let h='<div class="unit-debuff-grid">';for(let i=0;i<defs.length;i+=2){const a=defs[i],b=defs[i+1];const mk=(d)=>{if(!d)return'<span class="unit-debuff-fill" aria-hidden="true"></span>';const active=selSet.has(d.id)?' is-active':'';return`<button type="button" class="unit-debuff-item${active}" onclick="onUnitWeaponAttrSetRowClick('${d.id}',event)" onkeydown="onUnitWeaponAttrSetRowKey(event,'${d.id}')"><span>${esc(unitWeaponAttrSetLabel(d.id))}</span></button>`};h+=`<div class="unit-debuff-grid-row">${mk(a)}${mk(b)}</div>`}h+='</div>';return h}
 function syncUnitWeaponAttrSetCheckboxes(){const pfx=unitWeaponDebuffDomPrefix();const body=document.getElementById(pfx+'WeaponAttrSetFilterBody');if(body)body.innerHTML=buildUnitWeaponAttrSetFilterHtml()}
@@ -10608,27 +10612,26 @@ const labRaw=String(wpn.attribute||'');
 const lab=labRaw.toLowerCase();
 if(lab||labRaw){
 const pk=[];
-if(lab.includes('beam')||labRaw.includes('光束'))pk.push('beam');
-if(lab.includes('physical')||labRaw.includes('物理'))pk.push('physical');
-if(lab.includes('special')||labRaw.includes('特殊'))pk.push('special');
+/* LANG shorts: EN Beam · JA ビーム · TW 光束 · HK 鐳射 · KR 빔 (+ Physical/Special equivalents) */
+if(lab.includes('beam')||labRaw.includes('光束')||labRaw.includes('鐳射')||labRaw.includes('ビーム')||labRaw.includes('빔'))pk.push('beam');
+if(lab.includes('physical')||labRaw.includes('物理')||labRaw.includes('물리'))pk.push('physical');
+if(lab.includes('special')||labRaw.includes('特殊')||labRaw.includes('특수'))pk.push('special');
 if(pk.length)return[...new Set(pk)];
 }
 return [_dcWeaponElementFromWeaponType(wpn)];
 }
 function weaponAttrKeyLabel(key){
-const k=String(key||'').toLowerCase();
-return DC_WPN_ELEM_LABEL[k]||DC_WPN_ELEM_LABEL.special||'Special';
+/* Single source for pill/chip text — LANG m_help Weapon Attributes shorts. */
+return _tbWeaponAttrChipLabel(key);
 }
 function weaponAttrDisplayLabel(wpn){
 if(!wpn)return '';
-const raw=(wpn.attribute||'').trim();
-if(raw)return raw;
 const aid=String(wpn.attribute_id!=null&&wpn.attribute_id!==undefined?wpn.attribute_id:'').trim();
 if(aid&&DC_WPN_ATTR_ID_KEYS[aid])return DC_WPN_ATTR_ID_KEYS[aid].map(weaponAttrKeyLabel).join('/');
 const keys=_dcWeaponAttributeKeys(wpn);
 if(keys&&keys.length)return keys.map(weaponAttrKeyLabel).join('/');
-return '';
-}
+const raw=(wpn.attribute||'').trim();
+return raw||'';}
 function _dcWeaponAttributeDisplayHtml(wpn){
 const lab=weaponAttrDisplayLabel(wpn);
 if(!lab)return '';
@@ -14080,23 +14083,32 @@ return'&weapon_attr='+encodeURIComponent(keys.join(','));
 function _tbWeaponAttrChipLabel(key){
 const k=String(key||'').toLowerCase();
 const lc=(S.lang||'EN').toUpperCase();
+/* LANG m_help: Beam/Physical/Special · JA ビーム/物理/特殊 · TW 光束/物理/特殊 · HK 鐳射/物理/特殊 · KR 빔/물리/특수 */
+const tk=k==='beam'?'dc_attr_beam':k==='physical'?'dc_attr_physical':k==='special'?'dc_attr_special':'';
+if(tk){
+const fromT=t(tk);
+if(fromT&&fromT!==tk)return fromT;
+}
 if(k==='beam'){
 if(lc==='JA'||lc==='JP')return'ビーム';
 if(lc==='TW')return'光束';
 if(lc==='HK')return'鐳射';
+if(lc==='KR'||lc==='HR')return'빔';
 return'Beam';
 }
 if(k==='physical'){
 if(lc==='JA'||lc==='JP')return'物理';
 if(lc==='TW'||lc==='HK')return'物理';
+if(lc==='KR'||lc==='HR')return'물리';
 return'Physical';
 }
 if(k==='special'){
 if(lc==='JA'||lc==='JP')return'特殊';
 if(lc==='TW'||lc==='HK')return'特殊';
+if(lc==='KR'||lc==='HR')return'특수';
 return'Special';
 }
-return weaponAttrKeyLabel(k);
+return DC_WPN_ELEM_LABEL[k]||DC_WPN_ELEM_LABEL.special||'Special';
 }
 function _tbSyncPickerToolbar(){
 const head=document.querySelector('#tbPickerOverlay .tb-picker-head');

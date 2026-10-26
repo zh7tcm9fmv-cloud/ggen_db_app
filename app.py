@@ -5150,10 +5150,12 @@ WEAPON_ATTR_SET_TYPE_KEYS = {
 }
 _WEAPON_ATTR_TYPE_EN_CANONICAL = {'physical': 'Physical', 'beam': 'Beam', 'special': 'Special'}
 _WEAPON_ATTR_TYPE_SET_ID = {'physical': '1', 'beam': '2', 'special': '3'}
+# Official m_help shorts (EN Weapon Attributes body · JA 武装属性 · TW/HK 武裝屬性 · KR 무장 속성).
+# HK Beam = 鐳射 (not TW 光束).
 _WEAPON_ATTR_TRAIT_SHORT = {
     'EN': {'physical': 'Physical', 'beam': 'Beam', 'special': 'Special'},
     'TW': {'physical': '物理', 'beam': '光束', 'special': '特殊'},
-    'HK': {'physical': '物理', 'beam': '光束', 'special': '特殊'},
+    'HK': {'physical': '物理', 'beam': '鐳射', 'special': '特殊'},
     'JA': {'physical': '物理', 'beam': 'ビーム', 'special': '特殊'},
     'JP': {'physical': '物理', 'beam': 'ビーム', 'special': '特殊'},
     'HR': {'physical': '물리', 'beam': '빔', 'special': '특수'},
@@ -5172,7 +5174,7 @@ _WEAPON_ATTR_TRAIT_PARSE = {
     },
     'HK': {
         'physical': re.compile(r'物理損傷'),
-        'beam': re.compile(r'光束損傷'),
+        'beam': re.compile(r'(?:鐳射|光束)損傷'),
         'special': re.compile(r'特殊損傷'),
     },
     'JA': {
@@ -5185,33 +5187,45 @@ _WEAPON_ATTR_TRAIT_PARSE = {
         'beam': re.compile(r'ビームダメージ'),
         'special': re.compile(r'特殊ダメージ'),
     },
+    'HR': {
+        'physical': re.compile(r'물리\s*대미지|물리\s*손상'),
+        'beam': re.compile(r'빔\s*대미지|빔\s*손상'),
+        'special': re.compile(r'특수\s*대미지|특수\s*손상'),
+    },
+    'KR': {
+        'physical': re.compile(r'물리\s*대미지|물리\s*손상'),
+        'beam': re.compile(r'빔\s*대미지|빔\s*손상'),
+        'special': re.compile(r'특수\s*대미지|특수\s*손상'),
+    },
 }
+_WEAPON_ATTR_EN_LEFTOVER = frozenset({'Physical', 'Beam', 'Special'})
 
 
 def _build_weapon_attr_type_labels_from_lang(lang_dir, lang_code, weapon_text_map):
-    """Resolve beam/physical/special short labels from data/<LANG>/lang (m_weapon + m_weapon_trait)."""
+    """Resolve beam/physical/special short labels from LANG (m_weapon / m_weapon_trait / m_help shorts)."""
     lc = lang_code if lang_code in _WEAPON_ATTR_TRAIT_SHORT else DEFAULT_LANG
+    shorts = _WEAPON_ATTR_TRAIT_SHORT.get(lc) or _WEAPON_ATTR_TRAIT_SHORT[DEFAULT_LANG]
     labels = {}
     en_wtm = (LANG_DATA.get(DEFAULT_LANG) or {}).get('weapon_text_map', {}) if lc != DEFAULT_LANG else (weapon_text_map or {})
+    trait_path = os.path.join(lang_dir, 'm_weapon_trait.json') if lang_dir else ''
+    trait_data = load_json(trait_path) if trait_path else None
     for key, en_val in _WEAPON_ATTR_TYPE_EN_CANONICAL.items():
         lid = next((k for k, v in en_wtm.items() if v == en_val), None)
         if lid:
             tx = (weapon_text_map or {}).get(lid, '').strip()
-            if tx:
+            # KR (and similar) sometimes leave EN "Physical"/"Special" in m_weapon — reject leftovers.
+            if tx and not (lc != DEFAULT_LANG and tx in _WEAPON_ATTR_EN_LEFTOVER):
                 labels[key] = tx
                 continue
-        trait_path = os.path.join(lang_dir, 'm_weapon_trait.json') if lang_dir else ''
-        trait_data = load_json(trait_path) if trait_path else None
         pat = (_WEAPON_ATTR_TRAIT_PARSE.get(lc) or {}).get(key)
         if pat and trait_data:
             for item in extract_data_list(trait_data):
                 v = str(item.get('value') or item.get('Value') or '').strip()
                 if pat.search(v):
-                    labels[key] = (_WEAPON_ATTR_TRAIT_SHORT.get(lc) or _WEAPON_ATTR_TRAIT_SHORT[DEFAULT_LANG])[key]
+                    labels[key] = shorts[key]
                     break
         if key not in labels:
-            sid = _WEAPON_ATTR_TYPE_SET_ID.get(key, '0')
-            labels[key] = WEAPON_ATTR_MAP.get(sid, {}).get('label', en_val)
+            labels[key] = shorts[key]
     return labels
 
 
