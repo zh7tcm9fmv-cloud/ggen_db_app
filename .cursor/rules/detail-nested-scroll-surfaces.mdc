@@ -1,0 +1,43 @@
+# Detail / nested scroll — name the surface before coding
+
+Owner lesson (**Oct 2026**): “restore scroll when leaving detail” was treated as **browse list Y**. The real bug was **modal scroll inside stage detail** after KEY UNITS → NPC kit → **Back to stage**. Many prompts wasted. iOS has no annotate mode — agent must disambiguate from words + DOM path, not assume.
+
+## Hard rule
+
+1. **Never** start a scroll-restore fix until you know **which scroller** failed. If unclear, ask once with the table below (or offer numbered choices). Do not ship browse-list scroll work for a nested-detail complaint.
+2. **Repro path > vague “scroll”.** Prefer: open → scroll → click X → back/close → expect Y. Button names (`Back to stage` vs modal X) change the bug class.
+3. On iOS / no annotate: treat `dom_path`, `onclick`, visible labels, and “I am still inside the stage modal” as ground truth. Do not invent desktop-only repros that skip the nested step.
+
+## Scroll surfaces (this app)
+
+| Surface | Typical scroller | Enter | Leave | Restore field / habit |
+|---|---|---|---|---|
+| A. Browse list | `window` / page | list → detail | modal **X** / overlay close | `_detailBrowseReturn` / `_browseListScrollY` |
+| B. Detail modal body | `#detailModal` / `#modalContent` | already in detail; scroll down | still in modal | `modalScrollTop` via `_detailModalScrollTop` / `pinDetailModalScrollTop` |
+| C. Nested return | same as B | stage → unit/char (`openStageNpcEntityDetail`, reward click) | **Back to stage** / `restoreStageDetailReturn` | capture in `captureStageDetailUiState`; re-pin **after** FEA `feaHydrateActiveDifficulty` |
+| D. Inner panes | `.stage-map-roster-scroll`, map grid wrap | pan/scroll roster or map | same nested return | `rosterScrollTop` / `mapScrollSpots` — not page Y |
+
+**Oct 2026 failure:** C was broken; agent fixed A (and `scroll-behavior:smooth` on page). Wrong surface = “still not working.”
+
+## Forbidden on nested return (C)
+
+| Pattern | Why |
+|---|---|
+| `focusStageMapNpc` / `scrollIntoView` on **Back to stage** | Jumps modal to map cell; drops KEY UNITS place |
+| Pin modal Y **before** FEA hydrate finishes | Content short → Y clamps to 0; hydrate remount leaves top |
+| Claiming “fixed” from browse-list Playwright only | Does not exercise C |
+
+## Agent checklist when owner says scroll / back / position
+
+- [ ] Which leave action? (`Back to stage` vs X vs browser back)
+- [ ] Still inside `#detailModal` after leave, or back on browse?
+- [ ] FEA / map roster involved? → await hydrate, then `pinDetailModalScrollTop`
+- [ ] Verify the **named** surface (modal Y for C, page Y for A) — say which you checked
+
+## Owner-friendly phrasing (no annotate)
+
+Short templates the agent should recognize:
+
+- “Inside stage → tap KEY UNITS thumb → Back to stage → still at top of **stage**”
+- “Close detail with **X** → list jumped to top” (= surface A)
+- Paste `dom_path` / `onclick` / button label when possible

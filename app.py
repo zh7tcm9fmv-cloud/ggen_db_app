@@ -9341,6 +9341,8 @@ _CHALLENGE_HARD_MISSION_CONDITION_TYPES = frozenset({273, 276, 281})
 _ETERNAL_EXPERT_MISSION_CONDITION_TYPES = frozenset({228, 229, 230, 263})
 # Collaboration HARD missions (EXA 90800202 uses 288 + 331; keep open for future collab events).
 _COLLABORATION_HARD_MISSION_CONDITION_TYPES = frozenset({288, 331})
+# Fierce Enemy Assault home missions: TargetValue1 = boss unit id, TargetValue2 = min difficulty (1/2/3).
+_FEA_MISSION_CONDITION_TYPES = frozenset({208, 316})
 
 
 def create_collaboration_hard_stage_id_set(lite_map, scenario_map):
@@ -9416,6 +9418,34 @@ def create_missions_by_target_stage(mission_rows, condition_lookup, stage_ids, g
             safe_int(m.get('Id') or m.get('id'), 0),
         ))
     return by_stage
+
+
+def create_fea_missions_by_unit_diff(mission_rows, condition_lookup, group_sort_lookup):
+    """FEA clear missions keyed by (boss_unit_id, difficulty_index 1/2/3)."""
+    by = {}
+    allowed = _FEA_MISSION_CONDITION_TYPES
+    for item in extract_data_list(mission_rows):
+        if not isinstance(item, dict):
+            continue
+        cond = (condition_lookup or {}).get(
+            normalize_id(item.get('GameEventConditionId') or item.get('gameEventConditionId')), {}
+        )
+        if not cond:
+            continue
+        ctype = safe_int(cond.get('GameEventConditionTypeIndex') or cond.get('gameEventConditionTypeIndex'), 0)
+        if ctype not in allowed:
+            continue
+        uid = normalize_id(cond.get('TargetValue1') or cond.get('targetValue1'))
+        dti = safe_int(cond.get('TargetValue2') or cond.get('targetValue2'), 0)
+        if uid == '0' or dti not in (1, 2, 3):
+            continue
+        by.setdefault((uid, dti), []).append(item)
+    for key, rows in by.items():
+        rows.sort(key=lambda m: (
+            safe_int((group_sort_lookup or {}).get(normalize_id(m.get('MissionGroupId') or m.get('missionGroupId')), 0), 0),
+            safe_int(m.get('Id') or m.get('id'), 0),
+        ))
+    return by
 
 
 def merge_missions_by_stage_indexes(*indexes):
@@ -12287,6 +12317,9 @@ stage_missions_by_stage = merge_missions_by_stage_indexes(
     _eternal_expert_missions_by_stage,
     _collaboration_hard_missions_by_stage,
 )
+fea_missions_by_unit_diff = create_fea_missions_by_unit_diff(
+    mission_data, game_event_condition_map, mission_group_sort_map,
+) if mission_data and game_event_condition_map else {}
 tower_event_map = create_tower_event_map(tower_event_data) if tower_event_data else {}
 tower_event_stage_group_map = create_tower_event_stage_group_map(tower_event_stage_group_data) if tower_event_stage_group_data else {}
 tower_event_stage_map = create_tower_event_stage_map(tower_event_stage_data) if tower_event_stage_data else {}
@@ -16455,9 +16488,7 @@ def resolve_mission_title(ld, mission_row):
     return f'Mission {mid}' if mid != '0' else 'Mission'
 
 
-def resolve_stage_missions(stage_id, lc):
-    sid = normalize_id(stage_id)
-    rows = (stage_missions_by_stage or {}).get(sid, [])
+def _decorate_mission_rows(rows, lc):
     if not rows:
         return []
     ld = get_lang_data(lc)
@@ -16470,6 +16501,20 @@ def resolve_stage_missions(stage_id, lc):
             'rewards': _decorate_reward_rows(_resolve_reward_rows_from_set_id(rsid), lc) if rsid != '0' else [],
         })
     return out
+
+
+def resolve_stage_missions(stage_id, lc):
+    sid = normalize_id(stage_id)
+    return _decorate_mission_rows((stage_missions_by_stage or {}).get(sid, []), lc)
+
+
+def resolve_fea_stage_missions(unit_id, difficulty_code, lc):
+    """Home FEA clear missions for this boss unit + selected Normal/Hard/Expert tab."""
+    uid = normalize_id(unit_id)
+    dti = {'normal': 1, 'hard': 2, 'expert': 3}.get(str(difficulty_code or ''), 0)
+    if uid == '0' or dti not in (1, 2, 3):
+        return []
+    return _decorate_mission_rows((fea_missions_by_unit_diff or {}).get((uid, dti), []), lc)
 
 
 def challenge_stage_thumb_url(thumbnail_resource_id):
@@ -31850,7 +31895,7 @@ def resolve_fea_challenge_reward_totals(group_id, lc):
     }
 
 
-def _fea_difficulty_slice_meta(stage_id, lc, difficulty_code):
+def _fea_difficulty_slice_meta(stage_id, lc, difficulty_code, unit_id=None):
     """Normal/Hard/Expert (or Challenge shell) meta for FEA event detail — no map/NPC body."""
     sid = normalize_id(stage_id)
     sm = (stage_map or {}).get(sid, {})
@@ -31869,6 +31914,9 @@ def _fea_difficulty_slice_meta(stage_id, lc, difficulty_code):
         }
     vc, dc, bvc = resolve_stage_conditions(sid, lc)
     rewards = resolve_stage_rewards(sid, lc, category='eternal')
+    missions = []
+    if difficulty_code in ('normal', 'hard', 'expert') and unit_id:
+        missions = resolve_fea_stage_missions(unit_id, difficulty_code, lc)
     return {
         'stage_id': sid,
         'name': sname,
@@ -31882,6 +31930,7 @@ def _fea_difficulty_slice_meta(stage_id, lc, difficulty_code):
         'defeat_conditions': dc,
         'branch_victory_conditions': bvc,
         'stage_rewards': rewards,
+        'stage_missions': missions,
     }
 
 
@@ -31953,12 +32002,12 @@ def build_fea_event_detail(group_id, lc):
     for code in ('normal', 'hard', 'expert'):
         sid = normalize_id(stages.get(code))
         if sid != '0':
-            difficulties[code] = _fea_difficulty_slice_meta(sid, lc, code)
+            difficulties[code] = _fea_difficulty_slice_meta(sid, lc, code, unit_id=uid)
     chall_totals = resolve_fea_challenge_reward_totals(gid, lc)
     extend_sid = normalize_id(gmeta.get('extend_stage_id') or stages.get('challenge'))
     challenge_meta = None
     if extend_sid != '0':
-        challenge_meta = _fea_difficulty_slice_meta(extend_sid, lc, 'challenge')
+        challenge_meta = _fea_difficulty_slice_meta(extend_sid, lc, 'challenge', unit_id=uid)
         challenge_meta['levels'] = chall_totals['levels']
         challenge_meta['total_rewards'] = chall_totals['total_rewards']
         challenge_meta['total_diamonds'] = chall_totals['total_diamonds']
@@ -31994,8 +32043,9 @@ def build_fea_event_detail(group_id, lc):
         'sortie_groups': [],
         'map_data': {'width': 0, 'height': 0, 'units': [], 'reach_target_areas': []},
         'npc_details': [],
-        'stage_rewards': [],
-        'stage_missions': [],
+        'stage_rewards': (difficulties.get('normal') or {}).get('stage_rewards') or [],
+        # Default tab = Normal; difficulty tabs carry their own stage_missions on fea_difficulties.*.
+        'stage_missions': (difficulties.get('normal') or {}).get('stage_missions') or [],
         'stage_secret_rewards': [],
         'stage_prev_cleared_rewards': [],
     }
@@ -35962,8 +36012,9 @@ def get_stage(stage_id):
         # StageId — pass fea_combat=1 to load that StageId's map/NPC combat payload instead.
         _fea_combat = str(request.args.get('fea_combat') or '').strip().lower() in ('1', 'true', 'yes')
         if (not _fea_combat) and stage_id in (invasion_event_group_map or {}):
+            # fea4: per-difficulty stage_missions (home FEA clear missions + rewards)
             ck_fea = (
-                f"stage_fea3_{stage_id}_{lc}_"
+                f"stage_fea4_{stage_id}_{lc}_"
                 f"{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_"
                 f"{eternal_stage_session_cache_key_fragment()}"
             )
