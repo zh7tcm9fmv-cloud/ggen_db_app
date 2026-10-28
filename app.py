@@ -1359,28 +1359,39 @@ def request_list_page():
 def request_list_per_page(default=50, lo=10, hi=100):
     return request_arg_int('per_page', default, minimum=lo, maximum=hi)
 
+def _datetime_jst_from_epoch_ms(ms):
+    """UTC epoch ms → aware/naive datetime in JST. Falls back to UTC+9 if ZoneInfo tz data is missing."""
+    if ms is None or ms <= 0:
+        return None
+    if ZoneInfo is not None:
+        try:
+            return datetime.fromtimestamp(ms / 1000.0, tz=timezone.utc).astimezone(ZoneInfo('Asia/Tokyo'))
+        except Exception:
+            pass
+    try:
+        return datetime.fromtimestamp(ms / 1000.0, tz=timezone.utc) + timedelta(hours=9)
+    except Exception:
+        try:
+            return datetime.utcfromtimestamp(ms / 1000.0) + timedelta(hours=9)
+        except Exception:
+            return None
+
 def format_start_datetime_jst(ms):
     """Format epoch milliseconds (UTC) as JST local time string."""
-    if ms is None or ms <= 0:
+    dt = _datetime_jst_from_epoch_ms(ms)
+    if dt is None:
         return ''
     try:
-        if ZoneInfo is not None:
-            dt = datetime.fromtimestamp(ms / 1000.0, tz=timezone.utc).astimezone(ZoneInfo('Asia/Tokyo'))
-        else:
-            dt = datetime.utcfromtimestamp(ms / 1000.0) + timedelta(hours=9)
         return dt.strftime('%Y-%m-%d %H:%M:%S') + ' JST'
     except Exception:
         return ''
 
 def _jst_year_from_epoch_ms(ms):
     """Calendar year in Asia/Tokyo for epoch milliseconds (banner schedule semantics)."""
-    if ms is None or ms <= 0:
+    dt = _datetime_jst_from_epoch_ms(ms)
+    if dt is None:
         return None
     try:
-        if ZoneInfo is not None:
-            dt = datetime.fromtimestamp(ms / 1000.0, tz=timezone.utc).astimezone(ZoneInfo('Asia/Tokyo'))
-        else:
-            dt = datetime.utcfromtimestamp(ms / 1000.0) + timedelta(hours=9)
         return int(dt.year)
     except Exception:
         return None
@@ -8862,6 +8873,9 @@ def create_stage_map(d):
             'stage_drop_set_id': normalize_id(item.get('StageDropSetId') or item.get('stageDropSetId')),
             'stage_score_evaluation_set_id': normalize_id(item.get('StageScoreEvaluationSetId') or item.get('stageScoreEvaluationSetId')),
             'base_score': safe_int(item.get('BaseScore') or item.get('baseScore'), 0),
+            'consume_action_point': safe_int(item.get('ConsumeActionPoint') or item.get('consumeActionPoint'), 0),
+            'stage_name_lang_id': normalize_id(item.get('StageNameLanguageId') or item.get('stageNameLanguageId')),
+            'stage_type_index': safe_int(item.get('StageTypeIndex') or item.get('stageTypeIndex'), 0),
         }
     return lookup
 
@@ -12081,6 +12095,7 @@ tower_event_stage_group_data = load_json(os.path.join(BASE_DIR, "m_tower_event_s
 tower_event_stage_data = load_json(os.path.join(BASE_DIR, "m_tower_event_stage.json"))
 tower_event_stage_appeal_reward_data = load_json(os.path.join(BASE_DIR, "m_tower_event_stage_appeal_reward.json"))
 reward_data = load_json(os.path.join(BASE_DIR, "m_reward.json"))
+reward_set_content_data = load_json(os.path.join(BASE_DIR, "m_reward_set_content.json"))
 item_data = load_json(os.path.join(BASE_DIR, "m_item.json"))
 unit_specialize_material_target_data = load_json(os.path.join(BASE_DIR, "m_unit_specialize_material_target.json"))
 character_specialize_material_target_data = load_json(
@@ -12150,6 +12165,7 @@ option_parts_lineage_data = load_json(os.path.join(BASE_DIR, "m_option_parts_lin
 option_parts_acquisition_method_data = load_json(os.path.join(BASE_DIR, "m_option_parts_acquisition_method.json"))
 invasion_event_stage_extend_data = load_json(os.path.join(BASE_DIR, "m_invasion_event_stage_extend.json"))
 invasion_event_stage_group_data = load_json(os.path.join(BASE_DIR, "m_invasion_event_stage_group.json"))
+invasion_event_stage_data = load_json(os.path.join(BASE_DIR, "m_invasion_event_stage.json"))
 binder_data = load_json(os.path.join(BASE_DIR, "m_binder.json"))
 unit_acquisition_method_data = load_json(os.path.join(BASE_DIR, "m_unit_acquisition_method.json"))
 character_acquisition_method_data = load_json(os.path.join(BASE_DIR, "m_character_acquisition_method.json"))
@@ -12292,6 +12308,16 @@ for _rid, _rrow in (reward_map or {}).items():
     if not _sid:
         continue
     reward_set_rewards_map.setdefault(_sid, []).append(dict(_rrow, reward_id=_rid))
+# Authoritative set→reward links (covers FEA / older ids where reward_id[:-2] ≠ RewardSetId).
+reward_set_content_ids_by_set = {}
+for _rsc in extract_data_list(reward_set_content_data or []):
+    if not isinstance(_rsc, dict):
+        continue
+    _rsid = normalize_id(_rsc.get('RewardSetId') or _rsc.get('rewardSetId'))
+    _rid = normalize_id(_rsc.get('RewardId') or _rsc.get('rewardId'))
+    if _rsid == '0' or _rid == '0':
+        continue
+    reward_set_content_ids_by_set.setdefault(_rsid, []).append(_rid)
 for _sid, _arr in list(reward_set_rewards_map.items()):
     _arr.sort(key=lambda x: safe_int(x.get('reward_id'), 0))
 option_part_reward_set_ids_by_op = {}
@@ -12997,6 +13023,7 @@ character_acquisition_by_id = _index_acq_rows(character_acquisition_method_data,
 item_acquisition_by_id = _index_acq_rows(item_acquisition_method_data, ('ItemId', 'itemId'))
 option_parts_acquisition_by_id = _index_acq_rows(option_parts_acquisition_method_data, ('OptionPartsId', 'optionPartsId'))
 _invasion_stage_group_by_extend_id = {}
+_invasion_extend_levels_by_group = {}
 for _ierow in extract_data_list(invasion_event_stage_extend_data or []):
     if not isinstance(_ierow, dict):
         continue
@@ -13004,14 +13031,63 @@ for _ierow in extract_data_list(invasion_event_stage_extend_data or []):
     _iegid = normalize_id(_ierow.get('InvasionEventStageGroupId') or _ierow.get('invasionEventStageGroupId'))
     if _iesid != '0' and _iegid != '0':
         _invasion_stage_group_by_extend_id[_iesid] = _iegid
+    if _iegid == '0':
+        continue
+    _invasion_extend_levels_by_group.setdefault(_iegid, []).append({
+        'id': _iesid,
+        'level': safe_int(_ierow.get('Level') or _ierow.get('level'), 0),
+        'buff_rate': safe_int(_ierow.get('BuffRate') or _ierow.get('buffRate'), 0),
+        'first_clear_reward_set_id': normalize_id(
+            _ierow.get('FirstClearRewardSetId') or _ierow.get('firstClearRewardSetId')
+        ),
+        'release_condition_extend_id': normalize_id(
+            _ierow.get('ReleaseConditionInvasionEventStageExtendId')
+            or _ierow.get('releaseConditionInvasionEventStageExtendId')
+        ),
+    })
+for _igid, _lvrows in list(_invasion_extend_levels_by_group.items()):
+    _lvrows.sort(key=lambda r: (safe_int(r.get('level'), 0), safe_int(r.get('id'), 0)))
+
 _invasion_group_unit_id_map = {}
+invasion_event_group_map = {}
 for _igrow in extract_data_list(invasion_event_stage_group_data or []):
     if not isinstance(_igrow, dict):
         continue
     _igid = normalize_id(_igrow.get('Id') or _igrow.get('id'))
+    if _igid == '0':
+        continue
     _iuid = normalize_id(_igrow.get('UnitId') or _igrow.get('unitId'))
-    if _igid != '0' and _iuid != '0':
+    if _iuid != '0':
         _invasion_group_unit_id_map[_igid] = _iuid
+    invasion_event_group_map[_igid] = {
+        'id': _igid,
+        'priority': safe_int(_igrow.get('Priority') or _igrow.get('priority'), 0),
+        'unit_id': _iuid,
+        'schedule_id': normalize_id(_igrow.get('ScheduleId') or _igrow.get('scheduleId'), '0'),
+        'extend_stage_id': normalize_id(_igrow.get('ExtendStageId') or _igrow.get('extendStageId')),
+        'stages': {},  # filled below: normal/hard/expert/challenge → stage_id
+    }
+
+# StageDifficultyTypeIndex: 1 Normal, 2 Hard, 3 Expert, 6 Challenge (extend shell).
+_FEA_DIFF_CODE_BY_INDEX = {1: 'normal', 2: 'hard', 3: 'expert', 6: 'challenge'}
+invasion_stage_to_group = {}
+invasion_playable_stage_ids = set()
+for _isrow in extract_data_list(invasion_event_stage_data or []):
+    if not isinstance(_isrow, dict):
+        continue
+    _igid = normalize_id(_isrow.get('InvasionEventStageGroupId') or _isrow.get('invasionEventStageGroupId'))
+    _sid = normalize_id(_isrow.get('StageId') or _isrow.get('stageId'))
+    _dti = safe_int(_isrow.get('StageDifficultyTypeIndex') or _isrow.get('stageDifficultyTypeIndex'), 0)
+    _code = _FEA_DIFF_CODE_BY_INDEX.get(_dti)
+    if _igid == '0' or _sid == '0' or not _code:
+        continue
+    gmeta = invasion_event_group_map.get(_igid)
+    if not gmeta:
+        continue
+    gmeta['stages'][_code] = _sid
+    invasion_stage_to_group[_sid] = {'group_id': _igid, 'difficulty_code': _code, 'difficulty_index': _dti}
+    invasion_playable_stage_ids.add(_sid)
+
 option_part_benefit_unit_by_op = {}
 for _opid, _acq_rows in (option_parts_acquisition_by_id or {}).items():
     for _arow in _acq_rows or []:
@@ -15464,11 +15540,18 @@ def _resolve_reward_rows_from_set_id(reward_set_id):
         return []
     rows = list(reward_set_rewards_map.get(rsid, []))
     if not rows:
+        for rid in (reward_set_content_ids_by_set.get(rsid) or []):
+            r = (reward_map or {}).get(rid)
+            if r:
+                rows.append(dict(r, reward_id=rid))
+    if not rows:
         rows = []
         for rid, r in (reward_map or {}).items():
             rs = str(rsid)
             if str(rid).startswith(rs):
                 rows.append(dict(r, reward_id=rid))
+        rows.sort(key=lambda x: safe_int(x.get('reward_id'), 0))
+    else:
         rows.sort(key=lambda x: safe_int(x.get('reward_id'), 0))
     return rows
 
@@ -19695,6 +19778,12 @@ def stages_special_page():
 
 @app.route('/collab')
 def stages_collaboration_page():
+    return _serve_index()
+
+
+@app.route('/fea')
+@app.route('/fierce-enemy-assault')
+def stages_fea_page():
     return _serve_index()
 
 
@@ -31683,6 +31772,235 @@ def _fierce_enemy_assault_event_name(lc):
     }.get(lc, 'Fierce Enemy Assault')
 
 
+def _fea_schedule_status(start_ms, end_ms, now_ms=None):
+    """active / upcoming / ended from group ScheduleId (same rules as Master League)."""
+    try:
+        now = int(now_ms) if now_ms is not None else int(datetime.now(timezone.utc).timestamp() * 1000)
+    except (TypeError, ValueError):
+        now = 0
+    sm = safe_int(start_ms, 0)
+    em = safe_int(end_ms, 0)
+    if sm and em and sm <= now < em:
+        return 'active'
+    if sm and now < sm:
+        return 'upcoming'
+    return 'ended'
+
+
+def _fea_resolve_unit_name(unit_id, lc):
+    uid = normalize_id(unit_id)
+    if uid == '0':
+        return ''
+    ld = get_lang_data(lc)
+    lid = (ld.get('unit_id_map') or {}).get(uid, '')
+    if lid:
+        return str((ld.get('unit_text_map') or {}).get(lid, '') or '').strip() or f'Unit {uid}'
+    return f'Unit {uid}'
+
+
+def _fea_merge_reward_stacks(reward_rows):
+    """Accumulate identical reward stacks (by type/target/name) across Challenge levels."""
+    merged = {}
+    order = []
+    for row in reward_rows or []:
+        if not isinstance(row, dict):
+            continue
+        key = (
+            normalize_id(row.get('reward_type_index')),
+            normalize_id(row.get('target_id')),
+            str(row.get('name') or ''),
+            str(row.get('icon') or row.get('thum') or ''),
+        )
+        cnt = safe_int(row.get('count'), 0)
+        if key not in merged:
+            merged[key] = dict(row)
+            merged[key]['count'] = cnt
+            order.append(key)
+        else:
+            merged[key]['count'] = safe_int(merged[key].get('count'), 0) + cnt
+    return [merged[k] for k in order]
+
+
+def resolve_fea_challenge_reward_totals(group_id, lc):
+    """Per-level first-clear rewards + merged totals + diamond sum for FEA Challenge Lv1–20."""
+    gid = normalize_id(group_id)
+    levels_out = []
+    all_rows = []
+    diamonds = 0
+    for lv in (_invasion_extend_levels_by_group.get(gid) or []):
+        rsid = normalize_id(lv.get('first_clear_reward_set_id'))
+        rewards = (
+            _decorate_reward_rows(_resolve_reward_rows_from_set_id(rsid), lc)
+            if rsid != '0' else []
+        )
+        for r in rewards:
+            if normalize_id(r.get('reward_type_index')) == '10':
+                diamonds += safe_int(r.get('count'), 0)
+        all_rows.extend(rewards)
+        levels_out.append({
+            'id': lv.get('id'),
+            'level': safe_int(lv.get('level'), 0),
+            'buff_rate': safe_int(lv.get('buff_rate'), 0),
+            'rewards': rewards,
+        })
+    return {
+        'levels': levels_out,
+        'total_rewards': _fea_merge_reward_stacks(all_rows),
+        'total_diamonds': diamonds,
+    }
+
+
+def _fea_difficulty_slice_meta(stage_id, lc, difficulty_code):
+    """Normal/Hard/Expert (or Challenge shell) meta for FEA event detail — no map/NPC body."""
+    sid = normalize_id(stage_id)
+    sm = (stage_map or {}).get(sid, {})
+    ld = get_lang_data(lc)
+    snlid = sm.get('stage_name_lang_id', '0')
+    sname = resolve_stage_name_from_lang_m_stage(ld, snlid, sid)
+    dti = {'normal': 1, 'hard': 2, 'expert': 3, 'challenge': 6}.get(str(difficulty_code or ''), 1)
+    diff = get_stage_difficulty_by_type_index(dti, lc)
+    # Eternal Road–style English labels for N/H/E on FEA too
+    if difficulty_code in ('normal', 'hard', 'expert'):
+        diff = {
+            'code': difficulty_code,
+            'name': ETERNAL_STAGE_DIFFICULTY_LABELS_EN.get(difficulty_code, diff.get('name') or difficulty_code),
+            'index': dti,
+            'enum': STAGE_DIFFICULTY_TYPE.get(dti, {}).get('enum', ''),
+        }
+    vc, dc, bvc = resolve_stage_conditions(sid, lc)
+    rewards = resolve_stage_rewards(sid, lc, category='eternal')
+    return {
+        'stage_id': sid,
+        'name': sname,
+        'difficulty_code': diff['code'],
+        'difficulty_name': diff['name'],
+        'recommended_cp': sm.get('recommended_cp', 0),
+        'consume_action_point': sm.get('consume_action_point', 0),
+        'terrain': resolve_stage_terrain_name(sm.get('terrain_type_index', '0'), lc),
+        'terrain_icon': resolve_stage_terrain_icon(sm.get('terrain_type_index', '0')),
+        'victory_conditions': vc,
+        'defeat_conditions': dc,
+        'branch_victory_conditions': bvc,
+        'stage_rewards': rewards,
+    }
+
+
+def apply_fea_buff_rate_to_npc_details(npc_details, buff_rate):
+    """Multiply displayed NPC unit combat stats by (100+BuffRate)/100 (Challenge ladder)."""
+    rate = safe_int(buff_rate, 0)
+    if rate <= 0 or not npc_details:
+        return npc_details
+    mult = (100 + rate) / 100.0
+    stat_keys = ('HP', 'EN', 'Attack', 'Defense', 'Mobility', 'Move')
+
+    def _scale_stat_map(m):
+        if not isinstance(m, dict):
+            return m
+        out = dict(m)
+        for k in stat_keys:
+            if k in out:
+                try:
+                    out[k] = int(math.floor(float(out[k]) * mult + 1e-9))
+                except (TypeError, ValueError):
+                    pass
+        return out
+
+    out_rows = []
+    for row in npc_details:
+        if not isinstance(row, dict):
+            out_rows.append(row)
+            continue
+        nr = dict(row)
+        up = nr.get('unit')
+        if isinstance(up, dict):
+            u2 = dict(up)
+            for sk in (
+                'stats_raw', 'stats', 'stats_raw_with_cond',
+                'stats_raw_npc_stage_squad_allies', 'stats_raw_npc_squad_allies_off',
+            ):
+                if sk in u2:
+                    u2[sk] = _scale_stat_map(u2[sk])
+            # Flat stat fields used by some NPC display helpers
+            for k in ('hp', 'en', 'attack', 'defense', 'mobility', 'move',
+                      'HP', 'EN', 'Attack', 'Defense', 'Mobility', 'Move'):
+                if k in u2:
+                    try:
+                        u2[k] = int(math.floor(float(u2[k]) * mult + 1e-9))
+                    except (TypeError, ValueError):
+                        pass
+            nr['unit'] = u2
+        out_rows.append(nr)
+    return out_rows
+
+
+def build_fea_event_detail(group_id, lc):
+    """Fierce Enemy Assault event card payload (group id = browse/detail id)."""
+    gid = normalize_id(group_id)
+    gmeta = (invasion_event_group_map or {}).get(gid)
+    if not gmeta:
+        return None
+    uid = normalize_id(gmeta.get('unit_id'))
+    boss_name = _fea_resolve_unit_name(uid, lc)
+    portrait = ''
+    if uid != '0':
+        uinfo = unit_info_map.get(uid, {})
+        portrait = find_portrait(uinfo.get('resource_ids', []), uid, 'images/unit_portraits') or ''
+    sched = normalize_id(gmeta.get('schedule_id'), '0')
+    sched_fields = resolve_m_schedule_release_fields(sched)
+    status = _fea_schedule_status(sched_fields.get('start_ms') or 0, sched_fields.get('end_ms') or 0)
+    stages = gmeta.get('stages') or {}
+    difficulties = {}
+    for code in ('normal', 'hard', 'expert'):
+        sid = normalize_id(stages.get(code))
+        if sid != '0':
+            difficulties[code] = _fea_difficulty_slice_meta(sid, lc, code)
+    chall_totals = resolve_fea_challenge_reward_totals(gid, lc)
+    extend_sid = normalize_id(gmeta.get('extend_stage_id') or stages.get('challenge'))
+    challenge_meta = None
+    if extend_sid != '0':
+        challenge_meta = _fea_difficulty_slice_meta(extend_sid, lc, 'challenge')
+        challenge_meta['levels'] = chall_totals['levels']
+        challenge_meta['total_rewards'] = chall_totals['total_rewards']
+        challenge_meta['total_diamonds'] = chall_totals['total_diamonds']
+    return {
+        'content_locked': False,
+        'id': gid,
+        'stage_category': 'fierce_enemy_assault',
+        'name': boss_name,
+        'event_name': _fierce_enemy_assault_event_name(lc),
+        'portrait': portrait,
+        'unit_id': uid,
+        'priority': safe_int(gmeta.get('priority'), 0),
+        'schedule_id': sched_fields['schedule_id'],
+        'start_ms': sched_fields['start_ms'],
+        'end_ms': sched_fields['end_ms'],
+        'start_label': sched_fields['start_label'],
+        'end_label': sched_fields['end_label'],
+        'duration_label': sched_fields['duration_label'],
+        'has_schedule_release': sched_fields['has_schedule_release'],
+        'schedule_status': status,
+        'fea_difficulties': difficulties,
+        'fea_challenge': challenge_meta,
+        'lang': lc,
+        # Shell fields so detail chrome does not explode
+        'stage_number': safe_int(gid, 0) % 1000,
+        'difficulty_code': '',
+        'difficulty_name': '',
+        'recommended_cp': None,
+        'terrain': '',
+        'victory_conditions': [],
+        'defeat_conditions': [],
+        'branch_victory_conditions': [],
+        'sortie_groups': [],
+        'map_data': {'width': 0, 'height': 0, 'units': [], 'reach_target_areas': []},
+        'npc_details': [],
+        'stage_rewards': [],
+        'stage_missions': [],
+        'stage_secret_rewards': [],
+        'stage_prev_cleared_rewards': [],
+    }
+
+
 def _format_clear_stage_acq(stage_name, lc):
     lc = (lc or '').upper()
     if lc == 'KR':
@@ -35322,18 +35640,57 @@ def list_stages():
             challenge_series = 'ALL'
         if cat not in (
             'eternal', 'score_attack', 'special_stage', 'tower_stage',
-            'challenge_stage', 'collaboration_stage',
+            'challenge_stage', 'collaboration_stage', 'fierce_enemy_assault',
         ):
             cat = 'eternal'
         # Eternal + Collaboration: Normal/Hard(/Expert) difficulty filter.
         if cat not in ('eternal', 'collaboration_stage'):
             df = 'all'
-        ck = f"stages16_{cat}_{tower_side}_{challenge_series}_{lc}_{page}_{pp}_{sq}_{df}_{sb}_{sd}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_{eternal_stage_session_cache_key_fragment()}"
+        ck = f"stages17_{cat}_{tower_side}_{challenge_series}_{lc}_{page}_{pp}_{sq}_{df}_{sb}_{sd}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_{eternal_stage_session_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
         ld = get_lang_data(lc); rows = []
-        if cat == 'collaboration_stage':
+        if cat == 'fierce_enemy_assault':
+            event_label = _fierce_enemy_assault_event_name(lc)
+            for gid, gmeta in (invasion_event_group_map or {}).items():
+                uid = normalize_id(gmeta.get('unit_id'))
+                boss_name = _fea_resolve_unit_name(uid, lc)
+                sched = normalize_id(gmeta.get('schedule_id'), '0')
+                sched_fields = resolve_m_schedule_release_fields(sched)
+                status = _fea_schedule_status(
+                    sched_fields.get('start_ms') or 0, sched_fields.get('end_ms') or 0
+                )
+                if sq:
+                    searchable = f"{gid} {boss_name} {event_label}".lower()
+                    if not search_row_matches_query(sq, searchable, None, entity_id=gid):
+                        continue
+                # Newest start first under default stage_number/asc (negate start_ms).
+                start_ms = safe_int(sched_fields.get('start_ms'), 0)
+                sn_sort = -start_ms
+                rows.append({
+                    '_sn_sort': sn_sort,
+                    'id': gid,
+                    'stage_number': safe_int(gmeta.get('priority'), 0),
+                    'name': boss_name,
+                    'recommended_cp': None,
+                    'terrain': '',
+                    'difficulty_code': '',
+                    'difficulty_name': '',
+                    'portrait': '',
+                    '_portrait_duid': uid,
+                    'content_locked': False,
+                    'stage_category': 'fierce_enemy_assault',
+                    'event_name': event_label,
+                    'schedule_status': status,
+                    'start_ms': sched_fields.get('start_ms'),
+                    'end_ms': sched_fields.get('end_ms'),
+                    'start_label': sched_fields.get('start_label'),
+                    'end_label': sched_fields.get('end_label'),
+                    'has_schedule_release': sched_fields.get('has_schedule_release'),
+                    'priority': safe_int(gmeta.get('priority'), 0),
+                })
+        elif cat == 'collaboration_stage':
             for sid, lite in (lite_scenario_event_stage_map or {}).items():
                 ssc = (scenario_stage_map or {}).get(sid, {})
                 sm = stage_map.get(sid, {})
@@ -35601,6 +35958,23 @@ def get_stage(stage_id):
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); stage_id = normalize_id(stage_id)
         ld = get_lang_data(lc)
+        # FEA event card (browse id = invasion group id). Group ids often equal Normal
+        # StageId — pass fea_combat=1 to load that StageId's map/NPC combat payload instead.
+        _fea_combat = str(request.args.get('fea_combat') or '').strip().lower() in ('1', 'true', 'yes')
+        if (not _fea_combat) and stage_id in (invasion_event_group_map or {}):
+            ck_fea = (
+                f"stage_fea3_{stage_id}_{lc}_"
+                f"{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_"
+                f"{eternal_stage_session_cache_key_fragment()}"
+            )
+            cached_fea = get_cached_response(ck_fea)
+            if cached_fea:
+                return jsonify_cacheable(cached_fea, ck_fea, private=True, max_age=3600, convert_images=True)
+            result = build_fea_event_detail(stage_id, lc)
+            if not result:
+                return jsonify({'error': f'Stage {stage_id} not found'}), 404
+            set_cached_response(ck_fea, result)
+            return jsonify_cacheable(result, ck_fea, private=True, max_age=3600, convert_images=True)
         sas = map_event_score_attack_stage_map.get(stage_id) if map_event_score_attack_stage_map else None
         ses = special_event_stage_map.get(stage_id) if special_event_stage_map else None
         tes = tower_event_stage_map.get(stage_id) if tower_event_stage_map else None
@@ -35609,14 +35983,17 @@ def get_stage(stage_id):
         lite_row = (lite_scenario_event_stage_map or {}).get(stage_id) if lite_scenario_event_stage_map else None
         ssc_map = (scenario_stage_map or {}).get(stage_id) if scenario_stage_map else None
         sm_direct = (stage_map or {}).get(stage_id) if stage_map else None
+        inv_meta = (invasion_stage_to_group or {}).get(stage_id)
+        is_invasion_stage = bool(inv_meta and sm_direct and not sas and not ses and not tes and not ch and not est_er)
         # Collaboration (lite scenario) before generic chronicle / E Simulator.
         is_collaboration_stage = bool(
             lite_row and ssc_map and sm_direct and not sas and not ses and not tes and not ch and not est_er
+            and not is_invasion_stage
         )
         # E Simulator / chronicle scenarios live in m_scenario_stage + m_stage (StageTypeIndex 18).
         is_chronicle_stage = bool(
             ssc_map and sm_direct and not sas and not ses and not tes and not ch and not est_er
-            and not is_collaboration_stage
+            and not is_collaboration_stage and not is_invasion_stage
         )
         if sas:
             is_score_attack = True
@@ -35639,6 +36016,11 @@ def get_stage(stage_id):
             is_tower_event_stage = False
             is_challenge_stage = True
         elif est_er:
+            is_score_attack = False
+            is_special_event_stage = False
+            is_tower_event_stage = False
+            is_challenge_stage = False
+        elif is_invasion_stage:
             is_score_attack = False
             is_special_event_stage = False
             is_tower_event_stage = False
@@ -35730,20 +36112,42 @@ def get_stage(stage_id):
                 'recommended_combat_power': safe_int(sm_direct.get('recommended_cp'), 0),
             }
             vis = True
+        elif is_invasion_stage:
+            gid = normalize_id((inv_meta or {}).get('group_id'))
+            gmeta = (invasion_event_group_map or {}).get(gid) or {}
+            dti = safe_int((inv_meta or {}).get('difficulty_index'), 1)
+            est = {
+                'stage_number': safe_int(gmeta.get('priority'), 0),
+                'stage_name_lang_id': (sm_direct or {}).get('stage_name_lang_id', '0'),
+                'display_unit_id': normalize_id(gmeta.get('unit_id')),
+                'stage_difficulty_type_index': dti,
+                'fea_group_id': gid,
+                'fea_difficulty_code': (inv_meta or {}).get('difficulty_code') or '',
+            }
+            vis = True
         else:
             est = est_er
             vis = eternal_stage_content_visible(stage_id, est)
         if not isinstance(est, dict):
             return jsonify({'error': f'Stage {stage_id} not found'}), 404
+        fea_buff_level = safe_int(request.args.get('fea_level'), 0)
+        fea_buff_rate = 0
+        if is_invasion_stage and fea_buff_level > 0:
+            gid_buff = normalize_id(est.get('fea_group_id'))
+            for _lv in (_invasion_extend_levels_by_group.get(gid_buff) or []):
+                if safe_int(_lv.get('level'), 0) == fea_buff_level:
+                    fea_buff_rate = safe_int(_lv.get('buff_rate'), 0)
+                    break
         ck_cat = (
             'sa' if is_score_attack else (
                 'ses' if is_special_event_stage else (
                     'tes' if is_tower_event_stage else (
                         'ch' if is_challenge_stage else (
                             'collab' if is_collaboration_stage else (
-                                'ce' if is_chronicle_stage else 'er'))))))
+                                'ce' if is_chronicle_stage else (
+                                    'fea' if is_invasion_stage else 'er')))))))
         # mstage18: chronicle/E-sim first-clear from node content FirstClearRewardSetId.
-        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_{eternal_stage_session_cache_key_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage29_collabrew"
+        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_{eternal_stage_session_cache_key_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage30_fea_b{fea_buff_level}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
@@ -35798,13 +36202,29 @@ def get_stage(stage_id):
                     f"Collaboration ({stage_id})" if is_collaboration_stage
                     else f"E Simulator ({stage_id})"
                 )
+        elif is_invasion_stage:
+            sname = resolve_stage_name_from_lang_m_stage(ld, est.get('stage_name_lang_id', '0'), stage_id)
+            if not sname or sname.startswith('Unknown'):
+                sname = _fea_resolve_unit_name(est.get('display_unit_id'), lc) or sname
         else:
             sname = ld.get('stage_text_map', {}).get(est.get('stage_name_lang_id', ''), '') or f"Unknown ({stage_id})"
         if (
             is_score_attack or is_special_event_stage or is_tower_event_stage
             or is_challenge_stage or is_collaboration_stage or is_chronicle_stage
+            or is_invasion_stage
         ):
             diff = get_stage_difficulty_by_type_index(est.get('stage_difficulty_type_index'), lc)
+            if is_invasion_stage:
+                _fc = str(est.get('fea_difficulty_code') or diff.get('code') or '')
+                if _fc in ETERNAL_STAGE_DIFFICULTY_LABELS_EN:
+                    diff = {
+                        'code': _fc,
+                        'name': ETERNAL_STAGE_DIFFICULTY_LABELS_EN[_fc],
+                        'index': safe_int(est.get('stage_difficulty_type_index'), 1),
+                        'enum': STAGE_DIFFICULTY_TYPE.get(
+                            safe_int(est.get('stage_difficulty_type_index'), 1), {}
+                        ).get('enum', ''),
+                    }
         else:
             diff = get_stage_difficulty(stage_id, lc)
         sm = stage_map.get(stage_master_id, {}); duid = est.get('display_unit_id', '0'); portrait = ''
@@ -36123,12 +36543,13 @@ def get_stage(stage_id):
                     'tower_stage' if is_tower_event_stage else (
                         'challenge_stage' if is_challenge_stage else (
                             'collaboration_stage' if is_collaboration_stage else (
-                                'chronicle' if is_chronicle_stage else 'eternal'))))))
+                                'chronicle' if is_chronicle_stage else (
+                                    'fierce_enemy_assault_stage' if is_invasion_stage else 'eternal')))))))
         stage_rewards = resolve_stage_rewards(
             stage_id,
             lc,
-            # Collaboration first-clear is on m_stage (like Eternal), not chronicle/e-sim.
-            category=stage_cat,
+            # Collaboration / FEA first-clear is on m_stage (like Eternal), not chronicle/e-sim.
+            category='eternal' if is_invasion_stage else stage_cat,
             score_attack_reward_id=est.get('score_attack_reward_id', '0'),
         )
         tower_side = 'ALL'
@@ -36188,6 +36609,17 @@ def get_stage(stage_id):
             'challenge_series_layout': challenge_series_layout,
             'stage_missions': resolve_stage_missions(stage_id, lc) if _show_stage_missions else [],
         }
+        if is_invasion_stage:
+            result['fea_group_id'] = normalize_id(est.get('fea_group_id'))
+            result['fea_difficulty_code'] = str(est.get('fea_difficulty_code') or '')
+            result['fea_buff_level'] = fea_buff_level if fea_buff_level > 0 else None
+            result['fea_buff_rate'] = fea_buff_rate if fea_buff_rate > 0 else 0
+            result['consume_action_point'] = sm.get('consume_action_point', 0)
+            result['event_name'] = _fierce_enemy_assault_event_name(lc)
+            if fea_buff_rate > 0 and result.get('npc_details'):
+                result['npc_details'] = apply_fea_buff_rate_to_npc_details(
+                    result['npc_details'], fea_buff_rate
+                )
         set_cached_response(ck, result)
         return jsonify_cacheable(result, ck, private=True, max_age=3600, convert_images=True)
     except Exception as e:
@@ -36847,6 +37279,7 @@ _SPA_TAB_PATHS = frozenset({
     'roadmap',
     # Stage category deep-links (Stages tab sources)
     'gtower', 'gt', 'challenge', 'challenges', 'ch', 'go', 'score', 'score-attack', 'grand-offensive', 'special',
+    'fea', 'fierce-enemy-assault',
 })
 _SPA_DETAIL_PREFIXES = frozenset({'u', 'c', 's', 'op', 'pt', 'es', 'item'})
 # Entity detail ids are numeric MasterData ids. Reject glued CJK/junk
