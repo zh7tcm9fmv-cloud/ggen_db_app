@@ -2762,30 +2762,33 @@ button.stage-map-roster-thumb:disabled{
 .stage-map-reinf-units-layer{position:absolute;inset:0;pointer-events:none;z-index:16;overflow:visible}
 .stage-map-escape-unit{position:absolute;pointer-events:auto;overflow:visible;box-sizing:border-box}
 .stage-map-escape-unit--click{cursor:pointer;touch-action:manipulation}
-.stage-map-escape-unit .map-unit-dot{position:absolute;inset:0;width:100%;height:100%}
-.stage-map-escape-unit .map-unit-dot--footprint{inset:0!important;left:0!important;top:0!important;width:100%!important;height:100%!important}
-.stage-map-escape-unit--overlap{overflow:visible}
-.stage-map-escape-unit--overlap .map-unit-dot{transition:transform .55s cubic-bezier(.34,1.56,.64,1);transform-origin:center center}
-.stage-map-escape-unit--overlap-back .map-unit-dot{transform:translateY(7px) scale(.93)}
-.stage-map-escape-unit--overlap-front .map-unit-dot{transform:translateY(0) scale(1)}
-.stage-map-escape-overlap-stack-hover.stage-map-escape-unit--overlap-front .map-unit-dot{transform:translateY(-14px) rotate(-5deg) scale(1)}
-.stage-map-escape-overlap-stack-hover.stage-map-escape-unit--overlap-back .map-unit-dot{transform:translateY(14px) rotate(5deg) scale(.93)}
-.stage-map-escape-overlap-host{position:absolute;pointer-events:none;z-index:60;overflow:visible;box-sizing:border-box}
-.stage-map-escape-overlap-host .stage-map-escape-overlap-switch{pointer-events:auto}
-.stage-map-escape-overlap-switch{position:absolute;top:6px;right:6px;left:auto;bottom:auto;z-index:2;display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;min-width:24px;min-height:24px;padding:0;margin:0;border:1px solid rgba(129,140,248,.55);border-radius:7px;background:rgba(8,12,22,.9);cursor:pointer;opacity:0;transform:scale(.4);transition:transform .5s cubic-bezier(.34,1.56,.64,1),opacity .3s ease,background .2s ease,border-color .2s ease;box-shadow:0 2px 10px rgba(0,0,0,.45);pointer-events:auto;touch-action:manipulation;-webkit-tap-highlight-color:transparent;overflow:hidden;line-height:0}
-.stage-map-escape-overlap-switch img{width:15px!important;height:15px!important;max-width:15px!important;max-height:15px!important;object-fit:contain;display:block;flex-shrink:0;filter:drop-shadow(0 1px 2px rgba(0,0,0,.35))}
-.stage-map-escape-overlap-host--show-switch .stage-map-escape-overlap-switch,.stage-map-escape-overlap-switch:focus-visible{opacity:1;transform:scale(1);transition-delay:.05s}
-.stage-map-escape-overlap-switch:hover{background:rgba(15,23,42,.96);border-color:rgba(165,180,252,.75)}
-@media(hover:none),(max-width:768px){
-.stage-map-escape-overlap-host--show-switch .stage-map-escape-overlap-switch{opacity:1;transform:scale(1)}
+/* Overlay host = full cell footprint; dots use the same inset:2px as in-cell units (not edge-fill — that looked oversized). */
+.stage-map-escape-unit .map-unit-dot{position:absolute;inset:2px;width:auto;height:auto}
+.stage-map-escape-unit .map-unit-dot--footprint{inset:2px!important;left:auto!important;top:auto!important;width:auto!important;height:auto!important}
+.stage-map-escape-unit--overlap{overflow:visible;--stack-i:0;--stack-n:2;transition:transform .55s cubic-bezier(.34,1.56,.64,1);transform-origin:center center;will-change:transform}
+/* Resting: slight horizontal card peek by slot (works for 2–N waves). Transform on host so Wave badge rides along. */
+.stage-map-escape-unit--overlap{transform:translate(calc(var(--stack-i) * 4px),calc(var(--stack-i) * 2px)) scale(calc(1 - var(--stack-i) * 0.04))}
+/* Takayu ui-fan — horizontal spread for every stacked unit; no Transform swap button. */
+.stage-map-escape-overlap-stack-hover.stage-map-escape-unit--overlap,
+.stage-map-escape-overlap-stack-pinned.stage-map-escape-unit--overlap{
+  transform:translate(calc((var(--stack-i) - (var(--stack-n) - 1) / 2) * 38px),calc((var(--stack-i) - (var(--stack-n) - 1) / 2) * -3px)) rotate(calc((var(--stack-i) - (var(--stack-n) - 1) / 2) * 10deg)) scale(1);
+  z-index:calc(20 + var(--stack-i));
 }
+.stage-map-stack-wave-badge{
+  position:absolute;left:50%;bottom:2px;transform:translateX(-50%);z-index:6;
+  padding:1px 5px;border-radius:4px;font-size:9px;font-weight:700;letter-spacing:.02em;line-height:1.25;
+  white-space:nowrap;pointer-events:none;opacity:0;
+  color:#f5e9ff;background:rgba(88,28,135,.92);border:1px solid rgba(216,180,254,.55);
+  box-shadow:0 1px 4px rgba(0,0,0,.45);transition:opacity .18s ease;
+}
+.stage-map-escape-overlap-stack-hover .stage-map-stack-wave-badge,
+.stage-map-escape-overlap-stack-pinned .stage-map-stack-wave-badge{opacity:1}
 @media(prefers-reduced-motion:reduce){
-.stage-map-escape-unit--overlap .map-unit-dot{transition:opacity .2s ease}
-.stage-map-escape-overlap-stack-hover.stage-map-escape-unit--overlap-front .map-unit-dot,.stage-map-escape-overlap-stack-hover.stage-map-escape-unit--overlap-back .map-unit-dot{transform:none}
-.stage-map-escape-overlap-switch{transition:opacity .2s ease}
+.stage-map-escape-unit--overlap{transition:opacity .2s ease}
+.stage-map-escape-overlap-stack-hover.stage-map-escape-unit--overlap,
+.stage-map-escape-overlap-stack-pinned.stage-map-escape-unit--overlap{transform:none}
+.stage-map-stack-wave-badge{transition:none}
 }
-.stage-map-reinf-overlap-host .stage-map-reinf-overlap-switch{border-color:rgba(192,132,252,.65)}
-.stage-map-reinf-overlap-host .stage-map-reinf-overlap-switch:hover{border-color:rgba(216,180,254,.85);background:rgba(40,20,60,.96)}
 .map-cell.map-cell--reinf-stack-cell{box-shadow:inset 0 0 0 1px rgba(192,132,252,.28);background:transparent!important}
 .map-cell.map-cell--escape-spawn-cell{box-shadow:inset 0 0 0 1px rgba(129,140,248,.22);background:transparent!important}
 .map-grid--reinf,.map-grid--has-bg.map-grid--reinf{overflow:visible}
@@ -2850,7 +2853,7 @@ button.stage-map-roster-thumb:disabled{
 .map-cell-pou-moving img{width:auto;height:auto;max-width:min(32px,calc(var(--map-cell,24px)*0.92));max-height:min(32px,calc(var(--map-cell,24px)*0.92));object-fit:contain;object-position:center;display:block;margin:0;padding:0;filter:drop-shadow(0 0 1px rgba(255,255,255,.85)) drop-shadow(0 0 1px rgba(0,0,0,.55))}
 .weapon-map-high-vis .map-cell-pou-moving img{filter:brightness(1.12) contrast(1.12) drop-shadow(0 0 2px rgba(0,0,0,.8))}
 .map-grid{display:grid;gap:2px;background:#0c1220;padding:15px;border-radius:12px;position:relative;--cell:50px;overflow:hidden}
-.map-grid--has-bg,.map-grid--escape{gap:0;padding:12px;background-color:#060910;overflow:visible;background-origin:content-box}
+.map-grid--has-bg,.map-grid--escape,.map-grid--reinf{gap:0;padding:12px;background-color:#060910;overflow:visible;background-origin:content-box}
 .map-grid--has-bg::before{content:"";position:absolute;inset:12px;border-radius:2px;background:rgba(6,10,18,.32);pointer-events:none;z-index:0}
 .map-grid--has-bg>.map-cell{z-index:1}
 .map-grid--has-bg .map-cell{background:transparent!important;border-color:rgba(236,244,255,.5);box-shadow:inset 0 0 0 1px rgba(6,10,18,.62)}
@@ -2876,18 +2879,16 @@ button.stage-map-roster-thumb:disabled{
   container-type:inline-size;
   container-name:stage-rewards;
 }
-/* Centered multi-col chips. auto-fit collapses empty tracks so 2 items = one centered row. */
+/* Content-sized chips wrapped & centered — no stretched equal columns (that left empty name↔qty / trailing gaps). */
 .stage-reward-grid{
-  --sr-col-min:clamp(148px,22vw,200px);
-  --sr-col-max:clamp(200px,28vw,270px);
-  --sr-chip-gap:clamp(2px,0.85vw,6px);
-  --sr-qty-gap:clamp(2px,0.7vw,6px);
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(min(100%,var(--sr-col-min)),min(100%,var(--sr-col-max))));
+  --sr-col-max:min(100%,320px);
+  --sr-chip-gap:clamp(4px,0.9vw,8px);
+  --sr-qty-gap:clamp(4px,0.8vw,8px);
+  display:flex;
+  flex-wrap:wrap;
   justify-content:center;
-  justify-items:stretch;
+  align-items:center;
   gap:clamp(4px,1.1vw,8px);
-  align-items:start;
   width:100%;
 }
 /* Compact reward chips — don’t inherit tall ability-card padding / stretch gaps. */
@@ -2896,28 +2897,42 @@ button.stage-map-roster-thumb:disabled{
   align-items:center;
   padding:clamp(4px,0.7vw,6px) clamp(6px,1vw,8px);
   margin:0;
-  width:100%;
+  width:max-content;
   max-width:var(--sr-col-max);
   min-height:0;
   min-width:0;
   height:auto;
-  justify-self:center;
   box-sizing:border-box;
   flex-wrap:nowrap;
   gap:var(--sr-chip-gap);
   overflow:hidden;
 }
+/* Thumbs keep their own size; only currency/item 40px rail is forced. Vertically center vs taller unit/char. */
+.stage-reward-grid>.ability-item>.list-thumb-composite,
+.stage-reward-grid>.ability-item>.sp-chip-thumb,
+.stage-reward-grid>.ability-item>.lb-chip-thumb,
+.stage-reward-grid>.ability-item>.stage-reward-pt-thumb,
+.stage-reward-grid>.ability-item>.stage-reward-item-icon{
+  flex:0 0 auto;
+  margin:0!important;
+  align-self:center;
+}
+.stage-reward-grid>.ability-item>.stage-reward-item-icon,
+.stage-reward-grid>.ability-item>.sp-chip-thumb,
+.stage-reward-grid>.ability-item>.lb-chip-thumb{
+  width:40px!important;
+  height:40px!important;
+  flex:0 0 40px;
+}
 .stage-reward-grid>.ability-item>.stage-reward-row-body{
-  flex:1 1 auto;
+  flex:0 1 auto;
   min-width:0;
-  display:grid;
-  grid-template-columns:minmax(0,1fr) max-content;
+  display:flex;
   align-items:center;
-  column-gap:var(--sr-qty-gap);
+  gap:var(--sr-qty-gap);
 }
 .stage-reward-grid>.ability-item>.stage-reward-row-body:not(:has(.stage-reward-qty)){
-  grid-template-columns:minmax(0,1fr);
-  column-gap:0;
+  gap:0;
 }
 .stage-reward-copy{min-width:0;max-width:100%;overflow:hidden}
 .stage-reward-name{
@@ -2934,16 +2949,15 @@ button.stage-map-roster-thumb:disabled{
 .stage-reward-qty,
 .stage-reward-grid .stage-reward-row-body>.stage-meta-badge{
   flex:0 0 auto;
-  justify-self:end;
   align-self:center;
   white-space:nowrap;
   padding:2px 5px;
   font-size:clamp(10px,1.5vw,11px);
   line-height:1.15;
 }
-/* Same chip footprint as currency — do not full-span / recenter (that staggered the row). */
+/* Profile titles stay content-sized with the other reward chips. */
 .stage-reward-grid>.stage-reward-item--profile-title{
-  width:100%;
+  width:max-content;
   max-width:var(--sr-col-max);
   flex-wrap:nowrap;
   gap:var(--sr-chip-gap);
@@ -2982,28 +2996,25 @@ button.stage-map-roster-thumb:disabled{
   width:auto;
   min-width:0;
 }
-/* Narrow detail panel: fewer / tighter chips; pull icon↔qty closer. */
+/* Narrow detail panel: slightly tighter chip / qty gaps. */
 @container stage-rewards (max-width:720px){
   .stage-reward-grid{
-    --sr-col-min:clamp(140px,42cqi,190px);
-    --sr-col-max:clamp(180px,48cqi,240px);
-    --sr-chip-gap:3px;
-    --sr-qty-gap:3px;
+    --sr-col-max:min(100%,280px);
+    --sr-chip-gap:4px;
+    --sr-qty-gap:4px;
   }
 }
 @container stage-rewards (max-width:520px){
   .stage-reward-grid{
-    --sr-col-min:min(100%,160px);
-    --sr-col-max:min(100%,220px);
-    --sr-chip-gap:2px;
-    --sr-qty-gap:2px;
+    --sr-col-max:min(100%,100%);
+    --sr-chip-gap:3px;
+    --sr-qty-gap:3px;
     gap:5px;
   }
   .stage-reward-pt-thumb{max-width:64px}
 }
 @container stage-rewards (max-width:360px){
   .stage-reward-grid{
-    grid-template-columns:1fr;
     --sr-col-max:100%;
     --sr-chip-gap:2px;
     --sr-qty-gap:2px;
@@ -3089,19 +3100,17 @@ button.stage-map-roster-thumb:disabled{
   gap:8px;
 }
 .stage-mission-reward-cell .stage-reward-row-body{
-  flex:1 1 auto;
+  flex:0 1 auto;
   min-width:0;
-  display:grid;
-  grid-template-columns:minmax(0,1fr) max-content;
+  display:flex;
   align-items:center;
-  column-gap:8px;
+  gap:8px;
 }
 @media(max-width:768px){
   .stage-reward-grid{
-    --sr-col-min:clamp(140px,44vw,180px);
-    --sr-col-max:clamp(170px,48vw,240px);
-    --sr-chip-gap:2px;
-    --sr-qty-gap:2px;
+    --sr-col-max:min(100%,280px);
+    --sr-chip-gap:3px;
+    --sr-qty-gap:3px;
     gap:5px;
   }
   .detail-section--stage-rewards>.stage-reward-grid,
@@ -3121,7 +3130,7 @@ button.stage-map-roster-thumb:disabled{
     gap:var(--sr-chip-gap,2px);
   }
   .stage-mission-reward-cell .stage-reward-row-body{
-    column-gap:var(--sr-qty-gap,2px);
+    gap:var(--sr-qty-gap,2px);
   }
 }
 .map-cell.map-cell--unit-origin{position:relative;overflow:visible;z-index:4}
@@ -3204,6 +3213,7 @@ button.stage-map-roster-thumb:disabled{
 .stage-npc-compact-badges{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-top:6px}
 .stage-npc-meta-badge{font-size:10px;font-weight:700;padding:2px 6px;border-radius:6px;background:rgba(255,255,255,.06);color:var(--text-secondary);border:1px solid var(--border-color)}
 .stage-npc-meta-badge--step{background:rgba(249,115,22,.15);border-color:rgba(249,115,22,.45);color:#fdba74}
+.stage-npc-meta-badge--wave{background:rgba(168,85,247,.16);border-color:rgba(192,132,252,.5);color:#e9d5ff}
 .stage-npc-meta-badge--boss{background:rgba(236,72,153,.12);border-color:rgba(236,72,153,.4);color:#f9a8d4}
 .page-footer{display:flex;justify-content:center;align-items:center;padding:24px 20px 32px;margin-top:auto}
 .site-footer-links{text-align:center;padding:12px 16px 28px;margin:0 auto;margin-top:auto;max-width:1600px;width:100%;min-width:0;box-sizing:border-box;font-size:12px;color:var(--text-muted);line-height:1.5;flex-shrink:0;overflow-x:clip}
@@ -5546,32 +5556,30 @@ textarea:focus-visible,
   box-sizing:border-box;
   overflow:hidden;
 }
-/* Keep OP / unit / gem thumbs on the same left rail (cancel list-thumb margin:auto). */
+/* FEA challenge ladder: same content pack as main rewards — entity thumbs not forced to gem size. */
 .stage-fea-level-rewards .stage-reward-item>.list-thumb-composite,
 .stage-fea-level-rewards .stage-reward-item>.sp-chip-thumb,
 .stage-fea-level-rewards .stage-reward-item>.stage-reward-pt-thumb,
-.stage-fea-level-rewards .stage-reward-item>div[style*="width:40px"]{
-  flex:0 0 40px;
-  width:40px!important;
-  height:40px!important;
+.stage-fea-level-rewards .stage-reward-item>.stage-reward-item-icon{
+  flex:0 0 auto;
   margin:0!important;
   align-self:center;
 }
-.stage-fea-level-rewards .list-thumb-composite{
+.stage-fea-level-rewards .stage-reward-item>.stage-reward-item-icon,
+.stage-fea-level-rewards .stage-reward-item>.sp-chip-thumb{
   width:40px!important;
   height:40px!important;
+  flex:0 0 40px;
 }
 .stage-fea-level-rewards .stage-reward-row-body{
-  flex:1 1 auto;
+  flex:0 1 auto;
   min-width:0;
-  display:grid;
-  grid-template-columns:minmax(0,1fr) max-content;
+  display:flex;
   align-items:center;
-  column-gap:6px;
+  gap:6px;
 }
 .stage-fea-level-rewards .stage-reward-row-body:not(:has(.stage-reward-qty)){
-  grid-template-columns:minmax(0,1fr);
-  column-gap:0;
+  gap:0;
 }
 .stage-fea-level-rewards .stage-reward-name{
   font-size:11px;
