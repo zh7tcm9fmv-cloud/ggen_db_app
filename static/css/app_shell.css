@@ -5613,13 +5613,15 @@ textarea:focus-visible,
   margin-left:auto;
 }
 .stage-fea-diamond-total-inline{
-  font-size:12px;
-  font-weight:700;
+  font-size:15px;
+  font-weight:800;
   color:var(--accent-cyan);
   letter-spacing:.02em;
   text-transform:none;
   white-space:nowrap;
   font-variant-numeric:tabular-nums;
+  line-height:1.2;
+  text-shadow:0 1px 2px rgba(0,0,0,.45);
 }
 .stage-fea-challenge-caret{
   width:8px;
