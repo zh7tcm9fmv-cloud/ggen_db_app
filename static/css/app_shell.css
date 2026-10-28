@@ -2275,7 +2275,11 @@ a.seo-entity-link{color:inherit;text-decoration:none;font:inherit;cursor:pointer
   background:rgba(0,212,255,.10);
   border-color:rgba(0,212,255,.45);
 }.detail-rec-link-card:focus-visible{outline:2px solid var(--accent-cyan);outline-offset:2px}.detail-rec-link-label{font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:0.06em;text-align:center;text-transform:uppercase;width:100%;margin:0 0 10px;padding:0 2px;flex-shrink:0}.detail-rec-link-thumb-wrap{display:flex;justify-content:center;align-items:center;padding:10px 12px 14px;overflow:visible;box-sizing:border-box;width:100%;min-height:0}.detail-rec-link-thumb-wrap .list-thumb-composite{width:96px!important;height:96px!important;max-width:100%;flex-shrink:0;overflow:visible}.detail-rec-link-thumb-wrap .list-thumb-back{overflow:visible}.detail-rec-link-name{font-size:12px;font-weight:600;color:var(--text-primary);text-align:center;line-height:1.25;max-width:160px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;padding:0 2px;margin-top:8px}.detail-name{font-size:32px;font-weight:700;margin-bottom:10px;line-height:1.2;text-shadow:0 2px 4px rgba(0,0,0,0.5);word-break:break-word}
-.detail-meta{display:flex;align-items:center;gap:14px;margin-bottom:14px;flex-wrap:wrap}.detail-rarity-icon{height:50px}.detail-role-label{font-size:18px;color:var(--text-secondary);font-weight:600;padding:0;background:transparent;border:none;display:flex;align-items:center;gap:8px}.detail-role-label img{height:35px}.detail-meta-icon{height:30px;vertical-align:middle;background:transparent;border:none;object-fit:contain}
+.detail-meta{display:flex;align-items:center;gap:14px;margin-bottom:14px;flex-wrap:wrap}
+/* FEA dossier: CP + terrain (+ buff) stay one row — no Active chip here. */
+.detail-meta.detail-meta--fea-cp-terrain{flex-wrap:nowrap;gap:10px;align-items:center}
+.detail-meta.detail-meta--fea-cp-terrain .stage-meta-badge{flex:0 1 auto;white-space:nowrap}
+.detail-rarity-icon{height:50px}.detail-role-label{font-size:18px;color:var(--text-secondary);font-weight:600;padding:0;background:transparent;border:none;display:flex;align-items:center;gap:8px}.detail-role-label img{height:35px}.detail-meta-icon{height:30px;vertical-align:middle;background:transparent;border:none;object-fit:contain}
 .char-extra-info-wrap{display:inline-grid;grid-template-columns:auto;gap:5px;margin:2px 0 8px 0;padding:8px 10px;border-radius:12px;border:1px solid rgba(125,211,252,.32);background:rgba(8,19,36,.5);width:fit-content;max-width:100%}
 .char-extra-info-row{display:grid;grid-template-columns:auto auto;align-items:center;justify-content:start;column-gap:8px;row-gap:0}
 .char-extra-info-label{font-size:12px;font-weight:800;letter-spacing:.02em;color:#c7e7ff;white-space:nowrap;min-width:104px}
@@ -2951,25 +2955,36 @@ button.stage-map-roster-thumb:disabled{
 /* Host matches one cell. Keep overflow visible so Support Defense/Attack badges (outside the thumb) are not clipped. */
 .stage-map-escape-unit{position:absolute;pointer-events:auto;overflow:visible;box-sizing:border-box}
 .stage-map-escape-unit--click{cursor:pointer;touch-action:manipulation}
-/* Overlay host is already footprint-sized. Dot must FILL the host — never left/top:auto
-   (that shrink-wraps thumbs to ~6px while grid cells stay normal). */
+/* Overlay host fills the cell content box (JS insets 1px for .map-cell border); inset/padding
+   MUST match in-cell .map-unit-dot (2px+2px) or reinfs look larger. Never left/top:auto (~6px). */
 .stage-map-escape-unit .map-unit-dot,
 .stage-map-escape-unit .map-unit-dot--footprint{
-  position:absolute;inset:1px!important;left:1px!important;top:1px!important;right:1px!important;bottom:1px!important;
-  width:auto!important;height:auto!important;padding:1px;box-sizing:border-box;
+  position:absolute;inset:2px!important;left:2px!important;top:2px!important;right:2px!important;bottom:2px!important;
+  width:auto!important;height:auto!important;padding:2px;box-sizing:border-box;
+}
+/* Multi-footprint overlay: fill host like in-cell .map-unit-dot--footprint (no extra inset shrink). */
+.stage-map-escape-unit.stage-map-escape-unit--multi-fp .map-unit-dot{
+  inset:0!important;left:0!important;top:0!important;right:0!important;bottom:0!important;
+  padding:3px;border-radius:12px;
+}
+/* Reinforcement overlay: purple plate (not enemy red). */
+.stage-map-reinf-stack-unit .map-unit-dot.enemy{
+  background:linear-gradient(145deg,#dd13fa 0%,#ca06f2 100%);
+  box-shadow:0 0 8px rgba(202,6,242,.48);
+  outline:2px solid rgba(221,19,250,.78);
 }
 .stage-map-escape-unit--overlap{
   overflow:visible;--stack-i:0;--stack-n:2;
-  /* Fan step tracks cell size so autofit / mobile maps still spread like desktop. */
-  --stack-fan:max(30px,calc(var(--cell,36px) * 1.05));
-  --stack-fan-y:max(2px,calc(var(--cell,36px) * 0.08));
+  /* Same FEA fan everywhere: step scales with --cell (no px floor — Expert autofit was flying units ~2+ cells). */
+  --stack-fan:calc(var(--cell,36px) * 1.05);
+  --stack-fan-y:calc(var(--cell,36px) * 0.08);
   --stack-peek-x:0px;
   --stack-peek-y:0px;
   transition:transform .55s cubic-bezier(.34,1.56,.64,1);transform-origin:center center;
 }
 /* Resting: exact stack in-cell (no peek shift — peek made stacked reinfs look oversized / outside the tile). */
 .stage-map-escape-unit--overlap{transform:none}
-/* Takayu ui-fan — horizontal spread for every stacked unit; no Transform swap button. */
+/* Takayu ui-fan — horizontal spread + light rotate for every stacked unit (FEA / ER Expert / Escape). */
 .stage-map-escape-overlap-stack-hover.stage-map-escape-unit--overlap,
 .stage-map-escape-overlap-stack-pinned.stage-map-escape-unit--overlap{
   transform:translate(calc((var(--stack-i) - (var(--stack-n) - 1) / 2) * var(--stack-fan)),calc((var(--stack-i) - (var(--stack-n) - 1) / 2) * var(--stack-fan-y) * -1)) rotate(calc((var(--stack-i) - (var(--stack-n) - 1) / 2) * 8deg)) scale(1);
@@ -2984,13 +2999,15 @@ button.stage-map-roster-thumb:disabled{
 }
 .stage-map-escape-overlap-stack-hover .stage-map-stack-wave-badge,
 .stage-map-escape-overlap-stack-pinned .stage-map-stack-wave-badge{opacity:1}
-/* Touch: wider fan; shorter transition (no spring thrash on remount); same inset as in-cell. */
+/* Touch: same FEA spring fan (do not flatten to .2s — that made Expert feel unlike FEA). Keep inset match. */
 @media(pointer:coarse),(hover:none){
 .stage-map-escape-unit .map-unit-dot,
 .stage-map-escape-unit .map-unit-dot--footprint{
-  inset:1px!important;left:1px!important;top:1px!important;right:1px!important;bottom:1px!important;padding:1px;
+  inset:2px!important;left:2px!important;top:2px!important;right:2px!important;bottom:2px!important;padding:2px;
 }
-.stage-map-escape-unit--overlap{--stack-fan:max(34px,calc(var(--cell,36px) * 1.15));--stack-fan-y:max(3px,calc(var(--cell,36px) * 0.1));transition:transform .2s ease}
+.stage-map-escape-unit.stage-map-escape-unit--multi-fp .map-unit-dot{
+  inset:0!important;left:0!important;top:0!important;right:0!important;bottom:0!important;padding:3px;
+}
 .stage-map-stack-wave-badge{font-size:10px;padding:2px 6px;bottom:1px}
 }
 /* Reduced-motion: keep the fan spread (functional — iOS Reduce Motion must not collapse stacks). Only drop bounce + rotate. */

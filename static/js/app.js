@@ -6617,6 +6617,19 @@ const lab=st==='active'?t('ml_status_active'):st==='upcoming'?t('ml_status_upcom
 if(!lab)return'';
 return`<span class="ml-status-pill ml-status-${esc(st)} stage-fea-status-chip">${esc(lab)}</span>`;
 }
+function feaActiveDifficultyMeta(d){
+const diffs=(d&&d.fea_difficulties)||{};
+const code=S.feaDiff||'normal';
+/* Challenge Lv uses extend-stage CP/terrain (same board as Expert + buff). */
+if(code==='expert'&&S.feaLevel!=null&&S.feaLevel!==''&&d&&d.fea_challenge)return d.fea_challenge;
+return diffs[code]||{};
+}
+function feaActiveCpTerrainBadgesHtml(d){
+const meta=feaActiveDifficultyMeta(d);
+const cp=meta&&meta.recommended_cp;
+const cpBadge=(cp!=null&&cp!=='')?`<span class="stage-meta-badge">${esc(t('recommended_cp'))}: ${fmtN(cp)}</span>`:'';
+return cpBadge+stageTerrainMetaBadgeHtml(meta);
+}
 function renderFeaChallengeLevelEntry(lv){
 const n=Number(lv&&lv.level)||0;
 const active=Number(S.feaLevel)===n;
@@ -6663,9 +6676,9 @@ const challTitle=`${t('fea_challenge_levels')||'Challenge Levels'} · ${t('stage
 const diaLabel=t('fea_total_diamonds')||'Diamonds (total)';
 challBlock=`<div class="detail-section stage-fea-challenge-section${challOpen?'':' is-collapsed'}"><button type="button" class="section-title stage-fea-challenge-toggle" aria-expanded="${challOpen?'true':'false'}" onclick="toggleFeaChallengeSection(this)"><span class="stage-fea-challenge-title-text">${esc(challTitle)}</span><span class="stage-fea-challenge-head-right"><span class="stage-fea-diamond-total-inline" title="${escAttr(diaLabel)}">${esc(diaLabel)}: ${fmtN(totDia)}</span><span class="stage-fea-challenge-caret" aria-hidden="true"></span></span></button><div class="stage-fea-challenge-body">${renderFeaChallengeLevelsBoard(levels)}</div></div>`;
 }
-const metaActive=diffs[S.feaDiff]||{};
 const buffNote=(S.feaDiff==='expert'&&S.feaLevel)?`<span class="stage-meta-badge">${esc((t('fea_buff_rate')||'Enemy stats +{n}%').replace('{n}',String(((chall.levels||[]).find(x=>Number(x.level)===Number(S.feaLevel))||{}).buff_rate||0)))}</span>`:'';
-return`<div class="modal-top-label">${esc(eventName)}</div><div class="modal-entity-id">ID: ${esc(String(d.id||''))}</div><div class="detail-header"><div class="detail-portrait-wrap" style="width:${portWrapW}px">${portInner}</div><div class="detail-title-area"><div class="stage-detail-head-row"><div class="stage-detail-head-main">${nameLine}<div class="detail-meta">${feaScheduleStatusChip(d.schedule_status)}${buffNote}</div></div>${stageReleaseScheduleHtml(d)}</div><div class="stage-fea-diff-tabs" role="tablist">${tabHtml}</div><div id="feaActiveConditionHost"></div></div></div><div class="detail-body"><div id="feaActiveRewardHost">${feaActiveRewardHostHtml(d)}</div>${challBlock}<div id="detailStageRestrictionsContainer"></div><div id="detailStageMapContainer"></div><div id="detailNpcContainer"></div></div>`;
+/* Status chip stays on browse rows only — detail-meta is CP + terrain (+ buff) on one row. */
+return`<div class="modal-top-label">${esc(eventName)}</div><div class="modal-entity-id">ID: ${esc(String(d.id||''))}</div><div class="detail-header"><div class="detail-portrait-wrap" style="width:${portWrapW}px">${portInner}</div><div class="detail-title-area"><div class="stage-detail-head-row"><div class="stage-detail-head-main">${nameLine}<div class="detail-meta detail-meta--fea-cp-terrain">${feaActiveCpTerrainBadgesHtml(d)}${buffNote}</div></div>${stageReleaseScheduleHtml(d)}</div><div class="stage-fea-diff-tabs" role="tablist">${tabHtml}</div><div id="feaActiveConditionHost"></div></div></div><div class="detail-body"><div id="feaActiveRewardHost">${feaActiveRewardHostHtml(d)}</div>${challBlock}<div id="detailStageRestrictionsContainer"></div><div id="detailStageMapContainer"></div><div id="detailNpcContainer"></div></div>`;
 }
 function feaActiveRewardHostHtml(d){
 const diffs=(d&&d.fea_difficulties)||{};
@@ -7905,22 +7918,15 @@ function _stageMapStackWaveLabel(waveNum){
   const tpl=(raw&&raw!=='stage_map_reinf_wave')?raw:'Wave {n}';
   return String(tpl).replace(/\{n\}/g,String(n));
 }
-function _stageMapStackWaveBadgeHtml(or){
-  if(!or||!(or.stackTotal>1))return'';
-  const wave=or.wave!=null?or.wave:(Number(or.stackIndex)||0)+1;
-  const lab=_stageMapStackWaveLabel(wave);
-  return`<span class="stage-map-stack-wave-badge" aria-hidden="true">${esc(lab)}</span>`;
-}
 function _stageMapReinfLayerUnitHtml(u,pool,roles,win,cellPx,gapPx,mapW,mapH,gridPad){
   if(!u)return'';
   const origin=_stageMapUnitOriginXY(u);
-  /* Single-cell reinfs: pin host to the origin tile (same size as in-cell). Multi-footprint keeps bbox. */
+  /* 1×1 → origin cell content box (cell has 1px border). Multi-fp → full outer bbox + fill host. */
   const multiFpHost=!!(_stageMapUnitMultiFootprint(u,mapW,mapH).multiFp);
-  let box=multiFpHost
+  const raw=multiFpHost
     ?_stageMapFootprintBoxPx(u,win,cellPx,gapPx,mapW,mapH,gridPad)
     :_stageMapCellBoxPx(origin.x,origin.y,win,cellPx,gapPx,gridPad);
-  /* Single-cell overlay hosts: never shrink thumbs below readable size (desktop autofit). */
-  if(!multiFpHost)box=_stageMapEnsureReadableOverlayBox(box);
+  const box=multiFpHost?raw:_stageMapOverlayHostBoxPx(raw);
   const zBase=10+origin.y;
   const nid=String(u.npc_id||'');
   const or=roles&&roles[nid];
@@ -7940,12 +7946,14 @@ function _stageMapReinfLayerUnitHtml(u,pool,roles,win,cellPx,gapPx,mapW,mapH,gri
   const guestCls=u.is_guest_ally?'ally-guest':'';
   const friendlyCls=u.is_friendly_force?'friendly-force':'';
   const gimmickCls=u.is_gimmick?'gimmick':'';
+  const multiFpCls=multiFpHost?' stage-map-escape-unit--multi-fp':'';
   /* Host already sized to cell/footprint — do not add --footprint (left:auto collapse). Never .large. */
   const kit=_stageNpcKitLabel(null,u)||u.name||'';
   const masterXY=`${Number(u.x||0)},${Number(u.y||0)}`;
   const waveLab=or?_stageMapStackWaveLabel(or.wave||(or.stackIndex+1)):'';
   const titleAttr=` title="${escAttr((waveLab?waveLab+' · ':'')+kit+' @ '+masterXY)}"`;
-  return`<div class="stage-map-escape-unit stage-map-reinf-stack-unit ${sideCls}${clickCls}${overlapCls}" style="left:${box.left}px;top:${box.top}px;width:${box.w}px;height:${box.h}px;z-index:${z};${stackVars}" aria-label="${escAttr((waveLab?waveLab+' — ':'')+kit)}"${titleAttr}${mapDataAttrs}${stackAttrs}>${_stageMapRenderUnitDotHtml(u,{guestCls,friendlyCls,gimmickCls,largeCls:'',fpCls:''})}${_stageMapStackWaveBadgeHtml(or)}</div>`;
+  /* Wave label: title/aria + NPC hover pop only — no on-map badge (covers tiny stacked thumbs). */
+  return`<div class="stage-map-escape-unit stage-map-reinf-stack-unit${multiFpCls} ${sideCls}${clickCls}${overlapCls}" style="left:${box.left}px;top:${box.top}px;width:${box.w}px;height:${box.h}px;z-index:${z};${stackVars}" aria-label="${escAttr((waveLab?waveLab+' — ':'')+kit)}"${titleAttr}${mapDataAttrs}${stackAttrs}>${_stageMapRenderUnitDotHtml(u,{guestCls,friendlyCls,gimmickCls,largeCls:'',fpCls:''})}</div>`;
 }
 function _stageMapReinfOverlapLayerHtml(pool,win,cellPx,gapPx,mapW,mapH,gridPad){
   if(!S.stageMapReinforcementOnly)return'';
@@ -8338,30 +8346,33 @@ function _stageMapUsesTightGrid(md,escapeOn,reinfOn){
   }catch(_){}
   return false;
 }
-/* Zoom floor 28% so mobile autofit can show the full map again.
-   Tiny reinf thumbs were a CSS footprint collapse — not this floor. Overlay hosts still
-   get a readable min box when cells are small. */
+/* Zoom floor 28% so mobile autofit can show the full map.
+   Overlay reinf/escape hosts must match cell size (same as initial deployed) — never inflate.
+   Tiny-thumb bug was CSS left:auto on .map-unit-dot--footprint, not a min host size. */
 const STAGE_MAP_CELL_BASE_PX=50;
 const STAGE_MAP_ZOOM_MIN=0.28; /* 14px cells — full-map autofit on phones */
 const STAGE_MAP_ZOOM_MAX=1.4;
-const STAGE_MAP_OVERLAY_UNIT_MIN_PX=28;
 function _stageMapClampZoom(z){
   const n=Number(z);
   return Math.max(STAGE_MAP_ZOOM_MIN,Math.min(STAGE_MAP_ZOOM_MAX,Number.isFinite(n)?n:1));
 }
 function _stageMapCellPxFromZoom(z){return Math.round(STAGE_MAP_CELL_BASE_PX*_stageMapClampZoom(z))}
-function _stageMapEnsureReadableOverlayBox(box){
-  if(!box)return box;
-  const minPx=STAGE_MAP_OVERLAY_UNIT_MIN_PX;
-  if(Math.min(box.w,box.h)>=minPx)return box;
-  const host=minPx;
-  return{left:box.left-(host-box.w)/2,top:box.top-(host-box.h)/2,w:host,h:host,cx:box.cx,cy:box.cy};
-}
 function _stageMapCellBoxPx(x,y,win,cellPx,gapPx,paddingPx){
   const pad=paddingPx!=null?paddingPx:15;
   const stride=cellPx+gapPx;
   const col=x-win.minX,row=win.maxY-y;
   return{left:pad+col*stride,top:pad+row*stride,w:cellPx,h:cellPx,cx:pad+col*stride+cellPx/2,cy:pad+row*stride+cellPx/2};
+}
+/* Overlay hosts sit on the grid stack (no cell chrome). .map-cell uses border-box + 1px border,
+   so in-cell dots size to (cell−2). Inset overlay 1×1 hosts by that border or reinfs look ~2px larger. */
+function _stageMapOverlayHostBoxPx(box){
+  if(!box)return box;
+  const b=1;
+  const w=Math.max(0,(Number(box.w)||0)-2*b);
+  const h=Math.max(0,(Number(box.h)||0)-2*b);
+  const left=(Number(box.left)||0)+b;
+  const top=(Number(box.top)||0)+b;
+  return{left,top,w,h,cx:left+w/2,cy:top+h/2};
 }
 function _stageMapFootprintBoxPx(u,win,cellPx,gapPx,mapW,mapH,paddingPx){
   const pad=paddingPx!=null?paddingPx:15;
@@ -8474,11 +8485,12 @@ function _stageMapEscapeUnitsLayerHtml(pool,win,cellPx,gapPx,mapW,mapH,gridPad){
   let items='';
   sorted.forEach(u=>{
     const origin=_stageMapUnitOriginXY(u);
+    /* Match reinf overlay: 1×1 content box (cell border); multi-fp full outer bbox. */
     const multiFp=!!(_stageMapUnitMultiFootprint(u,mapW,mapH).multiFp);
-    let box=multiFp
+    const raw=multiFp
       ?_stageMapFootprintBoxPx(u,win,cellPx,gapPx,mapW,mapH,gridPad)
       :_stageMapCellBoxPx(origin.x,origin.y,win,cellPx,gapPx,gridPad);
-    if(!multiFp)box=_stageMapEnsureReadableOverlayBox(box);
+    const box=multiFp?raw:_stageMapOverlayHostBoxPx(raw);
     const zBase=10+origin.y;
     const nid=String(u.npc_id||'');
     const or=overlapRoles[nid];
@@ -8497,9 +8509,10 @@ function _stageMapEscapeUnitsLayerHtml(pool,win,cellPx,gapPx,mapW,mapH,gridPad){
     const guestCls=u.is_guest_ally?'ally-guest':'';
     const friendlyCls=u.is_friendly_force?'friendly-force':'';
     const gimmickCls=u.is_gimmick?'gimmick':'';
+    const multiFpCls=multiFp?' stage-map-escape-unit--multi-fp':'';
     const waveLab=or?_stageMapStackWaveLabel(or.wave||(or.stackIndex+1)):'';
     const ariaLab=waveLab?(waveLab+' — '+(u.name||'')):(u.name||'');
-    items+=`<div class="stage-map-escape-unit ${sideCls}${clickCls}${overlapCls}" style="left:${box.left}px;top:${box.top}px;width:${box.w}px;height:${box.h}px;z-index:${z};${stackVars}" aria-label="${escAttr(ariaLab)}"${mapDataAttrs}${stackAttrs}>${_stageMapRenderUnitDotHtml(u,{guestCls,friendlyCls,gimmickCls,largeCls:'',fpCls:''})}${_stageMapStackWaveBadgeHtml(or)}</div>`;
+    items+=`<div class="stage-map-escape-unit${multiFpCls} ${sideCls}${clickCls}${overlapCls}" style="left:${box.left}px;top:${box.top}px;width:${box.w}px;height:${box.h}px;z-index:${z};${stackVars}" aria-label="${escAttr(ariaLab)}"${mapDataAttrs}${stackAttrs}>${_stageMapRenderUnitDotHtml(u,{guestCls,friendlyCls,gimmickCls,largeCls:'',fpCls:''})}</div>`;
   });
   return `<div class="stage-map-escape-units-layer">${items}</div>`;
 }
@@ -9703,18 +9716,42 @@ function ensureStageNpcHoverPopEl(){
 function positionStageNpcHoverPop(el,anchor){
   if(!el||!anchor)return;
   const r=anchor.getBoundingClientRect();
-  const pad=10;
+  const pad=10,gap=12;
   const vw=window.innerWidth||0,vh=window.innerHeight||0;
   el.style.left='0px';el.style.top='0px';
   const tw=el.offsetWidth||280,th=el.offsetHeight||160;
-  let left=r.left+r.width/2-tw/2;
-  let top=r.top-th-8;
-  if(top<pad)top=r.bottom+8;
-  if(left<pad)left=pad;
-  if(left+tw>vw-pad)left=Math.max(pad,vw-tw-pad);
-  if(top+th>vh-pad)top=Math.max(pad,vh-th-pad);
-  el.style.left=Math.round(left)+'px';
-  el.style.top=Math.round(top)+'px';
+  const clampX=(x)=>Math.min(Math.max(pad,x),Math.max(pad,vw-tw-pad));
+  /* Never cover the hovered/tapped unit. Prefer on-screen slots; dock before overlapping. */
+  const intersects=(left,top)=>{
+    const slack=2;
+    return!(left+tw<=r.left-slack||left>=r.right+slack||top+th<=r.top-slack||top>=r.bottom+slack);
+  };
+  const visibleY=(top)=>top+th>pad&&top<vh-pad;
+  const fullyInY=(top)=>top>=pad&&top+th<=vh-pad;
+  const candidates=[
+    {left:clampX(r.left+r.width/2-tw/2),top:r.top-th-gap},
+    {left:clampX(r.left+r.width/2-tw/2),top:r.bottom+gap},
+    {left:clampX(r.right+gap),top:r.top+r.height/2-th/2},
+    {left:clampX(r.left-tw-gap),top:r.top+r.height/2-th/2},
+    /* Viewport docks — last resorts that stay readable on mobile without covering the thumb. */
+    {left:clampX(r.left+r.width/2-tw/2),top:Math.max(pad,vh-th-pad)},
+    {left:clampX(r.left+r.width/2-tw/2),top:pad}
+  ];
+  let pick=null,pickPartial=null;
+  for(let i=0;i<candidates.length;i++){
+    const c=candidates[i];
+    if(intersects(c.left,c.top))continue;
+    if(fullyInY(c.top)){pick=c;break}
+    if(!pickPartial&&visibleY(c.top))pickPartial=c;
+  }
+  if(!pick)pick=pickPartial;
+  if(!pick){
+    const above={left:clampX(r.left+r.width/2-tw/2),top:r.top-th-gap};
+    const below={left:clampX(r.left+r.width/2-tw/2),top:r.bottom+gap};
+    pick=(r.top>=vh-r.bottom)?above:below;
+  }
+  el.style.left=Math.round(pick.left)+'px';
+  el.style.top=Math.round(pick.top)+'px';
 }
 function showStageNpcHoverPop(anchor,opts){
   if(!anchor)return false;

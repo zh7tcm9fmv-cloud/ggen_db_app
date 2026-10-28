@@ -32035,8 +32035,10 @@ def build_fea_event_detail(group_id, lc):
         'stage_number': safe_int(gid, 0) % 1000,
         'difficulty_code': '',
         'difficulty_name': '',
-        'recommended_cp': None,
-        'terrain': '',
+        # Default tab = Normal — surface that CP / terrain on the event shell too.
+        'recommended_cp': (difficulties.get('normal') or {}).get('recommended_cp'),
+        'terrain': (difficulties.get('normal') or {}).get('terrain') or '',
+        'terrain_icon': (difficulties.get('normal') or {}).get('terrain_icon') or '',
         'victory_conditions': [],
         'defeat_conditions': [],
         'branch_victory_conditions': [],
@@ -35696,7 +35698,7 @@ def list_stages():
         # Eternal + Collaboration: Normal/Hard(/Expert) difficulty filter.
         if cat not in ('eternal', 'collaboration_stage'):
             df = 'all'
-        ck = f"stages17_{cat}_{tower_side}_{challenge_series}_{lc}_{page}_{pp}_{sq}_{df}_{sb}_{sd}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_{eternal_stage_session_cache_key_fragment()}"
+        ck = f"stages18_{cat}_{tower_side}_{challenge_series}_{lc}_{page}_{pp}_{sq}_{df}_{sb}_{sd}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_{eternal_stage_session_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
@@ -35718,13 +35720,19 @@ def list_stages():
                 # Newest start first under default stage_number/asc (negate start_ms).
                 start_ms = safe_int(sched_fields.get('start_ms'), 0)
                 sn_sort = -start_ms
+                # Browse CP / terrain = Normal combat stage (default FEA tab), not the event shell.
+                stages_by_diff = gmeta.get('stages') or {}
+                normal_sid = normalize_id(stages_by_diff.get('normal'))
+                sm_n = (stage_map or {}).get(normal_sid, {}) if normal_sid != '0' else {}
+                rec_cp = sm_n.get('recommended_cp', 0) if sm_n else None
+                ter_name = resolve_stage_terrain_name(sm_n.get('terrain_type_index', '0'), lc) if sm_n else ''
                 rows.append({
                     '_sn_sort': sn_sort,
                     'id': gid,
                     'stage_number': safe_int(gmeta.get('priority'), 0),
                     'name': boss_name,
-                    'recommended_cp': None,
-                    'terrain': '',
+                    'recommended_cp': rec_cp,
+                    'terrain': ter_name,
                     'difficulty_code': '',
                     'difficulty_name': '',
                     'portrait': '',
