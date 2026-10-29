@@ -63,3 +63,13 @@ Must include, beyond six Unit Skill types:
 ### Profile
 
 “Profile partial” needs the actual **簡介** pieces: ranks, achievement tiers, user/cumulative records, titles, Style tips — and what LANG/MD is still missing — not a one-line stub.
+
+## Diff_auto / MasterData folder diffs (owner — Oct 2026)
+
+When the owner points at `GGen_Database/Diff_auto(…)/index.html` (or “latest update diff” / MasterData_A → MasterData_B):
+
+1. **Resolve every opaque id to player-facing content** — do not stop at “new schedule Id=…”.
+2. For each changed row, **cross-search the newer MasterData tree** for that id (`ScheduleId`, `GashaId`, `ItemId`, `RewardSetId`, `EventId`, `ItemTypeIndex`, gift message id, etc.) and name what it belongs to (LANG EN; TW/HK when quoting UI).
+3. **ItemTypeIndex / enum-only rows** — expand to the enum name **and** list concrete items (or “whole class: N tickets”) so it’s clear what players see.
+4. **Orphan ids** — if nothing in client master references a new `m_schedule` / reward / gift id, say so explicitly (`no client cross-ref; likely server present / reserved`). Still show JST start/end.
+5. Same patch: **wire gift + reward + schedule together** when ids share a date pattern or appear together (maintenance apology gift, etc.).
