@@ -5334,6 +5334,20 @@
     "IsSimpleThumbnail": false
   },
   {
+    "Id": 15022610470001,
+    "ProfileTitleTypeIndex": 2,
+    "ProfileTitleRarityTypeIndex": 3,
+    "BackgroundResourceId": "",
+    "TitleImageDisplayLanguageId": 240115022610470001,
+    "TitleNameLanguageId": 240215022610470001,
+    "AcquisitionRouteLanguageId": 240315022610470001,
+    "SortOrder": 151000009,
+    "ScheduleId": 0,
+    "BaseBackgroundResourceId": "",
+    "RarityTypeIndex": 4,
+    "IsSimpleThumbnail": false
+  },
+  {
     "Id": 16905200010001,
     "ProfileTitleTypeIndex": 1,
     "ProfileTitleRarityTypeIndex": 5,
