@@ -1,0 +1,43 @@
+---
+description: Never inject helpers mid-function; smoke /tm /dm after matrix JS edits
+alwaysApply: true
+---
+
+# No mid-function helper inject (+ matrix smoke)
+
+Owner lesson (**Oct 2026**): bulk IME “safety” helpers were pasted **inside** `applyCopy()` / `applyStaticI18n()` in `tag_matrix.js` / `debuff_matrix.js`. `node --check` still passed. Runtime `ReferenceError: _ggenBindImeSafeInput is not defined` aborted `init` **before** `loadMatrix()` → empty boards in **all locales**. Filters still looked fine (static HTML). Agent did not open `/tm` `/dm` or tell the owner those files were in the blast radius.
+
+## Hard rule
+
+1. **Never** insert a new `function …` block in the middle of another function via regex/bulk patch (“before `var search =`”).
+2. Shared helpers belong at **IIFE / module top level** (sibling of `init` / `loadMatrix`), or in a tiny shared util — not nested unless the **only** caller is that same function body.
+3. After **any** edit to these page scripts, **smoke the page before saying done** (and say which URL you checked):
+
+| File | Must check |
+|---|---|
+| `static/js/tag_matrix.js` | `/tm` — board has rows (`#tmBoard .tm-row`), no console error |
+| `static/js/debuff_matrix.js` | `/dm` — board has content (`#dmBoard` non-empty), no console error |
+| `static/js/collections.js` | `/collections` paints |
+| `static/js/meta_synergy.js` / `sp_investment.js` | `/msy` or `/ip` still loads |
+
+Quick local check:
+
+```text
+python scripts/smoke_matrix_boards.py
+```
+
+(or Playwright / fetch + evaluate row counts). `node --check` alone is **not** enough — missing symbols are not syntax errors.
+
+4. If a “sitewide” fix (IME, search, i18n) touches matrix/collections JS: **name those surfaces in the owner reply** and report smoke results. Do not bury “also edited tag_matrix.js” under browse-search work.
+
+## Forbidden
+
+| Pattern | Why |
+|---|---|
+| Paste helpers above `var search = …` inside `applyCopy` / `applyUiLang` / `bindControls` | Scopes helpers away from `init` / `bindFilters` |
+| “Syntax OK” as the only gate after editing those files | Empty board with working chrome |
+| Claiming IME/global search fixed without `/tm` `/dm` check when those files changed | Owner finds dead matrices |
+
+## Reply habit
+
+If matrix/collections JS changed this turn: **say so**, smoke `/tm`+`/dm` (or the touched page), and only then call the work done / ready to push.

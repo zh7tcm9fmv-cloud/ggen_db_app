@@ -19790,6 +19790,11 @@ def master_league_page():
     return _serve_index()
 
 
+@app.route('/estscore')
+def master_league_estscore_page():
+    return _serve_index()
+
+
 @app.route('/esim')
 def e_simulator_page():
     return _serve_index()
@@ -37343,7 +37348,7 @@ def get_unit(unit_id):
 
 # Client history short-paths (must stay in sync with parseBrowseShortPath in static/js/app.js).
 _SPA_TAB_PATHS = frozenset({
-    'c', 'u', 's', 'new', 'tl', 'banners', 'st', 'esim', 'ml', 'cal', 'tb', 'op', 'pt', 'rk', 'msy', 'ip',
+    'c', 'u', 's', 'new', 'tl', 'banners', 'st', 'esim', 'ml', 'estscore', 'cal', 'tb', 'op', 'pt', 'rk', 'msy', 'ip',
     'gacha-sim',
     'roadmap',
     # Stage category deep-links (Stages tab sources)
@@ -37485,6 +37490,10 @@ _SPA_SEO_BY_PATH = {
     '/ml': (
         'Master League — GGen Eternal Database',
         'Master League tools and showcase for SD Gundam G Generation ETERNAL.',
+    ),
+    '/estscore': (
+        'MAX SS Pt Estimate — GGen Eternal Database',
+        'Master League MAX SS / Event Estimated Score calculator for SD Gundam G Generation ETERNAL.',
     ),
     '/rk': (
         'Ranking — GGen Eternal Database',
@@ -37784,7 +37793,7 @@ _SEO_SITEMAP_URL_CAP = 40000
 _SEO_PAGE_PATHS = (
     '/', '/ip', '/collections', '/game-news', '/tm', '/dm', '/about', '/contact', '/privacy-policy',
     '/c', '/u', '/s', '/st', '/gtower', '/challenge', '/go', '/special', '/collab',
-    '/cal', '/tb', '/tl', '/ml', '/rk', '/op', '/new', '/esim', '/gacha-sim',
+    '/cal', '/tb', '/tl', '/ml', '/estscore', '/rk', '/op', '/new', '/esim', '/gacha-sim',
 )
 
 

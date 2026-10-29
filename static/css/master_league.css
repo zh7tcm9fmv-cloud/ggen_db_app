@@ -59,16 +59,24 @@
   position: relative;
   z-index: 1;
 }
+.ml-season-upcoming-cluster {
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 8px;
+  min-width: 0;
+  position: relative;
+  z-index: 1;
+}
 .ml-status-pill {
-  grid-column: 3;
-  justify-self: end;
-  align-self: center;
   position: relative;
   z-index: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   margin: 0;
+  margin-bottom: 0;
   padding: 8px 12px;
   min-height: 40px;
   height: 40px;
@@ -79,6 +87,60 @@
   letter-spacing: 0.02em;
   text-transform: uppercase;
   white-space: nowrap;
+  align-self: flex-end;
+}
+.ml-calc-open-btn {
+  grid-column: 3;
+  justify-self: end;
+  align-self: center;
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  cursor: pointer;
+  transition: transform var(--motion-dur-quick, 120ms) var(--motion-ease-standard, cubic-bezier(0.2, 0, 0, 1)),
+    box-shadow var(--motion-dur-quick, 120ms) var(--motion-ease-standard, cubic-bezier(0.2, 0, 0, 1));
+}
+.ml-calc-open-btn:hover {
+  transform: translateY(-1px);
+}
+.ml-calc-open-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--chrome-focus-ring, 0 0 0 2px var(--accent-cyan));
+}
+.ml-calc-open-btn__img {
+  display: block;
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  pointer-events: none;
+}
+.ml-calc-open-btn__win {
+  position: absolute;
+  left: 50%;
+  bottom: 10%;
+  width: 58%;
+  height: auto;
+  transform: translateX(-50%);
+  object-fit: contain;
+  pointer-events: none;
+  z-index: 1;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.55));
+}
+.ml-wrap.is-calc-view #mlPageHeader {
+  display: none;
+}
+.ml-wrap.is-calc-view .ml-calc-open-btn {
+  opacity: 0;
+  pointer-events: none;
 }
 .ml-season-filter-wrap {
   display: inline-flex;
@@ -764,5 +826,484 @@ button.ml-reward-chip {
 @media (max-width: 480px) {
   .ml-meta-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* —— MAX SS calculator (page-transition-stack) —— */
+.ml-stack {
+  position: relative;
+  min-height: 280px;
+  isolation: isolate;
+}
+.ml-stack-layer {
+  transform-origin: 50% 40%;
+  transition:
+    opacity var(--motion-dur-modal, 320ms) var(--motion-ease-enter, cubic-bezier(0.05, 0.7, 0.1, 1)),
+    transform var(--motion-dur-modal, 320ms) var(--motion-ease-enter, cubic-bezier(0.05, 0.7, 0.1, 1));
+  will-change: transform, opacity;
+}
+.ml-stack-season {
+  position: relative;
+  z-index: 1;
+}
+.ml-stack-calc {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  z-index: 2;
+  opacity: 0;
+  transform: translateY(14%) scale(1.04);
+  pointer-events: none;
+}
+.ml-wrap.is-calc-view .ml-stack {
+  /* Clip the abspos season layer so its full page height cannot inflate document scroll. */
+  overflow: hidden;
+}
+.ml-wrap.is-calc-view {
+  overflow-x: clip;
+}
+.ml-wrap.is-calc-view .ml-stack-season {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  opacity: 0;
+  transform: scale(0.92) translateY(6px);
+  pointer-events: none;
+}
+.ml-wrap.is-calc-view .ml-stack-calc {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+  position: relative;
+  inset: auto;
+  height: auto;
+  max-height: none;
+  overflow: visible;
+}
+.ml-wrap.is-calc-view .ml-stack-calc[hidden] {
+  display: block !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ml-stack-layer {
+    transition: opacity var(--motion-dur-crossfade, 180ms) linear;
+    transform: none !important;
+  }
+  .ml-wrap.is-calc-view .ml-stack-season,
+  .ml-wrap:not(.is-calc-view) .ml-stack-calc {
+    transform: none !important;
+  }
+}
+
+.ml-calc {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 14px 12px 28px;
+  border-radius: var(--radius-md);
+  background-image: url('/static/images/Master%20League/tex_bg_space01_v1_ML_300010.webp');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  overflow: visible; /* allow trophy scale past RankFlag */
+}
+.ml-calc::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(8, 2, 4, 0.28);
+  pointer-events: none;
+  z-index: 0;
+}
+.ml-calc > * {
+  position: relative;
+  z-index: 1;
+}
+.ml-calc__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.ml-calc__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 6px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color var(--motion-dur-quick, 120ms) var(--motion-ease-standard, cubic-bezier(0.2, 0, 0, 1));
+}
+.ml-calc__back:hover {
+  border-color: var(--accent-cyan);
+}
+.ml-calc__back:focus-visible {
+  outline: none;
+  box-shadow: var(--chrome-focus-ring, 0 0 0 2px var(--accent-cyan));
+}
+.ml-calc__title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+}
+.ml-calc__disclaimer {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--text-muted);
+  font-family: var(--font-body);
+}
+
+.ml-calc__board {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+  align-items: stretch;
+}
+.ml-calc-slot {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  /* Match SlotCell_Base art (277×326) so the plate never stretches. */
+  aspect-ratio: 277 / 326;
+  width: 100%;
+  min-height: 0;
+  border-radius: 2px;
+  overflow: hidden;
+  isolation: isolate;
+}
+.ml-calc-slot__base,
+.ml-calc-slot__cell {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  pointer-events: none;
+}
+.ml-calc-slot__base {
+  /* Solid vivid fill — do NOT luminosity-blend (plate mid-greys → dusty pink). */
+  background-color: #2e0101;
+  isolation: isolate;
+}
+/* Fabric folds as soft-light on top of the solid red (texture without washing hue). */
+.ml-calc-slot__base::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--ml-base);
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  mix-blend-mode: soft-light;
+  opacity: 0.9;
+  pointer-events: none;
+}
+.ml-calc-slot__base::after {
+  content: none;
+}
+/* Glyph only — luminance mask; lighter than plate #2e0101. */
+.ml-calc-slot__cell {
+  z-index: 1;
+  background: #4f0302;
+  -webkit-mask-image: var(--ml-cell);
+  mask-image: var(--ml-cell);
+  -webkit-mask-mode: luminance;
+  mask-mode: luminance;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+.ml-calc-slot__cell::after {
+  content: none;
+}
+.ml-calc-slot__body {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 12px;
+  flex: 1;
+  padding: 12px 10px 14px;
+  min-height: 0;
+}
+.ml-calc-slot__cp-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.ml-calc-slot__cp-ic {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  flex: 0 0 auto;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.65));
+}
+.ml-calc-slot__cp-input {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  height: 28px;
+  /* Right + optically middle; extra bottom pad nudges text a bit higher. */
+  padding: 0 8px 3px;
+  border: 1px solid rgba(254, 247, 113, 0.35);
+  border-radius: 2px;
+  background: rgba(10, 4, 6, 0.72);
+  color: #f9fffe;
+  font-family: var(--font-body);
+  font-size: 22px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 24px;
+  text-align: right;
+  outline: none;
+}
+.ml-calc-slot__cp-input::placeholder {
+  color: rgba(249, 255, 254, 0.45);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 24px;
+  text-align: right;
+}
+.ml-calc-slot__cp-input:focus {
+  border-color: #fef771;
+  box-shadow: 0 0 0 1px rgba(254, 247, 113, 0.35);
+}
+.ml-calc-slot__result {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  opacity: 0;
+  transform: translateY(4px);
+  transition:
+    opacity var(--motion-dur-standard, 220ms) var(--motion-ease-enter, cubic-bezier(0.05, 0.7, 0.1, 1)),
+    transform var(--motion-dur-standard, 220ms) var(--motion-ease-enter, cubic-bezier(0.05, 0.7, 0.1, 1));
+}
+.ml-calc-slot.has-score .ml-calc-slot__result {
+  opacity: 1;
+  transform: none;
+}
+.ml-calc-slot__ss {
+  position: relative;
+  width: 26px;
+  height: 26px;
+  flex: 0 0 auto;
+}
+.ml-calc-slot__ss-ic {
+  display: block;
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+}
+.ml-calc-slot__ss-max {
+  position: absolute;
+  left: 50%;
+  bottom: -2px;
+  width: 20px;
+  height: auto;
+  transform: translateX(-50%);
+  object-fit: contain;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.8));
+}
+.ml-calc-slot__pts {
+  flex: 1;
+  min-width: 0;
+  max-width: 100%;
+  display: flex;
+  align-items: baseline;
+  overflow: hidden;
+  font-family: var(--font-body);
+  /* slightly taller than 26px SS icon; still fits ~5-digit comma score in slot */
+  font-size: clamp(24px, 3.2vw, 32px);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.ml-calc-slot__pts > [data-ml-pts] {
+  color: #fef771;
+  -webkit-text-stroke: 1.35px #ba4d06;
+  paint-order: stroke fill;
+  text-shadow:
+    0 0 1px #fad0b3,
+    0 0 3px #ed7f20,
+    0 0 7px #b14a0b,
+    0 0 12px rgba(237, 127, 32, 0.55),
+    0 1px 0 #ba4d06;
+}
+.ml-calc-slot__pts-unit {
+  margin-left: 3px;
+  flex: 0 0 auto;
+  font-size: 0.42em;
+  font-weight: 700;
+  color: #f9fffe;
+  -webkit-text-stroke: 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.65);
+}
+
+.ml-calc__total {
+  /* RankFlag proportions; score on top, oversized trophy covers bottom */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+  box-sizing: border-box;
+  width: min(300px, 100%);
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 420 / 789;
+  flex: 0 0 auto;
+  margin: 4px auto 10px;
+  padding: 16px 12px 0;
+  border-radius: 0;
+  overflow: visible; /* trophy may extend past RankFlag */
+  isolation: isolate;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: 100% 100%;
+}
+.ml-calc__total::before {
+  content: none;
+}
+.ml-calc__emblem {
+  position: relative;
+  z-index: 3;
+  display: block;
+  width: 92%;
+  max-width: 240px;
+  height: auto;
+  margin: 4px 0 0;
+  flex: 0 0 auto;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.55));
+}
+.ml-calc__total-label {
+  position: relative;
+  z-index: 3;
+  margin: 0;
+  flex: 0 0 auto;
+  width: auto;
+  max-width: 100%;
+  padding: 0 2px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0;
+  white-space: nowrap;
+  text-align: center;
+  color: #f9fffe;
+  font-family: var(--font-body);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.55);
+}
+.ml-calc__total-pts {
+  position: relative;
+  z-index: 3;
+  margin: 0 0 4px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 4px;
+  white-space: nowrap;
+  flex: 0 0 auto;
+  font-family: var(--font-body);
+  font-size: clamp(22px, 4.8vw, 30px);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  text-align: center;
+  color: #f9fffe;
+}
+.ml-calc__total-pts #mlCalcTotalPts {
+  text-shadow:
+    0 0 1px #fad0b3,
+    0 0 4px #ed7f20,
+    0 0 9px #b14a0b,
+    0 0 16px rgba(237, 127, 32, 0.7),
+    0 2px 8px rgba(0, 0, 0, 0.55);
+}
+.ml-calc__total-pts [data-ml-pts-unit] {
+  margin-left: 0;
+  font-size: 0.55em;
+  font-weight: 700;
+  color: #f9fffe;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.65);
+}
+
+/* Champion + destroyed pile — under Pt, oversized to cover flag bottom */
+.ml-calc__total .ml-calc__trophy {
+  position: absolute;
+  left: 50%;
+  /* clear emblem + label + Pt row before art starts */
+  top: 36%;
+  bottom: -6%;
+  z-index: 2;
+  width: 195%;
+  margin: 0;
+  transform: translateX(-50%);
+  overflow: visible;
+  pointer-events: none;
+}
+.ml-calc__trophy-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.45));
+}
+
+@media (max-width: 900px) {
+  .ml-calc__board {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 620px) {
+  .ml-calc__board {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .ml-page-header {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: auto auto;
+  }
+  .ml-page-header > .ml-hero {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+  .ml-toolbar-filters {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .ml-calc-open-btn {
+    grid-column: 2;
+    grid-row: 2;
   }
 }
