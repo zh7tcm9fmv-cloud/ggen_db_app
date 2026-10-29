@@ -1758,12 +1758,8 @@
     applyNavTabLabels();
 
   function _ggenImeComposing(ev) {
-    if (!ev) return false;
-    if (ev.isComposing) return true;
-    try {
-      if (ev.target && ev.target.getAttribute && ev.target.getAttribute('data-ggen-ime') === '1') return true;
-    } catch (_) {}
-    return false;
+    /* Sticky data-ggen-ime alone must not block — mobile often skips compositionend. */
+    return !!(ev && ev.isComposing);
   }
   function _ggenBindImeSafeInput(el, onCommit) {
     if (!el || el._ggenImeBound) return;
@@ -1780,7 +1776,10 @@
       onCommit(ev);
     });
     el.addEventListener('input', function (ev) {
-      if (_ggenImeComposing(ev)) return;
+      if (ev && ev.isComposing) return;
+      try {
+        el.removeAttribute('data-ggen-ime');
+      } catch (_) {}
       onCommit(ev);
     });
   }
