@@ -1262,6 +1262,35 @@
       btn.title = lab;
       btn.setAttribute('aria-label', lab);
     });
+
+  function _ggenImeComposing(ev) {
+    if (!ev) return false;
+    if (ev.isComposing) return true;
+    try {
+      if (ev.target && ev.target.getAttribute && ev.target.getAttribute('data-ggen-ime') === '1') return true;
+    } catch (_) {}
+    return false;
+  }
+  function _ggenBindImeSafeInput(el, onCommit) {
+    if (!el || el._ggenImeBound) return;
+    el._ggenImeBound = 1;
+    el.addEventListener('compositionstart', function () {
+      try {
+        el.setAttribute('data-ggen-ime', '1');
+      } catch (_) {}
+    });
+    el.addEventListener('compositionend', function (ev) {
+      try {
+        el.removeAttribute('data-ggen-ime');
+      } catch (_) {}
+      onCommit(ev);
+    });
+    el.addEventListener('input', function (ev) {
+      if (_ggenImeComposing(ev)) return;
+      onCommit(ev);
+    });
+  }
+
     var search = document.getElementById('colSearch');
     if (search) search.placeholder = t('search_ph');
     setText('colOwnVisible', t('select_lb0'));
@@ -3131,7 +3160,7 @@
     var search = document.getElementById('colSearch');
     if (search) {
       var tmr = null;
-      search.addEventListener('input', function () {
+      _ggenBindImeSafeInput(search, function () {
         clearTimeout(tmr);
         tmr = setTimeout(function () {
           state.q = search.value;

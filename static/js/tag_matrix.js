@@ -2358,6 +2358,35 @@
     document.querySelectorAll('.tm-rotate-arrow').forEach(function (img) {
       img.src = cdnPath(ROTATE_ARROW);
     });
+
+  function _ggenImeComposing(ev) {
+    if (!ev) return false;
+    if (ev.isComposing) return true;
+    try {
+      if (ev.target && ev.target.getAttribute && ev.target.getAttribute('data-ggen-ime') === '1') return true;
+    } catch (_) {}
+    return false;
+  }
+  function _ggenBindImeSafeInput(el, onCommit) {
+    if (!el || el._ggenImeBound) return;
+    el._ggenImeBound = 1;
+    el.addEventListener('compositionstart', function () {
+      try {
+        el.setAttribute('data-ggen-ime', '1');
+      } catch (_) {}
+    });
+    el.addEventListener('compositionend', function (ev) {
+      try {
+        el.removeAttribute('data-ggen-ime');
+      } catch (_) {}
+      onCommit(ev);
+    });
+    el.addEventListener('input', function (ev) {
+      if (_ggenImeComposing(ev)) return;
+      onCommit(ev);
+    });
+  }
+
     var search = document.getElementById('tmSearch');
     if (search) {
       search.placeholder = t('searchPh');
@@ -2672,7 +2701,7 @@
 
     var search = document.getElementById('tmSearch');
     if (search) {
-      search.addEventListener('input', function () {
+      _ggenBindImeSafeInput(search, function () {
         state.search = search.value || '';
         if (searchDebounceTimer) clearTimeout(searchDebounceTimer);
         searchDebounceTimer = setTimeout(function () {

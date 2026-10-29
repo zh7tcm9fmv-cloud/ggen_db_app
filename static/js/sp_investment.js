@@ -1664,6 +1664,35 @@
     </div>`;
   }
 
+
+  function _ggenImeComposing(ev) {
+    if (!ev) return false;
+    if (ev.isComposing) return true;
+    try {
+      if (ev.target && ev.target.getAttribute && ev.target.getAttribute('data-ggen-ime') === '1') return true;
+    } catch (_) {}
+    return false;
+  }
+  function _ggenBindImeSafeInput(el, onCommit) {
+    if (!el || el._ggenImeBound) return;
+    el._ggenImeBound = 1;
+    el.addEventListener('compositionstart', function () {
+      try {
+        el.setAttribute('data-ggen-ime', '1');
+      } catch (_) {}
+    });
+    el.addEventListener('compositionend', function (ev) {
+      try {
+        el.removeAttribute('data-ggen-ime');
+      } catch (_) {}
+      onCommit(ev);
+    });
+    el.addEventListener('input', function (ev) {
+      if (_ggenImeComposing(ev)) return;
+      onCommit(ev);
+    });
+  }
+
   function bindSpiDdSearch(panel) {
     const search = panel.querySelector('.filter-dd-search');
     const clearBtn = panel.querySelector('.spi-dd-search-clear');
@@ -1672,7 +1701,7 @@
       const has = !!String(search.value || '').trim();
       if (clearBtn) clearBtn.hidden = !has;
     };
-    search.addEventListener('input', () => {
+    _ggenBindImeSafeInput(search, () => {
       filterDdRows(panel, search.value);
       syncClear();
     });
@@ -3714,14 +3743,17 @@
         closeSpiFilterPanels();
     });
     let searchTimer = null;
-    $('#spiSearch').addEventListener('input', (e) => {
-      syncSearchClear();
-      clearTimeout(searchTimer);
-      searchTimer = setTimeout(() => {
-        searchQuery = e.target.value || '';
-        render();
-      }, 120);
-    });
+    const spiSearchEl = $('#spiSearch');
+    if (spiSearchEl) {
+      _ggenBindImeSafeInput(spiSearchEl, (e) => {
+        syncSearchClear();
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(() => {
+          searchQuery = (e && e.target ? e.target.value : spiSearchEl.value) || '';
+          render();
+        }, 120);
+      });
+    }
     const clearBtn = $('#spiSearchClear');
     if (clearBtn) {
       clearBtn.addEventListener('click', () => {
