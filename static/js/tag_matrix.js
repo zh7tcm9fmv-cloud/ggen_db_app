@@ -2323,6 +2323,34 @@
     if (tabs) tabs.setAttribute('aria-label', t('navSection'));
   }
 
+
+  function _ggenImeComposing(ev) {
+    /* Sticky data-ggen-ime alone must not block — mobile often skips compositionend. */
+    return !!(ev && ev.isComposing);
+  }
+  function _ggenBindImeSafeInput(el, onCommit) {
+    if (!el || el._ggenImeBound) return;
+    el._ggenImeBound = 1;
+    el.addEventListener('compositionstart', function () {
+      try {
+        el.setAttribute('data-ggen-ime', '1');
+      } catch (_) {}
+    });
+    el.addEventListener('compositionend', function (ev) {
+      try {
+        el.removeAttribute('data-ggen-ime');
+      } catch (_) {}
+      onCommit(ev);
+    });
+    el.addEventListener('input', function (ev) {
+      if (ev && ev.isComposing) return;
+      try {
+        el.removeAttribute('data-ggen-ime');
+      } catch (_) {}
+      onCommit(ev);
+    });
+  }
+
   function applyCopy() {
     var map = [
       ['tmEyebrow', 'eyebrow'],
@@ -2358,33 +2386,6 @@
     document.querySelectorAll('.tm-rotate-arrow').forEach(function (img) {
       img.src = cdnPath(ROTATE_ARROW);
     });
-
-  function _ggenImeComposing(ev) {
-    /* Sticky data-ggen-ime alone must not block — mobile often skips compositionend. */
-    return !!(ev && ev.isComposing);
-  }
-  function _ggenBindImeSafeInput(el, onCommit) {
-    if (!el || el._ggenImeBound) return;
-    el._ggenImeBound = 1;
-    el.addEventListener('compositionstart', function () {
-      try {
-        el.setAttribute('data-ggen-ime', '1');
-      } catch (_) {}
-    });
-    el.addEventListener('compositionend', function (ev) {
-      try {
-        el.removeAttribute('data-ggen-ime');
-      } catch (_) {}
-      onCommit(ev);
-    });
-    el.addEventListener('input', function (ev) {
-      if (ev && ev.isComposing) return;
-      try {
-        el.removeAttribute('data-ggen-ime');
-      } catch (_) {}
-      onCommit(ev);
-    });
-  }
 
     var search = document.getElementById('tmSearch');
     if (search) {

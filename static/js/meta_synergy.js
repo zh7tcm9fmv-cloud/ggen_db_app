@@ -1920,9 +1920,6 @@
     if (typeof global.openDetail === 'function') global.openDetail('character', id);
   }
 
-  function bindControls() {
-    if (state._bound) return;
-    state._bound = true;
 
   function _ggenImeComposing(ev) {
     /* Sticky data-ggen-ime alone must not block — mobile often skips compositionend. */
@@ -1950,6 +1947,10 @@
       onCommit(ev);
     });
   }
+
+  function bindControls() {
+    if (state._bound) return;
+    state._bound = true;
 
     var search = document.getElementById('msySearchInput');
     if (search) {
