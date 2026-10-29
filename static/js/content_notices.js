@@ -16,6 +16,8 @@
   const PAGE_VISIT_NOTICES = [
     { pageId: 'master_league', tabId: 'navMasterLeagueTab', version: '1' },
     { pageId: 'e_simulator', tabId: 'navStageTab', extraIds: ['stageSourceEsimBtn'], version: '1' },
+    /* FEA browse tab — new feature; bump version to re-flare everyone. */
+    { pageId: 'fierce_enemy_assault', tabId: 'navStageTab', extraIds: ['stageSourceFeaBtn'], version: '1' },
   ];
   /** Stage source buttons that flare for today's openings (by browse category). */
   const STAGES_CATEGORY_BTN_IDS = {
@@ -23,6 +25,7 @@
     collaboration_stage: 'stageSourceCollabBtn',
     challenge_stage: 'stageSourceChallengeBtn',
     special_stage: 'stageSourceSpecialBtn',
+    fierce_enemy_assault: 'stageSourceFeaBtn',
   };
   const LANG_STORAGE_KEY = 'ggen_lang';
   const UI_NOTICE_FLARE_PATH = '/static/images/UI/UI_MapEventEffect_FlareCircleRed.webp';
@@ -417,10 +420,11 @@
   function refreshStagesNavNotice() {
     const tab = document.getElementById('navStageTab');
     const esimNeeds = pageNeedsVisitNotice(pageVisitEntry('e_simulator'));
+    const feaNeeds = pageNeedsVisitNotice(pageVisitEntry('fierce_enemy_assault'));
     const stagesNew = stagesCatalogHasNew();
     if (tab) {
       tab.classList.add('ui-notice-anchor');
-      if (esimNeeds) setPageVisitNotice(tab, true);
+      if (esimNeeds || feaNeeds) setPageVisitNotice(tab, true);
       else setNotice(tab, stagesNew);
     }
     Object.keys(STAGES_CATEGORY_BTN_IDS).forEach((cat) => {
@@ -430,10 +434,14 @@
       ensureNoticeFlare(el);
       setNotice(el, stagesCategoryHasNew(cat));
     });
-    // Keep e_sim page-visit flare on its button if still unread.
+    // Keep e_sim / FEA page-visit flares on their buttons if still unread.
     const esimBtn = document.getElementById('stageSourceEsimBtn');
     if (esimBtn && pageNeedsVisitNotice(pageVisitEntry('e_simulator'))) {
       setPageVisitNotice(esimBtn, true);
+    }
+    const feaBtn = document.getElementById('stageSourceFeaBtn');
+    if (feaBtn && pageNeedsVisitNotice(pageVisitEntry('fierce_enemy_assault'))) {
+      setPageVisitNotice(feaBtn, true);
     }
     syncOverflowHints();
   }

@@ -27021,8 +27021,9 @@ def _stages_notice_ids_by_category_today():
     """Browse categories whose stages open today (JST) — /st pulse scope.
 
     Covers Eternal, Collaboration, Challenge (m_main_stage_challenge.ScheduleId),
-    and Special (m_stage.ScheduleId on special-event rows). Gacha/unit schedules
-    alone do not pulse Stages.
+    Special (m_stage.ScheduleId on special-event rows), and Fierce Enemy Assault
+    (m_invasion_event_stage_group.ScheduleId). Gacha/unit schedules alone do not
+    pulse Stages.
     """
     today = _jst_today_date()
     eternal_ids = []
@@ -27065,11 +27066,20 @@ def _stages_notice_ids_by_category_today():
         sm = (stage_map or {}).get(sid_n, {})
         if _schedule_starts_on_jst_day(sm.get('schedule_id', '0'), today):
             special_ids.append(sid_n)
+    fea_ids = []
+    for gid, gmeta in (invasion_event_group_map or {}).items():
+        gid_n = normalize_id(gid)
+        if gid_n in ('', '0'):
+            continue
+        sched = normalize_id((gmeta or {}).get('schedule_id') or '0')
+        if _schedule_starts_on_jst_day(sched, today):
+            fea_ids.append(gid_n)
     return {
         'eternal': sorted(set(eternal_ids)),
         'collaboration_stage': sorted(set(collab_ids)),
         'challenge_stage': sorted(set(challenge_ids)),
         'special_stage': sorted(set(special_ids)),
+        'fierce_enemy_assault': sorted(set(fea_ids)),
     }
 
 
@@ -27077,7 +27087,7 @@ _STAGES_CATALOG_STATUS_CACHE = None  # (jst_date_iso, payload_base)
 
 
 def _stages_catalog_status_payload(last_seen_fp=''):
-    """Unread /st pulse for stages that open today (JST) — ER / Collab / Challenge / Special."""
+    """Unread /st pulse for stages that open today (JST) — ER / Collab / Challenge / Special / FEA."""
     global _STAGES_CATALOG_STATUS_CACHE
     today = _jst_today_date()
     today_iso = today.isoformat()
