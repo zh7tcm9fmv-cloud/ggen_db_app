@@ -2,7 +2,7 @@
   "version": 1,
   "title": "Thank you to {n} Newtypes keeping this database alive.",
   "join_label": "Join the wall",
-  "count": 36,
+  "count": 34,
   "supporters": [
     {
       "name": "Fire Red",
@@ -20,12 +20,16 @@
       "rank": 3
     },
     {
+      "name": "Kamen Rider Decade",
+      "thumb": "/static/images/KofiSupporters/kamen_rider_decade.webp"
+    },
+    {
       "name": "Fortexfiend",
       "thumb": "/static/images/KofiSupporters/fortexfiend.webp"
     },
     {
-      "name": "Kamen Rider Decade",
-      "thumb": "/static/images/KofiSupporters/kamen_rider_decade.webp"
+      "name": "休閒享樂",
+      "thumb": "/static/images/KofiSupporters/xiuxian_xiangle.webp"
     },
     {
       "name": "岳尚賢",
@@ -40,35 +44,39 @@
       "thumb": "/static/images/KofiSupporters/ajun.webp"
     },
     {
-      "name": "休閒享樂",
-      "thumb": "/static/images/KofiSupporters/xiuxian_xiangle.webp"
-    },
-    {
-      "name": "大漢Erection",
-      "thumb": "/static/images/KofiSupporters/dahan_erection.webp"
+      "name": "char",
+      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp"
     },
     {
       "name": "Ko-fi User",
       "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp"
     },
     {
+      "name": "大漢Erection",
+      "thumb": "/static/images/KofiSupporters/dahan_erection.webp"
+    },
+    {
       "name": "老狗司機",
       "thumb": "/static/images/KofiSupporters/laogou_siji.webp"
-    },
-    {
-      "name": "2PMgaming",
-      "thumb": "/static/images/KofiSupporters/2pmgaming.webp"
-    },
-    {
-      "name": "char",
-      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp"
     },
     {
       "name": "dundun456",
       "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp"
     },
     {
+      "name": "2PMgaming",
+      "thumb": "/static/images/KofiSupporters/2pmgaming.webp"
+    },
+    {
+      "name": "Blasphemy",
+      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp"
+    },
+    {
       "name": "Gdge Sdssfsf",
+      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp"
+    },
+    {
+      "name": "Herman",
       "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp"
     },
     {
@@ -84,6 +92,10 @@
       "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp"
     },
     {
+      "name": "Simon Ng",
+      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp"
+    },
+    {
       "name": "Unknown B",
       "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp"
     },
@@ -96,15 +108,7 @@
       "thumb": "/static/images/KofiSupporters/chuochuo.webp"
     },
     {
-      "name": "Herman",
-      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp"
-    },
-    {
       "name": "rAyRaY",
-      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp"
-    },
-    {
-      "name": "Simon Ng",
       "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp"
     },
     {
@@ -138,18 +142,6 @@
     {
       "name": "剎那",
       "thumb": "/static/images/KofiSupporters/setsuna.webp"
-    },
-    {
-      "name": "Jaime Lai",
-      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp"
-    },
-    {
-      "name": "vuca",
-      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp"
-    },
-    {
-      "name": "yoko",
-      "thumb": "/static/images/KofiSupporters/yoko.webp"
     }
   ]
 }
