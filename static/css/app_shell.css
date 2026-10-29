@@ -3305,23 +3305,61 @@ button.stage-map-roster-thumb:disabled{
   object-position:center center;
   flex:none;
 }
-/* Challenge/ER missions: center the card row so 2–3 missions don’t hug the left edge. */
+/* Challenge/ER/FEA missions: one bordered card per mission so rewards don’t blur together. */
 .stage-missions-grid{
   display:flex;
   flex-wrap:wrap;
   justify-content:center;
   align-items:stretch;
-  gap:8px;
+  gap:16px 18px;
 }
 .stage-mission-reward-cell{
   display:flex;
   flex-direction:column;
-  gap:6px;
+  gap:12px;
   min-width:0;
-  flex:1 1 240px;
-  max-width:min(340px,100%);
+  flex:1 1 260px;
+  max-width:min(360px,100%);
+  padding:12px 14px 14px;
+  box-sizing:border-box;
+  background:var(--bg-card);
+  border:1px solid var(--border-color);
+  border-radius:var(--radius-md);
+  box-shadow:var(--shadow-surface);
 }
-.stage-mission-reward-title{font-size:12px;font-weight:600;line-height:1.35;color:var(--text-secondary);text-align:center}
+.stage-mission-reward-head{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  padding-bottom:10px;
+  border-bottom:1px solid rgba(42,54,84,.72);
+}
+.stage-mission-reward-idx{
+  flex:0 0 auto;
+  align-self:flex-start;
+  box-sizing:border-box;
+  width:22px;height:22px;
+  margin:0;padding:0;
+  border-radius:6px;
+  display:grid;place-items:center;
+  font-size:11px;font-weight:800;line-height:1;
+  font-variant-numeric:tabular-nums;
+  text-align:center;
+  color:var(--accent-cyan);
+  background:rgba(0,212,255,.1);
+  border:1px solid rgba(0,212,255,.35);
+  /* Optical center — heavy digits sit high in the em box. */
+  transform:translateY(0.5px);
+}
+.stage-mission-reward-title{
+  flex:1 1 auto;min-width:0;
+  font-size:12.5px;font-weight:700;line-height:1.4;
+  color:var(--text-primary);text-align:left;
+}
+.stage-mission-reward-body{
+  display:flex;flex-wrap:wrap;justify-content:center;align-items:center;
+  gap:8px;min-width:0;
+}
 .stage-mission-reward-cell .ability-item{
   height:auto;
   padding:8px 10px;
@@ -3329,6 +3367,9 @@ button.stage-map-roster-thumb:disabled{
   min-height:0;
   flex-wrap:nowrap;
   gap:8px;
+  background:rgba(13,19,33,.55);
+  border:1px solid rgba(42,54,84,.85);
+  border-radius:var(--radius-sm);
 }
 .stage-mission-reward-cell .stage-reward-row-body{
   flex:0 1 auto;
@@ -3349,8 +3390,8 @@ button.stage-map-roster-thumb:disabled{
     padding:6px 8px;
   }
   .stage-missions-grid{
-    gap:6px;
-    align-items:start;
+    gap:12px;
+    align-items:stretch;
   }
   .stage-mission-reward-cell{
     flex:1 1 100%;

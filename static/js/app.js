@@ -6567,10 +6567,11 @@ function renderStageCapturableSection(d){
 function renderStageMissionsSection(d){
   const missions=Array.isArray(d.stage_missions)?d.stage_missions:[];
   if(!missions.length)return'';
-  const cells=missions.map(m=>{
+  const cells=missions.map((m,i)=>{
     const rewards=Array.isArray(m.rewards)?m.rewards:[];
     const rewardHtml=rewards.length?rewards.map(renderStageRewardRow).join(''):`<div class="stage-condition-item">${esc(t('none'))}</div>`;
-    return`<div class="stage-mission-reward-cell"><div class="stage-mission-reward-title">${esc(m.title||'')}</div>${rewardHtml}</div>`;
+    /* Card per mission so title↔reward stay grouped (FEA EXPERT 10/20/30/50 looked like one strip). */
+    return`<article class="stage-mission-reward-cell" aria-label="${escAttr(m.title||('Mission '+(i+1)))}"><div class="stage-mission-reward-head"><span class="stage-mission-reward-idx" aria-hidden="true">${i+1}</span><div class="stage-mission-reward-title">${esc(m.title||'')}</div></div><div class="stage-mission-reward-body">${rewardHtml}</div></article>`;
   }).join('');
   return`<div class="detail-section"><div class="section-title">${esc(t('stage_missions'))}</div><div class="stage-reward-grid stage-missions-grid">${cells}</div></div>`;
 }
