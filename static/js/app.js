@@ -10246,10 +10246,11 @@ function renderMapGrid(weapon,unitData,opts){
     dashEndCols.forEach(dx=>{let c={x:dx,y:ey};if(c.x<mnx)mnx=c.x;if(c.x>mxx)mxx=c.x;if(c.y<mny)mny=c.y;if(c.y>mxy)mxy=c.y});
   }
 
+  // Frame size from effect bbox. Same pad for every mid/large AoE (aw+4) so a 7-wide
+  // diamond does not get aw*3 (=21) while a 9-wide only gets aw+4 (=13).
   let aw=mxx-mnx+1,fc=0;
   if(aw<3){fc=9}
-  else if(aw>=8){fc=aw+4}
-  else{fc=aw*3}
+  else{fc=aw+4}
   let hpad=fc-aw;
   let padL=Math.ceil(hpad/2),padR=Math.floor(hpad/2);
   let fmnx=mnx-padL,fmxx=mxx+padR;
@@ -10386,10 +10387,9 @@ function renderMapGrid(weapon,unitData,opts){
         }
       }else{
         if(iocc){
-          // Around 2×2 (Big Zam + other large): empty Nomal cells + one Posi over the footprint.
-          bi=imgUrl(aroundPouSingle
-            ?'/static/images/UI/Sprite/UI_Common_Dialog_Block_Nomal.webp'
-            :'/static/images/UI/Sprite/UI_Common_Dialog_Block_Nega.webp');
+          // Around / non-shooting MAP: in-game POU cell(s) are empty (Nomal), marker on top —
+          // 1×1 Posi triangle or 2×2 spanning Posi; not Nega under the marker.
+          bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Nomal.webp');
           if(aroundPouSingle&&imrk){
             pouAnchorCls=' map-cell--pou-2x2-anchor';
             mh=`<span class=\"map-pou-2x2-marker\" aria-hidden=\"true\"><img src=\"${mapUsePosi}\" alt=\"\"${mapMkErr}></span>`
