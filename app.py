@@ -33683,7 +33683,7 @@ def api_master_league():
     force_event_id = normalize_id(request.args.get('event_id') or '')
     if force_event_id == '0':
         force_event_id = ''
-    ck = f'master_league_v26_{lc}'
+    ck = f'master_league_v27_{lc}'
     if force_event_id:
         ck_detail = f'{ck}_ev_{force_event_id}'
         cached_detail = get_cached_response(ck_detail)
@@ -33935,6 +33935,8 @@ def api_master_league():
 
         srgid = safe_int(lx.get('LeagueSeasonRewardGroupId') or lx.get('leagueSeasonRewardGroupId'), 0)
         chall_threshold = safe_int(lx.get('LeagueChallengeModeEntryScoreThreshold') or lx.get('leagueChallengeModeEntryScoreThreshold'), 0)
+        chall_match_gid = safe_int(
+            lx.get('LeagueChallengeModeMatchingGroupId') or lx.get('leagueChallengeModeMatchingGroupId'), 0)
         score_floor = max(150000, chall_threshold) if chall_threshold > 0 else 0
         score_milestones = []
         if include_rewards and score_floor > 0 and srgid > 0:
@@ -33988,6 +33990,7 @@ def api_master_league():
             'terrain_icons': terrain_icons,
             'limit_turns': safe_int(lx.get('LimitTurnCount') or lx.get('limitTurnCount'), 5),
             'challenge_threshold': chall_threshold,
+            'challenge_matching_group_id': chall_match_gid or None,
             'rank_group_id': rank_gid,
             'rank_tiers': rank_tiers,
             'score_milestones': score_milestones,
