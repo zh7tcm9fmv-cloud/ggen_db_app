@@ -1431,6 +1431,14 @@ button.ml-reward-chip {
     0 0 12px rgba(237, 127, 32, 0.55),
     0 1px 0 #ba4d06;
 }
+/* Mark slot Pt as approximate — exact in-game SS MAX match on all 5 is uncommon */
+.ml-calc-slot.has-score .ml-calc-slot__pts > [data-ml-pts]::before {
+  content: '~';
+  margin-right: 0.06em;
+  font-weight: 800;
+  -webkit-text-stroke: clamp(0.45px, 0.55cqi, 1.1px) #ba4d06;
+  paint-order: stroke fill;
+}
 .ml-calc-slot__pts-unit {
   margin-left: 3px;
   flex: 0 0 auto;
@@ -1570,6 +1578,11 @@ button.ml-reward-chip {
     0 0 9px #b14a0b,
     0 0 16px rgba(237, 127, 32, 0.7),
     0 2px 8px rgba(0, 0, 0, 0.55);
+}
+.ml-calc__total-pts #mlCalcTotalPts::before {
+  content: '~';
+  margin-right: 0.05em;
+  font-weight: 800;
 }
 .ml-calc__total-pts [data-ml-pts-unit] {
   margin-left: 0;
