@@ -864,6 +864,11 @@ button.ml-reward-chip {
 }
 .ml-wrap.is-calc-view {
   overflow-x: clip;
+  /* /estscore: use more of the main column so 70% zoom still reads large */
+  width: 100%;
+  max-width: min(1320px, 100%);
+  box-sizing: border-box;
+  padding-bottom: 16px;
 }
 .ml-wrap.is-calc-view .ml-stack-season {
   position: absolute;
@@ -903,22 +908,24 @@ button.ml-reward-chip {
 .ml-calc {
   position: relative;
   display: grid;
-  /* RankFlag top-aligned with header; board beside + vertically centered to flag; trophy clipped (no collision). */
-  grid-template-columns: minmax(0, 1fr) min(280px, 30vw);
+  /* RankFlag top-aligned with header; board beside + vertically centered to flag */
+  grid-template-columns: minmax(0, 1fr) min(340px, 28vw);
   grid-template-rows: auto minmax(0, 1fr);
   grid-template-areas:
     "top total"
     "board total";
   align-items: start;
-  column-gap: 20px;
+  column-gap: 24px;
   row-gap: 0;
-  padding: 14px 12px 28px;
+  padding: 16px 18px 28px;
   border-radius: var(--radius-md);
   background-image: url('/static/images/Master%20League/tex_bg_space01_v1_ML_300010.webp');
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
   overflow: visible;
+  box-sizing: border-box;
+  width: 100%;
 }
 .ml-calc::before {
   content: '';
@@ -937,15 +944,23 @@ button.ml-reward-chip {
     left: 0;
     bottom: 0;
     z-index: 0;
-    width: min(780px, 92%);
+    width: min(920px, 94%);
     aspect-ratio: 1024 / 306;
-    max-height: min(280px, 42%);
+    max-height: min(320px, 44%);
     background-image: url('/static/images/Master%20League/UI_Event_ML_Bg_Vignette_300010.webp');
     background-repeat: no-repeat;
     background-position: left bottom;
     background-size: contain;
     pointer-events: none;
     border-radius: inherit;
+  }
+  .ml-calc__title {
+    font-size: clamp(20px, 2vw, 26px);
+  }
+  .ml-calc__total {
+    /* Fill the wider RankFlag column (override base min(300px)) */
+    width: 100%;
+    max-width: 100%;
   }
 }
 .ml-calc > * {
@@ -963,7 +978,7 @@ button.ml-reward-chip {
   justify-self: stretch;
   box-sizing: border-box;
   /* Nudge up: clear trophy stack + line SS/Pt band up with Event Estimated Score */
-  transform: translateY(-96px);
+  transform: translateY(-110px);
 }
 .ml-calc__total {
   grid-area: total;
@@ -972,6 +987,8 @@ button.ml-reward-chip {
   justify-self: stretch;
   margin: 0;
   overflow: visible;
+  width: 100%;
+  max-width: 100%;
 }
 /* Keep Challenge Mode tip above RankFlag total (same stacking context as siblings). */
 .ml-calc__top {
@@ -1474,7 +1491,8 @@ button.ml-reward-chip {
   justify-content: flex-start;
   gap: 6px;
   box-sizing: border-box;
-  width: min(300px, 100%);
+  /* Width comes from the grid RankFlag column (wider on desktop /estscore) */
+  width: 100%;
   max-width: 100%;
   height: auto;
   aspect-ratio: 420 / 789;
@@ -1587,6 +1605,9 @@ button.ml-reward-chip {
 }
 
 @media (max-width: 900px) {
+  .ml-wrap.is-calc-view {
+    max-width: 960px;
+  }
   .ml-calc {
     grid-template-columns: 1fr;
     grid-template-rows: auto;
@@ -1596,6 +1617,7 @@ button.ml-reward-chip {
       "board";
     justify-items: stretch;
     row-gap: 10px;
+    padding: 14px 12px 28px;
   }
   .ml-calc__top {
     grid-area: top;
@@ -1606,6 +1628,7 @@ button.ml-reward-chip {
     justify-self: center;
     margin: 0 auto 10px;
     z-index: 2;
+    width: min(300px, 100%);
   }
   .ml-calc__board {
     grid-area: board;
