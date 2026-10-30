@@ -11379,14 +11379,25 @@ def resolve_weapon_stats(wm, wsm, wcm, wtm, wcam, gpm, wtcm, wtdm, wid='', lang_
             mc = augment_map_coords_for_occupied_area_2([dict(c) for c in (ws.get('map_coords') or [])], unit_id)
             map_dash_dual_end_coords = map_dash_dual_end_coords_above_effect(mc, scc)
             scc = append_map_dash_dual_end_cells(scc, map_dash_dual_end_coords)
-        elif uidn == '1001002700':
-            mc = minkowski_map_coords_with_2x2_footprint([dict(c) for c in (ws.get('map_coords') or [])])
-            map_single_pou = True
-            scc = augment_map_coords_for_occupied_area_2(scc, unit_id)
         elif mrt == '2':
+            # Impact-relative effect — do not widen; shooting path still +x for 2×2.
             mc = [{'x': c['x'], 'y': c['y']} for c in (ws.get('map_coords') or [])]
             scc = augment_map_coords_for_occupied_area_2(scc, unit_id)
+        elif mrt == '1':
+            # Around-myself: in-game is manhattan from the full 2×2 footprint (solid diamond).
+            # +x-only leaves diagonal notches; minkowski ≡ ∪ translate by OccupiedAreaId-2 cells.
+            base_mc = [dict(c) for c in (ws.get('map_coords') or [])]
+            info = unit_info_map.get(uidn) or {}
+            if safe_int(info.get('occupied_area_id'), 1) == 2 and not map_coords_already_2x2_footprint_aware(base_mc):
+                mc = minkowski_map_coords_with_2x2_footprint(base_mc)
+            else:
+                mc = base_mc
+            scc = augment_map_coords_for_occupied_area_2(scc, unit_id)
+            if uidn == '1001002700':
+                map_single_pou = True
         else:
+            # Directional (mrt 3 etc.): widen +x per row only — not minkowski +y
+            # (forward rectangles stay 2 columns wide, not 2 rows into the unit).
             mc = augment_map_coords_for_occupied_area_2(mc, unit_id)
             scc = augment_map_coords_for_occupied_area_2(scc, unit_id)
         isd = bool(mc and scc and len(mc) == len(scc) and {(c['x'], c['y']) for c in mc} == {(c['x'], c['y']) for c in scc})

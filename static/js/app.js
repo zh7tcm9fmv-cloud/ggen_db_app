@@ -10161,7 +10161,7 @@ function renderMapGrid(weapon,unitData,opts){
   opts=opts||{};
   const iconPreview=!!opts.iconPreview;
   const iconCompact=!!opts.compact;
-  // map_coords / shooting_coords from API. is_large → 2×2 nega tiles (same as get_large_unit_cells: +x/+y from pivot). map_single_pou → one Posi icon spanning 2×2 anchored at top-left (0,1) (Big Zam). Non-directional 2×2 uses UnitMarker_Moving per tile.
+  // map_coords / shooting_coords from API. is_large → 2×2 POU (around: +x/+y; directional/dash: +x/y-1). map_single_pou → one Posi icon spanning that 2×2 (Big Zam). Non-directional 2×2 uses UnitMarker_Moving per tile.
   const _mxy=(c)=>{if(!c||typeof c!=='object')return null;const x=Number(c.x),y=Number(c.y);if(!Number.isFinite(x)||!Number.isFinite(y))return null;return{x,y}};
   let ec=(weapon.map_coords||[]).map(_mxy).filter(Boolean);
   let sc=(weapon.shooting_coords||[]).map(_mxy).filter(Boolean);
@@ -10192,11 +10192,18 @@ function renderMapGrid(weapon,unitData,opts){
     else t2=true
   }
 
-  // OccupiedAreaId 2 use-point: dash starts BELOW the path/effect (y-1), matching in-game Leveler/GP03.
-  // Non-dash (type2 rings, type1 AoE) uses stage footprint +y so the 2×2 centers on (0.5,0.5).
-  const fpOcc=isLarge?(t3?[{x:0,y:0},{x:1,y:0},{x:0,y:-1},{x:1,y:-1}]:[{x:0,y:0},{x:1,y:0},{x:0,y:1},{x:1,y:1}]):[{x:0,y:0}];
-  // CSS .map-pou-2x2-marker grows right+down in screen space (toward lower y); anchor at footprint top-left.
-  const fpMrk=(isLarge&&mapSinglePou)?(t3?[{x:0,y:0}]:[{x:0,y:1}]):fpOcc;
+  // OccupiedAreaId 2 use-point:
+  // - Around (mrt 1): footprint +x/+y — matches minkowski effect centered on the 2×2.
+  //   In-game: those 4 cells are empty (Nomal), with one Posi triangle spanning the 2×2.
+  // - Directional / dash: footprint y-1 (behind) so forward AoE sits above the unit, not in it.
+  const mrtStr=String(weapon.map_range_type||'');
+  const aroundLarge=isLarge&&mrtStr==='1';
+  const aroundPouSingle=aroundLarge||(isLarge&&mapSinglePou);
+  const fpOcc=isLarge?(aroundLarge
+    ?[{x:0,y:0},{x:1,y:0},{x:0,y:1},{x:1,y:1}]
+    :[{x:0,y:0},{x:1,y:0},{x:0,y:-1},{x:1,y:-1}]):[{x:0,y:0}];
+  // CSS .map-pou-2x2-marker grows right+down (toward lower y); anchor = footprint top-left.
+  const fpMrk=aroundPouSingle?(aroundLarge?[{x:0,y:1}]:[{x:0,y:0}]):fpOcc;
 
   const dashEndCols=(t3&&mapDashDualWide)?[0,1]:[0];
 
@@ -10379,8 +10386,11 @@ function renderMapGrid(weapon,unitData,opts){
         }
       }else{
         if(iocc){
-          bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Nega.webp');
-          if(mapSinglePou&&imrk){
+          // Around 2×2 (Big Zam + other large): empty Nomal cells + one Posi over the footprint.
+          bi=imgUrl(aroundPouSingle
+            ?'/static/images/UI/Sprite/UI_Common_Dialog_Block_Nomal.webp'
+            :'/static/images/UI/Sprite/UI_Common_Dialog_Block_Nega.webp');
+          if(aroundPouSingle&&imrk){
             pouAnchorCls=' map-cell--pou-2x2-anchor';
             mh=`<span class=\"map-pou-2x2-marker\" aria-hidden=\"true\"><img src=\"${mapUsePosi}\" alt=\"\"${mapMkErr}></span>`
           }else if(imrk){
@@ -10401,7 +10411,7 @@ function renderMapGrid(weapon,unitData,opts){
   if(iconPreview){
     html+='</div></div>'
   }else{
-    const legendPouSrc=t2?mapUseNega:(mapSinglePou?mapUsePosi:(isLarge?mapUseMovingWebp:(pouWraps?mapUsePosi:mapUseMovingWebp)));
+    const legendPouSrc=t2?mapUseNega:(aroundPouSingle?mapUsePosi:(isLarge?mapUseMovingWebp:(pouWraps?mapUsePosi:mapUseMovingWebp)));
     const legUse='<span class="weapon-map-legend-item" role="listitem"><img class="map-legend-use-img" src="'+legendPouSrc+'" width="14" height="14" alt="" style="vertical-align:middle;object-fit:contain"> '+t('map_legend_use')+'</span>';
     const legEffect='<span class="weapon-map-legend-item" role="listitem"><span style="display:inline-block;width:10px;height:10px;background:#59a8f0;border-radius:2px" aria-hidden="true"></span> '+t('map_legend_effect')+'</span>';
     if(t2){
