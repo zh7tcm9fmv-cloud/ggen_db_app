@@ -1081,15 +1081,15 @@ button.ml-reward-chip {
   outline: none;
 }
 .ml-calc__chal-pop {
-  /* Anchor to the right so tip stays on-screen (Challenge Mode sits near the right edge). */
+  /* Open to the right of Challenge Mode (header is left-aligned beside RankFlag). */
   position: absolute;
-  left: auto;
-  right: 0;
+  left: 0;
+  right: auto;
   top: calc(100% + 8px);
   z-index: 50;
   box-sizing: border-box;
-  width: min(380px, calc(100vw - 32px));
-  max-width: min(380px, calc(100vw - 32px));
+  width: min(380px, calc(100vw - 48px));
+  max-width: min(380px, 70vw);
   padding: 12px 14px;
   border: 1px solid rgba(254, 232, 109, 0.35);
   border-radius: var(--radius-sm, 6px);
