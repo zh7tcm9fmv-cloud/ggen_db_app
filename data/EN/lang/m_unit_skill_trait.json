@@ -1,7 +1,23 @@
 [
   {
+    "id": 141500109900055081,
+    "value": "Preemptive Strike"
+  },
+  {
+    "id": 141500109900055082,
+    "value": "Increased MOB"
+  },
+  {
     "id": 141500111400045011,
     "value": "Barrier Effect"
+  },
+  {
+    "id": 141500112500155071,
+    "value": "Increased ATK"
+  },
+  {
+    "id": 141500112500155072,
+    "value": "Increased DEF"
   },
   {
     "id": 141500114400055011,
@@ -88,8 +104,24 @@
     "value": "MP Up"
   },
   {
+    "id": 141600109900055081,
+    "value": "Grant \"Preemptive Strike\" to own melee weapon (1 turn(s)).\nOnce per battle."
+  },
+  {
+    "id": 141600109900055082,
+    "value": "Increase Mobility by 15%."
+  },
+  {
     "id": 141600111400045011,
     "value": "Grants a barrier that absorbs damage up to 20% of this unit's Max HP."
+  },
+  {
+    "id": 141600112500155071,
+    "value": "Increase ATK by 25% (1 turn(s))."
+  },
+  {
+    "id": 141600112500155072,
+    "value": "Increase DEF by 15% (1 turn(s))."
   },
   {
     "id": 141600114400055011,

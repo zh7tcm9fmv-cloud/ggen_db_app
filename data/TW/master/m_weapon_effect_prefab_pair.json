@@ -2136,6 +2136,12 @@
     "DamagedEffectId": "ef_mpd_0023_000_sniperrifle_dynames"
   },
   {
+    "Id": 290183,
+    "WeaponEffectPrefabPairSetId": 290183,
+    "WeaponEffectId": "ef_mpa_0023_000_wirefunnelbit_neozeong",
+    "DamagedEffectId": "ef_mpd_0023_000_wirefunnelbit_neozeong"
+  },
+  {
     "Id": 310001,
     "WeaponEffectPrefabPairSetId": 310001,
     "WeaponEffectId": "ef_mpa_0029_001_funnelbeam",
@@ -3384,6 +3390,12 @@
     "DamagedEffectId": "ef_mpd_0000_000_cmnhit"
   },
   {
+    "Id": 370016,
+    "WeaponEffectPrefabPairSetId": 370016,
+    "WeaponEffectId": "ef_mpa_0027_000_funnel_devilgundamjr",
+    "DamagedEffectId": "ef_mpd_0000_000_cmnhit"
+  },
+  {
     "Id": 380001,
     "WeaponEffectPrefabPairSetId": 380001,
     "WeaponEffectId": "ef_mpa_0028_006_funnel_psycogundammk2",
@@ -3801,6 +3813,12 @@
     "Id": 900050,
     "WeaponEffectPrefabPairSetId": 900050,
     "WeaponEffectId": "ef_mpw_036_01_recoveryparticle",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900053,
+    "WeaponEffectPrefabPairSetId": 900053,
+    "WeaponEffectId": "ef_mpw_039_01_slavecontrol",
     "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
   },
   {
@@ -9992,6 +10010,126 @@
   {
     "Id": 8008911,
     "WeaponEffectPrefabPairSetId": 80089,
+    "WeaponEffectId": "ef_mpa_1000_000_null",
+    "DamagedEffectId": "ef_mpd_1000_000_null"
+  },
+  {
+    "Id": 8009001,
+    "WeaponEffectPrefabPairSetId": 80090,
+    "WeaponEffectId": "ef_mpa_1000_000_trail_dijeh",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8009002,
+    "WeaponEffectPrefabPairSetId": 80090,
+    "WeaponEffectId": "ef_mpa_1000_000_beamrifle_dijeh",
+    "DamagedEffectId": "ef_mpd_1000_000_beamrifle_dijeh"
+  },
+  {
+    "Id": 8009003,
+    "WeaponEffectPrefabPairSetId": 80090,
+    "WeaponEffectId": "ef_mpa_1000_000_twinshoulderbeam_dijeh",
+    "DamagedEffectId": "ef_mpd_1000_000_twinshoulderbeam_dijeh"
+  },
+  {
+    "Id": 8009004,
+    "WeaponEffectPrefabPairSetId": 80090,
+    "WeaponEffectId": "ef_mpa_1000_000_launcherthrow_dijeh",
+    "DamagedEffectId": "ef_mpd_1000_000_launcherthrow_dijeh"
+  },
+  {
+    "Id": 8009005,
+    "WeaponEffectPrefabPairSetId": 80090,
+    "WeaponEffectId": "ef_mpa_1000_000_multiple_dijeh",
+    "DamagedEffectId": "ef_mpd_1000_000_multiple_dijeh"
+  },
+  {
+    "Id": 8009006,
+    "WeaponEffectPrefabPairSetId": 80090,
+    "WeaponEffectId": "ef_mpa_1000_000_text_dijeh",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8009007,
+    "WeaponEffectPrefabPairSetId": 80090,
+    "WeaponEffectId": "ef_mpa_1000_000_aura_dijeh",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8009008,
+    "WeaponEffectPrefabPairSetId": 80090,
+    "WeaponEffectId": "ef_mpa_1000_000_beamsaber_dijeh_ex1",
+    "DamagedEffectId": "ef_mpd_1000_000_beamsaber_dijeh_ex1"
+  },
+  {
+    "Id": 8009009,
+    "WeaponEffectPrefabPairSetId": 80090,
+    "WeaponEffectId": "ef_mpa_1000_000_beamsaber_dijeh_ex2",
+    "DamagedEffectId": "ef_mpd_1000_000_beamsaber_dijeh_ex2"
+  },
+  {
+    "Id": 8009010,
+    "WeaponEffectPrefabPairSetId": 80090,
+    "WeaponEffectId": "ef_mpa_1000_000_beamsaber_dijeh_ex3",
+    "DamagedEffectId": "ef_mpd_1000_000_beamsaber_dijeh_ex3"
+  },
+  {
+    "Id": 8009011,
+    "WeaponEffectPrefabPairSetId": 80090,
+    "WeaponEffectId": "ef_mpa_1000_000_beamsaber_dijeh_ex4",
+    "DamagedEffectId": "ef_mpd_1000_000_beamsaber_dijeh_ex4"
+  },
+  {
+    "Id": 8009012,
+    "WeaponEffectPrefabPairSetId": 80090,
+    "WeaponEffectId": "ef_mpa_1000_000_beamsaber_dijeh_ex5",
+    "DamagedEffectId": "ef_mpd_1000_000_beamsaber_dijeh_ex5"
+  },
+  {
+    "Id": 8009013,
+    "WeaponEffectPrefabPairSetId": 80090,
+    "WeaponEffectId": "ef_mpa_1000_000_kick_dijeh",
+    "DamagedEffectId": "ef_mpd_1000_000_kick_dijeh"
+  },
+  {
+    "Id": 8009014,
+    "WeaponEffectPrefabPairSetId": 80090,
+    "WeaponEffectId": "ef_mpa_1000_000_null",
+    "DamagedEffectId": "ef_mpd_1000_000_null"
+  },
+  {
+    "Id": 8009101,
+    "WeaponEffectPrefabPairSetId": 80091,
+    "WeaponEffectId": "ef_mpa_1000_000_flare_neozeong",
+    "DamagedEffectId": "ef_mpd_1000_000_flare_neozeong"
+  },
+  {
+    "Id": 8009102,
+    "WeaponEffectPrefabPairSetId": 80091,
+    "WeaponEffectId": "ef_mpa_1000_000_funnel_neozeong_ex1",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8009103,
+    "WeaponEffectPrefabPairSetId": 80091,
+    "WeaponEffectId": "ef_mpa_1000_000_funnel_neozeong_ex2",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8009104,
+    "WeaponEffectPrefabPairSetId": 80091,
+    "WeaponEffectId": "ef_mpa_1000_000_finishbeam_neozeong",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8009105,
+    "WeaponEffectPrefabPairSetId": 80091,
+    "WeaponEffectId": "ef_mpsc_1000_000_neozeong",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8009106,
+    "WeaponEffectPrefabPairSetId": 80091,
     "WeaponEffectId": "ef_mpa_1000_000_null",
     "DamagedEffectId": "ef_mpd_1000_000_null"
   },

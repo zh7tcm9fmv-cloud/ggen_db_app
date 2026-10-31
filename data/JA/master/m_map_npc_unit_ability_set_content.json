@@ -6445,6 +6445,11 @@
     "AbilityId": 6113501
   },
   {
+    "MapNpcUnitAbilitySetId": 29020001850003101,
+    "SortOrder": 1,
+    "AbilityId": 5129101
+  },
+  {
     "MapNpcUnitAbilitySetId": 29020071700000101,
     "SortOrder": 1,
     "AbilityId": 5105101

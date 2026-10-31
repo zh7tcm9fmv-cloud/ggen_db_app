@@ -1,0 +1,107 @@
+[
+  {
+    "Id": 902000010101,
+    "TraitSetId": 511390101,
+    "OverrideTargetConditionSetId": 0
+  },
+  {
+    "Id": 902000010102,
+    "TraitSetId": 511390201,
+    "OverrideTargetConditionSetId": 0
+  },
+  {
+    "Id": 902000010103,
+    "TraitSetId": 511390401,
+    "OverrideTargetConditionSetId": 0
+  },
+  {
+    "Id": 902000010104,
+    "TraitSetId": 511400101,
+    "OverrideTargetConditionSetId": 0
+  },
+  {
+    "Id": 902000010105,
+    "TraitSetId": 511400201,
+    "OverrideTargetConditionSetId": 0
+  },
+  {
+    "Id": 902000010106,
+    "TraitSetId": 511400401,
+    "OverrideTargetConditionSetId": 0
+  },
+  {
+    "Id": 902000010107,
+    "TraitSetId": 511680101,
+    "OverrideTargetConditionSetId": 0
+  },
+  {
+    "Id": 902000010108,
+    "TraitSetId": 511680201,
+    "OverrideTargetConditionSetId": 0
+  },
+  {
+    "Id": 902000010109,
+    "TraitSetId": 511680401,
+    "OverrideTargetConditionSetId": 0
+  },
+  {
+    "Id": 902000010110,
+    "TraitSetId": 511430201,
+    "OverrideTargetConditionSetId": 0
+  },
+  {
+    "Id": 902000010111,
+    "TraitSetId": 511430301,
+    "OverrideTargetConditionSetId": 0
+  },
+  {
+    "Id": 902000010112,
+    "TraitSetId": 511440101,
+    "OverrideTargetConditionSetId": 1000715
+  },
+  {
+    "Id": 902000010113,
+    "TraitSetId": 511440201,
+    "OverrideTargetConditionSetId": 1000715
+  },
+  {
+    "Id": 902000010114,
+    "TraitSetId": 511440401,
+    "OverrideTargetConditionSetId": 1000715
+  },
+  {
+    "Id": 902000010115,
+    "TraitSetId": 511460101,
+    "OverrideTargetConditionSetId": 1000715
+  },
+  {
+    "Id": 902000010116,
+    "TraitSetId": 511460301,
+    "OverrideTargetConditionSetId": 1000715
+  },
+  {
+    "Id": 902000010117,
+    "TraitSetId": 511460501,
+    "OverrideTargetConditionSetId": 1000715
+  },
+  {
+    "Id": 902000010118,
+    "TraitSetId": 511440101,
+    "OverrideTargetConditionSetId": 1000714
+  },
+  {
+    "Id": 902000010119,
+    "TraitSetId": 511440201,
+    "OverrideTargetConditionSetId": 1000714
+  },
+  {
+    "Id": 902000010120,
+    "TraitSetId": 511440401,
+    "OverrideTargetConditionSetId": 1000714
+  },
+  {
+    "Id": 902000010121,
+    "TraitSetId": 511460101,
+    "OverrideTargetConditionSetId": 1000716
+  }
+]

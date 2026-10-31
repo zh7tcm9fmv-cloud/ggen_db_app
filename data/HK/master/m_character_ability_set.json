@@ -5256,6 +5256,38 @@
     "ScheduleId": 2510309902
   },
   {
+    "CharacterId": 1099000400,
+    "SortOrder": 1,
+    "AbilityId": 2001003,
+    "RequiredLevel": 1,
+    "SpAbilityId": 0,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1099000400,
+    "SortOrder": 2,
+    "AbilityId": 2001804,
+    "RequiredLevel": 10,
+    "SpAbilityId": 0,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1099000400,
+    "SortOrder": 3,
+    "AbilityId": 2031201,
+    "RequiredLevel": 45,
+    "SpAbilityId": 0,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1099000400,
+    "SortOrder": 4,
+    "AbilityId": 2000101,
+    "RequiredLevel": 80,
+    "SpAbilityId": 0,
+    "ScheduleId": 0
+  },
+  {
     "CharacterId": 1101000100,
     "SortOrder": 1,
     "AbilityId": 2012904,
@@ -5958,6 +5990,38 @@
     "RequiredLevel": 80,
     "SpAbilityId": 2000201,
     "ScheduleId": 2510309902
+  },
+  {
+    "CharacterId": 1125000301,
+    "SortOrder": 1,
+    "AbilityId": 2010005,
+    "RequiredLevel": 1,
+    "SpAbilityId": 0,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1125000301,
+    "SortOrder": 2,
+    "AbilityId": 2002304,
+    "RequiredLevel": 10,
+    "SpAbilityId": 0,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1125000301,
+    "SortOrder": 3,
+    "AbilityId": 2031101,
+    "RequiredLevel": 45,
+    "SpAbilityId": 0,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1125000301,
+    "SortOrder": 4,
+    "AbilityId": 2000301,
+    "RequiredLevel": 80,
+    "SpAbilityId": 0,
+    "ScheduleId": 0
   },
   {
     "CharacterId": 1125000302,
@@ -18685,6 +18749,38 @@
     "AbilityId": 2000201,
     "RequiredLevel": 80,
     "SpAbilityId": 0,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1510000100,
+    "SortOrder": 1,
+    "AbilityId": 2010003,
+    "RequiredLevel": 1,
+    "SpAbilityId": 2010003,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1510000100,
+    "SortOrder": 2,
+    "AbilityId": 2000403,
+    "RequiredLevel": 10,
+    "SpAbilityId": 2000403,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1510000100,
+    "SortOrder": 3,
+    "AbilityId": 2033101,
+    "RequiredLevel": 45,
+    "SpAbilityId": 2033101,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1510000100,
+    "SortOrder": 4,
+    "AbilityId": 2000201,
+    "RequiredLevel": 80,
+    "SpAbilityId": 2000201,
     "ScheduleId": 0
   },
   {

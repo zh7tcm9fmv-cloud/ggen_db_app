@@ -1,5 +1,19 @@
 [
   {
+    "Id": 109900055000,
+    "NameLanguageId": 141300109900055000,
+    "DescriptionLanguageId": 141400109900055000,
+    "ResourceId": "trait_11910101",
+    "StartEffectResourceId": "ef_mpc_0091_03_unitskill",
+    "ActiveEffectResourceId": "ef_mpc_0091_03_unitskill_loop",
+    "Duration": 1,
+    "UsageLimit": 1,
+    "MultiTargetTypeIndex": 0,
+    "MultiTargetRangeMin": 0,
+    "MultiTargetRangeMax": 0,
+    "MultiTargetCount": 0
+  },
+  {
     "Id": 111400045000,
     "NameLanguageId": 141300111400045000,
     "DescriptionLanguageId": 141400111400045000,
@@ -12,6 +26,20 @@
     "MultiTargetRangeMin": 0,
     "MultiTargetRangeMax": 3,
     "MultiTargetCount": 1
+  },
+  {
+    "Id": 112500155000,
+    "NameLanguageId": 141300112500155000,
+    "DescriptionLanguageId": 141400112500155000,
+    "ResourceId": "trait_11880101",
+    "StartEffectResourceId": "ef_mpc_0091_03_unitskill",
+    "ActiveEffectResourceId": "ef_mpc_0091_03_unitskill_loop",
+    "Duration": 1,
+    "UsageLimit": 1,
+    "MultiTargetTypeIndex": 0,
+    "MultiTargetRangeMin": 0,
+    "MultiTargetRangeMax": 0,
+    "MultiTargetCount": 0
   },
   {
     "Id": 114400055000,

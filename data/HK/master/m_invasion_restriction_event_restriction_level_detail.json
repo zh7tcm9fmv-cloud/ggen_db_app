@@ -1,0 +1,426 @@
+[
+  {
+    "Id": 90200001010201,
+    "InvasionRestrictionEventRestrictionLevelId": 902000010102,
+    "FunctionTypeIndex": 4,
+    "TargetId": 902000010201,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001020101,
+    "InvasionRestrictionEventRestrictionLevelId": 902000010201,
+    "FunctionTypeIndex": 4,
+    "TargetId": 902000010202,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001020201,
+    "InvasionRestrictionEventRestrictionLevelId": 902000010202,
+    "FunctionTypeIndex": 4,
+    "TargetId": 902000010203,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001020301,
+    "InvasionRestrictionEventRestrictionLevelId": 902000010203,
+    "FunctionTypeIndex": 4,
+    "TargetId": 902000010204,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001030101,
+    "InvasionRestrictionEventRestrictionLevelId": 902000010301,
+    "FunctionTypeIndex": 4,
+    "TargetId": 902000010205,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001030201,
+    "InvasionRestrictionEventRestrictionLevelId": 902000010302,
+    "FunctionTypeIndex": 4,
+    "TargetId": 902000010206,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001030301,
+    "InvasionRestrictionEventRestrictionLevelId": 902000010303,
+    "FunctionTypeIndex": 4,
+    "TargetId": 902000010207,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001040101,
+    "InvasionRestrictionEventRestrictionLevelId": 902000010401,
+    "FunctionTypeIndex": 8,
+    "TargetId": 902000010301,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001040201,
+    "InvasionRestrictionEventRestrictionLevelId": 902000010402,
+    "FunctionTypeIndex": 8,
+    "TargetId": 902000010302,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001040301,
+    "InvasionRestrictionEventRestrictionLevelId": 902000010403,
+    "FunctionTypeIndex": 8,
+    "TargetId": 902000010303,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001050101,
+    "InvasionRestrictionEventRestrictionLevelId": 902000010501,
+    "FunctionTypeIndex": 8,
+    "TargetId": 902000010304,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001050201,
+    "InvasionRestrictionEventRestrictionLevelId": 902000010502,
+    "FunctionTypeIndex": 8,
+    "TargetId": 902000010305,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001050301,
+    "InvasionRestrictionEventRestrictionLevelId": 902000010503,
+    "FunctionTypeIndex": 8,
+    "TargetId": 902000010306,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001060101,
+    "InvasionRestrictionEventRestrictionLevelId": 902000010601,
+    "FunctionTypeIndex": 8,
+    "TargetId": 902000010307,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001060201,
+    "InvasionRestrictionEventRestrictionLevelId": 902000010602,
+    "FunctionTypeIndex": 8,
+    "TargetId": 902000010308,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001060301,
+    "InvasionRestrictionEventRestrictionLevelId": 902000010603,
+    "FunctionTypeIndex": 8,
+    "TargetId": 902000010309,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001070101,
+    "InvasionRestrictionEventRestrictionLevelId": 902000010701,
+    "FunctionTypeIndex": 8,
+    "TargetId": 902000010310,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001070201,
+    "InvasionRestrictionEventRestrictionLevelId": 902000010702,
+    "FunctionTypeIndex": 8,
+    "TargetId": 902000010311,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001070301,
+    "InvasionRestrictionEventRestrictionLevelId": 902000010703,
+    "FunctionTypeIndex": 8,
+    "TargetId": 902000010312,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001080101,
+    "InvasionRestrictionEventRestrictionLevelId": 902000010801,
+    "FunctionTypeIndex": 3,
+    "TargetId": 1,
+    "TargetValue": 4,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001080201,
+    "InvasionRestrictionEventRestrictionLevelId": 902000010802,
+    "FunctionTypeIndex": 3,
+    "TargetId": 1,
+    "TargetValue": 3,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001090101,
+    "InvasionRestrictionEventRestrictionLevelId": 902000010901,
+    "FunctionTypeIndex": 3,
+    "TargetId": 2,
+    "TargetValue": 4,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001090201,
+    "InvasionRestrictionEventRestrictionLevelId": 902000010902,
+    "FunctionTypeIndex": 3,
+    "TargetId": 2,
+    "TargetValue": 3,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001100101,
+    "InvasionRestrictionEventRestrictionLevelId": 902000011001,
+    "FunctionTypeIndex": 1,
+    "TargetId": 902000010110,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001100201,
+    "InvasionRestrictionEventRestrictionLevelId": 902000011002,
+    "FunctionTypeIndex": 1,
+    "TargetId": 902000010111,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001110101,
+    "InvasionRestrictionEventRestrictionLevelId": 902000011101,
+    "FunctionTypeIndex": 1,
+    "TargetId": 902000010101,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001110201,
+    "InvasionRestrictionEventRestrictionLevelId": 902000011102,
+    "FunctionTypeIndex": 1,
+    "TargetId": 902000010102,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001110301,
+    "InvasionRestrictionEventRestrictionLevelId": 902000011103,
+    "FunctionTypeIndex": 1,
+    "TargetId": 902000010103,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001120101,
+    "InvasionRestrictionEventRestrictionLevelId": 902000011201,
+    "FunctionTypeIndex": 1,
+    "TargetId": 902000010104,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001120201,
+    "InvasionRestrictionEventRestrictionLevelId": 902000011202,
+    "FunctionTypeIndex": 1,
+    "TargetId": 902000010105,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001120301,
+    "InvasionRestrictionEventRestrictionLevelId": 902000011203,
+    "FunctionTypeIndex": 1,
+    "TargetId": 902000010106,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001130101,
+    "InvasionRestrictionEventRestrictionLevelId": 902000011301,
+    "FunctionTypeIndex": 1,
+    "TargetId": 902000010107,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001130201,
+    "InvasionRestrictionEventRestrictionLevelId": 902000011302,
+    "FunctionTypeIndex": 1,
+    "TargetId": 902000010108,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001130301,
+    "InvasionRestrictionEventRestrictionLevelId": 902000011303,
+    "FunctionTypeIndex": 1,
+    "TargetId": 902000010109,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001150101,
+    "InvasionRestrictionEventRestrictionLevelId": 902000011501,
+    "FunctionTypeIndex": 1,
+    "TargetId": 902000010112,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001150201,
+    "InvasionRestrictionEventRestrictionLevelId": 902000011502,
+    "FunctionTypeIndex": 1,
+    "TargetId": 902000010113,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001150301,
+    "InvasionRestrictionEventRestrictionLevelId": 902000011503,
+    "FunctionTypeIndex": 1,
+    "TargetId": 902000010114,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001160101,
+    "InvasionRestrictionEventRestrictionLevelId": 902000011601,
+    "FunctionTypeIndex": 1,
+    "TargetId": 902000010115,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001160201,
+    "InvasionRestrictionEventRestrictionLevelId": 902000011602,
+    "FunctionTypeIndex": 1,
+    "TargetId": 902000010116,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001160301,
+    "InvasionRestrictionEventRestrictionLevelId": 902000011603,
+    "FunctionTypeIndex": 1,
+    "TargetId": 902000010117,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001170101,
+    "InvasionRestrictionEventRestrictionLevelId": 902000011701,
+    "FunctionTypeIndex": 7,
+    "TargetId": 902000010501,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001170201,
+    "InvasionRestrictionEventRestrictionLevelId": 902000011702,
+    "FunctionTypeIndex": 7,
+    "TargetId": 902000010502,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001170301,
+    "InvasionRestrictionEventRestrictionLevelId": 902000011703,
+    "FunctionTypeIndex": 7,
+    "TargetId": 902000010503,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001180101,
+    "InvasionRestrictionEventRestrictionLevelId": 902000011801,
+    "FunctionTypeIndex": 1,
+    "TargetId": 902000010118,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001180201,
+    "InvasionRestrictionEventRestrictionLevelId": 902000011802,
+    "FunctionTypeIndex": 1,
+    "TargetId": 902000010119,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001180301,
+    "InvasionRestrictionEventRestrictionLevelId": 902000011803,
+    "FunctionTypeIndex": 1,
+    "TargetId": 902000010120,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001190101,
+    "InvasionRestrictionEventRestrictionLevelId": 902000011901,
+    "FunctionTypeIndex": 7,
+    "TargetId": 902000010504,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001190201,
+    "InvasionRestrictionEventRestrictionLevelId": 902000011902,
+    "FunctionTypeIndex": 7,
+    "TargetId": 902000010505,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001190301,
+    "InvasionRestrictionEventRestrictionLevelId": 902000011903,
+    "FunctionTypeIndex": 7,
+    "TargetId": 902000010506,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001200301,
+    "InvasionRestrictionEventRestrictionLevelId": 902000012003,
+    "FunctionTypeIndex": 7,
+    "TargetId": 902000010507,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001200302,
+    "InvasionRestrictionEventRestrictionLevelId": 902000012003,
+    "FunctionTypeIndex": 7,
+    "TargetId": 902000010508,
+    "TargetValue": 0,
+    "SortOrder": 2
+  },
+  {
+    "Id": 90200001210201,
+    "InvasionRestrictionEventRestrictionLevelId": 902000012102,
+    "FunctionTypeIndex": 6,
+    "TargetId": 902000010601,
+    "TargetValue": 0,
+    "SortOrder": 1
+  },
+  {
+    "Id": 90200001230201,
+    "InvasionRestrictionEventRestrictionLevelId": 902000012302,
+    "FunctionTypeIndex": 1,
+    "TargetId": 902000010121,
+    "TargetValue": 0,
+    "SortOrder": 1
+  }
+]

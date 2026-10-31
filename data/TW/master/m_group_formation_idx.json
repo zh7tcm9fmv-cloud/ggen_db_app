@@ -360,6 +360,12 @@
     "GroupFormationNumber": 1
   },
   {
+    "Id": 2105903017,
+    "GroupFormationTypeIndex": 21,
+    "ContentTargetId": 90200001,
+    "GroupFormationNumber": 1
+  },
+  {
     "Id": 2140996512,
     "GroupFormationTypeIndex": 1,
     "ContentTargetId": 2100,

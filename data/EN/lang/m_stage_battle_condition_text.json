@@ -1837,7 +1837,7 @@
   },
   {
     "id": 130300000810060304,
-    "value": "Penetrate the enemy force's Defense Area.\nAll of your units are defeated.Kamille Bidan and Guest force defeated."
+    "value": "Enemy forces reach the Defense Area.\nAll of your units are defeated.Kamille Bidan and Guest force defeated."
   },
   {
     "id": 130300000810070301,
@@ -4525,11 +4525,11 @@
   },
   {
     "id": 130300003300050304,
-    "value": "Penetrate the enemy force's Defense Area.\nAll of your units are defeated.Yzak Joule and Guest force defeated."
+    "value": "Enemy forces reach the Defense Area.\nAll of your units are defeated.Yzak Joule and Guest force defeated."
   },
   {
     "id": 130300003300050305,
-    "value": "Penetrate the enemy force's Defense Area.\nAll of your units are defeated.Yzak Joule and Guest force defeated."
+    "value": "Enemy forces reach the Defense Area.\nAll of your units are defeated.Yzak Joule and Guest force defeated."
   },
   {
     "id": 130300003300060301,
@@ -5441,7 +5441,7 @@
   },
   {
     "id": 130300003760110104,
-    "value": "Penetrate the enemy force Fon Spaak Defense Area.\nAll of your units are Defeated."
+    "value": "Enemy force Fon Spaak reaches the Defense Area.\nAll of your units are defeated."
   },
   {
     "id": 130300003760500101,
@@ -5925,7 +5925,7 @@
   },
   {
     "id": 130300004300170404,
-    "value": "Penetrate the enemy force's Defense Area.\nAll of your units are defeated.Akihiro Altland and Guest force defeated."
+    "value": "Enemy forces reach the Defense Area.\nAll of your units are defeated.Akihiro Altland and Guest force defeated."
   },
   {
     "id": 130300004300180301,
@@ -7400,6 +7400,14 @@
     "value": "All of your units are Defeated.\nLimit: 5 turns."
   },
   {
+    "id": 130300009020002501,
+    "value": "Defeat Dark Gundam Jr."
+  },
+  {
+    "id": 130300009020002504,
+    "value": "All of your units are defeated.\nLimit: 5 turns."
+  },
+  {
     "id": 130300009021000101,
     "value": "Defeat Red Gundam(0085)."
   },
@@ -7578,6 +7586,14 @@
   {
     "id": 130300009021002404,
     "value": "All of your units are Defeated.\nLimit: 5 turns."
+  },
+  {
+    "id": 130300009021002501,
+    "value": "Defeat Dark Gundam Jr."
+  },
+  {
+    "id": 130300009021002504,
+    "value": "All of your units are defeated.\nLimit: 5 turns."
   },
   {
     "id": 130300009022000101,
@@ -7766,6 +7782,14 @@
   {
     "id": 130300009022002404,
     "value": "All of your units are Defeated.\nLimit: 5 turns."
+  },
+  {
+    "id": 130300009022002501,
+    "value": "Defeat Dark Gundam Jr."
+  },
+  {
+    "id": 130300009022002504,
+    "value": "All of your units are defeated.\nLimit: 5 turns."
   },
   {
     "id": 130300009023000101,
@@ -7966,6 +7990,22 @@
   {
     "id": 130300009023002404,
     "value": "All of your units are Defeated.\nLimit: 5 turns."
+  },
+  {
+    "id": 130300009023002501,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300009023002504,
+    "value": "All of your units are defeated.\nLimit: 5 turns."
+  },
+  {
+    "id": 130300009024000101,
+    "value": "Defeat Red Gundam(0085)."
+  },
+  {
+    "id": 130300009024000104,
+    "value": "Your forces will lose when {kill_count} of your units are defeated.\nLimit: {turn_limit} turns."
   },
   {
     "id": 130300009030010101,
@@ -8589,7 +8629,7 @@
   },
   {
     "id": 130300009030023404,
-    "value": "All of your units are defeated. \nPenetrate the enemy force's Defense Area."
+    "value": "All of your units are defeated.\nEnemy forces reach the Defense Area."
   },
   {
     "id": 130300009030023501,
@@ -8845,7 +8885,7 @@
   },
   {
     "id": 130300009050003104,
-    "value": "All of your units defeated. / Limit: 3 turns.\nPenetrate the enemy force's target area."
+    "value": "All of your units defeated. / Limit: 3 turns.\nEnemy forces reach the target area."
   },
   {
     "id": 130300009051000101,
@@ -9029,7 +9069,7 @@
   },
   {
     "id": 130300009051002404,
-    "value": "All of your units are defeated. / Limit: 3 turns.\nPenetrate the enemy force's Defense Area."
+    "value": "All of your units are defeated. / Limit: 3 turns.\nEnemy forces reach the Defense Area."
   },
   {
     "id": 130300009051002501,
@@ -9573,7 +9613,7 @@
   },
   {
     "id": 130300009070011404,
-    "value": "All of your units are defeated. / Limit: 4 turns.\nPenetrate the enemy force's Defense Area."
+    "value": "All of your units are defeated. / Limit: 4 turns.\nEnemy forces reach the Defense Area."
   },
   {
     "id": 130300009070011501,
@@ -9685,7 +9725,7 @@
   },
   {
     "id": 130300009070020804,
-    "value": "Penetrate the enemy force's Defense Area.\nAll of your units are defeated. / Limit: 4 turns."
+    "value": "All of your units are defeated. / Limit: 4 turns.\nEnemy forces reach the Defense Area."
   },
   {
     "id": 130300009070020901,

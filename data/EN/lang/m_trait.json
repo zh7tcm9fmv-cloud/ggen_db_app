@@ -3212,6 +3212,22 @@
     "value": "Increase ATK by {0}% (up to 18%)"
   },
   {
+    "id": 141200000101840201,
+    "value": "Decrease Beam Ranged & Physical Weapon Power by {0}%"
+  },
+  {
+    "id": 141200000101860201,
+    "value": "When own EN is 50% or higher,\nincrease own ATK by 10%\nand own EN consumption by 30%."
+  },
+  {
+    "id": 141200000101860202,
+    "value": ""
+  },
+  {
+    "id": 141200000101880101,
+    "value": "When Vigor is \"Supercharged\" or greater, \nincrease movement range for Support Defense by 1."
+  },
+  {
     "id": 141200000200010101,
     "value": "Increase Melee by 5%."
   },
@@ -7529,15 +7545,19 @@
   },
   {
     "id": 141200000201680101,
-    "value": "When piloting Units from the above Series,\nif Vigor is \"Supercharged\" or greater,\nSupport Attack/Counter +1 time(s)."
+    "value": "When Vigor is \"Supercharged\" or greater, \nSupport Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000201680102,
-    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 15%."
+    "value": "When piloting units with the specified tags or series,\nincrease MP by 6,\nand increase damage dealt to enemies by 15%."
   },
   {
     "id": 141200000201680103,
     "value": "When executing Support Attack/Counter,\nincrease ATK by 10%."
+  },
+  {
+    "id": 141200000201680104,
+    "value": ""
   },
   {
     "id": 141200000201690301,
@@ -7717,7 +7737,7 @@
   },
   {
     "id": 141200000201860101,
-    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 15%,\nreduce damage taken by 15%,\nand can execute Support Defense when enemies responds to an ally's attack with a counter during a combat."
+    "value": "When piloting units with the specified tags or series,\nincrease damage dealt to enemies by 15%,\nreduce damage taken by 15%,\nand can execute Support Defense when enemies respond to an ally's attack with a counter during a combat."
   },
   {
     "id": 141200000201860102,
@@ -7997,7 +8017,7 @@
   },
   {
     "id": 141200000202130101,
-    "value": "When piloting units with the specified type,\nincrease own ATK by 20% when countering."
+    "value": "When piloting units of the specified series or type,\nincrease own ATK by 20% when countering."
   },
   {
     "id": 141200000202130102,
@@ -9158,6 +9178,42 @@
   {
     "id": 141200000203100112,
     "value": "Apply MP Lock to self (1 turn(s))."
+  },
+  {
+    "id": 141200000203110101,
+    "value": "Support Defense +1 time(s)."
+  },
+  {
+    "id": 141200000203110102,
+    "value": "When piloting the Neo Zeong (EX),\nimprove the weapon power decrease effect of (Cond: Area) Inflict \"Decreased Beam & Physical Ranged Weapon Power\" by 15% additively."
+  },
+  {
+    "id": 141200000203110103,
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 15%\nand reduce damage taken by 15%."
+  },
+  {
+    "id": 141200000203110104,
+    "value": ""
+  },
+  {
+    "id": 141200000203120101,
+    "value": "When piloting Char Aznable's Dijeh (EX),\nthe max range of Melee Weapon is increased by 1."
+  },
+  {
+    "id": 141200000203120102,
+    "value": "When piloting units with specified tags,\nincrease Melee by 10%,\nincrease damage dealt to enemies by 15%\nand reduce damage taken by 15%."
+  },
+  {
+    "id": 141200000203120103,
+    "value": ""
+  },
+  {
+    "id": 141200000203120104,
+    "value": ""
+  },
+  {
+    "id": 141200000203310101,
+    "value": "When piloting units from specified series,\nSupport Defense +1 time(s)."
   },
   {
     "id": 141200000300010101,
@@ -15608,6 +15664,22 @@
     "value": "Increase ATK by 8%."
   },
   {
+    "id": 141200000407190101,
+    "value": "Increase ATK by 5%."
+  },
+  {
+    "id": 141200000407190102,
+    "value": "When equipped to Dark Gundam Jr.,\nincrease ATK by 2%."
+  },
+  {
+    "id": 141200000407200101,
+    "value": "Increase DEF by 8%."
+  },
+  {
+    "id": 141200000407200102,
+    "value": "When equipped to Dark Gundam Jr.,\nincrease DEF by 2%."
+  },
+  {
     "id": 141200000510010101,
     "value": "Increase ATK by 10%."
   },
@@ -17128,6 +17200,122 @@
     "value": "Revives with change in performance level when HP falls to 0 during battle. (Once per battle)"
   },
   {
+    "id": 141200000511390101,
+    "value": "Increase squad ATK by 50%."
+  },
+  {
+    "id": 141200000511390201,
+    "value": "Increase squad ATK by 100%."
+  },
+  {
+    "id": 141200000511390301,
+    "value": "Increase squad ATK by 150%."
+  },
+  {
+    "id": 141200000511390401,
+    "value": "Increase squad ATK by 200%."
+  },
+  {
+    "id": 141200000511390501,
+    "value": "Increase squad ATK by 250%."
+  },
+  {
+    "id": 141200000511390601,
+    "value": "Increase squad ATK by 300%."
+  },
+  {
+    "id": 141200000511400101,
+    "value": "Increase squad DEF by 50%."
+  },
+  {
+    "id": 141200000511400201,
+    "value": "Increase squad DEF by 100%."
+  },
+  {
+    "id": 141200000511400301,
+    "value": "Increase squad DEF by 150%."
+  },
+  {
+    "id": 141200000511400401,
+    "value": "Increase squad DEF by 200%."
+  },
+  {
+    "id": 141200000511400501,
+    "value": "Increase squad DEF by 250%."
+  },
+  {
+    "id": 141200000511400601,
+    "value": "Increase squad DEF by 300%."
+  },
+  {
+    "id": 141200000511430201,
+    "value": "Decrease squad MOV by 1."
+  },
+  {
+    "id": 141200000511430301,
+    "value": "Decrease squad MOV by 2."
+  },
+  {
+    "id": 141200000511440101,
+    "value": "Increase Max HP by 50%."
+  },
+  {
+    "id": 141200000511440102,
+    "value": "Increase own ATK by 50%."
+  },
+  {
+    "id": 141200000511440103,
+    "value": "Increase own DEF by 50%."
+  },
+  {
+    "id": 141200000511440104,
+    "value": "Increase Mobility by 25%."
+  },
+  {
+    "id": 141200000511440201,
+    "value": "Increase Max HP by 100%."
+  },
+  {
+    "id": 141200000511440202,
+    "value": "Increase own ATK by 100%."
+  },
+  {
+    "id": 141200000511440203,
+    "value": "Increase own DEF by 100%."
+  },
+  {
+    "id": 141200000511440204,
+    "value": "Increase Mobility by 50%."
+  },
+  {
+    "id": 141200000511440401,
+    "value": "Increase Max HP by 200%."
+  },
+  {
+    "id": 141200000511440402,
+    "value": "Increase own ATK by 200%."
+  },
+  {
+    "id": 141200000511440403,
+    "value": "Increase own DEF by 200%."
+  },
+  {
+    "id": 141200000511440404,
+    "value": "Increase Mobility by 100%."
+  },
+  {
+    "id": 141200000511460101,
+    "value": "The max range of Weapon is increased by 1."
+  },
+  {
+    "id": 141200000511460301,
+    "value": "The max range of Weapon is increased by 3."
+  },
+  {
+    "id": 141200000511460501,
+    "value": "The max range of Weapon is increased by 5."
+  },
+  {
     "id": 141200000511490101,
     "value": "Applies “Limit Damage Taken (max 150000 damage)” to self."
   },
@@ -17222,6 +17410,22 @@
   {
     "id": 141200000511610101,
     "value": "Can re-sortie once after being defeated."
+  },
+  {
+    "id": 141200000511680101,
+    "value": "Increase squad Max HP by 50%."
+  },
+  {
+    "id": 141200000511680201,
+    "value": "Increase squad Max HP by 100%."
+  },
+  {
+    "id": 141200000511680401,
+    "value": "Increase squad Max HP by 200%."
+  },
+  {
+    "id": 141200000512910101,
+    "value": "Each time this unit is attacked,\nits ATK increases by 10% (up to 100%)."
   },
   {
     "id": 141200000530010101,
@@ -17940,6 +18144,14 @@
     "value": ""
   },
   {
+    "id": 141200000610170701,
+    "value": "Force activate Chance Step 7 time(s)."
+  },
+  {
+    "id": 141200000610170702,
+    "value": ""
+  },
+  {
     "id": 141200000610180101,
     "value": "Support Defense +1 time(s)"
   },
@@ -18358,6 +18570,14 @@
   {
     "id": 141200000610351102,
     "value": "When executing Support Defense.\nReduce damage taken by 200%."
+  },
+  {
+    "id": 141200000610360301,
+    "value": "Support Attack/Counter +4 time(s)"
+  },
+  {
+    "id": 141200000610360302,
+    "value": "When executing Support Attack/Counter.\nIncrease ATK by 40%."
   },
   {
     "id": 141200000610370101,
@@ -19204,6 +19424,14 @@
     "value": "When Vigor is \"Supercharged\" or greater,\nreduce weapons EN consumption by 99%."
   },
   {
+    "id": 141200000611740301,
+    "value": "Support Attack/Counter +8 time(s)"
+  },
+  {
+    "id": 141200000611740302,
+    "value": "When executing Support Attack/Counter.\nIncrease ATK by 40%."
+  },
+  {
     "id": 141200000611760101,
     "value": "Support Attack/Counter +10 time(s)"
   },
@@ -19644,6 +19872,14 @@
     "value": "Increase ATK by 5%."
   },
   {
+    "id": 141200000612470101,
+    "value": "When Shuji Itō in your squad is defeated,\nincrease own ATK by 200%."
+  },
+  {
+    "id": 141200000612480101,
+    "value": "When Amate Yuzuriha (MACHU) in your squad is defeated,\nincrease own ATK by 200%."
+  },
+  {
     "id": 141200000612490101,
     "value": "Increase DEF by 300%\nfor squad units piloted by Fon Spaak."
   },
@@ -19802,6 +20038,10 @@
   {
     "id": 141200000612630111,
     "value": "Decrease MP by 12"
+  },
+  {
+    "id": 141200000612640101,
+    "value": "Increase squad Dark Gundam Jr. DEF by 200%."
   },
   {
     "id": 141200000612920101,

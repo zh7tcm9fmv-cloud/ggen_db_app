@@ -13986,6 +13986,83 @@
     "NpcGroupName": "<default>"
   },
   {
+    "MapGroupId": 9020000025020000001,
+    "MapNpcId": 902000002502000001,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9020000025020000001,
+    "MapNpcId": 902000002502000002,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 2,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9020000025020000001,
+    "MapNpcId": 902000002502000003,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 3,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9020000025020000001,
+    "MapNpcId": 902000002502000004,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 4,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9020000025020000001,
+    "MapNpcId": 902000002502000005,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 5,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9020000025020000001,
+    "MapNpcId": 902000002502000006,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 6,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9020000025020000001,
+    "MapNpcId": 902000002502000017,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 17,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9020000025020000001,
+    "MapNpcId": 902000002502000018,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 18,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9020000025020000001,
+    "MapNpcId": 902000002502000019,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 19,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9020000025020000001,
+    "MapNpcId": 902000002502000020,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 20,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9020000025020000001,
+    "MapNpcId": 902000002502000021,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 21,
+    "NpcGroupName": "<default>"
+  },
+  {
     "MapGroupId": 9021000001020000001,
     "MapNpcId": 902100000102000001,
     "GroupUnitTypeIndex": 3,
@@ -14627,6 +14704,181 @@
     "MapNpcId": 902100001902000025,
     "GroupUnitTypeIndex": 3,
     "SortOrder": 1,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9021000025020000001,
+    "MapNpcId": 902100002502000001,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9021000025020000001,
+    "MapNpcId": 902100002502000002,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 2,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9021000025020000001,
+    "MapNpcId": 902100002502000003,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 3,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9021000025020000001,
+    "MapNpcId": 902100002502000004,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 4,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9021000025020000001,
+    "MapNpcId": 902100002502000005,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 5,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9021000025020000001,
+    "MapNpcId": 902100002502000006,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 6,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9021000025020000001,
+    "MapNpcId": 902100002502000007,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 7,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9021000025020000001,
+    "MapNpcId": 902100002502000008,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 8,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9021000025020000001,
+    "MapNpcId": 902100002502000009,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 9,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9021000025020000001,
+    "MapNpcId": 902100002502000010,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 10,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9021000025020000001,
+    "MapNpcId": 902100002502000011,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 11,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9021000025020000001,
+    "MapNpcId": 902100002502000012,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 12,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9021000025020000001,
+    "MapNpcId": 902100002502000013,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 13,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9021000025020000001,
+    "MapNpcId": 902100002502000014,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 14,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9021000025020000001,
+    "MapNpcId": 902100002502000015,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 15,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9021000025020000001,
+    "MapNpcId": 902100002502000016,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 16,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9021000025020000001,
+    "MapNpcId": 902100002502000017,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 17,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9021000025020000001,
+    "MapNpcId": 902100002502000018,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 18,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9021000025020000001,
+    "MapNpcId": 902100002502000019,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 19,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9021000025020000001,
+    "MapNpcId": 902100002502000020,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 20,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9021000025020000001,
+    "MapNpcId": 902100002502000021,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 21,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9021000025020000001,
+    "MapNpcId": 902100002502000022,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 22,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9021000025020000001,
+    "MapNpcId": 902100002502000023,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 23,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9021000025020000001,
+    "MapNpcId": 902100002502000024,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 24,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9021000025020000001,
+    "MapNpcId": 902100002502000025,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 25,
     "NpcGroupName": "<default>"
   },
   {
@@ -15407,6 +15659,223 @@
     "NpcGroupName": "<default>"
   },
   {
+    "MapGroupId": 9022000025020000001,
+    "MapNpcId": 902200002502000001,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9022000025020000001,
+    "MapNpcId": 902200002502000002,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 2,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9022000025020000001,
+    "MapNpcId": 902200002502000003,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 3,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9022000025020000001,
+    "MapNpcId": 902200002502000004,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 4,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9022000025020000001,
+    "MapNpcId": 902200002502000005,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 5,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9022000025020000001,
+    "MapNpcId": 902200002502000006,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 6,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9022000025020000001,
+    "MapNpcId": 902200002502000007,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 7,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9022000025020000001,
+    "MapNpcId": 902200002502000008,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 8,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9022000025020000001,
+    "MapNpcId": 902200002502000009,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 9,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9022000025020000001,
+    "MapNpcId": 902200002502000010,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 10,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9022000025020000001,
+    "MapNpcId": 902200002502000011,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 11,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9022000025020000001,
+    "MapNpcId": 902200002502000012,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 12,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9022000025020000001,
+    "MapNpcId": 902200002502000013,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 13,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9022000025020000001,
+    "MapNpcId": 902200002502000014,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 14,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9022000025020000001,
+    "MapNpcId": 902200002502000015,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 15,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9022000025020000001,
+    "MapNpcId": 902200002502000016,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 16,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9022000025020000001,
+    "MapNpcId": 902200002502000017,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 17,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9022000025020000001,
+    "MapNpcId": 902200002502000018,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 18,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9022000025020000001,
+    "MapNpcId": 902200002502000019,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 19,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9022000025020000001,
+    "MapNpcId": 902200002502000020,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 20,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9022000025020000001,
+    "MapNpcId": 902200002502000021,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 21,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9022000025020000001,
+    "MapNpcId": 902200002502000022,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 22,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9022000025020000001,
+    "MapNpcId": 902200002502000023,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 23,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9022000025020000001,
+    "MapNpcId": 902200002502000024,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 24,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9022000025020000001,
+    "MapNpcId": 902200002502000025,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 25,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9022000025020000001,
+    "MapNpcId": 902200002502000026,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 26,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9022000025020000001,
+    "MapNpcId": 902200002502000027,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 27,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9022000025020000001,
+    "MapNpcId": 902200002502000028,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 28,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9022000025020000001,
+    "MapNpcId": 902200002502000029,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 29,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9022000025020000001,
+    "MapNpcId": 902200002502000030,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 30,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9022000025020000001,
+    "MapNpcId": 902200002502000031,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 31,
+    "NpcGroupName": "<default>"
+  },
+  {
     "MapGroupId": 9023000003020000001,
     "MapNpcId": 902300000302000001,
     "GroupUnitTypeIndex": 3,
@@ -15929,6 +16398,482 @@
     "MapNpcId": 902300001902000025,
     "GroupUnitTypeIndex": 3,
     "SortOrder": 1,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9023000025020000001,
+    "MapNpcId": 902300002502000001,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9023000025020000001,
+    "MapNpcId": 902300002502000002,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 2,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9023000025020000001,
+    "MapNpcId": 902300002502000003,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 3,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9023000025020000001,
+    "MapNpcId": 902300002502000004,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 4,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9023000025020000001,
+    "MapNpcId": 902300002502000005,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 5,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9023000025020000001,
+    "MapNpcId": 902300002502000006,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 6,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9023000025020000001,
+    "MapNpcId": 902300002502000007,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 7,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9023000025020000001,
+    "MapNpcId": 902300002502000008,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 8,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9023000025020000001,
+    "MapNpcId": 902300002502000009,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 9,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9023000025020000001,
+    "MapNpcId": 902300002502000010,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 10,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9023000025020000001,
+    "MapNpcId": 902300002502000011,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 11,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9023000025020000001,
+    "MapNpcId": 902300002502000012,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 12,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9023000025020000001,
+    "MapNpcId": 902300002502000013,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 13,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9023000025020000001,
+    "MapNpcId": 902300002502000014,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 14,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9023000025020000001,
+    "MapNpcId": 902300002502000015,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 15,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9023000025020000001,
+    "MapNpcId": 902300002502000016,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 16,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9023000025020000001,
+    "MapNpcId": 902300002502000017,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 17,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9023000025020000001,
+    "MapNpcId": 902300002502000018,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 18,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9023000025020000001,
+    "MapNpcId": 902300002502000019,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 19,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9023000025020000001,
+    "MapNpcId": 902300002502000020,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 20,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9023000025020000001,
+    "MapNpcId": 902300002502000021,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 21,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9023000025020000001,
+    "MapNpcId": 902300002502000022,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 22,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9023000025020000001,
+    "MapNpcId": 902300002502000023,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 23,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9023000025020000001,
+    "MapNpcId": 902300002502000024,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 24,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9023000025020000001,
+    "MapNpcId": 902300002502000025,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 25,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9023000025020000001,
+    "MapNpcId": 902300002502000026,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 26,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9023000025020000001,
+    "MapNpcId": 902300002502000027,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 27,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9023000025020000001,
+    "MapNpcId": 902300002502000028,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 28,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9023000025020000001,
+    "MapNpcId": 902300002502000029,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 29,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9023000025020000001,
+    "MapNpcId": 902300002502000030,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 30,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9023000025020000001,
+    "MapNpcId": 902300002502000031,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 31,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9024000001020000001,
+    "MapNpcId": 902400000102000001,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9024000001020000001,
+    "MapNpcId": 902400000102000002,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 2,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9024000001020000001,
+    "MapNpcId": 902400000102000003,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 3,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9024000001020000001,
+    "MapNpcId": 902400000102000004,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 4,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9024000001020000001,
+    "MapNpcId": 902400000102000005,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 5,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9024000001020000001,
+    "MapNpcId": 902400000102000006,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 6,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9024000001020000001,
+    "MapNpcId": 902400000102000007,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 7,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9024000001020000001,
+    "MapNpcId": 902400000102000008,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 8,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9024000001020000001,
+    "MapNpcId": 902400000102000009,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 9,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9024000001020000001,
+    "MapNpcId": 902400000102000010,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 10,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9024000001020000001,
+    "MapNpcId": 902400000102000011,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 11,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9024000001020000001,
+    "MapNpcId": 902400000102000012,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 12,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9024000001020000001,
+    "MapNpcId": 902400000102000013,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 13,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9024000001020000001,
+    "MapNpcId": 902400000102000014,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 14,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9024000001020000001,
+    "MapNpcId": 902400000102000015,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 15,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9024000001020000001,
+    "MapNpcId": 902400000102000016,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 16,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9024000001020000001,
+    "MapNpcId": 902400000102000017,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 17,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9024000001020000001,
+    "MapNpcId": 902400000102000018,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 18,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9024000001020000001,
+    "MapNpcId": 902400000102000019,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 19,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9024000001020000001,
+    "MapNpcId": 902400000102000020,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 20,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9024000001020000001,
+    "MapNpcId": 902400000102000021,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 21,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9024000001020000001,
+    "MapNpcId": 902400000102000022,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 22,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9024000001020000001,
+    "MapNpcId": 902400000102000023,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 23,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9024000001020000001,
+    "MapNpcId": 902400000102000024,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 24,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9024000001020000001,
+    "MapNpcId": 902400000102000025,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 25,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9024000001020000001,
+    "MapNpcId": 902400000102000026,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 26,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9024000001020000001,
+    "MapNpcId": 902400000102000027,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 27,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9024000001020000001,
+    "MapNpcId": 902400000102000028,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 28,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9024000001020000001,
+    "MapNpcId": 902400000102000029,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 29,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9024000001020000001,
+    "MapNpcId": 902400000102000030,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 30,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9024000001020000001,
+    "MapNpcId": 902400000102000031,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 31,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9024000001020000001,
+    "MapNpcId": 902400000102000032,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 32,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9024000001020000001,
+    "MapNpcId": 902400000102000033,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 33,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9024000001020000001,
+    "MapNpcId": 902400000102000034,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 34,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9024000001020000001,
+    "MapNpcId": 902400000102000035,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 35,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9024000001020000001,
+    "MapNpcId": 902400000102000036,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 36,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 9024000001020000001,
+    "MapNpcId": 902400000102000037,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 37,
     "NpcGroupName": "<default>"
   },
   {

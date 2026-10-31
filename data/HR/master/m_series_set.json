@@ -145,6 +145,11 @@
     "SortOrder": 1
   },
   {
+    "SeriesSetId": 10000000000005100,
+    "SeriesId": 5100,
+    "SortOrder": 1
+  },
+  {
     "SeriesSetId": 10000000000006000,
     "SeriesId": 6000,
     "SortOrder": 1
@@ -1001,6 +1006,16 @@
   },
   {
     "SeriesSetId": 10000000085001750,
+    "SeriesId": 8500,
+    "SortOrder": 1
+  },
+  {
+    "SeriesSetId": 10000000085002000,
+    "SeriesId": 2000,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 10000000085002000,
     "SeriesId": 8500,
     "SortOrder": 1
   },

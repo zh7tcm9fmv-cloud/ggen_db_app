@@ -1664,6 +1664,10 @@
     "value": "Ingrid 0's Gaplant [MA]"
   },
   {
+    "id": 110100001099000550,
+    "value": "Char Aznable's Dijeh (EX)"
+  },
+  {
     "id": 110100001100000210,
     "value": "Over.on (Armor Form)"
   },
@@ -1878,6 +1882,10 @@
   {
     "id": 110100001125001500,
     "value": "Neo Zeong"
+  },
+  {
+    "id": 110100001125001550,
+    "value": "Neo Zeong (EX)"
   },
   {
     "id": 110100001125001600,
@@ -6168,6 +6176,10 @@
     "value": "Gundam Aerial Rebuild"
   },
   {
+    "id": 110100001510000100,
+    "value": "Gundam Zirius"
+  },
+  {
     "id": 110100001600000110,
     "value": "Beginning Gundam"
   },
@@ -6590,6 +6602,10 @@
   {
     "id": 110100001850003010,
     "value": "Dom Bein Nichts"
+  },
+  {
+    "id": 110100001850003100,
+    "value": "Dark Gundam Jr."
   },
   {
     "id": 110100001850003200,
@@ -8676,6 +8692,10 @@
     "value": "-"
   },
   {
+    "id": 110200001099000550,
+    "value": "A specially designed unit said to have been built for Char Aznable, leader of the revitalized Neo Zeon, to conduct tests on the psycho-frame.\nThe Dijeh that serves as its base was heavily modified by Karaba after analyzing the Rick Dias.\nNevertheless, in order to accommodate combat in space, the land-type Dijeh underwent even more extensive modifications than are readily apparent, such as the attitude control thrusters that are installed throughout the unit.\nEquipped with the same Grye Binders as the Schuzrum Dias on its back, it boasts enhanced mobility and firepower.\nIt also comes installed with the same arms and optional equipment as the Geara Doga, which is currently under development as the primary mobile suit of the revitalized Neo Zeon.\nIts most important feature, the psycho-frame, is connected to a backup Biosensor, and when active, its reaction speed is greatly enhanced.\nHowever, it does not possess the rigidity necessary to withstand activation, and it is said to have been nothing more than a test unit for the psycho-frame."
+  },
+  {
     "id": 110200001100000200,
     "value": "A form that adds supplemental thrusters to increase its cruising range and includes Chobham Armor.\nIt was known as the White The-O."
   },
@@ -8881,6 +8901,10 @@
   },
   {
     "id": 110200001125001500,
+    "value": "A huge mobile armor designed for fortress attack and developed specifically for use by Full Frontal, commander-in-chief of the Neo Zeon remnant faction known as the Sleeves.\nThe Sinanju combines with it to serve as its core unit, a configuration attesting to the Neo Zeong's unprecedented size.\nOnce combined, the Red Comet's machine changes from a humanoid type to a monster with overwhelming power.\nMultiple mega particle cannons are just the beginning of an expansive array of weapons bristling all over its body.\nHowever, its true value lies in newly designed weapons that work together with the psycho-frame of the core unit.\nIn other words, the hull unit serves as a psycommu amplifier for the Sinanju itself.\nMost noteworthy are the psycho-shard generators housed in the shoulders.\nWhen deployed to its sides, they form a ring of light crystals, or psycho-shards.\nThese resonate with the psycho-frame of the Sinanju, allowing the Neo Zeong to produce a psycho-field-like phenomenon at will, without the aid of a separate machine.\nWhen active, these generators can also cause enemy weaponry to explode."
+  },
+  {
+    "id": 110200001125001550,
     "value": "A huge mobile armor designed for fortress attack and developed specifically for use by Full Frontal, commander-in-chief of the Neo Zeon remnant faction known as the Sleeves.\nThe Sinanju combines with it to serve as its core unit, a configuration attesting to the Neo Zeong's unprecedented size.\nOnce combined, the Red Comet's machine changes from a humanoid type to a monster with overwhelming power.\nMultiple mega particle cannons are just the beginning of an expansive array of weapons bristling all over its body.\nHowever, its true value lies in newly designed weapons that work together with the psycho-frame of the core unit.\nIn other words, the hull unit serves as a psycommu amplifier for the Sinanju itself.\nMost noteworthy are the psycho-shard generators housed in the shoulders.\nWhen deployed to its sides, they form a ring of light crystals, or psycho-shards.\nThese resonate with the psycho-frame of the Sinanju, allowing the Neo Zeong to produce a psycho-field-like phenomenon at will, without the aid of a separate machine.\nWhen active, these generators can also cause enemy weaponry to explode."
   },
   {
@@ -12668,6 +12692,10 @@
     "value": "-"
   },
   {
+    "id": 110200001510000100,
+    "value": "Model Number: EES-001\nA state-of-the-art mobile suit developed for extravehicular activity (EVA) by East End Co. for the Outer Space Exploration Project, launched by the international organization Solar System Alliance.\nRecent research reveals that the remains of Mother Swan, an unknown life-form discovered among the rings of Saturn two hundred years ago, originated from outside the Solar System.\nBelieving that research into life-forms capable of traversing the stars could accelerate human advancement and expansion, the world committed vast budgetary and personnel resources to the Outer Space Exploration Project.\nSince outer space represents a new frontier for humanity, mobile suits designed for EVA require high versatility in order to respond to any kind of contingency.\nThe EES series was selected following a lengthy trial process held across numerous bidding companies.\nThe development concept includes the phrase \"A next-generation, all-purpose machine to fulfill humanity's dreams.\"\nIt is instantly recognizable by the Feather Extension mounted on its back."
+  },
+  {
     "id": 110200001600000100,
     "value": "A one-of-a-kind, mysterious Gunpla that Haru happened upon.\nIt is an original not modeled after any previous designs.\nAlthough it was defeated in battle by Schauer, it was repaired and modded, becoming the Beginning 30 Gundam."
   },
@@ -13074,6 +13102,10 @@
   {
     "id": 110200001850003000,
     "value": "A mobile suit planned for deployment by Zeon forces.\nA variant of the Rick Dom, its maneuverability and ranged combat capabilities are an upgrade over its predecessor intended to compete with the Gelgoog, a next-generation primary mobile suit replacing the Dom series.\nIts legs have been removed and replaced with high-mobility thrusters, granting it maneuverability in space comparable to a mobile armor.\n"
+  },
+  {
+    "id": 110200001850003100,
+    "value": "Descended from the Dark Gundam.\nIt is an original unit created for this game.\nAmong all the Dark Army units created by the Dark Gundam, some that went down their own evolutionary path survived.\nThe Dark Gundam Jr. coalesced from these remnants and evolved even further.\nAlthough it is considerably smaller than the Dark Gundam, it is not to be taken lightly.\nIt can deploy bits that mimic the Dark Gundam's Four Kings, and it can even exert mind control over humans.\nBuilding upon the Dark Gundam's objective of restoring the Earth by destroying humanity, the Dark Gundam Jr. operates under the more sophisticated objective of restoring the Earth by controlling humanity through enslavement.\nSome years after the 13th Gundam Fight, the offspring of the Dark Gundam will threaten humanity with even greater power..."
   },
   {
     "id": 110200001850003200,
@@ -15424,6 +15456,10 @@
     "value": "Ingrid 0's Gaplant [MA]"
   },
   {
+    "id": 110300001099000550,
+    "value": "Char Aznable's Dijeh (EX)"
+  },
+  {
     "id": 110300001100000210,
     "value": "Over.on (Armor Form)"
   },
@@ -15638,6 +15674,10 @@
   {
     "id": 110300001125001500,
     "value": "Neo Zeong"
+  },
+  {
+    "id": 110300001125001550,
+    "value": "Neo Zeong (EX)"
   },
   {
     "id": 110300001125001600,
@@ -19928,6 +19968,10 @@
     "value": "Gundam Aerial Rebuild"
   },
   {
+    "id": 110300001510000100,
+    "value": "Gundam Zirius"
+  },
+  {
     "id": 110300001600000110,
     "value": "Beginning Gundam"
   },
@@ -20350,6 +20394,10 @@
   {
     "id": 110300001850003010,
     "value": "Dom Bein Nichts"
+  },
+  {
+    "id": 110300001850003100,
+    "value": "Dark Gundam Jr."
   },
   {
     "id": 110300001850003200,
@@ -22700,6 +22748,10 @@
     "value": "Ingrid 0's Gaplant [MA]"
   },
   {
+    "id": 110400001099000550,
+    "value": "Char Aznable's Dijeh (EX)"
+  },
+  {
     "id": 110400001100000210,
     "value": "Over.on (Armor Form)"
   },
@@ -22914,6 +22966,10 @@
   {
     "id": 110400001125001500,
     "value": "Neo Zeong"
+  },
+  {
+    "id": 110400001125001550,
+    "value": "Neo Zeong (EX)"
   },
   {
     "id": 110400001125001600,
@@ -27204,6 +27260,10 @@
     "value": "Gundam Aerial Rebuild"
   },
   {
+    "id": 110400001510000100,
+    "value": "Gundam Zirius"
+  },
+  {
     "id": 110400001600000110,
     "value": "Beginning Gundam"
   },
@@ -27626,6 +27686,10 @@
   {
     "id": 110400001850003010,
     "value": "Dom Bein Nichts"
+  },
+  {
+    "id": 110400001850003100,
+    "value": "Dark Gundam Jr."
   },
   {
     "id": 110400001850003200,

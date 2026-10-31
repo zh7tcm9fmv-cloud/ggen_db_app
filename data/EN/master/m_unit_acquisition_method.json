@@ -455,6 +455,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1001000150,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1001000160,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 140003
@@ -905,6 +910,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1001000410,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1001000500,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 100101
@@ -1335,6 +1345,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1001000610,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1001000700,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 100101
@@ -1760,6 +1775,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1001000710,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1001000800,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 100102
@@ -2183,6 +2203,11 @@
     "UnitId": 1001000810,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1001000810,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1001000900,
@@ -2630,6 +2655,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1001000910,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1001001110,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -3053,6 +3083,11 @@
     "UnitId": 1001001110,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1001001110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1001001200,
@@ -3575,6 +3610,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1001001610,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1001001700,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 100102
@@ -4040,6 +4080,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1001002110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1001002200,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 100102
@@ -4448,6 +4493,11 @@
     "UnitId": 1001003050,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1001003050,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1001003100,
@@ -4880,6 +4930,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1001003110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1001003300,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 100102
@@ -5310,6 +5365,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1001003410,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1001003700,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 100102
@@ -5733,6 +5793,11 @@
     "UnitId": 1001003710,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1001003710,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1001003800,
@@ -6165,6 +6230,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1003000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1003000200,
     "AcquisitionMethodTypeIndex": 26,
     "TargetId": 100202
@@ -6583,6 +6653,11 @@
     "UnitId": 1003000250,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1003000250,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1003000310,
@@ -7040,6 +7115,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1003000310,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1005000110,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -7465,6 +7545,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1005000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1005000210,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2507100302
@@ -7853,6 +7938,11 @@
     "UnitId": 1005000210,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1005000210,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1007000100,
@@ -8288,6 +8378,11 @@
     "UnitId": 1007000310,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1007000310,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1007000410,
@@ -8740,6 +8835,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1007000410,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1007000510,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -9163,6 +9263,11 @@
     "UnitId": 1007000510,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1007000510,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1007000600,
@@ -9620,6 +9725,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1007000710,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1008000100,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 100102
@@ -10045,6 +10155,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1008000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1008000210,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -10468,6 +10583,11 @@
     "UnitId": 1008000210,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1008000210,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1008000300,
@@ -10925,6 +11045,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1009000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1009000210,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -11375,6 +11500,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1009000210,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1009000310,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -11800,6 +11930,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1009000310,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1009000410,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -12223,6 +12358,11 @@
     "UnitId": 1009000410,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1009000410,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1009000510,
@@ -12680,6 +12820,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1009000510,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1009000550,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2601200302
@@ -12915,6 +13060,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1009000550,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1009000610,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -13333,6 +13483,11 @@
     "UnitId": 1009000610,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1009000610,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1009000710,
@@ -13760,6 +13915,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1009000710,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1009000810,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -14185,6 +14345,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1009000810,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1011000110,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -14603,6 +14768,11 @@
     "UnitId": 1011000110,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1011000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1012000110,
@@ -15028,6 +15198,11 @@
     "UnitId": 1012000110,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1012000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1013000100,
@@ -15460,6 +15635,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1013000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1013000200,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 201301
@@ -15888,6 +16068,11 @@
     "UnitId": 1013000210,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1013000210,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1013000300,
@@ -16345,6 +16530,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1013000350,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1013000500,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 201301
@@ -16775,6 +16965,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1013000510,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1013000600,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 201301
@@ -17203,6 +17398,11 @@
     "UnitId": 1013000610,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1013000610,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1013000700,
@@ -17650,6 +17850,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1013000710,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1013000800,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 201301
@@ -17838,6 +18043,11 @@
     "UnitId": 1013000850,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1013000850,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1013000900,
@@ -18300,6 +18510,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1013001410,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1013001500,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 201301
@@ -18743,6 +18958,11 @@
     "UnitId": 1013001510,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1013001510,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1017000100,
@@ -19205,6 +19425,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1017000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1017000200,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 201701
@@ -19650,6 +19875,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1017000310,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1017000400,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 201701
@@ -20088,6 +20318,11 @@
     "UnitId": 1017000410,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1017000410,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1017000500,
@@ -20560,6 +20795,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1017000510,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1017000600,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 201701
@@ -21025,6 +21265,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1017000610,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1017000700,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 201701
@@ -21323,6 +21568,11 @@
     "UnitId": 1017000950,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1017000950,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1017001000,
@@ -21795,6 +22045,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1017001210,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1021000100,
     "AcquisitionMethodTypeIndex": 16,
     "TargetId": 2100901
@@ -22253,6 +22508,11 @@
     "UnitId": 1021000110,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1021000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1021000200,
@@ -22715,6 +22975,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1021000210,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1021000400,
     "AcquisitionMethodTypeIndex": 16,
     "TargetId": 2101001
@@ -23023,6 +23288,11 @@
     "UnitId": 1022000150,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1022000150,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1022000200,
@@ -23483,6 +23753,11 @@
     "UnitId": 1022000210,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1022000210,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1022000300,
@@ -23998,6 +24273,11 @@
     "UnitId": 1023000110,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1023000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1024000100,
@@ -24525,6 +24805,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1026000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1029000210,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -24980,6 +25265,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1029000210,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1029002110,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -25405,6 +25695,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1029002110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1031000100,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 203201
@@ -25808,6 +26103,11 @@
     "UnitId": 1031000150,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1031000150,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1031000200,
@@ -26223,6 +26523,11 @@
     "UnitId": 1031000350,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1031000350,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1031000400,
@@ -26483,6 +26788,11 @@
     "UnitId": 1031001250,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1031001250,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1031001300,
@@ -27105,6 +27415,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1044000410,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1055000260,
     "AcquisitionMethodTypeIndex": 17,
     "TargetId": 90200001
@@ -27563,6 +27878,11 @@
     "UnitId": 1055000610,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1055000610,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1060000100,
@@ -28215,6 +28535,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1060001410,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1060001500,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 206001
@@ -28588,6 +28913,11 @@
     "UnitId": 1060001850,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1060001850,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1060001900,
@@ -29028,6 +29358,11 @@
     "UnitId": 1060002010,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1060002010,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1060002110,
@@ -29483,6 +29818,11 @@
     "UnitId": 1060002110,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1060002110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1060002200,
@@ -30040,6 +30380,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1063000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1067000110,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -30493,6 +30838,11 @@
     "UnitId": 1067000110,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1067000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1068000150,
@@ -30940,6 +31290,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1068000150,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1069000150,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -31380,6 +31735,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1069000150,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1069000210,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -31798,6 +32158,11 @@
     "UnitId": 1069000210,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1069000210,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1070000110,
@@ -32223,6 +32588,11 @@
     "UnitId": 1070000110,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1070000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1070000210,
@@ -32680,6 +33050,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1070000210,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1070000310,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -33103,6 +33478,11 @@
     "UnitId": 1070000310,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1070000310,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1070000510,
@@ -33558,6 +33938,11 @@
     "UnitId": 1070000510,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1070000510,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1080000100,
@@ -34045,6 +34430,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1080001110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1080001200,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 108101
@@ -34480,6 +34870,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1080001310,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1080001400,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 108101
@@ -34903,6 +35298,11 @@
     "UnitId": 1080001410,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1080001410,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1080001500,
@@ -35338,6 +35738,11 @@
     "UnitId": 1080001510,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1080001510,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1080001600,
@@ -35805,6 +36210,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1080001610,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1080001710,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -36223,6 +36633,11 @@
     "UnitId": 1080001710,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1080001710,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1080001800,
@@ -36648,6 +37063,11 @@
     "UnitId": 1080001810,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1080001810,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1080001900,
@@ -37083,6 +37503,11 @@
     "UnitId": 1080001910,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1080001910,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1080002000,
@@ -37523,6 +37948,11 @@
     "UnitId": 1080002010,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1080002010,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1080002100,
@@ -38010,6 +38440,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1080003250,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1080003300,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 108102
@@ -38438,6 +38873,11 @@
     "UnitId": 1080003310,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1080003310,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1080003400,
@@ -38910,6 +39350,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1081000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1082000110,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -39365,6 +39810,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1082000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1083000100,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 109501
@@ -39793,6 +40243,11 @@
     "UnitId": 1083000310,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1083000310,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1083000400,
@@ -40260,6 +40715,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1083000510,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1083000600,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 109501
@@ -40685,6 +41145,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1083000610,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1084000110,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -41140,6 +41605,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1084000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1085000110,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -41595,6 +42065,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1085000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1085000310,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -42048,6 +42523,11 @@
     "UnitId": 1085000310,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1085000310,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1085000450,
@@ -42215,6 +42695,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1085000910,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1085001010,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2604300302
@@ -42370,6 +42855,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1085001010,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1085001110,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2604300302
@@ -42525,6 +43015,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1085001110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1085001210,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2604300302
@@ -42680,6 +43175,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1085001210,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1085001310,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2604300302
@@ -42835,6 +43335,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1085001310,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1085001710,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2604300302
@@ -42990,6 +43495,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1085001710,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1085001810,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2604300302
@@ -43145,6 +43655,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1085001810,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1085001910,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2604300302
@@ -43298,6 +43813,11 @@
     "UnitId": 1085001910,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1085001910,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1095000100,
@@ -43663,6 +44183,11 @@
     "UnitId": 1095000350,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1095000350,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1095000400,
@@ -44088,6 +44613,11 @@
     "UnitId": 1095000410,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1095000410,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1095000500,
@@ -44528,6 +45058,11 @@
     "UnitId": 1095000510,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1095000510,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1095000700,
@@ -44980,6 +45515,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1095000910,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1095001000,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 109502
@@ -45413,6 +45953,11 @@
     "UnitId": 1095001010,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1095001010,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1095001100,
@@ -45853,6 +46398,11 @@
     "UnitId": 1095001510,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1095001510,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1095001700,
@@ -46375,6 +46925,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1095002910,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1095003000,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 109502
@@ -46835,6 +47390,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1095003110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1095003200,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 109502
@@ -47278,6 +47838,11 @@
     "UnitId": 1095003510,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1095003510,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1095003600,
@@ -47740,6 +48305,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1095003810,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1095003910,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -48158,6 +48728,11 @@
     "UnitId": 1095003910,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1095003910,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1095004000,
@@ -48585,6 +49160,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1095004010,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1095004110,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -49003,6 +49583,11 @@
     "UnitId": 1095004110,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1095004110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1095004200,
@@ -49450,6 +50035,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1095004410,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1095004500,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 109501
@@ -49880,6 +50470,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1098000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1098000210,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -50303,6 +50898,11 @@
     "UnitId": 1098000210,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1098000210,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1098000310,
@@ -50755,6 +51355,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1098000310,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1098000400,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 100102
@@ -51183,6 +51788,11 @@
     "UnitId": 1098000510,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1098000510,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1098000610,
@@ -51638,6 +52248,11 @@
     "UnitId": 1098000610,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1098000610,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1098000700,
@@ -52115,6 +52730,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1099000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1099000210,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -52568,6 +53188,16 @@
     "UnitId": 1099000210,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1099000210,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
+    "UnitId": 1099000550,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1100000210,
@@ -53040,6 +53670,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1101000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1101000350,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2608500301
@@ -53078,6 +53713,11 @@
     "UnitId": 1101000350,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1101000350,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1110000100,
@@ -53523,6 +54163,11 @@
     "UnitId": 1110000150,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1110000150,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1110000200,
@@ -53995,6 +54640,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1110000550,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1110000600,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 111001
@@ -54420,6 +55070,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1110000810,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1110000900,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 111001
@@ -54588,6 +55243,11 @@
     "UnitId": 1114000450,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1114000450,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1114000600,
@@ -55145,6 +55805,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1125000250,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1125000300,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 112501
@@ -55493,6 +56158,11 @@
     "UnitId": 1125000510,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1125000510,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1125000700,
@@ -55855,6 +56525,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1125001250,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1125001450,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2509600301
@@ -55868,6 +56543,11 @@
     "UnitId": 1125001500,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 112502
+  },
+  {
+    "UnitId": 1125001550,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1125001600,
@@ -56293,6 +56973,11 @@
     "UnitId": 1125003310,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1125003310,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1125003400,
@@ -56725,6 +57410,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1125005110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1125005300,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 112502
@@ -57135,6 +57825,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1133001310,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1133001410,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2509600301
@@ -57463,6 +58158,11 @@
     "UnitId": 1133001410,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1133001410,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1133001500,
@@ -57920,6 +58620,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1144000150,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1144000200,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 114401
@@ -58108,6 +58813,11 @@
     "UnitId": 1144001110,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1144001110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1144001200,
@@ -58460,6 +59170,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1150000250,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1150000410,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2511400301
@@ -58728,6 +59443,11 @@
     "UnitId": 1150000410,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1150000410,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1150000500,
@@ -59220,6 +59940,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1155000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1155000200,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 116201
@@ -59313,6 +60038,11 @@
     "UnitId": 1155000250,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1155000250,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1155000300,
@@ -59418,6 +60148,11 @@
     "UnitId": 1155000610,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1155000610,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1155000700,
@@ -59548,6 +60283,11 @@
     "UnitId": 1159000110,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1159000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1159000200,
@@ -59945,6 +60685,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1162000150,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1162000300,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 116201
@@ -60095,6 +60840,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1162001010,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1162001200,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 116201
@@ -60195,6 +60945,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1162001310,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1162001400,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 116201
@@ -60293,6 +61048,11 @@
     "UnitId": 1162001510,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1162001510,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1162001600,
@@ -60760,6 +61520,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1166000250,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1166000510,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -61183,6 +61948,11 @@
     "UnitId": 1166000510,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1166000510,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1175000100,
@@ -61645,6 +62415,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1175000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1175000300,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 175001
@@ -62080,6 +62855,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1175000410,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1175000500,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 175001
@@ -62508,6 +63288,11 @@
     "UnitId": 1175000510,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1175000510,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1175000600,
@@ -62970,6 +63755,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1175000910,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1175001000,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 175001
@@ -63013,6 +63803,11 @@
     "UnitId": 1175001150,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1175001150,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1175001200,
@@ -63060,6 +63855,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1175001310,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1175001500,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 175001
@@ -63088,6 +63888,11 @@
     "UnitId": 1175001710,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1175001710,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1175001900,
@@ -63168,6 +63973,11 @@
     "UnitId": 1175002610,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1175002610,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1175002800,
@@ -63300,6 +64110,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1175004610,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1175004700,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 175002
@@ -63333,6 +64148,11 @@
     "UnitId": 1175004910,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1175004910,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1175005000,
@@ -63755,6 +64575,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1200000410,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1200000500,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 120001
@@ -64103,6 +64928,11 @@
     "UnitId": 1200000610,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1200000610,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1200000700,
@@ -64455,6 +65285,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1200000810,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1200000900,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 120001
@@ -64803,6 +65638,11 @@
     "UnitId": 1200001010,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1200001010,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1200001100,
@@ -65188,6 +66028,11 @@
     "UnitId": 1200001350,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1200001350,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1200001500,
@@ -65658,6 +66503,11 @@
     "UnitId": 1200001710,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1200001710,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1200001900,
@@ -66170,6 +67020,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1200002210,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1200002300,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 120001
@@ -66650,6 +67505,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1200003310,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1200003400,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 120001
@@ -67075,6 +67935,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1200003410,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1200003500,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 120001
@@ -67498,6 +68363,11 @@
     "UnitId": 1200003510,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1200003510,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1200003600,
@@ -68095,6 +68965,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1210001310,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1210001410,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -68515,6 +69390,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1210001410,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1210001510,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -68935,6 +69815,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1210001510,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1210001610,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -69353,6 +70238,11 @@
     "UnitId": 1210001610,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1210001610,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1210001700,
@@ -69780,6 +70670,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1210001710,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1210001810,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -70198,6 +71093,11 @@
     "UnitId": 1210001810,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1210001810,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1210001900,
@@ -70638,6 +71538,11 @@
     "UnitId": 1210002010,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1210002010,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1210002100,
@@ -71185,6 +72090,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1210003110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1210003300,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 121001
@@ -71338,6 +72248,11 @@
     "UnitId": 1211001210,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1211001210,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1212000100,
@@ -71810,6 +72725,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1217000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1217000310,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -72260,6 +73180,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1217000310,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1217000510,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2506100302
@@ -72663,6 +73588,11 @@
     "UnitId": 1217000510,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1217000510,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1219000100,
@@ -73085,6 +74015,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1219000250,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1219000300,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 121901
@@ -73255,6 +74190,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1219000350,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1219000400,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 121901
@@ -73318,6 +74258,11 @@
     "UnitId": 1219000450,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1219000450,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1219000500,
@@ -73845,6 +74790,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1230001210,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1230001300,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 123001
@@ -74275,6 +75225,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1230001310,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1230001410,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -74698,6 +75653,11 @@
     "UnitId": 1230001410,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1230001410,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1230001500,
@@ -75155,6 +76115,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1230001710,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1230001810,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -75573,6 +76538,11 @@
     "UnitId": 1230001810,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1230001810,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1230001910,
@@ -76025,6 +76995,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1230001910,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1230002000,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 123001
@@ -76448,6 +77423,11 @@
     "UnitId": 1230002110,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1230002110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1230002200,
@@ -76885,6 +77865,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1230002310,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1230002400,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 123001
@@ -77320,6 +78305,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1230002610,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1230002700,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 123001
@@ -77753,6 +78743,11 @@
     "UnitId": 1230002910,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1230002910,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1230003000,
@@ -78230,6 +79225,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1230003510,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1230003600,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 123001
@@ -78470,6 +79470,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1230003950,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1230004000,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 123001
@@ -78698,6 +79703,11 @@
     "UnitId": 1230004510,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1230004510,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1230004600,
@@ -78933,6 +79943,11 @@
     "UnitId": 1230004910,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1230004910,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1230005000,
@@ -79195,6 +80210,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1230005510,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1230005610,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2601500301
@@ -79408,6 +80428,11 @@
     "UnitId": 1230005610,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1230005610,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1240000110,
@@ -79865,6 +80890,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1240000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1240001010,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -80288,6 +81318,11 @@
     "UnitId": 1240001010,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1240001010,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1240001110,
@@ -80738,6 +81773,11 @@
     "UnitId": 1240001110,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1240001110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1300000100,
@@ -81265,6 +82305,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1300001710,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1300001800,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 130001
@@ -81728,6 +82773,11 @@
     "UnitId": 1300002110,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1300002110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1300002200,
@@ -82200,6 +83250,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1300002210,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1300002300,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 130002
@@ -82630,6 +83685,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1300002310,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1300002400,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 130002
@@ -83058,6 +84118,11 @@
     "UnitId": 1300002410,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1300002410,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1300002500,
@@ -83550,6 +84615,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1300002810,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1300002900,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 130002
@@ -84025,6 +85095,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1300003210,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1300003300,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 130001
@@ -84478,6 +85553,11 @@
     "UnitId": 1300003910,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1300003910,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1300004000,
@@ -84950,6 +86030,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1300004250,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1300004300,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 130001
@@ -85385,6 +86470,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1300004450,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1300004500,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 130002
@@ -85653,6 +86743,11 @@
     "UnitId": 1300004650,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1300004650,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1300004700,
@@ -86093,6 +87188,11 @@
     "UnitId": 1304000110,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1304000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1304000200,
@@ -86600,6 +87700,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1304001210,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1305000100,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 230501
@@ -86823,6 +87928,11 @@
     "UnitId": 1305000350,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1305000350,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1305000400,
@@ -87250,6 +88360,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1305000610,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1305000700,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 230501
@@ -87668,6 +88783,11 @@
     "UnitId": 1305000810,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1305000810,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1305000900,
@@ -88170,6 +89290,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1306000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1306000310,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2606200302
@@ -88278,6 +89403,11 @@
     "UnitId": 1306000310,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1306000310,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1307000110,
@@ -88705,6 +89835,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1307000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1307000210,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -89130,6 +90265,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1307000210,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1307000310,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2606200302
@@ -89238,6 +90378,11 @@
     "UnitId": 1307000310,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1307000310,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1307000410,
@@ -89665,6 +90810,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1307000410,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1308000100,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 230801
@@ -89978,6 +91128,11 @@
     "UnitId": 1308000710,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1308000710,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1310000100,
@@ -90430,6 +91585,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1330000350,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1330000400,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 133002
@@ -90723,6 +91883,11 @@
     "UnitId": 1330002850,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1330002850,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1330003000,
@@ -91135,6 +92300,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1330003110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1330003210,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2506300301
@@ -91528,6 +92698,11 @@
     "UnitId": 1330003210,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1330003210,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1330003300,
@@ -91945,6 +93120,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1330003610,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1330003710,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2506300301
@@ -92338,6 +93518,11 @@
     "UnitId": 1330003710,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1330003710,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1330003900,
@@ -92805,6 +93990,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1330004910,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1330005100,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 133002
@@ -93058,6 +94248,11 @@
     "UnitId": 1330005310,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1330005310,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1330005500,
@@ -93455,6 +94650,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1330005710,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1330005900,
     "AcquisitionMethodTypeIndex": 17,
     "TargetId": 90200013
@@ -93710,6 +94910,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1330006010,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1330006110,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2512400301
@@ -93950,6 +95155,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1330006110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1330006510,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2512400301
@@ -94188,6 +95398,11 @@
     "UnitId": 1330006510,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1330006510,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1330006700,
@@ -94328,6 +95543,11 @@
     "UnitId": 1336000150,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1336000150,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1336000200,
@@ -94905,6 +96125,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1350000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1370000100,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 137001
@@ -95350,6 +96575,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1370000150,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1370000300,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 137001
@@ -95363,6 +96593,11 @@
     "UnitId": 1370000350,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1370000350,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1370000500,
@@ -95840,6 +97075,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1370001710,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1370001810,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -96263,6 +97503,11 @@
     "UnitId": 1370001810,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1370001810,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1370001900,
@@ -96700,6 +97945,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1370002310,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1370002400,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 137002
@@ -97130,6 +98380,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1370002410,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1370002510,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -97553,6 +98808,11 @@
     "UnitId": 1370002510,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1370002510,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1370002600,
@@ -97990,6 +99250,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1370002710,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1370002800,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 137002
@@ -98413,6 +99678,11 @@
     "UnitId": 1370002810,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1370002810,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1370002900,
@@ -98850,6 +100120,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1370003110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1370003200,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 137002
@@ -99285,6 +100560,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1370003610,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1370003710,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -99708,6 +100988,11 @@
     "UnitId": 1370003710,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1370003710,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1370003800,
@@ -100140,6 +101425,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1370003810,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1370004010,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -100563,6 +101853,11 @@
     "UnitId": 1370004010,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1370004010,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1370004200,
@@ -101020,6 +102315,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1370004910,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1370005100,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 137002
@@ -101475,6 +102775,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1370005210,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1370005400,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 137002
@@ -101905,6 +103210,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1370005410,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1370005600,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 137002
@@ -102125,6 +103435,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1370007410,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1370007510,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2603600301
@@ -102290,6 +103605,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1370007510,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1370007610,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2603600301
@@ -102453,6 +103773,11 @@
     "UnitId": 1370007610,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1370007610,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1370007800,
@@ -102548,6 +103873,11 @@
     "UnitId": 1370008610,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1370008610,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1370008700,
@@ -102760,6 +104090,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1370009710,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1370009810,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2603600301
@@ -102930,6 +104265,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1370009810,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1370009900,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 137002
@@ -102973,6 +104313,11 @@
     "UnitId": 1370010150,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1370010150,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1370010300,
@@ -103148,6 +104493,11 @@
     "UnitId": 1370010410,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1370010410,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1370010500,
@@ -103328,6 +104678,11 @@
     "UnitId": 1370010610,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1370010610,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1370010700,
@@ -103830,6 +105185,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1375000210,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1375000310,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -104253,6 +105613,11 @@
     "UnitId": 1375000310,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1375000310,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1375000410,
@@ -104705,6 +106070,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1375000410,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1375000600,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 237601
@@ -104768,6 +106138,11 @@
     "UnitId": 1375001550,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1375001550,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1376000100,
@@ -105295,6 +106670,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1378000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1379000100,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 137002
@@ -105785,6 +107165,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1379000510,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1379000610,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -106240,6 +107625,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1379000610,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1379001900,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 137002
@@ -106278,6 +107668,11 @@
     "UnitId": 1379002010,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1379002010,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1400000100,
@@ -106745,6 +108140,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1400000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1400000150,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2602400301
@@ -106933,6 +108333,11 @@
     "UnitId": 1400000150,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1400000150,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1400000200,
@@ -107158,6 +108563,11 @@
     "UnitId": 1400001710,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1400001710,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1400001800,
@@ -107640,6 +109050,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1400002810,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1400002900,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 140001
@@ -108068,6 +109483,11 @@
     "UnitId": 1400002910,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1400002910,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1400003000,
@@ -108500,6 +109920,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1400003010,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1400003100,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 140001
@@ -108928,6 +110353,11 @@
     "UnitId": 1400003110,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1400003110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1400003200,
@@ -109365,6 +110795,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1400003310,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1400003400,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 140002
@@ -109603,6 +111038,11 @@
     "UnitId": 1400003810,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1400003810,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1400004000,
@@ -110040,6 +111480,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1400004210,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1400004300,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 140002
@@ -110300,6 +111745,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1400007310,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1400007400,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 140001
@@ -110500,6 +111950,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1400008110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1401000110,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -110955,6 +112410,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1401000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1408000110,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -111408,6 +112868,11 @@
     "UnitId": 1408000110,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1408000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1408000300,
@@ -111618,6 +113083,11 @@
     "UnitId": 1408000410,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1408000410,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1408000500,
@@ -112090,6 +113560,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1420000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1420001810,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -112513,6 +113988,11 @@
     "UnitId": 1420001810,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1420001810,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1420004710,
@@ -112970,6 +114450,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1420004710,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1420004910,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -113395,6 +114880,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1420004910,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1420005310,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -113820,6 +115310,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1420005310,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1420005710,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -114238,6 +115733,11 @@
     "UnitId": 1420005710,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1420005710,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1420005810,
@@ -114665,6 +116165,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1420005810,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1420005910,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -115088,6 +116593,11 @@
     "UnitId": 1420005910,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1420005910,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1430000100,
@@ -115543,6 +117053,11 @@
     "UnitId": 1430000350,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1430000350,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1430000400,
@@ -116050,6 +117565,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1430001110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1430001200,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 143001
@@ -116505,6 +118025,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1430001410,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1430001500,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 143001
@@ -116935,6 +118460,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1430001610,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1430001810,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -117358,6 +118888,11 @@
     "UnitId": 1430001810,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1430001810,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1430001900,
@@ -117803,6 +119338,11 @@
     "UnitId": 1430002210,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1430002210,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1430002310,
@@ -118253,6 +119793,11 @@
     "UnitId": 1430002310,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1430002310,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1430002400,
@@ -118730,6 +120275,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1430002910,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1430003000,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 143001
@@ -119153,6 +120703,11 @@
     "UnitId": 1430003110,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1430003110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1430003200,
@@ -119590,6 +121145,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1430003310,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1430003400,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 143001
@@ -119950,6 +121510,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1430004110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1430004200,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 143001
@@ -120225,6 +121790,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1430004850,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1430004910,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2510800301
@@ -120525,6 +122095,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1430004910,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1430005010,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2510800301
@@ -120823,6 +122398,11 @@
     "UnitId": 1430005010,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1430005010,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1430005100,
@@ -121155,6 +122735,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1430005310,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1430005410,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2510800301
@@ -121465,6 +123050,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1430005410,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1430005500,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 143001
@@ -121770,6 +123360,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1430005610,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1430005710,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2510800301
@@ -122068,6 +123663,11 @@
     "UnitId": 1430005710,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1430005710,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1430005800,
@@ -122375,6 +123975,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1430005910,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1430006010,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2510800301
@@ -122673,6 +124278,11 @@
     "UnitId": 1430006010,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1430006010,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1430006100,
@@ -122988,6 +124598,11 @@
     "UnitId": 1430006210,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1430006210,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1430006400,
@@ -123338,6 +124953,11 @@
     "UnitId": 1430007610,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1430007610,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1430007700,
@@ -123835,6 +125455,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1431000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1431000200,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 243101
@@ -124285,6 +125910,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1431000410,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1431000500,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 243101
@@ -124643,6 +126273,11 @@
     "UnitId": 1431000550,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1431000550,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1431000600,
@@ -125045,6 +126680,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1431001310,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1431001400,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 243101
@@ -125420,6 +127060,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1431001710,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1431001810,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2509200401
@@ -125775,6 +127420,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1431001810,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1431001910,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2509200401
@@ -126113,6 +127763,11 @@
     "UnitId": 1431001910,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1431001910,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1431002000,
@@ -126618,6 +128273,11 @@
     "UnitId": 1501000150,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1501000150,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1501000200,
@@ -127140,6 +128800,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1501001010,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1501001100,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 150101
@@ -127488,6 +129153,11 @@
     "UnitId": 1501001650,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1501001650,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1501001710,
@@ -127915,6 +129585,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1501001710,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1501001800,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 150101
@@ -128090,6 +129765,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1501002450,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1501002500,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 150101
@@ -128165,6 +129845,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1501002550,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1501003010,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2512400301
@@ -128405,6 +130090,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1501003010,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1501003310,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2512400301
@@ -128643,6 +130333,11 @@
     "UnitId": 1501003310,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1501003310,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1501003400,
@@ -128720,6 +130415,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1501003450,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1501003910,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2512400301
@@ -128958,6 +130658,11 @@
     "UnitId": 1501003910,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1501003910,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1501004200,
@@ -129430,6 +131135,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1600000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1600000210,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -129880,6 +131590,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1600000210,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1604000150,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2506100302
@@ -130283,6 +131998,11 @@
     "UnitId": 1604000150,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1604000150,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1650000110,
@@ -130740,6 +132460,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1650000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1700000100,
     "AcquisitionMethodTypeIndex": 17,
     "TargetId": 90200007
@@ -130808,6 +132533,11 @@
     "UnitId": 1700000250,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1700000250,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1705000550,
@@ -131200,13 +132930,18 @@
     "TargetId": 2610300501
   },
   {
-    "UnitId": 1705002050,
+    "UnitId": 1705001510,
     "AcquisitionMethodTypeIndex": 7,
-    "TargetId": 2608200301
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1705002050,
     "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2608200301
+  },
+  {
+    "UnitId": 1705002050,
+    "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2608200501
   },
   {
@@ -131265,6 +133000,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1705003010,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1705004310,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2608200301
@@ -131320,6 +133060,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1705004310,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1705004910,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2608200301
@@ -131375,6 +133120,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1705004910,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1705005010,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2608200301
@@ -131428,6 +133178,11 @@
     "UnitId": 1705005010,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1705005010,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1705005500,
@@ -131823,6 +133578,11 @@
     "UnitId": 1725000150,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1725000150,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1728000100,
@@ -132310,6 +134070,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1750000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1750000300,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 108101
@@ -132755,6 +134520,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1760000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1761000100,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 109502
@@ -133195,6 +134965,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1763000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1763000200,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 100102
@@ -133608,6 +135383,11 @@
     "UnitId": 1764000110,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1764000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1764000200,
@@ -134085,6 +135865,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1764000310,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1771000110,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -134510,6 +136295,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1771000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1771000210,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -134935,6 +136725,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1771000210,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1779000110,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -135358,6 +137153,11 @@
     "UnitId": 1779000110,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1779000110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1850000200,
@@ -135805,6 +137605,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1850000250,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1850000310,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -136228,6 +138033,11 @@
     "UnitId": 1850000310,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1850000310,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1850000610,
@@ -136685,6 +138495,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1850000610,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1850000650,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2604500301
@@ -136818,6 +138633,11 @@
     "UnitId": 1850000650,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1850000650,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1850001210,
@@ -137275,6 +139095,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1850001210,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1850001350,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2603200302
@@ -137453,6 +139278,11 @@
     "UnitId": 1850001350,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1850001350,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1850001400,
@@ -137608,6 +139438,11 @@
     "UnitId": 1850001650,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1850001650,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1850001800,
@@ -138058,6 +139893,11 @@
     "UnitId": 1850002110,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1850002110,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1850002200,
@@ -138535,6 +140375,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1850002410,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1850002510,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -138990,6 +140835,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1850002510,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1850002800,
     "AcquisitionMethodTypeIndex": 17,
     "TargetId": 90200018
@@ -139430,6 +141280,11 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1850002910,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
     "UnitId": 1850003010,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2504100101
@@ -139855,6 +141710,26 @@
     "TargetId": 2610300501
   },
   {
+    "UnitId": 1850003010,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
+  },
+  {
+    "UnitId": 1850003100,
+    "AcquisitionMethodTypeIndex": 17,
+    "TargetId": 90200025
+  },
+  {
+    "UnitId": 1850003100,
+    "AcquisitionMethodTypeIndex": 17,
+    "TargetId": 90210025
+  },
+  {
+    "UnitId": 1850003100,
+    "AcquisitionMethodTypeIndex": 17,
+    "TargetId": 90220025
+  },
+  {
     "UnitId": 1850003200,
     "AcquisitionMethodTypeIndex": 6,
     "TargetId": 121001
@@ -140228,6 +142103,11 @@
     "UnitId": 1850005310,
     "AcquisitionMethodTypeIndex": 7,
     "TargetId": 2610300501
+  },
+  {
+    "UnitId": 1850005310,
+    "AcquisitionMethodTypeIndex": 7,
+    "TargetId": 2610500306
   },
   {
     "UnitId": 1850005400,

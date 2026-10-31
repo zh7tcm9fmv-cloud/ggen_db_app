@@ -322,6 +322,20 @@
     "IsSimpleThumbnail": false
   },
   {
+    "Id": 10100004000025,
+    "ProfileTitleTypeIndex": 2,
+    "ProfileTitleRarityTypeIndex": 5,
+    "BackgroundResourceId": "profile_title_10100004000025",
+    "TitleImageDisplayLanguageId": 0,
+    "TitleNameLanguageId": 240210100004000025,
+    "AcquisitionRouteLanguageId": 240310100004000025,
+    "SortOrder": 26105001,
+    "ScheduleId": 0,
+    "BaseBackgroundResourceId": "profile_title_localization_invasion",
+    "RarityTypeIndex": 4,
+    "IsSimpleThumbnail": false
+  },
+  {
     "Id": 10110001000001,
     "ProfileTitleTypeIndex": 2,
     "ProfileTitleRarityTypeIndex": 5,
@@ -375,6 +389,20 @@
     "ScheduleId": 0,
     "BaseBackgroundResourceId": "",
     "RarityTypeIndex": 5,
+    "IsSimpleThumbnail": false
+  },
+  {
+    "Id": 10120001000001,
+    "ProfileTitleTypeIndex": 2,
+    "ProfileTitleRarityTypeIndex": 5,
+    "BackgroundResourceId": "profile_title_10120001000001",
+    "TitleImageDisplayLanguageId": 0,
+    "TitleNameLanguageId": 240210120001000001,
+    "AcquisitionRouteLanguageId": 240310120001000001,
+    "SortOrder": 26105001,
+    "ScheduleId": 0,
+    "BaseBackgroundResourceId": "profile_title_localization_invasion_restriction",
+    "RarityTypeIndex": 4,
     "IsSimpleThumbnail": false
   },
   {

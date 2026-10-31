@@ -1,0 +1,212 @@
+[
+  {
+    "Id": 9020000101,
+    "InvasionEventStageGroupId": 90200001,
+    "CategoryTypeIndex": 1,
+    "NameLanguageId": 251800009020000101,
+    "DescriptionLanguageId": 251900009020000101,
+    "SortOrder": 1,
+    "IconResourceId": "trait_restriction_success_condition_change",
+    "IsScoreReleaseRequired": true
+  },
+  {
+    "Id": 9020000102,
+    "InvasionEventStageGroupId": 90200001,
+    "CategoryTypeIndex": 1,
+    "NameLanguageId": 251800009020000102,
+    "DescriptionLanguageId": 251900009020000102,
+    "SortOrder": 2,
+    "IconResourceId": "trait_restriction_failure_turn",
+    "IsScoreReleaseRequired": true
+  },
+  {
+    "Id": 9020000103,
+    "InvasionEventStageGroupId": 90200001,
+    "CategoryTypeIndex": 2,
+    "NameLanguageId": 251800009020000103,
+    "DescriptionLanguageId": 251900009020000103,
+    "SortOrder": 3,
+    "IconResourceId": "trait_restriction_failure_turn",
+    "IsScoreReleaseRequired": true
+  },
+  {
+    "Id": 9020000104,
+    "InvasionEventStageGroupId": 90200001,
+    "CategoryTypeIndex": 2,
+    "NameLanguageId": 251800009020000104,
+    "DescriptionLanguageId": 251900009020000104,
+    "SortOrder": 4,
+    "IconResourceId": "trait_restriction_unit_tag",
+    "IsScoreReleaseRequired": true
+  },
+  {
+    "Id": 9020000105,
+    "InvasionEventStageGroupId": 90200001,
+    "CategoryTypeIndex": 2,
+    "NameLanguageId": 251800009020000105,
+    "DescriptionLanguageId": 251900009020000105,
+    "SortOrder": 5,
+    "IconResourceId": "trait_restriction_unit_tag",
+    "IsScoreReleaseRequired": true
+  },
+  {
+    "Id": 9020000106,
+    "InvasionEventStageGroupId": 90200001,
+    "CategoryTypeIndex": 2,
+    "NameLanguageId": 251800009020000106,
+    "DescriptionLanguageId": 251900009020000106,
+    "SortOrder": 6,
+    "IconResourceId": "trait_restriction_unit_series_0010",
+    "IsScoreReleaseRequired": false
+  },
+  {
+    "Id": 9020000107,
+    "InvasionEventStageGroupId": 90200001,
+    "CategoryTypeIndex": 2,
+    "NameLanguageId": 251800009020000107,
+    "DescriptionLanguageId": 251900009020000107,
+    "SortOrder": 7,
+    "IconResourceId": "trait_restriction_unit_tag_all",
+    "IsScoreReleaseRequired": false
+  },
+  {
+    "Id": 9020000108,
+    "InvasionEventStageGroupId": 90200001,
+    "CategoryTypeIndex": 2,
+    "NameLanguageId": 251800009020000108,
+    "DescriptionLanguageId": 251900009020000108,
+    "SortOrder": 8,
+    "IconResourceId": "trait_restriction_sortie_decrease",
+    "IsScoreReleaseRequired": true
+  },
+  {
+    "Id": 9020000109,
+    "InvasionEventStageGroupId": 90200001,
+    "CategoryTypeIndex": 2,
+    "NameLanguageId": 251800009020000109,
+    "DescriptionLanguageId": 251900009020000109,
+    "SortOrder": 9,
+    "IconResourceId": "trait_restriction_sortie_decrease",
+    "IsScoreReleaseRequired": true
+  },
+  {
+    "Id": 9020000110,
+    "InvasionEventStageGroupId": 90200001,
+    "CategoryTypeIndex": 2,
+    "NameLanguageId": 251800009020000110,
+    "DescriptionLanguageId": 251900009020000110,
+    "SortOrder": 10,
+    "IconResourceId": "trait_restriction_status_mob",
+    "IsScoreReleaseRequired": true
+  },
+  {
+    "Id": 9020000111,
+    "InvasionEventStageGroupId": 90200001,
+    "CategoryTypeIndex": 3,
+    "NameLanguageId": 251800009020000111,
+    "DescriptionLanguageId": 251900009020000111,
+    "SortOrder": 11,
+    "IconResourceId": "trait_restriction_status_attack",
+    "IsScoreReleaseRequired": false
+  },
+  {
+    "Id": 9020000112,
+    "InvasionEventStageGroupId": 90200001,
+    "CategoryTypeIndex": 3,
+    "NameLanguageId": 251800009020000112,
+    "DescriptionLanguageId": 251900009020000112,
+    "SortOrder": 12,
+    "IconResourceId": "trait_restriction_status_defend",
+    "IsScoreReleaseRequired": false
+  },
+  {
+    "Id": 9020000113,
+    "InvasionEventStageGroupId": 90200001,
+    "CategoryTypeIndex": 3,
+    "NameLanguageId": 251800009020000113,
+    "DescriptionLanguageId": 251900009020000113,
+    "SortOrder": 13,
+    "IconResourceId": "trait_restriction_status_hp",
+    "IsScoreReleaseRequired": false
+  },
+  {
+    "Id": 9020000115,
+    "InvasionEventStageGroupId": 90200001,
+    "CategoryTypeIndex": 3,
+    "NameLanguageId": 251800009020000115,
+    "DescriptionLanguageId": 251900009020000115,
+    "SortOrder": 14,
+    "IconResourceId": "trait_restriction_g0550u00200",
+    "IsScoreReleaseRequired": false
+  },
+  {
+    "Id": 9020000116,
+    "InvasionEventStageGroupId": 90200001,
+    "CategoryTypeIndex": 3,
+    "NameLanguageId": 251800009020000116,
+    "DescriptionLanguageId": 251900009020000116,
+    "SortOrder": 15,
+    "IconResourceId": "trait_restriction_g0550u00200",
+    "IsScoreReleaseRequired": false
+  },
+  {
+    "Id": 9020000117,
+    "InvasionEventStageGroupId": 90200001,
+    "CategoryTypeIndex": 3,
+    "NameLanguageId": 251800009020000117,
+    "DescriptionLanguageId": 251900009020000117,
+    "SortOrder": 16,
+    "IconResourceId": "trait_restriction_g0550u00200",
+    "IsScoreReleaseRequired": true
+  },
+  {
+    "Id": 9020000118,
+    "InvasionEventStageGroupId": 90200001,
+    "CategoryTypeIndex": 3,
+    "NameLanguageId": 251800009020000118,
+    "DescriptionLanguageId": 251900009020000118,
+    "SortOrder": 17,
+    "IconResourceId": "trait_restriction_g0550u00300",
+    "IsScoreReleaseRequired": true
+  },
+  {
+    "Id": 9020000119,
+    "InvasionEventStageGroupId": 90200001,
+    "CategoryTypeIndex": 3,
+    "NameLanguageId": 251800009020000119,
+    "DescriptionLanguageId": 251900009020000119,
+    "SortOrder": 18,
+    "IconResourceId": "trait_restriction_g0550u00300",
+    "IsScoreReleaseRequired": false
+  },
+  {
+    "Id": 9020000120,
+    "InvasionEventStageGroupId": 90200001,
+    "CategoryTypeIndex": 3,
+    "NameLanguageId": 251800009020000120,
+    "DescriptionLanguageId": 251900009020000120,
+    "SortOrder": 19,
+    "IconResourceId": "trait_restriction_g0550u00200",
+    "IsScoreReleaseRequired": true
+  },
+  {
+    "Id": 9020000121,
+    "InvasionEventStageGroupId": 90200001,
+    "CategoryTypeIndex": 3,
+    "NameLanguageId": 251800009020000121,
+    "DescriptionLanguageId": 251900009020000121,
+    "SortOrder": 20,
+    "IconResourceId": "trait_restriction_g0550u00600",
+    "IsScoreReleaseRequired": true
+  },
+  {
+    "Id": 9020000123,
+    "InvasionEventStageGroupId": 90200001,
+    "CategoryTypeIndex": 4,
+    "NameLanguageId": 251800009020000123,
+    "DescriptionLanguageId": 251900009020000123,
+    "SortOrder": 21,
+    "IconResourceId": "trait_restriction_unit_tag_all",
+    "IsScoreReleaseRequired": true
+  }
+]

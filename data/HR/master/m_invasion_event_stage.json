@@ -161,6 +161,13 @@
     "StageDifficultyTypeIndex": 1
   },
   {
+    "Id": 90200025,
+    "InvasionEventStageGroupId": 90200025,
+    "SortOrder": 4,
+    "StageId": 90200025,
+    "StageDifficultyTypeIndex": 1
+  },
+  {
     "Id": 90210001,
     "InvasionEventStageGroupId": 90200001,
     "SortOrder": 3,
@@ -319,6 +326,13 @@
     "InvasionEventStageGroupId": 90200024,
     "SortOrder": 3,
     "StageId": 90210024,
+    "StageDifficultyTypeIndex": 2
+  },
+  {
+    "Id": 90210025,
+    "InvasionEventStageGroupId": 90200025,
+    "SortOrder": 3,
+    "StageId": 90210025,
     "StageDifficultyTypeIndex": 2
   },
   {
@@ -483,6 +497,13 @@
     "StageDifficultyTypeIndex": 3
   },
   {
+    "Id": 90220025,
+    "InvasionEventStageGroupId": 90200025,
+    "SortOrder": 2,
+    "StageId": 90220025,
+    "StageDifficultyTypeIndex": 3
+  },
+  {
     "Id": 90230001,
     "InvasionEventStageGroupId": 90200001,
     "SortOrder": 1,
@@ -641,6 +662,13 @@
     "InvasionEventStageGroupId": 90200024,
     "SortOrder": 1,
     "StageId": 90230024,
+    "StageDifficultyTypeIndex": 6
+  },
+  {
+    "Id": 90230025,
+    "InvasionEventStageGroupId": 90200025,
+    "SortOrder": 1,
+    "StageId": 90230025,
     "StageDifficultyTypeIndex": 6
   }
 ]

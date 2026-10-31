@@ -1684,6 +1684,10 @@
     "value": "SSR Ingrid 0's Gaplant Limit Break Material"
   },
   {
+    "id": 150100171099000550,
+    "value": "UR Char Aznable's Dijeh (EX) Limit Break Material"
+  },
+  {
     "id": 150100171100000210,
     "value": "SSR Over.on (Armor Form) Limit Break Material"
   },
@@ -1858,6 +1862,10 @@
   {
     "id": 150100171125001500,
     "value": "SSR Neo Zeong Limit Break Material"
+  },
+  {
+    "id": 150100171125001550,
+    "value": "UR Neo Zeong (EX) Limit Break Material"
   },
   {
     "id": 150100171125001600,
@@ -5100,6 +5108,10 @@
     "value": "SSR Guel's Dilanza (Final Battle) Limit Break Material"
   },
   {
+    "id": 150100171510000100,
+    "value": "SSR Gundam Zirius Limit Break Material"
+  },
+  {
     "id": 150100171600000110,
     "value": "SSR Beginning Gundam Limit Break Material"
   },
@@ -5414,6 +5426,10 @@
   {
     "id": 150100171850003010,
     "value": "SR Dom Bein Nichts Limit Break Material"
+  },
+  {
+    "id": 150100171850003100,
+    "value": "SSR Dark Gundam Jr. Limit Break Material"
   },
   {
     "id": 150100171850004850,
@@ -6672,6 +6688,10 @@
     "value": "Mobile Suit Gundam the Witch from Mercury Series SP Conversion Chips"
   },
   {
+    "id": 150100240000015100,
+    "value": "Mobile Suit Gundam Eight Series SP Conversion Chips"
+  },
+  {
     "id": 150100240000020000,
     "value": "Mobile Suit Gundam Series SP Conversion Badge"
   },
@@ -6702,6 +6722,10 @@
   {
     "id": 150100240000021021,
     "value": "ZAFT-Tag SP Conversion Chips"
+  },
+  {
+    "id": 150100240000021095,
+    "value": "Fierce Enemy Assault-Tag SP Conversion Chips"
   },
   {
     "id": 150100240000021137,
@@ -6894,6 +6918,10 @@
   {
     "id": 150100300000021055,
     "value": "SD Gundam-Tag SSP Conversion Chips"
+  },
+  {
+    "id": 150100300000021095,
+    "value": "Fierce Enemy Assault-Tag SSP Conversion Chips"
   },
   {
     "id": 150100990000000001,
@@ -8592,6 +8620,10 @@
     "value": "An item used to perform Limit Break on SSR Ingrid 0's Gaplant"
   },
   {
+    "id": 150200171099000550,
+    "value": "An item used to perform Limit Break on UR Char Aznable's Dijeh (EX)"
+  },
+  {
     "id": 150200171100000210,
     "value": "An item used to perform Limit Break on SSR Over.on (Armor Form)"
   },
@@ -8766,6 +8798,10 @@
   {
     "id": 150200171125001500,
     "value": "An item used to perform Limit Break on SSR Neo Zeong"
+  },
+  {
+    "id": 150200171125001550,
+    "value": "An item used to perform Limit Break on UR Neo Zeong (EX)"
   },
   {
     "id": 150200171125001600,
@@ -12008,6 +12044,10 @@
     "value": "An item used to perform Limit Break on SSR Guel's Dilanza (Final Battle)"
   },
   {
+    "id": 150200171510000100,
+    "value": "An item used to perform Limit Break on SSR Gundam Zirius"
+  },
+  {
     "id": 150200171600000110,
     "value": "An item used to perform Limit Break on SSR Beginning Gundam"
   },
@@ -12322,6 +12362,10 @@
   {
     "id": 150200171850003010,
     "value": "An item used to perform Limit Break on SR Dom Bein Nichts"
+  },
+  {
+    "id": 150200171850003100,
+    "value": "An item used to perform Limit Break on SSR Dark Gundam Jr."
   },
   {
     "id": 150200171850004850,
@@ -13580,6 +13624,10 @@
     "value": "Usable on non-UR units from the specified series.\nAn SP conversion item that boosts stats and raises Max Level to 100."
   },
   {
+    "id": 150200240000015100,
+    "value": "Usable on non-UR units from the specified series.\nAn SP conversion item that boosts stats and raises Max Level to 100."
+  },
+  {
     "id": 150200240000020000,
     "value": "Usable on non-UR characters from the specified series.\nAn SP conversion item that boosts stats and raises Max Level to 100."
   },
@@ -13609,6 +13657,10 @@
   },
   {
     "id": 150200240000021021,
+    "value": "Usable on non-UR units bearing the above tag.\nAn SP conversion item that boosts stats and raises Max Level to 100."
+  },
+  {
+    "id": 150200240000021095,
     "value": "Usable on non-UR units bearing the above tag.\nAn SP conversion item that boosts stats and raises Max Level to 100."
   },
   {
@@ -13801,6 +13853,10 @@
   },
   {
     "id": 150200300000021055,
+    "value": "An item for performing SSP Conversion.\nUsable on non-UR units from the above tag. Performing SSP Conversion on units unlocks their Retrofit Level and Custom Core."
+  },
+  {
+    "id": 150200300000021095,
     "value": "An item for performing SSP Conversion.\nUsable on non-UR units from the above tag. Performing SSP Conversion on units unlocks their Retrofit Level and Custom Core."
   },
   {

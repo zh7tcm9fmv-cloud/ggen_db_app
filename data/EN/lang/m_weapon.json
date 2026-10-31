@@ -6232,6 +6232,22 @@
     "value": "Beam Cannon SSP"
   },
   {
+    "id": 120100109900055001,
+    "value": "Beam Naginata"
+  },
+  {
+    "id": 120100109900055002,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100109900055003,
+    "value": "Beam Cannon"
+  },
+  {
+    "id": 120100109900055004,
+    "value": "Beam Naginata EX"
+  },
+  {
     "id": 120100110000021001,
     "value": "Beam Saber"
   },
@@ -7114,6 +7130,26 @@
   {
     "id": 120100112500150090,
     "value": "Large-Caliber High Mega Particle Cannon SSP"
+  },
+  {
+    "id": 120100112500155001,
+    "value": "Arm Unit"
+  },
+  {
+    "id": 120100112500155002,
+    "value": "Large Wired Funnel Bit"
+  },
+  {
+    "id": 120100112500155003,
+    "value": "Large-Caliber High Mega Particle Cannon"
+  },
+  {
+    "id": 120100112500155004,
+    "value": "Large Wired Funnel Bit EX"
+  },
+  {
+    "id": 120100112500155005,
+    "value": "Large-Caliber High Mega Particle Cannon"
   },
   {
     "id": 120100112500160001,
@@ -22948,6 +22984,22 @@
     "value": "Gundnode"
   },
   {
+    "id": 120100151000010001,
+    "value": "Beam Saber (Dual Wield)"
+  },
+  {
+    "id": 120100151000010002,
+    "value": "Beam Rifle (Long Range)"
+  },
+  {
+    "id": 120100151000010003,
+    "value": "Beam Rifle (Long Range)"
+  },
+  {
+    "id": 120100151000010090,
+    "value": "Beam Rifle (Long Range) SSP"
+  },
+  {
     "id": 120100160000011001,
     "value": "Beam Saber"
   },
@@ -24522,6 +24574,26 @@
   {
     "id": 120100185000301090,
     "value": "Raketen Bazooka SSP"
+  },
+  {
+    "id": 120100185000310001,
+    "value": "Melee"
+  },
+  {
+    "id": 120100185000310002,
+    "value": "Mega Dark Flash"
+  },
+  {
+    "id": 120100185000310003,
+    "value": "Four Kings Bits"
+  },
+  {
+    "id": 120100185000310004,
+    "value": "Slave Control"
+  },
+  {
+    "id": 120100185000310090,
+    "value": "Four Kings Bits SSP"
   },
   {
     "id": 120100185000320001,

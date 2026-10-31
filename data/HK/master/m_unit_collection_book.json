@@ -3069,6 +3069,17 @@
     "KomaMovePositionY": 0
   },
   {
+    "Id": 9900003,
+    "DefaultUnitId": 1099000550,
+    "SortOrder": 9900003,
+    "SeriesId": 990,
+    "DescriptionLanguageId": 110200001099000550,
+    "ScheduleId": 2610509901,
+    "OverrideKomaSize": 0,
+    "KomaMovePositionX": 0,
+    "KomaMovePositionY": 0
+  },
+  {
     "Id": 10000001,
     "DefaultUnitId": 1100000210,
     "SortOrder": 10000001,
@@ -11341,6 +11352,17 @@
     "KomaMovePositionY": 0
   },
   {
+    "Id": 51000001,
+    "DefaultUnitId": 1510000100,
+    "SortOrder": 51000001,
+    "SeriesId": 5100,
+    "DescriptionLanguageId": 110200001510000100,
+    "ScheduleId": 2610509901,
+    "OverrideKomaSize": 0,
+    "KomaMovePositionX": 0,
+    "KomaMovePositionY": 0
+  },
+  {
     "Id": 60000001,
     "DefaultUnitId": 1600000110,
     "SortOrder": 60000001,
@@ -12241,5 +12263,16 @@
     "OverrideKomaSize": 0,
     "KomaMovePositionX": 0,
     "KomaMovePositionY": 0
+  },
+  {
+    "Id": 85000027,
+    "DefaultUnitId": 1850003100,
+    "SortOrder": 85000027,
+    "SeriesId": 8500,
+    "DescriptionLanguageId": 110200001850003100,
+    "ScheduleId": 2610509901,
+    "OverrideKomaSize": 0,
+    "KomaMovePositionX": 0,
+    "KomaMovePositionY": 15
   }
 ]

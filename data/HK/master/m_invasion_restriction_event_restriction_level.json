@@ -1,0 +1,366 @@
+[
+  {
+    "Id": 902000010102,
+    "InvasionRestrictionEventRestrictionId": 9020000101,
+    "Level": 1,
+    "TextLanguageId": 252900902000010102,
+    "Score": 3000
+  },
+  {
+    "Id": 902000010201,
+    "InvasionRestrictionEventRestrictionId": 9020000102,
+    "Level": 1,
+    "TextLanguageId": 252900902000010201,
+    "Score": 200
+  },
+  {
+    "Id": 902000010202,
+    "InvasionRestrictionEventRestrictionId": 9020000102,
+    "Level": 2,
+    "TextLanguageId": 252900902000010202,
+    "Score": 400
+  },
+  {
+    "Id": 902000010203,
+    "InvasionRestrictionEventRestrictionId": 9020000102,
+    "Level": 3,
+    "TextLanguageId": 252900902000010203,
+    "Score": 600
+  },
+  {
+    "Id": 902000010301,
+    "InvasionRestrictionEventRestrictionId": 9020000103,
+    "Level": 1,
+    "TextLanguageId": 252900902000010301,
+    "Score": 200
+  },
+  {
+    "Id": 902000010302,
+    "InvasionRestrictionEventRestrictionId": 9020000103,
+    "Level": 2,
+    "TextLanguageId": 252900902000010302,
+    "Score": 400
+  },
+  {
+    "Id": 902000010303,
+    "InvasionRestrictionEventRestrictionId": 9020000103,
+    "Level": 3,
+    "TextLanguageId": 252900902000010303,
+    "Score": 600
+  },
+  {
+    "Id": 902000010401,
+    "InvasionRestrictionEventRestrictionId": 9020000104,
+    "Level": 1,
+    "TextLanguageId": 252900902000010401,
+    "Score": 100
+  },
+  {
+    "Id": 902000010402,
+    "InvasionRestrictionEventRestrictionId": 9020000104,
+    "Level": 2,
+    "TextLanguageId": 252900902000010402,
+    "Score": 300
+  },
+  {
+    "Id": 902000010403,
+    "InvasionRestrictionEventRestrictionId": 9020000104,
+    "Level": 3,
+    "TextLanguageId": 252900902000010403,
+    "Score": 500
+  },
+  {
+    "Id": 902000010501,
+    "InvasionRestrictionEventRestrictionId": 9020000105,
+    "Level": 1,
+    "TextLanguageId": 252900902000010501,
+    "Score": 100
+  },
+  {
+    "Id": 902000010502,
+    "InvasionRestrictionEventRestrictionId": 9020000105,
+    "Level": 2,
+    "TextLanguageId": 252900902000010502,
+    "Score": 300
+  },
+  {
+    "Id": 902000010503,
+    "InvasionRestrictionEventRestrictionId": 9020000105,
+    "Level": 3,
+    "TextLanguageId": 252900902000010503,
+    "Score": 500
+  },
+  {
+    "Id": 902000010601,
+    "InvasionRestrictionEventRestrictionId": 9020000106,
+    "Level": 1,
+    "TextLanguageId": 252900902000010601,
+    "Score": 100
+  },
+  {
+    "Id": 902000010602,
+    "InvasionRestrictionEventRestrictionId": 9020000106,
+    "Level": 2,
+    "TextLanguageId": 252900902000010602,
+    "Score": 300
+  },
+  {
+    "Id": 902000010603,
+    "InvasionRestrictionEventRestrictionId": 9020000106,
+    "Level": 3,
+    "TextLanguageId": 252900902000010603,
+    "Score": 500
+  },
+  {
+    "Id": 902000010701,
+    "InvasionRestrictionEventRestrictionId": 9020000107,
+    "Level": 1,
+    "TextLanguageId": 252900902000010701,
+    "Score": 300
+  },
+  {
+    "Id": 902000010702,
+    "InvasionRestrictionEventRestrictionId": 9020000107,
+    "Level": 2,
+    "TextLanguageId": 252900902000010702,
+    "Score": 600
+  },
+  {
+    "Id": 902000010703,
+    "InvasionRestrictionEventRestrictionId": 9020000107,
+    "Level": 3,
+    "TextLanguageId": 252900902000010703,
+    "Score": 900
+  },
+  {
+    "Id": 902000010801,
+    "InvasionRestrictionEventRestrictionId": 9020000108,
+    "Level": 1,
+    "TextLanguageId": 252900902000010801,
+    "Score": 300
+  },
+  {
+    "Id": 902000010802,
+    "InvasionRestrictionEventRestrictionId": 9020000108,
+    "Level": 2,
+    "TextLanguageId": 252900902000010802,
+    "Score": 600
+  },
+  {
+    "Id": 902000010901,
+    "InvasionRestrictionEventRestrictionId": 9020000109,
+    "Level": 1,
+    "TextLanguageId": 252900902000010901,
+    "Score": 300
+  },
+  {
+    "Id": 902000010902,
+    "InvasionRestrictionEventRestrictionId": 9020000109,
+    "Level": 2,
+    "TextLanguageId": 252900902000010902,
+    "Score": 600
+  },
+  {
+    "Id": 902000011001,
+    "InvasionRestrictionEventRestrictionId": 9020000110,
+    "Level": 1,
+    "TextLanguageId": 252900902000011001,
+    "Score": 500
+  },
+  {
+    "Id": 902000011002,
+    "InvasionRestrictionEventRestrictionId": 9020000110,
+    "Level": 2,
+    "TextLanguageId": 252900902000011002,
+    "Score": 1000
+  },
+  {
+    "Id": 902000011101,
+    "InvasionRestrictionEventRestrictionId": 9020000111,
+    "Level": 1,
+    "TextLanguageId": 252900902000011101,
+    "Score": 300
+  },
+  {
+    "Id": 902000011102,
+    "InvasionRestrictionEventRestrictionId": 9020000111,
+    "Level": 2,
+    "TextLanguageId": 252900902000011102,
+    "Score": 600
+  },
+  {
+    "Id": 902000011103,
+    "InvasionRestrictionEventRestrictionId": 9020000111,
+    "Level": 3,
+    "TextLanguageId": 252900902000011103,
+    "Score": 1200
+  },
+  {
+    "Id": 902000011201,
+    "InvasionRestrictionEventRestrictionId": 9020000112,
+    "Level": 1,
+    "TextLanguageId": 252900902000011201,
+    "Score": 150
+  },
+  {
+    "Id": 902000011202,
+    "InvasionRestrictionEventRestrictionId": 9020000112,
+    "Level": 2,
+    "TextLanguageId": 252900902000011202,
+    "Score": 300
+  },
+  {
+    "Id": 902000011203,
+    "InvasionRestrictionEventRestrictionId": 9020000112,
+    "Level": 3,
+    "TextLanguageId": 252900902000011203,
+    "Score": 600
+  },
+  {
+    "Id": 902000011301,
+    "InvasionRestrictionEventRestrictionId": 9020000113,
+    "Level": 1,
+    "TextLanguageId": 252900902000011301,
+    "Score": 150
+  },
+  {
+    "Id": 902000011302,
+    "InvasionRestrictionEventRestrictionId": 9020000113,
+    "Level": 2,
+    "TextLanguageId": 252900902000011302,
+    "Score": 300
+  },
+  {
+    "Id": 902000011303,
+    "InvasionRestrictionEventRestrictionId": 9020000113,
+    "Level": 3,
+    "TextLanguageId": 252900902000011303,
+    "Score": 600
+  },
+  {
+    "Id": 902000011501,
+    "InvasionRestrictionEventRestrictionId": 9020000115,
+    "Level": 1,
+    "TextLanguageId": 252900902000011501,
+    "Score": 400
+  },
+  {
+    "Id": 902000011502,
+    "InvasionRestrictionEventRestrictionId": 9020000115,
+    "Level": 2,
+    "TextLanguageId": 252900902000011502,
+    "Score": 800
+  },
+  {
+    "Id": 902000011503,
+    "InvasionRestrictionEventRestrictionId": 9020000115,
+    "Level": 3,
+    "TextLanguageId": 252900902000011503,
+    "Score": 1600
+  },
+  {
+    "Id": 902000011601,
+    "InvasionRestrictionEventRestrictionId": 9020000116,
+    "Level": 1,
+    "TextLanguageId": 252900902000011601,
+    "Score": 200
+  },
+  {
+    "Id": 902000011602,
+    "InvasionRestrictionEventRestrictionId": 9020000116,
+    "Level": 2,
+    "TextLanguageId": 252900902000011602,
+    "Score": 600
+  },
+  {
+    "Id": 902000011603,
+    "InvasionRestrictionEventRestrictionId": 9020000116,
+    "Level": 3,
+    "TextLanguageId": 252900902000011603,
+    "Score": 1000
+  },
+  {
+    "Id": 902000011701,
+    "InvasionRestrictionEventRestrictionId": 9020000117,
+    "Level": 1,
+    "TextLanguageId": 252900902000011701,
+    "Score": 100
+  },
+  {
+    "Id": 902000011702,
+    "InvasionRestrictionEventRestrictionId": 9020000117,
+    "Level": 2,
+    "TextLanguageId": 252900902000011702,
+    "Score": 300
+  },
+  {
+    "Id": 902000011703,
+    "InvasionRestrictionEventRestrictionId": 9020000117,
+    "Level": 3,
+    "TextLanguageId": 252900902000011703,
+    "Score": 500
+  },
+  {
+    "Id": 902000011801,
+    "InvasionRestrictionEventRestrictionId": 9020000118,
+    "Level": 1,
+    "TextLanguageId": 252900902000011801,
+    "Score": 300
+  },
+  {
+    "Id": 902000011802,
+    "InvasionRestrictionEventRestrictionId": 9020000118,
+    "Level": 2,
+    "TextLanguageId": 252900902000011802,
+    "Score": 600
+  },
+  {
+    "Id": 902000011803,
+    "InvasionRestrictionEventRestrictionId": 9020000118,
+    "Level": 3,
+    "TextLanguageId": 252900902000011803,
+    "Score": 1200
+  },
+  {
+    "Id": 902000011901,
+    "InvasionRestrictionEventRestrictionId": 9020000119,
+    "Level": 1,
+    "TextLanguageId": 252900902000011901,
+    "Score": 200
+  },
+  {
+    "Id": 902000011902,
+    "InvasionRestrictionEventRestrictionId": 9020000119,
+    "Level": 2,
+    "TextLanguageId": 252900902000011902,
+    "Score": 600
+  },
+  {
+    "Id": 902000011903,
+    "InvasionRestrictionEventRestrictionId": 9020000119,
+    "Level": 3,
+    "TextLanguageId": 252900902000011903,
+    "Score": 1000
+  },
+  {
+    "Id": 902000012003,
+    "InvasionRestrictionEventRestrictionId": 9020000120,
+    "Level": 1,
+    "TextLanguageId": 252900902000012003,
+    "Score": 400
+  },
+  {
+    "Id": 902000012102,
+    "InvasionRestrictionEventRestrictionId": 9020000121,
+    "Level": 1,
+    "TextLanguageId": 252900902000012102,
+    "Score": 400
+  },
+  {
+    "Id": 902000012302,
+    "InvasionRestrictionEventRestrictionId": 9020000123,
+    "Level": 1,
+    "TextLanguageId": 252900902000012302,
+    "Score": 200
+  }
+]

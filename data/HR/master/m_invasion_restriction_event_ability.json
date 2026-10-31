@@ -1,0 +1,58 @@
+[
+  {
+    "Id": 902000010501,
+    "MapNpcId": 902400000102000012,
+    "BeforeAbilityId": 6102303,
+    "AfterAbilityId": 6103603,
+    "SortOrder": 2
+  },
+  {
+    "Id": 902000010502,
+    "MapNpcId": 902400000102000012,
+    "BeforeAbilityId": 6102303,
+    "AfterAbilityId": 6108203,
+    "SortOrder": 2
+  },
+  {
+    "Id": 902000010503,
+    "MapNpcId": 902400000102000012,
+    "BeforeAbilityId": 6102303,
+    "AfterAbilityId": 6117403,
+    "SortOrder": 2
+  },
+  {
+    "Id": 902000010504,
+    "MapNpcId": 902400000102000018,
+    "BeforeAbilityId": 6101702,
+    "AfterAbilityId": 6101703,
+    "SortOrder": 1
+  },
+  {
+    "Id": 902000010505,
+    "MapNpcId": 902400000102000018,
+    "BeforeAbilityId": 6101702,
+    "AfterAbilityId": 6101705,
+    "SortOrder": 1
+  },
+  {
+    "Id": 902000010506,
+    "MapNpcId": 902400000102000018,
+    "BeforeAbilityId": 6101702,
+    "AfterAbilityId": 6101707,
+    "SortOrder": 1
+  },
+  {
+    "Id": 902000010507,
+    "MapNpcId": 902400000102000012,
+    "BeforeAbilityId": 0,
+    "AfterAbilityId": 6124801,
+    "SortOrder": 10
+  },
+  {
+    "Id": 902000010508,
+    "MapNpcId": 902400000102000018,
+    "BeforeAbilityId": 0,
+    "AfterAbilityId": 6124701,
+    "SortOrder": 10
+  }
+]

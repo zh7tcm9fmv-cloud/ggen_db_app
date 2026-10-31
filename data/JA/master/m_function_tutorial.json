@@ -106,5 +106,11 @@
     "FunctionTutorialTypeIndex": 18,
     "FunctionTutorialContentSetId": 0,
     "SortOrder": 18
+  },
+  {
+    "Id": 2801,
+    "FunctionTutorialTypeIndex": 19,
+    "FunctionTutorialContentSetId": 0,
+    "SortOrder": 20
   }
 ]

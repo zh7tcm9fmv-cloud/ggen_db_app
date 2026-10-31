@@ -414,5 +414,21 @@
     "HomeBannerLanguageId": 180500026103001102,
     "InformationId": 2026101601,
     "TabResourceId": "pm_banner_261030011"
+  },
+  {
+    "Id": 261050011,
+    "NameLanguageId": 180500026105001101,
+    "DescriptionLanguageId": 180600000261050011,
+    "FullCompleteRewardResourceId": "pm_c_banner_261050011",
+    "AvailableScheduleId": 2610502701,
+    "ReceivableScheduleId": 2610502702,
+    "RewardSetId": 0,
+    "TabNameLanguageId": 180500026105001102,
+    "PanelMissionGroupSetId": 261050011,
+    "SortOrder": 990,
+    "HomeBannerResourceId": "thum_panel_mission_261050011",
+    "HomeBannerLanguageId": 180500026105001102,
+    "InformationId": 2026103102,
+    "TabResourceId": "pm_banner_261050011"
   }
 ]

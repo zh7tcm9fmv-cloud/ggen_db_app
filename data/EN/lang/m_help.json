@@ -65,7 +65,7 @@
   },
   {
     "id": 170200000001011051,
-    "value": "Weapon Attributes"
+    "value": "Weapon Attributes and Weapon Types"
   },
   {
     "id": 170200000001011061,
@@ -465,7 +465,7 @@
   },
   {
     "id": 170300000001011051,
-    "value": "Each weapon has at least one of three attributes: Beam, Physical, and Special.\n\nEX Weapons possess various attributes such as Beam, Physical, and Special.\nAbilities that reduce damage from specific weapon attributes do not affect EX Weapons.\n\nSome weapons may have usage restrictions based on the conditions.\nYou can check these restrictions in the weapon details."
+    "value": "Each weapon is assigned both a Weapon Attribute and a Weapon Type. Weapon Attributes are either Beam, Physical, or Special, while Weapon Types are either Ranged, Melee, or Awaken.\n\nEX Weapons possess multiple attributes from among Beam, Physical, and Special.\nThey also possess all types—Ranged, Melee, and Awaken.\nDamage dealt by EX Weapons is not affected by abilities that reduce damage from specific Weapon Attributes or Weapon Types.\n\nSome weapons may have usage restrictions based on the conditions.\nYou can check these restrictions in the weapon details."
   },
   {
     "id": 170300000001011061,
@@ -477,7 +477,7 @@
   },
   {
     "id": 170300000001011081,
-    "value": "Unit Abilities are unique effects that units possess."
+    "value": "Unit Abilities are unique effects that units possess.\n\nSome abilities increase stats, while others impair enemies.\nCertain abilities also only take effect under specific conditions.\n\n*Stacking Rules for Cond: Area Abilities\nCond: Area abilities with the same effect do not stack. \nThe effect with the higher value takes precedence, and its duration also applies."
   },
   {
     "id": 170300000001011085,

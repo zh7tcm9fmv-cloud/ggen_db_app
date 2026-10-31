@@ -372,6 +372,10 @@
     "value": "Take on Giant Psycho Golem by first lowering its stats with\nthe guest forces' Full Armor Knight Gundam's Arrow of Light."
   },
   {
+    "id": 170800000000510010,
+    "value": "You will lose if the specified number of your units are defeated.\nMove low-HP units to the rear to keep them out of danger."
+  },
+  {
     "id": 170800000000520101,
     "value": "Some weapons can inflict harmful effects on the enemy. Start by assessing \nthe enemy MAP Weapon's range, then move the Units who can inflict effects on the enemy out of its way!"
   },
@@ -598,6 +602,26 @@
   {
     "id": 170800000000910005,
     "value": "Clear the highest unit of the group at each level to unlock the next group.\nUnlock a group with a fierce enemy to unlock the group at that difficulty for all fierce enemies."
+  },
+  {
+    "id": 170800000000910301,
+    "value": "A new mode for Fierce Enemy Assault. Combine Special Ops and take on fierce enemies with\nyour own custom settings. The more you play, the more exclusive rewards you'll earn."
+  },
+  {
+    "id": 170800000000910302,
+    "value": "Special Ops are special conditions you can set for battles.\nCombine them to achieve even higher scores."
+  },
+  {
+    "id": 170800000000910303,
+    "value": "You can earn Score Mission rewards based on your best score.\nKeep pushing for a higher and higher score."
+  },
+  {
+    "id": 170800000000910304,
+    "value": "Whenever an event is held, you can take on fierce enemies from past events\nin Special Ops Mode, just as in Normal Mode."
+  },
+  {
+    "id": 170800000000910305,
+    "value": "When you first play Special Ops Mode, only certain Special Ops will be available.\nBy reaching target scores, you can unlock new Specials Ops."
   },
   {
     "id": 170800000000920001,

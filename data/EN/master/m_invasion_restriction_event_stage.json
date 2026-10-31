@@ -1,0 +1,12 @@
+[
+  {
+    "Id": 90240001,
+    "InvasionEventStageGroupId": 90200001,
+    "Priority": 200,
+    "StageId": 90240001,
+    "UnitId": 1055000260,
+    "ReleaseConditionClearLevel": 12,
+    "ProfileAchievementRecordId": 5,
+    "RestrictionReleaseConditionScore": 4500
+  }
+]

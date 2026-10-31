@@ -6335,6 +6335,11 @@
     "AfterWeaponId": 150100391090
   },
   {
+    "Id": 151000010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 151000010090
+  },
+  {
     "Id": 160000011001,
     "BeforeWeaponId": 0,
     "AfterWeaponId": 160000011090
@@ -6688,6 +6693,11 @@
     "Id": 185000301001,
     "BeforeWeaponId": 0,
     "AfterWeaponId": 185000301090
+  },
+  {
+    "Id": 185000310001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 185000310090
   },
   {
     "Id": 185000531001,

@@ -1,0 +1,170 @@
+[
+  {
+    "id": 251800009020000101,
+    "value": "Change Victory Conditions"
+  },
+  {
+    "id": 251800009020000102,
+    "value": "Fewer Turns Until Defeat"
+  },
+  {
+    "id": 251800009020000103,
+    "value": "Add Destruction of Your Forces as a Defeat Condition"
+  },
+  {
+    "id": 251800009020000104,
+    "value": "Include Red-Tagged Units in Your Formation"
+  },
+  {
+    "id": 251800009020000105,
+    "value": "Include Lightning-Fast-Tagged Units in Your Formation"
+  },
+  {
+    "id": 251800009020000106,
+    "value": "Include Mobile Suit Gundam-Series Units in Your Formation"
+  },
+  {
+    "id": 251800009020000107,
+    "value": "Include Fierce Enemy Assault-Tagged Units in Your Formation"
+  },
+  {
+    "id": 251800009020000108,
+    "value": "Fewer Formation Slots for Squad 1"
+  },
+  {
+    "id": 251800009020000109,
+    "value": "Fewer Formation Slots for Squad 2"
+  },
+  {
+    "id": 251800009020000110,
+    "value": "Decreased Movement Range for Own Forces"
+  },
+  {
+    "id": 251800009020000111,
+    "value": "Increased ATK for All Enemy Forces"
+  },
+  {
+    "id": 251800009020000112,
+    "value": "Increased DEF for All Enemy Forces"
+  },
+  {
+    "id": 251800009020000113,
+    "value": "Increased Max HP for All Enemy Forces"
+  },
+  {
+    "id": 251800009020000115,
+    "value": "All Stats Increased for Enemy Force's Red Gundam(0085) (Excluding EN/MOV)"
+  },
+  {
+    "id": 251800009020000116,
+    "value": "Increased Weapon Max Range for Enemy Force's Red Gundam(0085)"
+  },
+  {
+    "id": 251800009020000117,
+    "value": "Increased Support Attacks / Counter Supports for Enemy Force's Red Gundam(0085)"
+  },
+  {
+    "id": 251800009020000118,
+    "value": "All Stats Increased for Enemy Force's GQuuuuuuX (Omega Psycommu) (Excluding EN/MOV)"
+  },
+  {
+    "id": 251800009020000119,
+    "value": "More Guaranteed Chance Steps for Enemy Force's GQuuuuuuX (Omega Psycommu)"
+  },
+  {
+    "id": 251800009020000120,
+    "value": "(Cond: Defeat) Increased ATK Ability Granted to Enemy Force's Red Gundam(0085) & GQuuuuuuX (Omega Psycommu)"
+  },
+  {
+    "id": 251800009020000121,
+    "value": "Additional Enemy Gundam(GQ) Appears"
+  },
+  {
+    "id": 251800009020000123,
+    "value": "Increased Ranged Weapon Max Range for Enemy/Your Zaku-Tagged Units"
+  },
+  {
+    "id": 251900009020000101,
+    "value": "Change victory conditions from \"Defeat Red Gundam(0085)\" to the specified conditions."
+  },
+  {
+    "id": 251900009020000102,
+    "value": "Reduce turns of the \"Defeat after 5 turns\" condition by the specified number."
+  },
+  {
+    "id": 251900009020000103,
+    "value": "Add \"You will be defeated after specified number of your units are defeated\" as a condition."
+  },
+  {
+    "id": 251900009020000104,
+    "value": "Clear with at least the specified number of Red-tagged units in your formation."
+  },
+  {
+    "id": 251900009020000105,
+    "value": "Clear with at least the specified number of Lightning-Fast-tagged units in your formation."
+  },
+  {
+    "id": 251900009020000106,
+    "value": "Clear with at least the specified number of Mobile Suit Gundam-series units in your formation."
+  },
+  {
+    "id": 251900009020000107,
+    "value": "Clear with at least the specified number of Fierce Enemy Assault-tagged units in your formation."
+  },
+  {
+    "id": 251900009020000108,
+    "value": "Reduce how many units/characters can be assigned to Squad 1 by the specified number."
+  },
+  {
+    "id": 251900009020000109,
+    "value": "Reduce how many units/characters can be assigned to Squad 2 by the specified number."
+  },
+  {
+    "id": 251900009020000110,
+    "value": "Decreases the number of movable spaces by the specified amount. If the number of movable spaces is reduced to 0, your units can still move 1 space. In this case, using skills or abilities that increase MOV will not increase the number of movable spaces."
+  },
+  {
+    "id": 251900009020000111,
+    "value": "Increase ATK for all enemy forces by the specified percentage."
+  },
+  {
+    "id": 251900009020000112,
+    "value": "Increase DEF for all enemy forces by the specified percentage."
+  },
+  {
+    "id": 251900009020000113,
+    "value": "Increase Max HP for all enemy forces by the specified percentage."
+  },
+  {
+    "id": 251900009020000115,
+    "value": "Increase all stats of enemy force's Red Gundam(0085) by the specified percentage, except EN/MOV. MOB increases by half the specified percentage."
+  },
+  {
+    "id": 251900009020000116,
+    "value": "Increase max range of weapons for enemy force's Red Gundam(0085) by the specified number."
+  },
+  {
+    "id": 251900009020000117,
+    "value": "Increase the number of Support Attacks / Counter Supports for enemy force's Red Gundam(0085) by the specified number."
+  },
+  {
+    "id": 251900009020000118,
+    "value": "Increase all stats of enemy force's GQuuuuuuX (Omega Psycommu) by the specified percentage, except EN/MOV. MOB increases by half the specified percentage."
+  },
+  {
+    "id": 251900009020000119,
+    "value": "Increase the number of Chance Steps for enemy force's GQuuuuuuX (Omega Psycommu) by the specified number."
+  },
+  {
+    "id": 251900009020000120,
+    "value": "Grant \"(Cond: Defeat) Increased ATK\" to enemy force's Red Gundam(0085) and GQuuuuuuX (Omega Psycommu)."
+  },
+  {
+    "id": 251900009020000121,
+    "value": "Gundam(GQ) and Char Aznable (GQ) appear as enemies."
+  },
+  {
+    "id": 251900009020000123,
+    "value": "Increase max range of ranged weapons for all enemy/your Zaku-tagged units."
+  }
+]

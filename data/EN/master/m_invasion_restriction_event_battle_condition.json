@@ -1,0 +1,58 @@
+[
+  {
+    "Id": 902000010201,
+    "BattleConditionSetId": 902000010201,
+    "PresetTypeIndex": 1,
+    "Value": "0",
+    "VictoryLanguageId": 252000902000010201,
+    "VictoryShortConditionSentenceLanguageId": 252100902000010201
+  },
+  {
+    "Id": 902000010202,
+    "BattleConditionSetId": 902000010202,
+    "PresetTypeIndex": 2,
+    "Value": "4",
+    "VictoryLanguageId": 0,
+    "VictoryShortConditionSentenceLanguageId": 0
+  },
+  {
+    "Id": 902000010203,
+    "BattleConditionSetId": 902000010203,
+    "PresetTypeIndex": 2,
+    "Value": "3",
+    "VictoryLanguageId": 0,
+    "VictoryShortConditionSentenceLanguageId": 0
+  },
+  {
+    "Id": 902000010204,
+    "BattleConditionSetId": 902000010204,
+    "PresetTypeIndex": 2,
+    "Value": "2",
+    "VictoryLanguageId": 0,
+    "VictoryShortConditionSentenceLanguageId": 0
+  },
+  {
+    "Id": 902000010205,
+    "BattleConditionSetId": 902000010205,
+    "PresetTypeIndex": 3,
+    "Value": "3",
+    "VictoryLanguageId": 0,
+    "VictoryShortConditionSentenceLanguageId": 0
+  },
+  {
+    "Id": 902000010206,
+    "BattleConditionSetId": 902000010206,
+    "PresetTypeIndex": 3,
+    "Value": "2",
+    "VictoryLanguageId": 0,
+    "VictoryShortConditionSentenceLanguageId": 0
+  },
+  {
+    "Id": 902000010207,
+    "BattleConditionSetId": 902000010207,
+    "PresetTypeIndex": 3,
+    "Value": "1",
+    "VictoryLanguageId": 0,
+    "VictoryShortConditionSentenceLanguageId": 0
+  }
+]

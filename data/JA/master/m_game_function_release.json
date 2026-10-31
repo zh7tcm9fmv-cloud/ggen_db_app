@@ -198,5 +198,10 @@
     "GameFunctionReleaseGroupId": 130,
     "GameFunctionTypeIndex": 40,
     "ReleaseScheduleId": 1000000001
+  },
+  {
+    "GameFunctionReleaseGroupId": 131,
+    "GameFunctionTypeIndex": 43,
+    "ReleaseScheduleId": 0
   }
 ]

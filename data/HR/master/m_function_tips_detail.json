@@ -475,6 +475,11 @@
     "ImageResourceId": "tips_510009"
   },
   {
+    "Id": 510010,
+    "ContentLanguageId": 170800000000510010,
+    "ImageResourceId": "tips_510010"
+  },
+  {
     "Id": 520101,
     "ContentLanguageId": 170800000000520101,
     "ImageResourceId": "tips_520301"
@@ -763,6 +768,31 @@
     "Id": 910005,
     "ContentLanguageId": 170800000000910005,
     "ImageResourceId": "tips_910005"
+  },
+  {
+    "Id": 910301,
+    "ContentLanguageId": 170800000000910301,
+    "ImageResourceId": "tips_910301"
+  },
+  {
+    "Id": 910302,
+    "ContentLanguageId": 170800000000910302,
+    "ImageResourceId": "tips_910302"
+  },
+  {
+    "Id": 910303,
+    "ContentLanguageId": 170800000000910303,
+    "ImageResourceId": "tips_910303"
+  },
+  {
+    "Id": 910304,
+    "ContentLanguageId": 170800000000910304,
+    "ImageResourceId": "tips_910304"
+  },
+  {
+    "Id": 910305,
+    "ContentLanguageId": 170800000000910305,
+    "ImageResourceId": "tips_910305"
   },
   {
     "Id": 920101,

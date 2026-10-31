@@ -26,5 +26,19 @@
     "ForceNumber": 1,
     "DirectionTypeIndex": 1,
     "LeagueStageInitialPositionGroupId": 12
+  },
+  {
+    "Id": 3,
+    "PlayerSideTypeIndex": 1,
+    "ForceNumber": 1,
+    "DirectionTypeIndex": 3,
+    "LeagueStageInitialPositionGroupId": 31
+  },
+  {
+    "Id": 3,
+    "PlayerSideTypeIndex": 2,
+    "ForceNumber": 1,
+    "DirectionTypeIndex": 1,
+    "LeagueStageInitialPositionGroupId": 32
   }
 ]

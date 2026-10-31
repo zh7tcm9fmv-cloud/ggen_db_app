@@ -1,7 +1,15 @@
 [
   {
+    "id": 141300109900055000,
+    "value": "Unit Skill [Char Aznable's Dijeh (EX)]"
+  },
+  {
     "id": 141300111400045000,
     "value": "Unit Skill [Nu Gundam (Double Fin Funnels) (EX)]"
+  },
+  {
+    "id": 141300112500155000,
+    "value": "Unit Skill [Neo Zeong (EX)]"
   },
   {
     "id": 141300114400055000,
@@ -60,8 +68,16 @@
     "value": "Unit Skill [MP Up]"
   },
   {
+    "id": 141400109900055000,
+    "value": "Grant \"Preemptive Strike\" to own melee weapon (1 turn(s)).\nIncrease MOB by 15% (1 turn(s)). Once per battle."
+  },
+  {
     "id": 141400111400045000,
     "value": "Applies to self and 1 ally within range.\nGrants a barrier that absorbs damage up to 20% of this unit's Max HP.\n(Once per battle)"
+  },
+  {
+    "id": 141400112500155000,
+    "value": "Increase ATK by 25%(1 turn(s)).\nIncrease DEF by 15%(1 turn(s)).\n(Once per battle)"
   },
   {
     "id": 141400114400055000,

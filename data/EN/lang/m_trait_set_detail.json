@@ -2248,6 +2248,18 @@
     "value": "(Cond: Combat - Count) Increased ATK"
   },
   {
+    "id": 140100000101840201,
+    "value": "(Cond: Area) Inflict \"Decreased Beam & Physical Ranged Weapon Power\" LV 2"
+  },
+  {
+    "id": 140100000101860201,
+    "value": "(Cond: EN) Increased ATK & Increased EN Cost LV 2"
+  },
+  {
+    "id": 140100000101880101,
+    "value": "(Cond: Vigor) Increased Support Defense Range LV 1"
+  },
+  {
     "id": 140100000200010101,
     "value": "Increased Melee LV 1"
   },
@@ -5466,6 +5478,18 @@
   {
     "id": 140100000203100112,
     "value": "MP Lock (1 turn(s))"
+  },
+  {
+    "id": 140100000203110100,
+    "value": "EX Character Ability"
+  },
+  {
+    "id": 140100000203120100,
+    "value": "EX Character Ability"
+  },
+  {
+    "id": 140100000203310101,
+    "value": "(Cond: Series) Support Defense LV 1"
   },
   {
     "id": 140100000300010101,
@@ -11284,6 +11308,14 @@
     "value": "Limiter OFF SR (Gundam Side Story 0079: Rise from the Ashes)"
   },
   {
+    "id": 140100000407190100,
+    "value": "Limiter OFF SR (Fierce Enemy Assault)"
+  },
+  {
+    "id": 140100000407200100,
+    "value": "Reinforced Armor SSR (Fierce Enemy Assault)"
+  },
+  {
     "id": 140100000510010101,
     "value": "Increased ATK LV 1"
   },
@@ -12712,6 +12744,86 @@
     "value": "Revival"
   },
   {
+    "id": 140100000511390101,
+    "value": "Increased ATK (All Units) LV 1"
+  },
+  {
+    "id": 140100000511390201,
+    "value": "Increased ATK (All Units) LV 2"
+  },
+  {
+    "id": 140100000511390301,
+    "value": "Increased ATK (All Units) LV 3"
+  },
+  {
+    "id": 140100000511390401,
+    "value": "Increased ATK (All Units) LV 4"
+  },
+  {
+    "id": 140100000511390501,
+    "value": "Increased ATK (All Units) LV 5"
+  },
+  {
+    "id": 140100000511390601,
+    "value": "Increased ATK (All Units) LV 6"
+  },
+  {
+    "id": 140100000511400101,
+    "value": "Increased DEF (All Units) LV 1"
+  },
+  {
+    "id": 140100000511400201,
+    "value": "Increased DEF (All Units) LV 2"
+  },
+  {
+    "id": 140100000511400301,
+    "value": "Increased DEF (All Units) LV 3"
+  },
+  {
+    "id": 140100000511400401,
+    "value": "Increased DEF (All Units) LV 4"
+  },
+  {
+    "id": 140100000511400501,
+    "value": "Increased DEF (All Units) LV 5"
+  },
+  {
+    "id": 140100000511400601,
+    "value": "Increased DEF (All Units) LV 6"
+  },
+  {
+    "id": 140100000511430201,
+    "value": "MOV Down (All Units) LV 1"
+  },
+  {
+    "id": 140100000511430301,
+    "value": "MOV Down (All Units) LV 2"
+  },
+  {
+    "id": 140100000511440101,
+    "value": "Increased Max HP, ATK, DEF & MOB LV 1"
+  },
+  {
+    "id": 140100000511440201,
+    "value": "Increased Max HP, ATK, DEF & MOB LV 2"
+  },
+  {
+    "id": 140100000511440401,
+    "value": "Increased Max HP, ATK, DEF & MOB LV 4"
+  },
+  {
+    "id": 140100000511460101,
+    "value": "Increased Weapon Max Range LV 1"
+  },
+  {
+    "id": 140100000511460301,
+    "value": "Increased Weapon Max Range LV 3"
+  },
+  {
+    "id": 140100000511460501,
+    "value": "Increased Weapon Max Range LV 5"
+  },
+  {
     "id": 140100000511490101,
     "value": "Limit Damage Taken (max 150000 damage)"
   },
@@ -12790,6 +12902,18 @@
   {
     "id": 140100000511610101,
     "value": "(Cond: Defeat) Re-sortie"
+  },
+  {
+    "id": 140100000511680101,
+    "value": "Increased Max HP (All Units) LV 1"
+  },
+  {
+    "id": 140100000511680201,
+    "value": "Increased Max HP (All Units) LV 2"
+  },
+  {
+    "id": 140100000511680401,
+    "value": "Increased Max HP (All Units) LV 4"
   },
   {
     "id": 140100000530010100,
@@ -13464,6 +13588,10 @@
     "value": "Guaranteed Chance Step LV 5"
   },
   {
+    "id": 140100000610170700,
+    "value": "Guaranteed Chance Step LV 7"
+  },
+  {
     "id": 140100000610180101,
     "value": "Support Defense"
   },
@@ -13738,6 +13866,10 @@
   {
     "id": 140100000610351100,
     "value": "Support Defense LV 10"
+  },
+  {
+    "id": 140100000610360300,
+    "value": "Support Attack / Counter Support LV 2"
   },
   {
     "id": 140100000610370101,
@@ -14408,6 +14540,10 @@
     "value": "(Cond: Vigor) Reduced Weapon EN Consumption"
   },
   {
+    "id": 140100000611740300,
+    "value": "Support Attack / Counter Support LV 2"
+  },
+  {
     "id": 140100000611760101,
     "value": "Support Attack / Counter Support "
   },
@@ -14736,6 +14872,14 @@
     "value": "Increased ATK"
   },
   {
+    "id": 140100000612470101,
+    "value": "(Cond: Defeat) Increased ATK"
+  },
+  {
+    "id": 140100000612480101,
+    "value": "(Cond: Defeat) Increased ATK"
+  },
+  {
     "id": 140100000612490101,
     "value": "(Cond: Character) Increased DEF"
   },
@@ -14854,6 +14998,10 @@
   {
     "id": 140100000612630111,
     "value": "Decreased MP"
+  },
+  {
+    "id": 140100000612640101,
+    "value": "(Character conditions) Increased DEF"
   },
   {
     "id": 140100000612920101,
@@ -15954,5 +16102,9 @@
   {
     "id": 140100000710250601,
     "value": "Increased MP LV 6"
+  },
+  {
+    "id": 140300000101840201,
+    "value": "Inflict \"Decrease Beam & Physical Ranged Weapon Power by 20%\" on all enemies 1-4 spaces from this unit."
   }
 ]

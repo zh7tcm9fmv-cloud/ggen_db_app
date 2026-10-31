@@ -192,6 +192,18 @@
     "TargetCountLteThreshold": 0
   },
   {
+    "Id": 1125000550,
+    "SupporterActiveSkillTraitId": 1125000550,
+    "TraitConditionSetId": 1000686,
+    "TargetCountLteThreshold": 0
+  },
+  {
+    "Id": 1125000551,
+    "SupporterActiveSkillTraitId": 1125000551,
+    "TraitConditionSetId": 1000686,
+    "TargetCountLteThreshold": 2
+  },
+  {
     "Id": 1144000150,
     "SupporterActiveSkillTraitId": 1144000150,
     "TraitConditionSetId": 0,
