@@ -11782,7 +11782,7 @@ _activeSkills:S.dc._activeSkills||{},
 mpLevel:S.dc.mpLevel||'medium',
 terrainMode:S.dc.terrainMode||'normal',terrain:S.dc.terrain||0,
 finalWpnPow:S.dc.finalWpnPow||0,dmgIncrease:S.dc.dmgIncrease||0,critDmgUp:S.dc.critDmgUp||0,exSquadAtkPct:S.dc.exSquadAtkPct||0,exSquadAtkPctExplicitZero:!!S.dc.exSquadAtkPctExplicitZero,squadCondPct:S.dc.squadCondPct||0,atkCounterOwnAtk:!!S.dc.atkCounterOwnAtk,supportCounterAtk:!!S.dc.supportCounterAtk,_supportCounterAtkPct:S.dc._supportCounterAtkPct|0,supportCntPairSnap:(function(){const m=S.dc._supportCntAtkPairSnapBySlot;if(!m)return null;const i=Math.min(Math.max(S.dc.atkSlotIndex|0,0),DC_ATK_SLOT_COUNT-1);const v=m[i];return v?String(v):null})(),applyAdvantageEnemyTag:S.dc.applyAdvantageEnemyTag!==false,applyZeonEnemyTag:S.dc.applyZeonEnemyTag!==false,
-unitTurnBuffAtk:!!S.dc.unitTurnBuffAtk,unitTurnBuffDef:!!S.dc.unitTurnBuffDef,
+unitTurnBuffAtk:!!(S.dc.unitTurnBuffAtk||S.dc.unitTurnBuffDef),unitTurnBuffDef:!!(S.dc.unitTurnBuffAtk||S.dc.unitTurnBuffDef),
 masterLeagueBuff:!!S.dc.masterLeagueBuff,
 grandOffensiveBuff:!!S.dc.grandOffensiveBuff,
 bigRangZeonSquadBuff:!!S.dc.bigRangZeonSquadBuff,
@@ -11812,7 +11812,7 @@ S.dc.mpLevel=_dcNormMpLevel(slot.mpLevel);
 S.dc.terrainMode=slot.terrainMode||'normal';S.dc.terrain=slot.terrain||0;
 S.dc.finalWpnPow=slot.finalWpnPow||0;S.dc.dmgIncrease=slot.dmgIncrease||0;S.dc.critDmgUp=slot.critDmgUp||0;S.dc.exSquadAtkPct=slot.exSquadAtkPct||0;S.dc.exSquadAtkPctExplicitZero=!!slot.exSquadAtkPctExplicitZero;S.dc.squadCondPct=slot.squadCondPct|0;S.dc.atkCounterOwnAtk=!!slot.atkCounterOwnAtk;S.dc.supportCounterAtk=!!slot.supportCounterAtk;{const _cdw=slot.atkCharData,_udw=slot.atkUnitData;let _scp=0;if(_cdw&&!_cdw._manual){const _fr=_dcParseMaxSupportCounterAtkPctFromChar(_cdw,_udw)|0;_scp=_fr>0?_fr:(slot._supportCounterAtkPct|0)}S.dc._supportCounterAtkPct=_scp}{const wi=supportSnapSlotIdx!==undefined&&supportSnapSlotIdx!==null?Math.min(Math.max(supportSnapSlotIdx|0,0),DC_ATK_SLOT_COUNT-1):Math.min(Math.max(S.dc.atkSlotIndex|0,0),DC_ATK_SLOT_COUNT-1);if(!S.dc._supportCntAtkPairSnapBySlot)S.dc._supportCntAtkPairSnapBySlot={};const skProvided=slot&&Object.prototype.hasOwnProperty.call(slot,'supportCntPairSnap')&&slot.supportCntPairSnap!=null&&String(slot.supportCntPairSnap).trim()!=='';S.dc._supportCntAtkPairSnapBySlot[wi]=skProvided?String(slot.supportCntPairSnap):(_dcSupportCntEligiblePairSnap(slot.atkCharData,slot.atkUnitData)||null)}S.dc.applyAdvantageEnemyTag=slot.applyAdvantageEnemyTag!==false;
 S.dc.applyZeonEnemyTag=slot.applyZeonEnemyTag!==false;
-S.dc.unitTurnBuffAtk=!!slot.unitTurnBuffAtk;S.dc.unitTurnBuffDef=!!slot.unitTurnBuffDef;
+{const _ut=!!(slot.unitTurnBuffAtk||slot.unitTurnBuffDef);S.dc.unitTurnBuffAtk=_ut;S.dc.unitTurnBuffDef=_ut}
 S.dc.masterLeagueBuff=!!slot.masterLeagueBuff;
 S.dc.grandOffensiveBuff=!!slot.grandOffensiveBuff;
 S.dc.bigRangZeonSquadBuff=!!slot.bigRangZeonSquadBuff;
@@ -12784,8 +12784,8 @@ slot.unitCondPassive=_sacOn;
 slot.supportCounterAtk=_sacOn;
 }
 slot.supportCntPairSnap=_dcSupportCntEligiblePairSnap(slot.atkCharData,slot.atkUnitData)||null;
-if(o.uta)slot.unitTurnBuffAtk=true;
-if(o.utd)slot.unitTurnBuffDef=true;
+/* Unit skill (1 turn) is one skill — either packed flag arms both. */
+if(o.uta||o.utd){slot.unitTurnBuffAtk=true;slot.unitTurnBuffDef=true}
 if(o.mlb)slot.masterLeagueBuff=true;
 if(o.ogb)slot.grandOffensiveBuff=true;
 if(o.brz)slot.bigRangZeonSquadBuff=true;
@@ -13343,7 +13343,7 @@ S.tb.squads[1].name=n1;S.tb.squads[2].name=n2;
 async function hydrateSlot(sideIdx,i,o){
 if(!o)return;
 const sl=S.tb.squads[sideIdx].slots[i];
-sl.lbTier=o.lbTier!=null?o.lbTier:3;const um=o.um;if(um==='normal'||um==='sp'||um==='ssp')sl.unitStatMode=um;else sl.unitStatMode='normal';sl.unitCondPassive=!!o.unitCondPassive;sl.charCondPassive=!!o.charCondPassive;sl.unitTurnBuffAtk=!!o.unitTurnBuffAtk;sl.unitTurnBuffDef=!!o.utd||!!o.unitTurnBuffDef;sl.exSquadAtkPct=o.exSquadAtkPct|0;
+sl.lbTier=o.lbTier!=null?o.lbTier:3;const um=o.um;if(um==='normal'||um==='sp'||um==='ssp')sl.unitStatMode=um;else sl.unitStatMode='normal';sl.unitCondPassive=!!o.unitCondPassive;sl.charCondPassive=!!o.charCondPassive;{const _utOn=!!o.unitTurnBuffAtk||!!o.utd||!!o.unitTurnBuffDef;sl.unitTurnBuffAtk=_utOn;sl.unitTurnBuffDef=_utOn}sl.exSquadAtkPct=o.exSquadAtkPct|0;
 const uid=o.unitId?String(o.unitId):'';
 const cid=o.charId?String(o.charId):'';
 const unitP=uid?fetch(`/api/unit/${encodeURIComponent(uid)}?lang=${encodeURIComponent(S.lang)}`).then(r=>r.json()).catch(()=>({error:1})):Promise.resolve({error:1});
@@ -15823,10 +15823,62 @@ if(!cd||cd._manual)return'none';
 return _dcOwnHpGatesAtFullHpFromAbilities(cd.abilities,_dcResolveCharAbilityForMode);
 }
 /**
- * Default unit CP on when DC assumes full HP:
+ * Parse an ability line’s remaining-EN gate. DC assumes 100% EN (start of battle).
+ * Returns {dir:'above'|'below', pct} or null.
+ * Matches "When own EN is 50% or higher" / "When EN is 75% or above" even when the effect
+ * also raises EN Cost / EN consumption on the same line. Skips Max EN effect-only lines.
+ */
+function _dcParseOwnEnPercentGate(txt){
+const t=String(txt||'').replace(/\n/g,' ');
+if(!t)return null;
+const tl=t.toLowerCase();
+if(/\bmax\s*en\b/i.test(t)||/最大\s*EN/i.test(t))return null;
+/* Require a remaining-EN threshold clause — not bare "increase EN Cost" effect text alone. */
+if(!/(?:when\s+(?:own\s+)?en\s+is|EN(?:が|為|为)|(?:殘餘|残余|剩餘|剩余)?EN)/i.test(t))return null;
+let m;
+/* EN ≥ / or above / or higher (optional "own") */
+m=t.match(/(?:own\s+)?EN\s*(?:is\s*)?(\d+)\s*%\s*or\s+(?:above|higher|greater)/i);
+if(!m)m=t.match(/(?:own\s+)?EN\s*(?:is\s*)?(?:at\s+least|≥|>=)\s*(\d+)\s*%/i);
+if(!m)m=t.match(/EN(?:が|為|为)\s*(\d+)\s*%\s*以上/);
+if(!m)m=t.match(/(?:殘餘|残余|剩餘|剩余)?EN\s*(\d+)\s*%\s*以上/);
+if(m)return{dir:'above',pct:parseInt(m[1],10)||0};
+if(/\bwhen\s+(?:own\s+)?en\s+is\s+full\b/i.test(tl)||/\ben\s+is\s+full\b/i.test(tl))return{dir:'above',pct:100};
+/* EN ≤ / or below */
+m=t.match(/(?:own\s+)?EN\s*(?:is\s*)?(\d+)\s*%\s*or\s+(?:below|less|lower)/i);
+if(!m)m=t.match(/(?:own\s+)?EN\s*(?:is\s*)?(?:below|under|less\s+than|≤|<=)\s*(\d+)\s*%/i);
+if(!m)m=t.match(/EN(?:が|為|为)\s*(\d+)\s*%\s*(?:以下|未満)/);
+if(!m)m=t.match(/(?:殘餘|残余|剩餘|剩余)?EN\s*(\d+)\s*%\s*(?:以下|未満)/);
+if(m)return{dir:'below',pct:parseInt(m[1],10)||0};
+return null;
+}
+/** 'met' = full EN satisfies every remaining-EN ≥ gate; 'unmet' = only low-EN gates; 'none' = no EN gate. */
+function _dcOwnEnGatesAtFullEnFromAbilities(abilities,resolveFn){
+let sawAbove=false,sawBelow=false;
+(abilities||[]).forEach(ab=>{
+const r=typeof resolveFn==='function'?resolveFn(ab):ab;
+if(!r)return;
+(r.details||[]).forEach(ln=>{
+const g=_dcParseOwnEnPercentGate((ln&&ln.text)||'');
+if(!g)return;
+if(g.dir==='above')sawAbove=true;
+else if(g.dir==='below')sawBelow=true;
+});
+});
+if(sawBelow&&!sawAbove)return'unmet';
+if(sawBelow&&sawAbove)return'met';
+if(sawAbove)return'met';
+return'none';
+}
+function _dcUnitOwnEnGateAtFullEn(ud){
+if(!ud||ud._manual)return'none';
+return _dcOwnEnGatesAtFullEnFromAbilities(ud.abilities,_dcResolveUnitAbilityForMode);
+}
+/**
+ * Default unit CP on when DC assumes full HP / full EN:
  * - HP ≥ X% gates (e.g. F91 Cond: HP) → on
+ * - EN ≥ X% gates (e.g. Cond: EN Dijeh / EN Cost kits) → on (start-of-battle full EN)
  * - unit_hp_atk_tiers (legacy tier path) → on
- * - HP ≤ / below gates only → off
+ * - HP ≤ / EN ≤ / below gates only → off
  * - Combat-count (Cond: Combat) alone → off (0 stacks; activates only after dealing damage — use slider / CP chip)
  */
 function _dcShouldAutoUnitCondPassive(ud,mpOpt){
@@ -15834,9 +15886,11 @@ if(!ud||ud._manual)return false;
 if(!ud.has_cond_stats)return false;
 const hpGate=_dcUnitOwnHpGateAtFullHp(ud);
 if(hpGate==='unmet')return false;
+const enGate=_dcUnitOwnEnGateAtFullEn(ud);
+if(enGate==='unmet')return false;
 const hpTiers=ud.unit_hp_atk_tiers;
 const hasHpTiers=!!(hpTiers&&hpTiers.tiers&&hpTiers.tiers.length);
-if(!hasHpTiers&&hpGate!=='met')return false;
+if(!hasHpTiers&&hpGate!=='met'&&enGate!=='met')return false;
 const thr=_dcVigorThresholdFromUnit(ud);
 if(thr||_detailUnitHasCondWeaponRange(ud,!!(S.dc&&S.dc.unitStatMode==='ssp'))){
 const prevUd=S.dc.atkUnitData;
@@ -15848,7 +15902,7 @@ if(req&&!_dcVigorAtLeast(mpOpt!=null&&mpOpt!==''?mpOpt:S.dc.mpLevel,req))return 
 }
 return true;
 }
-/** When unit conditional stats are vigor-gated, sync CP from vigor (Max+). HP≥ / hp-tier units default on via _dcShouldAutoUnitCondPassive. */
+/** When unit conditional stats are vigor-gated, sync CP from vigor (Max+). HP≥ / EN≥ / hp-tier units default on via _dcShouldAutoUnitCondPassive. */
 function _dcSyncUnitCondPassiveFromVigor(){
 const ud=S.dc.atkUnitData;
 if(!ud||ud._manual)return;
@@ -16926,8 +16980,14 @@ else if(S.dc.atkUnitData)_dcInitUnitCondControls(S.dc.atkUnitData);
 _dcSyncLinkedUnitCpAndSupportCounter('cp');
 renderDcAtkUnit();renderDcAtkChar();onDcParamChange();
 }
-function setDcUnitTurnBuffAtk(on){S.dc.unitTurnBuffAtk=!!on;renderDcAtkUnit();renderDcAtkChar();if((_dcAccumMpBonusFromUnitSkills(S.dc.atkUnitData)|0)>0)_dcAutoSetVigor();else onDcParamChange()}
-function setDcUnitTurnBuffDef(on){S.dc.unitTurnBuffDef=!!on;renderDcAtkUnit();renderDcAtkChar();if((_dcAccumMpBonusFromUnitSkills(S.dc.atkUnitData)|0)>0)_dcAutoSetVigor();else onDcParamChange()}
+/** Unit skill (1 turn) ATK/MOB/dealt and DEF are one skill — keep both DC flags in sync. */
+function _dcLinkUnitTurnBuffFlags(on){
+const v=!!on;
+S.dc.unitTurnBuffAtk=v;
+S.dc.unitTurnBuffDef=v;
+}
+function setDcUnitTurnBuffAtk(on){_dcLinkUnitTurnBuffFlags(on);renderDcAtkUnit();renderDcAtkChar();if((_dcAccumMpBonusFromUnitSkills(S.dc.atkUnitData)|0)>0)_dcAutoSetVigor();else onDcParamChange()}
+function setDcUnitTurnBuffDef(on){_dcLinkUnitTurnBuffFlags(on);renderDcAtkUnit();renderDcAtkChar();if((_dcAccumMpBonusFromUnitSkills(S.dc.atkUnitData)|0)>0)_dcAutoSetVigor();else onDcParamChange()}
 function _dcHtmlSheetBuffToggles(){
 const ml=!!S.dc.masterLeagueBuff,go=!!S.dc.grandOffensiveBuff;
 const kdMl='if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();toggleDcMasterLeagueBuff();}';
@@ -19268,8 +19328,8 @@ const _bw=_dcPickBestWeaponIndices(d);
 S.dc.wpnIdx=_bw.wpnIdx;S.dc.wpnLv=_bw.wpnLv;
 S.dc.unitStatMode='normal';
 {const _ut=_dcGetDetectedUnitTurnBuffPercents(d);const _dd=_dcGetDetectedUnitSkillDmgDealtUp(d);
-S.dc.unitTurnBuffAtk=((_ut.atkPct|0)>0||(_ut.mobPct|0)>0||(_dd.pct|0)>0);
-S.dc.unitTurnBuffDef=(_ut.defPct|0)>0;}
+const _uskOn=((_ut.atkPct|0)>0||(_ut.mobPct|0)>0||(_dd.pct|0)>0||(_ut.defPct|0)>0);
+S.dc.unitTurnBuffAtk=_uskOn;S.dc.unitTurnBuffDef=_uskOn;}
 _dcDetectVigorCondAbilities(d);
 S.dc.unitCondPassive=_dcShouldAutoUnitCondPassive(d);
 _dcSyncUnitCondPassiveFromVigor();

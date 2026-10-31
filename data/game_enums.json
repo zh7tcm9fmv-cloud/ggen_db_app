@@ -6537,7 +6537,16 @@
         "107": "PostAttackMove",
         "108": "WeaponMpDamageValueAddition",
         "109": "DamageBarrierMaxHpRate",
-        "110": "DamageCut"
+        "110": "DamageCut",
+        "111": "SupportDefenseRangeChangeValue",
+        "112": "WeaponPowerLowEnBoost",
+        "113": "WeaponPowerHighEnBoost",
+        "114": "Parry",
+        "115": "PostMapWeaponAttackMove",
+        "116": "WeaponPreemptiveAttackAddition",
+        "117": "MapWeaponMaxAmmoChangeValue",
+        "118": "WeaponMaxRangeChangeValueWithLimit",
+        "119": "AuraBuffValueAddition"
       },
       "labels": {
         "0": "None",
@@ -6637,7 +6646,16 @@
         "107": "Post Attack Move",
         "108": "Weapon Mp Damage Value Addition",
         "109": "Damage Barrier Max Hp Rate",
-        "110": "Damage Cut"
+        "110": "Damage Cut",
+        "111": "Support Defense Range Change Value",
+        "112": "Weapon Power Low En Boost",
+        "113": "Weapon Power High En Boost",
+        "114": "Parry",
+        "115": "Post Map Weapon Attack Move",
+        "116": "Weapon Preemptive Attack Addition",
+        "117": "Map Weapon Max Ammo Change Value",
+        "118": "Weapon Max Range Change Value With Limit",
+        "119": "Aura Buff Value Addition"
       }
     },
     "TransitionType": {

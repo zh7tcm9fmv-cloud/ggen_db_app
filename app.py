@@ -6240,23 +6240,31 @@ def _unit_hp_threshold_active_at_assumed_full_hp(part):
 
 def _unit_en_threshold_active_at_assumed_full_en(part):
     """
-    Unit detail/list assume full EN (like HP). High-EN gates (e.g. EN ≥ 75%) apply to base stats /
-    weapon Crit / weapon EN cost without requiring the CP toggle. Low-EN gates stay conditional.
+    True when a remaining-EN ≥ / full gate is met under assumed start-of-battle full EN.
+
+    Matches official EN phrasing including ``When own EN is 50% or higher`` and
+    ``When EN is 75% or above`` (effect may also raise EN Cost / EN consumption on the
+    same line — do not reject those). Max-EN effect-only lines stay out.
+    EN≥ gates stay in the CP bucket (see ``_unit_resource_threshold_assumed_active``);
+    clients default CP on for these.
     """
     t = (part or '').strip()
     if not t:
         return False
     tl = t.lower()
-    # Avoid Max EN / EN Cost effect lines — only remaining-EN gates.
-    if re.search(r'\ben\s+cost\b', tl):
-        return False
     if 'max en' in tl or '最大en' in t.lower().replace(' ', ''):
         return False
-    if 'or below' in tl or re.search(r'\bwhen\s+en\s+is\s+below\b', tl):
+    if 'or below' in tl or re.search(r'\bwhen\s+(?:own\s+)?en\s+is\s+below\b', tl):
         return False
-    if re.search(r'\bwhen\s+en\s+is\s+\d+%\s+or\s+above\b', tl):
+    # Require a remaining-EN threshold clause (not bare "increase EN Cost" alone).
+    if not re.search(r'(?:when\s+(?:own\s+)?en\s+is|en(?:が|為|为)|(?:殘餘|残余|剩餘|剩余)?en)', tl, re.I):
+        if not re.search(r'(?:殘餘|残余|剩餘|剩余)?EN', t):
+            return False
+    if re.search(r'\bwhen\s+(?:own\s+)?en\s+is\s+\d+%\s+or\s+(?:above|higher|greater)\b', tl):
         return True
-    if re.search(r'\bwhen\s+en\s+is\s+full\b', tl) or re.search(r'\ben\s+is\s+full\b', tl):
+    if re.search(r'\b(?:own\s+)?en\s+is\s+\d+%\s+or\s+(?:above|higher|greater)\b', tl):
+        return True
+    if re.search(r'\bwhen\s+(?:own\s+)?en\s+is\s+full\b', tl) or re.search(r'\ben\s+is\s+full\b', tl):
         return True
     if re.search(r'ENが\d+%以上', t) or re.search(r'EN(?:在|為|为)\d+%以上', t):
         return True
@@ -7012,6 +7020,7 @@ def _extract_weapon_en_cost_increase_pct(text, skip_conditional=True):
 
     EN examples:
       - increase own EN Cost by 40%
+      - and own EN consumption by 30%  (Cond: EN continuation after increase ATK)
       - but weapon EN costs increase by 30%  (Destiny Impulse / Cond: Vigor)
     JA: 武装の消費ENがN%増加 / 消費ENがN%増加
     TW/HK: 武裝消耗EN增加N% / 消耗EN增加N%
@@ -7030,6 +7039,12 @@ def _extract_weapon_en_cost_increase_pct(text, skip_conditional=True):
     # "EN Cost is increased by N%" / "[weapon] EN cost(s) increase by N%"
     m = re.search(
         r'(?:weapon\s+)?EN\s+[Cc]osts?\s+(?:is\s+|are\s+)?increas(?:ed|e)\s+by\s+(\d+)\s*%',
+        s, re.I)
+    if m:
+        return int(m.group(1) or 0)
+    # "increase own EN consumption by N%" / "and own EN consumption by N%" (official Cond: EN)
+    m = re.search(
+        r'(?:increase(?:s)?\s+|and\s+)?(?:own\s+)?EN\s+consumption\s+by\s+(\d+)\s*%',
         s, re.I)
     if m:
         return int(m.group(1) or 0)
@@ -8115,6 +8130,199 @@ def create_trait_set_detail_resource_lookup(d):
     return lookup
 
 
+def _format_trait_desc_placeholders(text, trait_value):
+    """Fill Unity-style ``{0}`` / ``{1}`` slots in trait LANG using |TraitValue|.
+
+    Decrease / Down lines store a negative TraitValue but LANG shows the magnitude
+    (e.g. TraitValue -20 → \"by 20%\"). Increase lines are already positive.
+    """
+    s = str(text or '')
+    if '{' not in s:
+        return s
+    mag = abs(safe_int(trait_value, 0))
+    # Only {0} is authored today; keep {1}+ ready with the same magnitude.
+    def _sub(m):
+        try:
+            idx = int(m.group(1))
+        except (TypeError, ValueError):
+            return m.group(0)
+        if idx >= 0:
+            return str(mag)
+        return m.group(0)
+    return re.sub(r'\{(\d+)\}', _sub, s)
+
+
+# TraitType indices for aura / counter-facing weapon-power sim (dump TraitType).
+TRAIT_TYPE_WEAPON_POWER_CHANGE_RATE = 78
+TRAIT_TYPE_AURA_BUFF_VALUE_ADDITION = 119
+
+
+def _build_trait_sim_effect(t_data):
+    """Locale-independent combat effect row for future DC / counter / aura wiring."""
+    if not isinstance(t_data, dict):
+        return None
+    tti = safe_int(t_data.get('trait_type_index'), 0)
+    val = safe_int(t_data.get('trait_value'), 0)
+    if not tti or not val:
+        return None
+    twc = normalize_id(t_data.get('target_weapon_condition_id') or '0')
+    _twc_w = globals().get('twc_weapon_attr_keys_map') or {}
+    _twc_a = globals().get('twc_attack_type_keys_map') or {}
+    weapon_attrs = list(_twc_w.get(twc) or []) if twc and twc != '0' else []
+    attack_types = list(_twc_a.get(twc) or []) if twc and twc != '0' else []
+    rmin = safe_int(t_data.get('range_min'), 0)
+    rmax = safe_int(t_data.get('range_max'), 0)
+    row = {
+        'trait_type_index': tti,
+        'trait_type_key': t_data.get('trait_type_key') or game_enums.enum_key('TraitType', tti),
+        'value': val,
+        'weapon_attrs': weapon_attrs,
+        'attack_types': attack_types,
+        'active_cond_id': normalize_id(t_data.get('active_cond_id') or '0'),
+        'target_cond_id': normalize_id(t_data.get('target_cond_id') or '0'),
+        'target_weapon_condition_id': twc if twc != '0' else '',
+        'range_min': rmin,
+        'range_max': rmax,
+    }
+    if tti == TRAIT_TYPE_WEAPON_POWER_CHANGE_RATE:
+        # Neo Zeong Cond: Area (TWC 24) = physical+beam AND ranged only.
+        # Fail closed: never emit an unscoped WP rate (empty filters ≠ all weapons).
+        if not weapon_attrs or not attack_types:
+            return None
+        row['kind'] = 'weapon_power_pct'
+        row['is_area_aura'] = bool(rmin or rmax)
+        row['weapon_filter_required'] = True
+        return row
+    if tti == TRAIT_TYPE_AURA_BUFF_VALUE_ADDITION:
+        # Additive improve of an aura buff magnitude (e.g. Full Frontal +15% on Neo Zeong area WP down).
+        # Does not target weapons itself — only stacks onto a matching weapon_power_pct (see sum helper).
+        row['kind'] = 'aura_buff_value_addition'
+        return row
+    return None
+
+
+def apply_weapon_power_rate_pct(base_power, rate_pct):
+    """In-game style weapon power after a signed % rate (floor). rate_pct -35 → ×0.65."""
+    try:
+        base = int(base_power)
+    except (TypeError, ValueError):
+        return 0
+    pct = safe_int(rate_pct, 0)
+    return int(base * (100 + pct) // 100)
+
+
+_WPN_ATTR_ID_TO_KEY = {'1': 'physical', '2': 'beam', '3': 'special'}
+_WPN_ATK_TYPE_ALIASES = {
+    'ranged': 'ranged', 'melee': 'melee', 'awaken': 'awaken',
+    '1': 'ranged', '2': 'melee', '3': 'awaken',
+}
+
+
+def _weapon_dict_attr_keys(wpn):
+    """API / dict weapon → {'physical'|'beam'|'special', ...}."""
+    if not isinstance(wpn, dict):
+        return []
+    aid = normalize_id(wpn.get('attribute_id') or wpn.get('attributeId') or '0')
+    if aid and aid != '0' and aid in _WPN_ATTR_ID_TO_KEY:
+        return [_WPN_ATTR_ID_TO_KEY[aid]]
+    lab = str(wpn.get('attribute') or wpn.get('weapon_attribute') or '').strip()
+    low = lab.lower()
+    keys = []
+    if 'beam' in low or '光束' in lab or '鐳射' in lab or 'ビーム' in lab or '빔' in lab:
+        keys.append('beam')
+    if 'physical' in low or '物理' in lab or '물리' in lab:
+        keys.append('physical')
+    if 'special' in low or '特殊' in lab or '특수' in lab:
+        keys.append('special')
+    return keys
+
+
+def _weapon_dict_attack_type_keys(wpn):
+    """API / dict weapon → {'ranged'|'melee'|'awaken', ...}."""
+    if not isinstance(wpn, dict):
+        return []
+    out = []
+    seen = set()
+    for at in (wpn.get('attack_types') or []):
+        if isinstance(at, dict):
+            raw = str(at.get('key') or at.get('label') or '').strip()
+        else:
+            raw = str(at or '').strip()
+        if not raw:
+            continue
+        key = _WPN_ATK_TYPE_ALIASES.get(raw) or _WPN_ATK_TYPE_ALIASES.get(raw.lower())
+        if not key:
+            low = raw.lower()
+            if 'ranged' in low or '射撃' in raw or '射擊' in raw:
+                key = 'ranged'
+            elif 'melee' in low or '格闘' in raw or '格鬥' in raw:
+                key = 'melee'
+            elif 'awaken' in low or '覚醒' in raw or '覺醒' in raw:
+                key = 'awaken'
+        if key and key not in seen:
+            seen.add(key)
+            out.append(key)
+    return out
+
+
+def weapon_matches_sim_weapon_power_effect(wpn, effect):
+    """True only when the weapon hits BOTH weapon_attrs and attack_types gates.
+
+    Empty filter lists do **not** mean “all weapons” — fail closed so aura WP
+    down cannot leak onto melee / special / awaken / MAP-only misfires.
+    """
+    if not isinstance(effect, dict) or effect.get('kind') != 'weapon_power_pct':
+        return False
+    want_attrs = [str(x).lower() for x in (effect.get('weapon_attrs') or []) if x]
+    want_types = [str(x).lower() for x in (effect.get('attack_types') or []) if x]
+    if not want_attrs or not want_types:
+        return False
+    have_attrs = set(_weapon_dict_attr_keys(wpn))
+    have_types = set(_weapon_dict_attack_type_keys(wpn))
+    if not have_attrs or not have_types:
+        return False
+    if not any(a in have_attrs for a in want_attrs):
+        return False
+    if not any(t in have_types for t in want_types):
+        return False
+    return True
+
+
+def sum_aura_weapon_power_rate_pct(effect_lists, wpn):
+    """Signed area-aura weapon-power % for this weapon only (0 if out of scope).
+
+    ``aura_buff_value_addition`` (e.g. Full Frontal −15) stacks only when a
+    matching ``weapon_power_pct`` area aura already applies — never alone on
+    every weapon.
+    """
+    effects = []
+    for lst in (effect_lists or []):
+        if isinstance(lst, list):
+            effects.extend(lst)
+        elif isinstance(lst, dict):
+            effects.append(lst)
+    base = 0
+    matched = False
+    for e in effects:
+        if not isinstance(e, dict):
+            continue
+        if e.get('kind') != 'weapon_power_pct':
+            continue
+        if not e.get('is_area_aura'):
+            continue
+        if not weapon_matches_sim_weapon_power_effect(wpn, e):
+            continue
+        base += safe_int(e.get('value'), 0)
+        matched = True
+    if not matched:
+        return 0
+    add = 0
+    for e in effects:
+        if isinstance(e, dict) and e.get('kind') == 'aura_buff_value_addition':
+            add += safe_int(e.get('value'), 0)
+    return base + add
+
+
 def create_trait_data_map(d):
     lookup = {}
     for item in extract_data_list(d):
@@ -8134,6 +8342,8 @@ def create_trait_data_map(d):
             'trait_type_key': game_enums.enum_key('TraitType', tti),
             'trait_type_label': game_enums.enum_label('TraitType', tti),
             'trait_value': safe_int(item.get('TraitValue') or item.get('traitValue'), 0),
+            'range_min': safe_int(item.get('RangeMin') or item.get('rangeMin'), 0),
+            'range_max': safe_int(item.get('RangeMax') or item.get('rangeMax'), 0),
         }
     return lookup
 
@@ -11723,9 +11933,16 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
     trait_ids = trait_set_traits_map.get(trait_set_id, [])
     if not trait_ids: trait_ids = trait_set_traits_map.get(lookup_id, [])
     trait_info = []
+    sim_effects = []
     for tid in trait_ids:
         t_data = trait_data_map.get(tid, {}); desc_lang_id = t_data.get('desc_lang_id', '0')
-        display_text = lang_text_map.get(desc_lang_id, '').strip(); en_text = en_lang_text_map.get(desc_lang_id, '').strip()
+        _tv = safe_int(t_data.get('trait_value'), 0)
+        display_text = _format_trait_desc_placeholders(
+            lang_text_map.get(desc_lang_id, '').strip(), _tv
+        )
+        en_text = _format_trait_desc_placeholders(
+            en_lang_text_map.get(desc_lang_id, '').strip(), _tv
+        )
         if not display_text and en_text: display_text = en_text
         if display_text == ab_name.strip(): display_text = ""
         if en_text == ab_name.strip(): en_text = ""
@@ -11787,11 +12004,17 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
             if iv not in cond_nums:
                 cond_nums.append(iv)
         tti = safe_int(t_data.get('trait_type_index'), 0)
+        _sim = _build_trait_sim_effect(t_data)
+        if _sim:
+            _sim = dict(_sim)
+            _sim['trait_id'] = tid
+            sim_effects.append(_sim)
         trait_info.append({
             'trait_id': tid,
             'trait_type_index': tti,
             'trait_type_key': t_data.get('trait_type_key') or game_enums.enum_key('TraitType', tti),
             'trait_type_label': t_data.get('trait_type_label') or game_enums.enum_label('TraitType', tti),
+            'trait_value': _tv,
             'display_text': display_text,
             'en_text': en_text,
             'conditions': trait_conds,
@@ -12056,7 +12279,22 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
             disp_name = ex_character_ability_display_label(lang_code)
     else:
         disp_name = ab_name
-    return {'id': ab_id, 'name': ab_name, 'display_name': disp_name, 'sort': sort_order, 'details': details, 'icon': f"/static/images/Trait/{icon_file}" if icon_file else '', 'has_icon': has_icon, 'is_ex': ex_frame, 'frame_base': ABILITY_FRAME_BASE if (has_icon and ex_frame) else '', 'frame_overlay': ABILITY_FRAME_OVERLAY if (has_icon and ex_frame) else '', 'resource_id': res_id}
+    out = {
+        'id': ab_id,
+        'name': ab_name,
+        'display_name': disp_name,
+        'sort': sort_order,
+        'details': details,
+        'icon': f"/static/images/Trait/{icon_file}" if icon_file else '',
+        'has_icon': has_icon,
+        'is_ex': ex_frame,
+        'frame_base': ABILITY_FRAME_BASE if (has_icon and ex_frame) else '',
+        'frame_overlay': ABILITY_FRAME_OVERLAY if (has_icon and ex_frame) else '',
+        'resource_id': res_id,
+    }
+    if sim_effects:
+        out['sim_effects'] = sim_effects
+    return out
 
 # ═══════════════════════════════════════════════════════
 # LOAD ALL DATA
@@ -17458,6 +17696,8 @@ def resolve_unit_skill(usid, ld, sv):
             tname = tnf.get(tid, '')
         if not tdesc:
             tdesc = tname
+        _uskill_tv = safe_int(tr.get('trait_value'), 0)
+        tdesc = _format_trait_desc_placeholders(tdesc, _uskill_tv)
         cond_id = normalize_id(tr.get('active_cond_set_id') or '0')
         cond = unit_skill_trait_condition_map.get(cond_id, {}) or {}
         wattrs = list(cond.get('weapon_attrs') or [])
@@ -17473,7 +17713,7 @@ def resolve_unit_skill(usid, ld, sv):
             'active_weapon_attrs': wattrs,
             'active_attack_types': atypes,
             'trait_type_index': normalize_id(tr.get('trait_type_index') or '0'),
-            'trait_value': safe_int(tr.get('trait_value'), 0),
+            'trait_value': _uskill_tv,
         })
         tnorm = (tdesc or '').strip()
         if not tnorm:
@@ -36719,7 +36959,7 @@ def get_character(char_id):
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
         view_ranking = request.args.get('view', '').strip().lower() == 'ranking'
         # r21: condition chips use in-game id order (Zeon & Land, not file order).
-        ck = f"c_{char_id}_{lc}_r23_{1 if view_ranking else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        ck = f"c_{char_id}_{lc}_r24_{1 if view_ranking else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             # Images already CDN-converted when cached; skip re-walk + re-jsonify under GIL.
@@ -36876,7 +37116,7 @@ def get_unit(unit_id):
         if stat_mode_arg not in ('normal', 'sp', 'ssp'):
             stat_mode_arg = 'normal'
         cond_for_ranking = request.args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
-        ck = f"u_{unit_id}_{lc}_ssp20_ult8_cpwr1_usk3_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_bp3_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        ck = f"u_{unit_id}_{lc}_ssp20_ult8_cpwr1_usk4_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_bp3_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_preserialized(cached, ck, private=True, max_age=3600, convert_images=False)
