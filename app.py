@@ -8545,10 +8545,14 @@ def _split_cond_csv(val, *, normalize=False):
 
 
 def _trait_condition_group_is_or(group_id):
-    """In-game GroupId token ``or`` (e.g. 耐久orWシリーズ) = alternatives inside that group.
+    """True when GroupId text itself encodes OR (e.g. 耐久orWシリーズ).
 
-    Different GroupId buckets are alternatives of each other. Rows that share an empty
-    GroupId (Land + Zeon on set 1000654) are AND. A comma list inside one field is OR.
+    Row-join policy in ``resolve_condition_tags`` (multi-row sets):
+    - Different GroupId buckets → OR (alternatives)
+    - Shared **empty** GroupId → AND (e.g. Land + Zeon on 1000654; \"tag that also have a series\")
+    - Shared **non-empty** GroupId → OR (JP ``…or…`` names, and numeric ids like Suletta
+      tags-or-series 1000695 / GUND-ARM | Witch from Mercury)
+    A comma list inside one field is OR via ``_emit_specs``.
     """
     g = str(group_id or '').strip()
     if not g or '&' in g or '＆' in g:
@@ -8779,12 +8783,15 @@ def resolve_condition_tags(cond_id, trait_condition_raw_map, lineage_lookup, ser
             gk = str(row.get('group_id') or '').strip()
             if not started:
                 row_join = ''
-            elif prev_group is None or gk != prev_group:
+            elif gk != prev_group:
+                # Different GroupId buckets are alternatives of each other.
                 row_join = 'or'
-            elif _trait_condition_group_is_or(gk):
-                row_join = 'or'
-            else:
+            elif not gk:
+                # Shared empty GroupId → AND (Land+Zeon; "tag that also have a specified series").
                 row_join = 'and'
+            else:
+                # Shared non-empty GroupId → OR (「耐久orW…」, numeric tags-or-series sets).
+                row_join = 'or'
             if _emit_specs(specs, row_join):
                 started = True
                 prev_group = gk
@@ -36959,7 +36966,7 @@ def get_character(char_id):
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
         view_ranking = request.args.get('view', '').strip().lower() == 'ranking'
         # r21: condition chips use in-game id order (Zeon & Land, not file order).
-        ck = f"c_{char_id}_{lc}_r24_{1 if view_ranking else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        ck = f"c_{char_id}_{lc}_r25_{1 if view_ranking else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             # Images already CDN-converted when cached; skip re-walk + re-jsonify under GIL.
