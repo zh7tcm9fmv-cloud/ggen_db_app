@@ -1590,25 +1590,43 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .detail-back-btn:hover{color:var(--accent-cyan);border-color:rgba(34,211,238,.55);background:rgba(15,23,42,.75)}
 .detail-header{display:flex;gap:28px;padding:52px 28px 24px;border-bottom:1px solid var(--border-color);background:rgba(0,0,0,0.2);overflow:hidden;position:relative}
 .detail-portrait-wrap{flex-shrink:0;width:300px;max-width:100%;position:relative}.detail-portrait{width:100%;max-width:300px;height:400px;object-fit:contain;object-position:center calc(50% + var(--portrait-optical-y));border-radius:var(--radius-md);border:2px solid var(--border-color);background:rgba(13,19,33,0.8)}
-/* Detail header plates — portrait plate transparent so art shares the BG */
+/* Header garage/office plate: full cover density on a FIXED-tall ::before so
+   SP/SSP digit-scale / bonus rows cannot re-cover the art (Zirius-class). */
 .modal-content.unit-detail:not(.detail-ranking-view) .detail-header.unit-detail-header,
 .modal-content.supporter-detail .detail-header.supporter-detail-header,
 .modal-content.char-detail:not(.detail-ranking-view) .detail-header.char-detail-header{
   background-color:#0a0e17;
+  background-image:none;
+  isolation:isolate;
+  overflow:clip;
+}
+.modal-content.unit-detail:not(.detail-ranking-view) .detail-header.unit-detail-header::before,
+.modal-content.supporter-detail .detail-header.supporter-detail-header::before,
+.modal-content.char-detail:not(.detail-ranking-view) .detail-header.char-detail-header::before{
+  content:'';
+  position:absolute;
+  left:0;
+  right:0;
+  top:0;
+  height:960px;
+  z-index:0;
+  pointer-events:none;
   background-size:cover,cover;
   background-position:center,center 42%;
   background-repeat:no-repeat;
 }
-.modal-content.unit-detail:not(.detail-ranking-view) .detail-header.unit-detail-header,
-.modal-content.supporter-detail .detail-header.supporter-detail-header{
-  background-image:
-    linear-gradient(90deg,rgba(10,14,23,.22) 0%,rgba(10,14,23,.55) 42%,rgba(10,14,23,.82) 100%),
-    url('/static/images/Background/obg_011_garage.webp');
+.modal-content.unit-detail:not(.detail-ranking-view) .detail-header.unit-detail-header::before,
+.modal-content.supporter-detail .detail-header.supporter-detail-header::before{
+  background-image:linear-gradient(90deg,rgba(10,14,23,.22) 0%,rgba(10,14,23,.55) 42%,rgba(10,14,23,.82) 100%),url('/static/images/Background/obg_011_garage.webp');
 }
-.modal-content.char-detail:not(.detail-ranking-view) .detail-header.char-detail-header{
-  background-image:
-    linear-gradient(90deg,rgba(10,14,23,.22) 0%,rgba(10,14,23,.55) 42%,rgba(10,14,23,.82) 100%),
-    url('/static/images/Background/obg_021_office.webp');
+.modal-content.char-detail:not(.detail-ranking-view) .detail-header.char-detail-header::before{
+  background-image:linear-gradient(90deg,rgba(10,14,23,.22) 0%,rgba(10,14,23,.55) 42%,rgba(10,14,23,.82) 100%),url('/static/images/Background/obg_021_office.webp');
+}
+.modal-content.unit-detail:not(.detail-ranking-view) .detail-header.unit-detail-header>*,
+.modal-content.supporter-detail .detail-header.supporter-detail-header>*,
+.modal-content.char-detail:not(.detail-ranking-view) .detail-header.char-detail-header>*{
+  position:relative;
+  z-index:1;
 }
 .modal-content.supporter-detail .detail-header.supporter-detail-header .supporter-portrait,
 .modal-content.supporter-detail .detail-header.supporter-detail-header .supporter-portrait-placeholder{

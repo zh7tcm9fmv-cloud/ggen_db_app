@@ -7885,11 +7885,17 @@ if(useSimpleStatCard)return`<div class="stat-card ${cardHi}"><div class="stat-ca
 const meta=detailRankingMetaFor(type,d.id,s.name);const loading=!meta||!meta.rank||!meta.total;const w=loading?62:detailRankingBarWidth(meta);const splitPos=!loading;let posHtml='...';if(!loading){const rk=Number(meta.rank)||0,tt=Number(meta.total)||0;if(S.lang==='EN')posHtml=`<span class="stat-rank-pos-main">${rk}${ordinalSuffixEn(rk)}/</span><span class="stat-rank-pos-total">${tt}</span>`;else posHtml=`<span class="stat-rank-pos-main">${fmtN(rk)}位 /</span><span class="stat-rank-pos-total">${fmtN(tt)}</span>`}
 return`<div class="stat-card stat-card--ranking ${cardHi} ${loading?'is-loading':''}"><div class="stat-rank-head"><div class="stat-card-label stat-rank-label">${esc(tStat(s.name,type))}</div><div class="stat-rank-bar"><span class="stat-rank-fill ${loading?'is-loading':''}" style="width:${w.toFixed(2)}%"></span></div><div class="stat-rank-pos ${loading?'is-loading':''} ${splitPos?'is-split':''}">${posHtml}</div></div><div class="stat-card-value stat-rank-value ${valHi}">${valTxt}</div>${eb}</div>`
 }).join('');
-/* One scale for the whole row — sized by the longest value so buffed HP doesn't leave EN huge. */
+/* One scale for the whole row — sized by the longest value so buffed HP doesn't leave EN huge.
+   Use the max across base/SP/SSP (current LB) so toggling SP/SSP cannot flip mid→long and reflow the header plate (Zirius vs Dark Gundam Jr). */
 let maxValLen=0;
-for(let i=0;i<sr.length;i++){
-const n=String(fmtN(sr[i].total)).replace(/\s/g,'').length;
-if(n>maxValLen)maxValLen=n;
+const _noteStatValLen=(rows)=>{if(!rows||!rows.length)return;for(let i=0;i<rows.length;i++){const n=String(fmtN(rows[i].total)).replace(/\s/g,'').length;if(n>maxValLen)maxValLen=n}};
+_noteStatValLen(sr);
+if(type==='unit'&&d&&d.lb_data){
+const td=Array.isArray(d.lb_data)?d.lb_data[S.currentLbTier]:(d.lb_data[S.currentLbTier]||d.lb_data[String(S.currentLbTier)]);
+if(td){['stats_no_cond','stats_with_cond','sp_stats_no_cond','sp_stats_with_cond','ssp_stats_no_cond','ssp_stats_with_cond'].forEach(k=>_noteStatValLen(td[k]))}
+}else if(type==='character'&&d){
+_noteStatValLen(d.stats);_noteStatValLen(d.sp_stats);_noteStatValLen(d.stats_with_ex);_noteStatValLen(d.sp_stats_with_ex);
+if(d.ex_supercharged_tiers)d.ex_supercharged_tiers.forEach(tier=>_noteStatValLen(tier&&tier.stats));
 }
 const gridScaleCls=maxValLen>=8?' stats-grid--val-xl':maxValLen>=7?' stats-grid--val-long':maxValLen>=6?' stats-grid--val-mid':'';
 return{head:`${th}${exRow}`,grid:`<div class="${gridCls}${gridScaleCls}">${body}</div>`}
