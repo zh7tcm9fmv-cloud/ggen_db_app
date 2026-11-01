@@ -181,10 +181,14 @@
 
   function refreshSpecialOpsButtonNotices() {
     const needs = pageNeedsVisitNotice(pageVisitEntry('fea_special_ops'));
-    /* Flare on the thumb top-right — keep SO logo absolutely positioned top-left. */
-    document.querySelectorAll('.stage-browse-thumb[data-special-ops="1"]').forEach((el) => {
+    /* Flare on card body bottom-right — thumb art blends red into purple SO BG. */
+    document.querySelectorAll('.list-grid-card--fea-so .list-grid-card-body').forEach((el) => {
       el.classList.add('ui-notice-anchor');
       setPageVisitNotice(el, needs);
+    });
+    /* Clear legacy thumb flares if any remain from older markup. */
+    document.querySelectorAll('.stage-browse-thumb[data-special-ops="1"]').forEach((el) => {
+      setPageVisitNotice(el, false);
     });
     document.querySelectorAll('.fea-special-ops-toggle').forEach((el) => {
       el.classList.add('ui-notice-anchor');
@@ -200,7 +204,9 @@
       setPageVisitNotice(document.getElementById(id), false);
     });
     if (pageId === 'fea_special_ops') {
-      document.querySelectorAll('.stage-browse-thumb[data-special-ops="1"], .fea-special-ops-toggle').forEach((el) => {
+      document.querySelectorAll(
+        '.list-grid-card--fea-so .list-grid-card-body, .stage-browse-thumb[data-special-ops="1"], .fea-special-ops-toggle'
+      ).forEach((el) => {
         setPageVisitNotice(el, false);
       });
     }

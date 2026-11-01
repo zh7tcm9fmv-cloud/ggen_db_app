@@ -6884,11 +6884,23 @@ const normalBody=soOn?`${rewardHost}${mapNpcHosts}`:`${rewardHost}${challBlock}$
 const haroHtml=soOn?feaSpecialOpsHaroTrophiesHtml(so):'';
 return`<div class="modal-top-label">${esc(eventName)}${soToggle}</div><div class="modal-entity-id">ID: ${esc(String(d.id||''))}${so&&so.stage_id?`<span class="modal-entity-id-so">Special Ops Stage: ${esc(String(so.stage_id))}</span>`:''}</div><div class="detail-header${soOn?' is-fea-special-ops':''}"><div class="detail-portrait-wrap" style="width:${portWrapW}px">${portInner}</div><div class="detail-title-area"><div class="stage-detail-head-row${soOn?' stage-detail-head-row--so':''}"><div class="stage-detail-head-main">${nameLine}<div class="detail-meta detail-meta--fea-cp-terrain">${feaActiveCpTerrainBadgesHtml(d)}${buffNote}</div>${haroHtml}</div>${stageReleaseScheduleHtml(d)}</div>${tabHtml?`<div class="stage-fea-diff-tabs" role="tablist">${tabHtml}</div>`:''}<div id="feaActiveConditionHost"></div></div></div><div class="detail-body${soOn?' is-fea-special-ops':''}">${soPanel}${normalBody}</div>`;
 }
-function renderFeaSoCollapsible(kind,title,bodyHtml,count){
+function feaSpecialOpsMissionDiamondTotal(missions){
+let n=0;
+(missions||[]).forEach(m=>{(Array.isArray(m&&m.rewards)?m.rewards:[]).forEach(r=>{if(String(r&&r.reward_type_index||'')==='10')n+=Math.max(0,Number(r.count)||0)})});
+return n;
+}
+function renderFeaSoCollapsible(kind,title,bodyHtml,count,opts){
 if(!bodyHtml)return'';
+opts=opts||{};
 const open=kind==='missions'?!!S.feaSoMissionsExpanded:!!S.feaSoRewardsExpanded;
 const n=count==null?'':` <span class="fea-so-collapse-count">${fmtN(count)}</span>`;
-return`<div class="detail-section fea-so-collapse${open?'':' is-collapsed'}" data-fea-so-kind="${escAttr(kind)}"><button type="button" class="section-title fea-so-collapse-toggle" aria-expanded="${open?'true':'false'}" onclick="toggleFeaSoCollapse('${escJs(kind)}',this)"><span class="fea-so-collapse-title">${esc(title)}${n}</span><span class="fea-so-collapse-caret" aria-hidden="true"></span></button><div class="fea-so-collapse-body">${bodyHtml}</div></div>`;
+const right=[];
+if(opts.diamondTotal!=null&&Number(opts.diamondTotal)>=0){
+const diaLabel=t('fea_total_diamonds')||'Diamonds (total)';
+right.push(`<span class="stage-fea-diamond-total-inline" title="${escAttr(diaLabel)}">${esc(diaLabel)}: ${fmtN(opts.diamondTotal)}</span>`);
+}
+right.push('<span class="fea-so-collapse-caret" aria-hidden="true"></span>');
+return`<div class="detail-section fea-so-collapse${open?'':' is-collapsed'}" data-fea-so-kind="${escAttr(kind)}"><button type="button" class="section-title fea-so-collapse-toggle" aria-expanded="${open?'true':'false'}" onclick="toggleFeaSoCollapse('${escJs(kind)}',this)"><span class="fea-so-collapse-title">${esc(title)}${n}</span><span class="fea-so-collapse-head-right">${right.join('')}</span></button><div class="fea-so-collapse-body">${bodyHtml}</div></div>`;
 }
 function toggleFeaSoCollapse(kind,btn){
 if(kind==='missions')S.feaSoMissionsExpanded=!S.feaSoMissionsExpanded;
@@ -6909,11 +6921,9 @@ if(btn)btn.setAttribute('aria-expanded',on?'true':'false');
 }
 function feaSpecialOpsRewardHostHtml(so){
 if(!so)return'';
-const rewards=Array.isArray(so.event_rewards)?so.event_rewards:[];
 const missions=Array.isArray(so.missions)?so.missions:[];
-const rewardBody=rewards.length?renderStageRewardGrid(rewards):'';
 const missionInner=missions.length?`<div class="stage-reward-grid stage-missions-grid">${missions.map((m,i)=>{const rew=Array.isArray(m.rewards)?m.rewards:[];const rewardHtml=rew.length?rew.map(renderStageRewardRow).join(''):`<div class="stage-condition-item">${esc(t('none'))}</div>`;return`<article class="stage-mission-reward-cell" aria-label="${escAttr(m.title||('Mission '+(i+1)))}"><div class="stage-mission-reward-head"><span class="stage-mission-reward-idx" aria-hidden="true">${i+1}</span><div class="stage-mission-reward-title">${esc(m.title||'')}</div></div><div class="stage-mission-reward-body">${rewardHtml}</div></article>`}).join('')}</div>`:'';
-return renderFeaSoCollapsible('rewards',t('stage_rewards')||'Rewards',rewardBody,rewards.length)+renderFeaSoCollapsible('missions',t('stage_missions')||'Missions',missionInner,missions.length);
+return renderFeaSoCollapsible('missions',t('stage_missions')||'Missions',missionInner,missions.length,{diamondTotal:feaSpecialOpsMissionDiamondTotal(missions)});
 }
 function feaActiveRewardHostHtml(d){
 const diffs=(d&&d.fea_difficulties)||{};
