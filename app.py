@@ -9980,6 +9980,10 @@ def create_map_stage_conditions_by_map_stage(d):
         by_msid.setdefault(msid, []).append({
             'sort_order': safe_int(item.get('SortOrder') or item.get('sortOrder'), 0),
             'condition_type_index': safe_int(item.get('MapStageConditionTypeIndex') or item.get('mapStageConditionTypeIndex'), 0),
+            'ingame_event_condition_type_index': safe_int(
+                item.get('IngameEventConditionTypeIndex') or item.get('ingameEventConditionTypeIndex'), 0
+            ),
+            'target_value': safe_int(item.get('TargetValue') or item.get('targetValue'), 0),
             'text_lang_id': normalize_id(item.get('ShortConditionSentenceLanguageId') or item.get('shortConditionSentenceLanguageId')),
         })
     for arr in by_msid.values():
@@ -16247,6 +16251,9 @@ def _specialize_target_row(item_id):
 
     Unit table first (MS chips), then character table (pilot badges). Type 4 generic
     (no target) is skipped so ordinary items stay non-clickable.
+
+    Tag SSP chips (30000002XXXX) often omit a specialize-target row while the matching
+    SP chip (24000002XXXX) has TargetTypeIndex 5 → LineageId XXXX; infer the same.
     """
     iid = normalize_id(item_id)
     if iid == '0':
@@ -16257,6 +16264,11 @@ def _specialize_target_row(item_id):
         info = (character_specialize_material_target_map or {}).get(iid)
         table = 'character'
     if not info:
+        m_tag = re.match(r'^(?:24000002|30000002)(\d+)$', iid)
+        if m_tag:
+            lid = normalize_id(str(int(m_tag.group(1))))
+            if lid != '0':
+                return {'table': 'unit', 'target_type_index': '5', 'target_id': lid}
         return None
     ttype = normalize_id(info.get('target_type_index'))
     tid = normalize_id(info.get('target_id'))
@@ -16477,9 +16489,18 @@ def _decorate_reward_rows(rows, lc):
             reward_name = f"Reward {rid}"
         detail_type = ('character' if rt == '2' else ('option_part' if rt == '8' else ('profile_title' if rt == '30' else ('unit' if rt == '3' else ''))))
         detail_id = (tid if rt in ('2', '8', '30', '3') else '')
-        if not detail_type and _specialize_target_row(tid):
+        spec = _specialize_target_row(tid) if tid != '0' else None
+        if not detail_type and spec:
             detail_type = 'item'
             detail_id = tid
+        reward_tags = []
+        if spec and normalize_id(spec.get('target_type_index')) == '5':
+            default_tt = 'character' if spec.get('table') == 'character' else 'unit'
+            reward_tags = resolve_lineage_ids_to_tag_dicts([spec.get('target_id')], ld, default_tt)
+        elif spec and normalize_id(spec.get('target_type_index')) == '2':
+            ser = resolve_series_id_to_tag(spec.get('target_id'), ld)
+            if ser:
+                reward_tags = [ser]
         out.append({
             'reward_id': rid,
             'reward_type_index': rt,
@@ -16490,6 +16511,7 @@ def _decorate_reward_rows(rows, lc):
             'icon': reward_icon,
             'detail_type': detail_type,
             'detail_id': detail_id,
+            'tags': reward_tags,
             'thumb_type': ('char' if rt == '2' else ('option_part' if rt == '8' else ('unit' if rt == '3' else ''))),
             'thumb': (reward_icon if rt in ('2', '8', '3') else ''),
             'rarity': (RARITY_MAP.get(cri, 'N') if rt == '2' else (RARITY_MAP.get(ori, 'N') if rt == '8' else (RARITY_MAP.get(uri, 'N') if rt == '3' else ''))),
@@ -16860,10 +16882,26 @@ def resolve_special_ops_missions(event_id, lc):
 
 
 def resolve_special_ops_event_rewards(event_id, lc):
-    """m_event.PickupRewardSetId for Special Ops event card rewards."""
+    """Accumulative Special Ops rewards = merge of all event mission reward sets.
+
+    PickupRewardSetId on m_event is only the banner highlight (SSP / title / diamonds).
+    Coins, Unit Upgrade Data, SP chips, etc. live on the mission RewardSetIds — same
+    class as FEA Challenge total_rewards.
+    """
     eid = safe_int(event_id, 0)
     if not eid:
         return []
+    missions = resolve_special_ops_missions(eid, lc)
+    all_rows = []
+    for m in missions or []:
+        if not isinstance(m, dict):
+            continue
+        for r in (m.get('rewards') or []):
+            if isinstance(r, dict):
+                all_rows.append(r)
+    if all_rows:
+        return _fea_merge_reward_stacks(all_rows)
+    # Fallback: banner pickup set when missions have no reward rows yet.
     for ev in extract_data_list(event_master_data or []):
         if not isinstance(ev, dict):
             continue
@@ -17124,6 +17162,21 @@ def _resolve_map_branch_victory_texts(sid, lc):
     return out
 
 
+def _sanitize_stage_battle_condition_placeholders(txt):
+    """LANG may ship Special Ops templates with `{kill_count}` / `{turn_limit}`.
+
+    Those slots are filled in-client from the player's chosen Special Ops
+    (OwnUnitKillCountDefeat / TurnLimitChange) — not fixed stage constants.
+    Never leave snake_case brace tokens on the website; keep the LANG sentence
+    and mark the variable slots with an ellipsis.
+    """
+    if not txt or not isinstance(txt, str):
+        return txt
+    if '{kill_count}' not in txt and '{turn_limit}' not in txt:
+        return txt
+    return txt.replace('{kill_count}', '…').replace('{turn_limit}', '…')
+
+
 def resolve_stage_conditions(sid, lc):
     ld = get_lang_data(lc)
     ctm = ld.get('stage_condition_text_map', {})
@@ -17135,6 +17188,7 @@ def resolve_stage_conditions(sid, lc):
         txt = _lookup_condition_text(c.get('text_lang_id', ''), ctm)
         if not txt:
             continue
+        txt = _sanitize_stage_battle_condition_placeholders(txt)
         ct = str(c.get('category_type_index', '0'))
         if ct == '1':
             victory.append(txt)
@@ -36611,7 +36665,7 @@ def get_stage(stage_id):
         if (not _fea_combat) and stage_id in (invasion_event_group_map or {}):
             # fea8: Special Ops Haro Trophy score thresholds
             ck_fea = (
-                f"stage_fea8_{stage_id}_{lc}_"
+                f"stage_fea11_{stage_id}_{lc}_"
                 f"{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_"
                 f"{eternal_stage_session_cache_key_fragment()}"
             )

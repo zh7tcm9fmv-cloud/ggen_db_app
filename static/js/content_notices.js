@@ -18,6 +18,8 @@
     { pageId: 'e_simulator', tabId: 'navStageTab', extraIds: ['stageSourceEsimBtn'], version: '1' },
     /* FEA browse tab — new feature; bump version to re-flare everyone. */
     { pageId: 'fierce_enemy_assault', tabId: 'navStageTab', extraIds: ['stageSourceFeaBtn'], version: '1' },
+    /* Special Ops Mode (特務) on FEA — bump version to re-flare everyone. */
+    { pageId: 'fea_special_ops', tabId: 'navStageTab', extraIds: ['stageSourceFeaBtn'], version: '1' },
   ];
   /** Stage source buttons that flare for today's openings (by browse category). */
   const STAGES_CATEGORY_BTN_IDS = {
@@ -177,6 +179,19 @@
     syncOverflowHints();
   }
 
+  function refreshSpecialOpsButtonNotices() {
+    const needs = pageNeedsVisitNotice(pageVisitEntry('fea_special_ops'));
+    /* Flare on the thumb top-right — keep SO logo absolutely positioned top-left. */
+    document.querySelectorAll('.stage-browse-thumb[data-special-ops="1"]').forEach((el) => {
+      el.classList.add('ui-notice-anchor');
+      setPageVisitNotice(el, needs);
+    });
+    document.querySelectorAll('.fea-special-ops-toggle').forEach((el) => {
+      el.classList.add('ui-notice-anchor');
+      setPageVisitNotice(el, needs);
+    });
+  }
+
   function markPageVisitSeen(pageId) {
     const entry = pageVisitEntry(pageId);
     if (!entry) return;
@@ -184,6 +199,11 @@
     pageVisitTargetIds(entry).forEach((id) => {
       setPageVisitNotice(document.getElementById(id), false);
     });
+    if (pageId === 'fea_special_ops') {
+      document.querySelectorAll('.stage-browse-thumb[data-special-ops="1"], .fea-special-ops-toggle').forEach((el) => {
+        setPageVisitNotice(el, false);
+      });
+    }
     refreshStagesNavNotice();
     syncOverflowHints();
     refreshHomeAggregate();
@@ -421,10 +441,11 @@
     const tab = document.getElementById('navStageTab');
     const esimNeeds = pageNeedsVisitNotice(pageVisitEntry('e_simulator'));
     const feaNeeds = pageNeedsVisitNotice(pageVisitEntry('fierce_enemy_assault'));
+    const soNeeds = pageNeedsVisitNotice(pageVisitEntry('fea_special_ops'));
     const stagesNew = stagesCatalogHasNew();
     if (tab) {
       tab.classList.add('ui-notice-anchor');
-      if (esimNeeds || feaNeeds) setPageVisitNotice(tab, true);
+      if (esimNeeds || feaNeeds || soNeeds) setPageVisitNotice(tab, true);
       else setNotice(tab, stagesNew);
     }
     Object.keys(STAGES_CATEGORY_BTN_IDS).forEach((cat) => {
@@ -434,15 +455,16 @@
       ensureNoticeFlare(el);
       setNotice(el, stagesCategoryHasNew(cat));
     });
-    // Keep e_sim / FEA page-visit flares on their buttons if still unread.
+    // Keep e_sim / FEA / Special Ops page-visit flares on their buttons if still unread.
     const esimBtn = document.getElementById('stageSourceEsimBtn');
     if (esimBtn && pageNeedsVisitNotice(pageVisitEntry('e_simulator'))) {
       setPageVisitNotice(esimBtn, true);
     }
     const feaBtn = document.getElementById('stageSourceFeaBtn');
-    if (feaBtn && pageNeedsVisitNotice(pageVisitEntry('fierce_enemy_assault'))) {
+    if (feaBtn && (feaNeeds || soNeeds)) {
       setPageVisitNotice(feaBtn, true);
     }
+    refreshSpecialOpsButtonNotices();
     syncOverflowHints();
   }
 
@@ -806,6 +828,7 @@
     markPageVisitSeen,
     bootstrapPageVisitNotices,
     refreshStagesNavNotice,
+    refreshSpecialOpsButtonNotices,
     updateStagesCatalogNotice,
     updateBtVoteNotices,
     updateCollectionsCensusNotice,
