@@ -7097,6 +7097,9 @@ _API_CACHE_PIN_PREFIXES = (
     'browse_filters_',
     # Banner timeline is huge to rebuild (~1–3s). Evicting it under browse/detail
     # traffic made /tl and site-wide votes feel randomly sluggish after every feature.
+    # Keep pin prefixes in lockstep with api_banner_timeline cache tags (currently v23).
+    'banner_tl_v23_',
+    'banner_tl_full_v23_',
     'banner_tl_v22_',
     'banner_tl_full_v22_',
     'banner_tl_v21_',
@@ -7285,6 +7288,21 @@ def _http_json_body_cache_get(cache_key):
         return _HTTP_JSON_BODY_CACHE.get(cache_key)
 
 
+def _http_json_body_cache_evict_oldest(store, *, prefer_unpinned=True):
+    """Pop one entry for LRU pressure. Prefer unpinned so /tl gzip survives traffic floods."""
+    if not store:
+        return None
+    if prefer_unpinned:
+        for k in list(store.keys()):
+            if not _api_cache_key_pinned(k):
+                return store.pop(k, None)
+    try:
+        oldest = next(iter(store))
+    except StopIteration:
+        return None
+    return store.pop(oldest, None)
+
+
 def _http_json_body_cache_put(cache_key, raw, compressed, etag):
     with _HTTP_JSON_BODY_CACHE_LOCK:
         raw_len = len(raw) if raw is not None else 0
@@ -7296,29 +7314,24 @@ def _http_json_body_cache_put(cache_key, raw, compressed, etag):
                 'raw': raw, 'gzip': compressed, 'etag': etag,
             }
             while len(_HTTP_JSON_DETAIL_BODY_CACHE) > _HTTP_JSON_DETAIL_BODY_CACHE_MAX:
-                try:
-                    oldest = next(iter(_HTTP_JSON_DETAIL_BODY_CACHE))
-                except StopIteration:
+                if _http_json_body_cache_evict_oldest(
+                    _HTTP_JSON_DETAIL_BODY_CACHE, prefer_unpinned=False
+                ) is None:
                     break
-                _HTTP_JSON_DETAIL_BODY_CACHE.pop(oldest, None)
             return
         if compressed is None and keep_raw is None:
             return
         _HTTP_JSON_BODY_CACHE[cache_key] = entry
         while len(_HTTP_JSON_BODY_CACHE) > _HTTP_JSON_BODY_CACHE_MAX:
-            try:
-                oldest = next(iter(_HTTP_JSON_BODY_CACHE))
-            except StopIteration:
+            if _http_json_body_cache_evict_oldest(_HTTP_JSON_BODY_CACHE) is None:
                 break
-            _HTTP_JSON_BODY_CACHE.pop(oldest, None)
         # Byte budget: drop oldest until under cap (gzip-only matrix stays cheap).
+        # Prefer unpinned victims so pinned /tl bodies are not the first casualty under rpm.
         total = sum(_http_json_entry_bytes(v) for v in _HTTP_JSON_BODY_CACHE.values())
         while total > _HTTP_JSON_BODY_CACHE_BUDGET and _HTTP_JSON_BODY_CACHE:
-            try:
-                oldest = next(iter(_HTTP_JSON_BODY_CACHE))
-            except StopIteration:
+            gone = _http_json_body_cache_evict_oldest(_HTTP_JSON_BODY_CACHE)
+            if gone is None:
                 break
-            gone = _HTTP_JSON_BODY_CACHE.pop(oldest, None)
             total -= _http_json_entry_bytes(gone)
 
 
@@ -18934,7 +18947,12 @@ def _start_browse_cache_warmup():
 
 
 def _prewarm_banner_timeline_caches():
-    """Seed /api/banner_timeline for active langs so /tl is not a cold multi-second rebuild."""
+    """Seed /api/banner_timeline for active langs so /tl is not a cold multi-second rebuild.
+
+    Cache tag must match api_banner_timeline (banner_tl_v23_*). A stale prewarm key
+    (e.g. v22 after a v23 bump) silently no-ops the warm path and every first /tl
+    after recycle pays the multi-second rebuild — worst under high traffic / multi-worker.
+    """
     langs = []
     for lc in (DEFAULT_LANG, 'EN', 'TW', 'HK', 'JA', 'JP'):
         if lc and lc not in langs:
@@ -18945,7 +18963,7 @@ def _prewarm_banner_timeline_caches():
         langs = [lc for lc in langs if lc in have] or list(have)[:1]
     warmed = 0
     for lc in langs:
-        ck = f'banner_tl_v22_{lc}'
+        ck = f'banner_tl_v23_{lc}'
         if get_cached_response(ck):
             continue
         try:
