@@ -2799,7 +2799,12 @@ def _char_ability_entries_for_pilot_cond(char_id, ld, lc, stat_mode='normal'):
 
 
 def _ability_detail_condition_unit_ids(d2):
-    """Unit ids from trait-condition chips on an ability detail (source=unit_ids)."""
+    """Unit ids from trait-condition chips on an ability detail (source=unit_ids only).
+
+    Tag/series affinity chips also use type=unit (e.g. source=unit_tags id=1121
+    Alaya-Vijnana Type E). Those must NOT be treated as named-unit pair gates — that
+    mis-routed tag-gated EX Melee/Reaction % into pair_ex (never applied, no CP toggle).
+    """
     out = []
     if not isinstance(d2, dict):
         return out
@@ -2808,6 +2813,9 @@ def _ability_detail_condition_unit_ids(d2):
         if not isinstance(c, dict):
             continue
         if str(c.get('type') or '').lower() != 'unit':
+            continue
+        # Strict: only UnitIds chips. unit_tags / series / types are affinity gates.
+        if str(c.get('source') or '').lower() != 'unit_ids':
             continue
         uid = normalize_id(c.get('id') or '')
         if uid and uid != '0' and uid not in seen:
@@ -18975,6 +18983,11 @@ def _prewarm_default_browse_list_api_caches(include_stages=False, stages_only=Fa
                 (
                     f'/api/stages?lang={lc}&page=1&per_page=50&q=&difficulty=&sort=stage_number'
                     f'&dir=asc&category=challenge_stage&tower_side=ALL&challenge_series=ALL',
+                    list_stages,
+                ),
+                (
+                    f'/api/stages?lang={lc}&page=1&per_page=50&q=&difficulty=&sort=stage_number'
+                    f'&dir=asc&category=fierce_enemy_assault&tower_side=ALL&challenge_series=ALL',
                     list_stages,
                 ),
             ))
@@ -37363,7 +37376,7 @@ def get_character(char_id):
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
         view_ranking = request.args.get('view', '').strip().lower() == 'ranking'
         # r21: condition chips use in-game id order (Zeon & Land, not file order).
-        ck = f"c_{char_id}_{lc}_r25_{1 if view_ranking else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        ck = f"c_{char_id}_{lc}_r26_{1 if view_ranking else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             # Images already CDN-converted when cached; skip re-walk + re-jsonify under GIL.

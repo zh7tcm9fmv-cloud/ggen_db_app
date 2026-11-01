@@ -155,6 +155,17 @@
         votes:fetch('/api/sp_investment/votes',{credentials:'same-origin',cache:'no-store'}).then(function(r){return r.ok?r.json():null}).catch(function(){return null})
       };
     }
+    /* /fea: overlap FEA stages list with CSS/JS download (same class as /tl /new /ip). */
+    if(/^\/fea\/?$/i.test(path)){
+      var feaUrl='/api/stages?lang='+encodeURIComponent(l)+'&page=1&per_page=50&q=&difficulty=&sort=stage_number&dir=asc&category=fierce_enemy_assault&tower_side=ALL&challenge_series=ALL';
+      window.__GGEN_FEA_BOOT__={
+        lang:l,
+        url:feaUrl,
+        resp:fetch(feaUrl,{credentials:'same-origin'}).then(function(r){
+          return r.json().then(function(body){return{ok:r.ok,status:r.status,data:body}}).catch(function(){return{ok:false,status:r.status,data:null}});
+        }).catch(function(){return{ok:false,status:0,data:null}})
+      };
+    }
   }catch(_){}
 })();
 </script>

@@ -185,5 +185,22 @@
     "bsp_sharded": true,
     "weapon_len": 512,
     "weapon_max": 512
+  },
+  {
+    "at": "2026-11-01T15:43:50+08:00",
+    "rss_mb": 910.8,
+    "body_mb": 3.05,
+    "detail_mb": 0.94,
+    "band": "pressure",
+    "rpm": 203,
+    "pair_len": 1500,
+    "pair_max": 1500,
+    "body_budget_mb": 8.0,
+    "bsp_lru": 11,
+    "bsp_lru_max": 64,
+    "api_cache_keys": 103,
+    "bsp_sharded": true,
+    "weapon_len": 512,
+    "weapon_max": 512
   }
 ]
