@@ -7486,16 +7486,26 @@ return(traits||[]).some(tr=>String(tr||'').split(/\r?\n/).some(l=>{const t=l.tri
 }
 function _normalizePilotWeaponTypeToken(t){
 const tl=String(t||'').trim().toLowerCase().replace(/\s+weapons?\s*$/,'').trim();
-if(tl.includes('physical')||tl.includes('物理'))return'physical';
-if(tl.includes('beam')||tl.includes('光束')||tl.includes('鐳射')||tl.includes('ビーム'))return'beam';
-if(tl.includes('special')||tl.includes('特殊'))return'special';
+/* Attribute (Beam/Physical/Special) vs attack type (Melee/Ranged/Awaken) — Char Dijeh EX uses Melee Weapon. */
+if(tl.includes('physical')||tl.includes('物理')||tl.includes('물리'))return'physical';
+if(tl.includes('beam')||tl.includes('光束')||tl.includes('鐳射')||tl.includes('ビーム')||tl.includes('빔'))return'beam';
+if(tl.includes('special')||tl.includes('特殊')||tl.includes('특수'))return'special';
+if(tl.includes('melee')||tl.includes('格闘')||tl.includes('格鬥')||tl.includes('격투'))return'melee';
+if(tl.includes('ranged')||tl.includes('射撃')||tl.includes('射擊')||tl.includes('사격'))return'ranged';
+if(tl.includes('awaken')||tl.includes('覚醒')||tl.includes('覺醒')||tl.includes('각성'))return'awaken';
 return tl;
 }
 function _pilotRangeTypeKeysMatchWeapon(wpnTypesStr,wpn){
 if(weaponRowLooksMapWeapon(wpn))return false;
-const wpnKeySet=new Set(_dcWeaponAttributeKeys(wpn));
+const attrKeys=new Set(_dcWeaponAttributeKeys(wpn));
+const atkKeys=new Set((_dcWeaponAtkStatKeys(wpn)||[]).map(k=>String(k||'').toLowerCase()));
 const types=String(wpnTypesStr||'').split(/\s+or\s+|,\s*|\s+and\s+|\s*\/\s*|\s*、\s*/);
-return types.some(t=>{const key=_normalizePilotWeaponTypeToken(t);return key&&wpnKeySet.has(key)});
+return types.some(t=>{
+const key=_normalizePilotWeaponTypeToken(t);
+if(!key)return false;
+if(key==='melee'||key==='ranged'||key==='awaken')return atkKeys.has(key);
+return attrKeys.has(key);
+});
 }
 function _pilotExclusiveAbilityPilotPhrase(tx){
 let m=String(tx||'').match(/when\s+piloting\s+(.+?)\s+and\s+vigor/i);
@@ -7573,10 +7583,14 @@ const reWeaponMaxInc=/when\s+piloting\s+(.+?)[,\s][\s\S]{0,220}?((?:beam|physica
 while((m=reWeaponMaxInc.exec(s))!==null)push(m[1],m[2],m[3]);
 const reIsIncreased=/when\s+piloting\s+(.+?)[,\s][\s\S]{0,200}?max\s+range\s+of\s+(.+?)\s+(?:weapons?\s+)?is\s+increased\s+by\s+(\d+)/gi;
 while((m=reIsIncreased.exec(s))!==null)push(m[1],m[2],m[3]);
-const reJaUnit=/搭乗ユニットが「([^」]+)」[\s\S]{0,320}?((?:物理|ビーム|特殊)(?:[、及](?:物理|ビーム|特殊))*)武装の最大射程が(\d+)上昇/g;
+const reJaUnit=/搭乗ユニットが「([^」]+)」[\s\S]{0,320}?((?:物理|ビーム|特殊|格闘|射撃|覚醒)(?:[、及](?:物理|ビーム|特殊|格闘|射撃|覚醒))*)武装の最大射程が(\d+)上昇/g;
 while((m=reJaUnit.exec(s))!==null)push(m[1],m[2],m[3]);
-const reJaPilot=/「([^」]+)」\s*搭乗時[\s\S]{0,120}?((?:物理|ビーム|特殊)(?:[、及](?:物理|ビーム|特殊))*)武装の最大射程が(\d+)上昇/g;
+const reJaPilot=/「([^」]+)」\s*搭乗時[\s\S]{0,120}?((?:物理|ビーム|特殊|格闘|射撃|覚醒)(?:[、及](?:物理|ビーム|特殊|格闘|射撃|覚醒))*)武装の最大射程が(\d+)上昇/g;
 while((m=reJaPilot.exec(s))!==null)push(m[1],m[2],m[3]);
+const reTwPilot=/搭乘「([^」]+)」時[\s\S]{0,120}?((?:物理|光束|特殊|格鬥|射擊|覺醒)(?:[、及](?:物理|光束|特殊|格鬥|射擊|覺醒))*)武[裝装]的最大射程提升(\d+)/g;
+while((m=reTwPilot.exec(s))!==null)push(m[1],m[2],m[3]);
+const reKrPilot=/'([^']+)'\s*탑승\s*시[\s\S]{0,120}?((?:물리|빔|특수|격투|사격|각성)(?:\s*[,，및]\s*(?:물리|빔|특수|격투|사격|각성))*)\s*무장의\s*최대\s*사정거리가\s*(\d+)\s*상승/g;
+while((m=reKrPilot.exec(s))!==null)push(m[1],m[2],m[3]);
 });
 const seen=new Set();
 return mods.filter(m=>{const k=m.wpnTypes+'|'+m.inc;if(seen.has(k))return false;seen.add(k);return true});
@@ -11475,7 +11489,7 @@ const DC_ATK_SLOT_COUNT=3;
 const DC_SHINN_ASUKA_CHAR_IDS=new Set(['1330000101','1330000102','1330000103','1330000104','1330000105']);
 function _dcIsZhCalcLang(){const lc=(S.lang||'EN').toUpperCase();return lc==='TW'||lc==='HK';}
 function _dcIsJaCalcLang(){return (S.lang||'EN').toUpperCase()==='JA';}
-function _dcTwZhWeaponTypesToEn(zhBlob){const map={物理:'physical',光束:'beam',特殊:'special'};return String(zhBlob||'').split(/、/).map(s=>map[s.trim()]||'').filter(Boolean).join(' or ');}
+function _dcTwZhWeaponTypesToEn(zhBlob){const map={物理:'physical',光束:'beam',特殊:'special',格鬥:'melee',射擊:'ranged',覺醒:'awaken'};return String(zhBlob||'').split(/、/).map(s=>map[s.trim()]||'').filter(Boolean).join(' or ');}
 function _dcTwBattleSpiritToVigorKey(spirit){const t=String(spirit||'').trim();if(t==='超一擊')return'super';if(t==='超強勢')return'max';if(t==='強勢')return'high';return'medium';}
 function _dcIsShinnAsukaCharacter(cd){if(!cd)return false;const id=String(cd.id!=null?cd.id:'').trim();if(DC_SHINN_ASUKA_CHAR_IDS.has(id))return true;const mid=cd.main_character_id!=null?String(cd.main_character_id).trim():'';if(mid&&DC_SHINN_ASUKA_CHAR_IDS.has(mid))return true;const n=(cd.name||'').toLowerCase();return n.includes('shinn')&&n.includes('asuka')}
 function _dcCharAbilitiesTextBlob(cd){
@@ -18018,17 +18032,17 @@ mods.push({reqVigor:reqVigorKey,wpnTypes:wpnTypesStr,rangeInc});
 if(_dcIsZhCalcLang()){
 sources.forEach(txt=>{
 let m;
-const twFull=/搭乘(?:單位為)?「([^」]+)」[^]*?自身戰意為「([^」]+)」以上[^]*?((?:物理|光束|特殊)(?:、(?:物理|光束|特殊))*)武裝的最大射程提升(\d+)/g;
+const twFull=/搭乘(?:單位為)?「([^」]+)」[^]*?自身戰意為「([^」]+)」以上[^]*?((?:物理|光束|特殊|格鬥|射擊|覺醒)(?:、(?:物理|光束|特殊|格鬥|射擊|覺醒))*)武裝的最大射程提升(\d+)/g;
 while((m=twFull.exec(txt))!==null){
 enPushIfUnit(m[1],_dcTwBattleSpiritToVigorKey(m[2]),_dcTwZhWeaponTypesToEn(m[3]),parseInt(m[4],10)||0);
 }
 if(!/搭乘/.test(txt)){
-const twVigor=/自身戰意為「([^」]+)」以上[^]*?((?:物理|光束|特殊)(?:、(?:物理|光束|特殊))*)武裝的最大射程提升(\d+)/g;
+const twVigor=/自身戰意為「([^」]+)」以上[^]*?((?:物理|光束|特殊|格鬥|射擊|覺醒)(?:、(?:物理|光束|特殊|格鬥|射擊|覺醒))*)武裝的最大射程提升(\d+)/g;
 while((m=twVigor.exec(txt))!==null){
 enPushIfUnit('',_dcTwBattleSpiritToVigorKey(m[1]),_dcTwZhWeaponTypesToEn(m[2]),parseInt(m[3],10)||0);
 }
 }
-const twPilot=/搭乘「([^」]+)」時[^]*?((?:物理|光束|特殊)(?:、(?:物理|光束|特殊))*)武裝的最大射程提升(\d+)/g;
+const twPilot=/搭乘「([^」]+)」時[^]*?((?:物理|光束|特殊|格鬥|射擊|覺醒)(?:、(?:物理|光束|特殊|格鬥|射擊|覺醒))*)武裝的最大射程提升(\d+)/g;
 while((m=twPilot.exec(txt))!==null){
 if(/自身戰意為/.test(m[0]))continue;
 enPushIfUnit(m[1],'medium',_dcTwZhWeaponTypesToEn(m[2]),parseInt(m[3],10)||0);

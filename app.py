@@ -2485,11 +2485,24 @@ _UNIT_WEAPON_RANGE_MOD_CACHE = {}
 
 
 def _weapon_range_type_keys_from_phrase(phrase):
-    """Map trait phrasing ('Physical or Beam Weapons') to canonical type keys."""
+    """Map trait phrasing to canonical keys.
+
+    Attribute keys: physical / beam / special (WeaponAttributeSet).
+    Attack-type keys: melee / ranged / awaken (AttackAttributeSet) — e.g. Char
+    Aznable EX ``max range of Melee Weapon +1`` on Dijeh (EX). Do not treat
+    ``Melee Weapon`` as ``weapons`` → all attributes.
+    """
     if not phrase:
         return frozenset()
     tl = str(phrase).lower().replace('&', ' ').replace('、', ' ').replace('及', ' ').replace(',', ' ')
     keys = set()
+    # Attack types first so "Melee Weapon" does not fall through to all-attrs.
+    if re.search(r'\bmelee\b', tl) or '格闘' in phrase or '格鬥' in phrase or '격투' in phrase:
+        keys.add('melee')
+    if re.search(r'\branged\b', tl) or '射撃' in phrase or '射擊' in phrase or '사격' in phrase:
+        keys.add('ranged')
+    if re.search(r'\bawaken\b', tl) or '覚醒' in phrase or '覺醒' in phrase or '각성' in phrase:
+        keys.add('awaken')
     if 'physical' in tl or '物理' in phrase or '물리' in phrase:
         keys.add('physical')
     if 'beam' in tl or '光束' in phrase or 'ビーム' in phrase or '鐳射' in phrase or '빔' in phrase:
@@ -2539,8 +2552,18 @@ def _parse_weapon_max_range_increases_from_text(text):
         if key not in seen:
             seen.add(key)
             out.append((types, inc))
+    _zh_atk_attr = r'物理|光束|特殊|鐳射|格鬥|射擊|覺醒'
     for m in re.finditer(
-            r'((?:物理|光束|特殊|鐳射)(?:[、及或&\s]+(?:物理|光束|特殊|鐳射))*)武[裝装]的最大射程提升(\d+)', s):
+            rf'((?:{_zh_atk_attr})(?:[、及或&\s]+(?:{_zh_atk_attr}))*)武[裝装]的最大射程提升(\d+)', s):
+        types = _weapon_range_type_keys_from_phrase(m.group(1))
+        inc = int(m.group(2))
+        key = (types, inc)
+        if key not in seen:
+            seen.add(key)
+            out.append((types, inc))
+    _ja_atk_attr = r'物理|ビーム|特殊|格闘|射撃|覚醒'
+    for m in re.finditer(
+            rf'((?:{_ja_atk_attr})(?:[、及或\s]+(?:{_ja_atk_attr}))*)武装の最大射程(?:が)?(\d+)(?:増加|上昇|延び)', s):
         types = _weapon_range_type_keys_from_phrase(m.group(1))
         inc = int(m.group(2))
         key = (types, inc)
@@ -2548,24 +2571,17 @@ def _parse_weapon_max_range_increases_from_text(text):
             seen.add(key)
             out.append((types, inc))
     for m in re.finditer(
-            r'((?:物理|ビーム|特殊)(?:[、及或\s]+(?:物理|ビーム|特殊))*)武装の最大射程(?:が)?(\d+)(?:増加|上昇|延び)', s):
+            rf'((?:{_ja_atk_attr})(?:[、及](?:{_ja_atk_attr}))?)武装の最大射程が(\d+)上昇', s):
         types = _weapon_range_type_keys_from_phrase(m.group(1))
         inc = int(m.group(2))
         key = (types, inc)
         if key not in seen:
             seen.add(key)
             out.append((types, inc))
+    # KR: 빔 / 물리 / 격투 무장의 최대 사정거리가 1 상승
+    _kr_atk_attr = r'물리|빔|특수|격투|사격|각성'
     for m in re.finditer(
-            r'((?:物理|ビーム|特殊)(?:[、及](?:物理|ビーム|特殊))?)武装の最大射程が(\d+)上昇', s):
-        types = _weapon_range_type_keys_from_phrase(m.group(1))
-        inc = int(m.group(2))
-        key = (types, inc)
-        if key not in seen:
-            seen.add(key)
-            out.append((types, inc))
-    # KR: 빔 무장의 최대 사정거리가 1 상승 / 물리, 빔 무장의 최대 사정거리가 1 상승
-    for m in re.finditer(
-            r'((?:물리|빔|특수)(?:\s*[,，및]\s*(?:물리|빔|특수))*)\s*무장의\s*최대\s*사정거리가\s*(\d+)\s*상승',
+            rf'((?:{_kr_atk_attr})(?:\s*[,，및]\s*(?:{_kr_atk_attr}))*)\s*무장의\s*최대\s*사정거리가\s*(\d+)\s*상승',
             s):
         types = _weapon_range_type_keys_from_phrase(m.group(1))
         inc = int(m.group(2))
@@ -2577,11 +2593,25 @@ def _parse_weapon_max_range_increases_from_text(text):
 
 
 def _weapon_row_matches_range_type_keys(wm, type_keys):
+    """True when weapon matches attribute and/or attack-type range keys."""
     if not type_keys:
         return False
-    ai = str(wm.get('attribute', '0') or '0')
-    wkeys = set(WEAPON_ATTR_SET_TYPE_KEYS.get(ai, []) or [])
-    return bool(wkeys & set(type_keys))
+    want = set(type_keys)
+    attr_want = want & {'physical', 'beam', 'special'}
+    atk_want = want & {'melee', 'ranged', 'awaken'}
+    if not attr_want and not atk_want:
+        return False
+    if attr_want:
+        ai = str(wm.get('attribute', '0') or '0')
+        wkeys = set(WEAPON_ATTR_SET_TYPE_KEYS.get(ai, []) or [])
+        if not (wkeys & attr_want):
+            return False
+    if atk_want:
+        aa = str(wm.get('attack_attribute', '0') or '0')
+        akeys = set(ATTACK_ATTR_SET_TYPE_KEYS.get(aa, []) or [])
+        if not (akeys & atk_want):
+            return False
+    return True
 
 
 def _unit_ability_entries_for_weapon_range(uid, ld, lc, stat_mode):
@@ -2877,9 +2907,11 @@ def _collect_pilot_weapon_range_modifiers(uid, ld, lc, stat_mode):
                         txt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
                         if not txt or not re.search(r'when\s+piloting|搭乘|搭乗|탑승', txt, re.I):
                             continue
-                        if not _pilot_text_targets_unit(uid, ld, txt):
+                        if not _pilot_detail_targets_unit(uid, ld, d2 if isinstance(d2, dict) else txt):
                             continue
                         for types, inc in _parse_weapon_max_range_increases_from_text(txt):
+                            if not types or not inc:
+                                continue
                             mods.append({'type_keys': types, 'inc': inc})
     _PILOT_WEAPON_RANGE_MOD_CACHE[cache_key] = mods
     return mods
