@@ -1,6 +1,7 @@
 /**
  * Ko-fi donate promo — speech bubble near #kofiHeaderLink with a random portrait.
- * Portrait: uniform random from images/Popup + original Maria.
+ * Portrait: 60% from latest Popup batch + win_g8500n00100_02; else rest of
+ * images/Popup + original Maria (uniform within each bucket).
  * Shows 2 minutes after page load. Snoozed for 24h after close (X) or Ko-fi header click
  * on the same page visit — a full reload clears the snooze.
  */
@@ -17,6 +18,20 @@
     'ggen_kofi_promo_snooze_until',
   ];
   var MARIA_IMG = '/static/images/UI/UI_TacticalTraining_Logo_maria.webp';
+  /**
+   * Weighted featured set (60%): latest Popup batch (Oct 2026) + pinned win_g8500n00100_02.
+   * Must also exist in PROMO_POPUP_FILES. Sync script only rewrites PROMO_POPUP_FILES.
+   */
+  var PROMO_POPUP_FEATURED_WEIGHT = 0.6;
+  var PROMO_POPUP_FEATURED_FILES = [
+    'win_g0990c00400_01.webp',
+    'win_g0990c00400_02.webp',
+    'win_g0990c00400_03.webp',
+    'win_g5100c00100_01.webp',
+    'win_g5100c00100_02.webp',
+    'win_g5100c00100_03.webp',
+    'win_g8500n00100_02.webp',
+  ];
   /** Keep in sync with image_index.json → "images/Popup" (run scripts/sync_kofi_promo_popup_avatars.py). */
   var PROMO_POPUP_FILES = [
     'sd_story_event_shop_gm.webp',
@@ -402,10 +417,23 @@
   }
 
   function pickPromoPortraitPath() {
-    var pool = PROMO_POPUP_FILES.map(function (name) {
-      return '/static/images/Popup/' + name;
+    var featuredSet = Object.create(null);
+    PROMO_POPUP_FEATURED_FILES.forEach(function (name) {
+      featuredSet[name] = true;
     });
-    pool.push(MARIA_IMG);
+    var toPopupPath = function (name) {
+      return '/static/images/Popup/' + name;
+    };
+    var featured = PROMO_POPUP_FEATURED_FILES.filter(function (name) {
+      return PROMO_POPUP_FILES.indexOf(name) !== -1;
+    }).map(toPopupPath);
+    var rest = PROMO_POPUP_FILES.filter(function (name) {
+      return !featuredSet[name];
+    }).map(toPopupPath);
+    rest.push(MARIA_IMG);
+    var useFeatured = featured.length > 0 && Math.random() < PROMO_POPUP_FEATURED_WEIGHT;
+    var pool = useFeatured ? featured : rest;
+    if (!pool.length) pool = featured.length ? featured : [MARIA_IMG];
     return pool[Math.floor(Math.random() * pool.length)] || MARIA_IMG;
   }
 

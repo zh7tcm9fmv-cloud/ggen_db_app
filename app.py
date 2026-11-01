@@ -1061,6 +1061,7 @@ UI_LABELS = {
         'stage_score_type_1': 'Clear evaluation', 'stage_score_type_2': 'Damage taken', 'stage_score_type_3': 'Overkill',
         'stage_score_type_4': 'Survivors', 'stage_score_type_5': 'Bonus',
         'reward_diamonds': 'Diamonds',
+        'reward_capital': 'Capital',
     },
     'TW': {
         'restriction_before_moving': '僅限移動前使用。',
@@ -1084,6 +1085,7 @@ UI_LABELS = {
         'stage_score_type_1': '通關評價', 'stage_score_type_2': '承受傷害', 'stage_score_type_3': '過剩擊殺',
         'stage_score_type_4': '存活數', 'stage_score_type_5': '加成',
         'reward_diamonds': '鑽石',
+        'reward_capital': 'CAPITAL',
     },
     'HK': {
         'restriction_before_moving': '僅限移動前使用。',
@@ -1107,6 +1109,7 @@ UI_LABELS = {
         'stage_score_type_1': '通關評價', 'stage_score_type_2': '承受傷害', 'stage_score_type_3': '過剩擊殺',
         'stage_score_type_4': '存活數', 'stage_score_type_5': '加成',
         'reward_diamonds': '鑽石',
+        'reward_capital': 'CAPITAL',
     },
     'JA': {
         'restriction_before_moving': '移動前のみ使用可能。',
@@ -1130,6 +1133,7 @@ UI_LABELS = {
         'stage_score_type_1': 'クリア評価', 'stage_score_type_2': '被ダメージ', 'stage_score_type_3': 'オーバーキル',
         'stage_score_type_4': '生存数', 'stage_score_type_5': 'ボーナス',
         'reward_diamonds': 'ダイヤ',
+        'reward_capital': 'CAPITAL',
     },
     # Korean (HR pack / KR UI). Prefer game LANG for dossier text; these are UI chrome fallbacks.
     'HR': {
@@ -1154,6 +1158,7 @@ UI_LABELS = {
         'stage_score_type_1': '클리어 평가', 'stage_score_type_2': '피데미지', 'stage_score_type_3': '오버킬',
         'stage_score_type_4': '생존 수', 'stage_score_type_5': '보너스',
         'reward_diamonds': '다이아',
+        'reward_capital': 'CAPITAL',
     },
 }
 UI_LABELS['KR'] = dict(UI_LABELS['HR'])
@@ -12375,6 +12380,7 @@ main_stage_challenge_npc_unit_override_data = load_json(os.path.join(BASE_DIR, "
 main_stage_challenge_npc_character_override_data = load_json(os.path.join(BASE_DIR, "m_map_npc_character_main_stage_challenge_override.json"))
 mission_data = load_json(os.path.join(BASE_DIR, "m_mission.json"))
 mission_group_data = load_json(os.path.join(BASE_DIR, "m_mission_group.json"))
+event_master_data = load_json(os.path.join(BASE_DIR, "m_event.json"))
 game_event_condition_data = load_json(os.path.join(BASE_DIR, "m_game_event_condition.json"))
 tower_event_data = load_json(os.path.join(BASE_DIR, "m_tower_event.json"))
 tower_event_stage_group_data = load_json(os.path.join(BASE_DIR, "m_tower_event_stage_group.json"))
@@ -12452,6 +12458,10 @@ option_parts_acquisition_method_data = load_json(os.path.join(BASE_DIR, "m_optio
 invasion_event_stage_extend_data = load_json(os.path.join(BASE_DIR, "m_invasion_event_stage_extend.json"))
 invasion_event_stage_group_data = load_json(os.path.join(BASE_DIR, "m_invasion_event_stage_group.json"))
 invasion_event_stage_data = load_json(os.path.join(BASE_DIR, "m_invasion_event_stage.json"))
+invasion_restriction_event_stage_data = load_json(os.path.join(BASE_DIR, "m_invasion_restriction_event_stage.json"))
+invasion_restriction_event_restriction_data = load_json(os.path.join(BASE_DIR, "m_invasion_restriction_event_restriction.json"))
+invasion_restriction_event_restriction_level_data = load_json(os.path.join(BASE_DIR, "m_invasion_restriction_event_restriction_level.json"))
+profile_achievement_record_tier_data = load_json(os.path.join(BASE_DIR, "m_profile_achievement_record_tier.json"))
 binder_data = load_json(os.path.join(BASE_DIR, "m_binder.json"))
 unit_acquisition_method_data = load_json(os.path.join(BASE_DIR, "m_unit_acquisition_method.json"))
 character_acquisition_method_data = load_json(os.path.join(BASE_DIR, "m_character_acquisition_method.json"))
@@ -13376,6 +13386,48 @@ for _isrow in extract_data_list(invasion_event_stage_data or []):
     gmeta['stages'][_code] = _sid
     invasion_stage_to_group[_sid] = {'group_id': _igid, 'difficulty_code': _code, 'difficulty_index': _dti}
     invasion_playable_stage_ids.add(_sid)
+
+# Special Ops (Invasion Restriction) — unit_id → restriction stage meta
+invasion_restriction_by_unit_id = {}
+invasion_restriction_by_group_id = {}
+for _irrow in extract_data_list(invasion_restriction_event_stage_data or []):
+    if not isinstance(_irrow, dict):
+        continue
+    _ir_gid = normalize_id(_irrow.get('InvasionEventStageGroupId') or _irrow.get('invasionEventStageGroupId'))
+    _ir_uid = normalize_id(_irrow.get('UnitId') or _irrow.get('unitId'))
+    _ir_sid = normalize_id(_irrow.get('StageId') or _irrow.get('stageId'))
+    if _ir_uid == '0' and _ir_gid == '0':
+        continue
+    _meta = {
+        'id': normalize_id(_irrow.get('Id') or _irrow.get('id')),
+        'group_id': _ir_gid,
+        'unit_id': _ir_uid,
+        'stage_id': _ir_sid,
+        'priority': safe_int(_irrow.get('Priority') or _irrow.get('priority'), 0),
+        'release_clear_level': safe_int(
+            _irrow.get('ReleaseConditionClearLevel') or _irrow.get('releaseConditionClearLevel'), 0
+        ),
+        'restriction_release_score': safe_int(
+            _irrow.get('RestrictionReleaseConditionScore') or _irrow.get('restrictionReleaseConditionScore'), 0
+        ),
+        'profile_achievement_record_id': safe_int(
+            _irrow.get('ProfileAchievementRecordId') or _irrow.get('profileAchievementRecordId'), 0
+        ),
+    }
+    if _ir_uid != '0':
+        invasion_restriction_by_unit_id[_ir_uid] = _meta
+    if _ir_gid != '0':
+        invasion_restriction_by_group_id[_ir_gid] = _meta
+    # Combat StageId for Special Ops maps — reuse FEA invasion combat hydrate path.
+    if _ir_sid != '0' and _ir_sid not in invasion_stage_to_group:
+        invasion_stage_to_group[_ir_sid] = {
+            'group_id': _ir_gid,
+            'difficulty_code': 'special_ops',
+            'difficulty_index': 0,
+        }
+        invasion_playable_stage_ids.add(_ir_sid)
+
+_invasion_restriction_lang_cache = {}
 
 option_part_benefit_unit_by_op = {}
 for _opid, _acq_rows in (option_parts_acquisition_by_id or {}).items():
@@ -16319,6 +16371,10 @@ def _decorate_reward_rows(rows, lc):
         if rt == '10':
             reward_name = get_ui_label(lc, 'reward_diamonds')
             reward_icon = game_image_public_url('/static/images/UI/UI_Common_Icon_Diamond_M.webp')
+        elif rt == '5':
+            # RewardType Capital — currency (TargetId unused). LANG: EN Capital · JA/TW/HK CAPITAL.
+            reward_name = get_ui_label(lc, 'reward_capital')
+            reward_icon = game_image_public_url('/static/images/UI/UI_Common_Icon_Capital_M.webp')
         elif rt == '2':
             c = get_npc_character_display(tid, {}, lc)
             reward_name = str(c.get('name') or f"Character {tid}")
@@ -16771,6 +16827,53 @@ def resolve_fea_stage_missions(unit_id, difficulty_code, lc):
     if uid == '0' or dti not in (1, 2, 3):
         return []
     return _decorate_mission_rows((fea_missions_by_unit_diff or {}).get((uid, dti), []), lc)
+
+
+def resolve_special_ops_missions(event_id, lc):
+    """Missions whose MissionGroup.EventId matches Special Ops event (120001)."""
+    eid = safe_int(event_id, 0)
+    if not eid:
+        return []
+    group_ids = set()
+    for g in extract_data_list(mission_group_data or []):
+        if not isinstance(g, dict):
+            continue
+        if safe_int(g.get('EventId') or g.get('eventId'), 0) != eid:
+            continue
+        gid = normalize_id(g.get('Id') or g.get('id'))
+        if gid != '0':
+            group_ids.add(gid)
+    if not group_ids:
+        return []
+    rows = []
+    for m in extract_data_list(mission_data or []):
+        if not isinstance(m, dict):
+            continue
+        mg = normalize_id(m.get('MissionGroupId') or m.get('missionGroupId'))
+        if mg in group_ids:
+            rows.append(m)
+    rows.sort(key=lambda m: (
+        safe_int((mission_group_sort_map or {}).get(normalize_id(m.get('MissionGroupId') or m.get('missionGroupId')), 0), 0),
+        safe_int(m.get('Id') or m.get('id'), 0),
+    ))
+    return _decorate_mission_rows(rows, lc)
+
+
+def resolve_special_ops_event_rewards(event_id, lc):
+    """m_event.PickupRewardSetId for Special Ops event card rewards."""
+    eid = safe_int(event_id, 0)
+    if not eid:
+        return []
+    for ev in extract_data_list(event_master_data or []):
+        if not isinstance(ev, dict):
+            continue
+        if safe_int(ev.get('Id') or ev.get('id'), 0) != eid:
+            continue
+        rsid = normalize_id(ev.get('PickupRewardSetId') or ev.get('pickupRewardSetId'))
+        if rsid == '0':
+            return []
+        return _decorate_reward_rows(_resolve_reward_rows_from_set_id(rsid), lc)
+    return []
 
 
 def challenge_stage_thumb_url(thumbnail_resource_id):
@@ -32255,6 +32358,203 @@ def apply_fea_buff_rate_to_npc_details(npc_details, buff_rate):
     return out_rows
 
 
+def _special_ops_event_name(lc):
+    """LANG m_event TitleLanguageId 250100000000120001 — Fierce Enemy Assault: Special Ops Mode."""
+    lc = (lc or '').upper()
+    if lc == 'KR':
+        lc = 'HR'
+    return {
+        'EN': 'Fierce Enemy Assault: Special Ops Mode',
+        'JA': '強敵襲来 特務モード',
+        'JP': '強敵襲来 特務モード',
+        'TW': '強敵來襲：特務模式',
+        'HK': '強敵來襲：特務模式',
+        'HR': '강적 습격: 특무 모드',
+    }.get(lc, 'Fierce Enemy Assault: Special Ops Mode')
+
+
+def _special_ops_short_name(lc):
+    """LANG tip / nav — Special Ops / 特務."""
+    lc = (lc or '').upper()
+    if lc == 'KR':
+        lc = 'HR'
+    return {
+        'EN': 'Special Ops',
+        'JA': '特務',
+        'JP': '特務',
+        'TW': '特務',
+        'HK': '特務',
+        'HR': '특무',
+    }.get(lc, 'Special Ops')
+
+
+def _invasion_restriction_lang_maps(lc):
+    """Lazy per-locale maps for Special Ops restriction + level text."""
+    global _invasion_restriction_lang_cache
+    lc = (lc or DEFAULT_LANG or 'EN').upper()
+    if lc == 'KR':
+        lc = 'HR'
+    cached = _invasion_restriction_lang_cache.get(lc)
+    if cached is not None:
+        return cached
+    root = os.path.dirname(os.path.abspath(__file__))
+    lang_dir = os.path.join(root, 'data', lc, 'lang')
+    if not os.path.isdir(lang_dir):
+        lang_dir = os.path.join(root, 'data', 'EN', 'lang')
+    rest = load_json(os.path.join(lang_dir, 'm_invasion_restriction_event_restriction.json'))
+    lvl = load_json(os.path.join(lang_dir, 'm_invasion_restriction_event_restriction_level.json'))
+    ev = load_json(os.path.join(lang_dir, 'm_event.json'))
+    out = {
+        'restriction': create_lang_text_map(rest) if rest else {},
+        'level': create_lang_text_map(lvl) if lvl else {},
+        'event': create_lang_text_map(ev) if ev else {},
+    }
+    _invasion_restriction_lang_cache[lc] = out
+    return out
+
+
+def _special_ops_icon_url(resource_id):
+    rid = str(resource_id or '').strip()
+    if not rid:
+        return ''
+    # Folder name has a space — encode for URL paths; convert_image_urls / CDN still rewrite.
+    return f'/static/images/UI/Invasion%20Event/{rid}.webp'
+
+
+def _special_ops_logo_url(lc):
+    lc = (lc or 'EN').upper()
+    if lc == 'KR':
+        lc = 'HR'
+    if lc == 'JP':
+        lc = 'JA'
+    suf = lc.lower() if lc in ('EN', 'JA', 'TW', 'HK', 'HR', 'SC') else 'en'
+    return f'/static/images/UI/Invasion%20Event/invasion_restriction_event_logo_{suf}.webp'
+
+
+def _fea_attack_enemy_bg_url():
+    """Normal FEA browse card BG (Purple asset, CSS hue-shifted to red)."""
+    return '/static/images/UI/Invasion%20Event/UI_AttackEnemy_Bg_Purple.webp'
+
+
+def _special_ops_bg_url():
+    """Special Ops browse/detail BG — Purple_02 (true purple)."""
+    return '/static/images/UI/Invasion%20Event/UI_AttackEnemy_Bg_Purple_02.webp'
+
+
+# AchievementGrade: None=0, Bronze=1, Silver=2, Gold=3 (dump AchievementGrade enum).
+_SPECIAL_OPS_HARO_GRADE = {
+    1: ('bronze', 'UI_Common_Icon_Haro_Bronze'),
+    2: ('silver', 'UI_Common_Icon_Haro_Silver'),
+    3: ('gold', 'UI_Common_Icon_Haro_Gold'),
+}
+
+
+def _special_ops_haro_trophies(group_id, record_id):
+    """Profile Haro Trophy score thresholds for Special Ops (m_profile_achievement_record_tier)."""
+    gid = normalize_id(group_id)
+    rid = safe_int(record_id, 0)
+    if gid == '0' or rid <= 0:
+        return []
+    out = []
+    for row in extract_data_list(profile_achievement_record_tier_data or []):
+        if not isinstance(row, dict):
+            continue
+        if safe_int(row.get('ProfileAchievementRecordId') or row.get('profileAchievementRecordId'), 0) != rid:
+            continue
+        if normalize_id(row.get('TargetId') or row.get('targetId')) != gid:
+            continue
+        gidx = safe_int(row.get('AchievementGradeIndex') or row.get('achievementGradeIndex'), 0)
+        grade_meta = _SPECIAL_OPS_HARO_GRADE.get(gidx)
+        if not grade_meta:
+            continue
+        grade, icon_stem = grade_meta
+        out.append({
+            'grade': grade,
+            'grade_index': gidx,
+            'score': safe_int(row.get('Threshold') or row.get('threshold'), 0),
+            'icon': f'/static/images/UI/{icon_stem}.webp',
+        })
+    out.sort(key=lambda x: (x.get('grade_index') or 0, x.get('score') or 0))
+    return out
+
+
+def build_fea_special_ops_payload(group_id, unit_id, lc):
+    """Full Special Ops (特務) catalog for an FEA group/unit, or None if unavailable."""
+    gid = normalize_id(group_id)
+    uid = normalize_id(unit_id)
+    meta = (invasion_restriction_by_group_id or {}).get(gid) or (invasion_restriction_by_unit_id or {}).get(uid)
+    if not meta:
+        return None
+    rest_gid = normalize_id(meta.get('group_id'))
+    maps = _invasion_restriction_lang_maps(lc)
+    rmap = maps.get('restriction') or {}
+    lmap = maps.get('level') or {}
+    emap = maps.get('event') or {}
+    title_lid = '250100000000120001'
+    event_title = (emap.get(title_lid) or '').strip() or _special_ops_event_name(lc)
+    levels_by_rest = {}
+    for row in extract_data_list(invasion_restriction_event_restriction_level_data or []):
+        if not isinstance(row, dict):
+            continue
+        rid = normalize_id(row.get('InvasionRestrictionEventRestrictionId') or row.get('invasionRestrictionEventRestrictionId'))
+        if rid == '0':
+            continue
+        tl = normalize_id(row.get('TextLanguageId') or row.get('textLanguageId'))
+        levels_by_rest.setdefault(rid, []).append({
+            'id': normalize_id(row.get('Id') or row.get('id')),
+            'level': safe_int(row.get('Level') or row.get('level'), 0),
+            'score': safe_int(row.get('Score') or row.get('score'), 0),
+            'text': (lmap.get(tl) or '').strip() if tl != '0' else '',
+        })
+    for rid in levels_by_rest:
+        levels_by_rest[rid].sort(key=lambda x: (x.get('level') or 0, x.get('id') or ''))
+    restrictions = []
+    for row in extract_data_list(invasion_restriction_event_restriction_data or []):
+        if not isinstance(row, dict):
+            continue
+        if normalize_id(row.get('InvasionEventStageGroupId') or row.get('invasionEventStageGroupId')) != rest_gid:
+            continue
+        rid = normalize_id(row.get('Id') or row.get('id'))
+        nlid = normalize_id(row.get('NameLanguageId') or row.get('nameLanguageId'))
+        dlid = normalize_id(row.get('DescriptionLanguageId') or row.get('descriptionLanguageId'))
+        icon = str(row.get('IconResourceId') or row.get('iconResourceId') or '').strip()
+        restrictions.append({
+            'id': rid,
+            'sort': safe_int(row.get('SortOrder') or row.get('sortOrder'), 0),
+            'category_type_index': safe_int(row.get('CategoryTypeIndex') or row.get('categoryTypeIndex'), 0),
+            'name': (rmap.get(nlid) or '').strip() if nlid != '0' else '',
+            'description': (rmap.get(dlid) or '').strip() if dlid != '0' else '',
+            'icon_resource_id': icon,
+            'icon': _special_ops_icon_url(icon) if icon else '',
+            'score_release_required': bool(
+                row.get('IsScoreReleaseRequired') if row.get('IsScoreReleaseRequired') is not None
+                else row.get('isScoreReleaseRequired')
+            ),
+            'levels': levels_by_rest.get(rid) or [],
+        })
+    restrictions.sort(key=lambda x: (x.get('sort') or 0, x.get('id') or ''))
+    so_event_id = 120001
+    haro_record_id = meta.get('profile_achievement_record_id') or 0
+    return {
+        'available': True,
+        'event_id': so_event_id,
+        'event_title': event_title,
+        'short_name': _special_ops_short_name(lc),
+        'group_id': rest_gid,
+        'unit_id': normalize_id(meta.get('unit_id')),
+        'stage_id': normalize_id(meta.get('stage_id')),
+        'release_clear_level': meta.get('release_clear_level') or 0,
+        'restriction_release_score': meta.get('restriction_release_score') or 0,
+        'profile_achievement_record_id': haro_record_id,
+        'haro_trophies': _special_ops_haro_trophies(rest_gid, haro_record_id),
+        'logo': _special_ops_logo_url(lc),
+        'bg': _special_ops_bg_url(),
+        'restrictions': restrictions,
+        'missions': resolve_special_ops_missions(so_event_id, lc),
+        'event_rewards': resolve_special_ops_event_rewards(so_event_id, lc),
+    }
+
+
 def build_fea_event_detail(group_id, lc):
     """Fierce Enemy Assault event card payload (group id = browse/detail id)."""
     gid = normalize_id(group_id)
@@ -32284,6 +32584,7 @@ def build_fea_event_detail(group_id, lc):
         challenge_meta['levels'] = chall_totals['levels']
         challenge_meta['total_rewards'] = chall_totals['total_rewards']
         challenge_meta['total_diamonds'] = chall_totals['total_diamonds']
+    special_ops = build_fea_special_ops_payload(gid, uid, lc)
     return {
         'content_locked': False,
         'id': gid,
@@ -32303,6 +32604,8 @@ def build_fea_event_detail(group_id, lc):
         'schedule_status': status,
         'fea_difficulties': difficulties,
         'fea_challenge': challenge_meta,
+        'special_ops': special_ops,
+        'special_ops_available': bool(special_ops and special_ops.get('available')),
         'lang': lc,
         # Shell fields so detail chrome does not explode
         'stage_number': safe_int(gid, 0) % 1000,
@@ -35974,7 +36277,7 @@ def list_stages():
         # Eternal + Collaboration: Normal/Hard(/Expert) difficulty filter.
         if cat not in ('eternal', 'collaboration_stage'):
             df = 'all'
-        ck = f"stages18_{cat}_{tower_side}_{challenge_series}_{lc}_{page}_{pp}_{sq}_{df}_{sb}_{sd}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_{eternal_stage_session_cache_key_fragment()}"
+        ck = f"stages19_{cat}_{tower_side}_{challenge_series}_{lc}_{page}_{pp}_{sq}_{df}_{sb}_{sd}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_{eternal_stage_session_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
@@ -36002,6 +36305,9 @@ def list_stages():
                 sm_n = (stage_map or {}).get(normal_sid, {}) if normal_sid != '0' else {}
                 rec_cp = sm_n.get('recommended_cp', 0) if sm_n else None
                 ter_name = resolve_stage_terrain_name(sm_n.get('terrain_type_index', '0'), lc) if sm_n else ''
+                _so_meta = (invasion_restriction_by_group_id or {}).get(gid) or (
+                    invasion_restriction_by_unit_id or {}
+                ).get(uid)
                 rows.append({
                     '_sn_sort': sn_sort,
                     'id': gid,
@@ -36013,6 +36319,7 @@ def list_stages():
                     'difficulty_name': '',
                     'portrait': '',
                     '_portrait_duid': uid,
+                    'unit_id': uid,
                     'content_locked': False,
                     'stage_category': 'fierce_enemy_assault',
                     'event_name': event_label,
@@ -36023,6 +36330,12 @@ def list_stages():
                     'end_label': sched_fields.get('end_label'),
                     'has_schedule_release': sched_fields.get('has_schedule_release'),
                     'priority': safe_int(gmeta.get('priority'), 0),
+                    'fea_bg': _fea_attack_enemy_bg_url(),
+                    'special_ops_available': bool(_so_meta),
+                    'special_ops_logo': _special_ops_logo_url(lc) if _so_meta else '',
+                    'special_ops_bg': _special_ops_bg_url() if _so_meta else '',
+                    'special_ops_event_name': _special_ops_event_name(lc) if _so_meta else '',
+                    'special_ops_short_name': _special_ops_short_name(lc) if _so_meta else '',
                 })
         elif cat == 'collaboration_stage':
             for sid, lite in (lite_scenario_event_stage_map or {}).items():
@@ -36296,9 +36609,9 @@ def get_stage(stage_id):
         # StageId — pass fea_combat=1 to load that StageId's map/NPC combat payload instead.
         _fea_combat = str(request.args.get('fea_combat') or '').strip().lower() in ('1', 'true', 'yes')
         if (not _fea_combat) and stage_id in (invasion_event_group_map or {}):
-            # fea4: per-difficulty stage_missions (home FEA clear missions + rewards)
+            # fea8: Special Ops Haro Trophy score thresholds
             ck_fea = (
-                f"stage_fea4_{stage_id}_{lc}_"
+                f"stage_fea8_{stage_id}_{lc}_"
                 f"{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_"
                 f"{eternal_stage_session_cache_key_fragment()}"
             )

@@ -24,12 +24,30 @@
   --motion-dur-quick:120ms;
   --motion-dur-standard:220ms;
   --motion-dur-modal:320ms;
+  /* Takayu glitch-in — FEA Special Ops theme enter */
+  --motion-dur-glitch-in:420ms;
   /* Brand title center-out (takayu tx-center-out-reveal) — elegant hover */
   --motion-dur-brand-reveal:520ms;
   --motion-brand-reveal-stagger:32ms;
   --motion-interactive:border-color var(--motion-dur-quick) var(--motion-ease-standard),color var(--motion-dur-quick) var(--motion-ease-standard),background var(--motion-dur-quick) var(--motion-ease-standard),background-color var(--motion-dur-quick) var(--motion-ease-standard),box-shadow var(--motion-dur-quick) var(--motion-ease-standard),transform var(--motion-dur-quick) var(--motion-ease-standard),opacity var(--motion-dur-quick) var(--motion-ease-standard),filter var(--motion-dur-quick) var(--motion-ease-standard);
   /* Alias legacy token — never transition:all (paint-cost / surprise props) */
   --transition:var(--motion-interactive);
+}
+
+/* —— Takayu glitch-in (catalog) — Special Ops mode enter —— */
+@keyframes ggen-glitch-in{
+  0%{opacity:0;transform:translate3d(4px,-2px,0) skewX(-2deg);filter:none}
+  12%{opacity:1;transform:translate3d(-5px,1px,0) skewX(1.5deg);filter:hue-rotate(40deg) saturate(1.35)}
+  22%{opacity:.85;transform:translate3d(6px,0,0) skewX(-1deg);filter:hue-rotate(-25deg) saturate(1.2)}
+  34%{opacity:1;transform:translate3d(-3px,2px,0);filter:hue-rotate(15deg)}
+  48%{opacity:.95;transform:translate3d(2px,-1px,0);filter:none}
+  62%{opacity:1;transform:translate3d(-1px,0,0)}
+  78%{opacity:1;transform:translate3d(1px,0,0)}
+  100%{opacity:1;transform:none;filter:none}
+}
+@keyframes ggen-glitch-in-reduced{
+  from{opacity:0}
+  to{opacity:1}
 }
 
 /* —— Brand h1 hover: tx-center-out-reveal (replaces brand-frame nudge) —— */
@@ -627,5 +645,11 @@ body:not(.tm-page):not(.dm-page).nav-tabs-collapsed #navTabsShell{
   .modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card::after,
   .modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card > .border-glow-edge{
     transition:none!important;
+  }
+  .stage-browse-thumb.is-special-ops.ggen-glitch-in,
+  .stage-browse-thumb.ggen-glitch-in.is-special-ops,
+  .fea-special-ops-panel.ggen-glitch-in{
+    animation:ggen-glitch-in-reduced var(--motion-dur-crossfade,180ms) linear both!important;
+    filter:none!important;
   }
 }
