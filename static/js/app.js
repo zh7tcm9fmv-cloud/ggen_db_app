@@ -8609,7 +8609,7 @@ function _stageMapUsesTightGrid(md,escapeOn,reinfOn){
   }catch(_){}
   return false;
 }
-/* Zoom floor 28% so mobile autofit can show the full map.
+/* Zoom floor 28% so mobile/desktop autofit can show the full map.
    Overlay reinf/escape hosts must match cell size (same as initial deployed) — never inflate.
    Tiny-thumb bug was CSS left:auto on .map-unit-dot--footprint, not a min host size. */
 const STAGE_MAP_CELL_BASE_PX=50;
@@ -9482,15 +9482,18 @@ function fitStageMapToUnits(centerAfter){
   const compact=_stageMapIsCompactViewport();
   const section=c.closest('.detail-section')||c.parentElement||c;
   const gw=c.querySelector('.stage-map-grid-wrap');
-  /* Prefer the live map column (excludes side roster). Section width alone over-fits when roster is beside the map. */
-  let measureW=Math.max(gw&&gw.clientWidth||0,0);
-  if(measureW<80){
-    measureW=Math.max(section.clientWidth||0,c.clientWidth||0,280);
-    if(!compact){
-      const roster=c.querySelector('.stage-map-roster');
-      const rw=roster?Math.min(Math.max(roster.clientWidth||0,200),320):0;
-      if(rw)measureW=Math.max(80,measureW-rw-12);
-    }
+  /* Prefer the live map column when it is a bounded flex column (Key Units roster beside).
+     Without a roster the wrap sizes to the grid content, so clientWidth ≈ full map width and
+     autofit never shrinks — FEA Special Ops stages often have 0 key units and hit this. */
+  const portW=Math.max(c.clientWidth||0,0);
+  const gwW=Math.max(gw&&gw.clientWidth||0,0);
+  let measureW=gwW;
+  if(portW>=80&&(measureW<80||measureW>portW+2))measureW=portW;
+  if(measureW<80)measureW=Math.max(section.clientWidth||0,portW,280);
+  if(!compact){
+    const roster=c.querySelector('.stage-map-roster');
+    const rw=roster?Math.min(Math.max(roster.clientWidth||0,200),320):0;
+    if(rw&&(gwW<80||gwW>portW+2))measureW=Math.max(80,measureW-rw-12);
   }
   /* Auto-fit = entire map visible in the scrollport (width ∩ height).
      Compact phones: roster under the map (CSS) — reserve a little height for that strip. */
@@ -9502,6 +9505,7 @@ function fitStageMapToUnits(centerAfter){
   const cellPxW=Math.floor((availW-((bw-1)*gap))/Math.max(1,bw));
   const cellPxH=Math.floor((availH-((bh-1)*gap))/Math.max(1,bh));
   const minCell=_stageMapCellPxFromZoom(STAGE_MAP_ZOOM_MIN);
+  /* Full-board fit (width ∩ height) — same for FEA normal and Special Ops. */
   const cellPx=Math.max(minCell,Math.min(cellPxW,cellPxH));
   const z=cellPx/baseCell;
   S.stageMapZoom=_stageMapClampZoom(z*.98);

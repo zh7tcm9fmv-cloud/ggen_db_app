@@ -7344,15 +7344,43 @@ def _http_json_body_cache_strip_large_raw():
     return stripped
 
 
+def _spi_http_body_cache_strip_large_raw():
+    """Drop retainable multi‑MB SPI `raw` blobs; keep gzip (same class as matrix cache)."""
+    stripped = 0
+    try:
+        with _SPI_HTTP_BODY_CACHE_LOCK:
+            for _k, entry in list(_SPI_HTTP_BODY_CACHE.items()):
+                if not isinstance(entry, dict):
+                    continue
+                raw = entry.get('raw')
+                if raw is None:
+                    continue
+                if len(raw) <= _HTTP_JSON_BODY_RAW_KEEP_MAX:
+                    continue
+                entry['raw'] = None
+                stripped += 1
+                if entry.get('gzip') is None:
+                    _SPI_HTTP_BODY_CACHE.pop(_k, None)
+    except NameError:
+        return 0
+    except Exception:
+        return stripped
+    return stripped
+
+
 def pressure_trim_aux_caches(*, rss_mb=None):
     """Background-only: free retainable warm bytes without changing API features.
 
     Never call from the /health request path (Railway probes). Safe to call from the
     adaptive cache tick when RSS is already at the MSY floor.
     """
-    info = {'stripped_raw': 0, 'api_evicted': 0, 'detail_evicted': 0}
+    info = {'stripped_raw': 0, 'spi_stripped_raw': 0, 'api_evicted': 0, 'detail_evicted': 0}
     try:
         info['stripped_raw'] = int(_http_json_body_cache_strip_large_raw() or 0)
+    except Exception:
+        pass
+    try:
+        info['spi_stripped_raw'] = int(_spi_http_body_cache_strip_large_raw() or 0)
     except Exception:
         pass
     try:
@@ -25611,19 +25639,20 @@ def api_sp_investment():
     hit = None
     with _SPI_HTTP_BODY_CACHE_LOCK:
         hit = _SPI_HTTP_BODY_CACHE.get(ck)
-    if hit and hit.get('raw') is not None:
-        body = hit.get('gzip') if want_gzip and hit.get('gzip') else hit['raw']
+    # Same rule as matrix/timeline body cache: gzip-only warm entries OK (no multi‑MB raw).
+    body, used_gzip = _http_json_resolve_body(hit, want_gzip) if hit else (None, False)
+    if body is not None:
         resp = make_response(body)
         resp.headers['Content-Type'] = 'application/json; charset=utf-8'
         resp.headers['Cache-Control'] = cc
         if etag:
             resp.headers['ETag'] = etag
-        if want_gzip and hit.get('gzip') and body is hit.get('gzip'):
+        if used_gzip:
             resp.headers['Content-Encoding'] = 'gzip'
             resp.headers['Vary'] = 'Accept-Encoding'
         resp.headers['Content-Length'] = str(len(body))
         return resp
-    # Cold: serialize once, cache raw + gzip for subsequent hits.
+    # Cold: serialize once; retain gzip (and raw only if under RAW_KEEP_MAX).
     resp = jsonify_cacheable(payload, ck, public=True, max_age=300, convert_images=False)
     if resp.status_code != 200:
         return resp
@@ -25634,8 +25663,9 @@ def api_sp_investment():
         compressed = _gzip.compress(raw, compresslevel=5)
         if len(compressed) >= len(raw):
             compressed = None
+    keep_raw = raw if (raw is not None and len(raw) <= _HTTP_JSON_BODY_RAW_KEEP_MAX) else None
     with _SPI_HTTP_BODY_CACHE_LOCK:
-        _SPI_HTTP_BODY_CACHE[ck] = {'raw': raw, 'gzip': compressed, 'etag': etag}
+        _SPI_HTTP_BODY_CACHE[ck] = {'raw': keep_raw, 'gzip': compressed, 'etag': etag}
         while len(_SPI_HTTP_BODY_CACHE) > _SPI_HTTP_BODY_CACHE_MAX:
             try:
                 oldest = next(iter(_SPI_HTTP_BODY_CACHE))
