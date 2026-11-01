@@ -22066,6 +22066,46 @@ def tag_matrix_page():
     return r
 
 
+@app.route('/tracking')
+@app.route('/tracking/')
+def sales_tracking_page():
+    """Sales Rank Tracking — same SPA shell as /gacha-sim (panel-sales_tracking)."""
+    return _serve_index()
+
+
+@app.route('/api/sales_rank_tracking')
+def api_sales_rank_tracking():
+    """Rolling samples of Apple top-grossing (+ Game-i 本日) by country."""
+    try:
+        import sales_rank_tracking as srt
+    except Exception as e:
+        return jsonify({'ok': False, 'error': f'import:{e}'}), 500
+    chart = (request.args.get('chart') or 'overall').strip().lower()
+    try:
+        hours = float(request.args.get('hours') or 24)
+    except ValueError:
+        hours = 24.0
+    hours = max(1.0, min(36.0, hours))
+    fresh = (request.args.get('fresh') or '').strip() in ('1', 'true', 'yes')
+    try:
+        payload = srt.get_payload(hours=hours, chart=chart)
+        # First open with empty series: take one sample now (may take a few seconds).
+        if fresh and int(payload.get('sample_count') or 0) < 1:
+            try:
+                srt.force_sample_now()
+            except Exception as e:
+                payload = srt.get_payload(hours=hours, chart=chart)
+                payload['meta'] = dict(payload.get('meta') or {})
+                payload['meta']['last_err'] = f'fresh:{e}'
+            else:
+                payload = srt.get_payload(hours=hours, chart=chart)
+        r = jsonify(payload)
+        r.headers['Cache-Control'] = 'no-store'
+        return r
+    except Exception as e:
+        return jsonify({'ok': False, 'error': str(e)}), 500
+
+
 # Community “四大/六大/新系統” lineage short IDs (not an official master category).
 # Order matches the common reference chart (TW/HK wording groups).
 _TAG_MATRIX_SPEC = (
@@ -38512,7 +38552,7 @@ _SEO_SITEMAP_CACHE = {}
 _SEO_SITEMAP_LOCK = threading.Lock()
 _SEO_SITEMAP_URL_CAP = 40000
 _SEO_PAGE_PATHS = (
-    '/', '/ip', '/collections', '/game-news', '/tm', '/dm', '/about', '/contact', '/privacy-policy',
+    '/', '/ip', '/collections', '/game-news', '/tm', '/dm', '/tracking', '/about', '/contact', '/privacy-policy',
     '/c', '/u', '/s', '/st', '/gtower', '/challenge', '/go', '/special', '/collab',
     '/cal', '/tb', '/tl', '/ml', '/estscore', '/rk', '/op', '/new', '/esim', '/gacha-sim',
 )
@@ -38703,6 +38743,25 @@ _start_browse_cache_warmup()
 threading.Thread(
     target=_preload_bsp_published_cache_bg,
     name='bsp-published-preload',
+    daemon=True,
+).start()
+
+
+def _start_sales_rank_tracking_bg():
+    """Sample Apple/Game-i country ranks for /tracking (daemon; after browse warm)."""
+    if (os.environ.get('GGEN_SALES_RANK_TRACKING') or '1').strip() in ('0', 'false', 'off', 'no'):
+        return
+    try:
+        import sales_rank_tracking as srt
+        srt.start_background(app_dir)
+        print('sales_rank_tracking: background sampler started')
+    except Exception as e:
+        print(f'sales_rank_tracking: failed to start ({e})')
+
+
+threading.Thread(
+    target=_start_sales_rank_tracking_bg,
+    name='sales-rank-tracking-boot',
     daemon=True,
 ).start()
 

@@ -658,6 +658,11 @@ a.nav-tab:any-link:hover:not(.active),a.nav-tab:visited:hover:not(.active){color
   .bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(5){transform:translate(-87px,81px) !important}
 }
 .bt-th-combo-vote-tools .bt-gacha-sim-tools{margin-right:0}
+.bt-sales-tracking-btn{text-decoration:none;color:inherit}
+.bt-sales-tracking-btn:hover{border-color:rgba(0,212,255,.65);box-shadow:0 0 0 1px rgba(0,212,255,.35),0 0 12px rgba(69,128,230,.25)}
+#panel-banner_timeline .bt-sales-tracking-btn{width:40px;height:40px;min-width:40px;min-height:40px}
+#panel-banner_timeline .bt-sales-tracking-btn img,
+#panel-banner_timeline .bt-sales-tracking-btn .bt-gacha-sim-btn-ic{width:26px !important;height:26px !important;object-fit:contain !important}
 .bt-vote-mode-caption{margin:0;font-size:12px;font-weight:600;line-height:1.35;color:var(--accent-cyan);text-align:right;max-width:min(320px,48vw)}
 .bt-vote-mode-caption[hidden]{display:none!important}
 .ui-notice-anchor{position:relative;display:inline-flex;vertical-align:middle;overflow:visible}

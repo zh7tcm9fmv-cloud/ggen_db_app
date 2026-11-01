@@ -1,0 +1,78 @@
+{# Sales Rank Tracking body — shared by SPA panel + standalone /tracking #}
+{% set boost_url = ((image_cdn ~ '/images/UI/FieldStoryEvent_Boost_Base_Enable1.webp') if image_cdn else '/static/images/UI/FieldStoryEvent_Boost_Base_Enable1.webp') %}
+{% set motif_url = ((image_cdn ~ '/images/UI/UI_Gallery_Motif_Series.webp') if image_cdn else '/static/images/UI/UI_Gallery_Motif_Series.webp') %}
+{% set bg_top_url = ((image_cdn ~ '/images/Background/Dummy_FieldStoryEvent_BG_Line_03.webp') if image_cdn else '/static/images/Background/Dummy_FieldStoryEvent_BG_Line_03.webp') %}
+{% set bg_bot_url = ((image_cdn ~ '/images/Background/Dummy_FieldStoryEvent_BG_Line_01.webp') if image_cdn else '/static/images/Background/Dummy_FieldStoryEvent_BG_Line_01.webp') %}
+{# Newly staged under images/UI — serve same-origin until CDN push. #}
+{% set haro_gold = '/static/images/UI/UI_Common_Icon_Haro_Gold.webp' %}
+{% set haro_silver = '/static/images/UI/UI_Common_Icon_Haro_Silver.webp' %}
+{% set haro_bronze = '/static/images/UI/UI_Common_Icon_Haro_Bronze.webp' %}
+<style id="trkAssetVarsEmbedded">
+.trk-page,.trk-spa-root{
+  --trk-boost-plate:url("{{ boost_url }}");
+  --trk-bg-top:url("{{ bg_top_url }}");
+  --trk-bg-bot:url("{{ bg_bot_url }}");
+}
+</style>
+<div class="trk-spa-root trk-page" id="trkSpaRoot" data-trk-embedded="{{ '1' if trk_embedded|default(false) else '0' }}">
+  <div class="trk-bg" aria-hidden="true">
+    <div class="trk-bg-top"></div>
+    <div class="trk-bg-bot"></div>
+  </div>
+  <header class="trk-intro">
+    <div class="trk-intro-top">
+      <button type="button" class="trk-back" id="trkBackBtn" onclick="typeof closeSalesTrackingTab==='function'&&closeSalesTrackingTab()">Back</button>
+    </div>
+    <div class="trk-intro-brand">
+      <img class="trk-intro-ic" src="{{ motif_url }}" alt="" width="56" height="56" decoding="async" loading="lazy">
+      <div class="trk-intro-copy">
+        <div class="trk-eyebrow" id="trkEyebrow">Live · Store sales</div>
+        <h1 id="trkTitle">Sales Rank Tracking</h1>
+      </div>
+    </div>
+    <p class="trk-sub" id="trkSub">Track Eternal’s App Store top-grossing rank by country during a new Unit Assembly window (about 24 hours).</p>
+    <p class="trk-note" id="trkNote">Trail = Apple App Store top-grossing (iOS only — not Android / not official gem #1). Game-i 「本日」 is the gem-race cross-check. Treat Apple #1 alone as “likely”, not confirmed.</p>
+  </header>
+
+  <section class="trk-toolbar" aria-label="Filters">
+    <div class="trk-filter-block">
+      <span class="trk-filter-label" id="trkChartLbl">Chart</span>
+      <nav class="trk-chip-row" role="group" aria-label="Chart">
+        <button type="button" class="trk-chip is-active" data-trk-chart="overall" aria-pressed="true" id="trkChipOverall">Overall</button>
+        <button type="button" class="trk-chip" data-trk-chart="games" aria-pressed="false" id="trkChipGames">Games</button>
+      </nav>
+    </div>
+    <div class="trk-filter-block">
+      <span class="trk-filter-label" id="trkWindowLbl">Window</span>
+      <nav class="trk-chip-row" role="group" aria-label="Window">
+        <button type="button" class="trk-chip is-active" data-trk-hours="24" aria-pressed="true" id="trkChip24">24h</button>
+        <button type="button" class="trk-chip" data-trk-hours="36" aria-pressed="false" id="trkChip36">36h</button>
+      </nav>
+    </div>
+  </section>
+
+  <section class="trk-live-row" id="trkLive" aria-label="Current ranks"></section>
+
+  <section class="trk-chart-shell" aria-label="Rank trail">
+    <div class="trk-chart-head">
+      <h2 class="trk-chart-title" id="trkChartTitle">Rank over time</h2>
+      <p class="trk-chart-hint" id="trkChartHint">Top of chart = #1 · hover a line to see rank then / previous</p>
+    </div>
+    <div class="trk-chart-wrap">
+      <div class="trk-empty" id="trkEmpty">Collecting samples…</div>
+      <div id="trkChart"></div>
+      <div class="trk-hover-tip" id="trkHoverTip" hidden></div>
+    </div>
+    <div class="trk-legend" id="trkLegend" aria-label="Legend"></div>
+  </section>
+
+  <p class="trk-status" id="trkStatus" aria-live="polite"></p>
+</div>
+<script>
+window.__TRK_ASSETS__=window.__TRK_ASSETS__||{};
+window.__TRK_ASSETS__.boost={{ boost_url|tojson }};
+window.__TRK_ASSETS__.motif={{ motif_url|tojson }};
+window.__TRK_ASSETS__.haroGold={{ haro_gold|tojson }};
+window.__TRK_ASSETS__.haroSilver={{ haro_silver|tojson }};
+window.__TRK_ASSETS__.haroBronze={{ haro_bronze|tojson }};
+</script>

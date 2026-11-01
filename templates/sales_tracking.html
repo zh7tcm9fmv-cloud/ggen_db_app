@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" data-ui-lang="EN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+(function(){
+  try{
+    var l=String(localStorage.getItem('ggen_lang')||'EN').trim().toUpperCase();
+    if(l==='JP')l='JA';
+    if(l!=='EN'&&l!=='TW'&&l!=='HK'&&l!=='JA'&&l!=='KR')l='EN';
+    document.documentElement.setAttribute('data-ui-lang',l);
+    document.documentElement.lang=l==='JA'?'ja':(l==='TW'||l==='HK')?'zh-Hant':(l==='KR'?'ko':'en');
+  }catch(_){}
+})();
+</script>
+<title>Sales Rank Tracking — GGen Eternal Database</title>
+<meta name="description" content="Live App Store top-grossing ranks for SD Gundam G Generation Eternal by country during Unit Assembly release windows.">
+<link rel="canonical" href="{{ public_origin }}/tracking">
+<link rel="icon" type="image/webp" href="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Gallery_Comics_Logo_Eternalbase.webp{% else %}/static/images/UI/UI_Gallery_Comics_Logo_Eternalbase.webp{% endif %}">
+{% include '_gtm.html' %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/app_shell.css') }}?v={{ app_js_version }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/ggen_15.css') }}?v={{ app_js_version }}&trk=1">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/sales_tracking.css') }}?v={{ app_js_version }}&trk=12">
+{% if image_cdn %}
+<link rel="preconnect" href="{{ image_cdn }}" crossorigin>
+<link rel="dns-prefetch" href="{{ image_cdn }}">
+{% endif %}
+<script>
+(function(){
+  var q=new URLSearchParams(location.search||'');
+  var forced=q.get('design')||q.get('mock');
+  var stored='';
+  try{stored=localStorage.getItem('ggen_design_15')||''}catch(_){}
+  var on=forced==='15'?true:forced==='classic'?false:(stored==='0'?false:true);
+  window.__GGEN_DESIGN_15__=!!on;
+})();
+</script>
+<link id="ggen15Fonts" rel="stylesheet" href="{{ url_for('static', filename='css/ggen_teko.css') }}?v={{ app_js_version }}">
+{% include '_defer_brand_fonts.html' %}
+<script>
+window.__GGEN_IMAGE_CDN__={{ (image_cdn or '')|tojson }};
+window.__GGEN_GAME_IMAGES_USE_CDN__={{ game_images_use_cdn|tojson }};
+window.__GGEN_APP_JS_V__={{ (app_js_version or '')|tojson }};
+</script>
+</head>
+<body class="app-shell trk-page">
+<script>
+(function(){
+  var on=!!window.__GGEN_DESIGN_15__;
+  document.documentElement.classList.add(on?'ggen-15':'ggen-classic');
+  var link=document.getElementById('ggen15Fonts');
+  if(link){ if(on){link.media='all'} else{link.disabled=true;link.removeAttribute('onload')} }
+})();
+</script>
+{% include '_gtm_noscript.html' %}
+<div class="bg-pattern" aria-hidden="true"></div>
+
+<header class="app-header trk-app-header" id="trkAppHeader">
+  <div class="header-inner">
+    <a class="header-brand" href="/" aria-label="Back to GGen Eternal Database">
+      <div class="brand-logo">
+        <img src="{% if image_cdn %}{{ image_cdn }}/images/UI/IMG_Common_Logo_ETERNALBASE.webp{% else %}/static/images/UI/IMG_Common_Logo_ETERNALBASE.webp{% endif %}" alt="GGen Eternal Database" width="42" height="42" decoding="async">
+      </div>
+      <div class="brand-copy">
+        <div class="brand-title-row">
+          <h1 class="brand-text">
+            <span class="brand-word brand-word-ggen brand-frame-1">GGEN</span>
+            <span class="brand-word brand-frame-2">ETERNAL</span>
+            <span class="brand-word brand-word-db brand-frame-3">DATABASE</span>
+          </h1>
+        </div>
+        <div class="brand-sub">SD Gundam G Generation</div>
+      </div>
+    </a>
+    <div class="header-controls">
+      <div class="lang-selector trk-lang" role="group" aria-label="Language">
+        <button type="button" class="lang-btn trk-lang-btn" data-lang="EN" title="EN">EN</button>
+        <button type="button" class="lang-btn trk-lang-btn" data-lang="JA" title="JP">JP</button>
+        <button type="button" class="lang-btn trk-lang-btn" data-lang="TW" title="TW">TW</button>
+        <button type="button" class="lang-btn trk-lang-btn" data-lang="HK" title="HK">HK</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<header class="trk-topbar" id="trkTopbar">
+  <a class="trk-topbar-back" id="trkBackBtn" href="/tl">Back</a>
+  <h1 class="trk-topbar-title" id="trkTopTitle">Sales Rank Tracking</h1>
+</header>
+
+<main class="trk-main">
+{% with trk_embedded=false %}{% include '_sales_tracking_panel.html' %}{% endwith %}
+</main>
+
+<script src="{{ url_for('static', filename='js/ggen_15.js') }}?v={{ app_js_version }}&trk=1" defer></script>
+<script src="{{ url_for('static', filename='js/sales_tracking.js') }}?v={{ app_js_version }}&trk=9" defer></script>
+{% include '_client_version_reload.html' %}
+</body>
+</html>
