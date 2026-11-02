@@ -82,6 +82,26 @@ Confirm file on the votes branch: `https://github.com/zh7tcm9fmv-cloud/ggen_db_a
 
 ---
 
+## Sales Rank Tracking (`/tracking`) — same GitHub backup
+
+Apple / Game-i country rank samples for the trail chart reuse the **same** `GGEN_BANNER_VOTES_GITHUB_TOKEN` + `banner-votes-data` branch. No Railway volume.
+
+| Variable | Notes |
+|----------|--------|
+| `GGEN_BANNER_VOTES_GITHUB_TOKEN` | Same PAT as banner/SPI votes |
+| `GGEN_SALES_RANK_SYNC_MODE` | Optional; default `shutdown` when the votes token is set (`off` disables) |
+| `GGEN_SALES_RANK_GITHUB_PATH` | Optional; default `data/published/sales_rank_tracking.json` |
+
+Local working cache: `data/persistent/sales_rank_tracking.json` (ephemeral on Railway).  
+Bundled seed (committed on `main`, boot merge): `data/published/sales_rank_tracking.json`  
+Durable ring on votes branch: same path under `banner-votes-data`.
+
+Boot merges: local disk + bundled seed + GitHub snapshot. After each sample, debounced push (~45s); SIGTERM flushes again.
+
+Confirm: `https://github.com/zh7tcm9fmv-cloud/ggen_db_app/blob/banner-votes-data/data/published/sales_rank_tracking.json`
+
+---
+
 ## Collections census + share codes (no Railway volume)
 
 Anonymous census and short share codes use the **same GitHub backup** as banner / SPI votes (`banner-votes-data` branch + `GGEN_BANNER_VOTES_GITHUB_TOKEN`). No Railway volume required. The client upserts on **Submit / update census**, and also quietly after **Save image**, **Share on X**, or **Generate share code** (when a display name is set).

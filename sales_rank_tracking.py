@@ -5,17 +5,22 @@ Primary source: Apple public top-grossing RSS (overall + Games).
 Secondary: Game-i world_analytics 「本日」 column (daily snapshot, same countries).
 
 Keeps a rolling ~96h ring so a gacha release trail can show All / 24h / 36h.
-Durable only as a local working cache (same class as SPI/votes file cache) —
-not a Railway volume requirement.
+
+Local ``data/persistent/sales_rank_tracking.json`` is an ephemeral working cache
+(same class as SPI/votes). Durable source of truth = GitHub branch
+``banner-votes-data`` via ``GGEN_BANNER_VOTES_GITHUB_TOKEN`` (no Railway volume).
+Boot also merges bundled ``data/published/sales_rank_tracking.json`` when present.
 """
 from __future__ import annotations
 
+import base64
 import json
 import os
 import re
 import threading
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional, Tuple
@@ -79,6 +84,13 @@ _thread: Optional[threading.Thread] = None
 _stop = threading.Event()
 _store_path: Optional[str] = None
 _active_until_ms = 0
+_app_dir: Optional[str] = None
+_github_sha: Optional[str] = None
+_github_push_lock = threading.Lock()
+_debounce_timer: Optional[threading.Timer] = None
+_debounce_lock = threading.Lock()
+_last_pushed_n = -1
+_GITHUB_PUSH_DEBOUNCE_SEC = 45.0
 
 
 def _now_ms() -> int:
@@ -120,21 +132,58 @@ def _trim_locked(now: Optional[int] = None) -> None:
     _samples = [s for s in _samples if int(s.get("t") or 0) >= cutoff]
 
 
-def _save_locked() -> None:
-    if not _store_path:
-        return
-    payload = {
+def _snapshot_dict() -> Dict[str, Any]:
+    return {
         "v": 1,
         "saved_ms": _now_ms(),
         "meta": dict(_meta),
         "samples": list(_samples),
     }
+
+
+def _save_locked() -> None:
+    if not _store_path:
+        return
+    payload = _snapshot_dict()
     parent = os.path.dirname(_store_path) or "."
     os.makedirs(parent, exist_ok=True)
     tmp = f"{_store_path}.tmp.{os.getpid()}"
     with open(tmp, "w", encoding="utf-8") as f:
         json.dump(payload, f, ensure_ascii=False, separators=(",", ":"))
     os.replace(tmp, _store_path)
+
+
+def _apply_snapshot_locked(data: Optional[Dict[str, Any]], *, replace_meta: bool = False) -> int:
+    """Merge snapshot samples into memory. Returns added/merged count hint."""
+    global _samples, _meta
+    if not isinstance(data, dict):
+        return 0
+    incoming = data.get("samples") or []
+    if not isinstance(incoming, list):
+        return 0
+    before = len(_samples)
+    _samples = _merge_sample_lists(_samples, incoming)
+    _trim_locked()
+    meta = data.get("meta")
+    if isinstance(meta, dict):
+        if replace_meta or not _meta.get("last_ok_ms"):
+            for k in ("last_ok_ms", "last_err", "started_ms"):
+                if k in meta and meta[k] not in (None, ""):
+                    if k == "last_ok_ms":
+                        try:
+                            _meta[k] = max(int(_meta.get(k) or 0), int(meta[k] or 0))
+                        except (TypeError, ValueError):
+                            pass
+                    elif k == "started_ms":
+                        try:
+                            cur = int(_meta.get(k) or 0)
+                            inc = int(meta[k] or 0)
+                            _meta[k] = min(cur, inc) if cur and inc else (cur or inc)
+                        except (TypeError, ValueError):
+                            pass
+                    elif replace_meta or not _meta.get(k):
+                        _meta[k] = meta[k]
+    return max(0, len(_samples) - before)
 
 
 def _load_locked() -> None:
@@ -155,6 +204,312 @@ def _load_locked() -> None:
         _trim_locked()
     except Exception as e:
         _meta["last_err"] = f"load:{e}"
+
+
+def _country_fill_score(sample: Dict[str, Any]) -> int:
+    countries = sample.get("countries") or {}
+    if not isinstance(countries, dict):
+        return 0
+    n = 0
+    for row in countries.values():
+        if not isinstance(row, dict):
+            continue
+        if row.get("overall") is not None:
+            n += 2
+        if row.get("games") is not None:
+            n += 1
+        if row.get("gamei_today") is not None:
+            n += 1
+    return n
+
+
+def _merge_sample_lists(
+    a: List[Dict[str, Any]], b: List[Dict[str, Any]]
+) -> List[Dict[str, Any]]:
+    by_t: Dict[int, Dict[str, Any]] = {}
+    for src in (a or []) + (b or []):
+        if not isinstance(src, dict):
+            continue
+        try:
+            t = int(src.get("t") or 0)
+        except (TypeError, ValueError):
+            continue
+        if t <= 0:
+            continue
+        prev = by_t.get(t)
+        if prev is None or _country_fill_score(src) >= _country_fill_score(prev):
+            by_t[t] = src
+    return [by_t[k] for k in sorted(by_t.keys())]
+
+
+def _bundled_seed_path(app_dir: Optional[str] = None) -> str:
+    base = app_dir or _app_dir or os.path.dirname(os.path.abspath(__file__))
+    return os.path.join(base, "data", "published", "sales_rank_tracking.json")
+
+
+def _load_bundled_seed(app_dir: Optional[str] = None) -> Optional[Dict[str, Any]]:
+    path = _bundled_seed_path(app_dir)
+    if not os.path.isfile(path):
+        return None
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        return data if isinstance(data, dict) else None
+    except Exception:
+        return None
+
+
+def _on_railway() -> bool:
+    return bool(os.environ.get("RAILWAY_ENVIRONMENT") or os.environ.get("RAILWAY_PROJECT_ID"))
+
+
+def _github_sync_mode() -> str:
+    raw = (os.environ.get("GGEN_SALES_RANK_SYNC_MODE") or "").strip().lower()
+    if raw in ("off", "none", "false", "0", "never"):
+        return "off"
+    if raw in ("sample", "vote", "each", "always", "every"):
+        return "sample"
+    if raw in ("shutdown", "deploy", "exit", "stop", "on", "true", "1"):
+        return "shutdown"
+    # Default: when votes token exists, keep trail across deploys (same as SPI).
+    if (os.environ.get("GGEN_BANNER_VOTES_GITHUB_TOKEN") or "").strip():
+        return "shutdown"
+    return "off"
+
+
+def _github_path() -> str:
+    return (
+        os.environ.get("GGEN_SALES_RANK_GITHUB_PATH")
+        or "data/published/sales_rank_tracking.json"
+    ).strip().lstrip("/")
+
+
+def _github_repo() -> str:
+    return (
+        os.environ.get("GGEN_BANNER_VOTES_GITHUB_REPO")
+        or os.environ.get("GITHUB_REPOSITORY")
+        or "zh7tcm9fmv-cloud/ggen_db_app"
+    ).strip()
+
+
+def _github_branch() -> str:
+    explicit = (os.environ.get("GGEN_BANNER_VOTES_GITHUB_BRANCH") or "").strip()
+    if explicit:
+        return explicit
+    if _on_railway() and (os.environ.get("GGEN_BANNER_VOTES_GITHUB_TOKEN") or "").strip():
+        return "banner-votes-data"
+    return "banner-votes-data"
+
+
+def _github_config() -> Optional[Tuple[str, str, str, str]]:
+    token = (os.environ.get("GGEN_BANNER_VOTES_GITHUB_TOKEN") or "").strip()
+    repo = _github_repo()
+    path = _github_path()
+    if not token or not repo or "/" not in repo:
+        return None
+    return token, repo, path, _github_branch()
+
+
+def _github_api_headers(token: str) -> Dict[str, str]:
+    return {
+        "Authorization": f"Bearer {token}",
+        "Accept": "application/vnd.github+json",
+        "User-Agent": UA,
+        "X-GitHub-Api-Version": "2022-11-28",
+    }
+
+
+def _http_json(
+    url: str,
+    *,
+    headers: Optional[Dict[str, str]] = None,
+    method: str = "GET",
+    data: Optional[bytes] = None,
+    timeout: float = 25.0,
+) -> Any:
+    req = urllib.request.Request(
+        url, data=data, headers=headers or {"User-Agent": UA}, method=method
+    )
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+        raw = resp.read()
+    if not raw:
+        return None
+    return json.loads(raw.decode("utf-8"))
+
+
+def fetch_github_snapshot() -> Optional[Dict[str, Any]]:
+    """Fetch durable ring from banner-votes-data (token API, else raw.githubusercontent)."""
+    global _github_sha
+    cfg = _github_config()
+    repo = _github_repo()
+    path = _github_path()
+    branch = _github_branch()
+    if cfg:
+        token, repo, path, branch = cfg
+        api = (
+            f"https://api.github.com/repos/{repo}/contents/"
+            f"{urllib.parse.quote(path)}?ref={urllib.parse.quote(branch)}"
+        )
+        try:
+            meta = _http_json(api, headers=_github_api_headers(token))
+            if isinstance(meta, dict):
+                if meta.get("sha"):
+                    _github_sha = str(meta["sha"])
+                content = meta.get("content")
+                if isinstance(content, str) and content:
+                    raw = base64.b64decode(content.replace("\n", ""))
+                    data = json.loads(raw.decode("utf-8"))
+                    return data if isinstance(data, dict) else None
+                download = meta.get("download_url")
+                if download:
+                    raw = _http_get(str(download))
+                    data = json.loads(raw.decode("utf-8"))
+                    return data if isinstance(data, dict) else None
+        except Exception as e:
+            _meta["last_err"] = f"github_fetch:{e}"[:500]
+    # Public raw fallback (works if file exists on the votes branch).
+    if repo and "/" in repo and path:
+        raw_url = f"https://raw.githubusercontent.com/{repo}/{branch}/{path}"
+        try:
+            raw = _http_get(raw_url)
+            data = json.loads(raw.decode("utf-8"))
+            return data if isinstance(data, dict) else None
+        except Exception:
+            return None
+    return None
+
+
+def push_github_snapshot(*, reason: str = "debounced", force: bool = False) -> bool:
+    """Push current ring to GitHub. Tiny JSON — Contents API is enough."""
+    global _github_sha, _last_pushed_n
+    if _github_sync_mode() == "off":
+        return False
+    cfg = _github_config()
+    if not cfg:
+        return False
+    with _lock:
+        n = len(_samples)
+        payload_obj = _snapshot_dict()
+    if not force and n == _last_pushed_n and n > 0:
+        return False
+    if n < 1 and not force:
+        return False
+    token, repo, path, branch = cfg
+    payload = json.dumps(payload_obj, ensure_ascii=False, indent=2).encode("utf-8") + b"\n"
+    url = f"https://api.github.com/repos/{repo}/contents/{urllib.parse.quote(path)}"
+    with _github_push_lock:
+        for attempt in range(3):
+            body: Dict[str, Any] = {
+                "message": f"chore: snapshot sales-rank tracking ({reason}, n={n})",
+                "content": base64.b64encode(payload).decode("ascii"),
+                "branch": branch,
+            }
+            if _github_sha:
+                body["sha"] = _github_sha
+            try:
+                meta = _http_json(
+                    url,
+                    headers={**_github_api_headers(token), "Content-Type": "application/json"},
+                    method="PUT",
+                    data=json.dumps(body).encode("utf-8"),
+                )
+                content = meta.get("content") if isinstance(meta, dict) else None
+                if isinstance(content, dict) and content.get("sha"):
+                    _github_sha = str(content["sha"])
+                _last_pushed_n = n
+                print(f"sales_rank_tracking: GitHub snapshot ({reason}, n={n})")
+                return True
+            except urllib.error.HTTPError as e:
+                if e.code in (404, 409, 422) and attempt < 2:
+                    _github_sha = None
+                    try:
+                        fetch_github_snapshot()
+                    except Exception:
+                        pass
+                    time.sleep(0.25 * (attempt + 1))
+                    continue
+                print(f"sales_rank_tracking: GitHub push failed: {e}")
+                return False
+            except Exception as e:
+                print(f"sales_rank_tracking: GitHub push failed: {e}")
+                if attempt < 2:
+                    time.sleep(0.25 * (attempt + 1))
+                    continue
+                return False
+    return False
+
+
+def _cancel_debounced_push() -> None:
+    global _debounce_timer
+    with _debounce_lock:
+        if _debounce_timer:
+            _debounce_timer.cancel()
+            _debounce_timer = None
+
+
+def schedule_debounced_github_push() -> None:
+    """After each sample save — debounce so we don't thrash the Contents API."""
+    global _debounce_timer
+    mode = _github_sync_mode()
+    if mode == "off" or not _github_config():
+        return
+    if mode == "sample":
+        threading.Thread(
+            target=lambda: push_github_snapshot(reason="sample", force=True),
+            daemon=True,
+            name="sales-rank-gh-push",
+        ).start()
+        return
+
+    def _run() -> None:
+        try:
+            push_github_snapshot(reason="debounced", force=True)
+        except Exception as e:
+            print(f"sales_rank_tracking: debounced push failed: {e}")
+
+    with _debounce_lock:
+        if _debounce_timer:
+            _debounce_timer.cancel()
+        _debounce_timer = threading.Timer(_GITHUB_PUSH_DEBOUNCE_SEC, _run)
+        _debounce_timer.daemon = True
+        _debounce_timer.start()
+
+
+def flush_github_sync(reason: str = "shutdown") -> bool:
+    """SIGTERM / deploy flush — same habit as banner/SPI votes."""
+    if _github_sync_mode() == "off" or not _github_config():
+        return False
+    _cancel_debounced_push()
+    try:
+        return push_github_snapshot(reason=reason, force=True)
+    except Exception as e:
+        print(f"sales_rank_tracking: flush failed ({reason}): {e}")
+        return False
+
+
+def hydrate_durable(app_dir: Optional[str] = None) -> None:
+    """Merge bundled seed + GitHub snapshot into memory, then rewrite local cache."""
+    with _lock:
+        seed = _load_bundled_seed(app_dir)
+        added_seed = _apply_snapshot_locked(seed) if seed else 0
+    remote = None
+    if _github_sync_mode() != "off":
+        try:
+            remote = fetch_github_snapshot()
+        except Exception as e:
+            print(f"sales_rank_tracking: hydrate fetch failed: {e}")
+    with _lock:
+        added_remote = _apply_snapshot_locked(remote) if remote else 0
+        try:
+            _save_locked()
+        except Exception as e:
+            _meta["last_err"] = f"hydrate_save:{e}"[:500]
+        n = len(_samples)
+    if added_seed or added_remote or (remote and n):
+        print(
+            f"sales_rank_tracking: hydrated n={n} "
+            f"(seed+{added_seed}, github+{added_remote})"
+        )
 
 
 def _http_get(url: str, timeout: float = 18.0) -> bytes:
@@ -270,6 +625,10 @@ def take_sample() -> Dict[str, Any]:
             _save_locked()
         except Exception as e:
             _meta["last_err"] = (str(_meta.get("last_err") or "") + f"|save:{e}")[:500]
+    try:
+        schedule_debounced_github_push()
+    except Exception:
+        pass
     return sample
 
 
@@ -582,14 +941,23 @@ def _worker(app_dir: Optional[str] = None) -> None:
 
 def start_background(app_dir: Optional[str] = None) -> None:
     """Idempotent: hydrate store + start sampler daemon."""
-    global _thread, _store_path, _meta
+    global _thread, _store_path, _meta, _app_dir
     with _lock:
         if _thread and _thread.is_alive():
             return
+        _app_dir = app_dir or os.path.dirname(os.path.abspath(__file__))
         _store_path = resolve_store_path(app_dir)
         _load_locked()
         if not _meta.get("started_ms"):
             _meta["started_ms"] = _now_ms()
+    # Outside lock: network hydrate (bundled seed + GitHub votes branch).
+    try:
+        hydrate_durable(app_dir)
+    except Exception as e:
+        print(f"sales_rank_tracking: hydrate failed: {e}")
+    with _lock:
+        if _thread and _thread.is_alive():
+            return
         try:
             refresh_active_from_gacha_schedules(app_dir)
         except Exception:
@@ -602,6 +970,11 @@ def start_background(app_dir: Optional[str] = None) -> None:
             daemon=True,
         )
         _thread.start()
+    if _on_railway() and _github_sync_mode() != "off" and not _github_config():
+        print(
+            "sales_rank_tracking: set GGEN_BANNER_VOTES_GITHUB_TOKEN "
+            "(reuses banner-votes-data) so /tracking trail survives deploys."
+        )
 
 
 def force_sample_now() -> Dict[str, Any]:

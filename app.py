@@ -35604,7 +35604,13 @@ def _banner_pool_votes_register_shutdown_sync():
     banner_on = _banner_pool_votes_sync_mode() == 'shutdown'
     spi_on = _spi_votes_sync_mode() == 'shutdown'
     col_on = _collections_github_sync_mode() == 'shutdown'
-    if not banner_on and not spi_on and not col_on:
+    sales_rank_on = False
+    try:
+        import sales_rank_tracking as _srt_boot
+        sales_rank_on = _srt_boot._github_sync_mode() != 'off' and bool(_srt_boot._github_config())
+    except Exception:
+        sales_rank_on = False
+    if not banner_on and not spi_on and not col_on and not sales_rank_on:
         return
     _BANNER_VOTES_SHUTDOWN_REGISTERED = True
 
@@ -35616,6 +35622,12 @@ def _banner_pool_votes_register_shutdown_sync():
         if col_on:
             _collections_census_flush_to_github(f'signal:{signum}', force=True)
             _collections_share_flush_to_github(f'signal:{signum}', force=True)
+        if sales_rank_on:
+            try:
+                import sales_rank_tracking as _srt_term
+                _srt_term.flush_github_sync(f'signal:{signum}')
+            except Exception as e:
+                print(f'sales_rank_tracking: SIGTERM flush failed: {e}')
 
     try:
         signal.signal(signal.SIGTERM, _term)
