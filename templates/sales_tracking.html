@@ -21,7 +21,7 @@
 {% include '_gtm.html' %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/app_shell.css') }}?v={{ app_js_version }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/ggen_15.css') }}?v={{ app_js_version }}&trk=1">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/sales_tracking.css') }}?v={{ app_js_version }}&trk=12">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/sales_tracking.css') }}?v={{ app_js_version }}&trk=13">
 {% if image_cdn %}
 <link rel="preconnect" href="{{ image_cdn }}" crossorigin>
 <link rel="dns-prefetch" href="{{ image_cdn }}">
@@ -94,7 +94,7 @@ window.__GGEN_APP_JS_V__={{ (app_js_version or '')|tojson }};
 </main>
 
 <script src="{{ url_for('static', filename='js/ggen_15.js') }}?v={{ app_js_version }}&trk=1" defer></script>
-<script src="{{ url_for('static', filename='js/sales_tracking.js') }}?v={{ app_js_version }}&trk=9" defer></script>
+<script src="{{ url_for('static', filename='js/sales_tracking.js') }}?v={{ app_js_version }}&trk=13" defer></script>
 {% include '_client_version_reload.html' %}
 </body>
 </html>

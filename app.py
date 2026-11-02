@@ -22091,24 +22091,32 @@ def api_sales_rank_tracking():
     except Exception as e:
         return jsonify({'ok': False, 'error': f'import:{e}'}), 500
     chart = (request.args.get('chart') or 'overall').strip().lower()
-    try:
-        hours = float(request.args.get('hours') or 24)
-    except ValueError:
-        hours = 24.0
-    hours = max(1.0, min(36.0, hours))
+    raw_hours = (request.args.get('hours') or 'all').strip().lower()
+    all_ring = raw_hours in ('all', '0', 'full', 'ring')
+    hours = None
+    if not all_ring:
+        try:
+            hours = float(raw_hours)
+        except ValueError:
+            all_ring = True
+            hours = None
+        else:
+            # Cap at retained ring (~96h); do not invent history beyond KEEP_MS.
+            keep_h = float(getattr(srt, 'KEEP_MS', 96 * 3600_000) or 96 * 3600_000) / 3600_000
+            hours = max(1.0, min(keep_h, hours))
     fresh = (request.args.get('fresh') or '').strip() in ('1', 'true', 'yes')
     try:
-        payload = srt.get_payload(hours=hours, chart=chart)
+        payload = srt.get_payload(hours=hours, chart=chart, all_ring=all_ring)
         # First open with empty series: take one sample now (may take a few seconds).
         if fresh and int(payload.get('sample_count') or 0) < 1:
             try:
                 srt.force_sample_now()
             except Exception as e:
-                payload = srt.get_payload(hours=hours, chart=chart)
+                payload = srt.get_payload(hours=hours, chart=chart, all_ring=all_ring)
                 payload['meta'] = dict(payload.get('meta') or {})
                 payload['meta']['last_err'] = f'fresh:{e}'
             else:
-                payload = srt.get_payload(hours=hours, chart=chart)
+                payload = srt.get_payload(hours=hours, chart=chart, all_ring=all_ring)
         r = jsonify(payload)
         r.headers['Cache-Control'] = 'no-store'
         return r

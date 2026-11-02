@@ -12,6 +12,7 @@
       overall: 'Overall',
       games: 'Games',
       windowLbl: 'Window',
+      hAll: 'All',
       h24: '24h',
       h36: '36h',
       chartTitle: 'Rank over time',
@@ -41,6 +42,7 @@
       overall: '綜合',
       games: '遊戲',
       windowLbl: '區間',
+      hAll: '全部',
       h24: '24小時',
       h36: '36小時',
       chartTitle: '排名軌跡',
@@ -70,6 +72,7 @@
       overall: '綜合',
       games: '遊戲',
       windowLbl: '區間',
+      hAll: '全部',
       h24: '24小時',
       h36: '36小時',
       chartTitle: '排名軌跡',
@@ -99,6 +102,7 @@
       overall: '総合',
       games: 'ゲーム',
       windowLbl: '期間',
+      hAll: 'すべて',
       h24: '24時間',
       h36: '36時間',
       chartTitle: '順位トレイル',
@@ -125,7 +129,8 @@
   var state = {
     lang: 'EN',
     chart: 'overall',
-    hours: 24,
+    /* Default = full retained ring (~96h). Window filter only; no extra Apple/Game-i polls. */
+    hours: 'all',
     hidden: {},
     data: null,
     timer: null,
@@ -162,6 +167,7 @@
       trkChipOverall: 'overall',
       trkChipGames: 'games',
       trkWindowLbl: 'windowLbl',
+      trkChipAll: 'hAll',
       trkChip24: 'h24',
       trkChip36: 'h36',
       trkChartTitle: 'chartTitle',
@@ -806,12 +812,13 @@
     });
     document.querySelectorAll('[data-trk-hours]').forEach(function (btn) {
       btn.addEventListener('click', function () {
-        state.hours = Number(btn.getAttribute('data-trk-hours')) || 24;
-        document.querySelectorAll('[data-trk-hours]').forEach(function (b) {
-          var on = b === btn;
-          b.classList.toggle('is-active', on);
-          b.setAttribute('aria-pressed', on ? 'true' : 'false');
-        });
+        var raw = String(btn.getAttribute('data-trk-hours') || 'all').toLowerCase();
+        if (raw === 'all' || raw === 'full' || raw === '0') state.hours = 'all';
+        else {
+          var n = Number(raw);
+          state.hours = isFinite(n) && n > 0 ? n : 'all';
+        }
+        syncHoursChips();
         load();
       });
     });
@@ -862,12 +869,23 @@
     });
   }
 
+  function syncHoursChips() {
+    var cur = state.hours === 'all' || state.hours === 0 ? 'all' : String(state.hours);
+    document.querySelectorAll('[data-trk-hours]').forEach(function (b) {
+      var v = String(b.getAttribute('data-trk-hours') || '').toLowerCase();
+      var on = v === cur || (cur === 'all' && (v === 'all' || v === 'full' || v === '0'));
+      b.classList.toggle('is-active', on);
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  }
+
   function boot(opts) {
     opts = opts || {};
     if (!document.getElementById('trkLive')) return;
     state.lang = readLang();
     if (!state.booted) {
       state.chart = 'overall';
+      state.hours = 'all';
       try {
         var q = new URLSearchParams(location.search || '');
         var cq = (q.get('chart') || '').toLowerCase();
@@ -876,11 +894,15 @@
           var saved = String(localStorage.getItem('ggen_trk_chart') || '').toLowerCase();
           if (saved === 'games' || saved === 'overall') state.chart = saved;
         }
+        var hq = (q.get('hours') || '').toLowerCase();
+        if (hq === 'all' || hq === 'full' || hq === '0') state.hours = 'all';
+        else if (hq === '24' || hq === '36') state.hours = Number(hq);
       } catch (_) {}
     }
     document.documentElement.setAttribute('data-ui-lang', state.lang);
     applyCopy();
     syncChartChips();
+    syncHoursChips();
     syncLangBtns();
     bind();
     if (!state.booted) {

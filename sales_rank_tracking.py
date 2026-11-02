@@ -4,7 +4,7 @@
 Primary source: Apple public top-grossing RSS (overall + Games).
 Secondary: Game-i world_analytics 「本日」 column (daily snapshot, same countries).
 
-Keeps a rolling ~36h ring so a gacha release day can show a trail chart.
+Keeps a rolling ~96h ring so a gacha release trail can show All / 24h / 36h.
 Durable only as a local working cache (same class as SPI/votes file cache) —
 not a Railway volume requirement.
 """
@@ -407,13 +407,32 @@ def _peak_row(samples: List[Dict[str, Any]], code: str, chart: str, t0: int, t1:
     }
 
 
-def get_payload(hours: float = 24.0, chart: str = "overall") -> Dict[str, Any]:
+def get_payload(
+    hours: Optional[float] = None, chart: str = "overall", *, all_ring: bool = False
+) -> Dict[str, Any]:
+    """Return chart series.
+
+    ``all_ring`` / ``hours is None`` → every sample still in the rolling ring
+    (KEEP_MS, currently ~96h). Window chips only filter stored points; they do
+    **not** change Apple / Game-i poll rate.
+    """
     chart = "games" if str(chart).lower() == "games" else "overall"
     now = _now_ms()
-    cutoff = now - int(float(hours) * 3600 * 1000)
+    keep_h = KEEP_MS / 3600_000
+    if all_ring or hours is None:
+        hours_out: Any = "all"
+        cutoff = now - KEEP_MS
+    else:
+        h = float(hours)
+        h = max(1.0, min(keep_h, h))
+        hours_out = h
+        cutoff = now - int(h * 3600 * 1000)
     with _lock:
         ring = list(_samples)
-        samples = [s for s in ring if int(s.get("t") or 0) >= cutoff]
+        if all_ring or hours is None:
+            samples = list(ring)
+        else:
+            samples = [s for s in ring if int(s.get("t") or 0) >= cutoff]
         meta = dict(_meta)
         active_until = int(_active_until_ms or 0)
 
@@ -471,8 +490,8 @@ def get_payload(hours: float = 24.0, chart: str = "overall") -> Dict[str, Any]:
     return {
         "ok": True,
         "chart": chart,
-        "hours": hours,
-        "keep_hours": KEEP_MS / 3600_000,
+        "hours": hours_out,
+        "keep_hours": keep_h,
         "sample_count": len(samples),
         "countries": [
             {"code": c["code"], "label_en": c["label_en"], "label_ja": c["label_ja"]}
