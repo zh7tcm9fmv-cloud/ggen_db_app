@@ -7279,7 +7279,7 @@ _HTTP_JSON_BODY_CACHE_BUDGET = max(
 # Small dossier/detail responses get their own LRU so SPI/timeline do not thrash them out.
 _HTTP_JSON_DETAIL_BODY_CACHE = {}
 # Hold more warm unit/char dossiers so detail storms re-hit gzip bytes (no rebuild / no UX change).
-_HTTP_JSON_DETAIL_BODY_CACHE_MAX = max(64, min(384, int(os.environ.get('HTTP_JSON_DETAIL_BODY_CACHE_MAX', '256') or '256')))
+_HTTP_JSON_DETAIL_BODY_CACHE_MAX = max(64, min(512, int(os.environ.get('HTTP_JSON_DETAIL_BODY_CACHE_MAX', '384') or '384')))
 _HTTP_JSON_DETAIL_BODY_MAX_RAW = max(8192, min(262144, int(os.environ.get('HTTP_JSON_DETAIL_BODY_MAX_RAW', '131072') or '131072')))
 _HTTP_JSON_DETAIL_KEY_PREFIXES = (
     'c_', 'u_', 's8_', 's_', 'op_', 'opd3_', 'item_', 'pt_', 'ubp_',
@@ -33449,6 +33449,16 @@ def npc_view_cache_key_fragment():
     return 'npc1' if session.get('npc_view_unlocked') is True else 'npc2'
 
 
+def _detail_http_cache_kwargs():
+    """Anonymous dossiers: public max-age so edge/browsers absorb scrapers (no UX hit).
+
+    NPC-unlocked sessions stay private so CDN never serves unlocked NPC payloads.
+    """
+    if NPC_VIEW_PASSWORD and session.get('npc_view_unlocked') is True:
+        return {'public': False, 'private': True, 'max_age': 3600}
+    return {'public': True, 'private': False, 'max_age': 3600}
+
+
 @app.route('/api/npc_view/status')
 def api_npc_view_status():
     if not NPC_VIEW_PASSWORD:
@@ -36378,12 +36388,13 @@ def get_supporter(supporter_id):
         max_level = supporter_max_level_for_rarity(ri)
         level = min(max_level, max(1, int(request.args.get('level', max_level))))
         ck = f"s8_{supporter_id}_{lc}_{level}_{lb_tier}_{for_uid_key}_{for_cid_key}_{lr_schedule_cache_key_fragment()}"
-        early = try_serve_preserialized(ck, private=True, max_age=3600)
+        _cc = _detail_http_cache_kwargs()
+        early = try_serve_preserialized(ck, **_cc)
         if early is not None:
             return early
         cached = get_cached_response(ck)
         if cached:
-            return jsonify_preserialized(cached, ck, private=True, max_age=3600, convert_images=False)
+            return jsonify_preserialized(cached, ck, convert_images=False, **_cc)
         result = build_supporter_detail_dict(
             supporter_id, lc, level=level, lb_tier=lb_tier,
             for_uid_q=for_uid_q, for_cid_q=for_cid_q,
@@ -36392,7 +36403,7 @@ def get_supporter(supporter_id):
             return jsonify({'error': f'Supporter {supporter_id} not found'}), 404
         result = convert_image_urls(result)
         set_cached_response(ck, result)
-        return jsonify_preserialized(result, ck, private=True, max_age=3600, convert_images=False)
+        return jsonify_preserialized(result, ck, convert_images=False, **_cc)
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'error': str(e)}), 500
 
@@ -37561,14 +37572,15 @@ def get_character(char_id):
         view_ranking = request.args.get('view', '').strip().lower() == 'ranking'
         # r21: condition chips use in-game id order (Zeon & Land, not file order).
         ck = f"c_{char_id}_{lc}_r26_{1 if view_ranking else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        _cc = _detail_http_cache_kwargs()
         # Warm body/304 before dict lookup — keeps detail storms off the rebuild path.
-        early = try_serve_preserialized(ck, private=True, max_age=3600)
+        early = try_serve_preserialized(ck, **_cc)
         if early is not None:
             return early
         cached = get_cached_response(ck)
         if cached:
             # Images already CDN-converted when cached; skip re-walk + re-jsonify under GIL.
-            return jsonify_preserialized(cached, ck, private=True, max_age=3600, convert_images=False)
+            return jsonify_preserialized(cached, ck, convert_images=False, **_cc)
         ld = get_lang_data(lc); ldc = get_calc_lang_data(); char_id = normalize_id(char_id); info = char_info_map.get(char_id)
         if not info: return jsonify({'error': f'Character {char_id} not found'}), 404
         if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
@@ -37708,7 +37720,7 @@ def get_character(char_id):
             result['view_ranking'] = True
         result = convert_image_urls(result)
         set_cached_response(ck, result)
-        return jsonify_preserialized(result, ck, private=True, max_age=3600, convert_images=False)
+        return jsonify_preserialized(result, ck, convert_images=False, **_cc)
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'error': str(e)}), 500
 
@@ -37722,12 +37734,13 @@ def get_unit(unit_id):
             stat_mode_arg = 'normal'
         cond_for_ranking = request.args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
         ck = f"u_{unit_id}_{lc}_ssp20_ult8_cpwr1_usk4_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_bp3_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
-        early = try_serve_preserialized(ck, private=True, max_age=3600)
+        _cc = _detail_http_cache_kwargs()
+        early = try_serve_preserialized(ck, **_cc)
         if early is not None:
             return early
         cached = get_cached_response(ck)
         if cached:
-            return jsonify_preserialized(cached, ck, private=True, max_age=3600, convert_images=False)
+            return jsonify_preserialized(cached, ck, convert_images=False, **_cc)
         ld = get_lang_data(lc); ldc = get_calc_lang_data(); unit_id = normalize_id(unit_id); info = unit_info_map.get(unit_id)
         if not info: return jsonify({'error': f'Unit {unit_id} not found'}), 404
         if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
@@ -38205,7 +38218,7 @@ def get_unit(unit_id):
             result['best_synergy_pilot_eligible'] = False
         result = convert_image_urls(result)
         set_cached_response(ck, result)
-        return jsonify_preserialized(result, ck, private=True, max_age=3600, convert_images=False)
+        return jsonify_preserialized(result, ck, convert_images=False, **_cc)
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'error': str(e)}), 500
 
