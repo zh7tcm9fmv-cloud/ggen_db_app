@@ -3573,14 +3573,16 @@ def _unit_ability_text_implies_pilot_cond_passive(txt):
 def _unit_has_pilot_cond_passive(uid, ld, lc, stat_mode='normal', include_flat_move=True):
     """Recommend pilot grants detail-card-visible PEP for this unit.
 
-    Eligible: ATK/DEF/squad stats, flat own MOV when piloting this unit,
-    weapon ACC/Crit (tag or series affinity), weapon range, weapon-effect
-    additives, weapon EN cost, Guaranteed Chance Step when piloting this unit.
-    Not eligible: tag-affinity damage dealt/taken only (those never appear on
-    the unit detail card).
+    Eligible (lights the PEP toggle):
+    - Named-unit exclusives (UnitIds / piloting this MS by name / pair table) that
+      change detail numbers: ATK/DEF/squad %, flat MOV, weapon range / effect / EN,
+      Guaranteed Chance Step.
+    - Tag / series affinity that changes detail-visible weapon ACC or Crit (e.g.
+      Alaya-Vijnana Crit Rate) — PEP points at that affinity ability.
 
-    Series-gated Max EX ACC (any rarity recommend, e.g. SSR collab) lights PEP.
-    Named-unit / tag exclusives still require a UR recommend pilot.
+    Not PEP: damage dealt/taken-only affinity (not on the unit card), and
+    in-combat Support Defense/Attack action buffs (role-gated DEF mid-fight).
+
     Prefer trait UnitIds over EN display-name match (Gumdam typo class).
 
     include_flat_move=False: used to detect “other PEP” so vigor-gated MOV can
@@ -3630,6 +3632,9 @@ def _unit_has_pilot_cond_passive(uid, ld, lc, stat_mode='normal', include_flat_m
             # Damage dealt/taken affinity alone must never show the PEP toggle.
             if _ability_text_implies_pilot_tag_affinity_damage_only(txt):
                 continue
+            # In-combat Support Defense/Attack action buffs are not detail-card PEP.
+            if _char_trait_text_is_support_defense_action(txt):
+                continue
             if (
                 _ability_text_implies_pilot_tag_affinity_weapon_stat(txt)
                 or _ability_text_implies_pilot_tag_affinity_en_consumption(txt)
@@ -3638,6 +3643,11 @@ def _unit_has_pilot_cond_passive(uid, ld, lc, stat_mode='normal', include_flat_m
                 if req_tags and _unit_has_any_lineage_tag(uid, lc, req_tags):
                     _PILOT_COND_PASSIVE_CACHE[cache_key] = True
                     return True
+                continue
+            if _ability_text_implies_pilot_series_affinity_weapon_stat(txt):
+                continue
+            if _ability_text_has_pilot_tag_affinity_prefix(txt) or _ability_text_has_pilot_series_affinity_prefix(txt):
+                continue
             if re.search(r'when\s+piloting|搭乘|搭乗|탑승', txt, re.I):
                 if not _pilot_detail_targets_unit(uid, ld, d2 if isinstance(d2, dict) else txt):
                     continue
@@ -38049,6 +38059,7 @@ def get_unit(unit_id):
         _pilot_wpn_fx = _collect_pilot_weapon_effect_additive_bonuses(unit_id, ld, lc, stat_mode_arg)
         _pilot_tag_wpn = _collect_pilot_tag_weapon_stat_bonuses(unit_id, ld, lc, stat_mode_arg)
         _pilot_en_red = _collect_pilot_en_cost_reduction_pct(unit_id, ld, lc, stat_mode_arg)
+        # Collectors can edge-case past the text gate (named weapon-fx / tag ACC·Crit / EN).
         if not _has_pilot_cond and (
                 _pilot_wpn_fx
                 or (_pilot_tag_wpn.get('acc') or 0)

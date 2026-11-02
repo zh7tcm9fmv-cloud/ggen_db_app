@@ -1678,9 +1678,81 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .modal-content--has-chrome.char-detail:not(.detail-ranking-view) .detail-header,.modal-content--has-chrome.unit-detail:not(.detail-ranking-view) .detail-header{padding-top:14px!important;padding-left:var(--modal-detail-gutter,14px)!important;padding-right:var(--modal-detail-gutter,14px)!important}
 .modal-content--has-chrome .detail-body{padding-left:var(--modal-detail-gutter,14px);padding-right:var(--modal-detail-gutter,14px)}
 .modal-content.profile-title-detail.modal-content--has-chrome .profile-title-detail-body{padding-top:0;margin-top:0}
+/* Narrow modal: swap to mobile recommend chip (phones / mini / Air). Do NOT put
+   unit header grid / display:contents here — that ruined ≤768 layouts. */
 @container modal-detail (max-width:820px){
 .modal-content.char-detail:not(.detail-ranking-view) .detail-rec-shortcut--desktop,.modal-content.unit-detail:not(.detail-ranking-view) .detail-rec-shortcut--desktop{display:none!important}
 .modal-content.char-detail:not(.detail-ranking-view) .detail-rec-shortcut--mobile,.modal-content.unit-detail:not(.detail-ranking-view) .detail-rec-shortcut--mobile{display:flex!important;flex-direction:column;align-items:center;justify-content:flex-start;width:100%;flex-shrink:0}
+}
+/*
+  iPad Air only (viewport ≥769 + modal ≤820). Phones / Duo / iPad mini keep the
+  max-width:768 + mini overlay rules untouched.
+*/
+@media (min-width:769px){
+@container modal-detail (max-width:820px){
+.modal-content.unit-detail:not(.detail-ranking-view) .detail-header.unit-detail-header{
+  display:grid!important;
+  grid-template-columns:auto minmax(0,1fr);
+  grid-template-rows:auto auto auto;
+  align-items:start;
+  column-gap:16px;
+  row-gap:10px;
+}
+.modal-content.unit-detail:not(.detail-ranking-view) .detail-portrait-stack{
+  grid-column:1;
+  grid-row:1 / span 2;
+  justify-self:start;
+  align-self:start;
+}
+.modal-content.unit-detail:not(.detail-ranking-view) .unit-detail-title-area{
+  display:contents;
+}
+.modal-content.unit-detail:not(.detail-ranking-view) .unit-detail-head-row{
+  grid-column:2;
+  grid-row:1;
+  width:100%;
+  min-width:0;
+  flex-wrap:nowrap;
+  align-self:start;
+  position:static;
+}
+.modal-content.unit-detail:not(.detail-ranking-view) .detail-rec-shortcut--mobile{
+  display:flex!important;
+  flex-direction:column;
+  align-items:stretch;
+  grid-column:2;
+  grid-row:2;
+  justify-self:start;
+  align-self:start;
+  position:static;
+  width:min(168px,100%);
+  max-width:168px;
+  margin:0;
+  z-index:6;
+}
+.modal-content.unit-detail:not(.detail-ranking-view) .detail-rec-shortcut--mobile .detail-rec-link-card{
+  max-width:100%!important;
+  width:100%!important;
+  min-width:0;
+  box-sizing:border-box;
+}
+.modal-content.unit-detail:not(.detail-ranking-view) .detail-rec-shortcut--mobile .detail-rec-link-thumb-wrap .list-thumb-composite{
+  width:72px!important;
+  height:72px!important;
+}
+.modal-content.unit-detail:not(.detail-ranking-view) #detailUnitTerrainRow,
+.modal-content.unit-detail:not(.detail-ranking-view) .detail-tags-row,
+.modal-content.unit-detail:not(.detail-ranking-view) .header-stats-wrapper{
+  grid-column:1 / -1;
+}
+.modal-content.unit-detail:not(.detail-ranking-view) .detail-header:not(:has(.detail-rec-shortcut--mobile .detail-rec-link-card)) .unit-detail-head-row{
+  grid-column:2;
+  grid-row:1;
+}
+.modal-content.unit-detail:not(.detail-ranking-view) .detail-header:not(:has(.detail-rec-shortcut--mobile .detail-rec-link-card)) .detail-portrait-stack{
+  grid-row:1;
+}
+}
 }
 .modal-content--rec-collision.char-detail:not(.detail-ranking-view) .detail-rec-shortcut--desktop,.modal-content--rec-collision.unit-detail:not(.detail-ranking-view) .detail-rec-shortcut--desktop{display:none!important}
 .modal-content--rec-collision.char-detail:not(.detail-ranking-view) .detail-rec-shortcut--mobile,.modal-content--rec-collision.unit-detail:not(.detail-ranking-view) .detail-rec-shortcut--mobile{display:flex!important}
@@ -2103,11 +2175,14 @@ a.seo-entity-link{color:inherit;text-decoration:none;font:inherit;cursor:pointer
 }
 .unit-detail-head-main>.unit-model-stage{align-self:flex-start}
 /* Koma + model/series cluster (series sits in aside when no recommend char) */
+/* Model # + series left of koma stage — side-by-side (desktop-like on iPad Pro too).
+   nowrap: avoid stacking stage under logos when the title column is mid-width. */
 .unit-detail-koma-row{
   display:flex;
-  flex-direction:column;
-  align-items:flex-start;
-  gap:6px;
+  flex-direction:row;
+  flex-wrap:nowrap;
+  align-items:center;
+  gap:18px;
   width:100%;
   max-width:100%;
   min-width:0;
@@ -2117,12 +2192,21 @@ a.seo-entity-link{color:inherit;text-decoration:none;font:inherit;cursor:pointer
   display:flex;
   flex-direction:column;
   align-items:flex-start;
+  justify-content:center;
   gap:6px;
+  flex:0 1 auto;
   min-width:0;
-  max-width:100%;
+  max-width:min(160px,36%);
+  padding-top:0;
 }
-.unit-detail-koma-aside>.detail-model{margin-top:0;margin-bottom:0;width:auto;max-width:100%}
+.unit-detail-koma-aside>.detail-model{margin-top:0;margin-bottom:0;width:auto;max-width:100%;font-size:clamp(12px,3.4vw,15px);line-height:1.25}
 .unit-detail-koma-aside>.detail-series-row{margin:0;width:auto;max-width:100%;justify-content:flex-start}
+.unit-detail-koma-aside .series-icon-img{height:clamp(28px,8vw,40px);width:auto;max-width:100%}
+.unit-detail-koma-row>.unit-model-stage{
+  flex:0 1 auto;
+  min-width:0;
+  max-width:min(232px,100%);
+}
 .modal-content.unit-detail .unit-detail-title-area,
 .modal-content.unit-detail .unit-detail-head-row,
 .modal-content.unit-detail .unit-detail-head-main{overflow:visible}
@@ -2166,7 +2250,11 @@ a.seo-entity-link{color:inherit;text-decoration:none;font:inherit;cursor:pointer
 }
 .rarity-filter-lt-row{display:inline-flex;align-items:center}
 .detail-portrait-stack{display:flex;flex-direction:column;align-items:flex-start;gap:10px;flex-shrink:0}
-.modal-content.char-detail .detail-portrait-stack>.detail-portrait-wrap,.modal-content.unit-detail .detail-portrait-stack>.detail-portrait-wrap{width:100%}
+/* Desktop only — on mobile this 100% width made the hero full-bleed and cut off. */
+@media(min-width:769px){
+.modal-content.char-detail .detail-portrait-stack>.detail-portrait-wrap,
+.modal-content.unit-detail .detail-portrait-stack>.detail-portrait-wrap{width:100%}
+}
 .detail-rec-shortcut--mobile{display:none}.detail-rec-shortcut--mobile:empty{display:none!important}
 .modal-content.char-detail .detail-rec-shortcut--desktop,.modal-content.unit-detail .detail-rec-shortcut--desktop{display:flex;flex-direction:column;align-items:center}
 .rarity-filter-row-lt,.rarity-filter-row-nlt{align-items:center;padding:8px 10px;border-top:1px solid rgba(255,255,255,.06);margin-top:2px}
@@ -2201,18 +2289,25 @@ a.seo-entity-link{color:inherit;text-decoration:none;font:inherit;cursor:pointer
   align-items:center;
   justify-content:flex-start;
   width:100%;
+  max-width:100%;
   order:0;
   flex-shrink:0;
+  overflow:visible!important;
+  box-sizing:border-box;
 }
-/* ~240/62vw: keep the large centered mobile hero (was ~132/36vw), but below
-   full 300/78vw so decode/paint + header layout stay snappy on open. */
+/* Centered hero — never stretch to full modal width (iPad mini / phone). */
+.modal-content.char-detail:not(.detail-ranking-view) .detail-portrait-stack>.detail-portrait-wrap,
+.modal-content.unit-detail:not(.detail-ranking-view) .detail-portrait-stack>.detail-portrait-wrap,
 .modal-content.char-detail:not(.detail-ranking-view) .detail-portrait-wrap,
 .modal-content.unit-detail:not(.detail-ranking-view) .detail-portrait-wrap{
-  width:min(240px,62vw)!important;
-  max-width:min(240px,62vw)!important;
+  width:min(240px,72vw)!important;
+  max-width:min(240px,72vw)!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
   height:auto!important;
   overflow:visible!important;
   flex-shrink:0;
+  box-sizing:border-box;
 }
 .modal-content.char-detail:not(.detail-ranking-view) .detail-portrait,
 .modal-content.unit-detail:not(.detail-ranking-view) .detail-portrait,
@@ -2222,12 +2317,16 @@ a.seo-entity-link{color:inherit;text-decoration:none;font:inherit;cursor:pointer
   max-width:100%;
   height:auto;
   aspect-ratio:3/4;
+  object-fit:contain!important;
+  object-position:center center!important;
+  display:block;
+  margin:0 auto;
 }
-/* Title area: name+meta | mobile rec on one row, then series/tags full width */
+/* Title area: name+meta | compact rec chip (auto width), then series/tags full width */
 .modal-content.char-detail:not(.detail-ranking-view) .detail-title-area,
 .modal-content.unit-detail:not(.detail-ranking-view) .detail-title-area{
   display:grid!important;
-  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  grid-template-columns:minmax(0,1fr) auto;
   gap:10px;
   align-items:start;
   width:100%;
@@ -2257,13 +2356,13 @@ a.seo-entity-link{color:inherit;text-decoration:none;font:inherit;cursor:pointer
   display:flex!important;
   flex-direction:column;
   align-items:stretch;
-  justify-content:stretch;
+  justify-content:flex-start;
   grid-column:2;
   grid-row:1;
-  width:100%;
-  max-width:100%;
+  width:auto;
+  max-width:min(148px,42vw);
   min-width:0;
-  align-self:stretch;
+  align-self:start;
 }
 .modal-content.char-detail:not(.detail-ranking-view) .detail-header:not(:has(.detail-rec-shortcut--mobile .detail-rec-link-card)) .char-detail-head-row,
 .modal-content.unit-detail:not(.detail-ranking-view) .detail-header:not(:has(.detail-rec-shortcut--mobile .detail-rec-link-card)) .unit-detail-head-row{
@@ -2315,19 +2414,20 @@ a.seo-entity-link{color:inherit;text-decoration:none;font:inherit;cursor:pointer
 .modal-content.char-detail:not(.detail-ranking-view) .detail-rec-shortcut--mobile .detail-rec-link-card,
 .modal-content.unit-detail:not(.detail-ranking-view) .detail-rec-shortcut--mobile .detail-rec-link-card{
   width:100%!important;
-  max-width:100%!important;
-  height:100%;
-  min-height:100%;
-  padding:10px 8px 12px!important;
+  max-width:min(148px,42vw)!important;
+  height:auto!important;
+  min-height:0!important;
+  padding:8px 6px 10px!important;
   box-sizing:border-box;
-  justify-content:center;
+  justify-content:flex-start;
+  align-self:start;
 }
 .modal-content.char-detail:not(.detail-ranking-view) .detail-rec-shortcut--mobile .detail-rec-link-thumb-wrap,
-.modal-content.unit-detail:not(.detail-ranking-view) .detail-rec-shortcut--mobile .detail-rec-link-thumb-wrap{padding:6px 4px 8px}
+.modal-content.unit-detail:not(.detail-ranking-view) .detail-rec-shortcut--mobile .detail-rec-link-thumb-wrap{padding:4px 2px 6px}
 .modal-content.char-detail:not(.detail-ranking-view) .detail-rec-shortcut--mobile .detail-rec-link-thumb-wrap .list-thumb-composite,
-.modal-content.unit-detail:not(.detail-ranking-view) .detail-rec-shortcut--mobile .detail-rec-link-thumb-wrap .list-thumb-composite{width:72px!important;height:72px!important}
+.modal-content.unit-detail:not(.detail-ranking-view) .detail-rec-shortcut--mobile .detail-rec-link-thumb-wrap .list-thumb-composite{width:64px!important;height:64px!important}
 .modal-content.char-detail:not(.detail-ranking-view) .detail-rec-shortcut--mobile .detail-rec-link-label,
-.modal-content.unit-detail:not(.detail-ranking-view) .detail-rec-shortcut--mobile .detail-rec-link-label{font-size:9px;margin-bottom:4px}
+.modal-content.unit-detail:not(.detail-ranking-view) .detail-rec-shortcut--mobile .detail-rec-link-label{font-size:9px;margin-bottom:2px}
 .modal-content.char-detail:not(.detail-ranking-view) .detail-rec-shortcut--mobile .detail-rec-link-name,
 .modal-content.unit-detail:not(.detail-ranking-view) .detail-rec-shortcut--mobile .detail-rec-link-name{font-size:11px;max-width:100%;margin-top:2px}
 .modal-content.char-detail:not(.detail-ranking-view) .detail-series-row,.modal-content.char-detail:not(.detail-ranking-view) .detail-tags-row,.modal-content.char-detail:not(.detail-ranking-view) .header-terrain-row,.modal-content.unit-detail:not(.detail-ranking-view) .detail-series-row,.modal-content.unit-detail:not(.detail-ranking-view) .detail-tags-row,.modal-content.unit-detail:not(.detail-ranking-view) .header-terrain-row{justify-content:flex-start!important}
@@ -2339,29 +2439,104 @@ a.seo-entity-link{color:inherit;text-decoration:none;font:inherit;cursor:pointer
 .modal-content.char-detail:not(.detail-ranking-view) .header-stats-wrapper .lb-icon-btn img,.modal-content.unit-detail:not(.detail-ranking-view) .header-stats-wrapper .lb-icon-btn img{width:14px;height:14px}
 .modal-content.char-detail:not(.detail-ranking-view) .header-stats-wrapper .lb-icon-btn.active,.modal-content.unit-detail:not(.detail-ranking-view) .header-stats-wrapper .lb-icon-btn.active{box-shadow:none}
 .modal-content.char-detail:not(.detail-ranking-view) .header-stats-wrapper .lb-icon-btn:last-child.active,.modal-content.unit-detail:not(.detail-ranking-view) .header-stats-wrapper .lb-icon-btn:last-child.active{border-top-right-radius:var(--radius-sm);border-bottom-right-radius:var(--radius-sm)}
-/* Stage size for the compact name column under a large centered portrait. */
+/* Phone koma under portrait — Pro Max was ~108px (dossier_film was pinning it).
+   Keep below mini overlay / Air scopes (600–768 and ≥769 have their own --stage).
+   Must stay in lockstep with dossier_film.css (loads after this bundle). */
 .modal-content.unit-detail:not(.detail-ranking-view) .unit-model-stage{
-  --stage:calc(min(140px,34vw) * 232 / 300);
+  --stage:calc(min(220px,52vw) * 232 / 300);
 }
-/* No recommend char: model ID + series sit beside the koma stage (fill empty right). */
-.modal-content.unit-detail:not(.detail-ranking-view) .detail-header:not(:has(.detail-rec-shortcut--mobile .detail-rec-link-card)) .unit-detail-koma-row{
-  flex-direction:row;
-  align-items:flex-start;
-  gap:10px;
+.modal-content.unit-detail:not(.detail-ranking-view) .unit-detail-koma-row{
+  gap:12px;
 }
-.modal-content.unit-detail:not(.detail-ranking-view) .detail-header:not(:has(.detail-rec-shortcut--mobile .detail-rec-link-card)) .unit-detail-koma-aside{
-  flex:1 1 auto;
-  min-width:0;
-  padding-top:2px;
+.modal-content.unit-detail:not(.detail-ranking-view) .unit-detail-koma-aside{
+  max-width:min(120px,36%);
 }
-.modal-content.unit-detail:not(.detail-ranking-view) .detail-header:not(:has(.detail-rec-shortcut--mobile .detail-rec-link-card)) .unit-detail-koma-aside>.detail-model{
+.modal-content.unit-detail:not(.detail-ranking-view) .unit-detail-koma-aside>.detail-model{
   font-size:clamp(12px,3.4vw,14px);
-  line-height:1.25;
 }
-.modal-content.unit-detail:not(.detail-ranking-view) .detail-header:not(:has(.detail-rec-shortcut--mobile .detail-rec-link-card)) .unit-detail-koma-aside .series-icon-img{
+.modal-content.unit-detail:not(.detail-ranking-view) .unit-detail-koma-aside .series-icon-img{
   height:28px;
+  max-width:min(120px,36vw);
+}
+}
+/* iPad mini / tablet (not narrow phone): pin name+meta+koma top-left and
+   recommend card top-right onto the portrait-stack hangar — saves vertical scroll. */
+@media(min-width:600px) and (max-width:768px){
+.modal-content.unit-detail:not(.detail-ranking-view) .detail-header.unit-detail-header{
+  position:relative;
+}
+.modal-content.unit-detail:not(.detail-ranking-view) .detail-portrait-stack{
+  position:relative;
+  z-index:1;
+}
+.modal-content.unit-detail:not(.detail-ranking-view) .unit-detail-head-row{
+  position:absolute;
+  top:44px;
+  left:14px;
   width:auto;
-  max-width:min(140px,42vw);
+  max-width:calc(100% - 168px);
+  z-index:6;
+  margin:0;
+  pointer-events:auto;
+}
+.modal-content--has-chrome.unit-detail:not(.detail-ranking-view) .unit-detail-head-row{
+  top:18px;
+}
+.modal-content.unit-detail:not(.detail-ranking-view) .unit-detail-head-main{
+  width:auto;
+  max-width:100%;
+}
+.modal-content.unit-detail:not(.detail-ranking-view) .unit-detail-head-main .detail-name{
+  font-size:clamp(16px,3.6vw,22px);
+  margin-bottom:4px;
+  text-shadow:0 1px 2px rgba(0,0,0,.9),0 0 14px rgba(0,0,0,.55);
+}
+.modal-content.unit-detail:not(.detail-ranking-view) .unit-detail-head-main .detail-meta{
+  margin-bottom:4px;
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,.75));
+}
+.modal-content.unit-detail:not(.detail-ranking-view) .unit-detail-koma-row{
+  margin-top:2px;
+}
+.modal-content.unit-detail:not(.detail-ranking-view) .unit-model-stage{
+  /* Match pre-overlay mobile stage (~140px), not the cramped 108px trial. */
+  --stage:calc(min(160px,30vw) * 232 / 300);
+}
+.modal-content.unit-detail:not(.detail-ranking-view) .detail-rec-shortcut--mobile{
+  position:absolute;
+  top:44px;
+  right:14px;
+  left:auto;
+  grid-column:auto;
+  grid-row:auto;
+  width:auto;
+  max-width:min(140px,32vw);
+  z-index:6;
+  margin:0;
+  align-self:auto;
+  pointer-events:auto;
+}
+.modal-content--has-chrome.unit-detail:not(.detail-ranking-view) .detail-rec-shortcut--mobile{
+  top:18px;
+}
+.modal-content.unit-detail:not(.detail-ranking-view) .detail-rec-shortcut--mobile .detail-rec-link-card{
+  max-width:min(140px,32vw)!important;
+  padding:8px 6px 10px!important;
+  background:rgba(10,14,23,.42);
+}
+.modal-content.unit-detail:not(.detail-ranking-view) .detail-rec-shortcut--mobile .detail-rec-link-thumb-wrap .list-thumb-composite{
+  width:72px!important;
+  height:72px!important;
+}
+.modal-content.unit-detail:not(.detail-ranking-view) .detail-rec-shortcut--mobile .detail-rec-link-label{
+  font-size:10px;
+}
+.modal-content.unit-detail:not(.detail-ranking-view) .detail-rec-shortcut--mobile .detail-rec-link-name{
+  font-size:12px;
+}
+.modal-content.unit-detail:not(.detail-ranking-view) .unit-detail-title-area{
+  /* Absolute overlays leave terrain/tags/stats as first in-flow content under portrait */
+  gap:8px;
 }
 }
 @media(max-width:480px){

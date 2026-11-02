@@ -16,6 +16,12 @@
   padding-bottom: 28px;
   box-sizing: border-box;
 }
+@media (max-width: 768px) {
+  .detail-rec-shortcut--mobile:has(.detail-rec-link-card--has-bsp) {
+    padding-bottom: 22px;
+    max-width: min(148px, 42vw);
+  }
+}
 
 .detail-rec-link-card--has-bsp,
 .modal-content.unit-detail:not(.detail-ranking-view) .detail-rec-shortcut--desktop .detail-rec-link-card--has-bsp,

@@ -31,12 +31,15 @@ html .modal-content.unit-detail:not(.detail-ranking-view) .detail-header .detail
 }
 
 @media(max-width:768px){
+  /* Keep in lockstep with app_shell mobile hero (centered, not full-bleed). */
   html .modal-content.char-detail:not(.detail-ranking-view) .detail-portrait-stack > .detail-portrait-wrap,
   html .modal-content.unit-detail:not(.detail-ranking-view) .detail-portrait-stack > .detail-portrait-wrap{
-    width:min(300px,78vw);
-    max-width:min(300px,78vw);
+    width:min(240px,72vw);
+    max-width:min(240px,72vw);
+    margin-left:auto;
+    margin-right:auto;
   }
-  html .modal-content.unit-detail:not(.detail-ranking-view) .unit-model-stage{
-    --stage:calc(min(140px,34vw) * 232 / 300);
-  }
+  /* Do NOT set --stage here. This file loads after app_shell and was pinning
+     phone/mini koma to the old ~108px size. Stage sizes live in app_shell only
+     (phone ≤768, mini 600–768, Air ≥769). */
 }
