@@ -129,6 +129,12 @@
 .trk-axis text,.trk-grid text,text.trk-y,text.trk-x{
   fill:#9eb6d4 !important;font-size:11px;font-family:var(--font-body,system-ui,sans-serif);
 }
+text.trk-x{
+  font-size:10px;
+  paint-order:stroke;
+  stroke:rgba(6,12,24,.85);
+  stroke-width:2.5px;
+}
 .trk-grid line{stroke:rgba(100,170,255,.16);stroke-width:1}
 .trk-trail{
   fill:none;stroke-width:2.75;stroke-linecap:round;stroke-linejoin:round;opacity:0;

@@ -382,13 +382,16 @@
     var host = wrap.parentElement && wrap.parentElement.classList.contains('trk-chart-wrap') ? wrap.parentElement : wrap;
     var W = Math.max(320, Math.floor(host.clientWidth || wrap.clientWidth || 800));
     var H = Math.max(280, Math.floor(host.clientHeight || wrap.clientHeight || 360));
-    var padL = 40;
     // Extra right gutter so end labels (#2 vs #3) can sit past the line without colliding.
     var padR = 72;
     var padT = 16;
-    var padB = 28;
-    var plotW = W - padL - padR;
-    var plotH = H - padT - padB;
+    /* −45° x labels: reserve diagonal footprint so text never clips or overlaps. */
+    var xLabelEstW = 90;
+    var xDiag = Math.ceil(xLabelEstW * Math.SQRT1_2);
+    var padL = Math.max(48, Math.min(72, xDiag + 10));
+    var padB = Math.max(56, xDiag + 22);
+    var plotW = Math.max(80, W - padL - padR);
+    var plotH = Math.max(80, H - padT - padB);
     var tMin = Math.min.apply(
       null,
       allPts.map(function (p) {
@@ -434,17 +437,27 @@
         rk +
         '</text>';
     });
+    /* Tick count from diagonal footprint so −45° labels never overlap (esp. mobile). */
+    var xTickGap = xDiag + 14;
+    var xTickCount = Math.max(2, Math.min(5, Math.floor(plotW / xTickGap) + 1));
+    var xLabelY = padT + plotH + 10;
     var xLabels = '';
-    for (var i = 0; i < 4; i++) {
-      var tt = tMin + ((tMax - tMin) * i) / 3;
-      var x = padL + ((tt - tMin) / (tMax - tMin)) * plotW;
+    for (var i = 0; i < xTickCount; i++) {
+      var frac = xTickCount === 1 ? 0 : i / (xTickCount - 1);
+      var tt = tMin + (tMax - tMin) * frac;
+      var x = padL + frac * plotW;
+      var lab = esc(fmtTime(tt));
       xLabels +=
         '<text class="trk-x" x="' +
         x.toFixed(1) +
         '" y="' +
-        (H - 8) +
-        '" text-anchor="middle" fill="#9eb6d4">' +
-        esc(fmtTime(tt)) +
+        xLabelY.toFixed(1) +
+        '" text-anchor="end" transform="rotate(-45 ' +
+        x.toFixed(1) +
+        ' ' +
+        xLabelY.toFixed(1) +
+        ')" fill="#9eb6d4">' +
+        lab +
         '</text>';
     }
 
