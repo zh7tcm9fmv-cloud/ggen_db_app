@@ -20044,6 +20044,11 @@ def health_check():
         mem['msy_char_pair_cache_ceiling'] = int(getattr(_msr_h, '_CHAR_PAIR_CACHE_MAX', 0) or 0)
         mem['msy_unit_weapon_cache'] = len(getattr(_msr_h, '_unit_weapon_cache', {}) or {})
         mem['msy_adaptive'] = _msr_h.adaptive_cache_status()
+        try:
+            # Last-60s API path mix (excludes /health+/static). Diagnose rpm floods.
+            mem['traffic_top'] = _msr_h.traffic_top_paths(20)
+        except Exception:
+            pass
         mem['bsp_published_memory_keys'] = len(getattr(_msr_h, '_BSP_PUBLISHED_MEMORY', {}) or {})
         mem['bsp_group_lru'] = len(getattr(_msr_h, '_BSP_GROUP_LRU', {}) or {})
         mem['bsp_group_lru_max'] = int(getattr(_msr_h, '_BSP_GROUP_LRU_MAX', 0) or 0)
@@ -25742,12 +25747,14 @@ def api_sp_investment():
     if not os.path.isfile(path):
         return jsonify({'error': 'sp_investment_v1.json not found — run scripts/build_sp_investment_rankings.py'}), 404
     lc = _spi_norm_lang(request.args.get('lang') or DEFAULT_LANG)
-    payload, mtime = _sp_investment_payload_for_lang(path, lc)
-    votes_data = _spi_votes_load()
+    # Warm body/ETag first — do not rebuild the ~9MB board before cache lookup.
+    try:
+        board_mtime = int(os.path.getmtime(path))
+    except OSError:
+        board_mtime = 0
     votes_mtime = int(_SPI_VOTES_CACHE.get('mtime') or 0)
-    payload = _spi_payload_with_community_votes(payload, votes_data)
     # wire_nodup: drop duplicate top-level sp/ssp + slim recommended_* (2026-10 audit).
-    ck = f"sp_investment_v1_wire_nodup_recslim_{lc}_{int(mtime)}_{votes_mtime}"
+    ck = f"sp_investment_v1_wire_nodup_recslim_{lc}_{board_mtime}_{votes_mtime}"
     etag = _api_etag_from_cache_key(ck) if (_API_ETAG_ENABLED and ck) else None
     cc = _api_cache_control_header(public=True, max_age=300, private=False, no_store=False)
     if etag and _api_if_none_match_matches(request.headers.get('If-None-Match'), etag):
@@ -25773,7 +25780,32 @@ def api_sp_investment():
             resp.headers['Vary'] = 'Accept-Encoding'
         resp.headers['Content-Length'] = str(len(body))
         return resp
-    # Cold: serialize once; retain gzip (and raw only if under RAW_KEEP_MAX).
+    # Cold: localize + votes, serialize once; retain gzip (and raw only if under RAW_KEEP_MAX).
+    payload, mtime = _sp_investment_payload_for_lang(path, lc)
+    votes_data = _spi_votes_load()
+    votes_mtime = int(_SPI_VOTES_CACHE.get('mtime') or 0)
+    payload = _spi_payload_with_community_votes(payload, votes_data)
+    ck = f"sp_investment_v1_wire_nodup_recslim_{lc}_{int(mtime)}_{votes_mtime}"
+    etag = _api_etag_from_cache_key(ck) if (_API_ETAG_ENABLED and ck) else None
+    if etag and _api_if_none_match_matches(request.headers.get('If-None-Match'), etag):
+        resp = make_response('', 304)
+        resp.headers['ETag'] = etag
+        resp.headers['Cache-Control'] = cc
+        return resp
+    with _SPI_HTTP_BODY_CACHE_LOCK:
+        hit = _SPI_HTTP_BODY_CACHE.get(ck)
+    body, used_gzip = _http_json_resolve_body(hit, want_gzip) if hit else (None, False)
+    if body is not None:
+        resp = make_response(body)
+        resp.headers['Content-Type'] = 'application/json; charset=utf-8'
+        resp.headers['Cache-Control'] = cc
+        if etag:
+            resp.headers['ETag'] = etag
+        if used_gzip:
+            resp.headers['Content-Encoding'] = 'gzip'
+            resp.headers['Vary'] = 'Accept-Encoding'
+        resp.headers['Content-Length'] = str(len(body))
+        return resp
     resp = jsonify_cacheable(payload, ck, public=True, max_age=300, convert_images=False)
     if resp.status_code != 200:
         return resp

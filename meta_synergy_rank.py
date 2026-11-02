@@ -2344,7 +2344,26 @@ _adaptive_up_streak = 0
 _adaptive_lock = threading.Lock()
 _adaptive_started = False
 _adaptive_req_times = deque()
+# (monotonic_ts, path_bucket) — same 60s window as rpm, for /health traffic.top
+_adaptive_req_paths = deque()
 _ADAPTIVE_TICK_SEC = max(15.0, float(os.environ.get('MSY_ADAPTIVE_TICK_SEC', '30') or '30'))
+
+
+def _traffic_path_bucket(path):
+    """Collapse detail ids so /health top paths stay readable under scrapers."""
+    p = str(path or '') or '/'
+    if p.startswith('/static/') or p.startswith('/font/'):
+        return '/static/*'
+    # /api/unit/12345/... → /api/unit/<id>
+    parts = p.split('/')
+    if len(parts) >= 4 and parts[1] == 'api' and parts[2] in (
+        'unit', 'character', 'supporter', 'option_part', 'modification', 'stage'
+    ):
+        rest = '/'.join(parts[4:]) if len(parts) > 4 else ''
+        return f"/api/{parts[2]}/<id>" + (f"/{rest}" if rest else '')
+    if len(p) > 96:
+        return p[:96] + '…'
+    return p
 
 
 def note_http_request(path):
@@ -2352,15 +2371,19 @@ def note_http_request(path):
     if not _ADAPTIVE_CACHE_ENABLED:
         return
     p = str(path or '')
-    if p == '/health' or p.startswith('/static/'):
+    if p == '/health' or p.startswith('/static/') or p.startswith('/font/'):
         return
     now = time.monotonic()
+    bucket = _traffic_path_bucket(p)
     with _adaptive_lock:
         _adaptive_req_times.append(now)
+        _adaptive_req_paths.append((now, bucket))
         if len(_adaptive_req_times) > 8000:
             cutoff = now - 60.0
             while _adaptive_req_times and _adaptive_req_times[0] < cutoff:
                 _adaptive_req_times.popleft()
+            while _adaptive_req_paths and _adaptive_req_paths[0][0] < cutoff:
+                _adaptive_req_paths.popleft()
 
 
 def _adaptive_requests_per_min():
@@ -2370,6 +2393,21 @@ def _adaptive_requests_per_min():
         while _adaptive_req_times and _adaptive_req_times[0] < cutoff:
             _adaptive_req_times.popleft()
         return len(_adaptive_req_times)
+
+
+def traffic_top_paths(limit=20):
+    """Top path buckets in the last 60s (excludes /health + /static)."""
+    now = time.monotonic()
+    cutoff = now - 60.0
+    counts = {}
+    with _adaptive_lock:
+        while _adaptive_req_paths and _adaptive_req_paths[0][0] < cutoff:
+            _adaptive_req_paths.popleft()
+        for _ts, bucket in _adaptive_req_paths:
+            counts[bucket] = counts.get(bucket, 0) + 1
+    ranked = sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))
+    lim = max(1, min(40, int(limit or 20)))
+    return [{'path': p, 'n': n} for p, n in ranked[:lim]]
 
 
 def read_process_rss_mb():
