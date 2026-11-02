@@ -1648,11 +1648,34 @@ if(document.documentElement)document.documentElement.scrollTop=t;
 if(document.body)document.body.scrollTop=t;
 }catch(_){}
 }
+function _clearBrowseScrollPinUserCancel(){
+try{
+if(S._browseScrollPinUserCancel){
+const u=S._browseScrollPinUserCancel;
+S._browseScrollPinUserCancel=null;
+if(u.wheel)window.removeEventListener('wheel',u.wheel,true);
+if(u.touch)window.removeEventListener('touchmove',u.touch,true);
+if(u.key)window.removeEventListener('keydown',u.key,true);
+if(u.ptr)window.removeEventListener('pointerdown',u.ptr,true);
+}
+}catch(_){}
+}
 function _clearBrowseScrollPinListener(){
 try{
 if(S._browseScrollPinClear){clearTimeout(S._browseScrollPinClear);S._browseScrollPinClear=null}
 if(S._browseScrollPinOnScroll){window.removeEventListener('scroll',S._browseScrollPinOnScroll,true);S._browseScrollPinOnScroll=null}
 if(S._browseScrollLockOnScroll){window.removeEventListener('scroll',S._browseScrollLockOnScroll,true);S._browseScrollLockOnScroll=null}
+if(S._browseScrollPinClassClear){clearTimeout(S._browseScrollPinClassClear);S._browseScrollPinClassClear=null}
+_clearBrowseScrollPinUserCancel();
+}catch(_){}
+}
+/** Stop fighting the user — pin is only for history.back / focus scroll resets. */
+function _releaseBrowseScrollPin(){
+try{
+S._browseScrollPinGen=(S._browseScrollPinGen||0)+1;
+S._browseScrollRestoreGen=(S._browseScrollRestoreGen||0)+1;
+_clearBrowseScrollPinListener();
+document.documentElement.classList.remove('ggen-scroll-pin');
 }catch(_){}
 }
 function _persistBrowseScrollReturn(rec){
@@ -1671,29 +1694,50 @@ if(o.ts&&(Date.now()-o.ts)>30*60*1000){sessionStorage.removeItem('ggenBrowseScro
 return o;
 }catch(_){return null}
 }
-/** Pin browse-list Y with instant scroll; hold briefly against history.back / focus resets. */
+/** Pin browse-list Y with instant scroll; hold briefly against history.back / focus resets.
+ *  User wheel/touch/keys cancel the pin immediately (avoids “sticky resistance” after detail close). */
 function _pinBrowseListScrollY(y,opts){
 opts=opts||{};
 if(typeof y!=='number'||!(y>=0)||!isFinite(y))return;
 const target=Math.max(0,Math.round(y));
 _clearBrowseScrollPinListener();
+S._browseScrollPinGen=(S._browseScrollPinGen||0)+1;
+const gen=S._browseScrollPinGen;
 document.documentElement.classList.add('ggen-scroll-pin');
-const pin=function(){_applyPageScrollY(target)};
+const pin=function(){if(S._browseScrollPinGen!==gen)return;_applyPageScrollY(target)};
 pin();
 requestAnimationFrame(function(){pin();requestAnimationFrame(pin)});
-const hold=opts.ms!=null?opts.ms:800;
-[0,16,32,50,100,200,400,hold].forEach(function(ms){setTimeout(pin,ms)});
+/* Short settle for history.back — long holds felt like scroll resistance. */
+const hold=opts.ms!=null?opts.ms:280;
+[0,16,32,50,100,hold].forEach(function(ms){setTimeout(pin,ms)});
 try{
-if(S._browseScrollPinClassClear)clearTimeout(S._browseScrollPinClassClear);
 S._browseScrollPinClassClear=setTimeout(function(){
+if(S._browseScrollPinGen!==gen)return;
 try{document.documentElement.classList.remove('ggen-scroll-pin')}catch(_){}
 S._browseScrollPinClassClear=null;
-},hold+200);
+},hold+120);
+}catch(_){}
+try{
+const cancel=function(){if(S._browseScrollPinGen!==gen)return;_releaseBrowseScrollPin()};
+const u={wheel:cancel,touch:cancel,key:function(ev){
+if(S._browseScrollPinGen!==gen)return;
+const k=ev&&ev.key;
+if(k==='ArrowUp'||k==='ArrowDown'||k==='PageUp'||k==='PageDown'||k==='Home'||k==='End'||k===' ')cancel();
+},ptr:function(ev){
+if(S._browseScrollPinGen!==gen)return;
+try{const t=ev&&ev.target;if(t&&t.closest&&t.closest('#detailModal,.modal-overlay,.nav-tabs,a,button,input,select,textarea,[role="button"]'))return}catch(_){}
+/* Scrub on empty list chrome / trackpad-area pointer → treat as user scroll intent after a beat via wheel/touch. */
+}};
+S._browseScrollPinUserCancel=u;
+window.addEventListener('wheel',u.wheel,{capture:true,passive:true});
+window.addEventListener('touchmove',u.touch,{capture:true,passive:true});
+window.addEventListener('keydown',u.key,true);
 }catch(_){}
 if(opts.noListen)return;
 try{
 const until=Date.now()+hold+80;
 const onScroll=function(ev){
+if(S._browseScrollPinGen!==gen){window.removeEventListener('scroll',onScroll,true);return}
 if(Date.now()>until){window.removeEventListener('scroll',onScroll,true);if(S._browseScrollPinOnScroll===onScroll)S._browseScrollPinOnScroll=null;return}
 try{const t=ev&&ev.target;const m=document.getElementById('detailModal');if(m&&t&&t!==document&&t!==window&&(t===m||t===document.getElementById('modalContent')||(t.nodeType===1&&m.contains(t))))return}catch(_){}
 if(Math.abs(_readPageScrollY()-target)>2)pin();
@@ -1792,11 +1836,14 @@ id=ret.id!=null?String(ret.id):null;
 }
 if(y==null)y=_browseListScrollYSaved();
 const keepY=(typeof y==='number')?y:null;
+S._browseScrollRestoreGen=(S._browseScrollRestoreGen||0)+1;
+const restoreGen=S._browseScrollRestoreGen;
 if(keepY!=null){
 S._browseListScrollY=keepY;
-_pinBrowseListScrollY(keepY,{ms:800});
+_pinBrowseListScrollY(keepY,{ms:280});
 }
 const bringRow=function(){
+if(S._browseScrollRestoreGen!==restoreGen)return;
 try{
 if(keepY!=null&&keepY>=8){
 _applyPageScrollY(keepY);
@@ -1816,15 +1863,16 @@ if(el2&&typeof el2.focus==='function')el2.focus({preventScroll:true});
 };
 bringRow();
 requestAnimationFrame(function(){bringRow();requestAnimationFrame(bringRow)});
-[32,80,160,320,640].forEach(function(ms){setTimeout(bringRow,ms)});
+[32,80,160].forEach(function(ms){setTimeout(bringRow,ms)});
 setTimeout(function(){
+if(S._browseScrollRestoreGen!==restoreGen)return;
 try{
 S._detailBrowseReturn=null;
 _persistBrowseScrollReturn(null);
 S._browseListScrollY=null;
 document.documentElement.classList.remove('ggen-scroll-pin');
 }catch(_){}
-},1000);
+},420);
 }
 function applyBackgroundScrollLock(){
 if(typeof S._pageScrollLock!=='number')S._pageScrollLock=0;
@@ -1857,7 +1905,7 @@ try{document.documentElement.style.removeProperty('--page-scroll-lock-top')}catc
 _clearBrowseScrollPinListener();
 if(typeof y==='number'){
 _applyPageScrollY(y);
-_pinBrowseListScrollY(y,{ms:800});
+_pinBrowseListScrollY(y,{ms:280});
 }
 }
 function browseFilterPanelNeedsRebuild(el,entity){if(!el)return true;return el.dataset.bfPoolSig!==buildBrowsePoolSig(entity)}
