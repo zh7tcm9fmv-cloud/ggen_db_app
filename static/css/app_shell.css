@@ -2126,12 +2126,44 @@ a.seo-entity-link{color:inherit;text-decoration:none;font:inherit;cursor:pointer
 .detail-rec-link-thumb-wrap{position:relative;overflow:visible}
 .detail-rec-link-card .detail-rec-limited-wrap--on-thumb{
   position:absolute;top:-7px;left:50%;transform:translateX(-50%);
-  z-index:3;margin:0;width:min(88%,86px);pointer-events:none;
+  z-index:3;margin:0;width:min(96%,92px);pointer-events:none;
   display:flex;justify-content:center;align-items:center;
 }
 .detail-rec-link-card .detail-rec-limited-wrap--on-thumb .detail-limited-banner-wrap{margin:0;width:100%;display:flex;justify-content:center}
-.detail-rec-link-card .detail-rec-limited-wrap--on-thumb .limited-ur-badge{width:100%;max-width:100%}
-.detail-rec-link-card .detail-rec-limited-wrap--on-thumb .limited-ur-badge-text{font-size:8px;letter-spacing:.04em}
+.detail-rec-link-card .detail-rec-limited-wrap--on-thumb .limited-ur-badge{
+  width:100%;max-width:100%;overflow:visible;container-type:inline-size;
+}
+/* Tiny thumb plate: EN "Limited" fits; CJK/KR need zero tracking + no ellipsis (same class as /bt). */
+.detail-rec-link-card .detail-rec-limited-wrap--on-thumb .limited-ur-badge-text{
+  font-size:clamp(6.5px,11cqi,8.5px);
+  font-weight:900;
+  letter-spacing:0;
+  text-transform:none;
+  max-width:88%;
+  padding:0 3%;
+  line-height:1;
+  overflow:visible;
+  text-overflow:clip;
+  white-space:nowrap;
+}
+html[data-ui-lang="JA"] .detail-rec-link-card .detail-rec-limited-wrap--on-thumb,
+html[data-ui-lang="JP"] .detail-rec-link-card .detail-rec-limited-wrap--on-thumb,
+html[data-ui-lang="TW"] .detail-rec-link-card .detail-rec-limited-wrap--on-thumb,
+html[data-ui-lang="HK"] .detail-rec-link-card .detail-rec-limited-wrap--on-thumb,
+html[data-ui-lang="KR"] .detail-rec-link-card .detail-rec-limited-wrap--on-thumb{
+  width:min(100%,96px);
+}
+html[data-ui-lang="JA"] .detail-rec-link-card .detail-rec-limited-wrap--on-thumb .limited-ur-badge-text,
+html[data-ui-lang="JP"] .detail-rec-link-card .detail-rec-limited-wrap--on-thumb .limited-ur-badge-text,
+html[data-ui-lang="TW"] .detail-rec-link-card .detail-rec-limited-wrap--on-thumb .limited-ur-badge-text,
+html[data-ui-lang="HK"] .detail-rec-link-card .detail-rec-limited-wrap--on-thumb .limited-ur-badge-text,
+html[data-ui-lang="KR"] .detail-rec-link-card .detail-rec-limited-wrap--on-thumb .limited-ur-badge-text{
+  font-size:clamp(6.5px,12cqi,9px);
+  font-weight:800;
+  letter-spacing:0;
+  max-width:94%;
+  padding:0 2%;
+}
 .detail-rec-link-card .detail-rec-limited-wrap:not(.detail-rec-limited-wrap--on-thumb){margin-top:4px;width:100%;display:flex;justify-content:center;align-items:center}
 .detail-rec-link-card .detail-rec-limited-wrap:not(.detail-rec-limited-wrap--on-thumb) .detail-limited-banner-wrap{margin:0 auto;display:flex;justify-content:center;align-items:center;width:100%;max-width:100%}
 .detail-rec-link-card .detail-rec-limited-wrap:not(.detail-rec-limited-wrap--on-thumb) .limited-ur-badge--detail{width:min(132px,90%);margin:0 auto}
