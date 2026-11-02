@@ -7278,8 +7278,9 @@ _HTTP_JSON_BODY_CACHE_BUDGET = max(
 )
 # Small dossier/detail responses get their own LRU so SPI/timeline do not thrash them out.
 _HTTP_JSON_DETAIL_BODY_CACHE = {}
-_HTTP_JSON_DETAIL_BODY_CACHE_MAX = max(32, min(256, int(os.environ.get('HTTP_JSON_DETAIL_BODY_CACHE_MAX', '128') or '128')))
-_HTTP_JSON_DETAIL_BODY_MAX_RAW = max(8192, min(262144, int(os.environ.get('HTTP_JSON_DETAIL_BODY_MAX_RAW', '65536') or '65536')))
+# Hold more warm unit/char dossiers so detail storms re-hit gzip bytes (no rebuild / no UX change).
+_HTTP_JSON_DETAIL_BODY_CACHE_MAX = max(64, min(384, int(os.environ.get('HTTP_JSON_DETAIL_BODY_CACHE_MAX', '256') or '256')))
+_HTTP_JSON_DETAIL_BODY_MAX_RAW = max(8192, min(262144, int(os.environ.get('HTTP_JSON_DETAIL_BODY_MAX_RAW', '131072') or '131072')))
 _HTTP_JSON_DETAIL_KEY_PREFIXES = (
     'c_', 'u_', 's8_', 's_', 'op_', 'opd3_', 'item_', 'pt_', 'ubp_',
 )
@@ -7496,12 +7497,14 @@ def _http_json_resolve_body(hit, want_gzip):
     return None, False
 
 
-def jsonify_preserialized(data, cache_key, *, public=True, max_age=3600, private=False,
-                          no_store=False, convert_images=False):
-    """jsonify_cacheable + remember raw/gzip so later hits do not re-serialize."""
-    if convert_images:
-        data = convert_image_urls(data)
-    etag = _api_etag_from_cache_key(cache_key) if (_API_ETAG_ENABLED and cache_key) else None
+def try_serve_preserialized(cache_key, *, public=True, max_age=3600, private=False, no_store=False):
+    """304 or warm gzip/raw body without building payload. None = cold miss.
+
+    Faster detail/browse under load — same bytes/ETag as jsonify_preserialized warm path.
+    """
+    if not cache_key:
+        return None
+    etag = _api_etag_from_cache_key(cache_key) if _API_ETAG_ENABLED else None
     cc = _api_cache_control_header(
         public=public, max_age=max_age, private=private, no_store=no_store,
     )
@@ -7512,25 +7515,46 @@ def jsonify_preserialized(data, cache_key, *, public=True, max_age=3600, private
         if private or not public:
             resp.headers['Vary'] = 'Cookie'
         return resp
-    hit = _http_json_body_cache_get(cache_key) if cache_key else None
+    hit = _http_json_body_cache_get(cache_key)
+    if not hit:
+        return None
     accept = (request.headers.get('Accept-Encoding') or '').lower()
     want_gzip = 'gzip' in accept
     body, as_gzip = _http_json_resolve_body(hit, want_gzip)
-    if body is not None:
-        resp = make_response(body)
-        resp.headers['Content-Type'] = 'application/json; charset=utf-8'
-        resp.headers['Cache-Control'] = cc
-        if etag:
-            resp.headers['ETag'] = etag
-        if as_gzip:
-            resp.headers['Content-Encoding'] = 'gzip'
-            vary = resp.headers.get('Vary') or ''
-            if 'Accept-Encoding' not in vary:
-                resp.headers['Vary'] = (vary + ', Accept-Encoding').lstrip(', ').strip()
-        if private or not public:
-            resp.headers['Vary'] = 'Cookie'
-        resp.headers['Content-Length'] = str(len(body))
-        return resp
+    if body is None:
+        return None
+    resp = make_response(body)
+    resp.headers['Content-Type'] = 'application/json; charset=utf-8'
+    resp.headers['Cache-Control'] = cc
+    if etag:
+        resp.headers['ETag'] = etag
+    if as_gzip:
+        resp.headers['Content-Encoding'] = 'gzip'
+        vary = resp.headers.get('Vary') or ''
+        if 'Accept-Encoding' not in vary:
+            resp.headers['Vary'] = (vary + ', Accept-Encoding').lstrip(', ').strip()
+    if private or not public:
+        resp.headers['Vary'] = 'Cookie'
+    resp.headers['Content-Length'] = str(len(body))
+    return resp
+
+
+def jsonify_preserialized(data, cache_key, *, public=True, max_age=3600, private=False,
+                          no_store=False, convert_images=False):
+    """jsonify_cacheable + remember raw/gzip so later hits do not re-serialize."""
+    if convert_images:
+        data = convert_image_urls(data)
+    early = try_serve_preserialized(
+        cache_key, public=public, max_age=max_age, private=private, no_store=no_store,
+    )
+    if early is not None:
+        return early
+    etag = _api_etag_from_cache_key(cache_key) if (_API_ETAG_ENABLED and cache_key) else None
+    cc = _api_cache_control_header(
+        public=public, max_age=max_age, private=private, no_store=no_store,
+    )
+    accept = (request.headers.get('Accept-Encoding') or '').lower()
+    want_gzip = 'gzip' in accept
     resp = jsonify(data)
     resp.headers['Cache-Control'] = cc
     if etag:
@@ -20047,6 +20071,11 @@ def health_check():
         try:
             # Last-60s API path mix (excludes /health+/static). Diagnose rpm floods.
             mem['traffic_top'] = _msr_h.traffic_top_paths(20)
+        except Exception:
+            pass
+        try:
+            # Early warning only — does not throttle users.
+            mem['traffic_alert'] = _msr_h.traffic_alert_status()
         except Exception:
             pass
         mem['bsp_published_memory_keys'] = len(getattr(_msr_h, '_BSP_PUBLISHED_MEMORY', {}) or {})
@@ -36349,6 +36378,9 @@ def get_supporter(supporter_id):
         max_level = supporter_max_level_for_rarity(ri)
         level = min(max_level, max(1, int(request.args.get('level', max_level))))
         ck = f"s8_{supporter_id}_{lc}_{level}_{lb_tier}_{for_uid_key}_{for_cid_key}_{lr_schedule_cache_key_fragment()}"
+        early = try_serve_preserialized(ck, private=True, max_age=3600)
+        if early is not None:
+            return early
         cached = get_cached_response(ck)
         if cached:
             return jsonify_preserialized(cached, ck, private=True, max_age=3600, convert_images=False)
@@ -37529,6 +37561,10 @@ def get_character(char_id):
         view_ranking = request.args.get('view', '').strip().lower() == 'ranking'
         # r21: condition chips use in-game id order (Zeon & Land, not file order).
         ck = f"c_{char_id}_{lc}_r26_{1 if view_ranking else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        # Warm body/304 before dict lookup — keeps detail storms off the rebuild path.
+        early = try_serve_preserialized(ck, private=True, max_age=3600)
+        if early is not None:
+            return early
         cached = get_cached_response(ck)
         if cached:
             # Images already CDN-converted when cached; skip re-walk + re-jsonify under GIL.
@@ -37686,6 +37722,9 @@ def get_unit(unit_id):
             stat_mode_arg = 'normal'
         cond_for_ranking = request.args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
         ck = f"u_{unit_id}_{lc}_ssp20_ult8_cpwr1_usk4_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_bp3_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        early = try_serve_preserialized(ck, private=True, max_age=3600)
+        if early is not None:
+            return early
         cached = get_cached_response(ck)
         if cached:
             return jsonify_preserialized(cached, ck, private=True, max_age=3600, convert_images=False)

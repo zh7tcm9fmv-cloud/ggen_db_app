@@ -2366,8 +2366,19 @@ def _traffic_path_bucket(path):
     return p
 
 
+def _is_traffic_chatter(path):
+    """Tiny polls that must not floor MSY caches (no UX change — just smarter budgeting)."""
+    p = str(path or '')
+    if p == '/api/client_version':
+        return True
+    # /api/stages/status, /api/kofi/status, /api/whats_new/status, …
+    if p.startswith('/api/') and p.endswith('/status'):
+        return True
+    return False
+
+
 def note_http_request(path):
-    """Count user requests for the adaptive budget. Skip probes and static."""
+    """Record traffic. Adaptive rpm ignores chatter; traffic_top still shows everything."""
     if not _ADAPTIVE_CACHE_ENABLED:
         return
     p = str(path or '')
@@ -2375,18 +2386,25 @@ def note_http_request(path):
         return
     now = time.monotonic()
     bucket = _traffic_path_bucket(p)
+    chatter = _is_traffic_chatter(p)
     with _adaptive_lock:
-        _adaptive_req_times.append(now)
+        # Always visible in /health traffic_top (diagnose floods).
         _adaptive_req_paths.append((now, bucket))
+        # Only substantive API work drives cache pressure / band.
+        if not chatter:
+            _adaptive_req_times.append(now)
         if len(_adaptive_req_times) > 8000:
             cutoff = now - 60.0
             while _adaptive_req_times and _adaptive_req_times[0] < cutoff:
                 _adaptive_req_times.popleft()
+        if len(_adaptive_req_paths) > 8000:
+            cutoff = now - 60.0
             while _adaptive_req_paths and _adaptive_req_paths[0][0] < cutoff:
                 _adaptive_req_paths.popleft()
 
 
 def _adaptive_requests_per_min():
+    """Substantive API rpm (excludes client_version + /api/*/status chatter)."""
     now = time.monotonic()
     cutoff = now - 60.0
     with _adaptive_lock:
@@ -2408,6 +2426,53 @@ def traffic_top_paths(limit=20):
     ranked = sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))
     lim = max(1, min(40, int(limit or 20)))
     return [{'path': p, 'n': n} for p, n in ranked[:lim]]
+
+
+_TRAFFIC_ALERT_LAST = {'sig': '', 'ts': 0.0}
+
+
+def traffic_alert_status():
+    """Early-warning blob for /health when substantive load is high (no UX impact)."""
+    rpm = _adaptive_requests_per_min()
+    rss = read_process_rss_mb()
+    band = adaptive_band_for(rss, rpm)
+    top = traffic_top_paths(5)
+    alert = None
+    if rpm >= 180:
+        alert = {
+            'level': 'high_rpm',
+            'rpm': rpm,
+            'band': band,
+            'rss_mb': None if rss is None else round(float(rss), 1),
+            'top': top,
+            'hint': 'Substantive API rpm high — check traffic_top (details/browse), not status polls.',
+        }
+    elif band == 'pressure' and rss is not None and float(rss) >= _ADAPTIVE_RSS_PRESSURE_MB:
+        alert = {
+            'level': 'rss_pressure',
+            'rpm': rpm,
+            'band': band,
+            'rss_mb': round(float(rss), 1),
+            'top': top,
+            'hint': 'RSS in pressure zone — adaptive caches at floor; features unchanged.',
+        }
+    if alert:
+        sig = f"{alert['level']}:{int(rpm // 20)}:{alert.get('rss_mb')}"
+        now = time.monotonic()
+        prev = _TRAFFIC_ALERT_LAST
+        if prev.get('sig') != sig or (now - float(prev.get('ts') or 0)) >= 120.0:
+            _TRAFFIC_ALERT_LAST['sig'] = sig
+            _TRAFFIC_ALERT_LAST['ts'] = now
+            try:
+                top_s = ', '.join(f"{r.get('n')}×{r.get('path')}" for r in (top or [])[:5])
+                print(
+                    f"traffic_alert {alert['level']}: rpm={rpm} band={band} "
+                    f"rss={alert.get('rss_mb')} top=[{top_s}]",
+                    flush=True,
+                )
+            except Exception:
+                pass
+    return alert
 
 
 def read_process_rss_mb():
@@ -2473,6 +2538,7 @@ def adaptive_cache_status():
         'pair_ceiling': _CHAR_PAIR_CACHE_MAX,
         'weapon_max': effective_unit_weapon_cache_max(),
         'weapon_len': len(_unit_weapon_cache),
+        # Substantive API only (excludes client_version + /api/*/status).
         'requests_per_min': _adaptive_requests_per_min(),
         'bsp_group_lru': len(_BSP_GROUP_LRU),
         'bsp_group_lru_max': _BSP_GROUP_LRU_MAX,
