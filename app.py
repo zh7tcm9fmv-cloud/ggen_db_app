@@ -20866,13 +20866,24 @@ def api_unit_best_synergy_pilots(unit_id):
     import meta_synergy_rank as msr
     kwargs = msr._msy_dc_kwargs_from_request(request.args)
     try:
-        payload = msr.unit_best_synergy_pilots_payload(unit_id, kwargs)
         # max-age=0 + deploy-tagged ETag: iOS Safari must revalidate after each Railway deploy
         # (it has no hard-refresh; old max-age=3600 left Top Def chips stale for hours).
-        ck = (
+        ver = _app_js_bundle_version_tag()
+        base = (
             f'ubp_{unit_id}_{kwargs["lc"]}_{kwargs.get("lb_tier", 3)}_{kwargs.get("def_tier", 3)}'
-            f'_{payload.get("source") or "x"}_{int(bool(payload.get("modes")))}'
-            f'_{_app_js_bundle_version_tag()}'
+        )
+        # Warm/304 BEFORE payload build — published Top 10 was paying multi-second rebuild
+        # on every open even when gzip body was already cached (same class as SPI fix).
+        for source in ('published_dc', 'x'):
+            for modes in (1, 0):
+                ck_try = f'{base}_{source}_{modes}_{ver}'
+                early = try_serve_preserialized(ck_try, public=True, max_age=0)
+                if early is not None:
+                    return early
+        payload = msr.unit_best_synergy_pilots_payload(unit_id, kwargs)
+        ck = (
+            f'{base}_{payload.get("source") or "x"}_{int(bool(payload.get("modes")))}'
+            f'_{ver}'
         )
         # Published boards: pre-serialize + gzip once (skip convert+jsonify under GIL on warm hits).
         # Same JSON shape/features as before — convert_images still runs on first body-cache miss.
