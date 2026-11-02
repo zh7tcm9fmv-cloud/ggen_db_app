@@ -27921,6 +27921,24 @@ def api_whats_new():
     scripts/backfill_whats_new_history.py). *tabs* / *entries* are sorted latest date first.
     """
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
+
+    def _wn_mtime(path):
+        try:
+            return int(os.path.getmtime(path))
+        except OSError:
+            return 0
+
+    # Warm/304 before delta rebuild — same tabs/entries until snapshot / manual / master date moves.
+    ck = (
+        f"whats_new_v1_{lc}_{_whats_new_master_data_date()}"
+        f"_{_wn_mtime(WHATS_NEW_SNAPSHOT_PATH)}"
+        f"_{_wn_mtime(WHATS_NEW_HISTORY_INDEX_PATH)}"
+        f"_{_wn_mtime(WHATS_NEW_JSON_PATH)}"
+    )
+    early = try_serve_preserialized(ck, public=True, max_age=300)
+    if early is not None:
+        return early
+
     tabs = []
     entries = []
     try:
@@ -28022,9 +28040,7 @@ def api_whats_new():
         'entries': entries,
         'generated_at': datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
     }
-    resp = make_response(jsonify(payload))
-    resp.headers['Cache-Control'] = 'no-store'
-    return resp
+    return jsonify_preserialized(payload, ck, public=True, max_age=300, convert_images=False)
 
 @app.route('/api/tag_units')
 def get_tag_units():
@@ -36190,11 +36206,14 @@ def api_banner_timeline_votes():
     mine = _bt_vote_mine_for_voter(data.get('ballots') or {}, voter_id)
     # vote_pools: notice dots only — clients must NOT fetch full /api/banner_timeline site-wide.
     lang = request.args.get('lang') or DEFAULT_LANG
-    return jsonify({
+    resp = jsonify({
         'totals': totals,
         'mine': mine,
         'vote_pools': _bt_vote_pools_meta(lang),
     })
+    # private: includes per-voter `mine`. Short max-age cuts repeat polls; POST vote still fresh.
+    resp.headers['Cache-Control'] = 'private, max-age=15'
+    return resp
 
 
 @app.route('/api/banner_timeline/vote', methods=['POST'])
