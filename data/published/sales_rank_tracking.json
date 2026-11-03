@@ -1,9 +1,9 @@
 {
   "v": 1,
-  "saved_ms": 1793690863387,
+  "saved_ms": 1793691484175,
   "meta": {
-    "last_ok_ms": 1793690799135,
-    "last_err": "",
+    "last_ok_ms": 1793691418434,
+    "last_err": "gamei:<urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1028)>",
     "started_ms": 1793557196594
   },
   "samples": [
@@ -7284,6 +7284,41 @@
           "overall": null,
           "games": null,
           "gamei_today": 255
+        }
+      }
+    },
+    {
+      "t": 1793691418434,
+      "countries": {
+        "hk": {
+          "overall": 11,
+          "games": 7,
+          "gamei_today": null
+        },
+        "mo": {
+          "overall": 6,
+          "games": 6,
+          "gamei_today": null
+        },
+        "tw": {
+          "overall": null,
+          "games": 90,
+          "gamei_today": null
+        },
+        "jp": {
+          "overall": 83,
+          "games": 46,
+          "gamei_today": null
+        },
+        "sg": {
+          "overall": null,
+          "games": null,
+          "gamei_today": null
+        },
+        "kr": {
+          "overall": null,
+          "games": null,
+          "gamei_today": null
         }
       }
     }
