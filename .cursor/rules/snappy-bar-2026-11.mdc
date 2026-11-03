@@ -1,0 +1,33 @@
+---
+description: Nov 2026 snappy bar — compare future audits to live 51e8b9a
+alwaysApply: true
+---
+
+# Snappy bar (locked 2026-11-03, live `51e8b9a`)
+
+Owner baseline after worker refinements. Future audits **compare to these numbers**. A regression vs this bar is a bug even if a feature is “correct.”
+
+Measured gzip, Asia edge `hkg1` → Railway origin, quiet warm (not a sequential storm). Floor ~250ms is RTT, not GIL.
+
+| Surface | Bar |
+|---|---|
+| `/health` | ~0.28–0.33s · ready · RSS ~0.95GB idle · alert quiet |
+| Browse `/api/characters` `/api/units` | ~0.28–0.31s |
+| Char / unit detail | ~0.26–0.31s |
+| BSP Top 10 warm + 304 | ~0.27–0.29s |
+| `/api/banner_timeline` | ~0.28s |
+| Banner votes | ~0.30s · `private, max-age=15` |
+| SPI `/api/sp_investment` | ~0.38s · ~726KB gzip |
+| `/api/whats_new` warm + 304 | ~0.25–0.29s · `public, max-age=300` |
+| `/api/tag_matrix` | ~0.4–0.5s |
+| 12× parallel char details | wall ~0.66s |
+| Adaptive band at idle | **calm** (pair cache near 6k ceiling) |
+
+## What “worse” means
+
+- `/health` or warm detail/browse/`/tl`/`/new`/BSP climbing past **~0.5s** while idle
+- SPI warm past **~0.8s**
+- Band stuck on **pressure** at RSS &lt; ~1.1GB and rpm &lt; 80
+- Parallel detail wall multi-second (queue saturation)
+
+Do not “fix” the ~250ms RTT floor with extra workers, boot-prewarm of multi‑MB boards, or rate limits. See `live-perf-never-break-snappy.mdc`.

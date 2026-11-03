@@ -286,7 +286,10 @@ def _app_js_bundle_version_tag():
         ('js', 'tag_matrix.js'),
         ('js', 'debuff_matrix.js'),
         ('js', 'gacha_sim.js'),
+        ('js', 'ml_sim.js'),
+        ('js', 'ml_sim_rules.js'),
         ('css', 'gacha_sim.css'),
+        ('css', 'ml_sim.css'),
         ('css', 'app_shell.css'),
         ('css', 'app_shell_bundle.min.css'),
         ('css', 'unit_best_pilots.css'),
@@ -498,6 +501,13 @@ def _apply_seo_and_static_cache_headers(response):
 
 # Latest Release: set LATEST_RELEASE_PASSWORD to require unlock + per-session watermark id.
 LATEST_RELEASE_PASSWORD = (os.environ.get('LATEST_RELEASE_PASSWORD') or '').strip()
+# Master League Simulator (/mls): soft gate. Default password when env unset (owner can override via GGEN_MLS_PASSWORD).
+# Set GGEN_MLS_PASSWORD= (empty) to disable the gate.
+_mls_pw_env = os.environ.get('GGEN_MLS_PASSWORD')
+if _mls_pw_env is None:
+    MLS_SIM_PASSWORD = 'ggenmls'
+else:
+    MLS_SIM_PASSWORD = str(_mls_pw_env).strip()
 # Optional test pins: lock a specific schedule Id or exact StartDatetime (epoch ms) even if "now" is past start.
 LATEST_RELEASE_TEST_LOCK_SCHEDULE_ID = (os.environ.get('LATEST_RELEASE_TEST_LOCK_SCHEDULE_ID') or '').strip()
 _ts = (os.environ.get('LATEST_RELEASE_TEST_LOCK_START_MS') or '').strip()
@@ -9084,7 +9094,19 @@ def create_supporter_active_skill_map(d):
     for item in extract_data_list(d):
         if not isinstance(item, dict): continue
         sp = str(item.get('SupporterId') or item.get('supporterId') or str(item.get('Id') or item.get('id') or '')[:10])
-        lookup.setdefault(sp, []).append({'name_lang_id': normalize_id(item.get('NameLanguageId') or item.get('nameLanguageId')), 'desc_lang_id': normalize_id(item.get('DescriptionLanguageId') or item.get('descriptionLanguageId')), 'resource_id': str(item.get('ResourceId') or item.get('resourceId') or '')})
+        rng_raw = str(item.get('EffectRange') or item.get('effectRange') or '')
+        rng_max = 0
+        for _a, _b in re.findall(r'\((-?\d+),(-?\d+)\)', rng_raw):
+            rng_max = max(rng_max, abs(int(_a)) + abs(int(_b)))
+        lookup.setdefault(sp, []).append({
+            'name_lang_id': normalize_id(item.get('NameLanguageId') or item.get('nameLanguageId')),
+            'desc_lang_id': normalize_id(item.get('DescriptionLanguageId') or item.get('descriptionLanguageId')),
+            'resource_id': str(item.get('ResourceId') or item.get('resourceId') or ''),
+            'effect_range_max': rng_max,
+            'ml_passed_turn': safe_int(item.get('MasterLeagueAutoUsagePassedTurn'), 1),
+            'ml_threshold': safe_int(item.get('MasterLeagueAutoUsageThreshold'), 1),
+            'ml_hp_tier': safe_int(item.get('MasterLeagueAutoUsageTargetThreshold'), 2),
+        })
     return lookup
 
 
@@ -20337,6 +20359,11 @@ def roadmap_calendar_frame():
 
 @app.route('/ml')
 def master_league_page():
+    return _serve_index()
+
+
+@app.route('/mls')
+def master_league_sim_page():
     return _serve_index()
 
 
@@ -33583,6 +33610,27 @@ def api_latest_release_unlock():
     return jsonify({'ok': True, 'watermark': session['lr_wm'], 'password_required': True})
 
 
+@app.route('/api/ml_sim/status')
+def api_ml_sim_status():
+    """Soft gate status for /mls (password optional via GGEN_MLS_PASSWORD)."""
+    required = bool(MLS_SIM_PASSWORD)
+    unlocked = (not required) or (session.get('mls_unlocked') is True)
+    return jsonify({'password_required': required, 'unlocked': unlocked})
+
+
+@app.route('/api/ml_sim/unlock', methods=['POST'])
+def api_ml_sim_unlock():
+    """Unlock Master League Simulator for this browser session."""
+    if not MLS_SIM_PASSWORD:
+        return jsonify({'ok': True, 'password_required': False})
+    data = request.get_json(force=True, silent=True) or {}
+    pw = (data.get('password') or '').strip()
+    if pw != MLS_SIM_PASSWORD:
+        return jsonify({'ok': False, 'error': 'invalid_password'}), 403
+    session['mls_unlocked'] = True
+    return jsonify({'ok': True, 'password_required': True})
+
+
 @app.route('/api/latest_release')
 def api_latest_release():
     """Group units, characters, and supporters by gasha ScheduleId; dates from m_schedule StartDatetime (JST)."""
@@ -34534,6 +34582,107 @@ def _ml_resolve_buff_target_name(target_type, target_id, lineage_lookup, series_
     if safe_int(target_type, 0) == 1:
         return series_id_to_name.get(tid, '')
     return lineage_lookup.get(tid, lineage_lookup.get(tid.lstrip('0'), ''))
+
+
+@app.route('/api/master_league/sim_board')
+def api_master_league_sim_board():
+    """Spawn cells for the ML simulator. Season 18 (event 300021) is set 3: groups 31 + 32 (LINE)."""
+    lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
+    event_id = normalize_id(request.args.get('event_id') or '300021')
+    if event_id == '0':
+        event_id = '300021'
+    ck = f'ml_sim_board_v3_{lc}_{event_id}'
+    cached = get_cached_response(ck)
+    if cached:
+        return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
+    events = extract_data_list(load_json(_ml_master_file(lc, 'm_league_event.json')))
+    ev = None
+    for row in events:
+        if isinstance(row, dict) and normalize_id(row.get('EventId')) == event_id:
+            ev = row
+            break
+    if not ev:
+        return jsonify({'error': 'event_not_found', 'event_id': event_id}), 404
+    try:
+        set_id = int(ev.get('LeagueStageInitialPositionGroupSetId') or 0)
+    except (TypeError, ValueError):
+        set_id = 0
+    sets = extract_data_list(load_json(_ml_master_file(lc, 'm_league_stage_initial_position_group_set.json')))
+    groups = extract_data_list(load_json(_ml_master_file(lc, 'm_league_stage_initial_position_group.json')))
+    by_group = {}
+    for g in groups:
+        if not isinstance(g, dict):
+            continue
+        try:
+            gid = int(g.get('Id') or 0)
+        except (TypeError, ValueError):
+            continue
+        by_group.setdefault(gid, []).append({
+            'n': int(g.get('PositionNumber') or 0),
+            'x': int(g.get('X') or 0),
+            'y': int(g.get('Y') or 0),
+            'type': int(g.get('InitialPositionTypeIndex') or 0),
+        })
+    for cells in by_group.values():
+        cells.sort(key=lambda c: c['n'])
+    sides = []
+    for row in sets:
+        if not isinstance(row, dict):
+            continue
+        try:
+            if int(row.get('Id') or 0) != set_id:
+                continue
+            gid = int(row.get('LeagueStageInitialPositionGroupId') or 0)
+            side = int(row.get('PlayerSideTypeIndex') or 0)
+            direction = int(row.get('DirectionTypeIndex') or 0)
+        except (TypeError, ValueError):
+            continue
+        sides.append({
+            'player_side': side,
+            'group_id': gid,
+            'direction': direction,
+            'cells': by_group.get(gid) or [],
+        })
+    sides.sort(key=lambda s: s['player_side'])
+    try:
+        limit_turns = int(ev.get('LimitTurnCount') or 5)
+    except (TypeError, ValueError):
+        limit_turns = 5
+    stage_id = normalize_id(ev.get('StageId'))
+    map_payload = None
+    mse = (map_stage_lookup or {}).get(stage_id) or {}
+    mid = normalize_id(mse.get('map_id'))
+    if mid and mid != '0':
+        mi = (map_master_lookup or {}).get(mid) or {}
+        bg_asset = str(mi.get('background_asset') or '').strip()
+        map_payload = {
+            'map_id': mid,
+            'width': safe_int(mi.get('width'), 0),
+            'height': safe_int(mi.get('height'), 0),
+            'background_asset': bg_asset,
+            'background': stage_map_background_url(bg_asset) if bg_asset else '',
+            'background_offset_x': 0,
+            'background_offset_y': 0,
+        }
+    # player_side 1 = right/ally, 2 = left/enemy (HangerLab layout + MasterData spawn sides).
+    payload = {
+        'event_id': event_id,
+        'stage_id': stage_id,
+        'set_id': set_id,
+        'limit_turns': limit_turns,
+        'buff_id': normalize_id(ev.get('BuffId')),
+        'formation': 'line' if set_id == 3 else 'standard',
+        'layout': {
+            'left': 'enemy',
+            'right': 'ally',
+            'enemy_player_side': 2,
+            'ally_player_side': 1,
+        },
+        'map': map_payload,
+        'sides': sides,
+    }
+    set_cached_response(ck, payload)
+    return jsonify_cacheable(payload, ck, public=True, max_age=3600, convert_images=True)
 
 
 @app.route('/api/master_league')
@@ -36372,7 +36521,13 @@ def build_supporter_detail_dict(supporter_id, lc, level=None, lb_tier=3, for_uid
         an = ld.get('supporter_active_text_map', {}).get(a.get('name_lang_id', ''), '')
         ad = ld.get('supporter_active_text_map', {}).get(a.get('desc_lang_id', ''), '')
         icf = find_trait_icon(a.get('resource_id', ''))
-        asks.append({'name': an, 'desc': ad, 'icon': f"/static/images/Trait/{icf}" if icf else ''})
+        asks.append({
+            'name': an, 'desc': ad, 'icon': f"/static/images/Trait/{icf}" if icf else '',
+            'effect_range_max': safe_int(a.get('effect_range_max'), 0),
+            'ml_passed_turn': safe_int(a.get('ml_passed_turn'), 1),
+            'ml_threshold': safe_int(a.get('ml_threshold'), 1),
+            'ml_hp_tier': safe_int(a.get('ml_hp_tier'), 2),
+        })
     portrait = find_supporter_full_portrait(info.get('resource_id')) or find_supporter_portrait(info.get('resource_id'), supporter_id)
     acq = info.get('acquisition_route', '0')
     acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
@@ -36417,7 +36572,7 @@ def get_supporter(supporter_id):
         ri = info.get('rarity', '1')
         max_level = supporter_max_level_for_rarity(ri)
         level = min(max_level, max(1, int(request.args.get('level', max_level))))
-        ck = f"s8_{supporter_id}_{lc}_{level}_{lb_tier}_{for_uid_key}_{for_cid_key}_{lr_schedule_cache_key_fragment()}"
+        ck = f"s9_{supporter_id}_{lc}_{level}_{lb_tier}_{for_uid_key}_{for_cid_key}_{lr_schedule_cache_key_fragment()}"
         _cc = _detail_http_cache_kwargs()
         early = try_serve_preserialized(ck, **_cc)
         if early is not None:
@@ -38254,7 +38409,7 @@ def get_unit(unit_id):
 
 # Client history short-paths (must stay in sync with parseBrowseShortPath in static/js/app.js).
 _SPA_TAB_PATHS = frozenset({
-    'c', 'u', 's', 'new', 'tl', 'banners', 'st', 'esim', 'ml', 'estscore', 'cal', 'tb', 'op', 'pt', 'rk', 'msy', 'ip',
+    'c', 'u', 's', 'new', 'tl', 'banners', 'st', 'esim', 'ml', 'mls', 'estscore', 'cal', 'tb', 'op', 'pt', 'rk', 'msy', 'ip',
     'gacha-sim',
     'roadmap',
     # Stage category deep-links (Stages tab sources)
@@ -38396,6 +38551,10 @@ _SPA_SEO_BY_PATH = {
     '/ml': (
         'Master League — GGen Eternal Database',
         'Master League tools and showcase for SD Gundam G Generation ETERNAL.',
+    ),
+    '/mls': (
+        'Master League Simulator — GGen Eternal Database',
+        'Master League formation, turn battle, and search for SD Gundam G Generation ETERNAL. Season 18 LINE spawns.',
     ),
     '/estscore': (
         'MAX SS Pt Estimate — GGen Eternal Database',

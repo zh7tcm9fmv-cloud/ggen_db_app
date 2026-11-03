@@ -1,0 +1,125 @@
+<div class="mls-shell" id="mlsShell">
+  <div class="mls-gate" id="mlsGate" hidden>
+    <div class="mls-gate-card" role="dialog" aria-modal="true" aria-labelledby="mlsGateTitle">
+      <img class="mls-gate-lock" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_ULT_MissionGauge_Button_Lock.webp{% else %}/static/images/UI/UI_ULT_MissionGauge_Button_Lock.webp{% endif %}" alt="" width="72" height="72" decoding="async">
+      <h2 id="mlsGateTitle">Simulator locked</h2>
+      <p class="mls-gate-hint">Enter password to open Master League Simulator.</p>
+      <div id="mlsGateInputHost" class="mls-gate-input-host"></div>
+      <div class="mls-gate-actions">
+        <button type="button" class="mls-btn primary" id="mlsGateUnlock">Unlock</button>
+        <button type="button" class="mls-btn" id="mlsGateBack">← Master League</button>
+      </div>
+      <div class="mls-gate-err" id="mlsGateErr" aria-live="polite"></div>
+    </div>
+  </div>
+  <header class="mls-top">
+    <a class="mls-back" href="/ml" onclick="event.preventDefault();switchTab('master_league')">Master League</a>
+    <h1>Simulator</h1>
+    <label class="mls-season-wrap">
+      <span class="mls-lbl">SEASON</span>
+      <select id="mlsSeasonSelect" class="mls-select" aria-label="Season preset"></select>
+    </label>
+  </header>
+
+  <div class="mls-preset" id="mlsPresetBar" aria-live="polite">
+    <!-- Filled by paintPreset → same ml-boost-card as /ml -->
+  </div>
+
+  <nav class="mls-views" role="tablist">
+    <button type="button" class="mls-view-btn is-active" data-view="formation" id="mlsTabFormation">Formation</button>
+    <button type="button" class="mls-view-btn" data-view="battle" id="mlsTabBattle">Battle</button>
+  </nav>
+
+  <section class="mls-view is-active" id="mlsViewFormation" data-view="formation">
+    <p class="mls-note">Left = opponent, right = your force. Each side has a <strong>supporter</strong> (same as Team Builder): after you pick one, unit suggestions filter by that supporter’s tags. Set <strong>LB</strong> and <strong>option part</strong> per unit the same way as /tb. <strong>Drag</strong> a slot onto another to swap map positions.</p>
+    <div class="mls-forces">
+      <div class="mls-force mls-force--enemy" aria-label="Enemy force">
+        <header class="mls-force-head"><span class="mls-force-tag">ENEMY</span><span>Opponent · left</span></header>
+        <div class="mls-supp" id="mlsEnemySupp"></div>
+        <div class="mls-slot-list" id="mlsEnemySlots"></div>
+      </div>
+      <div class="mls-force mls-force--ally" aria-label="Ally force">
+        <header class="mls-force-head"><span class="mls-force-tag">ALLY</span><span>Player · right</span></header>
+        <div class="mls-supp" id="mlsAllySupp"></div>
+        <div class="mls-slot-list" id="mlsAllySlots"></div>
+      </div>
+    </div>
+    <div class="mls-form-actions">
+      <label class="mls-check"><input type="checkbox" id="mlsOwnedOnly"> Prefer Collections when searching</label>
+      <button type="button" class="mls-btn" id="mlsClearRoster">Clear both forces</button>
+      <button type="button" class="mls-btn primary" id="mlsGotoBattle">Open battle map</button>
+    </div>
+    <div class="tb-stats-panel mls-stats-panel" id="mlsStatsPanel" aria-live="polite"></div>
+  </section>
+
+  <section class="mls-view" id="mlsViewBattle" data-view="battle" hidden>
+    <div class="mls-map-tools">
+      <label class="mls-check mls-aura-toggle" title="Cond:Area aura tiles + debuff icons (e.g. Neo Zeong EX)">
+        <input type="checkbox" id="mlsAuraToggle" checked>
+        <span>Area aura</span>
+      </label>
+    </div>
+    <div class="mls-map-stage">
+      <div class="mls-map-scroll">
+        <div class="mls-map" id="mlsBoard" aria-label="Master League battle map"></div>
+      </div>
+      <div class="mls-banner" id="mlsBanner" hidden aria-hidden="true">
+        <div class="mls-banner-inner">
+          <span class="mls-banner-line">READY? GO!!</span>
+          <img class="mls-banner-cutin" src="{% if image_cdn %}{{ image_cdn }}/images/Master%20League/ml_skip_character_cutin_bromide_300010.webp{% else %}/static/images/Master%20League/ml_skip_character_cutin_bromide_300010.webp{% endif %}" alt="" width="220" height="80" decoding="async">
+        </div>
+      </div>
+      <div class="mls-endcard" id="mlsEndCard" hidden aria-hidden="true" role="status">
+        <div class="mls-endcard-spark" aria-hidden="true"></div>
+        <div class="mls-endcard-title" id="mlsEndTitle"></div>
+        <div class="mls-endcard-rule" aria-hidden="true"></div>
+        <div class="mls-endcard-sub" id="mlsEndSub"></div>
+        <div class="mls-endcard-letters" id="mlsEndLetters" aria-hidden="true"></div>
+        <button type="button" class="mls-endcard-retry" id="mlsEndRetry" hidden>TRY AGAIN</button>
+      </div>
+    </div>
+    <div class="mls-controls">
+      <div class="mls-controls-main">
+        <button type="button" class="mls-btn primary mls-sim-start" id="mlsFight">SIMULATION START</button>
+        <button type="button" class="mls-btn" id="mlsPause" disabled>PAUSE</button>
+        <button type="button" class="mls-btn" id="mlsSpeed" title="Playback speed">1×</button>
+        <button type="button" class="mls-btn" id="mlsSkip" disabled>SKIP</button>
+        <button type="button" class="mls-btn" id="mlsReset" title="Reset battle map to formation start">RESET</button>
+        <button type="button" class="mls-btn" id="mlsBackForm">← Formation</button>
+      </div>
+      <div class="mls-ai-cluster">
+        <button type="button" class="mls-btn mls-ai-search" id="mlsAiSearch" title="Try ally LINE slot orders; keep the fastest clear">
+          <img class="mls-ai-search-ic" src="{% if image_cdn %}{{ image_cdn }}/images/Popup/win_g2100n00400_01.webp{% else %}/static/images/Popup/win_g2100n00400_01.webp{% endif %}" alt="" width="28" height="28" decoding="async" loading="lazy">
+          <span>Formation Optimizer</span>
+        </button>
+        <div class="mls-ai-progress-wrap">
+          <div class="mls-ai-progress" id="mlsAiProgress" hidden role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Formation Optimizer progress">
+            <div class="mls-ai-progress-bar" id="mlsAiProgressBar"><i class="mls-ai-progress-fill" aria-hidden="true"></i></div>
+          </div>
+          <span class="mls-ai-status" id="mlsAiStatus" aria-live="polite"></span>
+        </div>
+      </div>
+    </div>
+    <div class="mls-battle-meta">
+      <div class="mls-timeline-wrap">
+        <div class="mls-lbl">TURN ORDER</div>
+        <div class="mls-timeline" id="mlsTimeline"></div>
+      </div>
+      <div class="mls-log-wrap">
+        <div class="mls-lbl">BATTLE LOG</div>
+        <pre class="mls-log" id="mlsLog" aria-live="polite"></pre>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="mls-picker" id="mlsPicker" hidden>
+  <div class="mls-picker-panel" role="dialog" aria-modal="true" aria-labelledby="mlsPickerTitle">
+    <header class="mls-picker-head">
+      <h2 id="mlsPickerTitle">Pick unit</h2>
+      <button type="button" class="mls-btn" id="mlsPickerClose">Close</button>
+    </header>
+    <input type="search" id="mlsPickerSearch" class="mls-picker-search" placeholder="Search unit name…" autocomplete="off">
+    <div class="mls-picker-list" id="mlsPickerList"></div>
+  </div>
+</div>
