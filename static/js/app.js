@@ -11840,7 +11840,8 @@ function _dcDefaultWeaponDistance(wpn){const eff=_dcGetEffectiveRange(wpn);const
 function _dcNonMapWeapons(ud){
 if(!ud||!ud.weapons)return[];
 const um=S.dc.unitStatMode||'normal';
-return ud.weapons.filter(w=>w.weapon_type!=='3'&&(!w.is_ssp_weapon||um==='ssp'));
+const ultOn=!!(S.dc&&S.dc.ultAltActive);
+return ud.weapons.filter(w=>w.weapon_type!=='3'&&(!w.is_ssp_weapon||um==='ssp')&&(!w.is_ult_weapon||ultOn));
 }
 /** From API: per-level enemy DEF % down on this attack (base + optional Supercharged-only line). */
 function _dcWeaponEnemyDefDebuffEffective(wpn,wpnLvIdx){
@@ -14181,6 +14182,23 @@ fdef=_tbApplyUnitTurnBuffDefToMsDef(fdef,ud,!!sl.unitTurnBuffDef);
 return{hp:f.unitHp,atk:fatk,def:fdef,mob:f.unitMob,mov:f.unitMove};
 }
 function _tbRarityRankOption(row){return{UR:4,SSR:3,SR:2,R:1}[row&&row.rarity]||0}
+/** 2 = exact series/tag OP for this unit; 1 = broad UC/AU umbrella; 0 = no owner series gate. */
+function _tbOpSeriesSpecificity(row,unitData){
+const part=_dcCompactOptionPartRow(row)||row||{};
+const name=String(part.name||row&&row.name||'');
+const broadName=/UC\s*\/\s*AU|UC\s*&?\s*AU|UC Series|AU Series|宇宙世紀|アナザーユニバース/i.test(name);
+let best=0;
+(_dcOptionPartSimEffects(part)||[]).forEach(eff=>{
+const ids=eff&&eff.cond_unit_tag_ids||[];
+if(!ids.length)return;
+if(!_dcOpCondTagsMatchEntity(eff,unitData))return;
+const tags=((eff.cond_unit_tag_names||[]).join(' ')+' '+name);
+if(/UC\s*\/\s*AU|UC Series|AU Series|宇宙世紀|アナザー|Another\s*Universe/i.test(tags)||broadName)best=Math.max(best,1);
+else best=Math.max(best,2);
+});
+if(!best&&broadName&&(_dcAccumulateOptionPartSheetBonuses([part],unitData).opPct.Attack|0)>0)best=1;
+return best;
+}
 function _tbRankOptionForAutoFill(sl,side,row,supForSlot){
 const rk=_tbUnitRoleKind(sl.unitData);
 const part=_dcCompactOptionPartRow(row)||{id:row.id,name:row.name||'',details:row.details||'',thum:row.thum||'',tags:row.tags||[],sim_effects:row.sim_effects||[]};
@@ -14198,17 +14216,23 @@ const hp12=b.opPct.HP===12;
 const def12=b.opPct.Defense===12;
 const rid=parseInt(String(row.id),10)||0;
 const rb=_tbRarityRankOption(row);
+const ser=_tbOpSeriesSpecificity(row,sl.unitData);
+/* Exact series OP beats broad UC/AU “+12% ATK” that auto-equip used to prefer. */
+if(ser>=2&&(atk12||dWpScore>0||dAtk>0||dHp>0||dDef>0)){
+if(rk==='def')return[5,dHp+dDef,dDef,dAtk,rb,rid];
+return[5,dAtk+dWpScore,dHp,dDef,rb,rid];
+}
 if(rk==='def'){
 if(hp12)return[4,dHp,dDef,dAtk,rb,rid];
 if(def12)return[3,dDef,dHp,dAtk,rb,rid];
 return[2,dHp+dDef,dDef,dHp,rb,rid];
 }
 if(rk==='sup'){
-if(atk12)return[4,dAtk,0,0,rb,rid];
-return[2,dAtk+dWpScore,dWpScore,0,rb,rid];
+if(atk12)return[ser>=1?3:4,dAtk,ser,0,rb,rid];
+return[2,dAtk+dWpScore,dWpScore,ser,rb,rid];
 }
-if(atk12)return[4,dAtk,dHp,dDef,rb,rid];
-return[2,dAtk+dWpScore,dHp+dDef,dDef,rb,rid];
+if(atk12)return[ser===1?3:4,dAtk,dHp,dDef,ser,rb,rid];
+return[2,dAtk+dWpScore,dHp+dDef,dDef,ser,rb,rid];
 }
 function _tbCompareRankAuto(a,b){
 for(let i=0;i<Math.max(a.length,b.length);i++){
@@ -14264,17 +14288,22 @@ const hp12=b.opPct.HP===12;
 const def12=b.opPct.Defense===12;
 const rid=parseInt(String(row.id),10)||0;
 const rb=_tbRarityRankOption(row);
+const ser=_tbOpSeriesSpecificity(row,sl.unitData);
+if(ser>=2&&(atk12||dWpScore>0||dAtk>0||dHp>0||dDef>0)){
+if(rk==='def')return[5,dHp+dDef,dDef,dAtk,rb,rid];
+return[5,dAtk+dWpScore,dHp,dDef,rb,rid];
+}
 if(rk==='def'){
 if(hp12)return[4,dHp,dDef,dAtk,rb,rid];
 if(def12)return[3,dDef,dHp,dAtk,rb,rid];
 return[2,dHp+dDef,dDef,dHp,rb,rid];
 }
 if(rk==='sup'){
-if(atk12)return[4,dAtk,0,0,rb,rid];
-return[2,dAtk+dWpScore,dWpScore,0,rb,rid];
+if(atk12)return[ser>=1?3:4,dAtk,ser,0,rb,rid];
+return[2,dAtk+dWpScore,dWpScore,ser,rb,rid];
 }
-if(atk12)return[4,dAtk,dHp,dDef,rb,rid];
-return[2,dAtk+dWpScore,dHp+dDef,dDef,rb,rid];
+if(atk12)return[ser===1?3:4,dAtk,dHp,dDef,ser,rb,rid];
+return[2,dAtk+dWpScore,dHp+dDef,dDef,ser,rb,rid];
 }
 function _dcDedupeSsrOptionPartsAcrossDcSlots(){
 if(!S.dc||!S.dc.atkSlots||!Array.isArray(S.dc.atkSlots))return;
@@ -17524,6 +17553,7 @@ return _dcAbilityCondContextMeetsGroups(ud,null,condGroups);
 }
 function _dcCharIsAttackRole(cd){return String(cd&&cd.role_id||'')==='1'}
 function _dcCharIsSupportRole(cd){return String(cd&&cd.role_id||'')==='3'}
+function _dcCharIsDurabilityRole(cd){return String(cd&&cd.role_id||'')==='2'}
 /** Trait / ability blob mentions Support Attack or Support Counter context (EN/JA/TW). */
 function _dcAbilityBlobMentionsSupportCounter(s){
 const t=String(s||'');
@@ -17685,6 +17715,123 @@ return _dcParseMaxSupportCounterAtkPctFromChar(cd,ud,{unitCondPassive:!!c.unitCo
 function _dcEffectiveSupportCounterAtkPct(){return _dcEffectiveSupportCounterAtkPctFromCtx(S.dc);}
 /** Legacy post-multiply path — support-counter % is combat-only (see _dcGetModifiedAttackerUnitStatsFromCtx forPanel). */
 function _dcApplySupportCounterAtkToUnitAtk(unitAtk){return unitAtk;}
+
+/** Trait blob mentions Support Defense (EN/JA/TW/HK). */
+function _dcAbilityBlobMentionsSupportDefense(s){
+const t=String(s||'');
+if(!t.trim())return false;
+if(/support\s+defense/i.test(t))return true;
+if(/支援防御|支援防禦/.test(t))return true;
+if(/지원\s*방어/.test(t))return true;
+return false;
+}
+/** Max DEF % from Support Defense passives in one text blob. */
+function _dcExtractSupportDefenseDefPctFromBlob(blob){
+const s=String(blob||'');
+let max=0;
+const tryN=(m)=>{if(m){const v=parseInt(m[1],10);if(Number.isFinite(v)&&v>max)max=v}};
+let m;
+m=s.match(/(?:increase|Increases)\s+own\s+DEF\s+by\s+(\d+)\s*%/i);tryN(m);
+m=s.match(/(?:increase|Increases)\s+DEF\s+by\s+(\d+)\s*%/i);tryN(m);
+m=s.match(/increase\s+own\s+defense\s+by\s+(\d+)\s*%/i);tryN(m);
+m=s.match(/防御力が(\d+)%上昇/);tryN(m);
+m=s.match(/守備力提升(\d+)%/);tryN(m);
+m=s.match(/防禦力提升(\d+)%/);tryN(m);
+m=s.match(/방어력이\s*(\d+)\s*%\s*상승/);tryN(m);
+return max;
+}
+/** Sum Support Defense MS DEF % from abilities (max within each ability, then sum). */
+function _dcSumSupportDefenseDefPctFromAbilities(abilities,resolveFn,unitRef,cd,allowJoinedBlob){
+let total=0;
+(abilities||[]).forEach(ab=>{
+const r=resolveFn(ab);
+if(!r)return;
+let abMax=0;
+(r.details||[]).forEach(ln=>{
+const tx=typeof ln==='string'?ln:(ln&&ln.text)||'';
+if(!tx||!_dcAbilityBlobMentionsSupportDefense(tx))return;
+if(!_dcExtractSupportDefenseDefPctFromBlob(tx))return;
+const condGroups=(ln&&ln.condition_groups)||[];
+if(condGroups.length&&!_dcAbilityCondContextMeetsGroups(unitRef,cd,condGroups))return;
+const p=_dcExtractSupportDefenseDefPctFromBlob(tx);
+if(p>abMax)abMax=p;
+});
+if(abMax<=0&&allowJoinedBlob){
+const blob=(r.details||[]).map(d=>typeof d==='string'?d:(d&&d.text)||'').join('\n');
+if(_dcAbilityBlobMentionsSupportDefense(blob))abMax=_dcExtractSupportDefenseDefPctFromBlob(blob);
+}
+if(abMax>0)total+=abMax;
+});
+return total;
+}
+/** Pilot + MS: Support Defense DEF % while covering (type/tag gates via condition_groups). */
+function _dcParseMaxSupportDefenseDefPctFromChar(cd,ud){
+if((!cd||cd._manual)&&(!ud||ud._manual))return 0;
+const unitRef=ud||S.dc.defUnitData||S.dc.atkUnitData;
+let total=0;
+if(cd&&!cd._manual){
+total+=_dcSumSupportDefenseDefPctFromAbilities(
+cd.abilities,
+_dcResolveCharAbilityForMode,
+unitRef,
+cd,
+_dcCharIsDurabilityRole(cd)
+);
+}
+if(unitRef&&!unitRef._manual){
+total+=_dcSumSupportDefenseDefPctFromAbilities(
+unitRef.abilities,
+_dcResolveUnitAbilityForMode,
+unitRef,
+cd&&!cd._manual?cd:null,
+false
+)|0;
+}
+return total;
+}
+/** Apply Support Defense DEF %: +floor(DEF × pct/100) — same shape as 1-turn MS DEF buff. */
+function _dcApplySupportDefenseDefPctToUnitDef(unitDef,pct){
+const F=Math.floor;
+const p=pct|0;
+if(p<=0)return unitDef;
+const d=F(Math.max(0,Number(unitDef)||0));
+return d+F(d*p/100);
+}
+/** Max EN-consumption reduction % from Support Attack/Counter lines (type-gated). */
+function _dcExtractSupportCounterEnRedPctFromBlob(blob){
+const s=String(blob||'');
+if(!_dcAbilityBlobMentionsSupportCounter(s))return 0;
+return _extractEnConsumptionReductionPct(s)|0;
+}
+function _dcSumSupportCounterEnRedPctFromAbilities(abilities,resolveFn,unitRef,cd){
+let total=0;
+(abilities||[]).forEach(ab=>{
+const r=resolveFn(ab);
+if(!r)return;
+let abMax=0;
+(r.details||[]).forEach(ln=>{
+const tx=typeof ln==='string'?ln:(ln&&ln.text)||'';
+if(!tx)return;
+const condGroups=(ln&&ln.condition_groups)||[];
+if(condGroups.length&&!_dcAbilityCondContextMeetsGroups(unitRef,cd,condGroups))return;
+const p=_dcExtractSupportCounterEnRedPctFromBlob(tx);
+if(p>abMax)abMax=p;
+});
+if(abMax>0)total+=abMax;
+});
+return total;
+}
+/** Pilot Support Attack/Counter weapon EN reduction % (Support-type MS + matching conditions). */
+function _dcParseMaxSupportCounterEnRedPctFromChar(cd,ud){
+if(!cd||cd._manual||!ud||ud._manual)return 0;
+if(String(ud.role_id||'')!=='3')return 0;
+return _dcSumSupportCounterEnRedPctFromAbilities(
+cd.abilities,
+_dcResolveCharAbilityForMode,
+ud,
+cd
+)|0;
+}
 
 function _dcParsePilotAbilBonuses(cd){
 const b={dmgDealt:0,critDmg:0,dmgTaken:0,atkPct:0,items:[]};
@@ -19053,8 +19200,9 @@ const defUnitStats=td?(td[uKey]||td.stats_no_cond||td.stats||[]):[];
 /* Unit Skill (1 turn) MOB%/ATK% when defender skill toggle is on (e.g. V2AB MOB +10%). */
 const usk=_dcGetDetectedUnitTurnBuffPercents(ud);
 const uskOn=!!S.dc.defUnitSkillActive&&((usk.atkPct|0)>0||(usk.mobPct|0)>0||(usk.defPct|0)>0);
-/* Always run sheet formula for database defenders (ML / OP / supporter). forPanel skips attacker-only support-counter. */
-const ctx={optionParts:S.dc.defOptionParts||[],supporters:S.dc.defSupporters||[],atkUnitData:ud,masterLeagueBuff:!!S.dc.masterLeagueBuff,grandOffensiveBuff:false,unitTurnBuffAtk:uskOn};
+/* Always run sheet formula for database defenders (ML / OP / supporter). forPanel skips attacker-only support-counter.
+ * MLS / multi-slot fight: optional defSquadCond* so same-squad ATK/DEF auras apply on the defender sheet too. */
+const ctx={optionParts:S.dc.defOptionParts||[],supporters:S.dc.defSupporters||[],atkUnitData:ud,atkCharData:S.dc.defCharData||null,charCondPassive:!!S.dc.defCharCondPassive,masterLeagueBuff:!!S.dc.masterLeagueBuff,grandOffensiveBuff:false,unitTurnBuffAtk:uskOn,squadCondAtkPct:S.dc.defSquadCondAtkPct|0,squadCondDefPct:S.dc.defSquadCondDefPct|0,exSquadAtkPct:0,ultAltActive:!!S.dc.defUltAltActive};
 return _dcGetModifiedAttackerUnitStatsFromCtx(ctx,defUnitStats,true);
 }
 
@@ -20713,6 +20861,17 @@ const mobDbCorePassive=F(mobBase*(100+pMob)/100);
 const atkDbCorePassive=F(atkBase*(100+pAtk)/100);
 /* Named-unit EX flat MOV (dual-gate needs CP; PEP-only when pair matches). */
 unitMove=_dcPilotPairUnitMovFlat(unitMove,c);
+/* ULT Alteration max (100% growth / alt LV cap — e.g. total Alt Lv 50): flat add after sheet %. */
+if(c.ultAltActive||(c===S.dc&&S.dc.ultAltActive)){
+const _ua=_ultAltMaxAddMap(c.atkUnitData);
+if(_ua){
+unitHp+=( _ua.HP|0);
+unitEn+=( _ua.EN|0);
+unitAtk+=( _ua.Attack|0);
+unitDefVal+=( _ua.Defense|0);
+unitMob+=( _ua.Mobility|0);
+}
+}
 return{unitAtk,unitHp,unitEn,unitDefVal,unitMob,unitMove,atkSupport,hpSupport,leaderPct,leaderSameGroupAdBonusPct:lpAd|0,supportCounterPct:supCnt|0,unitAtkExSquadBase,unitAtkGrowthAfterOptions,unitDefExSquadBase,deltaExAtk,advantageFlatGrowthAtk:atkBase,advantageFlatGrowthDef:defBase,hpGrowthBase:hpBase,enGrowthBase:enBase,mobGrowthBase:mobBase,hpDbCorePassive,defDbCorePassive,mobDbCorePassive,atkDbCorePassive};
 }
 function _dcGetModifiedAttackerUnitStatsForPanel(atkUnitStats){return _dcGetModifiedAttackerUnitStatsFromCtx(S.dc,atkUnitStats,true);}
@@ -20770,6 +20929,33 @@ if(_defMod){
 unitDef=Math.max(0,_defMod.unitDefVal|0);
 defModHp=Math.max(0,_defMod.unitHp|0);
 defModMob=Math.max(0,_defMod.unitMob|0);
+}
+/* Advantage DEF while defending: same tag rule as ATK, on the defender’s own Advantage lines vs attacker tags. */
+if(S.dc.applyAdvantageEnemyTag!==false&&S.dc.defUnitData&&!S.dc.defUnitData._manual&&S.dc.atkUnitData){
+const _advDefNpc={unit:S.dc.atkUnitData,character:S.dc.atkCharData||null};
+const _advDefPct=_dcAdvantageTagAtkPctCore(S.dc.defUnitData,_advDefNpc)|0;
+if(_advDefPct>0){
+let _defRawBase=(_defMod&&(_defMod.advantageFlatGrowthDef|0))||0;
+if(!_defRawBase){
+const _dLb=S.dc.defUnitData.lb_data;
+const _dMax=_dLb&&_dLb.length?_dLb.length-1:0;
+const _dTier=Math.min(Math.max(0,S.dc.defLbTier|0),_dMax);
+const _dTd=(_dLb&&_dLb[_dTier])||(S.dc.defUnitData.stats&&{stats_no_cond:S.dc.defUnitData.stats});
+const _dUcp=!!(S.dc.defUnitData.has_cond_stats&&S.dc.defUnitCondPassive);
+const _dKey=_dUcp?'stats_with_cond':'stats_no_cond';
+const _dStats=_dTd?(_dTd[_dKey]||_dTd.stats_no_cond||_dTd.stats||[]):[];
+const _dEnt=_dcFindStatEntry(_dStats,'Defense');
+_defRawBase=Math.floor(Math.max(0,_dEnt?_dEnt.base:0));
+}
+if(!_defRawBase)_defRawBase=Math.floor(Math.max(0,Number(defUnit&&defUnit.stats_raw&&defUnit.stats_raw.Defense)||0));
+unitDef=_dcApplyAdvantageTagAtkToUnitAtk(unitDef,_advDefPct,_defRawBase);
+}
+}
+/* Support Defense: pilot/unit “increase own DEF by N%” while covering (type/tag gates). */
+let supportDefenseDefPctApplied=0;
+if(S.dc.supportDefenseActive){
+supportDefenseDefPctApplied=_dcParseMaxSupportDefenseDefPctFromChar(S.dc.defCharData,S.dc.defUnitData)|0;
+if(supportDefenseDefPctApplied>0)unitDef=_dcApplySupportDefenseDefPctToUnitDef(unitDef,supportDefenseDefPctApplied);
 }
 let defDebuffPct=_dcManualPlusWeaponDefDebuffPct(wpn,S.dc.wpnLv);
 if(defDebuffPct>0){
@@ -20909,7 +21095,7 @@ characterStatRatio,unitStatRatio,charSigmoid,unitSigmoid,
 atkCombined,defCombined,offenseComponent,defenseComponent,
 damageCorrection:C(damageCorrection),terrainCorrection,totalNormalMultPct,totalCritMultPct,critCorrectionPct,critPreVigor,crit125Trim,scaledNormal,scaledCrit,defendMult,unitSkillMult,postDmgMult,isExWeapon,
 defMsDefensePair,defMsStatsRawDefense,defMsBonusDefense,defDebuffFlatSubtract,qubPlusOneApplied,
-traitDistPow,traitHpPow,traitMpPow,traitWpnDistBasePct:wtTraits.distPowerMax|0,traitWpnCoreBonusPct:wtTraits.distCoreMax|0,finalWpnPowOverride,vigorDmgBonusPct,userDmgIncreasePct,unitSkillDmgDealtPct,exSquadAtkPct,squadCondAtkPct,squadCondDefPct,counterOwnAtkPct,supportCounterAtkPctApplied,advantageTagAtkPct,advantageGrowthFlatOmitted:false,userCritDmgUpPct,dmgTakenUpPct,dmgTakenUpGeneric,dmgTakenUpTyped,takenDown,unitSkillDtdPct,unitSkillBarrierPct,unitSkillBarrierCap,unitSkillBarrierAbsorb,unitSkillInitialNull,defDebuffPct,
+traitDistPow,traitHpPow,traitMpPow,traitWpnDistBasePct:wtTraits.distPowerMax|0,traitWpnCoreBonusPct:wtTraits.distCoreMax|0,finalWpnPowOverride,vigorDmgBonusPct,userDmgIncreasePct,unitSkillDmgDealtPct,exSquadAtkPct,squadCondAtkPct,squadCondDefPct,counterOwnAtkPct,supportCounterAtkPctApplied,supportDefenseDefPctApplied,advantageTagAtkPct,advantageGrowthFlatOmitted:false,userCritDmgUpPct,dmgTakenUpPct,dmgTakenUpGeneric,dmgTakenUpTyped,takenDown,unitSkillDtdPct,unitSkillBarrierPct,unitSkillBarrierCap,unitSkillBarrierAbsorb,unitSkillInitialNull,defDebuffPct,
 pilotBoostPct:0,pilotAtkDownPct:0,unitAtkDownPct:0,accDownPct,mobDownPct,wpnElem:_dcWeaponAttributeKeys(wpn).join('/'),
 hitRate:accResult.finalHitRate,hitRateDetails:accResult,isSuperVigor:_dcNormMpLevel(S.dc.mpLevel)==='super'};
 }

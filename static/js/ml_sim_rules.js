@@ -5,6 +5,15 @@
 (function (root) {
   'use strict';
 
+  /* Combat RNG — ml_sim injects simRandom so optimizer + SIMULATION START share one seed. */
+  var randomFn = function () { return Math.random(); };
+  function setRandom(fn) {
+    randomFn = typeof fn === 'function' ? fn : function () { return Math.random(); };
+  }
+  function nextRandom() {
+    try { return randomFn(); } catch (e) { return Math.random(); }
+  }
+
   function unitSize(u) {
     if (!u) return 1;
     if (u.size != null) return Math.max(1, u.size | 0);
@@ -93,6 +102,8 @@
       m = t.match(/最大射程[^0-9]*?(\d+)|max(?:imum)?\s*range[^0-9]*?[+＋]?(\d+)|射程\s*[+＋](\d+)/i);
       if (!m) continue;
       if (!tensionOk(actor && actor.mp, t)) continue;
+      /* Cond:Vigor Special Weapon Max Range — only special weapons. */
+      if (/special\s+weapon|特殊武装|特殊武裝|特殊武器/i.test(t) && !weaponIsSpecial(weapon)) continue;
       if (/HP(?:が)?満タン|HP\s*(?:at\s*)?full/i.test(t) && hpRatio < 0.999) continue;
       hpM = t.match(/HP(?:が)?(\d+)%以上|HP\s*(\d+)%\+/i);
       if (hpM && hpRatio * 100 < (parseInt(hpM[1] || hpM[2], 10) || 0)) continue;
@@ -114,6 +125,10 @@
     });
   }
 
+  /* Last-call cache: pickEngage + MAP + move all BFS the same actor/board state. */
+  var _reachCacheKey = '';
+  var _reachCacheCells = null;
+
   /**
    * gge getReachableCells — 4-dir BFS. Allies are passable; enemies block.
    * bounds: {minX,maxX,minY,maxY}
@@ -127,9 +142,20 @@
     var visited = {};
     var reachable = [];
     var head = 0;
-    var curr, dirs, t, nx, ny, key, blocked, u, isOcc;
+    var curr, dirs, t, nx, ny, key, blocked, u, isOcc, i, fp, cacheKey;
     visited[startX + ',' + startY] = 1;
     bounds = bounds || { minX: 0, maxX: 16, minY: 0, maxY: 15 };
+
+    fp = '';
+    for (i = 0; i < (allUnits || []).length; i++) {
+      u = allUnits[i];
+      if (!u) continue;
+      fp += (u.id || i) + ':' + (u.x | 0) + ',' + (u.y | 0) + ',' + ((u.hp | 0) > 0 ? 1 : 0) + ';';
+    }
+    cacheKey = (actor.id || '') + '@' + startX + ',' + startY + '/' + move + '/' +
+      (bounds.minX | 0) + ',' + (bounds.maxX | 0) + ',' + (bounds.minY | 0) + ',' + (bounds.maxY | 0) +
+      '/' + size + '/' + fp;
+    if (_reachCacheKey === cacheKey && _reachCacheCells) return _reachCacheCells;
 
     function occupies(x, y) {
       var i;
@@ -171,6 +197,8 @@
       }
     }
     if (!reachable.length) reachable.push({ x: startX, y: startY, cost: 0 });
+    _reachCacheKey = cacheKey;
+    _reachCacheCells = reachable;
     return reachable;
   }
 
@@ -923,9 +951,19 @@
     var t = normalizeFullwidth(text);
     var m = mp | 0;
     if (/超一撃|Supercharged\s*EX|超一擊/i.test(t) && m < 12) return false;
+    /* "Max or greater" / 超強気以上 — require High band (MP≥8), before soft High|Max matcher. */
+    if (/(?:Vigor\s+is\s+[\"'「]?Max|Vigor[^\n]{0,24}Max[\"'」]?\s+or\s+greater|テンションが「?超強気|テンション「?超強気」?以上|戰意為「?超強勢|戰意「?超強勢」?以上|战意为「?超强势)/i.test(t) && m < 8) return false;
     if (/超強気|High\s*Vigor|超強勢/i.test(t) && !/超一撃|Supercharged/i.test(t) && m < 8) return false;
     if (/強気以上|Vigor.*(High|Max)|強勢以上/i.test(t) && m < 4) return false;
     return true;
+  }
+
+  function weaponIsSpecial(weapon) {
+    var t = String((weapon && weapon.raw && weapon.raw.weapon_type) || (weapon && weapon.weapon_type) || '');
+    if (/特殊|special/i.test(t)) return true;
+    /* Numeric type tables sometimes encode special as 3 / "Special". */
+    if (/^3$/.test(t.trim())) return true;
+    return false;
   }
 
   /**
@@ -1064,7 +1102,7 @@
   }
 
   function getEffectiveEnCost(actor, weapon, isSupport) {
-    var base, mult, maxEn, curEn, ratio, bags, i, desc, m;
+    var base, mult, maxEn, curEn, ratio, bags, i, desc, m, saEnRed, abMax;
     if (!actor || !weapon) return 0;
     base = weapon.en != null ? (weapon.en | 0)
       : (weapon.en_cost != null ? (weapon.en_cost | 0)
@@ -1083,17 +1121,45 @@
       }
       m = desc.match(/消費EN(?:が)?(\d+)%増加|EN\s*cost\s*\+(\d+)%|EN\s*consumption.*?(\d+)%\s*increase/i);
       if (m) mult += (parseInt(m[1] || m[2] || m[3], 10) || 0) / 100;
-      m = desc.match(/消費EN(?:が)?(\d+)%(?:軽減|減少)|EN\s*cost\s*-(\d+)%|EN\s*consumption.*?(\d+)%\s*(?:reduc|decreas)/i);
-      if (m) mult -= (parseInt(m[1] || m[2] || m[3], 10) || 0) / 100;
-      if (isSupport) {
-        m = desc.match(/支援.*?消費EN.*?(\d+)%軽減|Support.*?EN\s*cost.*?(\d+)%/i);
-        if (m) mult -= (parseInt(m[1] || m[2], 10) || 0) / 100;
+      /* Always-on EN reduction (not SA-gated). SA/Counter EN cut is handled below with type gates. */
+      if (!/Support\s+Attack|支援攻撃|支援攻擊|지원\s*공격/i.test(desc)) {
+        m = desc.match(/消費EN(?:が)?(\d+)%(?:軽減|減少)|EN\s*cost\s*-(\d+)%|EN\s*consumption.*?(\d+)%\s*(?:reduc|decreas)/i);
+        if (m) mult -= (parseInt(m[1] || m[2] || m[3], 10) || 0) / 100;
       }
+    }
+    /* Support Attack/Counter: “reduce own weapon EN consumption by N%” when type/tag conditions match. */
+    if (isSupport) {
+      saEnRed = 0;
+      if (typeof root._dcParseMaxSupportCounterEnRedPctFromChar === 'function'
+        && actor.char && actor.unit) {
+        try {
+          saEnRed = root._dcParseMaxSupportCounterEnRedPctFromChar(actor.char, actor.unit) | 0;
+        } catch (eEn) { saEnRed = 0; }
+      }
+      if (saEnRed <= 0) {
+        /* Fallback: scan ability details with role/tag gates (same as detailConditionsMet). */
+        abMax = 0;
+        iterAbilityDetails(actor, function (ab, detail, text) {
+          var norm, p, mm;
+          if (detail && !detailConditionsMet(actor, detail)) return;
+          norm = normalizeFullwidth(text);
+          if (!/Support\s+Attack\s*\/\s*(?:Support\s*)?Counter|Support\s+Attack\/Counter|支援攻撃|支援攻擊|지원\s*공격/i.test(norm)) return;
+          mm = norm.match(/reduce\s+(?:own\s+)?(?:weapon\s+)?EN\s+consumption\s+by\s+(\d+)\s*%/i)
+            || norm.match(/消費EN(?:が)?(\d+)%(?:軽減|減少)/)
+            || norm.match(/消耗EN減輕(\d+)%/)
+            || norm.match(/무장\s*소비\s*EN[이가]?\s*(\d+)\s*%\s*감소/i);
+          if (!mm) return;
+          p = parseInt(mm[1], 10) || 0;
+          if (p > abMax) abMax = p;
+        });
+        saEnRed = abMax;
+      }
+      if (saEnRed > 0) mult -= saEnRed / 100;
     }
     if (actor.unit && actor.unit.pilot_en_cost_reduction_pct) {
       mult -= (actor.unit.pilot_en_cost_reduction_pct | 0) / 100;
     }
-    return Math.max(0, Math.round(base * mult));
+    return Math.max(0, Math.round(base * Math.max(0, mult)));
   }
 
   function weaponMpRequirement(weapon) {
@@ -1216,7 +1282,7 @@
     if (weapon.accuracy != null) hitRate += ((weapon.accuracy | 0) - 100);
     else if (weapon.raw && weapon.raw.accuracy != null) hitRate += ((weapon.raw.accuracy | 0) - 100);
     if (hitRate < 0) hitRate = 0;
-    return (Math.random() * 100) <= hitRate;
+    return (nextRandom() * 100) <= hitRate;
   }
 
   /** gge calculateCriticalRate — weapon base + ability / OP / SD-tag lines. */
@@ -1314,6 +1380,18 @@
     return false;
   }
 
+  /** MAP hit test: gge uses the unit’s placement anchor, not any overlapping footprint cell. */
+  function unitAnchorInCells(unit, cells) {
+    var ux = unit.x | 0;
+    var uy = unit.y | 0;
+    var i, c;
+    for (i = 0; i < (cells || []).length; i++) {
+      c = cells[i];
+      if ((c.x | 0) === ux && (c.y | 0) === uy) return true;
+    }
+    return false;
+  }
+
   /**
    * gge MAP interrupt — use any is_map with ammo when AoE beats single-target
    * (master map_coords instead of JP name whitelist; same decision math).
@@ -1350,16 +1428,13 @@
 
       cells = mapWeaponWorldCells(simPos, wpn);
       if (!cells.length) {
-        /* fall back: all foes in weapon range */
-        inArea = alive(foes).filter(function (e) {
-          var d = distance(simPos, e);
-          return d >= mn && d <= mx;
-        });
-      } else {
-        inArea = alive(foes).filter(function (e) {
-          return unitOverlapsCells(e, cells);
-        });
+        /* No master map_coords → skip (do not fake a full min–max range blast). */
+        continue;
       }
+      /* Large units: only the anchor cell (unit.x/y) counts — corner-graze on a 2×2 must not pull them in. */
+      inArea = alive(foes).filter(function (e) {
+        return unitAnchorInCells(e, cells);
+      });
       if (!inArea.some(function (e) { return e === target; })) continue;
 
       maxSel = 0;
@@ -1410,6 +1485,7 @@
         best = {
           weapon: wpn,
           targets: inArea,
+          cells: cells.slice(),
           moveTo: needMove ? { x: simPos.x, y: simPos.y } : null,
           mapKills: mapKills,
           totalDmg: totalDmg,
@@ -1953,6 +2029,7 @@
   }
 
   var api = {
+    setRandom: setRandom,
     unitSize: unitSize,
     distance: distance,
     chebyshev: distance,

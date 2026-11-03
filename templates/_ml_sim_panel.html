@@ -18,7 +18,10 @@
     </div>
   </div>
   <header class="mls-top">
-    <a class="mls-back" href="/ml" onclick="event.preventDefault();switchTab('master_league')">Master League</a>
+    <a class="mls-back mls-back--logo" href="/ml" onclick="event.preventDefault();switchTab('master_league')" title="Master League" aria-label="Master League">
+      {# CDN first; fall back to /static (jsDelivr 403 until ggen_db_images has this file). #}
+      <img class="mls-back-logo" src="{% if image_cdn %}{{ image_cdn }}/images/UI/Profile/profile_logo_ml_event_en.webp{% else %}/static/images/UI/Profile/profile_logo_ml_event_en.webp{% endif %}" alt="" width="160" height="40" decoding="async" onerror="this.onerror=null;this.src='/static/images/UI/Profile/profile_logo_ml_event_en.webp'">
+    </a>
     <h1>Simulator</h1>
     <label class="mls-season-wrap">
       <span class="mls-lbl">SEASON</span>
@@ -36,7 +39,7 @@
   </nav>
 
   <section class="mls-view is-active" id="mlsViewFormation" data-view="formation">
-    <p class="mls-note">Left = opponent, right = your force. Each side has a <strong>supporter</strong> (same as Team Builder): after you pick one, unit suggestions filter by that supporter’s tags. Set <strong>LB</strong> and <strong>option part</strong> per unit the same way as /tb. <strong>Drag</strong> a formation portrait to reorder slots, or drag a unit on the <strong>Battle</strong> map onto that side’s <strong>spawn cells</strong> for this season’s formation (drop on a teammate to swap starts).</p>
+    <p class="mls-note">Left = opponent, right = your force. Each side has a <strong>supporter</strong> (same as Team Builder): after you pick one, unit suggestions filter by that supporter’s tags. Tap the <strong>pilot portrait</strong> (or <strong>Set pilot</strong>) to swap pilots. Set <strong>LB</strong> and <strong>option part</strong> per unit the same way as /tb. <strong>Drag</strong> a formation portrait to reorder slots, or drag a unit on the <strong>Battle</strong> map onto that side’s <strong>spawn cells</strong> for this season’s formation (drop on a teammate to swap starts).</p>
     <div class="mls-forces">
       <div class="mls-force mls-force--enemy" aria-label="Enemy force">
         <header class="mls-force-head"><span class="mls-force-tag">ENEMY</span><span>Opponent · left</span></header>
@@ -102,14 +105,20 @@
 
   <section class="mls-view" id="mlsViewBattle" data-view="battle" hidden>
     <div class="mls-map-tools">
-      <label class="mls-check mls-aura-toggle" title="Cond:Area aura tiles + debuff icons (e.g. Neo Zeong EX)">
+      <label class="mls-check mls-aura-toggle" title="Cond:Area weapon-power aura tiles (e.g. Neo Zeong EX). Not MAP attack range.">
         <input type="checkbox" id="mlsAuraToggle" checked>
-        <span>Area aura</span>
+        <span>Cond:Area (not MAP)</span>
       </label>
     </div>
     <div class="mls-map-stage">
       <div class="mls-map-scroll">
         <div class="mls-map" id="mlsBoard" aria-label="Master League battle map"></div>
+      </div>
+      <div class="mls-turn-hud" id="mlsTurnHud" hidden aria-live="polite">
+        <span class="mls-turn-hud-lbl">TURN</span>
+        <span class="mls-turn-hud-num" id="mlsTurnHudNum">1</span>
+        <span class="mls-turn-hud-sep">/</span>
+        <span class="mls-turn-hud-max" id="mlsTurnHudMax">5</span>
       </div>
       <aside class="mls-map-turn-order" aria-label="Turn order">
         <div class="mls-lbl-row mls-map-turn-order-head">
