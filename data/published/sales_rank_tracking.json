@@ -1,9 +1,9 @@
 {
   "v": 1,
-  "saved_ms": 1793740518496,
+  "saved_ms": 1793741156696,
   "meta": {
-    "last_ok_ms": 1793740456085,
-    "last_err": "",
+    "last_ok_ms": 1793741073499,
+    "last_err": "gamei:<urlopen error _ssl.c:1011: The handshake operation timed out>",
     "started_ms": 1793557196594
   },
   "samples": [
@@ -10224,6 +10224,41 @@
           "overall": null,
           "games": null,
           "gamei_today": 295
+        }
+      }
+    },
+    {
+      "t": 1793741073499,
+      "countries": {
+        "hk": {
+          "overall": 13,
+          "games": 7,
+          "gamei_today": null
+        },
+        "mo": {
+          "overall": 16,
+          "games": 10,
+          "gamei_today": null
+        },
+        "tw": {
+          "overall": null,
+          "games": null,
+          "gamei_today": null
+        },
+        "jp": {
+          "overall": 92,
+          "games": 51,
+          "gamei_today": null
+        },
+        "sg": {
+          "overall": null,
+          "games": null,
+          "gamei_today": null
+        },
+        "kr": {
+          "overall": null,
+          "games": null,
+          "gamei_today": null
         }
       }
     }
