@@ -93,7 +93,14 @@ const skill = rules.pickSkill({
   pilotSkills: kit,
   weapons: [{ min_range: 1, max_range: 5 }]
 }, foes);
-assert(skill && skill.key === 'repair', 'repair beats others under 50% HP, got ' + (skill && skill.key));
+assert(skill && skill.key === 'high_speed', 'gge: High Speed before Repair when not yet in range, got ' + (skill && skill.key));
+const skillInRange = rules.pickSkill({
+  hp: 40, maxHp: 100, mp: 3, skillUsed: false, currentSp: 10,
+  x: 8, y: 9, move: 5, size: 1,
+  pilotSkills: kit,
+  weapons: [{ min_range: 1, max_range: 5 }]
+}, foes);
+assert(skillInRange && skillInRange.key === 'repair', 'repair when already in range and HP under 50%, got ' + (skillInRange && skillInRange.key));
 
 const lim = rules.supportDefendLimit({
   char: {

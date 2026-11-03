@@ -5,6 +5,8 @@
   var ROSTER_KEY = 'ggen_mls_roster_v3';
   var ROSTER_KEY_LEGACY = 'ggen_mls_roster_v2';
   var AURA_VIS_KEY = 'ggen_mls_aura_vis';
+  var ORDER_ENEMY_KEY = 'ggen_mls_order_enemies';
+  var pickerFilter = { rarity: '', role: '' };
   var DEFAULT_EVENT = '300021';
   var mlsUnlocked = false;
   var gateBound = false;
@@ -24,15 +26,21 @@
   var skipAll = false;
   var pauseWait = null;
   var speedMul = 1;
-  /* gge wait(ms/speed): 1× should feel readable. Was 320; owner asked ~50% slower. */
+  /* gge wait(ms/speed): 1× should feel readable. Was 320; owner asked ~50% slower (desktop). */
   var STEP_MS = 640;
   var MOVE_MS = 620;
+  /* Phone/tablet: same 1× button, but slightly snappier so it matches desktop feel. */
+  var MOBILE_PACE_MUL = 1.45;
   var dmgFloatSide = 0;
   var pickerCtx = null;
   var mapOrigin = { minX: 0, minY: 0 };
   var mapCellPx = 40;
+  var mapBgCacheKey = '';
   var viewName = 'formation';
   var mapFitBound = false;
+  /* Freeze camera + cell size after first battle paint — unit moves/KOs must not keep re-fitting smaller. */
+  var lockedMapWindow = null;
+  var lockedMapCellPx = 0;
   /* Seeded RNG during AI Search so every lineup faces the same rolls. */
   var rngLocked = false;
   var rngState = 1;
@@ -111,6 +119,20 @@
     });
   }
 
+  function mobileBattleSnappy() {
+    try {
+      if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) return true;
+      if (window.matchMedia && window.matchMedia('(max-width: 820px)').matches) return true;
+    } catch (e0) {}
+    return false;
+  }
+
+  function battlePaceMul() {
+    var mul = Math.max(1, speedMul);
+    if (mobileBattleSnappy()) mul *= MOBILE_PACE_MUL;
+    return mul;
+  }
+
   function stepDelay(kind) {
     var base = STEP_MS;
     if (kind === 'move') base = MOVE_MS;
@@ -119,7 +141,13 @@
     /* Match shelter/cover CSS ease (~380ms) so return finishes before the next beat. */
     if (kind === 'cover-return') base = Math.round(STEP_MS * 0.72);
     if (kind === 'turn') base = Math.round(STEP_MS * 1.6);
-    return Math.max(60, Math.round(base / Math.max(1, speedMul)));
+    return Math.max(50, Math.round(base / battlePaceMul()));
+  }
+
+  /** Ranged bolt / float hold — scales with speed so phones stay readable, not laggy. */
+  function rangedFlightMs(distPx) {
+    var raw = Math.round((distPx || 0) * 0.48 + 28);
+    return Math.max(110, Math.min(300, Math.round(raw / battlePaceMul())));
   }
 
   function mapMeta() {
@@ -173,7 +201,7 @@
   }
 
   function normalizeSlot(sl) {
-    return {
+    var out = {
       unitId: String(sl.unitId),
       charId: sl.charId != null ? String(sl.charId) : null,
       charName: sl.charName || '',
@@ -183,11 +211,18 @@
       thum: sl.thum || '',
       rarity: sl.rarity || '',
       roleIcon: sl.roleIcon || '',
+      roleId: sl.roleId != null ? String(sl.roleId) : '',
       optionPartId: sl.optionPartId != null ? String(sl.optionPartId) : null,
       optionPartName: sl.optionPartName || '',
       optionPartThum: sl.optionPartThum || '',
       optionPartRarity: sl.optionPartRarity || ''
     };
+    /* Optional map start override (battle-map drag). Absent = LINE spawn for that slot. */
+    if (sl.x != null && sl.y != null && !isNaN(+sl.x) && !isNaN(+sl.y)) {
+      out.x = +sl.x | 0;
+      out.y = +sl.y | 0;
+    }
+    return out;
   }
 
   function forceOf(side) {
@@ -198,6 +233,223 @@
     try {
       localStorage.setItem(ROSTER_KEY, JSON.stringify(roster));
     } catch (e) {}
+  }
+
+  function includeEnemyOrder() {
+    var el = document.getElementById('mlsOrderEnemies');
+    if (el) return !!el.checked;
+    try { return localStorage.getItem(ORDER_ENEMY_KEY) !== '0'; } catch (e) { return true; }
+  }
+
+  function syncOrderToggleUi() {
+    var a = document.getElementById('mlsOrderEnemies');
+    var b = document.getElementById('mlsOrderEnemiesForm');
+    var on = true;
+    try { on = localStorage.getItem(ORDER_ENEMY_KEY) !== '0'; } catch (e) {}
+    if (a) a.checked = on;
+    if (b) b.checked = on;
+  }
+
+  function onOrderEnemiesChange(ev) {
+    var on = !!(ev && ev.target && ev.target.checked);
+    try { localStorage.setItem(ORDER_ENEMY_KEY, on ? '1' : '0'); } catch (e) {}
+    syncOrderToggleUi();
+    paintTimeline();
+  }
+
+  function collectionsLb(unitId) {
+    try {
+      var o = JSON.parse(localStorage.getItem('ggen_collections_v1') || 'null');
+      var v = o && o.units && o.units[String(unitId)];
+      if (v == null || v === '') return null;
+      var n = parseInt(v, 10);
+      if (isNaN(n) || n < 0) return null;
+      return Math.max(0, Math.min(3, n));
+    } catch (e) {
+      return null;
+    }
+  }
+
+  var MLS_RARITY_ICONS = {
+    UR: '/static/images/Rarity/UI_Common_RarityIcon_UR.webp',
+    SSR: '/static/images/Rarity/UI_Common_RarityIcon_SSR.webp',
+    SR: '/static/images/Rarity/UI_Common_RarityIcon_SR.webp',
+    R: '/static/images/Rarity/UI_Common_RarityIcon_R.webp',
+    N: '/static/images/Rarity/UI_Common_RarityIcon_N.webp'
+  };
+  var MLS_ROLE_ICONS = {
+    '1': '/static/images/UI/UI_Common_TypeIcon_Attack_M.webp',
+    '2': '/static/images/UI/UI_Common_TypeIcon_Defense_M.webp',
+    '3': '/static/images/UI/UI_Common_TypeIcon_Support_M.webp'
+  };
+  var MLS_SUPP_CAT_ICON = '/static/images/UI/UI_Common_Icon_Category_Supporter_Main.webp';
+
+  function mlsIconImg(path, cls, alt) {
+    if (!path) return '';
+    return '<img class="' + (cls || 'mls-ic') + '" src="' + esc(thumbUrl(path)) +
+      '" alt="' + esc(alt || '') + '" width="18" height="18" loading="lazy" decoding="async">';
+  }
+
+  function rarityIconHtml(rarity, cls) {
+    var key = String(rarity || '').toUpperCase();
+    var path = MLS_RARITY_ICONS[key];
+    return path ? mlsIconImg(path, cls || 'mls-ic mls-ic--rarity', key) : (key ? esc(key) : '');
+  }
+
+  function roleIconHtml(roleIconOrId, cls) {
+    var path = '';
+    var id = String(roleIconOrId || '');
+    if (/^\/static\//.test(id) || /^https?:/i.test(id)) path = id;
+    else if (MLS_ROLE_ICONS[id]) path = MLS_ROLE_ICONS[id];
+    return path ? mlsIconImg(path, cls || 'mls-ic mls-ic--role', '') : '';
+  }
+
+  /** Compact share token: omit default LB3 and empty option part. */
+  function slotShareToken(sl) {
+    var lb, op, ch;
+    if (!sl || !sl.unitId) return '-';
+    lb = sl.lb != null ? (sl.lb | 0) : 3;
+    op = sl.optionPartId || '';
+    ch = sl.charId || '';
+    if (!op && lb === 3) return ch ? (sl.unitId + ',' + ch) : String(sl.unitId);
+    if (!op) return [sl.unitId, ch, lb].join(',');
+    return [sl.unitId, ch, lb, op].join(',');
+  }
+
+  function exportForceCode(side) {
+    var parts = forceOf(side).slots.map(slotShareToken);
+    while (parts.length && parts[parts.length - 1] === '-') parts.pop();
+    return 'MLS1|' + parts.join(';');
+  }
+
+  function parseForceCode(text) {
+    var raw = String(text || '').trim();
+    var slots = emptySlots();
+    var bits, i, bit, cols, sl;
+    if (!raw) return slots;
+    raw = raw.replace(/^MLS1\|/i, '');
+    if (/^[EA]:/i.test(raw) && raw.indexOf('|') >= 0) return null;
+    bits = raw.split(';');
+    for (i = 0; i < SLOT_COUNT && i < bits.length; i++) {
+      bit = String(bits[i] || '').trim();
+      if (!bit || bit === '-') continue;
+      cols = bit.split(',');
+      if (!cols[0]) continue;
+      sl = {
+        unitId: cols[0],
+        charId: cols[1] || null,
+        lb: cols[2] != null && cols[2] !== '' ? (parseInt(cols[2], 10) || 0) : 3,
+        optionPartId: cols[3] || null,
+        name: cols[0],
+        thum: '',
+        charName: '',
+        charThum: ''
+      };
+      slots[i] = normalizeSlot(sl);
+    }
+    return slots;
+  }
+
+  function applyShareText(side, text) {
+    var raw = String(text || '').trim();
+    var useCol = document.getElementById('mlsShareUseColLb');
+    var slots, i, lb;
+    if (/^MLS1\|E:/i.test(raw) && /\|A:/i.test(raw)) {
+      var enemyPart = raw.replace(/^MLS1\|E:/i, '').split(/\|A:/i)[0];
+      var allyPart = (raw.split(/\|A:/i)[1] || '');
+      applyShareText('enemy', 'MLS1|' + enemyPart);
+      applyShareText('ally', 'MLS1|' + allyPart);
+      return;
+    }
+    slots = parseForceCode(raw);
+    if (!slots) return;
+    if (side === 'ally' && useCol && useCol.checked) {
+      for (i = 0; i < slots.length; i++) {
+        if (!slots[i]) continue;
+        lb = collectionsLb(slots[i].unitId);
+        if (lb != null) slots[i].lb = lb;
+      }
+    }
+    forceOf(side).slots = slots;
+    saveRoster();
+    paintForceSlots();
+    scheduleOrderRefresh();
+    log('Loaded ' + side + ' from share code.');
+  }
+
+  function forceHasUnits(side) {
+    return forceOf(side).slots.some(function (sl) { return sl && sl.unitId; });
+  }
+
+  /** Shuffle left→right slot order only (no vertical/rot jitter). */
+  function scrambleShareFaces(faces) {
+    var imgs, i, j, t;
+    if (!faces) return;
+    imgs = Array.prototype.slice.call(faces.querySelectorAll('img'));
+    for (i = imgs.length - 1; i > 0; i--) {
+      j = Math.floor(Math.random() * (i + 1));
+      t = imgs[i];
+      imgs[i] = imgs[j];
+      imgs[j] = t;
+    }
+    imgs.forEach(function (img) {
+      faces.appendChild(img);
+      img.style.removeProperty('--mls-face-x');
+      img.style.removeProperty('--mls-face-y');
+      img.style.removeProperty('--mls-face-rot');
+    });
+  }
+
+  var shareFaceLayoutKey = { enemy: '', ally: '' };
+
+  function syncShareFacesReady() {
+    var eCol = document.querySelector('.mls-share-col--enemy .mls-share-faces');
+    var aCol = document.querySelector('.mls-share-col--ally .mls-share-faces');
+    var eReady = forceHasUnits('enemy');
+    var aReady = forceHasUnits('ally');
+    var eKey = eReady ? exportForceCode('enemy') : '';
+    var aKey = aReady ? exportForceCode('ally') : '';
+    if (eCol) {
+      if (eReady && eKey !== shareFaceLayoutKey.enemy) scrambleShareFaces(eCol);
+      shareFaceLayoutKey.enemy = eKey;
+      eCol.classList.toggle('is-ready', eReady);
+    }
+    if (aCol) {
+      if (aReady && aKey !== shareFaceLayoutKey.ally) scrambleShareFaces(aCol);
+      shareFaceLayoutKey.ally = aKey;
+      aCol.classList.toggle('is-ready', aReady);
+    }
+  }
+
+  function fillShareBoxes() {
+    var e = document.getElementById('mlsShareEnemy');
+    var a = document.getElementById('mlsShareAlly');
+    if (e && document.activeElement !== e) e.value = exportForceCode('enemy');
+    if (a && document.activeElement !== a) a.value = exportForceCode('ally');
+    syncShareFacesReady();
+  }
+
+  function loadShareFromClipboard(side) {
+    var el = document.getElementById(side === 'enemy' ? 'mlsShareEnemy' : 'mlsShareAlly');
+    function apply(text) {
+      if (el) el.value = text;
+      applyShareText(side, text);
+    }
+    if (navigator.clipboard && navigator.clipboard.readText) {
+      return navigator.clipboard.readText().then(function (text) {
+        if (!String(text || '').trim()) {
+          log('Clipboard empty — copy a share code first.');
+          return;
+        }
+        apply(text);
+      }).catch(function () {
+        var manual = window.prompt('Paste ' + side + ' share code (MLS1|…)', el ? el.value : '');
+        if (manual != null) apply(manual);
+      });
+    }
+    var fallback = window.prompt('Paste ' + side + ' share code (MLS1|…)', el ? el.value : '');
+    if (fallback != null) apply(fallback);
+    return Promise.resolve();
   }
 
   function fetchJson(url) {
@@ -375,22 +627,26 @@
     if (!host) return;
     var sup = forceOf(side).supporter;
     var lb = sup && sup.lb != null ? (sup.lb | 0) : 3;
+    var catIc = mlsIconImg(MLS_SUPP_CAT_ICON, 'mls-ic mls-ic--supp', 'Supporter');
+    var rarIc = rarityIconHtml(sup && sup.rarity, 'mls-ic mls-ic--rarity');
     if (sup && sup.id) {
       host.innerHTML =
-        '<button type="button" class="mls-supp-card has-supp" data-mls-pick-supp="' + side + '">' +
+        '<button type="button" class="mls-supp-card has-supp" data-mls-pick-supp="' + side + '" title="Supporter · tag-boosted unit suggestions">' +
         '<img class="mls-supp-thum" src="' + esc(thumbUrl(sup.thum || '')) + '" alt="" loading="lazy" decoding="async">' +
         '<span class="mls-supp-meta"><span class="name">' + esc(sup.name || sup.id) + '</span>' +
-        '<span class="sub">Supporter · tag-boosted unit suggestions</span></span>' +
+        '<span class="sub mls-sub-icons">' + catIc + rarIc +
+        '<span class="mls-sub-hint">tag-boosted picks</span></span></span>' +
         '<span class="mls-supp-actions">' +
         '<span class="mls-supp-lb" onclick="event.stopPropagation()">' + lbButtonsHtml(side, 0, lb, 'sup') + '</span>' +
         '<button type="button" class="mls-mini-btn danger" data-mls-clear-supp="' + side + '">Clear</button>' +
         '</span></button>';
     } else {
       host.innerHTML =
-        '<button type="button" class="mls-supp-card" data-mls-pick-supp="' + side + '">' +
+        '<button type="button" class="mls-supp-card" data-mls-pick-supp="' + side + '" title="Same as /tb — units suggest from this supporter’s tags">' +
         '<span class="mls-supp-thum">＋</span>' +
         '<span class="mls-supp-meta"><span class="name">Pick supporter</span>' +
-        '<span class="sub">Same as /tb — units suggest from this supporter’s tags</span></span>' +
+        '<span class="sub mls-sub-icons">' + catIc +
+        '<span class="mls-sub-hint">tag-boosted picks</span></span></span>' +
         '<span class="mls-slot-n">SUP</span></button>';
     }
   }
@@ -431,9 +687,11 @@
             : '+') +
           '</span></span>' +
           '<span class="mls-slot-meta"><span class="name">' + esc(sl.name || sl.unitId) + '</span>' +
-          '<span class="sub">' +
-          (sl.charName ? esc(sl.charName) + ' · ' : '') +
-          (sl.rarity ? esc(sl.rarity) + ' · ' : '') + 'tap name to change · drag portrait to reorder</span></span>' +
+          '<span class="sub mls-sub-icons" title="Tap name to change · drag portrait to reorder">' +
+          (sl.charName ? '<span class="mls-pilot-name">' + esc(sl.charName) + '</span>' : '') +
+          rarityIconHtml(sl.rarity) +
+          roleIconHtml(sl.roleIcon || sl.roleId) +
+          '</span></span>' +
           '<span class="mls-slot-n">#' + (i + 1) + '</span></button>' +
           '<div class="mls-slot-tools">' +
           '<span class="mls-supp-lb">' + lbButtonsHtml(side, i, lb, 'unit') + '</span>' +
@@ -468,6 +726,430 @@
     force.slots[toIdx] = tmp;
     saveRoster();
     paintForceSlots();
+    fillShareBoxes();
+    scheduleOrderRefresh();
+  }
+
+  /** LINE spawn for slot index, or roster x/y override from map drag. */
+  function effectiveSlotHome(side, idx) {
+    var cells = side === 'ally' ? allyCells() : enemyCells();
+    var base = cells[idx] || { n: (idx | 0) + 1, x: 0, y: 0 };
+    var sl = forceOf(side).slots[idx];
+    return {
+      n: base.n | 0,
+      x: (sl && sl.x != null) ? (sl.x | 0) : (base.x | 0),
+      y: (sl && sl.y != null) ? (sl.y | 0) : (base.y | 0),
+      type: base.type | 0
+    };
+  }
+
+  function writeSlotHome(side, idx, x, y) {
+    var sl = forceOf(side).slots[idx];
+    var cells = side === 'ally' ? allyCells() : enemyCells();
+    var base = cells[idx];
+    if (!sl || !sl.unitId) return;
+    x |= 0;
+    y |= 0;
+    if (base && (base.x | 0) === x && (base.y | 0) === y) {
+      delete sl.x;
+      delete sl.y;
+    } else {
+      sl.x = x;
+      sl.y = y;
+    }
+  }
+
+  function swapSlotHomes(side, aIdx, bIdx) {
+    var ha, hb;
+    aIdx |= 0;
+    bIdx |= 0;
+    if (aIdx === bIdx || aIdx < 0 || bIdx < 0) return;
+    ha = effectiveSlotHome(side, aIdx);
+    hb = effectiveSlotHome(side, bIdx);
+    writeSlotHome(side, aIdx, hb.x, hb.y);
+    writeSlotHome(side, bIdx, ha.x, ha.y);
+  }
+
+  function clientToMapCell(clientX, clientY) {
+    var host = document.getElementById('mlsBoard');
+    var win, rect, lx, ly, gx, gy;
+    if (!host || !board) return null;
+    rect = host.getBoundingClientRect();
+    if (!rect.width || !rect.height) return null;
+    lx = clientX - rect.left;
+    ly = clientY - rect.top;
+    if (lx < 0 || ly < 0 || lx >= rect.width || ly >= rect.height) return null;
+    win = computeMapWindow();
+    gx = Math.floor(lx / Math.max(1, mapCellPx));
+    gy = Math.floor(ly / Math.max(1, mapCellPx));
+    gx = Math.max(0, Math.min(win.cols - 1, gx));
+    gy = Math.max(0, Math.min(win.rows - 1, gy));
+    return { x: win.minX + gx, y: win.maxY - gy };
+  }
+
+  /** Units overlapping a map cell at formation-home (setup), excluding skipKey. */
+  function unitsFootprintAtHome(x, y, skipKey) {
+    var out = [];
+    var seen = {};
+    lastAlly.concat(lastEnemy).forEach(function (u) {
+      var key, probe, cells, hit;
+      if (!u || (u.hp | 0) <= 0) return;
+      key = tokenKey(u);
+      if (skipKey && key === skipKey) return;
+      probe = {
+        x: u.homeX != null ? u.homeX : u.x,
+        y: u.homeY != null ? u.homeY : u.y,
+        side: u.side,
+        isLarge: !!u.isLarge,
+        direction: u.direction
+      };
+      cells = footprintCells(probe);
+      hit = cells.some(function (c) {
+        return (c.x | 0) === (x | 0) && (c.y | 0) === (y | 0);
+      });
+      if (hit && !seen[key]) {
+        seen[key] = 1;
+        out.push(u);
+      }
+    });
+    return out;
+  }
+
+  /**
+   * Validate placing unit u with origin (nx,ny).
+   * Returns { ok, swap: actor|null } — swap when exactly one same-side occupant.
+   */
+  function evaluateMapPlace(u, nx, ny) {
+    var m = mapMeta();
+    var probe = {
+      x: nx | 0,
+      y: ny | 0,
+      side: u.side,
+      isLarge: !!u.isLarge,
+      direction: u.direction
+    };
+    var cells = footprintCells(probe);
+    var allies = {};
+    var enemyHit = false;
+    var i, c, others, j, o, keys;
+    for (i = 0; i < cells.length; i++) {
+      c = cells[i];
+      if (m.width > 0 && (c.x < 0 || c.x >= (m.width | 0))) {
+        return { ok: false, swap: null };
+      }
+      if (m.height > 0 && (c.y < 0 || c.y >= (m.height | 0))) {
+        return { ok: false, swap: null };
+      }
+      others = unitsFootprintAtHome(c.x, c.y, tokenKey(u));
+      for (j = 0; j < others.length; j++) {
+        o = others[j];
+        if (o.side !== u.side) enemyHit = true;
+        else allies[tokenKey(o)] = o;
+      }
+    }
+    if (enemyHit) return { ok: false, swap: null };
+    keys = Object.keys(allies);
+    if (keys.length > 1) return { ok: false, swap: null };
+    if (keys.length === 1) return { ok: true, swap: allies[keys[0]] };
+    return { ok: true, swap: null };
+  }
+
+  function clearMapDropHints() {
+    var host = document.getElementById('mlsBoard');
+    if (!host) return;
+    Array.prototype.forEach.call(host.querySelectorAll('.mls-cell.is-drop-ok, .mls-cell.is-drop-swap, .mls-cell.is-drop-bad'), function (el) {
+      el.classList.remove('is-drop-ok', 'is-drop-swap', 'is-drop-bad');
+    });
+  }
+
+  function paintMapDropHints(u, nx, ny, verdict) {
+    var host = document.getElementById('mlsBoard');
+    var probe, cells, cls;
+    clearMapDropHints();
+    if (!host || !u || nx == null || ny == null) return;
+    probe = {
+      x: nx | 0,
+      y: ny | 0,
+      side: u.side,
+      isLarge: !!u.isLarge,
+      direction: u.direction
+    };
+    cells = footprintCells(probe);
+    cls = !verdict || !verdict.ok
+      ? 'is-drop-bad'
+      : (verdict.swap ? 'is-drop-swap' : 'is-drop-ok');
+    cells.forEach(function (c) {
+      var el = host.querySelector('.mls-cell[data-xy="' + (c.x | 0) + ',' + (c.y | 0) + '"]');
+      if (el) el.classList.add(cls);
+    });
+  }
+
+  function commitMapPlace(u, nx, ny, swapU) {
+    var side = u.side;
+    var fromIdx = u.slotIdx | 0;
+    var toIdx;
+    if (fromIdx < 0 || fromIdx >= SLOT_COUNT) return false;
+    if (swapU) {
+      toIdx = swapU.slotIdx | 0;
+      if (toIdx < 0 || toIdx >= SLOT_COUNT || toIdx === fromIdx) return false;
+      swapSlotHomes(side, fromIdx, toIdx);
+    } else {
+      writeSlotHome(side, fromIdx, nx, ny);
+    }
+    saveRoster();
+    fillShareBoxes();
+    scheduleOrderRefresh();
+    log(swapU
+      ? ('Swapped map start: ' + (u.name || u.id) + ' ↔ ' + (swapU.name || swapU.id))
+      : ('Moved ' + (u.name || u.id) + ' start → (' + (nx | 0) + ',' + (ny | 0) + ')'));
+    return true;
+  }
+
+  /**
+   * Drag tokens on the battle map to set formation-start cells.
+   * Drop on empty cell → place; drop on teammate → swap homes; enemy / multi-overlap → reject.
+   * Disabled while fightBusy (board gets .is-fighting).
+   */
+  function bindMapTokenDrag() {
+    var host = document.getElementById('mlsBoard');
+    var THRESH = 8;
+    var SNAP_MS = 420;
+    var OVERSHOOT = 5;
+    var armed = false;
+    var active = false;
+    var snapping = false;
+    var dragU = null;
+    var originEl = null;
+    var ghost = null;
+    var pointerId = null;
+    var startX = 0;
+    var startY = 0;
+    var lastX = 0;
+    var lastY = 0;
+    var lastClientX = 0;
+    var rot = 0;
+    var ghostW = 48;
+    var ghostH = 48;
+    var hoverCell = null;
+    var hoverVerdict = null;
+    var reduceMotion = false;
+
+    if (!host || host._mlsMapDragBound) return;
+    host._mlsMapDragBound = true;
+
+    function prefersReduce() {
+      try {
+        return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function findActor(side, slotIdx) {
+      var list = side === 'enemy' ? lastEnemy : lastAlly;
+      var i;
+      for (i = 0; i < list.length; i++) {
+        if ((list[i].slotIdx | 0) === (slotIdx | 0)) return list[i];
+      }
+      return null;
+    }
+
+    function ghostPos(clientX, clientY, r) {
+      lastX = clientX - ghostW / 2;
+      lastY = clientY - ghostH / 2;
+      rot = r || 0;
+      if (!ghost) return;
+      ghost.style.transform =
+        'translate3d(' + lastX + 'px,' + lastY + 'px,0) scale(1.08) rotate(' + rot + 'deg)';
+    }
+
+    function destroyGhost() {
+      if (ghost && ghost.parentNode) ghost.parentNode.removeChild(ghost);
+      ghost = null;
+    }
+
+    function hardReset() {
+      clearMapDropHints();
+      if (originEl) {
+        originEl.classList.remove('is-map-dragging');
+        try {
+          if (originEl.releasePointerCapture && pointerId != null) {
+            originEl.releasePointerCapture(pointerId);
+          }
+        } catch (eRel) {}
+      }
+      destroyGhost();
+      armed = false;
+      active = false;
+      snapping = false;
+      dragU = null;
+      originEl = null;
+      pointerId = null;
+      hoverCell = null;
+      hoverVerdict = null;
+      rot = 0;
+    }
+
+    function beginLift(ev) {
+      var srcImg, srcRect;
+      if (active || !originEl || !dragU) return;
+      active = true;
+      reduceMotion = prefersReduce();
+      originEl.classList.add('is-map-dragging');
+      srcImg = originEl.querySelector('.mls-token-thum');
+      srcRect = originEl.getBoundingClientRect();
+      ghostW = Math.max(36, Math.round(srcRect.width) || 48);
+      ghostH = Math.max(36, Math.round(srcRect.height) || 48);
+      ghost = document.createElement('div');
+      ghost.className = 'mls-drag-ghost' + (dragU.side === 'enemy' ? ' is-enemy' : ' is-ally');
+      ghost.setAttribute('aria-hidden', 'true');
+      if (srcImg && srcImg.tagName === 'IMG' && srcImg.src) {
+        ghost.innerHTML = '<img src="' + esc(srcImg.src) + '" alt="">';
+      } else {
+        ghost.textContent = '◇';
+      }
+      ghost.style.width = ghostW + 'px';
+      ghost.style.height = ghostH + 'px';
+      document.body.appendChild(ghost);
+      ghostPos(ev.clientX, ev.clientY, 0);
+      try { originEl.setPointerCapture(ev.pointerId); } catch (eCap) {}
+      ev.preventDefault();
+    }
+
+    function updateHover(clientX, clientY) {
+      var cell;
+      if (ghost) ghost.style.pointerEvents = 'none';
+      cell = clientToMapCell(clientX, clientY);
+      hoverCell = cell;
+      hoverVerdict = cell && dragU ? evaluateMapPlace(dragU, cell.x, cell.y) : null;
+      if (cell && dragU) paintMapDropHints(dragU, cell.x, cell.y, hoverVerdict);
+      else clearMapDropHints();
+    }
+
+    function cellCenterClient(x, y) {
+      var hostEl = document.getElementById('mlsBoard');
+      var win, rect, left, top;
+      if (!hostEl) return null;
+      win = computeMapWindow();
+      rect = hostEl.getBoundingClientRect();
+      left = rect.left + ((x - win.minX) + 0.5) * mapCellPx;
+      top = rect.top + ((win.maxY - y) + 0.5) * mapCellPx;
+      return { x: left, y: top };
+    }
+
+    function animateSnapAndCommit(cancelled) {
+      var dest, endX, endY, dx, dy, len, ox, oy, anim, ms, cell, verdict, did;
+      cell = hoverCell;
+      verdict = hoverVerdict;
+      did = !cancelled && cell && verdict && verdict.ok;
+      snapping = true;
+      clearMapDropHints();
+      dest = did ? cellCenterClient(cell.x, cell.y) : null;
+      if (!ghost) {
+        if (did) commitMapPlace(dragU, cell.x, cell.y, verdict.swap);
+        hardReset();
+        return;
+      }
+      if (!dest) {
+        dest = originEl ? (function () {
+          var r = originEl.getBoundingClientRect();
+          return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+        })() : { x: lastX + ghostW / 2, y: lastY + ghostH / 2 };
+      }
+      endX = dest.x - ghostW / 2;
+      endY = dest.y - ghostH / 2;
+      dx = endX - lastX;
+      dy = endY - lastY;
+      len = Math.hypot(dx, dy) || 1;
+      ox = endX + (dx / len) * OVERSHOOT;
+      oy = endY + (dy / len) * OVERSHOOT;
+      ms = reduceMotion ? 1 : SNAP_MS;
+      try {
+        anim = ghost.animate(
+          [
+            {
+              transform: 'translate3d(' + lastX + 'px,' + lastY + 'px,0) scale(1.08) rotate(' + rot + 'deg)'
+            },
+            {
+              transform: 'translate3d(' + ox + 'px,' + oy + 'px,0) scale(1.02) rotate(0deg)',
+              offset: 0.7
+            },
+            {
+              transform: 'translate3d(' + endX + 'px,' + endY + 'px,0) scale(1) rotate(0deg)'
+            }
+          ],
+          {
+            duration: ms,
+            easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+            fill: 'forwards'
+          }
+        );
+      } catch (eAnim) {
+        anim = null;
+      }
+      function finish() {
+        var u = dragU;
+        var c = cell;
+        var v = verdict;
+        var ok = did;
+        hardReset();
+        if (ok && u && c && v) commitMapPlace(u, c.x, c.y, v.swap);
+      }
+      if (anim && anim.finished) anim.finished.then(finish).catch(finish);
+      else setTimeout(finish, ms);
+    }
+
+    host.addEventListener('pointerdown', function (ev) {
+      var tok, side, idx, u;
+      if (fightBusy || snapping || ev.button) return;
+      tok = ev.target && ev.target.closest && ev.target.closest('.mls-token');
+      if (!tok || !host.contains(tok)) return;
+      if (tok.classList.contains('is-gone') || tok.classList.contains('is-dead')) return;
+      side = tok.getAttribute('data-side') || '';
+      idx = parseInt(tok.getAttribute('data-slot-idx'), 10);
+      if ((side !== 'ally' && side !== 'enemy') || !(idx >= 0)) return;
+      u = findActor(side, idx);
+      if (!u) return;
+      dragU = u;
+      originEl = tok;
+      armed = true;
+      active = false;
+      pointerId = ev.pointerId;
+      startX = ev.clientX;
+      startY = ev.clientY;
+      lastClientX = ev.clientX;
+      try { tok.setPointerCapture(ev.pointerId); } catch (eArm) {}
+    });
+
+    host.addEventListener('pointermove', function (ev) {
+      var dist, tilt;
+      if (!armed || snapping || (pointerId != null && ev.pointerId !== pointerId)) return;
+      if (!active) {
+        dist = Math.hypot(ev.clientX - startX, ev.clientY - startY);
+        if (dist < THRESH) return;
+        beginLift(ev);
+      }
+      if (!active) return;
+      tilt = Math.max(-10, Math.min(10, (ev.clientX - lastClientX) * 0.55));
+      lastClientX = ev.clientX;
+      ghostPos(ev.clientX, ev.clientY, tilt);
+      updateHover(ev.clientX, ev.clientY);
+      ev.preventDefault();
+    });
+
+    function endDrag(ev) {
+      if (!armed || snapping) return;
+      if (pointerId != null && ev.pointerId !== pointerId) return;
+      if (!active) {
+        hardReset();
+        return;
+      }
+      updateHover(ev.clientX, ev.clientY);
+      animateSnapAndCommit(!(hoverCell && hoverVerdict && hoverVerdict.ok));
+    }
+
+    host.addEventListener('pointerup', endDrag);
+    host.addEventListener('pointercancel', endDrag);
   }
 
   /**
@@ -477,8 +1159,9 @@
    */
   function bindSlotDrag(host, side) {
     var THRESH = 8;
-    var SNAP_MS = 820;
-    var OVERSHOOT = 6;
+    /* Snap was 820ms — felt stuck after drop. Short settle only. */
+    var SNAP_MS = 220;
+    var OVERSHOOT = 3;
     var dragIdx = -1;
     var armed = false;
     var active = false;
@@ -509,6 +1192,19 @@
       }
     }
 
+    function clearNativeSelection() {
+      try {
+        var sel = window.getSelection && window.getSelection();
+        if (sel && sel.removeAllRanges) sel.removeAllRanges();
+      } catch (eSel) {}
+    }
+
+    function setDraggingBody(on) {
+      try {
+        document.body.classList.toggle('mls-is-slot-dragging', !!on);
+      } catch (eBody) {}
+    }
+
     function clearTargets() {
       host.querySelectorAll('.mls-slot-block.is-drop-target').forEach(function (el) {
         el.classList.remove('is-drop-target');
@@ -533,6 +1229,7 @@
       if (originBlock) originBlock.classList.remove('is-dragging');
       if (originWrap) originWrap.classList.remove('is-drag-source');
       clearTargets();
+      setDraggingBody(false);
     }
 
     function hardReset() {
@@ -561,6 +1258,8 @@
       active = true;
       suppressClick = true;
       reduceMotion = prefersReduce();
+      clearNativeSelection();
+      setDraggingBody(true);
       originBlock.classList.add('is-dragging');
       originWrap.classList.add('is-drag-source');
       srcImg = originWrap.querySelector('.mls-slot-thum');
@@ -580,7 +1279,7 @@
       document.body.appendChild(ghost);
       ghostPos(ev.clientX, ev.clientY, 0);
       try { originWrap.setPointerCapture(ev.pointerId); } catch (eCap) {}
-      ev.preventDefault();
+      if (ev && ev.preventDefault) ev.preventDefault();
     }
 
     function animateSnapTo(targetWrap, toIdx, cancelled) {
@@ -690,7 +1389,13 @@
       startX = ev.clientX;
       startY = ev.clientY;
       lastClientX = ev.clientX;
+      clearNativeSelection();
+      /*
+       * Portrait is touch-action:none. preventDefault kills iOS text-select / callout
+       * so the gesture stays a reorder drag. Page scroll uses the name / LB area.
+       */
       try { wrap.setPointerCapture(ev.pointerId); } catch (eArm) {}
+      if (ev.cancelable) ev.preventDefault();
     });
 
     host.addEventListener('pointermove', function (ev) {
@@ -711,7 +1416,7 @@
       if (ghost) ghost.style.pointerEvents = 'none';
       block = el && el.closest && el.closest('.mls-slot-block[data-mls-slot^="' + side + ':"]');
       if (block && block !== originBlock) block.classList.add('is-drop-target');
-      ev.preventDefault();
+      if (ev.cancelable) ev.preventDefault();
     });
 
     function endDrag(ev) {
@@ -745,6 +1450,19 @@
     host.addEventListener('pointerup', endDrag);
     host.addEventListener('pointercancel', endDrag);
 
+    host.addEventListener('contextmenu', function (ev) {
+      if (ev.target && ev.target.closest && ev.target.closest('.mls-slot-thum-wrap[data-mls-drag]')) {
+        ev.preventDefault();
+      }
+    });
+
+    host.addEventListener('selectstart', function (ev) {
+      if (armed || active || (ev.target && ev.target.closest &&
+          ev.target.closest('.mls-slot-thum-wrap, .mls-slot-block'))) {
+        ev.preventDefault();
+      }
+    });
+
     host.addEventListener('click', function (ev) {
       if (!suppressClick) return;
       ev.preventDefault();
@@ -758,6 +1476,8 @@
     var battle = document.getElementById('mlsViewBattle');
     var tabF = document.getElementById('mlsTabFormation');
     var tabB = document.getElementById('mlsTabBattle');
+    /* New view pass — unlock so the next battle paint can size once for this lineup. */
+    if (!fightBusy) clearMapCameraLock();
     if (formation) {
       formation.hidden = name !== 'formation';
       formation.classList.toggle('is-active', name === 'formation');
@@ -769,7 +1489,14 @@
     if (tabF) tabF.classList.toggle('is-active', name === 'formation');
     if (tabB) tabB.classList.toggle('is-active', name === 'battle');
     if (name === 'battle') {
+      preloadBannerArt();
+      /*
+       * Do not race a second loadArmies→paintBoard while SIMULATION START is loading.
+       * That stale paint was wiping unit thumbs under READY? GO!!.
+       */
+      if (fightBusy) return;
       loadArmies().then(function () {
+        if (fightBusy || viewName !== 'battle') return;
         paintBoard();
         paintTimeline();
       });
@@ -799,6 +1526,8 @@
           ? 'Search option part…'
           : (kind === 'character' ? 'Search pilot name…' : 'Search unit name…'));
     }
+    var filters = document.getElementById('mlsPickerFilters');
+    if (filters) filters.hidden = !(kind === 'unit' || kind === 'character');
     if (picker) picker.hidden = false;
     runPickerSearch('').then(renderPickerRows);
     if (search) setTimeout(function () { search.focus(); }, 30);
@@ -815,14 +1544,19 @@
     var side = pickerCtx && pickerCtx.side || 'ally';
     var query = String(q || '').trim();
     var url;
+    var filt = '';
+    if (kind === 'unit' || kind === 'character') {
+      if (pickerFilter.rarity) filt += '&rarity=' + encodeURIComponent(pickerFilter.rarity);
+      if (pickerFilter.role) filt += '&role=' + encodeURIComponent(pickerFilter.role);
+    }
     if (kind === 'supporter') {
       url = '/api/supporters?lang=' + encodeURIComponent(lang()) +
         '&per_page=40&page=1&sort=rarity&dir=desc' +
-        (query ? ('&q=' + encodeURIComponent(query)) : '');
+        (query ? ('&q=' + encodeURIComponent(query)) : '') + filt;
     } else if (kind === 'character') {
       url = '/api/characters?lang=' + encodeURIComponent(lang()) +
         '&per_page=40&page=1&sort=rarity&dir=desc' +
-        (query ? ('&q=' + encodeURIComponent(query)) : '');
+        (query ? ('&q=' + encodeURIComponent(query)) : '') + filt;
     } else if (kind === 'option') {
       var slForOp = forceOf(side).slots[pickerCtx.idx | 0];
       var uidOp = slForOp && slForOp.unitId ? String(slForOp.unitId) : '';
@@ -843,7 +1577,7 @@
       var pp = boost ? '80' : '40';
       url = '/api/units?lang=' + encodeURIComponent(lang()) +
         '&per_page=' + pp + '&page=1&sort=rarity&dir=desc' +
-        (query ? ('&q=' + encodeURIComponent(query)) : '') + boost;
+        (query ? ('&q=' + encodeURIComponent(query)) : '') + boost + filt;
     }
     return fetch(url, { credentials: 'same-origin' }).then(function (r) {
       if (!r.ok) throw new Error(kind + ' ' + r.status);
@@ -852,6 +1586,24 @@
       pickerRows = d.rows || [];
       return pickerRows;
     });
+  }
+
+  /** Same framed-thumb cells as /cal attacker picker (+ /tb). Filters stay MLS-only. */
+  function mlsPickerEntityCell(row, entityKind) {
+    var th = 52;
+    if (typeof global.renderEntityPickerItemCell === 'function' && (entityKind === 'unit' || entityKind === 'char')) {
+      return global.renderEntityPickerItemCell(row, entityKind, th, 'data-mls-pick-id');
+    }
+    if (typeof global.renderSupporterPickerCell === 'function' && entityKind === 'supp') {
+      return global.renderSupporterPickerCell(row, th, 'data-mls-pick-id');
+    }
+    if (typeof global.renderOptionPartPickerCell === 'function' && entityKind === 'mod') {
+      return global.renderOptionPartPickerCell(row, th, 'data-mls-pick-id');
+    }
+    /* Fallback if browse helpers not loaded yet. */
+    return '<div class="tb-picker-item" role="button" tabindex="0" data-mls-pick-id="' + esc(String(row.id)) + '">' +
+      (row.thum ? '<img src="' + esc(thumbUrl(row.thum)) + '" alt="" width="52" height="52" loading="lazy">' : '') +
+      '<span class="tb-picker-item-name">' + esc(row.name || row.id) + '</span></div>';
   }
 
   function renderPickerRows(rows) {
@@ -869,31 +1621,31 @@
       if (kind === 'option' && isSsrOpRow(u) && usedSsr[String(u.id)]) return false;
       return true;
     });
-    if (kind === 'option') {
-      host.classList.add('mls-picker-list--rich');
-      host.innerHTML = list.map(function (u) {
-        var meta = String(u.details || u.effect || u.rarity || '').trim();
-        return '<button type="button" class="mls-picker-row" data-mls-pick-id="' + esc(u.id) + '">' +
-          '<img src="' + esc(thumbUrl(u.thum)) + '" alt="" loading="lazy" decoding="async">' +
-          '<span class="mls-picker-op-body"><strong>' + esc(u.name || u.id) + '</strong>' +
-          '<span class="mls-picker-op-meta">' + esc(meta) + '</span></span>' +
-          '<span class="rarity">' + esc(u.rarity || '') + '</span></button>';
-      }).join('') || '<div class="mls-note" style="padding:12px">No option parts for this unit.</div>';
+    var empty = '<div class="mls-note" style="padding:12px">' +
+      (kind === 'option' ? 'No option parts for this unit.' : 'No results.') + '</div>';
+    if (!list.length) {
+      host.className = 'mls-picker-list';
+      host.innerHTML = empty;
       return;
     }
-    host.classList.remove('mls-picker-list--rich');
-    host.innerHTML = list.map(function (u) {
-      var sub = kind === 'supporter'
-        ? (u.series_tag || u.boost || u.rarity || '')
-        : (kind === 'character'
-          ? ((u.rarity || '') + (u.role ? ' · ' + u.role : ''))
-          : ((u.rarity || '') + (u.role ? ' · ' + u.role : '')));
-      return '<button type="button" class="mls-picker-row" data-mls-pick-id="' + esc(u.id) + '">' +
-        '<img src="' + esc(thumbUrl(u.thum)) + '" alt="" loading="lazy" decoding="async">' +
-        '<span><strong>' + esc(u.name || u.id) + '</strong><br><span class="rarity">' +
-        esc(String(sub).slice(0, 80)) + '</span></span>' +
-        '<span class="rarity">' + esc(u.id) + '</span></button>';
-    }).join('') || '<div class="mls-note" style="padding:12px">No results.</div>';
+    if (kind === 'option') {
+      host.className = 'mls-picker-list mls-picker-list--rich';
+      host.innerHTML = '<div class="tb-picker-option-list tb-picker-option-list--rich">' +
+        list.map(function (u) { return mlsPickerEntityCell(u, 'mod'); }).join('') + '</div>';
+      return;
+    }
+    if (kind === 'supporter') {
+      host.className = 'mls-picker-list';
+      host.innerHTML = '<div class="tb-picker-grid">' +
+        list.map(function (u) { return mlsPickerEntityCell(u, 'supp'); }).join('') + '</div>';
+      return;
+    }
+    /* unit / character — /cal attacker search grid */
+    host.className = 'mls-picker-list';
+    host.innerHTML = '<div class="tb-picker-grid">' +
+      list.map(function (u) {
+        return mlsPickerEntityCell(u, kind === 'character' ? 'char' : 'unit');
+      }).join('') + '</div>';
   }
 
   function schedulePickerSearch(q) {
@@ -927,6 +1679,7 @@
         id: String(row.id),
         name: row.name || String(row.id),
         thum: row.thum || '',
+        rarity: row.rarity || '',
         lb: 3
       };
       saveRoster();
@@ -1068,7 +1821,8 @@
         name: row.name || u.name || String(row.id),
         thum: row.thum || u.thum || u.portrait || '',
         rarity: row.rarity || u.rarity || '',
-        roleIcon: row.role_icon || '',
+        roleIcon: row.role_icon || u.role_icon || '',
+        roleId: row.role_id != null ? String(row.role_id) : (u.role_id != null ? String(u.role_id) : ''),
         optionPartId: null,
         optionPartName: '',
         optionPartThum: '',
@@ -1377,16 +2131,278 @@
     });
   }
 
-  /** Ability-line DTD (e.g. Neo Zeong “Beam Damage Reduction LV 2”) — not always in unit.skills. */
+  function actorHpPct(actor) {
+    var maxHp = Math.max(1, (actor && actor.maxHp) | 0);
+    return Math.max(0, Math.min(100, Math.round(100 * ((actor && actor.hp) | 0) / maxHp)));
+  }
+
+  function actorEnPct(actor) {
+    var maxEn = Math.max(1, (actor && actor.maxEn) | 0);
+    return Math.max(0, Math.min(100, Math.round(100 * ((actor && actor.currentEn) | 0) / maxEn)));
+  }
+
+  function abilityDetailTexts(ab) {
+    var out = [];
+    if (ab && ab.name) out.push(String(ab.name));
+    (Array.isArray(ab && ab.details) ? ab.details : []).forEach(function (d) {
+      out.push(typeof d === 'string' ? d : ((d && d.text) || ''));
+    });
+    return out;
+  }
+
+  function parseHpGateFromText(txt) {
+    if (typeof global._dcParseOwnHpPercentGate === 'function') {
+      return global._dcParseOwnHpPercentGate(txt);
+    }
+    var t = String(txt || '').replace(/\n/g, ' ');
+    var m;
+    if (!t || !/HP|ヒットポイント|耐久/i.test(t)) return null;
+    m = t.match(/HP\s*(?:is\s*)?(\d+)\s*%\s*or\s+(?:above|higher|greater)/i);
+    if (!m) m = t.match(/HP\s*(?:is\s*)?(?:at\s+least|≥|>=)\s*(\d+)\s*%/i);
+    if (!m) m = t.match(/HP(?:が|為|为)\s*(\d+)\s*%\s*以上/);
+    if (!m) m = t.match(/HP\s*(\d+)\s*%\s*以上/);
+    if (m) return { dir: 'above', pct: parseInt(m[1], 10) || 0 };
+    m = t.match(/HP\s*(?:is\s*)?(\d+)\s*%\s*or\s+(?:below|less|lower)/i);
+    if (!m) m = t.match(/HP\s*(?:is\s*)?(?:below|under|less\s+than|≤|<=)\s*(\d+)\s*%/i);
+    if (!m) m = t.match(/HP(?:が|為|为)\s*(\d+)\s*%\s*(?:以下|未満)/);
+    if (!m) m = t.match(/HP\s*(\d+)\s*%\s*(?:以下|未満)/);
+    if (m) return { dir: 'below', pct: parseInt(m[1], 10) || 0 };
+    return null;
+  }
+
+  function parseEnGateFromText(txt) {
+    if (typeof global._dcParseOwnEnPercentGate === 'function') {
+      return global._dcParseOwnEnPercentGate(txt);
+    }
+    return null;
+  }
+
+  /** Live Cond:HP / Cond:EN — null = no gate on sheet; bool = gate result. */
+  function liveOwnPercentGatesMet(abilities, hpPct, enPct) {
+    var above = [], below = [], enAbove = [], enBelow = [];
+    var i, texts, g;
+    (abilities || []).forEach(function (ab) {
+      texts = abilityDetailTexts(ab);
+      for (i = 0; i < texts.length; i++) {
+        g = parseHpGateFromText(texts[i]);
+        if (g) {
+          if (g.dir === 'above') above.push(g.pct | 0);
+          else below.push(g.pct | 0);
+        }
+        g = parseEnGateFromText(texts[i]);
+        if (g) {
+          if (g.dir === 'above') enAbove.push(g.pct | 0);
+          else enBelow.push(g.pct | 0);
+        }
+      }
+    });
+    if (!above.length && !below.length && !enAbove.length && !enBelow.length) return null;
+    if (above.length || below.length) {
+      var hpOk = false;
+      if (above.length && !below.length) {
+        hpOk = above.some(function (th) { return hpPct >= th; });
+      } else if (below.length && !above.length) {
+        hpOk = below.some(function (th) { return hpPct <= th; });
+      } else {
+        hpOk = above.some(function (th) { return hpPct >= th; })
+          || below.some(function (th) { return hpPct <= th; });
+      }
+      if (!hpOk) return false;
+    }
+    if (enAbove.length || enBelow.length) {
+      var enOk = false;
+      if (enAbove.length && !enBelow.length) {
+        enOk = enAbove.some(function (th) { return enPct >= th; });
+      } else if (enBelow.length && !enAbove.length) {
+        enOk = enBelow.some(function (th) { return enPct <= th; });
+      } else {
+        enOk = enAbove.some(function (th) { return enPct >= th; })
+          || enBelow.some(function (th) { return enPct <= th; });
+      }
+      if (!enOk) return false;
+    }
+    return true;
+  }
+
+  /** Cond:Vigor gate from unit/char abilities (same helpers as /cal). null = no gate. */
+  function liveVigorGateMet(actor, data, kind) {
+    var thr = null, req, mpLv;
+    if (!data) return null;
+    if (kind === 'char' && typeof global._dcVigorThresholdFromChar === 'function') {
+      thr = global._dcVigorThresholdFromChar(data);
+    } else if (typeof global._dcVigorThresholdFromUnit === 'function') {
+      thr = global._dcVigorThresholdFromUnit(data);
+    }
+    if (!thr) return null;
+    req = typeof global._dcVigorTierMax === 'function'
+      ? global._dcVigorTierMax(thr, 'max')
+      : thr;
+    mpLv = vigorLevelFromMp(actor && actor.mp);
+    if (typeof global._dcVigorAtLeast === 'function') {
+      return global._dcVigorAtLeast(mpLv, req);
+    }
+    return mpLv === req || mpLv === 'super' || (req === 'max' && (mpLv === 'max' || mpLv === 'super'));
+  }
+
+  /**
+   * Live unit Conditional Passive for /cal sheets:
+   * Cond:HP / Cond:EN / Cond:Vigor / Cond:Combat-Count / Cond:Damage taken /
+   * plus always-on Series·Tag·Character·Weapon sheets once other gates pass.
+   */
+  function liveUnitCondPassive(actor) {
+    var ud = actor && actor.unit;
+    var gate, vigor, combatMeta, dmgDefMeta, stacksCombat, stacksTaken;
+    if (!ud) return false;
+    combatMeta = ud.unit_combat_count_atk;
+    dmgDefMeta = ud.unit_damage_taken_def;
+    stacksCombat = actor.combatCountStacks | 0;
+    stacksTaken = actor.damageTakenStacks | 0;
+    if (!ud.has_cond_stats) {
+      /* Stack metas / Cond:Combat titles can arm CP without a with_cond sheet delta. */
+      if (combatMeta && stacksCombat > 0) return true;
+      if (dmgDefMeta && stacksTaken > 0) return true;
+      if (stacksCombat > 0 && unitHasCondTitle(ud, /\(\s*(?:Cond|Cnd):\s*(?:Combat(?:\s*-\s*Count)?|Deals Damage|Defeat)\s*\)/i)) return true;
+      if (stacksTaken > 0 && unitHasCondTitle(ud, /\(\s*(?:Cond|Cnd):\s*Damage taken\s*\)/i)) return true;
+      return false;
+    }
+    gate = liveOwnPercentGatesMet(ud.abilities, actorHpPct(actor), actorEnPct(actor));
+    if (gate === false) return false;
+    vigor = liveVigorGateMet(actor, ud, 'unit');
+    if (vigor === false) return false;
+    if (gate === true || vigor === true) return true;
+    if ((combatMeta || unitHasCondTitle(ud, /\(\s*(?:Cond|Cnd):\s*(?:Combat(?:\s*-\s*Count)?|Deals Damage|Defeat)\s*\)/i)) && stacksCombat > 0) return true;
+    if ((dmgDefMeta || unitHasCondTitle(ud, /\(\s*(?:Cond|Cnd):\s*Damage taken\s*\)/i)) && stacksTaken > 0) return true;
+    /* Stack-only kits stay off at 0 stacks. */
+    if (combatMeta || dmgDefMeta ||
+        unitHasCondTitle(ud, /\(\s*(?:Cond|Cnd):\s*(?:Combat(?:\s*-\s*Count)?|Deals Damage|Defeat|Damage taken)\s*\)/i)) {
+      if (gate === null && vigor === null) return false;
+    }
+    /* Series / Tag / Character / Weapon / Range / Squad sheets — active in battle when gates allow. */
+    return true;
+  }
+
+  function liveCharCondPassive(actor) {
+    var cd = actor && actor.char;
+    var gate, vigor;
+    if (!cd) return false;
+    gate = liveOwnPercentGatesMet(cd.abilities, actorHpPct(actor), actorEnPct(actor));
+    if (gate === false) return false;
+    vigor = liveVigorGateMet(actor, cd, 'char');
+    if (vigor === false) return false;
+    /* EX / Supercharged / tag CP sheets stay on unless a live gate failed. */
+    return true;
+  }
+
+  function liveHpAtkTierIndex(actor) {
+    var meta = actor && actor.unit && actor.unit.unit_hp_atk_tiers;
+    var tiers, pct, i, best;
+    if (!meta || !Array.isArray(meta.tiers) || !meta.tiers.length) return 0;
+    tiers = meta.tiers;
+    pct = actorHpPct(actor);
+    best = 0;
+    for (i = 0; i < tiers.length; i++) {
+      if (pct >= ((tiers[i] && tiers[i].hp_pct) | 0)) best = i;
+    }
+    return best;
+  }
+
+  function liveCombatStackCount(actor) {
+    var cc = actor && actor.unit && actor.unit.unit_combat_count_atk;
+    var n = actor && actor.combatCountStacks | 0;
+    if (!cc) return 0;
+    return Math.max(0, Math.min(cc.max_stacks | 0, n));
+  }
+
+  function liveDamageTakenDefStacks(actor) {
+    var dd = actor && actor.unit && actor.unit.unit_damage_taken_def;
+    var n = actor && actor.damageTakenStacks | 0;
+    if (!dd) return 0;
+    return Math.max(0, Math.min(dd.max_stacks | 0, n));
+  }
+
+  /** Supercharged EX tier from live MP (tier list on char.ex_supercharged_tiers). */
+  function liveSuperchargedExTier(actor) {
+    var tiers = actor && actor.char && actor.char.ex_supercharged_tiers;
+    var mpLv, max;
+    if (!tiers || !tiers.length) return 0;
+    max = tiers.length - 1;
+    mpLv = vigorLevelFromMp(actor && actor.mp);
+    if (mpLv === 'super') return max;
+    if (mpLv === 'max' && max >= 1) return Math.max(0, max - 1);
+    return 0;
+  }
+
+  /**
+   * /cal defNpc ignores unitDamageTakenDefStacks — apply Cond:Damage taken DEF
+   * onto defender Defense after _dcSyncDefNpcFromDatabase.
+   */
+  function applyLiveDamageTakenDefToDefNpc(defender, dc) {
+    var dd, n, raw, base, pct, tot;
+    dd = defender && defender.unit && defender.unit.unit_damage_taken_def;
+    n = liveDamageTakenDefStacks(defender);
+    if (!dd || !(dd.per > 0) || n <= 0 || !dc || !dc.defNpc || !dc.defNpc.unit) return;
+    raw = dc.defNpc.unit.stats_raw || (dc.defNpc.unit.stats_raw = {});
+    base = raw.Defense | 0;
+    if (!(base > 0)) return;
+    pct = (dd.per | 0) * n;
+    tot = Math.floor(base * (100 + pct) / 100);
+    raw.Defense = tot;
+  }
+
+  function unitHasCondTitle(ud, re) {
+    return ((ud && ud.abilities) || []).some(function (ab) {
+      return re.test(String((ab && ab.name) || ''));
+    });
+  }
+
+  function bumpCondStacksAfterHit(attacker, defender) {
+    var cc, dd, max, ud;
+    if (attacker && attacker.unit) {
+      ud = attacker.unit;
+      if (ud.unit_combat_count_atk) {
+        cc = ud.unit_combat_count_atk;
+        max = Math.max(1, cc.max_stacks | 0);
+        attacker.combatCountStacks = Math.min(max, (attacker.combatCountStacks | 0) + 1);
+      } else if (unitHasCondTitle(ud, /\(\s*(?:Cond|Cnd):\s*(?:Combat(?:\s*-\s*Count)?|Deals Damage|Defeat)\s*\)/i)) {
+        /* Cond:Combat / Deals Damage / Defeat — mark “has fought” for CP-on sheets. */
+        attacker.combatCountStacks = Math.min(20, (attacker.combatCountStacks | 0) + 1);
+      }
+    }
+    if (defender && defender.unit) {
+      ud = defender.unit;
+      if (ud.unit_damage_taken_def) {
+        dd = ud.unit_damage_taken_def;
+        max = Math.max(1, dd.max_stacks | 0);
+        defender.damageTakenStacks = Math.min(max, (defender.damageTakenStacks | 0) + 1);
+      } else if (unitHasCondTitle(ud, /\(\s*(?:Cond|Cnd):\s*Damage taken\s*\)/i)) {
+        defender.damageTakenStacks = Math.min(20, (defender.damageTakenStacks | 0) + 1);
+      }
+    }
+  }
+
+  function weaponAttrKeys(weapon) {
+    var raw = weapon && (weapon.raw || weapon);
+    if (raw && typeof global._dcWeaponAttributeKeys === 'function') {
+      return global._dcWeaponAttributeKeys(raw) || [];
+    }
+    var lab = String((raw && (raw.attribute || raw.Attribute)) || (weapon && weapon.name) || '');
+    var keys = [];
+    if (/\bbeam\b|ビーム|光束|鐳射|빔/i.test(lab)) keys.push('beam');
+    if (/\bphysical\b|物理|물리/i.test(lab)) keys.push('physical');
+    if (/\bspecial\b|特殊|특수/i.test(lab)) keys.push('special');
+    return keys;
+  }
+
+  /** Ability-line DTD (Phase Shift Armor, Beam Damage Reduction, …) — not always in unit.skills. */
   function abilityDamageTakenDownPct(unitData, weapon) {
     var best = 0;
-    var blob, m, pct, wantBeam, wantPhys, wantSpec, isBeam, isPhys, isSpec, attrs;
+    var blob, m, pct, wantBeam, wantPhys, wantSpec, keys, isBeam, isPhys, isSpec;
+    keys = weaponAttrKeys(weapon);
+    isBeam = keys.indexOf('beam') >= 0;
+    isPhys = keys.indexOf('physical') >= 0;
+    isSpec = keys.indexOf('special') >= 0;
     ((unitData && unitData.abilities) || []).forEach(function (ab) {
-      blob = '';
-      if (ab && ab.name) blob += ' ' + ab.name;
-      (Array.isArray(ab && ab.details) ? ab.details : []).forEach(function (d) {
-        blob += ' ' + (typeof d === 'string' ? d : (d && d.text) || '');
-      });
+      blob = abilityDetailTexts(ab).join(' ');
       if (!/reduce\s+damage\s+taken|被ダメージ|損傷(?:減輕|減少)/i.test(blob)) return;
       m = blob.match(/(\d+)\s*%/);
       pct = m ? (parseInt(m[1], 10) || 0) : 0;
@@ -1394,15 +2410,6 @@
       wantBeam = /\bbeam\b|ビーム|光束|鐳射/i.test(blob);
       wantPhys = /\bphysical\b|物理/i.test(blob);
       wantSpec = /\bspecial\b|特殊/i.test(blob);
-      attrs = '';
-      if (weapon && weapon.raw && typeof global._dcWeaponAttributeKeys === 'function') {
-        attrs = (global._dcWeaponAttributeKeys(weapon.raw) || []).join(' ');
-      } else if (weapon && weapon.raw) {
-        attrs = String(weapon.raw.attribute || weapon.raw.Attribute || weapon.name || '');
-      }
-      isBeam = /\bbeam\b|ビーム|光束|鐳射/i.test(attrs + ' ' + (weapon && weapon.name || ''));
-      isPhys = /\bphysical\b|物理/i.test(attrs);
-      isSpec = /\bspecial\b|特殊/i.test(attrs);
       if (wantBeam || wantPhys || wantSpec) {
         if (wantBeam && !isBeam) return;
         if (wantPhys && !isPhys) return;
@@ -1413,12 +2420,180 @@
     return Math.min(80, best);
   }
 
+  /** "Restore own HP and EN by 5% at the start of every turn." */
+  function parseTurnStartRestore(actor) {
+    var hpPct = 0, enPct = 0, found = false;
+    var bags = [], i, ab, texts, t, m;
+    if (actor && actor.unit && actor.unit.abilities) bags.push(actor.unit.abilities);
+    if (actor && actor.char && actor.char.abilities) bags.push(actor.char.abilities);
+    bags.forEach(function (list) {
+      for (i = 0; i < list.length; i++) {
+        ab = list[i];
+        texts = abilityDetailTexts(ab);
+        texts.forEach(function (raw) {
+          t = String(raw || '').replace(/\n/g, ' ');
+          if (!/start of every turn|毎ターン開始|每回合開始|毎回合開始/i.test(t)) return;
+          if (!/restor|回復|恢復|回复/i.test(t)) return;
+          m = t.match(/HP(?:\s+and\s+EN|\s*[&／/・]\s*EN)?\s+by\s+(\d+)\s*%/i)
+            || t.match(/HP(?:と|及|和)EN.*?(\d+)\s*%/)
+            || t.match(/耐久.*?(\d+)\s*%/);
+          if (m) {
+            found = true;
+            hpPct = Math.max(hpPct, parseInt(m[1], 10) || 0);
+            if (/EN|ENを|EN及|EN和/i.test(t)) enPct = Math.max(enPct, parseInt(m[1], 10) || 0);
+          }
+          m = t.match(/EN\s+by\s+(\d+)\s*%/i) || t.match(/EN.*?(\d+)\s*%/);
+          if (m && /restor|回復|恢復|回复/i.test(t) && /EN/i.test(t)) {
+            found = true;
+            enPct = Math.max(enPct, parseInt(m[1], 10) || 0);
+          }
+        });
+      }
+    });
+    return found ? { hpPct: hpPct, enPct: enPct } : null;
+  }
+
+  /**
+   * Once-only (or stack) “HP falls to X% or below → restore Y%”.
+   * Pilot EX: “When piloting Zeong (EX) and HP falls to 0%…”.
+   */
+  function parseHpFallRestores(actor) {
+    var out = [];
+    var bags = [], bi, i, ab, texts, t, m, thr, heal, once, unitName, key;
+    if (actor && actor.char && actor.char.abilities) bags.push({ src: 'char', list: actor.char.abilities });
+    if (actor && actor.unit && actor.unit.abilities) bags.push({ src: 'unit', list: actor.unit.abilities });
+    bags.forEach(function (bag) {
+      for (i = 0; i < bag.list.length; i++) {
+        ab = bag.list[i];
+        texts = abilityDetailTexts(ab);
+        texts.forEach(function (raw) {
+          t = String(raw || '').replace(/\n/g, ' ');
+          if (!/HP\s+falls\s+to|HPが|HP為|HP为|耐久.*(?:以下|以下に|降至)/i.test(t)) return;
+          if (!/restor|回復|恢復|回复/i.test(t)) return;
+          m = t.match(/HP\s+falls\s+to\s+(\d+)\s*%\s*or\s+below/i)
+            || t.match(/HP(?:が|為|为)\s*(\d+)\s*%\s*(?:以下|未満)/)
+            || t.match(/(?:降至|降到)\s*(\d+)\s*%/);
+          if (!m) return;
+          thr = parseInt(m[1], 10);
+          if (isNaN(thr)) return;
+          m = t.match(/restores?\s+own\s+HP\s+by\s+(\d+)\s*%/i)
+            || t.match(/HP(?:を|)\s*(\d+)\s*%\s*回復/)
+            || t.match(/恢復(?:自身)?HP\s*(\d+)\s*%/)
+            || t.match(/回复(?:自身)?HP\s*(\d+)\s*%/);
+          if (!m) return;
+          heal = parseInt(m[1], 10) || 0;
+          if (heal <= 0) return;
+          once = /once\s+only|1回のみ|僅一次|仅一次|一回のみ/i.test(t);
+          unitName = '';
+          m = t.match(/When\s+piloting\s+(.+?)\s+and\s+HP\s+falls/i)
+            || t.match(/(.+?)(?:に搭乗|駕駛|驾驶).{0,12}HP/);
+          if (m) unitName = String(m[1] || '').trim();
+          key = bag.src + ':' + String((ab && ab.id) || ab && ab.name || '') + ':' + thr + ':' + heal;
+          out.push({
+            key: key,
+            threshold: thr,
+            healPct: heal,
+            once: once,
+            unitName: unitName
+          });
+        });
+      }
+    });
+    return out;
+  }
+
+  function unitNameMatchesFilter(actor, filter) {
+    var want, have, a, b;
+    if (!filter) return true;
+    want = String(filter).toLowerCase().replace(/\s+/g, ' ').trim();
+    have = String((actor && actor.unit && actor.unit.name) || (actor && actor.name) || '')
+      .toLowerCase().replace(/\s+/g, ' ').trim();
+    if (!want || !have) return !want;
+    if (have === want) return true;
+    a = want.replace(/[()（）]/g, '');
+    b = have.replace(/[()（）]/g, '');
+    return b.indexOf(a) >= 0 || a.indexOf(b) >= 0;
+  }
+
+  function applyTurnStartRestore(actor, turn, snapshotLine) {
+    var rest, healHp, healEn;
+    rest = parseTurnStartRestore(actor);
+    if (!rest || (actor.hp | 0) <= 0) return;
+    healHp = rest.hpPct > 0 ? Math.floor((actor.maxHp | 0) * rest.hpPct / 100) : 0;
+    healEn = rest.enPct > 0 ? Math.floor((actor.maxEn | 0) * rest.enPct / 100) : 0;
+    if (healHp <= 0 && healEn <= 0) return;
+    if (healHp > 0) {
+      actor.ghostHp = actor.hp | 0;
+      actor.hp = Math.min(actor.maxHp | 0, (actor.hp | 0) + healHp);
+    }
+    if (healEn > 0) {
+      actor.currentEn = Math.min(actor.maxEn | 0, (actor.currentEn | 0) + healEn);
+    }
+    if (typeof snapshotLine === 'function') {
+      snapshotLine(
+        'T' + turn + ' Turn restore: ' + actor.name +
+        (healHp > 0 ? (' +' + healHp + ' HP') : '') +
+        (healEn > 0 ? (' +' + healEn + ' EN') : '') +
+        ' (HP ' + (actor.hp | 0) + '/' + (actor.maxHp | 0) +
+        ', EN ' + (actor.currentEn | 0) + '/' + (actor.maxEn | 0) + ')',
+        healHp > 0
+          ? { x: actor.x, y: actor.y, text: '+' + fmtNum(healHp), cls: 'mls-float--heal' }
+          : null,
+        null,
+        'skill'
+      );
+    }
+  }
+
+  /**
+   * After damage: once-only revive / threshold HP restore (Char Aznable / Shinn EX, …).
+   * Returns true if HP was restored above 0 after a lethal hit.
+   */
+  function applyHpFallRestores(actor, hpBefore, turn, snapshotLine) {
+    var list, pctBefore, pctAfter, maxHp, healed, i, r, crossed, amt;
+    if (!actor) return false;
+    list = parseHpFallRestores(actor);
+    if (!list.length) return false;
+    maxHp = Math.max(1, actor.maxHp | 0);
+    pctBefore = Math.max(0, Math.min(100, Math.round(100 * (hpBefore | 0) / maxHp)));
+    pctAfter = actorHpPct(actor);
+    if (!actor._hpFallRestoreUsed) actor._hpFallRestoreUsed = {};
+    healed = false;
+    for (i = 0; i < list.length; i++) {
+      r = list[i];
+      if (r.once && actor._hpFallRestoreUsed[r.key]) continue;
+      if (!unitNameMatchesFilter(actor, r.unitName)) continue;
+      crossed = pctBefore > r.threshold && pctAfter <= r.threshold;
+      if (!crossed) continue;
+      amt = Math.floor(maxHp * r.healPct / 100);
+      if (amt <= 0) continue;
+      actor.ghostHp = actor.hp | 0;
+      actor.hp = Math.min(maxHp, Math.max(0, actor.hp | 0) + amt);
+      if (r.once) actor._hpFallRestoreUsed[r.key] = true;
+      healed = true;
+      if (typeof snapshotLine === 'function') {
+        snapshotLine(
+          'T' + turn + ' HP restore' + (r.once ? ' (once)' : '') + ': ' + actor.name +
+          ' +' + amt + ' HP' +
+          (r.threshold <= 0 && (hpBefore | 0) <= 0 ? ' [revive]' : '') +
+          ' (HP ' + (actor.hp | 0) + '/' + maxHp + ')',
+          { x: actor.x, y: actor.y, text: '+' + fmtNum(amt), cls: 'mls-float--heal' },
+          null,
+          'skill'
+        );
+      }
+    }
+    return healed;
+  }
+
   /**
    * Damage via /cal calculateDamage — gge-aligned flags:
    * Support Defense / Force Guard → defending (×0.8), unit skill + ability DTD on.
+   * All Cond:* passives follow live battle state (HP/EN/Vigor/Combat/Damage taken/Turn).
    */
   function strikeDamage(attacker, defender, weapon, opts) {
     var dc, keys, snap, r, weapons, idx, lv, sup, dmg, abilDr, skillDr, R, auraPct, nullify;
+    var turnBuffOn;
     opts = opts || {};
     R = rules();
     if (typeof global.calculateDamage !== 'function' || !global.S || !global.S.dc || !attacker.unit || !defender.unit) {
@@ -1430,6 +2605,8 @@
       'lbTier', 'defLbTier', 'wpnIdx', 'wpnLv', 'masterLeagueBuff', 'mpLevel', 'defending', 'shield',
       'optionParts', 'defOptionParts', 'supporters', 'terrain', 'finalWpnPow', 'unitStatMode',
       'defUnitSkillActive', 'defCharCondPassive', 'defUnitCondPassive', 'unitCondPassive', 'charCondPassive',
+      'unitHpAtkTierIndex', 'unitCondStackCount', 'unitDamageTakenDefStacks', 'dcSuperchargedExTier',
+      '_dcSuperchargedExManual', 'unitTurnBuffAtk', 'unitTurnBuffDef',
       'dmgTakenDownUnit', 'dmgTakenDownPilot', 'supportCounterAtk', '_supportCounterAtkPct', 'dmgIncrease'
     ];
     snap = {};
@@ -1455,14 +2632,26 @@
       dc.dmgIncrease = skillAndDebuffDmgPct(attacker, weapon);
       dc.optionParts = attacker.optionParts || [];
       dc.defOptionParts = defender.optionParts || [];
-      /* Enable type-11 unit-skill DTD + conditional passives for battle. */
-      dc.defUnitSkillActive = true;
-      dc.defCharCondPassive = true;
-      dc.defUnitCondPassive = true;
-      dc.unitCondPassive = true;
-      dc.charCondPassive = true;
+      /* Live Cond:* → /cal CP sheet + stack sliders. */
+      /* Barrier / first-strike / typed unit-skill DR are applied in the fight loop after the skill fires. */
+      dc.defUnitSkillActive = false;
+      dc.unitCondPassive = liveUnitCondPassive(attacker);
+      dc.charCondPassive = liveCharCondPassive(attacker);
+      dc.defUnitCondPassive = liveUnitCondPassive(defender);
+      dc.defCharCondPassive = liveCharCondPassive(defender);
+      dc.unitHpAtkTierIndex = liveHpAtkTierIndex(attacker);
+      dc.unitCondStackCount = liveCombatStackCount(attacker);
+      /* Attacker stack slider is for own combat ATK; defender DEF patched after sync. */
+      dc.unitDamageTakenDefStacks = liveDamageTakenDefStacks(attacker);
+      dc.dcSuperchargedExTier = liveSuperchargedExTier(attacker);
+      dc._dcSuperchargedExManual = true;
+      /* Unit skill (1 turn) ATK/DEF/MOB — active while skillDmgPct / forceGuard-style buffs linger. */
+      turnBuffOn = !!(attacker.turnBuffActive || ((attacker.skillDmgPct | 0) > 0 && attacker.usedSkillThisTurn));
+      dc.unitTurnBuffAtk = turnBuffOn;
+      dc.unitTurnBuffDef = !!(defender.turnBuffActive || defender.forceGuard);
       dc.dmgTakenDownUnit = 0;
       dc.dmgTakenDownPilot = 0;
+      abilDr = 0;
       sup = attacker.supporter || sideSupportData[attacker.side] || null;
       if (sup) {
         if (sup._dcLbTier == null) {
@@ -1477,9 +2666,6 @@
       dc.terrain = terrainIndex();
       dc.finalWpnPow = 0;
       dc.unitStatMode = attacker.unitStatMode || 'normal';
-      /* Supercharged CP sheet for EX kits (our /cal path). */
-      dc.charCondPassive = true;
-      dc.unitCondPassive = true;
       if (weapon && (weapon.is_map || weapon.is_map_weapon) && attacker.unit && attacker.unit.weapons) {
         weapons = attacker.unit.weapons;
       } else {
@@ -1501,6 +2687,7 @@
       lv = weapon.raw && weapon.raw.levels ? weapon.raw.levels.length - 1 : 0;
       dc.wpnLv = Math.max(0, lv);
       if (typeof global._dcSyncDefNpcFromDatabase === 'function') global._dcSyncDefNpcFromDatabase();
+      applyLiveDamageTakenDefToDefNpc(defender, dc);
       if (!attacker.char) {
         /* Pilot missing → /cal returns null; keep raw power for ranking honesty. */
         return weapon.power | 0;
@@ -1515,10 +2702,12 @@
         auraPct = R.areaWeaponPowerAuraPct(attacker, opts.auraSources, weapon) | 0;
         if (auraPct) dmg = Math.max(0, Math.ceil(dmg * (100 + auraPct) / 100));
       }
-      /* Ability DTD (Beam Damage Reduction etc.) when not already in unit.skills type-11. */
+      /* Ability DTD (Phase Shift Armor, Beam DR, …) when not already in unit.skills type-11. */
       skillDr = r && r.unitSkillDtdPct != null ? (r.unitSkillDtdPct | 0) : 0;
       abilDr = abilityDamageTakenDownPct(defender.unit, weapon);
-      /* EX Absolute Hit / Nullify DR: skip ability DTD when trait says so. */
+      if ((defender.unitSkillBeamDr | 0) > abilDr && weaponAttrKeys(weapon).indexOf('beam') >= 0) {
+        abilDr = defender.unitSkillBeamDr | 0;
+      }
       if (abilDr > 0 && skillDr <= 0) {
         nullify = /Nullify\s+Weapon\s+Attribute|武装属性.*無効|武裝屬性.*無效/i.test(
           (weapon.traits || []).join(' ') + ' ' + ((weapon.raw && weapon.raw.traits) || []).join(' ')
@@ -1608,6 +2797,32 @@
         '<span class="mls-token-badge-lab">' + esc(lab) + '</span></span>';
     }
     return '<span class="mls-token-badge">' + esc(lab) + '</span>';
+  }
+
+  /** Sticky unit-skill icon above the portrait for the rest of the fight. */
+  function skillMarkHtml(u) {
+    var icon, lab;
+    if (!u || !u.skillMarkIcon) return '';
+    icon = thumbUrl(u.skillMarkIcon) || skillBadgeIconUrl();
+    lab = String(u.skillMarkText || 'SKILL').replace(/\s+LV\s*\d+/i, '');
+    return '<span class="mls-token-skill-mark" title="' + esc(lab) + '" aria-label="' + esc(lab) + '">' +
+      '<img src="' + esc(icon) + '" alt="" decoding="async"></span>';
+  }
+
+  function syncSkillMarkEl(el, u) {
+    var mark = el && el.querySelector('.mls-token-skill-mark');
+    var html;
+    if (!el) return;
+    if (!u || !u.skillMarkIcon) {
+      if (mark && mark.parentNode) mark.parentNode.removeChild(mark);
+      return;
+    }
+    html = skillMarkHtml(u);
+    if (mark) {
+      mark.outerHTML = html;
+    } else {
+      el.insertAdjacentHTML('afterbegin', html);
+    }
   }
 
   function floatIconUrl(ev) {
@@ -2044,7 +3259,11 @@
       active: false,
       ghostHp: hp,
       badge: '',
-      tension: 0
+      tension: 0,
+      _hpFallRestoreUsed: {},
+      combatCountStacks: 0,
+      damageTakenStacks: 0,
+      turnBuffActive: false
     };
     syncMpDisplay(actor);
     var R = rules();
@@ -2100,14 +3319,23 @@
     var jobs = [];
     cells.forEach(function (cell, i) {
       var sl = slots[i];
+      var home;
       if (!sl || !sl.unitId) return;
+      home = {
+        n: cell.n | 0,
+        x: sl.x != null ? (sl.x | 0) : (cell.x | 0),
+        y: sl.y != null ? (sl.y | 0) : (cell.y | 0),
+        type: cell.type | 0
+      };
       jobs.push(Promise.all([
         loadPair(sl.unitId, sl.charId, sl.lb != null ? sl.lb : 3),
         loadOptionPart(sl.optionPartId)
       ]).then(function (pair) {
         var loaded = pair[0];
         var op = pair[1];
-        return makeActor(side, cell, loaded, owned, sl, op ? [op] : [], supporter);
+        var actor = makeActor(side, home, loaded, owned, sl, op ? [op] : [], supporter);
+        if (actor) actor.slotIdx = i;
+        return actor;
       }).catch(function () { return null; }));
     });
     return Promise.all(jobs).then(function (rows) {
@@ -2132,32 +3360,16 @@
     });
   }
 
-  function computeMapWindow() {
-    var cells = [];
-    var m = mapMeta();
-    var mapW = m.width | 0;
-    var mapH = m.height | 0;
-    (board && board.sides || []).forEach(function (s) {
-      (s.cells || []).forEach(function (c) { cells.push(c); });
-    });
-    lastAlly.concat(lastEnemy).forEach(function (u) {
-      footprintCells(u).forEach(function (c) { cells.push(c); });
-    });
-    if (!cells.length) {
-      if (mapW > 0 && mapH > 0) {
-        return { minX: 0, maxX: mapW - 1, minY: 0, maxY: mapH - 1, cols: mapW, rows: mapH };
-      }
-      return { minX: 0, maxX: 16, minY: 0, maxY: 10, cols: 17, rows: 11 };
-    }
-    var minX = cells[0].x, maxX = cells[0].x, minY = cells[0].y, maxY = cells[0].y;
-    cells.forEach(function (c) {
-      if (c.x < minX) minX = c.x;
-      if (c.x > maxX) maxX = c.x;
-      if (c.y < minY) minY = c.y;
-      if (c.y > maxY) maxY = c.y;
-    });
-    /* Tight camera around the fight — not the empty full map (avoids scroll / tiny tokens). */
-    minX -= 1; maxX += 1; minY -= 1; maxY += 1;
+  function clearMapCameraLock() {
+    var host;
+    lockedMapWindow = null;
+    lockedMapCellPx = 0;
+    mapBgCacheKey = '';
+    host = document.getElementById('mlsBoard');
+    if (host) host.removeAttribute('data-layout');
+  }
+
+  function finishMapWindow(minX, maxX, minY, maxY, mapW, mapH) {
     if (mapW > 0) {
       minX = Math.max(0, minX);
       maxX = Math.min(mapW - 1, maxX);
@@ -2171,6 +3383,71 @@
       cols: maxX - minX + 1,
       rows: maxY - minY + 1
     };
+  }
+
+  /** Fresh bbox around spawns + current unit footprints (pad 1). */
+  function computeMapWindowFresh() {
+    var cells = [];
+    var m = mapMeta();
+    var mapW = m.width | 0;
+    var mapH = m.height | 0;
+    (board && board.sides || []).forEach(function (s) {
+      (s.cells || []).forEach(function (c) { cells.push(c); });
+    });
+    lastAlly.concat(lastEnemy).forEach(function (u) {
+      if (!u) return;
+      /* Keep home cells in the bbox so KO / retreat does not shrink the camera. */
+      cells.push({
+        x: u.homeX != null ? u.homeX : u.x,
+        y: u.homeY != null ? u.homeY : u.y
+      });
+      footprintCells(u).forEach(function (c) { cells.push(c); });
+    });
+    if (!cells.length) {
+      if (mapW > 0 && mapH > 0) {
+        return finishMapWindow(0, mapW - 1, 0, mapH - 1, mapW, mapH);
+      }
+      return finishMapWindow(0, 16, 0, 10, 0, 0);
+    }
+    var minX = cells[0].x, maxX = cells[0].x, minY = cells[0].y, maxY = cells[0].y;
+    cells.forEach(function (c) {
+      if (c.x < minX) minX = c.x;
+      if (c.x > maxX) maxX = c.x;
+      if (c.y < minY) minY = c.y;
+      if (c.y > maxY) maxY = c.y;
+    });
+    /* Tight camera around the fight — not the empty full map (avoids scroll / tiny tokens). */
+    minX -= 1; maxX += 1; minY -= 1; maxY += 1;
+    return finishMapWindow(minX, maxX, minY, maxY, mapW, mapH);
+  }
+
+  /**
+   * Stable battle camera: lock after first paint, expand if units leave the box,
+   * never shrink when units move / die / swap (that was the “map keeps shrinking” bug).
+   */
+  function computeMapWindow() {
+    var fresh = computeMapWindowFresh();
+    var m, mapW, mapH;
+    if (!lockedMapWindow) {
+      lockedMapWindow = fresh;
+      return lockedMapWindow;
+    }
+    if (fresh.minX < lockedMapWindow.minX || fresh.maxX > lockedMapWindow.maxX ||
+        fresh.minY < lockedMapWindow.minY || fresh.maxY > lockedMapWindow.maxY) {
+      m = mapMeta();
+      mapW = m.width | 0;
+      mapH = m.height | 0;
+      lockedMapWindow = finishMapWindow(
+        Math.min(lockedMapWindow.minX, fresh.minX),
+        Math.max(lockedMapWindow.maxX, fresh.maxX),
+        Math.min(lockedMapWindow.minY, fresh.minY),
+        Math.max(lockedMapWindow.maxY, fresh.maxY),
+        mapW, mapH
+      );
+      /* Window grew — allow a one-shot cell re-fit so tokens stay readable. */
+      lockedMapCellPx = 0;
+    }
+    return lockedMapWindow;
   }
 
   function tokenKey(u) {
@@ -2395,13 +3672,17 @@
     var badgeHtml = badgeChipHtml(badge, badgeText, badgeIconOv);
     return '<div class="mls-token' + (u.isLarge ? ' is-large' : '') + ' ' + (u.side === 'ally' ? 'ally' : 'enemy') +
       (u.active ? ' is-active' : '') + (u.hp <= 0 ? ' is-dead' : '') + markCls +
-      '" data-token-key="' + esc(tokenKey(u)) + '" data-unit-id="' + esc(u.id) + '" style="' + posStyle + coverStyle + '">' +
+      '" data-token-key="' + esc(tokenKey(u)) + '" data-unit-id="' + esc(u.id) +
+      '" data-side="' + esc(u.side || '') + '" data-slot-idx="' + (u.slotIdx | 0) +
+      '" title="Drag to set start cell" style="' + posStyle + coverStyle + '">' +
+      skillMarkHtml(u) +
       badgeHtml +
       auraDebuffHtml(u) +
       vigorHudHtml(u) +
       '<div class="mls-token-frame">' +
       (u.thum
-        ? '<img class="mls-token-thum" src="' + esc(u.thum) + '" alt="' + esc(u.name) + '" loading="lazy" decoding="async">'
+        ? '<img class="mls-token-thum" src="' + esc(u.thum) + '" alt="' + esc(u.name) +
+          '" loading="eager" decoding="async" fetchpriority="high">'
         : '') +
       '</div>' +
       supportStockHtml(u) +
@@ -2471,11 +3752,17 @@
   function fitMapCell(win) {
     var scroll = document.querySelector('#mlsViewBattle .mls-map-scroll');
     var host = document.getElementById('mlsBoard');
+    var availW, availH, cell;
     if (!scroll || !host) return mapCellPx;
-    var availW = Math.max(160, scroll.clientWidth - 12);
-    var availH = Math.max(160, scroll.clientHeight - 12);
-    var cell = Math.floor(Math.min(availW / Math.max(1, win.cols), availH / Math.max(1, win.rows)));
-    cell = Math.max(26, Math.min(72, cell));
+    if (lockedMapCellPx > 0) {
+      cell = lockedMapCellPx;
+    } else {
+      availW = Math.max(160, scroll.clientWidth - 12);
+      availH = Math.max(160, scroll.clientHeight - 12);
+      cell = Math.floor(Math.min(availW / Math.max(1, win.cols), availH / Math.max(1, win.rows)));
+      cell = Math.max(26, Math.min(72, cell));
+      lockedMapCellPx = cell;
+    }
     mapCellPx = cell;
     host.style.setProperty('--mls-cols', String(win.cols));
     host.style.setProperty('--mls-rows', String(win.rows));
@@ -2495,23 +3782,29 @@
       'linear-gradient(rgba(120,180,255,0.12) 1px, transparent 1px),' +
       'linear-gradient(90deg, rgba(120,180,255,0.12) 1px, transparent 1px)';
     var wash = 'linear-gradient(180deg, rgba(2,8,20,0.22), rgba(2,8,20,0.55))';
+    var url, mapW, mapH, fullW, fullH, offX, offY, posX, posY, cacheKey;
     if (!bg) {
+      mapBgCacheKey = '';
       host.classList.remove('has-bg');
       host.style.backgroundImage = '';
       host.style.backgroundSize = '';
       host.style.backgroundPosition = '';
       return;
     }
+    url = thumbUrl(bg).replace(/"/g, '\\"');
+    mapW = (m.width | 0) || win.cols;
+    mapH = (m.height | 0) || win.rows;
+    fullW = mapW * cell;
+    fullH = mapH * cell;
+    offX = (m.background_offset_x | 0);
+    offY = (m.background_offset_y | 0);
+    posX = -(win.minX) * cell - offX;
+    posY = -(mapH - 1 - win.maxY) * cell - offY;
+    cacheKey = [url, cell, win.minX, win.maxY, mapW, mapH, offX, offY].join('|');
+    /* Re-setting backgroundImage every step re-decodes the map art on iOS — skip when unchanged. */
+    if (cacheKey === mapBgCacheKey && host.classList.contains('has-bg')) return;
+    mapBgCacheKey = cacheKey;
     host.classList.add('has-bg');
-    var url = thumbUrl(bg).replace(/"/g, '\\"');
-    var mapW = (m.width | 0) || win.cols;
-    var mapH = (m.height | 0) || win.rows;
-    var fullW = mapW * cell;
-    var fullH = mapH * cell;
-    var offX = (m.background_offset_x | 0);
-    var offY = (m.background_offset_y | 0);
-    var posX = -(win.minX) * cell - offX;
-    var posY = -(mapH - 1 - win.maxY) * cell - offY;
     host.style.backgroundImage = grid + ',' + wash + ',url("' + url + '")';
     host.style.backgroundSize =
       cell + 'px ' + cell + 'px,' +
@@ -2659,7 +3952,7 @@
     el.classList.remove('is-covering', 'is-hit', 'is-crit-flash');
     el.style.removeProperty('--mls-cover-x');
     el.style.removeProperty('--mls-cover-y');
-    easeTokenTransform(el, 'translate3d(0,0,0)', !!animate && !skipAll, 380);
+    easeTokenTransform(el, 'translate3d(0,0,0)', !!animate && !skipAll, stepDelay('cover-return'));
   }
 
   /** KO tokens fade out then leave the map (no lingering greyscale corpses). */
@@ -2672,7 +3965,7 @@
       if (!el.parentNode) return;
       el.classList.add('is-gone');
       el.setAttribute('aria-hidden', 'true');
-    }, skipAll ? 0 : 520);
+    }, skipAll ? 0 : Math.max(180, Math.round(420 / battlePaceMul())));
   }
 
   function syncTokens(host, win, floatEvt, linkEvt, animate) {
@@ -2682,11 +3975,13 @@
     var tgtId = linkEvt && linkEvt.toId;
     var supportId = linkEvt && linkEvt.supportId;
     var seen = {};
-    var reduceMotion = false;
-    try {
-      reduceMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-    } catch (e0) {}
-    var doAnim = !!animate && !reduceMotion && !skipAll;
+    /*
+     * Do NOT gate on prefers-reduced-motion. iOS Accessibility → Reduce Motion is
+     * commonly on and was skipping muzzle / trail / shot / impact entirely, so
+     * mobile fights only showed damage numbers after the fact (desktop looked fine).
+     * Combat readability > OS motion preference on this board.
+     */
+    var doAnim = !!animate && !skipAll;
 
     lastAlly.concat(lastEnemy).forEach(function (u) {
       var key = tokenKey(u);
@@ -2695,7 +3990,7 @@
       var mark = '';
       var fx = { badge: '', hit: false, crit: !!(floatEvt && floatEvt.crit && tgtId && String(u.id) === String(tgtId)) };
       var el, cover, shelter, nextTf, badge, badgeEl, hpCur, hpGhost, hpNum, hpWrap;
-      var maxHp, hp, ghost, pct, ghostPct, ten;
+      var maxHp, hp, ghost, pct, ghostPct, ten, thumEl, frameEl;
       var stillCovering, isCoverReturn, isHeal;
       seen[key] = 1;
       /* Keep SD on the cover cell for support-def AND the following hit (gge). */
@@ -2765,7 +4060,7 @@
         el.style.removeProperty('--mls-shelter-x');
         el.style.removeProperty('--mls-shelter-y');
         if (doAnim && !el.classList.contains('is-covering')) {
-          easeTokenTransform(el, nextTf, true, 380);
+          easeTokenTransform(el, nextTf, true, stepDelay('cover-return'));
         } else {
           el.style.transition = 'none';
           el.style.setProperty('transform', nextTf, 'important');
@@ -2788,7 +4083,7 @@
         }
         /* Target backup + resume with SD return / SD KO — smooth ease, not FLIP. */
         if (shelterMotion) {
-          easeTokenTransform(el, nextTf, doAnim, 380);
+          easeTokenTransform(el, nextTf, doAnim, stepDelay('cover-return'));
         } else {
           flipTokenTo(el, nextTf, false);
         }
@@ -2800,15 +4095,32 @@
         (fx.hit ? ' is-hit' : '') + (fx.crit ? ' is-crit-flash' : '') +
         (stillCovering ? ' is-covering' : '') +
         ((u.sheltered && !stillCovering) ? ' is-sheltered' : '');
+      el.setAttribute('data-side', u.side || '');
+      el.setAttribute('data-slot-idx', String(u.slotIdx | 0));
+      el.setAttribute('title', fightBusy ? '' : 'Drag to set start cell');
       /* Slot reorder (AI Search) keeps the cell key — swap the portrait to the unit now standing there. */
       if (String(el.getAttribute('data-unit-id') || '') !== String(u.id)) {
         el.setAttribute('data-unit-id', String(u.id));
-        var thumEl = el.querySelector('.mls-token-thum');
-        if (thumEl) {
-          if (u.thum) thumEl.src = u.thum;
+      }
+      /* Always refresh portrait — stale/empty src was leaving blank thumbs after racey paints. */
+      thumEl = el.querySelector('.mls-token-thum');
+      if (u.thum) {
+        if (!thumEl) {
+          frameEl = el.querySelector('.mls-token-frame');
+          if (frameEl) {
+            frameEl.insertAdjacentHTML(
+              'afterbegin',
+              '<img class="mls-token-thum" src="' + esc(u.thum) + '" alt="' + esc(u.name || '') +
+                '" loading="eager" decoding="async" fetchpriority="high">'
+            );
+          }
+        } else {
+          if (thumEl.getAttribute('src') !== u.thum) thumEl.src = u.thum;
           thumEl.alt = u.name || '';
+          thumEl.loading = 'eager';
         }
       }
+      syncSkillMarkEl(el, u);
 
       maxHp = Math.max(1, u.maxHp | 0);
       hp = Math.max(0, u.hp | 0);
@@ -2885,6 +4197,9 @@
     burst.style.left = (((cellPos.x - win.minX) + 0.5) * cell) + 'px';
     burst.style.top = (((win.maxY - cellPos.y) + 0.5) * cell) + 'px';
     layer.appendChild(burst);
+    /* Same iOS insert→keyframe timing as damage floats. */
+    void burst.offsetWidth;
+    burst.classList.add('is-play');
     setTimeout(function () {
       if (burst.parentNode) burst.parentNode.removeChild(burst);
     }, 420);
@@ -2909,7 +4224,7 @@
     dy = y2 - y1;
     dist = Math.sqrt(dx * dx + dy * dy) || 1;
     ang = Math.atan2(dy, dx) * 180 / Math.PI;
-    flightMs = Math.max(150, Math.min(340, Math.round(dist * 0.5)));
+    flightMs = rangedFlightMs(dist);
 
     /* Shooter kick — briefly recoil away from the target, then settle. */
     atkEl = layer && layer.querySelector('[data-unit-id="' + String(atkId) + '"]');
@@ -2934,6 +4249,8 @@
     muzzle.style.left = x1 + 'px';
     muzzle.style.top = y1 + 'px';
     fxLayer.appendChild(muzzle);
+    void muzzle.offsetWidth;
+    muzzle.classList.add('is-play');
 
     trail = document.createElement('div');
     trail.className = 'mls-ranged-trail is-' + side + (crit ? ' is-crit' : '');
@@ -2957,7 +4274,7 @@
 
     setTimeout(function () {
       if (muzzle.parentNode) muzzle.parentNode.removeChild(muzzle);
-    }, 220);
+    }, 260);
     setTimeout(function () {
       if (trail.parentNode) {
         trail.classList.add('is-fade');
@@ -2989,7 +4306,7 @@
       atkEl.classList.add('is-lunge');
       atkEl.style.transition = 'transform 90ms cubic-bezier(0.2, 0, 0, 1)';
       atkEl.style.transform = 'translate3d(' + lx + 'px,' + ly + 'px,0)';
-      holdMs = crit ? 160 : 90;
+      holdMs = Math.round((crit ? 140 : 80) / battlePaceMul());
       setTimeout(function () {
         if (!atkEl.parentNode) return;
         /* Hit-stop hold on attacker at contact, then ease back. */
@@ -2997,11 +4314,12 @@
         void atkEl.offsetWidth;
         setTimeout(function () {
           if (!atkEl.parentNode) return;
-          atkEl.style.transition = 'transform 220ms cubic-bezier(0.22, 1, 0.36, 1)';
+          atkEl.style.transition = 'transform ' + Math.round(200 / battlePaceMul()) +
+            'ms cubic-bezier(0.22, 1, 0.36, 1)';
           atkEl.style.transform = 'translate3d(0,0,0)';
           atkEl.classList.remove('is-lunge');
         }, holdMs);
-      }, 90);
+      }, Math.round(80 / battlePaceMul()));
     }
     if (tgtEl && !tgtEl.classList.contains('is-covering')) {
       tgtEl.classList.remove('is-hit-stop');
@@ -3009,7 +4327,7 @@
       tgtEl.classList.add('is-hit-stop');
       setTimeout(function () {
         if (tgtEl.parentNode) tgtEl.classList.remove('is-hit-stop');
-      }, crit ? 320 : 260);
+      }, Math.round((crit ? 280 : 220) / battlePaceMul()));
     }
     spawnImpactBurst(host, win, linkEvt.to, linkEvt.side, crit);
   }
@@ -3037,7 +4355,7 @@
         fdx = ((linkEvt.to.x - linkEvt.from.x) * (mapCellPx || 40));
         fdy = ((linkEvt.from.y - linkEvt.to.y) * (mapCellPx || 40));
         fdist = Math.sqrt(fdx * fdx + fdy * fdy);
-        floatDelay = Math.max(150, Math.min(340, Math.round(fdist * 0.5)));
+        floatDelay = rangedFlightMs(fdist);
       }
       if (floatDelay) {
         setTimeout(function () { spawnFloat(floatEvt, win); }, floatDelay);
@@ -3076,25 +4394,70 @@
     }
     el.style.cssText = cellPctBox(w, ev.x | 0, ev.y | 0, 1, 1) + ';display:flex;align-items:center;justify-content:center;gap:4px';
     layer.appendChild(el);
+    /* iOS Safari often skips a keyframe that starts in the same frame as insert. */
+    void el.offsetWidth;
+    el.classList.add('is-play');
     setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 1100);
   }
 
-  function paintTimeline() {
-    var host = document.getElementById('mlsTimeline');
-    if (!host) return;
+  var orderRefreshTimer = null;
+
+  function scheduleOrderRefresh() {
+    if (orderRefreshTimer) clearTimeout(orderRefreshTimer);
+    orderRefreshTimer = setTimeout(function () {
+      orderRefreshTimer = null;
+      if (fightBusy) {
+        paintTimeline();
+        return;
+      }
+      loadArmies().then(function () {
+        paintTimeline();
+        if (viewName === 'battle') paintBoard();
+      }).catch(function () { paintTimeline(); });
+    }, 80);
+  }
+
+  function paintTimeline(opts) {
+    var battleOnly = !!(opts && opts.battleOnly);
+    var hosts = [
+      document.getElementById('mlsTimeline'),
+      battleOnly ? null : document.getElementById('mlsFormOrder')
+    ].filter(Boolean);
     var R = rules();
-    if (!R || !lastAlly.length && !lastEnemy.length) {
-      host.innerHTML = '';
+    var pool, order, html, parts;
+    if (!hosts.length) return;
+    if (!R || (!lastAlly.length && !lastEnemy.length)) {
+      html = '<span class="mls-tl-empty">Pick units — order is unit Mobility + pilot Reaction (high → low).</span>';
+      hosts.forEach(function (h) { h.innerHTML = html; });
       return;
     }
-    var order = R.actionOrder(lastAlly.concat(lastEnemy));
-    host.innerHTML = order.map(function (u) {
-      return '<span class="mls-tl-chip ' + (u.side === 'enemy' ? 'enemy' : 'ally') +
-        (u.hp <= 0 ? ' is-dead' : '') + '">' +
-        (u.thum ? '<img src="' + esc(u.thum) + '" alt="">' : '') +
-        esc(String(u.name || '').replace(/\s*\(EX\)\s*$/i, '').slice(0, 14)) +
-        '</span>';
-    }).join('');
+    pool = lastAlly.slice();
+    if (includeEnemyOrder()) pool = pool.concat(lastEnemy);
+    order = R.actionOrder(pool);
+    if (!order.length) {
+      html = '<span class="mls-tl-empty">No living units in this order.</span>';
+    } else {
+      parts = [];
+      order.forEach(function (u, i) {
+        var spd = (u.mobility | 0) + (u.reaction | 0);
+        var nm = String(u.name || '').replace(/\s*\(EX\)\s*$/i, '').slice(0, 14);
+        if (i) parts.push('<span class="mls-tl-arrow" aria-hidden="true">→</span>');
+        parts.push(
+          '<span class="mls-tl-chip ' + (u.side === 'enemy' ? 'enemy' : 'ally') +
+          (u.hp <= 0 ? ' is-dead' : '') +
+          '" title="Mobility ' + (u.mobility | 0) + ' + Reaction ' + (u.reaction | 0) + ' = ' + spd + '">' +
+          '<span class="mls-tl-n">' + (i + 1) + '</span>' +
+          '<span class="mls-tl-body">' +
+          (u.thum ? '<img src="' + esc(u.thum) + '" alt="">' : '') +
+          '<span class="mls-tl-meta">' +
+          '<span class="mls-tl-name">' + esc(nm) + '</span>' +
+          '<span class="mls-tl-spd">' + spd + '</span>' +
+          '</span></span></span>'
+        );
+      });
+      html = parts.join('');
+    }
+    hosts.forEach(function (h) { h.innerHTML = html; });
   }
 
   function cloneArmy(list) {
@@ -3102,7 +4465,8 @@
       var kit = u.pilotSkills || (rules() && rules().buildPilotSkillKit && rules().buildPilotSkillKit(u.char)) || { list: [], sp: 5 };
       var sp = u.sp != null ? (u.sp | 0) : Math.max(5, kit.sp | 0);
       return {
-        side: u.side, n: u.n, x: u.homeX != null ? u.homeX : u.x, y: u.homeY != null ? u.homeY : u.y,
+        side: u.side, n: u.n, slotIdx: u.slotIdx | 0,
+        x: u.homeX != null ? u.homeX : u.x, y: u.homeY != null ? u.homeY : u.y,
         homeX: u.homeX != null ? u.homeX : u.x, homeY: u.homeY != null ? u.homeY : u.y,
         id: u.id, name: u.name, thum: u.thum, roleIcon: u.roleIcon, lb: u.lb,
         hp: u.maxHp, maxHp: u.maxHp, ghostHp: u.maxHp,
@@ -3152,7 +4516,11 @@
         debuffs: [],
         chanceStepsLeft: chanceStepLimit(u),
         active: false,
-        badge: ''
+        badge: '',
+        badgeText: '',
+        badgeIcon: '',
+        skillMarkIcon: '',
+        skillMarkText: ''
       };
     });
   }
@@ -3176,6 +4544,60 @@
     }
     var win = computeMapWindow();
     return { minX: win.minX, maxX: win.maxX, minY: win.minY, maxY: win.maxY };
+  }
+
+  /** Turn a planned unit skill on. Damage math stays in /cal. */
+  function applyPlannedUnitSkill(actor, phase, friends, turn, snapshotLine) {
+    var plan, R, val, ally, best, bestD;
+    R = rules();
+    if (!R || !R.planUnitSkill) return;
+    plan = R.planUnitSkill(actor, phase);
+    if (!plan) return;
+    actor.hasUsedUnitSkill = true;
+    actor.turnBuffActive = !!(plan.atkPct || plan.defPct || plan.mobPct);
+    /* Sticky icon above thum for the rest of the fight (not cleared with turn badges). */
+    actor.skillMarkText = String(plan.name || 'SKILL').replace(/\s+LV\s*\d+/i, '');
+    actor.skillMarkIcon = plan.icon || skillBadgeIconUrl();
+    actor.badge = 'SKILL';
+    actor.badgeText = actor.skillMarkText;
+    actor.badgeIcon = actor.skillMarkIcon;
+    if (plan.mp > 0) applyMpDelta(actor, plan.mp);
+    if (plan.move > 0) actor.move = (actor.move | 0) + plan.move;
+    if (plan.firstStrike) actor.hasFirstStrikeBarrier = true;
+    if (plan.beamDr > 0) actor.unitSkillBeamDr = plan.beamDr;
+    if (plan.barrierPct > 0) {
+      val = Math.floor((actor.maxHp | 0) * plan.barrierPct / 100);
+      actor.shieldBarrier = val;
+      best = null;
+      bestD = 99;
+      (friends || []).forEach(function (f) {
+        var d;
+        if (!f || f === actor || (f.hp | 0) <= 0) return;
+        d = R.distance(actor, f);
+        if (d > 3 || d >= bestD) return;
+        bestD = d;
+        best = f;
+      });
+      if (best) {
+        ally = best;
+        ally.shieldBarrier = val;
+      }
+    }
+    if (typeof snapshotLine === 'function') {
+      snapshotLine(
+        'T' + turn + ' Unit skill: ' + actor.name + ' 「' + (plan.name || 'SKILL') + '」',
+        {
+          x: actor.x, y: actor.y,
+          text: actor.skillMarkText,
+          skillName: actor.skillMarkText,
+          badge: 'SKILL',
+          icon: actor.skillMarkIcon,
+          cls: 'mls-float--skill'
+        },
+        null,
+        'skill'
+      );
+    }
   }
 
   function fightSteps(allies, enemies) {
@@ -3263,6 +4685,7 @@
           return {
             x: u.x, y: u.y, hp: u.hp, ghostHp: u.ghostHp, active: !!u.active,
             badge: u.badge || '', badgeText: u.badgeText || '', badgeIcon: u.badgeIcon || '',
+            skillMarkIcon: u.skillMarkIcon || '', skillMarkText: u.skillMarkText || '',
             tension: u.tension | 0, mp: u.mp | 0,
             covering: !!u.covering, coverTx: u.coverTx, coverTy: u.coverTy,
             sheltered: !!u.sheltered,
@@ -3276,6 +4699,7 @@
           return {
             x: u.x, y: u.y, hp: u.hp, ghostHp: u.ghostHp, active: !!u.active,
             badge: u.badge || '', badgeText: u.badgeText || '', badgeIcon: u.badgeIcon || '',
+            skillMarkIcon: u.skillMarkIcon || '', skillMarkText: u.skillMarkText || '',
             tension: u.tension | 0, mp: u.mp | 0,
             covering: !!u.covering, coverTx: u.coverTx, coverTy: u.coverTy,
             sheltered: !!u.sheltered,
@@ -3361,8 +4785,10 @@
       hit = R.checkHit(attacker, defender, wpn, defAction, !!hitOpts.isDefenderSupportDefend);
       attacker.lastActionHit = !!hit;
       if (!hit) {
-        /* LANG: MP down when your attack is evaded — attacker only (no defender gain). */
+        /* gge miss: attacker −1. Evade bonus +1 goes to the covered ally when SD whiffs, else the defender. */
         applyMpDelta(attacker, -1);
+        if (hitOpts.isDefenderSupportDefend && hitOpts.originalTarget) applyMpDelta(hitOpts.originalTarget, 1);
+        else applyMpDelta(defender, 1);
         clearBadges();
         snapshotLine(
           'T' + turn + ' ' + label + ': ' + attacker.name + ' → ' + defender.name +
@@ -3384,17 +4810,30 @@
       crit = simRandom() * 100 < critRate;
       dmgOpts.useCrit = crit;
       dmg = battleDamage(attacker, defender, wpn, dmgOpts) | 0;
-      defender.ghostHp = defender.hp | 0;
-      defender.hp = Math.max(0, (defender.hp | 0) - dmg);
-      applyWeaponDebuffs(defender, wpn, turn);
-      /* LANG + gge: land hit → attacker +1; take hit → −1; SD net +2.
-         Kill bonus (gge 完全撃破): main +4 / Support Attack +1 → main kill totals +5 with the hit. */
-      applyMpDelta(attacker, 1);
-      if (hitOpts.isDefenderSupportDefend) applyMpDelta(defender, 2);
-      else applyMpDelta(defender, -1);
-      if ((defender.hp | 0) <= 0) {
-        applyMpDelta(attacker, hitOpts.isSupport ? 1 : 4);
+      /* gge timing: first-strike null and HP% barrier eat the /cal number before HP. */
+      if (defender.hasFirstStrikeBarrier) {
+        defender.hasFirstStrikeBarrier = false;
+        snapshotLine(
+          'T' + turn + ' First-strike barrier: ' + defender.name + ' nullifies ' + dmg,
+          { x: defender.x, y: defender.y, text: 'NULL', cls: 'mls-float--heal' },
+          null, 'skill'
+        );
+        dmg = 0;
+      } else if ((defender.shieldBarrier | 0) > 0 && dmg > 0) {
+        var absorbed = Math.min(defender.shieldBarrier | 0, dmg);
+        defender.shieldBarrier = (defender.shieldBarrier | 0) - absorbed;
+        dmg -= absorbed;
+        snapshotLine(
+          'T' + turn + ' Barrier: ' + defender.name + ' absorbs ' + absorbed +
+          ' (left ' + (defender.shieldBarrier | 0) + ')',
+          { x: defender.x, y: defender.y, text: 'BAR ' + absorbed, cls: 'mls-float--heal' },
+          null, 'skill'
+        );
       }
+      defender.ghostHp = defender.hp | 0;
+      var hpBeforeHit = defender.hp | 0;
+      defender.hp = Math.max(0, hpBeforeHit - dmg);
+      applyWeaponDebuffs(defender, wpn, turn);
       floatCls = (defender.side === 'enemy' ? 'mls-float--enemy' : 'mls-float--ally') +
         (crit ? ' mls-float--crit' : '');
       linkKind = kind === 'Support Attack' || kind === 'Support Counter' ? 'support'
@@ -3430,13 +4869,14 @@
       aim = hitOpts.originalTarget && hitOpts.isDefenderSupportDefend
         ? { x: hitOpts.originalTarget.x | 0, y: hitOpts.originalTarget.y | 0 }
         : impact;
+      /* Log hit at post-damage HP (before revive) so KO reads correctly, then restore. */
       snapshotLine(
         'T' + turn + ' ' + label + ': ' + attacker.name + ' → ' + defender.name +
         '  −' + dmg + (crit ? ' CRIT' : '') +
         (wpn && wpn.name ? ' [' + wpn.name + ']' : '') +
         note +
         (defender.hp <= 0
-          ? ('  KO · MP ' + (attacker.mp | 0) + ' (' + vigorLabelFromMp(attacker.mp) + ')')
+          ? '  KO'
           : ('  (HP ' + defender.hp + ')')),
         {
           x: aim.x, y: aim.y,
@@ -3462,6 +4902,18 @@
         },
         linkKind === 'counter' ? 'counter' : (linkKind === 'support' ? 'support' : 'attack')
       );
+      /* Pilot/unit once-only revive & threshold restore (Zeong 0%→5%, Impulse 50%→50%). */
+      applyHpFallRestores(defender, hpBeforeHit, turn, snapshotLine);
+      /* Cond:Combat-Count / Cond:Damage taken — stacks rise after a landed hit (next strike uses them). */
+      bumpCondStacksAfterHit(attacker, defender);
+      /* LANG + gge: land hit → attacker +1; take hit → −1; SD net +2.
+         Kill bonus after revive check so a revived target is not a 完全撃破. */
+      applyMpDelta(attacker, 1);
+      if (hitOpts.isDefenderSupportDefend) applyMpDelta(defender, 2);
+      else applyMpDelta(defender, -1);
+      if ((defender.hp | 0) <= 0) {
+        applyMpDelta(attacker, hitOpts.isSupport ? 1 : 4);
+      }
       return { weapon: wpn, damage: dmg, miss: false, crit: crit };
     }
     while (turn <= limit && living(allies).length && living(enemies).length) {
@@ -3488,6 +4940,10 @@
         if (R.evaluateExPhase) R.evaluateExPhase(u);
         u._simTurn = turn;
         u.usedSkillThisTurn = false;
+        /* Unit skill (1 turn) buffs expire at the start of this unit's next action. */
+        u.turnBuffActive = false;
+        u.skillDmgPct = 0;
+        u.skillDmgKind = '';
         syncMpDisplay(u);
         foes = u.side === 'ally' ? enemies : allies;
         friends = u.side === 'ally' ? allies : enemies;
@@ -3498,7 +4954,13 @@
         /* gge: supporter HP skill is checked at the start of this unit's action, not at battle open. */
         evaluateSupportSkill(u, friends);
 
-        /* Pilot skill before move/attack (gge: one skill check outside combat loop). */
+        /* Unit ability: restore HP/EN at the start of every turn (Impulse Phase Shift kits, …). */
+        applyTurnStartRestore(u, turn, snapshotLine);
+
+        /* gge: non-first-strike unit skill once, before the move. */
+        applyPlannedUnitSkill(u, 'move', friends, turn, snapshotLine);
+
+        /* Pilot skill before move/attack (gge priority order). */
         skill = R.pickSkill(u, foes);
         if (skill) {
           u.currentSp = Math.max(0, (u.currentSp | 0) - (skill.sp | 0));
@@ -3508,16 +4970,27 @@
           u.badgeText = String(skill.name || 'SKILL').replace(/\s+LV\s*\d+/i, '');
           u.badgeIcon = skill.icon || '';
           if (skill.key === 'repair') {
+            var healPct = 30;
+            var healM = String(skill.effect || '').match(/(\d+)\s*%/);
+            if (healM) healPct = parseInt(healM[1], 10) || 30;
             u.ghostHp = u.hp;
-            u.hp = Math.min(u.maxHp, u.hp + Math.floor(u.maxHp * 0.3));
+            u.hp = Math.min(u.maxHp, u.hp + Math.floor((u.maxHp | 0) * healPct / 100));
           } else if (skill.key === 'range_boost') {
             u.weapons.forEach(function (w) { w.max_range += 1; });
           } else if (skill.key === 'high_speed') {
             u.move = (u.move | 0) + 1;
           } else if (skill.key === 'force_guard') {
             u.forceGuard = true;
+            u.turnBuffActive = true;
           } else if (skill.key === 'sway') {
             u.activeSkills = (u.activeSkills || []).concat([{ name: skill.name || 'Sway' }]);
+          } else if (skill.key === 'en_free') {
+            u.hasUsedFreeAmmoSkillInBattle = true;
+            u.freeAmmoThisAction = true;
+          } else if (skill.key === 'sd_plus') {
+            u.sdLimit = (u.sdLimit | 0) + 1;
+          } else if (skill.key === 'crit_boost') {
+            u.skillCritBonus = 20;
           } else if (skill.key === 'mp_up') {
             applyMpDelta(u, 3);
           } else if (skill.key === 'attack_burst' || skill.key === 'melee_boost' ||
@@ -3525,6 +4998,7 @@
             var spct = String(skill.effect || skill.name || '').match(/(\d+)\s*%/);
             u.skillDmgPct = spct ? (parseInt(spct[1], 10) || 0) : 10;
             u.skillDmgKind = skill.key;
+            u.turnBuffActive = true;
           }
           snapshotLine(
             'T' + turn + ' Skill: ' + u.name + ' uses 「' + skill.name + '」 (SP −' + (skill.sp | 0) + ')',
@@ -3556,6 +5030,9 @@
             break;
           }
           target = engage.target;
+
+          /* gge: first-strike unit skill fires when combat starts, after the move. */
+          applyPlannedUnitSkill(u, 'combat', friends, turn, snapshotLine);
 
           /* gge MAP interrupt before normal engage (whitelist → our is_map + map_coords). */
           mapPlan = R.evaluateMapWeapon(u, target, foes, allUnits, bounds, battleDamage);
@@ -3704,14 +5181,34 @@
 
             coverUnit = null;
             origTarget = q.originalTarget || (q.wave === 3 || q.wave === 4 ? u : target);
-            /* In-game: Support Attack / Support Counter do not fire if that original target is already down. */
-            if ((q.wave === 1 || q.wave === 3) && origTarget && (origTarget.hp | 0) <= 0) {
+            /* Support Attack: skip if the unit being piled on is already KO. */
+            if (q.wave === 1 && origTarget && (origTarget.hp | 0) <= 0) {
               snapshotLine(
-                'T' + turn + (q.wave === 1 ? ' Support Attack' : ' Support Counter') +
-                ' skipped: ' + q.attacker.name + ' — ' + origTarget.name + ' already down',
+                'T' + turn + ' Support Attack skipped: ' + q.attacker.name +
+                ' — ' + origTarget.name + ' already down',
                 null, null, 'step'
               );
               continue;
+            }
+            /* Support Counter: skip if the attacked ally is already KO (engagement ended),
+               or if the attacker they would hit is already down. */
+            if (q.wave === 3) {
+              if (target && (target.hp | 0) <= 0) {
+                snapshotLine(
+                  'T' + turn + ' Support Counter skipped: ' + q.attacker.name +
+                  ' — ' + target.name + ' already KO',
+                  null, null, 'step'
+                );
+                continue;
+              }
+              if (origTarget && (origTarget.hp | 0) <= 0) {
+                snapshotLine(
+                  'T' + turn + ' Support Counter skipped: ' + q.attacker.name +
+                  ' — ' + origTarget.name + ' already down',
+                  null, null, 'step'
+                );
+                continue;
+              }
             }
             if (q.defender !== origTarget) {
               coverUnit = q.defender;
@@ -3851,6 +5348,8 @@
       list[i].badge = s.badge || '';
       list[i].badgeText = s.badgeText || '';
       list[i].badgeIcon = s.badgeIcon || '';
+      list[i].skillMarkIcon = s.skillMarkIcon || '';
+      list[i].skillMarkText = s.skillMarkText || '';
       list[i].tension = s.tension | 0;
       list[i].mp = s.mp | 0;
       list[i].covering = !!s.covering;
@@ -3866,31 +5365,70 @@
     snap.enemy.forEach(function (s, i) { applyOne(enemies, s, i); });
   }
 
+  function bannerCutinUrl() {
+    return thumbUrl('/static/images/Master League/ml_skip_character_cutin_bromide_300010.webp');
+  }
+
+  /** Warm the READY cutin so start is not waiting on a cold CDN decode. */
+  function preloadBannerArt() {
+    try {
+      var img = new Image();
+      img.decoding = 'async';
+      img.src = bannerCutinUrl();
+    } catch (ePre) {}
+  }
+
+  function hideBannerNow() {
+    var el = document.getElementById('mlsBanner');
+    if (!el) return;
+    el.hidden = true;
+    el.setAttribute('hidden', '');
+    el.setAttribute('aria-hidden', 'true');
+    el.classList.remove('is-play', 'is-out');
+  }
+
   function showBanner() {
     var el = document.getElementById('mlsBanner');
-    var cutin, line;
+    var cutin, line, holdMs, outMs;
     if (!el) return Promise.resolve();
     line = el.querySelector('.mls-banner-line');
     if (line) line.textContent = 'READY? GO!!';
     cutin = el.querySelector('.mls-banner-cutin');
     if (cutin) {
-      cutin.src = thumbUrl('/static/images/Master League/ml_skip_character_cutin_bromide_300010.webp');
+      /* Keep the Master League cutin visible — do not strip src / hide the img. */
+      cutin.removeAttribute('hidden');
       cutin.hidden = false;
+      cutin.src = bannerCutinUrl();
     }
     el.hidden = false;
     el.removeAttribute('hidden');
     el.setAttribute('aria-hidden', 'false');
-    el.classList.remove('is-out', 'is-play');
+    el.classList.remove('is-out', 'is-play', 'is-snappy');
     void el.offsetWidth;
     el.classList.add('is-play');
-    return sleep(1400).then(function () {
+    /* Full READY + cutin beat (same look as before). Sim compute overlaps this wait. */
+    holdMs = Math.round((mobileBattleSnappy() ? 1050 : 1400) / Math.max(1, speedMul));
+    outMs = Math.round(280 / Math.max(1, speedMul));
+    return sleep(holdMs).then(function () {
       el.classList.add('is-out');
-      return sleep(280);
+      return sleep(outMs);
     }).then(function () {
-      el.hidden = true;
-      el.setAttribute('hidden', '');
-      el.setAttribute('aria-hidden', 'true');
-      el.classList.remove('is-play', 'is-out');
+      hideBannerNow();
+    });
+  }
+
+  /** Yield a frame so READY can paint, then run the sync sim off the click handler. */
+  function computeFightAsync(allies, enemies) {
+    return new Promise(function (resolve, reject) {
+      requestAnimationFrame(function () {
+        setTimeout(function () {
+          try {
+            resolve(fightSteps(cloneArmy(allies), cloneArmy(enemies)));
+          } catch (err) {
+            reject(err);
+          }
+        }, 0);
+      });
     });
   }
 
@@ -3991,6 +5529,8 @@
     var pause = document.getElementById('mlsPause');
     var skip = document.getElementById('mlsSkip');
     var reset = document.getElementById('mlsReset');
+    var boardEl = document.getElementById('mlsBoard');
+    var shell = document.querySelector('#panel-ml_sim .mls-shell');
     if (start) {
       start.disabled = !!busy;
       start.textContent = busy ? 'RUNNING…' : 'SIMULATION START';
@@ -4003,6 +5543,9 @@
     }
     if (skip) skip.disabled = !busy;
     if (reset) reset.disabled = !!busy;
+    if (boardEl) boardEl.classList.toggle('is-fighting', !!busy);
+    if (shell) shell.classList.toggle('is-fighting', !!busy);
+    try { document.body.classList.toggle('mls-is-fighting', !!busy); } catch (eFight) {}
   }
 
   function onResetBattle() {
@@ -4013,6 +5556,7 @@
       skipAll = false;
       pauseWait = null;
       setFightControls(false);
+      clearMapCameraLock();
       return loadArmies().then(function () {
         paintBoard();
         paintTimeline();
@@ -4134,6 +5678,8 @@
       })
       .then(function () {
         setView(viewName || 'formation');
+        fillShareBoxes();
+        scheduleOrderRefresh();
         log('Set enemy (left) and ally (right), then SIMULATION START.');
       });
   }
@@ -4168,28 +5714,45 @@
 
   function onFight() {
     if (fightBusy) return Promise.resolve();
+    /* Arm busy before setView so its idle loadArmies cannot race and blank thumbs. */
+    skipAll = false;
+    paused = false;
+    fightBusy = true;
+    setFightControls(true);
     setView('battle');
+    preloadBannerArt();
     log('Loading forces…');
+    /*
+     * 1) Paint start lineup (unit thumbs under READY)
+     * 2) READY? GO!! + cutin at full length
+     * 3) fightSteps overlaps the banner so we are not serial wait+wait+compute
+     */
     return loadArmies().then(function () {
+      var bannerP;
+      var simP;
       if (!lastAlly.length || !lastEnemy.length) {
-        log('Fill both enemy (left) and ally (right) forces on the Formation tab first.');
-        setView('formation');
-        return;
+        var emptyErr = new Error('Fill both enemy (left) and ally (right) forces on the Formation tab first.');
+        emptyErr.code = 'mls-empty';
+        throw emptyErr;
       }
       paintBoard();
       paintTimeline();
-      skipAll = false;
-      paused = false;
-      fightBusy = true;
-      setFightControls(true);
-      /* Banner first so READY? GO!! paints before the sync sim blocks the main thread. */
-      return showBanner().then(function () {
-        var result = fightSteps(cloneArmy(lastAlly), cloneArmy(lastEnemy));
-        return playFight(result);
+      bannerP = showBanner();
+      simP = computeFightAsync(lastAlly, lastEnemy);
+      return Promise.all([bannerP, simP]).then(function (pair) {
+        return playFight(pair[1]);
       });
     }).catch(function (e) {
+      hideBannerNow();
       fightBusy = false;
+      paused = false;
+      skipAll = false;
       setFightControls(false);
+      if (e && e.code === 'mls-empty') {
+        setView('formation');
+        log(e.message);
+        return;
+      }
       log(String(e && e.message || e));
     });
   }
@@ -4197,17 +5760,14 @@
   function playFight(result) {
     var allies = cloneArmy(result.allies);
     var enemies = cloneArmy(result.enemies);
-    var host0, layer0;
     lastAlly = allies;
     lastEnemy = enemies;
     hideEndCard();
-    /* Wipe tokens so playback does not flash the final KO board first. */
-    host0 = document.getElementById('mlsBoard');
-    if (host0) {
-      layer0 = host0.querySelector('.mls-token-layer');
-      if (layer0) layer0.innerHTML = '';
-    }
-    paintTimeline();
+    /*
+     * cloneArmy restores home cells + full HP — repaint start thumbs instead of
+     * blanking the layer (that removed portraits between READY and the first beat).
+     */
+    paintBoard();
     var logLines = [];
     var i = 0;
     return new Promise(function (resolve) {
@@ -4227,18 +5787,28 @@
           return;
         }
         var step = result.steps[i++];
+        var paceKind = step.pace || (step.link && step.link.kind) || 'step';
         applySnapshot(allies, enemies, step);
-        if (step.text) logLines.push(step.text);
-        log(logLines.join('\n'));
+        if (step.text) {
+          logLines.push(step.text);
+          if (logLines.length > 60) logLines = logLines.slice(-48);
+          log(logLines.join('\n'));
+        }
         paintBoard(skipAll ? null : step.float, skipAll ? null : step.link, !skipAll);
-        paintTimeline();
+        /* Full dual-timeline rebuild every beat janks iOS — battle strip only, and not every step. */
+        if (skipAll || paceKind === 'turn' || paceKind === 'attack' || paceKind === 'counter' ||
+            i === result.steps.length || (i % 4) === 0) {
+          paintTimeline({ battleOnly: true });
+        }
         if (skipAll) {
           next();
           return;
         }
         /* Brief beat on the SD hit float, then cover-return plays immediately after. */
-        var hold = (step.link && step.link.coverTo && step.float) ? 220 : 0;
-        sleep(stepDelay(step.pace || (step.link && step.link.kind) || 'step') + hold).then(next);
+        var hold = (step.link && step.link.coverTo && step.float)
+          ? Math.round(160 / battlePaceMul())
+          : 0;
+        sleep(stepDelay(paceKind) + hold).then(next);
       }
       next();
     });
@@ -4403,6 +5973,7 @@
     roster.eventId = id;
     saveRoster();
     seasonMeta = findSeason(id);
+    clearMapCameraLock();
     paintPreset();
     return fetchJson('/api/master_league/sim_board?event_id=' + encodeURIComponent(id) + '&lang=' + encodeURIComponent(lang()))
       .then(function (data) {
@@ -4423,12 +5994,20 @@
     if (!mapFitBound) {
       mapFitBound = true;
       var fitTimer = null;
+      var lastScrollBox = { w: 0, h: 0 };
       function onMapFit() {
+        var sc, w, h;
         if (viewName !== 'battle' || !board) return;
+        sc = document.querySelector('#mlsViewBattle .mls-map-scroll');
+        if (!sc) return;
+        w = sc.clientWidth | 0;
+        h = sc.clientHeight | 0;
+        /* Ignore noise / self-inflicted layout — only real viewport changes re-fit cell size. */
+        if (Math.abs(w - lastScrollBox.w) < 2 && Math.abs(h - lastScrollBox.h) < 2 && lastScrollBox.w) return;
+        lastScrollBox = { w: w, h: h };
         if (fitTimer) clearTimeout(fitTimer);
         fitTimer = setTimeout(function () {
-          var host = document.getElementById('mlsBoard');
-          if (host) host.removeAttribute('data-layout');
+          lockedMapCellPx = 0;
           paintBoard();
         }, 80);
       }
@@ -4436,6 +6015,7 @@
       try {
         var sc = document.querySelector('#mlsViewBattle .mls-map-scroll');
         if (sc && typeof ResizeObserver !== 'undefined') {
+          lastScrollBox = { w: sc.clientWidth | 0, h: sc.clientHeight | 0 };
           new ResizeObserver(onMapFit).observe(sc);
         }
       } catch (eFit) {}
@@ -4454,6 +6034,7 @@
     document.getElementById('mlsGotoBattle') && document.getElementById('mlsGotoBattle').addEventListener('click', function () {
       setView('battle');
     });
+    bindMapTokenDrag();
     document.getElementById('mlsBackForm') && document.getElementById('mlsBackForm').addEventListener('click', function () {
       setView('formation');
     });
@@ -4466,9 +6047,52 @@
       lastEnemy = [];
       sideSupportData.ally = null;
       sideSupportData.enemy = null;
+      clearMapCameraLock();
       paintBoard();
       paintTimeline();
+      fillShareBoxes();
       log('Forces cleared.');
+    });
+    document.getElementById('mlsOrderEnemies') && document.getElementById('mlsOrderEnemies').addEventListener('change', onOrderEnemiesChange);
+    document.getElementById('mlsOrderEnemiesForm') && document.getElementById('mlsOrderEnemiesForm').addEventListener('change', onOrderEnemiesChange);
+    function copyShare(side) {
+      var id = side === 'enemy' ? 'mlsShareEnemy' : 'mlsShareAlly';
+      var el = document.getElementById(id);
+      var text = exportForceCode(side);
+      if (el) el.value = text;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () { log('Copied ' + side + ' share code.'); }, function () {});
+      }
+    }
+    document.getElementById('mlsShareEnemyCopy') && document.getElementById('mlsShareEnemyCopy').addEventListener('click', function () { copyShare('enemy'); });
+    document.getElementById('mlsShareAllyCopy') && document.getElementById('mlsShareAllyCopy').addEventListener('click', function () { copyShare('ally'); });
+    document.getElementById('mlsShareEnemyPaste') && document.getElementById('mlsShareEnemyPaste').addEventListener('click', function () {
+      loadShareFromClipboard('enemy');
+    });
+    document.getElementById('mlsShareAllyPaste') && document.getElementById('mlsShareAllyPaste').addEventListener('click', function () {
+      loadShareFromClipboard('ally');
+    });
+    /* Face strip click = copy (same as Copy button). */
+    document.querySelectorAll('.mls-share-faces').forEach(function (faces) {
+      faces.addEventListener('click', function () {
+        var col = faces.closest('.mls-share-col');
+        var side = col && col.classList.contains('mls-share-col--enemy') ? 'enemy' : 'ally';
+        copyShare(side);
+      });
+    });
+    document.getElementById('mlsPickerFilters') && document.getElementById('mlsPickerFilters').addEventListener('click', function (ev) {
+      var btn = ev.target && ev.target.closest && ev.target.closest('.mls-chip');
+      var row, kind, qEl;
+      if (!btn) return;
+      row = btn.parentElement;
+      kind = row && row.getAttribute('data-mls-filter');
+      if (!kind) return;
+      Array.prototype.forEach.call(row.querySelectorAll('.mls-chip'), function (b) {
+        b.classList.toggle('is-on', b === btn);
+      });
+      pickerFilter[kind] = btn.getAttribute('data-val') || '';
+      qEl = document.getElementById('mlsPickerSearch');
+      runPickerSearch(qEl ? qEl.value : '').then(renderPickerRows);
     });
 
     root.addEventListener('click', function (e) {
@@ -4604,6 +6228,7 @@
     bind();
     bindGate();
     syncAuraToggleUi();
+    syncOrderToggleUi();
     return ensureMlsUnlocked().then(function (ok) {
       if (!ok) return null;
       return loadMlsContent();

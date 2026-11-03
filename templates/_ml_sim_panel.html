@@ -36,7 +36,7 @@
   </nav>
 
   <section class="mls-view is-active" id="mlsViewFormation" data-view="formation">
-    <p class="mls-note">Left = opponent, right = your force. Each side has a <strong>supporter</strong> (same as Team Builder): after you pick one, unit suggestions filter by that supporter’s tags. Set <strong>LB</strong> and <strong>option part</strong> per unit the same way as /tb. <strong>Drag</strong> a slot onto another to swap map positions.</p>
+    <p class="mls-note">Left = opponent, right = your force. Each side has a <strong>supporter</strong> (same as Team Builder): after you pick one, unit suggestions filter by that supporter’s tags. Set <strong>LB</strong> and <strong>option part</strong> per unit the same way as /tb. <strong>Drag</strong> a formation portrait to reorder LINE slots, or drag a unit on the <strong>Battle</strong> map onto a cell to set its start position (drop on a teammate to swap).</p>
     <div class="mls-forces">
       <div class="mls-force mls-force--enemy" aria-label="Enemy force">
         <header class="mls-force-head"><span class="mls-force-tag">ENEMY</span><span>Opponent · left</span></header>
@@ -49,8 +49,51 @@
         <div class="mls-slot-list" id="mlsAllySlots"></div>
       </div>
     </div>
+    <div class="mls-order-bar">
+      <div class="mls-lbl-row">
+        <div class="mls-lbl">ACTION ORDER <span class="mls-order-hint">Unit Mobility + pilot Reaction · high → low</span></div>
+        <label class="mls-check mls-order-toggle" title="Action order is Mobility + Reaction. Uncheck to list your force only.">
+          <input type="checkbox" id="mlsOrderEnemiesForm" checked>
+          <span>Include enemies</span>
+        </label>
+      </div>
+      <div class="mls-timeline mls-timeline--form" id="mlsFormOrder"></div>
+    </div>
+    <div class="mls-share">
+      <div class="mls-share-col mls-share-col--enemy">
+        <div class="mls-lbl">ENEMY SHARE</div>
+        <div class="mls-share-faces is-flip" aria-hidden="true">
+          <img src="{% if image_cdn %}{{ image_cdn }}/images/Popup/win_g8500n00200_01.webp{% else %}/static/images/Popup/win_g8500n00200_01.webp{% endif %}" alt="" width="72" height="72" loading="lazy" decoding="async">
+          <img src="{% if image_cdn %}{{ image_cdn }}/images/Popup/win_g8500n00300_01.webp{% else %}/static/images/Popup/win_g8500n00300_01.webp{% endif %}" alt="" width="72" height="72" loading="lazy" decoding="async">
+          <img src="{% if image_cdn %}{{ image_cdn }}/images/Popup/win_g8500n00400_01.webp{% else %}/static/images/Popup/win_g8500n00400_01.webp{% endif %}" alt="" width="72" height="72" loading="lazy" decoding="async">
+          <img src="{% if image_cdn %}{{ image_cdn }}/images/Popup/win_g8500n00700_01.webp{% else %}/static/images/Popup/win_g8500n00700_01.webp{% endif %}" alt="" width="72" height="72" loading="lazy" decoding="async">
+          <img src="{% if image_cdn %}{{ image_cdn }}/images/Popup/win_g3700n00015_01.webp{% else %}/static/images/Popup/win_g3700n00015_01.webp{% endif %}" alt="" width="72" height="72" loading="lazy" decoding="async">
+        </div>
+        <textarea id="mlsShareEnemy" class="mls-share-box mls-share-box--sr" rows="2" spellcheck="false" aria-label="Enemy share code" tabindex="-1"></textarea>
+        <div class="mls-share-actions">
+          <button type="button" class="mls-btn" id="mlsShareEnemyCopy" title="Copy enemy force code">Copy</button>
+          <button type="button" class="mls-btn" id="mlsShareEnemyPaste" title="Paste clipboard code into enemy force">Load enemy</button>
+        </div>
+      </div>
+      <div class="mls-share-col mls-share-col--ally">
+        <div class="mls-lbl">ALLY SHARE</div>
+        <div class="mls-share-faces" aria-hidden="true">
+          <img src="{% if image_cdn %}{{ image_cdn }}/images/Popup/win_g8500n00200_01.webp{% else %}/static/images/Popup/win_g8500n00200_01.webp{% endif %}" alt="" width="72" height="72" loading="lazy" decoding="async">
+          <img src="{% if image_cdn %}{{ image_cdn }}/images/Popup/win_g8500n00300_01.webp{% else %}/static/images/Popup/win_g8500n00300_01.webp{% endif %}" alt="" width="72" height="72" loading="lazy" decoding="async">
+          <img src="{% if image_cdn %}{{ image_cdn }}/images/Popup/win_g8500n00400_01.webp{% else %}/static/images/Popup/win_g8500n00400_01.webp{% endif %}" alt="" width="72" height="72" loading="lazy" decoding="async">
+          <img src="{% if image_cdn %}{{ image_cdn }}/images/Popup/win_g8500n00700_01.webp{% else %}/static/images/Popup/win_g8500n00700_01.webp{% endif %}" alt="" width="72" height="72" loading="lazy" decoding="async">
+          <img src="{% if image_cdn %}{{ image_cdn }}/images/Popup/win_g3700n00015_01.webp{% else %}/static/images/Popup/win_g3700n00015_01.webp{% endif %}" alt="" width="72" height="72" loading="lazy" decoding="async">
+        </div>
+        <textarea id="mlsShareAlly" class="mls-share-box mls-share-box--sr" rows="2" spellcheck="false" aria-label="Ally share code" tabindex="-1"></textarea>
+        <div class="mls-share-actions">
+          <button type="button" class="mls-btn" id="mlsShareAllyCopy" title="Copy ally force code">Copy</button>
+          <button type="button" class="mls-btn" id="mlsShareAllyPaste" title="Paste clipboard code into ally force">Load ally</button>
+          <label class="mls-check" title="When you Load an ally share code, set each unit’s Limit Break to match what you saved in Collections (owned units only)."><input type="checkbox" id="mlsShareUseColLb" checked> Sync Limit Break from Collections</label>
+        </div>
+      </div>
+    </div>
     <div class="mls-form-actions">
-      <label class="mls-check"><input type="checkbox" id="mlsOwnedOnly"> Prefer Collections when searching</label>
+      <label class="mls-check" title="Unit picker only shows kits you marked in Collections (your saved ownership)."><input type="checkbox" id="mlsOwnedOnly"> Only my Collections units</label>
       <button type="button" class="mls-btn" id="mlsClearRoster">Clear both forces</button>
       <button type="button" class="mls-btn primary" id="mlsGotoBattle">Open battle map</button>
     </div>
@@ -107,7 +150,13 @@
     </div>
     <div class="mls-battle-meta">
       <div class="mls-timeline-wrap">
-        <div class="mls-lbl">TURN ORDER</div>
+        <div class="mls-lbl-row">
+          <div class="mls-lbl">TURN ORDER</div>
+          <label class="mls-check mls-order-toggle" title="Action order is Mobility + Reaction. Uncheck to list your force only.">
+            <input type="checkbox" id="mlsOrderEnemies" checked>
+            <span>Include enemies</span>
+          </label>
+        </div>
         <div class="mls-timeline" id="mlsTimeline"></div>
       </div>
       <div class="mls-log-wrap">
@@ -125,6 +174,35 @@
       <button type="button" class="mls-btn" id="mlsPickerClose">Close</button>
     </header>
     <input type="search" id="mlsPickerSearch" class="mls-picker-search" placeholder="Search unit name…" autocomplete="off">
+    <div class="mls-picker-filters" id="mlsPickerFilters">
+      <div class="mls-picker-filter-row" data-mls-filter="rarity">
+        <button type="button" class="mls-chip is-on" data-val="" title="All rarities">All</button>
+        <button type="button" class="mls-chip mls-chip--icon" data-val="UR" title="UR" aria-label="UR">
+          <img src="{% if image_cdn %}{{ image_cdn }}/images/Rarity/UI_Common_RarityIcon_UR.webp{% else %}/static/images/Rarity/UI_Common_RarityIcon_UR.webp{% endif %}" alt="" width="22" height="22" decoding="async">
+        </button>
+        <button type="button" class="mls-chip mls-chip--icon" data-val="SSR" title="SSR" aria-label="SSR">
+          <img src="{% if image_cdn %}{{ image_cdn }}/images/Rarity/UI_Common_RarityIcon_SSR.webp{% else %}/static/images/Rarity/UI_Common_RarityIcon_SSR.webp{% endif %}" alt="" width="22" height="22" decoding="async">
+        </button>
+        <button type="button" class="mls-chip mls-chip--icon" data-val="SR" title="SR" aria-label="SR">
+          <img src="{% if image_cdn %}{{ image_cdn }}/images/Rarity/UI_Common_RarityIcon_SR.webp{% else %}/static/images/Rarity/UI_Common_RarityIcon_SR.webp{% endif %}" alt="" width="22" height="22" decoding="async">
+        </button>
+        <button type="button" class="mls-chip mls-chip--icon" data-val="R" title="R" aria-label="R">
+          <img src="{% if image_cdn %}{{ image_cdn }}/images/Rarity/UI_Common_RarityIcon_R.webp{% else %}/static/images/Rarity/UI_Common_RarityIcon_R.webp{% endif %}" alt="" width="22" height="22" decoding="async">
+        </button>
+      </div>
+      <div class="mls-picker-filter-row" data-mls-filter="role">
+        <button type="button" class="mls-chip is-on" data-val="" title="Any role">Any</button>
+        <button type="button" class="mls-chip mls-chip--icon" data-val="1" title="Attack" aria-label="Attack">
+          <img src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_TypeIcon_Attack_M.webp{% else %}/static/images/UI/UI_Common_TypeIcon_Attack_M.webp{% endif %}" alt="" width="22" height="22" decoding="async">
+        </button>
+        <button type="button" class="mls-chip mls-chip--icon" data-val="3" title="Support" aria-label="Support">
+          <img src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_TypeIcon_Support_M.webp{% else %}/static/images/UI/UI_Common_TypeIcon_Support_M.webp{% endif %}" alt="" width="22" height="22" decoding="async">
+        </button>
+        <button type="button" class="mls-chip mls-chip--icon" data-val="2" title="Durability" aria-label="Durability">
+          <img src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_TypeIcon_Defense_M.webp{% else %}/static/images/UI/UI_Common_TypeIcon_Defense_M.webp{% endif %}" alt="" width="22" height="22" decoding="async">
+        </button>
+      </div>
+    </div>
     <div class="mls-picker-list" id="mlsPickerList"></div>
   </div>
 </div>

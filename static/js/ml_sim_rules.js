@@ -673,7 +673,9 @@
     if (/Shooting\s*Boost|Ranged\s*Boost|射撃ブースト/i.test(n)) return 'shooting_boost';
     if (/Awaken\s*Boost|覚醒ブースト/i.test(n)) return 'awaken_boost';
     if (/Sway|スウェー/i.test(n)) return 'sway';
-    /* Save EN etc. still unrecognized — leave for next gap pass. */
+    if (/EN.*(?:Free|Ammo)|弾数フリー|EN・弾数/i.test(n)) return 'en_free';
+    if (/Support\s*Defense.*\+|支援防御回数|支援時防御/i.test(n)) return 'sd_plus';
+    if (/Critical\s*Boost|クリティカルブースト|爆擊提升/i.test(n)) return 'crit_boost';
     return '';
   }
 
@@ -722,8 +724,29 @@
     return n;
   }
 
+  /** gge predictCounter — an enemy can still hit us after we close. */
+  function enemyCanCounter(unit, enemies) {
+    return alive(enemies).some(function (e) {
+      var dist, move, maxR, reach;
+      if (weaponsInRange(e, unit).length) return true;
+      dist = distance(unit, e);
+      move = e.move | 0;
+      maxR = 1;
+      (e.weapons || []).forEach(function (w) {
+        if ((w.max_range | 0) > maxR) maxR = w.max_range | 0;
+      });
+      reach = Math.max(1, dist - (unit.move | 0));
+      return reach <= maxR && (dist + move) >= 1;
+    });
+  }
+
+  /**
+   * gge evaluatePilotSkills priority:
+   * High Speed, Range Boost, Repair, Force Guard, MP Up, bursts,
+   * EN free, SD-count, Sway (only if a counter is possible), Crit Boost.
+   */
   function pickSkill(unit, enemies) {
-    var kit, i, sk, canHit, maxHp, hp, sp;
+    var kit, i, sk, canHit, maxHp, hp, sp, order, oi, key;
     if (!unit || unit.skillUsed || unit.usedSkillThisTurn) return null;
     kit = unit.pilotSkills || { list: [] };
     sp = unit.currentSp != null ? (unit.currentSp | 0) : (unit.sp | 0);
@@ -731,26 +754,119 @@
     maxHp = unit.maxHp | 0;
     hp = unit.hp | 0;
 
-    function find(key) {
+    function find(k) {
       for (i = 0; i < (kit.list || []).length; i++) {
-        if (kit.list[i].key === key) return kit.list[i];
+        if (kit.list[i].key === k) return kit.list[i];
       }
       return null;
     }
+    function afford(s) { return s && sp >= (s.sp | 0); }
 
-    sk = find('repair');
-    if (sk && sp >= (sk.sp | 0) && maxHp > 0 && hp * 2 < maxHp) return sk;
-    sk = find('high_speed');
-    if (sk && sp >= (sk.sp | 0) && !canHit) return sk;
-    sk = find('range_boost');
-    if (sk && sp >= (sk.sp | 0) && !canHit) return sk;
-    sk = find('force_guard');
-    if (sk && sp >= (sk.sp | 0)) return sk;
-    sk = find('mp_up');
-    if (sk && sp >= (sk.sp | 0) && (unit.mp | 0) >= 2 && (unit.mp | 0) < 12) return sk;
-    sk = find('attack_burst') || find('melee_boost') || find('shooting_boost') || find('awaken_boost');
-    if (sk && sp >= (sk.sp | 0)) return sk;
+    order = [
+      'high_speed', 'range_boost', 'repair', 'force_guard', 'mp_up',
+      'attack_burst', 'shooting_boost', 'melee_boost', 'awaken_boost',
+      'en_free', 'sd_plus', 'sway', 'crit_boost'
+    ];
+    for (oi = 0; oi < order.length; oi++) {
+      key = order[oi];
+      sk = find(key);
+      if (!afford(sk)) continue;
+      if ((key === 'high_speed' || key === 'range_boost') && canHit) continue;
+      if (key === 'repair' && !(maxHp > 0 && hp * 2 < maxHp)) continue;
+      if (key === 'mp_up' && !((unit.mp | 0) >= 2 && (unit.mp | 0) < 12)) continue;
+      if (key === 'en_free' && unit.hasUsedFreeAmmoSkillInBattle) continue;
+      if (key === 'sway' && !enemyCanCounter(unit, enemies)) continue;
+      return sk;
+    }
     return null;
+  }
+
+  function unitSkillText(sk) {
+    var parts = [];
+    if (!sk) return '';
+    if (sk.name) parts.push(String(sk.name));
+    if (sk.effect) parts.push(String(sk.effect));
+    (sk.details || []).forEach(function (d) {
+      parts.push(typeof d === 'string' ? d : ((d && d.text) || ''));
+    });
+    (sk.traits || []).forEach(function (tr) {
+      if (!tr) return;
+      if (tr.desc) parts.push(String(tr.desc));
+      if (tr.name) parts.push(String(tr.name));
+      parts.push('type:' + String(tr.trait_type_index || '') + ':' + String(tr.trait_value || ''));
+    });
+    return parts.join(' ');
+  }
+
+  /**
+   * gge evaluateUnitSkill timing:
+   * first-strike / initial-null skills fire at combat start;
+   * every other unit skill fires once before the move.
+   * Numbers stay in /cal — this only decides when the skill turns on.
+   */
+  function planUnitSkill(actor, phase) {
+    var skills, i, sk, blob, anyFirst, first, out, m;
+    if (!actor || actor.hasUsedUnitSkill || !actor.unit) return null;
+    skills = actor.unit.skills || actor.unit.unit_skills || [];
+    if (!skills.length) return null;
+    anyFirst = skills.some(function (s) {
+      var t = unitSkillText(s);
+      return /Initial\s+Damage\s+Nullification|初撃|初回ダメージ無効|type:8:/i.test(t);
+    });
+    if (anyFirst && phase !== 'combat') return null;
+    if (!anyFirst && phase === 'combat') return null;
+    out = {
+      name: '',
+      icon: '',
+      atkPct: 0,
+      defPct: 0,
+      mobPct: 0,
+      mp: 0,
+      move: 0,
+      barrierPct: 0,
+      firstStrike: false,
+      beamDr: 0
+    };
+    for (i = 0; i < skills.length; i++) {
+      sk = skills[i];
+      blob = unitSkillText(sk);
+      first = /Initial\s+Damage\s+Nullification|初撃|初回ダメージ無効|type:8:/i.test(blob);
+      if (!out.name && sk.name) out.name = String(sk.name);
+      if (!out.icon) out.icon = sk.icon || sk.icon_url || sk.thum || '';
+      (sk.traits || []).forEach(function (tr) {
+        var typ = String(tr && tr.trait_type_index || '');
+        var val = Math.max(0, parseInt(tr && tr.trait_value, 10) || 0);
+        if (typ === '2') out.atkPct = Math.max(out.atkPct, val);
+        if (typ === '3') out.defPct = Math.max(out.defPct, val);
+        if (typ === '6') out.barrierPct = Math.max(out.barrierPct, val);
+        if (typ === '7') out.mobPct = Math.max(out.mobPct, val);
+        if (typ === '8') out.firstStrike = true;
+        if (typ === '11' && /beam|ビーム|光束|鐳射/i.test(blob)) out.beamDr = Math.max(out.beamDr, val);
+      });
+      if (first) out.firstStrike = true;
+      m = blob.match(/攻撃力[^%]{0,12}(\d+)\s*%|Attack[^%]{0,16}(\d+)\s*%/i);
+      if (m) out.atkPct = Math.max(out.atkPct, parseInt(m[1] || m[2], 10) || 0);
+      m = blob.match(/防御力[^%]{0,12}(\d+)\s*%|Defense[^%]{0,16}(\d+)\s*%/i);
+      if (m) out.defPct = Math.max(out.defPct, parseInt(m[1] || m[2], 10) || 0);
+      m = blob.match(/機動力[^%]{0,12}(\d+)\s*%|Mobility[^%]{0,16}(\d+)\s*%/i);
+      if (m) out.mobPct = Math.max(out.mobPct, parseInt(m[1] || m[2], 10) || 0);
+      m = blob.match(/MP(?:が|を)?\s*(\d+)\s*上昇|Increase\s+(?:own\s+)?MP\s+by\s+(\d+)/i);
+      if (m) out.mp = Math.max(out.mp, parseInt(m[1] || m[2], 10) || 0);
+      m = blob.match(/移動力[^0-9]{0,8}(\d+)|Move\s*\+\s*(\d+)/i);
+      if (m) out.move = Math.max(out.move, parseInt(m[1] || m[2], 10) || 0);
+      m = blob.match(/最大HP\s*(\d+)\s*%|Max\s*HP[^0-9]{0,12}(\d+)\s*%/i);
+      if (m && /バリア|barrier|屏障/i.test(blob)) {
+        out.barrierPct = Math.max(out.barrierPct, parseInt(m[1] || m[2], 10) || 0);
+      }
+      m = blob.match(/ビーム[^%]{0,16}(\d+)\s*%|beam[^%]{0,24}(\d+)\s*%/i);
+      if (m && /軽減|reduce\s+damage/i.test(blob)) {
+        out.beamDr = Math.max(out.beamDr, parseInt(m[1] || m[2], 10) || 0);
+      }
+    }
+    if (!(out.atkPct || out.defPct || out.mobPct || out.mp || out.move || out.barrierPct || out.firstStrike || out.beamDr)) {
+      return null;
+    }
+    return out;
   }
 
   function rankedPoints(role, win, turns, upset) {
@@ -926,6 +1042,7 @@
   function canUseFreeAmmoSkill(actor) {
     var skills, i, sk, cost, name;
     if (!actor) return false;
+    if (actor.freeAmmoThisAction) return true;
     if (actor.activeSkills && actor.activeSkills.some(function (s) {
       return s && /EN[・･·\s]*Ammo\s*Free|EN・弾数フリー|EN[・･].*彈數|EN.*Ammo.*Free/i.test(String(s.name || ''));
     })) return true;
@@ -1142,6 +1259,7 @@
       }
     }
     if (attacker && (attacker.exCritBonus | 0) > 0) rate += attacker.exCritBonus | 0;
+    if (attacker && (attacker.skillCritBonus | 0) > 0) rate += attacker.skillCritBonus | 0;
     if (rate > 100) rate = 100;
     if (rate < 0) rate = 0;
     return rate;
@@ -1867,6 +1985,8 @@
     terrainRowLevel: terrainRowLevel,
     buildPilotSkillKit: buildPilotSkillKit,
     pickSkill: pickSkill,
+    planUnitSkill: planUnitSkill,
+    enemyCanCounter: enemyCanCounter,
     chanceStepLimit: chanceStepLimit,
     rankedPoints: rankedPoints,
     determineDefenseAction: determineDefenseAction,

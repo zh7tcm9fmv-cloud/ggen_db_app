@@ -197,6 +197,170 @@
 }
 .mls-views {
   display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.mls-lbl-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin-bottom: 4px;
+}
+.mls-lbl-row .mls-lbl { margin-bottom: 0; }
+.mls-order-toggle { margin-left: auto; margin-right: 0; }
+.mls-order-bar { margin-top: 12px; }
+.mls-sub-icons {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 6px;
+}
+.mls-ic {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  flex: 0 0 auto;
+  vertical-align: middle;
+}
+.mls-ic--rarity { width: 20px; height: 20px; }
+.mls-ic--role { width: 18px; height: 18px; }
+.mls-ic--supp { width: 16px; height: 16px; }
+.mls-pilot-name {
+  color: var(--text-secondary);
+  font-size: inherit;
+}
+.mls-sub-hint {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+}
+.mls-order-hint {
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+}
+.mls-timeline--form { min-height: 64px; max-height: 180px; }
+.mls-tl-n {
+  font-family: Teko, var(--font-body);
+  font-size: 13px;
+  min-width: 1.1em;
+  color: var(--accent-cyan);
+}
+.mls-tl-chip.enemy .mls-tl-n { color: var(--accent-red, #ff4d6d); }
+.mls-tl-empty { font-size: 0.8rem; color: var(--text-muted); padding: 6px; }
+.mls-share {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 12px;
+}
+@media (max-width: 720px) {
+  .mls-share { grid-template-columns: 1fr; }
+  .mls-order-toggle { margin-left: 0; }
+}
+.mls-share-box {
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 4px;
+  resize: vertical;
+  font: 12px/1.35 ui-monospace, Consolas, monospace;
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 6px 8px;
+}
+/* Codes stay in DOM for copy/load — not shown. */
+.mls-share-box--sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+  resize: none;
+}
+.mls-share-col { position: relative; }
+.mls-share-faces {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 6px;
+  padding: 6px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, 0.22);
+  cursor: pointer;
+  opacity: 0.42;
+  transition: opacity 0.18s ease, border-color 0.18s ease;
+}
+.mls-share-faces.is-ready {
+  opacity: 1;
+  border-color: rgba(0, 212, 255, 0.35);
+}
+.mls-share-col--enemy .mls-share-faces.is-ready {
+  border-color: rgba(255, 77, 109, 0.4);
+}
+.mls-share-faces img {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 4px;
+  flex: 0 0 auto;
+  pointer-events: none;
+}
+.mls-share-faces.is-flip img {
+  transform: scaleX(-1);
+}
+.mls-share-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  margin-top: 6px;
+}
+.mls-picker-filters { display: flex; flex-direction: column; gap: 6px; margin: 8px 0; }
+.mls-picker-filters[hidden] { display: none !important; }
+.mls-picker-filter-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.mls-chip {
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  border-radius: 999px;
+  padding: 3px 10px;
+  font: inherit;
+  font-size: 0.75rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 28px;
+}
+.mls-chip--icon {
+  padding: 3px 7px;
+  min-width: 34px;
+}
+.mls-chip--icon img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  display: block;
+  pointer-events: none;
+}
+.mls-chip.is-on {
+  color: var(--accent-cyan);
+  border-color: var(--accent-cyan);
+  background: rgba(0, 212, 255, 0.08);
+}
+.mls-views {
+  display: flex;
   gap: 6px;
   border-bottom: 1px solid var(--border-color);
   padding-bottom: 0;
@@ -374,7 +538,11 @@
   border-top: 1px solid rgba(255, 255, 255, 0.06);
   position: relative;
   transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s ease, background 0.2s ease;
-  touch-action: none;
+  /* Scroll on the row; portraits are the drag handle (touch-action:none there). */
+  touch-action: pan-y;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
 }
 .mls-slot-block.is-dragging {
   z-index: 2;
@@ -408,6 +576,9 @@
   color: inherit;
   font: inherit;
   width: 100%;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
 }
 .mls-slot:hover .name { color: var(--accent-cyan); }
 .mls-force--enemy .mls-slot:hover .name { color: var(--accent-red, #ff4d6d); }
@@ -417,8 +588,11 @@
   height: 48px;
   flex: 0 0 auto;
   cursor: grab;
+  /* Dedicated reorder handle — blocks iOS select/callout; page scroll uses name/LB area. */
   touch-action: none;
+  -webkit-user-select: none;
   user-select: none;
+  -webkit-touch-callout: none;
 }
 .mls-slot-thum-wrap.is-drag-source {
   opacity: 0.28;
@@ -440,6 +614,18 @@
   background: rgba(0, 0, 0, 0.35);
   display: block;
   pointer-events: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+body.mls-is-slot-dragging {
+  -webkit-user-select: none !important;
+  user-select: none !important;
+  -webkit-touch-callout: none !important;
+  cursor: grabbing;
+}
+body.mls-is-slot-dragging .mls-slot-list {
+  touch-action: none;
 }
 /* Floating portrait while dragging — Takayu drag-snap lift. */
 .mls-drag-ghost {
@@ -450,6 +636,9 @@
   margin: 0;
   padding: 0;
   border-radius: 4px;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
   border: 2px solid var(--accent-cyan);
   box-shadow:
     0 12px 28px rgba(0, 0, 0, 0.55),
@@ -616,8 +805,7 @@
   grid-template-rows: repeat(var(--mls-rows), var(--mls-cell));
   width: calc(var(--mls-cols) * var(--mls-cell));
   height: calc(var(--mls-rows) * var(--mls-cell));
-  max-width: 100%;
-  max-height: 100%;
+  /* No max-width/height — JS locks px size; capping here shrank the board on unit changes. */
   margin: 0;
   flex: 0 0 auto;
   background:
@@ -652,6 +840,19 @@
 .mls-cell.foot-enemy {
   box-shadow: none;
   background: transparent;
+}
+/* Map-drag drop targets (setup only). */
+.mls-cell.is-drop-ok {
+  background: rgba(0, 212, 255, 0.18);
+  box-shadow: inset 0 0 0 2px var(--accent-cyan, #00d4ff);
+}
+.mls-cell.is-drop-swap {
+  background: rgba(255, 200, 80, 0.2);
+  box-shadow: inset 0 0 0 2px var(--accent-gold, #e8c56a);
+}
+.mls-cell.is-drop-bad {
+  background: rgba(255, 77, 109, 0.16);
+  box-shadow: inset 0 0 0 2px var(--accent-red, #ff4d6d);
 }
 /* Cond:Area aura (Neo Zeong EX etc.) — WeaponArea minimap tile, tinted #571e9f (not source red). */
 .mls-cell.is-area-aura {
@@ -708,6 +909,55 @@
   will-change: transform;
   z-index: 2;
   transform: translate3d(0, 0, 0);
+  /* Layer is pointer-events:none — tokens must opt in for map-drag. */
+  pointer-events: auto;
+  touch-action: none;
+  cursor: grab;
+  user-select: none;
+}
+/*
+ * iOS/mobile: filter:drop-shadow on every token + per-step layout = sluggish fights.
+ * During playback, use cheap frame glows (box-shadow) instead.
+ */
+@media (pointer: coarse), (max-width: 820px) {
+  .mls-board.is-fighting .mls-token,
+  .mls-shell.is-fighting .mls-token {
+    filter: none !important;
+    transition: transform var(--mls-move-ms) var(--mls-move-ease), opacity 0.18s ease;
+  }
+  .mls-board.is-fighting .mls-token .mls-token-frame,
+  .mls-shell.is-fighting .mls-token .mls-token-frame {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.55);
+  }
+  .mls-board.is-fighting .mls-token.is-attacker .mls-token-frame,
+  .mls-shell.is-fighting .mls-token.is-attacker .mls-token-frame {
+    box-shadow: 0 0 0 2px rgba(255, 220, 80, 0.9), 0 0 12px rgba(255, 200, 60, 0.55);
+  }
+  .mls-board.is-fighting .mls-token.is-target .mls-token-frame,
+  .mls-shell.is-fighting .mls-token.is-target .mls-token-frame {
+    box-shadow: 0 0 0 2px rgba(255, 90, 110, 0.85), 0 0 10px rgba(255, 70, 90, 0.45);
+  }
+  .mls-board.is-fighting .mls-token.is-covering .mls-token-frame,
+  .mls-shell.is-fighting .mls-token.is-covering .mls-token-frame {
+    box-shadow: 0 0 0 2px rgba(0, 200, 255, 0.85), 0 0 14px rgba(0, 200, 255, 0.5);
+  }
+  .mls-board.is-fighting .mls-token.is-active:not(.is-covering),
+  .mls-shell.is-fighting .mls-token.is-active:not(.is-covering) {
+    filter: none !important;
+  }
+  .mls-board.is-fighting .mls-cell.is-area-aura::before,
+  .mls-shell.is-fighting .mls-cell.is-area-aura::before {
+    opacity: 0.7;
+  }
+}
+.mls-token.is-map-dragging {
+  opacity: 0.32;
+  cursor: grabbing;
+  filter: grayscale(0.2) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+}
+.mls-board.is-fighting .mls-token {
+  pointer-events: none;
+  cursor: default;
 }
 .mls-token.is-large { z-index: 3; }
 .mls-token.is-attacker {
@@ -732,27 +982,25 @@
   z-index: 3;
   transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
 }
-@media (prefers-reduced-motion: reduce) {
-  .mls-token,
-  .mls-token.is-covering,
-  .mls-token.is-sheltered {
-    transition: opacity 0.15s ease !important;
-    transform: none !important;
-  }
-}
+/* Do not zero token transforms under prefers-reduced-motion.
+   iOS Reduce Motion was cancelling move / cover / hit motion vs desktop. */
 /* Ranged fire — muzzle + recoil + bolt (not arrow markers). */
 .mls-muzzle-flash {
   position: absolute;
-  width: 18px;
-  height: 18px;
-  margin-left: -9px;
-  margin-top: -9px;
+  width: 22px;
+  height: 22px;
+  margin-left: -11px;
+  margin-top: -11px;
   border-radius: 50%;
   pointer-events: none;
   z-index: 11;
+  opacity: 0;
   background: radial-gradient(circle, #fff 0%, rgba(255, 230, 120, 0.9) 35%, transparent 70%);
   box-shadow: 0 0 14px rgba(255, 220, 100, 0.95);
-  animation: mlsMuzzleFlash 0.2s cubic-bezier(0.2, 0, 0, 1) both;
+}
+/* Start on .is-play so iOS Safari runs the keyframe after insert (same as floats). */
+.mls-muzzle-flash.is-play {
+  animation: mlsMuzzleFlash 0.24s cubic-bezier(0.2, 0, 0, 1) both;
 }
 .mls-muzzle-flash.is-ally {
   background: radial-gradient(circle, #fff 0%, rgba(120, 240, 255, 0.95) 40%, transparent 72%);
@@ -763,10 +1011,10 @@
   box-shadow: 0 0 14px rgba(255, 90, 120, 0.9);
 }
 .mls-muzzle-flash.is-crit {
-  width: 24px;
-  height: 24px;
-  margin-left: -12px;
-  margin-top: -12px;
+  width: 30px;
+  height: 30px;
+  margin-left: -15px;
+  margin-top: -15px;
 }
 @keyframes mlsMuzzleFlash {
   0% { opacity: 0; transform: scale(0.3); }
@@ -775,16 +1023,16 @@
 }
 .mls-ranged-trail {
   position: absolute;
-  height: 2px;
-  margin-top: -1px;
+  height: 3px;
+  margin-top: -1.5px;
   transform-origin: left center;
   border-radius: 2px;
   pointer-events: none;
   z-index: 9;
   opacity: 0;
-  transition: transform 0.12s ease-out, opacity 0.12s ease-out;
+  transition: transform 0.14s ease-out, opacity 0.14s ease-out;
   background: linear-gradient(90deg, rgba(255, 230, 140, 0.15), rgba(255, 240, 180, 0.85) 55%, #fff);
-  box-shadow: 0 0 6px rgba(255, 220, 100, 0.65);
+  box-shadow: 0 0 8px rgba(255, 220, 100, 0.75);
 }
 .mls-ranged-trail.is-ally {
   background: linear-gradient(90deg, rgba(0, 200, 255, 0.12), rgba(120, 240, 255, 0.85) 55%, #fff);
@@ -794,20 +1042,20 @@
   background: linear-gradient(90deg, rgba(255, 80, 110, 0.12), rgba(255, 150, 170, 0.85) 55%, #fff);
   box-shadow: 0 0 6px rgba(255, 90, 120, 0.65);
 }
-.mls-ranged-trail.is-crit { height: 3px; margin-top: -1.5px; }
-.mls-ranged-trail.is-on { opacity: 0.95; }
+.mls-ranged-trail.is-crit { height: 4px; margin-top: -2px; }
+.mls-ranged-trail.is-on { opacity: 1; }
 .mls-ranged-trail.is-fade { opacity: 0; transition: opacity 0.12s ease-out; }
 .mls-ranged-shot {
   position: absolute;
-  width: 10px;
-  height: 10px;
-  margin-left: -5px;
-  margin-top: -5px;
+  width: 14px;
+  height: 14px;
+  margin-left: -7px;
+  margin-top: -7px;
   border-radius: 50%;
   pointer-events: none;
   z-index: 11;
   background: radial-gradient(circle, #fff 0%, #ffe066 55%, transparent 75%);
-  box-shadow: 0 0 10px rgba(255, 220, 100, 0.95), 0 0 18px rgba(255, 200, 60, 0.55);
+  box-shadow: 0 0 12px rgba(255, 220, 100, 0.95), 0 0 22px rgba(255, 200, 60, 0.6);
   will-change: transform;
 }
 .mls-ranged-shot.is-ally {
@@ -819,35 +1067,31 @@
   box-shadow: 0 0 10px rgba(255, 100, 130, 0.95), 0 0 18px rgba(255, 70, 100, 0.5);
 }
 .mls-ranged-shot.is-crit {
-  width: 12px;
-  height: 12px;
-  margin-left: -6px;
-  margin-top: -6px;
+  width: 16px;
+  height: 16px;
+  margin-left: -8px;
+  margin-top: -8px;
 }
 .mls-token.is-ranged-fire {
   z-index: 7;
 }
-@media (prefers-reduced-motion: reduce) {
-  .mls-muzzle-flash,
-  .mls-ranged-trail,
-  .mls-ranged-shot {
-    animation: none !important;
-    transition: opacity 0.1s ease !important;
-  }
-}
+/* Ranged FX stay on under Reduce Motion so iOS matches desktop playback. */
 /* Takayu catalog-game-impact-fx-hit-stop — ring flash only (no ghost clones). */
 .mls-impact-burst {
   position: absolute;
-  width: 28px;
-  height: 28px;
-  margin-left: -14px;
-  margin-top: -14px;
+  width: 34px;
+  height: 34px;
+  margin-left: -17px;
+  margin-top: -17px;
   border-radius: 50%;
   pointer-events: none;
   z-index: 10;
+  opacity: 0;
   border: 2px solid rgba(255, 230, 120, 0.95);
-  box-shadow: 0 0 10px rgba(255, 200, 60, 0.75), inset 0 0 8px rgba(255, 255, 255, 0.35);
-  animation: mlsImpactBurst 0.36s cubic-bezier(0.2, 0, 0, 1) both;
+  box-shadow: 0 0 12px rgba(255, 200, 60, 0.8), inset 0 0 8px rgba(255, 255, 255, 0.35);
+}
+.mls-impact-burst.is-play {
+  animation: mlsImpactBurst 0.4s cubic-bezier(0.2, 0, 0, 1) both;
 }
 .mls-impact-burst.is-ally {
   border-color: rgba(120, 240, 255, 0.95);
@@ -858,11 +1102,13 @@
   box-shadow: 0 0 10px rgba(255, 80, 110, 0.7), inset 0 0 8px rgba(255, 255, 255, 0.3);
 }
 .mls-impact-burst.is-crit {
-  width: 36px;
-  height: 36px;
-  margin-left: -18px;
-  margin-top: -18px;
-  animation-duration: 0.42s;
+  width: 42px;
+  height: 42px;
+  margin-left: -21px;
+  margin-top: -21px;
+}
+.mls-impact-burst.is-crit.is-play {
+  animation-duration: 0.46s;
 }
 @keyframes mlsImpactBurst {
   0% { opacity: 0; transform: scale(0.25); }
@@ -896,11 +1142,32 @@
   72% { transform: scale(1.08); filter: brightness(1.15); }
   100% { transform: scale(1); filter: brightness(1); }
 }
+/*
+ * Combat FX must keep animating under prefers-reduced-motion.
+ * iOS often has Reduce Motion on; zeroing these made fights unreadable vs desktop.
+ */
 @media (prefers-reduced-motion: reduce) {
-  .mls-impact-burst,
+  .mls-muzzle-flash.is-play {
+    animation: mlsMuzzleFlash 0.24s cubic-bezier(0.2, 0, 0, 1) both !important;
+  }
+  .mls-impact-burst.is-play {
+    animation: mlsImpactBurst 0.4s cubic-bezier(0.2, 0, 0, 1) both !important;
+  }
+  .mls-impact-burst.is-crit.is-play {
+    animation-duration: 0.46s !important;
+  }
   .mls-token.is-hit-stop .mls-token-frame {
-    animation: none !important;
-    opacity: 0.85;
+    animation: mlsHitStop 0.28s cubic-bezier(0.2, 0, 0, 1) both !important;
+  }
+  .mls-token.is-hit-stop.is-crit-flash .mls-token-frame,
+  .mls-token.is-hit-stop.is-hit .mls-token-frame {
+    animation: mlsHitStopCrit 0.34s cubic-bezier(0.2, 0, 0, 1) both !important;
+  }
+  .mls-float.is-play {
+    animation:
+      mlsDmgFlyX 1.05s linear both,
+      mlsDmgFlyY 1.05s cubic-bezier(0.3, -0.9, 0.7, 0.1) both,
+      mlsDmgPop 1.05s cubic-bezier(0.34, 1.56, 0.64, 1) both !important;
   }
 }
 /* Takayu catalog-game-combat-damage-numbers — pop + parabola float, L/R alternate */
@@ -920,6 +1187,9 @@
   align-items: center;
   justify-content: center;
   --mls-dx: 36px;
+}
+/* Animation starts on .is-play so iOS Safari actually runs the keyframe after insert. */
+.mls-float.is-play {
   animation:
     mlsDmgFlyX 1.05s linear both,
     mlsDmgFlyY 1.05s cubic-bezier(0.3, -0.9, 0.7, 0.1) both,
@@ -927,22 +1197,32 @@
 }
 .mls-float.is-left { --mls-dx: -42px; }
 .mls-float.is-right { --mls-dx: 42px; }
+@keyframes mlsDmgFlyLeft { to { margin-left: -42px; } }
+@keyframes mlsDmgFlyRight { to { margin-left: 42px; } }
+.mls-float.is-left.is-play { animation-name: mlsDmgFlyLeft, mlsDmgFlyY, mlsDmgPop; }
+.mls-float.is-right.is-play { animation-name: mlsDmgFlyRight, mlsDmgFlyY, mlsDmgPop; }
 .mls-float--enemy { color: #ffd0d8; text-shadow: 0 1px 3px #000, 0 0 12px rgba(255, 80, 110, 0.55); }
 .mls-float--ally { color: #d8f7ff; }
 .mls-float--heal {
   color: #9dffc0;
   text-shadow: 0 1px 3px #000, 0 0 10px rgba(80, 220, 140, 0.55);
-  animation: mlsDmgPop 0.85s var(--mls-move-ease) both;
+}
+.mls-float--heal.is-play {
+  animation: mlsDmgPop 0.85s var(--mls-move-ease, cubic-bezier(0.22, 1, 0.36, 1)) both;
 }
 .mls-float--crit {
   color: #ff5a1f;
   font-size: clamp(1.35rem, 3.4vw, 2rem);
   text-shadow: 0 0 8px #ff5a1f, 0 0 18px rgba(255, 80, 40, 0.75), 0 1px 3px #000;
+}
+.mls-float--crit.is-play {
   animation:
     mlsDmgFlyX 1.15s linear both,
     mlsDmgFlyY 1.15s cubic-bezier(0.3, -0.9, 0.7, 0.1) both,
     mlsCritPop 1.15s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
+.mls-float--crit.is-left.is-play { animation-name: mlsDmgFlyLeft, mlsDmgFlyY, mlsCritPop; }
+.mls-float--crit.is-right.is-play { animation-name: mlsDmgFlyRight, mlsDmgFlyY, mlsCritPop; }
 .mls-float--skill {
   color: #e8d6ff;
   font-size: clamp(0.95rem, 2.4vw, 1.25rem);
@@ -1001,8 +1281,9 @@
   border: none;
   color: #e8d6ff;
 }
+/* margin + transform (not the translate/scale properties) — iOS Safari skips those in keyframes. */
 @keyframes mlsDmgFlyX {
-  to { translate: var(--mls-dx) 0; }
+  to { margin-left: var(--mls-dx); }
 }
 @keyframes mlsDmgFlyY {
   0% { margin-top: 0; }
@@ -1010,16 +1291,16 @@
   100% { margin-top: 18px; }
 }
 @keyframes mlsDmgPop {
-  0% { opacity: 0; scale: 0.3; }
-  12% { opacity: 1; scale: 1.3; }
-  25%, 70% { opacity: 1; scale: 1; }
-  100% { opacity: 0; scale: 0; }
+  0% { opacity: 0; transform: scale(0.3); }
+  12% { opacity: 1; transform: scale(1.3); }
+  25%, 70% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.2); }
 }
 @keyframes mlsCritPop {
-  0% { opacity: 0; scale: 0.25; filter: brightness(2); }
-  12% { opacity: 1; scale: 1.45; filter: brightness(1.7); }
-  28%, 72% { opacity: 1; scale: 1.12; filter: brightness(1.2); }
-  100% { opacity: 0; scale: 0; filter: brightness(1); }
+  0% { opacity: 0; transform: scale(0.25); filter: brightness(2); }
+  12% { opacity: 1; transform: scale(1.45); filter: brightness(1.7); }
+  28%, 72% { opacity: 1; transform: scale(1.12); filter: brightness(1.2); }
+  100% { opacity: 0; transform: scale(0.2); filter: brightness(1); }
 }
 .mls-token.is-hit .mls-token-frame {
   animation: mlsHitShake 0.35s var(--motion-ease-standard, cubic-bezier(0.2, 0, 0, 1)) both;
@@ -1079,6 +1360,24 @@
   .mls-token-hp > i.mls-hp-ghost,
   .mls-token-hp.is-healing > i.mls-hp-cur { transition: none; }
 }
+/* Unit skill icon — stays above the portrait after activation for the whole fight. */
+.mls-token-skill-mark {
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 6;
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.85));
+}
+.mls-token-skill-mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
 .mls-token-badge {
   position: absolute;
   top: -8px;
@@ -1097,6 +1396,13 @@
   color: #efe8da;
   border: none;
   text-shadow: 0 1px 3px #000, 0 0 6px rgba(0, 0, 0, 0.8);
+}
+/* Sticky skill icon owns the crown; temporary chips (CS / SD) sit just under it. */
+.mls-token:has(.mls-token-skill-mark) .mls-token-badge {
+  top: 16px;
+}
+.mls-token:has(.mls-token-skill-mark) .mls-token-badge.is-skill {
+  display: none;
 }
 .mls-token-badge.is-chip {
   display: inline-flex;
@@ -1413,6 +1719,7 @@
     0 0 40px rgba(0, 140, 255, 0.45);
 }
 .mls-banner-cutin {
+  display: block;
   width: min(220px, 42vw);
   height: auto;
   object-fit: contain;
@@ -1580,21 +1887,7 @@
   0%, 70% { opacity: 0; transform: translateY(8px) scale(0.96); }
   82%, 100% { opacity: 1; transform: translateY(0) scale(1); }
 }
-@media (prefers-reduced-motion: reduce) {
-  .mls-endcard.is-play .mls-endcard-title,
-  .mls-endcard.is-play .mls-endcard-rule,
-  .mls-endcard.is-play .mls-endcard-sub,
-  .mls-endcard.is-play .mls-endcard-spark,
-  .mls-endcard.is-play .mls-endcard-letter,
-  .mls-endcard.is-play .mls-endcard-retry {
-    animation: none !important;
-    opacity: 1 !important;
-    transform: none !important;
-    filter: none !important;
-    letter-spacing: 0.08em !important;
-  }
-  .mls-endcard.is-play .mls-endcard-rule { width: min(220px, 55%); }
-}
+/* End card motion stays on under Reduce Motion so iOS matches desktop. */
 .mls-controls {
   display: flex;
   flex-wrap: wrap;
@@ -1727,26 +2020,61 @@
 .mls-timeline {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 4px 6px;
   padding: 8px;
+  align-items: center;
   align-content: flex-start;
+}
+.mls-tl-arrow {
+  font-family: Teko, var(--font-body);
+  font-size: 1rem;
+  color: var(--text-muted);
+  padding: 0 2px;
+  flex: 0 0 auto;
 }
 .mls-tl-chip {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 3px 6px 3px 3px;
+  gap: 5px;
+  padding: 4px 7px 4px 4px;
   border-radius: 4px;
   border: 1px solid rgba(255, 255, 255, 0.12);
   font-size: 0.72rem;
   background: rgba(0, 0, 0, 0.25);
 }
+.mls-tl-body {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+}
+.mls-tl-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+  line-height: 1.15;
+}
+.mls-tl-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 7.5em;
+}
+.mls-tl-spd {
+  font-family: Teko, var(--font-body);
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  color: var(--accent-cyan);
+}
+.mls-tl-chip.enemy .mls-tl-spd { color: var(--accent-red, #ff4d6d); }
 .mls-tl-chip img {
-  width: 22px;
-  height: 22px;
+  width: 28px;
+  height: 28px;
   object-fit: cover;
   border-radius: 2px;
   border: 1px solid var(--accent-cyan);
+  flex: 0 0 auto;
 }
 .mls-tl-chip.enemy img { border-color: var(--accent-red, #ff4d6d); }
 .mls-tl-chip.is-dead { opacity: 0.35; }
@@ -1773,7 +2101,8 @@
 }
 .mls-picker[hidden] { display: none !important; }
 .mls-picker-panel {
-  width: min(560px, 100%);
+  /* Match /cal dc picker width so the 3-col thumb grid breathes. */
+  width: min(920px, calc(100vw - 40px));
   max-height: 80vh;
   display: flex;
   flex-direction: column;
@@ -1797,9 +2126,38 @@
 .mls-picker-list {
   overflow: auto;
   max-height: 56vh;
+  min-height: 0;
+}
+/* /cal · /tb framed-thumb grid inside MLS picker */
+#mlsPickerList .tb-picker-grid {
+  background: transparent;
+  padding: 2px;
+}
+#mlsPickerList .tb-picker-item {
+  background: var(--bg-secondary, rgba(0, 0, 0, 0.28));
+}
+#mlsPickerList .list-thumb-composite--picker.list-thumb-has-frame .list-thumb-portrait-wrap {
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  align-items: center;
+  justify-content: center;
+}
+#mlsPickerList .list-thumb-composite--picker .list-thumb-portrait-wrap .list-thumb-portrait {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  flex: 1;
+}
+@media (max-width: 720px) {
+  #mlsPickerList .tb-picker-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 .mls-picker-row {
   display: grid;
