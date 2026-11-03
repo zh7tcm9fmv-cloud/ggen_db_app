@@ -1647,7 +1647,11 @@
       else if (kind === 'character') title.textContent = 'Pick pilot · ' + sideLbl + ' #' + ((idx | 0) + 1);
       else {
         title.textContent = 'Pick ' + sideLbl + ' unit #' + ((idx | 0) + 1) +
-          (forceOf(side).supporter ? ' (supporter tag boost)' : '');
+          (forceOf(side).supporter
+            ? ' (supporter tag boost)'
+            : ((seasonMeta && seasonMeta.boost_tags && seasonMeta.boost_tags.length)
+              ? ' (season Boost: Tag)'
+              : ''));
       }
     }
     if (search) {
@@ -1706,10 +1710,30 @@
     } else {
       var sup = forceOf(side).supporter;
       var boost = (sup && sup.id) ? ('&tb_boost_supporter=' + encodeURIComponent(sup.id)) : '';
+      var seasonLin = '';
       var pp = boost ? '80' : '40';
+      /*
+       * Empty search, no supporter: prefer this season’s Boost: Tag lineages (event-boosted kits),
+       * same idea as /ml banner — still OR across season tags. With a supporter, API already
+       * ranks by that supporter’s leader tags (search can still find any unit).
+       */
+      if (!boost && !query && seasonMeta && Array.isArray(seasonMeta.boost_tags)) {
+        var lids = [];
+        seasonMeta.boost_tags.forEach(function (t) {
+          var id = t && (t.target_id != null ? String(t.target_id) : '');
+          var kind = String((t && t.tag_type) || '').toLowerCase();
+          if (id && id !== '0' && (kind === 'lineage' || kind === '' || t.type_index === 2)) {
+            if (lids.indexOf(id) < 0) lids.push(id);
+          }
+        });
+        if (lids.length) {
+          seasonLin = '&lineage=' + encodeURIComponent(lids.join(',')) + '&lineage_op=or';
+          pp = '80';
+        }
+      }
       url = '/api/units?lang=' + encodeURIComponent(lang()) +
         '&per_page=' + pp + '&page=1&sort=rarity&dir=desc' +
-        (query ? ('&q=' + encodeURIComponent(query)) : '') + boost + filt;
+        (query ? ('&q=' + encodeURIComponent(query)) : '') + boost + seasonLin + filt;
     }
     return fetch(url, { credentials: 'same-origin' }).then(function (r) {
       if (!r.ok) throw new Error(kind + ' ' + r.status);
@@ -2585,46 +2609,87 @@
     return found ? { hpPct: hpPct, enPct: enPct } : null;
   }
 
+  /** Unit ids on an ability detail's condition chips (Setsuna/Char revive gates). */
+  function abilityDetailUnitIds(ab, detailIdx) {
+    var out = [];
+    var details, d, conds, i, c, id;
+    details = Array.isArray(ab && ab.details) ? ab.details : [];
+    d = details[detailIdx];
+    if (!d || typeof d === 'string') return out;
+    conds = [].concat(d.conditions || []);
+    (Array.isArray(d.condition_groups) ? d.condition_groups : []).forEach(function (g) {
+      conds = conds.concat((g && g.conditions) || []);
+    });
+    for (i = 0; i < conds.length; i++) {
+      c = conds[i];
+      if (!c) continue;
+      if (String(c.type || '') === 'unit' || String(c.source || '') === 'unit_ids') {
+        id = String(c.id || '');
+        if (id && id !== '0') out.push(id);
+      }
+    }
+    return out;
+  }
+
+  /**
+   * Once-only (or stack) "HP falls to X% → restore Y%".
+   * Covers Char/Zeong ("When piloting… falls to 0% or below… once only")
+   * and Setsuna/00 Raiser ("If HP falls to 0% when piloting… 1 time(s)")
+   * plus JA/TW/HK equivalents. Prefer Master unit-id chips over localized names.
+   */
   function parseHpFallRestores(actor) {
     var out = [];
-    var bags = [], bi, i, ab, texts, t, m, thr, heal, once, unitName, key;
+    var bags = [], i, ab, di, detail, t, m, thr, heal, once, unitName, unitIds, key;
     if (actor && actor.char && actor.char.abilities) bags.push({ src: 'char', list: actor.char.abilities });
     if (actor && actor.unit && actor.unit.abilities) bags.push({ src: 'unit', list: actor.unit.abilities });
     bags.forEach(function (bag) {
       for (i = 0; i < bag.list.length; i++) {
         ab = bag.list[i];
-        texts = abilityDetailTexts(ab);
-        texts.forEach(function (raw) {
-          t = String(raw || '').replace(/\n/g, ' ');
-          if (!/HP\s+falls\s+to|HPが|HP為|HP为|耐久.*(?:以下|以下に|降至)/i.test(t)) return;
-          if (!/restor|回復|恢復|回复/i.test(t)) return;
-          m = t.match(/HP\s+falls\s+to\s+(\d+)\s*%\s*or\s+below/i)
-            || t.match(/HP(?:が|為|为)\s*(\d+)\s*%\s*(?:以下|未満)/)
+        for (di = 0; di < (ab.details || []).length; di++) {
+          detail = ab.details[di];
+          t = String((typeof detail === 'string' ? detail : (detail && detail.text)) || '')
+            .replace(/\n/g, ' ');
+          if (!t) continue;
+          if (!/HP\s+falls\s+to|HPが|HP為|HP为|自身HP|耐久.*(?:以下|以下に|降至)/i.test(t)) continue;
+          if (!/restor|回復|恢復|回复/i.test(t)) continue;
+          /* thr: EN "falls to 0% or below" / "falls to 0% when…"; JA 0%になった時; TW/HK 0%時 */
+          m = t.match(/HP\s+falls\s+to\s+(\d+)\s*%(?:\s*or\s+below)?/i)
+            || t.match(/HP(?:が|為|为)\s*(\d+)\s*%\s*(?:以下|未満|になった|になった時|時|时)/)
+            || t.match(/自身HP為\s*(\d+)\s*%/)
             || t.match(/(?:降至|降到)\s*(\d+)\s*%/);
-          if (!m) return;
+          if (!m) continue;
           thr = parseInt(m[1], 10);
-          if (isNaN(thr)) return;
+          if (isNaN(thr)) continue;
           m = t.match(/restores?\s+own\s+HP\s+by\s+(\d+)\s*%/i)
-            || t.match(/HP(?:を|)\s*(\d+)\s*%\s*回復/)
+            || t.match(/HP(?:を|が|為|为)?\s*(\d+)\s*%\s*回復/)
+            || t.match(/HP\s*恢復\s*(\d+)\s*%/)
+            || t.match(/HP\s*回复\s*(\d+)\s*%/)
             || t.match(/恢復(?:自身)?HP\s*(\d+)\s*%/)
-            || t.match(/回复(?:自身)?HP\s*(\d+)\s*%/);
-          if (!m) return;
+            || t.match(/回复(?:自身)?HP\s*(\d+)\s*%/)
+            || t.match(/(?:恢復|回复)\s*(\d+)\s*%/);
+          if (!m) continue;
           heal = parseInt(m[1], 10) || 0;
-          if (heal <= 0) return;
-          once = /once\s+only|1回のみ|僅一次|仅一次|一回のみ/i.test(t);
+          if (heal <= 0) continue;
+          once = /once\s+only|1\s*time\s*\(\s*s\s*\)|1回のみ|一回のみ|僅一次|仅一次|\(1回\)|（1回）|\(1次\)|（1次）/i.test(t);
+          unitIds = abilityDetailUnitIds(ab, di);
           unitName = '';
           m = t.match(/When\s+piloting\s+(.+?)\s+and\s+HP\s+falls/i)
+            || t.match(/HP\s+falls\s+to\s+\d+\s*%(?:\s*or\s+below)?\s+when\s+piloting\s+(.+?)(?:,|\s+restores)/i)
+            || t.match(/搭乗ユニットが[「『](.+?)[」』]/)
+            || t.match(/搭乘單位為[「『](.+?)[」』]/)
             || t.match(/(.+?)(?:に搭乗|駕駛|驾驶).{0,12}HP/);
-          if (m) unitName = String(m[1] || '').trim();
-          key = bag.src + ':' + String((ab && ab.id) || ab && ab.name || '') + ':' + thr + ':' + heal;
+          if (m) unitName = String(m[1] || '').trim().replace(/[.,，、]+$/, '');
+          key = bag.src + ':' + String((ab && ab.id) || (ab && ab.name) || '') +
+            ':' + thr + ':' + heal + ':' + di;
           out.push({
             key: key,
             threshold: thr,
             healPct: heal,
             once: once,
-            unitName: unitName
+            unitName: unitName,
+            unitIds: unitIds
           });
-        });
+        }
       }
     });
     return out;
@@ -2641,6 +2706,21 @@
     a = want.replace(/[()（）]/g, '');
     b = have.replace(/[()（）]/g, '');
     return b.indexOf(a) >= 0 || a.indexOf(b) >= 0;
+  }
+
+  /** Apply revive row: Master unit-id chips win; else localized "piloting …" name. */
+  function hpFallRestoreApplies(actor, row) {
+    var uid, ids, i;
+    if (!row) return false;
+    ids = row.unitIds || [];
+    if (ids.length) {
+      uid = String((actor && actor.unit && actor.unit.id) || (actor && actor.id) || '');
+      for (i = 0; i < ids.length; i++) {
+        if (String(ids[i]) === uid) return true;
+      }
+      return false;
+    }
+    return unitNameMatchesFilter(actor, row.unitName);
   }
 
   function applyTurnStartRestore(actor, turn, snapshotLine) {
@@ -2690,7 +2770,7 @@
     for (i = 0; i < list.length; i++) {
       r = list[i];
       if (r.once && actor._hpFallRestoreUsed[r.key]) continue;
-      if (!unitNameMatchesFilter(actor, r.unitName)) continue;
+      if (!hpFallRestoreApplies(actor, r)) continue;
       crossed = pctBefore > r.threshold && pctAfter <= r.threshold;
       if (!crossed) continue;
       amt = Math.floor(maxHp * r.healPct / 100);
@@ -2703,7 +2783,7 @@
         snapshotLine(
           'T' + turn + ' HP restore' + (r.once ? ' (once)' : '') + ': ' + actor.name +
           ' +' + amt + ' HP' +
-          (r.threshold <= 0 && (hpBefore | 0) <= 0 ? ' [revive]' : '') +
+          (pctAfter <= 0 ? ' [revive]' : '') +
           ' (HP ' + (actor.hp | 0) + '/' + maxHp + ')',
           { x: actor.x, y: actor.y, text: '+' + fmtNum(amt), cls: 'mls-float--heal' },
           null,
@@ -2986,8 +3066,11 @@
 
   function terrainIndex() {
     var t = String((seasonMeta && seasonMeta.terrain_primary) || '').toLowerCase();
-    if (t.indexOf('space') >= 0 || t.indexOf('宇宙') >= 0) return 1;
-    if (t.indexOf('ground') >= 0 || t.indexOf('land') >= 0 || t.indexOf('地上') >= 0) return 3;
+    if (/space|宇宙|太空|우주/.test(t)) return 1;
+    if (/atmos|空中|大氣|大气|공중/.test(t)) return 2;
+    if (/ground|land|地上|地面|지상/.test(t)) return 3;
+    if (/sea|水面|水上|수상|surface/.test(t)) return 4;
+    if (/under|水中|수중/.test(t)) return 5;
     return 0;
   }
 
@@ -2996,6 +3079,7 @@
    * ● circle = full move · ▲ triangle = half move · - dash = cannot place.
    * Season terrain_primary is often "Land" (not "Ground"). gge getTerrainSuitability
    * for 地上/Land takes the best of Ground/Land and Atmospheric.
+   * Season 17 stage enables Ground + Atmospheric — Neo Zeong (EX) Atmospheric ▲ → Move 5→2.
    */
   function terrainRowLevel(unitData, aliases) {
     var rows = (unitData && unitData.terrain) || [];
@@ -3019,28 +3103,64 @@
     return best;
   }
 
-  function fieldIsSpace(field) {
-    return /space|宇宙|太空/i.test(String(field || ''));
+  function terrainAliasesForLabel(label) {
+    var t = String(label || '').toLowerCase();
+    if (/space|宇宙|太空|우주/.test(t)) return ['Space', '宇宙', '太空', '우주'];
+    if (/atmos|sky|空中|大氣|大气|공중/.test(t)) return ['Atmospheric', '空中', '大氣', '大气', '공중'];
+    if (/ground|land|地上|地面|지상/.test(t)) return ['Ground', 'Land', '地上', '地面', '지상'];
+    if (/sea|surface|水面|水上|수상/.test(t)) return ['Sea', '水面', '水上', '수상'];
+    if (/under|水中|수중/.test(t)) return ['Underwater', '水中', '수중'];
+    return [String(label || '')];
   }
 
-  /** Best suitability level for the season field (1/2/3). */
+  function fieldIsSpace(field) {
+    return /space|宇宙|太空|우주/i.test(String(field || ''));
+  }
+
+  function fieldIsLand(field) {
+    return /ground|land|地上|地面|지상/i.test(String(field || ''));
+  }
+
+  /**
+   * Best suitability level (1/2/3) for the season field.
+   * Land/Ground (Season 17 etc.): gge max(地上, 空中) — Neo Zeong Atmospheric ▲ → half Move
+   * even when Ground is dash, because the stage also allows Atmospheric.
+   */
   function terrainSuitabilityLevel(unitData, field) {
     var f = field != null ? String(field) : String((seasonMeta && seasonMeta.terrain_primary) || '');
-    if (fieldIsSpace(f)) return terrainRowLevel(unitData, ['Space', '宇宙', '太空']);
-    /* Land / Ground seasons — gge: max(地上, 空中). */
+    if (fieldIsSpace(f)) return terrainRowLevel(unitData, terrainAliasesForLabel('Space'));
+    if (/atmos|空中|大氣|大气|공중/i.test(f)) {
+      return terrainRowLevel(unitData, terrainAliasesForLabel('Atmospheric'));
+    }
+    if (/sea|水面|水上|수상|surface/i.test(f)) {
+      return terrainRowLevel(unitData, terrainAliasesForLabel('Sea'));
+    }
+    if (/under|水中|수중/i.test(f)) {
+      return terrainRowLevel(unitData, terrainAliasesForLabel('Underwater'));
+    }
+    /* Land / Ground / empty / unknown non-space — always max(Ground, Atmospheric). */
     return Math.max(
-      terrainRowLevel(unitData, ['Ground', 'Land', '地上', '地面']),
-      terrainRowLevel(unitData, ['Atmospheric', '空中', '大氣', '大气'])
+      terrainRowLevel(unitData, terrainAliasesForLabel('Ground')),
+      terrainRowLevel(unitData, terrainAliasesForLabel('Atmospheric'))
     );
   }
 
-  function terrainMoveFactor(unitData) {
-    var field = String((seasonMeta && seasonMeta.terrain_primary) || '');
-    var best = terrainSuitabilityLevel(unitData, field);
+  function terrainMoveFactor(unitData, field) {
+    var f = field != null ? String(field) : String((seasonMeta && seasonMeta.terrain_primary) || '');
+    var best = terrainSuitabilityLevel(unitData, f);
     if (!((unitData && unitData.terrain) || []).length) return 1;
     if (best >= 3) return 1;
     if (best === 2) return 0.5;
     return 0;
+  }
+
+  /** LANG: triangle halves Move (floor). baseMove is pre-terrain. */
+  function applyTerrainMove(baseMove, unitData, field) {
+    var base = Math.max(0, baseMove | 0);
+    var factor = terrainMoveFactor(unitData, field);
+    if (factor <= 0) return 0;
+    if (factor < 1) return Math.floor(base / 2);
+    return base;
   }
 
   /**
@@ -3052,10 +3172,10 @@
     var f = field != null ? String(field) : String((seasonMeta && seasonMeta.terrain_primary) || '');
     var g, a;
     if (fieldIsSpace(f)) {
-      return terrainRowLevel(unitData, ['Space', '宇宙', '太空']) >= 2 ? 'space' : 'none';
+      return terrainRowLevel(unitData, terrainAliasesForLabel('Space')) >= 2 ? 'space' : 'none';
     }
-    g = terrainRowLevel(unitData, ['Ground', 'Land', '地上', '地面']);
-    a = terrainRowLevel(unitData, ['Atmospheric', '空中', '大氣', '大气']);
+    g = terrainRowLevel(unitData, terrainAliasesForLabel('Ground'));
+    a = terrainRowLevel(unitData, terrainAliasesForLabel('Atmospheric'));
     if (g >= 2) return 'land';
     if (a >= 2) return 'air';
     return 'none';
@@ -3064,10 +3184,10 @@
   function canEnterOccupancy(unitData, mode, field) {
     var f = field != null ? String(field) : String((seasonMeta && seasonMeta.terrain_primary) || '');
     if (mode === 'space' || fieldIsSpace(f)) {
-      return terrainRowLevel(unitData, ['Space', '宇宙', '太空']) >= 2;
+      return terrainRowLevel(unitData, terrainAliasesForLabel('Space')) >= 2;
     }
-    if (mode === 'land') return terrainRowLevel(unitData, ['Ground', 'Land', '地上', '地面']) >= 2;
-    if (mode === 'air') return terrainRowLevel(unitData, ['Atmospheric', '空中', '大氣', '大气']) >= 2;
+    if (mode === 'land') return terrainRowLevel(unitData, terrainAliasesForLabel('Ground')) >= 2;
+    if (mode === 'air') return terrainRowLevel(unitData, terrainAliasesForLabel('Atmospheric')) >= 2;
     return false;
   }
 
@@ -3326,12 +3446,10 @@
     var facing = sideFacing(side);
     var mult = mlBoostMult();
     var mob = Math.floor(us.mob * mult);
-    var move = us.move;
     var fieldTerr = String((seasonMeta && seasonMeta.terrain_primary) || '');
-    var terrMove = terrainMoveFactor(loaded.unit);
-    var baseMove = move;
-    if (terrMove <= 0) move = 0;
-    else if (terrMove < 1) move = Math.floor(move * terrMove);
+    var baseMove = us.move;
+    var terrMove = terrainMoveFactor(loaded.unit, fieldTerr);
+    var move = applyTerrainMove(baseMove, loaded.unit, fieldTerr);
     var hp = Math.floor(us.hp * mult);
     var en = Math.floor((us.en || 100) * mult);
     var actor = {
@@ -3794,11 +3912,16 @@
       coverStyle = ';--mls-shelter-x:' + shelter.x + 'px;--mls-shelter-y:' + shelter.y + 'px';
     }
     var badgeHtml = badgeChipHtml(badge, badgeText, badgeIconOv);
+    var moveTip = (u.baseMove != null && (u.baseMove | 0) !== (u.move | 0))
+      ? ('Move ' + (u.move | 0) + ' (base ' + (u.baseMove | 0) +
+        (u.terrainMoveFactor != null && u.terrainMoveFactor < 1 ? ' · terrain ▲' : '') +
+        (u.fieldTerrain ? ' · ' + u.fieldTerrain : '') + ')')
+      : ('Move ' + (u.move | 0));
     return '<div class="mls-token' + (u.isLarge ? ' is-large' : '') + ' ' + (u.side === 'ally' ? 'ally' : 'enemy') +
       (u.active ? ' is-active' : '') + (u.hp <= 0 ? ' is-dead' : '') + markCls +
       '" data-token-key="' + esc(tokenKey(u)) + '" data-unit-id="' + esc(u.id) +
       '" data-side="' + esc(u.side || '') + '" data-slot-idx="' + (u.slotIdx | 0) +
-      '" aria-label="Drag to set start cell" style="' + posStyle + coverStyle + '">' +
+      '" title="' + esc(moveTip) + '" aria-label="Drag to set start cell" style="' + posStyle + coverStyle + '">' +
       skillMarkHtml(u) +
       badgeHtml +
       auraDebuffHtml(u) +
@@ -5036,6 +5159,13 @@
       if (revived && hpAfterHit <= 0 && (defender.hp | 0) > 0 && defender.active) {
         defender._endActionAfterRevive = true;
       }
+      /*
+       * In-game: a KO this engagement ends support participation even if HP is restored
+       * (Setsuna / Char revive). Support Counter / Counter must not fire after that kill.
+       */
+      if (hpAfterHit <= 0) {
+        defender._koThisEngagement = true;
+      }
       /* Cond:Combat-Count / Cond:Damage taken — stacks rise after a landed hit (next strike uses them). */
       bumpCondStacksAfterHit(attacker, defender);
       /* LANG + gge: land hit → attacker +1; take hit → −1; SD net +2.
@@ -5046,7 +5176,7 @@
       if ((defender.hp | 0) <= 0) {
         applyMpDelta(attacker, hitOpts.isSupport ? 1 : 4);
       }
-      return { weapon: wpn, damage: dmg, miss: false, crit: crit };
+      return { weapon: wpn, damage: dmg, miss: false, crit: crit, ko: hpAfterHit <= 0 };
     }
     while (turn <= limit && living(allies).length && living(enemies).length) {
       /* gge: reset per-round support-attack / support-defense uses at turn start.
@@ -5076,6 +5206,22 @@
         u.turnBuffActive = false;
         u.skillDmgPct = 0;
         u.skillDmgKind = '';
+        /* Fresh engagement — clear prior KO flags so revive from last fight does not linger. */
+        allies.concat(enemies).forEach(function (x) {
+          if (x) x._koThisEngagement = false;
+        });
+        /* Re-apply terrain Move each action (▲ → floor half). Keeps S17 Neo Zeong at 2. */
+        u.move = applyTerrainMove(
+          u.baseMove != null ? u.baseMove : u.move,
+          u.unit,
+          u.fieldTerrain || (seasonMeta && seasonMeta.terrain_primary) || ''
+        );
+        if (u.terrainMoveFactor == null) {
+          u.terrainMoveFactor = terrainMoveFactor(
+            u.unit,
+            u.fieldTerrain || (seasonMeta && seasonMeta.terrain_primary) || ''
+          );
+        }
         syncMpDisplay(u);
         foes = u.side === 'ally' ? enemies : allies;
         friends = u.side === 'ally' ? allies : enemies;
@@ -5315,7 +5461,8 @@
             coverUnit = null;
             origTarget = q.originalTarget || (q.wave === 3 || q.wave === 4 ? u : target);
             /* Support Attack: skip if the unit being piled on is already KO. */
-            if (q.wave === 1 && origTarget && (origTarget.hp | 0) <= 0) {
+            if (q.wave === 1 && origTarget &&
+                ((origTarget.hp | 0) <= 0 || origTarget._koThisEngagement)) {
               snapshotLine(
                 'T' + turn + ' Support Attack skipped: ' + q.attacker.name +
                 ' — ' + origTarget.name + ' already down',
@@ -5323,18 +5470,20 @@
               );
               continue;
             }
-            /* Support Counter: skip if the attacked ally is already KO (engagement ended),
-               or if the attacker they would hit is already down. */
+            /*
+             * Support Counter: in-game, a kill on the defended unit ends the engagement —
+             * even if they revive (Setsuna / Char). Do not fire SA/Counter after that KO.
+             */
             if (q.wave === 3) {
-              if (target && (target.hp | 0) <= 0) {
+              if (target && ((target.hp | 0) <= 0 || target._koThisEngagement)) {
                 snapshotLine(
                   'T' + turn + ' Support Counter skipped: ' + q.attacker.name +
-                  ' — ' + target.name + ' already KO',
+                  ' — ' + target.name + ' was KO’d (engagement ended)',
                   null, null, 'step'
                 );
                 continue;
               }
-              if (origTarget && (origTarget.hp | 0) <= 0) {
+              if (origTarget && ((origTarget.hp | 0) <= 0 || origTarget._koThisEngagement)) {
                 snapshotLine(
                   'T' + turn + ' Support Counter skipped: ' + q.attacker.name +
                   ' — ' + origTarget.name + ' already down',
@@ -5342,6 +5491,15 @@
                 );
                 continue;
               }
+            }
+            /* Counter: KO’d defender (even if revived) does not get a counter swing. */
+            if (q.wave === 4 && q.attacker && q.attacker._koThisEngagement) {
+              snapshotLine(
+                'T' + turn + ' Counter skipped: ' + q.attacker.name +
+                ' — was KO’d this engagement',
+                null, null, 'step'
+              );
+              continue;
             }
             if (q.defender !== origTarget) {
               coverUnit = q.defender;

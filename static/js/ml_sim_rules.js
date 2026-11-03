@@ -577,7 +577,7 @@
   }
 
   function fieldIsSpace(field) {
-    return /space|宇宙|太空/i.test(String(field || ''));
+    return /space|宇宙|太空|우주/i.test(String(field || ''));
   }
 
   /**
@@ -588,10 +588,10 @@
   function unitOccupancyMode(unitData, field) {
     var g, a;
     if (fieldIsSpace(field)) {
-      return terrainRowLevel(unitData, ['Space', '宇宙', '太空']) >= 2 ? 'space' : 'none';
+      return terrainRowLevel(unitData, ['Space', '宇宙', '太空', '우주']) >= 2 ? 'space' : 'none';
     }
-    g = terrainRowLevel(unitData, ['Ground', 'Land', '地上', '地面']);
-    a = terrainRowLevel(unitData, ['Atmospheric', '空中', '大氣', '大气']);
+    g = terrainRowLevel(unitData, ['Ground', 'Land', '地上', '地面', '지상']);
+    a = terrainRowLevel(unitData, ['Atmospheric', '空中', '大氣', '大气', '공중']);
     if (g >= 2) return 'land';
     if (a >= 2) return 'air';
     return 'none';
@@ -599,10 +599,10 @@
 
   function canEnterOccupancy(unitData, mode, field) {
     if (mode === 'space' || fieldIsSpace(field)) {
-      return terrainRowLevel(unitData, ['Space', '宇宙', '太空']) >= 2;
+      return terrainRowLevel(unitData, ['Space', '宇宙', '太空', '우주']) >= 2;
     }
-    if (mode === 'land') return terrainRowLevel(unitData, ['Ground', 'Land', '地上', '地面']) >= 2;
-    if (mode === 'air') return terrainRowLevel(unitData, ['Atmospheric', '空中', '大氣', '大气']) >= 2;
+    if (mode === 'land') return terrainRowLevel(unitData, ['Ground', 'Land', '地上', '地面', '지상']) >= 2;
+    if (mode === 'air') return terrainRowLevel(unitData, ['Atmospheric', '空中', '大氣', '大气', '공중']) >= 2;
     return false;
   }
 

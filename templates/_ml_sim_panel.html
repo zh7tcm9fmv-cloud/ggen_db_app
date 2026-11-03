@@ -111,6 +111,16 @@
       <div class="mls-map-scroll">
         <div class="mls-map" id="mlsBoard" aria-label="Master League battle map"></div>
       </div>
+      <aside class="mls-map-turn-order" aria-label="Turn order">
+        <div class="mls-lbl-row mls-map-turn-order-head">
+          <div class="mls-lbl">TURN ORDER</div>
+          <label class="mls-check mls-order-toggle" title="Action order is Mobility + Reaction. Uncheck to list your force only.">
+            <input type="checkbox" id="mlsOrderEnemies" checked>
+            <span>Enemies</span>
+          </label>
+        </div>
+        <div class="mls-timeline mls-timeline--map" id="mlsTimeline"></div>
+      </aside>
       <div class="mls-banner" id="mlsBanner" hidden aria-hidden="true">
         <div class="mls-banner-inner">
           <span class="mls-banner-line">READY? GO!!</span>
@@ -149,16 +159,6 @@
       </div>
     </div>
     <div class="mls-battle-meta">
-      <div class="mls-timeline-wrap">
-        <div class="mls-lbl-row">
-          <div class="mls-lbl">TURN ORDER</div>
-          <label class="mls-check mls-order-toggle" title="Action order is Mobility + Reaction. Uncheck to list your force only.">
-            <input type="checkbox" id="mlsOrderEnemies" checked>
-            <span>Include enemies</span>
-          </label>
-        </div>
-        <div class="mls-timeline" id="mlsTimeline"></div>
-      </div>
       <div class="mls-log-wrap">
         <div class="mls-lbl">BATTLE LOG</div>
         <pre class="mls-log" id="mlsLog" aria-live="polite"></pre>
