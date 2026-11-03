@@ -1721,10 +1721,13 @@ body.mls-is-slot-dragging .mls-slot-list {
 .mls-banner-cutin {
   display: block;
   width: min(220px, 42vw);
+  min-height: 72px;
   height: auto;
   object-fit: contain;
   filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.65));
   pointer-events: none;
+  visibility: visible;
+  opacity: 1;
 }
 @keyframes mlsBannerIn {
   0% { opacity: 0; transform: scale(1.22); }

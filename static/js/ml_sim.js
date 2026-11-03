@@ -730,15 +730,35 @@
     scheduleOrderRefresh();
   }
 
-  /** LINE spawn for slot index, or roster x/y override from map drag. */
+  /** True when (x,y) is one of this side’s board spawn origins (LINE / standard / whatever the season ships). */
+  function isSideSpawnOrigin(side, x, y) {
+    var cells = side === 'ally' ? allyCells() : enemyCells();
+    var i, c;
+    x |= 0;
+    y |= 0;
+    for (i = 0; i < cells.length; i++) {
+      c = cells[i];
+      if ((c.x | 0) === x && (c.y | 0) === y) return true;
+    }
+    return false;
+  }
+
+  /** Board spawn for slot index, or roster x/y override from map drag (spawn cells only). */
   function effectiveSlotHome(side, idx) {
     var cells = side === 'ally' ? allyCells() : enemyCells();
     var base = cells[idx] || { n: (idx | 0) + 1, x: 0, y: 0 };
     var sl = forceOf(side).slots[idx];
+    var x = (sl && sl.x != null) ? (sl.x | 0) : (base.x | 0);
+    var y = (sl && sl.y != null) ? (sl.y | 0) : (base.y | 0);
+    /* Old free-place coords outside this side’s spawn set → snap back to that slot’s spawn. */
+    if (sl && (sl.x != null || sl.y != null) && !isSideSpawnOrigin(side, x, y)) {
+      x = base.x | 0;
+      y = base.y | 0;
+    }
     return {
       n: base.n | 0,
-      x: (sl && sl.x != null) ? (sl.x | 0) : (base.x | 0),
-      y: (sl && sl.y != null) ? (sl.y | 0) : (base.y | 0),
+      x: x,
+      y: y,
       type: base.type | 0
     };
   }
@@ -750,6 +770,8 @@
     if (!sl || !sl.unitId) return;
     x |= 0;
     y |= 0;
+    /* Map drag may only park on this side’s board spawn origins. */
+    if (!isSideSpawnOrigin(side, x, y)) return;
     if (base && (base.x | 0) === x && (base.y | 0) === y) {
       delete sl.x;
       delete sl.y;
@@ -817,21 +839,27 @@
 
   /**
    * Validate placing unit u with origin (nx,ny).
+   * Origin must be one of this side’s board spawn cells (no free placement on the map).
    * Returns { ok, swap: actor|null } — swap when exactly one same-side occupant.
    */
   function evaluateMapPlace(u, nx, ny) {
     var m = mapMeta();
-    var probe = {
-      x: nx | 0,
-      y: ny | 0,
+    var probe, cells, allies, enemyHit, i, c, others, j, o, keys;
+    nx |= 0;
+    ny |= 0;
+    if (!u || !isSideSpawnOrigin(u.side, nx, ny)) {
+      return { ok: false, swap: null };
+    }
+    probe = {
+      x: nx,
+      y: ny,
       side: u.side,
       isLarge: !!u.isLarge,
       direction: u.direction
     };
-    var cells = footprintCells(probe);
-    var allies = {};
-    var enemyHit = false;
-    var i, c, others, j, o, keys;
+    cells = footprintCells(probe);
+    allies = {};
+    enemyHit = false;
     for (i = 0; i < cells.length; i++) {
       c = cells[i];
       if (m.width > 0 && (c.x < 0 || c.x >= (m.width | 0))) {
@@ -907,7 +935,7 @@
 
   /**
    * Drag tokens on the battle map to set formation-start cells.
-   * Drop on empty cell → place; drop on teammate → swap homes; enemy / multi-overlap → reject.
+   * Only that side’s board spawn origins are valid (empty → place; teammate → swap).
    * Disabled while fightBusy (board gets .is-fighting).
    */
   function bindMapTokenDrag() {
@@ -5365,8 +5393,27 @@
     snap.enemy.forEach(function (s, i) { applyOne(enemies, s, i); });
   }
 
+  var BANNER_CUTIN_PATH = '/static/images/Master League/ml_skip_character_cutin_bromide_300010.webp';
+  var BANNER_CUTIN_FALLBACK = '/static/images/Master%20League/ml_skip_character_cutin_bromide_300010.webp';
+
   function bannerCutinUrl() {
-    return thumbUrl('/static/images/Master League/ml_skip_character_cutin_bromide_300010.webp');
+    try {
+      if (typeof global.imgUrlPreferCdn === 'function') {
+        return global.imgUrlPreferCdn(BANNER_CUTIN_PATH) || thumbUrl(BANNER_CUTIN_PATH);
+      }
+    } catch (eUrl) {}
+    return thumbUrl(BANNER_CUTIN_PATH);
+  }
+
+  function sameMediaUrl(a, b) {
+    var x = String(a || '');
+    var y = String(b || '');
+    if (x === y) return true;
+    try {
+      return decodeURIComponent(x) === decodeURIComponent(y);
+    } catch (eDec) {
+      return false;
+    }
   }
 
   /** Warm the READY cutin so start is not waiting on a cold CDN decode. */
@@ -5387,26 +5434,81 @@
     el.classList.remove('is-play', 'is-out');
   }
 
-  function showBanner() {
+  /**
+   * Ensure the Master League cutin bitmap is actually decoded before READY hold /
+   * fightSteps. Rewriting src every start + running the sim on the same tick was
+   * blanking the art intermittently (text still showed).
+   */
+  function waitBannerCutin(cutin) {
+    return new Promise(function (resolve) {
+      var url = bannerCutinUrl();
+      var settled = false;
+      var timer;
+      function done() {
+        if (settled) return;
+        settled = true;
+        try { if (timer) clearTimeout(timer); } catch (eT) {}
+        resolve();
+      }
+      if (!cutin) {
+        done();
+        return;
+      }
+      cutin.removeAttribute('hidden');
+      cutin.hidden = false;
+      cutin.style.visibility = 'visible';
+      cutin.style.opacity = '1';
+      cutin.setAttribute('decoding', 'async');
+      cutin.setAttribute('loading', 'eager');
+      try { cutin.fetchPriority = 'high'; } catch (eFp) {}
+      /* Do not reset src when Jinja/CDN already loaded the same asset. */
+      if (!sameMediaUrl(cutin.currentSrc || cutin.src, url) &&
+          !sameMediaUrl(cutin.getAttribute('src'), url)) {
+        cutin.src = url;
+      }
+      if (cutin.complete && cutin.naturalWidth > 0) {
+        if (typeof cutin.decode === 'function') {
+          cutin.decode().then(done).catch(done);
+        } else {
+          done();
+        }
+        return;
+      }
+      timer = setTimeout(done, 1500);
+      cutin.onload = function () {
+        if (typeof cutin.decode === 'function') {
+          cutin.decode().then(done).catch(done);
+        } else {
+          done();
+        }
+      };
+      cutin.onerror = function () {
+        cutin.onerror = function () { done(); };
+        /* Railway /static → CDN 302 as last resort. */
+        cutin.src = BANNER_CUTIN_FALLBACK;
+      };
+    });
+  }
+
+  function revealBannerShell() {
     var el = document.getElementById('mlsBanner');
-    var cutin, line, holdMs, outMs;
-    if (!el) return Promise.resolve();
+    var cutin, line;
+    if (!el) return null;
     line = el.querySelector('.mls-banner-line');
     if (line) line.textContent = 'READY? GO!!';
     cutin = el.querySelector('.mls-banner-cutin');
-    if (cutin) {
-      /* Keep the Master League cutin visible — do not strip src / hide the img. */
-      cutin.removeAttribute('hidden');
-      cutin.hidden = false;
-      cutin.src = bannerCutinUrl();
-    }
     el.hidden = false;
     el.removeAttribute('hidden');
     el.setAttribute('aria-hidden', 'false');
     el.classList.remove('is-out', 'is-play', 'is-snappy');
+    return { el: el, cutin: cutin };
+  }
+
+  function runBannerHold(el) {
+    var holdMs, outMs;
+    if (!el) return Promise.resolve();
     void el.offsetWidth;
     el.classList.add('is-play');
-    /* Full READY + cutin beat (same look as before). Sim compute overlaps this wait. */
     holdMs = Math.round((mobileBattleSnappy() ? 1050 : 1400) / Math.max(1, speedMul));
     outMs = Math.round(280 / Math.max(1, speedMul));
     return sleep(holdMs).then(function () {
@@ -5414,6 +5516,14 @@
       return sleep(outMs);
     }).then(function () {
       hideBannerNow();
+    });
+  }
+
+  function showBanner() {
+    var shell = revealBannerShell();
+    if (!shell) return Promise.resolve();
+    return waitBannerCutin(shell.cutin).then(function () {
+      return runBannerHold(shell.el);
     });
   }
 
@@ -5730,6 +5840,7 @@
     return loadArmies().then(function () {
       var bannerP;
       var simP;
+      var shell;
       if (!lastAlly.length || !lastEnemy.length) {
         var emptyErr = new Error('Fill both enemy (left) and ally (right) forces on the Formation tab first.');
         emptyErr.code = 'mls-empty';
@@ -5737,10 +5848,17 @@
       }
       paintBoard();
       paintTimeline();
-      bannerP = showBanner();
-      simP = computeFightAsync(lastAlly, lastEnemy);
-      return Promise.all([bannerP, simP]).then(function (pair) {
-        return playFight(pair[1]);
+      /*
+       * Cutin must decode BEFORE fightSteps. Overlapping compute with READY froze the
+       * main thread on phones so the bromide sometimes never painted (text-only READY).
+       */
+      shell = revealBannerShell();
+      return waitBannerCutin(shell && shell.cutin).then(function () {
+        bannerP = runBannerHold(shell && shell.el);
+        simP = computeFightAsync(lastAlly, lastEnemy);
+        return Promise.all([bannerP, simP]).then(function (pair) {
+          return playFight(pair[1]);
+        });
       });
     }).catch(function (e) {
       hideBannerNow();
@@ -5990,6 +6108,7 @@
     var root = document.getElementById('panel-ml_sim');
     if (!root || root._mlsBound) return;
     root._mlsBound = 1;
+    preloadBannerArt();
 
     if (!mapFitBound) {
       mapFitBound = true;
