@@ -1,22 +1,5 @@
 [
   {
-    "at": "2026-10-28T15:39:54+08:00",
-    "rss_mb": 997.7,
-    "body_mb": 3.24,
-    "detail_mb": 3.0,
-    "band": "mid",
-    "rpm": 136,
-    "pair_len": 3750,
-    "pair_max": 3750,
-    "body_budget_mb": 8.0,
-    "bsp_lru": 50,
-    "bsp_lru_max": 64,
-    "api_cache_keys": 199,
-    "bsp_sharded": true,
-    "weapon_len": 1280,
-    "weapon_max": 1280
-  },
-  {
     "at": "2026-10-31T19:00:51+08:00",
     "rss_mb": 1205.9,
     "body_mb": 2.9,
@@ -202,5 +185,22 @@
     "bsp_sharded": true,
     "weapon_len": 2048,
     "weapon_max": 2048
+  },
+  {
+    "at": "2026-11-03T23:31:15+08:00",
+    "rss_mb": 826.4,
+    "body_mb": 1.52,
+    "detail_mb": 0.15,
+    "band": "pressure",
+    "rpm": 106,
+    "pair_len": 150,
+    "pair_max": 1500,
+    "body_budget_mb": 8.0,
+    "bsp_lru": 1,
+    "bsp_lru_max": 64,
+    "api_cache_keys": 41,
+    "bsp_sharded": true,
+    "weapon_len": 3,
+    "weapon_max": 512
   }
 ]

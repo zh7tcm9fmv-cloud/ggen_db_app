@@ -1,0 +1,129 @@
+{
+  "health": {
+    "ms": 259,
+    "ok": true,
+    "reachable": true,
+    "err": null,
+    "booting": false,
+    "browse_ready": true,
+    "rss_mb": 852.7,
+    "band": "mid",
+    "pair_len": 1082,
+    "pair_max": 3750,
+    "pair_ceiling": 6000,
+    "weapon_len": 943,
+    "weapon_max": 1280,
+    "rpm": 198,
+    "api_cache_keys": 90,
+    "body_keys": 32,
+    "detail_keys": 35,
+    "body_mb": 1.55,
+    "detail_mb": 0.65,
+    "body_budget_mb": 8.0,
+    "bsp_lru": 3,
+    "bsp_lru_max": 64,
+    "bsp_sharded": true
+  },
+  "paths": {
+    "/": {
+      "warm_ms": [
+        501,
+        594,
+        295
+      ],
+      "p50": 501,
+      "gzip": 38501,
+      "last": 295
+    },
+    "/api/characters?lang=EN": {
+      "warm_ms": [
+        263,
+        264,
+        255
+      ],
+      "p50": 263,
+      "gzip": 3660,
+      "last": 255
+    },
+    "/api/units?lang=EN": {
+      "warm_ms": [
+        240,
+        277,
+        273
+      ],
+      "p50": 273,
+      "gzip": 9831,
+      "last": 273
+    },
+    "/api/banner_timeline?lang=EN&sv=23": {
+      "warm_ms": [
+        289,
+        262,
+        267
+      ],
+      "p50": 267,
+      "gzip": 38330,
+      "last": 267
+    },
+    "/api/unit/1001000150?lang=EN": {
+      "warm_ms": [
+        321,
+        335,
+        261
+      ],
+      "p50": 321,
+      "gzip": 2867,
+      "last": 261
+    },
+    "/api/character/1001000100?lang=EN": {
+      "warm_ms": [
+        255,
+        261,
+        273
+      ],
+      "p50": 261,
+      "gzip": 1487,
+      "last": 273
+    },
+    "/api/unit/1001000150/best_synergy_pilots?lang=EN": {
+      "warm_ms": [
+        299,
+        277,
+        275
+      ],
+      "p50": 277,
+      "gzip": 50979,
+      "last": 275
+    },
+    "/api/sp_investment?lang=EN": {
+      "warm_ms": [
+        403,
+        403,
+        359
+      ],
+      "p50": 403,
+      "gzip": 725726,
+      "last": 359
+    },
+    "/api/whats_new?lang=EN": {
+      "warm_ms": [
+        346,
+        341,
+        280
+      ],
+      "p50": 341,
+      "gzip": 33827,
+      "last": 280
+    },
+    "/api/tag_matrix?lang=EN": {
+      "warm_ms": [
+        291,
+        326,
+        324
+      ],
+      "p50": 324,
+      "gzip": 134005,
+      "last": 324
+    }
+  }
+}

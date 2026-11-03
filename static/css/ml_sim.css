@@ -2121,16 +2121,17 @@ body.mls-is-map-dragging .mls-map {
   color: var(--text-secondary);
 }
 
-/* Unit picker */
+/* Unit picker — above sticky .app-header (z-index:100); match /cal cmp-picker (600). */
 .mls-picker {
   position: fixed;
   inset: 0;
-  z-index: 80;
+  z-index: 600;
   background: rgba(0, 0, 0, 0.62);
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
-  padding: 8vh 12px 24px;
+  padding: max(16px, env(safe-area-inset-top, 0px)) 12px max(24px, env(safe-area-inset-bottom, 0px));
+  box-sizing: border-box;
 }
 .mls-picker[hidden] { display: none !important; }
 .mls-picker-panel {
