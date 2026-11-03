@@ -22,6 +22,7 @@
       gamei: 'Game-i today',
       apple: 'Apple',
       out: 'Out of top 200',
+      appleOut: 'Apple out of chart',
       statusIdle: 'Auto: ~every 10 min · page refreshes every 60s.',
       statusActive: 'Dense sampling (gacha window, ~5 min) · page refreshes every 60s.',
       statusErr: 'Last sampler note',
@@ -52,6 +53,7 @@
       gamei: 'Game-i 本日',
       apple: 'Apple',
       out: '未進前 200',
+      appleOut: 'Apple 未進榜',
       statusIdle: '自動：約每 10 分鐘取樣 · 本頁每 60 秒刷新。',
       statusActive: '密集取樣中（卡池窗口，約 5 分鐘）· 本頁每 60 秒刷新。',
       statusErr: '取樣備註',
@@ -82,6 +84,7 @@
       gamei: 'Game-i 本日',
       apple: 'Apple',
       out: '未入前 200',
+      appleOut: 'Apple 未入榜',
       statusIdle: '自動：約每 10 分鐘取樣 · 本頁每 60 秒刷新。',
       statusActive: '密集取樣中（卡池窗口，約 5 分鐘）· 本頁每 60 秒刷新。',
       statusErr: '取樣備註',
@@ -112,6 +115,7 @@
       gamei: 'Game-i 本日',
       apple: 'Apple',
       out: 'トップ200外',
+      appleOut: 'Appleチャート外',
       statusIdle: '自動：約10分ごと · ページは60秒更新。',
       statusActive: '密サンプリング中（ガチャ窓・約5分）· ページは60秒更新。',
       statusErr: 'サンプラーメモ',
@@ -184,10 +188,10 @@
   function sortCountriesByRank(countries, latest) {
     latest = latest || {};
     return (countries || []).slice().sort(function (a, b) {
-      var ra = (latest[a.code] || {}).rank;
-      var rb = (latest[b.code] || {}).rank;
-      var aOut = ra == null;
-      var bOut = rb == null;
+      var ra = sortRankValue(latest[a.code]);
+      var rb = sortRankValue(latest[b.code]);
+      var aOut = ra >= 99999;
+      var bOut = rb >= 99999;
       if (aOut !== bOut) return aOut ? 1 : -1;
       if (!aOut && !bOut && ra !== rb) return ra - rb;
       return String(a.code).localeCompare(String(b.code));
@@ -199,7 +203,8 @@
     var latest = (data && data.latest) || {};
     ['sg', 'kr'].forEach(function (code) {
       var row = latest[code] || {};
-      if (row.rank == null && !Object.prototype.hasOwnProperty.call(state.hidden, code)) {
+      /* Dim only when neither Apple nor Game-i has a standing. */
+      if (!standingOf(row) && !Object.prototype.hasOwnProperty.call(state.hidden, code)) {
         state.hidden[code] = true;
       }
     });
@@ -242,6 +247,19 @@
     return '';
   }
 
+  /** Prefer Apple; fall back to Game-i so we still show standing past Apple top-100/200. */
+  function standingOf(row) {
+    row = row || {};
+    if (row.rank != null) return { rank: row.rank | 0, src: 'apple' };
+    if (row.gamei_today != null) return { rank: row.gamei_today | 0, src: 'gamei' };
+    return null;
+  }
+
+  function sortRankValue(row) {
+    var s = standingOf(row);
+    return s ? s.rank : 99999;
+  }
+
   function renderLiveCards(data) {
     var root = document.getElementById('trkLive');
     if (!root) return;
@@ -251,18 +269,25 @@
     countries.forEach(function (c) {
       var code = c.code;
       var row = latest[code] || {};
-      var rank = row.rank;
-      var isTop = rank === 1;
+      var stand = standingOf(row);
+      var rank = stand ? stand.rank : null;
+      var isTop = rank === 1 && stand && stand.src === 'apple';
       var gemDisagree = isTop && row.gamei_today != null && row.gamei_today !== 1;
       var label = countryLabel(c);
-      var rankTxt = rank != null ? '#' + rank : t('out');
+      var rankTxt = stand ? '#' + stand.rank : t('out');
       var metaBits = [];
-      if (rank != null) metaBits.push(t('apple'));
-      if (row.gamei_today != null) metaBits.push(t('gamei') + ' #' + row.gamei_today);
-      else if (rank == null && row.t) metaBits.push(t('updated') + ' ' + fmtTime(row.t));
+      if (stand && stand.src === 'apple') metaBits.push(t('apple'));
+      else if (stand && stand.src === 'gamei') metaBits.push(t('gamei'));
+      if (row.rank != null && row.gamei_today != null) {
+        metaBits = [t('apple'), t('gamei') + ' #' + row.gamei_today];
+      } else if (stand && stand.src === 'gamei' && row.rank == null) {
+        metaBits = [t('gamei'), t('appleOut')];
+      } else if (rank == null && row.t) {
+        metaBits.push(t('updated') + ' ' + fmtTime(row.t));
+      }
       if (gemDisagree) metaBits.push(t('gemWarn'));
       var meta = metaBits.join(' · ');
-      var haro = haroUrl(rank);
+      var haro = haroUrl(stand && stand.src === 'apple' ? rank : null);
       html +=
         '<article class="trk-live-card' +
         (isTop ? ' is-top1' : '') +
@@ -315,7 +340,7 @@
       countries
         .map(function (c) {
           var off = state.hidden[c.code] ? ' is-off' : '';
-          var oot = (latest[c.code] || {}).rank == null ? ' is-oot' : '';
+          var oot = !standingOf(latest[c.code]) ? ' is-oot' : '';
           var label = countryLabel(c);
           return (
             '<button type="button" class="trk-legend-item' +
@@ -348,7 +373,7 @@
       var x = x0 + ((p.t - tMin) / spanT) * w;
       // Exact rank Y — never fake-offset (so #2 never sits on the #1 grid).
       var y = y0 + ((rk - 1) / spanR) * h;
-      last = { x: x, y: y, rank: rk };
+      last = { x: x, y: y, rank: rk, t: p.t };
       d += (i === 0 ? 'M' : 'L') + x.toFixed(1) + ' ' + y.toFixed(1);
     });
     return { d: d, last: last };
@@ -536,8 +561,31 @@
           };
         })
       };
-      if (built.last) {
-        endMarks.push({ code: c.code, col: col, x: built.last.x, y: built.last.y, rank: built.last.rank });
+      /* End mark = latest known standing (Apple preferred when same sample; else Game-i). */
+      var endCand = null;
+      if (built.last && gBuilt.last) {
+        endCand =
+          built.last.t >= gBuilt.last.t
+            ? { x: built.last.x, y: built.last.y, rank: built.last.rank, src: 'apple', t: built.last.t }
+            : { x: gBuilt.last.x, y: gBuilt.last.y, rank: gBuilt.last.rank, src: 'gamei', t: gBuilt.last.t };
+        /* Prefer Apple if both exist at the same end time (built path uses Apple coords). */
+        if (built.last.t === gBuilt.last.t) {
+          endCand = { x: built.last.x, y: built.last.y, rank: built.last.rank, src: 'apple', t: built.last.t };
+        }
+      } else if (built.last) {
+        endCand = { x: built.last.x, y: built.last.y, rank: built.last.rank, src: 'apple', t: built.last.t };
+      } else if (gBuilt.last) {
+        endCand = { x: gBuilt.last.x, y: gBuilt.last.y, rank: gBuilt.last.rank, src: 'gamei', t: gBuilt.last.t };
+      }
+      if (endCand) {
+        endMarks.push({
+          code: c.code,
+          col: col,
+          x: endCand.x,
+          y: endCand.y,
+          rank: endCand.rank,
+          src: endCand.src
+        });
       }
     });
     endMarks.sort(function (a, b) {
@@ -546,13 +594,19 @@
     var placed = [];
     endMarks.forEach(function (m) {
       var labelX = m.x + 14;
-      var labelY = m.y - 6;
-      placed.forEach(function (p) {
-        if (Math.abs(labelY - p.y) < 16 && Math.abs(labelX - p.x) < 36) {
-          labelX = Math.max(labelX, p.x + 34);
-        }
-      });
+      var labelY = m.y + 4;
+      var tries = 0;
+      while (tries < 8) {
+        var hit = false;
+        placed.forEach(function (p) {
+          if (Math.abs(labelY - p.y) < 15 && Math.abs(labelX - p.x) < 40) hit = true;
+        });
+        if (!hit) break;
+        labelY += 14;
+        tries += 1;
+      }
       labelX = Math.min(labelX, padL + plotW + padR - 8);
+      labelY = Math.min(Math.max(padT + 10, labelY), padT + plotH - 2);
       placed.push({ x: labelX, y: labelY });
       trails +=
         '<circle class="trk-dot" cx="' +
@@ -563,7 +617,9 @@
         m.col +
         '" stroke="#061018" stroke-width="1.5"/>';
       trails +=
-        '<text class="trk-end-label" x="' +
+        '<text class="trk-end-label' +
+        (m.src === 'gamei' ? ' trk-end-label--gamei' : '') +
+        '" x="' +
         labelX.toFixed(1) +
         '" y="' +
         labelY.toFixed(1) +
@@ -685,35 +741,48 @@
       var s = item.s;
       var n = item.n;
       var gNear = item.gNear;
-      var appleTxt = '';
-      if (n && n.cur && n.cur.rank != null) {
-        var was =
-          n.prev && n.prev.rank != null
-            ? t('hoverWas') + ' #' + n.prev.rank
+      var appleRank = n && n.cur && n.cur.rank != null ? n.cur.rank : null;
+      var gameiRank = gNear && gNear.cur && gNear.cur.rank != null ? gNear.cur.rank : null;
+      if (appleRank == null && gameiRank == null) return;
+      var nowRank = appleRank != null ? appleRank : gameiRank;
+      var nowSrc = appleRank != null ? 'apple' : 'gamei';
+      var was =
+        appleRank != null && n.prev && n.prev.rank != null
+          ? '#' + n.prev.rank
+          : gameiRank != null && gNear.prev && gNear.prev.rank != null
+            ? '#' + gNear.prev.rank
             : '—';
-        appleTxt =
-          '<strong>' +
-          t('apple') +
-          ' #' +
-          n.cur.rank +
-          '</strong> <em>(' +
-          esc(was) +
-          ')</em>';
-      }
-      var gTxt =
-        gNear && gNear.cur && gNear.cur.rank != null
-          ? t('gamei') + ' #' + gNear.cur.rank
-          : '';
-      if (!appleTxt && !gTxt) return;
       rows.push(
-        '<div class="trk-hover-row" style="color:' +
+        '<div class="trk-hover-row" style="--trk-row:' +
           esc(s.col) +
-          '"><span class="trk-hover-name">' +
+          '">' +
+          '<div class="trk-hover-head">' +
+          '<span class="trk-hover-name">' +
           esc(s.label) +
-          '</span><span class="trk-hover-ranks">' +
-          (appleTxt || '—') +
-          (gTxt ? (appleTxt ? ' · ' : '') + esc(gTxt) : '') +
-          '</span></div>'
+          '</span>' +
+          '<span class="trk-hover-now" title="' +
+          esc(nowSrc === 'apple' ? t('apple') : t('gamei')) +
+          '">#' +
+          nowRank +
+          '</span>' +
+          '</div>' +
+          '<div class="trk-hover-meta">' +
+          '<span>' +
+          esc(t('apple')) +
+          ' ' +
+          (appleRank != null ? '#' + appleRank : '—') +
+          '</span>' +
+          '<span>' +
+          esc(t('hoverWas')) +
+          ' ' +
+          esc(was) +
+          '</span>' +
+          '<span>' +
+          esc(t('gamei')) +
+          ' ' +
+          (gameiRank != null ? '#' + gameiRank : '—') +
+          '</span>' +
+          '</div></div>'
       );
       if (n && n.cur) {
         dotsHtml +=
@@ -746,9 +815,10 @@
     tip.hidden = false;
     var host = tip.parentElement;
     var hostW = host ? host.clientWidth : 320;
-    var left = Math.min(Math.max(8, mx * (rect.width / hit.W) + 12), hostW - 180);
+    var tipW = Math.min(280, Math.max(200, tip.offsetWidth || 220));
+    var left = Math.min(Math.max(8, mx * (rect.width / hit.W) + 14), hostW - tipW - 8);
     tip.style.left = left + 'px';
-    tip.style.top = '12px';
+    tip.style.top = '10px';
   }
 
   function renderStatus(data) {

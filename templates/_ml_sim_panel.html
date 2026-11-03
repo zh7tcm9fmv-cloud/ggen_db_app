@@ -3,12 +3,17 @@
     <div class="mls-gate-card" role="dialog" aria-modal="true" aria-labelledby="mlsGateTitle">
       <img class="mls-gate-lock" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_ULT_MissionGauge_Button_Lock.webp{% else %}/static/images/UI/UI_ULT_MissionGauge_Button_Lock.webp{% endif %}" alt="" width="72" height="72" decoding="async">
       <h2 id="mlsGateTitle">Simulator locked</h2>
-      <p class="mls-gate-hint">Enter password to open Master League Simulator.</p>
-      <div id="mlsGateInputHost" class="mls-gate-input-host"></div>
-      <div class="mls-gate-actions">
-        <button type="button" class="mls-btn primary" id="mlsGateUnlock">Unlock</button>
-        <button type="button" class="mls-btn" id="mlsGateBack">← Master League</button>
-      </div>
+      <p class="mls-gate-hint">Enter the <code>GGEN_MLS_PASSWORD</code> value, then Unlock.</p>
+      <form class="mls-gate-form" id="mlsGateForm" action="#" method="post" autocomplete="off">
+        <label class="mls-gate-lbl" for="mlsGateInput">Password</label>
+        <input type="password" id="mlsGateInput" name="ggen_mls_unlock" class="ggen-gate-pw mls-gate-pw"
+          autocomplete="current-password" autocapitalize="off" autocorrect="off" spellcheck="false"
+          maxlength="200" inputmode="text" placeholder="Password">
+        <div class="mls-gate-actions">
+          <button type="submit" class="mls-btn primary" id="mlsGateUnlock">Unlock</button>
+          <button type="button" class="mls-btn" id="mlsGateBack">← Master League</button>
+        </div>
+      </form>
       <div class="mls-gate-err" id="mlsGateErr" aria-live="polite"></div>
     </div>
   </div>

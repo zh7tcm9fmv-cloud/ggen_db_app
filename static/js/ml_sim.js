@@ -4057,9 +4057,14 @@
   function bindGate() {
     if (gateBound) return;
     gateBound = true;
-    var unlockBtn = document.getElementById('mlsGateUnlock');
+    var form = document.getElementById('mlsGateForm');
     var backBtn = document.getElementById('mlsGateBack');
-    if (unlockBtn) unlockBtn.addEventListener('click', submitMlsUnlock);
+    if (form) {
+      form.addEventListener('submit', function (ev) {
+        ev.preventDefault();
+        submitMlsUnlock();
+      });
+    }
     if (backBtn) {
       backBtn.addEventListener('click', function () {
         if (typeof global.switchTab === 'function') global.switchTab('master_league');
@@ -4070,8 +4075,15 @@
   function submitMlsUnlock() {
     var inp = document.getElementById('mlsGateInput');
     var err = document.getElementById('mlsGateErr');
-    var pw = inp ? String(inp.value || '') : '';
+    var btn = document.getElementById('mlsGateUnlock');
+    var pw = inp ? String(inp.value || '').trim() : '';
     if (err) err.textContent = '';
+    if (!pw) {
+      if (err) err.textContent = 'Enter the password, then Unlock.';
+      if (inp) try { inp.focus(); } catch (_) {}
+      return Promise.resolve(false);
+    }
+    if (btn) btn.disabled = true;
     return fetch('/api/ml_sim/unlock', {
       method: 'POST',
       credentials: 'same-origin',
@@ -4079,23 +4091,51 @@
       body: JSON.stringify({ password: pw })
     }).then(function (r) {
       return r.json().catch(function () { return {}; }).then(function (d) {
-        return { ok: r.ok, body: d };
+        return { ok: r.ok, status: r.status, body: d };
       });
     }).then(function (pack) {
       if (!pack.ok) {
-        if (err) err.textContent = 'Wrong password.';
+        if (err) {
+          err.textContent = pack.status === 403
+            ? 'Wrong password.'
+            : ('Unlock failed (' + (pack.status || '?') + ').');
+        }
+        if (inp) {
+          inp.select();
+          try { inp.focus(); } catch (_) {}
+        }
         return false;
       }
       mlsUnlocked = true;
       setGateVisible(false);
-      if (typeof global._ggenUnmountGatePwInput === 'function') {
-        global._ggenUnmountGatePwInput('mlsGateInput');
-      }
-      return onTabShown().then(function () { return true; });
+      if (inp) inp.value = '';
+      return loadMlsContent().then(function () { return true; });
     }).catch(function (e) {
       if (err) err.textContent = String(e && e.message || e);
       return false;
+    }).then(function (ok) {
+      if (btn) btn.disabled = false;
+      return ok;
     });
+  }
+
+  function loadMlsContent() {
+    roster = loadRoster();
+    return fetchJson('/api/master_league?lang=' + encodeURIComponent(lang()))
+      .then(function (d) {
+        seasons = d.seasons || [];
+        fillSeasonSelect();
+        var sel = document.getElementById('mlsSeasonSelect');
+        var eventId = (sel && sel.value) || roster.eventId || DEFAULT_EVENT;
+        return loadBoardForEvent(eventId);
+      })
+      .then(function () {
+        return hydrateSlotPilotsAndOps();
+      })
+      .then(function () {
+        setView(viewName || 'formation');
+        log('Set enemy (left) and ally (right), then SIMULATION START.');
+      });
   }
 
   function ensureMlsUnlocked() {
@@ -4111,13 +4151,10 @@
           return true;
         }
         setGateVisible(true);
-        if (typeof global._ggenMountGatePwInput === 'function') {
-          var inp = global._ggenMountGatePwInput('mlsGateInputHost', 'mlsGateInput', 'ggen_mls_unlock', submitMlsUnlock);
-          if (inp) {
-            inp.value = '';
-            inp.placeholder = 'Password';
-            setTimeout(function () { try { inp.focus(); } catch (_) {} }, 60);
-          }
+        var inp = document.getElementById('mlsGateInput');
+        if (inp) {
+          inp.value = '';
+          setTimeout(function () { try { inp.focus(); } catch (_) {} }, 60);
         }
         return false;
       })
@@ -4567,24 +4604,9 @@
     bind();
     bindGate();
     syncAuraToggleUi();
-    roster = loadRoster();
     return ensureMlsUnlocked().then(function (ok) {
       if (!ok) return null;
-      return fetchJson('/api/master_league?lang=' + encodeURIComponent(lang()))
-        .then(function (d) {
-          seasons = d.seasons || [];
-          fillSeasonSelect();
-          var sel = document.getElementById('mlsSeasonSelect');
-          var eventId = (sel && sel.value) || roster.eventId || DEFAULT_EVENT;
-          return loadBoardForEvent(eventId);
-        })
-        .then(function () {
-          return hydrateSlotPilotsAndOps();
-        })
-        .then(function () {
-          setView(viewName || 'formation');
-          log('Set enemy (left) and ally (right), then SIMULATION START.');
-        });
+      return loadMlsContent();
     }).catch(function (e) { log(String(e && e.message || e)); });
   }
 

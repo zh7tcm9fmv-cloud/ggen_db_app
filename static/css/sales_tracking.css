@@ -115,17 +115,31 @@
 #trkChart{position:absolute;inset:0;width:100%;height:100%;z-index:0;cursor:crosshair}
 .trk-chart-wrap svg{width:100%;height:100%;display:block;touch-action:none}
 .trk-hover-tip{
-  position:absolute;z-index:4;min-width:160px;max-width:240px;padding:8px 10px;
+  position:absolute;z-index:4;min-width:200px;max-width:min(280px,92%);padding:10px 12px;
   border:1px solid rgba(0,212,255,.45);border-radius:var(--radius-sm,6px);
-  background:rgba(6,12,24,.94);color:var(--text-primary,#e8eef8);font-size:.78rem;
+  background:rgba(6,12,24,.96);color:var(--text-primary,#e8eef8);font-size:.78rem;
   pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.45);
 }
 .trk-hover-tip[hidden]{display:none!important}
-.trk-hover-time{font-size:.72rem;color:var(--text-muted,#7a8fa8);margin:0 0 6px}
-.trk-hover-row{display:flex;justify-content:space-between;gap:10px;margin:3px 0;line-height:1.25}
-.trk-hover-name{opacity:.95}
-.trk-hover-ranks strong{font-weight:700}
-.trk-hover-ranks em{font-style:normal;opacity:.75;font-size:.9em}
+.trk-hover-time{font-size:.72rem;color:var(--text-muted,#7a8fa8);margin:0 0 8px;letter-spacing:.02em}
+.trk-hover-row{
+  display:flex;flex-direction:column;gap:4px;margin:0 0 8px;padding:7px 8px;
+  border-left:3px solid var(--trk-row,#00d4ff);border-radius:0 4px 4px 0;
+  background:rgba(255,255,255,.03);line-height:1.2;
+}
+.trk-hover-row:last-child{margin-bottom:0}
+.trk-hover-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.trk-hover-name{font-size:.78rem;font-weight:600;opacity:.95;min-width:0}
+.trk-hover-now{
+  font-family:Teko,var(--font-display,sans-serif);font-size:1.55rem;line-height:1;
+  font-weight:600;color:var(--trk-row,#00d4ff);text-shadow:0 1px 4px rgba(0,0,0,.55);
+  flex:0 0 auto;letter-spacing:.02em;
+}
+.trk-hover-meta{
+  display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px 8px;
+  font-size:.68rem;color:var(--text-secondary,#9aadc4);
+}
+.trk-hover-meta span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .trk-axis text,.trk-grid text,text.trk-y,text.trk-x{
   fill:#9eb6d4 !important;font-size:11px;font-family:var(--font-body,system-ui,sans-serif);
 }
@@ -141,7 +155,8 @@ text.trk-x{
   animation:trk-trail-fade var(--motion-dur-modal,320ms) var(--motion-ease-enter,cubic-bezier(.05,.7,.1,1)) forwards;
 }
 @keyframes trk-trail-fade{to{opacity:1}}
-.trk-end-label{font-size:12px;font-weight:700;paint-order:stroke;stroke:#061018;stroke-width:3px}
+.trk-end-label{font-size:12px;font-weight:700;paint-order:stroke;stroke:#061018;stroke-width:3px;dominant-baseline:middle}
+.trk-end-label--gamei{font-style:italic;opacity:.92}
 .trk-trail--hk{stroke:#00d4ff}
 .trk-trail--mo{stroke:#e8c56a}
 .trk-trail--tw{stroke:#ff9d00}

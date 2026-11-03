@@ -353,7 +353,11 @@ else:
 
 # Sessions (Latest Release password gate). Set FLASK_SECRET_KEY in production.
 app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'ggen-dev-secret-change-in-production')
-if os.environ.get('FLASK_SESSION_SECURE', '').lower() in ('1', 'true', 'yes'):
+# Secure cookies on Railway / explicit flag (HTTPS). Helps password gates keep the session.
+_secure_sess = os.environ.get('FLASK_SESSION_SECURE', '').strip().lower()
+if _secure_sess in ('1', 'true', 'yes') or (
+    _secure_sess not in ('0', 'false', 'no', 'off') and bool(os.environ.get('RAILWAY_ENVIRONMENT'))
+):
     app.config['SESSION_COOKIE_SECURE'] = True
 app.config['SESSION_COOKIE_HTTPONLY'] = True
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'

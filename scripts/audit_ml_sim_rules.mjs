@@ -13,6 +13,18 @@ function assert(cond, msg) {
   }
 }
 
+/* Land-capable stub so LANG SD terrain gate (canSupportDefendOnTarget) can pass in fixtures. */
+const LAND_UNIT = {
+  terrain: [
+    { name: 'Ground', level: 3 },
+    { name: 'Atmospheric', level: 3 },
+    { name: 'Space', level: 3 }
+  ]
+};
+function withLand(u) {
+  return Object.assign({ fieldTerrain: 'Ground', unit: LAND_UNIT }, u);
+}
+
 const units = [
   { id: 'a', hp: 10, mobility: 5, reaction: 1, x: 0, y: 0 },
   { id: 'b', hp: 10, mobility: 9, reaction: 2, x: 1, y: 0 },
@@ -30,8 +42,8 @@ const atk = {
   weapons: [{ name: 'short', min_range: 1, max_range: 2, power: 100 }, { name: 'long', min_range: 1, max_range: 5, power: 500 }]
 };
 const foes = [
-  { id: 'near', hp: 80, x: 8, y: 10, n: 1, move: 5, size: 1, side: 'enemy', sdLimit: 1, usedSupportDefendCount: 0 },
-  { id: 'low', hp: 20, x: 8, y: 9, n: 2, move: 5, size: 1, side: 'enemy', sdLimit: 0, usedSupportDefendCount: 0 }
+  withLand({ id: 'near', hp: 80, x: 8, y: 10, n: 1, move: 5, size: 1, side: 'enemy', sdLimit: 1, usedSupportDefendCount: 0 }),
+  withLand({ id: 'low', hp: 20, x: 8, y: 9, n: 2, move: 5, size: 1, side: 'enemy', sdLimit: 0, usedSupportDefendCount: 0 })
 ];
 const bounds = { minX: 0, maxX: 20, minY: 0, maxY: 20 };
 const all = [atk].concat(foes);
@@ -48,10 +60,10 @@ assert(next.moved === true, 'must move when current dist 6 > maxR 5, got ' + JSO
 const guard = rules.pickSupportDefender(engage.target, foes);
 assert(guard && guard.id === 'near', 'support defend is other ally with SD uses in move range, got ' + (guard && guard.id));
 
-const tank = { id: 'tank', hp: 90, x: 8, y: 10, move: 5, sdLimit: 1, usedSupportDefendCount: 0 };
+const tank = withLand({ id: 'tank', hp: 90, x: 8, y: 10, move: 5, sdLimit: 1, usedSupportDefendCount: 0 });
 const noSd = rules.pickSupportDefender(tank, [
   tank,
-  { id: 'spent', hp: 99, x: 8, y: 9, move: 5, sdLimit: 1, usedSupportDefendCount: 1 }
+  withLand({ id: 'spent', hp: 99, x: 8, y: 9, move: 5, sdLimit: 1, usedSupportDefendCount: 1 })
 ]);
 assert(noSd == null, 'no SD when only self / spent uses');
 
@@ -96,8 +108,12 @@ assert(lim === 1, 'SD limit parses +1 time(s), got ' + lim);
 /* Full Frontal kit: Support Defense LV + EX each +1 → 2 per turn */
 const ffNz = {
   id: 'nz', hp: 90000, x: 5, y: 5, move: 4, size: 2, side: 'ally',
+  fieldTerrain: 'Ground',
   usedSupportDefendCount: 0, battleSupportDefendedCount: 0, mp: 0,
-  unit: { id: '1125001550', name: 'Neo Zeong (EX)', role: 'Durability', abilities: [] },
+  unit: {
+    id: '1125001550', name: 'Neo Zeong (EX)', role: 'Durability', abilities: [],
+    terrain: LAND_UNIT.terrain
+  },
   char: {
     role: 'Durability',
     abilities: [
@@ -125,7 +141,7 @@ const ffNz = {
   }
 };
 assert(rules.supportDefendLimit(ffNz) === 2, 'FF+NZ SD limit 2, got ' + rules.supportDefendLimit(ffNz));
-const allyA = { id: 'ally', hp: 40000, x: 6, y: 5, move: 3, size: 1, side: 'ally' };
+const allyA = withLand({ id: 'ally', hp: 40000, x: 6, y: 5, move: 3, size: 1, side: 'ally' });
 let g = rules.pickSupportDefender(allyA, [ffNz, allyA]);
 assert(g === ffNz, 'first SD picks NZ');
 ffNz.usedSupportDefendCount = 1;
