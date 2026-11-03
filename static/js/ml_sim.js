@@ -217,12 +217,41 @@
       optionPartThum: sl.optionPartThum || '',
       optionPartRarity: sl.optionPartRarity || ''
     };
-    /* Optional map start override (battle-map drag). Absent = LINE spawn for that slot. */
+    /* Optional map start override (battle-map drag). Absent = board spawn for that slot. */
     if (sl.x != null && sl.y != null && !isNaN(+sl.x) && !isNaN(+sl.y)) {
       out.x = +sl.x | 0;
       out.y = +sl.y | 0;
     }
     return out;
+  }
+
+  /** Drop battle-map x/y overrides (season change / scrub). Units stay; homes reset to board spawn. */
+  function clearMapHomeOverrides() {
+    ['ally', 'enemy'].forEach(function (side) {
+      var force = forceOf(side);
+      (force.slots || []).forEach(function (sl) {
+        if (!sl) return;
+        delete sl.x;
+        delete sl.y;
+      });
+    });
+  }
+
+  /**
+   * After a board loads: drop overrides that are not a spawn cell on this season
+   * (stale free-place coords, or leftover from a previous map).
+   */
+  function scrubInvalidMapHomeOverrides() {
+    ['ally', 'enemy'].forEach(function (side) {
+      var force = forceOf(side);
+      (force.slots || []).forEach(function (sl) {
+        if (!sl || sl.x == null || sl.y == null) return;
+        if (!isSideSpawnOrigin(side, sl.x, sl.y)) {
+          delete sl.x;
+          delete sl.y;
+        }
+      });
+    });
   }
 
   function forceOf(side) {
@@ -937,12 +966,14 @@
    * Drag tokens on the battle map to set formation-start cells.
    * Only that side’s board spawn origins are valid (empty → place; teammate → swap).
    * Disabled while fightBusy (board gets .is-fighting).
+   * iOS: claim touch on pointerdown (no long-press callout), track on document.
    */
   function bindMapTokenDrag() {
     var host = document.getElementById('mlsBoard');
-    var THRESH = 8;
-    var SNAP_MS = 420;
-    var OVERSHOOT = 5;
+    /* Desktop needs a small move before lift; touch lifts immediately. */
+    var THRESH_MOUSE = 8;
+    var SNAP_MS = 220;
+    var OVERSHOOT = 3;
     var armed = false;
     var active = false;
     var snapping = false;
@@ -961,6 +992,7 @@
     var hoverCell = null;
     var hoverVerdict = null;
     var reduceMotion = false;
+    var docBound = false;
 
     if (!host || host._mlsMapDragBound) return;
     host._mlsMapDragBound = true;
@@ -971,6 +1003,19 @@
       } catch (e) {
         return false;
       }
+    }
+
+    function clearNativeSelection() {
+      try {
+        var sel = window.getSelection && window.getSelection();
+        if (sel && sel.removeAllRanges) sel.removeAllRanges();
+      } catch (eSel) {}
+    }
+
+    function setDraggingBody(on) {
+      try {
+        document.body.classList.toggle('mls-is-map-dragging', !!on);
+      } catch (eBody) {}
     }
 
     function findActor(side, slotIdx) {
@@ -996,8 +1041,26 @@
       ghost = null;
     }
 
+    function unbindDoc() {
+      if (!docBound) return;
+      docBound = false;
+      document.removeEventListener('pointermove', onDocMove, true);
+      document.removeEventListener('pointerup', onDocUp, true);
+      document.removeEventListener('pointercancel', onDocUp, true);
+    }
+
+    function bindDoc() {
+      if (docBound) return;
+      docBound = true;
+      document.addEventListener('pointermove', onDocMove, { capture: true, passive: false });
+      document.addEventListener('pointerup', onDocUp, true);
+      document.addEventListener('pointercancel', onDocUp, true);
+    }
+
     function hardReset() {
       clearMapDropHints();
+      unbindDoc();
+      setDraggingBody(false);
       if (originEl) {
         originEl.classList.remove('is-map-dragging');
         try {
@@ -1023,6 +1086,8 @@
       if (active || !originEl || !dragU) return;
       active = true;
       reduceMotion = prefersReduce();
+      clearNativeSelection();
+      setDraggingBody(true);
       originEl.classList.add('is-map-dragging');
       srcImg = originEl.querySelector('.mls-token-thum');
       srcRect = originEl.getBoundingClientRect();
@@ -1032,7 +1097,7 @@
       ghost.className = 'mls-drag-ghost' + (dragU.side === 'enemy' ? ' is-enemy' : ' is-ally');
       ghost.setAttribute('aria-hidden', 'true');
       if (srcImg && srcImg.tagName === 'IMG' && srcImg.src) {
-        ghost.innerHTML = '<img src="' + esc(srcImg.src) + '" alt="">';
+        ghost.innerHTML = '<img src="' + esc(srcImg.src) + '" alt="" draggable="false">';
       } else {
         ghost.textContent = '◇';
       }
@@ -1041,7 +1106,7 @@
       document.body.appendChild(ghost);
       ghostPos(ev.clientX, ev.clientY, 0);
       try { originEl.setPointerCapture(ev.pointerId); } catch (eCap) {}
-      ev.preventDefault();
+      if (ev && ev.cancelable) ev.preventDefault();
     }
 
     function updateHover(clientX, clientY) {
@@ -1100,7 +1165,7 @@
             },
             {
               transform: 'translate3d(' + ox + 'px,' + oy + 'px,0) scale(1.02) rotate(0deg)',
-              offset: 0.7
+              offset: 0.68
             },
             {
               transform: 'translate3d(' + endX + 'px,' + endY + 'px,0) scale(1) rotate(0deg)'
@@ -1127,9 +1192,44 @@
       else setTimeout(finish, ms);
     }
 
+    function onPointerMove(ev) {
+      var dist, tilt, isTouch;
+      if (!armed || snapping || (pointerId != null && ev.pointerId !== pointerId)) return;
+      if (!active) {
+        isTouch = ev.pointerType === 'touch' || ev.pointerType === 'pen';
+        if (!isTouch) {
+          dist = Math.hypot(ev.clientX - startX, ev.clientY - startY);
+          if (dist < THRESH_MOUSE) return;
+        }
+        beginLift(ev);
+      }
+      if (!active) return;
+      tilt = Math.max(-10, Math.min(10, (ev.clientX - lastClientX) * 0.55));
+      lastClientX = ev.clientX;
+      ghostPos(ev.clientX, ev.clientY, tilt);
+      updateHover(ev.clientX, ev.clientY);
+      if (ev.cancelable) ev.preventDefault();
+    }
+
+    function onDocMove(ev) { onPointerMove(ev); }
+
+    function endDrag(ev) {
+      if (!armed || snapping) return;
+      if (pointerId != null && ev && ev.pointerId !== pointerId) return;
+      if (!active) {
+        hardReset();
+        return;
+      }
+      if (ev) updateHover(ev.clientX, ev.clientY);
+      animateSnapAndCommit(!(hoverCell && hoverVerdict && hoverVerdict.ok));
+    }
+
+    function onDocUp(ev) { endDrag(ev); }
+
     host.addEventListener('pointerdown', function (ev) {
-      var tok, side, idx, u;
+      var tok, side, idx, u, isTouch;
       if (fightBusy || snapping || ev.button) return;
+      /* Tokens’ children are pointer-events:none — closest still works from the shell. */
       tok = ev.target && ev.target.closest && ev.target.closest('.mls-token');
       if (!tok || !host.contains(tok)) return;
       if (tok.classList.contains('is-gone') || tok.classList.contains('is-dead')) return;
@@ -1146,38 +1246,42 @@
       startX = ev.clientX;
       startY = ev.clientY;
       lastClientX = ev.clientX;
+      clearNativeSelection();
+      /*
+       * Claim the gesture now: preventDefault + touch-action:none kills iOS
+       * long-press callout / image save / text select so drag stays a drag.
+       */
       try { tok.setPointerCapture(ev.pointerId); } catch (eArm) {}
-    });
+      if (ev.cancelable) ev.preventDefault();
+      bindDoc();
+      isTouch = ev.pointerType === 'touch' || ev.pointerType === 'pen';
+      if (isTouch) beginLift(ev);
+    }, { passive: false });
 
-    host.addEventListener('pointermove', function (ev) {
-      var dist, tilt;
-      if (!armed || snapping || (pointerId != null && ev.pointerId !== pointerId)) return;
-      if (!active) {
-        dist = Math.hypot(ev.clientX - startX, ev.clientY - startY);
-        if (dist < THRESH) return;
-        beginLift(ev);
-      }
-      if (!active) return;
-      tilt = Math.max(-10, Math.min(10, (ev.clientX - lastClientX) * 0.55));
-      lastClientX = ev.clientX;
-      ghostPos(ev.clientX, ev.clientY, tilt);
-      updateHover(ev.clientX, ev.clientY);
-      ev.preventDefault();
-    });
-
-    function endDrag(ev) {
-      if (!armed || snapping) return;
-      if (pointerId != null && ev.pointerId !== pointerId) return;
-      if (!active) {
-        hardReset();
-        return;
-      }
-      updateHover(ev.clientX, ev.clientY);
-      animateSnapAndCommit(!(hoverCell && hoverVerdict && hoverVerdict.ok));
-    }
-
+    host.addEventListener('pointermove', onPointerMove, { passive: false });
     host.addEventListener('pointerup', endDrag);
     host.addEventListener('pointercancel', endDrag);
+
+    host.addEventListener('contextmenu', function (ev) {
+      if (ev.target && ev.target.closest && ev.target.closest('.mls-token')) {
+        ev.preventDefault();
+      }
+    });
+
+    host.addEventListener('selectstart', function (ev) {
+      if (armed || active || (ev.target && ev.target.closest && ev.target.closest('.mls-token'))) {
+        ev.preventDefault();
+      }
+    });
+
+    /* Extra belt for older WebKit image long-press. */
+    host.addEventListener('touchstart', function (ev) {
+      var tok;
+      if (fightBusy) return;
+      tok = ev.target && ev.target.closest && ev.target.closest('.mls-token');
+      if (!tok || !host.contains(tok)) return;
+      if (ev.cancelable) ev.preventDefault();
+    }, { passive: false });
   }
 
   /**
@@ -2481,10 +2585,6 @@
     return found ? { hpPct: hpPct, enPct: enPct } : null;
   }
 
-  /**
-   * Once-only (or stack) “HP falls to X% or below → restore Y%”.
-   * Pilot EX: “When piloting Zeong (EX) and HP falls to 0%…”.
-   */
   function parseHpFallRestores(actor) {
     var out = [];
     var bags = [], bi, i, ab, texts, t, m, thr, heal, once, unitName, key;
@@ -3349,12 +3449,8 @@
       var sl = slots[i];
       var home;
       if (!sl || !sl.unitId) return;
-      home = {
-        n: cell.n | 0,
-        x: sl.x != null ? (sl.x | 0) : (cell.x | 0),
-        y: sl.y != null ? (sl.y | 0) : (cell.y | 0),
-        type: cell.type | 0
-      };
+      /* Same path as map drag — never keep absolute x/y from another season’s board. */
+      home = effectiveSlotHome(side, i);
       jobs.push(Promise.all([
         loadPair(sl.unitId, sl.charId, sl.lb != null ? sl.lb : 3),
         loadOptionPart(sl.optionPartId)
@@ -3702,7 +3798,7 @@
       (u.active ? ' is-active' : '') + (u.hp <= 0 ? ' is-dead' : '') + markCls +
       '" data-token-key="' + esc(tokenKey(u)) + '" data-unit-id="' + esc(u.id) +
       '" data-side="' + esc(u.side || '') + '" data-slot-idx="' + (u.slotIdx | 0) +
-      '" title="Drag to set start cell" style="' + posStyle + coverStyle + '">' +
+      '" aria-label="Drag to set start cell" style="' + posStyle + coverStyle + '">' +
       skillMarkHtml(u) +
       badgeHtml +
       auraDebuffHtml(u) +
@@ -4931,7 +5027,15 @@
         linkKind === 'counter' ? 'counter' : (linkKind === 'support' ? 'support' : 'attack')
       );
       /* Pilot/unit once-only revive & threshold restore (Zeong 0%→5%, Impulse 50%→50%). */
-      applyHpFallRestores(defender, hpBeforeHit, turn, snapshotLine);
+      var hpAfterHit = defender.hp | 0;
+      var revived = applyHpFallRestores(defender, hpBeforeHit, turn, snapshotLine);
+      /*
+       * In-game: if the *active* unit is KO’d (e.g. counter) then revives, their action ends —
+       * no further move / Chance Step this phase (Zeong + Char vs counter).
+       */
+      if (revived && hpAfterHit <= 0 && (defender.hp | 0) > 0 && defender.active) {
+        defender._endActionAfterRevive = true;
+      }
       /* Cond:Combat-Count / Cond:Damage taken — stacks rise after a landed hit (next strike uses them). */
       bumpCondStacksAfterHit(attacker, defender);
       /* LANG + gge: land hit → attacker +1; take hit → −1; SD net +2.
@@ -5047,6 +5151,7 @@
         u.chanceStepsLeft = chanceStepLimit(u);
         u.startX = u.x;
         u.startY = u.y;
+        u._endActionAfterRevive = false;
         /* Engage loop: Chance Step / unconditional CS / weapon-on-hit CS. */
         while (u.hp > 0 && living(foes).length) {
           var mapPlan, combat, qi, q, qj, waveLabel, defAct, coverUnit, origTarget, saLim;
@@ -5302,6 +5407,21 @@
               x.usedSwayInCombat = false;
             }
           });
+
+          /*
+           * Active unit KO’d then revived (counter → Char/Zeong revive): action ends.
+           * No further move / Chance Step this phase — matches in-game.
+           */
+          if (u._endActionAfterRevive) {
+            u.chanceStepsLeft = 0;
+            u.unconditionalCSStock = 0;
+            u._endActionAfterRevive = false;
+            snapshotLine(
+              'T' + turn + ' ' + u.name + ' revived — action ends (no further move / CS)',
+              null, null, 'skill'
+            );
+            break;
+          }
 
           gotExtra = false;
           R.checkAndAcquireUnconditionalCS(u);
@@ -6088,6 +6208,15 @@
 
   function loadBoardForEvent(eventId) {
     var id = String(eventId || DEFAULT_EVENT);
+    var prevId = String(roster.eventId || '');
+    /*
+     * Map-drag homes are absolute cells for the current board. Keeping them across a
+     * season switch parks both sides on the wrong formation (user report: swap then
+     * change season → both sides’ starts look wrong).
+     */
+    if (prevId && prevId !== id) {
+      clearMapHomeOverrides();
+    }
     roster.eventId = id;
     saveRoster();
     seasonMeta = findSeason(id);
@@ -6096,6 +6225,8 @@
     return fetchJson('/api/master_league/sim_board?event_id=' + encodeURIComponent(id) + '&lang=' + encodeURIComponent(lang()))
       .then(function (data) {
         board = data;
+        scrubInvalidMapHomeOverrides();
+        saveRoster();
         paintPreset();
         paintForceSlots();
         if (viewName === 'battle') {

@@ -913,7 +913,33 @@ body.mls-is-slot-dragging .mls-slot-list {
   pointer-events: auto;
   touch-action: none;
   cursor: grab;
+  -webkit-user-select: none;
   user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-drag: none;
+}
+.mls-token *,
+.mls-token img,
+.mls-token .mls-token-thum {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-drag: none;
+  pointer-events: none; /* hit-test the token shell only — smoother iOS drag */
+}
+body.mls-is-map-dragging {
+  -webkit-user-select: none !important;
+  user-select: none !important;
+  -webkit-touch-callout: none !important;
+  cursor: grabbing;
+  /* Kill scroll/bounce while a map token is in the air. */
+  overscroll-behavior: none;
+  touch-action: none;
+}
+body.mls-is-map-dragging .mls-map-scroll,
+body.mls-is-map-dragging .mls-map {
+  touch-action: none;
+  overflow: hidden;
 }
 /*
  * iOS/mobile: filter:drop-shadow on every token + per-step layout = sluggish fights.
@@ -1611,6 +1637,10 @@ body.mls-is-slot-dragging .mls-slot-list {
   object-fit: cover;
   object-position: center top;
   display: block;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+  user-select: none;
+  pointer-events: none;
 }
 /* Role type + pilot face omitted on battle tokens (formation-only). */
 /* /st map-unit-support-badge style — remaining SA / SD this turn */
