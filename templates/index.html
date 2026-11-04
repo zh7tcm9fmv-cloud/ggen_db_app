@@ -226,12 +226,18 @@
 /* Prefer CDN emblem without putting url() in a CSS variable (breaks Dark Reader / similar). */
 .brand-title-row::before{background-image:url('{% if image_cdn %}{{ image_cdn }}/images/UI/brand-emblem-panel.webp{% else %}/static/images/UI/brand-emblem-panel.webp{% endif %}')}
 @font-face{font-family:'RobotoMediumNumbers';src:url('/static/font/roboto_medium_numbers.ttf?v={{ app_js_version }}') format('truetype');font-weight:normal;font-style:normal;font-display:swap}
-/* Critical: /ml SIMULATOR mark before lazy master_league.css (kills giant-logo FOUC). */
+/* Critical: /ml + /mls Master League mark before lazy CSS (kills giant-logo FOUC). */
 .ml-sim-open{position:relative;display:inline-block;padding:2px 4px;line-height:0;text-decoration:none;color:inherit;isolation:isolate;z-index:3}
 .ml-sim-open-mark{position:relative;display:block;width:min(168px,42vw);max-width:168px;aspect-ratio:168/98;container-type:inline-size;line-height:0}
-.ml-sim-open .mls-brand-logo{display:block;width:100%;height:auto;aspect-ratio:168/98;object-fit:contain}
+.ml-sim-open .mls-brand-logo{display:block;width:100%;height:auto;aspect-ratio:168/98;object-fit:contain;opacity:0}
 .ml-sim-open .mls-brand-banner{position:absolute;left:50%;top:60.9%;transform:translate(-50%,-50%);font-family:Teko,var(--font-body);font-weight:600;font-size:clamp(0.52rem,7.4cqw,0.78rem);letter-spacing:.14em;line-height:1;text-transform:uppercase;white-space:nowrap;color:#f4fbff;text-shadow:0 0 6px rgba(0,180,255,.55),0 1px 2px rgba(0,0,0,.75);pointer-events:none;user-select:none;opacity:0}
-.ml-sim-open-mark.is-logo-ready .mls-brand-banner{opacity:1}
+.ml-sim-open-mark.is-logo-ready .mls-brand-logo,.ml-sim-open-mark.is-logo-ready .mls-brand-banner{opacity:1}
+.mls-brand{margin:0;font-size:inherit;font-weight:inherit;line-height:0}
+.mls-brand-link{display:inline-block;line-height:0;text-decoration:none;color:inherit}
+.mls-brand-mark{position:relative;display:block;width:min(200px,52vw);max-width:200px;aspect-ratio:556/326;container-type:inline-size;line-height:0}
+.mls-brand-logo{display:block;width:100%;height:auto;aspect-ratio:556/326;object-fit:contain;opacity:0}
+.mls-brand-banner{position:absolute;left:50%;top:60.9%;transform:translate(-50%,-50%);font-family:Teko,var(--font-body);font-weight:600;font-size:clamp(0.58rem,7.4cqw,0.78rem);letter-spacing:.14em;line-height:1;text-transform:uppercase;white-space:nowrap;color:#f4fbff;text-shadow:0 0 6px rgba(0,180,255,.55),0 1px 2px rgba(0,0,0,.75);pointer-events:none;user-select:none;opacity:0}
+.mls-brand-mark.is-logo-ready .mls-brand-logo,.mls-brand-mark.is-logo-ready .mls-brand-banner{opacity:1}
 </style>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/app_shell_bundle.min.css') }}?v={{ app_js_version }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/ggen_15.css') }}?v={{ app_js_version }}">
@@ -910,15 +916,24 @@ window.__GGEN_LAZY__=(function(){
     loadJs:loadJs
   };
 })();
-/* Cold /ml: start master_league.css during HTML parse (before deferred app.js). */
+/* Cold /ml|/mls: start page CSS during HTML parse (before deferred app.js). */
 (function(){
   try{
     var p=String(location.pathname||'');
-    if(/^\/(ml|estscore)\/?$/i.test(p)&&window.__GGEN_LAZY__&&typeof window.__GGEN_LAZY__.ensureMasterLeagueCss==='function'){
-      window.__GGEN_LAZY__.ensureMasterLeagueCss();
+    var L=window.__GGEN_LAZY__;
+    if(!L)return;
+    if(/^\/(ml|estscore)\/?$/i.test(p)&&typeof L.ensureMasterLeagueCss==='function'){
+      L.ensureMasterLeagueCss();
+    }
+    /* /mls brand mark lives in the panel HTML before ml_sim.css — kick CSS early. */
+    if(/^\/mls\/?$/i.test(p)&&typeof L.ensureMlSim==='function'){
+      L.ensureMlSim();
+    }else if(/^\/mls\/?$/i.test(p)&&typeof L.loadCss==='function'){
+      L.loadCss('ml_sim');
+      L.loadCss('master_league');
     }
   }catch(_){}
-  /* Cached logos may finish before onload; still reveal SIMULATOR text. */
+  /* Cached logos may finish before onload; still reveal mark + SIMULATOR text. */
   try{
     document.querySelectorAll('.mls-brand-logo').forEach(function(img){
       if(img.complete){var m=img.parentElement;if(m)m.classList.add('is-logo-ready');}

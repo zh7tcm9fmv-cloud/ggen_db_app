@@ -14200,6 +14200,47 @@ if(ud.is_ultimate)return false;
 if(ud.has_sp!==undefined)return!!ud.has_sp;
 return parseInt(ud.rarity_id||'5',10)<=4;
 }
+function _tbUnitUltAltActive(ud){
+return!!(ud&&ud.ult_alteration&&ud.ult_alteration.max_add_stats);
+}
+/**
+ * Master League season Boost: Tag — unit matches if it has ANY listed lineage/series
+ * target (MD m_league_buff_target). Multiple matches do NOT stack.
+ * type_index 1 / tag_type series → unit.series[].id; else lineage → unit.tags / tag_ids
+ * (incl. virtual lineages SSR and Below 7001 / Ultimate 7002).
+ */
+function _tbUnitMatchesMlBoostTags(ud,boostTags){
+if(!ud||!boostTags||!boostTags.length)return false;
+const tagIds=new Set();
+(ud.tags||[]).forEach(t=>{if(t&&t.id!=null&&String(t.id)!=='0')tagIds.add(String(t.id))});
+if(Array.isArray(ud.tag_ids))ud.tag_ids.forEach(id=>{if(id!=null&&String(id)!=='0')tagIds.add(String(id))});
+const seriesIds=new Set();
+(ud.series||[]).forEach(s=>{if(s&&s.id!=null&&String(s.id)!=='0')seriesIds.add(String(s.id))});
+for(let i=0;i<boostTags.length;i++){
+const bt=boostTags[i];
+if(!bt)continue;
+const tid=String(bt.target_id!=null?bt.target_id:'');
+if(!tid||tid==='0')continue;
+const kind=String(bt.tag_type||'').toLowerCase();
+const ti=bt.type_index|0;
+if(kind==='series'||ti===1){if(seriesIds.has(tid))return true}
+else if(tagIds.has(tid))return true;
+}
+return false;
+}
+/** TB Master League toggle: blanket when no season boost_tags; MLS passes boost_tags to gate. */
+function _tbUnitGetsMasterLeagueBuff(ud){
+if(typeof S==='undefined'||!S.tb||!S.tb.masterLeague)return false;
+const tags=S.tb.masterLeagueBoostTags;
+if(tags==null)return true;
+if(!tags.length)return false;
+return _tbUnitMatchesMlBoostTags(ud,tags);
+}
+function _tbMasterLeagueBuffPct(){
+if(typeof S==='undefined'||!S.tb||!S.tb.masterLeague)return 0;
+if(S.tb.masterLeagueBuffPct!=null&&S.tb.masterLeagueBuffPct!=='')return S.tb.masterLeagueBuffPct|0;
+return 50;
+}
 function _tbStatTotalsWithFullCtx(sl,side,optionParts,supForSlot){
 if(!sl||!sl.unitData)return null;
 if(typeof S==='undefined'||!S.tb)return null;
@@ -14214,8 +14255,8 @@ if(supForSlot===null)supporters=[_tbSupporterForStatsNoLeader(supEnt.data)];
 else supporters=[supEnt.data];
 }
 const sqP=_tbComputeSquadConditionSheetPcts(sl,side);
-const mlOn=!!S.tb.masterLeague;
-const fullCtx={masterLeagueBuff:mlOn,grandOffensiveBuff:!!S.tb.grandOffensive,optionParts:optionParts||[],supporters,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,atkUnitData:ud,atkCharData:sl.charData||null,charCondPassive:!!sl.charCondPassive,exSquadAtkPct:_tbEffectiveExSquadAtkPctForTb(sl,side),squadCondAtkPct:sqP.atk|0,squadCondDefPct:sqP.def|0};
+const mlOn=_tbUnitGetsMasterLeagueBuff(ud);
+const fullCtx={masterLeagueBuff:mlOn,masterLeagueBuffPct:mlOn?_tbMasterLeagueBuffPct():0,grandOffensiveBuff:!!S.tb.grandOffensive,optionParts:optionParts||[],supporters,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,atkUnitData:ud,atkCharData:sl.charData||null,charCondPassive:!!sl.charCondPassive,exSquadAtkPct:_tbEffectiveExSquadAtkPctForTb(sl,side),squadCondAtkPct:sqP.atk|0,squadCondDefPct:sqP.def|0,ultAltActive:_tbUnitUltAltActive(ud)};
 const f=_dcGetModifiedAttackerUnitStatsFromCtx(fullCtx,stats,true);
 let fatk=f.unitAtk,fdef=f.unitDefVal;
 const prf=_tbPilotPairUnitAtkDef(sl.charData,ud,!!sl.charCondPassive,fatk,fdef);
@@ -14505,9 +14546,10 @@ if(supForSlot===null)supporters=[_tbSupporterForStatsNoLeader(supEnt.data)];
 else supporters=[supEnt.data];
 }
 const sqP=_tbComputeSquadConditionSheetPcts(sl,side);
-const mlOn=!!S.tb.masterLeague;
-const fullCtx={masterLeagueBuff:mlOn,grandOffensiveBuff:!!S.tb.grandOffensive,optionParts:sl.optionParts||[],supporters,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,atkUnitData:ud,atkCharData:sl.charData||null,charCondPassive:!!sl.charCondPassive,exSquadAtkPct:_tbEffectiveExSquadAtkPctForTb(sl,side),squadCondAtkPct:sqP.atk|0,squadCondDefPct:sqP.def|0};
-const baseCtx={masterLeagueBuff:false,grandOffensiveBuff:false,optionParts:[],supporters:[],unitTurnBuffAtk:false,atkUnitData:ud,atkCharData:sl.charData||null,charCondPassive:false,exSquadAtkPct:0,squadCondAtkPct:0,squadCondDefPct:0};
+const mlOn=_tbUnitGetsMasterLeagueBuff(ud);
+const ultOn=_tbUnitUltAltActive(ud);
+const fullCtx={masterLeagueBuff:mlOn,masterLeagueBuffPct:mlOn?_tbMasterLeagueBuffPct():0,grandOffensiveBuff:!!S.tb.grandOffensive,optionParts:sl.optionParts||[],supporters,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,atkUnitData:ud,atkCharData:sl.charData||null,charCondPassive:!!sl.charCondPassive,exSquadAtkPct:_tbEffectiveExSquadAtkPctForTb(sl,side),squadCondAtkPct:sqP.atk|0,squadCondDefPct:sqP.def|0,ultAltActive:ultOn};
+const baseCtx={masterLeagueBuff:false,grandOffensiveBuff:false,optionParts:[],supporters:[],unitTurnBuffAtk:false,atkUnitData:ud,atkCharData:sl.charData||null,charCondPassive:false,exSquadAtkPct:0,squadCondAtkPct:0,squadCondDefPct:0,ultAltActive:false};
 const b=_dcGetModifiedAttackerUnitStatsFromCtx(baseCtx,stats,true);
 const f=_dcGetModifiedAttackerUnitStatsFromCtx(fullCtx,stats,true);
 let batk=b.unitAtk,bdef=b.unitDefVal;
@@ -19302,7 +19344,9 @@ const usk=_dcGetDetectedUnitTurnBuffPercents(ud);
 const uskOn=!!S.dc.defUnitSkillActive&&((usk.atkPct|0)>0||(usk.mobPct|0)>0||(usk.defPct|0)>0);
 /* Always run sheet formula for database defenders (ML / OP / supporter). forPanel skips attacker-only support-counter.
  * MLS / multi-slot fight: optional defSquadCond* so same-squad ATK/DEF auras apply on the defender sheet too. */
-const ctx={optionParts:S.dc.defOptionParts||[],supporters:S.dc.defSupporters||[],atkUnitData:ud,atkCharData:S.dc.defCharData||null,charCondPassive:!!S.dc.defCharCondPassive,masterLeagueBuff:!!S.dc.masterLeagueBuff,grandOffensiveBuff:false,unitTurnBuffAtk:uskOn,squadCondAtkPct:S.dc.defSquadCondAtkPct|0,squadCondDefPct:S.dc.defSquadCondDefPct|0,exSquadAtkPct:0,ultAltActive:!!S.dc.defUltAltActive};
+/* MLS may set defMasterLeagueBuff per defender tags; /cal uses shared masterLeagueBuff. */
+const defMl=S.dc.defMasterLeagueBuff!=null?!!S.dc.defMasterLeagueBuff:!!S.dc.masterLeagueBuff;
+const ctx={optionParts:S.dc.defOptionParts||[],supporters:S.dc.defSupporters||[],atkUnitData:ud,atkCharData:S.dc.defCharData||null,charCondPassive:!!S.dc.defCharCondPassive,masterLeagueBuff:defMl,masterLeagueBuffPct:defMl?(S.dc.masterLeagueBuffPct!=null&&S.dc.masterLeagueBuffPct!==''?(S.dc.masterLeagueBuffPct|0):50):0,grandOffensiveBuff:false,unitTurnBuffAtk:uskOn,squadCondAtkPct:S.dc.defSquadCondAtkPct|0,squadCondDefPct:S.dc.defSquadCondDefPct|0,exSquadAtkPct:0,ultAltActive:!!S.dc.defUltAltActive};
 return _dcGetModifiedAttackerUnitStatsFromCtx(ctx,defUnitStats,true);
 }
 
@@ -20846,7 +20890,9 @@ return`<img class="dc-stat-bonus-ico${opCls}" src="${imgUrl(p)}" alt="" width="1
 function _dcMsStatEnhancementLinesHtml(ctx,atkUnitStats){
 const F=Math.floor;
 const c=ctx||{};
-const mlPct=c.masterLeagueBuff?50:0;
+const mlPct=c.masterLeagueBuff
+  ?(c.masterLeagueBuffPct!=null&&c.masterLeagueBuffPct!==''?(c.masterLeagueBuffPct|0):50)
+  :0;
 const goPct=c.grandOffensiveBuff?100:0;
 const sheetBuffPct=mlPct+goPct;
 const opAcc=_dcAccumulateOptionPartSheetBonuses(c.optionParts,c.atkUnitData);
@@ -20900,7 +20946,9 @@ const scAtk=c.squadCondAtkPct|0;
 const scDef=c.squadCondDefPct|0;
 /* Include Support Attack/Counter % in panel ATK when the toggle is on (same as damage ⑧). */
 const supCnt=_dcEffectiveSupportCounterAtkPctFromCtx(c);
-const mlPct=c.masterLeagueBuff?50:0;
+const mlPct=c.masterLeagueBuff
+  ?(c.masterLeagueBuffPct!=null&&c.masterLeagueBuffPct!==''?(c.masterLeagueBuffPct|0):50)
+  :0;
 const goPct=c.grandOffensiveBuff?100:0;
 const sheetBuffPct=mlPct+goPct;
 const opAcc=_dcAccumulateOptionPartSheetBonuses(c.optionParts,c.atkUnitData);

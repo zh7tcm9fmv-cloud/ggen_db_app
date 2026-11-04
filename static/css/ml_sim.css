@@ -167,6 +167,8 @@
   aspect-ratio: 556 / 326;
   object-fit: contain;
   filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.45));
+  /* Sized box paints empty until decode — avoids giant FOUC on first /mls open. */
+  opacity: 0;
 }
 .mls-brand-banner {
   position: absolute;
@@ -188,6 +190,7 @@
   user-select: none;
   opacity: 0;
 }
+.mls-brand-mark.is-logo-ready .mls-brand-logo,
 .mls-brand-mark.is-logo-ready .mls-brand-banner {
   opacity: 1;
 }

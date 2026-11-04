@@ -132,6 +132,8 @@
   aspect-ratio: 168 / 98;
   object-fit: contain;
   filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.45));
+  /* Hold paint until decode — same FOUC class as /mls brand mark. */
+  opacity: 0;
 }
 .ml-sim-open .mls-brand-banner {
   position: absolute;
@@ -154,6 +156,7 @@
   /* Avoid orphan SIMULATOR text before the WebP paints (not lazy-load). */
   opacity: 0;
 }
+.ml-sim-open-mark.is-logo-ready .mls-brand-logo,
 .ml-sim-open-mark.is-logo-ready .mls-brand-banner {
   opacity: 1;
 }

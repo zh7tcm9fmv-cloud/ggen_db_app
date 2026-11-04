@@ -42,12 +42,12 @@
     return (units || []).filter(function (u) { return u && (u.hp | 0) > 0; });
   }
 
-  /** Unit Mobility + pilot Reaction (high → low). Prefers _spdMob/_spdReact when set. */
+  /**
+   * Turn order: sheet unit Mobility (ML + OP + supporter MOB%) + pilot Reaction.
+   * High → low. Uses actor.mobility (combat sheet), not raw unitStats.
+   */
   function unitOrderSpeed(u) {
     if (!u) return 0;
-    if (u._spdMob != null || u._spdReact != null) {
-      return (u._spdMob | 0) + (u._spdReact | 0);
-    }
     return (u.mobility | 0) + (u.reaction | 0);
   }
 

@@ -1575,6 +1575,8 @@
           '<span class="mls-supp-lb">' + lbButtonsHtml(side, i, lb, 'unit') + '</span>' +
           statModeButtonsHtml(sl, side, i) +
           opHtml +
+          '<button type="button" class="mls-mini-btn danger" data-mls-clear-unit="' +
+          side + ':' + i + '" title="Remove unit (blank this slot)">×</button>' +
           '</div>' +
           '</div>';
       } else {
@@ -3127,6 +3129,23 @@
     if (viewName === 'battle') loadArmies().then(paintBoard);
   }
 
+  /** Blank one formation slot (unit + pilot + OP) — keeps other slots. */
+  function clearUnitSlot(side, idx) {
+    var force = forceOf(side);
+    var i = idx | 0;
+    if (!force || !force.slots || i < 0 || i >= SLOT_COUNT) return;
+    if (!force.slots[i] || !force.slots[i].unitId) return;
+    force.slots[i] = null;
+    clearLeaderApplyCaches(side);
+    saveRoster();
+    fillShareBoxes();
+    paintForceSlots();
+    scheduleOrderRefresh();
+    if (viewName === 'battle') {
+      loadArmies().then(function () { paintBoard(); paintTimeline(); });
+    }
+  }
+
   /**
    * Same modified-stat panel as /tb (`tbStatsPanel`), under formation.
    * Temporarily mirrors MLS roster into S.tb so `_tbBuildSlotStatEff` + squad tags apply.
@@ -3147,6 +3166,8 @@
         squads: JSON.parse(JSON.stringify(S.tb.squads)),
         supBySide: JSON.parse(JSON.stringify(S.tb.supBySide)),
         masterLeague: S.tb.masterLeague,
+        masterLeagueBuffPct: S.tb.masterLeagueBuffPct,
+        masterLeagueBoostTags: S.tb.masterLeagueBoostTags,
         terrainType: S.tb.terrainType,
         grandOffensive: S.tb.grandOffensive
       };
@@ -3156,6 +3177,13 @@
     }
     S.tb.masterLeague = true;
     S.tb.grandOffensive = false;
+    /* Season Boost: Tag list + % — sheet applies only when the unit matches ≥1 tag (no stack). */
+    S.tb.masterLeagueBuffPct = seasonMeta && seasonMeta.buff_percent != null
+      ? (seasonMeta.buff_percent | 0)
+      : 50;
+    S.tb.masterLeagueBoostTags = (seasonMeta && Array.isArray(seasonMeta.boost_tags))
+      ? seasonMeta.boost_tags
+      : [];
     var terr = String((seasonMeta && seasonMeta.terrain_primary) || 'Space');
     S.tb.terrainType = /space|宇宙/i.test(terr) ? 'Space' : 'Ground';
 
@@ -3289,6 +3317,8 @@
         S.tb.squads = snap.squads;
         S.tb.supBySide = snap.supBySide;
         S.tb.masterLeague = snap.masterLeague;
+        S.tb.masterLeagueBuffPct = snap.masterLeagueBuffPct;
+        S.tb.masterLeagueBoostTags = snap.masterLeagueBoostTags;
         S.tb.terrainType = snap.terrainType;
         S.tb.grandOffensive = snap.grandOffensive;
       } catch (_) {}
@@ -3477,9 +3507,7 @@
     actor.maxEn = sheet.en | 0;
     actor.currentEn = actor.maxEn;
     actor.mobility = sheet.mob | 0;
-    actor._spdMob = Math.floor(
-      unitStats(alt, actor.lb | 0, resolveUnitStatMode(alt, actor.unitStatMode)).mob * mlBoostMult()
-    ) | 0;
+    actor._spdMob = sheet.mob | 0;
     actor.baseMove = baseMove | 0;
     actor.move = applyTerrainMove(baseMove, alt, fieldTerr);
     actor.terrainMoveFactor = terrainMoveFactor(alt, fieldTerr);
@@ -4340,7 +4368,7 @@
     dc = global.S.dc;
     keys = [
       'atkUnitData', 'atkCharData', 'defUnitData', 'defCharData', 'defNpc', 'defTargetMode',
-      'lbTier', 'defLbTier', 'wpnIdx', 'wpnLv', 'masterLeagueBuff', 'mpLevel', 'defending', 'shield',
+      'lbTier', 'defLbTier', 'wpnIdx', 'wpnLv', 'masterLeagueBuff', 'masterLeagueBuffPct', 'defMasterLeagueBuff', 'mpLevel', 'defending', 'shield',
       'optionParts', 'defOptionParts', 'supporters', 'defSupporters', 'terrain', 'finalWpnPow', 'unitStatMode',
       'defUnitSkillActive', 'defCharCondPassive', 'defUnitCondPassive', 'unitCondPassive', 'charCondPassive',
       'unitHpAtkTierIndex', 'unitCondStackCount', 'unitDamageTakenDefStacks', 'dcSuperchargedExTier',
@@ -4363,7 +4391,12 @@
       dc.defTargetMode = 'database';
       dc.lbTier = attacker.lb | 0;
       dc.defLbTier = defender.lb | 0;
-      dc.masterLeagueBuff = true;
+      /* Per-kit Boost: Tag (attacker vs defender may differ). */
+      dc.masterLeagueBuff = unitGetsSeasonMlBuff(attacker.unit);
+      dc.defMasterLeagueBuff = unitGetsSeasonMlBuff(defender.unit);
+      dc.masterLeagueBuffPct = seasonMeta && seasonMeta.buff_percent != null
+        ? (seasonMeta.buff_percent | 0)
+        : 50;
       dc.grandOffensiveBuff = false;
       /* Maxed ULT Alteration (alt LV cap / 100% growth flats + ult weapons). */
       dc.ultAltActive = unitHasUltAlt(attacker.unit);
@@ -5329,24 +5362,73 @@
   }
 
   /**
-   * HP/EN/MOB from the same /cal sheet path as damage (ML + OP% + leader + supporter flats).
-   * Raw unitStats×ML understated HP when OP/leader were on — units died too easily.
+   * Season Boost: Tag gate (MD m_league_buff_target). Unit needs ≥1 matching
+   * lineage/series — e.g. S18 Unstoppable + Red. Multiple tags do not stack %.
    */
-  function sheetCombatStats(loaded, optionParts, supporter) {
+  function unitGetsSeasonMlBuff(ud) {
+    var tags = seasonMeta && seasonMeta.boost_tags;
+    if (!ud || !tags || !tags.length) return false;
+    if (typeof global._tbUnitMatchesMlBoostTags === 'function') {
+      try { return !!global._tbUnitMatchesMlBoostTags(ud, tags); } catch (_) { return false; }
+    }
+    return false;
+  }
+
+  function seasonMlBuffPctForUnit(ud) {
+    if (!unitGetsSeasonMlBuff(ud)) return 0;
+    return seasonMeta && seasonMeta.buff_percent != null ? (seasonMeta.buff_percent | 0) : 50;
+  }
+
+  /**
+   * Pre-battle MS sheet: ML season % + OP + supporter/leader + Cond:HP/EN (full) +
+   * pilot Cond + squad/EX ATK·DEF % + maxed ULT Alt flats — same class as /mls bottom panel.
+   * Optional `sq` = { atk, def, ex } from stampSquadBuffs / computeSquadBuffsForActor.
+   */
+  function sheetCombatStats(loaded, optionParts, supporter, sq) {
     var mode = loaded && loaded.unitStatMode ? loaded.unitStatMode : 'normal';
     var us = unitStats(loaded.unit, loaded.lb, mode);
     var ud = loaded.unit;
+    var cd = loaded.char || null;
     var lb = loaded.lb | 0;
-    var lbData = ud && ud.lb_data;
-    var tier = lbData && lbData.length ? Math.min(lb, lbData.length - 1) : 0;
-    var td = (lbData && lbData[tier]) || {};
-    var statKey = 'stats_no_cond';
-    if (ud && ud.has_sp && mode === 'ssp') statKey = 'ssp_stats_no_cond';
-    else if (ud && ud.has_sp && mode === 'sp') statKey = 'sp_stats_no_cond';
-    var stats = td[statKey] || td.stats_no_cond || td.stats || (ud && ud.stats) || [];
     var mult = mlBoostMult();
+    var mlPct = seasonMlBuffPctForUnit(ud);
+    var mlOn = mlPct > 0;
     var getSheet = global._dcGetModifiedAttackerUnitStatsFromCtx;
-    var ctx, f, sup;
+    var fakeSlot, statKey, stats, ctx, f, sup, sqAtk, sqDef, exSq;
+    var fatk, fdef, pr;
+    sq = sq || {};
+    sqAtk = sq.atk | 0;
+    sqDef = sq.def | 0;
+    exSq = sq.ex | 0;
+    fakeSlot = {
+      unitData: ud,
+      charData: cd,
+      lbTier: lb,
+      unitStatMode: mode,
+      unitCondPassive: false,
+      charCondPassive: false,
+      unitCondStackCount: 0,
+      unitHpAtkTierIndex: 0,
+      unitDamageTakenDefStacks: 0
+    };
+    if (typeof global._tbSyncSlotCondPassives === 'function') {
+      try { global._tbSyncSlotCondPassives(fakeSlot); } catch (_) {}
+    }
+    if (typeof global._tbGetUnitStatKey === 'function' && typeof global._tbSlotStatsRows === 'function') {
+      try {
+        statKey = global._tbGetUnitStatKey(ud, fakeSlot);
+        stats = global._tbSlotStatsRows(fakeSlot, ud, statKey);
+      } catch (_) { stats = null; }
+    }
+    if (!stats || !stats.length) {
+      var lbData = ud && ud.lb_data;
+      var tier = lbData && lbData.length ? Math.min(lb, lbData.length - 1) : 0;
+      var td = (lbData && lbData[tier]) || {};
+      statKey = 'stats_no_cond';
+      if (ud && ud.has_sp && mode === 'ssp') statKey = 'ssp_stats_no_cond';
+      else if (ud && ud.has_sp && mode === 'sp') statKey = 'sp_stats_no_cond';
+      stats = td[statKey] || td.stats_no_cond || td.stats || (ud && ud.stats) || [];
+    }
     if (typeof getSheet === 'function' && ud && stats && stats.length) {
       sup = supporter || null;
       if (sup && !Array.isArray(sup)) {
@@ -5358,41 +5440,95 @@
         }
       }
       ctx = {
-        masterLeagueBuff: true,
+        /* Only if this kit holds a season Boost: Tag (OR, no stack). */
+        masterLeagueBuff: mlOn,
+        masterLeagueBuffPct: mlPct,
         grandOffensiveBuff: false,
         optionParts: optionParts || [],
         supporters: sup ? [sup] : [],
         atkUnitData: ud,
-        atkCharData: loaded.char || null,
-        charCondPassive: false,
+        atkCharData: cd,
+        charCondPassive: !!fakeSlot.charCondPassive,
         unitTurnBuffAtk: false,
-        squadCondAtkPct: 0,
-        squadCondDefPct: 0,
+        squadCondAtkPct: sqAtk,
+        squadCondDefPct: sqDef,
+        exSquadAtkPct: exSq,
         /* Maxed ULT Alt flats into HP/EN/ATK/DEF/MOB sheet (same as /cal when ULT toggle on). */
         ultAltActive: unitHasUltAlt(ud)
       };
       try {
         f = getSheet(ctx, stats, false);
         if (f && (f.unitHp | 0) > 0) {
+          fatk = f.unitAtk | 0;
+          fdef = f.unitDefVal | 0;
+          if (typeof global._tbPilotPairUnitAtkDef === 'function') {
+            try {
+              pr = global._tbPilotPairUnitAtkDef(cd, ud, !!fakeSlot.charCondPassive, fatk, fdef);
+              fatk = pr.unitAtk | 0;
+              fdef = pr.unitDefVal | 0;
+            } catch (_) {}
+          }
           return {
             hp: f.unitHp | 0,
             en: Math.max(1, f.unitEn | 0),
             mob: f.unitMob | 0,
             move: Math.max(1, f.unitMove | 0),
-            atk: f.unitAtk | 0,
-            def: f.unitDefVal | 0
+            atk: fatk,
+            def: fdef
           };
         }
       } catch (err) { /* fall through */ }
     }
+    /* Fallback only: still honor Boost: Tag gate (do not blanket-apply season %). */
+    var fb = mlOn ? mult : 1;
     return {
-      hp: Math.floor(us.hp * mult),
-      en: Math.floor((us.en || 100) * mult),
-      mob: Math.floor(us.mob * mult),
+      hp: Math.floor(us.hp * fb),
+      en: Math.floor((us.en || 100) * fb),
+      mob: Math.floor(us.mob * fb),
       move: us.move,
-      atk: Math.floor((us.atk || 0) * mult),
-      def: Math.floor((us.def || 0) * mult)
+      atk: Math.floor((us.atk || 0) * fb),
+      def: Math.floor((us.def || 0) * fb)
     };
+  }
+
+  /** Re-apply full pre-battle sheet after squad buffs are stamped (ATK/DEF % + Cond/ML/OP/supp). */
+  function refreshActorSheetFromSquad(sideActors) {
+    var list = sideActors || [];
+    var i, a, sheet, fieldTerr, baseMove;
+    for (i = 0; i < list.length; i++) {
+      a = list[i];
+      if (!a || !a.unit) continue;
+      sheet = sheetCombatStats({
+        unit: a.unit,
+        char: a.char,
+        lb: a.lb | 0,
+        side: a.side,
+        unitStatMode: a.unitStatMode || 'normal'
+      }, a.optionParts || [], a.supporter || null, {
+        atk: a.squadCondAtkPct | 0,
+        def: a.squadCondDefPct | 0,
+        ex: a.exSquadAtkPct | 0
+      });
+      a.maxHp = sheet.hp | 0;
+      a.hp = a.maxHp;
+      a.ghostHp = a.hp;
+      a.maxEn = sheet.en | 0;
+      a.currentEn = a.maxEn;
+      a.mobility = sheet.mob | 0;
+      a._spdMob = sheet.mob | 0;
+      a._sheetAtk = sheet.atk | 0;
+      a._sheetDef = sheet.def | 0;
+      fieldTerr = String(a.fieldTerrain || (seasonMeta && seasonMeta.terrain_primary) || '');
+      baseMove = sheet.move || a.baseMove || 3;
+      a.baseMove = baseMove;
+      a.move = applyTerrainMove(baseMove, a.unit, fieldTerr);
+      if (a._formBase) {
+        a._formBase.maxHp = a.maxHp;
+        a._formBase.maxEn = a.maxEn;
+        a._formBase.mobility = a.mobility;
+        a._formBase.baseMove = a.baseMove;
+      }
+    }
   }
 
   function makeActor(side, cell, loaded, owned, slotMeta, optionParts, supporter) {
@@ -5439,8 +5575,8 @@
       maxEn: en,
       currentEn: en,
       mobility: mob,
-      /* Turn order = unit Mobility×ML + pilot Reaction (not OP/leader sheet MOB). */
-      _spdMob: Math.floor(us.mob * mlBoostMult()) | 0,
+      /* Turn order uses sheet MOB (ML + OP + supporter) + Reaction — same as mobility/reaction. */
+      _spdMob: mob | 0,
       _spdReact: cs.reaction | 0,
       baseMove: baseMove,
       move: move,
@@ -5589,6 +5725,9 @@
       lastEnemy = pair[1];
       stampSquadBuffs(lastAlly);
       stampSquadBuffs(lastEnemy);
+      /* Squad ATK/DEF % + Cond:HP/EN must land on maxHp/EN before battle (match /mls bottom sheet). */
+      refreshActorSheetFromSquad(lastAlly);
+      refreshActorSheetFromSquad(lastEnemy);
       paintTimeline();
       paintForceSlots();
     });
@@ -6752,8 +6891,8 @@
     } else {
       parts = [];
       order.forEach(function (u, i) {
-        var mobPart = u._spdMob != null ? (u._spdMob | 0) : (u.mobility | 0);
-        var reactPart = u._spdReact != null ? (u._spdReact | 0) : (u.reaction | 0);
+        var mobPart = u.mobility | 0;
+        var reactPart = u.reaction | 0;
         var spd = spdFn(u);
         var nm = String(u.name || '').replace(/\s*\(EX\)\s*$/i, '').slice(0, 14);
         var dead = (u.hp | 0) <= 0;
@@ -9454,6 +9593,13 @@
         e.preventDefault(); e.stopPropagation();
         parts = String(el.getAttribute('data-mls-clear-op') || '').split(':');
         clearOption(parts[0], parseInt(parts[1], 10) || 0);
+        return;
+      }
+      el = t.closest && t.closest('[data-mls-clear-unit]');
+      if (el) {
+        e.preventDefault(); e.stopPropagation();
+        parts = String(el.getAttribute('data-mls-clear-unit') || '').split(':');
+        clearUnitSlot(parts[0], parseInt(parts[1], 10) || 0);
         return;
       }
       el = t.closest && t.closest('[data-mls-lb]');
