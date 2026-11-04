@@ -200,10 +200,17 @@
     return collectionsOwned().supporters;
   }
 
+  /** Ally Collections mode: owned-only pickers/board + sync LB from Collections. */
+  function wantUseCollections() {
+    var el = document.getElementById('mlsUseCollections')
+      || document.getElementById('mlsOwnedOnly')
+      || document.getElementById('mlsShareUseColLb');
+    return !!(el && el.checked);
+  }
+
   /** Formation picker + battle board: only kits marked in Collections. */
   function wantOwnedOnly() {
-    var el = document.getElementById('mlsOwnedOnly');
-    return !!(el && el.checked);
+    return wantUseCollections();
   }
 
   function unitOwnedInCollections(unitId) {
@@ -387,8 +394,7 @@
   }
 
   function wantCollectionsLbSync() {
-    var el = document.getElementById('mlsShareUseColLb');
-    return !!(el && el.checked);
+    return wantUseCollections();
   }
 
   /**
@@ -3626,7 +3632,7 @@
     return keys;
   }
 
-  /** Ability-line DTD (Phase Shift Armor, Beam Damage Reduction, Armure Lumiere, …) — not always in unit.skills. */
+  /** Ability-line DTD (Phase Shift Armor, Beam Damage Reduction, Armure Lumiere, I-Field, …) — not always in unit.skills. */
   function abilityDamageTakenDownPct(unitData, weapon) {
     var best = 0;
     var blob, m, pct, wantBeam, wantPhys, wantSpec, wantRanged, wantMelee;
@@ -3642,12 +3648,17 @@
       m = blob.match(/(\d+)\s*%/);
       pct = m ? (parseInt(m[1], 10) || 0) : 0;
       if (pct <= 0) return;
-      /* Armure Lumiere: “When enemies attack with a ranged weapon…” — not all hits. */
-      wantRanged = /ranged\s+weapon|射撃武装|遠程武装|遠距離武装|當敵方以射擊/i.test(blob);
+      /*
+       * Attack-type + attribute gates (AND when both appear):
+       * - Armure Lumiere: “ranged weapon” only
+       * - I-Field: “beam ranged weapon” → must be beam AND ranged
+       * - Plain “beam” / “physical” / “special” without ranged/melee → attribute only
+       */
+      wantRanged = /ranged\s+weapon|射撃武装|遠程武装|遠距離武装|當敵方以射擊|ビーム射撃|光束射擊|鐳射射擊/i.test(blob);
       wantMelee = /melee\s+weapon|格闘武装|近接武装/i.test(blob);
-      wantBeam = /\bbeam\b|ビーム|光束|鐳射/i.test(blob) && !wantRanged;
-      wantPhys = /\bphysical\b|物理/i.test(blob) && !wantRanged;
-      wantSpec = /\bspecial\b|特殊/i.test(blob) && !wantRanged;
+      wantBeam = /\bbeam\b|ビーム|光束|鐳射/i.test(blob);
+      wantPhys = /\bphysical\b|物理/i.test(blob);
+      wantSpec = /\bspecial\b|特殊/i.test(blob);
       if (wantRanged || wantMelee || wantBeam || wantPhys || wantSpec) {
         if (wantRanged && !isRanged) return;
         if (wantMelee && isRanged) return;
@@ -8935,16 +8946,12 @@
         applyShareCode(id === 'mlsShareEnemy' ? 'enemy' : 'ally', box.value);
       });
     });
-    document.getElementById('mlsShareUseColLb') && document.getElementById('mlsShareUseColLb').addEventListener('change', function () {
-      var n;
-      if (!this.checked) return;
-      n = syncAllyLbsFromCollections({ forcePaint: true });
-      log(n
-        ? ('Synced ' + n + ' Limit Break(s) from Collections (units + supporter).')
-        : 'No ally unit/supporter matched Collections (exact id; Collections is UR / Ultimate + UR supporters only).');
-    });
-    document.getElementById('mlsOwnedOnly') && document.getElementById('mlsOwnedOnly').addEventListener('change', function () {
+    document.getElementById('mlsUseCollections') && document.getElementById('mlsUseCollections').addEventListener('change', function () {
+      var nLb = 0;
       var nGrey = 0;
+      if (this.checked) {
+        nLb = syncAllyLbsFromCollections({ forcePaint: true });
+      }
       forceOf('ally').slots.forEach(function (sl) {
         if (slotExcludedByCollections(sl, 'ally')) nGrey += 1;
       });
@@ -8954,11 +8961,14 @@
       if (viewName === 'battle') {
         loadArmies().then(function () { paintBoard(); paintTimeline(); });
       }
-      log(this.checked
-        ? ('Only my Collections on (ally only) — ' +
-          (nGrey ? (nGrey + ' ally kit(s) greyed out (hidden on Battle).') : 'all ally kits are in Collections.') +
-          ' Enemy force unchanged.')
-        : 'Only my Collections off — full ally roster on Battle again.');
+      if (this.checked) {
+        log('My Collections on (ally only) — ' +
+          (nLb ? (nLb + ' LB synced; ') : '') +
+          (nGrey ? (nGrey + ' kit(s) greyed out (hidden on Battle).') : 'all ally kits are in Collections.') +
+          ' Enemy force unchanged.');
+      } else {
+        log('My Collections off — full ally roster on Battle; LB no longer auto-synced.');
+      }
     });
     /* Face strip click = copy (same as Copy button). */
     document.querySelectorAll('.mls-share-faces').forEach(function (faces) {
@@ -9204,8 +9214,17 @@
       var span = inp && inp.parentElement && inp.parentElement.querySelector('span');
       if (span) span.textContent = mlsT(key, fallback);
     }
-    setSpanInLabel('mlsShareUseColLb', 'mls_sync_lb', 'Sync Limit Break from Collections');
-    setSpanInLabel('mlsOwnedOnly', 'mls_owned_only', 'Only my Collections');
+    setSpanInLabel('mlsUseCollections', 'mls_owned_only', 'Sync with my collections');
+    (function syncCollectionsTip() {
+      var lab = document.getElementById('mlsUseCollectionsLab');
+      var tip;
+      if (!lab) return;
+      tip = mlsT(
+        'mls_use_collections_tip',
+        'Ally only: pickers show your Collections kits; sync Limit Break from Collections; kits not in Collections are greyed out and omitted from Battle. Enemy force is never filtered.'
+      );
+      lab.setAttribute('title', tip);
+    })();
     var backForm = document.getElementById('mlsBackForm');
     if (backForm) backForm.textContent = '← ' + mlsT('mls_tab_formation', 'Formation');
     var brandLink = document.querySelector('.mls-brand-link');

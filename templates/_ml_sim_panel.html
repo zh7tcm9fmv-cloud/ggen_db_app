@@ -44,13 +44,9 @@
       <button type="button" class="mls-view-btn" data-view="battle" id="mlsTabBattle" data-mls-i18n="mls_tab_battle">Battle</button>
     </div>
     <div class="mls-views-opts">
-      <label class="mls-check" title="Ally only: on Load, when enabling this, and when picking a unit/supporter — set Limit Break from Collections for owned kits (exact id). Unowned keep LB3 / share LB. Collections tracks UR units (incl. Ultimate) and UR supporters.">
-        <input type="checkbox" id="mlsShareUseColLb" checked>
-        <span>Sync Limit Break from Collections</span>
-      </label>
-      <label class="mls-check" title="Ally only: your unit/supporter pickers show Collections kits (UR units incl. Ultimate, and UR supporters). Ally slots not in Collections are greyed out and omitted from Battle. Enemy force is never filtered.">
-        <input type="checkbox" id="mlsOwnedOnly">
-        <span>Only my Collections</span>
+      <label class="mls-check" id="mlsUseCollectionsLab" title="Ally only: pickers show your Collections kits (UR units incl. Ultimate, UR supporters); sync Limit Break from Collections on load / pick; kits not in Collections are greyed out and omitted from Battle. Enemy force is never filtered.">
+        <input type="checkbox" id="mlsUseCollections">
+        <span>Sync with my collections</span>
       </label>
     </div>
   </nav>
