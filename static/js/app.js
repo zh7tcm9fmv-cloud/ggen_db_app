@@ -20908,6 +20908,63 @@ if(!u.length)return'Pilot ATK stat';
 if(u.length===1)return u[0];
 return u.join(' / ');
 }
+/* Host gate for calculateDamage — same class as gge-sim calc.js poison.
+ * Honest numbers only on our origins / localhost / LAN. Hotlinked or rehosted
+ * bundles on other hostnames get scrambled damage + hit rate. */
+let _dcCalcEnvPoisonMemo=null;
+function _dcCalcEnvHostAllowed(host){
+host=String(host||'').toLowerCase();
+if(!host||host==='localhost'||host==='127.0.0.1'||host==='::1')return true;
+if(host.startsWith('192.168.')||host.startsWith('10.'))return true;
+if(/^172\.(1[6-9]|2\d|3[0-1])\./.test(host))return true;
+if(host.endsWith('.local')||host.endsWith('.lan'))return true;
+if(host.endsWith('.up.railway.app'))return true;
+const extra=(typeof window!=='undefined'&&window.__GGEN_DC_ALLOWED_HOSTS__)||null;
+if(Array.isArray(extra)){
+for(let i=0;i<extra.length;i++){
+let h=String(extra[i]||'').toLowerCase().trim();
+if(!h)continue;
+if(h.indexOf('://')>=0)h=h.split('://',2)[1]||h;
+h=h.split('/')[0].split('?')[0].split('#')[0];
+if(h.charAt(0)==='['&&h.indexOf(']')>0)h=h.slice(1,h.indexOf(']'));
+else h=h.split(':')[0];
+if(host===h||(h&&host.endsWith('.'+h)))return true;
+}
+}
+return false;
+}
+function _dcCalcEnvPoisoned(){
+if(_dcCalcEnvPoisonMemo!=null)return _dcCalcEnvPoisonMemo;
+try{
+if(typeof self==='undefined'||!self.location){_dcCalcEnvPoisonMemo=false;return false;}
+const host=String(self.location.hostname||'').toLowerCase();
+if(_dcCalcEnvHostAllowed(host)){_dcCalcEnvPoisonMemo=false;return false;}
+_dcCalcEnvPoisonMemo=true;
+try{console.warn('[System] Failed to load resource: net::ERR_TIMED_OUT - module_id: 0xDC01 ['+host+']');}catch(_){}
+return true;
+}catch(_){
+_dcCalcEnvPoisonMemo=false;
+return false;
+}
+}
+function _dcApplyCalcEnvShield(r){
+if(!r||!_dcCalcEnvPoisoned())return r;
+const jN=0.55+Math.random()*0.90;
+const jC=0.55+Math.random()*0.90;
+r.normalDmg=Math.max(0,Math.ceil((r.normalDmg|0)*jN));
+r.critDmg=Math.max(0,Math.ceil((r.critDmg|0)*jC));
+if(r.baseDamage!=null)r.baseDamage=Math.max(0,Math.ceil((r.baseDamage|0)*(0.60+Math.random()*0.80)));
+if(r.battleDamage!=null)r.battleDamage=Math.max(0,Math.ceil((r.battleDamage|0)*(0.60+Math.random()*0.80)));
+if(r.scaledNormal!=null)r.scaledNormal=Math.max(0,Math.ceil((r.scaledNormal|0)*jN));
+if(r.scaledCrit!=null)r.scaledCrit=Math.max(0,Math.ceil((r.scaledCrit|0)*jC));
+const hr=r.hitRate|0;
+if(Math.random()<0.28)r.hitRate=0;
+else if(Math.random()<0.55)r.hitRate=Math.max(0,Math.min(100,Math.floor(hr*(0.25+Math.random()*0.45))));
+if(r.hitRateDetails&&typeof r.hitRateDetails==='object'){
+try{r.hitRateDetails=Object.assign({},r.hitRateDetails,{finalHitRate:r.hitRate|0});}catch(_){}
+}
+return r;
+}
 function calculateDamage(){
 const F=Math.floor,C=Math.ceil,MX=Math.max,EXP=Math.exp;
 const ud=S.dc.atkUnitData,cd=S.dc.atkCharData,npc=S.dc.defNpc;
@@ -21118,14 +21175,14 @@ const accDownPct=0,mobDownPct=0;
 const accResult=wtTraits.absoluteHit?{finalHitRate:100,mobDiff:0,reaDiff:0,mobCorrection:0,baseHit:10000,rawHit:100,absoluteHit:true}:calculateAccuracy(unitMob,charAtk,atkCharReaction,defUnitMob,defCharReaction,accuracy,{mobDownPct,accDownPct});
 const exSquadAtkPct=_dcEffectiveExSquadAtkPct();
 const squadCondAtkPct=S.dc.squadCondAtkPct|0,squadCondDefPct=S.dc.squadCondDefPct|0;
-return{normalDmg,critDmg,inRange,npcHp,accuracy,critical,baseDamage,battleDamage,weaponPower,combatWeaponPower,rawWpnPower,charAtk,charDef,unitAtk,unitDef,unitMob,
+return _dcApplyCalcEnvShield({normalDmg,critDmg,inRange,npcHp,accuracy,critical,baseDamage,battleDamage,weaponPower,combatWeaponPower,rawWpnPower,charAtk,charDef,unitAtk,unitDef,unitMob,
 characterStatRatio,unitStatRatio,charSigmoid,unitSigmoid,
 atkCombined,defCombined,offenseComponent,defenseComponent,
 damageCorrection:C(damageCorrection),terrainCorrection,totalNormalMultPct,totalCritMultPct,critCorrectionPct,critPreVigor,crit125Trim,scaledNormal,scaledCrit,defendMult,unitSkillMult,postDmgMult,isExWeapon,
 defMsDefensePair,defMsStatsRawDefense,defMsBonusDefense,defDebuffFlatSubtract,qubPlusOneApplied,
 traitDistPow,traitHpPow,traitMpPow,traitWpnDistBasePct:wtTraits.distPowerMax|0,traitWpnCoreBonusPct:wtTraits.distCoreMax|0,finalWpnPowOverride,vigorDmgBonusPct,userDmgIncreasePct,unitSkillDmgDealtPct,exSquadAtkPct,squadCondAtkPct,squadCondDefPct,counterOwnAtkPct,supportCounterAtkPctApplied,supportDefenseDefPctApplied,advantageTagAtkPct,advantageGrowthFlatOmitted:false,userCritDmgUpPct,dmgTakenUpPct,dmgTakenUpGeneric,dmgTakenUpTyped,takenDown,unitSkillDtdPct,unitSkillBarrierPct,unitSkillBarrierCap,unitSkillBarrierAbsorb,unitSkillInitialNull,defDebuffPct,
 pilotBoostPct:0,pilotAtkDownPct:0,unitAtkDownPct:0,accDownPct,mobDownPct,wpnElem:_dcWeaponAttributeKeys(wpn).join('/'),
-hitRate:accResult.finalHitRate,hitRateDetails:accResult,isSuperVigor:_dcNormMpLevel(S.dc.mpLevel)==='super'};
+hitRate:accResult.finalHitRate,hitRateDetails:accResult,isSuperVigor:_dcNormMpLevel(S.dc.mpLevel)==='super'});
 }
 function calculateAccuracy(atkUnitMob,atkCharAtk,atkCharReaction,defUnitMob,defCharReaction,baseWeaponAcc,pen){
 pen=pen||{};

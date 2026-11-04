@@ -193,6 +193,45 @@ def _public_site_origin():
     return _DEFAULT_PUBLIC_ORIGIN
 
 
+def _hostname_from_origin_or_host(value):
+    """Extract bare hostname from an origin URL or Host header value."""
+    raw = (value or '').strip().lower()
+    if not raw:
+        return ''
+    if '://' in raw:
+        raw = raw.split('://', 1)[1]
+    raw = raw.split('/', 1)[0].split('?', 1)[0].split('#', 1)[0]
+    if raw.startswith('[') and ']' in raw:
+        return raw[1:raw.index(']')]
+    return raw.split(':', 1)[0]
+
+
+def _dc_allowed_hosts():
+    """Hostnames where client calculateDamage may return honest numbers.
+
+    Injected into the SPA bootstrap. Copied/hotlinked bundles on other hosts
+    fail the client allowlist and get poisoned results (gge-sim class defense).
+    """
+    hosts = set()
+    for origin in (_DEFAULT_PUBLIC_ORIGIN, _public_site_origin()):
+        h = _hostname_from_origin_or_host(origin)
+        if h:
+            hosts.add(h)
+    extra = (os.environ.get('GGEN_DC_ALLOWED_HOSTS') or '').strip()
+    if extra:
+        for part in extra.replace(';', ',').split(','):
+            h = _hostname_from_origin_or_host(part)
+            if h:
+                hosts.add(h)
+    try:
+        h = _hostname_from_origin_or_host(getattr(request, 'host', '') or '')
+        if h:
+            hosts.add(h)
+    except RuntimeError:
+        pass
+    return sorted(hosts)
+
+
 @app.context_processor
 def _inject_public_origin():
     origin = _public_site_origin()
@@ -207,6 +246,7 @@ def _inject_public_origin():
         # without each route having to pass app_js_version explicitly.
         'app_js_version': _app_js_bundle_version_tag(),
         'holo_js_bundle': _holo_js_served_bundle_name(),
+        'dc_allowed_hosts': _dc_allowed_hosts(),
     }
 
 # Bust cache when static assets change OR when a new git commit is deployed.
