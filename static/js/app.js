@@ -6169,7 +6169,9 @@ function renderDetailRankToggleSlotHtml(d,type){if(!(d&&d.ranking_available&&(ty
 function toggleDetailRankingOverlay(){if(!S.currentDetailData||!(S.currentDetailType==='character'||S.currentDetailType==='unit')||!S.currentDetailData.ranking_available)return;S.detailRankingOverlay=!S.detailRankingOverlay;const b=document.querySelector('#detailRankToggleSlot .detail-rank-toggle-btn');if(b)b.classList.toggle('active',!!S.detailRankingOverlay);updateDetailDynamicSections(S.currentDetailType)}
 function charRoleIsDefense(role){const r=String(role||'').toLowerCase();return r==='defense'||r.includes('defense')||r.includes('durability')||r.includes('耐久')||r.includes('내구')}
 function charRoleIsSupport(role){const r=String(role||'').toLowerCase();return r==='support'||r.includes('support')}
-function _countCharActionPlusOne(txt,kind){const s=String(txt||'');const pick=(arr)=>arr.reduce((n,re)=>{const m=s.match(re);return n+(m?m.length:0)},0);if(kind==='chance')return pick([/chance\s*step[\s\S]{0,24}[+＋]\s*1(?!\d)/ig,/チャンスステップ[\s\S]{0,24}[+＋]\s*1(?!\d)/g,/額外行動[\s\S]{0,24}[+＋]\s*1(?!\d)/g,/'?찬스 스텝'?\s*[+＋]\s*1(?!\d)/g]);if(kind==='def')return pick([/support\s*defen[cs]e[\s\S]{0,24}[+＋]\s*1(?!\d)/ig,/支援防[禦御][\s\S]{0,24}[+＋]\s*1(?!\d)/g,/'?지원 방어'?\s*[+＋]\s*1(?!\d)/g]);return pick([/support\s*attack\s*\/\s*counter[\s\S]{0,24}[+＋]\s*1(?!\d)/ig,/支援攻擊\s*[／/]\s*反擊[\s\S]{0,24}[+＋]\s*1(?!\d)/g,/支援攻撃\s*[／/]\s*反撃[\s\S]{0,24}[+＋]\s*1(?!\d)/g,/'?지원 공격\s*[／/]\s*반격'?\s*[+＋]\s*1(?!\d)/g])}
+/** Auto / Guaranteed CS “+1 time(s)” is force-without-kill stock — not Chance Step max +1 (budget ×2). */
+function _stripSpecialForceChanceStepText(txt){return String(txt||'').replace(/Guaranteed\s*Chance\s*Step[^\n]*/gi,'').replace(/Unconditional\s*Chance\s*Step[^\n]*/gi,'').replace(/Auto[- ]?Chance\s*Step[^\n]*/gi,'').replace(/無条件チャンスステップ[^\n]*/g,'').replace(/オートチャンスステップ[^\n]*/g,'').replace(/無條件額外行動[^\n]*/g,'').replace(/自動額外行動[^\n]*/g,'').replace(/Chance\s*Step\s+will\s+trigger[^\n]*regardless[^\n]*/gi,'').replace(/敵を撃破しなくても[^\n]*/g,'').replace(/即使未擊敗[^\n]*/g,'')}
+function _countCharActionPlusOne(txt,kind){const raw=String(txt||'');const s=kind==='chance'?_stripSpecialForceChanceStepText(raw):raw;const pick=(arr)=>arr.reduce((n,re)=>{const m=s.match(re);return n+(m?m.length:0)},0);if(kind==='chance')return pick([/chance\s*step[\s\S]{0,24}[+＋]\s*1(?!\d)/ig,/チャンスステップ[\s\S]{0,24}[+＋]\s*1(?!\d)/g,/額外行動[\s\S]{0,24}[+＋]\s*1(?!\d)/g,/'?찬스 스텝'?\s*[+＋]\s*1(?!\d)/g]);if(kind==='def')return pick([/support\s*defen[cs]e[\s\S]{0,24}[+＋]\s*1(?!\d)/ig,/支援防[禦御][\s\S]{0,24}[+＋]\s*1(?!\d)/g,/'?지원 방어'?\s*[+＋]\s*1(?!\d)/g]);return pick([/support\s*attack\s*\/\s*counter[\s\S]{0,24}[+＋]\s*1(?!\d)/ig,/支援攻擊\s*[／/]\s*反擊[\s\S]{0,24}[+＋]\s*1(?!\d)/g,/支援攻撃\s*[／/]\s*反撃[\s\S]{0,24}[+＋]\s*1(?!\d)/g,/'?지원 공격\s*[／/]\s*반격'?\s*[+＋]\s*1(?!\d)/g])}
 /** EN/JA/TW/KR: sum explicit "Support Attack/Counter +N" (any N); plus legacy +1-only matches from _countCharActionPlusOne. */
 function _supportAtkCounterNumericAddsFromText(tx){let sum=0;const s=String(tx||'');const patterns=[/Support\s+Attack\s*\/\s*Counter[\s\S]{0,200}?[+\uFF0B]\s*(\d+)/gi,/Support\s+Attack(?!\s*\/\s*Counter)[\s\S]{0,160}?[+\uFF0B]\s*(\d+)/gi,/「支援攻[撃擊][/／]反[擊撃]」[+\uFF0B]\s*(\d+)回/g,/「支援攻[撃擊][/／]反[擊撃]」[+\uFF0B]\s*(\d+)次/g,/'지원 공격\s*[／/]\s*반격'\s*[+\uFF0B]\s*(\d+)회?/g];for(let pi=0;pi<patterns.length;pi++){const re=patterns[pi];re.lastIndex=0;let m;while((m=re.exec(s))){const v=parseInt(m[1],10);if(!isNaN(v))sum+=v}}return sum}
 function _supportAtkBonusFromAbilityDetailText(tx){return Math.max(_countCharActionPlusOne(tx,'atk'),_supportAtkCounterNumericAddsFromText(tx))}
@@ -6349,9 +6351,10 @@ function _npcRegexCaptureSum(tx,patterns){let sum=0;for(let pi=0;pi<patterns.len
 function _npcRegexCaptureMaxAcrossPatterns(tx,patterns){let best=0;for(let pi=0;pi<patterns.length;pi++){const re=patterns[pi];re.lastIndex=0;let m;while((m=re.exec(tx))){const v=parseInt(m[1],10);if(!isNaN(v))best=Math.max(best,v)}}return best}
 const NPC_SUPPORT_STAT_DEFAULT_CAP=5;
 const NPC_SUPPORT_ATK_EXPLICIT_PATTERNS=[/Support\s+Attack\s*\/\s*Counter[\s\S]{0,200}?[+\uFF0B]\s*(\d+)/gi,/Support\s+Attack(?!\s*\/\s*Counter)[\s\S]{0,160}?[+\uFF0B]\s*(\d+)/gi,/「支援攻[撃擊][/／]反[擊撃]」[+\uFF0B]\s*(\d+)回/g,/「支援攻[撃擊][/／]反[擊撃]」[+\uFF0B]\s*(\d+)次/g];
-const NPC_SUPPORT_CHANCE_EXPLICIT_PATTERNS=[/Force\s+activate\s+Chance\s+Step\s+(\d+)/gi,/チャンスステップを(\d+)回強制発動/g,/強制發動(\d+)次額外行動/g,/get\s+(\d+)\s+Guaranteed\s+Chance\s+Step(?:s)?/gi,/Guaranteed\s+Chance\s+Step(?:s)?\s*[+＋]\s*(\d+)/gi,/Chance\s+Step\s*[+＋]\s*(\d+)\s*time/gi,/Chance\s+Step\s*[+＋]\s*(\d+)/gi,/額外行動\s*[+＋]\s*(\d+)/g,/チャンスステップ\s*[+＋]\s*(\d+)/g];
+/* Max CS budget only — Guaranteed/Auto force stock is stripped (not ×2). */
+const NPC_SUPPORT_CHANCE_EXPLICIT_PATTERNS=[/Chance\s+Step\s*[+＋]\s*(\d+)\s*time/gi,/Chance\s+Step\s*[+＋]\s*(\d+)/gi,/額外行動\s*[+＋]\s*(\d+)/g,/チャンスステップ\s*[+＋]\s*(\d+)/g];
 const NPC_SUPPORT_LV_TITLE_PATTERNS={atk:[/Support\s+Attack\s*(?:\/\s*Counter)?\s*(?:Support\s+)?LV\s*(\d+)/gi,/支援攻[撃擊](?:\s*[／/]\s*反[擊撃])?\s*(?:Support\s+)?LV\s*(\d+)/gi],def:[/Support\s+Defense\s+LV\s*(\d+)/gi,/支援防[禦御]\s*LV\s*(\d+)/gi],chance:[/Chance\s+Step\s+Increase\s+LV\s*(\d+)/gi,/チャンスステップ(?:強化|増加)?\s*LV\s*(\d+)/gi,/額外行動\s*LV\s*(\d+)/gi]};
-function _npcChanceBonusFromAbilityText(tx){return Math.max(_npcRegexCaptureMaxAcrossPatterns(tx,NPC_SUPPORT_CHANCE_EXPLICIT_PATTERNS),_countCharActionPlusOne(tx,'chance'))}
+function _npcChanceBonusFromAbilityText(tx){const cleaned=typeof _stripSpecialForceChanceStepText==='function'?_stripSpecialForceChanceStepText(tx):String(tx||'');return Math.max(_npcRegexCaptureMaxAcrossPatterns(cleaned,NPC_SUPPORT_CHANCE_EXPLICIT_PATTERNS),_countCharActionPlusOne(tx,'chance'))}
 function _npcAtkBonusFromAbilityText(tx){return Math.max(_npcRegexCaptureMaxAcrossPatterns(tx,NPC_SUPPORT_ATK_EXPLICIT_PATTERNS),_supportAtkBonusFromAbilityDetailText(tx))}
 function _npcDetailEntityAbilityNameAndDetailStrings(ent){if(!ent||!Array.isArray(ent.abilities))return[];let rows=ent.abilities.slice();if(!S.spActive)rows=rows.filter(ba=>!(ba&&ba.sp_replacement&&isUnknownAbilityName(ba.name)));const out=[];rows.forEach(ba=>{let ab=ba;if(S.spActive&&ba.sp_replacement)ab=ba.sp_replacement;if(ab&&ab.name){const nm=String(ab.name).trim();if(nm)out.push(nm)}const ds=Array.isArray(ab.details)?ab.details:[];ds.forEach(det=>{const raw0=typeof det==='string'?det:String(det&&det.text||'');const raw=String(raw0).trim();if(!raw)return;out.push(raw)})});return out}
 function _npcAbilityCombinedTexts(ent){if(!ent||!Array.isArray(ent.abilities))return[];let rows=ent.abilities.slice();if(!S.spActive)rows=rows.filter(ba=>!(ba&&ba.sp_replacement&&isUnknownAbilityName(ba.name)));const out=[];rows.forEach(ba=>{let ab=ba;if(S.spActive&&ba.sp_replacement)ab=ba.sp_replacement;const chunks=[];if(ab&&ab.name){const nm=String(ab.name).trim();if(nm)chunks.push(nm)}const ds=Array.isArray(ab.details)?ab.details:[];ds.forEach(det=>{const raw0=typeof det==='string'?det:String(det&&det.text||'');const raw=String(raw0).trim();if(raw)chunks.push(raw)});if(chunks.length)out.push(chunks.join('\n'))});return out}
@@ -11896,7 +11899,8 @@ if((wt.enemyTagDefBonus|0)>0&&_dcEnemyTagWeaponBonusActive(wt))pct+=(wt.enemyTag
 return Math.min(100,pct);
 }
 function _dcManualPlusWeaponDefDebuffPct(wpn,wpnLvIdx){
-const manual=parseInt(document.getElementById('dcDefDebuffPct')?.value,10)||0;
+/* MLS fight stamps S.dc.defDebuffPct and skips the input so /cal DOM is not rewritten per hit. */
+const manual=(S.dc&&S.dc._mlsFightCalc)?(S.dc.defDebuffPct|0):(parseInt(document.getElementById('dcDefDebuffPct')?.value,10)||0);
 const wp=_dcWeaponEnemyDefDebuffEffective(wpn,wpnLvIdx);
 return Math.min(100,manual+wp);
 }
@@ -12495,7 +12499,7 @@ return{stats_raw,bonus_amounts};
 }
 function _dcSyncDefNpcFromDatabase(){
 const ud=S.dc.defUnitData,cd=S.dc.defCharData;
-if(!ud||ud.error||ud._manual||!cd||cd.error||cd._manual){S.dc.defNpc=null;renderDcDefDbPicks();renderDcDefStats();_dcAutoSetVigor();if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses(true);else onDcParamChange();return}
+if(!ud||ud.error||ud._manual||!cd||cd.error||cd._manual){S.dc.defNpc=null;if(S.dc&&S.dc._mlsFightCalc)return;renderDcDefDbPicks();renderDcDefStats();_dcAutoSetVigor();if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses(true);else onDcParamChange();return}
 const lb=ud.lb_data;
 const maxT=lb&&lb.length?lb.length-1:0;
 const tier=Math.min(Math.max(0,S.dc.defLbTier|0),maxT);
@@ -20647,7 +20651,8 @@ const b=_dcParsePilotAbilBonuses(cd);
 (b.items||[]).forEach(it=>{
 if(!it||it.key!=='dmgTaken'||it.src!=='char')return;
 if(it.cond)return;
-if(it.abilityHasCond&&!S.dc.defCharCondPassive)return;
+/* Tag/series already resolved as autoMet — Cond Passive is only for unmet live gates (vigor/combat). */
+if(it.abilityHasCond&&!it.autoMet&&!S.dc.defCharCondPassive)return;
 pct+=(it.val|0);
 });
 }finally{

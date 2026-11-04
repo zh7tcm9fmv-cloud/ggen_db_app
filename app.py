@@ -13247,6 +13247,28 @@ SDC_EXPLICIT_ABILITY_IDS = {'2018601'}
 CHANCE_STEP_EX_FILTER_ID = 'chance_step_ex'
 CHANCE_STEP_EX_FILTER_NAME = 'Chance Step x2'
 CHANCE_STEP_PLUS_ONE_RE = re.compile(r'chance\s*step\s*\+\s*1(?!\d)', re.IGNORECASE)
+# Guaranteed/Auto “+1 time(s)” must not count as Chance Step max +1 (budget ×2).
+_SPECIAL_FORCE_CS_STRIP_RES = (
+    re.compile(r'Guaranteed\s*Chance\s*Step[^\n]*', re.IGNORECASE),
+    re.compile(r'Unconditional\s*Chance\s*Step[^\n]*', re.IGNORECASE),
+    re.compile(r'Auto[- ]?Chance\s*Step[^\n]*', re.IGNORECASE),
+    re.compile(r'無条件チャンスステップ[^\n]*'),
+    re.compile(r'オートチャンスステップ[^\n]*'),
+    re.compile(r'無條件額外行動[^\n]*'),
+    re.compile(r'自動額外行動[^\n]*'),
+    re.compile(r'Chance\s*Step\s+will\s+trigger[^\n]*regardless[^\n]*', re.IGNORECASE),
+    re.compile(r'敵を撃破しなくても[^\n]*'),
+    re.compile(r'即使未擊敗[^\n]*'),
+)
+
+
+def _strip_special_force_chance_step_text(txt):
+    t = txt or ''
+    for rx in _SPECIAL_FORCE_CS_STRIP_RES:
+        t = rx.sub('', t)
+    return t
+
+
 # Official m_help titles (EN · JA · TW/HK) — Guaranteed ≠ Auto-Chance.
 # Guaranteed: end of any action · 無条件チャンスステップ · 無條件額外行動
 # Auto: combat end without KO · オートチャンスステップ · 自動額外行動 (※MAP does not trigger)
@@ -13266,6 +13288,16 @@ CHANCE_STEP_PLUS_ONE_REGEXES = (
     re.compile(r'チャンスステップ[\s\S]{0,24}[+＋]\s*1(?!\d)'),
     re.compile(r'額外行動[\s\S]{0,24}[+＋]\s*1(?!\d)'),
 )
+
+
+def _chance_step_max_plus_one_hits(txt):
+    """Count Chance Step +1 max-budget lines only (not Auto/Guaranteed force stock)."""
+    cleaned = _strip_special_force_chance_step_text(txt)
+    if not cleaned:
+        return 0
+    return sum(len(rx.findall(cleaned)) for rx in CHANCE_STEP_PLUS_ONE_REGEXES)
+
+
 GUARANTEED_CHANCE_STEP_TEXT_RES = (
     re.compile(r'guaranteed\s+chance\s*step', re.IGNORECASE),
     re.compile(r'force[- ]?activate\s+chance\s*step', re.IGNORECASE),
@@ -14620,7 +14652,7 @@ def _precompute_chance_step_ex_data():
                 d.get('text', '') if isinstance(d, dict) else str(d)
                 for d in bab.get('details', [])
             )
-            if CHANCE_STEP_PLUS_ONE_RE.search(detail_blob or ''):
+            if _chance_step_max_plus_one_hits(detail_blob or '') > 0:
                 ids.add(aid)
                 if not icon:
                     icon = (bab.get('icon') or '').strip()
@@ -14783,7 +14815,7 @@ def _char_matches_special_x2_filter(cid, want, include_sp=False, include_conditi
                 t = (d.get('text', '') if isinstance(d, dict) else str(d)).strip()
                 if not t:
                     continue
-                hit_ch += sum(len(rx.findall(t)) for rx in CHANCE_STEP_PLUS_ONE_REGEXES)
+                hit_ch += _chance_step_max_plus_one_hits(t)
                 hit_df += len(SUPPORT_DEF_PLUS_ONE_RE.findall(t))
                 hit_at += len(SUPPORT_ATK_PLUS_ONE_RE.findall(t))
             if hit_ch > 0:

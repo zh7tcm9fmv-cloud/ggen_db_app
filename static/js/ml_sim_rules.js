@@ -773,7 +773,8 @@
     return false;
   }
 
-  /** gge / site: Chance Step uses (額外行動). Base 1; +1 ability → up to 2. */
+  /** gge / site: Chance Step uses (額外行動). Base 1; +1 ability → up to 2.
+   * Auto / Guaranteed “+1 time(s)” force the existing budget without a KO — they do NOT raise max. */
   function chanceStepLimit(actor) {
     var n = 1;
     var bags = [];
@@ -790,6 +791,7 @@
         texts = detailTexts(ab);
         for (j = 0; j < texts.length; j++) {
           t = texts[j];
+          if (isGuaranteedCsStockText(t) || isAutoCsAfterCombatText(t)) continue;
           if (/Chance\s*Step|チャンスステップ|額外行動|찬스 스텝/i.test(t) && /[+＋]\s*1|×\s*2|x2/i.test(t)) {
             n = 2;
           }
@@ -1464,8 +1466,8 @@
    * gge checkAndAcquireUnconditionalCS — Guaranteed/Unconditional CS stock (once/battle).
    * EN: Guaranteed Chance Step · JA: 無条件チャンスステップ · TW/HK: 無條件額外行動.
    * Respects unit-tag / unit-id conditions + Vigor gates (e.g. Uso Supercharged + League Militaire).
-   * Stock is separate from the phase Chance Step budget (max 2) — firing it does not
-   * spend chanceStepsLeft (Uso: 2 kill-CS + 1 Guaranteed ⇒ up to 4 actions).
+   * Stock forces one existing Bonus Action without a KO; firing spends chanceStepsLeft.
+   * Does not raise chanceCount (m_help: limited Bonus Actions per phase).
    */
   function checkAndAcquireUnconditionalCS(actor) {
     var acquired = false;

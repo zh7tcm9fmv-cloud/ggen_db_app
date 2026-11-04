@@ -21,7 +21,7 @@
     <h1 class="mls-brand">
       <a class="mls-brand-link" href="/ml" onclick="event.preventDefault();switchTab('master_league')" title="Master League" aria-label="Master League Simulator">
         <span class="mls-brand-mark">
-          <img class="mls-brand-logo" src="{% if image_cdn %}{{ image_cdn }}/images/Master%20League/ml_logo_general.webp{% else %}/static/images/Master%20League/ml_logo_general.webp{% endif %}" alt="" width="556" height="326" decoding="async" onerror="this.onerror=null;this.src='/static/images/Master%20League/ml_logo_general.webp'">
+          <img class="mls-brand-logo" src="{% if image_cdn %}{{ image_cdn }}/images/Master%20League/ml_logo_general.webp{% else %}/static/images/Master%20League/ml_logo_general.webp{% endif %}" alt="" width="556" height="326" decoding="sync" loading="eager" onload="this.parentElement&&this.parentElement.classList.add('is-logo-ready')" onerror="this.onerror=null;this.src='/static/images/Master%20League/ml_logo_general.webp';this.parentElement&&this.parentElement.classList.add('is-logo-ready')">
           <span class="mls-brand-banner" aria-hidden="true" data-mls-i18n="mls_simulator">SIMULATOR</span>
         </span>
       </a>

@@ -34,13 +34,12 @@
   /* gge wait(ms/speed): 1× should feel readable. Was 320; owner asked ~50% slower (desktop). */
   var STEP_MS = 640;
   var MOVE_MS = 620;
-  /* Phone/tablet: same 1× button, but slightly snappier so it matches desktop feel. */
-  var MOBILE_PACE_MUL = 1.45;
   var dmgFloatSide = 0;
   var pickerCtx = null;
   var mapOrigin = { minX: 0, minY: 0 };
   var mapCellPx = 40;
   var mapBgCacheKey = '';
+  var timelinePaintSig = '';
   var viewName = 'formation';
   var mapFitBound = false;
   /* Freeze camera + cell size after first battle paint — unit moves/KOs must not keep re-fitting smaller. */
@@ -154,9 +153,7 @@
   }
 
   function battlePaceMul() {
-    var mul = Math.max(1, speedMul);
-    if (mobileBattleSnappy()) mul *= MOBILE_PACE_MUL;
-    return mul;
+    return Math.max(1, speedMul);
   }
 
   function stepDelay(kind) {
@@ -342,6 +339,43 @@
     try {
       localStorage.setItem(ROSTER_KEY, JSON.stringify(roster));
     } catch (e) {}
+    /* Do NOT warm on every save — phone Wi‑Fi was drowning in OP thumb re-paints. */
+  }
+
+  /**
+   * Prefetch unit/char/supporter JSON into `cache` only (no paintForceSlots).
+   * Call sparingly — after MLS content load / before Start — not on every roster write.
+   */
+  var warmArmiesTimer = null;
+  function scheduleWarmArmies() {
+    clearTimeout(warmArmiesTimer);
+    warmArmiesTimer = setTimeout(function () {
+      if (fightBusy) return;
+      warmArmiesSilent().catch(function () {});
+    }, mobileBattleSnappy() ? 500 : 900);
+  }
+
+  /** Build lastAlly/lastEnemy + fill fetch cache without rebuilding formation DOM. */
+  function warmArmiesSilent() {
+    var owned = ownedMap();
+    return Promise.all([
+      loadSupporter('ally'),
+      loadSupporter('enemy')
+    ]).then(function (sups) {
+      var allySup = supporterExcludedByCollections(forceOf('ally').supporter, 'ally') ? null : sups[0];
+      void allySup;
+      void sups[1];
+      return Promise.all([
+        buildSide('ally', allyCells(), forceOf('ally').slots, owned),
+        buildSide('enemy', enemyCells(), forceOf('enemy').slots, owned)
+      ]);
+    }).then(function (pair) {
+      lastAlly = pair[0];
+      lastEnemy = pair[1];
+      stampSquadBuffs(lastAlly);
+      stampSquadBuffs(lastEnemy);
+      /* Intentionally skip paintForceSlots / paintTimeline — those re-create <img> and thrash mobile. */
+    });
   }
 
   /** Formation + battle toggles both write ORDER_ENEMY_KEY — prefer that over a single checkbox. */
@@ -582,10 +616,13 @@
     if (side === 'ally') synced = applyCollectionsLbToAllyForce();
     saveRoster();
     paintForceSlots();
+    shareFaceLayoutKey[side] = '';
     fillShareBoxes();
     hydrateSlotPilotsAndOps().then(function () {
       /* Re-apply after hydrate in case slot objects were replaced. */
       if (side === 'ally') applyCollectionsLbToAllyForce();
+      shareFaceLayoutKey.enemy = '';
+      shareFaceLayoutKey.ally = '';
       fillShareBoxes();
       scheduleOrderRefresh();
       if (viewName === 'battle') return loadArmies().then(function () { paintBoard(); paintTimeline(); });
@@ -651,12 +688,31 @@
       idxs.forEach(appendUnit);
       appendSup();
     }
+    /* Haro popup art is empty-force chrome only — never after a share load that still awaits hydrate. */
     if (!html) {
-      SHARE_FACE_FALLBACK.forEach(function (path) {
-        html += shareFaceImgHtml(thumbUrl(path), '', '');
-      });
+      var hasIds = !!(force.supporter && force.supporter.id) ||
+        force.slots.some(function (s) { return s && s.unitId; });
+      if (!hasIds) {
+        SHARE_FACE_FALLBACK.forEach(function (path) {
+          html += shareFaceImgHtml(thumbUrl(path), '', '');
+        });
+      }
     }
     faces.innerHTML = html;
+  }
+
+  /** Code + live thumbs — hydrate fills thum after MLS2 load; code alone would skip the strip repaint. */
+  function shareFaceLayoutSig(side) {
+    var force = forceOf(side);
+    var parts = [exportForceCode(side)];
+    var i, sl, sup;
+    for (i = 0; i < SLOT_COUNT; i++) {
+      sl = force.slots[i];
+      parts.push(sl && sl.unitId ? String(sl.thum || '') : '');
+    }
+    sup = force.supporter;
+    parts.push(sup && sup.id ? String(sup.thum || '') : '');
+    return parts.join('\0');
   }
 
   function syncShareFacesReady() {
@@ -664,8 +720,8 @@
     var aCol = document.querySelector('.mls-share-col--ally .mls-share-faces');
     var eReady = forceHasUnits('enemy') || !!(forceOf('enemy').supporter && forceOf('enemy').supporter.id);
     var aReady = forceHasUnits('ally') || !!(forceOf('ally').supporter && forceOf('ally').supporter.id);
-    var eKey = eReady ? exportForceCode('enemy') : '';
-    var aKey = aReady ? exportForceCode('ally') : '';
+    var eKey = eReady ? shareFaceLayoutSig('enemy') : '';
+    var aKey = aReady ? shareFaceLayoutSig('ally') : '';
     if (eCol) {
       if (eKey !== shareFaceLayoutKey.enemy) paintShareFaceStrip(eCol, 'enemy');
       shareFaceLayoutKey.enemy = eKey;
@@ -917,6 +973,52 @@
   }
 
   /**
+   * Sync clipboard write — required on iOS Safari over http://LAN (no secure context;
+   * navigator.clipboard.writeText is missing or always rejects). Must run inside the tap.
+   */
+  function copyTextToClipboardSync(text) {
+    var ta, prev, okCopy;
+    text = String(text || '');
+    if (!text) return false;
+    prev = document.activeElement;
+    ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.setAttribute('aria-hidden', 'true');
+    /* In-view + 16px: iOS will select; opacity 0 keeps it invisible. */
+    ta.style.cssText = 'position:fixed;top:0;left:0;width:2px;height:2px;padding:0;margin:0;border:0;opacity:0;font-size:16px;';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try { ta.setSelectionRange(0, text.length); } catch (eSel) { /* ignore */ }
+    okCopy = false;
+    try { okCopy = !!document.execCommand('copy'); } catch (eCopy) { okCopy = false; }
+    if (ta.parentNode) ta.parentNode.removeChild(ta);
+    try { if (prev && typeof prev.focus === 'function') prev.focus(); } catch (eFocus) { /* ignore */ }
+    return okCopy;
+  }
+
+  /** Last resort: put the code in the Load field and select it for long-press copy. */
+  function revealShareCodeForManualCopy(side, text) {
+    var box = shareBoxEl(side);
+    var el = shareCipherEl(side);
+    openSharePanel(side, 'input');
+    shareInputArmed[side] = false;
+    if (el) {
+      el.textContent = 'Select & copy';
+      el.classList.add('is-prompt');
+      el.classList.remove('is-decrypting', 'is-copied');
+    }
+    if (!box) return;
+    box.value = String(text || '');
+    try {
+      box.focus();
+      box.select();
+      box.setSelectionRange(0, box.value.length);
+    } catch (eMan) { /* ignore */ }
+  }
+
+  /**
    * Copy → clipboard + short decrypt panel (“Formation Copied”) then fade away.
    * Load → open “Please input the code”; valid MLS code auto-applies (no extra click).
    */
@@ -941,11 +1043,25 @@
         setTimeout(function () { btn.classList.remove('is-flash'); }, 450);
       }
     }
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(ok, function () { ok(); });
-    } else {
-      ok();
+    function fail() {
+      msg = mlsT('mls_share_copy_fail',
+        'Clipboard blocked — code is selected below; long-press → Copy');
+      setShareStatus(side, msg, true);
+      log(msg);
+      revealShareCodeForManualCopy(side, text);
     }
+    /* 1) Sync execCommand while the tap is still “user activation” (iOS + http://192.168.x). */
+    if (copyTextToClipboardSync(text)) {
+      ok();
+      return;
+    }
+    /* 2) Async Clipboard API only on HTTPS / localhost secure contexts. */
+    if (typeof window !== 'undefined' && window.isSecureContext &&
+        navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+      navigator.clipboard.writeText(text).then(ok, fail);
+      return;
+    }
+    fail();
   }
 
   function applyShareCode(side, text) {
@@ -3728,9 +3844,9 @@
 
   /**
    * Once-only (or stack) "HP falls to X% → restore Y%".
-   * Covers Char/Zeong ("When piloting… falls to 0% or below… once only")
-   * and Setsuna/00 Raiser ("If HP falls to 0% when piloting… 1 time(s)")
-   * plus JA/TW/HK equivalents. Prefer Master unit-id chips over localized names.
+   * thr 0 = lethal revive (Char/Zeong, Setsuna/00 Raiser, …).
+   * thr >0 = alive-only threshold heal (Shinn/Impulse 50%, …) — not a KO revive.
+   * Prefer Master unit-id chips over localized names.
    */
   function parseHpFallRestores(actor) {
     var out = [];
@@ -3850,10 +3966,13 @@
 
   /**
    * After damage: once-only revive / threshold HP restore (Char Aznable / Shinn EX, …).
-   * Returns true if HP was restored above 0 after a lethal hit.
+   * - threshold 0: lethal revive (Zeong 0%→5%, Setsuna, …)
+   * - threshold >0: mid-fight heal only while still alive (Impulse 50%→50%).
+     A hit that skips the band and goes straight to 0% does NOT trigger — not a revive.
+   * Returns true only when a lethal (0% threshold) restore brought HP back above 0.
    */
   function applyHpFallRestores(actor, hpBefore, turn, snapshotLine) {
-    var list, pctBefore, pctAfter, maxHp, healed, i, r, crossed, amt;
+    var list, pctBefore, pctAfter, maxHp, revived, i, r, crossed, amt, isRevive;
     if (!actor) return false;
     list = parseHpFallRestores(actor);
     if (!list.length) return false;
@@ -3861,24 +3980,31 @@
     pctBefore = Math.max(0, Math.min(100, Math.round(100 * (hpBefore | 0) / maxHp)));
     pctAfter = actorHpPct(actor);
     if (!actor._hpFallRestoreUsed) actor._hpFallRestoreUsed = {};
-    healed = false;
+    revived = false;
     for (i = 0; i < list.length; i++) {
       r = list[i];
       if (r.once && actor._hpFallRestoreUsed[r.key]) continue;
       if (!hpFallRestoreApplies(actor, r)) continue;
+      isRevive = (r.threshold | 0) <= 0;
+      /*
+       * Cross into ≤threshold from above.
+       * Non-zero thresholds require surviving the hit (pctAfter > 0) — Shinn Impulse
+       * 50% restore must not fire on a KO the way Char/Zeong 0% revive does.
+       */
       crossed = pctBefore > r.threshold && pctAfter <= r.threshold;
       if (!crossed) continue;
+      if (!isRevive && pctAfter <= 0) continue;
       amt = Math.floor(maxHp * r.healPct / 100);
       if (amt <= 0) continue;
       actor.ghostHp = actor.hp | 0;
       actor.hp = Math.min(maxHp, Math.max(0, actor.hp | 0) + amt);
       if (r.once) actor._hpFallRestoreUsed[r.key] = true;
-      healed = true;
+      if (isRevive && (actor.hp | 0) > 0) revived = true;
       if (typeof snapshotLine === 'function') {
         snapshotLine(
           'T' + turn + ' HP restore' + (r.once ? ' (once)' : '') + ': ' + actor.name +
           ' +' + amt + ' HP' +
-          (pctAfter <= 0 ? ' [revive]' : '') +
+          (isRevive ? ' [revive]' : '') +
           ' (HP ' + (actor.hp | 0) + '/' + maxHp + ')',
           { x: actor.x, y: actor.y, text: '+' + fmtNum(amt), cls: 'mls-float--heal' },
           null,
@@ -3886,7 +4012,7 @@
         );
       }
     }
-    return healed;
+    return revived;
   }
 
   /**
@@ -4111,7 +4237,7 @@
       'defSquadCondAtkPct', 'defSquadCondDefPct',
       'applyAdvantageEnemyTag', 'applyZeonEnemyTag', 'charStatMode', 'atkCounterOwnAtk', 'grandOffensiveBuff',
       'ultAltActive', 'defUltAltActive', 'supportDefenseActive', 'defInitialNullStock',
-      'dtuBeam', 'dtuPhysical', 'dtuSpecial', 'defDebuffPct'
+      'dtuBeam', 'dtuPhysical', 'dtuSpecial', 'defDebuffPct', '_mlsFightCalc'
     ];
     snap = {};
     keys.forEach(function (k) { snap[k] = dc[k]; });
@@ -4178,33 +4304,12 @@
       (function applyLiveInflictToDc() {
         var dtu = liveStatusDtu(defender);
         var statusDef = liveStatusDefDebuffPct(defender) | 0;
-        var defEl, beamEl, physEl, specEl;
         dc.dtuBeam = dtu.beam | 0;
         dc.dtuPhysical = dtu.physical | 0;
         dc.dtuSpecial = dtu.special | 0;
         dc.defDebuffPct = statusDef;
-        if (typeof document === 'undefined') return;
-        /* /cal reads DEF from DOM; DTU from S.dc — seed both so leftover /cal inputs cannot leak. */
-        defEl = document.getElementById('dcDefDebuffPct');
-        beamEl = document.getElementById('dcDtuBeam');
-        physEl = document.getElementById('dcDtuPhysical');
-        specEl = document.getElementById('dcDtuSpecial');
-        if (defEl) {
-          snap._mlsDefDebuffDom = defEl.value;
-          defEl.value = String(statusDef);
-        }
-        if (beamEl) {
-          snap._mlsDtuBeamDom = beamEl.value;
-          beamEl.value = String(dtu.beam | 0);
-        }
-        if (physEl) {
-          snap._mlsDtuPhysDom = physEl.value;
-          physEl.value = String(dtu.physical | 0);
-        }
-        if (specEl) {
-          snap._mlsDtuSpecDom = specEl.value;
-          specEl.value = String(dtu.special | 0);
-        }
+        /* DEF debuff is read from S.dc while this is set — do not write /cal inputs. */
+        dc._mlsFightCalc = true;
       })();
       /* Formation squad buffs (Qubeley Neo Zeon stack, Sandaime Cond1/2, Nightingale Red aura, …). */
       atkSq = ensureActorSquadBuffs(attacker, opts.auraSources);
@@ -4288,13 +4393,24 @@
       applyLiveDamageTakenDefToDefNpc(defender, dc);
       if (!attacker.char) {
         /* Pilot missing → /cal returns null; keep raw power for ranking honesty. */
+        attacker._lastDmgFallback = 'no-pilot';
+        return weapon.power | 0;
+      }
+      if (!dc.defNpc) {
+        /* Sync failed — never pretend sheet damage; raw PWR only + mark for the battle log. */
+        attacker._lastDmgFallback = 'no-defnpc';
         return weapon.power | 0;
       }
       r = global.calculateDamage();
       dmg = opts.useCrit
         ? (r && r.critDmg != null ? (r.critDmg | 0) : 0)
         : (r && r.normalDmg != null ? (r.normalDmg | 0) : 0);
-      if (!(dmg > 0) && !(r && r.unitSkillInitialNull)) dmg = weapon.power | 0;
+      if (!(dmg > 0) && !(r && r.unitSkillInitialNull)) {
+        attacker._lastDmgFallback = 'cal-null';
+        dmg = weapon.power | 0;
+      } else {
+        attacker._lastDmgFallback = '';
+      }
       /* Cond:Area weapon-power aura (Neo Zeong −20% + Full Frontal −15% → −35%). */
       if (R && R.areaWeaponPowerAuraPct && opts.auraSources) {
         auraPct = R.areaWeaponPowerAuraPct(attacker, opts.auraSources, weapon) | 0;
@@ -4324,24 +4440,6 @@
       return weapon.power | 0;
     } finally {
       keys.forEach(function (k) { dc[k] = snap[k]; });
-      try {
-        if (snap._mlsDefDebuffDom != null) {
-          var defElRestore = document.getElementById('dcDefDebuffPct');
-          if (defElRestore) defElRestore.value = snap._mlsDefDebuffDom;
-        }
-        if (snap._mlsDtuBeamDom != null) {
-          var beamElRestore = document.getElementById('dcDtuBeam');
-          if (beamElRestore) beamElRestore.value = snap._mlsDtuBeamDom;
-        }
-        if (snap._mlsDtuPhysDom != null) {
-          var physElRestore = document.getElementById('dcDtuPhysical');
-          if (physElRestore) physElRestore.value = snap._mlsDtuPhysDom;
-        }
-        if (snap._mlsDtuSpecDom != null) {
-          var specElRestore = document.getElementById('dcDtuSpecial');
-          if (specElRestore) specElRestore.value = snap._mlsDtuSpecDom;
-        }
-      } catch (eDom) { /* ignore */ }
     }
   }
 
@@ -5908,26 +6006,33 @@
       var key = el.getAttribute('data-xy') || '';
       var cls = tints.spawn[key] || '';
       var ft = tints.footTint[key] || '';
-      el.className = 'mls-cell' + (cls ? ' ' + cls : '') + (ft ? ' ' + ft : '') +
+      var nextCellCls = 'mls-cell' + (cls ? ' ' + cls : '') + (ft ? ' ' + ft : '') +
         cellAuraClass(key) + (mapSet[key] ? ' is-map-aoe' : '');
+      if (el.className !== nextCellCls) el.className = nextCellCls;
     });
   }
 
   function flipTokenTo(el, nextTransform, animate, durationMs) {
-    var first = el.getBoundingClientRect();
+    var first, last, dx, dy, ms;
+    /* Stationary tokens must not force layout. FLIP measures only when actually moving. */
+    if (!animate) {
+      el.style.transition = 'none';
+      el.style.left = el._mlsLeft;
+      el.style.top = el._mlsTop;
+      el.style.width = el._mlsW;
+      el.style.height = el._mlsH;
+      el.style.transform = nextTransform || 'translate3d(0,0,0)';
+      return;
+    }
+    first = el.getBoundingClientRect();
     el.style.left = el._mlsLeft;
     el.style.top = el._mlsTop;
     el.style.width = el._mlsW;
     el.style.height = el._mlsH;
-    if (!animate) {
-      el.style.transition = 'none';
-      el.style.transform = nextTransform || 'translate3d(0,0,0)';
-      return;
-    }
-    var last = el.getBoundingClientRect();
-    var dx = first.left - last.left;
-    var dy = first.top - last.top;
-    var ms = durationMs != null ? durationMs : Math.max(180, stepDelay('move'));
+    last = el.getBoundingClientRect();
+    dx = first.left - last.left;
+    dy = first.top - last.top;
+    ms = durationMs != null ? durationMs : Math.max(180, stepDelay('move'));
     el.style.transition = 'none';
     el.style.transform = 'translate3d(' + dx + 'px,' + dy + 'px,0)';
     void el.offsetWidth;
@@ -6121,12 +6226,13 @@
         }
       }
 
-      el.className = 'mls-token' + (u.isLarge ? ' is-large' : '') + ' ' + (u.side === 'ally' ? 'ally' : 'enemy') +
+      var nextTokCls = 'mls-token' + (u.isLarge ? ' is-large' : '') + ' ' + (u.side === 'ally' ? 'ally' : 'enemy') +
         (u.active ? ' is-active' : '') +
         (mark === 'attacker' ? ' is-attacker' : '') + (mark === 'target' ? ' is-target' : '') +
         (fx.hit ? ' is-hit' : '') + (fx.crit ? ' is-crit-flash' : '') +
         (stillCovering ? ' is-covering' : '') +
         ((u.sheltered && !stillCovering) ? ' is-sheltered' : '');
+      if (el.className !== nextTokCls) el.className = nextTokCls;
       el.setAttribute('data-side', u.side || '');
       el.setAttribute('data-slot-idx', String(u.slotIdx | 0));
       el.setAttribute('title', fightBusy ? '' : 'Drag to set start cell');
@@ -6148,8 +6254,7 @@
           }
         } else {
           if (thumEl.getAttribute('src') !== u.thum) thumEl.src = u.thum;
-          thumEl.alt = u.name || '';
-          thumEl.loading = 'eager';
+          if (thumEl.alt !== (u.name || '')) thumEl.alt = u.name || '';
         }
       }
       syncTopMarksEl(el, u);
@@ -6185,7 +6290,10 @@
           if (hpGhost) hpGhost.style.transform = 'scaleY(' + (ghostPct / 100) + ')';
         }
       }
-      if (hpNum) hpNum.textContent = fmtNum(hp);
+      if (hpNum) {
+        var hpLabel = fmtNum(hp);
+        if (hpNum.textContent !== hpLabel) hpNum.textContent = hpLabel;
+      }
       syncVigorHudEl(el, u);
       syncAuraDebuffEl(el, u);
       syncSupportStockEl(el, u);
@@ -6462,10 +6570,16 @@
     var R = rules();
     var pool, order, html, parts;
     if (!hosts.length) return;
+    function commitTimeline(nextHtml) {
+      var sig = (battleOnly ? 'b:' : 'f:') + nextHtml;
+      if (sig === timelinePaintSig) return;
+      timelinePaintSig = sig;
+      hosts.forEach(function (h) { h.innerHTML = nextHtml; });
+    }
     if (!R || (!lastAlly.length && !lastEnemy.length)) {
       html = '<span class="mls-tl-empty">' + esc(mlsT('mls_order_empty',
         'Pick units — order is unit Mobility + pilot Reaction (high → low).')) + '</span>';
-      hosts.forEach(function (h) { h.innerHTML = html; });
+      commitTimeline(html);
       return;
     }
     pool = lastAlly.slice();
@@ -6495,7 +6609,7 @@
       });
       html = parts.join('');
     }
-    hosts.forEach(function (h) { h.innerHTML = html; });
+    commitTimeline(html);
   }
 
   function cloneArmy(list) {
@@ -7065,6 +7179,11 @@
       }
       if (defAction === 'evade') note += ' [Evade roll HIT]';
       if (hitOpts.wave != null) note += ' [W' + hitOpts.wave + ']';
+      /* Surface silent /cal failures (raw weapon PWR) — those look like “EX barely scratched”. */
+      if (attacker._lastDmgFallback) {
+        note += ' [DMG FALLBACK:' + attacker._lastDmgFallback + ' PWR ' + (wpn.power | 0) + ']';
+        attacker._lastDmgFallback = '';
+      }
       impact = impactCell(defender);
       /* gge: laser / float aim at originalTarget (cover cell), damage lands on SD there. */
       aim = hitOpts.originalTarget && hitOpts.isDefenderSupportDefend
@@ -7185,7 +7304,39 @@
         escaped: !!escaped
       };
     }
-    while (turn <= limit && living(allies).length && living(enemies).length) {
+    var asyncTurns = !!(opts && opts.asyncTurns);
+    function finalizeFightResult() {
+      if (pruned) {
+        return {
+          steps: steps, win: false, draw: false, turns: 999,
+          turn1EnemyHp: turn1EnemyHp != null ? turn1EnemyHp : 1e15,
+          allies: allies, enemies: enemies, pruned: true
+        };
+      }
+      var allyUp = living(allies).length;
+      var enemyUp = living(enemies).length;
+      /*
+       * Early exit (KO): `turn` is the last fought turn.
+       * Turn-limit exit: loop did turn++ past the last fought turn.
+       */
+      var turnsUsed = Math.min(limit, Math.max(1,
+        (allyUp > 0 && enemyUp > 0) ? (turn - 1) : turn
+      ));
+      var win = enemyUp === 0 && allyUp > 0;
+      var draw = allyUp > 0 && enemyUp > 0;
+      if (turn1EnemyHp == null) {
+        turn1EnemyHp = enemies.reduce(function (s, u) { return s + Math.max(0, u.hp | 0); }, 0);
+      }
+      snapshotLine(draw ? 'Time up — both sides remain' : (win ? 'Ally victory · ' + turnsUsed + ' turn(s)' : 'Ally defeat'));
+      return {
+        steps: steps, win: win, draw: draw, turns: turnsUsed,
+        turn1EnemyHp: turn1EnemyHp, allies: allies, enemies: enemies
+      };
+    }
+    /** One ML turn. Returns true when another turn should run. */
+    function runOneFightTurn() {
+      if (!(turn <= limit && living(allies).length && living(enemies).length)) return false;
+
       /* gge: reset per-round support-attack / support-defense uses at turn start.
          Re-sum SD/SA stock live so tension-gated +N lines unlock as MP rises. */
       allies.concat(enemies).forEach(function (x) {
@@ -7432,10 +7583,17 @@
             /* Official help: Auto-Chance Step does not trigger after MAP Weapons. */
             if ((u.hp | 0) > 0 && living(foes).length) {
               if (hitAny && !u._weaponCsGrantedThisAction &&
+                  (u.chanceStepsLeft | 0) > 0 &&
                   R.weaponGrantsUnconditionalCsOnHit(mapPlan.weapon)) {
+                /* Weapon on-hit CS still spends the phase Bonus Action budget. */
                 u._weaponCsGrantedThisAction = true;
+                u.chanceStepsLeft = (u.chanceStepsLeft | 0) - 1;
                 gotExtra = true;
-                snapshotLine('T' + turn + ' Weapon ' + csLblMap.cs + ' (on hit): ' + u.name, null, null, 'skill');
+                snapshotLine(
+                  'T' + turn + ' Weapon ' + csLblMap.cs + ' (on hit): ' + u.name +
+                  ' (left ' + (u.chanceStepsLeft | 0) + ')',
+                  null, null, 'skill'
+                );
               } else if (mapKilled && (u.chanceStepsLeft | 0) > 0) {
                 /* Regular kill CS from phase budget (max 2). */
                 u.chanceStepsLeft = (u.chanceStepsLeft | 0) - 1;
@@ -7446,16 +7604,17 @@
                   { kind: 'chance-step', fromId: u.id, toId: u.id, from: { x: u.x, y: u.y }, to: { x: u.x, y: u.y }, csIcon: true },
                   'skill'
                 );
-              } else if ((u.unconditionalCSStock | 0) > 0) {
+              } else if ((u.unconditionalCSStock | 0) > 0 && (u.chanceStepsLeft | 0) > 0) {
                 /*
-                 * Guaranteed CS is its own once/battle stock (Uso Supercharged, …).
-                 * It does not spend chanceStepsLeft — can be a 3rd extra after 2 kill-CS.
+                 * Guaranteed CS: forces one existing Bonus Action without a KO.
+                 * Does not raise chanceCount — spends chanceStepsLeft.
                  */
                 u.unconditionalCSStock--;
+                u.chanceStepsLeft = (u.chanceStepsLeft | 0) - 1;
                 gotExtra = true;
                 snapshotLine(
                   'T' + turn + ' ' + csLblMap.guaranteed + ': ' + u.name +
-                  ' (stock ' + (u.unconditionalCSStock | 0) + ')',
+                  ' (stock ' + (u.unconditionalCSStock | 0) + ', left ' + (u.chanceStepsLeft | 0) + ')',
                   { x: u.x, y: u.y, text: csLblMap.guaranteed, badge: 'CS', cls: 'mls-float--skill' },
                   { kind: 'chance-step', fromId: u.id, toId: u.id, from: { x: u.x, y: u.y }, to: { x: u.x, y: u.y }, csIcon: true },
                   'skill'
@@ -7769,10 +7928,17 @@
               !!(defForCs && defForCs._escapedThisEngagement) ||
               !!(target && target._escapedThisEngagement);
             if (u.lastActionHit && !u._weaponCsGrantedThisAction &&
+                (u.chanceStepsLeft | 0) > 0 &&
                 R.weaponGrantsUnconditionalCsOnHit(engage.weapon)) {
+              /* Weapon on-hit CS still spends the phase Bonus Action budget. */
               u._weaponCsGrantedThisAction = true;
+              u.chanceStepsLeft = (u.chanceStepsLeft | 0) - 1;
               gotExtra = true;
-              snapshotLine('T' + turn + ' Weapon ' + csLbl.cs + ' (on hit): ' + u.name, null, null, 'skill');
+              snapshotLine(
+                'T' + turn + ' Weapon ' + csLbl.cs + ' (on hit): ' + u.name +
+                ' (left ' + (u.chanceStepsLeft | 0) + ')',
+                null, null, 'skill'
+              );
             } else if (killedForCs && (u.chanceStepsLeft | 0) > 0) {
               /* Phase CS budget (base 1 / +1 → max 2). Kill-gated. */
               u.chanceStepsLeft = (u.chanceStepsLeft | 0) - 1;
@@ -7783,25 +7949,25 @@
                 { kind: 'chance-step', fromId: u.id, toId: u.id, from: { x: u.x, y: u.y }, to: { x: u.x, y: u.y }, csIcon: true },
                 'skill'
               );
-            } else if ((u.unconditionalCSStock | 0) > 0) {
+            } else if ((u.unconditionalCSStock | 0) > 0 && (u.chanceStepsLeft | 0) > 0) {
               /*
                * Guaranteed Chance Step (Uso Supercharged + League Militaire, …):
-               * separate once/battle stock — does NOT spend chanceStepsLeft.
-               * After 2 kill-CS, this is the 3rd extra (4th action) when stock is live.
-               * Also fires with no KO (help: end of any action).
+               * forces one existing Bonus Action without a KO (help: end of any action).
+               * Does not raise chanceCount — spends chanceStepsLeft like kill-CS / Auto-CS.
                */
               u.unconditionalCSStock--;
+              u.chanceStepsLeft = (u.chanceStepsLeft | 0) - 1;
               gotExtra = true;
               snapshotLine(
                 'T' + turn + ' ' + csLbl.guaranteed + ': ' + u.name +
-                ' (stock ' + (u.unconditionalCSStock | 0) + ')',
+                ' (stock ' + (u.unconditionalCSStock | 0) + ', left ' + (u.chanceStepsLeft | 0) + ')',
                 { x: u.x, y: u.y, text: csLbl.guaranteed, badge: 'CS', cls: 'mls-float--skill' },
                 { kind: 'chance-step', fromId: u.id, toId: u.id, from: { x: u.x, y: u.y }, to: { x: u.x, y: u.y }, csIcon: true },
                 'skill'
               );
             } else if ((u.autoCsLeft | 0) > 0 && (u.chanceStepsLeft | 0) > 0 &&
                 R.grantsAutoCsAfterCombat && R.grantsAutoCsAfterCombat(u)) {
-              /* Auto-CS: no KO required, but still spends the phase CS budget. */
+              /* Auto-CS (Mao Ex-S, …): force the existing CS if alive after combat; not +1 budget. */
               u.autoCsLeft = (u.autoCsLeft | 0) - 1;
               u.chanceStepsLeft = (u.chanceStepsLeft | 0) - 1;
               gotExtra = true;
@@ -7844,47 +8010,37 @@
         var bestT = pruneScore.turns | 0;
         if (eLeftP > 0 && turn >= bestT) {
           pruned = true;
-          break;
+          return false;
         }
         if (bestT === 1 && (pruneScore.turn1EnemyHp | 0) === 0 && turn === 1 &&
             eLeftP === 0 && aLeftP > 0) {
           var ahNow = allies.reduce(function (s, u) { return s + Math.max(0, u.hp | 0); }, 0);
           if (ahNow <= (pruneScore.allyHp | 0)) {
             pruned = true;
-            break;
+            return false;
           }
         }
       }
       /* Wipe / wipeout: stay on this turn — do not ++ or victory steps stamp TURN+1 on the HUD. */
-      if (!living(allies).length || !living(enemies).length) break;
+      if (!living(allies).length || !living(enemies).length) return false;
       turn += 1;
+      return true;
     }
-    if (pruned) {
-      return {
-        steps: steps, win: false, draw: false, turns: 999,
-        turn1EnemyHp: turn1EnemyHp != null ? turn1EnemyHp : 1e15,
-        allies: allies, enemies: enemies, pruned: true
-      };
+    if (asyncTurns) {
+      return (function pumpFightTurns() {
+        var more;
+        try {
+          more = runOneFightTurn();
+        } catch (fightErr) {
+          return Promise.reject(fightErr);
+        }
+        if (!more) return Promise.resolve(finalizeFightResult());
+        /* Yield between turns so Safari can composite READY — never mid-unit-action. */
+        return new Promise(function (resolve) { setTimeout(resolve, 0); }).then(pumpFightTurns);
+      })();
     }
-    var allyUp = living(allies).length;
-    var enemyUp = living(enemies).length;
-    /*
-     * Early exit (KO): `turn` is the last fought turn.
-     * Turn-limit exit: loop did turn++ past the last fought turn.
-     */
-    var turnsUsed = Math.min(limit, Math.max(1,
-      (allyUp > 0 && enemyUp > 0) ? (turn - 1) : turn
-    ));
-    var win = enemyUp === 0 && allyUp > 0;
-    var draw = allyUp > 0 && enemyUp > 0;
-    if (turn1EnemyHp == null) {
-      turn1EnemyHp = enemies.reduce(function (s, u) { return s + Math.max(0, u.hp | 0); }, 0);
-    }
-    snapshotLine(draw ? 'Time up — both sides remain' : (win ? 'Ally victory · ' + turnsUsed + ' turn(s)' : 'Ally defeat'));
-    return {
-      steps: steps, win: win, draw: draw, turns: turnsUsed,
-      turn1EnemyHp: turn1EnemyHp, allies: allies, enemies: enemies
-    };
+    while (runOneFightTurn()) {}
+    return finalizeFightResult();
   }
 
   function applySnapshot(allies, enemies, snap) {
@@ -7956,13 +8112,53 @@
     }
   }
 
-  /** Warm the READY cutin so start is not waiting on a cold CDN decode. */
+  /** Cached decode of READY cutin — resolve only after load (+ decode when available). */
+  var bannerCutinWarm = null;
+
   function preloadBannerArt() {
-    try {
-      var img = new Image();
-      img.decoding = 'async';
-      img.src = bannerCutinUrl();
-    } catch (ePre) {}
+    var url;
+    if (bannerCutinWarm) return bannerCutinWarm;
+    url = bannerCutinUrl();
+    bannerCutinWarm = new Promise(function (resolve) {
+      var img;
+      try {
+        img = new Image();
+        img.decoding = 'async';
+        try { img.fetchPriority = 'high'; } catch (eFp) {}
+        img.onload = function () {
+          if (typeof img.decode === 'function') {
+            img.decode().then(function () { resolve(img); }).catch(function () { resolve(img); });
+          } else {
+            resolve(img);
+          }
+        };
+        img.onerror = function () {
+          /* One fallback path (encoded /static); still resolve so Start is not stuck. */
+          if (!sameMediaUrl(img.src, BANNER_CUTIN_FALLBACK)) {
+            img.onerror = function () { resolve(null); };
+            img.src = BANNER_CUTIN_FALLBACK;
+            return;
+          }
+          resolve(null);
+        };
+        img.src = url;
+      } catch (ePre) {
+        resolve(null);
+      }
+    });
+    return bannerCutinWarm;
+  }
+
+  /** Two paints (+ short mobile settle) so iOS actually composites the bromide before /cal work. */
+  function paintReadyFrames() {
+    return new Promise(function (resolve) {
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          if (mobileBattleSnappy()) setTimeout(resolve, 50);
+          else resolve();
+        });
+      });
+    });
   }
 
   var BANNER_LINE_TEXT = 'READY? GO!!';
@@ -8008,58 +8204,57 @@
   }
 
   /**
-   * Ensure the Master League cutin bitmap is actually decoded before READY hold /
-   * fightSteps. Rewriting src every start + running the sim on the same tick was
-   * blanking the art intermittently (text still showed).
+   * Cutin must be decoded before READY hold — same gate on phone and desktop.
+   * Safety timeout only (2.5s); never a short “soft” abort that starts the sim blind.
    */
   function waitBannerCutin(cutin) {
-    return new Promise(function (resolve) {
-      var url = bannerCutinUrl();
-      var settled = false;
-      var timer;
-      function done() {
-        if (settled) return;
-        settled = true;
-        try { if (timer) clearTimeout(timer); } catch (eT) {}
-        resolve();
-      }
-      if (!cutin) {
-        done();
-        return;
-      }
-      cutin.removeAttribute('hidden');
-      cutin.hidden = false;
-      cutin.style.visibility = 'visible';
-      cutin.style.opacity = '1';
-      cutin.setAttribute('decoding', 'async');
-      cutin.setAttribute('loading', 'eager');
-      try { cutin.fetchPriority = 'high'; } catch (eFp) {}
-      /* Do not reset src when Jinja/CDN already loaded the same asset. */
-      if (!sameMediaUrl(cutin.currentSrc || cutin.src, url) &&
-          !sameMediaUrl(cutin.getAttribute('src'), url)) {
-        cutin.src = url;
-      }
-      if (cutin.complete && cutin.naturalWidth > 0) {
-        if (typeof cutin.decode === 'function') {
-          cutin.decode().then(done).catch(done);
-        } else {
-          done();
+    return preloadBannerArt().then(function () {
+      return new Promise(function (resolve) {
+        var url = bannerCutinUrl();
+        var settled = false;
+        var timer;
+        function done() {
+          if (settled) return;
+          settled = true;
+          try { if (timer) clearTimeout(timer); } catch (eT) {}
+          resolve();
         }
-        return;
-      }
-      timer = setTimeout(done, 1500);
-      cutin.onload = function () {
-        if (typeof cutin.decode === 'function') {
-          cutin.decode().then(done).catch(done);
-        } else {
+        if (!cutin) {
           done();
+          return;
         }
-      };
-      cutin.onerror = function () {
-        cutin.onerror = function () { done(); };
-        /* Railway /static → CDN 302 as last resort. */
-        cutin.src = BANNER_CUTIN_FALLBACK;
-      };
+        cutin.removeAttribute('hidden');
+        cutin.hidden = false;
+        cutin.style.visibility = 'visible';
+        cutin.style.opacity = '1';
+        cutin.setAttribute('decoding', 'sync');
+        cutin.setAttribute('loading', 'eager');
+        try { cutin.fetchPriority = 'high'; } catch (eFp) {}
+        if (!sameMediaUrl(cutin.currentSrc || cutin.src, url) &&
+            !sameMediaUrl(cutin.getAttribute('src'), url)) {
+          cutin.src = url;
+        }
+        if (cutin.complete && cutin.naturalWidth > 0) {
+          if (typeof cutin.decode === 'function') {
+            cutin.decode().then(done).catch(done);
+          } else {
+            done();
+          }
+          return;
+        }
+        timer = setTimeout(done, 2500);
+        cutin.onload = function () {
+          if (typeof cutin.decode === 'function') {
+            cutin.decode().then(done).catch(done);
+          } else {
+            done();
+          }
+        };
+        cutin.onerror = function () {
+          cutin.onerror = function () { done(); };
+          cutin.src = BANNER_CUTIN_FALLBACK;
+        };
+      });
     });
   }
 
@@ -8083,10 +8278,10 @@
     if (!el) return Promise.resolve();
     void el.offsetWidth;
     el.classList.add('is-play');
-    holdMs = Math.round((mobileBattleSnappy() ? 1050 : 1400) / Math.max(1, speedMul));
+    /* Same READY timing phone + desktop — do not shorten the opening on mobile. */
+    holdMs = Math.round(1400 / Math.max(1, speedMul));
     /* Exit: Takayu tx-fade-down-out on title (+ cutin sinks with it). */
     outMs = Math.round(bannerFadeDownOutMs(charCount) / Math.max(1, speedMul));
-    if (mobileBattleSnappy()) outMs = Math.round(outMs * 0.85);
     return sleep(holdMs).then(function () {
       el.classList.add('is-out');
       return sleep(outMs);
@@ -8103,15 +8298,25 @@
     });
   }
 
-  /** Yield a frame so READY can paint, then run the sync sim off the click handler. */
+  /**
+   * Yield a frame, then run the sim. Mobile uses asyncTurns so a long fight does not
+   * hard-lock Safari after READY; desktop stays one-shot (usually finishes in the hold).
+   */
   function computeFightAsync(allies, enemies) {
     return new Promise(function (resolve, reject) {
       requestAnimationFrame(function () {
         setTimeout(function () {
+          var out;
           try {
             /* Live Start: free rolls — never replay optimizer crit luck. */
             endSeededFight();
-            resolve(fightSteps(cloneArmy(allies), cloneArmy(enemies)));
+            out = fightSteps(
+              cloneArmy(allies),
+              cloneArmy(enemies),
+              mobileBattleSnappy() ? { asyncTurns: true } : null
+            );
+            if (out && typeof out.then === 'function') out.then(resolve, reject);
+            else resolve(out);
           } catch (err) {
             reject(err);
           }
@@ -8362,6 +8567,7 @@
 
   function loadMlsContent() {
     roster = loadRoster();
+    preloadBannerArt();
     return fetchJson('/api/master_league?lang=' + encodeURIComponent(lang()))
       .then(function (d) {
         seasons = d.seasons || [];
@@ -8377,6 +8583,7 @@
         setView(viewName || 'formation');
         fillShareBoxes();
         scheduleOrderRefresh();
+        scheduleWarmArmies();
         log('Set enemy (left) and ally (right), then SIMULATION START.');
       });
   }
@@ -8420,14 +8627,15 @@
     preloadBannerArt();
     log('Loading forces…');
     /*
-     * 1) Paint start lineup (unit thumbs under READY)
-     * 2) READY? GO!! + cutin at full length
-     * 3) fightSteps overlaps the banner so we are not serial wait+wait+compute
+     * Same beat phone + desktop (look/features unchanged):
+     * 1) Load + paint lineup
+     * 2) Decode cutin, reveal READY, paint frames (bromide on screen)
+     * 3) Start hold and fightSteps together (cutin already committed by paintReadyFrames)
+     *    — phone: ~8ms slices so the banner keeps compositing
+     *    — desktop: one shot, usually finishes inside the hold
+     * 4) playFight when hold + sim both done
      */
     return loadArmies().then(function () {
-      var bannerP;
-      var simP;
-      var shell;
       if (!lastAlly.length || !lastEnemy.length) {
         var emptyErr = new Error('Fill both enemy (left) and ally (right) forces on the Formation tab first.');
         emptyErr.code = 'mls-empty';
@@ -8435,17 +8643,17 @@
       }
       paintBoard();
       paintTimeline();
-      /*
-       * Cutin must decode BEFORE fightSteps. Overlapping compute with READY froze the
-       * main thread on phones so the bromide sometimes never painted (text-only READY).
-       */
-      shell = revealBannerShell();
+      return preloadBannerArt();
+    }).then(function () {
+      var shell = revealBannerShell();
       return waitBannerCutin(shell && shell.cutin).then(function () {
-        bannerP = runBannerHold(shell && shell.el, shell && shell.charCount);
-        simP = computeFightAsync(lastAlly, lastEnemy);
-        return Promise.all([bannerP, simP]).then(function (pair) {
-          return playFight(pair[1]);
-        });
+        return paintReadyFrames().then(function () { return shell; });
+      });
+    }).then(function (shell) {
+      var bannerP = runBannerHold(shell && shell.el, shell && shell.charCount);
+      var simP = computeFightAsync(lastAlly, lastEnemy);
+      return Promise.all([bannerP, simP]).then(function (pair) {
+        return playFight(pair[1]);
       });
     }).catch(function (e) {
       hideBannerNow();
@@ -9167,6 +9375,9 @@
     return Promise.all(jobs).then(function () {
       saveRoster();
       paintForceSlots();
+      /* Thumbs just arrived — force face-strip rebuild (sig includes thum). */
+      shareFaceLayoutKey.enemy = '';
+      shareFaceLayoutKey.ally = '';
       fillShareBoxes();
     });
   }

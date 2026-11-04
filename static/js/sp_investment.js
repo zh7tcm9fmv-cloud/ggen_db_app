@@ -2715,8 +2715,24 @@
     );
   }
 
+  /** Auto / Guaranteed “+1 time(s)” ≠ Chance Step max +1 (same rule as app.js). */
+  function _spiStripSpecialForceChanceStepText(txt) {
+    return String(txt || '')
+      .replace(/Guaranteed\s*Chance\s*Step[^\n]*/gi, '')
+      .replace(/Unconditional\s*Chance\s*Step[^\n]*/gi, '')
+      .replace(/Auto[- ]?Chance\s*Step[^\n]*/gi, '')
+      .replace(/無条件チャンスステップ[^\n]*/g, '')
+      .replace(/オートチャンスステップ[^\n]*/g, '')
+      .replace(/無條件額外行動[^\n]*/g, '')
+      .replace(/自動額外行動[^\n]*/g, '')
+      .replace(/Chance\s*Step\s+will\s+trigger[^\n]*regardless[^\n]*/gi, '')
+      .replace(/敵を撃破しなくても[^\n]*/g, '')
+      .replace(/即使未擊敗[^\n]*/g, '');
+  }
+
   function _spiCountCharActionPlusOne(txt, kind) {
-    const s = String(txt || '');
+    const raw = String(txt || '');
+    const s = kind === 'chance' ? _spiStripSpecialForceChanceStepText(raw) : raw;
     const pick = (arr) =>
       arr.reduce((n, re) => {
         const m = s.match(re);
