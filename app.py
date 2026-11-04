@@ -4622,6 +4622,10 @@ def char_instant_browse_facets(cid, info, ld, lc, include_sp=False):
         if GUARANTEED_CHANCE_STEP_FILTER_ID not in seen_ab:
             abils.append(GUARANTEED_CHANCE_STEP_FILTER_ID)
             seen_ab.add(GUARANTEED_CHANCE_STEP_FILTER_ID)
+    if aid_set & AUTO_CHANCE_STEP_ABILITY_IDS:
+        if AUTO_CHANCE_STEP_FILTER_ID not in seen_ab:
+            abils.append(AUTO_CHANCE_STEP_FILTER_ID)
+            seen_ab.add(AUTO_CHANCE_STEP_FILTER_ID)
     try:
         tag_rep = normalize_id(SDC_TAG_REPRESENTATIVE_ID)
         if tag_rep and (aid_set & SDC_TAG_ABILITY_IDS) and tag_rep not in seen_ab:
@@ -13243,10 +13247,14 @@ SDC_EXPLICIT_ABILITY_IDS = {'2018601'}
 CHANCE_STEP_EX_FILTER_ID = 'chance_step_ex'
 CHANCE_STEP_EX_FILTER_NAME = 'Chance Step x2'
 CHANCE_STEP_PLUS_ONE_RE = re.compile(r'chance\s*step\s*\+\s*1(?!\d)', re.IGNORECASE)
-# Official LANG: EN Guaranteed Chance Step · JA 無条件チャンスステップ · TW/HK 無條件額外行動
+# Official m_help titles (EN · JA · TW/HK) — Guaranteed ≠ Auto-Chance.
+# Guaranteed: end of any action · 無条件チャンスステップ · 無條件額外行動
+# Auto: combat end without KO · オートチャンスステップ · 自動額外行動 (※MAP does not trigger)
 GUARANTEED_CHANCE_STEP_FILTER_ID = 'guaranteed_chance_step'
 GUARANTEED_CHANCE_STEP_FILTER_NAME = 'Guaranteed Chance Step'
 GUARANTEED_CHANCE_STEP_TRAIT_TYPES = frozenset({80, 85})
+AUTO_CHANCE_STEP_FILTER_ID = 'auto_chance_step'
+AUTO_CHANCE_STEP_FILTER_NAME = 'Auto-Chance Step'
 SUPPORT_DEF_X2_FILTER_ID = 'support_def_x2'
 SUPPORT_DEF_X2_FILTER_NAME = 'Support Defense x2'
 SUPPORT_ATK_X2_FILTER_ID = 'support_atk_x2'
@@ -13258,9 +13266,6 @@ CHANCE_STEP_PLUS_ONE_REGEXES = (
     re.compile(r'チャンスステップ[\s\S]{0,24}[+＋]\s*1(?!\d)'),
     re.compile(r'額外行動[\s\S]{0,24}[+＋]\s*1(?!\d)'),
 )
-# Official LANG (m_help): Guaranteed ≠ Auto-Chance.
-# Guaranteed: end of any action · 無条件 / 無條件
-# Auto: combat end even without KO · オート / 自動 (matched only by broader pilot/SPI helpers)
 GUARANTEED_CHANCE_STEP_TEXT_RES = (
     re.compile(r'guaranteed\s+chance\s*step', re.IGNORECASE),
     re.compile(r'force[- ]?activate\s+chance\s*step', re.IGNORECASE),
@@ -13270,15 +13275,25 @@ GUARANTEED_CHANCE_STEP_TEXT_RES = (
     re.compile(r'無條件額外行動'),
     re.compile(r'無論採取何種行動'),
 )
+AUTO_CHANCE_STEP_TEXT_RES = (
+    re.compile(r'auto[- ]?chance\s*step', re.IGNORECASE),
+    re.compile(r'regardless of whether or not (?:an\s+)?enem(?:y|ies)\s+ha(?:s|ve)\s+been\s+defeated', re.IGNORECASE),
+    re.compile(r'chance\s*step\s+will\s+trigger\s+\d+\s*time', re.IGNORECASE),
+    re.compile(r'オートチャンスステップ'),
+    re.compile(r'敵を撃破しなくてもチャンスステップを発動'),
+    re.compile(r'自動額外行動'),
+    re.compile(r'即使未擊敗(?:敵人|對手).{0,24}發動額外行動'),
+)
 
 
 def _char_special_x2_filter_names(lc):
-    """Localized labels for special character x2 ability filters."""
+    """Localized labels for special character ability filters (official m_help titles)."""
     lang = validate_lang_code(lc)
     if lang in ('TW', 'HK'):
         return {
             CHANCE_STEP_EX_FILTER_ID: '額外行動 x2',
             GUARANTEED_CHANCE_STEP_FILTER_ID: '無條件額外行動',
+            AUTO_CHANCE_STEP_FILTER_ID: '自動額外行動',
             SUPPORT_DEF_X2_FILTER_ID: '支援防禦 x2',
             SUPPORT_ATK_X2_FILTER_ID: '支援攻擊 x2',
         }
@@ -13286,12 +13301,14 @@ def _char_special_x2_filter_names(lc):
         return {
             CHANCE_STEP_EX_FILTER_ID: 'チャンスステップ x2',
             GUARANTEED_CHANCE_STEP_FILTER_ID: '無条件チャンスステップ',
+            AUTO_CHANCE_STEP_FILTER_ID: 'オートチャンスステップ',
             SUPPORT_DEF_X2_FILTER_ID: '支援防御 x2',
             SUPPORT_ATK_X2_FILTER_ID: '支援攻撃 x2',
         }
     return {
         CHANCE_STEP_EX_FILTER_ID: CHANCE_STEP_EX_FILTER_NAME,
         GUARANTEED_CHANCE_STEP_FILTER_ID: GUARANTEED_CHANCE_STEP_FILTER_NAME,
+        AUTO_CHANCE_STEP_FILTER_ID: AUTO_CHANCE_STEP_FILTER_NAME,
         SUPPORT_DEF_X2_FILTER_ID: SUPPORT_DEF_X2_FILTER_NAME,
         SUPPORT_ATK_X2_FILTER_ID: SUPPORT_ATK_X2_FILTER_NAME,
     }
@@ -14614,10 +14631,15 @@ CHANCE_STEP_EX_ABILITY_IDS, CHANCE_STEP_EX_ICON = _precompute_chance_step_ex_dat
 print(f"Chance Step EX abilities found: {len(CHANCE_STEP_EX_ABILITY_IDS)}")
 
 
-def _precompute_guaranteed_chance_step_data():
-    """Character abilities with Guaranteed Chance Step (TraitType 80/85 or LANG prose)."""
-    ids = set()
-    icon = ''
+# Official trait glyph for Guaranteed / Auto-Chance Step (orange “CS” plate) — not pilot thums.
+GUARANTEED_CHANCE_STEP_ICON = '/static/images/Trait/trait_10070700.webp'
+AUTO_CHANCE_STEP_ICON = GUARANTEED_CHANCE_STEP_ICON
+
+
+def _precompute_special_chance_step_data():
+    """Split Guaranteed vs Auto-Chance Step ability ids (official m_help taxonomy)."""
+    guaranteed_ids = set()
+    auto_ids = set()
     ld = LANG_DATA.get(CALC_LANG, LANG_DATA.get(DEFAULT_LANG, {}))
     ldc = ld
     seen_aids = set()
@@ -14630,44 +14652,41 @@ def _precompute_guaranteed_chance_step_data():
             if not aid or aid in ('0', 'None') or aid in seen_aids:
                 continue
             seen_aids.add(aid)
-            hit = _ability_id_has_guaranteed_chance_step_trait(aid)
-            if not hit:
-                try:
-                    bab = build_ability_entry(
-                        aid, ld['abil_name_map'], abil_link_map, trait_set_traits_map,
-                        trait_data_map, ld['lang_text_map'], ldc['lang_text_map'],
-                        trait_condition_raw_map, ld['lineage_lookup'], ld['series_name_map'],
-                        ability_resource_map, ld['abil_desc_map'], sort_order=0, lang_code=CALC_LANG,
-                    )
-                except Exception:
-                    continue
-                detail_blob = ' '.join(
-                    d.get('text', '') if isinstance(d, dict) else str(d)
-                    for d in bab.get('details', [])
+            try:
+                bab = build_ability_entry(
+                    aid, ld['abil_name_map'], abil_link_map, trait_set_traits_map,
+                    trait_data_map, ld['lang_text_map'], ldc['lang_text_map'],
+                    trait_condition_raw_map, ld['lineage_lookup'], ld['series_name_map'],
+                    ability_resource_map, ld['abil_desc_map'], sort_order=0, lang_code=CALC_LANG,
                 )
-                hit = any(rx.search(detail_blob or '') for rx in GUARANTEED_CHANCE_STEP_TEXT_RES)
-                if hit and not icon:
-                    icon = (bab.get('icon') or '').strip()
-            if hit:
-                ids.add(aid)
-                if not icon:
-                    try:
-                        bab2 = build_ability_entry(
-                            aid, ld['abil_name_map'], abil_link_map, trait_set_traits_map,
-                            trait_data_map, ld['lang_text_map'], ldc['lang_text_map'],
-                            trait_condition_raw_map, ld['lineage_lookup'], ld['series_name_map'],
-                            ability_resource_map, ld['abil_desc_map'], sort_order=0, lang_code=CALC_LANG,
-                        )
-                        icon = (bab2.get('icon') or '').strip()
-                    except Exception:
-                        pass
-    if not icon:
-        icon = CHANCE_STEP_EX_ICON
-    return ids, icon
+            except Exception:
+                bab = {}
+            detail_blob = ' '.join(
+                d.get('text', '') if isinstance(d, dict) else str(d)
+                for d in (bab.get('details') or [])
+            )
+            name_blob = str(bab.get('name') or '')
+            blob = (detail_blob + ' ' + name_blob).strip()
+            # Auto name/body first — trait 80/85 is shared with Guaranteed stock, so
+            # "Auto Chance Step" titles must not land in the Guaranteed filter.
+            is_a = any(rx.search(blob or '') for rx in AUTO_CHANCE_STEP_TEXT_RES)
+            is_g = (not is_a) and (
+                _ability_id_has_guaranteed_chance_step_trait(aid) or any(
+                    rx.search(blob or '') for rx in GUARANTEED_CHANCE_STEP_TEXT_RES
+                )
+            )
+            if is_g:
+                guaranteed_ids.add(aid)
+            elif is_a:
+                auto_ids.add(aid)
+    return guaranteed_ids, auto_ids
 
 
-GUARANTEED_CHANCE_STEP_ABILITY_IDS, GUARANTEED_CHANCE_STEP_ICON = _precompute_guaranteed_chance_step_data()
-print(f"Guaranteed Chance Step abilities found: {len(GUARANTEED_CHANCE_STEP_ABILITY_IDS)}")
+GUARANTEED_CHANCE_STEP_ABILITY_IDS, AUTO_CHANCE_STEP_ABILITY_IDS = _precompute_special_chance_step_data()
+print(
+    f"Guaranteed Chance Step abilities found: {len(GUARANTEED_CHANCE_STEP_ABILITY_IDS)}; "
+    f"Auto-Chance Step: {len(AUTO_CHANCE_STEP_ABILITY_IDS)}"
+)
 
 
 def _precompute_support_x2_character_sets():
@@ -14779,13 +14798,19 @@ def _char_matches_special_x2_filter(cid, want, include_sp=False, include_conditi
     if want == CHANCE_STEP_EX_FILTER_ID:
         return chance_hits >= 1
     if want == GUARANTEED_CHANCE_STEP_FILTER_ID:
+        target_ids = GUARANTEED_CHANCE_STEP_ABILITY_IDS
+    elif want == AUTO_CHANCE_STEP_FILTER_ID:
+        target_ids = AUTO_CHANCE_STEP_ABILITY_IDS
+    else:
+        target_ids = None
+    if target_ids is not None:
         for ab_row in extract_data_list(char_abil):
             if normalize_id(ab_row.get('CharacterId', '')) != cid:
                 continue
             keys = ('AbilityId', 'SpAbilityId', 'spAbilityId') if include_sp else ('AbilityId',)
             for key in keys:
                 aid = normalize_id(ab_row.get(key) or '')
-                if aid and aid in GUARANTEED_CHANCE_STEP_ABILITY_IDS:
+                if aid and aid in target_ids:
                     return True
         return False
     if want == SUPPORT_DEF_X2_FILTER_ID:
@@ -28996,13 +29021,14 @@ def _char_has_ability_id(cid, ability_id):
     if want in (
         CHANCE_STEP_EX_FILTER_ID,
         GUARANTEED_CHANCE_STEP_FILTER_ID,
+        AUTO_CHANCE_STEP_FILTER_ID,
         SUPPORT_DEF_X2_FILTER_ID,
         SUPPORT_ATK_X2_FILTER_ID,
     ):
         include_sp = _request_flag_true(request.args.get('sp'))
         include_conditional = _request_flag_true(request.args.get('cond'))
-        # Guaranteed CS is almost always unit/tag-gated — always include conditional details.
-        if want == GUARANTEED_CHANCE_STEP_FILTER_ID:
+        # Guaranteed / Auto CS is almost always unit/tag-gated — always include conditional details.
+        if want in (GUARANTEED_CHANCE_STEP_FILTER_ID, AUTO_CHANCE_STEP_FILTER_ID):
             include_conditional = True
         return _char_matches_special_x2_filter(
             cid, want, include_sp=include_sp, include_conditional=include_conditional
@@ -30427,7 +30453,12 @@ def abilities_for_character_browse(ld, lc):
     if GUARANTEED_CHANCE_STEP_ABILITY_IDS:
         seen[GUARANTEED_CHANCE_STEP_FILTER_ID] = {
             'name': _x2n[GUARANTEED_CHANCE_STEP_FILTER_ID],
-            'icon': GUARANTEED_CHANCE_STEP_ICON or CHANCE_STEP_EX_ICON,
+            'icon': GUARANTEED_CHANCE_STEP_ICON,
+        }
+    if AUTO_CHANCE_STEP_ABILITY_IDS:
+        seen[AUTO_CHANCE_STEP_FILTER_ID] = {
+            'name': _x2n[AUTO_CHANCE_STEP_FILTER_ID],
+            'icon': AUTO_CHANCE_STEP_ICON,
         }
     if SUPPORT_DEF_X2_CHARACTER_IDS:
         seen[SUPPORT_DEF_X2_FILTER_ID] = {'name': _x2n[SUPPORT_DEF_X2_FILTER_ID], 'icon': '/static/images/UI/UI_Common_BattleIcon_AssistDeffence_S.webp'}
@@ -30457,6 +30488,7 @@ def abilities_for_character_browse_filtered(ld, lc, args):
     sdc_series_placed = False
     chance_step_ex_present = False
     guaranteed_chance_step_present = False
+    auto_chance_step_present = False
     support_def_x2_present = False
     support_atk_x2_present = False
     for ab_row in extract_data_list(char_abil):
@@ -30490,11 +30522,15 @@ def abilities_for_character_browse_filtered(ld, lc, args):
                     chance_step_ex_present = True
                 if aid in GUARANTEED_CHANCE_STEP_ABILITY_IDS:
                     guaranteed_chance_step_present = True
+                if aid in AUTO_CHANCE_STEP_ABILITY_IDS:
+                    auto_chance_step_present = True
                 continue
             if aid in CHANCE_STEP_EX_ABILITY_IDS:
                 chance_step_ex_present = True
             if aid in GUARANTEED_CHANCE_STEP_ABILITY_IDS:
                 guaranteed_chance_step_present = True
+            if aid in AUTO_CHANCE_STEP_ABILITY_IDS:
+                auto_chance_step_present = True
             if aid in SDC_TAG_ABILITY_IDS:
                 if not sdc_tag_placed:
                     _append_sdc_browse_rep(seen, SDC_TAG_REPRESENTATIVE_ID, ld, lc, ldc)
@@ -30528,7 +30564,12 @@ def abilities_for_character_browse_filtered(ld, lc, args):
     if guaranteed_chance_step_present:
         seen[GUARANTEED_CHANCE_STEP_FILTER_ID] = {
             'name': _x2n[GUARANTEED_CHANCE_STEP_FILTER_ID],
-            'icon': GUARANTEED_CHANCE_STEP_ICON or CHANCE_STEP_EX_ICON,
+            'icon': GUARANTEED_CHANCE_STEP_ICON,
+        }
+    if auto_chance_step_present:
+        seen[AUTO_CHANCE_STEP_FILTER_ID] = {
+            'name': _x2n[AUTO_CHANCE_STEP_FILTER_ID],
+            'icon': AUTO_CHANCE_STEP_ICON,
         }
     if support_def_x2_present:
         seen[SUPPORT_DEF_X2_FILTER_ID] = {'name': _x2n[SUPPORT_DEF_X2_FILTER_ID], 'icon': '/static/images/UI/UI_Common_BattleIcon_AssistDeffence_S.webp'}
@@ -30665,9 +30706,9 @@ def browse_filters():
         if entity == 'supporters':
             if filter_mode == 'current':
                 sig = browse_filters_pool_signature(request.args, 'supporters')
-                ck = f"browse_filters_v14_{lc}_{entity}_cur_{sig}"
+                ck = f"browse_filters_v15_{lc}_{entity}_cur_{sig}"
             else:
-                ck = f"browse_filters_v14_{lc}_{entity}"
+                ck = f"browse_filters_v15_{lc}_{entity}"
             cached = get_cached_response(ck)
             if cached:
                 return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
@@ -30682,9 +30723,9 @@ def browse_filters():
         if entity == 'option_parts':
             if filter_mode == 'current':
                 sig = browse_filters_pool_signature(request.args, 'option_parts')
-                ck = f"browse_filters_v14_{lc}_{entity}_cur_{sig}"
+                ck = f"browse_filters_v15_{lc}_{entity}_cur_{sig}"
             else:
-                ck = f"browse_filters_v14_{lc}_{entity}"
+                ck = f"browse_filters_v15_{lc}_{entity}"
             cached = get_cached_response(ck)
             if cached:
                 return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
@@ -30698,9 +30739,9 @@ def browse_filters():
             return jsonify_cacheable(result, ck, public=True, max_age=3600, convert_images=True)
         if filter_mode == 'current':
             sig = browse_filters_pool_signature(request.args, entity)
-            ck = f"browse_filters_v14_{lc}_{entity}_cur_{sig}"
+            ck = f"browse_filters_v15_{lc}_{entity}_cur_{sig}"
         else:
-            ck = f"browse_filters_v14_{lc}_{entity}"
+            ck = f"browse_filters_v15_{lc}_{entity}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)

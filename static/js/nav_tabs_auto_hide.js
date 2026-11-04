@@ -1,5 +1,6 @@
 /** Auto-hide #navTabsShell on scroll-down; reveal after a strong scroll-up. Brand row stays
- *  (except /collections mobile, which also hides brand + intro — see pinnedCollapsed). */
+ *  except /collections mobile (brand + intro) and MLS battle focus (brand via CSS) —
+ *  see pinnedCollapsed. */
 (function (global) {
   var ignoreUntil = 0;
   var inited = false;
@@ -16,18 +17,25 @@
     return !!(document.body && document.body.classList.contains('collections-page'));
   }
 
+  /** MLS battle map: collapse on Open battle map; keep pinned through scroll-into-view. */
+  function isMlsBattleFocus() {
+    return !!(document.body && document.body.classList.contains('mls-battle-focus'));
+  }
+
   function thresholds() {
     var shortLandscape = false;
     try {
       shortLandscape = global.matchMedia('(orientation: landscape) and (max-height: 520px)').matches;
     } catch (_) {}
-    /* Collections: intro/disclaimer only on aggressive scroll-up (or true top).
+    /* Collections / MLS battle: only aggressive scroll-up (or true top + intent) reveals.
        Possession % uses a separate compact sticky bar in collections.js. */
     var col = isCollectionsPage();
+    var mls = isMlsBattleFocus();
+    var aggressive = col || mls;
     if (shortLandscape) {
-      return { HIDE_AFTER: 4, REVEAL_UP: col ? 260 : 220, TOP_SHOW: 16 };
+      return { HIDE_AFTER: 4, REVEAL_UP: aggressive ? 260 : 220, TOP_SHOW: 16 };
     }
-    return { HIDE_AFTER: 10, REVEAL_UP: col ? 480 : 400, TOP_SHOW: 40 };
+    return { HIDE_AFTER: 10, REVEAL_UP: aggressive ? 480 : 400, TOP_SHOW: 40 };
   }
 
   function pageScrollY() {
@@ -45,19 +53,25 @@
     /* /tm and /dm use their own board-scroll chrome hide */
     if (isMatrixBoardPage()) return;
     var want = !!collapsed;
-    if (document.body.classList.contains('nav-tabs-collapsed') === want) return;
+    var already = document.body.classList.contains('nav-tabs-collapsed') === want;
     var y = pageScrollY();
     var t = thresholds();
-    document.body.classList.toggle('nav-tabs-collapsed', want);
-    /* Height snaps instantly; opacity fades up to 600ms on collections — ignore layout noise */
-    ignoreUntil = Date.now() + (isCollectionsPage() ? 700 : 320);
-    try {
-      if (global.S) global.S._navTabsScrollIgnoreUntil = ignoreUntil;
-    } catch (_) {}
-    if (want && isCollectionsPage() && y > t.TOP_SHOW) {
+    var mls = isMlsBattleFocus();
+    var col = isCollectionsPage();
+    if (!already) {
+      document.body.classList.toggle('nav-tabs-collapsed', want);
+      /* Height snaps instantly; opacity fades — ignore layout / smooth-scroll noise */
+      ignoreUntil = Date.now() + (col ? 700 : mls ? 900 : 320);
+      try {
+        if (global.S) global.S._navTabsScrollIgnoreUntil = ignoreUntil;
+      } catch (_) {}
+    }
+    /* Pin so programmatic scroll-up (MLS battle into view / collections chrome) cannot reveal. */
+    if (want && (mls || (col && y > t.TOP_SHOW))) {
       pinnedCollapsed = true;
     }
     if (!want) pinnedCollapsed = false;
+    if (already) return;
     if (typeof global.scheduleSyncListTheadStickyTop === 'function') {
       global.scheduleSyncListTheadStickyTop();
       requestAnimationFrame(function () {
@@ -95,8 +109,25 @@
       var dy = y - lastY;
       lastY = y;
       var t = thresholds();
-      if (y > t.TOP_SHOW + 64) pinnedCollapsed = false;
+      var mls = isMlsBattleFocus();
+      /* Collections: leave synthetic top → unpin. MLS battle: keep pin through
+         scroll-into-view mid-page; only aggressive REVEAL_UP (or leave battle) clears. */
+      if (!mls && y > t.TOP_SHOW + 64) pinnedCollapsed = false;
       if (y <= t.TOP_SHOW) {
+        /* MLS battle stays collapsed at top until aggressive upward scroll. */
+        if (mls && (pinnedCollapsed || document.body.classList.contains('nav-tabs-collapsed'))) {
+          if (dy < 0) {
+            upAccum += -dy;
+            if (upAccum >= t.REVEAL_UP) {
+              upAccum = 0;
+              pinnedCollapsed = false;
+              setNavTabsCollapsed(false);
+            }
+          } else if (dy > 0) {
+            upAccum = 0;
+          }
+          return;
+        }
         upAccum = 0;
         /* Synthetic top after tall chrome hide — do not auto-reveal (loop) */
         if (pinnedCollapsed) {
@@ -160,7 +191,15 @@
           setNavTabsCollapsed(true);
           touchY0 = cy;
         } else if (fingerUp < -28) {
-          if (pinnedCollapsed && y <= t.TOP_SHOW + 8) {
+          /* finger moves down → content scrolls up */
+          if (isMlsBattleFocus()) {
+            upAccum += -fingerUp;
+            if (upAccum >= t.REVEAL_UP) {
+              upAccum = 0;
+              pinnedCollapsed = false;
+              setNavTabsCollapsed(false);
+            }
+          } else if (pinnedCollapsed && y <= t.TOP_SHOW + 8) {
             upAccum = 0;
             pinnedCollapsed = false;
             setNavTabsCollapsed(false);

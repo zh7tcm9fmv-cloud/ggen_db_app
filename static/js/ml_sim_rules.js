@@ -447,6 +447,12 @@
         if (id && charTags.indexOf(id) >= 0) return true;
         return false;
       }
+      /* “When piloting units from specified series” — Argi-class Guaranteed CS. */
+      if (src === 'series' || typ === 'series') {
+        if (name && series.indexOf(name) >= 0) return true;
+        if (id && series.indexOf(id) >= 0) return true;
+        return false;
+      }
       if (typ === 'unit_role' || typ === 'role' || /role|type/.test(typ) || /role|type/.test(src)) {
         if (/durability|defense|耐久/.test(name) || /role_2|defense/.test(id)) {
           return /durability|defense|耐久/.test(role);
@@ -713,17 +719,58 @@
     ((charData && charData.skills) || []).forEach(function (s) {
       var key = skillKeyFromName(s && s.name);
       var cost = s && s.sp != null ? (s.sp | 0) : 0;
+      var effect;
       if (!key) return;
+      effect = Array.isArray(s.details)
+        ? s.details.map(function (d) {
+          return typeof d === 'string' ? d : ((d && d.text) || '');
+        }).join(' ')
+        : String(s.details || s.effect || '');
       list.push({
         key: key,
         name: s.name || key,
         sp: cost,
         icon: (s && (s.icon || s.icon_url || s.thum)) || '',
-        effect: Array.isArray(s.details) ? s.details.join(' ') : String(s.details || s.effect || '')
+        effect: effect
       });
       if (cost > spMax) spMax = cost;
     });
-    return { list: list, sp: Math.max(spMax, 5) };
+    /*
+     * SP pool: characters recover SP each turn; MaxSp is not on the browse payload.
+     * Floor 10 so Affinity kits can fire MP Up (3) + Melee Boost (5) in one action
+     * (EN help: multiple different skills before you act; same effect cannot re-fire).
+     */
+    return { list: list, sp: Math.max(spMax, 10) };
+  }
+
+  /** MP gained from an MP Up skill text (EN “Increase MP by 7.”). */
+  function parseMpUpAmount(skill) {
+    var blob = normalizeFullwidth(String((skill && (skill.effect || skill.name)) || ''));
+    var m = blob.match(/[Ii]ncrease\s+(?:own\s+)?MP\s+by\s+(\d+)/i)
+      || blob.match(/(?:自身の)?MP(?:が|を)\s*(\d+)\s*上昇/)
+      || blob.match(/自身MP(?:增加|提升)(\d+)/)
+      || blob.match(/MP\s*\+\s*(\d+)/);
+    return m ? Math.max(1, parseInt(m[1], 10) || 0) : 3;
+  }
+
+  /** True when a non-MAP weapon is locked by Tension / consume-MP vs current MP. */
+  function weaponsNeedMoreMp(unit) {
+    var mp = (unit && unit.mp) | 0;
+    var i, w, blob, m, cost, req;
+    for (i = 0; i < ((unit && unit.weapons) || []).length; i++) {
+      w = unit.weapons[i];
+      if (!w || isMapWeapon(w)) continue;
+      req = weaponMpRequirement(w);
+      if (req > mp) return true;
+      blob = normalizeFullwidth(weaponEffectBlob(w));
+      m = blob.match(/Can be used when consuming\s*(\d+)\s*MP/i)
+        || blob.match(/(\d+)\s*MP消費時に使用可能/)
+        || blob.match(/消耗\s*(\d+)\s*MP時可使用/)
+        || blob.match(/MP消費(\d+)|Consumes?\s*(\d+)\s*MP/i);
+      cost = m ? (parseInt(m[1] || m[2] || m[3], 10) || 0) : 0;
+      if (cost > mp) return true;
+    }
+    return false;
   }
 
   /** gge / site: Chance Step uses (額外行動). Base 1; +1 ability → up to 2. */
@@ -769,15 +816,18 @@
   }
 
   /**
-   * gge evaluatePilotSkills priority:
-   * High Speed, Range Boost, Repair, Force Guard, MP Up, bursts,
+   * gge / EN help evaluatePilotSkills:
+   * Multiple different skills per action while SP lasts (same effect cannot re-fire).
+   * Priority: High Speed, Range Boost, Repair, Force Guard, MP Up, bursts,
    * EN free, SD-count, Sway (only if a counter is possible), Crit Boost.
+   * When a Tension/MP-gated weapon is locked, MP Up is tried first (Burning Max / consume).
    */
   function pickSkill(unit, enemies) {
-    var kit, i, sk, canHit, maxHp, hp, sp, order, oi, key;
-    if (!unit || unit.skillUsed || unit.usedSkillThisTurn) return null;
+    var kit, i, sk, canHit, maxHp, hp, sp, order, oi, key, used;
+    if (!unit) return null;
     kit = unit.pilotSkills || { list: [] };
     sp = unit.currentSp != null ? (unit.currentSp | 0) : (unit.sp | 0);
+    used = unit.usedSkillKeys || {};
     canHit = alive(enemies).some(function (e) { return weaponsInRange(unit, e).length > 0; });
     maxHp = unit.maxHp | 0;
     hp = unit.hp | 0;
@@ -789,6 +839,22 @@
       return null;
     }
     function afford(s) { return s && sp >= (s.sp | 0); }
+    function tryKey(k) {
+      var s = find(k);
+      if (!s || used[k] || !afford(s)) return null;
+      if ((k === 'high_speed' || k === 'range_boost') && canHit) return null;
+      if (k === 'repair' && !(maxHp > 0 && hp * 2 < maxHp)) return null;
+      /* MP Up while under Supercharged — needed for Tension Max / consume gates. */
+      if (k === 'mp_up' && (unit.mp | 0) >= 12) return null;
+      if (k === 'en_free' && unit.hasUsedFreeAmmoSkillInBattle) return null;
+      if (k === 'sway' && !enemyCanCounter(unit, enemies)) return null;
+      return s;
+    }
+
+    if (weaponsNeedMoreMp(unit)) {
+      sk = tryKey('mp_up');
+      if (sk) return sk;
+    }
 
     order = [
       'high_speed', 'range_boost', 'repair', 'force_guard', 'mp_up',
@@ -797,14 +863,8 @@
     ];
     for (oi = 0; oi < order.length; oi++) {
       key = order[oi];
-      sk = find(key);
-      if (!afford(sk)) continue;
-      if ((key === 'high_speed' || key === 'range_boost') && canHit) continue;
-      if (key === 'repair' && !(maxHp > 0 && hp * 2 < maxHp)) continue;
-      if (key === 'mp_up' && !((unit.mp | 0) >= 2 && (unit.mp | 0) < 12)) continue;
-      if (key === 'en_free' && unit.hasUsedFreeAmmoSkillInBattle) continue;
-      if (key === 'sway' && !enemyCanCounter(unit, enemies)) continue;
-      return sk;
+      sk = tryKey(key);
+      if (sk) return sk;
     }
     return null;
   }
@@ -950,12 +1010,26 @@
   function tensionOk(mp, text) {
     var t = normalizeFullwidth(text);
     var m = mp | 0;
-    if (/超一撃|Supercharged\s*EX|超一擊/i.test(t) && m < 12) return false;
+    /* Supercharged vigor / Supercharged EX — MP band ≥12 (EN often omits “EX”). */
+    if (/超一撃|超一擊|Supercharged/i.test(t) && m < 12) return false;
     /* "Max or greater" / 超強気以上 — require High band (MP≥8), before soft High|Max matcher. */
     if (/(?:Vigor\s+is\s+[\"'「]?Max|Vigor[^\n]{0,24}Max[\"'」]?\s+or\s+greater|テンションが「?超強気|テンション「?超強気」?以上|戰意為「?超強勢|戰意「?超強勢」?以上|战意为「?超强势)/i.test(t) && m < 8) return false;
-    if (/超強気|High\s*Vigor|超強勢/i.test(t) && !/超一撃|Supercharged/i.test(t) && m < 8) return false;
+    if (/超強気|High\s*Vigor|超強勢/i.test(t) && !/超一撃|Supercharged|超一擊/i.test(t) && m < 8) return false;
     if (/強気以上|Vigor.*(High|Max)|強勢以上/i.test(t) && m < 4) return false;
     return true;
+  }
+
+  /** Official Guaranteed / 無条件 / 無條件 stock (+N, often once/battle). */
+  function isGuaranteedCsStockText(t) {
+    return /Guaranteed\s*Chance\s*Step|Unconditional\s*Chance\s*Step|無条件チャンスステップ|無條件額外行動|无条件额外行动/i.test(t || '');
+  }
+
+  /**
+   * Official Auto-Chance Step / オート / 自動 — end of combat without KO.
+   * m_help: does NOT trigger after MAP Weapons.
+   */
+  function isAutoCsAfterCombatText(t) {
+    return /Auto[- ]?Chance\s*Step|オートチャンスステップ|自動額外行動|regardless of whether or not enemies have been defeated|敵を撃破しなくても|即使未擊敗敵人|即使未击败敌人|적을\s*격파하지\s*않아도/i.test(t || '');
   }
 
   function weaponIsSpecial(weapon) {
@@ -997,15 +1071,19 @@
     return count;
   }
 
-  /** gge checkCounterSupportDefend — ability must explicitly allow SD vs counter. */
+  /**
+   * gge checkCounterSupportDefend — ability must explicitly allow SD vs counter.
+   * Collapse newlines before matching: Fon Spaak EX splits
+   * “with a counter,” / “execute Support Defense.” across lines (`.` does not match \\n).
+   */
   function canCounterSupportDefend(actor) {
     var found = false;
     iterAbilityDetails(actor, function (ab, detail, text) {
       var t;
       if (found) return;
       if (detail && !detailConditionsMet(actor, detail)) return;
-      t = normalizeFullwidth(text);
-      if (!/反撃に対して支援防御|反撃時支援防御|Counter.*Support\s*Defense|Support\s*Defense.*[Cc]ounter|支援防御.*反撃|支援防禦.*反擊/i.test(t)) return;
+      t = normalizeFullwidth(text).replace(/\s+/g, ' ');
+      if (!/反撃に対して支援防御|反撃時支援防御|敵の反撃に対して支援防御|Counter[\s\S]*Support\s*Defense|Support\s*Defense[\s\S]*[Cc]ounter|支援防御[\s\S]*反撃|支援防禦[\s\S]*反擊|受到敵方反擊時[\s\S]*支援防禦|受到敌方反击时[\s\S]*支援防御/i.test(t)) return;
       if (!tensionOk(actor && actor.mp, t)) return;
       found = true;
     });
@@ -1175,16 +1253,33 @@
     return Math.max(0, Math.round(base * Math.max(0, mult)));
   }
 
+  /**
+   * Minimum MP band to *unlock* a weapon (Tension/Vigor gates only).
+   * MP-consume costs are separate — see weaponMpCost (Affinity reductions apply there).
+   * EN: "Can be used at Tension Max or greater."
+   * JA: "テンションMax以上で使用可能。" · TW/HK: "戰意Max以上時可使用。"
+   */
   function weaponMpRequirement(weapon) {
     var blob = normalizeFullwidth(weaponEffectBlob(weapon) + ' ' + ((weapon.usage_restrictions || []).join(' ')));
     var req = 0;
     var m;
-    if (/超一撃|Supercharged\s*EX|超一擊/i.test(blob)) req = Math.max(req, 12);
-    else if (/超強気以上|High\s*Vigor|超強勢以上/i.test(blob)) req = Math.max(req, 8);
-    else if (/強気以上|Vigor.*High|強勢以上/i.test(blob)) req = Math.max(req, 4);
+    /* Supercharged / 超一撃 / 超一擊 — MP ≥ 12. */
+    if (/超一撃|Supercharged(?:\s*EX)?|超一擊/i.test(blob) &&
+        /以上|or\s+greater|以上で|以上時|以上时/i.test(blob)) {
+      req = Math.max(req, 12);
+    }
+    /* Max / 超強気 / 超強勢 / Tension Max — MP ≥ 8. */
+    if (/(?:Tension|Vigor)\s*Max|テンション\s*Max|戰意\s*Max|超強気|超強勢/i.test(blob) &&
+        /以上|or\s+greater|以上で|以上時|以上时|Can be used/i.test(blob)) {
+      req = Math.max(req, 8);
+    } else if (/超強気以上|超強勢以上|Vigor.*Max|Max\s+or\s+greater/i.test(blob)) {
+      req = Math.max(req, 8);
+    }
+    /* High / 強気 / 強勢 — MP ≥ 4 (only when not already Max+). */
+    if (req < 8 && /(?:Tension|Vigor)\s*High|テンション\s*High|戰意\s*High|強気以上|強勢以上|High\s+or\s+greater/i.test(blob)) {
+      req = Math.max(req, 4);
+    }
     m = blob.match(/MP(?:が)?(\d+)以上|MP\s*(\d+)\+/i);
-    if (m) req = Math.max(req, parseInt(m[1] || m[2], 10) || 0);
-    m = blob.match(/MP消費(\d+)|MP\s*cost\s*(\d+)/i);
     if (m) req = Math.max(req, parseInt(m[1] || m[2], 10) || 0);
     return req;
   }
@@ -1215,7 +1310,9 @@
       bonus = getWeaponRangeBonus(actor, w, !!isSupport);
       if (targetDist !== null && ((targetDist | 0) < mn || (targetDist | 0) > (mx + bonus))) return false;
       reqMp = weaponMpRequirement(w);
+      /* Need enough MP for the Tension gate and for the consume cost (after Affinity −N). */
       if ((actor.mp | 0) < reqMp) return false;
+      if ((actor.mp | 0) < weaponMpCost(actor, w, !!isSupport)) return false;
       if (isMoveBeforeOnly(w) && actorHasMoved(actor)) return false;
       return true;
     });
@@ -1235,8 +1332,11 @@
     }
     if (actor && actor.debuffs) {
       actor.debuffs.forEach(function (d) {
-        if (kind === 'hit' && d && d.type === '命中率') total -= d.value | 0;
-        if (kind === 'eva' && d && d.type === '回避率') total += d.isUp ? (d.value | 0) : -(d.value | 0);
+        if (!d) return;
+        if (kind === 'hit' && (d.type === '命中率' || d.type === 'acc_dn')) total -= d.value | 0;
+        if (kind === 'eva' && (d.type === '回避率' || d.type === 'eva_dn')) {
+          total += d.isUp ? (d.value | 0) : -(d.value | 0);
+        }
       });
     }
     return total;
@@ -1249,6 +1349,8 @@
   function checkHit(attacker, defender, weapon, defenseAction, isDefenderSupportDefend) {
     var mobAtk, mobDef, plAtk, defReact, x, hitRate, blob, m, isEx;
     var charAtk, charDef, hasSway;
+    if (attacker) attacker._lastMissReason = '';
+    if (defender) defender._lastMissReason = '';
     if (isAbsoluteHitWeapon(weapon)) return true;
     /* gge: Sway dodges only the original target, never a Support Defense cover, never vs Absolute Hit. */
     hasSway = defender && defender.activeSkills && defender.activeSkills.some(function (s) {
@@ -1256,16 +1358,26 @@
     });
     if (hasSway && !isDefenderSupportDefend) {
       defender.usedSwayInCombat = true;
+      defender._lastMissReason = 'Sway';
       return false;
     }
     if (defender && defender.hasEvadeWay && !defender.usedEvadeWay) {
       defender.usedEvadeWay = true;
+      defender._lastMissReason = 'Evade Way';
       return false;
     }
     if (defenseAction !== 'evade') return true;
 
     mobAtk = attacker.mobility | 0;
     mobDef = defender.mobility | 0;
+    /* Inflict Mobility Down % on the defender. */
+    if (defender && defender.debuffs) {
+      defender.debuffs.forEach(function (d) {
+        if (d && d.type === 'mob_dn' && (d.value | 0) > 0) {
+          mobDef = Math.max(0, Math.floor(mobDef * (100 - (d.value | 0)) / 100));
+        }
+      });
+    }
     charAtk = attacker.char && (attacker.char.stats || attacker.char.stats_with_ex) || [];
     charDef = defender.char && (defender.char.stats || defender.char.stats_with_ex) || [];
     function st(list, name) {
@@ -1295,7 +1407,11 @@
     if (weapon.accuracy != null) hitRate += ((weapon.accuracy | 0) - 100);
     else if (weapon.raw && weapon.raw.accuracy != null) hitRate += ((weapon.raw.accuracy | 0) - 100);
     if (hitRate < 0) hitRate = 0;
-    return (nextRandom() * 100) <= hitRate;
+    if ((nextRandom() * 100) <= hitRate) return true;
+    if (defender) {
+      defender._lastMissReason = 'Evade ~' + Math.round(hitRate) + '%';
+    }
+    return false;
   }
 
   /** gge calculateCriticalRate — weapon base + ability / OP / SD-tag lines. */
@@ -1344,21 +1460,83 @@
     return rate;
   }
 
-  /** gge checkAndAcquireUnconditionalCS — Supercharged + pilot ability, once/battle. */
+  /**
+   * gge checkAndAcquireUnconditionalCS — Guaranteed/Unconditional CS stock (once/battle).
+   * EN: Guaranteed Chance Step · JA: 無条件チャンスステップ · TW/HK: 無條件額外行動.
+   * Respects unit-tag / unit-id conditions + Vigor gates (e.g. Uso Supercharged + League Militaire).
+   * Stock is separate from the phase Chance Step budget (max 2) — firing it does not
+   * spend chanceStepsLeft (Uso: 2 kill-CS + 1 Guaranteed ⇒ up to 4 actions).
+   */
   function checkAndAcquireUnconditionalCS(actor) {
-    var bags, i, t;
+    var acquired = false;
     if (!actor || actor.hasAcquiredUnconditionalCS) return false;
     if (actor.hp != null && (actor.hp | 0) <= 0) return false;
-    if ((actor.mp | 0) < 12) return false;
-    bags = abilityTextBags(actor);
-    for (i = 0; i < bags.length; i++) {
-      t = normalizeFullwidth(bags[i].text);
-      if (!/無条件チャンスステップ|Unconditional\s*Chance\s*Step|無條件額外行動|无条件额外行动/i.test(t)) continue;
+    iterAbilityDetails(actor, function (ab, detail, text) {
+      var norm;
+      if (acquired) return;
+      if (detail && !detailConditionsMet(actor, detail)) return;
+      norm = normalizeFullwidth(text);
+      if (!isGuaranteedCsStockText(norm)) return;
+      /* Skip Auto-Chance (“regardless of defeat”) lines — those are not once/battle stock. */
+      if (isAutoCsAfterCombatText(norm) && !isGuaranteedCsStockText(norm)) return;
+      if (!tensionOk(actor.mp, norm)) return;
+      acquired = true;
       actor.hasAcquiredUnconditionalCS = true;
       actor.unconditionalCSStock = (actor.unconditionalCSStock | 0) + 1;
-      return true;
+    });
+    return acquired;
+  }
+
+  /**
+   * Auto-Chance Step charges from ability text (“1 time(s)” / 1回 / 1次).
+   * These are NOT infinite — they spend from the unit’s Chance Step budget
+   * (chanceCount ≤ 2) and only fire without a KO that many times per action.
+   */
+  function autoCsTimesAvailable(actor) {
+    var total = 0;
+    if (!actor) return 0;
+    iterAbilityDetails(actor, function (ab, detail, text) {
+      var norm, m, n;
+      if (detail && !detailConditionsMet(actor, detail)) return;
+      norm = normalizeFullwidth(text);
+      if (!isAutoCsAfterCombatText(norm)) return;
+      if (isGuaranteedCsStockText(norm)) return;
+      if (!tensionOk(actor.mp, norm)) return;
+      m = norm.match(/(?:trigger|発生|發動|발동)[^\d]{0,24}(\d+)\s*(?:time|回|次|회)/i)
+        || norm.match(/(\d+)\s*(?:time\s*\(?s\)?|回|次|회)/i);
+      n = m ? (parseInt(m[1], 10) || 0) : 1;
+      if (n < 1) n = 1;
+      total += n;
+    });
+    return total;
+  }
+
+  /**
+   * Auto-Chance Step after this combat with no kill required (survive / revive OK).
+   * Official help: does not trigger when using MAP Weapons.
+   * Requires remaining autoCsLeft (set each action from autoCsTimesAvailable).
+   */
+  function grantsAutoCsAfterCombat(actor) {
+    if (!actor || (actor.hp != null && (actor.hp | 0) <= 0)) return false;
+    if ((actor.autoCsLeft | 0) <= 0) return false;
+    return autoCsTimesAvailable(actor) > 0;
+  }
+
+  /** @deprecated use grantsAutoCsAfterCombat */
+  function grantsGuaranteedCsAfterCombat(actor) {
+    return grantsAutoCsAfterCombat(actor);
+  }
+
+  /** Localized CS labels from official m_help titles. */
+  function chanceStepLabels(lang) {
+    var L = String(lang || 'EN').toUpperCase();
+    if (L === 'JA' || L === 'JP') {
+      return { cs: 'チャンスステップ', auto: 'オートチャンスステップ', guaranteed: '無条件チャンスステップ' };
     }
-    return false;
+    if (L === 'TW' || L === 'HK') {
+      return { cs: '額外行動', auto: '自動額外行動', guaranteed: '無條件額外行動' };
+    }
+    return { cs: 'Chance Step', auto: 'Auto-Chance Step', guaranteed: 'Guaranteed Chance Step' };
   }
 
   /** World cells for MAP weapon from master map_coords + facing. */
@@ -1907,19 +2085,36 @@
    * gge executeAttack weapon MP cost (non-support, non-MAP).
    * Pilot 「消費MPがN軽減」 reduces the cost.
    */
+  /**
+   * MP spent on fire. EN: "Can be used when consuming 5 MP."
+   * JA: "5MP消費時に使用可能。" · TW/HK: "消耗5MP時可使用。"
+   * Affinity lines like "reduce weapons MP consumption by 2" (条件付き) subtract.
+   */
   function weaponMpCost(actor, weapon, isSupport) {
-    var blob, m, cost, bags, i, t, red;
+    var blob, m, cost;
     if (!weapon || isSupport || isMapWeapon(weapon)) return 0;
     blob = normalizeFullwidth(weaponEffectBlob(weapon));
-    m = blob.match(/MP消費(\d+)|Consumes?\s*(\d+)\s*MP|MP\s*cost\s*(\d+)/i);
+    m = blob.match(/Can be used when consuming\s*(\d+)\s*MP/i)
+      || blob.match(/(\d+)\s*MP消費時に使用可能/)
+      || blob.match(/消耗\s*(\d+)\s*MP時可使用/)
+      || blob.match(/消耗\s*(\d+)\s*MP时可使用/)
+      || blob.match(/MP消費(\d+)|Consumes?\s*(\d+)\s*MP|MP\s*cost\s*(\d+)/i);
     if (!m) return 0;
     cost = parseInt(m[1] || m[2] || m[3], 10) || 0;
-    bags = abilityTextBags(actor);
-    for (i = 0; i < bags.length; i++) {
-      t = normalizeFullwidth(bags[i].text);
-      red = t.match(/消費MP(?:が)?(\d+)軽減|MP\s*cost\s*(?:reduc\w*\s*)?(\d+)/i);
-      if (red) cost = Math.max(0, cost - (parseInt(red[1] || red[2], 10) || 0));
-    }
+    if (cost <= 0) return 0;
+    iterAbilityDetails(actor, function (ab, detail, text) {
+      var t, mm, cut;
+      if (detail && !detailConditionsMet(actor, detail)) return;
+      t = normalizeFullwidth(String(text || ''));
+      mm = t.match(/reduce\s+weapons?\s*MP\s*consumption\s+by\s+(\d+)/i)
+        || t.match(/武装の消費MPが(\d+)軽減/)
+        || t.match(/武裝(?:的)?消耗MP(?:減少|降低|減輕)(\d+)/)
+        || t.match(/消費MP(?:が)?(\d+)軽減/)
+        || t.match(/MP\s*cost\s*(?:reduc\w*\s*)?(?:by\s*)?(\d+)/i);
+      if (!mm) return;
+      cut = parseInt(mm[1], 10) || 0;
+      if (cut > 0) cost = Math.max(0, cost - cut);
+    });
     return cost;
   }
 
@@ -2053,6 +2248,7 @@
     isMapWeapon: isMapWeapon,
     weaponEffectBlob: weaponEffectBlob,
     weaponMpCost: weaponMpCost,
+    weaponMpRequirement: weaponMpRequirement,
     getReachableCells: getReachableCells,
     getBestMoveDestination: getBestMoveDestination,
     pickEngage: pickEngage,
@@ -2075,6 +2271,8 @@
     terrainRowLevel: terrainRowLevel,
     buildPilotSkillKit: buildPilotSkillKit,
     pickSkill: pickSkill,
+    parseMpUpAmount: parseMpUpAmount,
+    weaponsNeedMoreMp: weaponsNeedMoreMp,
     planUnitSkill: planUnitSkill,
     enemyCanCounter: enemyCanCounter,
     chanceStepLimit: chanceStepLimit,
@@ -2089,6 +2287,10 @@
     checkHit: checkHit,
     calculateCriticalRate: calculateCriticalRate,
     checkAndAcquireUnconditionalCS: checkAndAcquireUnconditionalCS,
+    autoCsTimesAvailable: autoCsTimesAvailable,
+    grantsAutoCsAfterCombat: grantsAutoCsAfterCombat,
+    grantsGuaranteedCsAfterCombat: grantsGuaranteedCsAfterCombat,
+    chanceStepLabels: chanceStepLabels,
     evaluateMapWeapon: evaluateMapWeapon,
     mapWeaponWorldCells: mapWeaponWorldCells,
     buildCombatQueue: buildCombatQueue,

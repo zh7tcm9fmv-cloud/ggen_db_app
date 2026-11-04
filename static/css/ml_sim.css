@@ -263,11 +263,6 @@
   flex-direction: column;
   min-width: min(100%, 280px);
 }
-.mls-top-actions .ml-calc-open-btn {
-  flex: 0 0 auto;
-  /* Nudge to optical center of the 40px select (btn is 48px). */
-  margin-bottom: -4px;
-}
 .mls-select, .mls-picker-search {
   width: 100%;
   border: 1px solid var(--border-color);
@@ -313,12 +308,6 @@
   .mls-preset .ml-boost-card { min-height: 128px; }
   .mls-top-actions { margin-left: 0; width: 100%; }
   .mls-season-wrap { width: 100%; }
-}
-.mls-views {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
 }
 .mls-lbl-row {
   display: flex;
@@ -380,32 +369,142 @@
   .mls-share { grid-template-columns: 1fr; }
   .mls-order-toggle { margin-left: 0; }
 }
+.mls-share-hint {
+  grid-column: 1 / -1;
+  margin: 0 0 2px;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+.mls-share-cipher-host {
+  position: relative;
+  margin-top: 6px;
+  display: none;
+  opacity: 0;
+  transform: translateY(-4px);
+  pointer-events: none;
+  transition:
+    opacity var(--motion-dur-standard, 220ms) var(--motion-ease-exit, cubic-bezier(0.3, 0, 1, 1)),
+    transform var(--motion-dur-standard, 220ms) var(--motion-ease-exit, cubic-bezier(0.3, 0, 1, 1));
+}
+.mls-share-cipher-host.is-open {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  transition:
+    opacity var(--motion-dur-standard, 220ms) var(--motion-ease-enter, cubic-bezier(0.05, 0.7, 0.1, 1)),
+    transform var(--motion-dur-standard, 220ms) var(--motion-ease-enter, cubic-bezier(0.05, 0.7, 0.1, 1));
+}
+.mls-share-cipher-host.is-fading {
+  opacity: 0;
+  transform: translateY(-4px);
+  pointer-events: none;
+}
+.mls-share-cipher {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 8px;
+  box-sizing: border-box;
+  overflow: hidden;
+  pointer-events: none;
+  font: 12px/1.35 ui-monospace, Consolas, monospace;
+  letter-spacing: 0.06em;
+  color: var(--accent-cyan, #00d4ff);
+  text-shadow: 0 0 10px rgba(0, 212, 255, 0.28);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  white-space: pre;
+  user-select: none;
+  transition: opacity var(--motion-dur-quick, 120ms) var(--motion-ease-standard, ease),
+    color var(--motion-dur-quick, 120ms) var(--motion-ease-standard, ease),
+    border-color var(--motion-dur-quick, 120ms) var(--motion-ease-standard, ease);
+}
+.mls-share-cipher.is-decrypting {
+  border-color: rgba(0, 212, 255, 0.55);
+}
+.mls-share-cipher.is-copied {
+  color: var(--accent-gold, #ffd700);
+  border-color: rgba(255, 215, 0, 0.45);
+  text-shadow: 0 0 12px rgba(255, 215, 0, 0.35);
+}
+.mls-share-cipher.is-prompt {
+  letter-spacing: 0.04em;
+  font-family: var(--font-body, system-ui, sans-serif);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-shadow: none;
+}
+.mls-share-col--enemy .mls-share-cipher:not(.is-copied):not(.is-prompt) {
+  color: var(--accent-red, #ff4d6d);
+  text-shadow: 0 0 10px rgba(255, 77, 109, 0.28);
+}
+.mls-share-col--enemy .mls-share-cipher.is-copied {
+  color: var(--accent-gold, #ffd700);
+  text-shadow: 0 0 12px rgba(255, 215, 0, 0.35);
+}
+.mls-share-cipher-host.is-input.is-editing .mls-share-cipher {
+  opacity: 0;
+}
 .mls-share-box {
   width: 100%;
   box-sizing: border-box;
-  margin-top: 4px;
+  margin-top: 0;
+  min-height: 2.6em;
   resize: vertical;
-  font: 12px/1.35 ui-monospace, Consolas, monospace;
-  color: var(--text-primary);
+  font: 11px/1.35 ui-monospace, Consolas, monospace;
+  color: transparent;
+  caret-color: var(--accent-cyan, #00d4ff);
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-sm);
   padding: 6px 8px;
+  word-break: break-all;
 }
-/* Codes stay in DOM for copy/load — not shown. */
-.mls-share-box--sr {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-  resize: none;
+.mls-share-cipher-host.is-input .mls-share-box {
+  color: var(--text-primary);
 }
+.mls-share-col--enemy .mls-share-box { caret-color: var(--accent-red, #ff4d6d); }
+@media (prefers-reduced-motion: reduce) {
+  .mls-share-cipher-host,
+  .mls-share-cipher-host.is-open,
+  .mls-share-cipher-host.is-fading,
+  .mls-share-cipher {
+    transition: none;
+    transform: none;
+    text-shadow: none;
+  }
+}
+.mls-slot-n-img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  flex: 0 0 auto;
+  align-self: center;
+  opacity: 0.92;
+  filter: drop-shadow(0 0 4px rgba(0, 212, 255, 0.25));
+  pointer-events: none;
+}
+.mls-force--enemy .mls-slot-n-img {
+  filter: drop-shadow(0 0 4px rgba(255, 77, 109, 0.28));
+}
+.mls-share-status {
+  min-height: 1.2em;
+  margin-top: 4px;
+  font-size: 0.72rem;
+  color: var(--accent-cyan, #00d4ff);
+}
+.mls-share-status.is-err { color: var(--accent-orange, #ff9d00); }
 .mls-share-col { position: relative; }
+.mls-share-actions .mls-btn.is-flash {
+  border-color: var(--accent-cyan, #00d4ff);
+  box-shadow: inset 0 0 0 1px rgba(0, 212, 255, 0.35);
+}
 .mls-share-faces {
   display: flex;
   flex-wrap: wrap;
@@ -492,9 +591,43 @@
 }
 .mls-views {
   display: flex;
-  gap: 6px;
-  border-bottom: 1px solid var(--border-color);
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  border-bottom: 1px solid var(--mls-rim-cyan, rgba(0, 212, 255, 0.42));
   padding-bottom: 0;
+}
+.mls-views-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+.mls-views-opts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px 16px;
+  margin-left: auto;
+  min-width: 0;
+  padding: 4px 0 6px;
+}
+.mls-views-opts .mls-check {
+  margin-right: 0;
+  font-family: Teko, var(--font-body);
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+.mls-views-opts .mls-check input {
+  accent-color: var(--accent-cyan);
+  width: 15px;
+  height: 15px;
 }
 .mls-view-btn {
   border: 0;
@@ -513,6 +646,14 @@
   color: var(--accent-cyan);
   border-bottom-color: var(--accent-cyan);
   text-shadow: 0 0 12px rgba(0, 212, 255, 0.35);
+}
+@media (max-width: 720px) {
+  .mls-views-opts {
+    margin-left: 0;
+    width: 100%;
+    justify-content: flex-start;
+  }
+  .mls-views-opts .mls-check { white-space: normal; }
 }
 .mls-view[hidden] { display: none !important; }
 .mls-note {
@@ -564,6 +705,38 @@
 }
 .mls-force--enemy .mls-force-tag { color: var(--accent-red, #ff4d6d); }
 .mls-force--ally .mls-force-tag { color: var(--accent-cyan); }
+.mls-force-clear-units {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 6px;
+  border: 1px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  cursor: pointer;
+  line-height: 0;
+}
+.mls-force-clear-units img {
+  display: block;
+  width: 28px;
+  height: auto;
+  opacity: 0.85;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.55));
+}
+.mls-force-clear-units:hover,
+.mls-force-clear-units:focus-visible {
+  border-color: rgba(0, 212, 255, 0.4);
+  background: rgba(0, 212, 255, 0.08);
+  outline: none;
+}
+.mls-force-clear-units:hover img,
+.mls-force-clear-units:focus-visible img { opacity: 1; }
+.mls-force--enemy .mls-force-clear-units:hover,
+.mls-force--enemy .mls-force-clear-units:focus-visible {
+  border-color: rgba(255, 77, 109, 0.45);
+  background: rgba(255, 77, 109, 0.1);
+}
 .mls-supp {
   padding: 8px 10px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
@@ -706,6 +879,31 @@
 .mls-slot-block.is-snap {
   animation: mls-slot-snap 0.38s var(--motion-ease-snap, cubic-bezier(0.16, 1, 0.3, 1));
 }
+/* Only my Collections: keep on formation, hide from Battle */
+.mls-slot-block.is-unowned {
+  opacity: 0.42;
+  filter: grayscale(0.55);
+}
+.mls-slot-block.is-unowned .mls-slot-meta .name {
+  color: var(--text-muted);
+}
+.mls-unowned-tag {
+  display: inline-block;
+  margin-left: 6px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  opacity: 0.95;
+}
+.mls-supp-card.is-unowned {
+  opacity: 0.42;
+  filter: grayscale(0.55);
+}
+.mls-supp-card.is-unowned .name {
+  color: var(--text-muted);
+}
 @keyframes mls-slot-snap {
   0% { transform: scale(1.045); }
   100% { transform: scale(1); }
@@ -822,6 +1020,27 @@ body.mls-is-slot-dragging .mls-slot-list {
   font-size: 1.2rem;
   color: var(--text-muted);
   border-style: dashed;
+}
+/* Same green leader-boost mark as Team Builder long cards. */
+.mls-slot-leader-buff {
+  position: absolute;
+  left: -3px;
+  top: -3px;
+  z-index: 5;
+  line-height: 0;
+  pointer-events: none;
+}
+.mls-slot-leader-buff img {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 0 6px rgba(74, 222, 128, 1)) drop-shadow(0 0 3px rgba(34, 197, 94, 1)) brightness(1.12) saturate(1.15);
+  animation: mls-leader-pulse 1.8s ease-in-out infinite;
+}
+@keyframes mls-leader-pulse {
+  0%, 100% { opacity: 0.88; }
+  50% { opacity: 1; }
 }
 .mls-pilot-pip {
   position: absolute;
@@ -946,9 +1165,12 @@ body.mls-is-slot-dragging .mls-slot-list {
   margin-right: auto;
 }
 
-/* Battle map — fit viewport (no scroll), stage map art aligned to camera */
+/* Battle map — map + turn order side-by-side (no overlay covering spawn cells). */
 .mls-map-stage {
   position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
   border: 1px solid var(--mls-rim-cyan, rgba(0, 212, 255, 0.42));
   border-radius: 0;
   clip-path: var(--mls-chamfer, polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px));
@@ -962,6 +1184,8 @@ body.mls-is-slot-dragging .mls-slot-list {
 }
 .mls-map-scroll {
   position: relative; /* READY / endcard clipped to battle map box */
+  flex: 1 1 auto;
+  min-width: 0;
   overflow: hidden;
   height: min(62vh, 560px);
   display: flex;
@@ -969,6 +1193,53 @@ body.mls-is-slot-dragging .mls-slot-list {
   justify-content: center;
   padding: 6px;
   box-sizing: border-box;
+}
+/* Battle focus: taller map. Section tabs + brand row collapse on battle view
+   (nav_tabs_auto_hide pin); reveal only after aggressive scroll-up. */
+body.mls-battle-focus .mls-map-scroll {
+  height: min(70vh, 640px);
+}
+body.mls-battle-focus #mlsShell {
+  scroll-margin-top: 0;
+}
+/* Hide brand header with section tabs while battle map is focused (same class
+   toggle as collections mobile — .app-header node stays; height snaps). */
+body.mls-battle-focus > .app-header .header-inner,
+body.mls-battle-focus .app-header .header-inner {
+  overflow: hidden;
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 180ms var(--motion-ease-standard, cubic-bezier(0.2, 0, 0, 1)),
+    transform 180ms var(--motion-ease-standard, cubic-bezier(0.2, 0, 0, 1));
+}
+body.mls-battle-focus.nav-tabs-collapsed > .app-header .header-inner,
+body.mls-battle-focus.nav-tabs-collapsed .app-header .header-inner {
+  max-height: 0 !important;
+  min-height: 0 !important;
+  height: 0 !important;
+  opacity: 0;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  transform: translateY(-8px);
+  pointer-events: none;
+}
+body.mls-battle-focus.nav-tabs-collapsed > .app-header,
+body.mls-battle-focus.nav-tabs-collapsed .app-header {
+  border-bottom-width: 0;
+  box-shadow: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  body.mls-battle-focus > .app-header .header-inner,
+  body.mls-battle-focus .app-header .header-inner {
+    transition: none !important;
+  }
+  body.mls-battle-focus.nav-tabs-collapsed > .app-header .header-inner,
+  body.mls-battle-focus.nav-tabs-collapsed .app-header .header-inner {
+    transform: none !important;
+  }
 }
 /* Live turn counter — top-left on the map (opposite turn-order strip). */
 .mls-turn-hud {
@@ -1042,32 +1313,29 @@ body.mls-is-slot-dragging .mls-slot-list {
   .mls-turn-hud-max { font-size: 1rem; }
 }
 /*
- * Battle turn order — top-right overlay.
- * Show as many chips as the panel height allows; vertical scroll for the rest.
- * No horizontal strip / side-scroll (never need all 10 visible at once).
+ * Battle turn order — column beside the map (not over it).
+ * Map fit uses .mls-map-scroll width, so cells scale into the leftover space.
  */
 .mls-map-turn-order {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  bottom: 8px;
-  z-index: 15; /* under .mls-banner (20) / endcard */
+  position: relative;
+  flex: 0 0 136px;
+  width: 136px;
+  z-index: 5;
   display: flex;
   flex-direction: column;
   gap: 3px;
-  width: min(168px, 34%);
+  height: min(62vh, 560px);
   max-height: none;
-  padding: 6px 6px 7px;
+  padding: 6px 5px 7px;
   box-sizing: border-box;
-  border: 1px solid rgba(0, 212, 255, 0.32);
+  border: none;
+  border-left: 1px solid rgba(0, 212, 255, 0.32);
   border-radius: 0;
-  clip-path: var(--mls-chamfer-sm, polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px));
+  clip-path: none;
   background:
     linear-gradient(180deg, rgba(0, 50, 80, 0.35) 0%, transparent 22%),
-    rgba(2, 8, 20, 0.9);
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 215, 0, 0.1),
-    0 4px 16px rgba(0, 0, 0, 0.35);
+    rgba(2, 8, 20, 0.96);
+  box-shadow: inset 1px 0 0 rgba(255, 215, 0, 0.1);
   pointer-events: auto;
 }
 .mls-map-turn-order-head {
@@ -1142,10 +1410,9 @@ body.mls-is-slot-dragging .mls-slot-list {
   line-height: 1.3;
   color: var(--text-muted);
 }
-/* Narrow: same vertical list under the map — no horizontal side-scroll. */
+/* Narrow: turn order stacks under the map. */
 @media (max-width: 820px) {
   .mls-map-stage {
-    display: flex;
     flex-direction: column;
     overflow: hidden;
   }
@@ -1156,26 +1423,15 @@ body.mls-is-slot-dragging .mls-slot-list {
     min-height: 220px;
   }
   .mls-map-turn-order {
-    position: relative;
-    top: auto;
-    right: auto;
-    bottom: auto;
-    z-index: 5;
-    width: 100%;
-    max-width: none;
-    /* Cap height — show what fits, scroll the rest vertically. */
-    max-height: min(42vh, 280px);
     flex: 0 1 auto;
+    width: 100%;
+    height: auto;
+    max-height: min(42vh, 280px);
     gap: 2px;
     padding: 6px 8px 8px;
-    border-radius: 0;
-    clip-path: none;
     border-left: none;
-    border-right: none;
-    border-bottom: none;
     border-top: 1px solid rgba(0, 212, 255, 0.28);
     box-shadow: inset 0 1px 0 rgba(255, 215, 0, 0.1);
-    background: rgba(2, 8, 20, 0.96);
   }
   .mls-map-turn-order-head {
     flex-wrap: nowrap;
@@ -1873,23 +2129,43 @@ body.mls-is-map-dragging .mls-map {
   .mls-token-hp > i.mls-hp-ghost,
   .mls-token-hp.is-healing > i.mls-hp-cur { transition: none; }
 }
-/* Unit skill icon — stays above the portrait after activation for the whole fight. */
-.mls-token-skill-mark {
+/* Crown icons above portrait: unit skill + Guaranteed CS stock, side by side. */
+.mls-token-top-marks {
   position: absolute;
-  top: -4px;
+  top: -6px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 6;
-  width: 20px;
-  height: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
   pointer-events: none;
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.85));
 }
-.mls-token-skill-mark img {
+.mls-token-skill-mark,
+.mls-token-gcs-mark,
+.mls-token-status-mark {
+  position: relative;
+  top: 0;
+  left: 0;
+  transform: none;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+}
+.mls-token-skill-mark img,
+.mls-token-gcs-mark img,
+.mls-token-status-mark img {
   width: 100%;
   height: 100%;
   object-fit: contain;
   display: block;
+}
+.mls-token-status-mark {
+  /* Slight gold rim so Inflict statuses read as debuffs next to skill / GCS. */
+  filter: drop-shadow(0 0 1px rgba(255, 180, 60, 0.9));
 }
 .mls-stat-modes {
   display: inline-flex;
@@ -1940,10 +2216,13 @@ body.mls-is-map-dragging .mls-map {
   border: none;
   text-shadow: 0 1px 3px #000, 0 0 6px rgba(0, 0, 0, 0.8);
 }
-/* Sticky skill icon owns the crown; temporary chips (CS / SD) sit just under it. */
-.mls-token:has(.mls-token-skill-mark) .mls-token-badge {
+/* Sticky crown icons own the top; temporary chips (CS / SD) sit just under them. */
+.mls-token:has(.mls-token-top-marks) .mls-token-badge,
+.mls-token:has(.mls-token-skill-mark) .mls-token-badge,
+.mls-token:has(.mls-token-gcs-mark) .mls-token-badge {
   top: 16px;
 }
+.mls-token:has(.mls-token-top-marks) .mls-token-badge.is-skill,
 .mls-token:has(.mls-token-skill-mark) .mls-token-badge.is-skill {
   display: none;
 }
@@ -2116,6 +2395,14 @@ body.mls-is-map-dragging .mls-map {
 }
 .mls-token.is-active:not(.is-covering) {
   transform: scale(1.12);
+}
+/* KO linger — grey-out only (no fade). Stays until Counter finishes, then is-dead fades once. */
+.mls-token.is-ko-linger {
+  opacity: 1;
+  filter: grayscale(1) brightness(0.62);
+  pointer-events: none;
+  z-index: 3;
+  transition: filter 0.2s ease;
 }
 /* KO — fade out then leave the map (no lingering greyscale corpses). */
 .mls-token.is-dead {
@@ -2600,12 +2887,15 @@ body.mls-is-map-dragging .mls-map {
   font-size: 11px;
   color: var(--text-secondary, #d5deea);
   min-width: 0;
-  line-height: 1.25;
-  white-space: nowrap;
+  line-height: 1.3;
+  white-space: normal;
   overflow: hidden;
-  text-overflow: ellipsis;
   max-width: 100%;
   text-align: right;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
 }
 @media (max-width: 720px) {
   .mls-controls { flex-direction: column; align-items: stretch; }

@@ -21,6 +21,11 @@
   var lastAlly = [];
   var lastEnemy = [];
   var sideSupportData = { ally: null, enemy: null };
+  /* Per unit+pilot: supporter detail with leader_skills.applies resolved (for_unit_id). */
+  var supporterForUnitCache = {};
+  var leaderApplyCache = {};
+  var leaderApplyRefreshTimer = null;
+  var LEADER_BUFF_ICON = '/static/images/UI/UI_Organization_Icon_SupporterLeader_Posi.webp';
   var fightBusy = false;
   var paused = false;
   var skipAll = false;
@@ -175,13 +180,54 @@
     return (board && board.map) || {};
   }
 
-  function ownedMap() {
+  function collectionsOwned() {
     try {
       var o = JSON.parse(localStorage.getItem('ggen_collections_v1') || 'null');
-      return (o && o.units) || {};
+      return {
+        units: (o && o.units) || {},
+        supporters: (o && o.supporters) || {}
+      };
     } catch (e) {
-      return {};
+      return { units: {}, supporters: {} };
     }
+  }
+
+  function ownedMap() {
+    return collectionsOwned().units;
+  }
+
+  function ownedSupportersMap() {
+    return collectionsOwned().supporters;
+  }
+
+  /** Formation picker + battle board: only kits marked in Collections. */
+  function wantOwnedOnly() {
+    var el = document.getElementById('mlsOwnedOnly');
+    return !!(el && el.checked);
+  }
+
+  function unitOwnedInCollections(unitId) {
+    if (unitId == null || unitId === '') return false;
+    return ownedMap()[String(unitId)] != null;
+  }
+
+  function supporterOwnedInCollections(suppId) {
+    if (suppId == null || suppId === '') return false;
+    return ownedSupportersMap()[String(suppId)] != null;
+  }
+
+  /**
+   * Ally only: slotted but not in Collections while "Only my Collections" is on
+   * → grey-out on formation / omit from Battle. Enemy force is never filtered.
+   */
+  function slotExcludedByCollections(sl, side) {
+    if (side !== 'ally') return false;
+    return !!(wantOwnedOnly() && sl && sl.unitId && !unitOwnedInCollections(sl.unitId));
+  }
+
+  function supporterExcludedByCollections(sup, side) {
+    if (side !== 'ally') return false;
+    return !!(wantOwnedOnly() && sup && sup.id && !supporterOwnedInCollections(sup.id));
   }
 
   function loadRoster() {
@@ -319,10 +365,10 @@
     scheduleOrderRefresh();
   }
 
-  function collectionsLb(unitId) {
+  function collectionsLbFromBag(bag, id) {
     try {
-      var o = JSON.parse(localStorage.getItem('ggen_collections_v1') || 'null');
-      var v = o && o.units && o.units[String(unitId)];
+      if (!bag || id == null || id === '') return null;
+      var v = bag[String(id)];
       if (v == null || v === '') return null;
       var n = parseInt(v, 10);
       if (isNaN(n) || n < 0) return null;
@@ -330,6 +376,64 @@
     } catch (e) {
       return null;
     }
+  }
+
+  function collectionsLb(unitId) {
+    return collectionsLbFromBag(ownedMap(), unitId);
+  }
+
+  function collectionsSupporterLb(suppId) {
+    return collectionsLbFromBag(ownedSupportersMap(), suppId);
+  }
+
+  function wantCollectionsLbSync() {
+    var el = document.getElementById('mlsShareUseColLb');
+    return !!(el && el.checked);
+  }
+
+  /**
+   * Ally only: sync unit + supporter Limit Break from Collections (exact ids).
+   * Unowned / missing ids are left alone. Returns how many entities changed.
+   */
+  function applyCollectionsLbToAllyForce() {
+    var force, slots, i, lb, n, sup;
+    if (!wantCollectionsLbSync()) return 0;
+    force = forceOf('ally');
+    slots = force.slots;
+    n = 0;
+    for (i = 0; i < slots.length; i++) {
+      if (!slots[i] || !slots[i].unitId) continue;
+      lb = collectionsLb(slots[i].unitId);
+      if (lb == null) continue;
+      if ((slots[i].lb | 0) !== lb) {
+        slots[i].lb = lb;
+        n++;
+      }
+    }
+    sup = force.supporter;
+    if (sup && sup.id) {
+      lb = collectionsSupporterLb(sup.id);
+      if (lb != null && (sup.lb | 0) !== lb) {
+        sup.lb = lb;
+        n++;
+      }
+    }
+    return n;
+  }
+
+  function syncAllyLbsFromCollections(opts) {
+    var n = applyCollectionsLbToAllyForce();
+    opts = opts || {};
+    if (n || opts.forcePaint) {
+      saveRoster();
+      paintForceSlots();
+      fillShareBoxes();
+      scheduleOrderRefresh();
+      if (viewName === 'battle') {
+        loadArmies().then(function () { paintBoard(); paintTimeline(); });
+      }
+    }
+    return n;
   }
 
   var MLS_RARITY_ICONS = {
@@ -453,8 +557,7 @@
 
   function applyShareText(side, text) {
     var raw = String(text || '').trim();
-    var useCol = document.getElementById('mlsShareUseColLb');
-    var parsed, slots, i, lb, force;
+    var parsed, slots, force, synced;
     if (/^MLS[12]\|E:/i.test(raw) && /\|A:/i.test(raw)) {
       var ver = /^MLS2\|/i.test(raw) ? 'MLS2|' : 'MLS1|';
       var enemyPart = raw.replace(/^MLS[12]\|E:/i, '').split(/\|A:/i)[0];
@@ -466,30 +569,30 @@
     parsed = parseForcePayload(raw);
     if (!parsed || !parsed.slots) return;
     slots = parsed.slots;
-    if (side === 'ally' && useCol && useCol.checked) {
-      for (i = 0; i < slots.length; i++) {
-        if (!slots[i]) continue;
-        lb = collectionsLb(slots[i].unitId);
-        if (lb != null) slots[i].lb = lb;
-      }
-    }
     force = forceOf(side);
     force.slots = slots;
     force.supporter = parsed.supporter;
+    synced = 0;
+    if (side === 'ally') synced = applyCollectionsLbToAllyForce();
     saveRoster();
     paintForceSlots();
     fillShareBoxes();
     hydrateSlotPilotsAndOps().then(function () {
+      /* Re-apply after hydrate in case slot objects were replaced. */
+      if (side === 'ally') applyCollectionsLbToAllyForce();
       fillShareBoxes();
       scheduleOrderRefresh();
       if (viewName === 'battle') return loadArmies().then(function () { paintBoard(); paintTimeline(); });
       return null;
     });
-    log('Loaded ' + side + ' from share code.');
+    log('Loaded ' + side + ' from share code.' +
+      (synced ? (' Synced ' + synced + ' Limit Break(s) from Collections.') : ''));
   }
 
   function forceHasUnits(side) {
-    return forceOf(side).slots.some(function (sl) { return sl && sl.unitId; });
+    return forceOf(side).slots.some(function (sl) {
+      return sl && sl.unitId && !slotExcludedByCollections(sl, side);
+    });
   }
 
   var shareFaceLayoutKey = { enemy: '', ally: '' };
@@ -569,34 +672,303 @@
     }
   }
 
+  /** Takayu-style tx-decrypt-center glyphs — only shown on Copy / Load. */
+  var SHARE_CIPHER_GLYPHS = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789|/;:#*+-=<>';
+  var shareCipherTimers = { enemy: null, ally: null };
+  var shareCipherHold = { enemy: null, ally: null };
+  var shareInputArmed = { enemy: false, ally: false };
+
+  function preferReducedMotion() {
+    try {
+      return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    } catch (eRm) {
+      return false;
+    }
+  }
+
+  function shareCipherEl(side) {
+    return document.getElementById(side === 'enemy' ? 'mlsShareEnemyCipher' : 'mlsShareAllyCipher');
+  }
+
+  function shareCipherHost(side) {
+    var el = shareCipherEl(side);
+    return el && el.closest ? el.closest('.mls-share-cipher-host') : null;
+  }
+
+  function shareBoxEl(side) {
+    return document.getElementById(side === 'enemy' ? 'mlsShareEnemy' : 'mlsShareAlly');
+  }
+
+  function stopShareCipher(side) {
+    if (shareCipherTimers[side]) {
+      clearInterval(shareCipherTimers[side]);
+      shareCipherTimers[side] = null;
+    }
+    if (shareCipherHold[side]) {
+      clearTimeout(shareCipherHold[side]);
+      shareCipherHold[side] = null;
+    }
+  }
+
+  function randomShareGlyph() {
+    return SHARE_CIPHER_GLYPHS.charAt((Math.random() * SHARE_CIPHER_GLYPHS.length) | 0);
+  }
+
+  function hideSharePanel(side, immediate) {
+    var host = shareCipherHost(side);
+    var box = shareBoxEl(side);
+    var cipher = shareCipherEl(side);
+    stopShareCipher(side);
+    shareInputArmed[side] = false;
+    if (!host) return;
+    host.classList.remove('is-input', 'is-editing', 'is-copy-fx');
+    if (cipher) cipher.classList.remove('is-decrypting', 'is-copied', 'is-prompt');
+    function close() {
+      host.classList.remove('is-open', 'is-fading');
+      host.hidden = true;
+      if (cipher) cipher.textContent = '';
+      if (box && document.activeElement !== box) box.value = '';
+    }
+    if (immediate || preferReducedMotion() || !host.classList.contains('is-open')) {
+      close();
+      return;
+    }
+    host.classList.add('is-fading');
+    shareCipherHold[side] = setTimeout(close, 280);
+  }
+
+  function openSharePanel(side, mode) {
+    var host = shareCipherHost(side);
+    var box = shareBoxEl(side);
+    var cipher = shareCipherEl(side);
+    if (!host) return;
+    stopShareCipher(side);
+    host.hidden = false;
+    host.classList.remove('is-fading');
+    host.classList.add('is-open');
+    host.classList.toggle('is-input', mode === 'input');
+    host.classList.toggle('is-copy-fx', mode === 'copy');
+    host.classList.remove('is-editing');
+    if (cipher) cipher.classList.remove('is-decrypting', 'is-copied', 'is-prompt');
+    if (mode === 'input' && box) {
+      box.value = '';
+      shareInputArmed[side] = true;
+    }
+  }
+
+  /**
+   * Center-out decrypt → “Formation Copied”, then fade the panel away.
+   */
+  function playCopiedShareCipher(side) {
+    var el = shareCipherEl(side);
+    var host = shareCipherHost(side);
+    var target = 'Formation Copied';
+    var fieldLen, pad, finalChars, order, locked, chars, mid, step, tick, i, d, L, R;
+    openSharePanel(side, 'copy');
+    if (!el || !host) return;
+    el.classList.remove('is-prompt');
+    if (preferReducedMotion()) {
+      el.textContent = target;
+      el.classList.add('is-copied');
+      shareCipherHold[side] = setTimeout(function () { hideSharePanel(side); }, 1100);
+      return;
+    }
+    fieldLen = Math.max(target.length + 6, 22);
+    if (fieldLen % 2 === 0) fieldLen += 1;
+    pad = ((fieldLen - target.length) / 2) | 0;
+    finalChars = [];
+    for (i = 0; i < fieldLen; i++) {
+      finalChars.push(i >= pad && i < pad + target.length ? target.charAt(i - pad) : ' ');
+    }
+    mid = (fieldLen - 1) / 2;
+    order = [];
+    for (d = 0; d <= Math.ceil(fieldLen / 2); d++) {
+      L = Math.floor(mid - d);
+      R = Math.ceil(mid + d);
+      if (L >= 0 && order.indexOf(L) < 0) order.push(L);
+      if (R < fieldLen && order.indexOf(R) < 0) order.push(R);
+    }
+    locked = Object.create(null);
+    chars = [];
+    for (i = 0; i < fieldLen; i++) chars.push(randomShareGlyph());
+    step = 0;
+    tick = 0;
+    el.classList.add('is-decrypting');
+    el.textContent = chars.join('');
+    shareCipherTimers[side] = setInterval(function () {
+      tick += 1;
+      for (i = 0; i < fieldLen; i++) {
+        if (locked[i]) continue;
+        chars[i] = finalChars[i] === ' ' ? ' ' : randomShareGlyph();
+      }
+      if (tick > 6 && ((tick - 6) % 2) === 0 && step < order.length) {
+        locked[order[step]] = true;
+        chars[order[step]] = finalChars[order[step]];
+        step += 1;
+      }
+      el.textContent = chars.join('');
+      if (step >= order.length) {
+        stopShareCipher(side);
+        el.textContent = target;
+        el.classList.remove('is-decrypting');
+        el.classList.add('is-copied');
+        shareCipherHold[side] = setTimeout(function () { hideSharePanel(side); }, 1200);
+      }
+    }, 42);
+  }
+
+  function openShareInputPanel(side) {
+    var el = shareCipherEl(side);
+    var box = shareBoxEl(side);
+    var prompt = 'Please input the code';
+    openSharePanel(side, 'input');
+    if (el) {
+      el.textContent = prompt;
+      el.classList.add('is-prompt');
+      el.classList.remove('is-decrypting', 'is-copied');
+    }
+    if (box) {
+      try {
+        box.focus();
+        box.select();
+      } catch (eF) { /* ignore */ }
+    }
+    setShareStatus(side, prompt, false);
+  }
+
+  function tryAutoLoadShareInput(side) {
+    var box = shareBoxEl(side);
+    var raw;
+    if (!shareInputArmed[side] || !box) return;
+    raw = String(box.value || '').trim();
+    if (!looksLikeShareCode(raw)) return;
+    shareInputArmed[side] = false;
+    applyShareCode(side, raw);
+  }
+
+  function bindShareCipherHosts() {
+    ['enemy', 'ally'].forEach(function (side) {
+      var box = shareBoxEl(side);
+      var host = shareCipherHost(side);
+      if (!box || !host || host._mlsCipherBound) return;
+      host._mlsCipherBound = true;
+      box.addEventListener('focus', function () {
+        if (!host.classList.contains('is-input')) return;
+        host.classList.add('is-editing');
+      });
+      box.addEventListener('blur', function () {
+        host.classList.remove('is-editing');
+        if (host.classList.contains('is-input') && shareInputArmed[side] &&
+            !looksLikeShareCode(box.value)) {
+          var c = shareCipherEl(side);
+          if (c) {
+            c.textContent = 'Please input the code';
+            c.classList.add('is-prompt');
+          }
+        }
+      });
+      box.addEventListener('input', function () { tryAutoLoadShareInput(side); });
+      box.addEventListener('paste', function () {
+        setTimeout(function () { tryAutoLoadShareInput(side); }, 0);
+      });
+    });
+  }
+
   function fillShareBoxes() {
-    var e = document.getElementById('mlsShareEnemy');
-    var a = document.getElementById('mlsShareAlly');
-    if (e && document.activeElement !== e) e.value = exportForceCode('enemy');
-    if (a && document.activeElement !== a) a.value = exportForceCode('ally');
+    bindShareCipherHosts();
+    /* Keep closed by default; leave an open Copy/Load panel alone during roster refreshes. */
+    ['enemy', 'ally'].forEach(function (side) {
+      var host = shareCipherHost(side);
+      if (host && host.classList.contains('is-open')) return;
+      hideSharePanel(side, true);
+    });
     syncShareFacesReady();
   }
 
+  function shareSideLabel(side) {
+    return side === 'enemy'
+      ? mlsT('mls_enemy_forces', 'Enemy Forces')
+      : mlsT('mls_your_forces', 'Your Forces');
+  }
+
+  function setShareStatus(side, msg, isErr) {
+    var el = document.getElementById(side === 'enemy' ? 'mlsShareEnemyStatus' : 'mlsShareAllyStatus');
+    if (!el) return;
+    el.textContent = msg || '';
+    el.classList.toggle('is-err', !!isErr);
+  }
+
+  function looksLikeShareCode(text) {
+    var t = String(text || '').trim();
+    return /^MLS[12]\|/i.test(t) || (/^[EA]:/i.test(t) && t.indexOf('|') >= 0);
+  }
+
+  function forceIsEmpty(side) {
+    var f = forceOf(side);
+    var hasUnit = f.slots.some(function (sl) { return sl && sl.unitId; });
+    var hasSup = !!(f.supporter && f.supporter.id);
+    return !hasUnit && !hasSup;
+  }
+
+  /**
+   * Copy → clipboard + short decrypt panel (“Formation Copied”) then fade away.
+   * Load → open “Please input the code”; valid MLS code auto-applies (no extra click).
+   */
+  function copyShare(side) {
+    var btn = document.getElementById(side === 'enemy' ? 'mlsShareEnemyCopy' : 'mlsShareAllyCopy');
+    var text = exportForceCode(side);
+    var sideLab = shareSideLabel(side);
+    var msg;
+    if (forceIsEmpty(side)) {
+      msg = mlsT('mls_share_empty', 'Force is empty — pick units first.');
+      setShareStatus(side, msg, true);
+      log(msg);
+      return;
+    }
+    function ok() {
+      msg = mlsT('mls_share_copied', 'Copied {side} force code').replace('{side}', sideLab);
+      setShareStatus(side, msg, false);
+      log(msg);
+      playCopiedShareCipher(side);
+      if (btn) {
+        btn.classList.add('is-flash');
+        setTimeout(function () { btn.classList.remove('is-flash'); }, 450);
+      }
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(ok, function () { ok(); });
+    } else {
+      ok();
+    }
+  }
+
+  function applyShareCode(side, text) {
+    var raw = String(text || '').trim();
+    var el = shareBoxEl(side);
+    var sideLab = shareSideLabel(side);
+    var msg;
+    if (!raw) {
+      msg = mlsT('mls_share_empty', 'Force is empty — pick units first.');
+      setShareStatus(side, msg, true);
+      log('Share code empty.');
+      return false;
+    }
+    if (!looksLikeShareCode(raw)) {
+      msg = mlsT('mls_share_bad', 'Not an MLS share code (need MLS2|… or MLS1|…).');
+      setShareStatus(side, msg, true);
+      log(msg);
+      return false;
+    }
+    if (el) el.value = raw;
+    applyShareText(side, raw);
+    msg = mlsT('mls_share_loaded', 'Loaded {side} force').replace('{side}', sideLab);
+    setShareStatus(side, msg, false);
+    hideSharePanel(side);
+    return true;
+  }
+
   function loadShareFromClipboard(side) {
-    var el = document.getElementById(side === 'enemy' ? 'mlsShareEnemy' : 'mlsShareAlly');
-    function apply(text) {
-      if (el) el.value = text;
-      applyShareText(side, text);
-    }
-    if (navigator.clipboard && navigator.clipboard.readText) {
-      return navigator.clipboard.readText().then(function (text) {
-        if (!String(text || '').trim()) {
-          log('Clipboard empty — copy a share code first.');
-          return;
-        }
-        apply(text);
-      }).catch(function () {
-        var manual = window.prompt('Paste ' + side + ' share code (MLS2|…)', el ? el.value : '');
-        if (manual != null) apply(manual);
-      });
-    }
-    var fallback = window.prompt('Paste ' + side + ' share code (MLS2|…)', el ? el.value : '');
-    if (fallback != null) apply(fallback);
+    openShareInputPanel(side);
     return Promise.resolve();
   }
 
@@ -721,6 +1093,7 @@
     paintSlotList('mlsAllySlots', forceOf('ally').slots, 'ally');
     fillShareBoxes();
     void renderMlsStats();
+    scheduleLeaderApplyRefresh();
   }
 
   function sideFacing(side) {
@@ -773,6 +1146,15 @@
 
   var MLS_SP_ICON = '/static/images/UI/UI_Common_Icon_Sp.webp';
   var MLS_SSP_ICON = '/static/images/UI/UI_Common_Icon_Ssp.webp';
+  /** Master League SD card digit plates (slots 1–5). */
+  var MLS_SLOT_NUM_BASE = '/static/images/Master League/UI_Event_SD_Card_Text_';
+
+  function slotNumBadgeHtml(n) {
+    var num = Math.max(1, Math.min(5, n | 0));
+    var src = thumbUrl(MLS_SLOT_NUM_BASE + num + '.webp');
+    return '<img class="mls-slot-n-img" src="' + esc(src) + '" alt="#' + num +
+      '" width="22" height="22" loading="lazy" decoding="async" draggable="false">';
+  }
 
   function statModeBtn(side, idx, kind, mode, on, icon, label) {
     return '<button type="button" class="mls-sp-btn' + (on ? ' is-on' : '') +
@@ -812,13 +1194,21 @@
     var lb = sup && sup.lb != null ? (sup.lb | 0) : 3;
     var catIc = mlsIconImg(MLS_SUPP_CAT_ICON, 'mls-ic mls-ic--supp', 'Supporter');
     var rarIc = rarityIconHtml(sup && sup.rarity, 'mls-ic mls-ic--rarity');
+    var unowned = supporterExcludedByCollections(sup, side);
     if (sup && sup.id) {
       host.innerHTML =
-        '<button type="button" class="mls-supp-card has-supp" data-mls-pick-supp="' + side + '" title="Supporter · tag-boosted unit suggestions">' +
+        '<button type="button" class="mls-supp-card has-supp' + (unowned ? ' is-unowned' : '') +
+        '" data-mls-pick-supp="' + side + '" title="' +
+        (unowned
+          ? 'Not in Collections — greyed out; ignored on Battle while Only my Collections is on (ally only)'
+          : 'Supporter · tag-boosted unit suggestions') + '">' +
         '<img class="mls-supp-thum" src="' + esc(thumbUrl(sup.thum || '')) + '" alt="" loading="lazy" decoding="async">' +
         '<span class="mls-supp-meta"><span class="name">' + esc(sup.name || sup.id) + '</span>' +
         '<span class="sub mls-sub-icons">' + catIc + rarIc +
-        '<span class="mls-sub-hint">tag-boosted picks</span></span></span>' +
+        (unowned
+          ? '<span class="mls-sub-hint">not in Collections</span>'
+          : '<span class="mls-sub-hint">tag-boosted picks</span>') +
+        '</span></span>' +
         '<span class="mls-supp-actions">' +
         '<span class="mls-supp-lb" onclick="event.stopPropagation()">' + lbButtonsHtml(side, 0, lb, 'sup') + '</span>' +
         '<button type="button" class="mls-mini-btn danger" data-mls-clear-supp="' + side + '">Clear</button>' +
@@ -827,23 +1217,111 @@
       host.innerHTML =
         '<button type="button" class="mls-supp-card" data-mls-pick-supp="' + side + '" title="Same as /tb — units suggest from this supporter’s tags">' +
         '<span class="mls-supp-thum">＋</span>' +
-        '<span class="mls-supp-meta"><span class="name">Pick supporter</span>' +
+        '<span class="mls-supp-meta"><span class="name">' + esc(mlsT('mls_pick_supporter', 'Pick supporter')) + '</span>' +
         '<span class="sub mls-sub-icons">' + catIc +
-        '<span class="mls-sub-hint">tag-boosted picks</span></span></span>' +
+        '<span class="mls-sub-hint">' + esc(mlsT('mls_supporter', 'Supporters')) + '</span></span></span>' +
         '<span class="mls-slot-n">SUP</span></button>';
     }
+  }
+
+  function leaderCacheKey(side, unitId, charId) {
+    return String(side || '') + ':' + String(unitId || '') + ':' + String(charId || '');
+  }
+
+  function clearLeaderApplyCaches(side) {
+    var prefix, k;
+    if (!side) {
+      supporterForUnitCache = {};
+      leaderApplyCache = {};
+      return;
+    }
+    prefix = String(side) + ':';
+    Object.keys(supporterForUnitCache).forEach(function (key) {
+      if (key.indexOf(prefix) === 0) delete supporterForUnitCache[key];
+    });
+    Object.keys(leaderApplyCache).forEach(function (key) {
+      if (key.indexOf(prefix) === 0) delete leaderApplyCache[key];
+    });
+  }
+
+  function unitHasLeaderBoost(side, sl) {
+    if (!sl || !sl.unitId || !forceOf(side).supporter) return false;
+    return !!leaderApplyCache[leaderCacheKey(side, sl.unitId, sl.charId)];
+  }
+
+  function fetchSupporterForUnit(side, unitId, charId) {
+    var ent = forceOf(side).supporter;
+    var key, lb, url;
+    if (!ent || !ent.id || !unitId) return Promise.resolve(null);
+    if (side === 'ally' && supporterExcludedByCollections(ent, 'ally')) return Promise.resolve(null);
+    key = leaderCacheKey(side, unitId, charId);
+    if (Object.prototype.hasOwnProperty.call(supporterForUnitCache, key)) {
+      return Promise.resolve(supporterForUnitCache[key]);
+    }
+    lb = ent.lb != null ? (ent.lb | 0) : 3;
+    url = '/api/supporter/' + encodeURIComponent(ent.id) +
+      '?lang=' + encodeURIComponent(lang()) + '&level=100&lb_tier=' + lb +
+      '&for_unit_id=' + encodeURIComponent(String(unitId));
+    if (charId) url += '&for_char_id=' + encodeURIComponent(String(charId));
+    return fetchJson(url).then(function (d) {
+      if (!d || d.error) {
+        supporterForUnitCache[key] = null;
+        leaderApplyCache[key] = false;
+        return null;
+      }
+      d._dcLevel = 100;
+      d._dcLbTier = lb;
+      supporterForUnitCache[key] = d;
+      leaderApplyCache[key] = (d.leader_skills || []).some(function (x) { return !!(x && x.applies); });
+      return d;
+    }).catch(function () {
+      supporterForUnitCache[key] = null;
+      leaderApplyCache[key] = false;
+      return null;
+    });
+  }
+
+  function scheduleLeaderApplyRefresh() {
+    clearTimeout(leaderApplyRefreshTimer);
+    leaderApplyRefreshTimer = setTimeout(refreshLeaderApplies, 80);
+  }
+
+  function refreshLeaderApplies() {
+    var tasks = [];
+    ['ally', 'enemy'].forEach(function (side) {
+      var slots, i, sl, key;
+      if (!forceOf(side).supporter || !forceOf(side).supporter.id) return;
+      slots = forceOf(side).slots || [];
+      for (i = 0; i < SLOT_COUNT; i++) {
+        sl = slots[i];
+        if (!sl || !sl.unitId) continue;
+        key = leaderCacheKey(side, sl.unitId, sl.charId);
+        if (Object.prototype.hasOwnProperty.call(leaderApplyCache, key)) continue;
+        tasks.push(fetchSupporterForUnit(side, sl.unitId, sl.charId));
+      }
+    });
+    if (!tasks.length) return;
+    Promise.all(tasks).then(function () {
+      paintForceSlots();
+    });
   }
 
   function paintSlotList(hostId, slots, side) {
     var host = document.getElementById(hostId);
     if (!host) return;
     var html = '';
-    var i, sl, thum, lb, opHtml;
+    var i, sl, thum, lb, opHtml, unowned, leaderBoost, leaderIc;
     for (i = 0; i < SLOT_COUNT; i++) {
       sl = slots[i];
       if (sl && sl.unitId) {
         thum = thumbUrl(sl.thum || '');
         lb = sl.lb != null ? (sl.lb | 0) : 3;
+        unowned = slotExcludedByCollections(sl, side);
+        leaderBoost = unitHasLeaderBoost(side, sl);
+        leaderIc = leaderBoost
+          ? ('<span class="mls-slot-leader-buff" title="Supporter leader skill applies">' +
+            '<img src="' + esc(thumbUrl(LEADER_BUFF_ICON)) + '" alt="" draggable="false"></span>')
+          : '';
         if (sl.optionPartId) {
           opHtml = '<span class="mls-op-chip">' +
             (sl.optionPartThum
@@ -855,13 +1333,18 @@
         } else {
           opHtml = '<button type="button" class="mls-mini-btn" data-mls-pick-op="' + side + ':' + i + '">+ Option part</button>';
         }
-        html += '<div class="mls-slot-block" data-mls-slot="' + side + ':' + i + '" draggable="false">' +
+        html += '<div class="mls-slot-block' + (unowned ? ' is-unowned' : '') +
+          '" data-mls-slot="' + side + ':' + i + '" draggable="false"' +
+          (unowned
+            ? ' title="Not in Collections — greyed out; does not appear on Battle while Only my Collections is on (ally only)"'
+            : '') + '>' +
           '<button type="button" class="mls-slot" data-mls-pick-unit="' + side + ':' + i + '">' +
           '<span class="mls-slot-thum-wrap" data-mls-drag="' + side + ':' + i +
           '" title="Drag to reorder">' +
           (thum
             ? '<img class="mls-slot-thum" src="' + esc(thum) + '" alt="" loading="lazy" decoding="async" draggable="false">'
             : '<span class="mls-slot-thum"></span>') +
+          leaderIc +
           '<span class="mls-pilot-pip' + (sl.charThum ? '' : ' is-empty') +
           '" data-mls-pick-pilot="' + side + ':' + i + '" title="Change pilot" ' +
           'aria-label="Change pilot">' +
@@ -873,8 +1356,9 @@
           '<span class="sub mls-sub-icons" title="Tap unit name to change · drag portrait to reorder">' +
           rarityIconHtml(sl.rarity) +
           roleIconHtml(sl.roleIcon || sl.roleId) +
+          (unowned ? '<span class="mls-unowned-tag">not in Collections</span>' : '') +
           '</span></span>' +
-          '<span class="mls-slot-n">#' + (i + 1) + '</span></button>' +
+          slotNumBadgeHtml(i + 1) + '</button>' +
           '<div class="mls-slot-tools">' +
           '<button type="button" class="mls-mini-btn mls-pilot-btn" data-mls-pick-pilot="' +
           side + ':' + i + '" title="Change pilot">' +
@@ -894,12 +1378,23 @@
           '<span class="sub">Tap to pick a unit' +
           (forceOf(side).supporter ? ' (boosted by supporter tags)' : '') +
           '</span></span>' +
-          '<span class="mls-slot-n">#' + (i + 1) + '</span></button>' +
+          slotNumBadgeHtml(i + 1) + '</button>' +
           '</div>';
       }
     }
     host.innerHTML = html;
     bindSlotDrag(host, side);
+  }
+
+  function actorSupporterPayload(actor) {
+    var key, cached;
+    if (!actor || !actor.unit) return null;
+    if (actor.supporter) return actor.supporter;
+    key = leaderCacheKey(actor.side, actor.unit.id, actor.char && actor.char.id);
+    cached = supporterForUnitCache[key];
+    if (cached) return cached;
+    /* Never fall back to unscoped sideSupportData (applies=true for every unit). */
+    return null;
   }
 
   function swapForceSlots(side, fromIdx, toIdx) {
@@ -1766,6 +2261,97 @@
     }, true);
   }
 
+  /**
+   * Battle view: taller map chrome. Collapse section tabs immediately on Open battle map
+   * (pinned through scroll-into-view). Reveal only via aggressive scroll-up
+   * (nav_tabs_auto_hide) — do not remove .app-header.
+   */
+  function syncMlsBattleChrome(on) {
+    try {
+      document.body.classList.toggle('mls-battle-focus', !!on);
+      /* Class first so setCollapsed can pin MLS battle focus. */
+      if (window.GgenNavTabsAutoHide && typeof window.GgenNavTabsAutoHide.setCollapsed === 'function') {
+        window.GgenNavTabsAutoHide.setCollapsed(!!on);
+      } else if (typeof window.setNavTabsCollapsed === 'function') {
+        window.setNavTabsCollapsed(!!on);
+      }
+    } catch (e) { /* ignore */ }
+  }
+
+  function mlsPageScrollY() {
+    return window.pageYOffset || window.scrollY || 0;
+  }
+
+  function mlsStickyHeaderPad() {
+    var header = document.querySelector('header.app-header') || document.querySelector('.app-header');
+    var h = 0;
+    try {
+      if (header && header.offsetParent !== null) h = header.getBoundingClientRect().height || 0;
+    } catch (e) { /* ignore */ }
+    return h + 10;
+  }
+
+  function mlsScrollToY(y) {
+    y = Math.max(0, Math.round(y));
+    try {
+      if (typeof window.scrollTo === 'function') {
+        try {
+          window.scrollTo({ top: y, left: 0, behavior: 'smooth' });
+        } catch (e1) {
+          window.scrollTo(0, y);
+        }
+      } else {
+        window.scrollTo(0, y);
+      }
+    } catch (e) { /* ignore */ }
+  }
+
+  /** ← Formation: land on the supporter / force cards (not the share footer). */
+  function scrollMlsFormationIntoView() {
+    var form = document.getElementById('mlsViewFormation');
+    var el;
+    if (!form || form.hidden) return;
+    el = document.querySelector('#mlsViewFormation .mls-forces') ||
+      document.getElementById('mlsAllySupp') ||
+      document.getElementById('mlsEnemySupp') ||
+      form;
+    if (!el) return;
+    try {
+      mlsScrollToY(mlsPageScrollY() + el.getBoundingClientRect().top - mlsStickyHeaderPad());
+    } catch (e) { /* ignore */ }
+  }
+
+  /**
+   * Open battle map: show map + SIMULATION START together.
+   * If both fit, pin map near the top; if not, keep Start visible near the bottom.
+   */
+  function scrollMlsBattleIntoView() {
+    var battle = document.getElementById('mlsViewBattle');
+    var map, end, pad, winH, scrollY, mapTop, endBottom, span, y;
+    if (!battle || battle.hidden) return;
+    map = document.querySelector('#mlsViewBattle .mls-map-scroll') ||
+      document.getElementById('mlsBoard') || battle;
+    end = document.getElementById('mlsFight') ||
+      document.querySelector('#mlsViewBattle .mls-controls');
+    if (!map) return;
+    try {
+      pad = 8;
+      winH = window.innerHeight || document.documentElement.clientHeight || 0;
+      scrollY = mlsPageScrollY();
+      mapTop = map.getBoundingClientRect().top + scrollY;
+      endBottom = (end ? end.getBoundingClientRect().bottom : map.getBoundingClientRect().bottom) + scrollY;
+      span = endBottom - mapTop;
+      if (winH > 0 && span + pad * 2 <= winH) {
+        y = mapTop - pad;
+      } else if (winH > 0) {
+        y = endBottom - winH + pad;
+      } else {
+        y = mapTop - pad;
+      }
+      mlsScrollToY(y);
+    } catch (e) { /* ignore */ }
+  }
+
   function setView(name) {
     viewName = name;
     var formation = document.getElementById('mlsViewFormation');
@@ -1784,9 +2370,17 @@
     }
     if (tabF) tabF.classList.toggle('is-active', name === 'formation');
     if (tabB) tabB.classList.toggle('is-active', name === 'battle');
+    syncMlsBattleChrome(name === 'battle');
     if (name !== 'battle' && !fightBusy) hideTurnHud();
     if (name === 'battle') {
       preloadBannerArt();
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          scrollMlsBattleIntoView();
+          /* Re-pin after scroll-into-view — switchTab / smooth scroll must not leave tabs open. */
+          syncMlsBattleChrome(true);
+        });
+      });
       /*
        * Do not race a second loadArmies→paintBoard while SIMULATION START is loading.
        * That stale paint was wiping unit thumbs under READY? GO!!.
@@ -1796,6 +2390,14 @@
         if (fightBusy || viewName !== 'battle') return;
         paintBoard();
         paintTimeline();
+        requestAnimationFrame(function () {
+          scrollMlsBattleIntoView();
+          syncMlsBattleChrome(true);
+        });
+      });
+    } else if (name === 'formation') {
+      requestAnimationFrame(function () {
+        requestAnimationFrame(scrollMlsFormationIntoView);
       });
     }
   }
@@ -1805,27 +2407,29 @@
     var picker = document.getElementById('mlsPicker');
     var title = document.getElementById('mlsPickerTitle');
     var search = document.getElementById('mlsPickerSearch');
-    var sideLbl = side === 'enemy' ? 'enemy' : 'ally';
+    var sideLbl = side === 'enemy'
+      ? mlsT('mls_enemy', 'Enemy')
+      : mlsT('mls_ally', 'Ally');
     if (title) {
-      if (kind === 'supporter') title.textContent = 'Pick ' + sideLbl + ' supporter';
-      else if (kind === 'option') title.textContent = 'Pick option part · ' + sideLbl + ' #' + ((idx | 0) + 1);
-      else if (kind === 'character') title.textContent = 'Pick pilot · ' + sideLbl + ' #' + ((idx | 0) + 1);
-      else {
-        title.textContent = 'Pick ' + sideLbl + ' unit #' + ((idx | 0) + 1) +
-          (forceOf(side).supporter
-            ? ' (supporter tag boost)'
-            : ((seasonMeta && seasonMeta.boost_tags && seasonMeta.boost_tags.length)
-              ? ' (season Boost: Tag)'
-              : ''));
+      if (kind === 'supporter') {
+        title.textContent = mlsT('mls_pick_supporter', 'Pick supporter') + ' · ' + sideLbl;
+      } else if (kind === 'option') {
+        title.textContent = mlsT('mls_pick_option', 'Pick Modification') + ' · ' + sideLbl + ' #' + ((idx | 0) + 1);
+      } else if (kind === 'character') {
+        title.textContent = mlsT('mls_pick_pilot', 'Pick pilot') + ' · ' + sideLbl + ' #' + ((idx | 0) + 1);
+      } else {
+        title.textContent = mlsT('mls_pick_unit', 'Pick unit') + ' · ' + sideLbl + ' #' + ((idx | 0) + 1);
       }
     }
     if (search) {
       search.value = '';
       search.placeholder = kind === 'supporter'
-        ? 'Search supporter name / tags…'
+        ? mlsT('mls_search_supporter', 'Search supporter name / tags…')
         : (kind === 'option'
-          ? 'Search option part…'
-          : (kind === 'character' ? 'Search pilot name…' : 'Search unit name…'));
+          ? mlsT('mls_search_option', 'Search Modification…')
+          : (kind === 'character'
+            ? mlsT('mls_search_pilot', 'Search pilot name…')
+            : mlsT('mls_search_unit', 'Search unit name…')));
     }
     var filters = document.getElementById('mlsPickerFilters');
     if (filters) filters.hidden = !(kind === 'unit' || kind === 'character');
@@ -1938,12 +2542,14 @@
     var kind = pickerCtx && pickerCtx.kind || 'unit';
     var side = pickerCtx && pickerCtx.side || 'ally';
     var idx = pickerCtx && pickerCtx.idx | 0;
-    var ownedOnly = document.getElementById('mlsOwnedOnly');
     var owned = ownedMap();
+    var ownedSupp = ownedSupportersMap();
     var usedSsr = kind === 'option' ? usedSsrOpIds(side, idx) : {};
     var list = (rows || []).filter(function (u) {
       if (!u || !u.id) return false;
-      if (kind === 'unit' && ownedOnly && ownedOnly.checked && owned[String(u.id)] == null) return false;
+      /* Ally pickers only — enemy can always pick any kit. */
+      if (side === 'ally' && kind === 'unit' && wantOwnedOnly() && owned[String(u.id)] == null) return false;
+      if (side === 'ally' && kind === 'supporter' && wantOwnedOnly() && ownedSupp[String(u.id)] == null) return false;
       if (kind === 'option' && isSsrOpRow(u) && usedSsr[String(u.id)]) return false;
       return true;
     });
@@ -2001,13 +2607,21 @@
     closePicker();
     if (!row) return;
     if (kind === 'supporter') {
+      var suppLb = 3;
+      var colSuppLb;
+      if (side === 'ally' && wantCollectionsLbSync()) {
+        colSuppLb = collectionsSupporterLb(row.id);
+        if (colSuppLb != null) suppLb = colSuppLb;
+      }
       forceOf(side).supporter = {
         id: String(row.id),
         name: row.name || String(row.id),
         thum: row.thum || '',
         rarity: row.rarity || '',
-        lb: 3
+        lb: suppLb
       };
+      clearLeaderApplyCaches(side);
+      sideSupportData[side] = null;
       saveRoster();
       paintForceSlots();
       fillShareBoxes();
@@ -2070,10 +2684,17 @@
     var cmp = global._tbCompareRankAuto;
     var compact = global._dcCompactOptionPartRow;
     var used = usedSsrOpIds(side, idx | 0);
+    var ud = unitData || null;
+    /* Keep Durability role visible to TB rank helpers (role_id 2 / Durability). */
+    if (ud && sl.roleId && (ud.role_id == null || ud.role_id === '')) {
+      ud = Object.assign({}, ud, { role_id: sl.roleId });
+    } else if (ud && !ud.role && sl.roleId === '2') {
+      ud = Object.assign({}, ud, { role: 'Durability', role_id: sl.roleId });
+    }
     var pseudo = {
       unitId: sl.unitId,
       charId: sl.charId,
-      unitData: unitData || null,
+      unitData: ud,
       charData: charData || null,
       lbTier: sl.lb != null ? (sl.lb | 0) : 3,
       unitStatMode: 'normal',
@@ -2133,7 +2754,13 @@
   }
 
   function pickUnitRow(side, idx, row) {
-    loadPair(row.id, null, 3).then(function (loaded) {
+    var pickLb = 3;
+    var colLb;
+    if (side === 'ally' && wantCollectionsLbSync()) {
+      colLb = collectionsLb(row.id);
+      if (colLb != null) pickLb = colLb;
+    }
+    loadPair(row.id, null, pickLb).then(function (loaded) {
       var charId = null;
       var u = loaded.unit || {};
       var rec = u.recommend_character;
@@ -2142,12 +2769,17 @@
       else if (u.default_character_id) charId = u.default_character_id;
       else if (u.pilot_id) charId = u.pilot_id;
       var prev = forceOf(side).slots[idx];
+      var slotLb = pickLb;
+      if (!(side === 'ally' && wantCollectionsLbSync() && colLb != null) &&
+          prev && prev.lb != null && String(prev.unitId) === String(row.id)) {
+        slotLb = prev.lb | 0;
+      }
       var slot = {
         unitId: String(row.id),
         charId: charId ? String(charId) : null,
         charName: '',
         charThum: '',
-        lb: prev && prev.lb != null ? (prev.lb | 0) : 3,
+        lb: slotLb,
         name: row.name || u.name || String(row.id),
         thum: row.thum || u.thum || u.portrait || '',
         rarity: row.rarity || u.rarity || '',
@@ -2196,6 +2828,8 @@
       var sup = forceOf(side).supporter;
       if (!sup) return;
       sup.lb = tier;
+      clearLeaderApplyCaches(side);
+      sideSupportData[side] = null;
     } else {
       var sl = forceOf(side).slots[idx];
       if (!sl) return;
@@ -2227,10 +2861,29 @@
 
   function clearSupporter(side) {
     forceOf(side).supporter = null;
+    sideSupportData[side] = null;
+    clearLeaderApplyCaches(side);
     saveRoster();
     fillShareBoxes();
     paintForceSlots();
     scheduleOrderRefresh();
+  }
+
+  /** Wipe unit slots only — supporter stays. */
+  function clearForceUnits(side) {
+    var force = forceOf(side);
+    if (!force) return;
+    force.slots = emptySlots();
+    saveRoster();
+    fillShareBoxes();
+    paintForceSlots();
+    scheduleOrderRefresh();
+    if (viewName === 'battle') {
+      if (side === 'ally') lastAlly = [];
+      if (side === 'enemy') lastEnemy = [];
+      loadArmies().then(function () { paintBoard(); paintTimeline(); });
+    }
+    log('Cleared ' + side + ' units (supporter kept).');
   }
 
   function clearOption(side, idx) {
@@ -2467,6 +3120,166 @@
     });
   }
 
+  /** Prefetched Escape Function alternate unit JSON (id → unit detail). */
+  var escapeUnitCache = Object.create(null);
+
+  function escapeMechanismEntry(ud) {
+    var list, i, m, key, nm;
+    if (!ud) return null;
+    list = ud.mechanisms || [];
+    for (i = 0; i < list.length; i++) {
+      m = list[i] || {};
+      key = String(m.mechanism_type_key || m.mechanism_type_label || '');
+      nm = String(m.name || '');
+      if (/^Escape$/i.test(key) || /Escape\s*Function|脱出機能|脫出機能|脱逃机能/i.test(nm)) {
+        return m;
+      }
+    }
+    return null;
+  }
+
+  function unitHasEscapeMechanism(ud) {
+    return !!escapeMechanismEntry(ud);
+  }
+
+  function escapeMechanismMeta(ud) {
+    var m = escapeMechanismEntry(ud);
+    return {
+      name: (m && m.name) || 'Escape Function',
+      icon: (m && m.icon) || '/static/images/mechanism/mechanism_0005.webp'
+    };
+  }
+
+  /** Freeze deployed identity so Escape morph does not leak into playback start. */
+  function captureFormBase(actor) {
+    if (!actor) return null;
+    return {
+      id: String(actor.id || ''),
+      name: actor.name || '',
+      thum: actor.thum || '',
+      unit: actor.unit || null,
+      maxHp: actor.maxHp | 0,
+      maxEn: actor.maxEn | 0,
+      mobility: actor.mobility | 0,
+      baseMove: actor.baseMove != null ? (actor.baseMove | 0) : (actor.move | 0),
+      move: actor.move | 0,
+      isLarge: !!actor.isLarge,
+      size: actor.size != null ? (actor.size | 0) : (actor.isLarge ? 2 : 1),
+      unitStatMode: actor.unitStatMode || 'normal',
+      weapons: (actor.weapons || []).slice()
+    };
+  }
+
+  /**
+   * Official Escape note: if the post-evac unit’s terrain is only “dash” / ×,
+   * evacuation does not occur (EN “dash” · JA 地形適正が×のみ).
+   */
+  function unitTerrainOnlyDash(ud) {
+    var terr, i, row, sym, lv;
+    terr = (ud && ud.terrain) || [];
+    if (!terr.length) return false;
+    for (i = 0; i < terr.length; i++) {
+      row = terr[i] || {};
+      sym = String(row.symbol || '').trim();
+      lv = parseInt(row.level, 10);
+      if (!(sym === '-' || sym === '×' || (Number.isFinite(lv) && lv <= 0))) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  function prefetchEscapePartner(ud) {
+    var pid;
+    if (!ud || !unitHasEscapeMechanism(ud)) return Promise.resolve(null);
+    pid = ud.transform_partner_id;
+    if (pid == null || pid === '') return Promise.resolve(null);
+    pid = String(pid);
+    if (escapeUnitCache[pid]) return Promise.resolve(escapeUnitCache[pid]);
+    return fetchJson('/api/unit/' + encodeURIComponent(pid) + '?lang=' + encodeURIComponent(lang()))
+      .then(function (d) {
+        if (d && !d.error) escapeUnitCache[pid] = d;
+        return escapeUnitCache[pid] || null;
+      })
+      .catch(function () { return null; });
+  }
+
+  /**
+   * Escape Function: on HP 0, once/battle, morph into transform_partner_id in-place
+   * (same pilot / OP / supporter / position). Returns true if transformed.
+   */
+  function tryEscapeTransform(actor, turn, snapshotLine) {
+    var ud, pid, alt, sheet, fieldTerr, baseMove, oldName, oldId, mech;
+    if (!actor || (actor.hp | 0) > 0 || actor._escapeUsed) return false;
+    ud = actor.unit;
+    if (!unitHasEscapeMechanism(ud)) return false;
+    pid = ud.transform_partner_id;
+    if (pid == null || pid === '') return false;
+    alt = escapeUnitCache[String(pid)];
+    if (!alt) return false;
+    if (unitTerrainOnlyDash(alt)) return false;
+
+    if (!actor._formBase) actor._formBase = captureFormBase(actor);
+    mech = escapeMechanismMeta(ud);
+    oldName = actor.name;
+    oldId = actor.id;
+    sheet = sheetCombatStats({
+      unit: alt,
+      char: actor.char,
+      lb: actor.lb | 0,
+      side: actor.side,
+      unitStatMode: resolveUnitStatMode(alt, actor.unitStatMode)
+    }, actor.optionParts || [], actor.supporter || null);
+    fieldTerr = String(actor.fieldTerrain || (seasonMeta && seasonMeta.terrain_primary) || '');
+    baseMove = sheet.move || unitStats(alt, actor.lb | 0, resolveUnitStatMode(alt, actor.unitStatMode)).move;
+
+    actor._escapeUsed = true;
+    actor._escapedThisEngagement = true;
+    actor._escapedFromId = oldId;
+    actor.id = String(alt.id);
+    actor.name = alt.name || String(alt.id);
+    actor.unit = alt;
+    actor.thum = thumbUrl(alt.thum || alt.portrait || '');
+    actor.maxHp = sheet.hp | 0;
+    actor.hp = actor.maxHp;
+    actor.ghostHp = actor.hp;
+    actor.maxEn = sheet.en | 0;
+    actor.currentEn = actor.maxEn;
+    actor.mobility = sheet.mob | 0;
+    actor.baseMove = baseMove | 0;
+    actor.move = applyTerrainMove(baseMove, alt, fieldTerr);
+    actor.terrainMoveFactor = terrainMoveFactor(alt, fieldTerr);
+    actor.occupancyMode = unitOccupancyMode(alt, fieldTerr);
+    actor.isLarge = unitIsLarge(alt);
+    actor.size = actor.isLarge ? 2 : 1;
+    actor.weapons = weaponsOf(alt, resolveUnitStatMode(alt, actor.unitStatMode));
+    actor.unitStatMode = resolveUnitStatMode(alt, actor.unitStatMode);
+    actor.lingerKo = false;
+    /*
+     * Keep _koThisEngagement — same class as revive: escaped form does not
+     * Counter / Support Counter in the engagement that dropped the prior form.
+     */
+    actor._koThisEngagement = true;
+
+    if (typeof snapshotLine === 'function') {
+      snapshotLine(
+        'T' + turn + ' ' + mech.name + ': ' + oldName + ' → ' + actor.name +
+        ' (HP ' + (actor.hp | 0) + '/' + (actor.maxHp | 0) + ')',
+        {
+          x: actor.x, y: actor.y,
+          text: String(mech.name || 'Escape Function').slice(0, 22),
+          skillName: String(mech.name || 'Escape Function').slice(0, 22),
+          badge: 'SKILL',
+          icon: mech.icon || '',
+          cls: 'mls-float--skill'
+        },
+        null,
+        'skill'
+      );
+    }
+    return true;
+  }
+
   /** ULT Alteration present → MLS treats kit as maxed Alt (full max_add_stats + ult weapons). */
   function unitHasUltAlt(ud) {
     return !!(ud && ud.ult_alteration && ud.ult_alteration.max_add_stats);
@@ -2633,19 +3446,55 @@
    * Cond:HP / Cond:EN / Cond:Vigor / Cond:Combat-Count / Cond:Damage taken /
    * plus always-on Series·Tag·Character·Weapon sheets once other gates pass.
    */
-  function liveUnitCondPassive(actor) {
+  function unitHasWhenAttackingCombatCond(ud) {
+    if (typeof global._dcUnitWhenAttackingCombatBonuses === 'function') {
+      return !!global._dcUnitWhenAttackingCombatBonuses(ud);
+    }
+    return ((ud && ud.abilities) || []).some(function (ab) {
+      var name = String((ab && ab.name) || '');
+      var blob;
+      if (!/\(\s*(?:Cond|Cnd):\s*Combat\s*\)/i.test(name)) return false;
+      if (/\(\s*(?:Cond|Cnd):\s*Combat\s*-\s*Count\s*\)/i.test(name)) return false;
+      blob = abilityDetailTexts(ab).join(' ');
+      return /when\s+attacking/i.test(blob);
+    });
+  }
+
+  function unitCpIsOnlyWhenAttackingCombat(ud) {
+    if (typeof global._dcUnitCpIsOnlyWhenAttackingCombat === 'function') {
+      return !!global._dcUnitCpIsOnlyWhenAttackingCombat(ud);
+    }
+    return unitHasWhenAttackingCombatCond(ud);
+  }
+
+  /**
+   * Live unit Conditional Passive for /cal sheets.
+   * opts.asDefender / opts.excludeWhenAttackingCombat: suppress Cond:Combat “When attacking”
+   * (DEF never while covering; ATK/DEF never on Counter / Support Attack / Support Counter).
+   */
+  function liveUnitCondPassive(actor, opts) {
     var ud = actor && actor.unit;
     var gate, vigor, combatMeta, dmgDefMeta, stacksCombat, stacksTaken;
+    var suppressWhenAtk, combatTitleActive;
+    opts = opts || {};
     if (!ud) return false;
+    suppressWhenAtk = !!(opts.asDefender || opts.excludeWhenAttackingCombat) &&
+      unitHasWhenAttackingCombatCond(ud) && unitCpIsOnlyWhenAttackingCombat(ud);
+    if (suppressWhenAtk) return false;
     combatMeta = ud.unit_combat_count_atk;
     dmgDefMeta = ud.unit_damage_taken_def;
     stacksCombat = actor.combatCountStacks | 0;
     stacksTaken = actor.damageTakenStacks | 0;
+    combatTitleActive = unitHasCondTitle(ud, /\(\s*(?:Cond|Cnd):\s*(?:Combat(?:\s*-\s*Count)?|Deals Damage|Defeat)\s*\)/i);
+    if ((opts.asDefender || opts.excludeWhenAttackingCombat) && unitHasWhenAttackingCombatCond(ud) && !combatMeta) {
+      /* When-attacking Cond:Combat alone must not arm CP while defending / on excluded waves. */
+      combatTitleActive = unitHasCondTitle(ud, /\(\s*(?:Cond|Cnd):\s*(?:Combat\s*-\s*Count|Deals Damage|Defeat)\s*\)/i);
+    }
     if (!ud.has_cond_stats) {
       /* Stack metas / Cond:Combat titles can arm CP without a with_cond sheet delta. */
       if (combatMeta && stacksCombat > 0) return true;
       if (dmgDefMeta && stacksTaken > 0) return true;
-      if (stacksCombat > 0 && unitHasCondTitle(ud, /\(\s*(?:Cond|Cnd):\s*(?:Combat(?:\s*-\s*Count)?|Deals Damage|Defeat)\s*\)/i)) return true;
+      if (stacksCombat > 0 && combatTitleActive) return true;
       if (stacksTaken > 0 && unitHasCondTitle(ud, /\(\s*(?:Cond|Cnd):\s*Damage taken\s*\)/i)) return true;
       return false;
     }
@@ -2654,11 +3503,11 @@
     vigor = liveVigorGateMet(actor, ud, 'unit');
     if (vigor === false) return false;
     if (gate === true || vigor === true) return true;
-    if ((combatMeta || unitHasCondTitle(ud, /\(\s*(?:Cond|Cnd):\s*(?:Combat(?:\s*-\s*Count)?|Deals Damage|Defeat)\s*\)/i)) && stacksCombat > 0) return true;
+    if ((combatMeta || combatTitleActive) && stacksCombat > 0) return true;
     if ((dmgDefMeta || unitHasCondTitle(ud, /\(\s*(?:Cond|Cnd):\s*Damage taken\s*\)/i)) && stacksTaken > 0) return true;
     /* Stack-only kits stay off at 0 stacks. */
-    if (combatMeta || dmgDefMeta ||
-        unitHasCondTitle(ud, /\(\s*(?:Cond|Cnd):\s*(?:Combat(?:\s*-\s*Count)?|Deals Damage|Defeat|Damage taken)\s*\)/i)) {
+    if (combatMeta || dmgDefMeta || combatTitleActive ||
+        unitHasCondTitle(ud, /\(\s*(?:Cond|Cnd):\s*Damage taken\s*\)/i)) {
       if (gate === null && vigor === null) return false;
     }
     /* Series / Tag / Character / Weapon / Range / Squad sheets — active in battle when gates allow. */
@@ -3250,7 +4099,8 @@
       'critDmgUp', 'squadCondAtkPct', 'squadCondDefPct', 'exSquadAtkPct', 'exSquadAtkPctExplicitZero',
       'defSquadCondAtkPct', 'defSquadCondDefPct',
       'applyAdvantageEnemyTag', 'applyZeonEnemyTag', 'charStatMode', 'atkCounterOwnAtk', 'grandOffensiveBuff',
-      'ultAltActive', 'defUltAltActive', 'supportDefenseActive', 'defInitialNullStock'
+      'ultAltActive', 'defUltAltActive', 'supportDefenseActive', 'defInitialNullStock',
+      'dtuBeam', 'dtuPhysical', 'dtuSpecial', 'defDebuffPct'
     ];
     snap = {};
     keys.forEach(function (k) { snap[k] = dc[k]; });
@@ -3289,9 +4139,12 @@
         defender.hasFirstStrikeBarrier);
       /* Type-8 Initial Null is one shot — only while stock remains (S.Attack consumes it too). */
       dc.defInitialNullStock = !!defender.hasFirstStrikeBarrier;
-      dc.unitCondPassive = liveUnitCondPassive(attacker);
+      /* Cond:Combat “When attacking … Excluding Counter / SA / Counter Support” — never while defending. */
+      dc.unitCondPassive = liveUnitCondPassive(attacker, {
+        excludeWhenAttackingCombat: !!(opts.isCounter || opts.isSupport)
+      });
       dc.charCondPassive = liveCharCondPassive(attacker);
-      dc.defUnitCondPassive = liveUnitCondPassive(defender);
+      dc.defUnitCondPassive = liveUnitCondPassive(defender, { asDefender: true });
       dc.defCharCondPassive = liveCharCondPassive(defender);
       dc.charStatMode = attacker.charStatMode || preferredCharStatMode(attacker.char);
       dc.unitHpAtkTierIndex = liveHpAtkTierIndex(attacker);
@@ -3307,6 +4160,41 @@
       /* Leave 0 so /cal auto-parses defender pilot DTD + OP incoming DTD. */
       dc.dmgTakenDownUnit = 0;
       dc.dmgTakenDownPilot = 0;
+      /*
+       * Live Inflict statuses on the defender → /cal DTU sliders + DEF-debuff field.
+       * Pharact EX “Damage Taken from Beam Weapons Up 35%” lands here for later Beam hits.
+       */
+      (function applyLiveInflictToDc() {
+        var dtu = liveStatusDtu(defender);
+        var statusDef = liveStatusDefDebuffPct(defender) | 0;
+        var defEl, beamEl, physEl, specEl;
+        dc.dtuBeam = dtu.beam | 0;
+        dc.dtuPhysical = dtu.physical | 0;
+        dc.dtuSpecial = dtu.special | 0;
+        dc.defDebuffPct = statusDef;
+        if (typeof document === 'undefined') return;
+        /* /cal reads DEF from DOM; DTU from S.dc — seed both so leftover /cal inputs cannot leak. */
+        defEl = document.getElementById('dcDefDebuffPct');
+        beamEl = document.getElementById('dcDtuBeam');
+        physEl = document.getElementById('dcDtuPhysical');
+        specEl = document.getElementById('dcDtuSpecial');
+        if (defEl) {
+          snap._mlsDefDebuffDom = defEl.value;
+          defEl.value = String(statusDef);
+        }
+        if (beamEl) {
+          snap._mlsDtuBeamDom = beamEl.value;
+          beamEl.value = String(dtu.beam | 0);
+        }
+        if (physEl) {
+          snap._mlsDtuPhysDom = physEl.value;
+          physEl.value = String(dtu.physical | 0);
+        }
+        if (specEl) {
+          snap._mlsDtuSpecDom = specEl.value;
+          specEl.value = String(dtu.special | 0);
+        }
+      })();
       /* Formation squad buffs (Qubeley Neo Zeon stack, Sandaime Cond1/2, Nightingale Red aura, …). */
       atkSq = ensureActorSquadBuffs(attacker, opts.auraSources);
       defSq = ensureActorSquadBuffs(defender, opts.auraSources);
@@ -3320,7 +4208,8 @@
       dc.applyAdvantageEnemyTag = true;
       dc.applyZeonEnemyTag = true;
       abilDr = 0;
-      sup = attacker.supporter || sideSupportData[attacker.side] || null;
+      /* Per-unit for_unit_id supporter only — unscoped sideSupportData would apply leader % to everyone. */
+      sup = actorSupporterPayload(attacker);
       if (sup) {
         if (sup._dcLbTier == null) {
           var ent = forceOf(attacker.side).supporter;
@@ -3331,7 +4220,7 @@
       } else {
         dc.supporters = [];
       }
-      defSup = defender.supporter || sideSupportData[defender.side] || null;
+      defSup = actorSupporterPayload(defender);
       if (defSup) {
         if (defSup._dcLbTier == null) {
           var dent = forceOf(defender.side).supporter;
@@ -3424,6 +4313,24 @@
       return weapon.power | 0;
     } finally {
       keys.forEach(function (k) { dc[k] = snap[k]; });
+      try {
+        if (snap._mlsDefDebuffDom != null) {
+          var defElRestore = document.getElementById('dcDefDebuffPct');
+          if (defElRestore) defElRestore.value = snap._mlsDefDebuffDom;
+        }
+        if (snap._mlsDtuBeamDom != null) {
+          var beamElRestore = document.getElementById('dcDtuBeam');
+          if (beamElRestore) beamElRestore.value = snap._mlsDtuBeamDom;
+        }
+        if (snap._mlsDtuPhysDom != null) {
+          var physElRestore = document.getElementById('dcDtuPhysical');
+          if (physElRestore) physElRestore.value = snap._mlsDtuPhysDom;
+        }
+        if (snap._mlsDtuSpecDom != null) {
+          var specElRestore = document.getElementById('dcDtuSpecial');
+          if (specElRestore) specElRestore.value = snap._mlsDtuSpecDom;
+        }
+      } catch (eDom) { /* ignore */ }
     }
   }
 
@@ -3440,6 +4347,10 @@
 
   function chanceStepIconUrl() {
     return thumbUrl('/static/images/UI/UI_Common_Icon_ChanceStep.webp');
+  }
+  /** Official Guaranteed Chance Step trait art (dossier ability icon). */
+  function guaranteedChanceStepIconUrl() {
+    return thumbUrl('/static/images/Trait/trait_10070700.webp');
   }
   function assistAtkIconUrl() {
     return thumbUrl('/static/images/UI/UI_Common_BattleIcon_AssistAtack_S.webp');
@@ -3458,16 +4369,36 @@
     return thumbUrl('/static/images/UI/UI_Common_WeaponIcon_map.webp');
   }
 
-  /** Short HUD label — icons alone were unreadable (Transform ≠ MAP). */
+  /** Short HUD label — official LANG Support Attack / Support Defense (m_help). */
   function badgeLabel(badge) {
     var b = String(badge || '');
-    if (b === 'S.DEF') return 'S. Defense';
-    if (b === 'S.ATK') return 'S. Attack';
-    if (b === 'CS') return 'CS';
+    if (b === 'S.DEF') return mlsT('mls_badge_sdef', 'S. Defense');
+    if (b === 'S.ATK') return mlsT('mls_badge_satk', 'S. Attack');
+    if (b === 'CS') {
+      try {
+        var R = rules();
+        var labs = R && R.chanceStepLabels && R.chanceStepLabels(lang());
+        if (labs && labs.cs) return labs.cs;
+      } catch (eCs) { /* ignore */ }
+      return mlsT('mls_chance_step', 'Chance Step');
+    }
     if (b === 'SKILL') return 'SKILL';
     if (b === 'MAP') return 'MAP';
     if (b === 'PRE' || b === 'PREEMPT') return 'PRE';
     return b;
+  }
+
+  function supportAttackLabel() {
+    return mlsT('mls_support_attack', 'Support Attack');
+  }
+  function supportDefenseLabel() {
+    return mlsT('mls_support_defense', 'Support Defense');
+  }
+  function supportCounterLabel() {
+    return mlsT('mls_support_counter', 'Support Counter');
+  }
+  function supportAtkCounterLabel() {
+    return mlsT('mls_support_atk_counter', 'Support Attack / Counter');
   }
 
   /** Badge / float → game asset + short label. */
@@ -3556,20 +4487,72 @@
       '<img src="' + esc(icon) + '" alt="" decoding="async"></span>';
   }
 
-  function syncSkillMarkEl(el, u) {
-    var mark = el && el.querySelector('.mls-token-skill-mark');
+  /** Guaranteed CS trait icon while once/battle stock remains (not spent). */
+  function guaranteedCsMarkHtml(u) {
+    var icon, lab, R;
+    if (!u || (u.unconditionalCSStock | 0) <= 0 || (u.hp | 0) <= 0) return '';
+    icon = guaranteedChanceStepIconUrl();
+    lab = 'Guaranteed Chance Step';
+    try {
+      R = rules();
+      if (R && R.chanceStepLabels) lab = (R.chanceStepLabels(lang()).guaranteed) || lab;
+    } catch (eLab) { /* ignore */ }
+    return '<span class="mls-token-gcs-mark" title="' + esc(lab) + '" aria-label="' + esc(lab) + '">' +
+      '<img src="' + esc(icon) + '" alt="" decoding="async"></span>';
+  }
+
+  /** Active Inflict / status debuff icons (Beam DTU, DEF down, …). */
+  function statusDebuffMarksHtml(u) {
+    var now, html, seen;
+    if (!u || (u.hp | 0) <= 0) return '';
+    now = u._simTurn | 0;
+    html = '';
+    seen = {};
+    (u.debuffs || []).forEach(function (d) {
+      var ic, lab;
+      if (!debuffStillActive(d, now) || !d.icon || seen[d.type]) return;
+      seen[d.type] = 1;
+      ic = thumbUrl(d.icon);
+      lab = String(d.label || d.type) + (d.value ? (' ' + (d.value | 0) + '%') : '');
+      html += '<span class="mls-token-status-mark" title="' + esc(lab) + '" aria-label="' + esc(lab) + '">' +
+        '<img src="' + esc(ic) + '" alt="" decoding="async"></span>';
+    });
+    return html;
+  }
+
+  /**
+   * Crown icons above the portrait: unit skill + Guaranteed CS + active Inflict statuses.
+   */
+  function topMarksHtml(u) {
+    var skill = skillMarkHtml(u);
+    var gcs = guaranteedCsMarkHtml(u);
+    var status = statusDebuffMarksHtml(u);
+    if (!skill && !gcs && !status) return '';
+    return '<div class="mls-token-top-marks">' + skill + gcs + status + '</div>';
+  }
+
+  function syncTopMarksEl(el, u) {
+    var wrap = el && el.querySelector('.mls-token-top-marks');
     var html;
     if (!el) return;
-    if (!u || !u.skillMarkIcon) {
-      if (mark && mark.parentNode) mark.parentNode.removeChild(mark);
+    html = topMarksHtml(u);
+    if (!html) {
+      if (wrap && wrap.parentNode) wrap.parentNode.removeChild(wrap);
+      /* Drop legacy single skill-mark nodes from older paints. */
+      Array.prototype.forEach.call(el.querySelectorAll('.mls-token-skill-mark, .mls-token-gcs-mark'), function (n) {
+        if (n.parentNode && !n.parentNode.classList.contains('mls-token-top-marks')) {
+          n.parentNode.removeChild(n);
+        }
+      });
       return;
     }
-    html = skillMarkHtml(u);
-    if (mark) {
-      mark.outerHTML = html;
-    } else {
-      el.insertAdjacentHTML('afterbegin', html);
-    }
+    if (wrap) wrap.outerHTML = html;
+    else el.insertAdjacentHTML('afterbegin', html);
+  }
+
+  /** @deprecated use syncTopMarksEl */
+  function syncSkillMarkEl(el, u) {
+    syncTopMarksEl(el, u);
   }
 
   function floatIconUrl(ev) {
@@ -3762,26 +4745,163 @@
     return bonus - down;
   }
 
-  /** Weapon trait "decrease weapon power N%" sticks on the defender for this turn and the next. */
-  function applyWeaponDebuffs(defender, weapon, turnNow) {
-    var blob, m, val;
-    if (!defender || !weapon) return;
-    blob = '';
+  /*
+   * Official m_weapon_trait.ResourceId icons (EN names: Increased Beam Damage Taken,
+   * Decreased DEF / ATK / MOB / ACC, weapon Power Down, …).
+   */
+  var DEBUFF_ICON_BEAM = '/static/images/Trait/trait_10600200.webp';
+  var DEBUFF_ICON_PHYS = '/static/images/Trait/trait_10640200.webp';
+  var DEBUFF_ICON_SPEC = '/static/images/Trait/trait_10680200.webp';
+  var DEBUFF_ICON_DEF = '/static/images/Trait/trait_10050200.webp';
+  var DEBUFF_ICON_ATK = '/static/images/Trait/trait_10030200.webp';
+  var DEBUFF_ICON_MOB = '/static/images/Trait/trait_10060200.webp';
+  var DEBUFF_ICON_ACC = '/static/images/Trait/trait_10150200.webp';
+  var DEBUFF_ICON_WP = '/static/images/Trait/trait_10030200.webp';
+
+  function weaponTraitTextBlob(weapon) {
+    var blob = '';
+    if (!weapon) return '';
     (weapon.traits || []).forEach(function (t) {
-      blob += ' ' + (typeof t === 'string' ? t : (t && (t.text || t.name)) || '');
+      blob += '\n' + (typeof t === 'string' ? t : ((t && (t.text || t.name)) || ''));
     });
     if (weapon.raw && weapon.raw.traits) {
-      weapon.raw.traits.forEach(function (t) {
-        blob += ' ' + (typeof t === 'string' ? t : (t && (t.text || t.name)) || '');
+      (weapon.raw.traits || []).forEach(function (t) {
+        blob += '\n' + (typeof t === 'string' ? t : ((t && (t.text || t.name)) || ''));
       });
     }
-    if (!/decreas|減少|低下|down/i.test(blob)) return;
-    if (!/weapon\s*power|武装威力|威力/i.test(blob)) return;
-    m = blob.match(/(\d+)\s*%/);
-    val = m ? (parseInt(m[1], 10) || 0) : 0;
-    if (val <= 0) return;
+    return blob;
+  }
+
+  function parseInflictDurationTurns(chunk, fallback) {
+    var m = String(chunk || '').match(/\((\d+)\s*turn/i)
+      || String(chunk || '').match(/(\d+)\s*ターン/)
+      || String(chunk || '').match(/(\d+)\s*回合/);
+    if (m) return Math.max(1, parseInt(m[1], 10) || 1);
+    return fallback != null ? fallback : 1;
+  }
+
+  function debuffStillActive(d, turnNow) {
+    if (!d) return false;
+    if (d.untilTurn == null) return true;
+    return (turnNow | 0) <= (d.untilTurn | 0);
+  }
+
+  function pruneExpiredDebuffs(actor) {
+    var now;
+    if (!actor || !actor.debuffs || !actor.debuffs.length) return;
+    now = actor._simTurn | 0;
+    actor.debuffs = actor.debuffs.filter(function (d) { return debuffStillActive(d, now); });
+  }
+
+  /** Active Damage-Taken-Up % on defender for /cal dtuBeam / dtuPhysical / dtuSpecial. */
+  function liveStatusDtu(actor) {
+    var out = { beam: 0, physical: 0, special: 0 };
+    var now = actor && (actor._simTurn | 0);
+    (actor && actor.debuffs || []).forEach(function (d) {
+      if (!debuffStillActive(d, now)) return;
+      if (d.type === 'dtu_beam') out.beam = Math.max(out.beam, d.value | 0);
+      else if (d.type === 'dtu_physical') out.physical = Math.max(out.physical, d.value | 0);
+      else if (d.type === 'dtu_special') out.special = Math.max(out.special, d.value | 0);
+    });
+    return out;
+  }
+
+  /** Active Inflict DEF-down % (status) — stacked with the attacking weapon’s own DEF line in /cal. */
+  function liveStatusDefDebuffPct(actor) {
+    var now = actor && (actor._simTurn | 0);
+    var best = 0;
+    (actor && actor.debuffs || []).forEach(function (d) {
+      if (!debuffStillActive(d, now)) return;
+      if (d.type === 'def_dn') best = Math.max(best, d.value | 0);
+    });
+    return best;
+  }
+
+  /**
+   * Parse weapon “Inflict …” / power-down traits into status rows.
+   * Class-wide (Support / Durability kits, Pharact EX Beam DTU, …) — not id special-cases.
+   */
+  function parseWeaponInflictDebuffs(weapon, turnNow) {
+    var blob = weaponTraitTextBlob(weapon);
+    var out = [];
+    var turns, pct, m, chunk;
+
+    function push(type, value, icon, label, durChunk) {
+      /* (N turn(s)) includes the apply turn — untilTurn = now + N - 1. */
+      var t = Math.max(1, parseInflictDurationTurns(durChunk || blob, 1) | 0);
+      if (!(value > 0)) return;
+      out.push({
+        type: type,
+        value: value | 0,
+        untilTurn: (turnNow | 0) + t - 1,
+        icon: icon || '',
+        label: label || type
+      });
+    }
+
+    /* Damage Taken from Beam / Physical / Special Up (Inflict). */
+    m = blob.match(/Inflict\s*[「"“]?Damage Taken from Beam Weapons Up\s*(\d+)\s*%[」"”]?([^\n]*)/i)
+      || blob.match(/ビーム武装(?:による)?被ダメージ[^\d]{0,24}(\d+)\s*%([^\n]*)/)
+      || blob.match(/遭(?:光束|鐳射)武裝攻擊時[^\d]{0,40}(\d+)\s*%([^\n]*)/);
+    if (m) push('dtu_beam', parseInt(m[1], 10), DEBUFF_ICON_BEAM, 'Beam damage taken up', m[0]);
+
+    m = blob.match(/Inflict\s*[「"“]?Damage Taken from Physical Weapons Up\s*(\d+)\s*%[」"”]?([^\n]*)/i)
+      || blob.match(/物理武装(?:による)?被ダメージ[^\d]{0,24}(\d+)\s*%([^\n]*)/)
+      || blob.match(/遭物理武裝攻擊時[^\d]{0,40}(\d+)\s*%([^\n]*)/);
+    if (m) push('dtu_physical', parseInt(m[1], 10), DEBUFF_ICON_PHYS, 'Physical damage taken up', m[0]);
+
+    m = blob.match(/Inflict\s*[「"“]?Damage Taken from Special Weapons Up\s*(\d+)\s*%[」"”]?([^\n]*)/i)
+      || blob.match(/特殊武装(?:による)?被ダメージ[^\d]{0,24}(\d+)\s*%([^\n]*)/)
+      || blob.match(/遭特殊武裝攻擊時[^\d]{0,40}(\d+)\s*%([^\n]*)/);
+    if (m) push('dtu_special', parseInt(m[1], 10), DEBUFF_ICON_SPEC, 'Special damage taken up', m[0]);
+
+    /* DEF / ATK / MOB / ACC down — EN weapon-trait wording is "DEF Down" / "MOB Down" / "ACC Down". */
+    m = blob.match(/Inflict\s*[「"“]?(?:DEF|Defense|防御力|守備力|防禦力)\s*(?:Down|減少|低下)\s*(\d+)\s*%/i)
+      || blob.match(/(?:DEF|Defense|防御力|守備力|防禦力)\s*(?:Down|減少|低下)\s*(\d+)\s*%[^\n]{0,40}Inflict/i);
+    if (m) push('def_dn', parseInt(m[1], 10), DEBUFF_ICON_DEF, 'DEF down', m[0]);
+    else {
+      chunk = blob.match(/Inflict[^\n]{0,80}(?:DEF|Defense|防御力|守備力|防禦力)[^\n]{0,40}(\d+)\s*%/i);
+      if (chunk) push('def_dn', parseInt(chunk[1], 10), DEBUFF_ICON_DEF, 'DEF down', chunk[0]);
+    }
+
+    m = blob.match(/Inflict\s*[「"“]?(?:ATK|Attack|攻撃力|攻擊力)\s*(?:Down|減少|低下)\s*(\d+)\s*%/i);
+    if (m) push('atk_dn', parseInt(m[1], 10), DEBUFF_ICON_ATK, 'ATK down', m[0]);
+
+    m = blob.match(/Inflict\s*[「"“]?(?:MOB|Mobility|機動力)\s*(?:Down|減少|低下)\s*(\d+)\s*%/i);
+    if (m) push('mob_dn', parseInt(m[1], 10), DEBUFF_ICON_MOB, 'MOB down', m[0]);
+
+    m = blob.match(/Inflict\s*[「"“]?(?:ACC|Accuracy|命中(?:率)?)\s*(?:Down|減少|低下|rate\s*down)\s*(\d+)\s*%/i);
+    if (m) push('acc_dn', parseInt(m[1], 10), DEBUFF_ICON_ACC, 'ACC down', m[0]);
+
+    m = blob.match(/Inflict\s*[「"“]?(?:EVA|Evasion|回避率|閃避率)\s*(?:Down|減少|低下)\s*(\d+)\s*%/i);
+    if (m) push('eva_dn', parseInt(m[1], 10), DEBUFF_ICON_MOB, 'EVA down', m[0]);
+
+    /* Weapon power down (attacker-side when they next fire). */
+    if (/decreas|減少|低下|down/i.test(blob) && /weapon\s*power|武装威力|武裝威力|威力/i.test(blob)) {
+      pct = 0;
+      m = blob.match(/(?:weapon\s*power|武装威力|武裝威力)[^\d]{0,20}(\d+)\s*%/i)
+        || blob.match(/(\d+)\s*%[^\n]{0,24}(?:weapon\s*power|武装威力)/i);
+      if (m) pct = parseInt(m[1], 10) || 0;
+      if (pct > 0) push('weapon_power', pct, DEBUFF_ICON_WP, 'Weapon power down', blob);
+    }
+
+    return out;
+  }
+
+  /** Apply Inflict / power-down traits from a landed hit onto the defender. */
+  function applyWeaponDebuffs(defender, weapon, turnNow) {
+    var list, i, neu;
+    if (!defender || !weapon) return;
+    list = parseWeaponInflictDebuffs(weapon, turnNow);
+    if (!list.length) return;
     defender.debuffs = defender.debuffs || [];
-    defender.debuffs.push({ type: 'weapon_power', value: val, untilTurn: (turnNow | 0) + 1 });
+    for (i = 0; i < list.length; i++) {
+      neu = list[i];
+      defender.debuffs = defender.debuffs.filter(function (d) {
+        return !(d && d.type === neu.type);
+      });
+      defender.debuffs.push(neu);
+    }
   }
 
   function unitIsLarge(ud) {
@@ -4079,7 +5199,9 @@
       homeY: cell.y,
       id: id,
       name: (loaded.unit && loaded.unit.name) || (slotMeta && slotMeta.name) || id,
-      thum: thumbUrl((slotMeta && slotMeta.thum) || (loaded.unit && (loaded.unit.thum || loaded.unit.portrait)) || ''),
+      /* Prefer live unit detail art — slot thumbs can lag / mismatch Escape partners. */
+      thum: thumbUrl((loaded.unit && (loaded.unit.thum || loaded.unit.portrait)) ||
+        (slotMeta && slotMeta.thum) || ''),
       roleIcon: thumbUrl((slotMeta && slotMeta.roleIcon) || ''),
       lb: loaded.lb | 0,
       hp: hp,
@@ -4126,10 +5248,12 @@
       badge: '',
       tension: 0,
       _hpFallRestoreUsed: {},
+      _escapeUsed: false,
       combatCountStacks: 0,
       damageTakenStacks: 0,
       turnBuffActive: false
     };
+    actor._formBase = captureFormBase(actor);
     syncMpDisplay(actor);
     var R = rules();
     if (R && R.buildPilotSkillKit) {
@@ -4180,24 +5304,30 @@
     });
   }
 
-  function buildSide(side, cells, slots, owned, supporter) {
+  function buildSide(side, cells, slots, owned) {
     var jobs = [];
     var i, sl;
     /* Iterate roster slots (not spawn-cell count) so ACTION ORDER includes every filled kit. */
     for (i = 0; i < SLOT_COUNT; i++) {
       sl = slots[i];
       if (!sl || !sl.unitId) continue;
+      /* Ally + Only my Collections: keep slot on formation (grey) but omit from battle map. */
+      if (slotExcludedByCollections(sl, side)) continue;
       (function (slotIdx, slotMeta) {
         var home = effectiveSlotHome(side, slotIdx);
         jobs.push(Promise.all([
           loadPair(slotMeta.unitId, slotMeta.charId, slotMeta.lb != null ? slotMeta.lb : 3),
-          loadOptionPart(slotMeta.optionPartId)
+          loadOptionPart(slotMeta.optionPartId),
+          fetchSupporterForUnit(side, slotMeta.unitId, slotMeta.charId)
         ]).then(function (pair) {
           var loaded = pair[0];
           var op = pair[1];
-          var actor = makeActor(side, home, loaded, owned, slotMeta, op ? [op] : [], supporter);
+          var unitSup = pair[2];
+          var actor = makeActor(side, home, loaded, owned, slotMeta, op ? [op] : [], unitSup);
           if (actor) actor.slotIdx = slotIdx;
-          return actor;
+          return prefetchEscapePartner(loaded && loaded.unit).then(function () {
+            return actor;
+          });
         }).catch(function () { return null; }));
       })(i, sl);
     }
@@ -4212,9 +5342,14 @@
       loadSupporter('ally'),
       loadSupporter('enemy')
     ]).then(function (sups) {
+      var allySup = supporterExcludedByCollections(forceOf('ally').supporter, 'ally') ? null : sups[0];
+      var enemySup = sups[1];
+      if (allySup == null) sideSupportData.ally = null;
+      /* sideSupportData stays for display; battle HP/dmg uses per-unit for_unit_id clones. */
+      void enemySup;
       return Promise.all([
-        buildSide('ally', allyCells(), forceOf('ally').slots, owned, sups[0]),
-        buildSide('enemy', enemyCells(), forceOf('enemy').slots, owned, sups[1])
+        buildSide('ally', allyCells(), forceOf('ally').slots, owned),
+        buildSide('enemy', enemyCells(), forceOf('enemy').slots, owned)
       ]);
     }).then(function (pair) {
       lastAlly = pair[0];
@@ -4222,6 +5357,7 @@
       stampSquadBuffs(lastAlly);
       stampSquadBuffs(lastEnemy);
       paintTimeline();
+      paintForceSlots();
     });
   }
 
@@ -4541,11 +5677,12 @@
         (u.fieldTerrain ? ' · ' + u.fieldTerrain : '') + ')')
       : ('Move ' + (u.move | 0));
     return '<div class="mls-token' + (u.isLarge ? ' is-large' : '') + ' ' + (u.side === 'ally' ? 'ally' : 'enemy') +
-      (u.active ? ' is-active' : '') + (u.hp <= 0 ? ' is-dead' : '') + markCls +
+      (u.active ? ' is-active' : '') +
+      (u.hp <= 0 ? (u.lingerKo ? ' is-ko-linger' : ' is-dead') : '') + markCls +
       '" data-token-key="' + esc(tokenKey(u)) + '" data-unit-id="' + esc(u.id) +
       '" data-side="' + esc(u.side || '') + '" data-slot-idx="' + (u.slotIdx | 0) +
       '" title="' + esc(moveTip) + '" aria-label="Drag to set start cell" style="' + posStyle + coverStyle + '">' +
-      skillMarkHtml(u) +
+      topMarksHtml(u) +
       badgeHtml +
       auraDebuffHtml(u) +
       vigorHudHtml(u) +
@@ -4579,14 +5716,14 @@
     if (saLim > 0) {
       html += '<span class="mls-support-stock mls-support-stock--atk' +
         (saLeft <= 0 ? ' is-spent' : '') +
-        '" title="Support Attack / Counter ×' + saLeft + '/' + saLim + '">' +
+        '" title="' + esc(supportAtkCounterLabel()) + ' ×' + saLeft + '/' + saLim + '">' +
         '<img src="' + esc(atkIcon) + '" alt="" loading="lazy" decoding="async">' +
         '<span class="mls-support-stock-count">×' + saLeft + '</span></span>';
     }
     if (sdLim > 0) {
       html += '<span class="mls-support-stock mls-support-stock--def' +
         (sdLeft <= 0 ? ' is-spent' : '') +
-        '" title="Support Defense ×' + sdLeft + '/' + sdLim + '">' +
+        '" title="' + esc(supportDefenseLabel()) + ' ×' + sdLeft + '/' + sdLim + '">' +
         '<img src="' + esc(defIcon) + '" alt="" loading="lazy" decoding="async">' +
         '<span class="mls-support-stock-count">×' + sdLeft + '</span></span>';
     }
@@ -4891,12 +6028,13 @@
 
       el = layer.querySelector('[data-token-key="' + key + '"]');
       if (!el) {
-        if ((u.hp | 0) <= 0) return; /* already dead before paint — never spawn a corpse */
+        /* Linger KO stays on the map until Counter finishes; otherwise never spawn a corpse. */
+        if ((u.hp | 0) <= 0 && !u.lingerKo) return;
         layer.insertAdjacentHTML('beforeend', unitTokenHtml(u, cellPctBox(win, origin.x, origin.y, span, span), mark, fx));
         return;
       }
 
-      if ((u.hp | 0) <= 0) {
+      if ((u.hp | 0) <= 0 && !u.lingerKo) {
         cancelCoverReturn(el);
         markTokenGone(el);
         return;
@@ -4905,6 +6043,14 @@
         el._mlsGone = false;
         el.classList.remove('is-gone', 'is-dead');
         el.removeAttribute('aria-hidden');
+      }
+      if (u.lingerKo && (u.hp | 0) <= 0) {
+        el.classList.add('is-ko-linger');
+        el.classList.remove('is-dead', 'is-gone');
+        el.removeAttribute('aria-hidden');
+        el._mlsGone = false;
+      } else {
+        el.classList.remove('is-ko-linger');
       }
 
       el._mlsLeft = ((origin.x - win.minX) / win.cols * 100) + '%';
@@ -4995,7 +6141,7 @@
           thumEl.loading = 'eager';
         }
       }
-      syncSkillMarkEl(el, u);
+      syncTopMarksEl(el, u);
 
       maxHp = Math.max(1, u.maxHp | 0);
       hp = Math.max(0, u.hp | 0);
@@ -5306,7 +6452,8 @@
     var pool, order, html, parts;
     if (!hosts.length) return;
     if (!R || (!lastAlly.length && !lastEnemy.length)) {
-      html = '<span class="mls-tl-empty">Pick units — order is unit Mobility + pilot Reaction (high → low).</span>';
+      html = '<span class="mls-tl-empty">' + esc(mlsT('mls_order_empty',
+        'Pick units — order is unit Mobility + pilot Reaction (high → low).')) + '</span>';
       hosts.forEach(function (h) { h.innerHTML = html; });
       return;
     }
@@ -5314,7 +6461,8 @@
     if (includeEnemyOrder()) pool = pool.concat(lastEnemy);
     order = R.actionOrder(pool);
     if (!order.length) {
-      html = '<span class="mls-tl-empty">No living units in this order.</span>';
+      html = '<span class="mls-tl-empty">' + esc(mlsT('mls_order_empty',
+        'Pick units — order is unit Mobility + pilot Reaction (high → low).')) + '</span>';
     } else {
       parts = [];
       order.forEach(function (u, i) {
@@ -5343,23 +6491,36 @@
     return list.map(function (u) {
       var kit = u.pilotSkills || (rules() && rules().buildPilotSkillKit && rules().buildPilotSkillKit(u.char)) || { list: [], sp: 5 };
       var sp = u.sp != null ? (u.sp | 0) : Math.max(5, kit.sp | 0);
-      return {
+      /* Playback must start as the deployed form — not the post-Escape morph left on result.allies. */
+      var base = u._formBase || captureFormBase(u);
+      var wpnSrc = (base && base.weapons && base.weapons.length) ? base.weapons : (u.weapons || []);
+      var maxHp = (base && base.maxHp) ? (base.maxHp | 0) : (u.maxHp | 0);
+      var maxEn = (base && base.maxEn != null) ? (base.maxEn | 0) : (u.maxEn | 0);
+      var Rclone = rules();
+      var startMp = 0;
+      var cloned;
+      /* Seed start MP from the same passives as makeActor (Affinity MP +6 → High, …). */
+      cloned = {
         side: u.side, n: u.n, slotIdx: u.slotIdx | 0,
         x: u.homeX != null ? u.homeX : u.x, y: u.homeY != null ? u.homeY : u.y,
         homeX: u.homeX != null ? u.homeX : u.x, homeY: u.homeY != null ? u.homeY : u.y,
-        id: u.id, name: u.name, thum: u.thum, roleIcon: u.roleIcon, lb: u.lb,
-        hp: u.maxHp, maxHp: u.maxHp, ghostHp: u.maxHp,
-        maxEn: u.maxEn | 0, currentEn: u.maxEn | 0,
-        mobility: u.mobility,
-        baseMove: u.baseMove != null ? (u.baseMove | 0) : (u.move | 0),
-        move: u.move,
+        id: (base && base.id) || u.id,
+        name: (base && base.name) || u.name,
+        thum: (base && base.thum) || u.thum,
+        roleIcon: u.roleIcon, lb: u.lb,
+        hp: maxHp, maxHp: maxHp, ghostHp: maxHp,
+        maxEn: maxEn, currentEn: maxEn,
+        mobility: (base && base.mobility != null) ? (base.mobility | 0) : u.mobility,
+        baseMove: (base && base.baseMove != null) ? (base.baseMove | 0)
+          : (u.baseMove != null ? (u.baseMove | 0) : (u.move | 0)),
+        move: (base && base.move != null) ? (base.move | 0) : u.move,
         fieldTerrain: u.fieldTerrain || String((seasonMeta && seasonMeta.terrain_primary) || ''),
         terrainMoveFactor: u.terrainMoveFactor != null ? u.terrainMoveFactor : 1,
         occupancyMode: u.occupancyMode || '',
         reaction: u.reaction,
-        mp: u.mp != null ? (u.mp | 0) : 0,
-        tension: u.tension != null ? (u.tension | 0) : 0,
-        weapons: u.weapons.map(function (w) {
+        mp: 0,
+        tension: 0,
+        weapons: wpnSrc.map(function (w) {
           return {
             raw: w.raw, name: w.name, icon: w.icon || '', icon_color: w.icon_color || '',
             min_range: w.min_range, max_range: w.max_range, power: w.power,
@@ -5371,13 +6532,15 @@
             map_single_pou: !!w.map_single_pou, attribute: w.attribute || '', weapon_type: w.weapon_type || ''
           };
         }),
-        unit: u.unit, char: u.char,
+        unit: (base && base.unit) || u.unit, char: u.char,
         optionParts: (u.optionParts || []).slice(),
-        supporter: u.supporter || sideSupportData[u.side] || null,
-        isLarge: !!u.isLarge,
-        size: u.size != null ? (u.size | 0) : (u.isLarge ? 2 : 1),
+        supporter: u.supporter || null,
+        isLarge: !!(base ? base.isLarge : u.isLarge),
+        size: (base && base.size != null) ? (base.size | 0)
+          : (u.size != null ? (u.size | 0) : (u.isLarge ? 2 : 1)),
         direction: u.direction != null ? u.direction : sideFacing(u.side),
-        unitStatMode: u.unitStatMode, charStatMode: u.charStatMode || 'normal', owned: u.owned,
+        unitStatMode: (base && base.unitStatMode) || u.unitStatMode,
+        charStatMode: u.charStatMode || 'normal', owned: u.owned,
         pilotSkills: kit,
         sp: sp,
         currentSp: sp,
@@ -5393,9 +6556,12 @@
         unconditionalCSStock: 0,
         hasAcquiredUnconditionalCS: false,
         hasUsedFreeAmmoSkillInBattle: false,
+        _escapeUsed: false,
+        _formBase: base,
         activeSkills: [],
         debuffs: [],
         chanceStepsLeft: chanceStepLimit(u),
+        autoCsLeft: 0,
         active: false,
         badge: '',
         badgeText: '',
@@ -5403,6 +6569,12 @@
         skillMarkIcon: '',
         skillMarkText: ''
       };
+      startMp = (Rclone && Rclone.startingMpBonus) ? (Rclone.startingMpBonus(cloned) | 0) : 0;
+      /* Prefer live board MP when already seeded (makeActor); never wipe Affinity/etc. to 0. */
+      if ((u.mp | 0) > startMp) startMp = u.mp | 0;
+      cloned.mp = Math.max(0, Math.min(12, startMp));
+      cloned.tension = Math.min(100, Math.round((cloned.mp / 12) * 100));
+      return cloned;
     });
   }
 
@@ -5490,10 +6662,14 @@
    * @param {boolean} [opts.scoreOnly] — Formation Optimizer: skip step snapshots (huge GC);
    *   returns win/turns/HP only. Playback still uses the full path.
    * @param {boolean} [opts.forceNoCrit] — never roll crits (fair 1T check).
+   * @param {object} [opts.pruneScore] — current best {win,turns,turn1EnemyHp,allyHp}; abort
+   *   when this fight can no longer beat it (optimizer only; ranking unchanged).
    */
   function fightSteps(allies, enemies, opts) {
     var scoreOnly = !!(opts && opts.scoreOnly);
     var forceNoCrit = !!(opts && opts.forceNoCrit);
+    var pruneScore = (opts && opts.pruneScore) || null;
+    var pruned = false;
     var R = rules();
     var limit = (board && board.limit_turns) || 5;
     var steps = [];
@@ -5540,6 +6716,10 @@
         ((defender && defender.shieldBarrier) | 0) + '\0' +
         (defender && defender.hasFirstStrikeBarrier ? 1 : 0) + '\0' +
         (defender && defender.turnBuffActive ? 1 : 0) + '\0' +
+        (liveStatusDtu(defender).beam | 0) + '\0' +
+        (liveStatusDtu(defender).physical | 0) + '\0' +
+        (liveStatusDtu(defender).special | 0) + '\0' +
+        (liveStatusDefDebuffPct(defender) | 0) + '\0' +
         (attacker && attacker.unitStatMode ? String(attacker.unitStatMode) : '') + '\0' +
         (attacker && attacker.charStatMode ? String(attacker.charStatMode) : '') + '\0' +
         (defender && defender.unitStatMode ? String(defender.unitStatMode) : '') + '\0' +
@@ -5639,12 +6819,23 @@
         link: linkEvt || null,
         ally: allies.map(function (u) {
           return {
-            x: u.x, y: u.y, hp: u.hp, ghostHp: u.ghostHp, active: !!u.active,
+            id: u.id, name: u.name, thum: u.thum || '',
+            x: u.x, y: u.y, hp: u.hp, maxHp: u.maxHp | 0, maxEn: u.maxEn | 0,
+            ghostHp: u.ghostHp, active: !!u.active,
+            isLarge: !!u.isLarge, size: u.size != null ? (u.size | 0) : (u.isLarge ? 2 : 1),
             badge: u.badge || '', badgeText: u.badgeText || '', badgeIcon: u.badgeIcon || '',
             skillMarkIcon: u.skillMarkIcon || '', skillMarkText: u.skillMarkText || '',
+            unconditionalCSStock: u.unconditionalCSStock | 0,
+            debuffs: (u.debuffs || []).map(function (d) {
+              return d ? {
+                type: d.type, value: d.value | 0, untilTurn: d.untilTurn,
+                icon: d.icon || '', label: d.label || ''
+              } : null;
+            }).filter(Boolean),
             tension: u.tension | 0, mp: u.mp | 0,
             covering: !!u.covering, coverTx: u.coverTx, coverTy: u.coverTy,
             sheltered: !!u.sheltered,
+            lingerKo: !!u.lingerKo,
             usedSupportCount: u.usedSupportCount | 0,
             usedSupportDefendCount: u.usedSupportDefendCount | 0,
             saLimit: u.saLimit | 0,
@@ -5653,12 +6844,23 @@
         }),
         enemy: enemies.map(function (u) {
           return {
-            x: u.x, y: u.y, hp: u.hp, ghostHp: u.ghostHp, active: !!u.active,
+            id: u.id, name: u.name, thum: u.thum || '',
+            x: u.x, y: u.y, hp: u.hp, maxHp: u.maxHp | 0, maxEn: u.maxEn | 0,
+            ghostHp: u.ghostHp, active: !!u.active,
+            isLarge: !!u.isLarge, size: u.size != null ? (u.size | 0) : (u.isLarge ? 2 : 1),
             badge: u.badge || '', badgeText: u.badgeText || '', badgeIcon: u.badgeIcon || '',
             skillMarkIcon: u.skillMarkIcon || '', skillMarkText: u.skillMarkText || '',
+            unconditionalCSStock: u.unconditionalCSStock | 0,
+            debuffs: (u.debuffs || []).map(function (d) {
+              return d ? {
+                type: d.type, value: d.value | 0, untilTurn: d.untilTurn,
+                icon: d.icon || '', label: d.label || ''
+              } : null;
+            }).filter(Boolean),
             tension: u.tension | 0, mp: u.mp | 0,
             covering: !!u.covering, coverTx: u.coverTx, coverTy: u.coverTy,
             sheltered: !!u.sheltered,
+            lingerKo: !!u.lingerKo,
             usedSupportCount: u.usedSupportCount | 0,
             usedSupportDefendCount: u.usedSupportDefendCount | 0,
             saLimit: u.saLimit | 0,
@@ -5682,7 +6884,7 @@
       coverActor.badgeIcon = '';
       if (sheltered) sheltered.sheltered = false;
       snapshotLine(
-        'T' + turn + ' Support Defense return: ' + coverActor.name,
+        'T' + turn + ' ' + supportDefenseLabel() + ': ' + coverActor.name,
         null,
         {
           kind: 'cover-return',
@@ -5754,6 +6956,8 @@
       attacker.lastActionHit = !!hit;
       if (!hit) {
         /* gge miss: attacker −1. Evade bonus +1 goes to the covered ally when SD whiffs, else the defender. */
+        var missWhy = (defender && defender._lastMissReason) ||
+          (defAction === 'evade' ? 'Evade' : '');
         applyMpDelta(attacker, -1);
         if (hitOpts.isDefenderSupportDefend && hitOpts.originalTarget) applyMpDelta(hitOpts.originalTarget, 1);
         else applyMpDelta(defender, 1);
@@ -5761,9 +6965,9 @@
         snapshotLine(
           'T' + turn + ' ' + label + ': ' + attacker.name + ' → ' + defender.name +
           '  MISS' + (wpn && wpn.name ? ' [' + wpn.name + ']' : '') +
-          (defAction === 'evade' ? ' [Evade]' : '') +
+          (missWhy ? ' [' + missWhy + ']' : '') +
           ' · MP ' + (attacker.mp | 0) + ' (' + vigorLabelFromMp(attacker.mp) + ')',
-          { x: defender.x, y: defender.y, text: 'MISS', cls: 'mls-float--heal' },
+          { x: defender.x, y: defender.y, text: missWhy === 'Sway' ? 'SWAY' : 'MISS', cls: 'mls-float--heal' },
           {
             kind: kind === 'Counter' ? 'counter' : 'attack',
             fromId: attacker.id, toId: defender.id,
@@ -5818,8 +7022,8 @@
       }
       defender.ghostHp = defender.hp | 0;
       var hpBeforeHit = defender.hp | 0;
+      var alreadyDown = hpBeforeHit <= 0;
       defender.hp = Math.max(0, hpBeforeHit - dmg);
-      applyWeaponDebuffs(defender, wpn, turn);
       floatCls = (defender.side === 'enemy' ? 'mls-float--enemy' : 'mls-float--ally') +
         (crit ? ' mls-float--crit' : '');
       linkKind = kind === 'Support Attack' || kind === 'Support Counter' ? 'support'
@@ -5855,6 +7059,15 @@
       aim = hitOpts.originalTarget && hitOpts.isDefenderSupportDefend
         ? { x: hitOpts.originalTarget.x | 0, y: hitOpts.originalTarget.y | 0 }
         : impact;
+      /*
+       * Arm grey-out linger BEFORE the KO snapshot — otherwise playback fades the token
+       * on the KO step, then brings it back for Counter (fade → revive → fade).
+       */
+      var hpAfterHit = defender.hp | 0;
+      if (hpAfterHit <= 0) {
+        defender._koThisEngagement = true;
+        defender.lingerKo = true;
+      }
       /* Log hit at post-damage HP (before revive) so KO reads correctly, then restore. */
       snapshotLine(
         'T' + turn + ' ' + label + ': ' + attacker.name + ' → ' + defender.name +
@@ -5862,7 +7075,7 @@
         (wpn && wpn.name ? ' [' + wpn.name + ']' : '') +
         note +
         (defender.hp <= 0
-          ? '  KO'
+          ? (alreadyDown ? '  (finishing)' : '  KO')
           : ('  (HP ' + defender.hp + ')')),
         {
           x: aim.x, y: aim.y,
@@ -5888,34 +7101,78 @@
         },
         linkKind === 'counter' ? 'counter' : (linkKind === 'support' ? 'support' : 'attack')
       );
+      /*
+       * Inflict after the hit snapshot so portrait status icons appear on impact,
+       * not on the pre-hit laser frame (debuffs were landing a step early).
+       */
+      (function applyAndAnnounceInflict() {
+        var list = parseWeaponInflictDebuffs(wpn, turn);
+        if (!list.length) return;
+        applyWeaponDebuffs(defender, wpn, turn);
+        list.forEach(function (d) {
+          snapshotLine(
+            'T' + turn + ' Inflict: ' + defender.name + ' ← ' +
+            (d.label || d.type) + ' ' + (d.value | 0) + '%',
+            {
+              x: defender.x, y: defender.y,
+              text: String(d.label || 'DEBUFF').slice(0, 18),
+              icon: d.icon || '',
+              cls: 'mls-float--skill'
+            },
+            null,
+            'skill'
+          );
+        });
+      })();
       /* Pilot/unit once-only revive & threshold restore (Zeong 0%→5%, Impulse 50%→50%). */
-      var hpAfterHit = defender.hp | 0;
       var revived = applyHpFallRestores(defender, hpBeforeHit, turn, snapshotLine);
       /*
-       * In-game: if the *active* unit is KO’d (e.g. counter) then revives, their action ends —
-       * no further move / Chance Step this phase (Zeong + Char vs counter).
+       * Escape Function (mechanism): HP 0 → alternate unit once/battle.
+       * Runs after revive so Char/Zeong-style restore wins when both could apply.
        */
-      if (revived && hpAfterHit <= 0 && (defender.hp | 0) > 0 && defender.active) {
-        defender._endActionAfterRevive = true;
+      var escaped = false;
+      if (!revived && hpAfterHit <= 0 && (defender.hp | 0) <= 0) {
+        escaped = tryEscapeTransform(defender, turn, snapshotLine);
       }
       /*
-       * In-game: a KO this engagement ends support participation even if HP is restored
-       * (Setsuna / Char revive). Support Counter / Counter must not fire after that kill.
+       * In-game: if the *active* unit is KO’d (e.g. counter) then revives / Escapes,
+       * their action ends — no further move / Chance Step / attack this phase.
+       * Escape is the same class as revive here.
        */
-      if (hpAfterHit <= 0) {
-        defender._koThisEngagement = true;
+      if ((revived || escaped) && hpAfterHit <= 0 && (defender.hp | 0) > 0 && defender.active) {
+        defender._endActionAfterRevive = true;
+        defender.lingerKo = false;
       }
       /* Cond:Combat-Count / Cond:Damage taken — stacks rise after a landed hit (next strike uses them). */
       bumpCondStacksAfterHit(attacker, defender);
       /* LANG + gge: land hit → attacker +1; take hit → −1; SD net +2.
-         Kill bonus after revive check so a revived target is not a 完全撃破. */
+         Kill bonus after revive check so a revived target is not a 完全撃破.
+         Escape Function still counts as destroying the pre-escape form. */
       applyMpDelta(attacker, 1);
       if (hitOpts.isDefenderSupportDefend) applyMpDelta(defender, 2);
-      else applyMpDelta(defender, -1);
-      if ((defender.hp | 0) <= 0) {
-        applyMpDelta(attacker, hitOpts.isSupport ? 1 : 4);
+      else if (!alreadyDown) applyMpDelta(defender, -1);
+      if (hpAfterHit <= 0 && !revived) {
+        if (!alreadyDown) {
+          /* First killing blow: Support Counter +1, normal/Counter +4. */
+          applyMpDelta(attacker, hitOpts.isSupport ? 1 : 4);
+          /*
+           * Shared destroy: when Support Counter KOs the active attacker and no Counter wave
+           * remains in this engagement, credit the main counter unit too (in-game both gain).
+           */
+          if (kind === 'Support Counter' && hitOpts.shareDestroyWith &&
+              (hitOpts.shareDestroyWith.hp | 0) > 0) {
+            applyMpDelta(hitOpts.shareDestroyWith, 4);
+          }
+        } else if (kind === 'Counter') {
+          /* Counter into a Support-Counter KO linger — main counterer still gets destroy tension. */
+          applyMpDelta(attacker, 4);
+        }
       }
-      return { weapon: wpn, damage: dmg, miss: false, crit: crit, ko: hpAfterHit <= 0 };
+      return {
+        weapon: wpn, damage: dmg, miss: false, crit: crit,
+        ko: hpAfterHit <= 0 && !alreadyDown && !revived,
+        escaped: !!escaped
+      };
     }
     while (turn <= limit && living(allies).length && living(enemies).length) {
       /* gge: reset per-round support-attack / support-defense uses at turn start.
@@ -5940,7 +7197,9 @@
         u.active = true;
         if (R.evaluateExPhase) R.evaluateExPhase(u);
         u._simTurn = turn;
+        pruneExpiredDebuffs(u);
         u.usedSkillThisTurn = false;
+        u.usedSkillKeys = {};
         /* Unit skill (1 turn) buffs expire at the start of this unit's next action.
          * Exception: MOB% that lasts until Initial Null is spent (F91 EX). */
         if (!(u._mobUntilInitialNull && u.hasFirstStrikeBarrier)) {
@@ -5948,9 +7207,12 @@
         }
         u.skillDmgPct = 0;
         u.skillDmgKind = '';
-        /* Fresh engagement — clear prior KO flags so revive from last fight does not linger. */
+        /* Fresh engagement — clear prior KO / Escape flags so revive from last fight does not linger. */
         allies.concat(enemies).forEach(function (x) {
-          if (x) x._koThisEngagement = false;
+          if (x) {
+            x._koThisEngagement = false;
+            x._escapedThisEngagement = false;
+          }
         });
         /* Re-apply terrain Move each action (▲ → floor half). Keeps S17 Neo Zeong at 2. */
         u.move = applyTerrainMove(
@@ -5980,73 +7242,106 @@
         /* gge: non-first-strike unit skill once, before the move. */
         applyPlannedUnitSkill(u, 'move', friends, turn, snapshotLine);
 
-        /* Pilot skill before move/attack (gge priority order). */
-        skill = R.pickSkill(u, foes);
-        if (skill) {
-          u.currentSp = Math.max(0, (u.currentSp | 0) - (skill.sp | 0));
-          u.usedSkillThisTurn = true;
-          u.skillUsed = true;
-          u.badge = 'SKILL';
-          u.badgeText = String(skill.name || 'SKILL').replace(/\s+LV\s*\d+/i, '');
-          u.badgeIcon = skill.icon || '';
-          if (skill.key === 'repair') {
-            var healPct = 30;
-            var healM = String(skill.effect || '').match(/(\d+)\s*%/);
-            if (healM) healPct = parseInt(healM[1], 10) || 30;
-            u.ghostHp = u.hp;
-            u.hp = Math.min(u.maxHp, u.hp + Math.floor((u.maxHp | 0) * healPct / 100));
-          } else if (skill.key === 'range_boost') {
-            u.weapons.forEach(function (w) { w.max_range += 1; });
-          } else if (skill.key === 'high_speed') {
-            u.move = (u.move | 0) + 1;
-          } else if (skill.key === 'force_guard') {
-            u.forceGuard = true;
-            u.turnBuffActive = true;
-          } else if (skill.key === 'sway') {
-            u.activeSkills = (u.activeSkills || []).concat([{ name: skill.name || 'Sway' }]);
-          } else if (skill.key === 'en_free') {
-            u.hasUsedFreeAmmoSkillInBattle = true;
-            u.freeAmmoThisAction = true;
-          } else if (skill.key === 'sd_plus') {
-            u.sdLimit = (u.sdLimit | 0) + 1;
-          } else if (skill.key === 'crit_boost') {
-            u.skillCritBonus = 20;
-          } else if (skill.key === 'mp_up') {
-            applyMpDelta(u, 3);
-          } else if (skill.key === 'attack_burst' || skill.key === 'melee_boost' ||
-              skill.key === 'shooting_boost' || skill.key === 'awaken_boost') {
-            var spct = String(skill.effect || skill.name || '').match(/(\d+)\s*%/);
-            u.skillDmgPct = spct ? (parseInt(spct[1], 10) || 0) : 10;
-            u.skillDmgKind = skill.key;
-            u.turnBuffActive = true;
+        /*
+         * Pilot skills before move/attack.
+         * EN help: spend SP to activate skills before acting; multiple different effects OK;
+         * same effect cannot re-fire until it expires. Repair still ends the action.
+         */
+        u.usedSkillKeys = u.usedSkillKeys || {};
+        var repairedThisAction = false;
+        (function applyPilotSkillsChain() {
+          var guard = 0;
+          var healPct, healM, spct, mpGain;
+          while (guard++ < 8) {
+            skill = R.pickSkill(u, foes);
+            if (!skill) break;
+            u.currentSp = Math.max(0, (u.currentSp | 0) - (skill.sp | 0));
+            u.usedSkillThisTurn = true;
+            u.skillUsed = true;
+            u.usedSkillKeys[skill.key] = 1;
+            u.badge = 'SKILL';
+            u.badgeText = String(skill.name || 'SKILL').replace(/\s+LV\s*\d+/i, '');
+            u.badgeIcon = skill.icon || '';
+            if (skill.key === 'repair') {
+              healPct = 30;
+              healM = String(skill.effect || '').match(/(\d+)\s*%/);
+              if (healM) healPct = parseInt(healM[1], 10) || 30;
+              u.ghostHp = u.hp;
+              u.hp = Math.min(u.maxHp, u.hp + Math.floor((u.maxHp | 0) * healPct / 100));
+              repairedThisAction = true;
+            } else if (skill.key === 'range_boost') {
+              u.weapons.forEach(function (w) { w.max_range += 1; });
+            } else if (skill.key === 'high_speed') {
+              u.move = (u.move | 0) + 1;
+            } else if (skill.key === 'force_guard') {
+              u.forceGuard = true;
+              u.turnBuffActive = true;
+            } else if (skill.key === 'sway') {
+              u.activeSkills = (u.activeSkills || []).concat([{ name: skill.name || 'Sway' }]);
+            } else if (skill.key === 'en_free') {
+              u.hasUsedFreeAmmoSkillInBattle = true;
+              u.freeAmmoThisAction = true;
+            } else if (skill.key === 'sd_plus') {
+              u.sdLimit = (u.sdLimit | 0) + 1;
+            } else if (skill.key === 'crit_boost') {
+              u.skillCritBonus = 20;
+            } else if (skill.key === 'mp_up') {
+              mpGain = (R.parseMpUpAmount ? R.parseMpUpAmount(skill) : 3) | 0;
+              applyMpDelta(u, mpGain);
+            } else if (skill.key === 'attack_burst' || skill.key === 'melee_boost' ||
+                skill.key === 'shooting_boost' || skill.key === 'awaken_boost') {
+              spct = String(skill.effect || skill.name || '').match(/(\d+)\s*%/);
+              u.skillDmgPct = spct ? (parseInt(spct[1], 10) || 0) : 10;
+              u.skillDmgKind = skill.key;
+              u.turnBuffActive = true;
+            }
+            snapshotLine(
+              'T' + turn + ' Skill: ' + u.name + ' uses 「' + skill.name + '」 (SP −' + (skill.sp | 0) + ')',
+              {
+                x: u.x, y: u.y,
+                text: u.badgeText,
+                skillName: u.badgeText,
+                badge: 'SKILL',
+                icon: skill.icon || '',
+                cls: 'mls-float--skill'
+              },
+              null,
+              'skill'
+            );
+            if (repairedThisAction) break;
           }
-          snapshotLine(
-            'T' + turn + ' Skill: ' + u.name + ' uses 「' + skill.name + '」 (SP −' + (skill.sp | 0) + ')',
-            {
-              x: u.x, y: u.y,
-              text: u.badgeText,
-              skillName: u.badgeText,
-              badge: 'SKILL',
-              icon: skill.icon || '',
-              cls: 'mls-float--skill'
-            },
-            null,
-            'skill'
-          );
-          if (skill.key === 'repair') return;
-        }
+        })();
+        if (repairedThisAction) return;
 
         u.chanceStepsLeft = chanceStepLimit(u);
+        /* Auto-CS charges this action (≤ chanceStepsLeft). Not infinite every combat. */
+        u.autoCsLeft = (R.autoCsTimesAvailable ? R.autoCsTimesAvailable(u) : 0) | 0;
+        if ((u.autoCsLeft | 0) > (u.chanceStepsLeft | 0)) {
+          u.autoCsLeft = u.chanceStepsLeft | 0;
+        }
         u.startX = u.x;
         u.startY = u.y;
         u._endActionAfterRevive = false;
         /* Weapon “CS on hit” is once per action — not every loop (0-dmg hits would spin forever). */
         u._weaponCsGrantedThisAction = false;
+        /* Unlock Guaranteed CS stock before the first swing if already Supercharged. */
+        if (R.checkAndAcquireUnconditionalCS(u)) {
+          snapshotLine(
+            'T' + turn + ' ' +
+            ((R.chanceStepLabels && R.chanceStepLabels(lang()).guaranteed) || 'Guaranteed Chance Step') +
+            ' stock +1: ' + u.name + ' (MP ' + (u.mp | 0) + ' · ' + vigorLabelFromMp(u.mp) + ')',
+            null, null, 'skill'
+          );
+        }
         /* Engage loop: Chance Step / unconditional CS / weapon-on-hit CS. */
         var engageGuard = 0;
         while (u.hp > 0 && living(foes).length && engageGuard++ < 24) {
-          var mapPlan, combat, qi, q, qj, waveLabel, defAct, coverUnit, origTarget, saLim;
+          var mapPlan, combat, qi, q, qj, waveLabel, waveKind, defAct, coverUnit, origTarget, saLim, laterCounter;
           var checkedPreWall, gotExtra, hitAny, stillCovering;
+          /* Per-engage: Escape “form destroyed” only counts for this combat’s CS check. */
+          allies.concat(enemies).forEach(function (x) {
+            if (x) x._escapedThisEngagement = false;
+          });
           allUnits = allies.concat(enemies);
           engage = R.pickEngage(u, foes, allUnits, bounds, battleDamage);
           if (!engage || !engage.target) {
@@ -6090,6 +7385,7 @@
               'attack'
             );
             hitAny = false;
+            var mapKilled = false;
             mapPlan.targets.forEach(function (mt) {
               var expectedMap, defActMap, res;
               if ((mt.hp | 0) <= 0) return;
@@ -6106,23 +7402,50 @@
                 skipCost: true
               });
               if (res && !res.miss) hitAny = true;
+              if ((mt.hp | 0) <= 0 || (res && res.escaped) || (mt && mt._escapedThisEngagement)) {
+                mapKilled = true;
+              }
             });
             u.lastActionHit = hitAny;
             gotExtra = false;
-            if (hitAny && !u._weaponCsGrantedThisAction &&
-                R.weaponGrantsUnconditionalCsOnHit(mapPlan.weapon)) {
-              u._weaponCsGrantedThisAction = true;
-              gotExtra = true;
-              snapshotLine('T' + turn + ' Weapon Chance Step (on hit): ' + u.name, null, null, 'skill');
-            } else {
-              R.checkAndAcquireUnconditionalCS(u);
-              if ((u.unconditionalCSStock | 0) > 0 && (u.hp | 0) > 0) {
+            var csLblMap = (R.chanceStepLabels && R.chanceStepLabels(lang())) || {
+              cs: 'Chance Step', guaranteed: 'Guaranteed Chance Step'
+            };
+            if (R.checkAndAcquireUnconditionalCS(u)) {
+              snapshotLine(
+                'T' + turn + ' ' + csLblMap.guaranteed + ' stock +1: ' + u.name +
+                ' (MP ' + (u.mp | 0) + ')',
+                null, null, 'skill'
+              );
+            }
+            /* Official help: Auto-Chance Step does not trigger after MAP Weapons. */
+            if ((u.hp | 0) > 0 && living(foes).length) {
+              if (hitAny && !u._weaponCsGrantedThisAction &&
+                  R.weaponGrantsUnconditionalCsOnHit(mapPlan.weapon)) {
+                u._weaponCsGrantedThisAction = true;
+                gotExtra = true;
+                snapshotLine('T' + turn + ' Weapon ' + csLblMap.cs + ' (on hit): ' + u.name, null, null, 'skill');
+              } else if (mapKilled && (u.chanceStepsLeft | 0) > 0) {
+                /* Regular kill CS from phase budget (max 2). */
+                u.chanceStepsLeft = (u.chanceStepsLeft | 0) - 1;
+                gotExtra = true;
+                snapshotLine(
+                  'T' + turn + ' ' + csLblMap.cs + ': ' + u.name + ' (' + (u.chanceStepsLeft | 0) + ')',
+                  { x: u.x, y: u.y, text: csLblMap.cs, badge: 'CS', cls: 'mls-float--skill' },
+                  { kind: 'chance-step', fromId: u.id, toId: u.id, from: { x: u.x, y: u.y }, to: { x: u.x, y: u.y }, csIcon: true },
+                  'skill'
+                );
+              } else if ((u.unconditionalCSStock | 0) > 0) {
+                /*
+                 * Guaranteed CS is its own once/battle stock (Uso Supercharged, …).
+                 * It does not spend chanceStepsLeft — can be a 3rd extra after 2 kill-CS.
+                 */
                 u.unconditionalCSStock--;
                 gotExtra = true;
                 snapshotLine(
-                  'T' + turn + ' Unconditional Chance Step: ' + u.name +
+                  'T' + turn + ' ' + csLblMap.guaranteed + ': ' + u.name +
                   ' (stock ' + (u.unconditionalCSStock | 0) + ')',
-                  { x: u.x, y: u.y, text: 'CHANCE STEP', badge: 'CS', cls: 'mls-float--skill' },
+                  { x: u.x, y: u.y, text: csLblMap.guaranteed, badge: 'CS', cls: 'mls-float--skill' },
                   { kind: 'chance-step', fromId: u.id, toId: u.id, from: { x: u.x, y: u.y }, to: { x: u.x, y: u.y }, csIcon: true },
                   'skill'
                 );
@@ -6165,7 +7488,21 @@
           }
 
           combat = R.buildCombatQueue(u, target, engage.weapon, friends, foes, battleDamage);
-          if (combat.bestGuard) {
+          /*
+           * In-game cover order (normal engagement):
+           *   1) Defender-side S.Defense steps in for the incoming Attack (/ Support Attack)
+           *   2) Those hits resolve → S.Defense returns home
+           *   3) Then Counter / Support Counter fire → Counter S.Defense steps in for the attacker
+           *   4) Those hits resolve → Counter S.Defense returns home
+           * Never announce / move Counter S.Defense before the main attack finishes.
+           * (Preemptive counter is the exception: cover is armed on the first queue entry that needs it.)
+           */
+          combat._defenderCoverAnnounced = false;
+          combat._counterCoverAnnounced = false;
+
+          function announceDefenderCover() {
+            if (!combat.bestGuard || combat._defenderCoverAnnounced) return;
+            combat._defenderCoverAnnounced = true;
             guard = combat.bestGuard;
             clearBadges();
             guard.badge = '';
@@ -6174,10 +7511,10 @@
             guard.coverTy = target.y;
             target.sheltered = true;
             snapshotLine(
-              'T' + turn + ' Support Defense: ' + guard.name + ' steps in for ' + target.name +
+              'T' + turn + ' ' + supportDefenseLabel() + ': ' + guard.name + ' → ' + target.name +
               ' (SD ' + (guard.usedSupportDefendCount | 0) + '/' +
               (R.supportDefendLimit ? (R.supportDefendLimit(guard) | 0) : (guard.sdLimit | 0)) + ')',
-              { x: target.x, y: target.y, text: 'S.DEF', badge: 'S.DEF', cls: 'mls-float--support' },
+              { x: target.x, y: target.y, text: badgeLabel('S.DEF'), badge: 'S.DEF', cls: 'mls-float--support' },
               {
                 kind: 'support-def',
                 fromId: guard.id, toId: target.id, supportId: guard.id,
@@ -6188,34 +7525,44 @@
               },
               'support-def'
             );
-          } else if (combat.defenderAction !== 'none') {
+          }
+
+          function announceCounterCover() {
+            var cg = combat.counterGuard;
+            if (!cg || combat._counterCoverAnnounced) return;
+            /* Defender-side cover must go home before Counter S.Defense walks in. */
+            if (combat.bestGuard && combat.bestGuard.covering) {
+              releaseCover(combat.bestGuard, target);
+            }
+            combat._counterCoverAnnounced = true;
+            u.sheltered = true;
+            cg.covering = true;
+            cg.coverTx = u.x;
+            cg.coverTy = u.y;
+            snapshotLine(
+              'T' + turn + ' ' + mlsT('mls_counter_support_defense', 'Counter Support Defense') +
+              ': ' + cg.name + ' → ' + u.name + ' (SD ' +
+              (cg.usedSupportDefendCount | 0) + '/' +
+              (R.supportDefendLimit ? (R.supportDefendLimit(cg) | 0) : (cg.sdLimit | 0)) + ')',
+              { x: u.x, y: u.y, text: badgeLabel('S.DEF'), badge: 'S.DEF', cls: 'mls-float--support' },
+              {
+                kind: 'support-def',
+                fromId: cg.id, toId: u.id, supportId: cg.id,
+                coverFrom: { x: cg.x, y: cg.y },
+                coverTo: { x: u.x, y: u.y },
+                from: { x: cg.x, y: cg.y },
+                to: { x: u.x, y: u.y }
+              },
+              'support-def'
+            );
+          }
+
+          if (!combat.bestGuard && combat.defenderAction !== 'none') {
             snapshotLine(
               'T' + turn + ' AI Defend: ' + target.name + ' chooses ' +
               (combat.defenderAction === 'shield' ? 'Shield' : (combat.defenderAction === 'evade' ? 'Evade' : 'Defend')),
               null, null, 'step'
             );
-          }
-          if (combat.counterGuard) {
-            u.sheltered = true;
-            snapshotLine(
-              'T' + turn + ' Counter Support Defense: ' + combat.counterGuard.name +
-              ' covers ' + u.name + ' vs counter (SD ' +
-              (combat.counterGuard.usedSupportDefendCount | 0) + '/' +
-              (R.supportDefendLimit ? (R.supportDefendLimit(combat.counterGuard) | 0) : (combat.counterGuard.sdLimit | 0)) + ')',
-              { x: u.x, y: u.y, text: 'S.DEF', badge: 'S.DEF', cls: 'mls-float--support' },
-              {
-                kind: 'support-def',
-                fromId: combat.counterGuard.id, toId: u.id, supportId: combat.counterGuard.id,
-                coverFrom: { x: combat.counterGuard.x, y: combat.counterGuard.y },
-                coverTo: { x: u.x, y: u.y },
-                from: { x: combat.counterGuard.x, y: combat.counterGuard.y },
-                to: { x: u.x, y: u.y }
-              },
-              'support-def'
-            );
-            combat.counterGuard.covering = true;
-            combat.counterGuard.coverTx = u.x;
-            combat.counterGuard.coverTy = u.y;
           }
 
           checkedPreWall = false;
@@ -6236,8 +7583,8 @@
             if (q.wave === 1 && origTarget &&
                 ((origTarget.hp | 0) <= 0 || origTarget._koThisEngagement)) {
               snapshotLine(
-                'T' + turn + ' Support Attack skipped: ' + q.attacker.name +
-                ' — ' + origTarget.name + ' already down',
+                'T' + turn + ' ' + supportAttackLabel() + ' — ' + q.attacker.name +
+                ' / ' + origTarget.name,
                 null, null, 'step'
               );
               continue;
@@ -6249,30 +7596,40 @@
             if (q.wave === 3) {
               if (target && ((target.hp | 0) <= 0 || target._koThisEngagement)) {
                 snapshotLine(
-                  'T' + turn + ' Support Counter skipped: ' + q.attacker.name +
-                  ' — ' + target.name + ' was KO’d (engagement ended)',
+                  'T' + turn + ' ' + supportCounterLabel() + ' — ' + q.attacker.name +
+                  ' / ' + target.name,
                   null, null, 'step'
                 );
                 continue;
               }
               if (origTarget && ((origTarget.hp | 0) <= 0 || origTarget._koThisEngagement)) {
                 snapshotLine(
-                  'T' + turn + ' Support Counter skipped: ' + q.attacker.name +
-                  ' — ' + origTarget.name + ' already down',
+                  'T' + turn + ' ' + supportCounterLabel() + ' — ' + q.attacker.name +
+                  ' / ' + origTarget.name,
                   null, null, 'step'
                 );
                 continue;
               }
             }
-            /* Counter: KO’d defender (even if revived) does not get a counter swing. */
-            if (q.wave === 4 && q.attacker && q.attacker._koThisEngagement) {
+            /* Counter: KO’d / Escaped *countering* unit (even if revived / morph) does not swing.
+             * The active attacker may already be at 0 from Support Counter — Counter still fires
+             * into that linger (in-game both get destroy tension, then the portrait fades). */
+            if (q.wave === 4 && q.attacker &&
+                (q.attacker._koThisEngagement || q.attacker._escapedThisEngagement)) {
               snapshotLine(
                 'T' + turn + ' Counter skipped: ' + q.attacker.name +
-                ' — was KO’d this engagement',
+                (q.attacker._escapedThisEngagement
+                  ? ' — Escaped this engagement'
+                  : ' — was KO’d this engagement'),
                 null, null, 'step'
               );
               continue;
             }
+
+            /* Arm the correct cover just before the hit that needs it. */
+            if (combat.bestGuard && q.defender === combat.bestGuard) announceDefenderCover();
+            if (combat.counterGuard && q.defender === combat.counterGuard) announceCounterCover();
+
             if (q.defender !== origTarget) {
               coverUnit = q.defender;
               coverUnit.covering = true;
@@ -6284,8 +7641,8 @@
               q.attacker.usedSupportCount = (q.attacker.usedSupportCount | 0) + 1;
               saLim = R.supportAttackLimit ? (R.supportAttackLimit(q.attacker) | 0) : (q.attacker.saLimit | 0);
               snapshotLine(
-                'T' + turn + (q.wave === 1 ? ' Support Attack: ' : ' Support Counter: ') +
-                q.attacker.name + ' (SA ' + (q.attacker.usedSupportCount | 0) + '/' + saLim + ')',
+                'T' + turn + ' ' + (q.wave === 1 ? supportAttackLabel() : supportCounterLabel()) +
+                ': ' + q.attacker.name + ' (SA ' + (q.attacker.usedSupportCount | 0) + '/' + saLim + ')',
                 null, null, 'support'
               );
             }
@@ -6293,13 +7650,22 @@
             defAct = q.forcedDefenderAction ||
               (q.defender === combat.actualDefender ? combat.defenderAction :
                 (q.defender === combat.actualCounterDefender ? combat.counterDefAction : 'none'));
-            if (q.wave === 0) waveLabel = 'Preemptive';
-            else if (q.wave === 1) waveLabel = 'Support Attack';
-            else if (q.wave === 2) waveLabel = 'Attack';
-            else if (q.wave === 3) waveLabel = 'Support Counter';
-            else waveLabel = 'Counter';
+            /* kind = English (combat rules); label = locale (battle log). */
+            if (q.wave === 0) { waveKind = 'Preemptive'; waveLabel = 'Preemptive'; }
+            else if (q.wave === 1) { waveKind = 'Support Attack'; waveLabel = supportAttackLabel(); }
+            else if (q.wave === 2) { waveKind = 'Attack'; waveLabel = 'Attack'; }
+            else if (q.wave === 3) { waveKind = 'Support Counter'; waveLabel = supportCounterLabel(); }
+            else { waveKind = 'Counter'; waveLabel = 'Counter'; }
 
-            applyHit(q.attacker, q.defender, waveLabel, waveLabel, coverUnit, {
+            /* If no Counter wave remains after this Support Counter, share destroy with the main target. */
+            laterCounter = false;
+            if (q.wave === 3 && combat.isTargetCountering) {
+              for (qj = qi + 1; qj < combat.queue.length; qj++) {
+                if ((combat.queue[qj].wave | 0) === 4) { laterCounter = true; break; }
+              }
+            }
+
+            applyHit(q.attacker, q.defender, waveLabel, waveKind, coverUnit, {
               weapon: q.weapon,
               defAction: defAct,
               defending: defAct === 'defend' || defAct === 'shield',
@@ -6307,13 +7673,16 @@
               isSupport: q.wave === 1 || q.wave === 3,
               isDefenderSupportDefend: !!(coverUnit && coverUnit === q.defender),
               originalTarget: origTarget,
-              wave: q.wave
+              wave: q.wave,
+              shareDestroyWith: (q.wave === 3 && !laterCounter && combat.isTargetCountering)
+                ? target
+                : null
             });
 
             /* After SD’s last needed hit — or immediately if SD died — home + clear shelter. */
             if (coverUnit && coverUnit === q.defender && coverUnit.covering) {
               stillCovering = false;
-              if ((coverUnit.hp | 0) > 0) {
+              if ((coverUnit.hp | 0) > 0 || coverUnit.lingerKo) {
                 for (qj = qi + 1; qj < combat.queue.length; qj++) {
                   if (combat.queue[qj].defender === coverUnit) {
                     stillCovering = true;
@@ -6328,6 +7697,23 @@
           /* Safety: any leftover cover (miss-only / skipped waves). */
           if (combat.bestGuard) releaseCover(combat.bestGuard, target);
           if (combat.counterGuard) releaseCover(combat.counterGuard, u);
+
+          /* After Counter / Support Counter finish — drop linger and fade defeated portraits. */
+          (function clearLingerKos() {
+            var faded = [];
+            allies.concat(enemies).forEach(function (x) {
+              if (x && x.lingerKo) {
+                x.lingerKo = false;
+                if ((x.hp | 0) <= 0) faded.push(x.name);
+              }
+            });
+            if (faded.length) {
+              snapshotLine(
+                'T' + turn + ' Defeated: ' + faded.join(', '),
+                null, null, 'step'
+              );
+            }
+          })();
           allies.concat(enemies).forEach(function (x) {
             if (x.covering) releaseCover(x, null);
             if (x.usedSwayInCombat) {
@@ -6339,45 +7725,79 @@
           });
 
           /*
-           * Active unit KO’d then revived (counter → Char/Zeong revive): action ends.
-           * No further move / Chance Step this phase — matches in-game.
+           * Active unit KO’d then revived / Escaped (counter → Char/Zeong / Escape):
+           * action ends. No further move / Chance Step / attack this phase.
            */
           if (u._endActionAfterRevive) {
             u.chanceStepsLeft = 0;
             u.unconditionalCSStock = 0;
             u._endActionAfterRevive = false;
             snapshotLine(
-              'T' + turn + ' ' + u.name + ' revived — action ends (no further move / CS)',
+              'T' + turn + ' ' + u.name +
+              (u._escapeUsed ? ' escaped' : ' revived') +
+              ' — action ends (no further move / CS / attack)',
               null, null, 'skill'
             );
             break;
           }
 
           gotExtra = false;
-          R.checkAndAcquireUnconditionalCS(u);
+          var csLbl = (R.chanceStepLabels && R.chanceStepLabels(lang())) || {
+            cs: 'Chance Step', auto: 'Auto-Chance Step', guaranteed: 'Guaranteed Chance Step'
+          };
+          if (R.checkAndAcquireUnconditionalCS(u)) {
+            snapshotLine(
+              'T' + turn + ' ' + csLbl.guaranteed + ' stock +1: ' + u.name +
+              ' (MP ' + (u.mp | 0) + ' · ' + vigorLabelFromMp(u.mp) + ')',
+              null, null, 'skill'
+            );
+          }
           if ((u.hp | 0) > 0 && living(foes).length) {
+            var defForCs = combat.actualDefender || target;
+            var killedForCs = ((defForCs && (defForCs.hp | 0) <= 0) || (target.hp | 0) <= 0) ||
+              !!(defForCs && defForCs._escapedThisEngagement) ||
+              !!(target && target._escapedThisEngagement);
             if (u.lastActionHit && !u._weaponCsGrantedThisAction &&
                 R.weaponGrantsUnconditionalCsOnHit(engage.weapon)) {
               u._weaponCsGrantedThisAction = true;
               gotExtra = true;
-              snapshotLine('T' + turn + ' Weapon Chance Step (on hit): ' + u.name, null, null, 'skill');
-            } else if ((u.unconditionalCSStock | 0) > 0) {
-              u.unconditionalCSStock--;
-              gotExtra = true;
-              snapshotLine(
-                'T' + turn + ' Unconditional Chance Step: ' + u.name +
-                ' (stock ' + (u.unconditionalCSStock | 0) + ')',
-                { x: u.x, y: u.y, text: 'CHANCE STEP', badge: 'CS', cls: 'mls-float--skill' },
-                { kind: 'chance-step', fromId: u.id, toId: u.id, from: { x: u.x, y: u.y }, to: { x: u.x, y: u.y }, csIcon: true },
-                'skill'
-              );
-            } else if (((combat.actualDefender && combat.actualDefender.hp <= 0) || target.hp <= 0) &&
-                (u.chanceStepsLeft | 0) > 0) {
+              snapshotLine('T' + turn + ' Weapon ' + csLbl.cs + ' (on hit): ' + u.name, null, null, 'skill');
+            } else if (killedForCs && (u.chanceStepsLeft | 0) > 0) {
+              /* Phase CS budget (base 1 / +1 → max 2). Kill-gated. */
               u.chanceStepsLeft = (u.chanceStepsLeft | 0) - 1;
               gotExtra = true;
               snapshotLine(
-                'T' + turn + ' Chance Step: ' + u.name + ' gains an extra action (剩餘 ' + (u.chanceStepsLeft | 0) + ')',
-                { x: u.x, y: u.y, text: 'CHANCE STEP', badge: 'CS', cls: 'mls-float--skill' },
+                'T' + turn + ' ' + csLbl.cs + ': ' + u.name + ' (' + (u.chanceStepsLeft | 0) + ')',
+                { x: u.x, y: u.y, text: csLbl.cs, badge: 'CS', cls: 'mls-float--skill' },
+                { kind: 'chance-step', fromId: u.id, toId: u.id, from: { x: u.x, y: u.y }, to: { x: u.x, y: u.y }, csIcon: true },
+                'skill'
+              );
+            } else if ((u.unconditionalCSStock | 0) > 0) {
+              /*
+               * Guaranteed Chance Step (Uso Supercharged + League Militaire, …):
+               * separate once/battle stock — does NOT spend chanceStepsLeft.
+               * After 2 kill-CS, this is the 3rd extra (4th action) when stock is live.
+               * Also fires with no KO (help: end of any action).
+               */
+              u.unconditionalCSStock--;
+              gotExtra = true;
+              snapshotLine(
+                'T' + turn + ' ' + csLbl.guaranteed + ': ' + u.name +
+                ' (stock ' + (u.unconditionalCSStock | 0) + ')',
+                { x: u.x, y: u.y, text: csLbl.guaranteed, badge: 'CS', cls: 'mls-float--skill' },
+                { kind: 'chance-step', fromId: u.id, toId: u.id, from: { x: u.x, y: u.y }, to: { x: u.x, y: u.y }, csIcon: true },
+                'skill'
+              );
+            } else if ((u.autoCsLeft | 0) > 0 && (u.chanceStepsLeft | 0) > 0 &&
+                R.grantsAutoCsAfterCombat && R.grantsAutoCsAfterCombat(u)) {
+              /* Auto-CS: no KO required, but still spends the phase CS budget. */
+              u.autoCsLeft = (u.autoCsLeft | 0) - 1;
+              u.chanceStepsLeft = (u.chanceStepsLeft | 0) - 1;
+              gotExtra = true;
+              snapshotLine(
+                'T' + turn + ' ' + csLbl.auto + ': ' + u.name +
+                ' (left ' + (u.chanceStepsLeft | 0) + ')',
+                { x: u.x, y: u.y, text: csLbl.auto, badge: 'CS', cls: 'mls-float--skill' },
                 { kind: 'chance-step', fromId: u.id, toId: u.id, from: { x: u.x, y: u.y }, to: { x: u.x, y: u.y }, csIcon: true },
                 'skill'
               );
@@ -6402,9 +7822,38 @@
       if (turn === 1) {
         turn1EnemyHp = enemies.reduce(function (s, u) { return s + Math.max(0, u.hp | 0); }, 0);
       }
+      /*
+       * Optimizer prune (same scoreBetter order): once we already have a win in T turns,
+       * any fight still contested after turn T cannot beat it. Equal-or-worse leftover
+       * ally HP on an already-known 1T wipe can stop immediately too.
+       */
+      if (scoreOnly && pruneScore && pruneScore.win) {
+        var eLeftP = living(enemies).length;
+        var aLeftP = living(allies).length;
+        var bestT = pruneScore.turns | 0;
+        if (eLeftP > 0 && turn >= bestT) {
+          pruned = true;
+          break;
+        }
+        if (bestT === 1 && (pruneScore.turn1EnemyHp | 0) === 0 && turn === 1 &&
+            eLeftP === 0 && aLeftP > 0) {
+          var ahNow = allies.reduce(function (s, u) { return s + Math.max(0, u.hp | 0); }, 0);
+          if (ahNow <= (pruneScore.allyHp | 0)) {
+            pruned = true;
+            break;
+          }
+        }
+      }
       /* Wipe / wipeout: stay on this turn — do not ++ or victory steps stamp TURN+1 on the HUD. */
       if (!living(allies).length || !living(enemies).length) break;
       turn += 1;
+    }
+    if (pruned) {
+      return {
+        steps: steps, win: false, draw: false, turns: 999,
+        turn1EnemyHp: turn1EnemyHp != null ? turn1EnemyHp : 1e15,
+        allies: allies, enemies: enemies, pruned: true
+      };
     }
     var allyUp = living(allies).length;
     var enemyUp = living(enemies).length;
@@ -6429,25 +7878,45 @@
 
   function applySnapshot(allies, enemies, snap) {
     function applyOne(list, s, i) {
-      if (!list[i]) return;
-      list[i].x = s.x; list[i].y = s.y; list[i].hp = s.hp;
-      list[i].ghostHp = s.ghostHp != null ? s.ghostHp : s.hp;
-      list[i].active = !!s.active;
-      list[i].badge = s.badge || '';
-      list[i].badgeText = s.badgeText || '';
-      list[i].badgeIcon = s.badgeIcon || '';
-      list[i].skillMarkIcon = s.skillMarkIcon || '';
-      list[i].skillMarkText = s.skillMarkText || '';
-      list[i].tension = s.tension | 0;
-      list[i].mp = s.mp | 0;
-      list[i].covering = !!s.covering;
-      list[i].coverTx = s.coverTx;
-      list[i].coverTy = s.coverTy;
-      list[i].sheltered = !!s.sheltered;
-      list[i].usedSupportCount = s.usedSupportCount | 0;
-      list[i].usedSupportDefendCount = s.usedSupportDefendCount | 0;
-      if (s.saLimit != null) list[i].saLimit = s.saLimit | 0;
-      if (s.sdLimit != null) list[i].sdLimit = s.sdLimit | 0;
+      var u;
+      if (!list[i] || !s) return;
+      u = list[i];
+      /* Escape Function: restore form identity so pre-escape steps keep the parent portrait. */
+      if (s.id != null) u.id = s.id;
+      if (s.name != null) u.name = s.name;
+      if (s.thum != null) u.thum = s.thum;
+      if (s.maxHp != null) u.maxHp = s.maxHp | 0;
+      if (s.maxEn != null) u.maxEn = s.maxEn | 0;
+      if (s.isLarge != null) u.isLarge = !!s.isLarge;
+      if (s.size != null) u.size = s.size | 0;
+      u.x = s.x; u.y = s.y; u.hp = s.hp;
+      u.ghostHp = s.ghostHp != null ? s.ghostHp : s.hp;
+      u.active = !!s.active;
+      u.badge = s.badge || '';
+      u.badgeText = s.badgeText || '';
+      u.badgeIcon = s.badgeIcon || '';
+      u.skillMarkIcon = s.skillMarkIcon || '';
+      u.skillMarkText = s.skillMarkText || '';
+      if (s.unconditionalCSStock != null) u.unconditionalCSStock = s.unconditionalCSStock | 0;
+      if (s.debuffs) {
+        u.debuffs = (s.debuffs || []).map(function (d) {
+          return d ? {
+            type: d.type, value: d.value | 0, untilTurn: d.untilTurn,
+            icon: d.icon || '', label: d.label || ''
+          } : null;
+        }).filter(Boolean);
+      }
+      u.tension = s.tension | 0;
+      u.mp = s.mp | 0;
+      u.covering = !!s.covering;
+      u.coverTx = s.coverTx;
+      u.coverTy = s.coverTy;
+      u.sheltered = !!s.sheltered;
+      u.lingerKo = !!s.lingerKo;
+      u.usedSupportCount = s.usedSupportCount | 0;
+      u.usedSupportDefendCount = s.usedSupportDefendCount | 0;
+      if (s.saLimit != null) u.saLimit = s.saLimit | 0;
+      if (s.sdLimit != null) u.sdLimit = s.sdLimit | 0;
     }
     snap.ally.forEach(function (s, i) { applyOne(allies, s, i); });
     snap.enemy.forEach(function (s, i) { applyOne(enemies, s, i); });
@@ -6662,17 +8131,17 @@
     hideEndCard();
     if (result && result.win) {
       mode = 'victory';
-      title.textContent = 'VICTORY';
+      title.textContent = mlsT('mls_victory', 'VICTORY');
       title.hidden = false;
-      if (sub) sub.textContent = 'THE BATTLE IS WON';
+      if (sub) sub.textContent = mlsT('mls_battle_won', 'THE BATTLE IS WON');
       if (letters) { letters.hidden = true; letters.innerHTML = ''; }
       if (retry) retry.hidden = true;
       hold = 2800;
     } else if (result && result.draw) {
       mode = 'draw';
-      title.textContent = 'TIME UP';
+      title.textContent = mlsT('mls_time_up', 'TIME UP');
       title.hidden = false;
-      if (sub) sub.textContent = 'BOTH SIDES REMAIN';
+      if (sub) sub.textContent = mlsT('mls_both_remain', 'BOTH SIDES REMAIN');
       if (letters) { letters.hidden = true; letters.innerHTML = ''; }
       if (retry) retry.hidden = true;
       hold = 2200;
@@ -6728,13 +8197,14 @@
     wrap.setAttribute('aria-valuenow', String(pct));
   }
 
-  /** Double-rAF + timeout so progress bar / status paint before the next sync sim. */
+  /**
+   * Let the progress bar paint without burning ~30ms/double-rAF per lineup.
+   * One rAF + setTimeout(0) is enough between optimizer batches.
+   */
   function yieldUi() {
     return new Promise(function (resolve) {
       requestAnimationFrame(function () {
-        requestAnimationFrame(function () {
-          setTimeout(resolve, 0);
-        });
+        setTimeout(resolve, 0);
       });
     });
   }
@@ -6748,13 +8218,13 @@
     var shell = document.querySelector('#panel-ml_sim .mls-shell');
     if (start) {
       start.disabled = !!busy;
-      start.textContent = busy ? 'RUNNING…' : 'SIMULATION START';
+      start.textContent = busy ? mlsT('mls_sim_running', 'RUNNING…') : mlsT('mls_sim_start', 'SIMULATION START');
       start.style.display = busy ? 'none' : '';
     }
     if (pause) {
       pause.disabled = !busy;
       pause.style.display = busy ? '' : 'none';
-      pause.textContent = paused ? 'RESUME' : 'PAUSE';
+      pause.textContent = paused ? mlsT('mls_resume', 'RESUME') : mlsT('mls_pause', 'PAUSE');
     }
     if (skip) skip.disabled = !busy;
     if (reset) reset.disabled = !!busy;
@@ -7106,12 +8576,18 @@
    * AI Search — permute ally LINE slots. Same RNG seed every lineup.
    * Prefer a win, then fewest turns, then a turn-1 wipe, then leftover ally HP.
    * Writes the winning order back onto the map (portraits follow the new cells).
+   *
+   * Speed (ranking unchanged):
+   *  - one no-crit sim per lineup (crit label only on the winner)
+   *  - prune fights that cannot beat the current best
+   *  - sync batches + light UI yield (not per-lineup double-rAF)
    */
   function runAiSearch() {
     var force = forceOf('ally');
     var filled = [];
     var i, perms, original, best, bestScore, result, score, status, names, same;
     var aiBtn = document.getElementById('mlsAiSearch');
+    var searchStarted = 0;
     if (fightBusy) return;
     for (i = 0; i < SLOT_COUNT; i++) {
       if (force.slots[i] && force.slots[i].unitId) filled.push(i);
@@ -7164,16 +8640,15 @@
       if (aiBtn) aiBtn.disabled = false;
     }
 
-    /*
-     * Load units once, then remap LINE homes in-memory per perm (no loadArmies each time).
-     * Yield + progress update every lineup so the bar stays visible and the UI stays responsive.
-     */
     setAiStatus('Loading…');
     setAiProgress(0, perms.length);
+    searchStarted = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
     return loadArmies().then(function () {
       var byOrigSlot = {};
       var baseEnemy = lastEnemy.slice();
       var pi = 0;
+      /* Sync batch size: enough work per slice, progress still paints (~15 yields for 120). */
+      var AI_BATCH = 12;
       if (!lastAlly.length || !baseEnemy.length) return;
       lastAlly.forEach(function (u) {
         if (u) byOrigSlot[u.slotIdx | 0] = u;
@@ -7188,6 +8663,7 @@
           src = byOrigSlot[perm[k]];
           if (!src) continue;
           home = effectiveSlotHome('ally', destSlot);
+          /* One clone here — fightSteps must not cloneArmy(allies) again. */
           one = cloneArmy([src])[0];
           one.slotIdx = destSlot;
           one.n = home.n | 0;
@@ -7200,68 +8676,93 @@
         return allies;
       }
 
-      /*
-       * Yield every N lineups (not every 1): double-rAF alone costs ~30ms+ each, so 120
-       * yields can burn seconds of wall clock with no sim work. Ranking is unchanged.
-       * Skip the crit pass when the no-crit fight already 1T-wipes — needsCritFor1T is
-       * false either way; ranking still uses the forceNoCrit score.
-       */
-      var AI_YIELD_EVERY = 4;
-
-      function runNext() {
-        var perm, allies, doYield;
-        if (pi >= perms.length) return Promise.resolve();
-        setAiStatus(pi + '/' + perms.length);
-        setAiProgress(pi, perms.length);
-        doYield = (pi % AI_YIELD_EVERY) === 0;
-        function simOne() {
-          perm = perms[pi];
-          allies = alliesForPerm(perm);
-          if (allies.length) {
-            try {
-              var resultCrit, t1NoCrit, t1Crit, allyHpSum;
-              /* Fair ranking = no crits. Fresh clones each pass (fightSteps mutates armies). */
-              beginSeededFight(OPTIMIZER_SEED);
-              result = fightSteps(cloneArmy(allies), cloneArmy(baseEnemy), { scoreOnly: true, forceNoCrit: true });
-              t1NoCrit = result.turn1EnemyHp != null ? (result.turn1EnemyHp | 0) : 1e15;
-              t1Crit = t1NoCrit;
-              /* Skip crit pass when no-crit already 1T-wipes — label would be false either way. */
-              if (t1NoCrit > 0) {
-                beginSeededFight(OPTIMIZER_SEED);
-                resultCrit = fightSteps(cloneArmy(allies), cloneArmy(baseEnemy), { scoreOnly: true, forceNoCrit: false });
-                t1Crit = resultCrit.turn1EnemyHp != null ? (resultCrit.turn1EnemyHp | 0) : 1e15;
-              }
-              allyHpSum = (result.allies || []).reduce(function (s, u) { return s + Math.max(0, u.hp | 0); }, 0);
-              score = {
-                win: !!result.win,
-                turns: result.turns | 0,
-                turn1EnemyHp: t1NoCrit,
-                allyHp: allyHpSum,
-                needsCritFor1T: t1NoCrit > 0 && t1Crit === 0,
-                perm: perm.slice()
-              };
-              if (scoreBetter(score, bestScore)) {
-                bestScore = score;
-                best = perm.slice();
-              }
-            } catch (simErr) {
-              log('Optimizer skip lineup ' + (pi + 1) + ': ' + String(simErr && simErr.message || simErr));
-            } finally {
-              endSeededFight();
-            }
+      function simPerm(perm) {
+        var allies = alliesForPerm(perm);
+        var allyHpSum, t1NoCrit;
+        if (!allies.length) return;
+        try {
+          /* Fair ranking = no crits. Crit label is computed once on the winner. */
+          beginSeededFight(OPTIMIZER_SEED);
+          result = fightSteps(allies, cloneArmy(baseEnemy), {
+            scoreOnly: true,
+            forceNoCrit: true,
+            pruneScore: bestScore
+          });
+          if (result && result.pruned) return;
+          t1NoCrit = result.turn1EnemyHp != null ? (result.turn1EnemyHp | 0) : 1e15;
+          allyHpSum = (result.allies || []).reduce(function (s, u) { return s + Math.max(0, u.hp | 0); }, 0);
+          score = {
+            win: !!result.win,
+            turns: result.turns | 0,
+            turn1EnemyHp: t1NoCrit,
+            allyHp: allyHpSum,
+            needsCritFor1T: false,
+            perm: perm.slice()
+          };
+          if (scoreBetter(score, bestScore)) {
+            bestScore = score;
+            best = perm.slice();
           }
-          pi += 1;
-          setAiProgress(pi, perms.length);
-          setAiStatus(pi + '/' + perms.length);
-          return runNext();
+        } catch (simErr) {
+          log('Optimizer skip lineup ' + (pi + 1) + ': ' + String(simErr && simErr.message || simErr));
+        } finally {
+          endSeededFight();
         }
-        if (doYield) return yieldUi().then(simOne);
-        return Promise.resolve().then(simOne);
       }
 
-      return runNext();
+      function runBatch() {
+        var end;
+        if (pi >= perms.length) return Promise.resolve();
+        end = Math.min(perms.length, pi + AI_BATCH);
+        while (pi < end) {
+          simPerm(perms[pi]);
+          pi += 1;
+        }
+        setAiProgress(pi, perms.length);
+        setAiStatus(pi + '/' + perms.length);
+        if (pi >= perms.length) return Promise.resolve();
+        return yieldUi().then(runBatch);
+      }
+
+      return runBatch();
     }).then(function () {
+      var alliesBest, resultCrit, t1Crit, ms, byOrig, dest, srcU, hm, unit;
       endSeededFight();
+      /* One crit pass on the winner — only for the “needs crit for 1T” HUD tag. */
+      if (best && bestScore && (bestScore.turn1EnemyHp | 0) > 0) {
+        try {
+          byOrig = {};
+          lastAlly.forEach(function (u) { if (u) byOrig[u.slotIdx | 0] = u; });
+          alliesBest = [];
+          applyPerm(best);
+          for (i = 0; i < filled.length; i++) {
+            dest = filled[i];
+            srcU = byOrig[best[i]];
+            if (!srcU) continue;
+            hm = effectiveSlotHome('ally', dest);
+            unit = cloneArmy([srcU])[0];
+            unit.slotIdx = dest;
+            unit.n = hm.n | 0;
+            unit.x = hm.x | 0;
+            unit.y = hm.y | 0;
+            unit.homeX = hm.x | 0;
+            unit.homeY = hm.y | 0;
+            alliesBest.push(unit);
+          }
+          if (alliesBest.length) {
+            beginSeededFight(OPTIMIZER_SEED);
+            resultCrit = fightSteps(alliesBest, cloneArmy(lastEnemy), {
+              scoreOnly: true, forceNoCrit: false
+            });
+            t1Crit = resultCrit.turn1EnemyHp != null ? (resultCrit.turn1EnemyHp | 0) : 1e15;
+            bestScore.needsCritFor1T = t1Crit === 0;
+          }
+        } catch (eCrit) {
+          /* label optional */
+        } finally {
+          endSeededFight();
+        }
+      }
       if (aiBtn) aiBtn.disabled = false;
       setAiProgress(perms.length, perms.length);
       if (!best) {
@@ -7278,19 +8779,25 @@
         var sl = force.slots[slotIdx];
         if (sl && sl.name) names.push(sl.name);
       });
-      /* Ranked without crit luck. Call out when a 1T wipe only appears if crits land. */
+      /*
+       * Keep the HUD short (narrow AI cluster truncates). Full order → battle log only;
+       * portraits already show the applied lineup.
+       */
       if (bestScore.win) {
-        status = 'Best: win in ' + bestScore.turns + 'T';
-        if (bestScore.turn1EnemyHp === 0) status += ' · 1T kill (no crit needed)';
-        else if (bestScore.needsCritFor1T) status += ' · cannot 1T without crits';
+        if (bestScore.turn1EnemyHp === 0) status = 'Best: 1T wipe';
+        else status = 'Best: win ' + bestScore.turns + 'T';
+        if (bestScore.needsCritFor1T) status += ' · needs crit for 1T';
       } else {
         status = 'Best: survive ' + bestScore.turns + 'T';
-        if (bestScore.needsCritFor1T) status += ' · cannot 1T without crits';
+        if (bestScore.needsCritFor1T) status += ' · needs crit for 1T';
       }
-      if (same) status += ' · already this order';
-      else if (names.length) status += ' · ' + names.join(' → ');
+      if (same) status += ' · unchanged';
+      else status += ' · order applied';
+      ms = ((typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now()) - searchStarted;
+      if (ms > 0 && ms < 600000) status += ' · ' + (ms < 1000 ? Math.round(ms) + 'ms' : (ms / 1000).toFixed(1) + 's');
       setAiStatus(status);
-      log('Formation Optimizer — ' + status);
+      log('Formation Optimizer — ' + status +
+        (names.length && !same ? (' · ' + names.join(' → ')) : ''));
       return loadArmies().then(function () {
         var host = document.getElementById('mlsBoard');
         var layer;
@@ -7410,15 +8917,6 @@
     });
     document.getElementById('mlsOrderEnemies') && document.getElementById('mlsOrderEnemies').addEventListener('change', onOrderEnemiesChange);
     document.getElementById('mlsOrderEnemiesForm') && document.getElementById('mlsOrderEnemiesForm').addEventListener('change', onOrderEnemiesChange);
-    function copyShare(side) {
-      var id = side === 'enemy' ? 'mlsShareEnemy' : 'mlsShareAlly';
-      var el = document.getElementById(id);
-      var text = exportForceCode(side);
-      if (el) el.value = text;
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(function () { log('Copied ' + side + ' share code.'); }, function () {});
-      }
-    }
     document.getElementById('mlsShareEnemyCopy') && document.getElementById('mlsShareEnemyCopy').addEventListener('click', function () { copyShare('enemy'); });
     document.getElementById('mlsShareAllyCopy') && document.getElementById('mlsShareAllyCopy').addEventListener('click', function () { copyShare('ally'); });
     document.getElementById('mlsShareEnemyPaste') && document.getElementById('mlsShareEnemyPaste').addEventListener('click', function () {
@@ -7426,6 +8924,41 @@
     });
     document.getElementById('mlsShareAllyPaste') && document.getElementById('mlsShareAllyPaste').addEventListener('click', function () {
       loadShareFromClipboard('ally');
+    });
+    /* Enter in the share box applies that side’s code (manual paste path). */
+    ['mlsShareEnemy', 'mlsShareAlly'].forEach(function (id) {
+      var box = document.getElementById(id);
+      if (!box) return;
+      box.addEventListener('keydown', function (ev) {
+        if (ev.key !== 'Enter' || ev.shiftKey) return;
+        ev.preventDefault();
+        applyShareCode(id === 'mlsShareEnemy' ? 'enemy' : 'ally', box.value);
+      });
+    });
+    document.getElementById('mlsShareUseColLb') && document.getElementById('mlsShareUseColLb').addEventListener('change', function () {
+      var n;
+      if (!this.checked) return;
+      n = syncAllyLbsFromCollections({ forcePaint: true });
+      log(n
+        ? ('Synced ' + n + ' Limit Break(s) from Collections (units + supporter).')
+        : 'No ally unit/supporter matched Collections (exact id; Collections is UR / Ultimate + UR supporters only).');
+    });
+    document.getElementById('mlsOwnedOnly') && document.getElementById('mlsOwnedOnly').addEventListener('change', function () {
+      var nGrey = 0;
+      forceOf('ally').slots.forEach(function (sl) {
+        if (slotExcludedByCollections(sl, 'ally')) nGrey += 1;
+      });
+      if (supporterExcludedByCollections(forceOf('ally').supporter, 'ally')) nGrey += 1;
+      paintForceSlots();
+      scheduleOrderRefresh();
+      if (viewName === 'battle') {
+        loadArmies().then(function () { paintBoard(); paintTimeline(); });
+      }
+      log(this.checked
+        ? ('Only my Collections on (ally only) — ' +
+          (nGrey ? (nGrey + ' ally kit(s) greyed out (hidden on Battle).') : 'all ally kits are in Collections.') +
+          ' Enemy force unchanged.')
+        : 'Only my Collections off — full ally roster on Battle again.');
     });
     /* Face strip click = copy (same as Copy button). */
     document.querySelectorAll('.mls-share-faces').forEach(function (faces) {
@@ -7457,6 +8990,13 @@
       if (el) { openPicker('supporter', el.getAttribute('data-mls-pick-supp'), 0); return; }
       el = t.closest && t.closest('[data-mls-clear-supp]');
       if (el) { e.preventDefault(); e.stopPropagation(); clearSupporter(el.getAttribute('data-mls-clear-supp')); return; }
+      el = t.closest && t.closest('[data-mls-clear-units]');
+      if (el) {
+        e.preventDefault();
+        e.stopPropagation();
+        clearForceUnits(el.getAttribute('data-mls-clear-units'));
+        return;
+      }
       el = t.closest && t.closest('[data-mls-pick-pilot]');
       if (el) {
         e.preventDefault(); e.stopPropagation();
@@ -7621,16 +9161,82 @@
     });
   }
 
+  function onTabHidden() {
+    syncMlsBattleChrome(false);
+  }
+
+  /** Official LANG terms where available (Chance Step / Limit Break / Modifications / …). */
+  function mlsT(key, fallback) {
+    try {
+      if (typeof global.t === 'function') {
+        var v = global.t(key);
+        if (v) return v;
+      }
+    } catch (e) { /* ignore */ }
+    return fallback != null ? fallback : key;
+  }
+
+  function applyLang() {
+    var shell = document.getElementById('mlsShell') || document.querySelector('.mls-shell');
+    var root = shell && shell.parentElement ? shell.parentElement : document;
+    root.querySelectorAll('[data-mls-i18n]').forEach(function (el) {
+      var key = el.getAttribute('data-mls-i18n');
+      if (!key) return;
+      /* Skip fight controls while busy — setFightControls owns those labels. */
+      if (fightBusy && (el.id === 'mlsFight' || el.id === 'mlsPause')) return;
+      var val = mlsT(key, el.textContent);
+      if (el.getAttribute('data-mls-upper') === '1') val = String(val).toUpperCase();
+      el.textContent = val;
+    });
+    root.querySelectorAll('[data-mls-i18n-html]').forEach(function (el) {
+      var key = el.getAttribute('data-mls-i18n-html');
+      if (!key) return;
+      el.innerHTML = mlsT(key, el.innerHTML);
+    });
+    root.querySelectorAll('[data-mls-role]').forEach(function (el) {
+      var rk = el.getAttribute('data-mls-role');
+      var lab = mlsT(rk, el.getAttribute('title') || '');
+      el.setAttribute('title', lab);
+      el.setAttribute('aria-label', lab);
+    });
+    function setSpanInLabel(inputId, key, fallback) {
+      var inp = document.getElementById(inputId);
+      var span = inp && inp.parentElement && inp.parentElement.querySelector('span');
+      if (span) span.textContent = mlsT(key, fallback);
+    }
+    setSpanInLabel('mlsShareUseColLb', 'mls_sync_lb', 'Sync Limit Break from Collections');
+    setSpanInLabel('mlsOwnedOnly', 'mls_owned_only', 'Only my Collections');
+    var backForm = document.getElementById('mlsBackForm');
+    if (backForm) backForm.textContent = '← ' + mlsT('mls_tab_formation', 'Formation');
+    var brandLink = document.querySelector('.mls-brand-link');
+    if (brandLink) {
+      var mlName = mlsT('tab_master_league', 'Master League');
+      var simName = mlsT('tab_ml_sim', 'Master League Simulator');
+      brandLink.setAttribute('title', mlName);
+      brandLink.setAttribute('aria-label', simName);
+    }
+    var seasonSel = document.getElementById('mlsSeasonSelect');
+    if (seasonSel) seasonSel.setAttribute('aria-label', mlsT('mls_season', 'Season'));
+    if (!fightBusy) {
+      var start = document.getElementById('mlsFight');
+      if (start) start.textContent = mlsT('mls_sim_start', 'SIMULATION START');
+      var pause = document.getElementById('mlsPause');
+      if (pause) pause.textContent = paused ? mlsT('mls_resume', 'RESUME') : mlsT('mls_pause', 'PAUSE');
+    }
+  }
+
   function onTabShown() {
     bind();
     bindGate();
     syncAuraToggleUi();
     syncOrderToggleUi();
+    applyLang();
+    syncMlsBattleChrome(viewName === 'battle');
     return ensureMlsUnlocked().then(function (ok) {
       if (!ok) return null;
       return loadMlsContent();
     }).catch(function (e) { log(String(e && e.message || e)); });
   }
 
-  global.GgenMlSim = { onTabShown: onTabShown };
+  global.GgenMlSim = { onTabShown: onTabShown, onTabHidden: onTabHidden, applyLang: applyLang };
 })(window);
