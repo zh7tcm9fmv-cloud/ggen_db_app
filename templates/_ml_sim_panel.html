@@ -18,15 +18,24 @@
     </div>
   </div>
   <header class="mls-top">
-    <a class="mls-back mls-back--logo" href="/ml" onclick="event.preventDefault();switchTab('master_league')" title="Master League" aria-label="Master League">
-      {# CDN first; fall back to /static (jsDelivr 403 until ggen_db_images has this file). #}
-      <img class="mls-back-logo" src="{% if image_cdn %}{{ image_cdn }}/images/UI/Profile/profile_logo_ml_event_en.webp{% else %}/static/images/UI/Profile/profile_logo_ml_event_en.webp{% endif %}" alt="" width="160" height="40" decoding="async" onerror="this.onerror=null;this.src='/static/images/UI/Profile/profile_logo_ml_event_en.webp'">
-    </a>
-    <h1>Simulator</h1>
-    <label class="mls-season-wrap">
-      <span class="mls-lbl">SEASON</span>
-      <select id="mlsSeasonSelect" class="mls-select" aria-label="Season preset"></select>
-    </label>
+    <h1 class="mls-brand">
+      <a class="mls-brand-link" href="/ml" onclick="event.preventDefault();switchTab('master_league')" title="Master League" aria-label="Master League Simulator">
+        <span class="mls-brand-mark">
+          <img class="mls-brand-logo" src="{% if image_cdn %}{{ image_cdn }}/images/Master%20League/ml_logo_general.webp{% else %}/static/images/Master%20League/ml_logo_general.webp{% endif %}" alt="" width="556" height="326" decoding="async" onerror="this.onerror=null;this.src='/static/images/Master%20League/ml_logo_general.webp'">
+          <span class="mls-brand-banner" aria-hidden="true">SIMULATOR</span>
+        </span>
+      </a>
+    </h1>
+    <div class="mls-top-actions">
+      <button type="button" class="ml-calc-open-btn" id="mlsCalcOpenBtn" onclick="mlOpenCalcView()" aria-label="MAX SS score calculator">
+        <img class="ml-calc-open-btn__img" src="{% if image_cdn %}{{ image_cdn }}/images/UI/Profile/profile_achievements_button_ml_event.webp{% else %}/static/images/UI/Profile/profile_achievements_button_ml_event.webp{% endif %}" alt="" width="48" height="48" loading="lazy" decoding="async" onerror="gameImageUrlFallback(this)">
+        <img class="ml-calc-open-btn__win" src="{% if image_cdn %}{{ image_cdn }}/images/Master%20League/UI_Event_ML_Win_Icon_GFight.webp{% else %}/static/images/Master%20League/UI_Event_ML_Win_Icon_GFight.webp{% endif %}" alt="" width="28" height="28" loading="lazy" decoding="async" onerror="gameImageUrlFallback(this)">
+      </button>
+      <label class="mls-season-wrap">
+        <span class="mls-lbl">SEASON</span>
+        <select id="mlsSeasonSelect" class="mls-select" aria-label="Season preset"></select>
+      </label>
+    </div>
   </header>
 
   <div class="mls-preset" id="mlsPresetBar" aria-live="polite">

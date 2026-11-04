@@ -6,6 +6,11 @@
   padding: 12px 12px 56px;
 }
 .mls-shell {
+  /* 1.5-style HUD chamfer — map / turn chrome / CTAs (cosmetic only). */
+  --mls-chamfer: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+  --mls-chamfer-sm: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+  --mls-rim-cyan: rgba(0, 212, 255, 0.42);
+  --mls-rim-gold: rgba(255, 215, 0, 0.28);
   position: relative;
   display: flex;
   flex-direction: column;
@@ -39,9 +44,15 @@
   gap: 10px;
   text-align: center;
   padding: 22px 18px 18px;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  background: var(--bg-card, #10182a);
+  border: 1px solid var(--mls-rim-cyan, rgba(0, 212, 255, 0.42));
+  border-radius: 0;
+  clip-path: var(--mls-chamfer, polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px));
+  background:
+    linear-gradient(180deg, rgba(0, 40, 70, 0.35), transparent 42%),
+    var(--bg-card, #10182a);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 215, 0, 0.12),
+    0 12px 28px rgba(0, 0, 0, 0.45);
 }
 .mls-gate-lock {
   width: 72px;
@@ -119,11 +130,63 @@
   gap: 8px 12px;
   align-items: center;
 }
-.mls-top h1 {
+/* Combined Master League mark + Teko SIMULATOR on the green banner plate. */
+.mls-brand {
   margin: 0;
-  font-size: 1.25rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: 0;
+}
+.mls-brand-link {
+  display: inline-block;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid transparent;
+  background: transparent;
+  padding: 2px 4px;
+  border-radius: 0;
+}
+.mls-brand-link:hover,
+.mls-brand-link:focus-visible {
+  border-color: rgba(0, 212, 255, 0.35);
+  background: rgba(0, 212, 255, 0.06);
+  outline: none;
+}
+.mls-brand-mark {
+  position: relative;
+  display: block;
+  width: min(200px, 52vw);
+  container-type: inline-size;
+  container-name: mls-brand;
+}
+.mls-brand-logo {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.45));
+}
+.mls-brand-banner {
+  position: absolute;
+  left: 50%;
+  top: 60.9%;
+  transform: translate(-50%, -50%);
+  font-family: Teko, var(--font-body);
+  font-weight: 600;
+  font-size: 7.4cqw;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #f4fbff;
+  text-shadow:
+    0 0 6px rgba(0, 180, 255, 0.55),
+    0 1px 2px rgba(0, 0, 0, 0.75);
+  pointer-events: none;
+  user-select: none;
+}
+@supports not (font-size: 1cqw) {
+  .mls-brand-banner { font-size: clamp(0.58rem, 2.4vw, 0.78rem); }
 }
 .mls-back, .mls-btn {
   border: 1px solid var(--border-color);
@@ -135,41 +198,76 @@
   text-decoration: none;
   font: inherit;
 }
-.mls-back--logo {
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 8px;
-  border-color: transparent;
-  background: transparent;
+/* 1.5 HUD chrome — secondary battle controls (Speed / Skip / Reset / Formation). */
+.mls-btn {
+  border-color: var(--mls-rim-cyan, rgba(0, 212, 255, 0.42));
+  border-radius: 0;
+  clip-path: var(--mls-chamfer-sm, polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px));
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 40%),
+    rgba(4, 12, 28, 0.88);
+  font-family: Teko, var(--font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: inset 0 0 0 1px rgba(255, 215, 0, 0.1);
 }
-.mls-back--logo:hover,
-.mls-back--logo:focus-visible {
-  border-color: rgba(0, 212, 255, 0.35);
-  background: rgba(0, 212, 255, 0.06);
+.mls-btn:hover,
+.mls-btn:focus-visible {
+  background:
+    linear-gradient(180deg, rgba(0, 212, 255, 0.12), transparent 45%),
+    rgba(4, 12, 28, 0.95);
+  box-shadow: inset 0 0 0 1px rgba(255, 215, 0, 0.22);
   outline: none;
-}
-.mls-back-logo {
-  display: block;
-  height: 36px;
-  width: auto;
-  max-width: min(180px, 42vw);
-  object-fit: contain;
 }
 .mls-btn.primary {
   border-color: var(--accent-cyan);
   color: var(--accent-cyan);
   background: rgba(0, 212, 255, 0.08);
+  border-radius: 0;
+  clip-path: var(--mls-chamfer-sm, polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px));
+  font-family: Teko, var(--font-body);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.mls-btn.primary:hover,
+.mls-btn.primary:focus-visible {
+  background: rgba(0, 212, 255, 0.16);
+  box-shadow: inset 0 0 0 1px rgba(255, 215, 0, 0.22);
+  outline: none;
 }
 .mls-btn:disabled { opacity: 0.45; cursor: wait; }
 .mls-lbl {
   display: block;
-  font-size: 0.68rem;
-  letter-spacing: 0.08em;
+  font-family: Teko, var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-muted);
   margin-bottom: 2px;
 }
-.mls-season-wrap { margin-left: auto; min-width: min(100%, 280px); }
+.mls-top-actions {
+  margin-left: auto;
+  display: flex;
+  flex-wrap: wrap;
+  /* Pin to select row — SEASON label above was lifting the calc btn mid-stack. */
+  align-items: flex-end;
+  gap: 10px;
+  min-width: 0;
+}
+.mls-season-wrap {
+  display: flex;
+  flex-direction: column;
+  min-width: min(100%, 280px);
+}
+.mls-top-actions .ml-calc-open-btn {
+  flex: 0 0 auto;
+  /* Nudge to optical center of the 40px select (btn is 48px). */
+  margin-bottom: -4px;
+}
 .mls-select, .mls-picker-search {
   width: 100%;
   border: 1px solid var(--border-color);
@@ -213,7 +311,8 @@
 }
 @media (max-width: 720px) {
   .mls-preset .ml-boost-card { min-height: 128px; }
-  .mls-season-wrap { margin-left: 0; width: 100%; }
+  .mls-top-actions { margin-left: 0; width: 100%; }
+  .mls-season-wrap { width: 100%; }
 }
 .mls-views {
   display: flex;
@@ -404,12 +503,16 @@
   color: var(--text-secondary);
   padding: 8px 14px;
   cursor: pointer;
-  font: inherit;
+  font-family: Teko, var(--font-body);
+  font-size: 1.05rem;
   font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 .mls-view-btn.is-active {
   color: var(--accent-cyan);
   border-bottom-color: var(--accent-cyan);
+  text-shadow: 0 0 12px rgba(0, 212, 255, 0.35);
 }
 .mls-view[hidden] { display: none !important; }
 .mls-note {
@@ -428,12 +531,21 @@
 }
 .mls-force {
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  background: var(--bg-card);
+  border-radius: 0;
+  clip-path: var(--mls-chamfer, polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px));
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 28%),
+    var(--bg-card);
   overflow: hidden;
 }
-.mls-force--enemy { box-shadow: inset 3px 0 0 var(--accent-red, #ff4d6d); }
-.mls-force--ally { box-shadow: inset -3px 0 0 var(--accent-cyan); }
+.mls-force--enemy {
+  border-color: rgba(255, 77, 109, 0.35);
+  box-shadow: inset 3px 0 0 var(--accent-red, #ff4d6d);
+}
+.mls-force--ally {
+  border-color: rgba(0, 212, 255, 0.35);
+  box-shadow: inset -3px 0 0 var(--accent-cyan);
+}
 .mls-force-head {
   display: flex;
   align-items: center;
@@ -444,9 +556,11 @@
   color: var(--text-secondary);
 }
 .mls-force-tag {
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  font-size: 0.78rem;
+  font-family: Teko, var(--font-body);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  font-size: 0.95rem;
+  text-transform: uppercase;
 }
 .mls-force--enemy .mls-force-tag { color: var(--accent-red, #ff4d6d); }
 .mls-force--ally .mls-force-tag { color: var(--accent-cyan); }
@@ -835,10 +949,16 @@ body.mls-is-slot-dragging .mls-slot-list {
 /* Battle map — fit viewport (no scroll), stage map art aligned to camera */
 .mls-map-stage {
   position: relative;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
+  border: 1px solid var(--mls-rim-cyan, rgba(0, 212, 255, 0.42));
+  border-radius: 0;
+  clip-path: var(--mls-chamfer, polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px));
   overflow: hidden;
-  background: #020814;
+  background:
+    linear-gradient(180deg, rgba(0, 40, 80, 0.35) 0%, transparent 18%),
+    #020814;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 215, 0, 0.14),
+    0 10px 28px rgba(0, 0, 0, 0.45);
 }
 .mls-map-scroll {
   position: relative; /* READY / endcard clipped to battle map box */
@@ -859,11 +979,15 @@ body.mls-is-slot-dragging .mls-slot-list {
   display: inline-flex;
   align-items: baseline;
   gap: 4px;
-  padding: 5px 10px 4px;
-  border: 1px solid rgba(0, 212, 255, 0.45);
-  border-radius: var(--radius-sm);
-  background: rgba(2, 8, 20, 0.9);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+  padding: 5px 12px 4px;
+  border: 1px solid rgba(0, 212, 255, 0.5);
+  border-radius: 0;
+  clip-path: var(--mls-chamfer-sm, polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px));
+  background:
+    linear-gradient(95deg, rgba(0, 40, 70, 0.92), rgba(2, 8, 20, 0.94));
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 215, 0, 0.16),
+    0 4px 14px rgba(0, 0, 0, 0.4);
   pointer-events: none;
   font-variant-numeric: tabular-nums;
 }
@@ -933,12 +1057,17 @@ body.mls-is-slot-dragging .mls-slot-list {
   gap: 3px;
   width: min(168px, 34%);
   max-height: none;
-  padding: 5px 5px 6px;
+  padding: 6px 6px 7px;
   box-sizing: border-box;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
-  background: rgba(2, 8, 20, 0.88);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(0, 212, 255, 0.32);
+  border-radius: 0;
+  clip-path: var(--mls-chamfer-sm, polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px));
+  background:
+    linear-gradient(180deg, rgba(0, 50, 80, 0.35) 0%, transparent 22%),
+    rgba(2, 8, 20, 0.9);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 215, 0, 0.1),
+    0 4px 16px rgba(0, 0, 0, 0.35);
   pointer-events: auto;
 }
 .mls-map-turn-order-head {
@@ -1040,10 +1169,12 @@ body.mls-is-slot-dragging .mls-slot-list {
     gap: 2px;
     padding: 6px 8px 8px;
     border-radius: 0;
+    clip-path: none;
     border-left: none;
     border-right: none;
     border-bottom: none;
-    box-shadow: none;
+    border-top: 1px solid rgba(0, 212, 255, 0.28);
+    box-shadow: inset 0 1px 0 rgba(255, 215, 0, 0.1);
     background: rgba(2, 8, 20, 0.96);
   }
   .mls-map-turn-order-head {
@@ -2139,25 +2270,37 @@ body.mls-is-map-dragging .mls-map {
   flex-direction: column;
   align-items: center;
   gap: 10px;
+  padding: 0;
+  border: none;
+  background: none;
+  box-shadow: none;
+  clip-path: none;
   opacity: 0;
-  transform: scale(1.18);
+  transform: scale(1.06);
 }
 .mls-banner.is-play .mls-banner-inner {
-  animation: mlsBannerIn 1.05s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: mlsBannerIn 0.85s var(--motion-ease-enter, cubic-bezier(0.05, 0.7, 0.1, 1)) both;
 }
-.mls-banner.is-out .mls-banner-inner {
-  animation: mlsBannerOut 0.28s ease both;
-}
+/* Takayu tx-fade-down-out: chars sink + fade from the end (y 0→30px, stagger 20ms). */
 .mls-banner-line {
   font-family: Teko, var(--font-body);
   font-size: clamp(2.4rem, 8vw, 4.2rem);
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   line-height: 1;
   color: #fff;
   text-shadow:
     0 0 18px rgba(0, 180, 255, 0.85),
+    0 0 28px rgba(255, 215, 0, 0.28),
     0 0 40px rgba(0, 140, 255, 0.45);
+}
+.mls-banner-line-ch {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+.mls-banner.is-out .mls-banner-line-ch {
+  animation: mlsBannerFadeDownOut 0.6s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+  animation-delay: calc(var(--r, 0) * 20ms);
 }
 .mls-banner-cutin {
   display: block;
@@ -2169,16 +2312,32 @@ body.mls-is-map-dragging .mls-map {
   pointer-events: none;
   visibility: visible;
   opacity: 1;
+  will-change: transform, opacity;
+}
+.mls-banner.is-out .mls-banner-cutin {
+  animation: mlsBannerFadeDownOut 0.6s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
 }
 @keyframes mlsBannerIn {
-  0% { opacity: 0; transform: scale(1.22); }
-  28% { opacity: 1; transform: scale(1); }
+  0% { opacity: 0; transform: scale(1.06); }
+  32% { opacity: 1; transform: scale(1); }
   100% { opacity: 1; transform: scale(1); }
 }
-@keyframes mlsBannerOut {
-  to { opacity: 0; transform: scale(0.96); }
+@keyframes mlsBannerFadeDownOut {
+  to { opacity: 0; transform: translateY(30px); }
 }
-/* Takayu catalog-game-cinematic-victory-title / defeat-dissolve */
+@media (prefers-reduced-motion: reduce) {
+  .mls-banner.is-out .mls-banner-line-ch,
+  .mls-banner.is-out .mls-banner-cutin {
+    animation-name: mlsBannerFadeOnly;
+    animation-duration: 0.28s;
+    animation-timing-function: ease;
+    animation-delay: 0ms;
+  }
+  @keyframes mlsBannerFadeOnly {
+    to { opacity: 0; }
+  }
+}
+/* Brand end state — cyan/gold victory (not arcade red WIN). */
 .mls-endcard {
   position: absolute;
   inset: 0;
@@ -2189,7 +2348,9 @@ body.mls-is-map-dragging .mls-map {
   justify-content: center;
   gap: 8px;
   pointer-events: auto;
-  background: rgba(4, 10, 18, 0.55);
+  background:
+    linear-gradient(180deg, rgba(0, 30, 55, 0.35) 0%, transparent 40%),
+    rgba(4, 10, 18, 0.62);
   overflow: hidden;
 }
 .mls-endcard[hidden] { display: none !important; }
@@ -2197,26 +2358,33 @@ body.mls-is-map-dragging .mls-map {
   font-family: Teko, var(--font-body);
   font-size: clamp(2.6rem, 9vw, 4.6rem);
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   line-height: 1;
   color: #fff;
-  text-shadow: 0 0 22px rgba(255, 70, 90, 0.55);
+  text-shadow: 0 0 22px rgba(0, 180, 255, 0.45);
 }
 .mls-endcard.is-victory .mls-endcard-title {
-  color: #ff4d6d;
+  color: var(--accent-cyan, #00d4ff);
   text-shadow:
-    0 0 18px rgba(255, 70, 90, 0.75),
-    0 0 40px rgba(255, 180, 40, 0.35);
+    0 0 18px rgba(0, 212, 255, 0.75),
+    0 0 36px rgba(255, 215, 0, 0.35);
 }
 .mls-endcard.is-draw .mls-endcard-title {
   color: #efe8da;
   text-shadow: 0 0 18px rgba(0, 180, 255, 0.45);
 }
+.mls-endcard.is-defeat .mls-endcard-letters {
+  color: rgba(239, 232, 218, 0.88);
+  text-shadow: 0 0 16px rgba(130, 150, 180, 0.35);
+}
 .mls-endcard-rule {
   width: 0;
   height: 2px;
-  background: linear-gradient(90deg, transparent, #ff4d6d, transparent);
+  background: linear-gradient(90deg, transparent, var(--accent-cyan, #00d4ff), var(--accent-gold, #ffd700), transparent);
   transform-origin: center;
+}
+.mls-endcard.is-victory .mls-endcard-rule {
+  background: linear-gradient(90deg, transparent, var(--accent-cyan, #00d4ff), var(--accent-gold, #ffd700), transparent);
 }
 .mls-endcard.is-draw .mls-endcard-rule {
   background: linear-gradient(90deg, transparent, #7ad7ff, transparent);
@@ -2245,15 +2413,17 @@ body.mls-is-map-dragging .mls-map {
 }
 .mls-endcard-retry {
   margin-top: 10px;
-  border: 0;
-  border-radius: 999px;
+  border: 1px solid rgba(255, 77, 109, 0.65);
+  border-radius: 0;
+  clip-path: var(--mls-chamfer-sm, polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px));
   padding: 8px 22px;
   font-family: Teko, var(--font-body);
   font-size: 1.05rem;
   letter-spacing: 0.12em;
   font-weight: 700;
+  text-transform: uppercase;
   color: #efe8da;
-  background: var(--accent-red, #ff4d6d);
+  background: linear-gradient(95deg, rgba(255, 77, 109, 0.85), rgba(180, 40, 60, 0.9));
   cursor: pointer;
   opacity: 0;
   transform: translateY(8px);
@@ -2264,9 +2434,9 @@ body.mls-is-map-dragging .mls-map {
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(circle at 50% 42%, rgba(255, 200, 60, 0.18), transparent 42%),
-    radial-gradient(circle at 30% 55%, rgba(255, 70, 90, 0.12), transparent 28%),
-    radial-gradient(circle at 70% 55%, rgba(255, 70, 90, 0.12), transparent 28%);
+    radial-gradient(circle at 50% 42%, rgba(0, 212, 255, 0.2), transparent 44%),
+    radial-gradient(circle at 32% 55%, rgba(255, 215, 0, 0.12), transparent 30%),
+    radial-gradient(circle at 68% 55%, rgba(0, 140, 255, 0.14), transparent 30%);
   opacity: 0;
 }
 .mls-endcard.is-victory.is-play .mls-endcard-title {
@@ -2348,9 +2518,12 @@ body.mls-is-map-dragging .mls-map {
   min-width: 0;
 }
 .mls-sim-start {
-  min-width: 160px;
+  min-width: 168px;
+  padding-left: 16px;
+  padding-right: 16px;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.1em;
+  box-shadow: inset 0 0 0 1px rgba(255, 215, 0, 0.18);
 }
 .mls-ai-cluster {
   margin-left: auto;
@@ -2452,9 +2625,13 @@ body.mls-is-map-dragging .mls-map {
   margin-top: 12px;
 }
 .mls-timeline, .mls-log {
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
-  background: var(--bg-secondary);
+  border: 1px solid var(--mls-rim-cyan, rgba(0, 212, 255, 0.42));
+  border-radius: 0;
+  clip-path: var(--mls-chamfer, polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px));
+  background:
+    linear-gradient(180deg, rgba(0, 40, 80, 0.28) 0%, transparent 22%),
+    var(--bg-secondary);
+  box-shadow: inset 0 0 0 1px rgba(255, 215, 0, 0.12);
   min-height: 120px;
   max-height: 220px;
   overflow: auto;
@@ -2465,6 +2642,8 @@ body.mls-is-map-dragging .mls-map {
   max-height: none;
   border: none;
   background: transparent;
+  clip-path: none;
+  box-shadow: none;
 }
 .mls-timeline {
   display: flex;
@@ -2529,12 +2708,15 @@ body.mls-is-map-dragging .mls-map {
 .mls-tl-chip.is-dead { opacity: 0.35; }
 .mls-log {
   margin: 0;
-  padding: 8px 10px;
+  padding: 10px 12px;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 0.75rem;
-  line-height: 1.4;
+  line-height: 1.45;
   white-space: pre-wrap;
   color: var(--text-secondary);
+}
+.mls-log-wrap .mls-lbl {
+  margin-bottom: 6px;
 }
 
 /* Unit picker — above sticky .app-header (z-index:100); match /cal cmp-picker (600). */

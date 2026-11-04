@@ -358,11 +358,39 @@
         .join('');
   }
 
-  function buildPath(pts, x0, y0, w, h, tMin, tMax, rMax, rankKey) {
+  /**
+   * Drop single-sample rank spikes (scrape glitches).
+   * Interior point far from both neighbors while neighbors agree → omit from the trail.
+   * Worldwide for Apple + Game-i lines (e.g. KR Game-i 295→567→295).
+   */
+  function despikeRankPts(pts, rankKey) {
     rankKey = rankKey || 'rank';
-    var usable = pts.filter(function (p) {
+    var src = (pts || []).filter(function (p) {
       return p && p[rankKey] != null && p.t != null;
     });
+    if (src.length < 3) return src;
+    var out = [src[0]];
+    var i, prev, cur, next, a, b, c, jump, neigh;
+    for (i = 1; i < src.length - 1; i++) {
+      prev = src[i - 1];
+      cur = src[i];
+      next = src[i + 1];
+      a = prev[rankKey] | 0;
+      b = cur[rankKey] | 0;
+      c = next[rankKey] | 0;
+      jump = Math.min(Math.abs(b - a), Math.abs(b - c));
+      neigh = Math.abs(a - c);
+      /* Spike: ≥120 places vs both sides, while neighbors within 40 of each other. */
+      if (jump >= 120 && neigh <= 40) continue;
+      out.push(cur);
+    }
+    out.push(src[src.length - 1]);
+    return out;
+  }
+
+  function buildPath(pts, x0, y0, w, h, tMin, tMax, rMax, rankKey) {
+    rankKey = rankKey || 'rank';
+    var usable = despikeRankPts(pts, rankKey);
     if (usable.length < 1) return { d: '', last: null };
     var spanT = Math.max(1, tMax - tMin);
     var spanR = Math.max(1, rMax - 1);
@@ -388,10 +416,12 @@
     var allPts = [];
     countries.forEach(function (c) {
       if (state.hidden[c.code]) return;
-      (series[c.code] || []).forEach(function (p) {
-        if (!p || p.t == null) return;
-        if (p.rank != null) allPts.push({ t: p.t, rank: p.rank });
-        if (p.gamei_today != null) allPts.push({ t: p.t, rank: p.gamei_today });
+      var raw = series[c.code] || [];
+      despikeRankPts(raw, 'rank').forEach(function (p) {
+        allPts.push({ t: p.t, rank: p.rank });
+      });
+      despikeRankPts(raw, 'gamei_today').forEach(function (p) {
+        allPts.push({ t: p.t, rank: p.gamei_today });
       });
     });
     if (!allPts.length) {
@@ -502,12 +532,8 @@
     countries.forEach(function (c) {
       if (state.hidden[c.code]) return;
       var raw = series[c.code] || [];
-      var pts = raw.filter(function (p) {
-        return p && p.rank != null && p.t != null;
-      });
-      var gPts = raw.filter(function (p) {
-        return p && p.gamei_today != null && p.t != null;
-      });
+      var pts = despikeRankPts(raw, 'rank');
+      var gPts = despikeRankPts(raw, 'gamei_today');
       var built = buildPath(pts, padL, padT, plotW, plotH, tMin, tMax, rMax, 'rank');
       var gBuilt = buildPath(gPts, padL, padT, plotW, plotH, tMin, tMax, rMax, 'gamei_today');
       var col = fillMap[c.code] || '#00d4ff';

@@ -98,72 +98,60 @@
   gap: 8px;
   z-index: 2;
 }
+/* Same Master League mark + Teko SIMULATOR as /mls header brand. */
 .ml-sim-open {
   position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 118px;
-  height: 36px;
-  padding: 0 14px;
-  border: none;
+  display: inline-block;
+  padding: 2px 4px;
+  border: 1px solid transparent;
   border-radius: 0;
   text-decoration: none;
-  white-space: nowrap;
-  overflow: visible;
   background: transparent;
-  color: var(--accent-cyan);
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  color: inherit;
+  line-height: 0;
   isolation: isolate;
   z-index: 3;
 }
-.ml-sim-open-bg {
+.ml-sim-open:hover,
+.ml-sim-open:focus-visible {
+  border-color: rgba(0, 212, 255, 0.35);
+  background: rgba(0, 212, 255, 0.06);
+  outline: none;
+}
+.ml-sim-open-mark {
+  position: relative;
+  display: block;
+  width: min(168px, 42vw);
+  container-type: inline-size;
+}
+.ml-sim-open .mls-brand-logo {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.45));
+}
+.ml-sim-open .mls-brand-banner {
   position: absolute;
   left: 50%;
-  top: 50%;
-  width: 88px;
-  height: 88px;
-  margin: -44px 0 0 -44px;
-  z-index: 0;
+  top: 60.9%;
+  transform: translate(-50%, -50%);
+  font-family: Teko, var(--font-body);
+  font-weight: 600;
+  font-size: 7.4cqw;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #f4fbff;
+  text-shadow:
+    0 0 6px rgba(0, 180, 255, 0.55),
+    0 1px 2px rgba(0, 0, 0, 0.75);
   pointer-events: none;
-  overflow: visible;
-  /* Inline starts hidden to kill FOUC before this CSS loads; reveal once stylesheet applies. */
-  visibility: visible !important;
+  user-select: none;
 }
-.ml-sim-open-line {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 88px;
-  height: 88px;
-  max-width: 88px;
-  max-height: 88px;
-  object-fit: contain;
-  object-position: center;
-  display: block;
-}
-.ml-sim-open-line--a {
-  opacity: 0.95;
-  mix-blend-mode: screen;
-}
-.ml-sim-open-line--b {
-  opacity: 0.78;
-  transform: scaleX(-1);
-  mix-blend-mode: screen;
-}
-.ml-sim-open-label {
-  position: relative;
-  z-index: 1;
-  text-shadow: 0 0 8px rgba(0, 212, 255, 0.45), 0 1px 2px rgba(0, 0, 0, 0.75);
-}
-.ml-sim-open:hover .ml-sim-open-line--a { opacity: 1; }
-.ml-sim-open:hover .ml-sim-open-line--b { opacity: 0.92; }
-.ml-sim-open:focus-visible {
-  outline: none;
-  box-shadow: var(--chrome-focus-ring, 0 0 0 2px var(--accent-cyan));
+@supports not (font-size: 1cqw) {
+  .ml-sim-open .mls-brand-banner { font-size: clamp(0.52rem, 2.1vw, 0.72rem); }
 }
 .ml-calc-open-btn {
   grid-column: auto;

@@ -6485,9 +6485,42 @@
     } catch (ePre) {}
   }
 
+  var BANNER_LINE_TEXT = 'READY? GO!!';
+
+  /** Takayu tx-fade-down-out: wrap glyphs; --r = n-1-i so stagger runs from the end. */
+  function prepareBannerLine(line) {
+    var chars, n, i, ch, html;
+    if (!line) return 0;
+    chars = Array.from(BANNER_LINE_TEXT);
+    n = chars.length;
+    html = '';
+    for (i = 0; i < n; i++) {
+      ch = chars[i] === ' ' ? '\u00a0' : chars[i];
+      html += '<span class="mls-banner-line-ch" style="--r:' + (n - 1 - i) + '">' + esc(ch) + '</span>';
+    }
+    line.innerHTML = html;
+    return n;
+  }
+
+  function bannerFadeDownOutMs(charCount) {
+    var n = Math.max(1, charCount | 0);
+    var reduced = false;
+    try {
+      reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    } catch (eR) { reduced = false; }
+    if (reduced) return 280;
+    /* 0.6s sink + 20ms * (n-1) from-end stagger (Takayu recipe). */
+    return 600 + Math.max(0, n - 1) * 20;
+  }
+
   function hideBannerNow() {
     var el = document.getElementById('mlsBanner');
+    var cutin, line;
     if (!el) return;
+    cutin = el.querySelector('.mls-banner-cutin');
+    if (cutin) cutin.style.opacity = '';
+    line = el.querySelector('.mls-banner-line');
+    if (line) line.textContent = BANNER_LINE_TEXT;
     el.hidden = true;
     el.setAttribute('hidden', '');
     el.setAttribute('aria-hidden', 'true');
@@ -6552,25 +6585,28 @@
 
   function revealBannerShell() {
     var el = document.getElementById('mlsBanner');
-    var cutin, line;
+    var cutin, line, charCount;
     if (!el) return null;
     line = el.querySelector('.mls-banner-line');
-    if (line) line.textContent = 'READY? GO!!';
+    charCount = prepareBannerLine(line);
     cutin = el.querySelector('.mls-banner-cutin');
+    if (cutin) cutin.style.opacity = '';
     el.hidden = false;
     el.removeAttribute('hidden');
     el.setAttribute('aria-hidden', 'false');
     el.classList.remove('is-out', 'is-play', 'is-snappy');
-    return { el: el, cutin: cutin };
+    return { el: el, cutin: cutin, charCount: charCount };
   }
 
-  function runBannerHold(el) {
+  function runBannerHold(el, charCount) {
     var holdMs, outMs;
     if (!el) return Promise.resolve();
     void el.offsetWidth;
     el.classList.add('is-play');
     holdMs = Math.round((mobileBattleSnappy() ? 1050 : 1400) / Math.max(1, speedMul));
-    outMs = Math.round(280 / Math.max(1, speedMul));
+    /* Exit: Takayu tx-fade-down-out on title (+ cutin sinks with it). */
+    outMs = Math.round(bannerFadeDownOutMs(charCount) / Math.max(1, speedMul));
+    if (mobileBattleSnappy()) outMs = Math.round(outMs * 0.85);
     return sleep(holdMs).then(function () {
       el.classList.add('is-out');
       return sleep(outMs);
@@ -6583,7 +6619,7 @@
     var shell = revealBannerShell();
     if (!shell) return Promise.resolve();
     return waitBannerCutin(shell.cutin).then(function () {
-      return runBannerHold(shell.el);
+      return runBannerHold(shell.el, shell.charCount);
     });
   }
 
@@ -6924,7 +6960,7 @@
        */
       shell = revealBannerShell();
       return waitBannerCutin(shell && shell.cutin).then(function () {
-        bannerP = runBannerHold(shell && shell.el);
+        bannerP = runBannerHold(shell && shell.el, shell && shell.charCount);
         simP = computeFightAsync(lastAlly, lastEnemy);
         return Promise.all([bannerP, simP]).then(function (pair) {
           return playFight(pair[1]);
