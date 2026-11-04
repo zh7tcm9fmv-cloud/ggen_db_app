@@ -5048,7 +5048,8 @@ rankSuf=`&view=ranking&stat_mode=${encodeURIComponent(sm)}&cond=${cond}&pilot_co
 }
 }
 if(type==='character')return`/api/character/${eid}?lang=${lang}${rankSuf}`;
-if(type==='unit')return`/api/unit/${eid}?lang=${lang}${rankSuf}`;
+/* sv=usk5: unit-skill details = LANG desc only (no trait paraphrase duplicates). */
+if(type==='unit')return`/api/unit/${eid}?lang=${lang}${rankSuf}&sv=usk5`;
 if(type==='supporter')return`/api/supporter/${eid}?lang=${lang}&level=100&lb_tier=3&sv=s8`;
 if(type==='option_part'){
 const vt=opts.variantTag?`&variant_tag=${encodeURIComponent(String(opts.variantTag))}`:'';
@@ -10330,7 +10331,31 @@ function battleDecisionFrameUrl(){return imgUrl('/static/images/UI/UI_Battle_But
 function battleDecisionFrameHtml(kind){const k=String(kind||'wpn-plain').replace(/[^a-z0-9-]/gi,'');const url=battleDecisionFrameUrl();if(!url)return'';return`<span class="battle-decision-frame battle-decision-frame--${k}" style="-webkit-mask-image:url('${url}');mask-image:url('${url}');" aria-hidden="true"></span>`}
 function weaponBattleFrameKind(x,rc){const c=String(rc||'').toLowerCase();if(c==='ex'||(x&&x.is_ex))return'wpn-ex';if(c==='map'||(x&&(x.is_map||x.weapon_type==='3')))return'wpn-map';if(c==='purple')return'wpn-range';if(c==='green')return'wpn-plain';if(c==='yellow')return'wpn-inflict';return'wpn-trait'}
 function renderCharSkillIconWrap(sk){const spVal=sk&&sk.sp!=null&&sk.sp!==''?Number(sk.sp):NaN;const spHtml=Number.isFinite(spVal)?`<div class="char-skill-sp-cost">SP ${Math.round(spVal)}</div>`:'';const wrapCls=spHtml?' ability-icon-wrap--char-skill':'';return`<div class="ability-icon-wrap${wrapCls}">${renderAbilIcon(sk)}${spHtml}</div>`}
-function renderSkills(s,isSp){if(!s||!s.length)return'';let vs=s.filter(sk=>isSp?sk.is_sp||!sk.replaced_by_sp:!sk.is_sp);if(!vs.length)return'';return`<div class="detail-section"><div class="section-title">${t('sec_skills')}</div><div class="ability-list">${vs.map(sk=>{const clickable=!sk.skip_skill_modal;const clickCls=clickable?' ability-item-clickable':'';const oc=clickable?` onclick="event.stopPropagation();openSkillModal('${escJs(sk.name)}')"`:'';const tt=clickable?` title="${t('view_owners')||'View who has this'}"`:'';return`<div class="ability-item${clickCls}"${oc}${tt}>${renderCharSkillIconWrap(sk)}<div class="ability-info"><div class="ability-name" style="display:flex;align-items:center;gap:6px;">${sk.is_sp?'<img src="'+imgUrl('/static/images/UI/UI_Common_Icon_Sp.webp')+'" style="height:20px;object-fit:contain;" alt="SP">':''}${esc(sk.name)}</div>${renderAbilityDetailsHtml(sk.details||[])}</div></div>`}).join('')}</div></div>`}
+/** Unit Skill panel: drop trait-desc paraphrases when the skill already has a LANG desc (in-game shows desc only). */
+function unitSkillDetailsForDisplay(sk){
+const details=Array.isArray(sk&&sk.details)?sk.details:[];
+const traits=Array.isArray(sk&&sk.traits)?sk.traits:[];
+if(!details.length||!traits.length)return details;
+const traitKeys=new Set();
+traits.forEach(tr=>{
+const raw=String((tr&&(tr.desc||tr.name))||'').trim();
+if(!raw)return;
+traitKeys.add(raw.replace(/\s+/g,'').toLowerCase());
+});
+if(!traitKeys.size)return details;
+const kept=details.filter(d=>{
+const text=typeof d==='string'?d:((d&&d.text)||'');
+const key=String(text||'').replace(/\s+/g,'').toLowerCase();
+if(!key)return true;
+/* Exact trait line, or a multi-line detail that is only trait lines glued together. */
+if(traitKeys.has(key))return false;
+const parts=String(text||'').split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+if(parts.length>=2&&parts.every(p=>traitKeys.has(p.replace(/\s+/g,'').toLowerCase())))return false;
+return true;
+});
+return kept.length?kept:details;
+}
+function renderSkills(s,isSp){if(!s||!s.length)return'';let vs=s.filter(sk=>isSp?sk.is_sp||!sk.replaced_by_sp:!sk.is_sp);if(!vs.length)return'';return`<div class="detail-section"><div class="section-title">${t('sec_skills')}</div><div class="ability-list">${vs.map(sk=>{const clickable=!sk.skip_skill_modal;const clickCls=clickable?' ability-item-clickable':'';const oc=clickable?` onclick="event.stopPropagation();openSkillModal('${escJs(sk.name)}')"`:'';const tt=clickable?` title="${t('view_owners')||'View who has this'}"`:'';return`<div class="ability-item${clickCls}"${oc}${tt}>${renderCharSkillIconWrap(sk)}<div class="ability-info"><div class="ability-name" style="display:flex;align-items:center;gap:6px;">${sk.is_sp?'<img src="'+imgUrl('/static/images/UI/UI_Common_Icon_Sp.webp')+'" style="height:20px;object-fit:contain;" alt="SP">':''}${esc(sk.name)}</div>${renderAbilityDetailsHtml(unitSkillDetailsForDisplay(sk))}</div></div>`}).join('')}</div></div>`}
 function renderModifiers(rows){if(!rows||!rows.length)return'';return`<div class="detail-section"><div class="section-title">Modifier</div><div class="ability-list">${rows.map(md=>{const src=md&&typeof md==='object'?md:{};const details=Array.isArray(src.details)?src.details:[];const name=src.name||'Modifier';return`<div class="ability-item"><div class="ability-icon-wrap">${renderAbilIcon(src)}</div><div class="ability-info"><div class="ability-name">${esc(name)}</div>${renderAbilityDetailsHtml(details)}</div></div>`}).join('')}</div></div>`}
 function renderMechanisms(m){if(!m||!m.length)return'';return`<div class="detail-section"><div class="section-title">${t('sec_mechanism')}</div><div class="ability-list">${m.map(x=>`<div class="ability-item"><div class="ability-icon-wrap">${x.icon?`<img class="mech-icon" src="${imgUrl(x.icon)}" alt="" onerror="this.outerHTML='<div class=\\'ability-icon-placeholder\\'>⚙️</div>'">`:'<div class="ability-icon-placeholder">⚙️</div>'}</div><div class="ability-info"><div class="ability-name">${esc(x.name)}</div><div class="ability-detail">${esc(x.description)}</div></div></div>`).join('')}</div></div>`}
 function collectOpenWeaponMapIds(root){const out=[];if(!root)return out;(root.querySelectorAll('.map-grid-container.active[id^="map-"]')||[]).forEach(el=>{const id=String(el.id||'');if(id.startsWith('map-'))out.push(id.slice(4))});return out}
@@ -21078,6 +21103,9 @@ normalDmg=MX(0,preN-unitSkillBarrierCap);
 critDmg=MX(0,preC-unitSkillBarrierCap);
 }
 unitSkillInitialNull=!!_dcGetDetectedUnitSkillInitialNull(S.dc.defUnitData).on;
+/* One-shot stock: MLS sets defInitialNullStock=false after the first landed hit (incl. S.Attack).
+ * /cal UI leaves it undefined → treat as available while the skill toggle is on. */
+if(unitSkillInitialNull&&S.dc.defInitialNullStock===false)unitSkillInitialNull=false;
 if(unitSkillInitialNull){normalDmg=0;critDmg=0}
 }
 const accuracy=lvData.accuracy;

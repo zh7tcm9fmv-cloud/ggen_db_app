@@ -17977,6 +17977,11 @@ def resolve_unit_skill(usid, ld, sv):
     def _uskill_detail_key(s):
         return re.sub(r'\s+', '', str(s or '').strip().lower())
     blob_key = _uskill_detail_key(blob)
+    # In-game Unit Skill panel shows the skill LANG desc only. Trait lines paraphrase the
+    # same effects with different wording (e.g. F91 EX “Grant Initial… / until the above
+    # effect expires” vs trait “Nullifies the first instance…” / “until the Initial
+    # Damage Nullification effect expires”) — keep them on traits for parsers, not details.
+    append_trait_details = not bool(blob)
     tnf = ld.get('unit_skill_trait_name_fallback', {}); tdf = ld.get('unit_skill_trait_desc_fallback', {})
     traits_out = []
     for tr in unit_skill_trait_by_skill.get(usid, []):
@@ -18020,6 +18025,8 @@ def resolve_unit_skill(usid, ld, sv):
             'trait_type_index': normalize_id(tr.get('trait_type_index') or '0'),
             'trait_value': _uskill_tv,
         })
+        if not append_trait_details:
+            continue
         tnorm = (tdesc or '').strip()
         if not tnorm:
             continue
@@ -37922,7 +37929,7 @@ def get_unit(unit_id):
         if stat_mode_arg not in ('normal', 'sp', 'ssp'):
             stat_mode_arg = 'normal'
         cond_for_ranking = request.args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
-        ck = f"u_{unit_id}_{lc}_ssp20_ult8_cpwr1_usk4_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_bp3_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        ck = f"u_{unit_id}_{lc}_ssp20_ult8_cpwr1_usk5_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_bp3_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         _cc = _detail_http_cache_kwargs()
         early = try_serve_preserialized(ck, **_cc)
         if early is not None:

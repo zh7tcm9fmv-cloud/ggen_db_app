@@ -236,7 +236,13 @@
       optionPartId: sl.optionPartId != null ? String(sl.optionPartId) : null,
       optionPartName: sl.optionPartName || '',
       optionPartThum: sl.optionPartThum || '',
-      optionPartRarity: sl.optionPartRarity || ''
+      optionPartRarity: sl.optionPartRarity || '',
+      /* SSR and below: normal / SP / SSP. Absent = pick the maxed kit (SSP when the unit has one). */
+      unitStatMode: sl.unitStatMode === 'sp' || sl.unitStatMode === 'ssp' || sl.unitStatMode === 'normal'
+        ? sl.unitStatMode : '',
+      charStatMode: sl.charStatMode === 'sp' || sl.charStatMode === 'normal' ? sl.charStatMode : '',
+      unitHasSp: !!sl.unitHasSp,
+      charHasSp: !!sl.charHasSp
     };
     /* Optional map start override (battle-map drag). Absent = board spawn for that slot. */
     if (sl.x != null && sl.y != null && !isNaN(+sl.x) && !isNaN(+sl.y)) {
@@ -285,10 +291,15 @@
     } catch (e) {}
   }
 
+  /** Formation + battle toggles both write ORDER_ENEMY_KEY — prefer that over a single checkbox. */
   function includeEnemyOrder() {
-    var el = document.getElementById('mlsOrderEnemies');
-    if (el) return !!el.checked;
-    try { return localStorage.getItem(ORDER_ENEMY_KEY) !== '0'; } catch (e) { return true; }
+    try { return localStorage.getItem(ORDER_ENEMY_KEY) !== '0'; } catch (e) {
+      var a = document.getElementById('mlsOrderEnemies');
+      var b = document.getElementById('mlsOrderEnemiesForm');
+      if (a) return !!a.checked;
+      if (b) return !!b.checked;
+      return true;
+    }
   }
 
   function syncOrderToggleUi() {
@@ -304,7 +315,8 @@
     var on = !!(ev && ev.target && ev.target.checked);
     try { localStorage.setItem(ORDER_ENEMY_KEY, on ? '1' : '0'); } catch (e) {}
     syncOrderToggleUi();
-    paintTimeline();
+    /* Reload both forces — formation picks can leave lastEnemy stale until this. */
+    scheduleOrderRefresh();
   }
 
   function collectionsLb(unitId) {
@@ -366,18 +378,52 @@
     return [sl.unitId, ch, lb, op].join(',');
   }
 
-  function exportForceCode(side) {
-    var parts = forceOf(side).slots.map(slotShareToken);
-    while (parts.length && parts[parts.length - 1] === '-') parts.pop();
-    return 'MLS1|' + parts.join(';');
+  function supporterShareToken(sup) {
+    var lb;
+    if (!sup || !sup.id) return '-';
+    lb = sup.lb != null ? (sup.lb | 0) : 3;
+    return lb === 3 ? String(sup.id) : (String(sup.id) + ',' + lb);
   }
 
-  function parseForceCode(text) {
+  /**
+   * MLS2|supporterId[,lb]|unit;unit;… — includes supporter + unit slots.
+   * MLS1|unit;… still loads (no supporter). Combined E:/A: dual codes accepted.
+   */
+  function exportForceCode(side) {
+    var force = forceOf(side);
+    var parts = force.slots.map(slotShareToken);
+    while (parts.length && parts[parts.length - 1] === '-') parts.pop();
+    return 'MLS2|' + supporterShareToken(force.supporter) + '|' + parts.join(';');
+  }
+
+  function parseForcePayload(text) {
     var raw = String(text || '').trim();
     var slots = emptySlots();
-    var bits, i, bit, cols, sl;
-    if (!raw) return slots;
-    raw = raw.replace(/^MLS1\|/i, '');
+    var supporter = null;
+    var bits, i, bit, cols, sl, pipe, supBit, sc;
+    if (!raw) return { slots: slots, supporter: null };
+    if (/^MLS2\|/i.test(raw)) {
+      raw = raw.replace(/^MLS2\|/i, '');
+      pipe = raw.indexOf('|');
+      if (pipe >= 0) {
+        supBit = String(raw.slice(0, pipe) || '').trim();
+        raw = raw.slice(pipe + 1);
+        if (supBit && supBit !== '-') {
+          sc = supBit.split(',');
+          if (sc[0]) {
+            supporter = {
+              id: String(sc[0]),
+              lb: sc[1] != null && sc[1] !== '' ? (parseInt(sc[1], 10) || 0) : 3,
+              name: String(sc[0]),
+              thum: '',
+              rarity: ''
+            };
+          }
+        }
+      }
+    } else {
+      raw = raw.replace(/^MLS1\|/i, '');
+    }
     if (/^[EA]:/i.test(raw) && raw.indexOf('|') >= 0) return null;
     bits = raw.split(';');
     for (i = 0; i < SLOT_COUNT && i < bits.length; i++) {
@@ -397,22 +443,29 @@
       };
       slots[i] = normalizeSlot(sl);
     }
-    return slots;
+    return { slots: slots, supporter: supporter };
+  }
+
+  function parseForceCode(text) {
+    var parsed = parseForcePayload(text);
+    return parsed ? parsed.slots : null;
   }
 
   function applyShareText(side, text) {
     var raw = String(text || '').trim();
     var useCol = document.getElementById('mlsShareUseColLb');
-    var slots, i, lb;
-    if (/^MLS1\|E:/i.test(raw) && /\|A:/i.test(raw)) {
-      var enemyPart = raw.replace(/^MLS1\|E:/i, '').split(/\|A:/i)[0];
+    var parsed, slots, i, lb, force;
+    if (/^MLS[12]\|E:/i.test(raw) && /\|A:/i.test(raw)) {
+      var ver = /^MLS2\|/i.test(raw) ? 'MLS2|' : 'MLS1|';
+      var enemyPart = raw.replace(/^MLS[12]\|E:/i, '').split(/\|A:/i)[0];
       var allyPart = (raw.split(/\|A:/i)[1] || '');
-      applyShareText('enemy', 'MLS1|' + enemyPart);
-      applyShareText('ally', 'MLS1|' + allyPart);
+      applyShareText('enemy', ver + enemyPart);
+      applyShareText('ally', ver + allyPart);
       return;
     }
-    slots = parseForceCode(raw);
-    if (!slots) return;
+    parsed = parseForcePayload(raw);
+    if (!parsed || !parsed.slots) return;
+    slots = parsed.slots;
     if (side === 'ally' && useCol && useCol.checked) {
       for (i = 0; i < slots.length; i++) {
         if (!slots[i]) continue;
@@ -420,10 +473,18 @@
         if (lb != null) slots[i].lb = lb;
       }
     }
-    forceOf(side).slots = slots;
+    force = forceOf(side);
+    force.slots = slots;
+    force.supporter = parsed.supporter;
     saveRoster();
     paintForceSlots();
-    scheduleOrderRefresh();
+    fillShareBoxes();
+    hydrateSlotPilotsAndOps().then(function () {
+      fillShareBoxes();
+      scheduleOrderRefresh();
+      if (viewName === 'battle') return loadArmies().then(function () { paintBoard(); paintTimeline(); });
+      return null;
+    });
     log('Loaded ' + side + ' from share code.');
   }
 
@@ -431,41 +492,78 @@
     return forceOf(side).slots.some(function (sl) { return sl && sl.unitId; });
   }
 
-  /** Shuffle left→right slot order only (no vertical/rot jitter). */
-  function scrambleShareFaces(faces) {
-    var imgs, i, j, t;
-    if (!faces) return;
-    imgs = Array.prototype.slice.call(faces.querySelectorAll('img'));
-    for (i = imgs.length - 1; i > 0; i--) {
-      j = Math.floor(Math.random() * (i + 1));
-      t = imgs[i];
-      imgs[i] = imgs[j];
-      imgs[j] = t;
-    }
-    imgs.forEach(function (img) {
-      faces.appendChild(img);
-      img.style.removeProperty('--mls-face-x');
-      img.style.removeProperty('--mls-face-y');
-      img.style.removeProperty('--mls-face-rot');
-    });
+  var shareFaceLayoutKey = { enemy: '', ally: '' };
+  var SHARE_FACE_FALLBACK = [
+    '/static/images/Popup/win_g8500n00200_01.webp',
+    '/static/images/Popup/win_g8500n00300_01.webp',
+    '/static/images/Popup/win_g8500n00400_01.webp',
+    '/static/images/Popup/win_g8500n00700_01.webp',
+    '/static/images/Popup/win_g3700n00015_01.webp'
+  ];
+
+  function shareFaceImgHtml(src, cls, title) {
+    return '<img' + (cls ? (' class="' + cls + '"') : '') + ' src="' + esc(src) +
+      '" alt="" width="56" height="56" loading="lazy" decoding="async"' +
+      (title ? (' title="' + esc(title) + '"') : '') + '>';
   }
 
-  var shareFaceLayoutKey = { enemy: '', ally: '' };
+  /**
+   * Live unit/supporter thumbs in formation order (no scramble):
+   * enemy → supporter, then slot 5→1 · ally → slot 1→5, then supporter.
+   */
+  function paintShareFaceStrip(faces, side) {
+    var force, html, i, sl, src, sup, idxs;
+    if (!faces) return;
+    force = forceOf(side);
+    html = '';
+    idxs = [];
+    for (i = 0; i < SLOT_COUNT; i++) idxs.push(i);
+    if (side === 'enemy') idxs.reverse();
+
+    function appendUnit(slotIdx) {
+      sl = force.slots[slotIdx];
+      if (!sl || !sl.unitId) return;
+      src = thumbUrl(sl.thum || '');
+      if (!src) return;
+      html += shareFaceImgHtml(src, '', sl.name || '');
+    }
+    function appendSup() {
+      sup = force.supporter;
+      if (!sup || !sup.id) return;
+      src = thumbUrl(sup.thum || '');
+      if (!src) return;
+      html += shareFaceImgHtml(src, 'mls-share-face--supp', sup.name || 'Supporter');
+    }
+
+    if (side === 'enemy') {
+      appendSup();
+      idxs.forEach(appendUnit);
+    } else {
+      idxs.forEach(appendUnit);
+      appendSup();
+    }
+    if (!html) {
+      SHARE_FACE_FALLBACK.forEach(function (path) {
+        html += shareFaceImgHtml(thumbUrl(path), '', '');
+      });
+    }
+    faces.innerHTML = html;
+  }
 
   function syncShareFacesReady() {
     var eCol = document.querySelector('.mls-share-col--enemy .mls-share-faces');
     var aCol = document.querySelector('.mls-share-col--ally .mls-share-faces');
-    var eReady = forceHasUnits('enemy');
-    var aReady = forceHasUnits('ally');
+    var eReady = forceHasUnits('enemy') || !!(forceOf('enemy').supporter && forceOf('enemy').supporter.id);
+    var aReady = forceHasUnits('ally') || !!(forceOf('ally').supporter && forceOf('ally').supporter.id);
     var eKey = eReady ? exportForceCode('enemy') : '';
     var aKey = aReady ? exportForceCode('ally') : '';
     if (eCol) {
-      if (eReady && eKey !== shareFaceLayoutKey.enemy) scrambleShareFaces(eCol);
+      if (eKey !== shareFaceLayoutKey.enemy) paintShareFaceStrip(eCol, 'enemy');
       shareFaceLayoutKey.enemy = eKey;
       eCol.classList.toggle('is-ready', eReady);
     }
     if (aCol) {
-      if (aReady && aKey !== shareFaceLayoutKey.ally) scrambleShareFaces(aCol);
+      if (aKey !== shareFaceLayoutKey.ally) paintShareFaceStrip(aCol, 'ally');
       shareFaceLayoutKey.ally = aKey;
       aCol.classList.toggle('is-ready', aReady);
     }
@@ -493,11 +591,11 @@
         }
         apply(text);
       }).catch(function () {
-        var manual = window.prompt('Paste ' + side + ' share code (MLS1|…)', el ? el.value : '');
+        var manual = window.prompt('Paste ' + side + ' share code (MLS2|…)', el ? el.value : '');
         if (manual != null) apply(manual);
       });
     }
-    var fallback = window.prompt('Paste ' + side + ' share code (MLS1|…)', el ? el.value : '');
+    var fallback = window.prompt('Paste ' + side + ' share code (MLS2|…)', el ? el.value : '');
     if (fallback != null) apply(fallback);
     return Promise.resolve();
   }
@@ -621,6 +719,7 @@
     paintSupporter('mlsAllySupp', 'ally');
     paintSlotList('mlsEnemySlots', forceOf('enemy').slots, 'enemy');
     paintSlotList('mlsAllySlots', forceOf('ally').slots, 'ally');
+    fillShareBoxes();
     void renderMlsStats();
   }
 
@@ -670,6 +769,40 @@
         '" title="LB' + i + '" aria-label="Limit Break ' + i + '">' + imgs + '</button>';
     }
     return h;
+  }
+
+  var MLS_SP_ICON = '/static/images/UI/UI_Common_Icon_Sp.webp';
+  var MLS_SSP_ICON = '/static/images/UI/UI_Common_Icon_Ssp.webp';
+
+  function statModeBtn(side, idx, kind, mode, on, icon, label) {
+    return '<button type="button" class="mls-sp-btn' + (on ? ' is-on' : '') +
+      '" data-mls-stat="' + side + ':' + idx + ':' + kind + ':' + mode +
+      '" title="' + esc(label) + '" aria-label="' + esc(label) + '" aria-pressed="' + (on ? 'true' : 'false') + '">' +
+      '<img src="' + esc(thumbUrl(icon)) + '" alt=""></button>';
+  }
+
+  /** SP + SSP on the unit, same icons as /u. Hidden on UR and kits with no SP path. */
+  function statModeButtonsHtml(sl, side, idx) {
+    var mode, show;
+    if (!sl) return '';
+    show = sl._statChecked ? !!sl.unitHasSp : rarityAllowsSpSsp(sl.rarity);
+    if (!show) return '';
+    mode = sl.unitStatMode || '';
+    return '<span class="mls-stat-modes">' +
+      statModeBtn(side, idx, 'unit', 'sp', mode === 'sp', MLS_SP_ICON, 'SP') +
+      statModeBtn(side, idx, 'unit', 'ssp', mode === 'ssp', MLS_SSP_ICON, 'SSP') +
+      '</span>';
+  }
+
+  /** Pilot SP, same icon as /c. Hidden on UR pilots. */
+  function charSpButtonHtml(sl, side, idx) {
+    var show, mode;
+    if (!sl || !sl.charId) return '';
+    if (sl._charStatChecked) show = !!sl.charHasSp;
+    else show = true;
+    if (!show) return '';
+    mode = sl.charStatMode || '';
+    return statModeBtn(side, idx, 'char', 'sp', mode === 'sp', MLS_SP_ICON, 'Pilot SP');
   }
 
   function paintSupporter(hostId, side) {
@@ -747,7 +880,9 @@
           side + ':' + i + '" title="Change pilot">' +
           (sl.charName ? ('Pilot: ' + esc(sl.charName)) : 'Set pilot') +
           '</button>' +
+          charSpButtonHtml(sl, side, i) +
           '<span class="mls-supp-lb">' + lbButtonsHtml(side, i, lb, 'unit') + '</span>' +
+          statModeButtonsHtml(sl, side, i) +
           opHtml +
           '</div>' +
           '</div>';
@@ -1875,6 +2010,8 @@
       };
       saveRoster();
       paintForceSlots();
+      fillShareBoxes();
+      scheduleOrderRefresh();
       return;
     }
     if (kind === 'option') {
@@ -1887,6 +2024,7 @@
       slOp.optionPartRarity = row.rarity || '';
       saveRoster();
       paintForceSlots();
+      scheduleOrderRefresh();
       if (viewName === 'battle') loadArmies().then(paintBoard);
       return;
     }
@@ -1898,6 +2036,7 @@
       slCh.charThum = row.thum || row.portrait || '';
       saveRoster();
       paintForceSlots();
+      scheduleOrderRefresh();
       if (viewName === 'battle') loadArmies().then(paintBoard);
       return;
     }
@@ -2017,7 +2156,11 @@
         optionPartId: null,
         optionPartName: '',
         optionPartThum: '',
-        optionPartRarity: ''
+        optionPartRarity: '',
+        unitHasSp: unitAllowsSpSsp(u),
+        _statChecked: true,
+        unitStatMode: resolveUnitStatMode(u, ''),
+        charStatMode: ''
       };
       if (rec) {
         slot.charName = rec.name || '';
@@ -2031,11 +2174,15 @@
         if (cd && !cd.error) {
           slot.charName = cd.name || slot.charName;
           slot.charThum = cd.thum || cd.portrait || slot.charThum;
+          slot.charHasSp = charAllowsSp(cd);
+          slot._charStatChecked = true;
+          if (!slot.charStatMode) slot.charStatMode = resolveCharStatMode(cd, '');
         }
         return autoPickOpForSlot(side, idx, u, cd);
       }).then(function () {
         saveRoster();
         paintForceSlots();
+        scheduleOrderRefresh();
         if (viewName === 'battle') return loadArmies().then(paintBoard);
       });
     }).catch(function (e) {
@@ -2056,13 +2203,34 @@
     }
     saveRoster();
     paintForceSlots();
+    scheduleOrderRefresh();
+    if (viewName === 'battle') loadArmies().then(function () { paintBoard(); paintTimeline(); });
+  }
+
+  /** Toggle SP / SSP the same way /u and /c do: click the active mode to return to normal. */
+  function setSlotStatMode(side, idx, kind, mode) {
+    var sl = forceOf(side).slots[idx];
+    if (!sl || !sl.unitId) return;
+    if (kind === 'char') {
+      if (sl._charStatChecked && !sl.charHasSp) return;
+      sl.charStatMode = (sl.charStatMode === mode) ? 'normal' : mode;
+    } else {
+      if (sl._statChecked && !sl.unitHasSp) return;
+      if (mode !== 'sp' && mode !== 'ssp') return;
+      sl.unitStatMode = (sl.unitStatMode === mode) ? 'normal' : mode;
+    }
+    saveRoster();
+    paintForceSlots();
+    scheduleOrderRefresh();
     if (viewName === 'battle') loadArmies().then(function () { paintBoard(); paintTimeline(); });
   }
 
   function clearSupporter(side) {
     forceOf(side).supporter = null;
     saveRoster();
+    fillShareBoxes();
     paintForceSlots();
+    scheduleOrderRefresh();
   }
 
   function clearOption(side, idx) {
@@ -2147,6 +2315,8 @@
             slot.charId = sl.charId ? String(sl.charId) : null;
             slot.charData = cd && !cd.error ? cd : null;
             slot.lbTier = sl.lb != null ? (sl.lb | 0) : 3;
+            slot.unitStatMode = resolveUnitStatMode(ud, sl.unitStatMode);
+            slot.charStatMode = resolveCharStatMode(cd, sl.charStatMode);
             slot.optionParts = op ? [op] : [];
             if (typeof global._tbSyncSlotCondPassives === 'function') {
               try { global._tbSyncSlotCondPassives(slot); } catch (_) {}
@@ -2253,13 +2423,16 @@
     return 0;
   }
 
-  function unitStats(ud, lb) {
+  function unitStats(ud, lb, statMode) {
     var rows = ud && ud.lb_data;
     var tier = 0;
-    var row, list;
+    var row, list, key;
     if (rows && rows.length) tier = Math.min(Math.max(0, lb | 0), rows.length - 1);
     row = rows && rows[tier];
-    list = row ? (row.stats_no_cond || row.stats || []) : [];
+    key = 'stats_no_cond';
+    if (ud && ud.has_sp && statMode === 'ssp') key = 'ssp_stats_no_cond';
+    else if (ud && ud.has_sp && statMode === 'sp') key = 'sp_stats_no_cond';
+    list = row ? (row[key] || row.stats_no_cond || row.stats || []) : [];
     return {
       hp: statOf(list, 'HP'),
       en: statOf(list, 'EN'),
@@ -2270,8 +2443,10 @@
     };
   }
 
-  function charStats(cd) {
-    var list = (cd && (cd.stats || cd.stats_with_ex)) || [];
+  function charStats(cd, statMode) {
+    var list = (statMode === 'sp' && cd && cd.sp_stats && cd.sp_stats.length)
+      ? cd.sp_stats
+      : ((cd && (cd.stats || cd.stats_with_ex)) || []);
     return {
       reaction: statOf(list, 'Reaction'),
       def: statOf(list, 'Defense'),
@@ -2297,12 +2472,15 @@
     return !!(ud && ud.ult_alteration && ud.ult_alteration.max_add_stats);
   }
 
-  function weaponsOf(ud) {
+  function weaponsOf(ud, statMode) {
     var ultOn = unitHasUltAlt(ud);
+    var sspOn = statMode === 'ssp';
     return ((ud && ud.weapons) || []).filter(function (w) {
       if (!w) return false;
       /* Match /cal _dcNonMapWeapons: ult weapons only when ULT Alt is on. */
       if (w.is_ult_weapon && !ultOn) return false;
+      /* Custom Core weapons only while the unit is in SSP. */
+      if ((w.is_ssp_weapon || w.ssp_only) && !sspOn) return false;
       return true;
     }).map(function (w) {
       var levels = w.levels || [];
@@ -2310,6 +2488,8 @@
       return {
         raw: w,
         name: w.name || (w.is_ex ? 'EX' : 'Weapon'),
+        icon: w.icon || w.ssp_icon || '',
+        icon_color: w.icon_color || w.ssp_icon_color || '',
         min_range: w.min_range != null ? w.min_range | 0 : 1,
         max_range: w.max_range != null ? w.max_range | 0 : 1,
         power: (lv.power != null ? lv.power : w.power) | 0,
@@ -2319,6 +2499,7 @@
         accuracy: (lv.accuracy != null ? lv.accuracy : w.accuracy) | 0,
         critical: (lv.critical != null ? lv.critical : w.critical) | 0,
         is_ex: !!w.is_ex,
+        is_ssp_weapon: !!(w.is_ssp_weapon || w.ssp_only),
         is_map: !!(w.is_map || w.is_map_weapon),
         is_map_weapon: !!(w.is_map || w.is_map_weapon),
         is_ult_weapon: !!w.is_ult_weapon,
@@ -2596,24 +2777,31 @@
     return keys;
   }
 
-  /** Ability-line DTD (Phase Shift Armor, Beam Damage Reduction, …) — not always in unit.skills. */
+  /** Ability-line DTD (Phase Shift Armor, Beam Damage Reduction, Armure Lumiere, …) — not always in unit.skills. */
   function abilityDamageTakenDownPct(unitData, weapon) {
     var best = 0;
-    var blob, m, pct, wantBeam, wantPhys, wantSpec, keys, isBeam, isPhys, isSpec;
+    var blob, m, pct, wantBeam, wantPhys, wantSpec, wantRanged, wantMelee;
+    var keys, isBeam, isPhys, isSpec, isRanged;
     keys = weaponAttrKeys(weapon);
     isBeam = keys.indexOf('beam') >= 0;
     isPhys = keys.indexOf('physical') >= 0;
     isSpec = keys.indexOf('special') >= 0;
+    isRanged = weaponIsRanged(weapon);
     ((unitData && unitData.abilities) || []).forEach(function (ab) {
       blob = abilityDetailTexts(ab).join(' ');
       if (!/reduce\s+damage\s+taken|被ダメージ|損傷(?:減輕|減少)/i.test(blob)) return;
       m = blob.match(/(\d+)\s*%/);
       pct = m ? (parseInt(m[1], 10) || 0) : 0;
       if (pct <= 0) return;
-      wantBeam = /\bbeam\b|ビーム|光束|鐳射/i.test(blob);
-      wantPhys = /\bphysical\b|物理/i.test(blob);
-      wantSpec = /\bspecial\b|特殊/i.test(blob);
-      if (wantBeam || wantPhys || wantSpec) {
+      /* Armure Lumiere: “When enemies attack with a ranged weapon…” — not all hits. */
+      wantRanged = /ranged\s+weapon|射撃武装|遠程武装|遠距離武装|當敵方以射擊/i.test(blob);
+      wantMelee = /melee\s+weapon|格闘武装|近接武装/i.test(blob);
+      wantBeam = /\bbeam\b|ビーム|光束|鐳射/i.test(blob) && !wantRanged;
+      wantPhys = /\bphysical\b|物理/i.test(blob) && !wantRanged;
+      wantSpec = /\bspecial\b|特殊/i.test(blob) && !wantRanged;
+      if (wantRanged || wantMelee || wantBeam || wantPhys || wantSpec) {
+        if (wantRanged && !isRanged) return;
+        if (wantMelee && isRanged) return;
         if (wantBeam && !isBeam) return;
         if (wantPhys && !isPhys) return;
         if (wantSpec && !isSpec) return;
@@ -2851,6 +3039,37 @@
     return side === 'enemy' ? 2 : 1;
   }
 
+  /** UR kits have no SP/SSP conversion. SSR and below do when MasterData says so. */
+  function rarityAllowsSpSsp(rarity) {
+    var r = String(rarity || '').toUpperCase();
+    if (!r || r === 'UR') return false;
+    return true;
+  }
+
+  function unitAllowsSpSsp(ud) {
+    if (!ud || !rarityAllowsSpSsp(ud.rarity)) return false;
+    if (ud.has_sp) return true;
+    return preferredUnitStatMode(ud) === 'ssp';
+  }
+
+  function charAllowsSp(cd) {
+    if (!cd || !rarityAllowsSpSsp(cd.rarity)) return false;
+    if (cd.has_sp) return true;
+    return preferredCharStatMode(cd) === 'sp';
+  }
+
+  function resolveUnitStatMode(ud, explicit) {
+    if (!unitAllowsSpSsp(ud)) return 'normal';
+    if (explicit === 'normal' || explicit === 'sp' || explicit === 'ssp') return explicit;
+    return preferredUnitStatMode(ud);
+  }
+
+  function resolveCharStatMode(cd, explicit) {
+    if (!charAllowsSp(cd)) return 'normal';
+    if (explicit === 'normal' || explicit === 'sp') return explicit;
+    return preferredCharStatMode(cd);
+  }
+
   /** ML assumes maxed kits: SSP when the unit has an SSP path, else normal. */
   function preferredUnitStatMode(ud) {
     var ab, wp, i;
@@ -2888,7 +3107,7 @@
       optionParts: (actor && actor.optionParts) || [],
       lbTier: actor ? (actor.lb | 0) : 3,
       unitStatMode: (actor && actor.unitStatMode) || preferredUnitStatMode(actor && actor.unit),
-      charStatMode: preferredCharStatMode(actor && actor.char),
+      charStatMode: (actor && actor.charStatMode) || preferredCharStatMode(actor && actor.char),
       unitCondPassive: actor ? liveUnitCondPassive(actor) : false,
       charCondPassive: actor ? liveCharCondPassive(actor) : false,
       unitCondStackCount: actor ? liveCombatStackCount(actor) : 0,
@@ -3031,7 +3250,7 @@
       'critDmgUp', 'squadCondAtkPct', 'squadCondDefPct', 'exSquadAtkPct', 'exSquadAtkPctExplicitZero',
       'defSquadCondAtkPct', 'defSquadCondDefPct',
       'applyAdvantageEnemyTag', 'applyZeonEnemyTag', 'charStatMode', 'atkCounterOwnAtk', 'grandOffensiveBuff',
-      'ultAltActive', 'defUltAltActive', 'supportDefenseActive'
+      'ultAltActive', 'defUltAltActive', 'supportDefenseActive', 'defInitialNullStock'
     ];
     snap = {};
     keys.forEach(function (k) { snap[k] = dc[k]; });
@@ -3068,11 +3287,13 @@
       dc.defUnitSkillActive = !!(defender.turnBuffActive || defender.forceGuard ||
         (defender.unitSkillBeamDr | 0) > 0 || (defender.shieldBarrier | 0) > 0 ||
         defender.hasFirstStrikeBarrier);
+      /* Type-8 Initial Null is one shot — only while stock remains (S.Attack consumes it too). */
+      dc.defInitialNullStock = !!defender.hasFirstStrikeBarrier;
       dc.unitCondPassive = liveUnitCondPassive(attacker);
       dc.charCondPassive = liveCharCondPassive(attacker);
       dc.defUnitCondPassive = liveUnitCondPassive(defender);
       dc.defCharCondPassive = liveCharCondPassive(defender);
-      dc.charStatMode = preferredCharStatMode(attacker.char);
+      dc.charStatMode = attacker.charStatMode || preferredCharStatMode(attacker.char);
       dc.unitHpAtkTierIndex = liveHpAtkTierIndex(attacker);
       dc.unitCondStackCount = liveCombatStackCount(attacker);
       /* Attacker stack slider is for own combat ATK; defender DEF patched after sync. */
@@ -3130,7 +3351,7 @@
       } else {
         weapons = (typeof global._dcNonMapWeapons === 'function')
           ? global._dcNonMapWeapons(attacker.unit)
-          : weaponsOf(attacker.unit).filter(function (w) { return !w.is_map; }).map(function (w) { return w.raw; });
+          : weaponsOf(attacker.unit, attacker.unitStatMode).filter(function (w) { return !w.is_map; }).map(function (w) { return w.raw; });
       }
       idx = weapons.indexOf(weapon.raw);
       if (idx < 0 && weapon && weapon.raw && weapon.raw.id) {
@@ -3154,7 +3375,7 @@
         pilotBon = global._dcDerivePilotDmgCritForSlotContext({
           atkCharData: attacker.char,
           atkUnitData: attacker.unit,
-          charStatMode: 'normal',
+          charStatMode: attacker.charStatMode || preferredCharStatMode(attacker.char),
           _activeSkills: {}
         }, wCrit) || { dmgIncrease: 0, critDmgUp: wCrit };
         dc.dmgIncrease = (skillAndDebuffDmgPct(attacker, weapon) | 0) + (pilotBon.dmgIncrease | 0);
@@ -3277,6 +3498,52 @@
         '<span class="mls-token-badge-lab">' + esc(lab) + '</span></span>';
     }
     return '<span class="mls-token-badge">' + esc(lab) + '</span>';
+  }
+
+  /**
+   * Same float style as supporter skill / unit skill: icon + name on the unit that used it.
+   * Weapon icons match /u: tinted silhouette via mask + icon_color (green/yellow/orange/purple).
+   */
+  function weaponAnnounceFloat(actor, wpn) {
+    var name = String((wpn && wpn.name) || 'Weapon');
+    var raw = (wpn && wpn.raw) || wpn || {};
+    var usePortrait = !!(wpn && (wpn.is_ssp_weapon || wpn.is_ult_weapon));
+    var icon = '';
+    var iconColor = '';
+    if (usePortrait) {
+      /* SSP / ULT kit art is already colored — same as /u ssp-weapon-portrait. */
+      icon = (raw.ssp_icon || wpn.icon || raw.icon || '') || '';
+    } else {
+      icon = (wpn.icon || raw.icon || raw.ssp_icon || '') || '';
+      iconColor = String(wpn.icon_color || raw.icon_color || raw.ssp_icon_color || '').toLowerCase();
+      /* /u: EX + MAP (+ missing color) keep full-color <img>, not mask tint. */
+      if (iconColor === 'ex' || iconColor === 'map' || wpn.is_ex || wpn.is_map || wpn.is_map_weapon) {
+        iconColor = '';
+      }
+    }
+    return {
+      x: actor.x | 0,
+      y: actor.y | 0,
+      text: name.slice(0, 22),
+      skillName: name.slice(0, 22),
+      badge: 'SKILL',
+      icon: icon,
+      iconColor: iconColor,
+      cls: 'mls-float--skill'
+    };
+  }
+
+  /** Chip icon HTML — tinted mask when icon_color is a /u weapon hue. */
+  function floatChipIconHtml(ev) {
+    var url = floatIconUrl(ev);
+    var rc = String((ev && ev.iconColor) || '').toLowerCase();
+    if (!url) return '';
+    if (rc === 'green' || rc === 'yellow' || rc === 'orange' || rc === 'purple') {
+      return '<div class="mls-float-icon weapon-icon-mask color-' + rc +
+        '" style="-webkit-mask-image:url(\'' + esc(url) + '\');mask-image:url(\'' + esc(url) +
+        '\');" role="img" aria-hidden="true"></div>';
+    }
+    return '<img class="mls-float-icon" src="' + esc(url) + '" alt="">';
   }
 
   /** Sticky unit-skill icon above the portrait for the rest of the fight. */
@@ -3716,13 +3983,17 @@
    * Raw unitStats×ML understated HP when OP/leader were on — units died too easily.
    */
   function sheetCombatStats(loaded, optionParts, supporter) {
-    var us = unitStats(loaded.unit, loaded.lb);
+    var mode = loaded && loaded.unitStatMode ? loaded.unitStatMode : 'normal';
+    var us = unitStats(loaded.unit, loaded.lb, mode);
     var ud = loaded.unit;
     var lb = loaded.lb | 0;
     var lbData = ud && ud.lb_data;
     var tier = lbData && lbData.length ? Math.min(lb, lbData.length - 1) : 0;
     var td = (lbData && lbData[tier]) || {};
-    var stats = td.stats_no_cond || td.stats || (ud && ud.stats) || [];
+    var statKey = 'stats_no_cond';
+    if (ud && ud.has_sp && mode === 'ssp') statKey = 'ssp_stats_no_cond';
+    else if (ud && ud.has_sp && mode === 'sp') statKey = 'sp_stats_no_cond';
+    var stats = td[statKey] || td.stats_no_cond || td.stats || (ud && ud.stats) || [];
     var mult = mlBoostMult();
     var getSheet = global._dcGetModifiedAttackerUnitStatsFromCtx;
     var ctx, f, sup;
@@ -3775,11 +4046,21 @@
   }
 
   function makeActor(side, cell, loaded, owned, slotMeta, optionParts, supporter) {
-    var us = unitStats(loaded.unit, loaded.lb);
+    var uMode = resolveUnitStatMode(loaded.unit, slotMeta && slotMeta.unitStatMode);
+    var cMode = resolveCharStatMode(loaded.char, slotMeta && slotMeta.charStatMode);
+    if (slotMeta) {
+      slotMeta.unitHasSp = unitAllowsSpSsp(loaded.unit);
+      slotMeta.charHasSp = charAllowsSp(loaded.char);
+      slotMeta._statChecked = true;
+      slotMeta._charStatChecked = !!loaded.char;
+      if (!slotMeta.unitStatMode) slotMeta.unitStatMode = uMode;
+      if (!slotMeta.charStatMode) slotMeta.charStatMode = cMode;
+    }
+    var us = unitStats(loaded.unit, loaded.lb, uMode);
     var sheet = sheetCombatStats({
-      unit: loaded.unit, char: loaded.char, lb: loaded.lb, side: side
+      unit: loaded.unit, char: loaded.char, lb: loaded.lb, side: side, unitStatMode: uMode
     }, optionParts, supporter);
-    var cs = charStats(loaded.char);
+    var cs = charStats(loaded.char, cMode);
     var id = String(loaded.unit && loaded.unit.id || '');
     var facing = sideFacing(side);
     var mob = sheet.mob;
@@ -3813,7 +4094,7 @@
       occupancyMode: unitOccupancyMode(loaded.unit, fieldTerr),
       reaction: cs.reaction,
       mp: 0,
-      weapons: weaponsOf(loaded.unit),
+      weapons: weaponsOf(loaded.unit, uMode),
       unit: loaded.unit,
       char: loaded.char,
       optionParts: optionParts || [],
@@ -3821,7 +4102,8 @@
       isLarge: unitIsLarge(loaded.unit),
       size: unitIsLarge(loaded.unit) ? 2 : 1,
       direction: facing,
-      unitStatMode: preferredUnitStatMode(loaded.unit),
+      unitStatMode: uMode,
+      charStatMode: cMode,
       owned: owned[id] != null,
       pilotSkills: { list: [], sp: 5 },
       sp: 5,
@@ -3900,23 +4182,25 @@
 
   function buildSide(side, cells, slots, owned, supporter) {
     var jobs = [];
-    cells.forEach(function (cell, i) {
-      var sl = slots[i];
-      var home;
-      if (!sl || !sl.unitId) return;
-      /* Same path as map drag — never keep absolute x/y from another season’s board. */
-      home = effectiveSlotHome(side, i);
-      jobs.push(Promise.all([
-        loadPair(sl.unitId, sl.charId, sl.lb != null ? sl.lb : 3),
-        loadOptionPart(sl.optionPartId)
-      ]).then(function (pair) {
-        var loaded = pair[0];
-        var op = pair[1];
-        var actor = makeActor(side, home, loaded, owned, sl, op ? [op] : [], supporter);
-        if (actor) actor.slotIdx = i;
-        return actor;
-      }).catch(function () { return null; }));
-    });
+    var i, sl;
+    /* Iterate roster slots (not spawn-cell count) so ACTION ORDER includes every filled kit. */
+    for (i = 0; i < SLOT_COUNT; i++) {
+      sl = slots[i];
+      if (!sl || !sl.unitId) continue;
+      (function (slotIdx, slotMeta) {
+        var home = effectiveSlotHome(side, slotIdx);
+        jobs.push(Promise.all([
+          loadPair(slotMeta.unitId, slotMeta.charId, slotMeta.lb != null ? slotMeta.lb : 3),
+          loadOptionPart(slotMeta.optionPartId)
+        ]).then(function (pair) {
+          var loaded = pair[0];
+          var op = pair[1];
+          var actor = makeActor(side, home, loaded, owned, slotMeta, op ? [op] : [], supporter);
+          if (actor) actor.slotIdx = slotIdx;
+          return actor;
+        }).catch(function () { return null; }));
+      })(i, sl);
+    }
     return Promise.all(jobs).then(function (rows) {
       return rows.filter(Boolean);
     });
@@ -4962,7 +5246,7 @@
   function spawnFloat(ev, win) {
     var host = document.getElementById('mlsBoard');
     var layer = host && host.querySelector('.mls-fx-layer');
-    var icon, isDmg;
+    var icon, isDmg, lab;
     if (!host || !layer || !ev) return;
     var w = win || computeMapWindow();
     var el = document.createElement('div');
@@ -4975,16 +5259,17 @@
     }
     el.className = 'mls-float' + sideCls + (ev.cls ? ' ' + ev.cls : '');
     icon = floatIconUrl(ev);
+    lab = floatLabelText(ev) || ev.text || '';
     if (icon && !isDmg) {
       /* Asset + wording (skill name / SD / SA / …) — never icon-only. */
       el.className += ' is-chip-float';
-      el.innerHTML = '<img class="mls-float-icon" src="' + esc(icon) + '" alt="">' +
-        '<span class="mls-float-lab">' + esc(floatLabelText(ev)) + '</span>';
+      el.innerHTML = floatChipIconHtml(ev) +
+        '<span class="mls-float-lab">' + esc(lab) + '</span>';
     } else if (icon) {
-      el.innerHTML = '<img class="mls-float-icon" src="' + esc(icon) + '" alt="">' +
+      el.innerHTML = floatChipIconHtml(ev) +
         '<span>' + esc(ev.text) + '</span>';
     } else {
-      el.textContent = floatLabelText(ev) || ev.text;
+      el.textContent = lab;
     }
     el.style.cssText = cellPctBox(w, ev.x | 0, ev.y | 0, 1, 1) + ';display:flex;align-items:center;justify-content:center;gap:4px';
     layer.appendChild(el);
@@ -5076,9 +5361,11 @@
         tension: u.tension != null ? (u.tension | 0) : 0,
         weapons: u.weapons.map(function (w) {
           return {
-            raw: w.raw, name: w.name, min_range: w.min_range, max_range: w.max_range, power: w.power,
+            raw: w.raw, name: w.name, icon: w.icon || '', icon_color: w.icon_color || '',
+            min_range: w.min_range, max_range: w.max_range, power: w.power,
             en: w.en | 0, en_cost: w.en_cost | 0, ammo: w.ammo | 0, accuracy: w.accuracy | 0, critical: w.critical | 0,
-            is_ex: !!w.is_ex, is_map: !!w.is_map, is_map_weapon: !!w.is_map_weapon, is_preemptive: !!w.is_preemptive,
+            is_ex: !!w.is_ex, is_ssp_weapon: !!w.is_ssp_weapon,
+            is_map: !!w.is_map, is_map_weapon: !!w.is_map_weapon, is_preemptive: !!w.is_preemptive,
             traits: (w.traits || []).slice(), usage_restrictions: (w.usage_restrictions || []).slice(),
             map_coords: (w.map_coords || []).slice(), shooting_coords: (w.shooting_coords || []).slice(),
             map_single_pou: !!w.map_single_pou, attribute: w.attribute || '', weapon_type: w.weapon_type || ''
@@ -5090,7 +5377,7 @@
         isLarge: !!u.isLarge,
         size: u.size != null ? (u.size | 0) : (u.isLarge ? 2 : 1),
         direction: u.direction != null ? u.direction : sideFacing(u.side),
-        unitStatMode: u.unitStatMode, owned: u.owned,
+        unitStatMode: u.unitStatMode, charStatMode: u.charStatMode || 'normal', owned: u.owned,
         pilotSkills: kit,
         sp: sp,
         currentSp: sp,
@@ -5157,7 +5444,11 @@
     actor.badgeIcon = actor.skillMarkIcon;
     if (plan.mp > 0) applyMpDelta(actor, plan.mp);
     if (plan.move > 0) actor.move = (actor.move | 0) + plan.move;
-    if (plan.firstStrike) actor.hasFirstStrikeBarrier = true;
+    if (plan.firstStrike) {
+      actor.hasFirstStrikeBarrier = true;
+      /* F91 EX: MOB% lasts until Initial Null expires — keep turnBuff tied to stock. */
+      if ((plan.mobPct | 0) > 0) actor._mobUntilInitialNull = true;
+    }
     if (plan.beamDr > 0) actor.unitSkillBeamDr = plan.beamDr;
     if (plan.barrierPct > 0) {
       val = Math.floor((actor.maxHp | 0) * plan.barrierPct / 100);
@@ -5213,6 +5504,11 @@
     stampSquadBuffs(enemies);
     /* Stable roster for the whole fight (dead stay in list with hp≤0). Avoids concat thrash. */
     var rosterBuf = allies.concat(enemies);
+    /*
+     * Cond:Area WP auras are distance-based. Bump this on every board move so dmgMemo
+     * cannot reuse a pre-move (outside-aura) preview after a unit walks into range.
+     */
+    var posEpoch = 0;
     /* Memoize /cal previews — pickEngage/MAP/queue call strikeDamage dozens of times per action. */
     var dmgMemo = Object.create(null);
     function living(list) { return list.filter(function (u) { return u.hp > 0; }); }
@@ -5245,8 +5541,12 @@
         (defender && defender.hasFirstStrikeBarrier ? 1 : 0) + '\0' +
         (defender && defender.turnBuffActive ? 1 : 0) + '\0' +
         (attacker && attacker.unitStatMode ? String(attacker.unitStatMode) : '') + '\0' +
+        (attacker && attacker.charStatMode ? String(attacker.charStatMode) : '') + '\0' +
+        (defender && defender.unitStatMode ? String(defender.unitStatMode) : '') + '\0' +
+        (defender && defender.charStatMode ? String(defender.charStatMode) : '') + '\0' +
         ((attacker && attacker.squadCondAtkPct) | 0) + '\0' +
-        ((attacker && attacker.exSquadAtkPct) | 0);
+        ((attacker && attacker.exSquadAtkPct) | 0) + '\0' +
+        (posEpoch | 0);
       var hit = dmgMemo[key];
       var opts;
       if (hit != null) {
@@ -5425,6 +5725,13 @@
         if (!picked) return null;
         wpn = picked.weapon;
       }
+      /* Announce weapon on the shooter — same chip as supporter skill (icon + name). */
+      snapshotLine(
+        'T' + turn + ' Weapon: ' + attacker.name + ' 「' + ((wpn && wpn.name) || 'Weapon') + '」',
+        weaponAnnounceFloat(attacker, wpn),
+        null,
+        'skill'
+      );
       /* gge: EN/ammo consumed at wave fire (caller may pass skipCost). */
       if (!hitOpts.skipCost) {
         costInfo = R.consumeWeaponCost(attacker, wpn, !!hitOpts.isSupport);
@@ -5476,14 +5783,22 @@
       dmg = battleDamage(attacker, defender, wpn, dmgOpts) | 0;
       calInitialNull = !!defender._calSkillInitialNull;
       calBarrierAbs = defender._calSkillBarrierAbsorb | 0;
-      /* /cal already applied type-8 null / type-6 barrier when defUnitSkillActive — sync stock only. */
+      /* /cal already applied type-8 null / type-6 barrier when stock was live — consume once. */
       if (calInitialNull && defender.hasFirstStrikeBarrier) {
         defender.hasFirstStrikeBarrier = false;
+        if (defender._mobUntilInitialNull) {
+          defender.turnBuffActive = false;
+          defender._mobUntilInitialNull = false;
+        }
       } else if (calBarrierAbs > 0 && (defender.shieldBarrier | 0) > 0) {
         defender.shieldBarrier = Math.max(0, (defender.shieldBarrier | 0) - calBarrierAbs);
       } else if (defender.hasFirstStrikeBarrier) {
-        /* gge timing: first-strike null eats damage before HP when /cal did not. */
+        /* gge timing: first-strike null eats damage before HP when /cal did not (e.g. S.Attack). */
         defender.hasFirstStrikeBarrier = false;
+        if (defender._mobUntilInitialNull) {
+          defender.turnBuffActive = false;
+          defender._mobUntilInitialNull = false;
+        }
         snapshotLine(
           'T' + turn + ' First-strike barrier: ' + defender.name + ' nullifies ' + dmg,
           { x: defender.x, y: defender.y, text: 'NULL', cls: 'mls-float--heal' },
@@ -5626,8 +5941,11 @@
         if (R.evaluateExPhase) R.evaluateExPhase(u);
         u._simTurn = turn;
         u.usedSkillThisTurn = false;
-        /* Unit skill (1 turn) buffs expire at the start of this unit's next action. */
-        u.turnBuffActive = false;
+        /* Unit skill (1 turn) buffs expire at the start of this unit's next action.
+         * Exception: MOB% that lasts until Initial Null is spent (F91 EX). */
+        if (!(u._mobUntilInitialNull && u.hasFirstStrikeBarrier)) {
+          u.turnBuffActive = false;
+        }
         u.skillDmgPct = 0;
         u.skillDmgKind = '';
         /* Fresh engagement — clear prior KO flags so revive from last fight does not linger. */
@@ -5746,16 +6064,17 @@
             if (mapPlan.moveTo) {
               oldX = u.x; oldY = u.y;
               u.x = mapPlan.moveTo.x; u.y = mapPlan.moveTo.y;
+              posEpoch += 1;
               snapshotLine(
                 'T' + turn + ' MAP Move: ' + u.name + ' [' + oldX + ',' + oldY + '] → [' + u.x + ',' + u.y + ']',
                 null, null, 'move'
               );
             }
             R.consumeWeaponCost(u, mapPlan.weapon, false);
-            snapshotLine(
+              snapshotLine(
               'T' + turn + ' MAP: ' + u.name + ' fires 「' + mapPlan.weapon.name + '」 at ' +
               mapPlan.targets.length + ' target(s) (EN ' + (u.currentEn | 0) + ')',
-              { x: u.x, y: u.y, text: 'MAP', badge: 'MAP', cls: 'mls-float--skill' },
+              weaponAnnounceFloat(u, mapPlan.weapon),
               {
                 kind: 'map-aoe',
                 fromId: u.id,
@@ -5824,6 +6143,7 @@
               oldY = u.y;
               u.x = nextPos.x;
               u.y = nextPos.y;
+              posEpoch += 1;
               snapshotLine(
                 'T' + turn + ' Move: ' + u.name + ' [' + oldX + ',' + oldY + '] → [' + u.x + ',' + u.y + ']' +
                 ' (dist ' + R.distance(u, target) + ', move ' + (u.move | 0) +
@@ -6844,24 +7164,37 @@
         return allies;
       }
 
+      /*
+       * Yield every N lineups (not every 1): double-rAF alone costs ~30ms+ each, so 120
+       * yields can burn seconds of wall clock with no sim work. Ranking is unchanged.
+       * Skip the crit pass when the no-crit fight already 1T-wipes — needsCritFor1T is
+       * false either way; ranking still uses the forceNoCrit score.
+       */
+      var AI_YIELD_EVERY = 4;
+
       function runNext() {
-        var perm, allies;
+        var perm, allies, doYield;
         if (pi >= perms.length) return Promise.resolve();
         setAiStatus(pi + '/' + perms.length);
         setAiProgress(pi, perms.length);
-        return yieldUi().then(function () {
+        doYield = (pi % AI_YIELD_EVERY) === 0;
+        function simOne() {
           perm = perms[pi];
           allies = alliesForPerm(perm);
           if (allies.length) {
             try {
               var resultCrit, t1NoCrit, t1Crit, allyHpSum;
-              /* Fair ranking = no crits. Second pass (same hit seed) checks if 1T needs crits. */
+              /* Fair ranking = no crits. Fresh clones each pass (fightSteps mutates armies). */
               beginSeededFight(OPTIMIZER_SEED);
-              result = fightSteps(allies, cloneArmy(baseEnemy), { scoreOnly: true, forceNoCrit: true });
+              result = fightSteps(cloneArmy(allies), cloneArmy(baseEnemy), { scoreOnly: true, forceNoCrit: true });
               t1NoCrit = result.turn1EnemyHp != null ? (result.turn1EnemyHp | 0) : 1e15;
-              beginSeededFight(OPTIMIZER_SEED);
-              resultCrit = fightSteps(allies, cloneArmy(baseEnemy), { scoreOnly: true, forceNoCrit: false });
-              t1Crit = resultCrit.turn1EnemyHp != null ? (resultCrit.turn1EnemyHp | 0) : 1e15;
+              t1Crit = t1NoCrit;
+              /* Skip crit pass when no-crit already 1T-wipes — label would be false either way. */
+              if (t1NoCrit > 0) {
+                beginSeededFight(OPTIMIZER_SEED);
+                resultCrit = fightSteps(cloneArmy(allies), cloneArmy(baseEnemy), { scoreOnly: true, forceNoCrit: false });
+                t1Crit = resultCrit.turn1EnemyHp != null ? (resultCrit.turn1EnemyHp | 0) : 1e15;
+              }
               allyHpSum = (result.allies || []).reduce(function (s, u) { return s + Math.max(0, u.hp | 0); }, 0);
               score = {
                 win: !!result.win,
@@ -6885,7 +7218,9 @@
           setAiProgress(pi, perms.length);
           setAiStatus(pi + '/' + perms.length);
           return runNext();
-        });
+        }
+        if (doYield) return yieldUi().then(simOne);
+        return Promise.resolve().then(simOne);
       }
 
       return runNext();
@@ -7120,6 +7455,13 @@
         setSlotLb(side, idx, tier, kind);
         return;
       }
+      el = t.closest && t.closest('[data-mls-stat]');
+      if (el) {
+        e.preventDefault(); e.stopPropagation();
+        parts = String(el.getAttribute('data-mls-stat') || '').split(':');
+        setSlotStatMode(parts[0], parseInt(parts[1], 10) || 0, parts[2] || 'unit', parts[3] || 'sp');
+        return;
+      }
       el = t.closest && t.closest('[data-mls-pick-id]');
       if (el) {
         applyPickerChoice(el.getAttribute('data-mls-pick-id'));
@@ -7181,12 +7523,36 @@
   function hydrateSlotPilotsAndOps() {
     var jobs = [];
     ['ally', 'enemy'].forEach(function (side) {
-      forceOf(side).slots.forEach(function (sl, idx) {
+      var force = forceOf(side);
+      var ent = force.supporter;
+      if (ent && ent.id) {
+        jobs.push(
+          fetchJson('/api/supporter/' + encodeURIComponent(ent.id) +
+            '?lang=' + encodeURIComponent(lang()) +
+            '&level=100&lb_tier=' + (ent.lb != null ? (ent.lb | 0) : 3)
+          ).then(function (d) {
+            if (!d || d.error) return null;
+            ent.name = d.name || ent.name || String(ent.id);
+            ent.thum = d.thum || d.portrait || ent.thum || '';
+            ent.rarity = d.rarity || ent.rarity || '';
+            return ent;
+          }).catch(function () { return null; })
+        );
+      }
+      force.slots.forEach(function (sl, idx) {
         if (!sl || !sl.unitId) return;
         jobs.push(
           loadPair(sl.unitId, sl.charId, sl.lb != null ? sl.lb : 3).then(function (loaded) {
             var cd = loaded.char;
             var ud = loaded.unit;
+            if (ud && !ud.error) {
+              /* Restore display after share load (codes only carry ids). */
+              sl.name = ud.name || sl.name || String(sl.unitId);
+              sl.thum = ud.thum || ud.portrait || sl.thum || '';
+              sl.rarity = ud.rarity || sl.rarity || '';
+              sl.roleIcon = ud.role_icon || sl.roleIcon || '';
+              if (ud.role_id != null && !sl.roleId) sl.roleId = String(ud.role_id);
+            }
             if (cd && !cd.error) {
               sl.charName = cd.name || sl.charName || '';
               sl.charThum = cd.thum || cd.portrait || sl.charThum || '';
@@ -7194,6 +7560,16 @@
               sl.charId = sl.charId || String(ud.recommend_character.id || '');
               sl.charName = sl.charName || ud.recommend_character.name || '';
               sl.charThum = sl.charThum || ud.recommend_character.thum || '';
+            }
+            if (sl.optionPartId && (!sl.optionPartName || !sl.optionPartThum)) {
+              return loadOptionPart(sl.optionPartId).then(function (op) {
+                if (op) {
+                  sl.optionPartName = op.name || sl.optionPartName || sl.optionPartId;
+                  sl.optionPartThum = op.thum || sl.optionPartThum || '';
+                  sl.optionPartRarity = op.rarity || sl.optionPartRarity || '';
+                }
+                return null;
+              });
             }
             if (!sl.optionPartId) return autoPickOpForSlot(side, idx, ud, cd);
             return null;
@@ -7205,6 +7581,7 @@
     return Promise.all(jobs).then(function () {
       saveRoster();
       paintForceSlots();
+      fillShareBoxes();
     });
   }
 

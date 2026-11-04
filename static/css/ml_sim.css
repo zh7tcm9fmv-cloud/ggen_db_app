@@ -335,8 +335,20 @@
   flex: 0 0 auto;
   pointer-events: none;
 }
-.mls-share-faces.is-flip img {
+/* Flip unit tokens only — supporter bromides stay upright (face + ship). */
+.mls-share-faces.is-flip img:not(.mls-share-face--supp) {
   transform: scaleX(-1);
+}
+/* Full bromide visible (contain) — cover was still clipping face/ship. */
+.mls-share-faces img.mls-share-face--supp {
+  width: auto;
+  max-width: 120px;
+  height: 56px;
+  object-fit: contain;
+  object-position: center;
+  background: rgba(0, 0, 0, 0.4);
+  outline: 2px solid rgba(0, 212, 255, 0.55);
+  outline-offset: -1px;
 }
 .mls-share-actions {
   display: flex;
@@ -445,7 +457,7 @@
 }
 .mls-supp-card {
   display: grid;
-  grid-template-columns: 48px minmax(0, 1fr) auto;
+  grid-template-columns: 96px minmax(0, 1fr) auto;
   gap: 10px;
   align-items: center;
   width: 100%;
@@ -461,9 +473,10 @@
 .mls-supp-card:hover { border-color: var(--accent-gold, #e8b84a); background: rgba(232, 184, 74, 0.08); }
 .mls-supp-card.has-supp { border-style: solid; border-color: rgba(232, 184, 74, 0.55); }
 .mls-supp-thum {
-  width: 48px;
-  height: 48px;
-  object-fit: cover;
+  width: 96px;
+  height: 52px;
+  object-fit: contain;
+  object-position: center;
   border-radius: 4px;
   border: 2px solid rgba(232, 184, 74, 0.65);
   background: rgba(0, 0, 0, 0.35);
@@ -711,6 +724,12 @@ body.mls-is-slot-dragging .mls-slot-list {
   cursor: pointer;
   z-index: 2;
 }
+.mls-force--enemy .mls-pilot-pip {
+  border-color: var(--accent-red, #ff4d6d);
+}
+.mls-force--ally .mls-pilot-pip {
+  border-color: var(--accent-cyan);
+}
 .mls-pilot-pip:hover,
 .mls-pilot-pip:focus-visible {
   border-color: var(--accent-gold, #e8c547);
@@ -728,6 +747,9 @@ body.mls-is-slot-dragging .mls-slot-list {
   font-weight: 700;
   line-height: 24px;
   text-align: center;
+}
+.mls-force--enemy .mls-pilot-pip.is-empty {
+  color: var(--accent-red, #ff4d6d);
 }
 .mls-pilot-btn {
   max-width: 100%;
@@ -819,6 +841,7 @@ body.mls-is-slot-dragging .mls-slot-list {
   background: #020814;
 }
 .mls-map-scroll {
+  position: relative; /* READY / endcard clipped to battle map box */
   overflow: hidden;
   height: min(62vh, 560px);
   display: flex;
@@ -1587,6 +1610,21 @@ body.mls-is-map-dragging .mls-map {
   width: 22px;
   height: 22px;
 }
+/* Match /u weapon hue: silhouette mask + .color-{green,yellow,orange,purple} fill. */
+.mls-float.is-chip-float .mls-float-icon.weapon-icon-mask {
+  display: block;
+  flex: 0 0 auto;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-mode: alpha;
+  mask-mode: alpha;
+  border-radius: 0;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.85));
+}
 .mls-float.is-chip-float .mls-float-lab {
   font-family: Teko, var(--font-body);
   font-weight: 700;
@@ -1696,6 +1734,36 @@ body.mls-is-map-dragging .mls-map {
   height: 100%;
   object-fit: contain;
   display: block;
+}
+.mls-stat-modes {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+}
+.mls-sp-btn {
+  padding: 2px;
+  width: 28px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(13, 19, 33, 0.8);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+.mls-sp-btn img {
+  height: 16px;
+  width: auto;
+  object-fit: contain;
+  filter: grayscale(1) opacity(0.4);
+}
+.mls-sp-btn.is-on {
+  border-color: var(--accent-gold);
+  background: rgba(255, 215, 0, 0.15);
+}
+.mls-sp-btn.is-on img {
+  filter: none;
 }
 .mls-token-badge {
   position: absolute;

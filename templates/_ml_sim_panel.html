@@ -105,14 +105,29 @@
 
   <section class="mls-view" id="mlsViewBattle" data-view="battle" hidden>
     <div class="mls-map-tools">
-      <label class="mls-check mls-aura-toggle" title="Cond:Area weapon-power aura tiles (e.g. Neo Zeong EX). Not MAP attack range.">
+      <label class="mls-check mls-aura-toggle" title="Aura Debuff — Cond:Area weapon-power tiles (e.g. Neo Zeong EX). Not MAP attack range.">
         <input type="checkbox" id="mlsAuraToggle" checked>
-        <span>Cond:Area (not MAP)</span>
+        <span>Aura Debuff</span>
       </label>
     </div>
     <div class="mls-map-stage">
       <div class="mls-map-scroll">
         <div class="mls-map" id="mlsBoard" aria-label="Master League battle map"></div>
+        <!-- READY / endcard live inside the map box (not over turn-order strip). -->
+        <div class="mls-banner" id="mlsBanner" hidden aria-hidden="true">
+          <div class="mls-banner-inner">
+            <span class="mls-banner-line">READY? GO!!</span>
+            <img class="mls-banner-cutin" src="{% if image_cdn %}{{ image_cdn }}/images/Master%20League/ml_skip_character_cutin_bromide_300010.webp{% else %}/static/images/Master%20League/ml_skip_character_cutin_bromide_300010.webp{% endif %}" alt="" width="220" height="80" decoding="async">
+          </div>
+        </div>
+        <div class="mls-endcard" id="mlsEndCard" hidden aria-hidden="true" role="status">
+          <div class="mls-endcard-spark" aria-hidden="true"></div>
+          <div class="mls-endcard-title" id="mlsEndTitle"></div>
+          <div class="mls-endcard-rule" aria-hidden="true"></div>
+          <div class="mls-endcard-sub" id="mlsEndSub"></div>
+          <div class="mls-endcard-letters" id="mlsEndLetters" aria-hidden="true"></div>
+          <button type="button" class="mls-endcard-retry" id="mlsEndRetry" hidden>TRY AGAIN</button>
+        </div>
       </div>
       <div class="mls-turn-hud" id="mlsTurnHud" hidden aria-live="polite">
         <span class="mls-turn-hud-lbl">TURN</span>
@@ -130,20 +145,6 @@
         </div>
         <div class="mls-timeline mls-timeline--map" id="mlsTimeline"></div>
       </aside>
-      <div class="mls-banner" id="mlsBanner" hidden aria-hidden="true">
-        <div class="mls-banner-inner">
-          <span class="mls-banner-line">READY? GO!!</span>
-          <img class="mls-banner-cutin" src="{% if image_cdn %}{{ image_cdn }}/images/Master%20League/ml_skip_character_cutin_bromide_300010.webp{% else %}/static/images/Master%20League/ml_skip_character_cutin_bromide_300010.webp{% endif %}" alt="" width="220" height="80" decoding="async">
-        </div>
-      </div>
-      <div class="mls-endcard" id="mlsEndCard" hidden aria-hidden="true" role="status">
-        <div class="mls-endcard-spark" aria-hidden="true"></div>
-        <div class="mls-endcard-title" id="mlsEndTitle"></div>
-        <div class="mls-endcard-rule" aria-hidden="true"></div>
-        <div class="mls-endcard-sub" id="mlsEndSub"></div>
-        <div class="mls-endcard-letters" id="mlsEndLetters" aria-hidden="true"></div>
-        <button type="button" class="mls-endcard-retry" id="mlsEndRetry" hidden>TRY AGAIN</button>
-      </div>
     </div>
     <div class="mls-controls">
       <div class="mls-controls-main">

@@ -1036,12 +1036,25 @@
 
   function hasShieldMechanism(actor) {
     var mech = '';
-    if (!actor) return false;
-    if (actor.unit) {
-      if (Array.isArray(actor.unit.mechanisms)) mech = actor.unit.mechanisms.join(' ');
-      else mech = String(actor.unit.mechanism || actor.unit.mechanisms || '');
+    var list, i, m;
+    if (!actor || !actor.unit) return false;
+    list = actor.unit.mechanisms;
+    if (Array.isArray(list)) {
+      /* API ships objects ({ name, mechanism_type_key… }) — .join would be "[object Object]". */
+      for (i = 0; i < list.length; i++) {
+        m = list[i];
+        if (!m) continue;
+        if (typeof m === 'string') mech += ' ' + m;
+        else {
+          mech += ' ' + [
+            m.name, m.mechanism_type_key, m.mechanism_type_label, m.description
+          ].filter(Boolean).join(' ');
+        }
+      }
+    } else {
+      mech = String(actor.unit.mechanism || actor.unit.mechanisms || '');
     }
-    return /shield|シールド|護盾|防盾/i.test(mech);
+    return /shield|シールド|護盾|防盾|ShieldDefense/i.test(mech);
   }
 
   /** gge determineDefenseAction */
