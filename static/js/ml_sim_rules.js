@@ -42,9 +42,28 @@
     return (units || []).filter(function (u) { return u && (u.hp | 0) > 0; });
   }
 
+  /** Unit Mobility + pilot Reaction (high → low). Prefers _spdMob/_spdReact when set. */
+  function unitOrderSpeed(u) {
+    if (!u) return 0;
+    if (u._spdMob != null || u._spdReact != null) {
+      return (u._spdMob | 0) + (u._spdReact | 0);
+    }
+    return (u.mobility | 0) + (u.reaction | 0);
+  }
+
   function actionOrder(units) {
     return alive(units).map(function (u, i) {
-      return { u: u, i: i, key: (u.mobility | 0) + (u.reaction | 0) };
+      return { u: u, i: i, key: unitOrderSpeed(u) };
+    }).sort(function (a, b) {
+      if (b.key !== a.key) return b.key - a.key;
+      return a.i - b.i;
+    }).map(function (row) { return row.u; });
+  }
+
+  /** Same sort as actionOrder, but keeps KO’d units (for the turn-order strip). */
+  function displayOrder(units) {
+    return (units || []).filter(Boolean).map(function (u, i) {
+      return { u: u, i: i, key: unitOrderSpeed(u) };
     }).sort(function (a, b) {
       if (b.key !== a.key) return b.key - a.key;
       return a.i - b.i;
@@ -895,7 +914,7 @@
    * Numbers stay in /cal — this only decides when the skill turns on.
    */
   function planUnitSkill(actor, phase) {
-    var skills, i, sk, blob, anyFirst, first, out, m;
+    var skills, i, sk, blob, anyFirst, first, out, m, rMin, rMax, allyN;
     if (!actor || actor.hasUsedUnitSkill || !actor.unit) return null;
     skills = actor.unit.skills || actor.unit.unit_skills || [];
     if (!skills.length) return null;
@@ -914,6 +933,10 @@
       mp: 0,
       move: 0,
       barrierPct: 0,
+      /* Extra allies besides self (Nu EX MultiTargetCount=1). */
+      barrierAllyCount: 0,
+      barrierRangeMin: 0,
+      barrierRangeMax: 0,
       firstStrike: false,
       beamDr: 0
     };
@@ -951,6 +974,39 @@
       m = blob.match(/ビーム[^%]{0,16}(\d+)\s*%|beam[^%]{0,24}(\d+)\s*%/i);
       if (m && /軽減|reduce\s+damage/i.test(blob)) {
         out.beamDr = Math.max(out.beamDr, parseInt(m[1] || m[2], 10) || 0);
+      }
+      /* Master multi-target (preferred) + LANG “self and N ally” fallback. */
+      if (out.barrierPct > 0) {
+        rMin = sk.multi_target_range_min != null ? (sk.multi_target_range_min | 0) : out.barrierRangeMin;
+        rMax = sk.multi_target_range_max != null ? (sk.multi_target_range_max | 0) : out.barrierRangeMax;
+        allyN = sk.multi_target_count != null ? (sk.multi_target_count | 0) : out.barrierAllyCount;
+        if (!(rMax > 0)) {
+          m = blob.match(/range[^0-9]{0,6}(\d+)\s*[-–~〜]\s*(\d+)/i);
+          if (m) { rMin = parseInt(m[1], 10) || 0; rMax = parseInt(m[2], 10) || 0; }
+        }
+        if (!(allyN > 0) && /self\s+and|自身と|自己與|自己与/i.test(blob)) {
+          m = blob.match(/(\d+)\s*ally|味方\s*(\d+)|盟友\s*(\d+)|味方ユニット\s*(\d+)/i);
+          if (m) allyN = parseInt(m[1] || m[2] || m[3] || m[4], 10) || 1;
+          else allyN = 1;
+        }
+        if (rMax > 0) {
+          out.barrierRangeMin = rMin | 0;
+          out.barrierRangeMax = rMax | 0;
+        }
+        if (allyN > 0) out.barrierAllyCount = allyN | 0;
+      }
+    }
+    /* Defaults when API multi-target fields are missing (stale process / old payload). */
+    if (out.barrierPct > 0 && !(out.barrierRangeMax > 0)) {
+      out.barrierRangeMin = 0;
+      out.barrierRangeMax = 3;
+    }
+    if (out.barrierPct > 0 && !(out.barrierAllyCount > 0)) {
+      for (i = 0; i < skills.length; i++) {
+        if (/self\s+and|自身と|自己與|自己与/i.test(unitSkillText(skills[i]))) {
+          out.barrierAllyCount = 1;
+          break;
+        }
       }
     }
     if (!(out.atkPct || out.defPct || out.mobPct || out.mp || out.move || out.barrierPct || out.firstStrike || out.beamDr)) {
@@ -2245,6 +2301,8 @@
     chebyshev: distance,
     checkOverlap: checkOverlap,
     actionOrder: actionOrder,
+    unitOrderSpeed: unitOrderSpeed,
+    displayOrder: displayOrder,
     weaponsInRange: weaponsInRange,
     getWeaponRangeBonus: getWeaponRangeBonus,
     isMapWeapon: isMapWeapon,

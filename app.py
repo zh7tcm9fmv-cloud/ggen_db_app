@@ -12960,6 +12960,19 @@ def create_unit_skill_info_map(d):
             'resource_id': str(item.get('ResourceId') or item.get('resourceId') or ''),
             'duration': safe_int(item.get('Duration') or item.get('duration'), 0),
             'usage_limit': safe_int(item.get('UsageLimit') or item.get('usageLimit'), 0),
+            # Multi-target AOE (Nu Double Fin Funnels EX barrier: self + 1 ally, range 0–3).
+            'multi_target_type_index': safe_int(
+                item.get('MultiTargetTypeIndex') or item.get('multiTargetTypeIndex'), 0
+            ),
+            'multi_target_range_min': safe_int(
+                item.get('MultiTargetRangeMin') or item.get('multiTargetRangeMin'), 0
+            ),
+            'multi_target_range_max': safe_int(
+                item.get('MultiTargetRangeMax') or item.get('multiTargetRangeMax'), 0
+            ),
+            'multi_target_count': safe_int(
+                item.get('MultiTargetCount') or item.get('multiTargetCount'), 0
+            ),
         }
     return lk
 
@@ -18155,6 +18168,12 @@ def resolve_unit_skill(usid, ld, sv):
         'frame_overlay': '',
         'resource_id': ri,
         'skip_skill_modal': True,
+        'usage_limit': safe_int(info.get('usage_limit'), 0),
+        'duration': safe_int(info.get('duration'), 0),
+        'multi_target_type_index': safe_int(info.get('multi_target_type_index'), 0),
+        'multi_target_range_min': safe_int(info.get('multi_target_range_min'), 0),
+        'multi_target_range_max': safe_int(info.get('multi_target_range_max'), 0),
+        'multi_target_count': safe_int(info.get('multi_target_count'), 0),
     }
 
 def resolve_npc_character_skills(ssid, lc):

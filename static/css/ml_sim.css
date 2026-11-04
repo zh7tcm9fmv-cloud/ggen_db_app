@@ -3002,6 +3002,14 @@ body.mls-is-map-dragging .mls-map {
 }
 .mls-tl-chip.enemy img { border-color: var(--accent-red, #ff4d6d); }
 .mls-tl-chip.is-dead { opacity: 0.35; }
+.mls-tl-chip.is-active:not(.is-dead) {
+  outline: 1px solid var(--accent-gold, #ffd700);
+  box-shadow: 0 0 0 1px rgba(255, 215, 0, 0.35);
+}
+.mls-tl-chip.is-active:not(.is-dead) .mls-tl-n,
+.mls-tl-chip.is-active:not(.is-dead) .mls-tl-spd {
+  color: var(--accent-gold, #ffd700);
+}
 .mls-log {
   margin: 0;
   padding: 10px 12px;
