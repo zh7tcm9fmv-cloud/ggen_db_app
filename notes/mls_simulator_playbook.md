@@ -2,14 +2,14 @@
 
 **Audience:** you explaining the tool to users / community.  
 **Code:** `static/js/ml_sim.js` (UI, fight playback, `/cal` damage, Formation Optimizer) + `static/js/ml_sim_rules.js` (movement, combat queue, MP / SA / SD / CS / MAP / Cond:Area).  
-**Rules port:** `ml_sim_rules.js` is a client port of **gge-simulator.jp** `battle.js` (distance, BFS move, support limits, combat waves). No local `battle.js` tree on this machine — treat the port comments + `scripts/audit_ml_sim_rules.mjs` as the gge audit harness.  
-**Last audited:** 2026-11-05 against live `ml_sim*.js` + gge-simulator.jp `app.bundle.js` decode + EN/TW `m_help`. Re-run: `node scripts/audit_ml_sim_rules.mjs`.
+**Rules:** `ml_sim_rules.js` owns distance, BFS move, support limits, and combat waves. Cross-check with EN/TW `m_help` + `scripts/audit_ml_sim_rules.mjs`.  
+**Last audited:** 2026-11-05 against live `ml_sim*.js` + EN/TW `m_help`. Re-run: `node scripts/audit_ml_sim_rules.mjs`.
 
 ---
 
 ## One-sentence pitch
 
-`/mls` is a **client-side auto-battle twin** of Master League: you set both teams (enemy left / ally right), pick season board + LB/OP/supporter, then the sim moves and fights for you using the same **Damage Calculator (`/cal`)** numbers plus gge-style turn rules.
+`/mls` is a **client-side auto-battle twin** of Master League: you set both teams (enemy left / ally right), pick season board + LB/OP/supporter, then the sim moves and fights for you using the same **Damage Calculator (`/cal`)** numbers plus MLS-style turn rules.
 
 It is **not** the live game server and **not** a guarantee of Master League ranked points.
 
@@ -23,7 +23,7 @@ It is **not** the live game server and **not** a guarantee of Master League rank
 | **Battle** | Auto-play map: move → combat → floats / HP / vigor. Pause, speed, SKIP, RESET. |
 | **Area aura toggle** | Cond:Area rings (e.g. Neo Zeong EX) on/off for visibility. Combat still applies aura damage math when relevant. |
 | **Formation Optimizer** | Tries ally **slot order** permutations only; keeps the fastest clear under a fixed RNG seed. |
-| **Password gate** | Soft lock via `GGEN_MLS_PASSWORD` (Railway / env). Default when unset: `ggenmls`. Empty env = gate off. |
+| **Password gate** | Soft lock via `GGEN_MLS_PASSWORD` (Railway / env). **Soft launch default: off** when unset. Set a non-empty value to re-lock. |
 
 Roster saves in browser `localStorage` (`ggen_mls_roster_v3`).
 
@@ -60,7 +60,7 @@ This is **not** the official phase script (Your → Friendly → Enemy → Third
 
 ## Combat inside one engagement
 
-Waves (gge order), then sorted by Mobility+Reaction inside a wave:
+Waves (MLS order), then sorted by Mobility+Reaction inside a wave:
 
 | Wave | What |
 |------|------|
@@ -103,7 +103,7 @@ If Cond:Area auras from the **opposing** side apply to the attacker’s weapon (
 
 So a main kill is **+1 (hit) +4 (kill) = +5**; SA kill is **+1 +1 = +2**.
 
-> **Honesty note:** kill +4 / +1 is from the **gge-sim** port (完全撃破-style), **not** listed as separate bullets in official Vigor help. If a user asks “is that exact live ML?”, say we match gge-sim / our twin, and Bandai’s help text only lists the general actions.
+> **Honesty note:** kill +4 / +1 follows 完全撃破-style MP grants used in this sim, **not** listed as separate bullets in official Vigor help. If a user asks “is that exact live ML?”, say we match our practice twin, and Bandai’s help text only lists the general actions.
 
 **Battle-start MP:** parses “Increase MP by N” / JA・TW equivalents + unit-skill MpBoost (trait type 12), same family as `/cal`.
 
@@ -167,7 +167,7 @@ Say these clearly when users compare to the app:
 - Lock On vs Sway interactions (Sway handled; Parry is implemented for unit ability kits)  
 - Full Unit Skill activation UI mid-battle  
 - Live Master League **score table** (`rankedPoints` exists in rules but is not the optimizer score)  
-- Server-authoritative ML matchmaking / ranking / gge-style Ranked Match UI
+- Server-authoritative ML matchmaking / ranking / MLS-style Ranked Match UI
 
 ---
 
@@ -197,6 +197,7 @@ Say these clearly when users compare to the app:
 - [x] Vigor bands + hit/miss/take-hit MP directions  
 - [x] MAP: no CS on MAP kill  
 - [x] Preemptive wave + attacker priority when both preempt  
+- [x] Preemptive Counter keeps Counter identity (own-ATK %); Inflict ATK Down lands before the Attacker's follow-up swing (`_mlsAtkDebuffPct`)  
 - [x] SD blocked by terrain occupancy (help wording)  
 - [x] SA order by mobility (plus reaction)  
 - [x] Cond:Area typed effects from MasterData  
@@ -207,15 +208,15 @@ Say these clearly when users compare to the app:
 | Gap | Severity | Notes |
 |-----|----------|--------|
 | Role-default SA/SD + 3-cap | Done | `max(text, role 1)`; SA/SC waves `.slice(0, 3)` |
-| Kill MP +4/+1 | Medium | gge; not in help bullets |
+| Kill MP +4/+1 | Medium | Sim convention; not in help bullets |
 | Shared MOB timeline vs phase model | Medium | Product choice |
 | Lock On / transform / Antidote / etc. | Low–Med | Document as out of scope |
 | Parry (unit ability) | Done | Map HUD `n/3`, 40% vs listed weapons at Max+ Vigor; Abs Hit / Lock On / MAP block |
 
-### gge-sim
+### Maintenance
 
-- Rules header + combat queue / BFS / support math = intentional gge twin.  
-- Re-verify kill MP and any new systems against a fresh gge decode when available.  
+- Keep combat queue / BFS / support math aligned with help + `/cal`.  
+- Re-check kill MP and new systems when MasterData / help text changes.  
 - Regression: `node scripts/audit_ml_sim_rules.mjs` (must print `ml sim rules audit OK`).
 
 ---

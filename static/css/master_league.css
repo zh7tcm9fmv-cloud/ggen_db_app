@@ -98,7 +98,10 @@
   gap: 8px;
   z-index: 2;
 }
-/* Same Master League mark + Teko SIMULATOR as /mls header brand. */
+/* Same Master League mark + Teko SIMULATOR as /mls header brand.
+ * Do NOT also put .mls-brand-mark on this node — that 200px/556:326 box
+ * fights the compact /ml open control and looked like a hover “scale up”
+ * on first /ml entry when cascade/reflow resolved the larger size. */
 .ml-sim-open {
   position: relative;
   display: inline-block;
@@ -111,29 +114,41 @@
   line-height: 0;
   isolation: isolate;
   z-index: 3;
+  transform: none;
 }
 .ml-sim-open:hover,
 .ml-sim-open:focus-visible {
   border-color: rgba(0, 212, 255, 0.35);
   background: rgba(0, 212, 255, 0.06);
   outline: none;
+  transform: none;
 }
-.ml-sim-open-mark {
+.ml-sim-open .ml-sim-open-mark {
   position: relative;
   display: block;
-  width: min(168px, 42vw);
+  width: 168px;
+  max-width: min(168px, 42vw);
+  height: auto;
   aspect-ratio: 168 / 98;
   container-type: inline-size;
+  line-height: 0;
+  transform: none;
 }
 .ml-sim-open .mls-brand-logo {
   display: block;
   width: 100%;
+  max-width: 168px;
   height: auto;
   aspect-ratio: 168 / 98;
   object-fit: contain;
   filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.45));
   /* Hold paint until decode — same FOUC class as /mls brand mark. */
   opacity: 0;
+  transform: none;
+}
+.ml-sim-open:hover .mls-brand-logo,
+.ml-sim-open:focus-visible .mls-brand-logo {
+  transform: none;
 }
 .ml-sim-open .mls-brand-banner {
   position: absolute;
@@ -156,8 +171,8 @@
   /* Avoid orphan SIMULATOR text before the WebP paints (not lazy-load). */
   opacity: 0;
 }
-.ml-sim-open-mark.is-logo-ready .mls-brand-logo,
-.ml-sim-open-mark.is-logo-ready .mls-brand-banner {
+.ml-sim-open .ml-sim-open-mark.is-logo-ready .mls-brand-logo,
+.ml-sim-open .ml-sim-open-mark.is-logo-ready .mls-brand-banner {
   opacity: 1;
 }
 @supports not (font-size: 1cqw) {

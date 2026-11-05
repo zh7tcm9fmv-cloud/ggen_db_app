@@ -93,7 +93,7 @@ const skill = rules.pickSkill({
   pilotSkills: kit,
   weapons: [{ min_range: 1, max_range: 5 }]
 }, foes);
-assert(skill && skill.key === 'high_speed', 'gge: High Speed before Repair when not yet in range, got ' + (skill && skill.key));
+assert(skill && skill.key === 'high_speed', 'MLS: High Speed before Repair when not yet in range, got ' + (skill && skill.key));
 const skillInRange = rules.pickSkill({
   hp: 40, maxHp: 100, mp: 3, skillUsed: false, currentSp: 10,
   x: 8, y: 9, move: 5, size: 1,
@@ -218,7 +218,7 @@ assert(rules.supportDefendLimit(sdJaOnly) === 1, 'JA SD +1 parsed');
 assert(rules.rankedPoints('attack', true, 1, false) === 15, '1-turn win +15');
 assert(rules.rankedPoints('attack', true, 1, true) === 30, 'upset doubles a win');
 
-/* gge combat systems */
+/* MLS combat systems */
 const preW = { name: 'P', min_range: 1, max_range: 3, power: 100, en: 10, ammo: 0, is_preemptive: true, traits: ['Preemptive Strike'], raw: { is_preemptive: true } };
 assert(rules.isPreemptiveWeapon({}, preW) === true, 'preemptive flag');
 assert(rules.isAbsoluteHitWeapon({ traits: ['Absolute Hit'] }) === true, 'absolute hit');

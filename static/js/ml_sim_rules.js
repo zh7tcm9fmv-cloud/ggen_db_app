@@ -1,6 +1,6 @@
-/* Master League turn rules — ported from gge-simulator.jp decoded battle.js:
-   getDistance (Manhattan+size), getReachableCells / getBestMoveDestination (4-dir BFS),
-   achievableTargets → lowest HP, calcSupportDefendLimit / cover search, evaluatePilotSkills.
+/* Master League turn rules — client combat/move engine:
+   distance (Manhattan+size), reachable cells / best move (4-dir BFS),
+   achievableTargets → lowest HP, support-defend limits / cover search, pilot skills.
    Damage numbers stay in the page (/cal). */
 (function (root) {
   'use strict';
@@ -20,7 +20,7 @@
     return u.isLarge ? 2 : 1;
   }
 
-  /** gge getDistance — orthogonal gap between footprints (NOT Chebyshev). */
+  /** MLS getDistance — orthogonal gap between footprints (NOT Chebyshev). */
   function distance(u1, u2) {
     var s1 = unitSize(u1);
     var s2 = unitSize(u2);
@@ -147,7 +147,7 @@
   }
 
   /**
-   * gge getWeaponRangeBonus — Range Boost skill + passive max-range +N
+   * MLS getWeaponRangeBonus — Range Boost skill + passive max-range +N
    * (skips Support-only range lines unless isSupport).
    */
   function getWeaponRangeBonus(actor, weapon, isSupport) {
@@ -202,7 +202,7 @@
   var _reachCacheCells = null;
 
   /**
-   * gge getReachableCells — 4-dir BFS. Allies are passable; enemies block.
+   * MLS getReachableCells — 4-dir BFS. Allies are passable; enemies block.
    * bounds: {minX,maxX,minY,maxY}
    */
   function getReachableCells(actor, maxMove, allUnits, bounds) {
@@ -292,7 +292,7 @@
   }
 
   /**
-   * gge getBestMoveDestination — cell within weapon minR..maxR of target,
+   * MLS getBestMoveDestination — cell within weapon minR..maxR of target,
    * fewest steps, then closest Euclidean center (encircle tie-break).
    */
   function getBestMoveDestination(actor, target, maxMove, minR, maxR, allUnits, bounds) {
@@ -349,7 +349,7 @@
   }
 
   /**
-   * gge achievableTargets: enemies you can put in some weapon's range after moving.
+   * MLS achievableTargets: enemies you can put in some weapon's range after moving.
    * Then pick lowest current HP; weapon = highest preview damage among those that reach.
    */
   function pickEngage(attacker, enemies, allUnits, bounds, damageOf) {
@@ -464,7 +464,7 @@
   }
 
   /**
-   * gge isAbilityActive-lite for one detail row: empty conditions always on;
+   * MLS isAbilityActive-lite for one detail row: empty conditions always on;
    * unit id / tags / role / series must match the actor's unit (and pilot tags).
    */
   function detailConditionsMet(actor, detail) {
@@ -616,7 +616,7 @@
   }
 
   /**
-   * gge calcSupportDefendLimit — SUM every active 「支援防御」+N line (per turn stock).
+   * MLS calcSupportDefendLimit — SUM every active 「支援防御」+N line (per turn stock).
    * Once-per-battle lines subtract battleSupportDefendedCount. Tension / detail
    * conditions are evaluated live (not the dossier conditionalPassiveActive toggle).
    * Floor at role baseline so Durability pilots match help/dossier when +N text is missing.
@@ -656,7 +656,7 @@
       for (j = 0; j < texts.length; j++) {
         norm = String(texts[j])
           .replace(/[０-９]/g, function (s) { return String.fromCharCode(s.charCodeAt(0) - 0xFEE0); });
-        /* gge getGuardSupportDefendBonus — 「支援防御の範囲がN上昇」 etc. */
+        /* MLS getGuardSupportDefendBonus — 「支援防御の範囲がN上昇」 etc. */
         if (!/Support\s*Defense.*range|支援防御.*範囲|支援防禦.*範圍|支援防御の範囲が/i.test(norm)) continue;
         m = norm.match(/(?:range|範囲|範圍)[^\d]*(\d+)|(\d+)\s*(?:上昇|up)/i) || norm.match(/(\d+)/);
         bonus += m ? (parseInt(m[1] || m[2], 10) || 1) : 1;
@@ -681,7 +681,7 @@
     return (actor && actor.saLimit) | 0;
   }
 
-  /** Remaining SD uses this turn (gge: calcSupportDefendLimit - usedSupportDefendCount). */
+  /** Remaining SD uses this turn (MLS: calcSupportDefendLimit - usedSupportDefendCount). */
   function supportDefendRemaining(actor) {
     return Math.max(0, effectiveSupportDefendLimit(actor) - ((actor && actor.usedSupportDefendCount) | 0));
   }
@@ -693,7 +693,7 @@
 
   /**
    * LANG Terrain Capability row level: 3 ● · 2 ▲ · 1 -.
-   * Season "Land" uses Ground/Land + Atmospheric (gge getTerrainSuitability for 地上).
+   * Season "Land" uses Ground/Land + Atmospheric (MLS getTerrainSuitability for 地上).
    */
   function terrainRowLevel(unitData, aliases) {
     var rows = (unitData && unitData.terrain) || [];
@@ -758,7 +758,7 @@
   }
 
   /**
-   * gge guardCands: not self, remaining SD uses, Manhattan dist <= move + SD range bonus,
+   * MLS guardCands: not self, remaining SD uses, Manhattan dist <= move + SD range bonus,
    * terrain-enterable cover cell (LANG), highest HP. Returns null if nobody covers.
    */
   function pickSupportDefender(target, allies) {
@@ -890,7 +890,7 @@
     return false;
   }
 
-  /** gge / site: Chance Step uses (額外行動). Base 1; +1 ability → up to 2.
+  /** MLS / site: Chance Step uses (額外行動). Base 1; +1 ability → up to 2.
    * Auto / Guaranteed “+1 time(s)” force the existing budget without a KO — they do NOT raise max. */
   function chanceStepLimit(actor) {
     var n = 1;
@@ -918,7 +918,7 @@
     return n;
   }
 
-  /** gge predictCounter — an enemy can still hit us after we close. */
+  /** MLS predictCounter — an enemy can still hit us after we close. */
   function enemyCanCounter(unit, enemies) {
     return alive(enemies).some(function (e) {
       var dist, move, maxR, reach;
@@ -935,7 +935,7 @@
   }
 
   /**
-   * gge / EN help evaluatePilotSkills:
+   * MLS / EN help evaluatePilotSkills:
    * Multiple different skills per action while SP lasts (same effect cannot re-fire).
    * Priority: High Speed, Range Boost, Repair, Force Guard, MP Up, bursts,
    * EN free, SD-count, Sway (only if a counter is possible), Crit Boost.
@@ -1006,7 +1006,7 @@
   }
 
   /**
-   * gge evaluateUnitSkill timing:
+   * MLS evaluateUnitSkill timing:
    * first-strike / initial-null skills fire at combat start;
    * every other unit skill fires once before the move.
    * Numbers stay in /cal — this only decides when the skill turns on.
@@ -1160,7 +1160,7 @@
     return pts;
   }
 
-  /* ========== gge battle-loop combat systems (executeAttack / runSimulation) ========== */
+  /* ========== MLS battle-loop combat systems (executeAttack / runSimulation) ========== */
 
   function abilityTextBags(actor) {
     var bags = [];
@@ -1233,7 +1233,7 @@
   }
 
   /**
-   * gge calcSupportLimit — SUM every active Support Attack/Counter +N line.
+   * MLS calcSupportLimit — SUM every active Support Attack/Counter +N line.
    * Do NOT use bare「支援」+N (that false-matches 支援防御). Do NOT cache via saLimit
    * (tension-gated EX +N must re-evaluate as MP rises).
    * Floor at role baseline so Support pilots match help/dossier when +N text is missing.
@@ -1268,7 +1268,7 @@
   var MAX_SUPPORT_PARTICIPANTS = 3;
 
   /**
-   * gge checkCounterSupportDefend — ability must explicitly allow SD vs counter.
+   * MLS checkCounterSupportDefend — ability must explicitly allow SD vs counter.
    * Collapse newlines before matching: Fon Spaak EX splits
    * “with a counter,” / “execute Support Defense.” across lines (`.` does not match \\n).
    */
@@ -1333,7 +1333,7 @@
     return false;
   }
 
-  /** gge determineDefenseAction */
+  /** MLS determineDefenseAction */
   function determineDefenseAction(defender, expectedDmg, hasCounter, hasPreemptiveCounter) {
     var cut;
     if (hasPreemptiveCounter) return 'none';
@@ -1496,7 +1496,7 @@
     return (actor.x | 0) !== (actor.startX | 0) || (actor.y | 0) !== (actor.startY | 0);
   }
 
-  /** gge getValidWeapons — EN / ammo / range(+bonus) / MP / move-before. targetDist=null → MAP pass. */
+  /** MLS getValidWeapons — EN / ammo / range(+bonus) / MP / move-before. targetDist=null → MAP pass. */
   function getValidWeapons(actor, targetDist, isSupport) {
     var free = canUseFreeAmmoSkill(actor);
     return (actor.weapons || []).filter(function (w) {
@@ -1694,7 +1694,7 @@
   }
 
   /**
-   * gge checkHit — absolute hit; Parry; sway; evade formula when defenseAction==='evade';
+   * MLS checkHit — absolute hit; Parry; sway; evade formula when defenseAction==='evade';
    * Otherwise always hits (defend / none / shield).
    */
   function checkHit(attacker, defender, weapon, defenseAction, isDefenderSupportDefend) {
@@ -1708,7 +1708,7 @@
     if (isAbsoluteHitWeapon(weapon)) return true;
     /* LANG Parry — ability evade (not Defend action). Blocked by Abs Hit / Lock On / MAP. */
     if (tryParry(attacker, defender, weapon)) return false;
-    /* gge: Sway dodges only the original target, never a Support Defense cover, never vs Absolute Hit. */
+    /* MLS: Sway dodges only the original target, never a Support Defense cover, never vs Absolute Hit. */
     hasSway = defender && defender.activeSkills && defender.activeSkills.some(function (s) {
       return s && /Sway|スウェー/i.test(String(s.name || ''));
     });
@@ -1770,7 +1770,7 @@
     return false;
   }
 
-  /** gge calculateCriticalRate — weapon base + ability / OP / SD-tag lines. */
+  /** MLS calculateCriticalRate — weapon base + ability / OP / SD-tag lines. */
   function calculateCriticalRate(attacker, weapon, defender) {
     var rate = 0;
     var bags, i, t, m, maxEn, curEn, enOk;
@@ -1817,7 +1817,7 @@
   }
 
   /**
-   * gge checkAndAcquireUnconditionalCS — Guaranteed/Unconditional CS stock (once/battle).
+   * MLS checkAndAcquireUnconditionalCS — Guaranteed/Unconditional CS stock (once/battle).
    * EN: Guaranteed Chance Step · JA: 無条件チャンスステップ · TW/HK: 無條件額外行動.
    * Respects unit-tag / unit-id conditions + Vigor gates (e.g. Uso Supercharged + League Militaire).
    * Stock forces one existing Bonus Action without a KO; firing spends chanceStepsLeft.
@@ -1898,7 +1898,7 @@
   /**
    * World cells for MAP weapon from master map_coords + facing.
    * 2×2 kits: visual footprint grows −y from the placement anchor (see footprintCellsAt),
-   * while facing-right (dir 1) gge mapping sends local +x → +y. Mirror that axis for
+   * while facing-right (dir 1) MLS mapping sends local +x → +y. Mirror that axis for
    * large units so the overlay starts on the drawn body (e.g. Neue Ziel EX → cells
    * beside the portrait, not one tile above).
    */
@@ -1934,7 +1934,7 @@
     return false;
   }
 
-  /** MAP hit test: gge uses the unit’s placement anchor, not any overlapping footprint cell. */
+  /** MAP hit test: MLS uses the unit’s placement anchor, not any overlapping footprint cell. */
   function unitAnchorInCells(unit, cells) {
     var ux = unit.x | 0;
     var uy = unit.y | 0;
@@ -2031,14 +2031,14 @@
   }
 
   /**
-   * gge MAP interrupt — use any is_map with ammo when AoE / multi-spot beats single-target
+   * MLS MAP interrupt — use any is_map with ammo when AoE / multi-spot beats single-target
    * (master map_coords; type-2 impact = designate spots within weapon range).
    */
   function evaluateMapWeapon(actor, target, foes, allUnits, bounds, damageOf) {
     var candidates = getValidWeapons(actor, null, false).filter(isMapWeapon);
     var best = null;
     var ci, wpn, free, cost, canFire, rawDist, mn, mx, needMove, simPos;
-    var cells, inArea, maxSel, isSingle, minNeed, mapKills, mainDmg, totalDmg, i, mt, mDmg;
+    var cells, inArea, maxSel, isSingle, minNeed, mapKills, totalDmg, i, mt, mDmg;
     var normalPick, normalDmg, normalKills, better;
     var impactMode, dest, picked, key, seen, cellList, j, ec;
 
@@ -2146,14 +2146,12 @@
       if (inArea.length < minNeed) continue;
 
       mapKills = 0;
-      mainDmg = 0;
       totalDmg = 0;
       for (i = 0; i < inArea.length; i++) {
         mt = inArea[i];
         mDmg = typeof damageOf === 'function' ? (damageOf(actor, mt, wpn) | 0) : (wpn.power | 0);
         totalDmg += mDmg;
         if ((mt.hp | 0) - mDmg <= 0) mapKills++;
-        if (mt === target) mainDmg = mDmg;
       }
 
       normalPick = pickWeapon(
@@ -2166,13 +2164,17 @@
       normalDmg = normalPick ? (normalPick.damage | 0) : 0;
       normalKills = (target.hp | 0) - normalDmg <= 0 ? 1 : 0;
 
+      /*
+       * m_help: MAP kill does NOT grant Chance Step / 額外行動.
+       * Prefer MAP only when it gets strictly more kills than a normal weapon.
+       * If a normal shot already kills (same kill count ≥ 1), keep the normal
+       * swing so kill-CS can chain (Altron EW EX after-move MAP class).
+       * Chip-only (0 kills): MAP still wins on total damage / multi-spot.
+       */
       better = false;
       if (mapKills > normalKills) better = true;
-      else if (mapKills === normalKills) {
-        /* Multi-spot impact: prefer opening with 2+ designates when total damage wins. */
-        if (mapKills === 0) better = totalDmg >= normalDmg;
-        else if (mainDmg > normalDmg) better = true;
-        else if (mainDmg === normalDmg && inArea.length > 1) better = true;
+      else if (mapKills === 0 && normalKills === 0) {
+        better = totalDmg >= normalDmg;
       }
       if (!better) continue;
       if (!best || mapKills > best.mapKills || (mapKills === best.mapKills && totalDmg > best.totalDmg) ||
@@ -2193,7 +2195,7 @@
   }
 
   /**
-   * gge combatQueue builder — waves:
+   * MLS combatQueue builder — waves:
    * 0 preempt (rewritten), 1 SA, 2 main, 3 support-counter, 4 counter.
    */
   /** Units on the same force as `unit` (friends∪foes filtered by .side). */
@@ -2227,9 +2229,15 @@
     var predictedHp, actorPredictedHp;
     var saCands, i, su, distS, bg, scored, counterWpns, hasPreCounter;
 
+    /* SA / Support Counter hits use isSupport — rank + predict with the same flag. */
+    function damageOfSupport(a, d, w) {
+      if (typeof damageOf !== 'function') return (w && w.power) | 0;
+      return damageOf(a, d, w, { isSupport: true }) | 0;
+    }
+
     function bestWpnAt(cand, tgt, d) {
       var wpns = getValidWeapons(cand, d, true).filter(function (w) { return !isMapWeapon(w); });
-      var ranked = rankWeaponsByDamage(cand, tgt, wpns, damageOf);
+      var ranked = rankWeaponsByDamage(cand, tgt, wpns, damageOfSupport);
       return ranked.length ? ranked[0].weapon : null;
     }
 
@@ -2256,7 +2264,7 @@
         return {
           unit: su, dist: distS, wpn: bg,
           spd: (su.mobility | 0) + (su.reaction | 0),
-          dmg: typeof damageOf === 'function' ? (damageOf(su, actualDefender, bg) | 0) : (bg.power | 0)
+          dmg: damageOfSupport(su, actualDefender, bg) | 0
         };
       }).filter(Boolean).sort(function (a, b) { return b.spd - a.spd; })
         .slice(0, MAX_SUPPORT_PARTICIPANTS);
@@ -2287,9 +2295,7 @@
         forcedDefenderAction: bestGuard ? defenderAction : undefined,
         originalTarget: target
       });
-      predictedHp -= typeof damageOf === 'function'
-        ? (damageOf(saCands[i].unit, actualDefender, saCands[i].wpn) | 0)
-        : (saCands[i].wpn.power | 0);
+      predictedHp -= damageOfSupport(saCands[i].unit, actualDefender, saCands[i].wpn) | 0;
     }
 
     queue.push({
@@ -2354,7 +2360,7 @@
     }
 
     /* Wave 3: support counters always searched (even if main target defends).
-       gge: one queue entry per unit per combat; multi-use stock spans engagements.
+       MLS: one queue entry per unit per combat; multi-use stock spans engagements.
        LANG: max 3 Support Counter participants per combat (same cap as SA). */
     {
       var eSup = alive(foes).filter(function (u) {
@@ -2374,9 +2380,7 @@
           forcedDefenderAction: counterGuard ? counterDefAction : undefined,
           originalTarget: actor
         });
-        actorPredictedHp -= typeof damageOf === 'function'
-          ? (damageOf(eSup[i].unit, actualCounterDefender, eSup[i].wpn) | 0)
-          : (eSup[i].wpn.power | 0);
+        actorPredictedHp -= damageOfSupport(eSup[i].unit, actualCounterDefender, eSup[i].wpn) | 0;
       }
     }
 
@@ -2394,9 +2398,25 @@
       if (isPreemptiveWeapon(q.attacker, q.weapon)) q.wave = 0;
     });
 
+    /*
+     * m_help Preemptive Strike: if both attacker and counterattacker have it,
+     * the attacker is prioritized. Then MOB+Reaction within the same side.
+     */
+    function preemptSidePriority(q) {
+      if (!q) return 9;
+      if (q.type === 'main' || q.type === 'support') return 0;
+      if (q.type === 'support_counter' || q.type === 'counter') return 1;
+      return 2;
+    }
+
     queue.sort(function (a, b) {
-      var spdA, spdB;
+      var spdA, spdB, priA, priB;
       if (a.wave !== b.wave) return a.wave - b.wave;
+      if ((a.wave | 0) === 0) {
+        priA = preemptSidePriority(a);
+        priB = preemptSidePriority(b);
+        if (priA !== priB) return priA - priB;
+      }
       spdA = (a.attacker.mobility | 0) + (a.attacker.reaction | 0);
       spdB = (b.attacker.mobility | 0) + (b.attacker.reaction | 0);
       return spdB - spdA;
@@ -2477,7 +2497,7 @@
 
   /**
    * Cond:Area weapon-power auras (Neo Zeong EX etc.) — range_min/max are Manhattan
-   * tiles from the source footprint (gge getDistance). Includes ability icon for HUD.
+   * tiles from the source footprint (MLS getDistance). Includes ability icon for HUD.
    */
   function listAreaAuras(entity) {
     var out = [];
@@ -2612,7 +2632,7 @@
   }
 
   /**
-   * gge executeAttack weapon MP cost (non-support, non-MAP).
+   * MLS executeAttack weapon MP cost (non-support, non-MAP).
    * Pilot 「消費MPがN軽減」 reduces the cost.
    */
   /**
@@ -2649,7 +2669,7 @@
   }
 
   /**
-   * gge evaluateExPhase — Supercharged (超一撃) EX1/EX2 progression.
+   * MLS evaluateExPhase — Supercharged (超一撃) EX1/EX2 progression.
    * EN/JA ability text; applies 1-turn crit / DR flags used by calculateCriticalRate + /cal.
    */
   function evaluateExPhase(actor) {

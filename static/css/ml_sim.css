@@ -672,6 +672,16 @@
   border-bottom-color: var(--accent-cyan);
   text-shadow: 0 0 12px rgba(0, 212, 255, 0.35);
 }
+/* Formation help tip — parked/hidden for now (was hover/tap on FORMATION; too noisy). */
+.mls-view-tab-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+  vertical-align: top;
+}
+.mls-view-tip {
+  display: none !important;
+}
 @media (max-width: 720px) {
   .mls-views-opts {
     margin-left: 0;
@@ -1017,6 +1027,16 @@
   animation: mls-slot-snap 0.38s var(--motion-ease-snap, cubic-bezier(0.16, 1, 0.3, 1));
 }
 /* Only my Collections: keep on formation, hide from Battle */
+.mls-slot-block.is-missing-pilot {
+  outline: 2px solid var(--accent-orange, #ff9d00);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 1px rgba(255, 157, 0, 0.35), 0 0 14px rgba(255, 157, 0, 0.22);
+}
+.mls-slot-block.is-missing-pilot .mls-pilot-btn,
+.mls-slot-block.is-missing-pilot .mls-pilot-pip {
+  outline: 1px solid var(--accent-orange, #ff9d00);
+  color: var(--accent-orange, #ff9d00);
+}
 .mls-slot-block.is-unowned {
   opacity: 0.42;
   filter: grayscale(0.55);
@@ -1263,8 +1283,33 @@ body.mls-is-slot-dragging .mls-slot-list {
 .mls-op-chip {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   max-width: 100%;
+  flex: 1 1 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 4px 6px 4px 4px;
+  border-radius: var(--radius-sm, 4px);
+  border: 1px solid color-mix(in srgb, var(--border-color) 80%, transparent);
+  background: rgba(0, 0, 0, 0.22);
+}
+.mls-op-chip > .mls-mini-btn.danger {
+  align-self: center;
+  flex: 0 0 auto;
+}
+.mls-op-chip--rich .mls-op-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 1px;
+}
+.mls-op-chip--empty .mls-op-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: center;
 }
 /* Clickable OP thumb — same idea as unit / pilot pip (no separate Swap). */
 .mls-op-thum {
@@ -1310,12 +1355,23 @@ body.mls-is-slot-dragging .mls-slot-list {
   pointer-events: none;
 }
 .mls-op-chip .op-name {
-  font-size: 0.72rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.25;
+  white-space: normal;
+  overflow: visible;
+  word-break: break-word;
+}
+.mls-op-chip .op-buff {
+  font-size: 0.7rem;
+  line-height: 1.3;
   color: var(--text-secondary);
-  max-width: 140px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;
+  word-break: break-word;
+}
+.mls-op-chip .op-buff.is-active {
+  color: var(--accent-cyan, #00d4ff);
 }
 .mls-form-actions {
   display: flex;
@@ -1371,33 +1427,63 @@ body.mls-battle-focus #mlsShell {
   scroll-margin-top: 0;
 }
 /* Hide brand header with section tabs while battle map is focused (same class
-   toggle as collections mobile — .app-header node stays; height snaps). */
+   toggle as collections mobile — .app-header node stays; height snaps).
+   Keep overflow visible when expanded so #langBtn / dropdown are not clipped
+   or click-blocked by the sticky header stacking context. */
+body.mls-battle-focus > .app-header,
+body.mls-battle-focus .app-header {
+  z-index: 200;
+}
 body.mls-battle-focus > .app-header .header-inner,
 body.mls-battle-focus .app-header .header-inner {
-  overflow: hidden;
+  overflow: visible;
   opacity: 1;
   transform: translateY(0);
   transition:
     opacity 180ms var(--motion-ease-standard, cubic-bezier(0.2, 0, 0, 1)),
     transform 180ms var(--motion-ease-standard, cubic-bezier(0.2, 0, 0, 1));
 }
+body.mls-battle-focus > .app-header .header-controls,
+body.mls-battle-focus .app-header .header-controls,
+body.mls-battle-focus > .app-header .lang-selector,
+body.mls-battle-focus .app-header .lang-selector {
+  position: relative;
+  z-index: 220;
+  pointer-events: auto;
+}
+/*
+ * Collapsed battle chrome: shrink brand / 1.5 slot, but keep header-controls
+ * (Ko-fi + #langBtn) visible and clickable — full header-inner height:0 made
+ * lang look “blocked” by the battle panel under the sticky bar.
+ */
 body.mls-battle-focus.nav-tabs-collapsed > .app-header .header-inner,
 body.mls-battle-focus.nav-tabs-collapsed .app-header .header-inner {
-  max-height: 0 !important;
+  max-height: none !important;
   min-height: 0 !important;
-  height: 0 !important;
-  opacity: 0;
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
+  height: auto !important;
+  opacity: 1;
+  padding-top: 6px !important;
+  padding-bottom: 6px !important;
   margin: 0 !important;
   border: none !important;
-  transform: translateY(-8px);
-  pointer-events: none;
+  transform: none;
+  overflow: visible;
+  pointer-events: auto;
+  justify-content: flex-end;
+}
+body.mls-battle-focus.nav-tabs-collapsed > .app-header .header-brand,
+body.mls-battle-focus.nav-tabs-collapsed .app-header .header-brand,
+body.mls-battle-focus.nav-tabs-collapsed > .app-header .header-15-slot,
+body.mls-battle-focus.nav-tabs-collapsed .app-header .header-15-slot {
+  display: none !important;
 }
 body.mls-battle-focus.nav-tabs-collapsed > .app-header,
 body.mls-battle-focus.nav-tabs-collapsed .app-header {
   border-bottom-width: 0;
   box-shadow: none;
+}
+body.mls-battle-focus .lang-dropdown.active {
+  z-index: 240 !important;
 }
 @media (prefers-reduced-motion: reduce) {
   body.mls-battle-focus > .app-header .header-inner,
@@ -1407,6 +1493,12 @@ body.mls-battle-focus.nav-tabs-collapsed .app-header {
   body.mls-battle-focus.nav-tabs-collapsed > .app-header .header-inner,
   body.mls-battle-focus.nav-tabs-collapsed .app-header .header-inner {
     transform: none !important;
+  }
+  body.mls-battle-focus.nav-tabs-collapsed > .app-header .header-brand,
+  body.mls-battle-focus.nav-tabs-collapsed .app-header .header-brand,
+  body.mls-battle-focus.nav-tabs-collapsed > .app-header .header-15-slot,
+  body.mls-battle-focus.nav-tabs-collapsed .app-header .header-15-slot {
+    display: none !important;
   }
 }
 /* Live turn counter — top-left on the map (opposite turn-order strip). */
@@ -1897,7 +1989,7 @@ body.mls-is-map-dragging .mls-map {
 .mls-token.is-lunge {
   z-index: 7;
 }
-/* gge playDefendCoverAnim — slide toward covered unit, scale up */
+/* MLS playDefendCoverAnim — slide toward covered unit, scale up */
 .mls-token.is-covering {
   z-index: 8;
   transform: translate3d(var(--mls-cover-x, 0px), var(--mls-cover-y, 0px), 0) scale(1.12);

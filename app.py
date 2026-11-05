@@ -210,7 +210,7 @@ def _dc_allowed_hosts():
     """Hostnames where client calculateDamage may return honest numbers.
 
     Injected into the SPA bootstrap. Copied/hotlinked bundles on other hosts
-    fail the client allowlist and get poisoned results (gge-sim class defense).
+    fail the client allowlist and get poisoned results (MLS class defense).
     """
     hosts = set()
     for origin in (_DEFAULT_PUBLIC_ORIGIN, _public_site_origin()):
@@ -545,13 +545,10 @@ def _apply_seo_and_static_cache_headers(response):
 
 # Latest Release: set LATEST_RELEASE_PASSWORD to require unlock + per-session watermark id.
 LATEST_RELEASE_PASSWORD = (os.environ.get('LATEST_RELEASE_PASSWORD') or '').strip()
-# Master League Simulator (/mls): soft gate. Default password when env unset (owner can override via GGEN_MLS_PASSWORD).
-# Set GGEN_MLS_PASSWORD= (empty) to disable the gate.
+# Master League Simulator (/mls): soft gate (soft-launch default = off).
+# Unset / empty GGEN_MLS_PASSWORD → open. Set a non-empty value to re-lock.
 _mls_pw_env = os.environ.get('GGEN_MLS_PASSWORD')
-if _mls_pw_env is None:
-    MLS_SIM_PASSWORD = 'ggenmls'
-else:
-    MLS_SIM_PASSWORD = str(_mls_pw_env).strip()
+MLS_SIM_PASSWORD = '' if _mls_pw_env is None else str(_mls_pw_env).strip()
 # Optional test pins: lock a specific schedule Id or exact StartDatetime (epoch ms) even if "now" is past start.
 LATEST_RELEASE_TEST_LOCK_SCHEDULE_ID = (os.environ.get('LATEST_RELEASE_TEST_LOCK_SCHEDULE_ID') or '').strip()
 _ts = (os.environ.get('LATEST_RELEASE_TEST_LOCK_START_MS') or '').strip()
