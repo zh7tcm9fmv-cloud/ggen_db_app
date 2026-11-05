@@ -38,6 +38,54 @@
       y1 <= y2 + size2 - 1 && y1 + size1 - 1 >= y2;
   }
 
+  /**
+   * 2×2 expands behind facing (same as ml_sim footprintCells):
+   * dir 1 Right → −x; dir 3 Left → +x; plus one cell down (−y).
+   * AABB checkOverlap grows +y and misses the real −y lobe — do not use it for landing.
+   */
+  function footprintDx(side, direction) {
+    var dir = direction != null ? (direction | 0) : (side === 'ally' ? 3 : 1);
+    if (dir === 1) return -1;
+    if (dir === 3) return 1;
+    return side === 'ally' ? 1 : -1;
+  }
+
+  function footprintCellsAt(x, y, size, side, direction) {
+    var dx;
+    x = x | 0;
+    y = y | 0;
+    if (!(size > 1)) return [{ x: x, y: y }];
+    dx = footprintDx(side, direction);
+    return [
+      { x: x, y: y },
+      { x: x + dx, y: y },
+      { x: x, y: y - 1 },
+      { x: x + dx, y: y - 1 }
+    ];
+  }
+
+  function footprintsOverlap(cellsA, cellsB) {
+    var i, j, a, b;
+    for (i = 0; i < (cellsA || []).length; i++) {
+      a = cellsA[i];
+      if (!a) continue;
+      for (j = 0; j < (cellsB || []).length; j++) {
+        b = cellsB[j];
+        if (b && (a.x | 0) === (b.x | 0) && (a.y | 0) === (b.y | 0)) return true;
+      }
+    }
+    return false;
+  }
+
+  /** True if a unit of `size` at (x,y) would share a cell with `other`. */
+  function wouldOverlapUnit(x, y, size, side, direction, other) {
+    if (!other) return false;
+    return footprintsOverlap(
+      footprintCellsAt(x, y, size, side, direction),
+      footprintCellsAt(other.x | 0, other.y | 0, unitSize(other), other.side, other.direction)
+    );
+  }
+
   function alive(units) {
     return (units || []).filter(function (u) { return u && (u.hp | 0) > 0; });
   }
@@ -169,11 +217,13 @@
     for (i = 0; i < (allUnits || []).length; i++) {
       u = allUnits[i];
       if (!u) continue;
-      fp += (u.id || i) + ':' + (u.x | 0) + ',' + (u.y | 0) + ',' + ((u.hp | 0) > 0 ? 1 : 0) + ';';
+      fp += (u.id || i) + ':' + (u.x | 0) + ',' + (u.y | 0) + ',' +
+        (u.direction != null ? (u.direction | 0) : '') + ',' +
+        ((u.hp | 0) > 0 ? 1 : 0) + ';';
     }
     cacheKey = (actor.id || '') + '@' + startX + ',' + startY + '/' + move + '/' +
       (bounds.minX | 0) + ',' + (bounds.maxX | 0) + ',' + (bounds.minY | 0) + ',' + (bounds.maxY | 0) +
-      '/' + size + '/' + fp;
+      '/' + size + '/' + (actor.direction != null ? (actor.direction | 0) : '') + '/' + fp;
     if (_reachCacheKey === cacheKey && _reachCacheCells) return _reachCacheCells;
 
     function occupies(x, y) {
@@ -181,7 +231,7 @@
       for (i = 0; i < (allUnits || []).length; i++) {
         u = allUnits[i];
         if (!u || (u.hp | 0) <= 0 || u === actor) continue;
-        if (checkOverlap(x, y, size, u.x | 0, u.y | 0, unitSize(u))) return true;
+        if (wouldOverlapUnit(x, y, size, actor.side, actor.direction, u)) return true;
       }
       return false;
     }
@@ -192,7 +242,7 @@
         u = allUnits[i];
         if (!u || (u.hp | 0) <= 0 || u === actor) continue;
         if (u.side === actor.side) continue;
-        if (checkOverlap(x, y, size, u.x | 0, u.y | 0, unitSize(u))) return true;
+        if (wouldOverlapUnit(x, y, size, actor.side, actor.direction, u)) return true;
       }
       return false;
     }
@@ -206,8 +256,11 @@
       for (t = 0; t < 4; t++) {
         nx = curr.x + dirs[t][0];
         ny = curr.y + dirs[t][1];
-        if (nx < bounds.minX || nx + size - 1 > bounds.maxX) continue;
-        if (ny < bounds.minY || ny + size - 1 > bounds.maxY) continue;
+        /* Bounds against real facing footprint (not AABB +y). */
+        if (!footprintCellsAt(nx, ny, size, actor.side, actor.direction).every(function (c) {
+          return c.x >= bounds.minX && c.x <= bounds.maxX &&
+            c.y >= bounds.minY && c.y <= bounds.maxY;
+        })) continue;
         key = nx + ',' + ny;
         if (visited[key]) continue;
         if (enemyBlocks(nx, ny)) continue;
@@ -680,6 +733,8 @@
     alive(allies).forEach(function (a) {
       var limit, used, range;
       if (!a || a === target) return;
+      /* Never cover the opposing force (ally must not S.Def for enemy, and vice versa). */
+      if ((a.side || '') !== (target.side || '')) return;
       limit = effectiveSupportDefendLimit(a);
       used = a.usedSupportDefendCount | 0;
       if (limit - used <= 0) return;
@@ -701,6 +756,7 @@
     alive(allies).forEach(function (a) {
       var key;
       if (!a || a === attacker) return;
+      if ((a.side || '') !== (attacker.side || '')) return;
       if (distance(a, defender) > r) return;
       if (!weaponsInRange(a, defender, true).length) return;
       key = (a.mobility | 0) + (a.reaction | 0);
@@ -735,6 +791,8 @@
   function buildPilotSkillKit(charData) {
     var list = [];
     var spMax = 0;
+    var burstCost = 0;
+    var boostCost = 0;
     ((charData && charData.skills) || []).forEach(function (s) {
       var key = skillKeyFromName(s && s.name);
       var cost = s && s.sp != null ? (s.sp | 0) : 0;
@@ -753,13 +811,18 @@
         effect: effect
       });
       if (cost > spMax) spMax = cost;
+      if (key === 'attack_burst') burstCost = Math.max(burstCost, cost);
+      if (key === 'shooting_boost' || key === 'melee_boost' || key === 'awaken_boost') {
+        boostCost = Math.max(boostCost, cost);
+      }
     });
     /*
-     * SP pool: characters recover SP each turn; MaxSp is not on the browse payload.
-     * Floor 10 so Affinity kits can fire MP Up (3) + Melee Boost (5) in one action
-     * (EN help: multiple different skills before you act; same effect cannot re-fire).
+     * SP pool: MaxSp is not on the browse payload. Floor so one action can fire the
+     * usual damage pair (Attack Burst + Ranged/Melee/Awaken Boost) — e.g. V2AB Uso
+     * Attack Burst 5 + Ranged Boost 7. Not a “save for turn 2” reserve.
+     * (EN help: multiple different skills before you act; same effect cannot re-fire.)
      */
-    return { list: list, sp: Math.max(spMax, 10) };
+    return { list: list, sp: Math.max(spMax, burstCost + boostCost, 10) };
   }
 
   /** MP gained from an MP Up skill text (EN “Increase MP by 7.”). */
@@ -938,7 +1001,11 @@
       barrierRangeMin: 0,
       barrierRangeMax: 0,
       firstStrike: false,
-      beamDr: 0
+      beamDr: 0,
+      /* Any type-11 DTD (beam/phys/special) — arms 1-turn skill window. */
+      skillDtd: 0,
+      /* Type-14 Attack Burst — % damage dealt (1 turn); /cal reads via unitTurnBuffAtk. */
+      dmgPct: 0
     };
     for (i = 0; i < skills.length; i++) {
       sk = skills[i];
@@ -954,7 +1021,22 @@
         if (typ === '6') out.barrierPct = Math.max(out.barrierPct, val);
         if (typ === '7') out.mobPct = Math.max(out.mobPct, val);
         if (typ === '8') out.firstStrike = true;
-        if (typ === '11' && /beam|ビーム|光束|鐳射/i.test(blob)) out.beamDr = Math.max(out.beamDr, val);
+        /* Type 10 = flat MOV (V2 Assault Buster / High Speed +1). */
+        if (typ === '10') out.move = Math.max(out.move, val);
+        /* Type-11 DTD: arm 1-turn window; beam-tagged also feeds post-/cal beam DR. */
+        if (typ === '11' && val > 0) {
+          out.skillDtd = Math.max(out.skillDtd | 0, val);
+          if (/beam|ビーム|光束|鐳射/i.test(blob) ||
+              ((tr.active_weapon_attrs || []).some(function (a) {
+                return /beam|ビーム|光束|鐳射/i.test(String(a));
+              }))) {
+            out.beamDr = Math.max(out.beamDr, val);
+          }
+        }
+        /* Type 12 = MP on skill use only (never battle-start — see startingMpBonus). */
+        if (typ === '12') out.mp = Math.max(out.mp, val);
+        /* Type 14 = Attack Burst — Increase damage dealt by N% (1 turn). */
+        if (typ === '14') out.dmgPct = Math.max(out.dmgPct, val);
       });
       if (first) out.firstStrike = true;
       m = blob.match(/攻撃力[^%]{0,12}(\d+)\s*%|Attack[^%]{0,16}(\d+)\s*%/i);
@@ -967,6 +1049,10 @@
       if (m) out.mp = Math.max(out.mp, parseInt(m[1] || m[2], 10) || 0);
       m = blob.match(/移動力[^0-9]{0,8}(\d+)|Move\s*\+\s*(\d+)/i);
       if (m) out.move = Math.max(out.move, parseInt(m[1] || m[2], 10) || 0);
+      m = blob.match(/Increase\s+damage\s+dealt(?:\s+to\s+enemies)?\s+by\s+(\d+)\s*%/i)
+        || blob.match(/与(?:える)?ダメージ(?:を)?(\d+)\s*%(?:アップ|上昇)/)
+        || blob.match(/造成的?損傷(?:提高|增加)[^0-9]*(\d+)\s*%/);
+      if (m) out.dmgPct = Math.max(out.dmgPct, parseInt(m[1], 10) || 0);
       m = blob.match(/最大HP\s*(\d+)\s*%|Max\s*HP[^0-9]{0,12}(\d+)\s*%/i);
       if (m && /バリア|barrier|屏障/i.test(blob)) {
         out.barrierPct = Math.max(out.barrierPct, parseInt(m[1] || m[2], 10) || 0);
@@ -974,6 +1060,7 @@
       m = blob.match(/ビーム[^%]{0,16}(\d+)\s*%|beam[^%]{0,24}(\d+)\s*%/i);
       if (m && /軽減|reduce\s+damage/i.test(blob)) {
         out.beamDr = Math.max(out.beamDr, parseInt(m[1] || m[2], 10) || 0);
+        out.skillDtd = Math.max(out.skillDtd | 0, out.beamDr);
       }
       /* Master multi-target (preferred) + LANG “self and N ally” fallback. */
       if (out.barrierPct > 0) {
@@ -1009,7 +1096,8 @@
         }
       }
     }
-    if (!(out.atkPct || out.defPct || out.mobPct || out.mp || out.move || out.barrierPct || out.firstStrike || out.beamDr)) {
+    if (!(out.atkPct || out.defPct || out.mobPct || out.mp || out.move || out.barrierPct ||
+        out.firstStrike || out.beamDr || out.skillDtd || out.dmgPct)) {
       return null;
     }
     return out;
@@ -1155,6 +1243,7 @@
     alive(friends).forEach(function (a) {
       var limit, used, range;
       if (!a || a === actor) return;
+      if ((a.side || '') !== (actor.side || '')) return;
       if (!canCounterSupportDefend(a)) return;
       if (!canSupportDefendOnTarget(a, actor)) return;
       limit = effectiveSupportDefendLimit(a);
@@ -1171,26 +1260,27 @@
   }
 
   function hasShieldMechanism(actor) {
-    var mech = '';
-    var list, i, m;
+    var list, i, m, key, name;
     if (!actor || !actor.unit) return false;
     list = actor.unit.mechanisms;
-    if (Array.isArray(list)) {
-      /* API ships objects ({ name, mechanism_type_key… }) — .join would be "[object Object]". */
-      for (i = 0; i < list.length; i++) {
-        m = list[i];
-        if (!m) continue;
-        if (typeof m === 'string') mech += ' ' + m;
-        else {
-          mech += ' ' + [
-            m.name, m.mechanism_type_key, m.mechanism_type_label, m.description
-          ].filter(Boolean).join(' ');
-        }
-      }
-    } else {
-      mech = String(actor.unit.mechanism || actor.unit.mechanisms || '');
+    if (!Array.isArray(list)) {
+      return /ShieldDefense|Shield\s*Defense|シールド防御|護盾防禦|防盾/i.test(
+        String(actor.unit.mechanism || actor.unit.mechanisms || '')
+      );
     }
-    return /shield|シールド|護盾|防盾|ShieldDefense/i.test(mech);
+    /* Prefer MechanismType key — do not match flavor text that merely says “shield”. */
+    for (i = 0; i < list.length; i++) {
+      m = list[i];
+      if (!m) continue;
+      if (typeof m === 'string') {
+        if (/ShieldDefense|Shield\s*Defense|シールド防御|護盾防禦/i.test(m)) return true;
+        continue;
+      }
+      key = String(m.mechanism_type_key || '');
+      name = String(m.name || m.mechanism_type_label || '');
+      if (key === 'ShieldDefense' || /Shield\s*Defense|シールド防御|護盾防禦/i.test(name)) return true;
+    }
+    return false;
   }
 
   /** gge determineDefenseAction */
@@ -1258,6 +1348,10 @@
         : (weapon.raw && (weapon.raw.en_cost != null ? weapon.raw.en_cost : weapon.raw.en)) | 0);
     if (base <= 0) return 0;
     mult = 1;
+    /* Pilot Ranged/Melee Boost “reduce weapons EN consumption by N% (1 turn)”. */
+    if ((actor.skillEnCostDownPct | 0) > 0) {
+      mult -= Math.min(80, actor.skillEnCostDownPct | 0) / 100;
+    }
     maxEn = (actor.maxEn | 0) || 100;
     curEn = actor.currentEn != null ? (actor.currentEn | 0) : maxEn;
     ratio = maxEn > 0 ? (curEn / maxEn) * 100 : 100;
@@ -1597,16 +1691,23 @@
     return { cs: 'Chance Step', auto: 'Auto-Chance Step', guaranteed: 'Guaranteed Chance Step' };
   }
 
-  /** World cells for MAP weapon from master map_coords + facing. */
+  /**
+   * World cells for MAP weapon from master map_coords + facing.
+   * 2×2 kits: visual footprint grows −y from the placement anchor (see footprintCellsAt),
+   * while facing-right (dir 1) gge mapping sends local +x → +y. Mirror that axis for
+   * large units so the overlay starts on the drawn body (e.g. Neue Ziel EX → cells
+   * beside the portrait, not one tile above).
+   */
   function mapWeaponWorldCells(actor, weapon) {
     var dir = actor.direction != null ? (actor.direction | 0) : (actor.side === 'ally' ? 3 : 1);
     var ax = actor.x | 0;
     var ay = actor.y | 0;
+    var large = unitSize(actor) > 1;
     var coords = (weapon.map_coords || (weapon.raw && weapon.raw.map_coords) || []);
     return coords.map(function (c) {
       var lx = c.x | 0;
       var ly = c.y | 0;
-      if (dir === 1) return { x: ax + ly, y: ay + lx };
+      if (dir === 1) return { x: ax + ly, y: large ? (ay - lx) : (ay + lx) };
       if (dir === 3) return { x: ax - ly, y: ay - lx };
       if (dir === 2) return { x: ax + lx, y: ay + ly };
       return { x: ax - lx, y: ay - ly };
@@ -1750,12 +1851,27 @@
    * gge combatQueue builder — waves:
    * 0 preempt (rewritten), 1 SA, 2 main, 3 support-counter, 4 counter.
    */
+  /** Units on the same force as `unit` (friends∪foes filtered by .side). */
+  function sameSideUnits(unit, friends, foes) {
+    var out = [];
+    var side = unit && unit.side;
+    if (side !== 'ally' && side !== 'enemy') return out;
+    (friends || []).concat(foes || []).forEach(function (u) {
+      if (!u || (u.hp | 0) <= 0) return;
+      if (u.side !== side) return;
+      if (out.indexOf(u) >= 0) return;
+      out.push(u);
+    });
+    return out;
+  }
+
   function buildCombatQueue(actor, target, weapon, friends, foes, damageOf) {
     var dist = distance(actor, target);
     var queue = [];
     var defenderAction = 'none';
     var actualDefender = target;
-    var bestGuard = pickSupportDefender(target, foes);
+    /* Cover only from the target’s own force — never the attacker’s (cross-side S.Def bug). */
+    var bestGuard = pickSupportDefender(target, sameSideUnits(target, friends, foes));
     var tempExpected = 0;
     var tempDefAction = 'none';
     var isTargetCountering = true;
@@ -1777,12 +1893,16 @@
       bestGuard.battleSupportDefendedCount = (bestGuard.battleSupportDefendedCount | 0) + 1;
       actualDefender = bestGuard;
       defenderAction = hasShieldMechanism(bestGuard) ? 'shield' : 'defend';
+      /*
+       * Live ML: S.Def takes the incoming hits; the *covered* unit still counters afterward
+       * when a weapon reaches the attacker (range/EN/ammo). Do NOT cancel isTargetCountering.
+       */
     }
 
     if (!bestGuard) {
       tempExpected = typeof damageOf === 'function' ? (damageOf(actor, actualDefender, weapon) | 0) : (weapon.power | 0);
       saCands = alive(friends).filter(function (u) {
-        return u !== actor && supportAttackRemaining(u) > 0;
+        return u !== actor && u.side === actor.side && supportAttackRemaining(u) > 0;
       });
       for (i = 0; i < saCands.length; i++) {
         su = saCands[i];
@@ -1801,7 +1921,7 @@
     predictedHp -= typeof damageOf === 'function' ? (damageOf(actor, actualDefender, weapon) | 0) : (weapon.power | 0);
 
     saCands = alive(friends).filter(function (u) {
-      return u !== actor && supportAttackRemaining(u) > 0;
+      return u !== actor && u.side === actor.side && supportAttackRemaining(u) > 0;
     }).map(function (su) {
       distS = distance(su, target);
       bg = bestWpnAt(su, target, distS);
@@ -1835,7 +1955,7 @@
     }
 
     if (isTargetCountering) {
-      counterGuard = pickCounterSupportDefender(actor, friends);
+      counterGuard = pickCounterSupportDefender(actor, sameSideUnits(actor, friends, foes));
       if (counterGuard) {
         counterGuard.usedSupportDefendCount = (counterGuard.usedSupportDefendCount | 0) + 1;
         counterGuard.battleSupportDefendedCount = (counterGuard.battleSupportDefendedCount | 0) + 1;
@@ -1887,7 +2007,7 @@
        gge: one queue entry per unit per combat; multi-use stock spans engagements. */
     {
       var eSup = alive(foes).filter(function (u) {
-        return u !== target && supportAttackRemaining(u) > 0;
+        return u !== target && u.side === target.side && supportAttackRemaining(u) > 0;
       }).map(function (su) {
         distS = distance(su, actor);
         bg = bestWpnAt(su, actor, distS);
@@ -2272,25 +2392,24 @@
 
   function startingMpBonus(actor) {
     var total = 0;
-    var fromTrait;
     iterAbilityDetails(actor, function (ab, detail, text) {
       var v;
       if (detail && !detailConditionsMet(actor, detail)) return;
       /* Skip weapon-on-hit / MAP supply wording — not battle-start MP. */
       if (/on hit|MAP Weapon|MP Supply|敵.*MP|enemy MP|Decrease.*MP/i.test(text || '')) return;
+      /* Unit-skill lines (“1 time(s)” / on activate) are applied in planUnitSkill, not here. */
+      if (/\(\s*1\s*time|1\s*回|1\s*次|1\s*회|\(1 turns?/i.test(text || '') &&
+          /Increase\s+(?:own\s+)?MP|MP(?:が|を)\s*\d+\s*上昇|自身MP/i.test(text || '')) {
+        return;
+      }
       v = parseStartingMpFromText(text);
       if (v > 0) total += v;
     });
-    /* Unit-skill MpBoost trait (type 12) only — text-only “on skill use” MP is not battle-start. */
-    ((actor && actor.unit && actor.unit.skills) || []).forEach(function (sk) {
-      fromTrait = 0;
-      (sk.traits || []).forEach(function (tr) {
-        if (String(tr.trait_type_index || '') === '12') {
-          fromTrait += Math.max(0, parseInt(tr.trait_value, 10) || 0);
-        }
-      });
-      if (fromTrait > 0) total += fromTrait;
-    });
+    /*
+     * Do NOT add unit-skill trait type 12 (MpBoost) here — that is on-skill-use only
+     * (e.g. V2 Assault Buster +3 MP). Baking it into battle-start made Uso start at 9
+     * then skill again → false Supercharged → Guaranteed CS before any kill.
+     */
     return Math.max(0, Math.min(12, total | 0));
   }
 
@@ -2300,6 +2419,8 @@
     distance: distance,
     chebyshev: distance,
     checkOverlap: checkOverlap,
+    footprintCellsAt: footprintCellsAt,
+    wouldOverlapUnit: wouldOverlapUnit,
     actionOrder: actionOrder,
     unitOrderSpeed: unitOrderSpeed,
     displayOrder: displayOrder,

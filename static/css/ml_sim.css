@@ -566,7 +566,23 @@
 }
 .mls-picker-filters { display: flex; flex-direction: column; gap: 6px; margin: 8px 0; }
 .mls-picker-filters[hidden] { display: none !important; }
-.mls-picker-filter-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.mls-picker-filter-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.mls-picker-season-tags[hidden] { display: none !important; }
+.mls-picker-season-lbl {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted, #8a9bb0);
+  margin-right: 2px;
+  flex: 0 0 auto;
+}
+.mls-picker-season-tags .mls-chip {
+  font-size: 11px;
+  line-height: 1.2;
+  padding: 5px 9px;
+  max-width: 100%;
+}
 .mls-chip {
   border: 1px solid var(--border-color);
   background: var(--bg-card);
@@ -717,14 +733,16 @@
 .mls-force-clear-units {
   margin-left: auto;
   display: inline-flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 4px 6px;
+  gap: 2px;
+  padding: 4px 8px;
   border: 1px solid transparent;
   border-radius: 0;
   background: transparent;
   cursor: pointer;
-  line-height: 0;
+  line-height: 1.1;
 }
 .mls-force-clear-units img {
   display: block;
@@ -732,6 +750,15 @@
   height: auto;
   opacity: 0.85;
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.55));
+}
+.mls-force-clear-label {
+  font-family: Teko, var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  line-height: 1;
 }
 .mls-force-clear-units:hover,
 .mls-force-clear-units:focus-visible {
@@ -741,10 +768,18 @@
 }
 .mls-force-clear-units:hover img,
 .mls-force-clear-units:focus-visible img { opacity: 1; }
+.mls-force-clear-units:hover .mls-force-clear-label,
+.mls-force-clear-units:focus-visible .mls-force-clear-label {
+  color: var(--accent-cyan);
+}
 .mls-force--enemy .mls-force-clear-units:hover,
 .mls-force--enemy .mls-force-clear-units:focus-visible {
   border-color: rgba(255, 77, 109, 0.45);
   background: rgba(255, 77, 109, 0.1);
+}
+.mls-force--enemy .mls-force-clear-units:hover .mls-force-clear-label,
+.mls-force--enemy .mls-force-clear-units:focus-visible .mls-force-clear-label {
+  color: var(--accent-red, #ff4d6d);
 }
 .mls-supp {
   padding: 8px 10px;
@@ -753,11 +788,11 @@
 }
 .mls-supp-card {
   display: grid;
-  grid-template-columns: 96px minmax(0, 1fr) auto;
-  gap: 10px;
-  align-items: center;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 8px;
+  align-items: start;
   width: 100%;
-  padding: 6px 8px;
+  padding: 4px 8px;
   border: 1px dashed rgba(255, 255, 255, 0.18);
   border-radius: var(--radius-sm);
   background: rgba(255, 255, 255, 0.03);
@@ -765,6 +800,7 @@
   font: inherit;
   cursor: pointer;
   text-align: left;
+  box-sizing: border-box;
 }
 .mls-supp-card:hover { border-color: var(--accent-gold, #e8b84a); background: rgba(232, 184, 74, 0.08); }
 .mls-supp-card.has-supp { border-style: solid; border-color: rgba(232, 184, 74, 0.55); }
@@ -785,34 +821,60 @@
   color: var(--text-muted);
   font-size: 1.1rem;
 }
-.mls-supp-meta { min-width: 0; }
-.mls-supp-meta .name {
-  display: block;
+/* name → flag/UR → LB — packed, no center-gap. */
+.mls-supp-body {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  line-height: 1.15;
+}
+.mls-supp-name-row {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+.mls-supp-name-row .name {
+  flex: 1 1 auto;
+  min-width: 0;
   font-weight: 700;
+  font-size: 0.82rem;
+  line-height: 1.2;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.mls-supp-meta .sub {
-  display: block;
-  font-size: 0.75rem;
-  color: var(--text-muted);
+.mls-supp-name-row .mls-mini-btn {
+  flex: 0 0 auto;
 }
-.mls-supp-actions {
+.mls-supp-body > .sub {
   display: flex;
-  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: center;
   gap: 4px;
-  align-items: flex-end;
+  font-size: 0.72rem;
+  line-height: 1;
+  color: var(--text-muted);
+  min-width: 0;
+}
+.mls-supp-body > .sub .mls-sub-hint {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .mls-supp-lb {
   display: inline-flex;
   align-items: center;
+  align-self: flex-start;
   gap: 0;
   background: var(--bg-input, var(--bg-secondary));
   border: 1px solid var(--border-color);
   border-radius: var(--radius-sm, 3px);
   overflow: hidden;
 }
+/* Same LB star size as unit slots (.mls-lb-btn img = 12px). */
 .mls-lb-btn {
   display: inline-flex;
   align-items: center;
@@ -1399,6 +1461,11 @@ body.mls-battle-focus.nav-tabs-collapsed .app-header {
   gap: 3px;
   font-size: 0.62rem;
   flex: 0 0 auto;
+  max-height: 48px;
+  transition:
+    opacity 0.22s var(--motion-ease-standard, ease),
+    transform 0.22s var(--motion-ease-standard, ease),
+    max-height 0.28s var(--motion-ease-standard, ease);
 }
 .mls-timeline--map .mls-tl-chip img {
   width: 18px;
@@ -1563,13 +1630,36 @@ body.mls-battle-focus.nav-tabs-collapsed .app-header {
   background-color: rgba(87, 30, 159, 0.42);
   box-shadow: inset 0 0 0 1px rgba(180, 120, 255, 0.35);
 }
-/* Live MAP AoE (cyan) — distinct from purple Cond:Area aura. */
+/* Live MAP effect range — same WideArea glyph as stage-map MAP weapon toggle. */
 .mls-cell.is-map-aoe {
-  background-color: rgba(0, 212, 255, 0.28);
-  box-shadow: inset 0 0 0 2px rgba(0, 212, 255, 0.75);
+  background-color: rgba(205, 51, 51, 0.2);
+  box-shadow: inset 0 0 0 1px rgba(252, 165, 165, 0.55);
+  position: relative;
+  overflow: hidden;
+}
+.mls-cell.is-map-aoe::before {
+  content: '';
+  position: absolute;
+  inset: 8%;
+  z-index: 1;
+  pointer-events: none;
+  background-image: url(/static/images/Stages/UI_Battle_MapUI_Icon_MapWeapon_WideArea.webp);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.92;
+  filter: drop-shadow(0 0 4px rgba(205, 51, 51, 0.55));
+  animation: mls-map-aoe-in 0.28s var(--motion-ease-standard, ease) both;
 }
 .mls-cell.is-map-aoe.is-area-aura {
-  background-color: rgba(0, 180, 220, 0.35);
+  background-color: rgba(180, 60, 100, 0.28);
+}
+@keyframes mls-map-aoe-in {
+  from { opacity: 0; transform: scale(0.72); }
+  to { opacity: 0.92; transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mls-cell.is-map-aoe::before { animation: none; }
 }
 .mls-cell.is-area-aura::before {
   content: '';
@@ -1795,7 +1885,7 @@ body.mls-is-map-dragging .mls-map {
   z-index: 11;
   background: radial-gradient(circle, #fff 0%, #ffe066 55%, transparent 75%);
   box-shadow: 0 0 12px rgba(255, 220, 100, 0.95), 0 0 22px rgba(255, 200, 60, 0.6);
-  will-change: transform;
+  transform: translate3d(0, 0, 0);
 }
 .mls-ranged-shot.is-ally {
   background: radial-gradient(circle, #fff 0%, #7af0ff 55%, transparent 75%);
@@ -2206,6 +2296,98 @@ body.mls-is-map-dragging .mls-map {
 .mls-sp-btn.is-on img {
   filter: none;
 }
+.mls-ult-alt-btn {
+  position: relative;
+  min-width: 36px;
+  gap: 2px;
+}
+.mls-ult-alt-btn .mls-ult-lv {
+  font-family: Teko, var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--accent-gold, #ffd700);
+  letter-spacing: 0.02em;
+}
+.mls-ult-alt-modes {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+}
+.mls-ult-skills {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 3px;
+  max-width: 220px;
+}
+.mls-ult-skill-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  cursor: pointer;
+  opacity: 0.72;
+  transition: opacity var(--transition, 0.15s), border-color var(--transition, 0.15s),
+    box-shadow var(--transition, 0.15s);
+}
+.mls-ult-skill-btn:hover,
+.mls-ult-skill-btn:focus-visible {
+  opacity: 1;
+  border-color: var(--chrome-hover-ring, rgba(0, 212, 255, 0.45));
+  outline: none;
+}
+.mls-ult-skill-btn.is-on {
+  opacity: 1;
+  border-color: var(--accent-cyan, #00d4ff);
+  box-shadow: 0 0 0 1px rgba(0, 212, 255, 0.25);
+}
+.mls-ult-skill-icon {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  display: block;
+}
+.mls-ult-skill-frame {
+  position: absolute;
+  inset: 0;
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  pointer-events: none;
+}
+.mls-ult-skill-glyph {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 22px;
+  height: 22px;
+  margin: -11px 0 0 -11px;
+  object-fit: contain;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.mls-ult-skill-glyph-fallback,
+.mls-ult-skill-none {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--text-secondary);
+  pointer-events: none;
+}
+.mls-ult-skill-icon--none .mls-ult-skill-none {
+  color: var(--text-muted);
+  opacity: 0.9;
+}
 .mls-token-badge {
   position: absolute;
   top: -8px;
@@ -2534,20 +2716,54 @@ body.mls-is-map-dragging .mls-map {
 .mls-token-hp > i.mls-hp-cur { background: var(--accent-cyan); }
 .mls-token.enemy .mls-token-hp > i.mls-hp-cur { background: var(--accent-red, #ff4d6d); }
 .mls-token-hp > i.mls-hp-ghost { background: rgba(255, 255, 255, 0.4); }
-.mls-token-hpnum {
+/*
+ * HP readout beside the vertical bar (in-game: white HP, then cyan +barrier).
+ * Ally bar sits right of the token; enemy bar sits left.
+ */
+.mls-token-hpvals {
   position: absolute;
-  left: 50%;
-  bottom: -12px;
-  transform: translateX(-50%);
-  z-index: 3;
+  top: 8%;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+  pointer-events: none;
+  line-height: 1.05;
   font-size: 9px;
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum" 1;
-  color: #fff;
   text-shadow: 0 1px 2px #000;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.mls-token.ally .mls-token-hpvals {
+  left: calc(100% + 8px);
+  right: auto;
+}
+.mls-token.enemy .mls-token-hpvals {
+  right: calc(100% + 8px);
+  left: auto;
+  align-items: flex-end;
+}
+.mls-token-hpnum {
+  position: static;
+  left: auto;
+  bottom: auto;
+  transform: none;
+  z-index: 3;
+  font-size: inherit;
+  font-variant-numeric: inherit;
+  font-feature-settings: inherit;
+  color: #fff;
+  text-shadow: inherit;
   white-space: nowrap;
   pointer-events: none;
-  letter-spacing: 0.02em;
+  letter-spacing: inherit;
+}
+.mls-token-barrier {
+  color: #49b7f0;
+  font-weight: 600;
 }
 .mls-banner {
   position: absolute;
@@ -2577,6 +2793,17 @@ body.mls-is-map-dragging .mls-map {
 .mls-banner.is-play .mls-banner-inner {
   animation: mlsBannerIn 0.85s var(--motion-ease-enter, cubic-bezier(0.05, 0.7, 0.1, 1)) both;
 }
+/* Seamless Start — snappy cut-in; long 0.85s in feels like a load gate. */
+.mls-banner.is-play.is-snappy .mls-banner-inner {
+  animation-duration: 0.32s;
+}
+.mls-banner.is-out.is-snappy .mls-banner-line-ch,
+.mls-banner.is-out.is-snappy .mls-banner-q,
+.mls-banner.is-out.is-snappy .mls-banner-go-ch,
+.mls-banner.is-out.is-snappy .mls-banner-cutin {
+  animation-duration: 0.28s;
+  animation-delay: 0ms;
+}
 /* Takayu tx-fade-down-out: chars sink + fade from the end (y 0→30px, stagger 20ms). */
 .mls-banner-line {
   font-family: Teko, var(--font-body);
@@ -2590,11 +2817,47 @@ body.mls-is-map-dragging .mls-map {
     0 0 28px rgba(255, 215, 0, 0.28),
     0 0 40px rgba(0, 140, 255, 0.45);
 }
-.mls-banner-line-ch {
+.mls-banner-line-ch,
+.mls-banner-q,
+.mls-banner-go-ch {
   display: inline-block;
   will-change: transform, opacity;
 }
-.mls-banner.is-out .mls-banner-line-ch {
+/*
+ * Waiting “READY??????” — each new ? uses Takayu e-md3a (Material 3 Accelerate):
+ * https://motion-reference.takayustudio.jp/#motion=e-md3a
+ * cubic-bezier(.3,0,1,1) · ~200ms · fade + travel.
+ */
+.mls-banner-q.is-in {
+  animation: mlsBannerQIn 200ms cubic-bezier(0.3, 0, 1, 1) both;
+}
+@keyframes mlsBannerQIn {
+  from { opacity: 0; transform: translateY(-14px) scale(0.72); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+/*
+ * Playback armed — drop the READY wash so the map is clear under GO!! / first skills.
+ * Keep GO text only (no bromide veil).
+ */
+.mls-banner.is-go {
+  background: transparent;
+  z-index: 12;
+}
+.mls-banner.is-go .mls-banner-cutin {
+  opacity: 0;
+  visibility: hidden;
+}
+.mls-banner.is-go .mls-banner-go-ch {
+  animation: mlsBannerGoIn 280ms var(--motion-ease-enter, cubic-bezier(0.05, 0.7, 0.1, 1)) both;
+  animation-delay: calc(var(--i, 0) * 28ms);
+}
+@keyframes mlsBannerGoIn {
+  from { opacity: 0; transform: translateY(18px) scale(0.82); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.mls-banner.is-out .mls-banner-line-ch,
+.mls-banner.is-out .mls-banner-q,
+.mls-banner.is-out .mls-banner-go-ch {
   animation: mlsBannerFadeDownOut 0.6s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
   animation-delay: calc(var(--r, 0) * 20ms);
 }
@@ -2622,7 +2885,15 @@ body.mls-is-map-dragging .mls-map {
   to { opacity: 0; transform: translateY(30px); }
 }
 @media (prefers-reduced-motion: reduce) {
+  .mls-banner-q.is-in,
+  .mls-banner.is-go .mls-banner-go-ch {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
   .mls-banner.is-out .mls-banner-line-ch,
+  .mls-banner.is-out .mls-banner-q,
+  .mls-banner.is-out .mls-banner-go-ch,
   .mls-banner.is-out .mls-banner-cutin {
     animation-name: mlsBannerFadeOnly;
     animation-duration: 0.28s;
@@ -2851,23 +3122,32 @@ body.mls-is-map-dragging .mls-map {
   background: rgba(240, 193, 75, 0.12);
 }
 .mls-ai-search:disabled {
-  opacity: 0.55;
+  opacity: 0.72;
+  cursor: wait;
+}
+.mls-ai-search.is-busy {
+  opacity: 1;
+  border-color: rgba(240, 193, 75, 0.85);
+  box-shadow: 0 0 0 1px rgba(240, 193, 75, 0.22);
   cursor: wait;
 }
 .mls-ai-progress-wrap {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 3px;
+  gap: 4px;
   min-width: 0;
   width: 100%;
+  min-height: 1.15em;
 }
 .mls-ai-progress {
-  height: 8px;
+  height: 3px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.1);
   overflow: hidden;
-  border: 1px solid rgba(240, 193, 75, 0.35);
+  border: none;
+  opacity: 1;
+  transition: opacity 0.22s cubic-bezier(0.2, 0, 0, 1);
 }
 .mls-ai-progress[hidden] { display: none !important; }
 .mls-ai-progress-bar {
@@ -2886,25 +3166,37 @@ body.mls-is-map-dragging .mls-map {
   transform-origin: left center;
   transform: scaleX(var(--mls-ai-pct, 0));
   background: linear-gradient(90deg, var(--accent-gold, #f0c14b), #ffe08a);
-  transition: transform 0.45s cubic-bezier(0.05, 0.7, 0.1, 1);
-  will-change: transform;
+  transition: transform 0.28s cubic-bezier(0.05, 0.7, 0.1, 1);
+}
+.mls-ai-progress.is-indeterminate .mls-ai-progress-fill {
+  width: 40%;
+  transform: none;
+  transition: none;
+  animation: mlsAiIndeterminate 0.9s cubic-bezier(0.2, 0, 0, 1) infinite;
+}
+@keyframes mlsAiIndeterminate {
+  0% { transform: translate3d(-120%, 0, 0); }
+  100% { transform: translate3d(320%, 0, 0); }
 }
 @media (prefers-reduced-motion: reduce) {
   .mls-ai-progress-fill { transition: none; }
+  .mls-ai-progress.is-indeterminate .mls-ai-progress-fill {
+    animation: none;
+    width: 100%;
+    opacity: 0.55;
+  }
 }
 .mls-ai-status {
   font-size: 11px;
   color: var(--text-secondary, #d5deea);
   min-width: 0;
-  line-height: 1.3;
-  white-space: normal;
+  line-height: 1.25;
+  white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
   max-width: 100%;
   text-align: right;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
+  letter-spacing: 0.01em;
 }
 @media (max-width: 720px) {
   .mls-controls { flex-direction: column; align-items: stretch; }
@@ -3005,12 +3297,36 @@ body.mls-is-map-dragging .mls-map {
 }
 .mls-tl-chip.enemy img { border-color: var(--accent-red, #ff4d6d); }
 .mls-tl-chip.is-dead { opacity: 0.35; }
-.mls-tl-chip.is-active:not(.is-dead) {
+.mls-tl-chip.is-leaving {
+  opacity: 0;
+  max-height: 0;
+  margin: 0;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  overflow: hidden;
+  transform: scale(0.94);
+  pointer-events: none;
+  transition:
+    opacity 0.28s var(--motion-ease-standard, ease),
+    max-height 0.28s var(--motion-ease-standard, ease),
+    transform 0.28s var(--motion-ease-standard, ease),
+    padding 0.28s ease,
+    margin 0.28s ease;
+}
+.mls-timeline--map .mls-tl-arrow:has(+ .mls-tl-chip.is-leaving),
+.mls-timeline--map .mls-tl-chip.is-leaving + .mls-tl-arrow {
+  opacity: 0;
+  max-height: 0;
+  padding: 0;
+  overflow: hidden;
+  transition: opacity 0.22s ease, max-height 0.28s ease;
+}
+.mls-tl-chip.is-active:not(.is-dead):not(.is-leaving) {
   outline: 1px solid var(--accent-gold, #ffd700);
   box-shadow: 0 0 0 1px rgba(255, 215, 0, 0.35);
 }
-.mls-tl-chip.is-active:not(.is-dead) .mls-tl-n,
-.mls-tl-chip.is-active:not(.is-dead) .mls-tl-spd {
+.mls-tl-chip.is-active:not(.is-dead):not(.is-leaving) .mls-tl-n,
+.mls-tl-chip.is-active:not(.is-dead):not(.is-leaving) .mls-tl-spd {
   color: var(--accent-gold, #ffd700);
 }
 .mls-log {

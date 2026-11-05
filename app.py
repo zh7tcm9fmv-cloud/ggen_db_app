@@ -14342,6 +14342,31 @@ def _unit_is_transform_alternate(uid):
     return uid != mid and _unit_qualifies_as_transform_partner(uid)
 
 
+# Mechanism filter ids: Escape / PostEscape (+ 超強気 variants). Not Transformation / Conversion.
+_ESCAPE_FUNCTION_MECH_IDS = frozenset({'4', '5', '6', '7'})
+_ESCAPE_PRE_MECH_IDS = frozenset({'4', '6'})
+_ESCAPE_POST_MECH_IDS = frozenset({'5', '7'})
+
+
+def _unit_is_escape_function_alternate(uid):
+    """True for post-evac forms (Escape Function partners) — not deployable as a starting kit."""
+    uid = normalize_id(uid)
+    if not _unit_is_transform_alternate(uid):
+        return False
+    info = unit_info_map.get(uid) or {}
+    mid = normalize_id(info.get('main_unit_id', uid))
+    if mid == '0':
+        mid = uid
+    alt_mids = collect_unit_mechanism_mids(info, uid)
+    if alt_mids & _ESCAPE_POST_MECH_IDS:
+        return True
+    if alt_mids & _ESCAPE_PRE_MECH_IDS:
+        return True
+    main_info = unit_info_map.get(mid) or {}
+    main_mids = collect_unit_mechanism_mids(main_info, mid)
+    return bool(main_mids & _ESCAPE_FUNCTION_MECH_IDS)
+
+
 def _unit_transform_alt_search_match(uid, sq, ld, lc, q_scope='name_id'):
     """True when sq explicitly matches this transform alternate by display name or id."""
     if not sq or not _unit_is_transform_alternate(uid):
@@ -31057,6 +31082,7 @@ def list_units():
     if not tb_boost or tb_boost not in supporter_info_map:
         tb_boost = None
     ranking_bulk_u = request.args.get('ranking_bulk', '').strip().lower() in ('1', 'true', 'yes')
+    exclude_escape_alt = request.args.get('exclude_escape_alt', '').strip().lower() in ('1', 'true', 'yes')
     # Team builder: boosted-only lists can exceed 100 rows (UR first); raise cap so SSR etc. are not truncated.
     if ranking_bulk_u:
         pp = request_list_per_page(default=50000, lo=10, hi=50000)
@@ -31067,6 +31093,7 @@ def list_units():
     want_stat_bounds_u = request.args.get('stat_bounds', '').strip().lower() in ('1', 'true', 'yes')
     sbu_ck = 'sbd1' if want_stat_bounds_u else 'sbd0'
     rb_u_ck = 'rb2' if ranking_bulk_u else 'rb0'
+    esc_alt_ck = 'exa1' if exclude_escape_alt else 'exa0'
     # ul65: InstantBrowse facets on ranking_bulk (source/series/mech/abil/forms + tag_ids).
     # ul66: All-weapon range filter includes EX (type 2) without list SSP mode
     # ul67: weapon_range_auto_ssp_tiers / weapon_range_auto_pep_tiers for list toggle auto-arm
@@ -31074,7 +31101,8 @@ def list_units():
     # ul69: weapon_attr accepts exact WeaponAttributeSetIds (1–8) for /u attribute droplist
     # ul70: InstantBrowse ib.was (weapon attr set ids) for snappy /u attribute droplist
     # ul71: weapon_attr_op and/or/and_or combine for /u attribute droplist
-    ck = f"ul71_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_attr_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_waop{_cbu['weapon_attr_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    # ul72: exclude_escape_alt — hide Escape Function post-evac forms (MLS formation picker)
+    ck = f"ul72_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_attr_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_waop{_cbu['weapon_attr_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{esc_alt_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached:
         return jsonify_preserialized(cached, ck, public=True, max_age=3600, convert_images=False)
@@ -31104,6 +31132,9 @@ def list_units():
         if _muid == '0':
             _muid = uid
         if uid != _muid and not wide_seek:
+            continue
+        # Escape Function post-evac kits are not starting forms in-game (MLS / formation pickers).
+        if exclude_escape_alt and _unit_is_escape_function_alternate(uid):
             continue
         if rarity_filter is not None:
             if not rarity_filter:

@@ -58,8 +58,9 @@
         <header class="mls-force-head">
           <span class="mls-force-tag" data-mls-i18n="mls_enemy" data-mls-upper="1">ENEMY</span>
           <span id="mlsEnemySideHint" data-mls-i18n="mls_opponent_left">Opponent · left</span>
-          <button type="button" class="mls-force-clear-units" data-mls-clear-units="enemy" title="Clear units (keep supporter)" aria-label="Clear enemy units">
+          <button type="button" class="mls-force-clear-units" data-mls-clear-units="enemy" data-mls-role="mls_force_reset_tip" title="Reset units — clear this side’s units (keeps supporter)" aria-label="Reset enemy units">
             <img src="{% if image_cdn %}{{ image_cdn }}/images/UI/ULT%20ALT/UI_ULT_Label_Switch.webp{% else %}/static/images/UI/ULT%20ALT/UI_ULT_Label_Switch.webp{% endif %}" alt="" width="28" height="16" decoding="async" onerror="this.onerror=null;this.src='/static/images/UI/ULT%20ALT/UI_ULT_Label_Switch.webp'">
+            <span class="mls-force-clear-label" data-mls-i18n="mls_reset">Reset</span>
           </button>
         </header>
         <div class="mls-supp" id="mlsEnemySupp"></div>
@@ -69,8 +70,9 @@
         <header class="mls-force-head">
           <span class="mls-force-tag" data-mls-i18n="mls_ally" data-mls-upper="1">ALLY</span>
           <span id="mlsAllySideHint" data-mls-i18n="mls_player_right">Player · right</span>
-          <button type="button" class="mls-force-clear-units" data-mls-clear-units="ally" title="Clear units (keep supporter)" aria-label="Clear ally units">
+          <button type="button" class="mls-force-clear-units" data-mls-clear-units="ally" data-mls-role="mls_force_reset_tip" title="Reset units — clear this side’s units (keeps supporter)" aria-label="Reset ally units">
             <img src="{% if image_cdn %}{{ image_cdn }}/images/UI/ULT%20ALT/UI_ULT_Label_Switch.webp{% else %}/static/images/UI/ULT%20ALT/UI_ULT_Label_Switch.webp{% endif %}" alt="" width="28" height="16" decoding="async" onerror="this.onerror=null;this.src='/static/images/UI/ULT%20ALT/UI_ULT_Label_Switch.webp'">
+            <span class="mls-force-clear-label" data-mls-i18n="mls_reset">Reset</span>
           </button>
         </header>
         <div class="mls-supp" id="mlsAllySupp"></div>
@@ -137,7 +139,7 @@
 
   <section class="mls-view" id="mlsViewBattle" data-view="battle" hidden>
     <div class="mls-map-tools">
-      <label class="mls-check mls-aura-toggle" title="Aura Debuff — Cond:Area weapon-power tiles (e.g. Neo Zeong EX). Not MAP attack range.">
+      <label class="mls-check mls-aura-toggle" title="Aura Debuff — hide Cond:Area map tiles only (e.g. Neo Zeong EX). Unit debuff icons stay on. Not MAP attack range.">
         <input type="checkbox" id="mlsAuraToggle" checked>
         <span data-mls-i18n="mls_aura_debuff">Aura Debuff</span>
       </label>
@@ -148,7 +150,7 @@
         <!-- READY / endcard live inside the map box (not over turn-order strip). -->
         <div class="mls-banner" id="mlsBanner" hidden aria-hidden="true">
           <div class="mls-banner-inner">
-            <span class="mls-banner-line">READY? GO!!</span>
+            <span class="mls-banner-line">READY?</span>
             <img class="mls-banner-cutin" src="{% if image_cdn %}{{ image_cdn }}/images/Master%20League/ml_skip_character_cutin_bromide_300010.webp{% else %}/static/images/Master%20League/ml_skip_character_cutin_bromide_300010.webp{% endif %}" alt="" width="220" height="80" decoding="async">
           </div>
         </div>
@@ -244,6 +246,7 @@
           <img src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_TypeIcon_Defense_M.webp{% else %}/static/images/UI/UI_Common_TypeIcon_Defense_M.webp{% endif %}" alt="" width="22" height="22" decoding="async">
         </button>
       </div>
+      <div class="mls-picker-filter-row mls-picker-season-tags" id="mlsPickerSeasonTags" data-mls-filter="season" hidden></div>
     </div>
     <div class="mls-picker-list" id="mlsPickerList"></div>
   </div>

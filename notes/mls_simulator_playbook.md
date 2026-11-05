@@ -70,7 +70,7 @@ Waves (gge order), then sorted by Mobility+Reaction inside a wave:
 | 3 | Support Counter |
 | 4 | Counter |
 
-**Support Defense:** highest-HP ally with remaining SD stock, within move (+ SD range bonus), who **can enter the ally’s space** (Terrain Capabilities — matches EN/TW help). Takes the hits with defend ×0.8 or Shield ×0.6.
+**Support Defense:** highest-HP ally with remaining SD stock, within move (+ SD range bonus), who **can enter the ally’s space** (Terrain Capabilities — matches EN/TW help). Takes the hits with defend ×0.8 or Shield ×0.6. After cover returns, the **covered** unit still **Counters** (and allies may Support Counter) if a weapon reaches the attacker — S.Def does not cancel the counter wave.
 
 **Hit / crit / EN / ammo / tension gates** follow the rules module; damage body is `/cal` with live MP (Vigor), ML season buff, LB, OP, supporters, terrain index, defending/shield flags, SA flag.
 
