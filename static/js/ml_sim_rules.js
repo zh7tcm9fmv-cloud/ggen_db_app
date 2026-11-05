@@ -1742,16 +1742,101 @@
     return false;
   }
 
+  /** MapWeaponRangeTypeIndex 2 = designate impact tiles (not a fixed shooter-relative AoE). */
+  function isImpactMapWeapon(w) {
+    var mrt = String((w && (w.map_range_type != null ? w.map_range_type
+      : (w.raw && w.raw.map_range_type))) || '0');
+    if (mrt === '2') return true;
+    if (mapImpactSelectCount(w) > 0) return true;
+    return false;
+  }
+
+  /** “Can designate up to N spots” / MapWeaponImpactPointMaxSelectCount. */
+  function mapImpactSelectCount(w) {
+    var n, m, blob, raw;
+    raw = w && w.raw ? w.raw : w;
+    n = (w && w.map_impact_point_max_select_count) | 0;
+    if (n <= 0 && raw) n = raw.map_impact_point_max_select_count | 0;
+    if (n > 0) return n;
+    blob = normalizeFullwidth(weaponEffectBlob(w) + ' ' +
+      ((w && w.usage_restrictions) || (raw && raw.usage_restrictions) || []).join(' '));
+    m = blob.match(/(?:選択地点|ターゲット|designate|spots?).*?(\d+)/i);
+    return m ? (parseInt(m[1], 10) || 0) : 0;
+  }
+
   /**
-   * gge MAP interrupt — use any is_map with ammo when AoE beats single-target
-   * (master map_coords instead of JP name whitelist; same decision math).
+   * After-move impact MAP: stand where the engage target is in range and as many
+   * other foes as possible also fall in minR..maxR (pick off N spots).
+   */
+  function getBestImpactMapDestination(actor, target, foes, maxMove, minR, maxR, allUnits, bounds) {
+    var size = unitSize(actor);
+    var start = { x: actor.x | 0, y: actor.y | 0, size: size };
+    var reachable, i, cell, d, score, inCount, best, pos;
+    var livingFoes = alive(foes);
+
+    function countInRange(posU) {
+      var n = 0;
+      var j, e, ed;
+      for (j = 0; j < livingFoes.length; j++) {
+        e = livingFoes[j];
+        ed = distance(posU, e);
+        if (ed >= minR && ed <= maxR) n += 1;
+      }
+      return n;
+    }
+
+    reachable = getReachableCells(actor, maxMove, allUnits, bounds);
+    best = null;
+    d = distance(start, target);
+    if (d >= minR && d <= maxR) {
+      inCount = countInRange(start);
+      best = { x: start.x, y: start.y, moved: false, inCount: inCount, score: inCount * 1000 };
+    }
+    for (i = 0; i < reachable.length; i++) {
+      cell = reachable[i];
+      pos = { x: cell.x | 0, y: cell.y | 0, size: size };
+      d = distance(pos, target);
+      if (d < minR || d > maxR) continue;
+      inCount = countInRange(pos);
+      score = inCount * 1000 - (cell.cost | 0);
+      if (!best || score > best.score) {
+        best = {
+          x: pos.x,
+          y: pos.y,
+          moved: pos.x !== start.x || pos.y !== start.y,
+          inCount: inCount,
+          score: score
+        };
+      }
+    }
+    return best;
+  }
+
+  /** Effect cells for one designated impact tile (map_coords are impact-relative). */
+  function impactMapEffectCells(impactUnit, weapon, facingSide) {
+    var pivot = {
+      x: impactUnit.x | 0,
+      y: impactUnit.y | 0,
+      size: 1,
+      side: facingSide,
+      direction: facingSide === 'ally' ? 3 : 1
+    };
+    var cells = mapWeaponWorldCells(pivot, weapon);
+    if (cells.length) return cells;
+    return [{ x: pivot.x, y: pivot.y }];
+  }
+
+  /**
+   * gge MAP interrupt — use any is_map with ammo when AoE / multi-spot beats single-target
+   * (master map_coords; type-2 impact = designate spots within weapon range).
    */
   function evaluateMapWeapon(actor, target, foes, allUnits, bounds, damageOf) {
     var candidates = getValidWeapons(actor, null, false).filter(isMapWeapon);
     var best = null;
-    var ci, wpn, free, cost, canFire, rawDist, mn, mx, needMove, simPos, m;
+    var ci, wpn, free, cost, canFire, rawDist, mn, mx, needMove, simPos;
     var cells, inArea, maxSel, isSingle, minNeed, mapKills, mainDmg, totalDmg, i, mt, mDmg;
     var normalPick, normalDmg, normalKills, better;
+    var impactMode, dest, picked, key, seen, cellList, j, ec;
 
     for (ci = 0; ci < candidates.length; ci++) {
       wpn = candidates[ci];
@@ -1763,41 +1848,95 @@
 
       mn = wpn.min_range != null ? wpn.min_range | 0 : 1;
       mx = wpn.max_range != null ? wpn.max_range | 0 : 5;
+      maxSel = mapImpactSelectCount(wpn);
+      impactMode = isImpactMapWeapon(wpn);
       rawDist = distance(actor, target);
       needMove = rawDist > mx || rawDist < mn;
       if (isMoveBeforeOnly(wpn) && needMove) continue;
 
       simPos = { x: actor.x | 0, y: actor.y | 0, size: unitSize(actor), side: actor.side };
-      if (needMove) {
-        var dest = getBestMoveDestination(actor, target, actor.move | 0, mn, mx, allUnits, bounds);
+      /*
+       * Impact multi-spot (after-move): even if already in range of the engage
+       * target, step up when that puts a 2nd designate in range.
+       */
+      if (impactMode && !isMoveBeforeOnly(wpn) && maxSel >= 2) {
+        dest = getBestImpactMapDestination(actor, target, foes, actor.move | 0, mn, mx, allUnits, bounds);
+        if (dest && distance({ x: dest.x, y: dest.y, size: simPos.size }, target) >= mn &&
+            distance({ x: dest.x, y: dest.y, size: simPos.size }, target) <= mx) {
+          var stayCount = 0;
+          alive(foes).forEach(function (e) {
+            var ed = distance(simPos, e);
+            if (ed >= mn && ed <= mx) stayCount += 1;
+          });
+          if ((dest.inCount | 0) > stayCount || needMove) {
+            simPos.x = dest.x;
+            simPos.y = dest.y;
+            needMove = !!(dest.moved);
+          }
+        } else if (needMove) {
+          continue;
+        }
+      } else if (needMove) {
+        dest = getBestMoveDestination(actor, target, actor.move | 0, mn, mx, allUnits, bounds);
         if (!dest) continue;
         simPos.x = dest.x;
         simPos.y = dest.y;
+        needMove = !!(dest.moved);
       }
       if (distance(simPos, target) < mn || distance(simPos, target) > mx) continue;
 
-      cells = mapWeaponWorldCells(simPos, wpn);
-      if (!cells.length) {
-        /* No master map_coords → skip (do not fake a full min–max range blast). */
-        continue;
-      }
-      /* Large units: only the anchor cell (unit.x/y) counts — corner-graze on a 2×2 must not pull them in. */
-      inArea = alive(foes).filter(function (e) {
-        return unitAnchorInCells(e, cells);
-      });
-      if (!inArea.some(function (e) { return e === target; })) continue;
-
-      maxSel = 0;
-      m = normalizeFullwidth(weaponEffectBlob(wpn) + ' ' + ((wpn.usage_restrictions || []).join(' ')))
-        .match(/(?:選択地点|ターゲット|designate|spots?).*?(\d+)/i);
-      if (m) maxSel = parseInt(m[1], 10) || 0;
-      if (maxSel > 0) {
-        inArea = inArea.slice().sort(function (a, b) {
+      if (impactMode) {
+        /*
+         * Type 2: pick up to N enemies in weapon range; effect pattern sits on each
+         * impact (map_coords often just {0,0} = that tile). After-move kits (Altron /
+         * Strike Noir EX) walk forward then snipe 2 spots.
+         */
+        inArea = alive(foes).filter(function (e) {
+          var ed = distance(simPos, e);
+          return ed >= mn && ed <= mx;
+        });
+        if (!inArea.some(function (e) { return e === target; })) continue;
+        picked = inArea.slice().sort(function (a, b) {
+          if (a === target && b !== target) return -1;
+          if (b === target && a !== target) return 1;
           return (a.hp | 0) - (b.hp | 0);
-        }).slice(0, maxSel);
+        });
+        if (maxSel > 0) picked = picked.slice(0, maxSel);
+        else picked = picked.slice(0, 1);
+        inArea = picked;
+        cells = [];
+        seen = Object.create(null);
+        for (i = 0; i < inArea.length; i++) {
+          cellList = impactMapEffectCells(inArea[i], wpn, actor.side);
+          for (j = 0; j < cellList.length; j++) {
+            ec = cellList[j];
+            key = (ec.x | 0) + ',' + (ec.y | 0);
+            if (seen[key]) continue;
+            seen[key] = 1;
+            cells.push({ x: ec.x | 0, y: ec.y | 0 });
+          }
+        }
+      } else {
+        cells = mapWeaponWorldCells(simPos, wpn);
+        if (!cells.length) {
+          /* No master map_coords → skip (do not fake a full min–max range blast). */
+          continue;
+        }
+        /* Large units: only the anchor cell (unit.x/y) counts — corner-graze on a 2×2 must not pull them in. */
+        inArea = alive(foes).filter(function (e) {
+          return unitAnchorInCells(e, cells);
+        });
+        if (!inArea.some(function (e) { return e === target; })) continue;
+
+        if (maxSel > 0) {
+          inArea = inArea.slice().sort(function (a, b) {
+            return (a.hp | 0) - (b.hp | 0);
+          }).slice(0, maxSel);
+        }
       }
 
-      isSingle = maxSel > 0 || !!(wpn.map_single_pou || (wpn.raw && wpn.raw.map_single_pou)) ||
+      isSingle = impactMode || maxSel > 0 ||
+        !!(wpn.map_single_pou || (wpn.raw && wpn.raw.map_single_pou)) ||
         ((wpn.min_range | 0) === 1 && (wpn.max_range | 0) === 1);
       minNeed = isSingle ? 1 : 2;
       if (inArea.length < minNeed) continue;
@@ -1826,12 +1965,14 @@
       better = false;
       if (mapKills > normalKills) better = true;
       else if (mapKills === normalKills) {
+        /* Multi-spot impact: prefer opening with 2+ designates when total damage wins. */
         if (mapKills === 0) better = totalDmg >= normalDmg;
         else if (mainDmg > normalDmg) better = true;
         else if (mainDmg === normalDmg && inArea.length > 1) better = true;
       }
       if (!better) continue;
-      if (!best || mapKills > best.mapKills || (mapKills === best.mapKills && totalDmg > best.totalDmg)) {
+      if (!best || mapKills > best.mapKills || (mapKills === best.mapKills && totalDmg > best.totalDmg) ||
+          (mapKills === best.mapKills && totalDmg === best.totalDmg && inArea.length > (best.targets || []).length)) {
         best = {
           weapon: wpn,
           targets: inArea,

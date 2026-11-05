@@ -22,7 +22,6 @@
       gamei: 'Game-i today',
       apple: 'Apple',
       out: 'Out of top 200',
-      appleOut: 'Apple out of chart',
       statusIdle: 'Auto: ~every 10 min · page refreshes every 60s.',
       statusActive: 'Dense sampling (gacha window, ~5 min) · page refreshes every 60s.',
       statusErr: 'Last sampler note',
@@ -53,7 +52,6 @@
       gamei: 'Game-i 本日',
       apple: 'Apple',
       out: '未進前 200',
-      appleOut: 'Apple 未進榜',
       statusIdle: '自動：約每 10 分鐘取樣 · 本頁每 60 秒刷新。',
       statusActive: '密集取樣中（卡池窗口，約 5 分鐘）· 本頁每 60 秒刷新。',
       statusErr: '取樣備註',
@@ -84,7 +82,6 @@
       gamei: 'Game-i 本日',
       apple: 'Apple',
       out: '未入前 200',
-      appleOut: 'Apple 未入榜',
       statusIdle: '自動：約每 10 分鐘取樣 · 本頁每 60 秒刷新。',
       statusActive: '密集取樣中（卡池窗口，約 5 分鐘）· 本頁每 60 秒刷新。',
       statusErr: '取樣備註',
@@ -115,7 +112,6 @@
       gamei: 'Game-i 本日',
       apple: 'Apple',
       out: 'トップ200外',
-      appleOut: 'Appleチャート外',
       statusIdle: '自動：約10分ごと · ページは60秒更新。',
       statusActive: '密サンプリング中（ガチャ窓・約5分）· ページは60秒更新。',
       statusErr: 'サンプラーメモ',
@@ -276,12 +272,16 @@
       var label = countryLabel(c);
       var rankTxt = stand ? '#' + stand.rank : t('out');
       var metaBits = [];
-      if (stand && stand.src === 'apple') metaBits.push(t('apple'));
-      else if (stand && stand.src === 'gamei') metaBits.push(t('gamei'));
+      /*
+       * Game-i standings past Apple RSS are first-class (big #N on the card).
+       * Do not label those as “Apple out of chart” — that read as an error.
+       */
       if (row.rank != null && row.gamei_today != null) {
         metaBits = [t('apple'), t('gamei') + ' #' + row.gamei_today];
-      } else if (stand && stand.src === 'gamei' && row.rank == null) {
-        metaBits = [t('gamei'), t('appleOut')];
+      } else if (stand && stand.src === 'apple') {
+        metaBits = [t('apple')];
+      } else if (stand && stand.src === 'gamei') {
+        metaBits = [t('gamei')];
       } else if (rank == null && row.t) {
         metaBits.push(t('updated') + ' ' + fmtTime(row.t));
       }

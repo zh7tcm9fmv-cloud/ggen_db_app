@@ -13535,6 +13535,32 @@ for item in extract_data_list(unit_ult_custom_skill_set_content_data or []):
 for sid in unit_ult_custom_skill_options_by_set:
     unit_ult_custom_skill_options_by_set[sid].sort(key=lambda r: r.get('sort_order') or 0)
 
+# Units that have Unit Skills: base set content, or max-ALT ULT Custom skill unlocks.
+def _build_units_with_unit_skills_ids():
+    ids = set()
+    for uid in (unit_skill_set_lookup or {}):
+        nid = normalize_id(uid)
+        if nid != '0':
+            ids.add(nid)
+    for uid in (unit_ult_custom_config_by_unit or {}):
+        ug = (unit_ult_group_by_unit or {}).get(uid) or {}
+        gid = normalize_id(ug.get('group_id') or '0')
+        if gid == '0':
+            continue
+        if (unit_ult_custom_skills_by_group or {}).get(gid):
+            nid = normalize_id(uid)
+            if nid != '0':
+                ids.add(nid)
+    return frozenset(ids)
+
+
+units_with_unit_skills_ids = _build_units_with_unit_skills_ids()
+
+
+def unit_has_unit_skills(uid):
+    return normalize_id(uid) in units_with_unit_skills_ids
+
+
 transition_map = {}
 for item in extract_data_list(transition_master_data or []):
     if not isinstance(item, dict):
@@ -29327,6 +29353,7 @@ def browse_filters_pool_signature(args, entity=None):
             parts.append(normalize_filter_combine_op(args.get('map_weapon_range_op'), 'and'))
             parts.append(args.get('mechanism', '').strip())
             parts.append(normalize_filter_combine_op(args.get('mechanism_op'), 'and'))
+            parts.append('1' if args.get('unit_skill', '').strip().lower() in ('1', 'true', 'yes') else '0')
         raw = '|'.join(parts)
     return hashlib.md5(raw.encode('utf-8')).hexdigest()[:20]
 
@@ -30033,6 +30060,7 @@ def unit_passes_browse_pool_filters(
     weapon_attr_combine='and', weapon_range_combine='and', weapon_range_non_map_combine='and', map_weapon_range_combine='and',
     cond_active=False,
     pilot_cond_active=False,
+    unit_skill_only=False,
 ):
     """list_units inclusion with optional lineage/series/ability filter steps (for scoped browse dropdowns)."""
     if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
@@ -30056,6 +30084,8 @@ def unit_passes_browse_pool_filters(
     if _muid == '0':
         _muid = uid
     if uid != _muid and not wide_seek:
+        return False
+    if unit_skill_only and not (direct_seek or npc123_list) and not unit_has_unit_skills(uid):
         return False
     _shape_kw = dict(
         role_filter=role_filter,
@@ -30254,6 +30284,7 @@ def lineages_for_unit_browse_filtered(ld, lc, args):
     map_weapon_range_filter = parse_map_weapon_range_filter(args.get('map_weapon_range', '').strip())
     cond_active = args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
     pilot_cond_active = args.get('pilot_cond', '').strip().lower() in ('1', 'true', 'yes')
+    unit_skill_only = args.get('unit_skill', '').strip().lower() in ('1', 'true', 'yes')
     _cbu = browse_combo_from_unit_args(args)
     short_ids = set()
     for uid, info in unit_info_map.items():
@@ -30264,7 +30295,7 @@ def lineages_for_unit_browse_filtered(ld, lc, args):
             weapon_range_non_map_ssp_ex=weapon_range_non_map_ssp_ex,
             map_weapon_range_filter=map_weapon_range_filter,
             q_scope=_qsc, apply_lineage=False, apply_series=True, apply_ability=True, apply_terrain=True,
-            cond_active=cond_active, pilot_cond_active=pilot_cond_active,
+            cond_active=cond_active, pilot_cond_active=pilot_cond_active, unit_skill_only=unit_skill_only,
             **_cbu,
         ):
             continue
@@ -30297,6 +30328,7 @@ def series_for_unit_browse_filtered(ld, lc, args):
     map_weapon_range_filter = parse_map_weapon_range_filter(args.get('map_weapon_range', '').strip())
     cond_active = args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
     pilot_cond_active = args.get('pilot_cond', '').strip().lower() in ('1', 'true', 'yes')
+    unit_skill_only = args.get('unit_skill', '').strip().lower() in ('1', 'true', 'yes')
     _cbu = browse_combo_from_unit_args(args)
     ssm = ld.get('ser_set_map', {})
     sl = ld.get('series_list', [])
@@ -30310,7 +30342,7 @@ def series_for_unit_browse_filtered(ld, lc, args):
             weapon_range_non_map_ssp_ex=weapon_range_non_map_ssp_ex,
             map_weapon_range_filter=map_weapon_range_filter,
             q_scope=_qsc, apply_lineage=True, apply_series=False, apply_ability=True, apply_terrain=True,
-            cond_active=cond_active, pilot_cond_active=pilot_cond_active,
+            cond_active=cond_active, pilot_cond_active=pilot_cond_active, unit_skill_only=unit_skill_only,
             **_cbu,
         ):
             continue
@@ -30703,6 +30735,7 @@ def abilities_for_unit_browse_filtered(ld, lc, args):
     map_weapon_range_filter = parse_map_weapon_range_filter(args.get('map_weapon_range', '').strip())
     cond_active = args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
     pilot_cond_active = args.get('pilot_cond', '').strip().lower() in ('1', 'true', 'yes')
+    unit_skill_only = args.get('unit_skill', '').strip().lower() in ('1', 'true', 'yes')
     _cbu = browse_combo_from_unit_args(args)
     ldc = get_calc_lang_data()
     seen = {}
@@ -30717,7 +30750,7 @@ def abilities_for_unit_browse_filtered(ld, lc, args):
             weapon_range_non_map_ssp_ex=weapon_range_non_map_ssp_ex,
             map_weapon_range_filter=map_weapon_range_filter,
             q_scope=_qsc, apply_ability=False, apply_terrain=True,
-            cond_active=cond_active, pilot_cond_active=pilot_cond_active,
+            cond_active=cond_active, pilot_cond_active=pilot_cond_active, unit_skill_only=unit_skill_only,
             **_cbu,
         ):
             continue
@@ -30892,8 +30925,8 @@ def list_characters():
     want_stat_bounds = request.args.get('stat_bounds', '').strip().lower() in ('1', 'true', 'yes')
     sb_ck = 'sbd1' if want_stat_bounds else 'sbd0'
     rb_ck = 'rb1' if ranking_bulk else 'rb0'
-    # cl39: SP list totals use spbs_u only (CP toggle no longer a no-op when SP is on).
-    ck = f"cl39_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_{ability_ck}_lop{_cbc['lineage_combine']}_sop{_cbc['series_combine']}_skop{_cbc['skill_combine']}_abop{_cbc['trait_combine']}_gs{1 if grid_skills else 0}_{sb_ck}_{rb_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    # cl40: recommend_unit_id on rows (MLS Collections pilot filter).
+    ck = f"cl40_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_{ability_ck}_lop{_cbc['lineage_combine']}_sop{_cbc['series_combine']}_skop{_cbc['skill_combine']}_abop{_cbc['trait_combine']}_gs{1 if grid_skills else 0}_{sb_ck}_{rb_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached:
         return jsonify_preserialized(cached, ck, public=True, max_age=3600, convert_images=False)
@@ -30999,7 +31032,9 @@ def list_characters():
         acq = acq_route; acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
         # Omit series / rarity_icon — unused by browse/ranking/TB list UI.
         # is_limited_time is on the row so Units/Characters can filter rarity locally.
-        row = {'id': cid, 'name': name, 'role': resolve_role_label(role_id, lc), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'thum': thum or '', 'acquisition_icon': acq_icon or '', 'is_limited_time': cid in LIMITED_TIME_CHARACTER_IDS, 'is_schedule_shell': entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')), 'tag_ids': lineage_tag_ids_for_browse_row(char_lin_map, cid), 'Ranged': totals.get('Ranged', 0), 'Melee': totals.get('Melee', 0), 'Awaken': totals.get('Awaken', 0), 'Defense': totals.get('Defense', 0), 'Reaction': totals.get('Reaction', 0), 'Ranged_base': base_src.get('Ranged', 0), 'Melee_base': base_src.get('Melee', 0), 'Awaken_base': base_src.get('Awaken', 0), 'Defense_base': base_src.get('Defense', 0), 'Reaction_base': base_src.get('Reaction', 0)}
+        # recommend_unit_id: MLS Collections sync — hide pilots whose kit unit is unowned.
+        _rec_uid = resolve_character_recommend_unit_id(cid)
+        row = {'id': cid, 'name': name, 'role': resolve_role_label(role_id, lc), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'thum': thum or '', 'acquisition_icon': acq_icon or '', 'is_limited_time': cid in LIMITED_TIME_CHARACTER_IDS, 'is_schedule_shell': entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')), 'tag_ids': lineage_tag_ids_for_browse_row(char_lin_map, cid), 'recommend_unit_id': _rec_uid if _rec_uid and _rec_uid != '0' else '', 'Ranged': totals.get('Ranged', 0), 'Melee': totals.get('Melee', 0), 'Awaken': totals.get('Awaken', 0), 'Defense': totals.get('Defense', 0), 'Reaction': totals.get('Reaction', 0), 'Ranged_base': base_src.get('Ranged', 0), 'Melee_base': base_src.get('Melee', 0), 'Awaken_base': base_src.get('Awaken', 0), 'Defense_base': base_src.get('Defense', 0), 'Reaction_base': base_src.get('Reaction', 0)}
         if ranking_bulk:
             row['ib'] = char_instant_browse_facets(cid, info, ld, lc, include_sp=bool(sp_list))
         rows.append(row)
@@ -31041,6 +31076,7 @@ def list_units():
     if stat_mode not in ('normal', 'sp', 'ssp'): stat_mode = 'normal'
     cond_list = request.args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
     pilot_cond_list = request.args.get('pilot_cond', '').strip().lower() in ('1', 'true', 'yes')
+    unit_skill_only = request.args.get('unit_skill', '').strip().lower() in ('1', 'true', 'yes')
     source_arg = request.args.get('source', '').strip()
     source_filter = parse_list_source_filter(source_arg)
     source_ck = source_filter_cache_fragment(source_filter)
@@ -31102,7 +31138,9 @@ def list_units():
     # ul70: InstantBrowse ib.was (weapon attr set ids) for snappy /u attribute droplist
     # ul71: weapon_attr_op and/or/and_or combine for /u attribute droplist
     # ul72: exclude_escape_alt — hide Escape Function post-evac forms (MLS formation picker)
-    ck = f"ul72_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_attr_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_waop{_cbu['weapon_attr_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{esc_alt_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    # ul73: unit_skill=1 — only units with Unit Skills (base + max ALT ULT unlocks)
+    uskill_ck = 'usk1' if unit_skill_only else 'usk0'
+    ck = f"ul73_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{uskill_ck}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_attr_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_waop{_cbu['weapon_attr_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{esc_alt_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached:
         return jsonify_preserialized(cached, ck, public=True, max_age=3600, convert_images=False)
@@ -31135,6 +31173,8 @@ def list_units():
             continue
         # Escape Function post-evac kits are not starting forms in-game (MLS / formation pickers).
         if exclude_escape_alt and _unit_is_escape_function_alternate(uid):
+            continue
+        if unit_skill_only and not (direct_seek or npc123_list) and not unit_has_unit_skills(uid):
             continue
         if rarity_filter is not None:
             if not rarity_filter:

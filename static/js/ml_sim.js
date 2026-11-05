@@ -28,6 +28,8 @@
   var leaderApplyRefreshTimer = null;
   var LEADER_BUFF_ICON = '/static/images/UI/UI_Organization_Icon_SupporterLeader_Posi.webp';
   var fightBusy = false;
+  /* True only while battle steps / fire FX are playing — not the end card. */
+  var playbackFxBusy = false;
   var paused = false;
   var skipAll = false;
   var pauseWait = null;
@@ -50,7 +52,8 @@
    * Shared OPTIMIZER_SEED for Formation Optimizer + live Start (same stream family).
    * Live and optimizer use SEPARATE LCG states — background warm must never reset
    * the live seed mid-compute (that made “1T wipe” labels disagree with Start).
-   * Optimizer ranks with forceNoCrit; live still rolls crits on its own stream.
+   * Optimizer ranks with forceNoCrit + forceConnect (hits land, no crit).
+   * A 1T label is only that sure line. Evade/crit seeds that also 1T are called RNG.
    */
   var rngLocked = false;
   var rngState = 1;
@@ -93,13 +96,12 @@
   }
 
   /**
-   * Formation Optimizer — silent warm AFTER playback only.
-   * Mid-fight fightSteps (even idle-sliced) steals frames from bolt/MAP CSS → frozen fire.
-   * Hard-park while fightBusy or liveComputeBusy; skip if this roster was already searched.
+   * Formation Optimizer — silent warm the moment playback FX ends (end card may still be up).
+   * Never runs while bolts/MAP are on screen. Yields between lineups so the end card stays smooth.
    */
   function scheduleOptimizerWarmSilent(delayMs) {
     var finger;
-    var wait = delayMs == null ? 200 : (delayMs | 0);
+    var wait = delayMs == null ? 0 : (delayMs | 0);
     try { finger = aiSearchRosterFinger(); } catch (eF) { finger = ''; }
     if (lastAiSearchCache && lastAiSearchCache.finger === finger && lastAiSearchCache.best) {
       return;
@@ -110,9 +112,8 @@
       try { f2 = aiSearchRosterFinger(); } catch (e2) { f2 = ''; }
       if (lastAiSearchCache && lastAiSearchCache.finger === f2 && lastAiSearchCache.best) return;
       if (aiSearchBusy) return;
-      /* Never steal main-thread from live compute or fire FX playback. */
-      if (liveComputeBusy || fightBusy) {
-        setTimeout(armKick, 120);
+      if (liveComputeBusy || playbackFxBusy) {
+        setTimeout(armKick, 80);
         return;
       }
       try {
@@ -122,15 +123,11 @@
       }
     }
     function armKick() {
-      if (liveComputeBusy || fightBusy) {
-        setTimeout(armKick, 120);
+      if (liveComputeBusy || playbackFxBusy) {
+        setTimeout(armKick, 80);
         return;
       }
-      if (typeof requestIdleCallback === 'function') {
-        requestIdleCallback(function () { kick(); }, { timeout: Math.max(400, wait + 200) });
-      } else {
-        setTimeout(kick, 0);
-      }
+      setTimeout(kick, 0);
     }
     setTimeout(armKick, Math.max(0, wait));
   }
@@ -381,42 +378,44 @@
       if (!o || typeof o !== 'object') return emptyRoster();
       return {
         eventId: String(o.eventId || DEFAULT_EVENT),
-        enemy: normalizeForce(o.enemy),
-        ally: normalizeForce(o.ally)
+        enemy: normalizeForce(o.enemy, 'enemy'),
+        ally: normalizeForce(o.ally, 'ally')
       };
     } catch (e) {
       return emptyRoster();
     }
   }
 
-  function normalizeForce(force) {
+  function normalizeForce(force, side) {
     /* v2 stored a bare slot array; v3 is { supporter, slots }. */
     if (Array.isArray(force)) {
-      return { supporter: null, slots: normalizeSideSlots(force) };
+      return { supporter: null, slots: normalizeSideSlots(force, side) };
     }
     if (!force || typeof force !== 'object') return emptyForce();
     return {
       supporter: force.supporter && force.supporter.id ? force.supporter : null,
-      slots: normalizeSideSlots(force.slots)
+      slots: normalizeSideSlots(force.slots, side)
     };
   }
 
-  function normalizeSideSlots(arr) {
+  function normalizeSideSlots(arr, side) {
     var out = emptySlots();
     var i;
     if (!Array.isArray(arr)) return out;
     for (i = 0; i < SLOT_COUNT; i++) {
       if (arr[i] && arr[i].unitId) out[i] = normalizeSlot(arr[i]);
     }
-    return enforceSideUniqueSlots(out).slots;
+    return enforceSideUniqueSlots(out, side).slots;
   }
 
   /**
    * Master League: unit + pilot are unique per side (enemy/ally separately).
    * First slot wins; later duplicate units are cleared; duplicate pilots drop charId.
+   * Ally + Collections sync: kits not in Collections are omitted from Battle, so they
+   * must not reserve unit/pilot uniqueness for owned slots.
    * @returns {{slots:Array, clearedUnits:number, clearedPilots:number}}
    */
-  function enforceSideUniqueSlots(slots) {
+  function enforceSideUniqueSlots(slots, side) {
     var seenU = Object.create(null);
     var seenC = Object.create(null);
     var i, sl, uid, cid;
@@ -426,6 +425,8 @@
     for (i = 0; i < slots.length; i++) {
       sl = slots[i];
       if (!sl || !sl.unitId) continue;
+      /* Greyed unowned ally kits stay on Formation but do not claim unique slots. */
+      if (side && slotExcludedByCollections(sl, side)) continue;
       uid = String(sl.unitId);
       if (seenU[uid]) {
         slots[i] = null;
@@ -457,7 +458,7 @@
     ['enemy', 'ally'].forEach(function (side) {
       var force = forceOf(side);
       var before = force.slots;
-      var res = enforceSideUniqueSlots(before);
+      var res = enforceSideUniqueSlots(before, side);
       force.slots = res.slots;
       if (res.clearedUnits || res.clearedPilots) {
         changed = true;
@@ -484,6 +485,7 @@
     forceOf(side).slots.forEach(function (sl, i) {
       if (!sl || !sl.unitId) return;
       if (i === exceptIdx) return;
+      if (slotExcludedByCollections(sl, side)) return;
       used[String(sl.unitId)] = 1;
     });
     return used;
@@ -495,6 +497,8 @@
     forceOf(side).slots.forEach(function (sl, i) {
       if (!sl || !sl.charId) return;
       if (i === exceptIdx) return;
+      /* Unowned Collections kits are off Battle — free their pilots for owned kits. */
+      if (slotExcludedByCollections(sl, side)) return;
       used[String(sl.charId)] = 1;
     });
     return used;
@@ -852,7 +856,7 @@
     }
     parsed = parseForcePayload(raw);
     if (!parsed || !parsed.slots) return;
-    slots = enforceSideUniqueSlots(parsed.slots).slots;
+    slots = enforceSideUniqueSlots(parsed.slots, side).slots;
     force = forceOf(side);
     force.slots = slots;
     force.supporter = parsed.supporter;
@@ -3182,6 +3186,14 @@
       /* Ally pickers only — enemy can always pick any kit. */
       if (side === 'ally' && kind === 'unit' && wantOwnedOnly() && owned[String(u.id)] == null) return false;
       if (side === 'ally' && kind === 'supporter' && wantOwnedOnly() && ownedSupp[String(u.id)] == null) return false;
+      /*
+       * Collections has units, not characters. Recommended pilot of an unowned unit
+       * is treated as unowned too (e.g. no Avalanche Astraea → hide Fon Spaak UR).
+       */
+      if (side === 'ally' && kind === 'character' && wantOwnedOnly()) {
+        var recUid = String(u.recommend_unit_id || (u.recommend_unit && u.recommend_unit.id) || '');
+        if (recUid && recUid !== '0' && owned[recUid] == null) return false;
+      }
       if (kind === 'option' && isSsrOpRow(u) && usedSsr[String(u.id)]) return false;
       /* Same side: one copy of each unit / pilot (enemy↔ally may still match). */
       if (kind === 'unit' && usedUnits[String(u.id)]) return false;
@@ -3287,6 +3299,10 @@
       var slCh = forceOf(side).slots[idx];
       if (!slCh || !slCh.unitId) return;
       if (usedCharIds(side, idx)[String(row.id)]) return;
+      if (side === 'ally' && wantOwnedOnly()) {
+        var pickRecUid = String(row.recommend_unit_id || (row.recommend_unit && row.recommend_unit.id) || '');
+        if (pickRecUid && pickRecUid !== '0' && ownedMap()[pickRecUid] == null) return;
+      }
       slCh.charId = String(row.id);
       slCh.charName = row.name || String(row.id);
       slCh.charThum = row.thum || row.portrait || '';
@@ -4163,6 +4179,8 @@
         usage_restrictions: (w.usage_restrictions || []).slice(),
         map_coords: (w.map_coords || []).slice(),
         shooting_coords: (w.shooting_coords || []).slice(),
+        map_range_type: String(w.map_range_type != null ? w.map_range_type : '0'),
+        map_impact_point_max_select_count: w.map_impact_point_max_select_count | 0,
         map_single_pou: !!w.map_single_pou,
         attribute: w.attribute || '',
         weapon_type: w.weapon_type || ''
@@ -7891,6 +7909,8 @@
             is_map: !!w.is_map, is_map_weapon: !!w.is_map_weapon, is_preemptive: !!w.is_preemptive,
             traits: (w.traits || []).slice(), usage_restrictions: (w.usage_restrictions || []).slice(),
             map_coords: (w.map_coords || []).slice(), shooting_coords: (w.shooting_coords || []).slice(),
+            map_range_type: String(w.map_range_type != null ? w.map_range_type : '0'),
+            map_impact_point_max_select_count: w.map_impact_point_max_select_count | 0,
             map_single_pou: !!w.map_single_pou, attribute: w.attribute || '', weapon_type: w.weapon_type || ''
           };
         }),
@@ -8056,12 +8076,14 @@
    * @param {boolean} [opts.scoreOnly] — Formation Optimizer: skip step snapshots (huge GC);
    *   returns win/turns/HP only. Playback still uses the full path.
    * @param {boolean} [opts.forceNoCrit] — never roll crits (fair 1T check).
+   * @param {boolean} [opts.forceConnect] — evade/accuracy rolls connect (Sway / Evade Way still miss).
    * @param {object} [opts.pruneScore] — current best {win,turns,turn1EnemyHp,allyHp}; abort
    *   when this fight can no longer beat it (optimizer only; ranking unchanged).
    */
   function fightSteps(allies, enemies, opts) {
     var scoreOnly = !!(opts && opts.scoreOnly);
     var forceNoCrit = !!(opts && opts.forceNoCrit);
+    var forceConnect = !!(opts && opts.forceConnect);
     var pruneScore = (opts && opts.pruneScore) || null;
     var pruned = false;
     var R = rules();
@@ -8069,6 +8091,7 @@
     var steps = [];
     var turn = 1;
     var turn1EnemyHp = null;
+    var turn1Alive = null;
     /* Formation squad buffs once per fight (dead units still count for same-squad tags). */
     stampSquadBuffs(allies);
     stampSquadBuffs(enemies);
@@ -8388,6 +8411,14 @@
         }
       }
       hit = R.checkHit(attacker, defender, wpn, defAction, !!hitOpts.isDefenderSupportDefend);
+      /*
+       * Optimizer sure-line: treat evade/accuracy misses as hits so a 1T claim
+       * is not a lucky roll. Sway and Evade Way stay real misses.
+       */
+      if (!hit && forceConnect) {
+        var connectWhy = (defender && defender._lastMissReason) || '';
+        if (connectWhy !== 'Sway' && connectWhy !== 'Evade Way') hit = true;
+      }
       attacker.lastActionHit = !!hit;
       if (!hit) {
         /* gge miss: attacker −1. Evade bonus +1 goes to the covered ally when SD whiffs, else the defender. */
@@ -8659,6 +8690,7 @@
         return {
           steps: steps, win: false, draw: false, turns: 999,
           turn1EnemyHp: turn1EnemyHp != null ? turn1EnemyHp : 1e15,
+          turn1Alive: turn1Alive || [],
           allies: allies, enemies: enemies, pruned: true
         };
       }
@@ -8679,7 +8711,9 @@
       snapshotLine(draw ? 'Time up — both sides remain' : (win ? 'Ally victory · ' + turnsUsed + ' turn(s)' : 'Ally defeat'));
       return {
         steps: steps, win: win, draw: draw, turns: turnsUsed,
-        turn1EnemyHp: turn1EnemyHp, allies: allies, enemies: enemies
+        turn1EnemyHp: turn1EnemyHp,
+        turn1Alive: turn1Alive || [],
+        allies: allies, enemies: enemies
       };
     }
     /** One ML turn. Returns true when another turn should run. */
@@ -9415,6 +9449,9 @@
       });
       if (turn === 1) {
         turn1EnemyHp = enemies.reduce(function (s, u) { return s + Math.max(0, u.hp | 0); }, 0);
+        turn1Alive = enemies.filter(function (u) { return (u.hp | 0) > 0; }).map(function (u) {
+          return u.name || String(u.id || '');
+        });
       }
       /*
        * Optimizer prune (same scoreBetter order): once we already have a win in T turns,
@@ -10240,6 +10277,7 @@
     skipAll = false;
     paused = false;
     fightBusy = true;
+    playbackFxBusy = true;
     enforceAllSideUniques({ silent: false });
     setFightControls(true);
     setView('battle');
@@ -10281,6 +10319,7 @@
     }).catch(function (e) {
       hideBannerNow();
       fightBusy = false;
+      playbackFxBusy = false;
       paused = false;
       skipAll = false;
       clearTimelinePhase();
@@ -10348,14 +10387,15 @@
           clearTimelinePhase();
           paintBoard();
           paintTimeline();
+          /* FX are done — warm now, while the end card is up. Do not wait out the card. */
+          playbackFxBusy = false;
+          scheduleOptimizerWarmSilent(0);
           /* Never wait on optimizer — endcard must not stall on bg search. */
           showEndCard(result).then(function () {
             fightBusy = false;
             paused = false;
             skipAll = false;
             setFightControls(false);
-            /* Warm only after playback — mid-fight sim freezes bolts/MAP FX. */
-            scheduleOptimizerWarmSilent(200);
             resolve();
           });
           return;
@@ -10495,11 +10535,11 @@
       });
     }
     if (aiSearchBusy) return bgAiPromise || Promise.resolve(outResult);
-    /* Mid-playback sim freezes bolts — park both manual click and silent warm. */
-    if (fightBusy) {
-      if (!background) setAiStatus('After the battle');
+    if (fightBusy && !background) {
+      setAiStatus('After the battle');
       return Promise.resolve(outResult);
     }
+    if (background && playbackFxBusy) return Promise.resolve(outResult);
     for (i = 0; i < SLOT_COUNT; i++) {
       if (force.slots[i] && force.slots[i].unitId) filled.push(i);
     }
@@ -10581,7 +10621,7 @@
     }
 
     function finishAiSearch(ms) {
-      var resultCrit, t1Crit, rankedT1;
+      var rankedT1;
       endOptSeededFight();
       if (!background) setAiProgress(perms.length, perms.length);
       aiSearchBusy = false;
@@ -10601,15 +10641,22 @@
           turns: bestScore.turns | 0,
           turn1EnemyHp: bestScore.turn1EnemyHp | 0,
           allyHp: bestScore.allyHp | 0,
-          needsCritFor1T: !!bestScore.needsCritFor1T
+          needsCritFor1T: !!bestScore.needsCritFor1T,
+          turn1Alive: (bestScore.turn1Alive || []).slice(),
+          rng1T: bestScore.rng1T | 0,
+          graded: !!bestScore.graded
         }
       };
       outResult.same = same;
-      /* Background warm: silent cache only. Apply + HUD only on an explicit button click. */
-      if (background) return outResult;
+      /* Background warm: cache only. Honesty seeds already ran (bestScore.graded). */
+      if (background) {
+        if (bestScore.graded) setAiStatus('Ready');
+        return outResult;
+      }
       applyPerm(best);
       saveRoster();
       paintForceSlots();
+      clearFightResultCache();
       outResult.applied = !same;
       names = [];
       filled.forEach(function (slotIdx, k) {
@@ -10619,49 +10666,60 @@
       });
       rankedT1 = bestScore.turn1EnemyHp | 0;
       clearFightResultCache();
-      setAiStatus(ms === 0 ? 'Checking…' : 'Applying…');
       /*
-       * Rank = no-crit (solid). Optional crit pass only flags RNG-dependent 1T —
-       * never rewrite the ranked result or force Start playback to match a seed.
+       * Label from a sure line only: attacks connect, no crits.
+       * Warm already sampled RNG seeds — click applies that, no second search.
        */
-      return loadArmies({ keepCalMemo: true }).then(function () {
-        bestScore.needsCritFor1T = false;
-        try {
-          if (lastAlly.length && lastEnemy.length && rankedT1 > 0) {
-            beginOptSeededFight(OPTIMIZER_SEED);
-            resultCrit = fightSteps(cloneArmy(lastAlly), cloneArmy(lastEnemy), {
-              scoreOnly: true,
-              forceNoCrit: false
-            });
-            t1Crit = resultCrit.turn1EnemyHp != null ? (resultCrit.turn1EnemyHp | 0) : 1e15;
-            /* No-crit did not wipe; crit stream did → 1T is RNG/crit luck. */
-            bestScore.needsCritFor1T = t1Crit === 0;
-          }
-        } catch (eCrit) {
-          /* flag optional */
-        } finally {
-          endOptSeededFight();
-        }
+      function publishRank(rng1T) {
+        var aliveTxt, spotMoves, advice;
+        bestScore.needsCritFor1T = rankedT1 > 0 && rng1T > 0;
         if (lastAiSearchCache && lastAiSearchCache.bestScore) {
           lastAiSearchCache.bestScore.needsCritFor1T = !!bestScore.needsCritFor1T;
+          lastAiSearchCache.bestScore.turn1EnemyHp = rankedT1;
+          lastAiSearchCache.bestScore.turns = bestScore.turns | 0;
+          lastAiSearchCache.bestScore.win = !!bestScore.win;
+          lastAiSearchCache.bestScore.rng1T = rng1T | 0;
+          lastAiSearchCache.bestScore.graded = true;
         }
-        if (bestScore.win && rankedT1 === 0) {
+        aliveTxt = (bestScore.turn1Alive || []).join(', ');
+        if (bestScore.win && rankedT1 === 0 && rng1T === 4) {
           status = (same ? 'Already optimal · ' : 'Applied · ') + '1T wipe';
-        } else if (bestScore.needsCritFor1T) {
+        } else if (bestScore.win && rankedT1 === 0) {
           status = (same ? 'Already optimal · ' : 'Applied · ') +
-            '1T needs crit/RNG — try another setup';
-        } else if (same) {
-          status = 'Already optimal';
+            '1T if hits connect (' + rng1T + '/4 RNG seeds) — not promised on Start';
+        } else if (bestScore.needsCritFor1T) {
+          status = (same ? 'Order kept · ' : 'Applied · ') +
+            'win in ' + bestScore.turns + 'T — 1T only with RNG (' + rng1T + '/4), not the result';
+        } else if (same && bestScore.win) {
+          status = 'Already optimal · win in ' + bestScore.turns + 'T';
         } else if (bestScore.win) {
           status = 'Applied · win in ' + bestScore.turns + 'T';
+        } else if (same) {
+          status = 'Already optimal';
         } else {
           status = 'Applied · best survive ' + bestScore.turns + 'T';
         }
-        if (ms === 0 && status.indexOf('needs crit') < 0) status += ' · ready';
+        spotMoves = [];
+        if (!same) {
+          filled.forEach(function (slotIdx, k) {
+            var srcIdx = best[k];
+            var sl = original[srcIdx];
+            if (srcIdx !== slotIdx && sl && sl.name) {
+              spotMoves.push(sl.name + ' → #' + ((slotIdx | 0) + 1));
+            }
+          });
+        }
+        advice = '';
+        if (rankedT1 > 0 && aliveTxt) {
+          advice = ' After turn 1 still up: ' + aliveTxt +
+            '. More S.Attack into those (or strip their S.Def) — this is not a 1T wipe.';
+        }
         setAiStatus(status);
         outResult.status = status;
         log('Formation Optimizer — ' + status +
-          (names.length && !same ? (' · ' + names.join(' → ')) : ''));
+          (names.length && !same ? (' · order ' + names.join(' → ')) : '') +
+          (spotMoves.length ? (' · spots ' + spotMoves.join('; ')) : '') +
+          advice);
         if (viewName === 'battle') {
           paintBoard();
           paintTimeline();
@@ -10669,6 +10727,45 @@
         setAiBusyUi(false);
         setAiProgress(0, 0);
         return outResult;
+      }
+      if (bestScore.graded) return publishRank(bestScore.rng1T | 0);
+      setAiStatus('Checking…');
+      return loadArmies({ keepCalMemo: true }).then(function () {
+        var sure, rng1T, si, rngRes;
+        sure = null;
+        rng1T = 0;
+        try {
+          if (lastAlly.length && lastEnemy.length) {
+            beginOptSeededFight(OPTIMIZER_SEED);
+            sure = fightSteps(cloneArmy(lastAlly), cloneArmy(lastEnemy), {
+              scoreOnly: true,
+              forceNoCrit: true,
+              forceConnect: true
+            });
+            endOptSeededFight();
+            for (si = 0; si < 4; si++) {
+              beginOptSeededFight((OPTIMIZER_SEED + 1 + si * 997) >>> 0);
+              rngRes = fightSteps(cloneArmy(lastAlly), cloneArmy(lastEnemy), {
+                scoreOnly: true,
+                forceNoCrit: false
+              });
+              endOptSeededFight();
+              if (rngRes && rngRes.win && (rngRes.turn1EnemyHp | 0) === 0) rng1T += 1;
+            }
+          }
+        } catch (eSure) {
+          sure = null;
+        } finally {
+          endOptSeededFight();
+        }
+        if (sure) {
+          rankedT1 = sure.turn1EnemyHp != null ? (sure.turn1EnemyHp | 0) : rankedT1;
+          bestScore.win = !!sure.win;
+          bestScore.turns = sure.turns | 0;
+          bestScore.turn1EnemyHp = rankedT1;
+          bestScore.turn1Alive = sure.turn1Alive || [];
+        }
+        return publishRank(rng1T);
       });
     }
 
@@ -10692,9 +10789,7 @@
        * Manual: larger batches → shorter wall time (user is waiting on the button).
        * Background idle: small slices. Mid-playback: 1 lineup + hard ms budget (no FX hitch).
        */
-      var AI_BATCH = background
-        ? (mobileBattleSnappy() ? 1 : 3)
-        : (mobileBattleSnappy() ? 12 : 40);
+      var AI_BATCH = background ? 1 : (mobileBattleSnappy() ? 12 : 40);
       if (!background) {
         setAiProgress(0, perms.length);
         setAiStatus('Optimizing…');
@@ -10735,6 +10830,7 @@
           win: !!res.win,
           turns: res.turns | 0,
           turn1EnemyHp: t1NoCrit,
+          turn1Alive: (res.turn1Alive || []).slice(),
           allyHp: allyHpSum,
           needsCritFor1T: false,
           perm: perm.slice()
@@ -10758,6 +10854,7 @@
         fightOpts = {
           scoreOnly: true,
           forceNoCrit: true,
+          forceConnect: true,
           pruneScore: bestScore,
           dmgMemo: sharedDmgMemo
         };
@@ -10810,8 +10907,8 @@
       function runBatch() {
         var end;
         if (pi >= perms.length) return Promise.resolve();
-        /* Live Start compute / fire FX own the main thread — hard park. */
-        if (liveComputeBusy || fightBusy) {
+        /* Fire FX / live compute own the thread. End card does not — warm may proceed. */
+        if (liveComputeBusy || playbackFxBusy) {
           return idleGap(80).then(runBatch);
         }
         end = Math.min(perms.length, pi + AI_BATCH);
@@ -10822,12 +10919,46 @@
         paintManualProgress();
         if (pi >= perms.length) return Promise.resolve();
         if (background) {
-          return idleGap(mobileBattleSnappy() ? 48 : 32).then(runBatch);
+          return new Promise(function (resolve) { setTimeout(resolve, 0); }).then(runBatch);
         }
         return yieldUi().then(runBatch);
       }
 
-      return runBatch();
+      /**
+       * After the sure-line search, sample 4 real hit/crit seeds on the winner only.
+       * Yields so the end card keeps painting. Click then skips this work.
+       */
+      function gradeRngSeeds() {
+        var n = 0;
+        var i = 0;
+        if (!background || !best || !bestScore) return Promise.resolve();
+        function step() {
+          var res;
+          if (i >= 4) {
+            bestScore.rng1T = n;
+            bestScore.graded = true;
+            return Promise.resolve();
+          }
+          return new Promise(function (resolve) { setTimeout(resolve, 0); }).then(function () {
+            if (playbackFxBusy || liveComputeBusy) return idleGap(80).then(step);
+            i += 1;
+            try {
+              beginOptSeededFight((OPTIMIZER_SEED + i * 997) >>> 0);
+              res = fightSteps(alliesForPerm(best), cloneArmy(baseEnemy), {
+                scoreOnly: true,
+                forceNoCrit: false,
+                dmgMemo: sharedDmgMemo
+              });
+              if (res && res.win && (res.turn1EnemyHp | 0) === 0) n += 1;
+            } catch (eGrade) { /* seed optional */ }
+            endOptSeededFight();
+            return step();
+          });
+        }
+        return step();
+      }
+
+      return runBatch().then(gradeRngSeeds);
     }).then(function () {
       var ms = ((typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now()) - searchStarted;
       return finishAiSearch(ms);
@@ -10966,6 +11097,8 @@
       if (this.checked) {
         nLb = syncAllyLbsFromCollections({ forcePaint: true });
       }
+      /* Re-run uniqueness: greyed kits must not keep locking pilots for owned slots. */
+      enforceAllSideUniques({ silent: true });
       forceOf('ally').slots.forEach(function (sl) {
         if (slotExcludedByCollections(sl, 'ally')) nGrey += 1;
       });
@@ -10978,7 +11111,7 @@
       if (this.checked) {
         log('My Collections on (ally only) — ' +
           (nLb ? (nLb + ' LB synced; ') : '') +
-          (nGrey ? (nGrey + ' kit(s) greyed out (hidden on Battle).') : 'all ally kits are in Collections.') +
+          (nGrey ? (nGrey + ' kit(s) greyed out (hidden on Battle; pilots freed).') : 'all ally kits are in Collections.') +
           ' Enemy force unchanged.');
       } else {
         log('My Collections off — full ally roster on Battle; LB no longer auto-synced.');
@@ -11306,7 +11439,7 @@
       if (!lab) return;
       tip = mlsT(
         'mls_use_collections_tip',
-        'Ally only: pickers show your Collections kits; sync Limit Break from Collections; kits not in Collections are greyed out and omitted from Battle. Enemy force is never filtered.'
+        'Ally only: pickers show your Collections kits and recommended pilots of those units; sync Limit Break from Collections; kits not in Collections are greyed out and omitted from Battle. Enemy force is never filtered.'
       );
       lab.setAttribute('title', tip);
     })();
