@@ -166,15 +166,20 @@
       t = normalizeFullwidth(bags[i].text);
       if (!isSupport && /支援攻撃|支援反撃|支援攻擊|支援反擊|Support\s*Attack|Support\s*Counter/i.test(t)
           && /最大射程|max(?:imum)?\s*range|射程/i.test(t)) continue;
-      m = t.match(/最大射程[^0-9]*?(\d+)|max(?:imum)?\s*range[^0-9]*?[+＋]?(\d+)|射程\s*[+＋](\d+)/i);
+      m = t.match(/最大射程[^0-9]*?(\d+)|max(?:imum)?\s*range[^0-9]*?[+＋]?(\d+)|射程\s*[+＋](\d+)/i)
+        /* EN LANG: "Melee Weapon Range +1" / "Special Weapon Range +1" / "… shooting range +1" */
+        || t.match(/(?:Weapon|Melee|Special|Beam|Physical|Shooting|格闘|射撃|射擊)\s+(?:Weapon\s+)?(?:Max(?:imum)?\s+)?Range\s*[+＋](\d+)/i)
+        || t.match(/(?:格闘|特殊)\s*(?:武装|武裝)?\s*(?:の)?(?:最大)?射程\s*[+＋]?(\d+)/i);
       if (!m) continue;
       if (!tensionOk(actor && actor.mp, t)) continue;
       /* Cond:Vigor Special Weapon Max Range — only special weapons. */
       if (/special\s+weapon|特殊武装|特殊武裝|特殊武器/i.test(t) && !weaponIsSpecial(weapon)) continue;
+      /* Melee Weapon Range +N — only melee weapons. */
+      if (/melee\s+weapon\s+range|格闘.*射程/i.test(t) && !weaponIsMelee(weapon)) continue;
       if (/HP(?:が)?満タン|HP\s*(?:at\s*)?full/i.test(t) && hpRatio < 0.999) continue;
       hpM = t.match(/HP(?:が)?(\d+)%以上|HP\s*(\d+)%\+/i);
       if (hpM && hpRatio * 100 < (parseInt(hpM[1] || hpM[2], 10) || 0)) continue;
-      add = parseInt(m[1] || m[2] || m[3], 10);
+      add = parseInt(m[1] || m[2] || m[3] || m[4] || m[5], 10);
       rangeUp += add > 0 ? add : 1;
     }
     return rangeUp;
@@ -351,7 +356,7 @@
     var move = Math.max(0, attacker.move | 0);
     var cells = getReachableCells(attacker, move, allUnits, bounds);
     var achievable = [];
-    var e, w, bestWpn, bestDmg, can, ideal, i, cell, d, baseDist, mn, mx, pDmg;
+    var e, bestWpn, bestDmg, can, ideal, i, cell, d, baseDist, mn, mx, mxEff, bonus, pDmg;
 
     alive(enemies).forEach(function (enemy) {
       bestWpn = null;
@@ -361,18 +366,20 @@
         if (isMapWeapon(weapon)) return;
         mn = weapon.min_range != null ? weapon.min_range | 0 : 1;
         mx = weapon.max_range != null ? weapon.max_range | 0 : mn;
+        bonus = getWeaponRangeBonus(attacker, weapon, false) | 0;
+        mxEff = mx + bonus;
         can = false;
         ideal = Infinity;
         for (i = 0; i < cells.length; i++) {
           cell = cells[i];
           d = distance({ x: cell.x, y: cell.y, size: unitSize(attacker) }, enemy);
-          if (d >= mn && d <= mx) {
+          if (d >= mn && d <= mxEff) {
             can = true;
             if (d < ideal) ideal = d;
           }
         }
         if (!can) return;
-        if (baseDist >= mn && baseDist <= mx) ideal = baseDist;
+        if (baseDist >= mn && baseDist <= mxEff) ideal = baseDist;
         pDmg = typeof damageOf === 'function'
           ? Math.max(0, damageOf(attacker, enemy, weapon) | 0)
           : (weapon.power | 0);
@@ -392,6 +399,8 @@
     e = achievable[0];
     mn = e.weapon.min_range != null ? e.weapon.min_range | 0 : 1;
     mx = e.weapon.max_range != null ? e.weapon.max_range | 0 : mn;
+    /* Move destination must honor the same +range passives as weaponsInRange / getValidWeapons. */
+    mx = mx + (getWeaponRangeBonus(attacker, e.weapon, false) | 0);
     return { target: e.enemy, weapon: e.weapon, minR: mn, maxR: mx, expectedDmg: e.expectedDmg };
   }
 
@@ -582,9 +591,35 @@
   }
 
   /**
+   * Pilot character type (LANG help) — not MS unit role.
+   * role_id: 1 Attack · 2 Durability · 3 Support.
+   */
+  function pilotRoleKey(actor) {
+    var ch = actor && actor.char;
+    var id = String((ch && (ch.role_id != null ? ch.role_id : ch.roleId)) ||
+      (actor && (actor.role_id != null ? actor.role_id : actor.roleId)) || '').trim();
+    var name = String((ch && (ch.role || ch.type)) || (actor && actor.role) || '').toLowerCase();
+    if (id === '3' || /support|支援/.test(name)) return 'support';
+    if (id === '2' || /durability|defense|耐久/.test(name)) return 'durability';
+    if (id === '1' || /attack|攻撃|攻擊/.test(name)) return 'attack';
+    return '';
+  }
+
+  /** LANG: Support-type characters possess Support Attack (baseline 1 when kit text is silent). */
+  function roleDefaultSupportAttack(actor) {
+    return pilotRoleKey(actor) === 'support' ? 1 : 0;
+  }
+
+  /** LANG: Durability-type characters possess Support Defense (baseline 1 when kit text is silent). */
+  function roleDefaultSupportDefend(actor) {
+    return pilotRoleKey(actor) === 'durability' ? 1 : 0;
+  }
+
+  /**
    * gge calcSupportDefendLimit — SUM every active 「支援防御」+N line (per turn stock).
    * Once-per-battle lines subtract battleSupportDefendedCount. Tension / detail
    * conditions are evaluated live (not the dossier conditionalPassiveActive toggle).
+   * Floor at role baseline so Durability pilots match help/dossier when +N text is missing.
    */
   function supportDefendLimit(actor) {
     var count = 0;
@@ -608,7 +643,7 @@
         count += addVal;
       }
     });
-    return count;
+    return Math.max(count, roleDefaultSupportDefend(actor) | 0);
   }
 
   function supportDefendRangeBonus(actor) {
@@ -1186,10 +1221,22 @@
     return false;
   }
 
+  function weaponIsMelee(weapon) {
+    var types, i, t, wt;
+    types = weaponAtkTypeKeys(weapon);
+    for (i = 0; i < types.length; i++) {
+      t = String(types[i] || '').toLowerCase();
+      if (/melee|格闘|格鬥|格斗/.test(t)) return true;
+    }
+    wt = String((weapon && weapon.raw && weapon.raw.weapon_type) || (weapon && weapon.weapon_type) || '');
+    return /melee|格闘|格鬥|格斗/i.test(wt);
+  }
+
   /**
    * gge calcSupportLimit — SUM every active Support Attack/Counter +N line.
    * Do NOT use bare「支援」+N (that false-matches 支援防御). Do NOT cache via saLimit
    * (tension-gated EX +N must re-evaluate as MP rises).
+   * Floor at role baseline so Support pilots match help/dossier when +N text is missing.
    */
   function supportAttackLimit(actor) {
     var count = 0;
@@ -1197,7 +1244,7 @@
       var norm, m;
       if (detail && !detailConditionsMet(actor, detail)) return;
       norm = normalizeFullwidth(text);
-      /* EN */
+      /* EN — also "Support Attack/Counter +1" (no spaces around /). */
       m = norm.match(/Support\s+Attack\s*\/\s*(?:Support\s*)?Counter\s*\+\s*(\d+)\s*times?/i)
         || norm.match(/Support\s+Attack(?!\s*\/)\s*\+\s*(\d+)\s*times?/i)
         /* JA — require 攻撃/反撃, never bare 支援 (avoids 支援防御) */
@@ -1214,8 +1261,11 @@
       if (!tensionOk(actor && actor.mp, norm)) return;
       count += parseInt(m[1], 10) || 0;
     });
-    return count;
+    return Math.max(count, roleDefaultSupportAttack(actor) | 0);
   }
+
+  /** LANG help: up to three allied units join SA or SC in a single combat. */
+  var MAX_SUPPORT_PARTICIPANTS = 3;
 
   /**
    * gge checkCounterSupportDefend — ability must explicitly allow SD vs counter.
@@ -1495,15 +1545,169 @@
   }
 
   /**
-   * gge checkHit — absolute hit; sway; evade formula when defenseAction==='evade';
+   * Unit ability Parry (e.g. ability 1017103 / unit 1705002050).
+   * LANG: when Vigor ≥ Max, N% chance to evade listed attr+type weapons, up to K times/turn.
+   * Help: blocked by Absolute Hit / Lock On / MAP.
+   */
+  function parseParryKit(actor) {
+    var bags, i, t, name, chance, maxUses, vigorMin, pairs, m, icon;
+    var hasPhysMel, hasBeamMel, hasPhysRng, hasBeamRng, hasPhys, hasBeam, hasMel, hasRng;
+    var abilityLists, li, list;
+    bags = [];
+    icon = '';
+    /* Accept battle actor ({ unit }) or raw unit dossier (abilities on self). */
+    abilityLists = [];
+    if (actor && actor.unit && Array.isArray(actor.unit.abilities)) abilityLists.push(actor.unit.abilities);
+    if (actor && Array.isArray(actor.abilities)) abilityLists.push(actor.abilities);
+    for (li = 0; li < abilityLists.length; li++) {
+      list = abilityLists[li];
+      list.forEach(function (ab) {
+        var texts = [];
+        var det, j, nm, rid;
+        nm = String((ab && (ab.name || ab.title)) || '');
+        rid = String((ab && (ab.resource_id || ab.ResourceId || ab.icon || ab.image)) || '');
+        if (Array.isArray(ab && ab.details)) {
+          for (j = 0; j < ab.details.length; j++) {
+            det = ab.details[j];
+            if (typeof det === 'string') texts.push(det);
+            else if (det && det.text) texts.push(String(det.text));
+          }
+        } else if (ab && ab.effect) texts.push(String(ab.effect));
+        else if (ab && ab.desc) texts.push(String(ab.desc));
+        texts.forEach(function (raw) {
+          bags.push({ name: nm, text: String(raw || ''), icon: rid });
+        });
+        if (!texts.length && /Parry|パリィ|格擋|格挡/i.test(nm)) {
+          bags.push({ name: nm, text: nm, icon: rid });
+        }
+      });
+    }
+    chance = 0;
+    maxUses = 0;
+    vigorMin = '';
+    pairs = [];
+    for (i = 0; i < bags.length; i++) {
+      name = bags[i].name || '';
+      t = normalizeFullwidth(bags[i].text || '');
+      if (!/Parry|パリィ|格擋|格挡/i.test(name + ' ' + t)) continue;
+      m = t.match(/(\d+)\s*%/);
+      if (m) chance = Math.max(chance, parseInt(m[1], 10) || 0);
+      m = t.match(/Up to\s+(\d+)\s*time|(\d+)\s*time\(s\)\s*per turn|1ターン(\d+)回|1回合最多(\d+)次|每回合最多(\d+)次/i);
+      if (m) maxUses = Math.max(maxUses, parseInt(m[1] || m[2] || m[3] || m[4] || m[5], 10) || 0);
+      if (/Supercharged|超一撃|超一擊/i.test(t) && /or\s+(?:greater|higher|above)|以上/i.test(t)) vigorMin = 'super';
+      else if (/["“]Max["”]|「超強気」|「超強勢」|Vigor is\s*["']?Max/i.test(t)) vigorMin = vigorMin || 'max';
+      else if (/["“]High["”]|「強気」|「強勢」/i.test(t)) vigorMin = vigorMin || 'high';
+      hasPhysMel = /Physical\s*Melee|物理格闘|物理格鬥|物理格斗/i.test(t);
+      hasBeamMel = /Beam\s*Melee|ビーム格闘|光束格鬥|鐳射格鬥|光束格斗|镭射格斗/i.test(t);
+      hasPhysRng = /Physical\s*Ranged|物理射撃|物理射擊|物理射击/i.test(t);
+      hasBeamRng = /Beam\s*Ranged|ビーム射撃|光束射擊|鐳射射擊/i.test(t);
+      /* Fallback lists that only say attr / type nouns separately. */
+      hasPhys = /Physical|物理/.test(t);
+      hasBeam = /Beam|ビーム|光束|鐳射|镭射/.test(t);
+      hasMel = /Melee|格闘|格鬥|格斗/.test(t);
+      hasRng = /Ranged|射撃|射擊|射击/.test(t);
+      if (hasPhysMel) pairs.push({ attr: 'physical', type: 'melee' });
+      if (hasBeamMel) pairs.push({ attr: 'beam', type: 'melee' });
+      if (hasPhysRng) pairs.push({ attr: 'physical', type: 'ranged' });
+      if (hasBeamRng) pairs.push({ attr: 'beam', type: 'ranged' });
+      if (!pairs.length && hasPhys && hasMel) pairs.push({ attr: 'physical', type: 'melee' });
+      if (!pairs.length && hasBeam && hasMel) pairs.push({ attr: 'beam', type: 'melee' });
+      if (bags[i].icon) icon = bags[i].icon;
+    }
+    if (!chance && !maxUses) return null;
+    if (!chance) chance = 40;
+    if (!maxUses) maxUses = 3;
+    if (!vigorMin) vigorMin = 'max';
+    if (!pairs.length) {
+      pairs = [
+        { attr: 'physical', type: 'melee' },
+        { attr: 'beam', type: 'melee' },
+        { attr: 'physical', type: 'ranged' }
+      ];
+    }
+    /* Dedupe pairs */
+    pairs = pairs.filter(function (p, idx, arr) {
+      return arr.findIndex(function (q) { return q.attr === p.attr && q.type === p.type; }) === idx;
+    });
+    if (!icon) icon = 'trait_11760100';
+    return { chance: chance, maxUses: maxUses, vigorMin: vigorMin, pairs: pairs, icon: icon };
+  }
+
+  function parryVigorOk(actor, vigorMin) {
+    var mp = actor && actor.mp | 0;
+    var need = String(vigorMin || 'max');
+    if (need === 'super') return mp >= 12;
+    if (need === 'max') return mp >= 8;
+    if (need === 'high') return mp >= 4;
+    return true;
+  }
+
+  function weaponMatchesParryPairs(weapon, pairs) {
+    var attrs, types, i, p, aOk, tOk, ti;
+    if (!weapon || !pairs || !pairs.length) return false;
+    attrs = weaponAttrKeys(weapon);
+    types = weaponAtkTypeKeys(weapon).map(function (x) {
+      x = String(x || '').toLowerCase();
+      if (/melee|格闘|格鬥|格斗/.test(x)) return 'melee';
+      if (/ranged|射撃|射擊|射击|shoot/.test(x)) return 'ranged';
+      if (/awaken|覚醒|覺醒|觉醒/.test(x)) return 'awaken';
+      return x;
+    });
+    for (i = 0; i < pairs.length; i++) {
+      p = pairs[i];
+      aOk = attrs.indexOf(p.attr) >= 0;
+      tOk = false;
+      for (ti = 0; ti < types.length; ti++) {
+        if (types[ti] === p.type) { tOk = true; break; }
+      }
+      if (aOk && tOk) return true;
+    }
+    return false;
+  }
+
+  function attackerHasLockOn(attacker) {
+    if (!attacker || !attacker.activeSkills) return false;
+    return attacker.activeSkills.some(function (s) {
+      return s && /Lock\s*On|ロックオン|鎖定|锁定/i.test(String(s.name || ''));
+    });
+  }
+
+  function tryParry(attacker, defender, weapon) {
+    var kit, left, roll;
+    if (!defender || !weapon) return false;
+    if (isMapWeapon(weapon)) return false;
+    if (isAbsoluteHitWeapon(weapon)) return false;
+    if (attackerHasLockOn(attacker)) return false;
+    kit = defender.parryKit || parseParryKit(defender);
+    if (!kit) return false;
+    defender.parryKit = kit;
+    if (!parryVigorOk(defender, kit.vigorMin)) return false;
+    if (!weaponMatchesParryPairs(weapon, kit.pairs)) return false;
+    left = (kit.maxUses | 0) - (defender.usedParryCount | 0);
+    if (left <= 0) return false;
+    roll = nextRandom() * 100;
+    if (roll > (kit.chance | 0)) return false;
+    defender.usedParryCount = (defender.usedParryCount | 0) + 1;
+    defender._lastMissReason = 'Parry';
+    defender._parryJustTriggered = true;
+    return true;
+  }
+
+  /**
+   * gge checkHit — absolute hit; Parry; sway; evade formula when defenseAction==='evade';
    * Otherwise always hits (defend / none / shield).
    */
   function checkHit(attacker, defender, weapon, defenseAction, isDefenderSupportDefend) {
     var mobAtk, mobDef, plAtk, defReact, x, hitRate, blob, m, isEx;
     var charAtk, charDef, hasSway;
     if (attacker) attacker._lastMissReason = '';
-    if (defender) defender._lastMissReason = '';
+    if (defender) {
+      defender._lastMissReason = '';
+      defender._parryJustTriggered = false;
+    }
     if (isAbsoluteHitWeapon(weapon)) return true;
+    /* LANG Parry — ability evade (not Defend action). Blocked by Abs Hit / Lock On / MAP. */
+    if (tryParry(attacker, defender, weapon)) return false;
     /* gge: Sway dodges only the original target, never a Support Defense cover, never vs Absolute Hit. */
     hasSway = defender && defender.activeSkills && defender.activeSkills.some(function (s) {
       return s && /Sway|スウェー/i.test(String(s.name || ''));
@@ -2042,17 +2246,21 @@
 
     if (!bestGuard) {
       tempExpected = typeof damageOf === 'function' ? (damageOf(actor, actualDefender, weapon) | 0) : (weapon.power | 0);
+      /* Same Mobility sort + 3-cap as the real SA wave (defend/evade prediction). */
       saCands = alive(friends).filter(function (u) {
         return u !== actor && u.side === actor.side && supportAttackRemaining(u) > 0;
-      });
-      for (i = 0; i < saCands.length; i++) {
-        su = saCands[i];
+      }).map(function (su) {
         distS = distance(su, target);
         bg = bestWpnAt(su, target, distS);
-        if (bg && (su.currentEn | 0) >= getEffectiveEnCost(su, bg, true)) {
-          tempExpected += typeof damageOf === 'function' ? (damageOf(su, actualDefender, bg) | 0) : (bg.power | 0);
-        }
-      }
+        if (!bg || (su.currentEn | 0) < getEffectiveEnCost(su, bg, true)) return null;
+        return {
+          unit: su, dist: distS, wpn: bg,
+          spd: (su.mobility | 0) + (su.reaction | 0),
+          dmg: typeof damageOf === 'function' ? (damageOf(su, actualDefender, bg) | 0) : (bg.power | 0)
+        };
+      }).filter(Boolean).sort(function (a, b) { return b.spd - a.spd; })
+        .slice(0, MAX_SUPPORT_PARTICIPANTS);
+      for (i = 0; i < saCands.length; i++) tempExpected += saCands[i].dmg | 0;
       counterWpns = getValidWeapons(target, dist, false).filter(function (w) { return !isMapWeapon(w); });
       hasPreCounter = counterWpns.some(function (w) { return isPreemptiveWeapon(target, w); });
       tempDefAction = determineDefenseAction(target, tempExpected, counterWpns.length > 0, hasPreCounter);
@@ -2068,7 +2276,8 @@
       bg = bestWpnAt(su, target, distS);
       if (!bg || (su.currentEn | 0) < getEffectiveEnCost(su, bg, true)) return null;
       return { unit: su, dist: distS, wpn: bg, spd: (su.mobility | 0) + (su.reaction | 0) };
-    }).filter(Boolean).sort(function (a, b) { return b.spd - a.spd; });
+    }).filter(Boolean).sort(function (a, b) { return b.spd - a.spd; })
+      .slice(0, MAX_SUPPORT_PARTICIPANTS);
 
     for (i = 0; i < saCands.length; i++) {
       if (predictedHp <= 0) break;
@@ -2145,7 +2354,8 @@
     }
 
     /* Wave 3: support counters always searched (even if main target defends).
-       gge: one queue entry per unit per combat; multi-use stock spans engagements. */
+       gge: one queue entry per unit per combat; multi-use stock spans engagements.
+       LANG: max 3 Support Counter participants per combat (same cap as SA). */
     {
       var eSup = alive(foes).filter(function (u) {
         return u !== target && u.side === target.side && supportAttackRemaining(u) > 0;
@@ -2154,7 +2364,8 @@
         bg = bestWpnAt(su, actor, distS);
         if (!bg || (su.currentEn | 0) < getEffectiveEnCost(su, bg, true)) return null;
         return { unit: su, dist: distS, wpn: bg, spd: (su.mobility | 0) + (su.reaction | 0) };
-      }).filter(Boolean).sort(function (a, b) { return b.spd - a.spd; });
+      }).filter(Boolean).sort(function (a, b) { return b.spd - a.spd; })
+        .slice(0, MAX_SUPPORT_PARTICIPANTS);
       for (i = 0; i < eSup.length; i++) {
         if (actorPredictedHp <= 0) break;
         queue.push({
@@ -2584,6 +2795,10 @@
     supportAttackLimit: supportAttackLimit,
     effectiveSupportAttackLimit: effectiveSupportAttackLimit,
     supportAttackRemaining: supportAttackRemaining,
+    pilotRoleKey: pilotRoleKey,
+    roleDefaultSupportAttack: roleDefaultSupportAttack,
+    roleDefaultSupportDefend: roleDefaultSupportDefend,
+    MAX_SUPPORT_PARTICIPANTS: MAX_SUPPORT_PARTICIPANTS,
     pickSupportDefender: pickSupportDefender,
     pickCounterSupportDefender: pickCounterSupportDefender,
     pickSupportAttacker: pickSupportAttacker,
@@ -2607,6 +2822,9 @@
     getEffectiveEnCost: getEffectiveEnCost,
     getValidWeapons: getValidWeapons,
     checkHit: checkHit,
+    parseParryKit: parseParryKit,
+    tryParry: tryParry,
+    weaponMatchesParryPairs: weaponMatchesParryPairs,
     calculateCriticalRate: calculateCriticalRate,
     checkAndAcquireUnconditionalCS: checkAndAcquireUnconditionalCS,
     autoCsTimesAvailable: autoCsTimesAvailable,

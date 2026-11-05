@@ -3,7 +3,7 @@
 **Audience:** you explaining the tool to users / community.  
 **Code:** `static/js/ml_sim.js` (UI, fight playback, `/cal` damage, Formation Optimizer) + `static/js/ml_sim_rules.js` (movement, combat queue, MP / SA / SD / CS / MAP / Cond:Area).  
 **Rules port:** `ml_sim_rules.js` is a client port of **gge-simulator.jp** `battle.js` (distance, BFS move, support limits, combat waves). No local `battle.js` tree on this machine — treat the port comments + `scripts/audit_ml_sim_rules.mjs` as the gge audit harness.  
-**Last audited:** 2026-11-03 against EN/TW `m_help.json` + live rules code. Re-run: `node scripts/audit_ml_sim_rules.mjs`.
+**Last audited:** 2026-11-05 against live `ml_sim*.js` + gge-simulator.jp `app.bundle.js` decode + EN/TW `m_help`. Re-run: `node scripts/audit_ml_sim_rules.mjs`.
 
 ---
 
@@ -111,13 +111,12 @@ So a main kill is **+1 (hit) +4 (kill) = +5**; SA kill is **+1 +1 = +2**.
 
 ## Support Attack / Support Defense (支援攻擊 / 支援防禦)
 
-**Stock per turn:** sum of ability lines like “Support Attack / Support Counter +N time(s)” / “Support Defense +N” (EN/JA/TW/HK). Tension and detail conditions are live.
+**Stock per turn:** `max(sum of written +N lines, role baseline)`. Tension and detail conditions are live.
 
-**Important fidelity gaps (tell advanced users):**
+- **Role baseline (LANG):** Support-type pilots floor at **1 SA**; Durability-type pilots floor at **1 SD**. Written +N stacks still win when higher (`max`, not add — no double-count with the role LV line).  
+- **Max 3 SA / 3 SC per combat** — EN help: *“Up to three allied units…”*. Highest Mobility (+ Reaction) first; extras with stock stay unused that engagement.
 
-1. **Role baseline** — Official help: Support-type / Durability-type characters “typically have” SA / SD. The **dossier** often gives role base 1. The sim **does not** auto-add that base; it only counts **written +N lines**. A Durability pilot with no “+1 time(s)” text can show **0 SD** in `/mls`.  
-2. **Max 3 SA/SC per combat** — EN/TW help: *“Up to three allied units…”* / *「單次對戰中最多允許三架…」*. The sim currently queues **all** eligible SA/SC with stock (no hard cap of 3).  
-3. SA order uses **Mobility + Reaction** (help stresses Mobility; Reaction is the same tie-break family as turn order).
+SA order uses **Mobility + Reaction** (help stresses Mobility; Reaction is the same tie-break family as turn order).
 
 HUD labels on the map: **S. Attack** / **S. Defense** (not SD/SA abbreviations).
 
@@ -164,11 +163,11 @@ Say these clearly when users compare to the app:
 
 - Full official **phase** structure (Your / Friendly / Enemy / Third)  
 - Player micro-control (manual move, weapon choice, defend/evade)  
-- Transform / Rearm / Escape / full Mechanisms beyond Shield  
-- Parry, Lock On vs Sway interactions (Sway is partially handled)  
+- General **Transform / Rearm** and Mechanisms beyond Shield (**Escape Function is implemented** — `tryEscapeTransform` / `transform_partner_id`, once per battle)  
+- Lock On vs Sway interactions (Sway handled; Parry is implemented for unit ability kits)  
 - Full Unit Skill activation UI mid-battle  
 - Live Master League **score table** (`rankedPoints` exists in rules but is not the optimizer score)  
-- Server-authoritative ML matchmaking / ranking
+- Server-authoritative ML matchmaking / ranking / gge-style Ranked Match UI
 
 ---
 
@@ -207,11 +206,11 @@ Say these clearly when users compare to the app:
 
 | Gap | Severity | Notes |
 |-----|----------|--------|
-| No role-default SA/SD stock | High | Text-sum only |
-| No 3-unit SA/SC cap | Medium | Help is explicit |
+| Role-default SA/SD + 3-cap | Done | `max(text, role 1)`; SA/SC waves `.slice(0, 3)` |
 | Kill MP +4/+1 | Medium | gge; not in help bullets |
 | Shared MOB timeline vs phase model | Medium | Product choice |
-| Parry / Lock On / transform / etc. | Low–Med | Document as out of scope |
+| Lock On / transform / Antidote / etc. | Low–Med | Document as out of scope |
+| Parry (unit ability) | Done | Map HUD `n/3`, 40% vs listed weapons at Max+ Vigor; Abs Hit / Lock On / MAP block |
 
 ### gge-sim
 
@@ -227,10 +226,10 @@ Say these clearly when users compare to the app:
 > It’s a practice twin: same season boards and `/cal` damage, with auto AI for both sides. It doesn’t replace the game’s ranked match or phase UI.
 
 **“Why didn’t my Durability pilot SD?”**  
-> The sim only counts Support Defense **+N** lines on the kit. Role alone doesn’t grant a free use yet — if the dossier shows SD from role but the ability text has no +times line, `/mls` may show 0.
+> Durability pilots get a baseline **1 SD** even without a parseable +N line. If stock is still 0, check terrain (can’t enter the ally’s cell), range, or spent uses this turn.
 
-**“Why so many Support Attacks?”**  
-> Official help caps participants at three per combat; the twin currently lets every in-range ally with stock join. We’re tracking that gap.
+**“Why only three Support Attacks?”**  
+> Official help caps participants at three per combat; `/mls` keeps the three highest-Mobility (then Reaction) allies with remaining stock.
 
 **“Where do the damage numbers come from?”**  
 > The Damage Simulator (`/cal`) with Master League buff and live Vigor/MP.

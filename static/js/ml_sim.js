@@ -576,7 +576,73 @@
           delete sl.y;
         }
       });
+      /* Roster edits leave stale map-drag homes → two units on one spawn (looks like 4/5). */
+      reconcileSideMapHomes(side);
     });
+  }
+
+  /**
+   * Filled slots on one side must not share a map-start cell.
+   * Map-drag stores x/y on the slot object; formation swaps / AI perms / picks can leave
+   * another slot’s override pointing at the same LINE spawn while this slot uses default.
+   * @returns {boolean} true if any override was changed
+   */
+  function reconcileSideMapHomes(side) {
+    var force = forceOf(side);
+    var cells = side === 'ally' ? allyCells() : enemyCells();
+    var claimed = Object.create(null);
+    var dirty = false;
+    var i, sl, home, base, bi, c, key;
+
+    function cellKey(x, y) {
+      return (x | 0) + ',' + (y | 0);
+    }
+
+    function tryClaim(slotIdx, x, y) {
+      var k = cellKey(x, y);
+      if (claimed[k] != null && claimed[k] !== slotIdx) return false;
+      claimed[k] = slotIdx;
+      return true;
+    }
+
+    if (!force || !Array.isArray(force.slots) || !cells.length) return false;
+
+    for (i = 0; i < SLOT_COUNT; i++) {
+      sl = force.slots[i];
+      if (!sl || !sl.unitId) continue;
+      if (slotExcludedByCollections(sl, side)) continue;
+      base = cells[i] || { x: 0, y: 0 };
+      home = effectiveSlotHome(side, i);
+      if (tryClaim(i, home.x, home.y)) continue;
+
+      /* Conflict: drop map-drag home and take this LINE index spawn if free. */
+      if (sl.x != null || sl.y != null) {
+        delete sl.x;
+        delete sl.y;
+        dirty = true;
+      }
+      if (tryClaim(i, base.x | 0, base.y | 0)) continue;
+
+      /* Native spawn also taken — park on any free spawn for this side. */
+      for (bi = 0; bi < cells.length; bi++) {
+        c = cells[bi];
+        if (!c) continue;
+        if (!tryClaim(i, c.x | 0, c.y | 0)) continue;
+        key = cellKey(c.x, c.y);
+        void key;
+        writeSlotHome(side, i, c.x | 0, c.y | 0);
+        dirty = true;
+        break;
+      }
+    }
+    return dirty;
+  }
+
+  function reconcileAllMapHomes() {
+    var dirty = false;
+    dirty = reconcileSideMapHomes('ally') || dirty;
+    dirty = reconcileSideMapHomes('enemy') || dirty;
+    return dirty;
   }
 
   function forceOf(side) {
@@ -606,6 +672,7 @@
   /** Build lastAlly/lastEnemy + fill fetch cache without rebuilding formation DOM. */
   function warmArmiesSilent() {
     var owned = ownedMap();
+    if (reconcileAllMapHomes()) saveRoster();
     return Promise.all([
       loadSupporter('ally'),
       loadSupporter('enemy')
@@ -1884,11 +1951,13 @@
     tmp = force.slots[fromIdx];
     force.slots[fromIdx] = force.slots[toIdx];
     force.slots[toIdx] = tmp;
-    /* Slot index owns the LINE spawn — drop map-drag homes so units don’t stack. */
+    /* Slot index owns the LINE spawn — drop map-drag homes on the moved pair. */
     a = force.slots[fromIdx];
     b = force.slots[toIdx];
     if (a) { delete a.x; delete a.y; }
     if (b) { delete b.x; delete b.y; }
+    /* Other slots may still hold overrides onto these spawns — resolve the whole side. */
+    reconcileSideMapHomes(side);
     saveRoster();
     paintForceSlots();
     fillShareBoxes();
@@ -2089,6 +2158,7 @@
     } else {
       writeSlotHome(side, fromIdx, nx, ny);
     }
+    reconcileSideMapHomes(side);
     saveRoster();
     fillShareBoxes();
     scheduleOrderRefresh();
@@ -5014,7 +5084,7 @@
       'defSquadCondAtkPct', 'defSquadCondDefPct',
       'applyAdvantageEnemyTag', 'applyZeonEnemyTag', 'charStatMode', 'atkCounterOwnAtk', 'grandOffensiveBuff',
       'ultAltActive', 'defUltAltActive', 'supportDefenseActive', 'defInitialNullStock',
-      'dtuBeam', 'dtuPhysical', 'dtuSpecial', 'defDebuffPct', '_mlsFightCalc'
+      'dtuBeam', 'dtuPhysical', 'dtuSpecial', 'defDebuffPct', '_mlsFightCalc', '_mlsAtkEnRatio'
     ];
     snap = {};
     keys.forEach(function (k) { snap[k] = dc[k]; });
@@ -5091,12 +5161,16 @@
       (function applyLiveInflictToDc() {
         var dtu = liveStatusDtu(defender);
         var statusDef = liveStatusDefDebuffPct(defender) | 0;
+        var maxEn = Math.max(1, (attacker && attacker.maxEn) | 0);
+        var curEn = attacker && attacker.currentEn != null ? (attacker.currentEn | 0) : maxEn;
         dc.dtuBeam = dtu.beam | 0;
         dc.dtuPhysical = dtu.physical | 0;
         dc.dtuSpecial = dtu.special | 0;
         dc.defDebuffPct = statusDef;
         /* DEF debuff is read from S.dc while this is set — do not write /cal inputs. */
         dc._mlsFightCalc = true;
+        /* Remaining-EN weapon POWER: live fraction for _dcWeaponTraitPowerBuckets. */
+        dc._mlsAtkEnRatio = Math.max(0, Math.min(1, curEn / maxEn));
       })();
       /* Formation squad buffs (Qubeley Neo Zeon stack, Sandaime Cond1/2, Nightingale Red aura, …). */
       atkSq = ensureActorSquadBuffs(attacker, opts.auraSources);
@@ -6362,6 +6436,11 @@
       actor.sp = Math.max(5, actor.pilotSkills.sp | 0);
       actor.currentSp = actor.sp;
     }
+    /* Unit Parry (e.g. Valkyrie Cond:Vigor) — portrait HUD + checkHit miss. */
+    if (R && R.parseParryKit) {
+      actor.parryKit = R.parseParryKit(loaded.unit) || null;
+      actor.usedParryCount = 0;
+    }
     /* gge: SD/SA stock is the SUM of every active +N ability line, re-evaluated live
        in combat (tension / unit conditions). Do NOT use dossier getCharacterChanceSupportState
        (Math.max(role,bonus) + conditionalPassiveActive UI toggle) — that under-counts EX stacks. */
@@ -6444,6 +6523,8 @@
   function loadArmies(opts) {
     var owned = ownedMap();
     var keepCalMemo = !!(opts && opts.keepCalMemo);
+    /* Catch stale map homes whenever battle armies are rebuilt (formation → map). */
+    if (reconcileAllMapHomes()) saveRoster();
     return Promise.all([
       loadSupporter('ally'),
       loadSupporter('enemy')
@@ -6825,7 +6906,7 @@
       '</span></div>';
   }
 
-  /** /st map-unit-support-badge style — remaining SA / SD this turn. */
+  /** /st map-unit-support-badge style — remaining SA / SD / Parry this turn. */
   function supportStockHtml(u) {
     var R = rules();
     var saLim = R && R.effectiveSupportAttackLimit
@@ -6834,11 +6915,16 @@
     var sdLim = R && R.effectiveSupportDefendLimit
       ? (R.effectiveSupportDefendLimit(u) | 0)
       : (u.sdLimit | 0);
+    var kit = u && u.parryKit;
+    var parryLim = kit ? (kit.maxUses | 0) : 0;
     var saLeft = Math.max(0, saLim - ((u.usedSupportCount) | 0));
     var sdLeft = Math.max(0, sdLim - ((u.usedSupportDefendCount) | 0));
+    var parryLeft = Math.max(0, parryLim - ((u.usedParryCount) | 0));
     var html = '';
     var atkIcon = thumbUrl('/static/images/UI/UI_Common_BattleIcon_AssistAtack_S.webp');
     var defIcon = thumbUrl('/static/images/UI/UI_Common_BattleIcon_AssistDeffence_S.webp');
+    var parryIcon = thumbUrl('/static/images/Trait/' +
+      String((kit && kit.icon) || 'trait_11760100').replace(/\.webp$/i, '') + '.webp');
     if (saLim > 0) {
       html += '<span class="mls-support-stock mls-support-stock--atk' +
         (saLeft <= 0 ? ' is-spent' : '') +
@@ -6852,6 +6938,13 @@
         '" title="' + esc(supportDefenseLabel()) + ' ×' + sdLeft + '/' + sdLim + '">' +
         '<img src="' + esc(defIcon) + '" alt="" loading="lazy" decoding="async">' +
         '<span class="mls-support-stock-count">×' + sdLeft + '</span></span>';
+    }
+    if (parryLim > 0) {
+      html += '<span class="mls-support-stock mls-support-stock--parry' +
+        (parryLeft <= 0 ? ' is-spent' : '') +
+        '" title="Parry ×' + parryLeft + '/' + parryLim + '">' +
+        '<img src="' + esc(parryIcon) + '" alt="" loading="lazy" decoding="async">' +
+        '<span class="mls-support-stock-count">' + parryLeft + '/' + parryLim + '</span></span>';
     }
     if (!html) return '';
     return '<div class="mls-support-stock-row">' + html + '</div>';
@@ -7572,13 +7665,16 @@
   function spawnFloat(ev, win) {
     var host = document.getElementById('mlsBoard');
     var layer = host && host.querySelector('.mls-fx-layer');
-    var icon, isDmg, lab;
+    var icon, isDmg, lab, isParry, ring, token;
     if (!host || !layer || !ev) return;
     var w = win || computeMapWindow();
     var el = document.createElement('div');
     var sideCls = '';
+    isParry = !!(ev.cls && String(ev.cls).indexOf('mls-float--parry') >= 0);
     isDmg = !!(ev.cls && String(ev.cls).indexOf('mls-float--heal') < 0 &&
-      String(ev.cls).indexOf('mls-float--skill') < 0 && String(ev.cls).indexOf('mls-float--support') < 0);
+      String(ev.cls).indexOf('mls-float--skill') < 0 &&
+      String(ev.cls).indexOf('mls-float--support') < 0 &&
+      !isParry);
     if (isDmg) {
       dmgFloatSide = 1 - dmgFloatSide;
       sideCls = dmgFloatSide ? ' is-right' : ' is-left';
@@ -7586,7 +7682,29 @@
     el.className = 'mls-float' + sideCls + (ev.cls ? ' ' + ev.cls : '');
     icon = floatIconUrl(ev);
     lab = floatLabelText(ev) || ev.text || '';
-    if (icon && !isDmg) {
+    if (isParry) {
+      /* Takayu catalog-game-combat-parry-window — PARRY pop + 0 damage. */
+      el.className += ' is-chip-float';
+      el.innerHTML =
+        (icon ? floatChipIconHtml(ev) : '') +
+        '<span class="mls-float-lab">' + esc(lab || 'PARRY') + '</span>' +
+        '<span class="mls-float-parry-zero">' + esc(ev.sub != null ? String(ev.sub) : '0') + '</span>';
+      ring = document.createElement('div');
+      ring.className = 'mls-parry-ring';
+      ring.style.cssText = cellPctBox(w, ev.x | 0, ev.y | 0, 1, 1);
+      layer.appendChild(ring);
+      void ring.offsetWidth;
+      ring.classList.add('is-play');
+      setTimeout(function () { if (ring.parentNode) ring.parentNode.removeChild(ring); }, 900);
+      if (ev.unitId != null) {
+        token = host.querySelector('.mls-token[data-unit-id="' + String(ev.unitId).replace(/"/g, '') + '"]');
+      }
+      if (!token) token = host.querySelector('.mls-token.is-target') || host.querySelector('.mls-token.is-active');
+      if (token) {
+        token.classList.add('is-parry');
+        setTimeout(function () { token.classList.remove('is-parry'); }, 480);
+      }
+    } else if (icon && !isDmg) {
       /* Asset + wording (skill name / SD / SA / …) — never icon-only. */
       el.className += ' is-chip-float';
       el.innerHTML = floatChipIconHtml(ev) +
@@ -7602,7 +7720,7 @@
     /* iOS Safari often skips a keyframe that starts in the same frame as insert. */
     void el.offsetWidth;
     el.classList.add('is-play');
-    setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 1100);
+    setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, isParry ? 1200 : 1100);
   }
 
   var orderRefreshTimer = null;
@@ -7928,6 +8046,12 @@
         pilotSkills: kit,
         sp: sp,
         currentSp: sp,
+        parryKit: (function () {
+          var R = rules();
+          if (u.parryKit) return u.parryKit;
+          return (R && R.parseParryKit) ? (R.parseParryKit(u.unit || u) || null) : null;
+        })(),
+        usedParryCount: 0,
         sdLimit: u.sdLimit != null ? (u.sdLimit | 0) : (rules() && rules().supportDefendLimit ? rules().supportDefendLimit(u) : 0),
         sdRangeBonus: u.sdRangeBonus | 0,
         usedSupportDefendCount: 0,
@@ -8292,6 +8416,9 @@
             lingerKo: !!u.lingerKo,
             usedSupportCount: u.usedSupportCount | 0,
             usedSupportDefendCount: u.usedSupportDefendCount | 0,
+            usedParryCount: u.usedParryCount | 0,
+            parryMax: (u.parryKit && u.parryKit.maxUses) | 0,
+            parryIcon: (u.parryKit && u.parryKit.icon) || '',
             saLimit: u.saLimit | 0,
             sdLimit: u.sdLimit | 0
           };
@@ -8318,6 +8445,9 @@
             lingerKo: !!u.lingerKo,
             usedSupportCount: u.usedSupportCount | 0,
             usedSupportDefendCount: u.usedSupportDefendCount | 0,
+            usedParryCount: u.usedParryCount | 0,
+            parryMax: (u.parryKit && u.parryKit.maxUses) | 0,
+            parryIcon: (u.parryKit && u.parryKit.icon) || '',
             saLimit: u.saLimit | 0,
             sdLimit: u.sdLimit | 0
           };
@@ -8417,32 +8547,56 @@
        */
       if (!hit && forceConnect) {
         var connectWhy = (defender && defender._lastMissReason) || '';
-        if (connectWhy !== 'Sway' && connectWhy !== 'Evade Way') hit = true;
+        /* Ability Parry stays a real miss (like Sway / Evade Way) — not optimizer luck. */
+        if (connectWhy !== 'Sway' && connectWhy !== 'Evade Way' && connectWhy !== 'Parry') hit = true;
       }
       attacker.lastActionHit = !!hit;
       if (!hit) {
         /* gge miss: attacker −1. Evade bonus +1 goes to the covered ally when SD whiffs, else the defender. */
         var missWhy = (defender && defender._lastMissReason) ||
           (defAction === 'evade' ? 'Evade' : '');
+        var missFloat;
         applyMpDelta(attacker, -1);
         if (hitOpts.isDefenderSupportDefend && hitOpts.originalTarget) applyMpDelta(hitOpts.originalTarget, 1);
         else applyMpDelta(defender, 1);
         clearBadges();
+        if (missWhy === 'Parry') {
+          missFloat = {
+            x: defender.x, y: defender.y,
+            unitId: defender.id,
+            text: 'PARRY', sub: '0',
+            icon: '/static/images/Trait/' +
+              String((defender.parryKit && defender.parryKit.icon) || 'trait_11760100').replace(/\.webp$/i, '') +
+              '.webp',
+            cls: 'mls-float--parry'
+          };
+        } else {
+          missFloat = {
+            x: defender.x, y: defender.y,
+            text: missWhy === 'Sway' ? 'SWAY' : 'MISS',
+            cls: 'mls-float--heal'
+          };
+        }
         snapshotLine(
           'T' + turn + ' ' + label + ': ' + attacker.name + ' → ' + defender.name +
           '  MISS' + (wpn && wpn.name ? ' [' + wpn.name + ']' : '') +
           (missWhy ? ' [' + missWhy + ']' : '') +
+          (missWhy === 'Parry'
+            ? ' · Parry ' + (defender.usedParryCount | 0) + '/' +
+              ((defender.parryKit && defender.parryKit.maxUses) | 0)
+            : '') +
           ' · MP ' + (attacker.mp | 0) + ' (' + vigorLabelFromMp(attacker.mp) + ')',
-          { x: defender.x, y: defender.y, text: missWhy === 'Sway' ? 'SWAY' : 'MISS', cls: 'mls-float--heal' },
+          missFloat,
           {
             kind: kind === 'Counter' ? 'counter' : 'attack',
             fromId: linkActorId(attacker), toId: linkActorId(defender),
             from: { x: attacker.x, y: attacker.y },
-            to: { x: defender.x, y: defender.y }
+            to: { x: defender.x, y: defender.y },
+            parry: missWhy === 'Parry'
           },
           'attack'
         );
-        return { weapon: wpn, damage: 0, miss: true };
+        return { weapon: wpn, damage: 0, miss: true, parry: missWhy === 'Parry' };
       }
       critRate = R.calculateCriticalRate(attacker, wpn, defender);
       /* Always burn a roll so no-crit / with-crit optimizer passes keep the same hit stream. */
@@ -8726,6 +8880,7 @@
         if (x.hp > 0) {
           x.usedSupportDefendCount = 0;
           x.usedSupportCount = 0;
+          x.usedParryCount = 0;
           x.exProgressedThisTurn = false;
           if (R.supportDefendLimit) x.sdLimit = R.supportDefendLimit(x) | 0;
           if (R.supportAttackLimit) x.saLimit = R.supportAttackLimit(x) | 0;
@@ -9537,6 +9692,12 @@
       u.lingerKo = !!s.lingerKo;
       u.usedSupportCount = s.usedSupportCount | 0;
       u.usedSupportDefendCount = s.usedSupportDefendCount | 0;
+      u.usedParryCount = s.usedParryCount | 0;
+      if ((s.parryMax | 0) > 0) {
+        u.parryKit = u.parryKit || { maxUses: s.parryMax | 0, icon: s.parryIcon || 'trait_11760100' };
+        u.parryKit.maxUses = s.parryMax | 0;
+        if (s.parryIcon) u.parryKit.icon = s.parryIcon;
+      }
       if (s.saLimit != null) u.saLimit = s.saLimit | 0;
       if (s.sdLimit != null) u.sdLimit = s.sdLimit | 0;
     }
@@ -10607,6 +10768,7 @@
         delete sl.x;
         delete sl.y;
       }
+      reconcileSideMapHomes('ally');
     }
 
     function restore() {

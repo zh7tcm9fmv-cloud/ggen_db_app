@@ -2003,6 +2003,15 @@ body.mls-is-map-dragging .mls-map {
   .mls-float--support.is-chip-float.is-play {
     animation: mlsChipPopScale 0.92s cubic-bezier(0.22, 1, 0.36, 1) both !important;
   }
+  .mls-float--parry.is-chip-float.is-play {
+    animation: mlsParryPop 1.05s cubic-bezier(0.22, 1, 0.36, 1) both !important;
+  }
+  .mls-parry-ring.is-play::before {
+    animation: mlsParryRing 0.72s cubic-bezier(0.22, 1, 0.36, 1) both !important;
+  }
+  .mls-token.is-parry .mls-token-frame {
+    animation: mlsParryTokenFlash 0.42s cubic-bezier(0.22, 1, 0.36, 1) both !important;
+  }
 }
 /* Takayu catalog-game-combat-damage-numbers — pop + parabola float, L/R alternate */
 .mls-float {
@@ -2075,6 +2084,75 @@ body.mls-is-map-dragging .mls-map {
   background: none;
   border: none;
   text-shadow: 0 1px 3px #000, 0 0 12px rgba(0, 200, 255, 0.7);
+}
+/*
+ * Takayu catalog-game-combat-parry-window (adapted for MLS float):
+ * timing ring shrink → PARRY pop + 0 damage. Red accent = success reversal.
+ * https://motion-reference.takayustudio.jp/#motion=catalog-game-combat-parry-window
+ */
+.mls-float--parry {
+  color: #ff6a4a;
+  font-size: clamp(1.05rem, 2.6vw, 1.4rem);
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-shadow: 0 1px 3px #000, 0 0 14px rgba(255, 70, 40, 0.75);
+  flex-direction: column;
+  gap: 0 !important;
+}
+.mls-float--parry .mls-float-parry-zero {
+  font-family: Teko, var(--font-body);
+  font-size: clamp(0.95rem, 2.3vw, 1.2rem);
+  font-weight: 700;
+  color: #efe8da;
+  letter-spacing: 0.04em;
+  text-shadow: 0 1px 3px #000, 0 0 8px rgba(0, 0, 0, 0.65);
+  line-height: 1;
+}
+.mls-float--parry.is-chip-float.is-play {
+  animation: mlsParryPop 1.05s cubic-bezier(0.22, 1, 0.36, 1) both !important;
+}
+@keyframes mlsParryPop {
+  0% { opacity: 0; transform: scale(0.2); }
+  14% { opacity: 1; transform: scale(1.28); }
+  28% { opacity: 1; transform: scale(1); }
+  72% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.96) translateY(-10px); }
+}
+.mls-parry-ring {
+  position: absolute;
+  z-index: 11;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mls-parry-ring::before {
+  content: '';
+  width: 72%;
+  height: 72%;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 70, 50, 0.85);
+  box-shadow: 0 0 10px rgba(255, 70, 40, 0.55);
+  opacity: 0;
+  transform: scale(1.65);
+}
+.mls-parry-ring.is-play::before {
+  animation: mlsParryRing 0.72s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes mlsParryRing {
+  0% { opacity: 0; transform: scale(1.7); }
+  18% { opacity: 0.95; transform: scale(1.35); }
+  55% { opacity: 1; transform: scale(0.55); }
+  78% { opacity: 0.55; transform: scale(0.85); }
+  100% { opacity: 0; transform: scale(1.15); }
+}
+.mls-token.is-parry .mls-token-frame {
+  animation: mlsParryTokenFlash 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes mlsParryTokenFlash {
+  0% { filter: brightness(1); box-shadow: none; }
+  35% { filter: brightness(1.35); box-shadow: 0 0 14px rgba(255, 80, 40, 0.85); }
+  100% { filter: brightness(1); box-shadow: none; }
 }
 .mls-float-cs,
 .mls-float-icon {
@@ -2683,6 +2761,7 @@ body.mls-is-map-dragging .mls-map {
 }
 .mls-support-stock--atk { border-color: rgba(255, 200, 60, 0.5); }
 .mls-support-stock--def { border-color: rgba(0, 200, 255, 0.5); }
+.mls-support-stock--parry { border-color: rgba(255, 90, 60, 0.55); }
 /*
  * Vertical HP bar OUTSIDE the portrait cell (ally → right, enemy → left).
  * Token padding stays even so the thum fills the cell with no side squeeze.

@@ -11528,6 +11528,13 @@ else if((wt.mpPowerMax|0)>0)mpPow+=tagBonus;
 else if((wt.enPowerMax|0)>0)enPow+=tagBonus;
 else hpPow+=tagBonus;
 }
+/* /mls fight: scale remaining-EN POW by live EN fraction (cap is max at full / empty).
+   /cal UI keeps max-applied for the sheet preview. */
+if(enPow>0&&S&&S.dc&&S.dc._mlsFightCalc&&S.dc._mlsAtkEnRatio!=null){
+const r=Math.max(0,Math.min(1,Number(S.dc._mlsAtkEnRatio)||0));
+const higher=wt.enPowerHigher!==false;
+enPow=Math.floor(enPow*(higher?r:(1-r)));
+}
 return{traitDistPow,hpPow,mpPow,enPow,traitScaling:hpPow+mpPow+enPow};
 }
 function _dcMpTraitPowNoteHtml(maxPct){
@@ -18558,7 +18565,7 @@ else if((traits.enPowerMax|0)>0)traits.enPowerMax=(traits.enPowerMax|0)+x;
 else traits.distCoreMax=(traits.distCoreMax|0)+x;
 }
 function _dcParseWeaponTraits(wpn,lvIdx){
-const traits={distPowerMax:0,hpPowerMax:0,mpPowerMax:0,enPowerMax:0,distCoreMax:0,critDmgUp:0,absoluteHit:false,dmgReductionNull:false,enemyTagWpMaxBonus:0,enemyTagDefBonus:0,enemyTagKey:'',powTraitHitSet:null};
+const traits={distPowerMax:0,hpPowerMax:0,mpPowerMax:0,enPowerMax:0,enPowerHigher:true,distCoreMax:0,critDmgUp:0,absoluteHit:false,dmgReductionNull:false,enemyTagWpMaxBonus:0,enemyTagDefBonus:0,enemyTagKey:'',powTraitHitSet:null};
 if(!wpn)return traits;
 const hit=new Set();
 const noteHit=(raw)=>{if(raw!=null&&raw!=='')hit.add(String(raw).trim())};
@@ -18607,7 +18614,7 @@ if(m){const p=parseInt(m[1],10)||0;traits.hpPowerMax=Math.max(traits.hpPowerMax,
 m=txt.match(/(?:the\s+)?(?:higher|lower)\s+(?:(?:this\s+unit'?s|your|own)\s+)?remaining\s+EN.*?(?:more|greater)\s+weapon\s+power\s+increases?\s*\(\s*up\s+to\s+(\d+)%(?:\s+increase)?\s*\)/i);
 if(!m&&zh)m=txt.match(/自身剩餘EN越(?:高|低)，武裝POWER越為提升（最高提升(\d+)%）/);
 if(!m&&isJa)m=txt.match(/自身の残ENが(?:多い|少ない)ほど武装POWERが上昇（最大(\d+)%上昇）/);
-if(m){const p=parseInt(m[1],10)||0;traits.enPowerMax=Math.max(traits.enPowerMax,p);noteHit(raw);}
+if(m){const p=parseInt(m[1],10)||0;traits.enPowerMax=Math.max(traits.enPowerMax,p);/* higher remaining EN → more POW (default); lower → more as EN depletes. */traits.enPowerHigher=!(/(?:^|[^\w])lower(?:[^\w]|$)|少ない|越低/i.test(txt)&&!/(?:^|[^\w])higher(?:[^\w]|$)|多い|越高/i.test(txt));if(/higher|多い|越高/i.test(txt))traits.enPowerHigher=true;if(/(?:^|[^\w])lower(?:[^\w]|$)|少ない|越低/i.test(txt))traits.enPowerHigher=false;noteHit(raw);}
 m=txt.match(/(?:With\s+More|With\s+Less)\s+Remaining\s+HP,?\s*Higher\s+Weapon\s+Power\s*LV\s*(\d+)/i);
 if(m){const p=_dcWeaponPowLvToMaxPct(m[1]);if(p){traits.hpPowerMax=Math.max(traits.hpPowerMax,p);noteHit(raw);}}
 m=txt.match(/Scaling\s+Weapon\s+Power\s+\((?:More|Less)\s+Remaining\s+HP\)\s*LV\s*(\d+)/i);

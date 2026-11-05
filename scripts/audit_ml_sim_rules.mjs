@@ -172,6 +172,35 @@ const saPilot = {
 assert(rules.supportAttackLimit(saPilot) === 2, 'SA limit sums two +1 lines, got ' + rules.supportAttackLimit(saPilot));
 assert(rules.supportAttackLimit(ffNz) === 0, 'FF SD lines must not count as SA, got ' + rules.supportAttackLimit(ffNz));
 
+/* LANG role baseline: max(text, 1) — Support→SA, Durability→SD; Attack→0 */
+const roleDurSilent = {
+  mp: 0, usedSupportDefendCount: 0, battleSupportDefendedCount: 0,
+  unit: { abilities: [] },
+  char: { role: 'Durability', role_id: '2', abilities: [] }
+};
+const roleSupSilent = {
+  mp: 0, usedSupportCount: 0,
+  unit: { abilities: [] },
+  char: { role: 'Support', role_id: '3', abilities: [] }
+};
+const roleAtkSilent = {
+  mp: 0,
+  unit: { abilities: [] },
+  char: { role: 'Attack', role_id: '1', abilities: [] }
+};
+assert(rules.supportDefendLimit(roleDurSilent) === 1, 'Durability role baseline SD 1, got ' + rules.supportDefendLimit(roleDurSilent));
+assert(rules.supportAttackLimit(roleSupSilent) === 1, 'Support role baseline SA 1, got ' + rules.supportAttackLimit(roleSupSilent));
+assert(rules.supportAttackLimit(roleAtkSilent) === 0, 'Attack role no SA baseline');
+assert(rules.supportDefendLimit(roleAtkSilent) === 0, 'Attack role no SD baseline');
+assert(rules.supportDefendLimit(ffNz) === 2, 'role baseline does not double-count written SD, got ' + rules.supportDefendLimit(ffNz));
+/* Oliver-style "Support Attack/Counter +1" (no spaces) still parses above role floor */
+assert(rules.supportAttackLimit({
+  mp: 0, unit: { abilities: [] },
+  char: { role: 'Support', role_id: '3', abilities: [
+    { name: 'SA', details: [{ text: 'Support Attack/Counter +1 time(s).', conditions: [] }] }
+  ] }
+}) === 1, 'Support Attack/Counter compact EN parses');
+
 const saJa = {
   mp: 0,
   unit: { abilities: [] },
@@ -254,5 +283,104 @@ const ranked = rules.rankWeaponsByDamage(
   (a, d, w) => (w.is_ex ? w.power : 160000) /* simulate EX cal-fail vs Claw success */
 );
 assert(ranked[0].weapon.name === 'Mega Cannon EX', 'rank prefers EX when cal collapses to raw power');
+
+/* pickEngage honors getWeaponRangeBonus (melee +1 etc.) on maxR */
+const rangeAtk = {
+  x: 10, y: 10, move: 0, size: 1, side: 'ally', hp: 100, maxHp: 100, mp: 0,
+  weapons: [{
+    name: 'blade', min_range: 1, max_range: 1, power: 200,
+    weapon_type: 'Melee', attribute: 'Physical',
+    raw: { weapon_type: 'Melee', attribute: 'Physical', attack_types: [{ key: 'melee' }] }
+  }],
+  unit: {
+    abilities: [{
+      name: 'Melee Range',
+      details: [{ text: 'Melee Weapon Range +1.', conditions: [] }]
+    }]
+  },
+  char: { abilities: [] },
+  activeSkills: []
+};
+const rangeFoe = withLand({ id: 'rf', hp: 50, x: 10, y: 12, n: 1, move: 0, size: 1, side: 'enemy' });
+assert(rules.getWeaponRangeBonus(rangeAtk, rangeAtk.weapons[0], false) >= 1, 'Melee Weapon Range +1 parsed');
+const rangeEngage = rules.pickEngage(rangeAtk, [rangeFoe], [rangeAtk, rangeFoe], bounds, (a, d, w) => w.power | 0);
+assert(rangeEngage && rangeEngage.target.id === 'rf', 'range-bonus engage reaches foe at dist 2');
+assert(rangeEngage && (rangeEngage.maxR | 0) >= 2, 'engage maxR includes weapon range bonus, got ' + (rangeEngage && rangeEngage.maxR));
+
+/* Parry — Valkyrie-style Cond:Vigor kit (ability 1017103) */
+const parryUnit = {
+  id: '1705002050',
+  abilities: [{
+    name: '(Cond: Vigor) Parry LV 3',
+    resource_id: 'trait_11760100',
+    details: [{
+      text: 'When Vigor is "Max" or greater, 40% chance to evade Physical Melee, Beam Melee, and Physical Ranged attacks. (Up to 3 time(s) per turn.)'
+    }]
+  }]
+};
+const parryKit = rules.parseParryKit(parryUnit);
+assert(parryKit && parryKit.chance === 40, 'parry chance 40, got ' + (parryKit && parryKit.chance));
+assert(parryKit && parryKit.maxUses === 3, 'parry maxUses 3, got ' + (parryKit && parryKit.maxUses));
+assert(parryKit && parryKit.pairs.length === 3, 'parry three weapon pairs');
+
+const parryDef = {
+  mp: 8, usedParryCount: 0, parryKit: parryKit,
+  unit: parryUnit, activeSkills: []
+};
+const parryAtk = { activeSkills: [] };
+const physMel = {
+  name: 'Slash', attribute: 'Physical', is_map: false,
+  raw: { attribute: 'Physical', attack_types: [{ key: 'melee' }], traits: [] },
+  traits: []
+};
+const absHit = {
+  name: 'Lock', attribute: 'Physical', is_map: false,
+  raw: { attribute: 'Physical', attack_types: [{ key: 'melee' }], traits: ['Absolute Hit'] },
+  traits: ['Absolute Hit']
+};
+let parryHits = 0;
+for (let pi = 0; pi < 40; pi++) {
+  parryDef.usedParryCount = 0;
+  parryDef._lastMissReason = '';
+  if (rules.tryParry(parryAtk, parryDef, physMel)) parryHits++;
+}
+assert(parryHits > 0, 'Parry can trigger vs Physical Melee at Max Vigor');
+assert(rules.tryParry(parryAtk, Object.assign({}, parryDef, { usedParryCount: 3 }), physMel) === false, 'Parry spent after 3/3');
+assert(rules.checkHit(parryAtk, Object.assign({}, parryDef, { usedParryCount: 0, mp: 0 }), physMel, 'defend') === true, 'Parry blocked below Max Vigor');
+assert(rules.isAbsoluteHitWeapon(absHit) === true, 'Abs Hit weapon flagged');
+assert(rules.checkHit(parryAtk, Object.assign({}, parryDef, { usedParryCount: 0, mp: 8 }), absHit, 'defend') === true, 'Abs Hit bypasses Parry');
+
+/* LANG: max 3 SA participants per combat (Mobility order keeps the top three) */
+{
+  const gun = {
+    name: 'gun', min_range: 1, max_range: 8, power: 50, en: 0, ammo: 0,
+    traits: [], raw: { attribute: 'Physical', attack_types: [{ key: 'ranged' }] }
+  };
+  const mainAtk = {
+    id: 'main', x: 12, y: 5, size: 1, side: 'ally', hp: 5000, maxEn: 200, currentEn: 200, mp: 0,
+    mobility: 5, reaction: 1, usedSupportCount: 0,
+    weapons: [gun], unit: { mechanisms: [], abilities: [] }, char: { abilities: [] }
+  };
+  const tgt = {
+    id: 'tgt', x: 8, y: 5, size: 1, side: 'enemy', hp: 40000, maxEn: 180, currentEn: 180, mp: 0,
+    mobility: 4, reaction: 1, usedSupportCount: 0, usedSupportDefendCount: 0, sdLimit: 0,
+    weapons: [], unit: { mechanisms: [], abilities: [] }, char: { abilities: [] }
+  };
+  const friends = [mainAtk];
+  for (let si = 0; si < 5; si++) {
+    friends.push({
+      id: 'sa' + si, x: 11 - (si % 3), y: 5 + (si % 2), size: 1, side: 'ally',
+      hp: 3000, maxEn: 100, currentEn: 100, mp: 0,
+      mobility: 20 - si, reaction: si, usedSupportCount: 0, saLimit: 1,
+      weapons: [gun], unit: { abilities: [] },
+      char: { role: 'Support', role_id: '3', abilities: [] }
+    });
+  }
+  const cqCap = rules.buildCombatQueue(mainAtk, tgt, gun, friends, [tgt], (a, d, w) => w.power | 0);
+  const saWave = (cqCap.queue || []).filter((q) => q.type === 'support');
+  assert(saWave.length <= 3, 'SA participants capped at 3, got ' + saWave.length);
+  assert(saWave.length === 3, 'exactly 3 SA when 5 eligible, got ' + saWave.length);
+  assert(saWave[0].attacker.mobility >= saWave[2].attacker.mobility, 'SA cap keeps highest mobility');
+}
 
 if (!process.exitCode) console.log('ml sim rules audit OK');
