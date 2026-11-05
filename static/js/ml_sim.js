@@ -3024,14 +3024,10 @@
     });
   }
 
-  function rowMatchesSelectedSeasonTags(row) {
-    var want = pickerFilter.seasonTags || [];
-    var ids;
+  function rowTagIdSet(row) {
+    var ids = Object.create(null);
     var series;
-    var i;
-    if (!want.length) return true;
-    if (!row) return false;
-    ids = {};
+    if (!row) return ids;
     (row.tag_ids || []).forEach(function (id) {
       if (id != null && String(id) !== '0') ids[String(id)] = 1;
     });
@@ -3044,10 +3040,23 @@
         if (s && s.id != null && String(s.id) !== '0') ids[String(s.id)] = 1;
       });
     }
+    return ids;
+  }
+
+  function rowMatchesTagIds(row, want) {
+    var ids;
+    var i;
+    if (!want || !want.length) return true;
+    if (!row) return false;
+    ids = rowTagIdSet(row);
     for (i = 0; i < want.length; i++) {
       if (ids[String(want[i])]) return true;
     }
     return false;
+  }
+
+  function rowMatchesSelectedSeasonTags(row) {
+    return rowMatchesTagIds(row, pickerFilter.seasonTags || []);
   }
 
   /** Paint S18-style Boost: Tag chips under rarity/role (unit picker only). */
@@ -3482,19 +3491,28 @@
     }).catch(function () { return null; });
   }
 
-  function pickUnitRow(side, idx, row) {
+  /**
+   * @param {object} [opts]
+   * @param {number} [opts.lb] Forced LB (Random roster). Collections sync still wins on ally.
+   * @param {boolean} [opts.fillMissingPilot] Fill empty/taken recommended pilot with same-role UR.
+   * @param {boolean} [opts.randomLb] Ignore sticky prev.lb; use opts.lb / roll.
+   */
+  function pickUnitRow(side, idx, row, opts) {
     var pickLb = 3;
     var colLb;
-    if (usedUnitIds(side, idx)[String(row.id)]) return;
+    opts = opts || {};
+    if (usedUnitIds(side, idx)[String(row.id)]) return Promise.resolve(null);
+    if (opts.lb != null) pickLb = Math.min(3, Math.max(0, opts.lb | 0));
     if (side === 'ally' && wantCollectionsLbSync()) {
       colLb = collectionsLb(row.id);
       if (colLb != null) pickLb = colLb;
     }
-    loadPair(row.id, null, pickLb).then(function (loaded) {
+    return loadPair(row.id, null, pickLb).then(function (loaded) {
       var charId = null;
       var u = loaded.unit || {};
       var rec = u.recommend_character;
       var usedChars;
+      var needPilotFill = false;
       if (rec && rec.id) charId = rec.id;
       else if (u.recommended_character_id) charId = u.recommended_character_id;
       else if (u.default_character_id) charId = u.default_character_id;
@@ -3505,9 +3523,11 @@
         charId = null;
         rec = null;
       }
+      if (!charId) needPilotFill = !!opts.fillMissingPilot;
       var prev = forceOf(side).slots[idx];
       var slotLb = pickLb;
-      if (!(side === 'ally' && wantCollectionsLbSync() && colLb != null) &&
+      if (!opts.randomLb &&
+          !(side === 'ally' && wantCollectionsLbSync() && colLb != null) &&
           prev && prev.lb != null && String(prev.unitId) === String(row.id)) {
         slotLb = prev.lb | 0;
       }
@@ -3520,6 +3540,7 @@
         name: row.name || u.name || String(row.id),
         thum: row.thum || u.thum || u.portrait || '',
         rarity: row.rarity || u.rarity || '',
+        isUltimate: !!(row.is_ultimate || u.is_ultimate),
         roleIcon: row.role_icon || u.role_icon || '',
         roleId: row.role_id != null ? String(row.role_id) : (u.role_id != null ? String(u.role_id) : ''),
         optionPartId: null,
@@ -3543,24 +3564,435 @@
       forceOf(side).slots[idx] = slot;
       saveRoster();
       paintForceSlots();
-      var charP = charId ? fetchJson('/api/character/' + encodeURIComponent(charId) + '?lang=' + encodeURIComponent(lang())).catch(function () { return null; }) : Promise.resolve(null);
-      return charP.then(function (cd) {
-        if (cd && !cd.error) {
-          slot.charName = cd.name || slot.charName;
-          slot.charThum = cd.thum || cd.portrait || slot.charThum;
-          slot.charHasSp = charAllowsSp(cd);
-          slot._charStatChecked = true;
-          if (!slot.charStatMode) slot.charStatMode = resolveCharStatMode(cd, '');
-        }
-        return autoPickOpForSlot(side, idx, u, cd);
+      var fillP = needPilotFill
+        ? fillSlotUrPilotSameRole(side, idx, slot)
+        : Promise.resolve(slot);
+      return fillP.then(function () {
+        var cid = slot.charId;
+        var charP = cid
+          ? fetchJson('/api/character/' + encodeURIComponent(cid) + '?lang=' + encodeURIComponent(lang())).catch(function () { return null; })
+          : Promise.resolve(null);
+        return charP.then(function (cd) {
+          if (cd && !cd.error) {
+            slot.charName = cd.name || slot.charName;
+            slot.charThum = cd.thum || cd.portrait || slot.charThum;
+            slot.charHasSp = charAllowsSp(cd);
+            slot._charStatChecked = true;
+            if (!slot.charStatMode) slot.charStatMode = resolveCharStatMode(cd, '');
+          }
+          return autoPickOpForSlot(side, idx, u, cd);
+        });
       }).then(function () {
         saveRoster();
         paintForceSlots();
         scheduleOrderRefresh();
         if (viewName === 'battle') return loadArmies().then(paintBoard);
+        return null;
       });
     }).catch(function (e) {
       log(String(e && e.message || e));
+      return null;
+    });
+  }
+
+  function seasonBoostTargetIds() {
+    var out = [];
+    var tags = (seasonMeta && Array.isArray(seasonMeta.boost_tags)) ? seasonMeta.boost_tags : [];
+    tags.forEach(function (t) {
+      var id = t && (t.target_id != null ? String(t.target_id) : '');
+      if (id && id !== '0' && out.indexOf(id) < 0) out.push(id);
+    });
+    return out;
+  }
+
+  function shuffleInPlace(arr) {
+    var i, j, tmp;
+    for (i = (arr || []).length - 1; i > 0; i--) {
+      j = Math.floor(Math.random() * (i + 1));
+      tmp = arr[i];
+      arr[i] = arr[j];
+      arr[j] = tmp;
+    }
+    return arr;
+  }
+
+  /** Weighted meta: 2 Durability + 2 Support + 1 Attack (~65%). Else open random. */
+  var RANDOM_ROSTER_META_WEIGHT = 0.65;
+  var RANDOM_ROSTER_META = { '1': 1, '2': 2, '3': 2 };
+  /** Unit / supporter LB: 80% LB3 · 15% LB2 · 4% LB1 · 1% LB0. */
+  var RANDOM_ROSTER_LB_WEIGHTS = [
+    { lb: 3, w: 0.80 },
+    { lb: 2, w: 0.15 },
+    { lb: 1, w: 0.04 },
+    { lb: 0, w: 0.01 }
+  ];
+  /**
+   * Unit rarity (owner ratios 92 / 7 / 2 — normalized). ULT = is_ultimate;
+   * SSR bucket = non-ultimate SSR (SSP path is the catalog default for SSR).
+   */
+  var RANDOM_ROSTER_RARITY_WEIGHTS = [
+    { tier: 'ur', w: 0.92 },
+    { tier: 'ssr', w: 0.07 },
+    { tier: 'ult', w: 0.02 }
+  ];
+  var RANDOM_ROSTER_RARITY_FALLBACK = ['ur', 'ssr', 'ult'];
+  var _urPilotByRoleCache = Object.create(null);
+
+  function rollWeightedKey(weights, keyName) {
+    var total = 0;
+    var i;
+    var r;
+    var acc = 0;
+    keyName = keyName || 'w';
+    for (i = 0; i < (weights || []).length; i++) total += Number(weights[i][keyName]) || 0;
+    if (total <= 0) return weights && weights[0];
+    r = Math.random() * total;
+    for (i = 0; i < weights.length; i++) {
+      acc += Number(weights[i][keyName]) || 0;
+      if (r < acc) return weights[i];
+    }
+    return weights[weights.length - 1];
+  }
+
+  function rollRandomRosterLb() {
+    var hit = rollWeightedKey(RANDOM_ROSTER_LB_WEIGHTS, 'w');
+    return hit ? (hit.lb | 0) : 3;
+  }
+
+  function rollRandomRosterRarityTier() {
+    var hit = rollWeightedKey(RANDOM_ROSTER_RARITY_WEIGHTS, 'w');
+    return (hit && hit.tier) || 'ur';
+  }
+
+  /** Unit role bucket: 1 Attack · 2 Durability · 3 Support (LANG roles). */
+  function unitRoleBucket(row) {
+    var id = String((row && (row.role_id != null ? row.role_id : row.roleId)) || '').trim();
+    var name;
+    if (id === '1' || id === '2' || id === '3') return id;
+    name = String((row && (row.role || row.type || '')) || '').toLowerCase();
+    if (/attack|攻撃|攻擊/.test(name)) return '1';
+    if (/durability|defense|耐久/.test(name)) return '2';
+    if (/support|支援/.test(name)) return '3';
+    return '';
+  }
+
+  /** ur | ssr | ult — list rows use is_ultimate + rarity letter (ULT kits are rarity UR). */
+  function unitRandomRarityTier(row) {
+    var r;
+    if (!row) return '';
+    if (row.is_ultimate) return 'ult';
+    r = String(row.rarity || '').toUpperCase();
+    if (r === 'SSR') return 'ssr';
+    if (r === 'UR' || r === 'LT' || r === 'LIMITED') return 'ur';
+    return '';
+  }
+
+  function emptyRoleTierBuckets() {
+    return {
+      '1': { ur: [], ssr: [], ult: [] },
+      '2': { ur: [], ssr: [], ult: [] },
+      '3': { ur: [], ssr: [], ult: [] },
+      '': { ur: [], ssr: [], ult: [] }
+    };
+  }
+
+  function takeOneFromTierLists(lists, used) {
+    var i, u, list, t;
+    for (t = 0; t < (lists || []).length; t++) {
+      list = lists[t] || [];
+      for (i = 0; i < list.length; i++) {
+        u = list[i];
+        if (!u || u.id == null || used[String(u.id)]) continue;
+        used[String(u.id)] = 1;
+        return u;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Prefer rolled rarity tier, then UR → SSR → ULT. Optional role lock for meta mix.
+   */
+  function takeRandomRosterUnit(byRoleTier, used, roleLock) {
+    var want = rollRandomRosterRarityTier();
+    var roles = roleLock ? [String(roleLock)] : ['1', '2', '3', ''];
+    var tierOrder = [want].concat(RANDOM_ROSTER_RARITY_FALLBACK.filter(function (t) {
+      return t !== want;
+    }));
+    var lists = [];
+    var ti, ri, role, tier, bucket;
+    for (ti = 0; ti < tierOrder.length; ti++) {
+      tier = tierOrder[ti];
+      for (ri = 0; ri < roles.length; ri++) {
+        role = roles[ri];
+        bucket = byRoleTier[role] && byRoleTier[role][tier];
+        if (bucket && bucket.length) lists.push(bucket);
+      }
+    }
+    /* Last resort: any remaining row in role lock / pool. */
+    for (ri = 0; ri < roles.length; ri++) {
+      role = roles[ri];
+      bucket = byRoleTier[role];
+      if (!bucket) continue;
+      lists.push(bucket.ur || []);
+      lists.push(bucket.ssr || []);
+      lists.push(bucket.ult || []);
+    }
+    return takeOneFromTierLists(lists, used);
+  }
+
+  /**
+   * Pick up to SLOT_COUNT unique units from a supporter-scoped pool.
+   * ~65%: role meta 2 Durability / 2 Support / 1 Attack.
+   * Per unit: ~92% UR / 7% SSR / 2% ULT (fallback if tier empty).
+   */
+  function pickRandomRosterUnits(pool) {
+    var wantMeta = Math.random() < RANDOM_ROSTER_META_WEIGHT;
+    var byRoleTier = emptyRoleTierBuckets();
+    var used = Object.create(null);
+    var picked = [];
+    var role, need, n, row, rid, tier;
+    (pool || []).forEach(function (u) {
+      if (!u || u.id == null) return;
+      rid = unitRoleBucket(u);
+      tier = unitRandomRarityTier(u);
+      if (!tier || !byRoleTier[rid] || !byRoleTier[rid][tier]) return;
+      byRoleTier[rid][tier].push(u);
+    });
+    ['1', '2', '3', ''].forEach(function (r) {
+      shuffleInPlace(byRoleTier[r].ur);
+      shuffleInPlace(byRoleTier[r].ssr);
+      shuffleInPlace(byRoleTier[r].ult);
+    });
+    if (wantMeta) {
+      for (role in RANDOM_ROSTER_META) {
+        if (!Object.prototype.hasOwnProperty.call(RANDOM_ROSTER_META, role)) continue;
+        need = RANDOM_ROSTER_META[role] | 0;
+        for (n = 0; n < need && picked.length < SLOT_COUNT; n++) {
+          row = takeRandomRosterUnit(byRoleTier, used, role);
+          if (row) picked.push(row);
+        }
+      }
+    }
+    while (picked.length < SLOT_COUNT) {
+      row = takeRandomRosterUnit(byRoleTier, used, null);
+      if (!row) break;
+      picked.push(row);
+    }
+    shuffleInPlace(picked);
+    return picked.slice(0, SLOT_COUNT);
+  }
+
+  /** Supporter skill tags intersect current season Boost: Tag target ids. */
+  function supporterMatchesSeasonBoost(row) {
+    var want = seasonBoostTargetIds();
+    var ids = Object.create(null);
+    var i, g, tags, t;
+    if (!want.length) return true;
+    if (!row) return false;
+    (row.skill_tag_data || []).forEach(function (group) {
+      tags = (group && group.tags) || [];
+      for (i = 0; i < tags.length; i++) {
+        t = tags[i];
+        if (t && t.id != null && String(t.id) !== '0') ids[String(t.id)] = 1;
+      }
+    });
+    for (i = 0; i < want.length; i++) {
+      if (ids[want[i]]) return true;
+    }
+    return false;
+  }
+
+  function supporterIsUr(row) {
+    return String((row && row.rarity) || '').toUpperCase() === 'UR';
+  }
+
+  /** Always UR when any UR exists (season-tag preferred, else any eligible). */
+  function pickRandomRosterSupporter(preferred, fallback) {
+    var prefer = (preferred || []).filter(function (s) { return s && s.id != null; });
+    var all = (fallback && fallback.length ? fallback : prefer).filter(function (s) {
+      return s && s.id != null;
+    });
+    var preferUr = prefer.filter(supporterIsUr);
+    var allUr = all.filter(supporterIsUr);
+    var pickFrom;
+    if (!prefer.length && !all.length) return null;
+    if (preferUr.length) pickFrom = preferUr;
+    else if (allUr.length) pickFrom = allUr;
+    else pickFrom = prefer.length ? prefer : all;
+    shuffleInPlace(pickFrom);
+    return pickFrom[0] || null;
+  }
+
+  function fetchSupporterUnitPool(suppId) {
+    var base = '/api/units?lang=' + encodeURIComponent(lang()) +
+      '&per_page=200&page=1&sort=rarity&dir=desc&exclude_escape_alt=1';
+    if (suppId) {
+      return fetchUnitPickerJson(base + '&tb_boost_supporter=' + encodeURIComponent(String(suppId)));
+    }
+    var sq = seasonBoostQueryParts();
+    if (sq.lineage || sq.series) return fetchSeasonBoostedUnitRows(base);
+    return fetchUnitPickerJson(base);
+  }
+
+  function fetchSupporterPool() {
+    return fetch('/api/supporters?lang=' + encodeURIComponent(lang()) +
+      '&per_page=200&page=1&sort=rarity&dir=desc', { credentials: 'same-origin' })
+      .then(function (r) {
+        if (!r.ok) throw new Error('supporters ' + r.status);
+        return r.json();
+      })
+      .then(function (d) { return d.rows || []; });
+  }
+
+  function fetchUrCharactersByRole(roleId) {
+    var key = String(roleId || '');
+    var url;
+    if (_urPilotByRoleCache[key]) return _urPilotByRoleCache[key];
+    url = '/api/characters?lang=' + encodeURIComponent(lang()) +
+      '&per_page=120&page=1&sort=rarity&dir=desc&rarity=' + encodeURIComponent('UR,LT,ULT');
+    if (key === '1' || key === '2' || key === '3') {
+      url += '&role=' + encodeURIComponent(key);
+    }
+    _urPilotByRoleCache[key] = fetch(url, { credentials: 'same-origin' })
+      .then(function (r) {
+        if (!r.ok) throw new Error('characters ' + r.status);
+        return r.json();
+      })
+      .then(function (d) { return d.rows || []; })
+      .catch(function () { return []; });
+    return _urPilotByRoleCache[key];
+  }
+
+  /** Fill empty pilot with a UR character matching the unit’s role (Attack/Durability/Support). */
+  function fillSlotUrPilotSameRole(side, idx, slot) {
+    var roleId = slot && slot.roleId != null ? String(slot.roleId) : '';
+    if (!slot) return Promise.resolve(null);
+    return fetchUrCharactersByRole(roleId).then(function (rows) {
+      var used = usedCharIds(side, idx);
+      var owned = ownedMap();
+      var list = (rows || []).filter(function (ch) {
+        var recUid;
+        if (!ch || ch.id == null || used[String(ch.id)]) return false;
+        if (String(ch.rarity || '').toUpperCase() !== 'UR' &&
+            !/^(LT|ULT|LIMITED)/i.test(String(ch.rarity || ''))) return false;
+        if (roleId && unitRoleBucket(ch) && unitRoleBucket(ch) !== roleId) return false;
+        if (side === 'ally' && wantOwnedOnly()) {
+          recUid = String(ch.recommend_unit_id || (ch.recommend_unit && ch.recommend_unit.id) || '');
+          if (recUid && recUid !== '0' && owned[recUid] == null) return false;
+        }
+        return true;
+      });
+      var pick;
+      shuffleInPlace(list);
+      pick = list[0];
+      if (!pick) return slot;
+      slot.charId = String(pick.id);
+      slot.charName = pick.name || String(pick.id);
+      slot.charThum = pick.thum || pick.portrait || '';
+      return slot;
+    });
+  }
+
+  /**
+   * Random roster: UR supporter (season-tag preferred) with rolled LB + units from that
+   * supporter’s leader tags. ~65% role meta 2D/2S/1A. Unit rarity ~92% UR / 7% SSR / 2% ULT.
+   * Missing/taken recommended pilots → same-role UR. Unit LB 80/15/4/1.
+   * Ally Collections sync still overrides LB / owned.
+   */
+  function randomizeForceRoster(side) {
+    var btn;
+    var owned;
+    var ownedSupp;
+    if (side !== 'ally' && side !== 'enemy') return Promise.resolve();
+    if (fightBusy) return Promise.resolve();
+    btn = document.querySelector('[data-mls-random-roster="' + side + '"]');
+    if (btn) btn.classList.add('is-busy');
+    owned = ownedMap();
+    ownedSupp = ownedSupportersMap();
+    return fetchSupporterPool().then(function (allSupps) {
+      var supps = (allSupps || []).filter(function (s) {
+        if (!s || !s.id) return false;
+        if (side === 'ally' && wantOwnedOnly() && ownedSupp[String(s.id)] == null) return false;
+        return true;
+      });
+      var seasonSupps = supps.filter(supporterMatchesSeasonBoost);
+      var pickSupps = seasonSupps.length ? seasonSupps : supps;
+      var pickedSupp = pickRandomRosterSupporter(pickSupps, supps);
+      var force = forceOf(side);
+      var suppLb = rollRandomRosterLb();
+      force.slots = emptySlots();
+      if (pickedSupp) {
+        if (side === 'ally' && wantCollectionsLbSync() && collectionsSupporterLb(pickedSupp.id) != null) {
+          suppLb = collectionsSupporterLb(pickedSupp.id);
+        }
+        force.supporter = {
+          id: String(pickedSupp.id),
+          name: pickedSupp.name || String(pickedSupp.id),
+          thum: supporterPortraitPath(pickedSupp.portrait || pickedSupp.thum || ''),
+          portrait: supporterPortraitPath(pickedSupp.portrait || pickedSupp.thum || ''),
+          rarity: pickedSupp.rarity || '',
+          lb: suppLb
+        };
+        clearLeaderApplyCaches(side);
+        sideSupportData[side] = null;
+      } else {
+        force.supporter = null;
+        clearLeaderApplyCaches(side);
+        sideSupportData[side] = null;
+      }
+      saveRoster();
+      paintForceSlots();
+      return fetchSupporterUnitPool(pickedSupp && pickedSupp.id).then(function (unitRows) {
+        var units = (unitRows || []).filter(function (u) {
+          if (!u || !u.id) return false;
+          if (side === 'ally' && wantOwnedOnly() && owned[String(u.id)] == null) return false;
+          return true;
+        });
+        var picked;
+        var chain;
+        var roleCounts;
+        if (!units.length) {
+          log(mlsT('mls_random_empty', 'No season units available to randomize.'));
+          return null;
+        }
+        picked = pickRandomRosterUnits(units);
+        roleCounts = { '1': 0, '2': 0, '3': 0 };
+        picked.forEach(function (row) {
+          var b = unitRoleBucket(row);
+          if (roleCounts[b] != null) roleCounts[b] += 1;
+        });
+        chain = Promise.resolve();
+        picked.forEach(function (row, slotIdx) {
+          chain = chain.then(function () {
+            return pickUnitRow(side, slotIdx, row, {
+              lb: rollRandomRosterLb(),
+              randomLb: true,
+              fillMissingPilot: true
+            });
+          });
+        });
+        return chain.then(function () {
+          reconcileSideMapHomes(side);
+          saveRoster();
+          paintForceSlots();
+          fillShareBoxes();
+          scheduleOrderRefresh();
+          log(mlsT('mls_random_done', 'Random {side} roster · {n} unit(s)')
+            .replace('{side}', side === 'enemy'
+              ? mlsT('mls_enemy', 'Enemy')
+              : mlsT('mls_ally', 'Ally'))
+            .replace('{n}', String(picked.length)) +
+            ' · A' + roleCounts['1'] + '/D' + roleCounts['2'] + '/S' + roleCounts['3'] +
+            (pickedSupp ? (' · ' + (pickedSupp.rarity || '?') + ' LB' + suppLb) : ''));
+          if (viewName === 'battle') return loadArmies().then(function () { paintBoard(); paintTimeline(); });
+          return null;
+        });
+      });
+    }).catch(function (e) {
+      log(String(e && e.message || e));
+    }).then(function () {
+      if (btn) btn.classList.remove('is-busy');
     });
   }
 
@@ -11333,6 +11765,13 @@
       /* LB / Clear are inside the card — don’t open the picker for those clicks. */
       if (el && !(t.closest && (t.closest('[data-mls-lb]') || t.closest('[data-mls-clear-supp]')))) {
         openPicker('supporter', el.getAttribute('data-mls-pick-supp'), 0);
+        return;
+      }
+      el = t.closest && t.closest('[data-mls-random-roster]');
+      if (el) {
+        e.preventDefault();
+        e.stopPropagation();
+        randomizeForceRoster(el.getAttribute('data-mls-random-roster'));
         return;
       }
       el = t.closest && t.closest('[data-mls-clear-units]');

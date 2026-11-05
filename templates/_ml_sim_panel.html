@@ -58,10 +58,19 @@
         <header class="mls-force-head">
           <span class="mls-force-tag" data-mls-i18n="mls_enemy" data-mls-upper="1">ENEMY</span>
           <span id="mlsEnemySideHint" data-mls-i18n="mls_opponent_left">Opponent · left</span>
-          <button type="button" class="mls-force-clear-units" data-mls-clear-units="enemy" data-mls-role="mls_force_reset_tip" title="Reset units — clear this side’s units (keeps supporter)" aria-label="Reset enemy units">
-            <img src="{% if image_cdn %}{{ image_cdn }}/images/UI/ULT%20ALT/UI_ULT_Label_Switch.webp{% else %}/static/images/UI/ULT%20ALT/UI_ULT_Label_Switch.webp{% endif %}" alt="" width="28" height="16" decoding="async" onerror="this.onerror=null;this.src='/static/images/UI/ULT%20ALT/UI_ULT_Label_Switch.webp'">
-            <span class="mls-force-clear-label" data-mls-i18n="mls_reset">Reset</span>
-          </button>
+          <div class="mls-force-head-actions">
+            <button type="button" class="mls-force-random-roster" data-mls-random-roster="enemy" data-mls-role="mls_force_random_tip" title="Random roster — UR supporter (random LB) + leader-tag units; often 2 Durability / 2 Support / 1 Attack" aria-label="Random enemy roster">
+              <span class="mls-random-roster-ic" aria-hidden="true">
+                <img class="mls-random-roster-boss" src="{% if image_cdn %}{{ image_cdn }}/images/Master%20League/UI_GTower_Icon_BigBoss.webp{% else %}/static/images/Master League/UI_GTower_Icon_BigBoss.webp{% endif %}" alt="" width="22" height="22" decoding="async" onerror="this.onerror=null;this.src='/static/images/Master League/UI_GTower_Icon_BigBoss.webp'">
+                <img class="mls-random-roster-spin" src="{% if image_cdn %}{{ image_cdn }}/images/Master%20League/UI_Gallery_Comics_RotationArrow_Active.webp{% else %}/static/images/Master League/UI_Gallery_Comics_RotationArrow_Active.webp{% endif %}" alt="" width="32" height="32" decoding="async" onerror="this.onerror=null;this.src='/static/images/Master League/UI_Gallery_Comics_RotationArrow_Active.webp'">
+              </span>
+              <span class="mls-force-clear-label" data-mls-i18n="mls_random">Random</span>
+            </button>
+            <button type="button" class="mls-force-clear-units" data-mls-clear-units="enemy" data-mls-role="mls_force_reset_tip" title="Reset units — clear this side’s units (keeps supporter)" aria-label="Reset enemy units">
+              <img src="{% if image_cdn %}{{ image_cdn }}/images/UI/ULT%20ALT/UI_ULT_Label_Switch.webp{% else %}/static/images/UI/ULT%20ALT/UI_ULT_Label_Switch.webp{% endif %}" alt="" width="28" height="16" decoding="async" onerror="this.onerror=null;this.src='/static/images/UI/ULT%20ALT/UI_ULT_Label_Switch.webp'">
+              <span class="mls-force-clear-label" data-mls-i18n="mls_reset">Reset</span>
+            </button>
+          </div>
         </header>
         <div class="mls-supp" id="mlsEnemySupp"></div>
         <div class="mls-slot-list" id="mlsEnemySlots"></div>
@@ -70,10 +79,19 @@
         <header class="mls-force-head">
           <span class="mls-force-tag" data-mls-i18n="mls_ally" data-mls-upper="1">ALLY</span>
           <span id="mlsAllySideHint" data-mls-i18n="mls_player_right">Player · right</span>
-          <button type="button" class="mls-force-clear-units" data-mls-clear-units="ally" data-mls-role="mls_force_reset_tip" title="Reset units — clear this side’s units (keeps supporter)" aria-label="Reset ally units">
-            <img src="{% if image_cdn %}{{ image_cdn }}/images/UI/ULT%20ALT/UI_ULT_Label_Switch.webp{% else %}/static/images/UI/ULT%20ALT/UI_ULT_Label_Switch.webp{% endif %}" alt="" width="28" height="16" decoding="async" onerror="this.onerror=null;this.src='/static/images/UI/ULT%20ALT/UI_ULT_Label_Switch.webp'">
-            <span class="mls-force-clear-label" data-mls-i18n="mls_reset">Reset</span>
-          </button>
+          <div class="mls-force-head-actions">
+            <button type="button" class="mls-force-random-roster" data-mls-random-roster="ally" data-mls-role="mls_force_random_tip" title="Random roster — UR supporter (random LB) + leader-tag units; often 2 Durability / 2 Support / 1 Attack" aria-label="Random ally roster">
+              <span class="mls-random-roster-ic" aria-hidden="true">
+                <img class="mls-random-roster-boss" src="{% if image_cdn %}{{ image_cdn }}/images/Master%20League/UI_GTower_Icon_BigBoss.webp{% else %}/static/images/Master League/UI_GTower_Icon_BigBoss.webp{% endif %}" alt="" width="22" height="22" decoding="async" onerror="this.onerror=null;this.src='/static/images/Master League/UI_GTower_Icon_BigBoss.webp'">
+                <img class="mls-random-roster-spin" src="{% if image_cdn %}{{ image_cdn }}/images/Master%20League/UI_Gallery_Comics_RotationArrow_Active.webp{% else %}/static/images/Master League/UI_Gallery_Comics_RotationArrow_Active.webp{% endif %}" alt="" width="32" height="32" decoding="async" onerror="this.onerror=null;this.src='/static/images/Master League/UI_Gallery_Comics_RotationArrow_Active.webp'">
+              </span>
+              <span class="mls-force-clear-label" data-mls-i18n="mls_random">Random</span>
+            </button>
+            <button type="button" class="mls-force-clear-units" data-mls-clear-units="ally" data-mls-role="mls_force_reset_tip" title="Reset units — clear this side’s units (keeps supporter)" aria-label="Reset ally units">
+              <img src="{% if image_cdn %}{{ image_cdn }}/images/UI/ULT%20ALT/UI_ULT_Label_Switch.webp{% else %}/static/images/UI/ULT%20ALT/UI_ULT_Label_Switch.webp{% endif %}" alt="" width="28" height="16" decoding="async" onerror="this.onerror=null;this.src='/static/images/UI/ULT%20ALT/UI_ULT_Label_Switch.webp'">
+              <span class="mls-force-clear-label" data-mls-i18n="mls_reset">Reset</span>
+            </button>
+          </div>
         </header>
         <div class="mls-supp" id="mlsAllySupp"></div>
         <div class="mls-slot-list" id="mlsAllySlots"></div>

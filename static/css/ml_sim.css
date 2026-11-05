@@ -730,8 +730,14 @@
 }
 .mls-force--enemy .mls-force-tag { color: var(--accent-red, #ff4d6d); }
 .mls-force--ally .mls-force-tag { color: var(--accent-cyan); }
-.mls-force-clear-units {
+.mls-force-head-actions {
   margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.mls-force-clear-units,
+.mls-force-random-roster {
   display: inline-flex;
   flex-direction: column;
   align-items: center;
@@ -760,25 +766,85 @@
   color: var(--text-secondary);
   line-height: 1;
 }
+.mls-random-roster-ic {
+  position: relative;
+  display: block;
+  width: 32px;
+  height: 32px;
+}
+.mls-random-roster-boss {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  object-fit: contain;
+  z-index: 1;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.55));
+}
+.mls-random-roster-spin {
+  position: absolute;
+  inset: 0;
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  opacity: 0.9;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.45));
+  transform-origin: 50% 50%;
+}
 .mls-force-clear-units:hover,
-.mls-force-clear-units:focus-visible {
+.mls-force-clear-units:focus-visible,
+.mls-force-random-roster:hover,
+.mls-force-random-roster:focus-visible {
   border-color: rgba(0, 212, 255, 0.4);
   background: rgba(0, 212, 255, 0.08);
   outline: none;
 }
 .mls-force-clear-units:hover img,
-.mls-force-clear-units:focus-visible img { opacity: 1; }
+.mls-force-clear-units:focus-visible img,
+.mls-force-random-roster:hover .mls-random-roster-boss,
+.mls-force-random-roster:focus-visible .mls-random-roster-boss,
+.mls-force-random-roster:hover .mls-random-roster-spin,
+.mls-force-random-roster:focus-visible .mls-random-roster-spin { opacity: 1; }
 .mls-force-clear-units:hover .mls-force-clear-label,
-.mls-force-clear-units:focus-visible .mls-force-clear-label {
+.mls-force-clear-units:focus-visible .mls-force-clear-label,
+.mls-force-random-roster:hover .mls-force-clear-label,
+.mls-force-random-roster:focus-visible .mls-force-clear-label {
   color: var(--accent-cyan);
 }
+.mls-force-random-roster:hover .mls-random-roster-spin,
+.mls-force-random-roster:focus-visible .mls-random-roster-spin {
+  animation: mlsRandomSpin 0.85s linear infinite;
+}
+.mls-force-random-roster.is-busy {
+  opacity: 0.55;
+  pointer-events: none;
+}
+.mls-force-random-roster.is-busy .mls-random-roster-spin {
+  animation: mlsRandomSpin 0.55s linear infinite;
+}
+@keyframes mlsRandomSpin {
+  to { transform: rotate(360deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mls-force-random-roster:hover .mls-random-roster-spin,
+  .mls-force-random-roster:focus-visible .mls-random-roster-spin,
+  .mls-force-random-roster.is-busy .mls-random-roster-spin {
+    animation: none;
+  }
+}
 .mls-force--enemy .mls-force-clear-units:hover,
-.mls-force--enemy .mls-force-clear-units:focus-visible {
+.mls-force--enemy .mls-force-clear-units:focus-visible,
+.mls-force--enemy .mls-force-random-roster:hover,
+.mls-force--enemy .mls-force-random-roster:focus-visible {
   border-color: rgba(255, 77, 109, 0.45);
   background: rgba(255, 77, 109, 0.1);
 }
 .mls-force--enemy .mls-force-clear-units:hover .mls-force-clear-label,
-.mls-force--enemy .mls-force-clear-units:focus-visible .mls-force-clear-label {
+.mls-force--enemy .mls-force-clear-units:focus-visible .mls-force-clear-label,
+.mls-force--enemy .mls-force-random-roster:hover .mls-force-clear-label,
+.mls-force--enemy .mls-force-random-roster:focus-visible .mls-force-clear-label {
   color: var(--accent-red, #ff4d6d);
 }
 .mls-supp {
