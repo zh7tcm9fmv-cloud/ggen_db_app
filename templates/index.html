@@ -238,6 +238,11 @@
 .mls-brand-logo{display:block;width:100%;height:auto;aspect-ratio:556/326;object-fit:contain;opacity:0}
 .mls-brand-banner{position:absolute;left:50%;top:60.9%;transform:translate(-50%,-50%);font-family:Teko,var(--font-body);font-weight:600;font-size:clamp(0.58rem,7.4cqw,0.78rem);letter-spacing:.14em;line-height:1;text-transform:uppercase;white-space:nowrap;color:#f4fbff;text-shadow:0 0 6px rgba(0,180,255,.55),0 1px 2px rgba(0,0,0,.75);pointer-events:none;user-select:none;opacity:0}
 .mls-brand-mark.is-logo-ready .mls-brand-logo,.mls-brand-mark.is-logo-ready .mls-brand-banner{opacity:1}
+/* Gate /ml + /mls until lazy page CSS has applied (kills first-entry unstyled→styled flash). */
+#panel-master_league:not(.is-ml-skin-ready) #mlWrap{visibility:hidden!important}
+#panel-master_league:not(.is-ml-skin-ready) #masterLeagueLoading{display:flex!important;min-height:42vh}
+#panel-ml_sim:not(.is-mls-skin-ready) .mls-shell{visibility:hidden!important}
+#panel-ml_sim:not(.is-mls-skin-ready) #mlsLoading{display:flex!important;min-height:42vh}
 </style>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/app_shell_bundle.min.css') }}?v={{ app_js_version }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/ggen_15.css') }}?v={{ app_js_version }}">
@@ -598,7 +603,7 @@
 </div>
 <div class="tab-panel" id="panel-latest_release"><div id="latestReleaseLoading" class="loading-overlay" style="display:none"><div class="spinner"></div></div><div id="latestReleaseRoot" class="lr-root"></div></div>
 <div class="tab-panel" id="panel-banner_timeline"><div id="bannerTimelineLoading" class="loading-overlay" style="display:none"><div class="spinner"></div></div><div class="bt-wrap"><div id="bannerTimelineRoot" class="bt-root"></div></div></div>
-<div class="tab-panel" id="panel-ml_sim">{% include '_ml_sim_panel.html' %}</div>
+<div class="tab-panel" id="panel-ml_sim"><div id="mlsLoading" class="loading-overlay" style="display:none" aria-hidden="true"><div class="spinner"></div></div>{% include '_ml_sim_panel.html' %}</div>
 <div class="tab-panel" id="panel-gacha_sim">{% include '_gacha_sim_panel.html' %}</div>
 <div class="tab-panel" id="panel-sales_tracking">
   {% with trk_embedded=true %}{% include '_sales_tracking_panel.html' %}{% endwith %}
@@ -814,7 +819,20 @@ window.__GGEN_LAZY__=(function(){
     if(window.GgenUnitBestPilots)return Promise.resolve(window.GgenUnitBestPilots);
     return Promise.all([loadCss('unit_best_pilots'), loadJs('unit_best_pilots')]).then(function(){return window.GgenUnitBestPilots||null});
   }
+  function afterStylesApplied(){
+    return new Promise(function(resolve){
+      requestAnimationFrame(function(){
+        requestAnimationFrame(function(){resolve()});
+      });
+    });
+  }
+  function markMlSkinReady(){try{var p=document.getElementById('panel-master_league');if(p)p.classList.add('is-ml-skin-ready')}catch(_){}}
+  function markMlsSkinReady(){try{var p=document.getElementById('panel-ml_sim');if(p)p.classList.add('is-mls-skin-ready');var load=document.getElementById('mlsLoading');if(load){load.style.display='none';load.setAttribute('aria-hidden','true')}}catch(_){}}
+  /* CSS only — do not reveal /ml until app.js has rendered season content (avoids empty-chrome flash). */
   function ensureMasterLeagueCss(){return loadCss('master_league')}
+  function revealMlSkin(){
+    return ensureMasterLeagueCss().then(afterStylesApplied).then(function(){markMlSkinReady()});
+  }
   function ensureCraftUiCss(){return loadCss('craft_ui')}
   function ensureSpInvestment(){
     if(window.GgenSpInvestment&&window.GgenSpInvestment._ready)return Promise.resolve(window.GgenSpInvestment);
@@ -831,10 +849,11 @@ window.__GGEN_LAZY__=(function(){
     return Promise.all([loadCss('gacha_sim'), loadJs('gacha_sim')]).then(function(){return window.GgenGachaSim||null});
   }
   function ensureMlSim(){
-    if(window.GgenMlSim)return Promise.resolve(window.GgenMlSim);
-    /* master_league.css — same boost-card chrome as /ml (mlsPresetBar). */
+    if(window.GgenMlSim){markMlsSkinReady();return Promise.resolve(window.GgenMlSim)}
+    /* Reveal shell only after CSS is in the cascade — don't wait on ml_sim.js. */
     return Promise.all([loadCss('ml_sim'), loadCss('master_league')])
-      .then(function(){return loadJs('ml_sim_rules')})
+      .then(afterStylesApplied)
+      .then(function(){markMlsSkinReady();return loadJs('ml_sim_rules')})
       .then(function(){return loadJs('ml_sim')})
       .then(function(){return window.GgenMlSim||null});
   }
@@ -906,10 +925,13 @@ window.__GGEN_LAZY__=(function(){
     ensureExtras:ensureExtras,
     ensureUnitBestPilots:ensureUnitBestPilots,
     ensureMasterLeagueCss:ensureMasterLeagueCss,
+    revealMlSkin:revealMlSkin,
     ensureCraftUiCss:ensureCraftUiCss,
     ensureSpInvestment:ensureSpInvestment,
     ensureGachaSim:ensureGachaSim,
     ensureMlSim:ensureMlSim,
+    markMlSkinReady:markMlSkinReady,
+    markMlsSkinReady:markMlsSkinReady,
     ensureSalesTracking:ensureSalesTracking,
     ensureContentNotices:ensureContentNotices,
     ensureUnitHoloCard:ensureUnitHoloCard,
