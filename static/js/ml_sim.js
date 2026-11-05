@@ -1865,14 +1865,21 @@
           : '';
         if (sl.optionPartId) {
           opHtml = '<span class="mls-op-chip">' +
+            '<button type="button" class="mls-op-thum" data-mls-pick-op="' + side + ':' + i +
+            '" title="Change option part" aria-label="Change option part">' +
             (sl.optionPartThum
-              ? '<img src="' + esc(thumbUrl(sl.optionPartThum)) + '" alt="">'
-              : '') +
+              ? '<img src="' + esc(thumbUrl(sl.optionPartThum)) + '" alt="" width="28" height="28" decoding="async">'
+              : '<span class="mls-op-thum-empty">＋</span>') +
+            '</button>' +
             '<span class="op-name">' + esc(sl.optionPartName || sl.optionPartId) + '</span>' +
-            '<button type="button" class="mls-mini-btn" data-mls-pick-op="' + side + ':' + i + '">Swap</button>' +
-            '<button type="button" class="mls-mini-btn danger" data-mls-clear-op="' + side + ':' + i + '">×</button></span>';
+            '<button type="button" class="mls-mini-btn danger" data-mls-clear-op="' + side + ':' + i +
+            '" title="Remove option part" aria-label="Clear option part">×</button></span>';
         } else {
-          opHtml = '<button type="button" class="mls-mini-btn" data-mls-pick-op="' + side + ':' + i + '">+ Option part</button>';
+          opHtml = '<span class="mls-op-chip mls-op-chip--empty">' +
+            '<button type="button" class="mls-op-thum is-empty" data-mls-pick-op="' + side + ':' + i +
+            '" title="Set option part" aria-label="Set option part">' +
+            '<span class="mls-op-thum-empty">＋</span></button>' +
+            '<span class="op-name">' + esc(mlsT('mls_option_part', 'Modifications')) + '</span></span>';
         }
         html += '<div class="mls-slot-block' + (unowned ? ' is-unowned' : '') +
           '" data-mls-slot="' + side + ':' + i + '" draggable="false"' +

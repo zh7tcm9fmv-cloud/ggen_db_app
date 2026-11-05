@@ -1266,17 +1266,48 @@ body.mls-is-slot-dragging .mls-slot-list {
   gap: 4px;
   max-width: 100%;
 }
+/* Clickable OP thumb — same idea as unit / pilot pip (no separate Swap). */
+.mls-op-thum {
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  margin: 0;
+  border-radius: 3px;
+  border: 1px solid var(--border-color);
+  background: rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  line-height: 0;
+}
+.mls-op-thum:hover,
+.mls-op-thum:focus-visible {
+  border-color: var(--accent-cyan, #00d4ff);
+  outline: none;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent-cyan, #00d4ff) 55%, transparent);
+}
+.mls-op-thum.is-empty,
+.mls-op-chip--empty .mls-op-thum {
+  border-style: dashed;
+  color: var(--text-muted);
+}
 /* Full OP sprite — contain (cover was cropping the art). */
-.mls-op-chip img {
+.mls-op-thum img {
   width: 28px;
   height: 28px;
   object-fit: contain;
   object-position: center;
-  flex: 0 0 auto;
-  border-radius: 3px;
-  border: 1px solid var(--border-color);
-  background: rgba(0, 0, 0, 0.35);
   display: block;
+  pointer-events: none;
+}
+.mls-op-thum-empty {
+  font-size: 0.85rem;
+  line-height: 1;
+  color: var(--text-muted);
+  pointer-events: none;
 }
 .mls-op-chip .op-name {
   font-size: 0.72rem;
