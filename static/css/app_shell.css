@@ -4910,25 +4910,56 @@ display:flex;flex-direction:column;gap:12px;align-items:stretch;width:100%;min-w
 @keyframes unit-map-preview-in{to{opacity:1;transform:translateY(0)}}
 @media (prefers-reduced-motion:reduce){.unit-map-preview{animation:none;opacity:1;transform:none}}
 .skill-filter-panel{min-width:min(92vw,420px);max-width:min(92vw,480px)}
-/* Compact chips (supporter Support Skills / MOV: short LANG labels) — fit content, not char skill grid width */
+/* Compact chips (supporter Support Skills / MOV: short LANG labels) — fit content, not char skill grid width.
+   Flex column + stretch so Esc/重置 footer width does not leave option chips left-offset in empty panel space. */
 .skill-filter-panel.skill-filter-panel--compact{
+  display:flex;
+  flex-direction:column;
   min-width:0!important;
   width:max-content!important;
   max-width:min(92vw,280px)!important;
   align-items:stretch;
   box-sizing:border-box;
+  padding:6px;
+  gap:4px;
 }
-.skill-filter-panel.skill-filter-panel--compact .filter-panel-scroll{overflow:visible;max-height:none}
-.skill-filter-panel.skill-filter-panel--compact .list-filter-tag-item{
+.skill-filter-panel.skill-filter-panel--compact .filter-panel-scroll{
+  overflow:visible;
+  max-height:none;
+  align-self:stretch;
   width:auto;
-  max-width:100%;
-  padding-right:12px;
-  justify-content:flex-start;
+  min-width:0;
 }
-.skill-filter-panel.skill-filter-panel--compact .filter-panel-clear-wrap{
+.skill-filter-panel.skill-filter-panel--compact .filter-panel-grid,
+.skill-filter-panel.skill-filter-panel--compact .browse-skill-grid{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  align-self:stretch;
+  width:auto;
+  min-width:0;
+  box-sizing:border-box;
+}
+.skill-filter-panel.skill-filter-panel--compact .list-filter-tag-item{
+  display:block;
+  align-self:stretch;
+  width:auto;
+  max-width:none;
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+.skill-filter-panel.skill-filter-panel--compact .list-filter-tag-item .list-filter-tag-composite.tag-composite{
   width:100%;
   box-sizing:border-box;
+}
+.skill-filter-panel.skill-filter-panel--compact .filter-panel-clear-wrap{
+  align-self:stretch;
+  width:auto;
+  box-sizing:border-box;
   gap:6px;
+  margin-top:2px;
+  padding:6px 0 0;
 }
 .skill-filter-panel.ability-filter-panel{min-width:min(96vw,560px);max-width:min(96vw,640px)}
 .skill-filter-panel:has(.filter-panel-scroll-inner .skill-filter-grid-browse){overflow:visible;max-height:none}
