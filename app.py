@@ -12888,6 +12888,8 @@ def _tower_side_from_tes(tes):
     gid = normalize_id(tes.get('tower_event_stage_group_id'))
     ginfo = (tower_event_stage_group_map or {}).get(gid, {})
     rid = str(ginfo.get('resource_id') or '').lower() if isinstance(ginfo, dict) else ''
+    if 'tower_event_300' in rid:
+        return 'S'
     if 'tower_event_200' in rid:
         return 'W'
     if 'tower_event_100' in rid:
@@ -12903,7 +12905,8 @@ def _build_tower_floor_index():
             continue
         side = _tower_side_from_tes(tes)
         floor = safe_int(tes.get('floor_count'), 0)
-        if side not in ('E', 'W') or floor <= 0:
+        # E / W / S (tower_event_100 / 200 / 300). Skip unknown ALL packaging.
+        if side not in ('E', 'W', 'S') or floor <= 0:
             continue
         key = (side, floor)
         tid_int = safe_int(tid, 0)
@@ -16167,11 +16170,15 @@ def resolve_tower_event_stage_name(ld, stage_name_lang_id, stage_id, group_id='0
 
 def classify_tower_side(stage_name, group_name='', group_resource_id=''):
     txt = f"{stage_name or ''} {group_name or ''}".upper()
+    if 'SOUTH' in txt or 'GTOWER S' in txt or '南' in txt:
+        return 'S'
     if 'WEST' in txt or 'GTOWER W' in txt or '西' in txt:
         return 'W'
     if 'EAST' in txt or 'GTOWER E' in txt or '東' in txt:
         return 'E'
     rid = str(group_resource_id or '').lower()
+    if 'tower_event_300' in rid:
+        return 'S'
     if 'tower_event_200' in rid:
         return 'W'
     if 'tower_event_100' in rid:
@@ -27866,9 +27873,13 @@ def _stages_notice_ids_by_category_today():
     """Browse categories whose stages open today (JST) — /st pulse scope.
 
     Covers Eternal, Collaboration, Challenge (m_main_stage_challenge.ScheduleId),
-    Special (m_stage.ScheduleId on special-event rows), and Fierce Enemy Assault
-    (m_invasion_event_stage_group.ScheduleId). Gacha/unit schedules alone do not
+    Special (m_stage.ScheduleId on special-event rows), Fierce Enemy Assault
+    (m_invasion_event_stage_group.ScheduleId), and GTower (m_event EventTypeIndex 5
+    ScheduleId → tower_event stage group). Gacha/unit schedules alone do not
     pulse Stages.
+
+    Returns (by_category, tower_sides) where tower_sides is sorted E/W/S for
+    events opening today.
     """
     today = _jst_today_date()
     eternal_ids = []
@@ -27919,25 +27930,73 @@ def _stages_notice_ids_by_category_today():
         sched = normalize_id((gmeta or {}).get('schedule_id') or '0')
         if _schedule_starts_on_jst_day(sched, today):
             fea_ids.append(gid_n)
-    return {
+    # GTower: floors use schedule_id 0 — open day comes from m_event (type 5).
+    tower_ids = []
+    tower_sides = set()
+    for ev in extract_data_list(event_master_data or []):
+        if not isinstance(ev, dict):
+            continue
+        if safe_int(ev.get('EventTypeIndex') or ev.get('eventTypeIndex'), 0) != 5:
+            continue
+        eid = normalize_id(ev.get('Id') or ev.get('id'))
+        if eid in ('', '0'):
+            continue
+        sched = normalize_id(
+            ev.get('ScheduleId') or ev.get('scheduleId')
+            or ev.get('ChallengeScheduleId') or ev.get('challengeScheduleId') or '0'
+        )
+        if not _schedule_starts_on_jst_day(sched, today):
+            continue
+        te = (tower_event_map or {}).get(eid, {})
+        gid = normalize_id((te or {}).get('tower_event_stage_group_id') or eid)
+        if gid in ('', '0'):
+            continue
+        ginfo = (tower_event_stage_group_map or {}).get(gid, {})
+        rid = str((ginfo or {}).get('resource_id') or '').lower()
+        if 'tower_event_300' in rid:
+            tower_sides.add('S')
+        elif 'tower_event_200' in rid:
+            tower_sides.add('W')
+        elif 'tower_event_100' in rid:
+            tower_sides.add('E')
+        # Fingerprint = event id (stable) + canonical floor stage ids for the group.
+        tower_ids.append(eid)
+        for tid, tes in (tower_event_stage_map or {}).items():
+            if not isinstance(tes, dict):
+                continue
+            if normalize_id(tes.get('tower_event_stage_group_id')) != gid:
+                continue
+            side = _tower_side_from_tes(tes)
+            floor = safe_int(tes.get('floor_count'), 0)
+            if side not in ('E', 'W', 'S') or floor <= 0:
+                continue
+            canon = (TOWER_CANONICAL_STAGE_BY_SIDE_FLOOR or {}).get((side, floor))
+            tid_n = normalize_id(tid)
+            if canon and tid_n != normalize_id(canon):
+                continue
+            tower_ids.append(tid_n)
+            tower_sides.add(side)
+    by_cat = {
         'eternal': sorted(set(eternal_ids)),
         'collaboration_stage': sorted(set(collab_ids)),
         'challenge_stage': sorted(set(challenge_ids)),
         'special_stage': sorted(set(special_ids)),
         'fierce_enemy_assault': sorted(set(fea_ids)),
+        'tower_stage': sorted(set(tower_ids)),
     }
+    return by_cat, sorted(tower_sides)
 
 
 _STAGES_CATALOG_STATUS_CACHE = None  # (jst_date_iso, payload_base)
 
 
 def _stages_catalog_status_payload(last_seen_fp=''):
-    """Unread /st pulse for stages that open today (JST) — ER / Collab / Challenge / Special / FEA."""
+    """Unread /st pulse for stages that open today (JST) — ER / Collab / Challenge / Special / FEA / GTower."""
     global _STAGES_CATALOG_STATUS_CACHE
     today = _jst_today_date()
     today_iso = today.isoformat()
     if _STAGES_CATALOG_STATUS_CACHE is None or _STAGES_CATALOG_STATUS_CACHE[0] != today_iso:
-        by_cat = _stages_notice_ids_by_category_today()
+        by_cat, tower_sides = _stages_notice_ids_by_category_today()
         cat_fps = {}
         all_parts = []
         for cat in sorted(by_cat.keys()):
@@ -27959,6 +28018,7 @@ def _stages_catalog_status_payload(last_seen_fp=''):
             'by_category': {c: len(by_cat[c]) for c in by_cat},
             'category_fps': cat_fps,
             'stage_ids': by_cat,
+            'tower_sides': list(tower_sides),
         })
     base = dict(_STAGES_CATALOG_STATUS_CACHE[1])
     seen_fp = (last_seen_fp or '').strip()
@@ -36951,7 +37011,7 @@ def list_stages():
         df = request.args.get('difficulty', 'ALL').lower(); sb = request.args.get('sort', 'stage_number'); sd = request.args.get('dir', 'asc')
         cat = (request.args.get('category') or 'eternal').strip().lower()
         tower_side = (request.args.get('tower_side') or 'ALL').strip().upper()
-        if tower_side not in ('ALL', 'E', 'W'):
+        if tower_side not in ('ALL', 'E', 'W', 'S'):
             tower_side = 'ALL'
         challenge_series = (request.args.get('challenge_series') or 'ALL').strip()
         _challenge_series_ids = _valid_challenge_series_filter_ids()

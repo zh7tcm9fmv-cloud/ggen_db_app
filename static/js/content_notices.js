@@ -28,6 +28,13 @@
     challenge_stage: 'stageSourceChallengeBtn',
     special_stage: 'stageSourceSpecialBtn',
     fierce_enemy_assault: 'stageSourceFeaBtn',
+    tower_stage: 'stageSourceTowerBtn',
+  };
+  /** GTower E/W/S side buttons — flared when that side's tower opens today. */
+  const STAGES_TOWER_SIDE_BTN_IDS = {
+    E: 'stageTowerEastBtn',
+    W: 'stageTowerWestBtn',
+    S: 'stageTowerSouthBtn',
   };
   const LANG_STORAGE_KEY = 'ggen_lang';
   const UI_NOTICE_FLARE_PATH = '/static/images/UI/UI_MapEventEffect_FlareCircleRed.webp';
@@ -460,6 +467,18 @@
       el.classList.add('ui-notice-anchor');
       ensureNoticeFlare(el);
       setNotice(el, stagesCategoryHasNew(cat));
+    });
+    const towerNew = stagesCategoryHasNew('tower_stage');
+    const towerSides = (state.stagesCatalog && Array.isArray(state.stagesCatalog.tower_sides)
+      ? state.stagesCatalog.tower_sides
+      : []
+    ).map((s) => String(s || '').toUpperCase());
+    Object.keys(STAGES_TOWER_SIDE_BTN_IDS).forEach((side) => {
+      const el = document.getElementById(STAGES_TOWER_SIDE_BTN_IDS[side]);
+      if (!el) return;
+      el.classList.add('ui-notice-anchor');
+      ensureNoticeFlare(el);
+      setNotice(el, towerNew && towerSides.indexOf(side) >= 0);
     });
     // Keep e_sim / FEA / Special Ops page-visit flares on their buttons if still unread.
     const esimBtn = document.getElementById('stageSourceEsimBtn');
