@@ -13295,6 +13295,11 @@
     "TargetId": 1125001700
   },
   {
+    "CharacterId": 1125002001,
+    "AcquisitionMethodTypeIndex": 21,
+    "TargetId": 11000614
+  },
+  {
     "CharacterId": 1125002600,
     "AcquisitionMethodTypeIndex": 18,
     "TargetId": 1125002600

@@ -986,6 +986,21 @@
   },
   {
     "ItemId": 110000000003,
+    "AcquisitionMethodTypeIndex": 21,
+    "TargetId": 11000601
+  },
+  {
+    "ItemId": 110000000003,
+    "AcquisitionMethodTypeIndex": 21,
+    "TargetId": 11000604
+  },
+  {
+    "ItemId": 110000000003,
+    "AcquisitionMethodTypeIndex": 21,
+    "TargetId": 11000607
+  },
+  {
+    "ItemId": 110000000003,
     "AcquisitionMethodTypeIndex": 23,
     "TargetId": 250110013
   },
@@ -1461,6 +1476,21 @@
   },
   {
     "ItemId": 120000000003,
+    "AcquisitionMethodTypeIndex": 21,
+    "TargetId": 11000602
+  },
+  {
+    "ItemId": 120000000003,
+    "AcquisitionMethodTypeIndex": 21,
+    "TargetId": 11000605
+  },
+  {
+    "ItemId": 120000000003,
+    "AcquisitionMethodTypeIndex": 21,
+    "TargetId": 11000608
+  },
+  {
+    "ItemId": 120000000003,
     "AcquisitionMethodTypeIndex": 23,
     "TargetId": 250110013
   },
@@ -1838,6 +1868,21 @@
     "ItemId": 130000000003,
     "AcquisitionMethodTypeIndex": 21,
     "TargetId": 11000509
+  },
+  {
+    "ItemId": 130000000003,
+    "AcquisitionMethodTypeIndex": 21,
+    "TargetId": 11000603
+  },
+  {
+    "ItemId": 130000000003,
+    "AcquisitionMethodTypeIndex": 21,
+    "TargetId": 11000606
+  },
+  {
+    "ItemId": 130000000003,
+    "AcquisitionMethodTypeIndex": 21,
+    "TargetId": 11000609
   },
   {
     "ItemId": 130000000003,
@@ -13140,6 +13185,16 @@
     "TargetId": 11000518
   },
   {
+    "ItemId": 161700000005,
+    "AcquisitionMethodTypeIndex": 21,
+    "TargetId": 11000611
+  },
+  {
+    "ItemId": 161700000005,
+    "AcquisitionMethodTypeIndex": 21,
+    "TargetId": 11000613
+  },
+  {
     "ItemId": 161800000001,
     "AcquisitionMethodTypeIndex": 17,
     "TargetId": 90210001
@@ -19046,6 +19101,11 @@
   },
   {
     "ItemId": 200000000001,
+    "AcquisitionMethodTypeIndex": 21,
+    "TargetId": 11000609
+  },
+  {
+    "ItemId": 200000000001,
     "AcquisitionMethodTypeIndex": 23,
     "TargetId": 251230011
   },
@@ -19098,6 +19158,16 @@
     "ItemId": 200000000002,
     "AcquisitionMethodTypeIndex": 21,
     "TargetId": 11000517
+  },
+  {
+    "ItemId": 200000000002,
+    "AcquisitionMethodTypeIndex": 21,
+    "TargetId": 11000608
+  },
+  {
+    "ItemId": 200000000002,
+    "AcquisitionMethodTypeIndex": 21,
+    "TargetId": 11000612
   },
   {
     "ItemId": 200000000002,

@@ -1768,6 +1768,45 @@
     "TargetCharacterRoleTypeIndex": 0
   },
   {
+    "Id": 410300101,
+    "TargetLineageId": 0,
+    "TargetUnitRoleTypeIndex": 0,
+    "TraitTypeIndex": 3,
+    "TraitValue": 1,
+    "ResourceId": "trait_10280101",
+    "NameLanguageId": 141300000410300101,
+    "DescriptionLanguageId": 141400000410300101,
+    "BuffLabelColorTypeIndex": 3,
+    "IsDisplayUpDown": false,
+    "TargetCharacterRoleTypeIndex": 0
+  },
+  {
+    "Id": 410300201,
+    "TargetLineageId": 0,
+    "TargetUnitRoleTypeIndex": 0,
+    "TraitTypeIndex": 3,
+    "TraitValue": 2,
+    "ResourceId": "trait_10280101",
+    "NameLanguageId": 141300000410300201,
+    "DescriptionLanguageId": 141400000410300201,
+    "BuffLabelColorTypeIndex": 3,
+    "IsDisplayUpDown": false,
+    "TargetCharacterRoleTypeIndex": 0
+  },
+  {
+    "Id": 410300301,
+    "TargetLineageId": 0,
+    "TargetUnitRoleTypeIndex": 0,
+    "TraitTypeIndex": 3,
+    "TraitValue": 3,
+    "ResourceId": "trait_10280101",
+    "NameLanguageId": 141300000410300301,
+    "DescriptionLanguageId": 141400000410300301,
+    "BuffLabelColorTypeIndex": 3,
+    "IsDisplayUpDown": false,
+    "TargetCharacterRoleTypeIndex": 0
+  },
+  {
     "Id": 900000001,
     "TargetLineageId": 0,
     "TargetUnitRoleTypeIndex": 0,
@@ -1802,6 +1841,19 @@
     "ResourceId": "trait_10510101",
     "NameLanguageId": 140500000009000105,
     "DescriptionLanguageId": 140600000009000105,
+    "BuffLabelColorTypeIndex": 3,
+    "IsDisplayUpDown": false,
+    "TargetCharacterRoleTypeIndex": 0
+  },
+  {
+    "Id": 900000009,
+    "TargetLineageId": 0,
+    "TargetUnitRoleTypeIndex": 0,
+    "TraitTypeIndex": 3,
+    "TraitValue": 5,
+    "ResourceId": "trait_10280101",
+    "NameLanguageId": 140500000900000009,
+    "DescriptionLanguageId": 140600000900000009,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
     "TargetCharacterRoleTypeIndex": 0

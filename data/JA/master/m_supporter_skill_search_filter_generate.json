@@ -1,0 +1,23 @@
+[
+  {
+    "Id": 3,
+    "NameLanguageId": 141900000000000001,
+    "DescriptionLanguageId": "trait_10010401",
+    "SortNameLanguageId": 0,
+    "RarityIndex": 1
+  },
+  {
+    "Id": 4,
+    "NameLanguageId": 141900000000000002,
+    "DescriptionLanguageId": "trait_10020501",
+    "SortNameLanguageId": 0,
+    "RarityIndex": 2
+  },
+  {
+    "Id": 8,
+    "NameLanguageId": 141900000000000003,
+    "DescriptionLanguageId": "trait_10510101",
+    "SortNameLanguageId": 2603609901,
+    "RarityIndex": 3
+  }
+]

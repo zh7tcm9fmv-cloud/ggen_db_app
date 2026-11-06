@@ -8626,5 +8626,17 @@
     "SeriesId": 0,
     "SortOrder": 0,
     "UnitId": 0
+  },
+  {
+    "Id": 400102,
+    "ResourceId": "op_000000004",
+    "RarityTypeIndex": 4,
+    "TraitSetId": 407230100,
+    "ScheduleId": 0,
+    "SortNameLanguageId": 270100000000400102,
+    "SearchWordGroupId": 0,
+    "SeriesId": 0,
+    "SortOrder": 0,
+    "UnitId": 0
   }
 ]

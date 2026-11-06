@@ -210,5 +210,9 @@
   {
     "IngameCoefficientConfigTypeIndex": 55,
     "Value": 11
+  },
+  {
+    "IngameCoefficientConfigTypeIndex": 56,
+    "Value": 0
   }
 ]

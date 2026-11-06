@@ -1631,6 +1631,34 @@
     "IsSubscription": false
   },
   {
+    "ProductGroupId": 226111001,
+    "StoreTypeIndex": 1,
+    "ProductId": "fi",
+    "JpyPrice": 480,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226111001,
+    "StoreTypeIndex": 2,
+    "ProductId": "fi",
+    "JpyPrice": 480,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226111001,
+    "StoreTypeIndex": 3,
+    "ProductId": "fi",
+    "JpyPrice": 480,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226111001,
+    "StoreTypeIndex": 4,
+    "ProductId": "fi",
+    "JpyPrice": 480,
+    "IsSubscription": false
+  },
+  {
     "ProductGroupId": 325041001,
     "StoreTypeIndex": 2,
     "ProductId": "gpp_a",

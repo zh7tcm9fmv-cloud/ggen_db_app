@@ -132320,6 +132320,26 @@
     "MapWeaponImpactPointMaxSelectCount": 0
   },
   {
+    "Id": 933000500001,
+    "RangeMin": 2,
+    "RangeMax": 3,
+    "Power": 3500,
+    "En": 27,
+    "HitRate": 100,
+    "CriticalRate": 0,
+    "MapWeaponShootingRange": "",
+    "MapWeaponEffectRange": "(0,8),(0,7),(0,6),(0,5),(0,4),(0,3),(0,2),(0,1)",
+    "WeaponLevelGrowthPatternSetId": 93002609,
+    "MapWeaponAutoUsageOwnAndGuestEnabled": false,
+    "MapWeaponAutoUsageAttackTargetThreshold": 1,
+    "BattlePowerRatingPointRatePercent": 100,
+    "MasterLeagueMapWeaponAutoUsageAttackTargetThreshold": 0,
+    "OverrideWeaponStatusChangePatternSetId": 0,
+    "OverrideWeaponTraitChangePatternSetId": 0,
+    "MapWeaponCanUseAfterMove": false,
+    "MapWeaponImpactPointMaxSelectCount": 0
+  },
+  {
     "Id": 933000590003,
     "RangeMin": 1,
     "RangeMax": 2,

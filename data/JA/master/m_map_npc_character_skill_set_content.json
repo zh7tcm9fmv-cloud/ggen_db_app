@@ -60,6 +60,11 @@
     "CharacterSkillId": 900000801
   },
   {
+    "MapNpcCharacterSkillSetId": 9000009,
+    "SortOrder": 1,
+    "CharacterSkillId": 900000009
+  },
+  {
     "MapNpcCharacterSkillSetId": 9900006,
     "SortOrder": 1,
     "CharacterSkillId": 990000006

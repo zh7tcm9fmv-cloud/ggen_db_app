@@ -548,6 +548,18 @@
     "CharacterSkillTraitId": 390280402
   },
   {
+    "Id": 4103001,
+    "CharacterSkillTraitId": 410300101
+  },
+  {
+    "Id": 4103002,
+    "CharacterSkillTraitId": 410300201
+  },
+  {
+    "Id": 4103003,
+    "CharacterSkillTraitId": 410300301
+  },
+  {
     "Id": 9000001,
     "CharacterSkillTraitId": 900000001
   },
@@ -562,6 +574,10 @@
   {
     "Id": 9000008,
     "CharacterSkillTraitId": 900000801
+  },
+  {
+    "Id": 9000009,
+    "CharacterSkillTraitId": 900000009
   },
   {
     "Id": 9900006,

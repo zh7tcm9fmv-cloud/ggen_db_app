@@ -1358,5 +1358,365 @@
     "DescriptionLanguageId": 290200907002200203,
     "HighlightDescriptionLanguageId": 290300907002200203,
     "BattleSideTypeIndex": 3
+  },
+  {
+    "StageId": 90700301,
+    "TowerEventTabTypeIndex": 3,
+    "SortOrder": 1,
+    "UnitId": 2001000400,
+    "CharacterId": 0,
+    "DescriptionLanguageId": 290200907003010201,
+    "HighlightDescriptionLanguageId": 290300907003010201,
+    "BattleSideTypeIndex": 1
+  },
+  {
+    "StageId": 90700302,
+    "TowerEventTabTypeIndex": 3,
+    "SortOrder": 1,
+    "UnitId": 1330005900,
+    "CharacterId": 0,
+    "DescriptionLanguageId": 290200907003020201,
+    "HighlightDescriptionLanguageId": 290300907003020201,
+    "BattleSideTypeIndex": 1
+  },
+  {
+    "StageId": 90700303,
+    "TowerEventTabTypeIndex": 3,
+    "SortOrder": 1,
+    "UnitId": 1850005100,
+    "CharacterId": 0,
+    "DescriptionLanguageId": 290200907003030201,
+    "HighlightDescriptionLanguageId": 290300907003030201,
+    "BattleSideTypeIndex": 7
+  },
+  {
+    "StageId": 90700304,
+    "TowerEventTabTypeIndex": 3,
+    "SortOrder": 1,
+    "UnitId": 1219000100,
+    "CharacterId": 0,
+    "DescriptionLanguageId": 290200907003040201,
+    "HighlightDescriptionLanguageId": 290300907003040201,
+    "BattleSideTypeIndex": 3
+  },
+  {
+    "StageId": 90700304,
+    "TowerEventTabTypeIndex": 3,
+    "SortOrder": 2,
+    "UnitId": 1850005200,
+    "CharacterId": 0,
+    "DescriptionLanguageId": 290200907003040202,
+    "HighlightDescriptionLanguageId": 290300907003040202,
+    "BattleSideTypeIndex": 7
+  },
+  {
+    "StageId": 90700305,
+    "TowerEventTabTypeIndex": 3,
+    "SortOrder": 1,
+    "UnitId": 1060000300,
+    "CharacterId": 0,
+    "DescriptionLanguageId": 290200907003050201,
+    "HighlightDescriptionLanguageId": 290300907003050201,
+    "BattleSideTypeIndex": 1
+  },
+  {
+    "StageId": 90700306,
+    "TowerEventTabTypeIndex": 3,
+    "SortOrder": 1,
+    "UnitId": 2175000400,
+    "CharacterId": 0,
+    "DescriptionLanguageId": 290200907003060201,
+    "HighlightDescriptionLanguageId": 290300907003060201,
+    "BattleSideTypeIndex": 1
+  },
+  {
+    "StageId": 90700306,
+    "TowerEventTabTypeIndex": 3,
+    "SortOrder": 2,
+    "UnitId": 2175000800,
+    "CharacterId": 0,
+    "DescriptionLanguageId": 290200907003060202,
+    "HighlightDescriptionLanguageId": 290300907003060202,
+    "BattleSideTypeIndex": 1
+  },
+  {
+    "StageId": 90700306,
+    "TowerEventTabTypeIndex": 3,
+    "SortOrder": 3,
+    "UnitId": 1175001300,
+    "CharacterId": 1175001200,
+    "DescriptionLanguageId": 290200907003060203,
+    "HighlightDescriptionLanguageId": 290300907003060203,
+    "BattleSideTypeIndex": 2
+  },
+  {
+    "StageId": 90700306,
+    "TowerEventTabTypeIndex": 3,
+    "SortOrder": 4,
+    "UnitId": 1175000100,
+    "CharacterId": 1175000201,
+    "DescriptionLanguageId": 290200907003060204,
+    "HighlightDescriptionLanguageId": 290300907003060204,
+    "BattleSideTypeIndex": 2
+  },
+  {
+    "StageId": 90700307,
+    "TowerEventTabTypeIndex": 2,
+    "SortOrder": 1,
+    "UnitId": 1001001100,
+    "CharacterId": 0,
+    "DescriptionLanguageId": 290200907003070101,
+    "HighlightDescriptionLanguageId": 290300907003070101,
+    "BattleSideTypeIndex": 2
+  },
+  {
+    "StageId": 90700307,
+    "TowerEventTabTypeIndex": 3,
+    "SortOrder": 1,
+    "UnitId": 1017001400,
+    "CharacterId": 0,
+    "DescriptionLanguageId": 290200907003070201,
+    "HighlightDescriptionLanguageId": 290300907003070201,
+    "BattleSideTypeIndex": 3
+  },
+  {
+    "StageId": 90700308,
+    "TowerEventTabTypeIndex": 3,
+    "SortOrder": 1,
+    "UnitId": 2300000100,
+    "CharacterId": 1300000300,
+    "DescriptionLanguageId": 290200907003080201,
+    "HighlightDescriptionLanguageId": 290300907003080201,
+    "BattleSideTypeIndex": 1
+  },
+  {
+    "StageId": 90700308,
+    "TowerEventTabTypeIndex": 3,
+    "SortOrder": 2,
+    "UnitId": 1300004100,
+    "CharacterId": 0,
+    "DescriptionLanguageId": 290200907003080202,
+    "HighlightDescriptionLanguageId": 290300907003080202,
+    "BattleSideTypeIndex": 1
+  },
+  {
+    "StageId": 90700308,
+    "TowerEventTabTypeIndex": 3,
+    "SortOrder": 3,
+    "UnitId": 2300000400,
+    "CharacterId": 0,
+    "DescriptionLanguageId": 290200907003080203,
+    "HighlightDescriptionLanguageId": 0,
+    "BattleSideTypeIndex": 2
+  },
+  {
+    "StageId": 90700309,
+    "TowerEventTabTypeIndex": 2,
+    "SortOrder": 1,
+    "UnitId": 1370011100,
+    "CharacterId": 0,
+    "DescriptionLanguageId": 290200907003090101,
+    "HighlightDescriptionLanguageId": 0,
+    "BattleSideTypeIndex": 2
+  },
+  {
+    "StageId": 90700309,
+    "TowerEventTabTypeIndex": 3,
+    "SortOrder": 1,
+    "UnitId": 1370008300,
+    "CharacterId": 0,
+    "DescriptionLanguageId": 290200907003090201,
+    "HighlightDescriptionLanguageId": 290300907003090201,
+    "BattleSideTypeIndex": 2
+  },
+  {
+    "StageId": 90700309,
+    "TowerEventTabTypeIndex": 3,
+    "SortOrder": 2,
+    "UnitId": 1370010800,
+    "CharacterId": 0,
+    "DescriptionLanguageId": 290200907003090202,
+    "HighlightDescriptionLanguageId": 290300907003090202,
+    "BattleSideTypeIndex": 2
+  },
+  {
+    "StageId": 90700309,
+    "TowerEventTabTypeIndex": 3,
+    "SortOrder": 3,
+    "UnitId": 1370005900,
+    "CharacterId": 0,
+    "DescriptionLanguageId": 290200907003090203,
+    "HighlightDescriptionLanguageId": 290300907003090203,
+    "BattleSideTypeIndex": 4
+  },
+  {
+    "StageId": 90700310,
+    "TowerEventTabTypeIndex": 3,
+    "SortOrder": 1,
+    "UnitId": 2001000400,
+    "CharacterId": 0,
+    "DescriptionLanguageId": 290200907003100201,
+    "HighlightDescriptionLanguageId": 290300907003100201,
+    "BattleSideTypeIndex": 1
+  },
+  {
+    "StageId": 90700310,
+    "TowerEventTabTypeIndex": 3,
+    "SortOrder": 2,
+    "UnitId": 1013001600,
+    "CharacterId": 0,
+    "DescriptionLanguageId": 290200907003100202,
+    "HighlightDescriptionLanguageId": 290300907003100202,
+    "BattleSideTypeIndex": 1
+  },
+  {
+    "StageId": 90700310,
+    "TowerEventTabTypeIndex": 3,
+    "SortOrder": 3,
+    "UnitId": 2022000100,
+    "CharacterId": 0,
+    "DescriptionLanguageId": 290200907003100203,
+    "HighlightDescriptionLanguageId": 290300907003100203,
+    "BattleSideTypeIndex": 2
+  },
+  {
+    "StageId": 90700310,
+    "TowerEventTabTypeIndex": 3,
+    "SortOrder": 4,
+    "UnitId": 1013001200,
+    "CharacterId": 0,
+    "DescriptionLanguageId": 290200907003100204,
+    "HighlightDescriptionLanguageId": 290300907003100204,
+    "BattleSideTypeIndex": 2
+  },
+  {
+    "StageId": 90700311,
+    "TowerEventTabTypeIndex": 3,
+    "SortOrder": 1,
+    "UnitId": 1175004300,
+    "CharacterId": 0,
+    "DescriptionLanguageId": 290200907003110201,
+    "HighlightDescriptionLanguageId": 290300907003110201,
+    "BattleSideTypeIndex": 2
+  },
+  {
+    "StageId": 90700311,
+    "TowerEventTabTypeIndex": 3,
+    "SortOrder": 2,
+    "UnitId": 1230004400,
+    "CharacterId": 0,
+    "DescriptionLanguageId": 290200907003110202,
+    "HighlightDescriptionLanguageId": 0,
+    "BattleSideTypeIndex": 2
+  },
+  {
+    "StageId": 90700312,
+    "TowerEventTabTypeIndex": 3,
+    "SortOrder": 1,
+    "UnitId": 1080003800,
+    "CharacterId": 0,
+    "DescriptionLanguageId": 290200907003120201,
+    "HighlightDescriptionLanguageId": 290300907003120201,
+    "BattleSideTypeIndex": 3
+  },
+  {
+    "StageId": 90700312,
+    "TowerEventTabTypeIndex": 3,
+    "SortOrder": 2,
+    "UnitId": 1705003200,
+    "CharacterId": 0,
+    "DescriptionLanguageId": 290200907003120202,
+    "HighlightDescriptionLanguageId": 290300907003120202,
+    "BattleSideTypeIndex": 3
+  },
+  {
+    "StageId": 90700313,
+    "TowerEventTabTypeIndex": 2,
+    "SortOrder": 1,
+    "UnitId": 1501004300,
+    "CharacterId": 1501003000,
+    "DescriptionLanguageId": 290200907003130101,
+    "HighlightDescriptionLanguageId": 290300907003130101,
+    "BattleSideTypeIndex": 2
+  },
+  {
+    "StageId": 90700313,
+    "TowerEventTabTypeIndex": 3,
+    "SortOrder": 1,
+    "UnitId": 1210000900,
+    "CharacterId": 0,
+    "DescriptionLanguageId": 290200907003130201,
+    "HighlightDescriptionLanguageId": 290300907003130201,
+    "BattleSideTypeIndex": 2
+  },
+  {
+    "StageId": 90700313,
+    "TowerEventTabTypeIndex": 3,
+    "SortOrder": 2,
+    "UnitId": 1501001900,
+    "CharacterId": 0,
+    "DescriptionLanguageId": 290200907003130202,
+    "HighlightDescriptionLanguageId": 290300907003130202,
+    "BattleSideTypeIndex": 2
+  },
+  {
+    "StageId": 90700314,
+    "TowerEventTabTypeIndex": 2,
+    "SortOrder": 1,
+    "UnitId": 1001002700,
+    "CharacterId": 1125002001,
+    "DescriptionLanguageId": 290200907003140101,
+    "HighlightDescriptionLanguageId": 0,
+    "BattleSideTypeIndex": 2
+  },
+  {
+    "StageId": 90700314,
+    "TowerEventTabTypeIndex": 3,
+    "SortOrder": 1,
+    "UnitId": 1125001100,
+    "CharacterId": 0,
+    "DescriptionLanguageId": 290200907003140201,
+    "HighlightDescriptionLanguageId": 290300907003140201,
+    "BattleSideTypeIndex": 1
+  },
+  {
+    "StageId": 90700314,
+    "TowerEventTabTypeIndex": 3,
+    "SortOrder": 2,
+    "UnitId": 1125000200,
+    "CharacterId": 0,
+    "DescriptionLanguageId": 290200907003140202,
+    "HighlightDescriptionLanguageId": 290300907003140202,
+    "BattleSideTypeIndex": 2
+  },
+  {
+    "StageId": 90700315,
+    "TowerEventTabTypeIndex": 2,
+    "SortOrder": 1,
+    "UnitId": 1330005000,
+    "CharacterId": 0,
+    "DescriptionLanguageId": 290200907003150101,
+    "HighlightDescriptionLanguageId": 290300907003150101,
+    "BattleSideTypeIndex": 2
+  },
+  {
+    "StageId": 90700315,
+    "TowerEventTabTypeIndex": 3,
+    "SortOrder": 1,
+    "UnitId": 1370008100,
+    "CharacterId": 0,
+    "DescriptionLanguageId": 290200907003150201,
+    "HighlightDescriptionLanguageId": 0,
+    "BattleSideTypeIndex": 2
+  },
+  {
+    "StageId": 90700315,
+    "TowerEventTabTypeIndex": 3,
+    "SortOrder": 2,
+    "UnitId": 1336000300,
+    "CharacterId": 0,
+    "DescriptionLanguageId": 290200907003150202,
+    "HighlightDescriptionLanguageId": 290300907003150202,
+    "BattleSideTypeIndex": 2
   }
 ]

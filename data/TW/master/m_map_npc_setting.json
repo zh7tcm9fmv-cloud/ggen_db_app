@@ -99935,6 +99935,1801 @@
     "IsExclusiveAdv": false
   },
   {
+    "MapNpcId": 907000300102000001,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300102000002,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300102000003,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300102000004,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300102000005,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300102000006,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300102000007,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300102000008,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300102000009,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300102000010,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300102000011,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300102000012,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300102000013,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300102000014,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300202000001,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300202000002,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300202000003,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300202000004,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300202000005,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300202000006,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300202000007,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300202000008,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300202000009,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300302000001,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300302000002,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300302000003,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300302000004,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300302000005,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300302000006,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300302000007,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300302000008,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300302000009,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300402000001,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300402000002,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300402000003,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300402000004,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300402000005,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300402000006,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300402000007,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300402000008,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300502000001,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300502000002,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300502000003,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300502000004,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300502000005,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300502000006,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300502000007,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300502000008,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300502000009,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300502000010,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300502000011,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300502000012,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300502000013,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300502000014,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300502000015,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300502000016,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300502000017,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300502000018,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300502000019,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300502000020,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300502000021,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300502000022,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300602000001,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300602000002,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300602000003,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300602000004,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300602000005,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300602000006,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300602000007,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300602000008,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300602000009,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300602000010,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300602000011,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300602000012,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300602000013,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300602000014,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000001,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000002,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000004,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000006,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000007,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000008,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000009,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000010,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000013,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000014,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000015,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000016,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000017,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000021,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000022,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000023,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000026,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000027,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000030,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000031,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000032,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000036,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000037,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000039,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000040,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000041,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000042,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000043,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000063,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000064,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000065,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000070,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000071,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000072,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000073,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000074,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000075,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000076,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000077,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000079,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000081,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000082,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000083,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000089,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000090,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000094,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300702000095,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000001,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000002,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000003,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000004,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000005,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000006,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000007,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000008,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000009,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000010,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000011,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000012,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000013,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000014,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000015,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000016,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000017,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000018,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000019,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000020,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000021,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000022,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000023,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000024,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000025,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000026,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000027,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000028,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000029,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000030,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000031,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000032,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000033,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000034,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000035,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000036,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000037,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000038,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000039,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300802000040,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300902000001,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300902000002,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300902000003,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300902000004,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300902000005,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300902000006,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300902000007,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300902000008,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300902000009,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300902000010,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300902000011,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300902000012,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000300902000013,
+    "UnitLeaveTypeIndex": 1,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301002000001,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301002000002,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301002000003,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301002000004,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301002000005,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301002000006,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301002000007,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301002000008,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301002000009,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301002000010,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301002000011,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301002000012,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301002000013,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301002000014,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301002000015,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301002000016,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301002000017,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301002000018,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301002000019,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301002000020,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301002000021,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301002000022,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301002000023,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301102000001,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301102000002,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301102000003,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301102000004,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301102000005,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301102000006,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301102000007,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301102000008,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301102000009,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301102000010,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301102000011,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301102000012,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301102000013,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301102000014,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301102000015,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301102000016,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301102000017,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301102000018,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301102000019,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301102000020,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301202000001,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301202000002,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301202000003,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301202000004,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301202000005,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301202000006,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301202000007,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301202000008,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301202000009,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301202000010,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301202000011,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301202000012,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301202000013,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301202000014,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301202000015,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301202000016,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301202000017,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301202000018,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301202000019,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301202000020,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301202000021,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301202000022,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000001,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000002,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000003,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000004,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000005,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000006,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000007,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000008,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000009,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000010,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000011,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000012,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000013,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000014,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000015,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000016,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000017,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000018,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000019,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000020,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000021,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000022,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000023,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000024,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000025,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000026,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000027,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000028,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000029,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000030,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000031,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000032,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000033,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000034,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000035,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000036,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000037,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000038,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000039,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000040,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000041,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000042,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000043,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000044,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000045,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000046,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000047,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000048,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000049,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000050,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000051,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000052,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000053,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000054,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000055,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000056,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000057,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000058,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000059,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000060,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000061,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000062,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000063,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000064,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000065,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000066,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000067,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301302000068,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301402000001,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301402000002,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301402000003,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301402000004,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301402000005,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301402000006,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301402000007,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301402000008,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301402000009,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301402000010,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301402000011,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301402000012,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301402000013,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301502000001,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301502000002,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301502000003,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301502000004,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301502000005,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301502000006,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301502000007,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301502000008,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301502000009,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301502000010,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301502000011,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301502000012,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301502000013,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301502000014,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301502000015,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301502000016,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301502000017,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301502000023,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301502000024,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301502000025,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301502000026,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301502000027,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301502000028,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301502000029,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301502000030,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301502000031,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301502000032,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301502000033,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301502000034,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301502000035,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301502000036,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301502000037,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301502000038,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301502000039,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301502000040,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301502000041,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
+    "MapNpcId": 907000301502000042,
+    "UnitLeaveTypeIndex": 0,
+    "IsExclusiveAdv": false
+  },
+  {
     "MapNpcId": 908000100302000001,
     "UnitLeaveTypeIndex": 0,
     "IsExclusiveAdv": false

@@ -17520,6 +17520,156 @@
     "WeaponQuoteCategory": ""
   },
   {
+    "Id": 1125002001001,
+    "CharacterCutInSetId": 1125002001,
+    "PlayTimingTypeIndex": 1,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g1250c02001_0001",
+    "QuoteLanguageId": 100701125002001001,
+    "OverrideCutInMilliseconds": 0,
+    "WeaponQuoteCategory": ""
+  },
+  {
+    "Id": 1125002001002,
+    "CharacterCutInSetId": 1125002001,
+    "PlayTimingTypeIndex": 6,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g1250c02001_0001",
+    "QuoteLanguageId": 100701125002001002,
+    "OverrideCutInMilliseconds": 0,
+    "WeaponQuoteCategory": ""
+  },
+  {
+    "Id": 1125002001003,
+    "CharacterCutInSetId": 1125002001,
+    "PlayTimingTypeIndex": 1,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g1250c02001_0002",
+    "QuoteLanguageId": 100701125002001003,
+    "OverrideCutInMilliseconds": 0,
+    "WeaponQuoteCategory": ""
+  },
+  {
+    "Id": 1125002001004,
+    "CharacterCutInSetId": 1125002001,
+    "PlayTimingTypeIndex": 6,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g1250c02001_0002",
+    "QuoteLanguageId": 100701125002001004,
+    "OverrideCutInMilliseconds": 0,
+    "WeaponQuoteCategory": ""
+  },
+  {
+    "Id": 1125002001005,
+    "CharacterCutInSetId": 1125002001,
+    "PlayTimingTypeIndex": 1,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g1250c02001_0003",
+    "QuoteLanguageId": 100701125002001005,
+    "OverrideCutInMilliseconds": 0,
+    "WeaponQuoteCategory": ""
+  },
+  {
+    "Id": 1125002001006,
+    "CharacterCutInSetId": 1125002001,
+    "PlayTimingTypeIndex": 6,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g1250c02001_0003",
+    "QuoteLanguageId": 100701125002001006,
+    "OverrideCutInMilliseconds": 0,
+    "WeaponQuoteCategory": ""
+  },
+  {
+    "Id": 1125002001007,
+    "CharacterCutInSetId": 1125002001,
+    "PlayTimingTypeIndex": 1,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g1250c02001_0004",
+    "QuoteLanguageId": 100701125002001007,
+    "OverrideCutInMilliseconds": 0,
+    "WeaponQuoteCategory": ""
+  },
+  {
+    "Id": 1125002001008,
+    "CharacterCutInSetId": 1125002001,
+    "PlayTimingTypeIndex": 6,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g1250c02001_0004",
+    "QuoteLanguageId": 100701125002001008,
+    "OverrideCutInMilliseconds": 0,
+    "WeaponQuoteCategory": ""
+  },
+  {
+    "Id": 1125002001009,
+    "CharacterCutInSetId": 1125002001,
+    "PlayTimingTypeIndex": 1,
+    "PlayPriority": 0,
+    "ResourceId": "H0101",
+    "QuoteLanguageId": 100701125002001009,
+    "OverrideCutInMilliseconds": 0,
+    "WeaponQuoteCategory": "D：汎用サイコミュ"
+  },
+  {
+    "Id": 1125002001010,
+    "CharacterCutInSetId": 1125002001,
+    "PlayTimingTypeIndex": 6,
+    "PlayPriority": 0,
+    "ResourceId": "H0101",
+    "QuoteLanguageId": 100701125002001010,
+    "OverrideCutInMilliseconds": 0,
+    "WeaponQuoteCategory": "D：汎用サイコミュ"
+  },
+  {
+    "Id": 1125002001011,
+    "CharacterCutInSetId": 1125002001,
+    "PlayTimingTypeIndex": 1,
+    "PlayPriority": 0,
+    "ResourceId": "I0101",
+    "QuoteLanguageId": 100701125002001011,
+    "OverrideCutInMilliseconds": 0,
+    "WeaponQuoteCategory": "E：ファンネル"
+  },
+  {
+    "Id": 1125002001012,
+    "CharacterCutInSetId": 1125002001,
+    "PlayTimingTypeIndex": 6,
+    "PlayPriority": 0,
+    "ResourceId": "I0101",
+    "QuoteLanguageId": 100701125002001012,
+    "OverrideCutInMilliseconds": 0,
+    "WeaponQuoteCategory": "E：ファンネル"
+  },
+  {
+    "Id": 1125002001013,
+    "CharacterCutInSetId": 1125002001,
+    "PlayTimingTypeIndex": 7,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g1250c02001_0005",
+    "QuoteLanguageId": 100701125002001013,
+    "OverrideCutInMilliseconds": 2300,
+    "WeaponQuoteCategory": ""
+  },
+  {
+    "Id": 1125002001014,
+    "CharacterCutInSetId": 1125002001,
+    "PlayTimingTypeIndex": 7,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g1250c02001_0006",
+    "QuoteLanguageId": 100701125002001014,
+    "OverrideCutInMilliseconds": 2900,
+    "WeaponQuoteCategory": ""
+  },
+  {
+    "Id": 1125002001015,
+    "CharacterCutInSetId": 1125002001,
+    "PlayTimingTypeIndex": 7,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g1250c02001_0007",
+    "QuoteLanguageId": 100701125002001015,
+    "OverrideCutInMilliseconds": 1000,
+    "WeaponQuoteCategory": ""
+  },
+  {
     "Id": 1125002500001,
     "CharacterCutInSetId": 1125002500,
     "PlayTimingTypeIndex": 1,

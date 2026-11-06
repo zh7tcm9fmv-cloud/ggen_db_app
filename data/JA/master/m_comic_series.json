@@ -140,6 +140,16 @@
     "TargetValue": 0
   },
   {
+    "Id": 12170,
+    "NameLanguageId": 350100000000012170,
+    "CoverThumbnailResourceId": "comic_cover_12170",
+    "Priority": 30783000,
+    "ScheduleId": 2611103101,
+    "ComicSeriesTypeIndex": 1,
+    "ComicReleaseConditionTypeIndex": 2,
+    "TargetValue": 0
+  },
+  {
     "Id": 12190,
     "NameLanguageId": 350100000000012190,
     "CoverThumbnailResourceId": "comic_cover_12190",

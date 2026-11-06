@@ -995,6 +995,11 @@
     "CharacterId": 1125002600
   },
   {
+    "CharacterCollectionBookId": 12500015,
+    "DisplayPriority": 1125002001,
+    "CharacterId": 1125002001
+  },
+  {
     "CharacterCollectionBookId": 14400001,
     "DisplayPriority": 1,
     "CharacterId": 1144000100

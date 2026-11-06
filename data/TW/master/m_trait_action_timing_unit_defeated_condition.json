@@ -166,5 +166,17 @@
     "AllyTypeIndex": 1,
     "MainUnitIds": "",
     "CharacterIds": "2001000200"
+  },
+  {
+    "Id": 100000031,
+    "AllyTypeIndex": 1,
+    "MainUnitIds": "",
+    "CharacterIds": "1125002001"
+  },
+  {
+    "Id": 100000032,
+    "AllyTypeIndex": 1,
+    "MainUnitIds": "",
+    "CharacterIds": "1001004800"
   }
 ]

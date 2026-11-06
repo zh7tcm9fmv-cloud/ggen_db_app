@@ -950,6 +950,326 @@
     "Name": ""
   },
   {
+    "Id": 9070003003001,
+    "X": 8,
+    "Y": 12,
+    "MapStageId": 907000300302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "IsScriptPlaced": false,
+    "Name": ""
+  },
+  {
+    "Id": 9070003003002,
+    "X": 16,
+    "Y": 12,
+    "MapStageId": 907000300302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "IsScriptPlaced": false,
+    "Name": ""
+  },
+  {
+    "Id": 9070003003003,
+    "X": 12,
+    "Y": 13,
+    "MapStageId": 907000300302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "IsScriptPlaced": false,
+    "Name": ""
+  },
+  {
+    "Id": 9070003004001,
+    "X": 6,
+    "Y": 7,
+    "MapStageId": 907000300402000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "IsScriptPlaced": false,
+    "Name": ""
+  },
+  {
+    "Id": 9070003004002,
+    "X": 6,
+    "Y": 12,
+    "MapStageId": 907000300402000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "IsScriptPlaced": false,
+    "Name": ""
+  },
+  {
+    "Id": 9070003011001,
+    "X": 4,
+    "Y": 15,
+    "MapStageId": 907000301102000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "IsScriptPlaced": false,
+    "Name": ""
+  },
+  {
+    "Id": 9070003011002,
+    "X": 17,
+    "Y": 15,
+    "MapStageId": 907000301102000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "IsScriptPlaced": false,
+    "Name": ""
+  },
+  {
+    "Id": 9070003011003,
+    "X": 10,
+    "Y": 11,
+    "MapStageId": 907000301102000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "IsScriptPlaced": false,
+    "Name": ""
+  },
+  {
+    "Id": 9070003011004,
+    "X": 17,
+    "Y": 7,
+    "MapStageId": 907000301102000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "IsScriptPlaced": false,
+    "Name": ""
+  },
+  {
+    "Id": 9070003011005,
+    "X": 9,
+    "Y": 19,
+    "MapStageId": 907000301102000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "IsScriptPlaced": false,
+    "Name": ""
+  },
+  {
+    "Id": 9070003011006,
+    "X": 12,
+    "Y": 18,
+    "MapStageId": 907000301102000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "IsScriptPlaced": false,
+    "Name": ""
+  },
+  {
+    "Id": 9070003011007,
+    "X": 8,
+    "Y": 4,
+    "MapStageId": 907000301102000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "IsScriptPlaced": false,
+    "Name": ""
+  },
+  {
+    "Id": 9070003011008,
+    "X": 11,
+    "Y": 3,
+    "MapStageId": 907000301102000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "IsScriptPlaced": false,
+    "Name": ""
+  },
+  {
+    "Id": 9070003012001,
+    "X": 5,
+    "Y": 8,
+    "MapStageId": 907000301202000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "IsScriptPlaced": false,
+    "Name": ""
+  },
+  {
+    "Id": 9070003012002,
+    "X": 16,
+    "Y": 19,
+    "MapStageId": 907000301202000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "IsScriptPlaced": false,
+    "Name": ""
+  },
+  {
+    "Id": 9070003012003,
+    "X": 17,
+    "Y": 10,
+    "MapStageId": 907000301202000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "IsScriptPlaced": false,
+    "Name": ""
+  },
+  {
+    "Id": 9070003013001,
+    "X": 14,
+    "Y": 29,
+    "MapStageId": 907000301302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "IsScriptPlaced": false,
+    "Name": ""
+  },
+  {
+    "Id": 9070003013002,
+    "X": 9,
+    "Y": 25,
+    "MapStageId": 907000301302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "IsScriptPlaced": false,
+    "Name": ""
+  },
+  {
+    "Id": 9070003013003,
+    "X": 19,
+    "Y": 25,
+    "MapStageId": 907000301302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "IsScriptPlaced": false,
+    "Name": ""
+  },
+  {
+    "Id": 9070003013004,
+    "X": 14,
+    "Y": 19,
+    "MapStageId": 907000301302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "IsScriptPlaced": false,
+    "Name": ""
+  },
+  {
+    "Id": 9070003013005,
+    "X": 14,
+    "Y": 12,
+    "MapStageId": 907000301302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "IsScriptPlaced": false,
+    "Name": ""
+  },
+  {
+    "Id": 9070003013006,
+    "X": 9,
+    "Y": 11,
+    "MapStageId": 907000301302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "IsScriptPlaced": false,
+    "Name": ""
+  },
+  {
+    "Id": 9070003013007,
+    "X": 19,
+    "Y": 11,
+    "MapStageId": 907000301302000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "IsScriptPlaced": false,
+    "Name": ""
+  },
+  {
+    "Id": 9070003014001,
+    "X": 7,
+    "Y": 17,
+    "MapStageId": 907000301402000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "IsScriptPlaced": false,
+    "Name": ""
+  },
+  {
+    "Id": 9070003014002,
+    "X": 16,
+    "Y": 10,
+    "MapStageId": 907000301402000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "IsScriptPlaced": false,
+    "Name": ""
+  },
+  {
+    "Id": 9070003015001,
+    "X": 1,
+    "Y": 23,
+    "MapStageId": 907000301502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "IsScriptPlaced": false,
+    "Name": ""
+  },
+  {
+    "Id": 9070003015002,
+    "X": 18,
+    "Y": 23,
+    "MapStageId": 907000301502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "IsScriptPlaced": false,
+    "Name": ""
+  },
+  {
+    "Id": 9070003015003,
+    "X": 10,
+    "Y": 18,
+    "MapStageId": 907000301502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "IsScriptPlaced": false,
+    "Name": ""
+  },
+  {
+    "Id": 9070003015007,
+    "X": 15,
+    "Y": 13,
+    "MapStageId": 907000301502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "IsScriptPlaced": false,
+    "Name": ""
+  },
+  {
+    "Id": 9070003015010,
+    "X": 2,
+    "Y": 18,
+    "MapStageId": 907000301502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "IsScriptPlaced": false,
+    "Name": ""
+  },
+  {
+    "Id": 9070003015011,
+    "X": 2,
+    "Y": 13,
+    "MapStageId": 907000301502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "IsScriptPlaced": false,
+    "Name": ""
+  },
+  {
+    "Id": 9070003015012,
+    "X": 16,
+    "Y": 10,
+    "MapStageId": 907000301502000000,
+    "InitDirectionTypeIndex": 4,
+    "InitStandbyTypeIndex": 0,
+    "IsScriptPlaced": false,
+    "Name": ""
+  },
+  {
     "Id": 9900001013001,
     "X": 7,
     "Y": 23,

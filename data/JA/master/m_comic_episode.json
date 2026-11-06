@@ -1104,6 +1104,42 @@
     "AuthorNameLanguageId": 0
   },
   {
+    "Id": 1217000010001,
+    "ComicSeriesId": 12170,
+    "PartNameLanguageId": 350201217000010001,
+    "TitleLanguageId": 350301217000010001,
+    "Priority": 999,
+    "ComicReleaseConditionTypeIndex": 2,
+    "TargetValue": 0,
+    "ScheduleId": 2611103101,
+    "SubtitleLanguageId": 0,
+    "AuthorNameLanguageId": 0
+  },
+  {
+    "Id": 1217000020002,
+    "ComicSeriesId": 12170,
+    "PartNameLanguageId": 350201217000020002,
+    "TitleLanguageId": 350301217000020002,
+    "Priority": 998,
+    "ComicReleaseConditionTypeIndex": 2,
+    "TargetValue": 0,
+    "ScheduleId": 2611103101,
+    "SubtitleLanguageId": 0,
+    "AuthorNameLanguageId": 0
+  },
+  {
+    "Id": 1217000030003,
+    "ComicSeriesId": 12170,
+    "PartNameLanguageId": 350201217000030003,
+    "TitleLanguageId": 350301217000030003,
+    "Priority": 997,
+    "ComicReleaseConditionTypeIndex": 2,
+    "TargetValue": 0,
+    "ScheduleId": 2611103101,
+    "SubtitleLanguageId": 0,
+    "AuthorNameLanguageId": 0
+  },
+  {
     "Id": 1219000010001,
     "ComicSeriesId": 12190,
     "PartNameLanguageId": 350201219000010001,
