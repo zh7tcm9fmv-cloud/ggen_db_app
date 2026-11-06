@@ -349,8 +349,23 @@
   }
 
   /**
+   * Target priority among units this actor can still put in weapon range after moving:
+   * lower absolute HP first (nicks / debuffs do not change the score).
+   * Ties: closer → higher expected /cal damage → lower slot index.
+   * Practice heuristic — not official Master League AI.
+   */
+  function compareEngageTargets(a, b) {
+    var aHp = a.enemy.hp | 0;
+    var bHp = b.enemy.hp | 0;
+    if (aHp !== bHp) return aHp - bHp;
+    if ((a.dist | 0) !== (b.dist | 0)) return (a.dist | 0) - (b.dist | 0);
+    if ((a.expectedDmg | 0) !== (b.expectedDmg | 0)) return (b.expectedDmg | 0) - (a.expectedDmg | 0);
+    return (a.enemy.n | 0) - (b.enemy.n | 0);
+  }
+
+  /**
    * MLS achievableTargets: enemies you can put in some weapon's range after moving.
-   * Then pick lowest current HP; weapon = highest preview damage among those that reach.
+   * Weapon = highest preview damage among those that reach; target = compareEngageTargets.
    */
   function pickEngage(attacker, enemies, allUnits, bounds, damageOf) {
     var move = Math.max(0, attacker.move | 0);
@@ -388,14 +403,18 @@
           bestWpn = weapon;
         }
       });
-      if (bestWpn) achievable.push({ enemy: enemy, weapon: bestWpn, expectedDmg: bestDmg });
+      if (bestWpn) {
+        achievable.push({
+          enemy: enemy,
+          weapon: bestWpn,
+          expectedDmg: bestDmg,
+          dist: baseDist
+        });
+      }
     });
 
     if (!achievable.length) return null;
-    achievable.sort(function (a, b) {
-      if ((a.enemy.hp | 0) !== (b.enemy.hp | 0)) return (a.enemy.hp | 0) - (b.enemy.hp | 0);
-      return (a.enemy.n | 0) - (b.enemy.n | 0);
-    });
+    achievable.sort(compareEngageTargets);
     e = achievable[0];
     mn = e.weapon.min_range != null ? e.weapon.min_range | 0 : 1;
     mx = e.weapon.max_range != null ? e.weapon.max_range | 0 : mn;
@@ -405,14 +424,31 @@
   }
 
   function pickTarget(attacker, enemies) {
-    var best = null;
+    var rows = [];
     alive(enemies).forEach(function (e) {
-      if (!weaponsInRange(attacker, e).length) return;
-      if (!best || (e.hp | 0) < (best.hp | 0) || ((e.hp | 0) === (best.hp | 0) && (e.n | 0) < (best.n | 0))) {
-        best = e;
+      var wpns = weaponsInRange(attacker, e);
+      var bestWpn;
+      var bestDmg = -1;
+      var i;
+      var p;
+      if (!wpns.length) return;
+      for (i = 0; i < wpns.length; i++) {
+        p = wpns[i].power | 0;
+        if (p > bestDmg) {
+          bestDmg = p;
+          bestWpn = wpns[i];
+        }
       }
+      rows.push({
+        enemy: e,
+        weapon: bestWpn,
+        expectedDmg: bestDmg,
+        dist: distance(attacker, e)
+      });
     });
-    return best;
+    if (!rows.length) return null;
+    rows.sort(compareEngageTargets);
+    return rows[0].enemy;
   }
 
   function nearestEnemy(attacker, enemies) {

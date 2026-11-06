@@ -2022,13 +2022,13 @@
             esc(mlsT('mls_option_part', 'Modifications')) + '</span></span></span>';
         }
         html += '<div class="mls-slot-block' + (unowned ? ' is-unowned' : '') +
-          '" data-mls-slot="' + side + ':' + i + '" draggable="false"' +
+          '" data-mls-slot="' + side + ':' + i + '" data-mls-drag="' + side + ':' + i +
+          '" draggable="false"' +
           (unowned
             ? ' title="Not in Collections — greyed out; does not appear on Battle while Only my Collections is on (ally only)"'
-            : '') + '>' +
+            : ' title="Tap to change unit · hold then drag to reorder"') + '>' +
           '<button type="button" class="mls-slot" data-mls-pick-unit="' + side + ':' + i + '">' +
-          '<span class="mls-slot-thum-wrap" data-mls-drag="' + side + ':' + i +
-          '" title="Drag to reorder">' +
+          '<span class="mls-slot-thum-wrap">' +
           (thum
             ? '<img class="mls-slot-thum" src="' + esc(thum) + '" alt="" loading="lazy" decoding="async" draggable="false">'
             : '<span class="mls-slot-thum"></span>') +
@@ -2041,7 +2041,7 @@
             : '+') +
           '</span></span>' +
           '<span class="mls-slot-meta"><span class="name">' + esc(sl.name || sl.unitId) + '</span>' +
-          '<span class="sub mls-sub-icons" title="Tap unit name to change · drag portrait to reorder">' +
+          '<span class="sub mls-sub-icons" title="Tap to change unit · hold then drag to reorder">' +
           rarityIconHtml(sl.rarity) +
           roleIconHtml(sl.roleIcon || sl.roleId) +
           (unowned ? '<span class="mls-unowned-tag">not in Collections</span>' : '') +
@@ -2638,15 +2638,17 @@
   }
 
   /**
-   * Takayu drag-snap (820ms outBack / ~6px overshoot):
-   * drag the unit portrait; ghost follows pointer; release → nearest slot settle.
-   * Tap (no drag threshold) still opens the unit picker via the slot button.
+   * Formation reorder — Takayu drag-pickup on lift, drag-snap on drop
+   * (820ms outBack / ~6px overshoot). Hold (~250ms) or drag past threshold to lift;
+   * quick tap still opens the unit picker (no preventDefault until lift).
    */
   function bindSlotDrag(host, side) {
-    var THRESH = 8;
-    /* Snap was 820ms — felt stuck after drop. Short settle only. */
-    var SNAP_MS = 220;
-    var OVERSHOOT = 3;
+    /* Short hold — long delay + WAAPI transform made the card feel stuck behind the pointer. */
+    var MOVE_THRESH = 8;
+    var HOLD_MS = 120;
+    /* Snap still has outBack overshoot; keep drop snappy so the gesture doesn’t feel heavy. */
+    var SNAP_MS = 420;
+    var OVERSHOOT = 5;
     var dragIdx = -1;
     var armed = false;
     var active = false;
@@ -2654,17 +2656,26 @@
     var originBlock = null;
     var originWrap = null;
     var ghost = null;
+    var ghostScale = null;
     var pointerId = null;
     var startX = 0;
     var startY = 0;
     var lastX = 0;
     var lastY = 0;
     var lastClientX = 0;
+    var lastClientY = 0;
+    var grabOffX = 0;
+    var grabOffY = 0;
     var rot = 0;
     var ghostW = 48;
     var ghostH = 48;
     var suppressClick = false;
     var reduceMotion = false;
+    var holdTimer = null;
+    var rafPos = 0;
+    var pendingX = 0;
+    var pendingY = 0;
+    var pendingRot = 0;
 
     if (!host || host._mlsDragBound) return;
     host._mlsDragBound = true;
@@ -2684,6 +2695,13 @@
       } catch (eSel) {}
     }
 
+    function clearHoldTimer() {
+      if (holdTimer != null) {
+        clearTimeout(holdTimer);
+        holdTimer = null;
+      }
+    }
+
     function setDraggingBody(on) {
       try {
         document.body.classList.toggle('mls-is-slot-dragging', !!on);
@@ -2696,18 +2714,34 @@
       });
     }
 
-    function ghostPos(clientX, clientY, r) {
-      lastX = clientX - ghostW / 2;
-      lastY = clientY - ghostH / 2;
-      rot = r || 0;
+    function applyGhostTransform() {
+      rafPos = 0;
       if (!ghost) return;
+      lastX = pendingX;
+      lastY = pendingY;
+      rot = pendingRot;
+      /* Translate/rotate only — scale lives on .mls-drag-ghost-scale so pickup never steals follow. */
       ghost.style.transform =
-        'translate3d(' + lastX + 'px,' + lastY + 'px,0) scale(1.1) rotate(' + rot + 'deg)';
+        'translate3d(' + lastX + 'px,' + lastY + 'px,0) rotate(' + rot + 'deg)';
+    }
+
+    function ghostPos(clientX, clientY, r) {
+      pendingX = clientX - grabOffX;
+      pendingY = clientY - grabOffY;
+      pendingRot = r || 0;
+      if (!ghost) return;
+      if (rafPos) return;
+      rafPos = requestAnimationFrame(applyGhostTransform);
     }
 
     function destroyGhost() {
+      if (rafPos) {
+        cancelAnimationFrame(rafPos);
+        rafPos = 0;
+      }
       if (ghost && ghost.parentNode) ghost.parentNode.removeChild(ghost);
       ghost = null;
+      ghostScale = null;
     }
 
     function resetDragClasses() {
@@ -2718,6 +2752,7 @@
     }
 
     function hardReset() {
+      clearHoldTimer();
       resetDragClasses();
       destroyGhost();
       dragIdx = -1;
@@ -2738,54 +2773,100 @@
     }
 
     function beginLift(ev) {
-      var srcImg, srcRect;
-      if (active || !originWrap) return;
+      var srcRect, cx, cy, child;
+      if (active || !originBlock) return;
+      clearHoldTimer();
       active = true;
       suppressClick = true;
       reduceMotion = prefersReduce();
       clearNativeSelection();
       setDraggingBody(true);
       originBlock.classList.add('is-dragging');
-      originWrap.classList.add('is-drag-source');
-      srcImg = originWrap.querySelector('.mls-slot-thum');
-      srcRect = originWrap.getBoundingClientRect();
-      ghostW = Math.max(40, Math.round(srcRect.width) || 48);
-      ghostH = Math.max(40, Math.round(srcRect.height) || 48);
-      ghost = document.createElement('div');
-      ghost.className = 'mls-drag-ghost' + (side === 'enemy' ? ' is-enemy' : ' is-ally');
+      if (originWrap) originWrap.classList.add('is-drag-source');
+      srcRect = originBlock.getBoundingClientRect();
+      ghostW = Math.max(120, Math.round(srcRect.width) || 320);
+      ghostH = Math.max(72, Math.round(srcRect.height) || 120);
+      cx = (ev && ev.clientX != null) ? ev.clientX : lastClientX;
+      cy = (ev && ev.clientY != null) ? ev.clientY : lastClientY;
+      lastClientX = cx;
+      lastClientY = cy;
+      grabOffX = Math.max(0, Math.min(ghostW, cx - srcRect.left));
+      grabOffY = Math.max(0, Math.min(ghostH, cy - srcRect.top));
+      /* Whole mls-slot-block lifts (Takayu drag-pickup), not portrait-only. */
+      ghost = originBlock.cloneNode(true);
+      ghost.classList.add('mls-drag-ghost', 'mls-drag-ghost--card');
+      ghost.classList.add(side === 'enemy' ? 'is-enemy' : 'is-ally');
+      ghost.classList.remove('is-dragging', 'is-drop-target', 'is-snap');
+      ghost.removeAttribute('data-mls-drag');
+      ghost.removeAttribute('title');
       ghost.setAttribute('aria-hidden', 'true');
-      if (srcImg && srcImg.tagName === 'IMG' && srcImg.src) {
-        ghost.innerHTML = '<img src="' + esc(srcImg.src) + '" alt="">';
-      } else {
-        ghost.textContent = '◇';
+      ghost.querySelectorAll('button, a, input, select, textarea').forEach(function (el) {
+        el.setAttribute('tabindex', '-1');
+        if (el.tagName === 'BUTTON' || el.tagName === 'INPUT') {
+          try { el.disabled = true; } catch (eDis) {}
+        }
+      });
+      /* Inner scale layer = pickup motion; outer layer tracks pointer every frame. */
+      ghostScale = document.createElement('div');
+      ghostScale.className = 'mls-drag-ghost-scale';
+      while (ghost.firstChild) {
+        child = ghost.firstChild;
+        ghostScale.appendChild(child);
       }
+      ghost.appendChild(ghostScale);
       ghost.style.width = ghostW + 'px';
       ghost.style.height = ghostH + 'px';
       document.body.appendChild(ghost);
-      ghostPos(ev.clientX, ev.clientY, 0);
-      try { originWrap.setPointerCapture(ev.pointerId); } catch (eCap) {}
-      if (ev && ev.preventDefault) ev.preventDefault();
+      lastX = srcRect.left;
+      lastY = srcRect.top;
+      rot = 0;
+      pendingX = lastX;
+      pendingY = lastY;
+      pendingRot = 0;
+      ghost.style.transform = 'translate3d(' + lastX + 'px,' + lastY + 'px,0) rotate(0deg)';
+      /* Follow immediately — don’t wait for pickup. */
+      ghostPos(cx, cy, 0);
+      if (reduceMotion) {
+        ghostScale.classList.add('is-up');
+      } else {
+        /* Double-rAF so the resting style paints before .is-up transitions. */
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            if (ghostScale) ghostScale.classList.add('is-up');
+          });
+        });
+      }
+      try {
+        if (originBlock.setPointerCapture) originBlock.setPointerCapture(pointerId != null ? pointerId : (ev && ev.pointerId));
+      } catch (eCap) {}
+      if (ev && ev.cancelable && ev.preventDefault) ev.preventDefault();
     }
 
-    function animateSnapTo(targetWrap, toIdx, cancelled) {
+    function animateSnapTo(targetBlock, toIdx, cancelled) {
       var destRect, endX, endY, dx, dy, len, ox, oy, anim, ms;
+      if (rafPos) {
+        cancelAnimationFrame(rafPos);
+        rafPos = 0;
+        applyGhostTransform();
+      }
       if (!ghost) {
         if (!cancelled && toIdx >= 0 && toIdx !== dragIdx) swapForceSlots(side, dragIdx, toIdx);
         hardReset();
         return;
       }
       snapping = true;
-      destRect = targetWrap
-        ? targetWrap.getBoundingClientRect()
-        : (originWrap && originWrap.getBoundingClientRect());
+      if (ghostScale) ghostScale.classList.remove('is-up');
+      destRect = targetBlock
+        ? targetBlock.getBoundingClientRect()
+        : (originBlock && originBlock.getBoundingClientRect());
       if (!destRect) {
         destroyGhost();
         if (!cancelled && toIdx >= 0 && toIdx !== dragIdx) swapForceSlots(side, dragIdx, toIdx);
         hardReset();
         return;
       }
-      endX = destRect.left + destRect.width / 2 - ghostW / 2;
-      endY = destRect.top + destRect.height / 2 - ghostH / 2;
+      endX = destRect.left;
+      endY = destRect.top;
       dx = endX - lastX;
       dy = endY - lastY;
       len = Math.hypot(dx, dy) || 1;
@@ -2793,27 +2874,25 @@
       oy = endY + (dy / len) * OVERSHOOT;
       ms = reduceMotion ? 1 : SNAP_MS;
       clearTargets();
-      if (targetWrap && !cancelled) {
-        var tipBlock = targetWrap.closest('.mls-slot-block');
-        if (tipBlock) tipBlock.classList.add('is-drop-target');
-      }
+      if (targetBlock && !cancelled) targetBlock.classList.add('is-drop-target');
       try {
+        /* Takayu drag-snap: outBack overshoot then settle (translate only). */
         anim = ghost.animate(
           [
             {
-              transform: 'translate3d(' + lastX + 'px,' + lastY + 'px,0) scale(1.1) rotate(' + rot + 'deg)'
+              transform: 'translate3d(' + lastX + 'px,' + lastY + 'px,0) rotate(' + rot + 'deg)'
             },
             {
-              transform: 'translate3d(' + ox + 'px,' + oy + 'px,0) scale(1.02) rotate(0deg)',
-              offset: 0.68
+              transform: 'translate3d(' + ox + 'px,' + oy + 'px,0) rotate(0deg)',
+              offset: 0.62
             },
             {
-              transform: 'translate3d(' + endX + 'px,' + endY + 'px,0) scale(1) rotate(0deg)'
+              transform: 'translate3d(' + endX + 'px,' + endY + 'px,0) rotate(0deg)'
             }
           ],
           {
             duration: ms,
-            easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+            easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
             fill: 'forwards'
           }
         );
@@ -2853,15 +2932,24 @@
       }
     }
 
+    function isSlotDragExclude(t) {
+      if (!t || !t.closest) return true;
+      /* Keep taps on tools / pilot pip as clicks — not reorder. */
+      if (t.closest('.mls-slot-tools')) return true;
+      if (t.closest('.mls-pilot-pip')) return true;
+      if (t.closest('a, input, select, textarea')) return true;
+      return false;
+    }
+
     host.addEventListener('pointerdown', function (ev) {
       var wrap, block, key, parts;
       if (snapping || ev.button) return;
-      if (ev.target && ev.target.closest && ev.target.closest('.mls-pilot-pip')) return;
-      wrap = ev.target && ev.target.closest && ev.target.closest('.mls-slot-thum-wrap[data-mls-drag]');
-      if (!wrap) return;
-      block = wrap.closest('.mls-slot-block');
+      if (isSlotDragExclude(ev.target)) return;
+      block = ev.target && ev.target.closest &&
+        ev.target.closest('.mls-slot-block[data-mls-drag^="' + side + ':"]');
       if (!block || block.querySelector('.mls-slot-empty')) return;
-      key = wrap.getAttribute('data-mls-drag') || '';
+      wrap = block.querySelector('.mls-slot-thum-wrap') || block;
+      key = block.getAttribute('data-mls-drag') || '';
       parts = key.split(':');
       if (parts[0] !== side) return;
       dragIdx = parseInt(parts[1], 10);
@@ -2874,30 +2962,38 @@
       startX = ev.clientX;
       startY = ev.clientY;
       lastClientX = ev.clientX;
-      clearNativeSelection();
-      /*
-       * Portrait is touch-action:none. preventDefault kills iOS text-select / callout
-       * so the gesture stays a reorder drag. Page scroll uses the name / LB area.
-       */
-      try { wrap.setPointerCapture(ev.pointerId); } catch (eArm) {}
-      if (ev.cancelable) ev.preventDefault();
+      lastClientY = ev.clientY;
+      /* Do not preventDefault / capture yet — quick tap must open the unit picker. */
+      clearHoldTimer();
+      holdTimer = setTimeout(function () {
+        holdTimer = null;
+        if (!armed || active || snapping) return;
+        beginLift({
+          clientX: lastClientX,
+          clientY: lastClientY,
+          pointerId: pointerId,
+          cancelable: true,
+          preventDefault: function () {}
+        });
+      }, HOLD_MS);
     });
 
     host.addEventListener('pointermove', function (ev) {
       var dist, el, block, tilt;
       if (!armed || snapping || (pointerId != null && ev.pointerId !== pointerId)) return;
+      lastClientX = ev.clientX;
+      lastClientY = ev.clientY;
       if (!active) {
         dist = Math.hypot(ev.clientX - startX, ev.clientY - startY);
-        if (dist < THRESH) return;
+        /* Intentional drag before hold completes — lift; tiny jitter keeps click. */
+        if (dist < MOVE_THRESH) return;
         beginLift(ev);
       }
       if (!active) return;
-      tilt = Math.max(-10, Math.min(10, (ev.clientX - lastClientX) * 0.55));
-      lastClientX = ev.clientX;
+      tilt = Math.max(-5, Math.min(5, (ev.clientX - startX) * 0.025));
       ghostPos(ev.clientX, ev.clientY, tilt);
       clearTargets();
       el = document.elementFromPoint(ev.clientX, ev.clientY);
-      /* Ignore the floating ghost under the cursor. */
       if (ghost) ghost.style.pointerEvents = 'none';
       block = el && el.closest && el.closest('.mls-slot-block[data-mls-slot^="' + side + ':"]');
       if (block && block !== originBlock) block.classList.add('is-drop-target');
@@ -2905,47 +3001,48 @@
     });
 
     function endDrag(ev) {
-      var block, key, parts, toIdx, destWrap;
+      var block, key, parts, toIdx, destBlock;
       if (!armed || snapping) return;
       if (pointerId != null && ev.pointerId !== pointerId) return;
+      clearHoldTimer();
       if (!active) {
+        /* Tap / short press — leave click alone for [data-mls-pick-unit]. */
         hardReset();
         return;
       }
       block = slotBlockFromPoint(ev.clientX, ev.clientY);
       toIdx = -1;
-      destWrap = originWrap;
+      destBlock = originBlock;
       if (block && block !== originBlock) {
         key = block.getAttribute('data-mls-slot') || '';
         parts = key.split(':');
         toIdx = parseInt(parts[1], 10);
-        destWrap = block.querySelector('.mls-slot-thum-wrap') || block;
+        destBlock = block;
       } else {
         toIdx = dragIdx;
-        destWrap = originWrap;
+        destBlock = originBlock;
       }
       try {
-        if (originWrap && originWrap.releasePointerCapture) {
-          originWrap.releasePointerCapture(ev.pointerId);
+        if (originBlock && originBlock.releasePointerCapture) {
+          originBlock.releasePointerCapture(ev.pointerId);
         }
       } catch (eRel) {}
-      animateSnapTo(destWrap, toIdx, toIdx === dragIdx || toIdx < 0);
+      animateSnapTo(destBlock, toIdx, toIdx === dragIdx || toIdx < 0);
     }
 
     host.addEventListener('pointerup', endDrag);
     host.addEventListener('pointercancel', endDrag);
 
     host.addEventListener('contextmenu', function (ev) {
-      if (ev.target && ev.target.closest && ev.target.closest('.mls-slot-thum-wrap[data-mls-drag]')) {
-        ev.preventDefault();
+      if (active || (ev.target && ev.target.closest &&
+          ev.target.closest('.mls-slot-block[data-mls-drag]'))) {
+        if (isSlotDragExclude(ev.target)) return;
+        if (active) ev.preventDefault();
       }
     });
 
     host.addEventListener('selectstart', function (ev) {
-      if (armed || active || (ev.target && ev.target.closest &&
-          ev.target.closest('.mls-slot-thum-wrap, .mls-slot-block'))) {
-        ev.preventDefault();
-      }
+      if (active) ev.preventDefault();
     });
 
     host.addEventListener('click', function (ev) {
@@ -3250,12 +3347,30 @@
     return rowMatchesTagIds(row, pickerFilter.seasonTags || []);
   }
 
-  /** Paint S18-style Boost: Tag chips under rarity/role (unit picker only). */
+  /** Same composite chip as /ml Boost: Tag banner (createTagHtml / mlRenderBoostTag). */
+  function mlsSeasonBoostTagInner(tag) {
+    var html;
+    if (typeof global.mlRenderBoostTag === 'function') {
+      html = String(global.mlRenderBoostTag(tag) || '');
+      html = html
+        .replace(/\sonclick="[^"]*"/gi, '')
+        .replace(/\sonkeydown="[^"]*"/gi, '')
+        .replace(/\srole="[^"]*"/gi, '')
+        .replace(/\stabindex="[^"]*"/gi, '')
+        .replace(/\stitle="[^"]*"/gi, '');
+      if (html) return html;
+    }
+    return '<span class="tag-composite"><span class="tag-part-value">' +
+      esc((tag && tag.name) || '') + '</span></span>';
+  }
+
+  /** Paint Boost: Tag filter row (unit picker) — same look as ml-boost-tag-block. */
   function paintSeasonTagChips() {
     var host = document.getElementById('mlsPickerSeasonTags');
     var tags;
     var html;
     var defaultIds = [];
+    var noneOn;
     if (!host) return;
     tags = (seasonMeta && Array.isArray(seasonMeta.boost_tags)) ? seasonMeta.boost_tags : [];
     if (!tags.length || (pickerCtx && pickerCtx.kind !== 'unit')) {
@@ -3264,23 +3379,34 @@
       pickerFilter.seasonTags = [];
       return;
     }
-    /* Default: every season Boost: Tag selected (OR — match any, not all). */
+    /* Default: every season Boost: Tag selected (OR — match any). */
     tags.forEach(function (t) {
       var id = t && (t.target_id != null ? String(t.target_id) : '');
       if (id && id !== '0' && defaultIds.indexOf(id) < 0) defaultIds.push(id);
     });
     pickerFilter.seasonTags = defaultIds.slice();
-    html = '<span class="mls-picker-season-lbl" title="Filter within supporter (or season) picks — multi-select OR">' +
-      esc(mlsT('ml_boost_heading', 'Boost: Tag')) + '</span>' +
-      '<button type="button" class="mls-chip" data-val="" title="No season-tag filter (full supporter / season list)">' +
-      esc(mlsT('mls_all', 'All')) + '</button>';
+    noneOn = pickerFilter.seasonTags.length === 0;
+    html = '<span class="mls-picker-season-lbl" title="' +
+      esc(mlsT('mls_filter_boost_tag_tip',
+        'Filter the unit list by this season’s Boost: Tag (multi-select OR). None = no tag filter.')) +
+      '">' + esc(mlsT('mls_filter_boost_tag', 'Filter by Boost: Tag')) + '</span>' +
+      '<button type="button" class="mls-chip mls-season-none' + (noneOn ? ' is-on' : '') +
+      '" data-val="" title="' +
+      esc(mlsT('mls_filter_boost_tag_none_tip',
+        'Clear Boost: Tag filter — show the full supporter / season list')) +
+      '">' + esc(mlsT('mls_filter_none', 'None')) + '</button>' +
+      '<span class="mls-picker-season-tags-row ml-boost-tags" role="group">';
     tags.forEach(function (t) {
       var id = t && (t.target_id != null ? String(t.target_id) : '');
       var name = (t && t.name) ? String(t.name) : id;
+      var on;
       if (!id || id === '0') return;
-      html += '<button type="button" class="mls-chip is-on" data-val="' + esc(id) + '" title="' +
-        esc(name) + ' — OR with other selected; within supporter matches">' + esc(name) + '</button>';
+      on = pickerFilter.seasonTags.indexOf(id) >= 0;
+      html += '<button type="button" class="mls-season-tag' + (on ? ' is-on' : '') +
+        '" data-val="' + esc(id) + '" title="' + esc(name) + '">' +
+        mlsSeasonBoostTagInner(t) + '</button>';
     });
+    html += '</span>';
     host.innerHTML = html;
     host.hidden = false;
   }
@@ -5948,6 +6074,7 @@
       if (R && R.areaWeaponPowerAuraPct && opts.auraSources) {
         auraPct = R.areaWeaponPowerAuraPct(attacker, opts.auraSources, weapon) | 0;
         if (auraPct) dmg = Math.max(0, Math.ceil(dmg * (100 + auraPct) / 100));
+        if (attacker) attacker._lastAuraWpPct = auraPct | 0;
       }
       /* Ability DTD (Phase Shift Armor, Beam DR, …) when not already in unit.skills type-11 via /cal. */
       skillDr = defender._calSkillDtdPct | 0;
@@ -9166,10 +9293,13 @@
       }
       Rlocal = rules();
       /* Same post-/cal order as strikeDamage (aura, then ability DR, FG, EX). */
+      auraPct = 0;
       if (Rlocal && Rlocal.areaWeaponPowerAuraPct) {
         auraPct = Rlocal.areaWeaponPowerAuraPct(attacker, rosterBuf, weapon) | 0;
         if (auraPct) dmg = Math.max(0, Math.ceil(dmg * (100 + auraPct) / 100));
       }
+      /* Battle log: Cond:Area WP (Neo Zeong −20% + Full Frontal −15% → −35%). */
+      if (attacker) attacker._lastAuraWpPct = auraPct | 0;
       skillDr = defender._calSkillDtdPct | 0;
       abilDr = abilityDamageTakenDownPct(defender.unit, weapon, {
         distance: (Rlocal && Rlocal.distance) ? Rlocal.distance(attacker, defender) : null,
@@ -9562,6 +9692,11 @@
       }
       if (defAction === 'evade') note += ' [Evade roll HIT]';
       if (hitOpts.wave != null) note += ' [W' + hitOpts.wave + ']';
+      /* Cond:Area weapon-power aura — often the gap vs a clean /cal share. */
+      if ((attacker._lastAuraWpPct | 0) < 0) {
+        note += ' [Area WP ' + (attacker._lastAuraWpPct | 0) + '%]';
+        attacker._lastAuraWpPct = 0;
+      }
       /* Surface silent /cal failures (raw weapon PWR) — those look like “EX barely scratched”. */
       if (attacker._lastDmgFallback) {
         note += ' [DMG FALLBACK:' + attacker._lastDmgFallback + ' PWR ' + (wpn.power | 0) + ']';
@@ -12210,6 +12345,22 @@
       setFormationTipOpen(false);
       setView('battle');
     });
+    (function bindMlsHelp() {
+      var btn = document.getElementById('mlsHelpBtn');
+      var panel = document.getElementById('mlsHelpPanel');
+      if (!btn || !panel || btn._mlsHelpBound) return;
+      btn._mlsHelpBound = true;
+      btn.addEventListener('click', function () {
+        var open = panel.hasAttribute('hidden');
+        if (open) {
+          panel.removeAttribute('hidden');
+          btn.setAttribute('aria-expanded', 'true');
+        } else {
+          panel.setAttribute('hidden', '');
+          btn.setAttribute('aria-expanded', 'false');
+        }
+      });
+    })();
     document.getElementById('mlsGotoBattle') && document.getElementById('mlsGotoBattle').addEventListener('click', function () {
       setView('battle');
     });
@@ -12287,13 +12438,17 @@
       });
     });
     document.getElementById('mlsPickerFilters') && document.getElementById('mlsPickerFilters').addEventListener('click', function (ev) {
-      var btn = ev.target && ev.target.closest && ev.target.closest('.mls-chip');
+      var btn = ev.target && ev.target.closest && (
+        ev.target.closest('.mls-season-tag') ||
+        ev.target.closest('.mls-season-none') ||
+        ev.target.closest('.mls-chip')
+      );
       var row, kind, qEl, val, set, ix;
       if (!btn) return;
-      row = btn.parentElement;
+      row = btn.closest('[data-mls-filter]');
       kind = row && row.getAttribute('data-mls-filter');
       if (!kind) return;
-      /* Season Boost: Tag — multi-select OR; All clears. Client filter only (no refetch). */
+      /* Season Boost: Tag — multi-select OR; None clears. Client filter only (no refetch). */
       if (kind === 'season') {
         val = btn.getAttribute('data-val') || '';
         set = pickerFilter.seasonTags || [];
@@ -12305,7 +12460,7 @@
           else set.push(val);
           pickerFilter.seasonTags = set;
         }
-        Array.prototype.forEach.call(row.querySelectorAll('.mls-chip'), function (b) {
+        Array.prototype.forEach.call(row.querySelectorAll('.mls-season-tag, .mls-season-none'), function (b) {
           var v = b.getAttribute('data-val') || '';
           b.classList.toggle('is-on', v
             ? (pickerFilter.seasonTags.indexOf(v) >= 0)

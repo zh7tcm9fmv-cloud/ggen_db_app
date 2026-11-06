@@ -42,17 +42,26 @@
     <div class="mls-views-tabs">
       <span class="mls-view-tab-wrap" id="mlsFormationTabWrap">
         <button type="button" class="mls-view-btn is-active" data-view="formation" id="mlsTabFormation" data-mls-i18n="mls_tab_formation" aria-describedby="mlsFormTip">Formation</button>
-        <span class="mls-view-tip" id="mlsFormTip" role="tooltip" data-mls-i18n-html="mls_note">Left is the opponent (<strong>Enemy Forces</strong>); right is your force (<strong>Your Forces</strong>). Each side can pick a <strong>supporter</strong> (same as Team Builder)—unit suggestions then filter by that supporter’s tags. Tap a <strong>pilot</strong> portrait to swap pilots. Set <strong>Limit Break</strong> and <strong>Modifications</strong> per unit the same way as /tb. <strong>Drag</strong> a formation portrait to reorder slots, or on the <strong>Battle</strong> map drag a unit onto that side’s spawn cells for this season’s formation.</span>
+        <span class="mls-view-tip" id="mlsFormTip" role="tooltip" data-mls-i18n-html="mls_note">Left is the opponent (<strong>Enemy Forces</strong>); right is your force (<strong>Your Forces</strong>). Open <strong>Help</strong> for the full how-to.</span>
       </span>
       <button type="button" class="mls-view-btn" data-view="battle" id="mlsTabBattle" data-mls-i18n="mls_tab_battle">Battle</button>
     </div>
     <div class="mls-views-opts">
+      <button type="button" class="mls-help-btn" id="mlsHelpBtn" aria-expanded="false" aria-controls="mlsHelpPanel" data-mls-i18n="mls_help">Help</button>
       <label class="mls-check" id="mlsUseCollectionsLab" title="Ally only: pickers show your Collections kits (UR units incl. Ultimate, UR supporters) and recommended pilots of those units; sync Limit Break from Collections on load / pick; kits not in Collections are greyed out and omitted from Battle. Enemy force is never filtered.">
         <input type="checkbox" id="mlsUseCollections">
         <span>Sync with my collections</span>
       </label>
     </div>
   </nav>
+  <aside class="mls-help-panel" id="mlsHelpPanel" hidden data-mls-i18n-html="mls_guide">
+    <p><strong>What this is</strong> — A practice Master League auto-battle twin. Build both teams, pick a season board, then watch the sim fight using Damage Calculator numbers. It is not the live game server and does not guarantee ranked results.</p>
+    <p><strong>Formation</strong> — Left = opponent (<strong>Enemy Forces</strong>); right = you (<strong>Your Forces</strong>). Each side: one <strong>supporter</strong> + five units. Tap a unit portrait/name to change the unit; tap the pilot pip or Pilot button to change the pilot; set <strong>Limit Break</strong> and <strong>Modifications</strong> like Team Builder. Supporter tags filter unit suggestions.</p>
+    <p><strong>Reorder</strong> — <strong>Tap</strong> to change a unit. <strong>Hold</strong> (~¼s) then drag the card (or portrait) onto another slot to swap LINE positions. On the <strong>Battle</strong> map, drag a unit onto that side’s spawn cells for this season.</p>
+    <p><strong>Collections</strong> — Optional “Sync with my collections” (ally only): pickers show your kits, sync LB, grey out missing kits so they stay off Battle. Enemy force is never filtered.</p>
+    <p><strong>Share</strong> — Copy / paste a side’s share code to move a force between devices or friends, then Load.</p>
+    <p><strong>Battle</strong> — Pick season → Open battle map → <strong>SIMULATION START</strong>. Pause, speed, Skip, Reset. Turn order is Mobility + Reaction (both sides). Chance Step options and area-aura visibility sit on the battle chrome. Formation Optimizer tries ally slot-order permutations for a faster clear under a fixed seed.</p>
+  </aside>
 
   <section class="mls-view is-active" id="mlsViewFormation" data-view="formation">
     <div class="mls-forces">

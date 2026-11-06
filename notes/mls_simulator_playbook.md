@@ -19,7 +19,7 @@ It is **not** the live game server and **not** a guarantee of Master League rank
 
 | Surface | What it is |
 |--------|------------|
-| **Formation** | 5+1 slots per side (units + supporter). LB, option part, pilot. Drag slots to change LINE map positions. |
+| **Formation** | 5+1 slots per side (units + supporter). LB, option part, pilot. **Tap** portrait/name to change unit; **hold** then drag the card (or portrait) to swap slots. **Help** = full how-to. |
 | **Battle** | Auto-play map: move → combat → floats / HP / vigor. Pause, speed, SKIP, RESET. |
 | **Area aura toggle** | Cond:Area rings (e.g. Neo Zeong EX) on/off for visibility. Combat still applies aura damage math when relevant. |
 | **Formation Optimizer** | Tries ally **slot order** permutations only; keeps the fastest clear under a fixed RNG seed. |
@@ -53,8 +53,9 @@ This is **not** the official phase script (Your → Friendly → Enemy → Third
 
 - **Distance** = Manhattan gap between **footprints** (large units size 2). Not Chebyshev.  
 - **Move** = 4-direction BFS. Allies are passable; enemies block.  
-- **Target** = lowest **current HP** among enemies you can still reach with some non-MAP weapon.  
-- **Weapon pick** = highest estimated damage via `/cal` (with a fallback if cal collapses to raw power).
+- **Target** (among enemies you can still reach with some non-MAP weapon): **lowest absolute HP** first (nicks / debuff “squish” do not re-rank). Ties → closer → higher `/cal` expected damage → lower slot index.  
+- **Weapon pick** = highest estimated damage via `/cal` (with a fallback if cal collapses to raw power).  
+- Still a **sim heuristic**, not a claim of official Master League AI.
 
 ---
 
