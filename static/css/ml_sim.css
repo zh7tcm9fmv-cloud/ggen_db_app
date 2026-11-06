@@ -2674,6 +2674,27 @@ body.mls-is-map-dragging .mls-map {
   object-fit: contain;
   display: block;
 }
+/* Guaranteed CS crown: fade away the instant once/battle stock is spent (not kill-CS). */
+.mls-token-gcs-mark {
+  opacity: 1;
+  transform: scale(1);
+  transition:
+    opacity var(--motion-dur-standard, 220ms) var(--motion-ease-exit, cubic-bezier(0.3, 0, 1, 1)),
+    transform var(--motion-dur-standard, 220ms) var(--motion-ease-exit, cubic-bezier(0.3, 0, 1, 1));
+}
+.mls-token-gcs-mark.is-fading {
+  opacity: 0;
+  transform: scale(0.72);
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .mls-token-gcs-mark {
+    transition: opacity var(--motion-dur-quick, 120ms) ease;
+  }
+  .mls-token-gcs-mark.is-fading {
+    transform: none;
+  }
+}
 .mls-token-status-mark {
   /* Slight gold rim so Inflict statuses read as debuffs next to skill / GCS. */
   filter: drop-shadow(0 0 1px rgba(255, 180, 60, 0.9));

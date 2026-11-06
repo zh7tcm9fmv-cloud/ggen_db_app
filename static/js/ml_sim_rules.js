@@ -2007,6 +2007,79 @@
     return false;
   }
 
+  /**
+   * Dash / Moving-Attack MAP (MapWeaponRangeTypeIndex 4, e.g. V2AB Wings of Light / 光之翼).
+   * Fires from the start tile; unit lands at the far end of shooting_coords after the attack.
+   */
+  function isDashMapWeapon(w) {
+    var mrt, raw;
+    if (!w) return false;
+    raw = w.raw || w;
+    if (w.is_dash || raw.is_dash || w.map_dash_dual_wide || raw.map_dash_dual_wide) return true;
+    mrt = String(w.map_range_type != null ? w.map_range_type
+      : (raw.map_range_type != null ? raw.map_range_type : '0'));
+    return mrt === '4';
+  }
+
+  /** Local → world using the same facing basis as mapWeaponWorldCells. */
+  function mapLocalToWorld(actor, lx, ly) {
+    var dir = actor.direction != null ? (actor.direction | 0) : (actor.side === 'ally' ? 3 : 1);
+    var ax = actor.x | 0;
+    var ay = actor.y | 0;
+    var large = unitSize(actor) > 1;
+    if (dir === 1) return { x: ax + (ly | 0), y: large ? (ay - (lx | 0)) : (ay + (lx | 0)) };
+    if (dir === 3) return { x: ax - (ly | 0), y: ay - (lx | 0) };
+    if (dir === 2) return { x: ax + (lx | 0), y: ay + (ly | 0) };
+    return { x: ax - (lx | 0), y: ay - (ly | 0) };
+  }
+
+  /** Shooting-path locals farthest from origin (dash land candidates, near→far). */
+  function mapDashPathLocals(weapon) {
+    var sc = (weapon && (weapon.shooting_coords || (weapon.raw && weapon.raw.shooting_coords))) || [];
+    var ends = (weapon && (weapon.map_dash_dual_end_coords ||
+      (weapon.raw && weapon.raw.map_dash_dual_end_coords))) || [];
+    var list = (ends.length ? ends : sc).slice();
+    list.sort(function (a, b) {
+      var da = Math.abs(a.x | 0) + Math.abs(a.y | 0);
+      var db = Math.abs(b.x | 0) + Math.abs(b.y | 0);
+      return da - db;
+    });
+    return list;
+  }
+
+  /**
+   * Where a dash MAP leaves the unit after firing (far end of shooting path).
+   * Walks back toward the origin if the preferred land tile is out of bounds / occupied.
+   */
+  function resolveDashLandCell(actor, weapon, allUnits, bounds) {
+    var locals, i, loc, world, size, ok, u, j;
+    if (!actor || !isDashMapWeapon(weapon)) return null;
+    locals = mapDashPathLocals(weapon);
+    if (!locals.length) return null;
+    size = unitSize(actor);
+    for (i = locals.length - 1; i >= 0; i--) {
+      loc = locals[i];
+      world = mapLocalToWorld(actor, loc.x | 0, loc.y | 0);
+      ok = footprintCellsAt(world.x, world.y, size, actor.side, actor.direction).every(function (c) {
+        return c.x >= (bounds.minX | 0) && c.x <= (bounds.maxX | 0) &&
+          c.y >= (bounds.minY | 0) && c.y <= (bounds.maxY | 0);
+      });
+      if (!ok) continue;
+      for (j = 0; j < (allUnits || []).length; j++) {
+        u = allUnits[j];
+        if (!u || (u.hp | 0) <= 0 || u === actor) continue;
+        if (wouldOverlapUnit(world.x, world.y, size, actor.side, actor.direction, u)) {
+          ok = false;
+          break;
+        }
+      }
+      if (!ok) continue;
+      if ((world.x | 0) === (actor.x | 0) && (world.y | 0) === (actor.y | 0)) return null;
+      return { x: world.x | 0, y: world.y | 0 };
+    }
+    return null;
+  }
+
   /** “Can designate up to N spots” / MapWeaponImpactPointMaxSelectCount. */
   function mapImpactSelectCount(w) {
     var n, m, blob, raw;
@@ -2083,16 +2156,38 @@
   }
 
   /**
-   * MLS MAP interrupt — use any is_map with ammo when AoE / multi-spot beats single-target
-   * (master map_coords; type-2 impact = designate spots within weapon range).
+   * MLS MAP interrupt (ML priority — owner / recorded matches):
+   *   1. Prefer EX / highest non-MAP damage first — never open with MAP when that
+   *      normal shot kills the engage target (even if MAP would multi-kill).
+   *   2. Only then use MAP when the engage foe survives the best normal shot AND
+   *      the MAP shape hits 2+ living enemies (single-spot impact kits still need
+   *      their designate count; multi AoE requires ≥2).
+   * Dash MAP (type 4, e.g. V2AB Wings of Light / 光之翼): fire from the current
+   * tile (no pre-move); land at `dashTo` after hits resolve.
    */
   function evaluateMapWeapon(actor, target, foes, allUnits, bounds, damageOf) {
     var candidates = getValidWeapons(actor, null, false).filter(isMapWeapon);
     var best = null;
     var ci, wpn, free, cost, canFire, rawDist, mn, mx, needMove, simPos;
     var cells, inArea, maxSel, isSingle, minNeed, mapKills, totalDmg, i, mt, mDmg;
-    var normalPick, normalDmg, normalKills, better;
-    var impactMode, dest, picked, key, seen, cellList, j, ec;
+    var normalPick, normalDmg, normalKills, better, mapPrimary;
+    var impactMode, isDash, dashTo, dest, picked, key, seen, cellList, j, ec;
+    var fireActor;
+
+    /* Gate once from the current tile: if EX/best normal kills engage, skip all MAP. */
+    normalPick = pickWeapon(
+      {
+        weapons: (actor.weapons || []).filter(function (w) { return !isMapWeapon(w); }),
+        x: actor.x | 0, y: actor.y | 0, size: unitSize(actor), side: actor.side
+      },
+      target,
+      function (a, d, w) {
+        return typeof damageOf === 'function' ? damageOf(actor, d, w) : (w.power | 0);
+      }
+    );
+    normalDmg = normalPick ? (normalPick.damage | 0) : 0;
+    normalKills = (target.hp | 0) - normalDmg <= 0 ? 1 : 0;
+    if (normalKills > 0) return null;
 
     for (ci = 0; ci < candidates.length; ci++) {
       wpn = candidates[ci];
@@ -2106,16 +2201,24 @@
       mx = wpn.max_range != null ? wpn.max_range | 0 : 5;
       maxSel = mapImpactSelectCount(wpn);
       impactMode = isImpactMapWeapon(wpn);
+      isDash = isDashMapWeapon(wpn);
+      dashTo = null;
       rawDist = distance(actor, target);
-      needMove = rawDist > mx || rawDist < mn;
+      needMove = !isDash && (rawDist > mx || rawDist < mn);
       if (isMoveBeforeOnly(wpn) && needMove) continue;
 
-      simPos = { x: actor.x | 0, y: actor.y | 0, size: unitSize(actor), side: actor.side };
+      simPos = {
+        x: actor.x | 0, y: actor.y | 0, size: unitSize(actor),
+        side: actor.side, direction: actor.direction
+      };
       /*
+       * Dash MAP: attack IS the path — fire from the current tile only.
        * Impact multi-spot (after-move): even if already in range of the engage
        * target, step up when that puts a 2nd designate in range.
        */
-      if (impactMode && !isMoveBeforeOnly(wpn) && maxSel >= 2) {
+      if (isDash) {
+        needMove = false;
+      } else if (impactMode && !isMoveBeforeOnly(wpn) && maxSel >= 2) {
         dest = getBestImpactMapDestination(actor, target, foes, actor.move | 0, mn, mx, allUnits, bounds);
         if (dest && distance({ x: dest.x, y: dest.y, size: simPos.size }, target) >= mn &&
             distance({ x: dest.x, y: dest.y, size: simPos.size }, target) <= mx) {
@@ -2139,7 +2242,7 @@
         simPos.y = dest.y;
         needMove = !!(dest.moved);
       }
-      if (distance(simPos, target) < mn || distance(simPos, target) > mx) continue;
+      if (!isDash && (distance(simPos, target) < mn || distance(simPos, target) > mx)) continue;
 
       if (impactMode) {
         /*
@@ -2194,6 +2297,7 @@
       isSingle = impactMode || maxSel > 0 ||
         !!(wpn.map_single_pou || (wpn.raw && wpn.raw.map_single_pou)) ||
         ((wpn.min_range | 0) === 1 && (wpn.max_range | 0) === 1);
+      /* Rule 2: multi AoE / dash MAP need 2+ living enemies in the shape. */
       minNeed = isSingle ? 1 : 2;
       if (inArea.length < minNeed) continue;
 
@@ -2206,30 +2310,15 @@
         if ((mt.hp | 0) - mDmg <= 0) mapKills++;
       }
 
-      normalPick = pickWeapon(
-        { weapons: (actor.weapons || []).filter(function (w) { return !isMapWeapon(w); }), x: simPos.x, y: simPos.y, size: simPos.size, side: actor.side },
-        target,
-        function (a, d, w) {
-          return typeof damageOf === 'function' ? damageOf(actor, d, w) : (w.power | 0);
-        }
-      );
-      normalDmg = normalPick ? (normalPick.damage | 0) : 0;
-      normalKills = (target.hp | 0) - normalDmg <= 0 ? 1 : 0;
-
       /*
-       * m_help: MAP kill does NOT grant Chance Step / 額外行動.
-       * Prefer MAP only when it gets strictly more kills than a normal weapon.
-       * If a normal shot already kills (same kill count ≥ 1), keep the normal
-       * swing so kill-CS can chain (Altron EW EX after-move MAP class).
-       * Chip-only (0 kills): do NOT pick MAP just because AoE sum ≥ one shot
-       * (F90 A.D.S. Barrage 4560×2 was beating Barrage EX 6120). Require MAP
-       * damage on the engage target ≥ best non-MAP, plus a real multi-hit
-       * (or no non-MAP in range at the fire tile).
+       * Engage already known to survive best non-MAP (gate above).
+       * Prefer MAP when it scores any kills, or on chip only when MAP primary
+       * ≥ best non-MAP and AoE sum beats that single shot (F90 Barrage lesson).
        */
       better = false;
-      if (mapKills > normalKills) better = true;
-      else if (mapKills === 0 && normalKills === 0) {
-        var mapPrimary = typeof damageOf === 'function'
+      if (mapKills > 0) better = true;
+      else {
+        mapPrimary = typeof damageOf === 'function'
           ? (damageOf(actor, target, wpn) | 0)
           : (wpn.power | 0);
         if (!normalPick || normalDmg <= 0) {
@@ -2239,6 +2328,15 @@
         }
       }
       if (!better) continue;
+
+      if (isDash) {
+        fireActor = {
+          x: simPos.x, y: simPos.y, size: simPos.size,
+          side: actor.side, direction: actor.direction
+        };
+        dashTo = resolveDashLandCell(fireActor, wpn, allUnits, bounds);
+      }
+
       if (!best || mapKills > best.mapKills || (mapKills === best.mapKills && totalDmg > best.totalDmg) ||
           (mapKills === best.mapKills && totalDmg === best.totalDmg && inArea.length > (best.targets || []).length)) {
         best = {
@@ -2246,6 +2344,7 @@
           targets: inArea,
           cells: cells.slice(),
           moveTo: needMove ? { x: simPos.x, y: simPos.y } : null,
+          dashTo: dashTo,
           mapKills: mapKills,
           totalDmg: totalDmg,
           enCost: cost,
@@ -2914,6 +3013,8 @@
     grantsGuaranteedCsAfterCombat: grantsGuaranteedCsAfterCombat,
     chanceStepLabels: chanceStepLabels,
     evaluateMapWeapon: evaluateMapWeapon,
+    isDashMapWeapon: isDashMapWeapon,
+    resolveDashLandCell: resolveDashLandCell,
     mapWeaponWorldCells: mapWeaponWorldCells,
     buildCombatQueue: buildCombatQueue,
     consumeWeaponCost: consumeWeaponCost,

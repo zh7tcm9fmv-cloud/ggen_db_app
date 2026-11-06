@@ -129,8 +129,12 @@ HUD labels on the map: **S. Attack** / **S. Defense** (not SD/SA abbreviations).
 - **MAP kill does not grant Chance Step** (matches help).  
 - **Guaranteed Chance Step +N** (無条件…+N回): real count increase — bump `chanceStepsLeft` on acquire, then no-KO fire spends that raised budget (Uso UR EX: base 2 + Guaranteed +1 → 4 actions). Auto-CS still only forces an existing slot.
 
-MAP: no normal move-after (except specials coded), uses map footprint cells + facing where present.  
-Chip-only MAP (0 kills): prefer MAP only when its damage on the engage target is ≥ the best non-MAP shot **and** it hits 2+ foes — do not let AoE sum beat a stronger single-target weapon (F90 A.D.S. Barrage vs Barrage EX).
+MAP AI (ML priority):
+1. Prefer EX / highest non-MAP first — **never** open with MAP when that shot kills the engage target (even if MAP would multi-kill; V2AB Wings of Light / 光之翼).
+2. Only then use MAP when the engage foe survives the best normal shot **and** 2+ living enemies sit in the MAP shape.
+3. Chip-only (0 MAP kills): still require MAP primary ≥ best non-MAP **and** AoE sum > that shot (F90 A.D.S. Barrage vs Barrage EX) — do not let weaker MAP win on sum alone.
+
+Dash / Moving-Attack MAP (`MapWeaponRangeTypeIndex` 4): fire from the start tile (no pre-move into range); after hits resolve, land at the far `shooting_coords` cell (`dashTo`).
 
 ---
 

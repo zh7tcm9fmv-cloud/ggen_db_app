@@ -5016,6 +5016,9 @@
         map_range_type: String(w.map_range_type != null ? w.map_range_type : '0'),
         map_impact_point_max_select_count: w.map_impact_point_max_select_count | 0,
         map_single_pou: !!w.map_single_pou,
+        is_dash: !!(w.is_dash || String(w.map_range_type) === '4' || w.map_dash_dual_wide),
+        map_dash_dual_wide: !!w.map_dash_dual_wide,
+        map_dash_dual_end_coords: (w.map_dash_dual_end_coords || []).slice(),
         attribute: w.attribute || '',
         weapon_type: w.weapon_type || ''
       };
@@ -6308,6 +6311,10 @@
       '<img src="' + esc(icon) + '" alt="" decoding="async"></span>';
   }
 
+  function guaranteedCsStillWanted(u) {
+    return !!(u && (u.unconditionalCSStock | 0) > 0 && (u.hp | 0) > 0);
+  }
+
   /** Active Inflict / status debuff icons (Beam DTU, DEF down, …). */
   function statusDebuffMarksHtml(u) {
     var now, html, seen;
@@ -6338,23 +6345,106 @@
     return '<div class="mls-token-top-marks">' + skill + gcs + status + '</div>';
   }
 
-  function syncTopMarksEl(el, u) {
+  function clearOrphanTopMarks(el) {
+    Array.prototype.forEach.call(el.querySelectorAll('.mls-token-skill-mark, .mls-token-gcs-mark, .mls-token-status-mark'), function (n) {
+      if (n.parentNode && !n.parentNode.classList.contains('mls-token-top-marks')) {
+        n.parentNode.removeChild(n);
+      }
+    });
+  }
+
+  function removeEmptyTopMarksWrap(el) {
     var wrap = el && el.querySelector('.mls-token-top-marks');
-    var html;
+    if (!wrap) return;
+    if (!wrap.querySelector('.mls-token-skill-mark, .mls-token-gcs-mark, .mls-token-status-mark')) {
+      if (wrap.parentNode) wrap.parentNode.removeChild(wrap);
+    }
+  }
+
+  /** Fade Guaranteed CS crown away the moment stock hits 0 (Guaranteed fire — not kill-CS). */
+  function beginGuaranteedCsMarkFade(el, mark) {
+    var finished = false;
+    function done() {
+      if (finished) return;
+      finished = true;
+      if (mark && mark.parentNode) mark.parentNode.removeChild(mark);
+      removeEmptyTopMarksWrap(el);
+    }
+    if (!mark) return;
+    mark.classList.add('is-fading');
+    mark.setAttribute('aria-hidden', 'true');
+    mark.addEventListener('transitionend', function (ev) {
+      if (ev && ev.target !== mark) return;
+      done();
+    });
+    setTimeout(done, 280);
+  }
+
+  /**
+   * Surgical crown sync — never outerHTML-replace a live Guaranteed CS mark while it
+   * still has stock, and fade it out immediately when Guaranteed stock is spent.
+   */
+  function syncTopMarksEl(el, u) {
+    var wrap, skillHtml, statusHtml, gcsHtml, wantGcs, gcsMark, skillSlot, statusHost;
     if (!el) return;
-    html = topMarksHtml(u);
-    if (!html) {
+    clearOrphanTopMarks(el);
+    wrap = el.querySelector('.mls-token-top-marks');
+    skillHtml = skillMarkHtml(u);
+    statusHtml = statusDebuffMarksHtml(u);
+    gcsHtml = guaranteedCsMarkHtml(u);
+    wantGcs = guaranteedCsStillWanted(u);
+    gcsMark = wrap && wrap.querySelector('.mls-token-gcs-mark');
+
+    if (!skillHtml && !statusHtml && !wantGcs && !(gcsMark && gcsMark.classList.contains('is-fading'))) {
+      if (gcsMark && !gcsMark.classList.contains('is-fading')) {
+        beginGuaranteedCsMarkFade(el, gcsMark);
+        /* Keep wrap while fade runs — skill/status already empty. */
+        Array.prototype.forEach.call(wrap.querySelectorAll('.mls-token-skill-mark, .mls-token-status-mark'), function (n) {
+          if (n.parentNode) n.parentNode.removeChild(n);
+        });
+        return;
+      }
       if (wrap && wrap.parentNode) wrap.parentNode.removeChild(wrap);
-      /* Drop legacy single skill-mark nodes from older paints. */
-      Array.prototype.forEach.call(el.querySelectorAll('.mls-token-skill-mark, .mls-token-gcs-mark'), function (n) {
-        if (n.parentNode && !n.parentNode.classList.contains('mls-token-top-marks')) {
-          n.parentNode.removeChild(n);
-        }
-      });
       return;
     }
-    if (wrap) wrap.outerHTML = html;
-    else el.insertAdjacentHTML('afterbegin', html);
+
+    if (!wrap) {
+      el.insertAdjacentHTML('afterbegin', '<div class="mls-token-top-marks"></div>');
+      wrap = el.querySelector('.mls-token-top-marks');
+    }
+
+    skillSlot = wrap.querySelector('.mls-token-skill-mark');
+    if (skillHtml) {
+      if (skillSlot) skillSlot.outerHTML = skillHtml;
+      else wrap.insertAdjacentHTML('afterbegin', skillHtml);
+    } else if (skillSlot && skillSlot.parentNode) {
+      skillSlot.parentNode.removeChild(skillSlot);
+    }
+
+    /* Guaranteed CS: show while stock remains; fade the same node the instant stock is spent. */
+    gcsMark = wrap.querySelector('.mls-token-gcs-mark');
+    if (wantGcs) {
+      if (gcsMark) {
+        /* Scrub/replay restored stock — cancel any in-flight fade. */
+        gcsMark.classList.remove('is-fading');
+        gcsMark.removeAttribute('aria-hidden');
+      } else if (gcsHtml) {
+        /* After skill, before status marks. */
+        statusHost = wrap.querySelector('.mls-token-status-mark');
+        if (statusHost) statusHost.insertAdjacentHTML('beforebegin', gcsHtml);
+        else wrap.insertAdjacentHTML('beforeend', gcsHtml);
+      }
+    } else if (gcsMark && !gcsMark.classList.contains('is-fading')) {
+      beginGuaranteedCsMarkFade(el, gcsMark);
+    }
+
+    /* Replace status marks as a block (order after skill + GCS). */
+    Array.prototype.forEach.call(wrap.querySelectorAll('.mls-token-status-mark'), function (n) {
+      if (n.parentNode) n.parentNode.removeChild(n);
+    });
+    if (statusHtml) wrap.insertAdjacentHTML('beforeend', statusHtml);
+
+    removeEmptyTopMarksWrap(el);
   }
 
   /** @deprecated use syncTopMarksEl */
@@ -6366,12 +6456,14 @@
     var t, icon;
     if (!ev) return '';
     if (ev.icon) return thumbUrl(ev.icon);
+    if (ev.gcsIcon || ev.gcsSpent) return guaranteedChanceStepIconUrl();
     if (ev.csIcon) return chanceStepIconUrl();
     icon = badgeIconUrl(ev.badge);
     if (icon) return icon;
     t = String(ev.text || '');
     if (/支援防御|Support\s*Defen|S\.DEF|反撃支援/i.test(t)) return assistDefIconUrl();
     if (/支援攻撃|Support\s*At|Support\s*Counter|S\.ATK/i.test(t)) return assistAtkIconUrl();
+    if (/Guaranteed|無条件|無條件/i.test(t)) return guaranteedChanceStepIconUrl();
     if (/Chance\s*Step|CHANCE\s*STEP|額外行動/i.test(t)) return chanceStepIconUrl();
     if (/Preemptive|先發|先制|先制攻擊/i.test(t)) return preemptIconUrl();
     if (/^MAP$/i.test(t)) return mapBadgeIconUrl();
@@ -9022,7 +9114,11 @@
             map_coords: (w.map_coords || []).slice(), shooting_coords: (w.shooting_coords || []).slice(),
             map_range_type: String(w.map_range_type != null ? w.map_range_type : '0'),
             map_impact_point_max_select_count: w.map_impact_point_max_select_count | 0,
-            map_single_pou: !!w.map_single_pou, attribute: w.attribute || '', weapon_type: w.weapon_type || ''
+            map_single_pou: !!w.map_single_pou,
+            is_dash: !!(w.is_dash || String(w.map_range_type) === '4' || w.map_dash_dual_wide),
+            map_dash_dual_wide: !!w.map_dash_dual_wide,
+            map_dash_dual_end_coords: (w.map_dash_dual_end_coords || []).slice(),
+            attribute: w.attribute || '', weapon_type: w.weapon_type || ''
           };
         }),
         unit: (base && base.unit) || u.unit, char: u.char,
@@ -10171,6 +10267,26 @@
               });
               if (res && !res.miss) hitAny = true;
             });
+            /* Dash / Moving-Attack MAP (type 4): land at the far end of shooting_coords. */
+            if (mapPlan.dashTo && (u.hp | 0) > 0) {
+              oldX = u.x; oldY = u.y;
+              u.x = mapPlan.dashTo.x | 0;
+              u.y = mapPlan.dashTo.y | 0;
+              if ((u.x | 0) !== (oldX | 0) || (u.y | 0) !== (oldY | 0)) {
+                snapshotLine(
+                  'T' + turn + ' MAP Dash: ' + u.name + ' [' + oldX + ',' + oldY + '] → [' + u.x + ',' + u.y + ']',
+                  null,
+                  {
+                    kind: 'move',
+                    fromId: linkActorId(u),
+                    toId: linkActorId(u),
+                    from: { x: oldX | 0, y: oldY | 0 },
+                    to: { x: u.x | 0, y: u.y | 0 }
+                  },
+                  'move'
+                );
+              }
+            }
             u.lastActionHit = hitAny;
             gotExtra = false;
             var csLblMap = (R.chanceStepLabels && R.chanceStepLabels(lang())) || {
@@ -10189,7 +10305,7 @@
              * - Auto-Chance Step does not activate after MAP Weapons.
              * Guaranteed Chance Step still applies (end of any non-wait action).
              * Weapon “CS on hit” traits still spend the phase budget when present.
-             * AI: evaluateMapWeapon prefers a normal kill when kill counts tie so CS can chain.
+             * AI: evaluateMapWeapon skips MAP when EX/best normal already kills the engage target.
              */
             if ((u.hp | 0) > 0 && living(foes).length) {
               if (hitAny && !u._weaponCsGrantedThisAction &&
@@ -10214,8 +10330,8 @@
                 snapshotLine(
                   'T' + turn + ' ' + csLblMap.guaranteed + ': ' + u.name +
                   ' (stock ' + (u.unconditionalCSStock | 0) + ', left ' + (u.chanceStepsLeft | 0) + ')',
-                  { x: u.x, y: u.y, text: csLblMap.guaranteed, badge: 'CS', cls: 'mls-float--skill' },
-                  { kind: 'chance-step', fromId: linkActorId(u), toId: linkActorId(u), from: { x: u.x, y: u.y }, to: { x: u.x, y: u.y }, csIcon: true },
+                  { x: u.x, y: u.y, text: csLblMap.guaranteed, badge: 'CS', cls: 'mls-float--skill', gcsIcon: true },
+                  { kind: 'chance-step', fromId: linkActorId(u), toId: linkActorId(u), from: { x: u.x, y: u.y }, to: { x: u.x, y: u.y }, csIcon: true, gcsSpent: true, gcsIcon: true },
                   'skill'
                 );
               }
@@ -10599,8 +10715,8 @@
               snapshotLine(
                 'T' + turn + ' ' + csLbl.guaranteed + ': ' + u.name +
                 ' (stock ' + (u.unconditionalCSStock | 0) + ', left ' + (u.chanceStepsLeft | 0) + ')',
-                { x: u.x, y: u.y, text: csLbl.guaranteed, badge: 'CS', cls: 'mls-float--skill' },
-                { kind: 'chance-step', fromId: linkActorId(u), toId: linkActorId(u), from: { x: u.x, y: u.y }, to: { x: u.x, y: u.y }, csIcon: true },
+                { x: u.x, y: u.y, text: csLbl.guaranteed, badge: 'CS', cls: 'mls-float--skill', gcsIcon: true },
+                { kind: 'chance-step', fromId: linkActorId(u), toId: linkActorId(u), from: { x: u.x, y: u.y }, to: { x: u.x, y: u.y }, csIcon: true, gcsSpent: true, gcsIcon: true },
                 'skill'
               );
             } else if ((u.autoCsLeft | 0) > 0 && (u.chanceStepsLeft | 0) > 0 &&

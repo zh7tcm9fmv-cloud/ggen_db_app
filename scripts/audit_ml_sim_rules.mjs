@@ -442,17 +442,87 @@ assert(rules.checkHit(parryAtk, Object.assign({}, parryDef, { usedParryCount: 0,
   assert(!mapPlanChip, 'F90 Barrage MAP skipped vs Barrage EX on chip (AoE sum must not win), got ' +
     (mapPlanChip && mapPlanChip.weapon && mapPlanChip.weapon.name));
 
-  /* Same cone, but MAP can double-kill while EX cannot → MAP still preferred. */
+  /* Soft foes: EX kills engage → never open with MAP even if MAP would multi-kill (V2AB Wings lesson). */
   const softFoes = [
     { id: 's2', hp: 4000, x: 8, y: 9, size: 1, side: 'enemy' },
     { id: 's4', hp: 4000, x: 8, y: 7, size: 1, side: 'enemy' }
   ];
-  const mapPlanKill = rules.evaluateMapWeapon(
+  const mapPlanSoft = rules.evaluateMapWeapon(
     f90, softFoes[1], softFoes, [f90].concat(softFoes), lineBounds, (a, d, w) => w.power | 0
   );
-  assert(mapPlanKill && mapPlanKill.weapon && mapPlanKill.weapon.name === 'Barrage',
-    'F90 Barrage MAP still used when it gets more kills than EX, got ' +
-    (mapPlanKill && mapPlanKill.weapon && mapPlanKill.weapon.name));
+  assert(!mapPlanSoft, 'F90 Barrage MAP skipped when Barrage EX kills engage, got ' +
+    (mapPlanSoft && mapPlanSoft.weapon && mapPlanSoft.weapon.name));
+
+  /* EX cannot kill, MAP can KO 2 in cone → MAP allowed. */
+  const midEx = {
+    name: 'Barrage EX', power: 3000, min_range: 1, max_range: 5, en: 43, en_cost: 43, ammo: 0,
+    is_map: false, is_ex: true, usage_restrictions: []
+  };
+  const f90Mid = Object.assign({}, f90, { weapons: [barrageMap, midEx] });
+  const midFoes = [
+    { id: 'm2', hp: 4000, x: 8, y: 9, size: 1, side: 'enemy' },
+    { id: 'm4', hp: 4000, x: 8, y: 7, size: 1, side: 'enemy' }
+  ];
+  const mapPlanMid = rules.evaluateMapWeapon(
+    f90Mid, midFoes[1], midFoes, [f90Mid].concat(midFoes), lineBounds, (a, d, w) => w.power | 0
+  );
+  assert(mapPlanMid && mapPlanMid.weapon && mapPlanMid.weapon.name === 'Barrage',
+    'F90 Barrage MAP used when EX cannot kill engage and 2+ in cone, got ' +
+    (mapPlanMid && mapPlanMid.weapon && mapPlanMid.weapon.name));
+}
+
+/* V2AB Wings of Light — dash MAP (type 4): land at far shooting_coord; skip when EX kills. */
+{
+  const wings = {
+    name: 'Wings of Light', power: 4560, min_range: 1, max_range: 4, en: 54, en_cost: 54, ammo: 1,
+    is_map: true, is_map_weapon: true, map_range_type: '4', is_dash: true,
+    map_impact_point_max_select_count: 0, map_single_pou: false,
+    usage_restrictions: [],
+    map_coords: [
+      { x: -1, y: 4 }, { x: 0, y: 4 }, { x: 1, y: 4 },
+      { x: -1, y: 3 }, { x: 0, y: 3 }, { x: 1, y: 3 },
+      { x: -1, y: 2 }, { x: 0, y: 2 }, { x: 1, y: 2 },
+      { x: -1, y: 1 }, { x: 0, y: 1 }, { x: 1, y: 1 }
+    ],
+    shooting_coords: [{ x: 0, y: 4 }, { x: 0, y: 3 }, { x: 0, y: 2 }, { x: 0, y: 1 }]
+  };
+  const barrageEx = {
+    name: 'Barrage EX', power: 7200, min_range: 1, max_range: 5, en: 43, en_cost: 43, ammo: 0,
+    is_map: false, is_ex: true, usage_restrictions: []
+  };
+  const v2 = {
+    id: 'v2ab', name: 'V2 Assault Buster Gundam (EX)', side: 'ally',
+    x: 12, y: 7, startX: 12, startY: 7, size: 1, direction: 3, move: 5,
+    hp: 50000, maxHp: 50000, currentEn: 200, maxEn: 200, mp: 0,
+    weapons: [wings, barrageEx]
+  };
+  const soft = [
+    { id: 'e2', hp: 4000, x: 10, y: 7, size: 1, side: 'enemy' },
+    { id: 'e4', hp: 4000, x: 9, y: 7, size: 1, side: 'enemy' }
+  ];
+  const bounds = { minX: 0, maxX: 20, minY: 0, maxY: 20 };
+  /* Facing left (dir 3): local (0,y) → world x = 12 - y. Soft anchors at x=10,9 on the dash path. */
+  const skipWings = rules.evaluateMapWeapon(
+    v2, soft[0], soft, [v2].concat(soft), bounds, (a, d, w) => w.power | 0
+  );
+  assert(!skipWings, 'V2AB Wings skipped when Barrage EX kills engage, got ' +
+    (skipWings && skipWings.weapon && skipWings.weapon.name));
+
+  assert(rules.isDashMapWeapon(wings), 'Wings of Light is dash MAP (type 4)');
+  const land = rules.resolveDashLandCell(v2, wings, [v2].concat(soft), bounds);
+  assert(land && land.x === 8 && land.y === 7,
+    'V2AB Wings dash lands at far shooting end (8,7), got ' + JSON.stringify(land));
+
+  const weakEx = Object.assign({}, barrageEx, { power: 3000 });
+  const v2Weak = Object.assign({}, v2, { weapons: [wings, weakEx] });
+  const mapWings = rules.evaluateMapWeapon(
+    v2Weak, soft[0], soft, [v2Weak].concat(soft), bounds, (a, d, w) => w.power | 0
+  );
+  assert(mapWings && mapWings.weapon && mapWings.weapon.name === 'Wings of Light',
+    'V2AB Wings used when EX cannot kill and 2+ on path, got ' +
+    (mapWings && mapWings.weapon && mapWings.weapon.name));
+  assert(mapWings.dashTo && mapWings.dashTo.x === 8 && mapWings.dashTo.y === 7,
+    'V2AB Wings plan includes dashTo (8,7), got ' + JSON.stringify(mapWings && mapWings.dashTo));
 }
 
 if (!process.exitCode) console.log('ml sim rules audit OK');
