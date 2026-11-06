@@ -383,4 +383,56 @@ assert(rules.checkHit(parryAtk, Object.assign({}, parryDef, { usedParryCount: 0,
   assert(saWave[0].attacker.mobility >= saWave[2].attacker.mobility, 'SA cap keeps highest mobility');
 }
 
+/* F90 A.D.S. Barrage (MAP type 3 cone) vs Barrage EX — chip MAP must not win on AoE sum alone.
+ * LINE ally slot 4 (12,7) facing left; enemies on x=8 include (8,7)+(8,9) in the Barrage cone. */
+{
+  const barrageMap = {
+    name: 'Barrage', power: 4560, min_range: 1, max_range: 4, en: 54, en_cost: 54, ammo: 1,
+    is_map: true, is_map_weapon: true, map_range_type: '3', map_impact_point_max_select_count: 0,
+    map_single_pou: false,
+    usage_restrictions: ['Useable only before moving.'],
+    map_coords: [
+      { x: -3, y: 4 }, { x: -2, y: 4 }, { x: -1, y: 4 }, { x: 0, y: 4 }, { x: 1, y: 4 }, { x: 2, y: 4 }, { x: 3, y: 4 },
+      { x: -2, y: 3 }, { x: -1, y: 3 }, { x: 0, y: 3 }, { x: 1, y: 3 }, { x: 2, y: 3 },
+      { x: -1, y: 2 }, { x: 0, y: 2 }, { x: 1, y: 2 }, { x: 0, y: 1 }
+    ],
+    raw: { is_map: true, map_range_type: '3', map_coords: null }
+  };
+  barrageMap.raw.map_coords = barrageMap.map_coords;
+  const barrageEx = {
+    name: 'Barrage EX', power: 6120, min_range: 1, max_range: 5, en: 43, en_cost: 43, ammo: 0,
+    is_map: false, is_ex: true, usage_restrictions: []
+  };
+  const f90 = {
+    id: 'f90', name: 'Gundam F90 A.D.S. Type (EX)', side: 'ally',
+    x: 12, y: 7, startX: 12, startY: 7, size: 1, direction: 3, move: 5,
+    hp: 50000, maxHp: 50000, currentEn: 200, maxEn: 200, mp: 0,
+    weapons: [barrageMap, barrageEx]
+  };
+  const lineFoes = [
+    { id: 'e1', hp: 80000, x: 8, y: 11, size: 1, side: 'enemy' },
+    { id: 'e2', hp: 75000, x: 8, y: 9, size: 1, side: 'enemy' },
+    { id: 'e4', hp: 70000, x: 8, y: 7, size: 1, side: 'enemy' }
+  ];
+  const lineAll = [f90].concat(lineFoes);
+  const lineBounds = { minX: 0, maxX: 20, minY: 0, maxY: 20 };
+  const mapPlanChip = rules.evaluateMapWeapon(
+    f90, lineFoes[2], lineFoes, lineAll, lineBounds, (a, d, w) => w.power | 0
+  );
+  assert(!mapPlanChip, 'F90 Barrage MAP skipped vs Barrage EX on chip (AoE sum must not win), got ' +
+    (mapPlanChip && mapPlanChip.weapon && mapPlanChip.weapon.name));
+
+  /* Same cone, but MAP can double-kill while EX cannot → MAP still preferred. */
+  const softFoes = [
+    { id: 's2', hp: 4000, x: 8, y: 9, size: 1, side: 'enemy' },
+    { id: 's4', hp: 4000, x: 8, y: 7, size: 1, side: 'enemy' }
+  ];
+  const mapPlanKill = rules.evaluateMapWeapon(
+    f90, softFoes[1], softFoes, [f90].concat(softFoes), lineBounds, (a, d, w) => w.power | 0
+  );
+  assert(mapPlanKill && mapPlanKill.weapon && mapPlanKill.weapon.name === 'Barrage',
+    'F90 Barrage MAP still used when it gets more kills than EX, got ' +
+    (mapPlanKill && mapPlanKill.weapon && mapPlanKill.weapon.name));
+}
+
 if (!process.exitCode) console.log('ml sim rules audit OK');

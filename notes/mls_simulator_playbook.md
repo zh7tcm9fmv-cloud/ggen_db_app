@@ -129,7 +129,8 @@ HUD labels on the map: **S. Attack** / **S. Defense** (not SD/SA abbreviations).
 - **MAP kill does not grant Chance Step** (matches help).  
 - Auto / Guaranteed Chance Step types from help are only partially covered (unconditional stock path exists; full live special CS types are not a complete twin).
 
-MAP: no normal move-after (except specials coded), uses map footprint cells + facing where present.
+MAP: no normal move-after (except specials coded), uses map footprint cells + facing where present.  
+Chip-only MAP (0 kills): prefer MAP only when its damage on the engage target is ≥ the best non-MAP shot **and** it hits 2+ foes — do not let AoE sum beat a stronger single-target weapon (F90 A.D.S. Barrage vs Barrage EX).
 
 ---
 

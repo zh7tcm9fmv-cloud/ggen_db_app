@@ -2205,12 +2205,22 @@
        * Prefer MAP only when it gets strictly more kills than a normal weapon.
        * If a normal shot already kills (same kill count ≥ 1), keep the normal
        * swing so kill-CS can chain (Altron EW EX after-move MAP class).
-       * Chip-only (0 kills): MAP still wins on total damage / multi-spot.
+       * Chip-only (0 kills): do NOT pick MAP just because AoE sum ≥ one shot
+       * (F90 A.D.S. Barrage 4560×2 was beating Barrage EX 6120). Require MAP
+       * damage on the engage target ≥ best non-MAP, plus a real multi-hit
+       * (or no non-MAP in range at the fire tile).
        */
       better = false;
       if (mapKills > normalKills) better = true;
       else if (mapKills === 0 && normalKills === 0) {
-        better = totalDmg >= normalDmg;
+        var mapPrimary = typeof damageOf === 'function'
+          ? (damageOf(actor, target, wpn) | 0)
+          : (wpn.power | 0);
+        if (!normalPick || normalDmg <= 0) {
+          better = inArea.length >= minNeed && totalDmg > 0;
+        } else if (mapPrimary >= normalDmg && inArea.length >= 2 && totalDmg > normalDmg) {
+          better = true;
+        }
       }
       if (!better) continue;
       if (!best || mapKills > best.mapKills || (mapKills === best.mapKills && totalDmg > best.totalDmg) ||
