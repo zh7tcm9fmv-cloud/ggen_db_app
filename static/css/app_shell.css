@@ -4910,6 +4910,26 @@ display:flex;flex-direction:column;gap:12px;align-items:stretch;width:100%;min-w
 @keyframes unit-map-preview-in{to{opacity:1;transform:translateY(0)}}
 @media (prefers-reduced-motion:reduce){.unit-map-preview{animation:none;opacity:1;transform:none}}
 .skill-filter-panel{min-width:min(92vw,420px);max-width:min(92vw,480px)}
+/* Compact chips (supporter Support Skills / MOV: short LANG labels) — fit content, not char skill grid width */
+.skill-filter-panel.skill-filter-panel--compact{
+  min-width:0!important;
+  width:max-content!important;
+  max-width:min(92vw,280px)!important;
+  align-items:stretch;
+  box-sizing:border-box;
+}
+.skill-filter-panel.skill-filter-panel--compact .filter-panel-scroll{overflow:visible;max-height:none}
+.skill-filter-panel.skill-filter-panel--compact .list-filter-tag-item{
+  width:auto;
+  max-width:100%;
+  padding-right:12px;
+  justify-content:flex-start;
+}
+.skill-filter-panel.skill-filter-panel--compact .filter-panel-clear-wrap{
+  width:100%;
+  box-sizing:border-box;
+  gap:6px;
+}
 .skill-filter-panel.ability-filter-panel{min-width:min(96vw,560px);max-width:min(96vw,640px)}
 .skill-filter-panel:has(.filter-panel-scroll-inner .skill-filter-grid-browse){overflow:visible;max-height:none}
 .skill-filter-panel .filter-panel-scroll-inner:has(.skill-filter-grid-browse){overflow:visible;max-height:none;padding:0}
@@ -4922,6 +4942,12 @@ display:flex;flex-direction:column;gap:12px;align-items:stretch;width:100%;min-w
 .skill-browse-all-label{font-family:var(--font-tag-ui);font-size:12px;font-weight:700;color:var(--text-secondary);letter-spacing:.3px;line-height:1.25}
 .skill-filter-toolbar-label{display:inline-flex;align-items:center;gap:6px;min-width:0;max-width:100%}
 .skill-filter-toolbar-ic{width:18px;height:18px;object-fit:contain;flex-shrink:0;display:block}
+.supp-skill-filter-all-icons{display:inline-flex;align-items:center;flex-shrink:0;padding-right:1px}
+.supp-skill-filter-all-icons .skill-filter-toolbar-ic{position:relative;margin-left:-3px;border-radius:4px;background:var(--bg-input);box-shadow:0 0 0 1px rgba(42,54,84,.7)}
+.supp-skill-filter-all-icons .skill-filter-toolbar-ic:first-child{margin-left:0}
+.supp-skill-filter-all-icons .skill-filter-toolbar-ic:nth-child(1){z-index:1}
+.supp-skill-filter-all-icons .skill-filter-toolbar-ic:nth-child(2){z-index:2}
+.supp-skill-filter-all-icons .skill-filter-toolbar-ic:nth-child(3){z-index:3}
 .skill-filter-grid-browse .skill-browse-row .tag-composite.list-filter-tag-composite{background:transparent!important;border:none!important;filter:none!important;box-shadow:none!important;border-radius:0}
 .skill-filter-grid-browse .skill-browse-row .tag-composite.list-filter-tag-composite:hover{transform:none;border-color:transparent}
 .skill-filter-grid-browse .skill-browse-row .tag-part-icon{background:transparent!important;border:none!important;width:auto;min-width:20px;height:auto;min-height:20px;padding:0}

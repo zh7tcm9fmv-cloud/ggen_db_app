@@ -2053,15 +2053,20 @@ UNIT_WEAPON_DEBUFF_FILTER_KEYS = frozenset({
     'atk_dn', 'def_dn', 'mob_dn', 'acc_dn',
     'dmg_phys', 'dmg_beam', 'dmg_spec',
     'wp_phys', 'wp_beam', 'wp_spec',
-    'range_beam', 'range_phys',
+    'range_beam', 'range_phys', 'range_all',
     'range_6',
-    'crit',
-    'mp_1',
+    'crit', 'crit_dmg',
+    'mp_1', 'mp_up',
     'preemptive',
     'absolute_hit',
     'map_weapon',
     'enemy_def_atk',
     'multi_dmg',
+    'mov_dn',
+    'power_long', 'power_short',
+    'power_low_hp', 'power_high_hp', 'power_high_mp', 'power_high_en',
+    'piercing',
+    'hp_steal', 'en_steal', 'en_dmg', 'hp_heal',
 })
 
 def parse_unit_weapon_debuff_filter(val):
@@ -3891,12 +3896,16 @@ def classify_unit_weapon_trait_debuff_keys(line):
     enemy_def_on_atk = False
     if re.search(r"when this unit attacks,\s*reduce enemy'?s\s+def\s+by\s+\d+\s*%", compact_sl) and 'for this attack' in compact_sl:
         keys.add('enemy_def_atk')
+        # Official Tags=1 filter title is Piercing (EN) / 貫通 / 貫穿 — same on-attack DEF cut.
+        keys.add('piercing')
         enemy_def_on_atk = True
     if re.search(r'自身の攻撃時、敵の防御力を\d+[%％]減少させた状態で攻撃', s):
         keys.add('enemy_def_atk')
+        keys.add('piercing')
         enemy_def_on_atk = True
     if re.search(r'自身攻擊時，以敵方防禦力減少\d+%的狀態攻擊', s):
         keys.add('enemy_def_atk')
+        keys.add('piercing')
         enemy_def_on_atk = True
 
     # MP −1: short names ("Decreased MP LV 1") + descriptions ("Decrease enemy MP by 1 on hit.").
@@ -4013,6 +4022,136 @@ def classify_unit_weapon_trait_debuff_keys(line):
     if _trait_text_indicates_absolute_hit(s):
         keys.add('absolute_hit')
 
+    # Official m_weapon_search_filter_item Tags=1 (Nov 2026 catalog).
+    # Match filter titles *and* live weapon-trait / set-detail phrasing (EN/JA/TW/HK).
+    if (
+        'mov down' in sl
+        or 'decreased mov' in sl
+        or '移動力減少' in s
+        or '移動力下降' in s
+        or re.search(r'\bmov\b.*(?:down|decrease)|(?:down|decrease).*\bmov\b', sl)
+    ):
+        keys.add('mov_dn')
+    if (
+        'max range down' in sl
+        or '最大射程減少' in s
+        or '最大射程降低' in s
+        or '武装最大射程ダウン' in s
+        or '武裝最大射程降低' in s
+    ):
+        keys.add('range_all')
+    if (
+        'increased weapon power at longer range' in sl
+        or 'farther enemies are' in sl
+        or '遠距離ほど武装POWER上昇' in s
+        or '遠距離時武装POWER上昇' in s
+        or '遠距離時武裝POWER提升' in s
+        or '距離越遠，武裝POWER越為提升' in s
+        or ('距離越遠' in s and 'POWER' in s)
+    ):
+        keys.add('power_long')
+    if (
+        'increased weapon power at shorter range' in sl
+        or 'closer enemies are' in sl
+        or '近距離ほど武装POWER上昇' in s
+        or '近距離時武装POWER上昇' in s
+        or '近距離時武裝POWER提升' in s
+        or '距離越近，武裝POWER越為提升' in s
+        or ('距離越近' in s and 'POWER' in s)
+    ):
+        keys.add('power_short')
+    if (
+        'lower remaining hp' in sl
+        or 'lower own remaining hp' in sl
+        or '残HPが少ないほど武装POWER上昇' in s
+        or '残HP少ないほど武装POWER上昇' in s
+        or '剩餘HP越低，武裝POWER越為提升' in s
+        or ('剩餘HP越低' in s and 'POWER' in s)
+    ):
+        keys.add('power_low_hp')
+    if (
+        'higher remaining hp' in sl
+        or 'higher own remaining hp' in sl
+        or '残HPが多いほど武装POWER上昇' in s
+        or '残HP多いほど武装POWER上昇' in s
+        or '剩餘HP越高，武裝POWER越為提升' in s
+        or ('剩餘HP越高' in s and 'POWER' in s)
+    ):
+        keys.add('power_high_hp')
+    if (
+        'with higher mp' in sl
+        or 'higher own mp is' in sl
+        or 'mpが多いほど武装POWER上昇' in sl
+        or 'MPが多いほど武装POWER上昇' in s
+        or 'MP多いほど武装POWER上昇' in s
+        or 'MP越高，武裝POWER越為提升' in s
+        or ('MP越高' in s and 'POWER' in s)
+    ):
+        keys.add('power_high_mp')
+    if (
+        'higher remaining en' in sl
+        or 'higher your remaining en' in sl
+        or '残ENが多いほど武装POWER上昇' in s
+        or '残EN多いほど武装POWER上昇' in s
+        or '剩餘EN越高，武裝POWER越為提升' in s
+        or ('剩餘EN越高' in s and 'POWER' in s)
+    ):
+        keys.add('power_high_en')
+    if (
+        'increased critical damage' in sl
+        or re.search(r'increase(?:s|d)?\s+critical\s+damage', sl)
+        or 'クリティカルダメージ上昇' in s
+        or '爆擊損傷提升' in s
+    ):
+        keys.add('crit_dmg')
+    if (
+        re.search(r'\bpiercing\b', sl)
+        or s.strip() in ('貫通', '貫穿')
+        or re.search(r'^貫通(?:\s|LV|Lv|$)', s)
+        or re.search(r'^貫穿(?:\s|LV|Lv|$)', s)
+        or re.search(r'(?:^|[\s・])貫通(?:$|[\s・LV])', s)
+        or re.search(r'(?:^|[\s・])貫穿(?:$|[\s・LV])', s)
+    ):
+        keys.add('piercing')
+    if (
+        'hp restoration based on damage dealt' in sl
+        or re.search(r'restores?\s+own\s+hp\s+equal\s+to\s+\d+%\s+of\s+damage\s+dealt', sl)
+        or '与ダメージ分HP回復' in s
+        or '依造成的損傷恢復HP' in s
+    ):
+        keys.add('hp_steal')
+    if (
+        'en restoration based on damage dealt' in sl
+        or re.search(r'restores?\s+own\s+en\s+equal\s+to\s+\d+%\s+of\s+en\s+damage\s+dealt', sl)
+        or '与ダメージ分EN回復' in s
+        or '依造成的損傷恢復EN' in s
+    ):
+        keys.add('en_steal')
+    if (
+        re.search(r'\ben damage\b', sl)
+        or 'ENダメージ' in s
+        or 'EN損傷' in s
+    ):
+        keys.add('en_dmg')
+    if (
+        (re.search(r'\bhp restoration\b', sl) and 'damage dealt' not in sl and 'based on' not in sl)
+        or (s.strip().startswith('HP回復') and '与ダメージ' not in s)
+        or (s.strip().startswith('HP恢復') and '造成的損傷' not in s)
+        or re.search(r'^HP回復(?:\s|LV|Lv|$)', s)
+        or re.search(r'^HP恢復(?:\s|LV|Lv|$)', s)
+    ):
+        keys.add('hp_heal')
+    if (
+        re.search(r'\bincreased mp\b', sl)
+        or re.search(r'increase(?:s|d)?\s+mp\s+by\s+\d+', sl)
+        or s.strip().startswith('MP上昇')
+        or s.strip().startswith('MP提升')
+        or re.search(r'^MP上昇(?:\s|LV|Lv|$)', s)
+        or re.search(r'^MP提升(?:\s|LV|Lv|$)', s)
+        or re.search(r'^Increased MP(?:\s|LV|Lv|$)', s)
+    ):
+        keys.add('mp_up')
+
     return frozenset(keys)
 
 
@@ -4058,7 +4197,7 @@ def _weapon_max_range_decrease_filter_keys(text):
         or re.search(r'decrease\s+special\s+weapon\s+max\s+range', sl)
         or re.search(r'reduce\s+special\s+weapon\s+max\s+range', sl)
     ):
-        keys.update(('range_beam', 'range_phys'))
+        keys.update(('range_beam', 'range_phys', 'range_all'))
     return frozenset(keys)
 
 
@@ -9160,11 +9299,70 @@ def create_supporter_active_skill_map(d):
 SUPPORTER_SKILL_KIND_HP = 'hp'
 SUPPORTER_SKILL_KIND_EN = 'en'
 SUPPORTER_SKILL_KIND_HYBRID = 'hybrid'
+SUPPORTER_SKILL_KIND_DMG_RED = 'dmg_red'
 SUPPORTER_SKILL_KIND_ICONS = {
     SUPPORTER_SKILL_KIND_HP: 'trait_10010401',
     SUPPORTER_SKILL_KIND_EN: 'trait_10020501',
     SUPPORTER_SKILL_KIND_HYBRID: 'trait_10780401',
 }
+# Official in-game search filters (m_supporter_skill_search_filter_generate.Id).
+SUPPORTER_OFFICIAL_SKILL_FILTER_KEY_BY_ID = {
+    3: SUPPORTER_SKILL_KIND_HP,
+    4: SUPPORTER_SKILL_KIND_EN,
+    8: SUPPORTER_SKILL_KIND_DMG_RED,
+}
+SUPPORTER_OFFICIAL_SKILL_FILTER_KEYS = frozenset(SUPPORTER_OFFICIAL_SKILL_FILTER_KEY_BY_ID.values())
+# m_help TitleLanguageId for the Support Skills filter group.
+SUPPORTER_SUPPORT_SKILLS_HELP_LANG_ID = '170200000001031041'
+
+
+def create_supporter_official_skill_filter_maps(generate_data, target_data):
+    """Official supporter skill search filters → meta + supporter-id sets.
+
+    Target.NameLanguageId is the supporter Id (client field name quirk).
+    Filter names come from generate.NameLanguageId via LANG
+    m_supporter_skill_search_filter_generate.json.
+    """
+    meta = []
+    by_key_ids = {k: set() for k in SUPPORTER_OFFICIAL_SKILL_FILTER_KEYS}
+    kinds_by_sid = {}
+    gen_rows = []
+    for item in extract_data_list(generate_data):
+        if not isinstance(item, dict):
+            continue
+        fid = safe_int(item.get('Id') or item.get('id'), 0)
+        key = SUPPORTER_OFFICIAL_SKILL_FILTER_KEY_BY_ID.get(fid)
+        if not key:
+            continue
+        gen_rows.append((safe_int(item.get('RarityIndex') or item.get('rarityIndex'), 99), fid, key, item))
+    gen_rows.sort(key=lambda x: (x[0], x[1]))
+    for _ri, fid, key, item in gen_rows:
+        name_lid = normalize_id(item.get('NameLanguageId') or item.get('nameLanguageId'))
+        icon_res = str(item.get('DescriptionLanguageId') or item.get('descriptionLanguageId') or '').strip()
+        icf = find_trait_icon(icon_res) if icon_res else None
+        icon = f'/static/images/Trait/{icf}' if icf else ''
+        meta.append({
+            'id': key,
+            'filter_id': fid,
+            'name_lang_id': name_lid,
+            'icon': icon,
+            'icon_res': icon_res,
+        })
+    for item in extract_data_list(target_data):
+        if not isinstance(item, dict):
+            continue
+        fid = safe_int(item.get('Id') or item.get('id'), 0)
+        key = SUPPORTER_OFFICIAL_SKILL_FILTER_KEY_BY_ID.get(fid)
+        if not key:
+            continue
+        sid = normalize_id(item.get('NameLanguageId') or item.get('nameLanguageId'))
+        if sid == '0':
+            continue
+        by_key_ids.setdefault(key, set()).add(sid)
+        kinds_by_sid.setdefault(sid, set()).add(key)
+    by_key_ids = {k: frozenset(v) for k, v in by_key_ids.items()}
+    kinds_by_sid = {k: frozenset(v) for k, v in kinds_by_sid.items()}
+    return meta, by_key_ids, kinds_by_sid
 
 
 def create_supporter_active_recovery_lookup(
@@ -12541,6 +12739,12 @@ supporter_active_trait_content_data = load_json(
 supporter_active_trait_content_set_data = load_json(
     os.path.join(BASE_DIR, "m_supporter_active_skill_trait_content_set.json")
 )
+supporter_skill_search_filter_generate_data = load_json(
+    os.path.join(BASE_DIR, "m_supporter_skill_search_filter_generate.json")
+)
+supporter_skill_search_filter_target_data = load_json(
+    os.path.join(BASE_DIR, "m_supporter_skill_search_filter_target_generate.json")
+)
 # supporter-addon #1 #4
 supporter_level_limit_data = load_json(os.path.join(BASE_DIR, "m_supporter_level_limit.json"))
 supporter_combat_power_data = load_json(os.path.join(BASE_DIR, "m_supporter_combat_power.json"))
@@ -12713,6 +12917,26 @@ supporter_active_recovery_map = (
     and supporter_active_trait_content_data
     and supporter_active_trait_data
     else {}
+)
+(
+    supporter_official_skill_filter_meta,
+    supporter_official_skill_filter_ids_by_key,
+    supporter_official_skill_kinds_by_id,
+) = (
+    create_supporter_official_skill_filter_maps(
+        supporter_skill_search_filter_generate_data,
+        supporter_skill_search_filter_target_data,
+    )
+    if supporter_skill_search_filter_generate_data is not None
+    and supporter_skill_search_filter_target_data is not None
+    else ([], {}, {})
+)
+print(
+    "Supporter official skill filters: "
+    + ", ".join(
+        f"{m['id']}={len(supporter_official_skill_filter_ids_by_key.get(m['id'], ()))}"
+        for m in supporter_official_skill_filter_meta
+    )
 )
 supporter_max_level_map = create_supporter_max_level_map(supporter_level_limit_data) if supporter_level_limit_data else {}
 supporter_combat_power_map = create_supporter_combat_power_map(supporter_combat_power_data) if supporter_combat_power_data else {}
@@ -14930,6 +15154,8 @@ def _precompute_weapon_debuff_keys_present_by_lang():
                     uid, ld_en, 'EN', sm, pilot_cond_active=False))
         # Always list Critical: some kits only gain Crit% with PEP (pilot_cond=1 at filter time).
         acc.add('crit')
+        # Official Tags=1 catalog rows that may have 0 linked playable weapons yet (still show chip).
+        acc.update({'hp_heal', 'mp_up'})
         fs = frozenset(acc)
         for lc in ('EN', 'TW', 'HK', 'JA'):
             if LANG_DATA.get(lc):
@@ -19161,6 +19387,7 @@ def _build_browse_list_performance_caches():
             wd[lc] = d2
     CHAR_BROWSE_LIST_ROW_CACHE = char_cache
     UNIT_BROWSE_LIST_ROW_CACHE = unit_cache
+    _refresh_mov_auto_tier_values()
     UNIT_MECHANISM_MIDS_CACHE = mids
     UNIT_WEAPON_DEBUFF_KEYS_CACHE = wd
     print(f'Browse list perf caches: {len(char_cache)} chars, {len(unit_cache)} units ({time.perf_counter() - t0:.2f}s)')
@@ -29360,6 +29587,171 @@ def skills_for_character_browse(ld):
     return sorted([{'id': k, 'name': v['name'], 'icon': v['icon']} for k, v in seen.items()], key=lambda x: x['name'].lower())
 
 
+
+
+def _precompute_mov_auto_tier_values():
+    """MOV values (3–6) some units only reach under SP / SSP / unit CP.
+
+    Used by the Units Move filter to auto-arm list toggles (same class as
+    weapon_range_auto_ssp_tiers). Pilot PEP flat MOV is not in browse list
+    rows yet — no mov_auto_pep until list MOV includes recommend-pilot bonus.
+    """
+    ssp_vals, sp_vals, cond_vals = set(), set(), set()
+    for ue in UNIT_BROWSE_LIST_ROW_CACHE.values():
+        lb = ue.get('lb') if isinstance(ue, dict) else None
+        if not lb:
+            continue
+        try:
+            n = int((_unit_lb_row_to_api(lb, 'normal', False) or {}).get('MOV', 0) or 0)
+            n_c = int((_unit_lb_row_to_api(lb, 'normal', True) or {}).get('MOV', 0) or 0)
+            sp_m = int((_unit_lb_row_to_api(lb, 'sp', False) or {}).get('MOV', 0) or 0)
+            ssp_m = int((_unit_lb_row_to_api(lb, 'ssp', False) or {}).get('MOV', 0) or 0)
+            sp_c = int((_unit_lb_row_to_api(lb, 'sp', True) or {}).get('MOV', 0) or 0)
+            ssp_c = int((_unit_lb_row_to_api(lb, 'ssp', True) or {}).get('MOV', 0) or 0)
+        except (TypeError, ValueError, AttributeError):
+            continue
+        for v in (3, 4, 5, 6):
+            if ssp_m == v and n != v:
+                ssp_vals.add(v)
+            if sp_m == v and n != v:
+                sp_vals.add(v)
+            if n_c == v and n != v:
+                cond_vals.add(v)
+            if sp_c == v and n != v and sp_c != sp_m:
+                cond_vals.add(v)
+            if ssp_c == v and n != v and ssp_c != ssp_m:
+                cond_vals.add(v)
+    return (
+        frozenset(ssp_vals),
+        frozenset(sp_vals),
+        frozenset(cond_vals),
+    )
+
+
+MOV_AUTO_SSP_VALUES = frozenset()
+MOV_AUTO_SP_VALUES = frozenset()
+MOV_AUTO_COND_VALUES = frozenset()
+
+
+def _refresh_mov_auto_tier_values():
+    global MOV_AUTO_SSP_VALUES, MOV_AUTO_SP_VALUES, MOV_AUTO_COND_VALUES
+    if not UNIT_BROWSE_LIST_ROW_CACHE:
+        MOV_AUTO_SSP_VALUES = frozenset()
+        MOV_AUTO_SP_VALUES = frozenset()
+        MOV_AUTO_COND_VALUES = frozenset()
+        return
+    MOV_AUTO_SSP_VALUES, MOV_AUTO_SP_VALUES, MOV_AUTO_COND_VALUES = _precompute_mov_auto_tier_values()
+
+
+def parse_list_mov_filter(raw):
+    """Official unit movement search filter: MOV 3–6 (OR). None = no filter."""
+    s = (raw or '').strip()
+    if not s or s.upper() == 'ALL':
+        return None
+    if s == '__NONE__':
+        return frozenset()
+    out = set()
+    for part in s.split(','):
+        p = part.strip()
+        if not p:
+            continue
+        try:
+            n = int(p)
+        except ValueError:
+            continue
+        if 3 <= n <= 6:
+            out.add(n)
+    return frozenset(out)
+
+
+def mov_filter_cache_fragment(filt):
+    if filt is None:
+        return 'movALL'
+    if not filt:
+        return 'movNONE'
+    return 'mov' + ','.join(str(x) for x in sorted(filt))
+
+
+def parse_list_supp_skill_filter(raw):
+    """Parse supp_skill=hp,en,dmg_red (official filter keys). None = no filter."""
+    s = (raw or '').strip()
+    if not s or s.upper() == 'ALL':
+        return None
+    if s == '__NONE__':
+        return frozenset()
+    out = set()
+    for part in s.split(','):
+        key = part.strip().lower()
+        if key in SUPPORTER_OFFICIAL_SKILL_FILTER_KEYS:
+            out.add(key)
+        elif key.isdigit():
+            mapped = SUPPORTER_OFFICIAL_SKILL_FILTER_KEY_BY_ID.get(safe_int(key, 0))
+            if mapped:
+                out.add(mapped)
+    return frozenset(out)
+
+
+def supp_skill_filter_cache_fragment(filt):
+    if filt is None:
+        return 'sskALL'
+    if not filt:
+        return 'sskNONE'
+    return 'ssk' + ','.join(sorted(filt))
+
+
+def supporter_matches_supp_skill_filter(sid, skill_filter):
+    """OR across selected official skill filter keys. None = pass."""
+    if skill_filter is None:
+        return True
+    if not skill_filter:
+        return False
+    have = supporter_official_skill_kinds_by_id.get(normalize_id(sid), frozenset())
+    return bool(have & skill_filter)
+
+
+def _lang_text_map_from_file(lang_dir, filename):
+    path = os.path.join(lang_dir, filename) if lang_dir else ''
+    if not path or not os.path.isfile(path):
+        return {}
+    try:
+        return create_lang_text_map(load_json(path)) or {}
+    except Exception:
+        return {}
+
+
+def supporter_official_skill_filter_browse_rows(lc):
+    """Localized official Support Skills filter chips (HP / EN / Damage Reduction)."""
+    lc_norm = str(lc or DEFAULT_LANG).upper()
+    if lc_norm == 'JP':
+        lc_norm = 'JA'
+    if lc_norm == 'KR':
+        lc_norm = 'HR'
+    _base, lang_dir = get_lang_paths(lc_norm)
+    name_map = _lang_text_map_from_file(lang_dir, 'm_supporter_skill_search_filter_generate.json')
+    help_map = _lang_text_map_from_file(lang_dir, 'm_help.json')
+    group_label = (help_map.get(SUPPORTER_SUPPORT_SKILLS_HELP_LANG_ID) or '').strip()
+    if not group_label and lc_norm != 'EN':
+        _eb, en_dir = get_lang_paths('EN')
+        en_help = _lang_text_map_from_file(en_dir, 'm_help.json')
+        group_label = (en_help.get(SUPPORTER_SUPPORT_SKILLS_HELP_LANG_ID) or '').strip()
+    rows = []
+    for m in supporter_official_skill_filter_meta:
+        name = (name_map.get(m.get('name_lang_id') or '') or '').strip()
+        if not name and lc_norm != 'EN':
+            _eb, en_dir = get_lang_paths('EN')
+            en_names = _lang_text_map_from_file(en_dir, 'm_supporter_skill_search_filter_generate.json')
+            name = (en_names.get(m.get('name_lang_id') or '') or '').strip()
+        if not name:
+            name = m.get('id') or ''
+        rows.append({
+            'id': m['id'],
+            'name': name,
+            'icon': m.get('icon') or '',
+            'filter_id': m.get('filter_id'),
+        })
+    return rows, group_label
+
+
 def browse_filters_pool_signature(args, entity=None):
     """Stable key for current-list browse pools. Supporters only use q, rarity, lineage_id."""
     ent = (entity or '').strip().lower()
@@ -29369,6 +29761,7 @@ def browse_filters_pool_signature(args, entity=None):
             args.get('rarity', '').strip(),
             args.get('lineage_id', '').strip(),
             normalize_filter_combine_op(args.get('lineage_op'), 'and'),
+            args.get('supp_skill', '').strip().lower(),
         ])
     elif ent in ('option_parts', 'modifications'):
         raw = '|'.join([
@@ -30424,8 +30817,8 @@ def series_for_unit_browse_filtered(ld, lc, args):
     return out
 
 
-def supporter_passes_browse_pool_filters(sid, info, ld, lc, sq, rarity_filter, lineage_filter, *, apply_lineage=True, lineage_combine='and'):
-    """Same inclusion as list_supporters with optional lineage filter step."""
+def supporter_passes_browse_pool_filters(sid, info, ld, lc, sq, rarity_filter, lineage_filter, *, apply_lineage=True, lineage_combine='and', skill_filter=None, apply_skill=True):
+    """Same inclusion as list_supporters with optional lineage / skill filter steps."""
     if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
         return False
     nsid = normalize_id(sid)
@@ -30441,6 +30834,9 @@ def supporter_passes_browse_pool_filters(sid, info, ld, lc, sq, rarity_filter, l
         return False
     if apply_lineage and lineage_filter is not None:
         if not id_seek and not search_query_is_npc123_list_seek(sq) and not supporter_matches_lineage_filter(sid, lineage_filter, ld, lc, lineage_combine):
+            return False
+    if apply_skill and skill_filter is not None:
+        if not (id_seek or search_query_is_npc123_list_seek(sq) or priv_seek) and not supporter_matches_supp_skill_filter(sid, skill_filter):
             return False
     if rarity_filter is not None:
         if not rarity_filter:
@@ -30484,13 +30880,14 @@ def lineages_for_supporter_browse_filtered(ld, lc, args):
     sq = args.get('q', '').strip().lower()
     rarity_filter = parse_list_rarity_filter(args.get('rarity', '').strip())
     lineage_filter = parse_list_lineage_filter(args.get('lineage_id', '').strip())
+    skill_filter = parse_list_supp_skill_filter(args.get('supp_skill', '').strip())
     _slc = normalize_filter_combine_op(args.get('lineage_op'), 'and')
     llk = ld.get('lineage_lookup', {})
     ll = ld.get('lineage_list', [])
     snm = ld.get('series_name_map', {})
     by_id = {}
     for supp_id, info in supporter_info_map.items():
-        if not supporter_passes_browse_pool_filters(supp_id, info, ld, lc, sq, rarity_filter, lineage_filter, apply_lineage=False, lineage_combine=_slc):
+        if not supporter_passes_browse_pool_filters(supp_id, info, ld, lc, sq, rarity_filter, lineage_filter, apply_lineage=False, lineage_combine=_slc, skill_filter=skill_filter, apply_skill=True):
             continue
         lsr = supporter_leader_map.get(supp_id, [])
         for ls in lsr:
@@ -30872,9 +31269,9 @@ def browse_filters():
         if entity == 'supporters':
             if filter_mode == 'current':
                 sig = browse_filters_pool_signature(request.args, 'supporters')
-                ck = f"browse_filters_v15_{lc}_{entity}_cur_{sig}"
+                ck = f"browse_filters_v16_{lc}_{entity}_cur_{sig}"
             else:
-                ck = f"browse_filters_v15_{lc}_{entity}"
+                ck = f"browse_filters_v16_{lc}_{entity}"
             cached = get_cached_response(ck)
             if cached:
                 return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
@@ -30883,7 +31280,15 @@ def browse_filters():
                 lineages = lineages_for_supporter_browse_filtered(ld, lc, request.args)
             else:
                 lineages = lineages_for_supporter_browse(ld, lc)
-            result = {'lineages': lineages, 'series': [], 'skills': [], 'abilities': []}
+            supp_skills, supp_skill_group = supporter_official_skill_filter_browse_rows(lc)
+            result = {
+                'lineages': lineages,
+                'series': [],
+                'skills': [],
+                'abilities': [],
+                'supp_skills': supp_skills,
+                'supp_skill_group_label': supp_skill_group or '',
+            }
             set_cached_response(ck, result)
             return jsonify_cacheable(result, ck, public=True, max_age=3600, convert_images=True)
         if entity == 'option_parts':
@@ -31145,6 +31550,9 @@ def list_units():
     ability_filter = parse_list_ability_filter(ability_arg)
     terrain_arg = request.args.get('terrain', '').strip()
     terrain_filter = parse_unit_terrain_filter(terrain_arg)
+    mov_arg = request.args.get('mov', '').strip()
+    mov_filter = parse_list_mov_filter(mov_arg)
+    mov_ck = mov_filter_cache_fragment(mov_filter)
     weapon_debuff_arg = request.args.get('weapon_debuff', '').strip()
     weapon_debuff_filter = parse_unit_weapon_debuff_filter(weapon_debuff_arg)
     weapon_attr_arg = request.args.get('weapon_attr', '').strip()
@@ -31196,8 +31604,9 @@ def list_units():
     # ul71: weapon_attr_op and/or/and_or combine for /u attribute droplist
     # ul72: exclude_escape_alt — hide Escape Function post-evac forms (MLS formation picker)
     # ul73: unit_skill=1 — only units with Unit Skills (base + max ALT ULT unlocks)
+    # ul74: mov=3,4,5,6 official movement search filter
     uskill_ck = 'usk1' if unit_skill_only else 'usk0'
-    ck = f"ul73_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{uskill_ck}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_attr_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_waop{_cbu['weapon_attr_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{esc_alt_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    ck = f"ul74_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{uskill_ck}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{mov_ck}_{weapon_debuff_ck}_{weapon_attr_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_waop{_cbu['weapon_attr_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{esc_alt_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached:
         return jsonify_preserialized(cached, ck, public=True, max_age=3600, convert_images=False)
@@ -31347,6 +31756,13 @@ def list_units():
                 fs = _unit_lb_row_to_api(lb, sm, cond_list) if lb else ue['nc']
         else:
             fs = {'Attack': 0, 'Defense': 0, 'Mobility': 0, 'HP': 0, 'EN': 0, 'Move': 0}
+        if mov_filter is not None:
+            try:
+                _mv = int(fs.get('Move', fs.get('MOV', 0)) or 0)
+            except (TypeError, ValueError):
+                _mv = 0
+            if not (direct_seek or npc123_list) and _mv not in mov_filter:
+                continue
         acq = acq_route; ai = ACQUISITION_ROUTE_ICONS.get(acq,''); si = []
         if ai: si.append(ai)
         thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
@@ -31417,7 +31833,7 @@ def list_units():
     _wr_auto_ssp = sorted(weapon_range_non_map_auto_ssp_tiers(), key=int)
     _wr_auto_pep = sorted(weapon_range_non_map_auto_pep_tiers(), key=int)
     _mech_rows = mechanism_list_filter_rows_from_ids(mechanism_union, ld)
-    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'ability_filter': ability_arg, 'terrain_filter': terrain_arg, 'weapon_debuff': weapon_debuff_arg, 'weapon_range': weapon_range_arg, 'weapon_range_non_map': weapon_range_non_map_arg, 'map_weapon_range': map_weapon_range_arg, 'weapon_debuff_present_keys': _wbp, 'weapon_debuff_auto_pep_keys': _wb_auto_pep, 'weapon_range_auto_ssp_tiers': _wr_auto_ssp, 'weapon_range_auto_pep_tiers': _wr_auto_pep, 'terrain_present_tokens': sorted(UNIT_TERRAIN_FILTER_TOKENS_PRESENT), 'weapon_range_ssp_ex_present': sorted(WEAPON_RANGE_SSP_EX_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_present': sorted(WEAPON_RANGE_SSP_EX_SSP_VALUES_PRESENT, key=int), 'weapon_range_non_map_present': sorted(WEAPON_RANGE_NON_MAP_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_present': sorted(WEAPON_RANGE_NON_MAP_SSP_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_present': sorted(WEAPON_RANGE_ALL_SSP_VALUES_PRESENT, key=int), 'weapon_range_non_map_cond_present': sorted(WEAPON_RANGE_NON_MAP_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_cond_present': sorted(WEAPON_RANGE_ALL_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_cond_present': sorted(WEAPON_RANGE_SSP_EX_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_pilot_cond_present': sorted(WEAPON_RANGE_NON_MAP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_pilot_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_pilot_cond_present': sorted(WEAPON_RANGE_ALL_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_pilot_cond_present': sorted(WEAPON_RANGE_SSP_EX_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_pilot_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_full_cond_present': sorted(WEAPON_RANGE_NON_MAP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_full_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_full_cond_present': sorted(WEAPON_RANGE_ALL_SSP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_full_cond_present': sorted(WEAPON_RANGE_SSP_EX_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_full_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_FULL_COND_VALUES_PRESENT, key=int), 'mechanism': mechanism_arg, 'mechanism_present': _mech_rows, 'stat_bounds': stat_bounds, 'sort_priority_band': sort_priority_band}
+    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'ability_filter': ability_arg, 'terrain_filter': terrain_arg, 'mov_filter': mov_arg, 'mov_auto_ssp_values': sorted(MOV_AUTO_SSP_VALUES), 'mov_auto_sp_values': sorted(MOV_AUTO_SP_VALUES), 'mov_auto_cond_values': sorted(MOV_AUTO_COND_VALUES), 'weapon_debuff': weapon_debuff_arg, 'weapon_range': weapon_range_arg, 'weapon_range_non_map': weapon_range_non_map_arg, 'map_weapon_range': map_weapon_range_arg, 'weapon_debuff_present_keys': _wbp, 'weapon_debuff_auto_pep_keys': _wb_auto_pep, 'weapon_range_auto_ssp_tiers': _wr_auto_ssp, 'weapon_range_auto_pep_tiers': _wr_auto_pep, 'terrain_present_tokens': sorted(UNIT_TERRAIN_FILTER_TOKENS_PRESENT), 'weapon_range_ssp_ex_present': sorted(WEAPON_RANGE_SSP_EX_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_present': sorted(WEAPON_RANGE_SSP_EX_SSP_VALUES_PRESENT, key=int), 'weapon_range_non_map_present': sorted(WEAPON_RANGE_NON_MAP_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_present': sorted(WEAPON_RANGE_NON_MAP_SSP_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_present': sorted(WEAPON_RANGE_ALL_SSP_VALUES_PRESENT, key=int), 'weapon_range_non_map_cond_present': sorted(WEAPON_RANGE_NON_MAP_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_cond_present': sorted(WEAPON_RANGE_ALL_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_cond_present': sorted(WEAPON_RANGE_SSP_EX_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_pilot_cond_present': sorted(WEAPON_RANGE_NON_MAP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_pilot_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_pilot_cond_present': sorted(WEAPON_RANGE_ALL_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_pilot_cond_present': sorted(WEAPON_RANGE_SSP_EX_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_pilot_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_full_cond_present': sorted(WEAPON_RANGE_NON_MAP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_full_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_full_cond_present': sorted(WEAPON_RANGE_ALL_SSP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_full_cond_present': sorted(WEAPON_RANGE_SSP_EX_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_full_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_FULL_COND_VALUES_PRESENT, key=int), 'mechanism': mechanism_arg, 'mechanism_present': _mech_rows, 'stat_bounds': stat_bounds, 'sort_priority_band': sort_priority_band}
     if not sq:
         result['transform_alt_browse_rows'] = _build_transform_alt_browse_rows(ld, lc, stat_mode, cond_list)
     result = convert_image_urls(result)
@@ -33511,6 +33927,9 @@ def list_supporters():
         lineage_filter = parse_list_lineage_filter(lineage_arg)
         lineage_combine_supp = normalize_filter_combine_op(request.args.get('lineage_op'), 'and')
         lineage_ck = lineage_filter_cache_fragment(lineage_filter)
+        skill_arg = request.args.get('supp_skill', '').strip()
+        skill_filter = parse_list_supp_skill_filter(skill_arg)
+        skill_ck = supp_skill_filter_cache_fragment(skill_filter)
         uids = []
         cids = []
         u_bulk = (request.args.get('unit_ids') or '').strip()
@@ -33548,7 +33967,7 @@ def list_supporters():
         else:
             uf = f"u{for_unit}" if for_unit else 'u0'
             cf = f"c{for_char}" if for_char else 'c0'
-        ck = f"sl10_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rk}_{lineage_ck}_lc{lineage_combine_supp}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}_{uf}_{cf}"
+        ck = f"sl11_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rk}_{lineage_ck}_lc{lineage_combine_supp}_{skill_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}_{uf}_{cf}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_preserialized(cached, ck, public=True, max_age=3600, convert_images=False)
@@ -33567,6 +33986,9 @@ def list_supporters():
                 continue
             if lineage_filter is not None:
                 if not id_seek and not npc123_list and not supporter_matches_lineage_filter(sid, lineage_filter, ld, lc, lineage_combine_supp):
+                    continue
+            if skill_filter is not None:
+                if not (id_seek or npc123_list or priv_seek) and not supporter_matches_supp_skill_filter(sid, skill_filter):
                     continue
             lsr = supporter_leader_map.get(sid, []); all_tags = []; descs = []; std = []
             for ls in lsr:
@@ -33614,11 +34036,12 @@ def list_supporters():
             # supporter-addon #2 acquisition route on browse list
             acq = info.get('acquisition_route', '0')
             acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
-            rows.append({'id': sid, 'name': name, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri, 4), 'rarity_icon': RARITY_ICON_MAP.get(ri, ''), 'thum': thum or '', 'skill_tag_data': std, 'series_tag': sts, 'boost': cb, 'active_icon': aic, 'is_limited_time': lim, 'acquisition_route': acq, 'acquisition_icon': acq_icon or '', 'is_schedule_shell': entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0'))})
+            ask_kinds = sorted(supporter_official_skill_kinds_by_id.get(nsid, frozenset()))
+            rows.append({'id': sid, 'name': name, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri, 4), 'rarity_icon': RARITY_ICON_MAP.get(ri, ''), 'thum': thum or '', 'skill_tag_data': std, 'series_tag': sts, 'boost': cb, 'active_icon': aic, 'active_skill_kinds': ask_kinds, 'is_limited_time': lim, 'acquisition_route': acq, 'acquisition_icon': acq_icon or '', 'is_schedule_shell': entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0'))})
         rows = sort_rows(rows, sb, sd, {'name', 'rarity', 'series_tag', 'boost'})
         total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
         start = (page - 1) * pp; pr = rows[start:start + pp]
-        result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'rarity_filter': rav}
+        result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'rarity_filter': rav, 'supp_skill_filter': skill_arg}
         result = convert_image_urls(result)
         set_cached_response(ck, result)
         return jsonify_preserialized(result, ck, public=True, max_age=3600, convert_images=False)
