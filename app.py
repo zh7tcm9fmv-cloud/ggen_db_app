@@ -15154,8 +15154,7 @@ def _precompute_weapon_debuff_keys_present_by_lang():
                     uid, ld_en, 'EN', sm, pilot_cond_active=False))
         # Always list Critical: some kits only gain Crit% with PEP (pilot_cond=1 at filter time).
         acc.add('crit')
-        # Official Tags=1 catalog rows that may have 0 linked playable weapons yet (still show chip).
-        acc.update({'hp_heal', 'mp_up'})
+        # hp_heal / mp_up official catalog stubs are shown greyed in UI when absent — not marked present.
         fs = frozenset(acc)
         for lc in ('EN', 'TW', 'HK', 'JA'):
             if LANG_DATA.get(lc):
