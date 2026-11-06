@@ -548,6 +548,150 @@
     "value": "Graze (Dainsleif Team, Arianrhod Fleet) is a Third Force unit that <material=MaterialName>uses a weapon with the “Decreased DEF” effect.</material> It will <material=MaterialName>appear as reinforcements once the mission objective has been met.</material>"
   },
   {
+    "id": 290200907003010201,
+    "value": "Medea is a guest force unit <material=MaterialName>with the Attack Enhancement Area: Increased ATK area effect</material>."
+  },
+  {
+    "id": 290200907003020201,
+    "value": "ZAKU Warrior (Live Concert Type) is a guest force unit <material=MaterialName>with the HP Restoration Area area effect</material>."
+  },
+  {
+    "id": 290200907003030201,
+    "value": "Zweite Guarder is a neutral unit with the <material=MaterialName>Attack Enhancement Area: Increased ATK area effect</material>.\nNeutral units cannot be attacked by enemies or your own force."
+  },
+  {
+    "id": 290200907003040201,
+    "value": "Wing Gundam Zero (EW) and Gundam Double X are third-force units <material=MaterialName>equipped with wide-range MAP weapons</material>."
+  },
+  {
+    "id": 290200907003040202,
+    "value": "Dritte Guarder is a neutral unit with the <material=MaterialName>Enhancement Area: Increased DEF area effect</material>.\nNeutral units cannot be attacked by enemies or your own force."
+  },
+  {
+    "id": 290200907003050201,
+    "value": "Gundam GP02A is a guest force unit <material=MaterialName>with the Attack Enhancement Area: Increased ATK area effect</material>."
+  },
+  {
+    "id": 290200907003060201,
+    "value": "Adrastea is a guest force unit <material=MaterialName>with the Attack Enhancement Area: Increased ATK area effect</material>."
+  },
+  {
+    "id": 290200907003060202,
+    "value": "Amalthea is a guest force unit <material=MaterialName>with the Enhancement Area: Increased DEF area effect</material>."
+  },
+  {
+    "id": 290200907003060203,
+    "value": "Cony Francis and Juca Meilasch <material=MaterialName>have an ability with the DEF of specified units is increased by 20%. effect</material>."
+  },
+  {
+    "id": 290200907003060204,
+    "value": "Victory Gundam  <material=MaterialName>has an ability with the DEF of specified units is increased by 50%. effect</material>."
+  },
+  {
+    "id": 290200907003070101,
+    "value": "Char's Zaku II and Gouf Custom has <material=MaterialName>high ATK and DEF</material>."
+  },
+  {
+    "id": 290200907003070201,
+    "value": "Dummy Balloon (Santa Claus) is a third-force unit <material=MaterialName>equipped with a wide-range MAP weapon</material>."
+  },
+  {
+    "id": 290200907003080201,
+    "value": "The victory condition for this stage is for <material=MaterialName>[Murrue Ramius]  to reach the target area</material>."
+  },
+  {
+    "id": 290200907003080202,
+    "value": "Moebius Zero is a guest force unit <material=MaterialName>with the Enhancement Area: Increased DEF area effect</material>."
+  },
+  {
+    "id": 290200907003080203,
+    "value": "Vesalius is an enemy force unit <material=MaterialName>with the Attack Enhancement Area: Increased ATK area effect</material>."
+  },
+  {
+    "id": 290200907003090101,
+    "value": "Reborns Gundam has <material=MaterialName>high HP</material>."
+  },
+  {
+    "id": 290200907003090201,
+    "value": "Gadessa (Revive) and Garazzo (Hilling) are enemy force units with the <material=MaterialName>Enhancement Area: Increased DEF area effect</material>."
+  },
+  {
+    "id": 290200907003090202,
+    "value": "Regnant appears as reinforcements on turn 2, and is an enemy force unit <material=MaterialName>with the Attack Enhancement Area: Increased ATK area effect</material>."
+  },
+  {
+    "id": 290200907003090203,
+    "value": "00 Raiser Final Battle Type is a Friendly Forces unit <material=MaterialName>with the Attack Enhancement Area: Increased ATK area effect</material>."
+  },
+  {
+    "id": 290200907003100201,
+    "value": "Medea is a guest force unit <material=MaterialName>with the HP Restoration Area area effect</material>."
+  },
+  {
+    "id": 290200907003100202,
+    "value": "Hover Truck is a guest force unit <material=MaterialName>with the Attack Enhancement Area: Increased ATK area effect</material>."
+  },
+  {
+    "id": 290200907003100203,
+    "value": "Dobday is an enemy force unit <material=MaterialName>with the Attack Enhancement Area: Increased ATK area effect</material>."
+  },
+  {
+    "id": 290200907003100204,
+    "value": "Apsaras III is a unit that appears as a reinforcement and is <material=MaterialName>equipped with a powerful MAP weapon</material>."
+  },
+  {
+    "id": 290200907003110201,
+    "value": "Doggorla is <material=MaterialName>equipped with a powerful MAP weapon</material>."
+  },
+  {
+    "id": 290200907003110202,
+    "value": "Gundam Ashtaron Hermit Crab [MA] and Scorpio MA <material=MaterialName>have an ability with the Guaranteed Bonus Action effect</material>."
+  },
+  {
+    "id": 290200907003120201,
+    "value": "Psycho Gundam and certain third-force units are units that <material=MaterialName>have an ability with the (Cond: Vigor) Increased ATK & DEF effect</material>."
+  },
+  {
+    "id": 290200907003120202,
+    "value": "Multiple units, including the Sorcerer Messala, will <material=MaterialName>appear as reinforcements on turn 2</material>."
+  },
+  {
+    "id": 290200907003130101,
+    "value": "The victory condition for this stage is to <material=MaterialName>defeat Ericht Samaya</material>.\n\nGundam Aerial Rebuild is a unit that has <material=MaterialName>long-range weaponry and high HP</material>."
+  },
+  {
+    "id": 290200907003130201,
+    "value": "Gundam Epyon and Rasveht have <material=MaterialName>high HP</material>."
+  },
+  {
+    "id": 290200907003130202,
+    "value": "Gundam Schwarzette is a unit that appears as a reinforcement and has <material=MaterialName>powerful abilities</material>."
+  },
+  {
+    "id": 290200907003140101,
+    "value": "Audrey Burne  <material=MaterialName>uses the Boost Range (Range) character skill</material>."
+  },
+  {
+    "id": 290200907003140201,
+    "value": "Banshee Norn (Destroy Mode) is a guest force unit that <material=MaterialName>has powerful weapon effects</material>."
+  },
+  {
+    "id": 290200907003140202,
+    "value": "Unicorn Gundam (Destroy Mode) and Zeong <material=MaterialName>have an ability with the Escape effect</material>."
+  },
+  {
+    "id": 290200907003150101,
+    "value": "The victory condition for this stage is to <material=MaterialName>defeat Lohengrin Cannon</material>."
+  },
+  {
+    "id": 290200907003150201,
+    "value": "Ahead Close-Combat Type (Sakigake), Alyzeus and Strike Noir Gundam  <material=MaterialName>have an ability with the Guaranteed Bonus Action effect</material>."
+  },
+  {
+    "id": 290200907003150202,
+    "value": "Blu Duel Gundam  <material=MaterialName>has an ability with the Support Defense (Counter) effect</material>."
+  },
+  {
     "id": 290300907001010201,
     "value": "Launch your attack from near Musai."
   },
@@ -1022,5 +1166,129 @@
   {
     "id": 290300907002200203,
     "value": "Utilize Graze (Dainsleif Team, Arianrhod Fleet)'s MAP weapon to inflict damage on the enemy."
+  },
+  {
+    "id": 290300907003010201,
+    "value": "Launch your attack from near Medea."
+  },
+  {
+    "id": 290300907003020201,
+    "value": "Position yourself near ZAKU Warrior (Live Concert Type) if your HP drops from incoming damage."
+  },
+  {
+    "id": 290300907003030201,
+    "value": "Launch your attack from near Zweite Guarder."
+  },
+  {
+    "id": 290300907003040201,
+    "value": "Utilize Wing Gundam Zero (EW)'s MAP weapon to inflict damage on the enemy."
+  },
+  {
+    "id": 290300907003040202,
+    "value": "Position your units near Dritte Guarder to withstand enemy attacks."
+  },
+  {
+    "id": 290300907003050201,
+    "value": "Launch your attack from near Gundam GP02A."
+  },
+  {
+    "id": 290300907003060201,
+    "value": "Launch your attack from near Adrastea."
+  },
+  {
+    "id": 290300907003060202,
+    "value": "Units which will be attacked should be placed near Amalthea."
+  },
+  {
+    "id": 290300907003060203,
+    "value": "Make use of guest forces to bring down the enemy count."
+  },
+  {
+    "id": 290300907003060204,
+    "value": "Prioritize defeating Marbet Fingerhat."
+  },
+  {
+    "id": 290300907003070101,
+    "value": "Defeat the targets by utilizing Dummy Balloon (Santa Claus)'s MAP Weapon."
+  },
+  {
+    "id": 290300907003070201,
+    "value": "Utilize Dummy Balloon (Santa Claus)'s MAP weapon to inflict damage on the enemy."
+  },
+  {
+    "id": 290300907003080201,
+    "value": "Use the ability of Moebius Zero to protect Murrue Ramius."
+  },
+  {
+    "id": 290300907003080202,
+    "value": "Units which will be attacked should be placed near Moebius Zero."
+  },
+  {
+    "id": 290300907003090201,
+    "value": "Prioritize defeating this unit."
+  },
+  {
+    "id": 290300907003090202,
+    "value": "Prioritize defeating Regnant."
+  },
+  {
+    "id": 290300907003090203,
+    "value": "Launch your attack from near 00 Raiser Final Battle Type."
+  },
+  {
+    "id": 290300907003100201,
+    "value": "Position yourself near Medea if your HP drops from incoming damage."
+  },
+  {
+    "id": 290300907003100202,
+    "value": "Launch your attack from near Hover Truck."
+  },
+  {
+    "id": 290300907003100203,
+    "value": "Prioritize defeating Dobday."
+  },
+  {
+    "id": 290300907003100204,
+    "value": "Be mindful of MAP weapons' range."
+  },
+  {
+    "id": 290300907003110201,
+    "value": "Use neutral units' area effects to increase your chances of success."
+  },
+  {
+    "id": 290300907003120201,
+    "value": "Defeat the targets by utilizing Rig Ring's MAP Weapon."
+  },
+  {
+    "id": 290300907003120202,
+    "value": "Prioritize defeating Sorcerer Messala."
+  },
+  {
+    "id": 290300907003130101,
+    "value": "Take out challenging enemies with the help of Guest Forces."
+  },
+  {
+    "id": 290300907003130201,
+    "value": "Make use of guest forces to bring down the enemy count."
+  },
+  {
+    "id": 290300907003130202,
+    "value": "Protect the guest force from attacks by Gundam Schwarzette."
+  },
+  {
+    "id": 290300907003140201,
+    "value": "Take out challenging enemies with the help of Guest Forces."
+  },
+  {
+    "id": 290300907003140202,
+    "value": "Watch out for reinforcements that appear when a certain unit is defeated."
+  },
+  {
+    "id": 290300907003150101,
+    "value": "Take advantage of neutral units' enhancement effects to defeat the enemy."
+  },
+  {
+    "id": 290300907003150202,
+    "value": "Take advantage of neutral units' enhancement effects to defeat the enemy."
   }
 ]

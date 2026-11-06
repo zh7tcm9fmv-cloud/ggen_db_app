@@ -3432,6 +3432,30 @@
     "ScheduleId": 0
   },
   {
+    "CharacterId": 1125002001,
+    "SortOrder": 1,
+    "CharacterSkillId": 120090101,
+    "RequiredLevel": 1,
+    "SpCharacterSkillId": 0,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1125002001,
+    "SortOrder": 2,
+    "CharacterSkillId": 130080401,
+    "RequiredLevel": 30,
+    "SpCharacterSkillId": 0,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1125002001,
+    "SortOrder": 3,
+    "CharacterSkillId": 410300101,
+    "RequiredLevel": 60,
+    "SpCharacterSkillId": 0,
+    "ScheduleId": 0
+  },
+  {
     "CharacterId": 1125002500,
     "SortOrder": 1,
     "CharacterSkillId": 170010101,

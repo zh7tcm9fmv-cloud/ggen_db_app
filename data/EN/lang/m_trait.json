@@ -15680,6 +15680,14 @@
     "value": "When equipped to Dark Gundam Jr.,\nincrease DEF by 2%."
   },
   {
+    "id": 141200000407230101,
+    "value": "Increase ATK by 10%."
+  },
+  {
+    "id": 141200000407230102,
+    "value": "When equipped to a Unit possessing a specified Tag,\nincrease ATK by 2%."
+  },
+  {
     "id": 141200000510010101,
     "value": "Increase ATK by 10%."
   },
@@ -15754,6 +15762,10 @@
   {
     "id": 141200000510023001,
     "value": "Increase DEF by 300%."
+  },
+  {
+    "id": 141200000510024001,
+    "value": "Increase DEF by 400%."
   },
   {
     "id": 141200000510025001,
@@ -17410,6 +17422,30 @@
   {
     "id": 141200000511610101,
     "value": "Can re-sortie once after being defeated."
+  },
+  {
+    "id": 141200000511660101,
+    "value": "When Vigor is \"High\" or greater,\nincrease ATK and DEF by 50%."
+  },
+  {
+    "id": 141200000511660102,
+    "value": "When Vigor is \"Max\" or greater,\nfurther increase ATK and DEF by 50%."
+  },
+  {
+    "id": 141200000511660103,
+    "value": "When Vigor is \"Supercharged\",\nfurther increase ATK and DEF by 100%."
+  },
+  {
+    "id": 141200000511660104,
+    "value": ""
+  },
+  {
+    "id": 141200000511660105,
+    "value": ""
+  },
+  {
+    "id": 141200000511660106,
+    "value": ""
   },
   {
     "id": 141200000511680101,
@@ -20068,6 +20104,26 @@
     "value": "Increase Mobility by 200%."
   },
   {
+    "id": 141200000613010101,
+    "value": "Increase ATK by 50% for squad units piloted by Uso Ewin"
+  },
+  {
+    "id": 141200000613020101,
+    "value": "Increase DEF by 20% for squad units piloted by Uso Ewin"
+  },
+  {
+    "id": 141200000613030101,
+    "value": "Increase DEF by 20% for squad units piloted by Uso Ewin"
+  },
+  {
+    "id": 141200000613040101,
+    "value": "When your squad's Audrey Burne is destroyed,\nincrease own ATK by 100%."
+  },
+  {
+    "id": 141200000613050101,
+    "value": "When your squad's Dozle Zabi is destroyed,\nincrease own ATK by 100%."
+  },
+  {
     "id": 141200000699000101,
     "value": "Increase ATK by 100%\nfor squad units piloted by McGillis Fareed"
   },
@@ -21138,6 +21194,10 @@
   {
     "id": 141200000700711001,
     "value": "DEF Down 100%"
+  },
+  {
+    "id": 141200000700800501,
+    "value": "The max range of Weapon is decrease by 5 (1 turn(s))."
   },
   {
     "id": 141200000710030501,

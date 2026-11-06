@@ -500,8 +500,24 @@
     "value": "Ranged Boost & Save EN LV 4"
   },
   {
+    "id": 140500000410300101,
+    "value": "Boost Range (Range) LV 1"
+  },
+  {
+    "id": 140500000410300201,
+    "value": "Boost Range (Range) LV 2"
+  },
+  {
+    "id": 140500000410300301,
+    "value": "Boost Range (Range) LV 3"
+  },
+  {
     "id": 140500000900000006,
     "value": "Transmission"
+  },
+  {
+    "id": 140500000900000009,
+    "value": "Boost Range (Range)"
   },
   {
     "id": 140500000900000801,
@@ -1018,6 +1034,22 @@
   {
     "id": 140600000390280401,
     "value": "Increase Ranged by 20% (1 turn(s))\nand reduce weapons EN consumption by 20% (1 turn(s))."
+  },
+  {
+    "id": 140600000410300101,
+    "value": "Increase max range of weapons of allies within range by 1 (1 time(s))."
+  },
+  {
+    "id": 140600000410300201,
+    "value": "Increase max range of weapons of allies within range by 2 (1 time(s))."
+  },
+  {
+    "id": 140600000410300301,
+    "value": "Increase max range of weapons of allies within range by 3 (1 time(s))."
+  },
+  {
+    "id": 140600000900000009,
+    "value": "Characters piloting squad units within range increase max range of weapons by 5 (1 time(s))."
   },
   {
     "id": 140600000990000008,

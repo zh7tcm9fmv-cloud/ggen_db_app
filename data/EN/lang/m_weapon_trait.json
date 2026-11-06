@@ -11412,6 +11412,14 @@
     "value": "Decreased DEF(5 turn(s))"
   },
   {
+    "id": 140700000700761201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000700761202,
+    "value": "Decreased MP (1 turn(s))"
+  },
+  {
     "id": 140700000700790101,
     "value": "Increased Weapon Max Range LV 1"
   },
@@ -11422,6 +11430,14 @@
   {
     "id": 140700000700790501,
     "value": "Increased Weapon Max Range LV 5"
+  },
+  {
+    "id": 140700000700800501,
+    "value": "Weapons Max Range Down (1 turn(s))"
+  },
+  {
+    "id": 140700000700800502,
+    "value": "Absolute Hit"
   },
   {
     "id": 140700000710030501,
@@ -22816,6 +22832,14 @@
     "value": "Inflict \"DEF Down 100%\" on enemies(5 turn(s))."
   },
   {
+    "id": 140800000700761201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000700761202,
+    "value": "Decrease enemy MP by 12 on hit."
+  },
+  {
     "id": 140800000700790101,
     "value": "The max range of Weapon is increased by 1."
   },
@@ -22826,6 +22850,14 @@
   {
     "id": 140800000700790501,
     "value": "The max range of Weapon is increased by 5."
+  },
+  {
+    "id": 140800000700800501,
+    "value": "Inflict \"Decrease weapon max range by 5\" on enemies (1 turn(s))."
+  },
+  {
+    "id": 140800000700800502,
+    "value": "Absolute Hit"
   },
   {
     "id": 140800000710030501,

@@ -1,0 +1,114 @@
+[
+  {
+    "id": 0,
+    "value": ""
+  },
+  {
+    "id": 141700000000000001,
+    "value": "Decreased ATK"
+  },
+  {
+    "id": 141700000000000002,
+    "value": "Decreased DEF"
+  },
+  {
+    "id": 141700000000000003,
+    "value": "Decreased ACC"
+  },
+  {
+    "id": 141700000000000005,
+    "value": "Decreased MOB"
+  },
+  {
+    "id": 141700000000000006,
+    "value": "Decreased Beam Weapon Power"
+  },
+  {
+    "id": 141700000000000007,
+    "value": "Decreased Physical Weapon Power"
+  },
+  {
+    "id": 141700000000000008,
+    "value": "Decreased Special Weapon Power"
+  },
+  {
+    "id": 141700000000000009,
+    "value": "Increased Damage Taken from Beam Weapons"
+  },
+  {
+    "id": 141700000000000010,
+    "value": "Increased Damage Taken from Physical Weapons"
+  },
+  {
+    "id": 141700000000000011,
+    "value": "Increased Damage Taken from Special Weapons"
+  },
+  {
+    "id": 141700000000000012,
+    "value": "Max Range Down"
+  },
+  {
+    "id": 141700000000000013,
+    "value": "MOV Down"
+  },
+  {
+    "id": 141700000000000014,
+    "value": "Increased Weapon Power at Longer Range"
+  },
+  {
+    "id": 141700000000000015,
+    "value": "Increased Weapon Power at Shorter Range"
+  },
+  {
+    "id": 141700000000000016,
+    "value": "Increased Weapon Power with Lower Remaining HP"
+  },
+  {
+    "id": 141700000000000017,
+    "value": "Increased Weapon Power with Higher Remaining HP"
+  },
+  {
+    "id": 141700000000000018,
+    "value": "Increased Weapon Power with Higher MP"
+  },
+  {
+    "id": 141700000000000019,
+    "value": "Increased Weapon Power with Higher Remaining EN"
+  },
+  {
+    "id": 141700000000000020,
+    "value": "Increased Critical Damage"
+  },
+  {
+    "id": 141700000000000021,
+    "value": "Piercing"
+  },
+  {
+    "id": 141700000000000022,
+    "value": "Preemptive Strike"
+  },
+  {
+    "id": 141700000000000023,
+    "value": "HP Restoration Based on Damage Dealt"
+  },
+  {
+    "id": 141700000000000024,
+    "value": "EN Restoration Based on Damage Dealt"
+  },
+  {
+    "id": 141700000000000025,
+    "value": "EN Damage"
+  },
+  {
+    "id": 141700000000000026,
+    "value": "Decreased MP"
+  },
+  {
+    "id": 141700000000000027,
+    "value": "HP Restoration"
+  },
+  {
+    "id": 141700000000000028,
+    "value": "Increased MP"
+  }
+]

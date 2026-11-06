@@ -158,5 +158,10 @@
     "GameFunctionReleaseGroupId": 131,
     "ReleaseConditionTypeIndex": 1,
     "TargetValue": 5
+  },
+  {
+    "GameFunctionReleaseGroupId": 140,
+    "ReleaseConditionTypeIndex": 0,
+    "TargetValue": 0
   }
 ]

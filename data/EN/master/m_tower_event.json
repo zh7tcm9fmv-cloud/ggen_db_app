@@ -33,5 +33,12 @@
     "TowerEventStageGroupId": 110005,
     "SortOrder": 1,
     "ResourceId": "tower_event_100"
+  },
+  {
+    "EventId": 110006,
+    "UpdateInfoLanguageId": 290100000100110006,
+    "TowerEventStageGroupId": 110006,
+    "SortOrder": 1,
+    "ResourceId": "tower_event_300"
   }
 ]

@@ -622,5 +622,89 @@
     "TowerEventStageId": 11000520,
     "FirstClearRewardSetTargetSortOrder": 0,
     "EveryFirstClearRewardSetTargetSortOrder": 0
+  },
+  {
+    "Id": 1100060501,
+    "BalloonTextLanguageId": 0,
+    "BalloonResourceId": "0",
+    "PickupSortOrder": 0,
+    "IsVisibleAsWholePickup": false,
+    "RewardId": 2090700305000001,
+    "Priority": 101,
+    "TowerEventStageId": 11000605,
+    "FirstClearRewardSetTargetSortOrder": 0,
+    "EveryFirstClearRewardSetTargetSortOrder": 0
+  },
+  {
+    "Id": 1100061001,
+    "BalloonTextLanguageId": 0,
+    "BalloonResourceId": "0",
+    "PickupSortOrder": 0,
+    "IsVisibleAsWholePickup": false,
+    "RewardId": 2090700310000002,
+    "Priority": 100,
+    "TowerEventStageId": 11000610,
+    "FirstClearRewardSetTargetSortOrder": 0,
+    "EveryFirstClearRewardSetTargetSortOrder": 0
+  },
+  {
+    "Id": 1100061101,
+    "BalloonTextLanguageId": 0,
+    "BalloonResourceId": "0",
+    "PickupSortOrder": 0,
+    "IsVisibleAsWholePickup": false,
+    "RewardId": 2090700311000002,
+    "Priority": 99,
+    "TowerEventStageId": 11000611,
+    "FirstClearRewardSetTargetSortOrder": 0,
+    "EveryFirstClearRewardSetTargetSortOrder": 0
+  },
+  {
+    "Id": 1100061201,
+    "BalloonTextLanguageId": 0,
+    "BalloonResourceId": "0",
+    "PickupSortOrder": 1,
+    "IsVisibleAsWholePickup": true,
+    "RewardId": 2090700312000002,
+    "Priority": 98,
+    "TowerEventStageId": 11000612,
+    "FirstClearRewardSetTargetSortOrder": 0,
+    "EveryFirstClearRewardSetTargetSortOrder": 0
+  },
+  {
+    "Id": 1100061301,
+    "BalloonTextLanguageId": 0,
+    "BalloonResourceId": "0",
+    "PickupSortOrder": 0,
+    "IsVisibleAsWholePickup": false,
+    "RewardId": 2090700313000002,
+    "Priority": 97,
+    "TowerEventStageId": 11000613,
+    "FirstClearRewardSetTargetSortOrder": 0,
+    "EveryFirstClearRewardSetTargetSortOrder": 0
+  },
+  {
+    "Id": 1100061401,
+    "BalloonTextLanguageId": 0,
+    "BalloonResourceId": "0",
+    "PickupSortOrder": 2,
+    "IsVisibleAsWholePickup": true,
+    "RewardId": 2090700314000001,
+    "Priority": 96,
+    "TowerEventStageId": 11000614,
+    "FirstClearRewardSetTargetSortOrder": 0,
+    "EveryFirstClearRewardSetTargetSortOrder": 0
+  },
+  {
+    "Id": 1100061501,
+    "BalloonTextLanguageId": 0,
+    "BalloonResourceId": "0",
+    "PickupSortOrder": 3,
+    "IsVisibleAsWholePickup": true,
+    "RewardId": 2090700315000002,
+    "Priority": 95,
+    "TowerEventStageId": 11000615,
+    "FirstClearRewardSetTargetSortOrder": 0,
+    "EveryFirstClearRewardSetTargetSortOrder": 0
   }
 ]

@@ -484,6 +484,10 @@
     "value": "EN Charge Lite LV 3"
   },
   {
+    "id": 140500000900000009,
+    "value": "Boost Range (Range)"
+  },
+  {
     "id": 140500000900000801,
     "value": "HP Repair (Range)"
   },
@@ -992,6 +996,10 @@
     "value": "Restore EN by 15%."
   },
   {
+    "id": 140600000900000009,
+    "value": "Characters piloting squad units within range increase max range of weapons by 5 (1 time(s))."
+  },
+  {
     "id": 140600000990000061,
     "value": "Increase Ranged by 200% (9 turn(s))."
   },
@@ -1100,6 +1108,18 @@
     "value": "Save EN LV 4"
   },
   {
+    "id": 141300000410300101,
+    "value": "Boost Range (Range) LV 1"
+  },
+  {
+    "id": 141300000410300201,
+    "value": "Boost Range (Range) LV 2"
+  },
+  {
+    "id": 141300000410300301,
+    "value": "Boost Range (Range) LV 3"
+  },
+  {
     "id": 141400000270130101,
     "value": "Increase Accuracy by 15% (1 turn(s))."
   },
@@ -1190,5 +1210,17 @@
   {
     "id": 141400000390280402,
     "value": "Reduce weapons EN consumption by 20% [1 turn(s)]."
+  },
+  {
+    "id": 141400000410300101,
+    "value": "Increase max range of weapons of allies within range by 1 (1 time(s))."
+  },
+  {
+    "id": 141400000410300201,
+    "value": "Increase max range of weapons of allies within range by 2 (1 time(s))"
+  },
+  {
+    "id": 141400000410300301,
+    "value": "Increase max range of weapons of allies within range by 3 (1 time(s))."
   }
 ]
