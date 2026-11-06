@@ -243,9 +243,29 @@ assert(cq.queue.some((q) => q.wave === 0), 'preemptive pulled to wave 0');
 assert(cq.queue.some((q) => q.wave === 4 || q.type === 'counter'), 'counter wave present when surviving');
 enActor.mp = 12;
 enActor.hp = 100;
+enActor.chanceStepsLeft = 2;
 enActor.char = { abilities: [{ name: 'u', details: ['無条件チャンスステップ'] }] };
 assert(rules.checkAndAcquireUnconditionalCS(enActor) === true, 'unconditional CS acquire');
 assert((enActor.unconditionalCSStock | 0) === 1, 'unconditional CS stock');
+assert((enActor.chanceStepsLeft | 0) === 3, 'Guaranteed CS raises Bonus Action count (2→3), got ' + (enActor.chanceStepsLeft | 0));
+/* Uso UR EX: Chance Step +1 (budget 2) + Guaranteed +1 at Supercharged → 3 left → 4 actions total. */
+const usoLike = {
+  mp: 12, hp: 100, chanceStepsLeft: 2, hasAcquiredUnconditionalCS: false, unconditionalCSStock: 0,
+  unit: { tags: ['League Militaire'] },
+  char: {
+    abilities: [{
+      name: 'EX Character Ability', is_ex: true,
+      details: [{
+        text: 'When piloting units with specified tags\nand Vigor is "Supercharged" or greater,\nGuaranteed Chance Step +1 time(s).\n(Once per battle)\n*Any count increase granted by this ability will remain until used.',
+        conditions: [{ type: 'unit', id: '1086', name: 'League Militaire', source: 'unit_tags' }]
+      }]
+    }]
+  }
+};
+assert(rules.checkAndAcquireUnconditionalCS(usoLike) === true, 'Uso-like Guaranteed CS acquire');
+assert((usoLike.unconditionalCSStock | 0) === 1 && (usoLike.chanceStepsLeft | 0) === 3,
+  'Uso-like Guaranteed +1 raises left to 3 (got stock=' + (usoLike.unconditionalCSStock | 0) +
+  ' left=' + (usoLike.chanceStepsLeft | 0) + ')');
 
 /* Neo Zeong Cond:Area −20 + Full Frontal addition −15 → −35 on beam/physical ranged */
 const auraSrc = {

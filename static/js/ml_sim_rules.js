@@ -927,7 +927,8 @@
   }
 
   /** MLS / site: Chance Step uses (額外行動). Base 1; +1 ability → up to 2.
-   * Auto / Guaranteed “+1 time(s)” force the existing budget without a KO — they do NOT raise max. */
+   * Auto-CS forces an existing budget slot without a KO (does not raise max).
+   * Guaranteed CS +N is a real count increase (see checkAndAcquireUnconditionalCS). */
   function chanceStepLimit(actor) {
     var n = 1;
     var bags = [];
@@ -1238,7 +1239,16 @@
 
   /** Official Guaranteed / 無条件 / 無條件 stock (+N, often once/battle). */
   function isGuaranteedCsStockText(t) {
-    return /Guaranteed\s*Chance\s*Step|Unconditional\s*Chance\s*Step|無条件チャンスステップ|無條件額外行動|无条件额外行动/i.test(t || '');
+    return /Guaranteed\s*Chance\s*Step|Guaranteed\s*Chance\s*\+|Unconditional\s*Chance\s*Step|無条件チャンスステップ|無條件額外行動|无条件额外行动/i.test(t || '');
+  }
+
+  /** Parse 「無条件チャンスステップ」+N / Guaranteed Chance Step +N time(s). Default 1. */
+  function guaranteedCsCountIncrease(text) {
+    var norm = normalizeFullwidth(text || '');
+    var m = norm.match(/(?:Guaranteed\s*Chance(?:\s*Step)?|Unconditional\s*Chance\s*Step|無条件チャンスステップ|無條件額外行動|无条件额外行动)[^\d+＋]{0,12}[+＋]\s*(\d+)/i)
+      || norm.match(/[+＋]\s*(\d+)\s*(?:time|回|次|회)/i);
+    var n = m ? (parseInt(m[1], 10) || 0) : 1;
+    return n < 1 ? 1 : n;
   }
 
   /**
@@ -1853,18 +1863,21 @@
   }
 
   /**
-   * MLS checkAndAcquireUnconditionalCS — Guaranteed/Unconditional CS stock (once/battle).
+   * MLS checkAndAcquireUnconditionalCS — Guaranteed/Unconditional CS (once/battle).
    * EN: Guaranteed Chance Step · JA: 無条件チャンスステップ · TW/HK: 無條件額外行動.
    * Respects unit-tag / unit-id conditions + Vigor gates (e.g. Uso Supercharged + League Militaire).
-   * Stock forces one existing Bonus Action without a KO; firing spends chanceStepsLeft.
-   * Does not raise chanceCount (m_help: limited Bonus Actions per phase).
+   * Official ability text: 「+N time(s)」 / 「+N回」 is a real Chance Step count increase
+   * (*Any count increase … will remain until used* / 増えた回数分は使用するまで消費されません).
+   * Acquire: bump chanceStepsLeft by N and bank unconditionalCSStock so end-of-action can
+   * fire without a KO. Firing still spends chanceStepsLeft (the raised budget).
+   * Auto-CS is different — it only forces an existing slot and must not use this path.
    */
   function checkAndAcquireUnconditionalCS(actor) {
     var acquired = false;
     if (!actor || actor.hasAcquiredUnconditionalCS) return false;
     if (actor.hp != null && (actor.hp | 0) <= 0) return false;
     iterAbilityDetails(actor, function (ab, detail, text) {
-      var norm;
+      var norm, add;
       if (acquired) return;
       if (detail && !detailConditionsMet(actor, detail)) return;
       norm = normalizeFullwidth(text);
@@ -1872,9 +1885,12 @@
       /* Skip Auto-Chance (“regardless of defeat”) lines — those are not once/battle stock. */
       if (isAutoCsAfterCombatText(norm) && !isGuaranteedCsStockText(norm)) return;
       if (!tensionOk(actor.mp, norm)) return;
+      add = guaranteedCsCountIncrease(norm);
       acquired = true;
       actor.hasAcquiredUnconditionalCS = true;
-      actor.unconditionalCSStock = (actor.unconditionalCSStock | 0) + 1;
+      actor.unconditionalCSStock = (actor.unconditionalCSStock | 0) + add;
+      /* Count increase remains until used — raise the live Bonus Action budget. */
+      actor.chanceStepsLeft = (actor.chanceStepsLeft | 0) + add;
     });
     return acquired;
   }

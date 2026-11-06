@@ -10078,7 +10078,9 @@
           snapshotLine(
             'T' + turn + ' ' +
             ((R.chanceStepLabels && R.chanceStepLabels(lang()).guaranteed) || 'Guaranteed Chance Step') +
-            ' stock +1: ' + u.name + ' (MP ' + (u.mp | 0) + ' · ' + vigorLabelFromMp(u.mp) + ')',
+            ' count +' + (u.unconditionalCSStock | 0) + ': ' + u.name +
+            ' (MP ' + (u.mp | 0) + ' · ' + vigorLabelFromMp(u.mp) +
+            ' · left ' + (u.chanceStepsLeft | 0) + ')',
             null, null, 'skill'
           );
         }
@@ -10176,8 +10178,8 @@
             };
             if (R.checkAndAcquireUnconditionalCS(u)) {
               snapshotLine(
-                'T' + turn + ' ' + csLblMap.guaranteed + ' stock +1: ' + u.name +
-                ' (MP ' + (u.mp | 0) + ')',
+                'T' + turn + ' ' + csLblMap.guaranteed + ' count +' + (u.unconditionalCSStock | 0) +
+                ': ' + u.name + ' (MP ' + (u.mp | 0) + ' · left ' + (u.chanceStepsLeft | 0) + ')',
                 null, null, 'skill'
               );
             }
@@ -10203,8 +10205,8 @@
                 );
               } else if ((u.unconditionalCSStock | 0) > 0 && (u.chanceStepsLeft | 0) > 0) {
                 /*
-                 * Guaranteed CS: forces one existing Bonus Action without a KO.
-                 * Does not raise chanceCount — spends chanceStepsLeft.
+                 * Guaranteed CS: no-KO trigger for a count already added on acquire.
+                 * Spends chanceStepsLeft (raised budget) + stock.
                  */
                 u.unconditionalCSStock--;
                 u.chanceStepsLeft = (u.chanceStepsLeft | 0) - 1;
@@ -10543,8 +10545,9 @@
           };
           if (R.checkAndAcquireUnconditionalCS(u)) {
             snapshotLine(
-              'T' + turn + ' ' + csLbl.guaranteed + ' stock +1: ' + u.name +
-              ' (MP ' + (u.mp | 0) + ' · ' + vigorLabelFromMp(u.mp) + ')',
+              'T' + turn + ' ' + csLbl.guaranteed + ' count +' + (u.unconditionalCSStock | 0) +
+              ': ' + u.name + ' (MP ' + (u.mp | 0) + ' · ' + vigorLabelFromMp(u.mp) +
+              ' · left ' + (u.chanceStepsLeft | 0) + ')',
               null, null, 'skill'
             );
           }
@@ -10588,7 +10591,7 @@
               /*
                * Guaranteed Chance Step: end of any action (no KO required) — including
                * after Escape morphs that cancel normal kill-CS.
-               * Does not raise chanceCount — spends chanceStepsLeft like kill-CS / Auto-CS.
+               * Count was raised on acquire; spend chanceStepsLeft + stock here.
                */
               u.unconditionalCSStock--;
               u.chanceStepsLeft = (u.chanceStepsLeft | 0) - 1;

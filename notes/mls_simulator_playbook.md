@@ -127,7 +127,7 @@ HUD labels on the map: **S. Attack** / **S. Defense** (not SD/SA abbreviations).
 
 - Kill → Chance Step for the killer if stock remains (character limit; ability text can raise it).  
 - **MAP kill does not grant Chance Step** (matches help).  
-- Auto / Guaranteed Chance Step types from help are only partially covered (unconditional stock path exists; full live special CS types are not a complete twin).
+- **Guaranteed Chance Step +N** (無条件…+N回): real count increase — bump `chanceStepsLeft` on acquire, then no-KO fire spends that raised budget (Uso UR EX: base 2 + Guaranteed +1 → 4 actions). Auto-CS still only forces an existing slot.
 
 MAP: no normal move-after (except specials coded), uses map footprint cells + facing where present.  
 Chip-only MAP (0 kills): prefer MAP only when its damage on the engage target is ≥ the best non-MAP shot **and** it hits 2+ foes — do not let AoE sum beat a stronger single-target weapon (F90 A.D.S. Barrage vs Barrage EX).
