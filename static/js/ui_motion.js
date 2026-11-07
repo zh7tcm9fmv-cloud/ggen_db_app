@@ -54,6 +54,8 @@
   function enhanceRange(input) {
     if (!input || input.nodeName !== 'INPUT' || input.type !== 'range') return;
     if (input.dataset.uiRubber === '1') return;
+    /* Invisible firefly overlay thumbs — rubber/ox would fight soft-drag feel */
+    if (input.classList && input.classList.contains('pep-ms-input')) return;
     input.dataset.uiRubber = '1';
     input.classList.add('ui-range');
     if (reduced || input.disabled) return;

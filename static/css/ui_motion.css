@@ -219,6 +219,109 @@ input[type=range].ui-range.ui-range-snap::-moz-range-thumb{
   transition:transform var(--ui-spring-snap) var(--ui-spring);
 }
 
+/* —— PEP stack: Takayu milestone-firefly (catalog-data-story-milestone-firefly) ——
+   Progress fill + tip firefly travel together; dots mark each buff % milestone.
+   Keep firefly tip aligned with fill end. Purple adapts the mint demo to PEP. */
+.detail-pep-ms{
+  --pep-ms-p:0;
+  align-items:center;
+  gap:8px;
+}
+.detail-pep-ms .pep-ms{
+  position:relative;
+  flex:1 1 auto;
+  min-width:0;
+  /* Tall invisible hit band — rail stays thin; thumb is easy to grab */
+  height:28px;
+  display:flex;
+  align-items:center;
+}
+.detail-pep-ms .pep-ms-rail{
+  position:absolute;
+  left:0;
+  right:0;
+  top:50%;
+  height:3px;
+  margin-top:-1.5px;
+  border-radius:999px;
+  background:rgba(41,65,78,.92);
+  overflow:visible;
+  pointer-events:none;
+}
+.detail-pep-ms .pep-ms-fill{
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  background:linear-gradient(90deg,rgba(124,58,237,.95),rgba(196,181,253,.95));
+  transform-origin:left center;
+  transform:scaleX(var(--pep-ms-p,0));
+  transition:transform var(--motion-dur-snap) var(--motion-ease-enter);
+  will-change:transform;
+}
+.detail-pep-ms .pep-ms-dot{
+  position:absolute;
+  top:50%;
+  width:7px;
+  height:7px;
+  margin:-3.5px 0 0 -3.5px;
+  border-radius:50%;
+  border:1px solid rgba(168,85,247,.5);
+  background:#14202e;
+  z-index:2;
+  box-sizing:border-box;
+  pointer-events:none;
+  transition:background-color var(--motion-dur-quick) var(--motion-ease-standard),border-color var(--motion-dur-quick) var(--motion-ease-standard),box-shadow var(--motion-dur-quick) var(--motion-ease-standard),transform var(--motion-dur-quick) var(--motion-ease-standard);
+}
+.detail-pep-ms .pep-ms-dot.is-done{
+  background:rgba(196,181,253,.9);
+  border-color:#c4b5fd;
+}
+.detail-pep-ms .pep-ms-dot.is-active{
+  background:#f3e8ff;
+  border-color:#fff;
+  box-shadow:0 0 8px rgba(168,85,247,.55);
+  transform:scale(1.15);
+}
+.detail-pep-ms .pep-ms-firefly{
+  position:absolute;
+  top:50%;
+  left:calc(var(--pep-ms-p,0) * 100%);
+  width:11px;
+  height:11px;
+  margin:-5.5px 0 0 -5.5px;
+  border-radius:50%;
+  background:#e9d5ff;
+  box-shadow:0 0 10px rgba(196,181,253,.78),0 0 18px rgba(168,85,247,.35);
+  z-index:3;
+  pointer-events:none;
+  transition:left var(--motion-dur-snap) var(--motion-ease-enter);
+  will-change:left;
+}
+.detail-pep-ms .pep-ms-input{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  margin:0;
+  opacity:0;
+  cursor:grab;
+  z-index:4;
+  accent-color:transparent;
+  touch-action:pan-x;
+  -webkit-appearance:none;
+  appearance:none;
+}
+.detail-pep-ms .pep-ms-input:active{cursor:grabbing}
+.detail-pep-ms.is-dragging .pep-ms-fill,
+.detail-pep-ms.is-dragging .pep-ms-firefly,
+.detail-pep-ms.is-dragging .pep-ms-dot{
+  transition:none!important;
+}
+.detail-pep-ms .detail-pilot-stack-val{
+  color:#e9d5ff;
+  text-shadow:0 0 8px rgba(168,85,247,.35);
+}
+
 /* —— Pill toggles (stage map + conditional switches) —— */
 .stage-map-reinf-slider.ui-toggle-snap::before,
 .toggle-switch.ui-toggle-snap::after{
@@ -546,6 +649,14 @@ body:not(.tm-page):not(.dm-page).nav-tabs-collapsed #navTabsShell{
     transform:none!important;
     transition:none!important;
   }
+  .detail-pep-ms .pep-ms-fill,
+  .detail-pep-ms .pep-ms-firefly,
+  .detail-pep-ms .pep-ms-dot{
+    transition:none!important;
+    transform:none;
+  }
+  .detail-pep-ms .pep-ms-fill{transform:scaleX(var(--pep-ms-p,0))}
+  .detail-pep-ms .pep-ms-dot.is-active{transform:none}
   /* Filter / lang dropdowns: opacity-only entry (no translate) */
   .rarity-filter-panel,
   .role-filter-panel,

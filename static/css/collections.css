@@ -1503,7 +1503,7 @@ body.collections-page .bg-pattern::after{
 .collections-pct-sticky-chip.is-skill-hp .collections-pct-sticky-chip-v{color:#6ee7b7}
 .collections-pct-sticky-chip.is-skill-en .collections-pct-sticky-chip-v{color:#facc15}
 .collections-pct-sticky-chip.is-skill-hybrid .collections-pct-sticky-chip-v{color:#d8b4fe}
-body.collections-page:has(.collections-hud.is-perfect) .collections-pct-sticky-val{
+body.collections-page.collections-perfect .collections-pct-sticky-val{
   background:linear-gradient(90deg,var(--accent-gold),var(--accent-cyan));
   -webkit-background-clip:text;background-clip:text;color:transparent;
 }

@@ -36,7 +36,7 @@
   can beat max-height and let the DOCUMENT scroll — nav tabs leave the viewport
   in landscape. Force a locked viewport shell; board-wrap is the only scroller.
 */
-html:has(body.dm-page){
+html.dm-page{
   height:100dvh !important;
   max-height:100dvh !important;
   min-height:0 !important;

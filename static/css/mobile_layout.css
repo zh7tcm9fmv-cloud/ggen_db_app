@@ -160,7 +160,7 @@
     padding-bottom: max(var(--mobile-grid-margin), calc(var(--safe-bottom) + 12px));
   }
 
-  html.cmp-bar-open:has(#cmpFloat.visible) .main-content {
+  html.cmp-bar-open .main-content {
     padding-bottom: max(
       var(--mobile-grid-margin),
       calc(var(--safe-bottom) + 56px + 12px)
@@ -503,18 +503,18 @@
     bottom: calc(var(--mobile-page-gutter) + var(--safe-bottom));
   }
 
-  body:has(.search-recall-fab.visible) .scroll-top-fab,
-  body:has(.search-recall-fab.visible) .banner-timeline-scroll-top-fab {
+  html.search-recall-open .scroll-top-fab,
+  html.search-recall-open .banner-timeline-scroll-top-fab {
     bottom: calc(88px + var(--safe-bottom));
   }
 
-  html.cmp-bar-open:has(#cmpFloat.visible) .scroll-top-fab,
-  html.cmp-bar-open:has(#cmpFloat.visible) .banner-timeline-scroll-top-fab {
+  html.cmp-bar-open .scroll-top-fab,
+  html.cmp-bar-open .banner-timeline-scroll-top-fab {
     bottom: calc(64px + var(--safe-bottom));
   }
 
-  html.cmp-bar-open:has(#cmpFloat.visible) body:has(.search-recall-fab.visible) .scroll-top-fab,
-  html.cmp-bar-open:has(#cmpFloat.visible) body:has(.search-recall-fab.visible) .banner-timeline-scroll-top-fab {
+  html.cmp-bar-open.search-recall-open .scroll-top-fab,
+  html.cmp-bar-open.search-recall-open .banner-timeline-scroll-top-fab {
     bottom: calc(132px + var(--safe-bottom));
   }
 
@@ -539,7 +539,7 @@
       min-height: var(--layout-vh, 100vh);
     }
 
-    html.cmp-bar-open:has(#cmpFloat.visible) {
+    html.cmp-bar-open {
       scroll-padding-bottom: calc(var(--safe-bottom) + 56px);
     }
 

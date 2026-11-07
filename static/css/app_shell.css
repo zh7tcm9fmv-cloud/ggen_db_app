@@ -1205,9 +1205,10 @@ html[data-ui-lang="HK"] #panel-banner_timeline .bt-table .bt-strip .lr-card.bt-l
 .scroll-top-fab:hover .scroll-top-fab-ic,.banner-timeline-scroll-top-fab:hover .banner-timeline-scroll-top-fab-ic{animation:none}
 }
 body.detail-modal-open .scroll-top-fab,body.detail-modal-open .banner-timeline-scroll-top-fab,body.search-spotlight-open .scroll-top-fab,body.search-spotlight-open .banner-timeline-scroll-top-fab,html.page-scroll-lock .scroll-top-fab,html.page-scroll-lock .banner-timeline-scroll-top-fab{display:none!important}
-body:has(.search-recall-fab.visible) .scroll-top-fab,body:has(.search-recall-fab.visible) .banner-timeline-scroll-top-fab{bottom:calc(96px + env(safe-area-inset-bottom,0px))}
-html.cmp-bar-open:has(#cmpFloat.visible) .scroll-top-fab,html.cmp-bar-open:has(#cmpFloat.visible) .banner-timeline-scroll-top-fab{bottom:calc(68px + env(safe-area-inset-bottom,0px))}
-html.cmp-bar-open:has(#cmpFloat.visible) body:has(.search-recall-fab.visible) .scroll-top-fab,html.cmp-bar-open:has(#cmpFloat.visible) body:has(.search-recall-fab.visible) .banner-timeline-scroll-top-fab{bottom:calc(144px + env(safe-area-inset-bottom,0px))}
+/* State classes — avoid landmark :has(html/body) (Chrome dirties large subtrees on toggle). */
+html.search-recall-open .scroll-top-fab,html.search-recall-open .banner-timeline-scroll-top-fab{bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+html.cmp-bar-open .scroll-top-fab,html.cmp-bar-open .banner-timeline-scroll-top-fab{bottom:calc(68px + env(safe-area-inset-bottom,0px))}
+html.cmp-bar-open.search-recall-open .scroll-top-fab,html.cmp-bar-open.search-recall-open .banner-timeline-scroll-top-fab{bottom:calc(144px + env(safe-area-inset-bottom,0px))}
 .lr-root{max-width:100%;width:100%;margin:0;padding:4px 0 24px;position:relative;z-index:1;text-align:left}
 .lr-page-title{font-size:17px;font-weight:800;color:var(--accent-gold);margin-bottom:22px;letter-spacing:.02em;text-align:left}
 .lr-section{margin-bottom:32px;padding-bottom:26px;border-bottom:1px solid rgba(255,255,255,.08);text-align:left}
@@ -1768,9 +1769,9 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .detail-back-btn:hover{color:var(--accent-cyan);border-color:rgba(34,211,238,.55);background:rgba(15,23,42,.75)}
 .detail-header{display:flex;gap:28px;padding:52px 28px 24px;border-bottom:1px solid var(--border-color);background:rgba(0,0,0,0.2);overflow:hidden;position:relative}
 .detail-portrait-wrap{flex-shrink:0;width:300px;max-width:100%;position:relative}.detail-portrait{width:100%;max-width:300px;height:400px;object-fit:contain;object-position:center calc(50% + var(--portrait-optical-y));border-radius:var(--radius-md);border:2px solid var(--border-color);background:rgba(13,19,33,0.8)}
-/* Header garage/office plate — normal cover on the header box itself.
-   SP/SSP reflow is prevented by stable stats-grid scale (JS), not a tall ::before
-   (that overflowed and painted over .detail-body abilities). */
+/* Header garage/office plate — full cover on the header box.
+   SP/SSP digit reflow: stable stats-grid scale (JS).
+   PEP stack slider: reserved label-col height (CSS) so toggle never grows the plate. */
 .modal-content.unit-detail:not(.detail-ranking-view) .detail-header.unit-detail-header,
 .modal-content.supporter-detail .detail-header.supporter-detail-header,
 .modal-content.char-detail:not(.detail-ranking-view) .detail-header.char-detail-header{
@@ -3885,9 +3886,18 @@ button.stage-map-roster-thumb:disabled{
 .detail-cond-toggle-stack .toggle-clickable{display:inline-flex!important;align-items:center;gap:8px;max-width:100%}
 .detail-cond-toggle-stack .toggle-control-slot{flex:0 0 44px;width:44px;display:inline-flex;align-items:center;justify-content:center}
 .detail-cond-toggle-stack .detail-pilot-ep-block{gap:0}
-.detail-pilot-ep-label-col{display:flex;flex-direction:column;align-items:flex-start;gap:6px;min-width:0;flex:1 1 auto}
+.detail-pilot-ep-label-col{display:flex;flex-direction:column;align-items:flex-start;gap:6px;min-width:0;flex:1 1 auto;/* label + gap + firefly stack band — keep header height stable when PEP toggles */min-height:calc(1.2em + 6px + 28px)}
 .detail-pilot-ep-label-col .toggle-label{align-self:flex-start}
-.detail-pilot-ep-label-col .detail-pilot-stack-row{align-self:stretch;width:100%;padding:0;margin-top:0;justify-content:flex-start}
+.detail-pilot-ep-label-col .detail-pilot-stack-row{align-self:stretch;width:100%;max-width:min(100%,200px);padding:0;margin-top:0;justify-content:flex-start}
+.detail-pilot-stack-row.is-reserved{visibility:hidden;pointer-events:none}
+.detail-pilot-stack-row.detail-pep-ms{width:min(100%,200px)}
+/* Firefly stack track (PEP + CP): override native range width locks */
+.detail-unit-cp-stack-slot .detail-unit-cond-stack-row.detail-pep-ms,
+.detail-unit-cond-stack-row.detail-pep-ms,
+.dc-picked-controls .detail-unit-cond-stack-row.detail-pep-ms{width:min(100%,200px);max-width:min(100%,200px)}
+.detail-unit-cond-stack-row.detail-pep-ms .detail-pilot-stack-slider.pep-ms-input,
+.detail-unit-cp-stack-slot .detail-unit-cond-stack-row.detail-pep-ms .detail-pilot-stack-slider.pep-ms-input{flex:unset;width:100%;max-width:none;min-width:0;height:100%}
+.detail-unit-cp-stack-slot .dc-unit-hp-tier-row.detail-pep-ms .detail-pilot-stack-val{min-width:5.5em}
 .weapon-card-header--pilot-ep-boost{animation:npc-card-highlight-pulse-purple 1.15s ease-in-out 8;box-shadow:inset 0 0 0 2px rgba(192,132,252,.72),0 0 18px rgba(168,85,247,.38)}
 .weapon-card-header--crit-filter-hit{animation:npc-card-highlight-pulse-gold 1.15s ease-in-out 8;box-shadow:inset 0 0 0 2px rgba(255,215,0,.72),0 0 18px rgba(255,215,0,.38)}
 .weapon-card-header--pilot-ep-boost.weapon-card-header--crit-filter-hit{animation:npc-card-highlight-pulse-gold 1.15s ease-in-out 8;box-shadow:inset 0 0 0 2px rgba(255,215,0,.78),0 0 18px rgba(255,215,0,.4)}
@@ -3899,7 +3909,10 @@ button.stage-map-roster-thumb:disabled{
 .weapon-trait-line .weapon-acc-boost{color:#5d9cec!important;font-weight:800;text-shadow:0 0 10px rgba(93,156,236,.45)}
 .detail-pilot-stack-row{display:flex;align-items:center;gap:8px;justify-content:flex-end;width:min(100%,200px);padding:0 6px 0 0;margin-top:6px}
 .detail-pilot-stack-row--enter{animation:detailPilotStackIn .24s ease-out both}
-.detail-pilot-stack-slider{flex:1;min-width:0;width:100%;height:4px;margin:0;accent-color:rgba(168,85,247,.9);cursor:pointer}
+.detail-pilot-stack-slider{flex:1;min-width:0;width:100%;height:28px;margin:0;accent-color:rgba(168,85,247,.9);cursor:grab;touch-action:pan-x}
+.detail-pilot-stack-slider:active,
+.detail-pilot-stack-row.is-dragging .detail-pilot-stack-slider{cursor:grabbing}
+.detail-pilot-stack-row.is-dragging{user-select:none}
 .detail-pilot-stack-val{font-size:11px;font-weight:700;color:#c4b5fd;min-width:2.75em;text-align:right;flex-shrink:0;font-variant-numeric:tabular-nums;line-height:1}
 .detail-unit-cp-block{display:flex;flex-direction:column;align-items:flex-end;gap:6px;width:100%}
 .detail-unit-cp-stack-slot{align-self:stretch;width:100%;display:flex;justify-content:flex-end}
@@ -4181,7 +4194,7 @@ html.cmp-mobile-pick .list-grid-card--cmp.cmp-is-selected .list-thumb-portrait,h
 #charTable tbody tr.cmp-is-selected td:last-child,#unitTable tbody tr.cmp-is-selected td:last-child{border-right:1px solid var(--border-accent);border-top-right-radius:var(--radius-sm);border-bottom-right-radius:var(--radius-sm)}
 #charTable tbody tr.cmp-is-selected:hover td,#unitTable tbody tr.cmp-is-selected:hover td{background:var(--bg-card-hover)!important}
 #charTable tbody tr.cmp-is-selected .list-thumb-portrait,#unitTable tbody tr.cmp-is-selected .list-thumb-portrait{filter:none}
-html.cmp-bar-open:has(#cmpFloat.visible) .main-content{padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))}
+html.cmp-bar-open .main-content{padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))}
 @media(max-width:768px){
 .cmp-mobile-pick-toggle{width:34px;height:30px}
 }
@@ -5453,9 +5466,9 @@ display:flex;flex-direction:column;gap:12px;align-items:stretch;width:100%;min-w
   .nav-tabs-shell{min-height:48px}
   .modal-content{-webkit-overflow-scrolling:touch}
   html{scroll-padding-bottom:env(safe-area-inset-bottom,0px);min-height:100%;min-height:100dvh;min-height:-webkit-fill-available;background-color:var(--bg-primary)}
-  html.cmp-bar-open:has(#cmpFloat.visible){scroll-padding-bottom:calc(env(safe-area-inset-bottom,0px) + 56px)}
-  html.cmp-bar-open:has(#cmpFloat.visible) .main-content{padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))}
-  html.cmp-bar-open:has(#cmpFloat.visible) .site-footer-links{padding-bottom:calc(28px + env(safe-area-inset-bottom,0px))}
+  html.cmp-bar-open{scroll-padding-bottom:calc(env(safe-area-inset-bottom,0px) + 56px)}
+  html.cmp-bar-open .main-content{padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))}
+  html.cmp-bar-open .site-footer-links{padding-bottom:calc(28px + env(safe-area-inset-bottom,0px))}
   body{min-height:100dvh;min-height:-webkit-fill-available;min-height:var(--layout-vh,100dvh);background-color:var(--bg-primary)}
   .app-header{top:0}
   /* Bleed page paint under Safari Liquid Glass chrome (avoids solid black toolbar bar) */

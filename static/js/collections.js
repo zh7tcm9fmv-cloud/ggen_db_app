@@ -1426,6 +1426,7 @@
         badge.hidden = !complete;
         badge.textContent = perfect ? t('complete_max') : t('complete');
         badge.classList.toggle('is-perfect', perfect);
+        document.body.classList.toggle('collections-perfect', !!perfect);
       }
     }
     if (statsEl && st) {
@@ -2675,6 +2676,7 @@
       hud.classList.toggle('is-complete', complete);
       hud.classList.toggle('is-perfect', perfect);
     }
+    document.body.classList.toggle('collections-perfect', !!perfect);
     if (gauge) {
       gauge.classList.toggle('is-complete', complete);
       gauge.classList.toggle('is-perfect', perfect);

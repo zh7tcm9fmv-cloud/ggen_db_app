@@ -2095,7 +2095,8 @@ function scrollActiveListToolbarIntoView(){try{const pan=document.getElementById
 function afterListLoadIfSpotlightOpen(){const ov=document.getElementById('searchSpotlightOverlay');if(!ov||!ov.classList.contains('active'))return;requestAnimationFrame(()=>scrollActiveListToolbarIntoView())}
 function openSearchSpotlight(){if(S.currentTab==='latest_release'||S.currentTab==='banner_timeline'||S.currentTab==='master_league'||S.currentTab==='investment_priority'||S.currentTab==='gacha_sim'||S.currentTab==='calculator'||S.currentTab==='team_builder'||S.currentTab==='meta_synergy')return;const real=getActiveSearchInput();if(!real)return;const ov=document.getElementById('searchSpotlightOverlay');const inp=document.getElementById('searchSpotlightInput');const hint=document.getElementById('searchSpotlightHint');const tabLine=document.getElementById('searchSpotlightTabLine');const title=document.getElementById('searchSpotlightTitle');const foot=document.getElementById('searchSpotlightFoot');if(!ov||!inp)return;const spotWasActive=ov.classList.contains('active');inp.value=real.value;inp.placeholder=t(getTabSearchPlaceholderKey());if(title)title.textContent=t('search_spotlight_title');if(tabLine)tabLine.textContent=getTabNameForSpotlight();if(hint)hint.innerHTML=t('search_hint_html');if(foot)foot.textContent=t('search_spotlight_foot');const sc=document.getElementById('searchSpotlightClose');if(sc)sc.setAttribute('aria-label',t('search_spotlight_close'));ov.classList.add('active');ov.setAttribute('aria-hidden','false');document.body.classList.add('search-spotlight-open');if(!spotWasActive)applyBackgroundScrollLock();requestAnimationFrame(()=>{try{inp.focus({preventScroll:true});inp.select()}catch(_){inp.focus()}});debounceSpotlightResults()}
 function recallSearchBar(){openSearchSpotlight()}
-function bindSearchRecallObserver(){const fab=document.getElementById('searchRecallFab');if(S._searchRecallObs){S._searchRecallObs.disconnect();S._searchRecallObs=null}if(!fab)return;if(S.currentTab==='latest_release'||S.currentTab==='banner_timeline'||S.currentTab==='master_league'||S.currentTab==='investment_priority'||S.currentTab==='gacha_sim'||S.currentTab==='calculator'||S.currentTab==='team_builder'||S.currentTab==='meta_synergy'){fab.classList.remove('visible');return}const panel=document.getElementById('panel-'+S.currentTab);if(!panel){fab.classList.remove('visible');return}let anchor=null;if(S.currentTab==='ranking'){anchor=document.getElementById(S.ranking&&S.ranking.mode==='characters'?'rankCharFilter':'rankUnitFilter')}if(!anchor)anchor=panel.querySelector('.browse-toolbar-top-row');if(!anchor)anchor=panel.querySelector('.list-toolbar-left>.browse-toolbar-leading');if(!anchor)anchor=panel.querySelector('.list-toolbar');if(!anchor){fab.classList.remove('visible');return}function applyRecallFabFromIO(ents){const e=ents&&ents[0];fab.classList.toggle('visible',!!e&&!e.isIntersecting)}S._searchRecallObs=new IntersectionObserver(applyRecallFabFromIO,{root:null,threshold:0,rootMargin:'-72px 0px 0px 0px'});S._searchRecallObs.observe(anchor);requestAnimationFrame(()=>{try{applyRecallFabFromIO(S._searchRecallObs.takeRecords())}catch(_){}})}
+function _setSearchRecallFabVisible(fab,on){const show=!!on;if(fab)fab.classList.toggle('visible',show);document.documentElement.classList.toggle('search-recall-open',show)}
+function bindSearchRecallObserver(){const fab=document.getElementById('searchRecallFab');if(S._searchRecallObs){S._searchRecallObs.disconnect();S._searchRecallObs=null}if(!fab){_setSearchRecallFabVisible(null,false);return}if(S.currentTab==='latest_release'||S.currentTab==='banner_timeline'||S.currentTab==='master_league'||S.currentTab==='investment_priority'||S.currentTab==='gacha_sim'||S.currentTab==='calculator'||S.currentTab==='team_builder'||S.currentTab==='meta_synergy'){_setSearchRecallFabVisible(fab,false);return}const panel=document.getElementById('panel-'+S.currentTab);if(!panel){_setSearchRecallFabVisible(fab,false);return}let anchor=null;if(S.currentTab==='ranking'){anchor=document.getElementById(S.ranking&&S.ranking.mode==='characters'?'rankCharFilter':'rankUnitFilter')}if(!anchor)anchor=panel.querySelector('.browse-toolbar-top-row');if(!anchor)anchor=panel.querySelector('.list-toolbar-left>.browse-toolbar-leading');if(!anchor)anchor=panel.querySelector('.list-toolbar');if(!anchor){_setSearchRecallFabVisible(fab,false);return}function applyRecallFabFromIO(ents){const e=ents&&ents[0];_setSearchRecallFabVisible(fab,!!e&&!e.isIntersecting)}S._searchRecallObs=new IntersectionObserver(applyRecallFabFromIO,{root:null,threshold:0,rootMargin:'-72px 0px 0px 0px'});S._searchRecallObs.observe(anchor);requestAnimationFrame(()=>{try{applyRecallFabFromIO(S._searchRecallObs.takeRecords())}catch(_){}})}
 function tryLoadLatestRelease(){loadLatestRelease()}
 function markLatestReleaseSeenFromNotices(){if(window.GgenContentNotices)void GgenContentNotices.markLatestReleaseSeen()}
 function markStagesCatalogSeenFromNotices(){if(window.GgenContentNotices)void GgenContentNotices.markStagesCatalogSeen()}
@@ -7859,53 +7860,200 @@ if(cc&&cc.max_stacks)S.unitCondStackCount=cc.max_stacks|0;
 const dd=ud.unit_damage_taken_def;
 if(dd&&dd.max_stacks)S.unitDamageTakenDefStacks=dd.max_stacks|0;
 }
-function setUnitCondStackCount(n){
+function _stackSliderBindAttrs(fnName){
+return`data-stack-fn="${fnName}" onpointerdown="onStackSliderPointerDown(this)" onpointerup="onStackSliderCommit(this)" onpointercancel="onStackSliderCommit(this)" oninput="onStackSliderInput(this)" onchange="onStackSliderCommit(this)"`;
+}
+function onStackSliderPointerDown(el){
+const row=el&&el.closest?el.closest('.detail-pilot-stack-row'):null;
+if(row)row.classList.add('is-dragging');
+}
+function onStackSliderInput(el){
+if(!el)return;
+const fn=typeof window[el.getAttribute('data-stack-fn')]==='function'?window[el.getAttribute('data-stack-fn')]:null;
+if(fn)fn(el.value,{soft:true});
+}
+function onStackSliderCommit(el){
+const row=el&&el.closest?el.closest('.detail-pilot-stack-row'):null;
+if(row)row.classList.remove('is-dragging');
+if(!el)return;
+const fn=typeof window[el.getAttribute('data-stack-fn')]==='function'?window[el.getAttribute('data-stack-fn')]:null;
+if(fn)fn(el.value);
+}
+function _stackMsPctDotsHtml(per,maxPct,maxS,cur,pct,minV){
+const minVal=minV==null?1:(minV|0);
+const mx=Math.max(1,maxPct|0);
+let dots='';
+for(let i=minVal;i<=maxS;i++){
+const dp=i<=0?0:Math.min(mx,per*i);
+const left=mx>0?(dp/mx)*100:0;
+const done=dp<=pct&&(i>0||pct<=0);
+const active=i===cur;
+dots+=`<span class="pep-ms-dot${done?' is-done':''}${active?' is-active':''}" data-stack="${i}" style="left:${left.toFixed(2)}%" title="+${dp}%"></span>`;
+}
+return dots;
+}
+function _stackMsTierDotsHtml(tiers,ti){
+const max=Math.max(0,tiers.length-1);
+let dots='';
+for(let i=0;i<=max;i++){
+const left=max>0?(i/max)*100:0;
+const tier=tiers[i]||{};
+const title=`${tier.hp_pct|0}% +${tier.atk_pct|0}%`;
+dots+=`<span class="pep-ms-dot${i<=ti?' is-done':''}${i===ti?' is-active':''}" data-stack="${i}" style="left:${left.toFixed(2)}%" title="${escAttr(title)}"></span>`;
+}
+return dots;
+}
+function _stackMsInnerHtml(opts){
+const pRaw=Number(opts.p);
+const p=Number.isFinite(pRaw)?Math.max(0,Math.min(1,pRaw)):0;
+const dis=opts.disabled?' disabled tabindex="-1"':'';
+const bind=opts.fnName?` ${_stackSliderBindAttrs(opts.fnName)}`:'';
+return`<div class="pep-ms" style="--pep-ms-p:${p}"><div class="pep-ms-rail"><div class="pep-ms-fill"></div>${opts.dots||''}<span class="pep-ms-firefly"></span></div><input type="range" class="detail-pilot-stack-slider pep-ms-input" min="${opts.min}" max="${opts.max}" step="1" value="${opts.cur}" aria-valuemin="${opts.min}" aria-valuemax="${opts.max}" aria-valuenow="${opts.cur}" aria-label="${escAttr(opts.aria||'')}"${dis}${bind}></div>`;
+}
+function _stackMsSyncPct(row,info,cur){
+if(!row||!info)return;
+const maxS=Math.max(1,info.maxStacks|0);
+const minV=info.minVal==null?1:(info.minVal|0);
+const c=Math.max(minV,Math.min(maxS,cur|0));
+const pct=c<=0?0:Math.min(info.maxPct|0,(info.per|0)*c);
+const p=(info.maxPct|0)>0?Math.max(0,Math.min(1,pct/(info.maxPct|0))):0;
+const ms=row.querySelector('.pep-ms');
+if(ms)ms.style.setProperty('--pep-ms-p',String(p));
+row.querySelectorAll('.pep-ms-dot').forEach((dot)=>{
+const stack=Number(dot.getAttribute('data-stack')||0);
+const dp=stack<=0?0:Math.min(info.maxPct|0,(info.per|0)*stack);
+dot.classList.toggle('is-done',stack>0?dp<=pct:(pct<=0&&c===0));
+dot.classList.toggle('is-active',stack===c);
+});
+const val=row.querySelector('.detail-pilot-stack-val');
+if(val)val.textContent='+'+pct+'%';
+const inp=row.querySelector('input.detail-pilot-stack-slider');
+if(inp){inp.value=String(c);inp.setAttribute('aria-valuenow',String(c))}
+}
+function _stackMsSyncTier(row,tiers,ti){
+if(!row||!tiers||!tiers.length)return;
+const max=tiers.length-1;
+const c=Math.min(Math.max(0,ti|0),max);
+const p=max>0?c/max:0;
+const ms=row.querySelector('.pep-ms');
+if(ms)ms.style.setProperty('--pep-ms-p',String(p));
+row.querySelectorAll('.pep-ms-dot').forEach((dot)=>{
+const stack=Number(dot.getAttribute('data-stack')||0);
+dot.classList.toggle('is-done',stack<=c);
+dot.classList.toggle('is-active',stack===c);
+});
+const tier=tiers[c]||{};
+const val=row.querySelector('.detail-pilot-stack-val');
+if(val)val.textContent=`${tier.hp_pct|0}% +${tier.atk_pct|0}%`;
+const inp=row.querySelector('input.detail-pilot-stack-slider');
+if(inp){inp.value=String(c);inp.setAttribute('aria-valuenow',String(c))}
+}
+function _detailSyncUnitCondSliderLabels(){
+const d=S.currentDetailData;
+if(!d||S.currentDetailType!=='unit')return;
+const root=document.getElementById('detailStatsToggles')||document;
+const cc=d.unit_combat_count_atk;
+if(cc){
+const max=Math.max(1,cc.max_stacks|0);
+const cur=Math.max(1,Math.min(max,S.unitCondStackCount|0||max));
+const info={per:cc.per|0,maxPct:cc.max|0,maxStacks:max,minVal:1};
+root.querySelectorAll('.detail-unit-combat-stack-row').forEach(row=>_stackMsSyncPct(row,info,cur));
+}
+const hp=d.unit_hp_atk_tiers;
+if(hp&&hp.tiers&&hp.tiers.length>1){
+const ti=Math.min(Math.max(0,S.unitHpAtkTierIndex|0),hp.tiers.length-1);
+root.querySelectorAll('.dc-unit-hp-tier-row').forEach(row=>_stackMsSyncTier(row,hp.tiers,ti));
+}
+const dd=d.unit_damage_taken_def;
+if(dd){
+const max=Math.max(1,dd.max_stacks|0);
+const cur=Math.max(1,Math.min(max,S.unitDamageTakenDefStacks|0||max));
+const info={per:dd.per|0,maxPct:dd.max|0,maxStacks:max,minVal:1};
+root.querySelectorAll('.detail-unit-dmg-taken-def-row').forEach(row=>_stackMsSyncPct(row,info,cur));
+}
+}
+function setUnitCondStackCount(n,opts){
+opts=opts||{};
 const d=S.currentDetailData;
 const cc=d&&d.unit_combat_count_atk;
 if(!cc)return;
-S.unitCondStackCount=Math.max(1,Math.min(cc.max_stacks|0,Number(n)||0));
+const next=Math.max(1,Math.min(cc.max_stacks|0,Number(n)||0));
+const soft=!!opts.soft;
+const changed=((S.unitCondStackCount|0)!==next);
+S.unitCondStackCount=next;
+if(changed||soft)_detailSyncUnitCondSliderLabels();
+if(soft){S._unitCondStackDirty=true;return}
+if(!changed&&!S._unitCondStackDirty)return;
+S._unitCondStackDirty=false;
 invalidateDetailRankingCachesForPerspectiveChange();
-updateDetailDynamicSections('unit');
+updateDetailDynamicSections('unit',{keepToggles:true});
 }
-function setUnitHpAtkTierIndex(i){
+function setUnitHpAtkTierIndex(i,opts){
+opts=opts||{};
 const d=S.currentDetailData;
 const hp=d&&d.unit_hp_atk_tiers;
 if(!hp||!hp.tiers||!hp.tiers.length)return;
-S.unitHpAtkTierIndex=Math.max(0,Math.min(hp.tiers.length-1,Number(i)||0));
+const next=Math.max(0,Math.min(hp.tiers.length-1,Number(i)||0));
+const soft=!!opts.soft;
+const changed=((S.unitHpAtkTierIndex|0)!==next);
+S.unitHpAtkTierIndex=next;
+if(changed||soft)_detailSyncUnitCondSliderLabels();
+if(soft){S._unitHpTierDirty=true;return}
+if(!changed&&!S._unitHpTierDirty)return;
+S._unitHpTierDirty=false;
 invalidateDetailRankingCachesForPerspectiveChange();
-updateDetailDynamicSections('unit');
+updateDetailDynamicSections('unit',{keepToggles:true});
 }
-function setUnitDamageTakenDefStacks(n){
+function setUnitDamageTakenDefStacks(n,opts){
+opts=opts||{};
 const d=S.currentDetailData;
 const dd=d&&d.unit_damage_taken_def;
 if(!dd)return;
-S.unitDamageTakenDefStacks=Math.max(1,Math.min(dd.max_stacks|0,Number(n)||0));
+const next=Math.max(1,Math.min(dd.max_stacks|0,Number(n)||0));
+const soft=!!opts.soft;
+const changed=((S.unitDamageTakenDefStacks|0)!==next);
+S.unitDamageTakenDefStacks=next;
+if(changed||soft)_detailSyncUnitCondSliderLabels();
+if(soft){S._unitDmgDefDirty=true;return}
+if(!changed&&!S._unitDmgDefDirty)return;
+S._unitDmgDefDirty=false;
 invalidateDetailRankingCachesForPerspectiveChange();
-updateDetailDynamicSections('unit');
+updateDetailDynamicSections('unit',{keepToggles:true});
 }
 function _detailUnitCombatStackSliderHtml(cc){
 if(!S.conditionalPassiveActive||!cc)return'';
 const max=Math.max(1,cc.max_stacks|0);
 const cur=Math.max(1,Math.min(max,S.unitCondStackCount|0||max));
 const pct=Math.min(cc.max|0,cc.per*cur);
+const maxPct=Math.max(1,cc.max|0);
+const p=pct/maxPct;
 const stackLab=t('unit_combat_stack_label')||'Combat stack level';
-return`<div class="detail-pilot-stack-row is-open detail-unit-cond-stack-row" onclick="event.stopPropagation()"><input type="range" class="detail-pilot-stack-slider" min="1" max="${max}" step="1" value="${cur}" aria-valuemin="1" aria-valuemax="${max}" aria-valuenow="${cur}" aria-label="${escAttr(stackLab)}" oninput="setUnitCondStackCount(this.value)"><span class="detail-pilot-stack-val">+${pct}%</span></div>`;
+const dots=_stackMsPctDotsHtml(cc.per|0,maxPct,max,cur,pct,1);
+const inner=_stackMsInnerHtml({p,dots,min:1,max,cur,aria:stackLab,fnName:'setUnitCondStackCount'});
+return`<div class="detail-pilot-stack-row is-open detail-unit-cond-stack-row detail-unit-combat-stack-row detail-pep-ms" onclick="event.stopPropagation()">${inner}<span class="detail-pilot-stack-val">+${pct}%</span></div>`;
 }
 function _detailAbilityHpTierRowHtml(hpMeta){
 if(!S.conditionalPassiveActive||!hpMeta||!hpMeta.tiers||hpMeta.tiers.length<2)return'';
 const max=hpMeta.tiers.length-1;
 const ti=Math.min(Math.max(0,S.unitHpAtkTierIndex|0),max);
 const tier=hpMeta.tiers[ti];
+const p=max>0?ti/max:0;
 const lab=t('unit_hp_atk_tier_label')||'HP ATK tier';
-return`<div class="detail-pilot-stack-row is-open detail-unit-cond-stack-row dc-unit-hp-tier-row" onclick="event.stopPropagation()"><input type="range" class="detail-pilot-stack-slider" min="0" max="${max}" step="1" value="${ti}" aria-valuemin="0" aria-valuemax="${max}" aria-valuenow="${ti}" aria-label="${escAttr(lab)}" oninput="setUnitHpAtkTierIndex(this.value)"><span class="detail-pilot-stack-val">${esc(String(tier.hp_pct))}% +${esc(String(tier.atk_pct))}%</span></div>`;
+const dots=_stackMsTierDotsHtml(hpMeta.tiers,ti);
+const inner=_stackMsInnerHtml({p,dots,min:0,max,cur:ti,aria:lab,fnName:'setUnitHpAtkTierIndex'});
+return`<div class="detail-pilot-stack-row is-open detail-unit-cond-stack-row dc-unit-hp-tier-row detail-pep-ms" onclick="event.stopPropagation()">${inner}<span class="detail-pilot-stack-val">${esc(String(tier.hp_pct))}% +${esc(String(tier.atk_pct))}%</span></div>`;
 }
 function _detailUnitDamageTakenDefSliderHtml(dd){
 if(!S.conditionalPassiveActive||!dd)return'';
 const max=Math.max(1,dd.max_stacks|0);
 const cur=Math.max(1,Math.min(max,S.unitDamageTakenDefStacks|0||max));
 const pct=Math.min(dd.max|0,dd.per*cur);
+const maxPct=Math.max(1,dd.max|0);
+const p=pct/maxPct;
 const stackLab=t('unit_damage_taken_def_label')||'Damage taken DEF stacks';
-return`<div class="detail-pilot-stack-row is-open detail-unit-cond-stack-row detail-unit-dmg-taken-def-row" onclick="event.stopPropagation()"><input type="range" class="detail-pilot-stack-slider" min="1" max="${max}" step="1" value="${cur}" aria-valuemin="1" aria-valuemax="${max}" aria-valuenow="${cur}" aria-label="${escAttr(stackLab)}" oninput="setUnitDamageTakenDefStacks(this.value)"><span class="detail-pilot-stack-val">+${pct}%</span></div>`;
+const dots=_stackMsPctDotsHtml(dd.per|0,maxPct,max,cur,pct,1);
+const inner=_stackMsInnerHtml({p,dots,min:1,max,cur,aria:stackLab,fnName:'setUnitDamageTakenDefStacks'});
+return`<div class="detail-pilot-stack-row is-open detail-unit-cond-stack-row detail-unit-dmg-taken-def-row detail-pep-ms" onclick="event.stopPropagation()">${inner}<span class="detail-pilot-stack-val">+${pct}%</span></div>`;
 }
 function _detailAbilityCondControlHtml(ab,ud){
 /* HP ATK tier / combat / damage-taken DEF sliders live under Conditional Passive (detail-unit-cp-stack-slot), not under ability text. */
@@ -7976,8 +8124,9 @@ const ac=active?' active':'';
 const src=imgUrl('/static/images/UI/UI_Common_Icon_Category_Chara_Main.webp');
 return`<span class="list-cond-toggle detail-pilot-ep-chip${ac}"><img class="detail-pilot-ep-char-main" src="${src}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'"><span class="detail-pilot-ep-badge" aria-hidden="true"><span class="detail-pilot-ep-e">E</span><span>P</span></span></span>`;
 }
-function _detailPilotStackSliderInfo(ud){
-if(!S.pilotConditionalPassiveActive||!ud||!S.pilotCondCharData)return null;
+function _detailPilotStackSliderInfo(ud,opts){
+opts=opts||{};
+if((!opts.probe&&!S.pilotConditionalPassiveActive)||!ud||!S.pilotCondCharData)return null;
 const cd=S.pilotCondCharData;
 const b=_scFindSquadConditionBinding(cd,ud);
 if(!b||!(b.kind==='stack_atk'||b.kind==='dual_stack_atk'))return null;
@@ -7992,23 +8141,44 @@ if(!info){S.pilotCondStackCount=0;return}
 if(!(S.pilotCondStackCount|0))S.pilotCondStackCount=info.maxStacks;
 else S.pilotCondStackCount=Math.max(1,Math.min(info.maxStacks,S.pilotCondStackCount|0));
 }
-function setPilotCondStackCount(n){
+function setPilotCondStackCount(n,opts){
+opts=opts||{};
 const d=S.currentDetailData;
 const info=d&&S.currentDetailType==='unit'?_detailPilotStackSliderInfo(d):null;
 if(!info)return;
-S.pilotCondStackCount=Math.max(1,Math.min(info.maxStacks,Number(n)||0));
+const next=Math.max(1,Math.min(info.maxStacks,Number(n)||0));
+const soft=!!opts.soft;
+const changed=((S.pilotCondStackCount|0)!==next);
+S.pilotCondStackCount=next;
+const row=document.querySelector('#detailStatsToggles .detail-pilot-ep-block .detail-pilot-stack-row.is-open.detail-pep-ms');
+if(row&&(changed||soft))_stackMsSyncPct(row,info,S.pilotCondStackCount);
+/* Soft while dragging: firefly/label only. Heavy dossier refresh on commit (change / pointerup). */
+if(soft){S._pepStackDirty=true;return}
+if(!changed&&!S._pepStackDirty)return;
+S._pepStackDirty=false;
 invalidateDetailRankingCachesForPerspectiveChange();
-updateDetailDynamicSections('unit');
+updateDetailDynamicSections('unit',{keepToggles:true});
 }
 function _detailPilotStackSliderHtml(ud){
-if(!S.pilotConditionalPassiveActive||!ud||!S.pilotCondCharData)return'';
-const stackInfo=_detailPilotStackSliderInfo(ud);
+if(!ud||!S.pilotCondCharData)return'';
+const stackInfo=_detailPilotStackSliderInfo(ud,{probe:true});
 if(!stackInfo)return'';
-const cur=Math.max(1,Math.min(stackInfo.maxStacks,S.pilotCondStackCount|0||stackInfo.maxStacks));
+const maxS=stackInfo.maxStacks;
+const maxPct=Math.max(1,stackInfo.maxPct|0);
+/* Reserved invisible row when PEP off — same height as open slider so garage cover never rescales. */
+if(!S.pilotConditionalPassiveActive){
+const dots=_stackMsPctDotsHtml(stackInfo.per,maxPct,maxS,maxS,maxPct,1);
+const inner=_stackMsInnerHtml({p:1,dots,min:1,max:maxS,cur:maxS,aria:'',disabled:true});
+return`<div class="detail-pilot-stack-row is-reserved detail-pep-ms" aria-hidden="true">${inner}<span class="detail-pilot-stack-val">+0%</span></div>`;
+}
+const cur=Math.max(1,Math.min(maxS,S.pilotCondStackCount|0||maxS));
 const pct=Math.min(stackInfo.maxPct,stackInfo.per*cur);
+const p=pct/maxPct;
 const stackLab=t('pilot_exclusive_stack_label')||'Pilot exclusive stack level';
 const enterCls=S._pilotStackSliderAnimate?' detail-pilot-stack-row--enter':'';
-return`<div class="detail-pilot-stack-row is-open${enterCls}" onclick="event.stopPropagation()"><input type="range" class="detail-pilot-stack-slider" min="1" max="${stackInfo.maxStacks}" step="1" value="${cur}" aria-valuemin="1" aria-valuemax="${stackInfo.maxStacks}" aria-valuenow="${cur}" aria-label="${escAttr(stackLab)}" oninput="setPilotCondStackCount(this.value)"><span class="detail-pilot-stack-val">+${pct}%</span></div>`;
+const dots=_stackMsPctDotsHtml(stackInfo.per,maxPct,maxS,cur,pct,1);
+const inner=_stackMsInnerHtml({p,dots,min:1,max:maxS,cur,aria:stackLab,fnName:'setPilotCondStackCount'});
+return`<div class="detail-pilot-stack-row is-open detail-pep-ms${enterCls}" onclick="event.stopPropagation()">${inner}<span class="detail-pilot-stack-val">+${pct}%</span></div>`;
 }
 function _detailPilotStatBonusPcts(ud){
 const z={atk:0,def:0};
@@ -8127,7 +8297,7 @@ return;
 }
 finish();
 }
-function updateDetailDynamicSections(type){const d=S.currentDetailData;if(type!=='supporter'&&type!=='stage'){const _sp=renderStatsWrapper(d,type);const _tog=document.getElementById('detailStatsToggles');const _st=document.getElementById('detailStatsWrapper');if(_tog)_tog.innerHTML=_sp.head||'';if(_st)_st.innerHTML=_tog?(_sp.grid||''):((_sp.head||'')+(_sp.grid||''));ensureDetailRankingToggleDom(type);applyDetailRankingInline(type)}if(type==='character'){const extra=document.getElementById('charExtraInfo');if(extra)extra.innerHTML=renderCharacterExtraInfo(d);const ucHost=document.getElementById('npcUnitCondTargets');if(ucHost)ucHost.innerHTML=renderNpcUnitConditionTargetsRow(d);document.getElementById('detailAbilitiesContainer').innerHTML=renderAbilsDynamic(d.abilities,t('sec_abilities'),false,S.spActive);document.getElementById('detailSkillsContainer').innerHTML=renderSkills(d.skills,S.spActive);syncNpcUnitConditionHighlights();syncAffinityExPairHighlights();syncPilotCondHighlights()}else if(type==='unit'){syncUnitLbVideoUi();void ensureUnitBestPilotsLoaded().then(api=>{if(api&&typeof api.syncUi==='function'&&S.currentDetailType==='unit'&&S.currentDetailData&&String(S.currentDetailData.id)===String(d&&d.id))api.syncUi(S.currentDetailData)});document.getElementById('detailAbilitiesContainer').innerHTML=renderAbilsDynamic(d.abilities,t('sec_abilities'),S.sspActive,false);document.getElementById('detailUnitSkillsContainer').innerHTML=renderSkills(d.skills||[],false);const modEl=document.getElementById('detailModifiersContainer');if(modEl)modEl.innerHTML=renderModifiers(d.modifiers||[]);setDetailWeaponsHtml(renderWeaponsDynamic(withNpcMapWeaponStrategyHints(d.weapons,d),S.sspActive,d));document.getElementById('detailMechanismsContainer').innerHTML=renderMechanisms(d.mechanisms);fillDetailSspMaterials('unit');fillDetailUltAlteration('unit');const tr=document.getElementById('detailUnitTerrainRow');if(tr){const base=d.terrain||[];const ter=S.sspActive&&(d.terrain_ssp&&d.terrain_ssp.length)?d.terrain_ssp:base;const hasTerrainEnh=!!(S.sspActive&&(d.has_terrain_enhancement===true||(d.terrain_ssp&&d.terrain&&d.terrain_ssp.some((ts,i)=>ts.level!==(d.terrain[i]?.level??-1)))));tr.innerHTML=renderHeaderTerrain(ter,S.sspActive,hasTerrainEnh)}syncPilotCondHighlights();syncUnitCondAbilityHighlights()}else if(type==='supporter'){let lh='';if(d.leader_skills&&d.leader_skills.length){lh=`<div class="detail-section"><div class="section-title">${t('sec_leader_skill')}</div><div class="ability-list">${d.leader_skills.map(ls=>{let ts2=ls.tags.map(t=>t.name).join(',');return`<div class="ability-item" style="flex-direction:column;gap:10px;cursor:pointer;" onclick="openTagModal('${esc(ts2)}','${ls.separator}')"><div class="ability-detail" style="margin:0;">${esc(ls.desc)}</div>${ls.tags&&ls.tags.length?`<div class="detail-tags-row" style="margin-top:0;align-items:center;">${renderSkillTags([{tags:ls.tags,separator:ls.separator}])}</div>`:''}</div>`}).join('')}</div></div>`}document.getElementById('detailLeaderSkillContainer').innerHTML=lh;let ah='';if(d.active_skills&&d.active_skills.length){ah=`<div class="detail-section"><div class="section-title">${t('sec_active_skills')}</div><div class="ability-list">${d.active_skills.map(sk=>`<div class="ability-item"><div class="ability-icon-wrap">${renderAbilIcon({icon:sk.icon})}</div><div class="ability-info"><div class="ability-name">${esc(sk.name)}</div><div class="ability-detail" style="margin:0;white-space:pre-wrap;">${esc(sk.desc)}</div></div></div>`).join('')}</div></div>`}document.getElementById('detailAbilitiesContainer').innerHTML=ah}else if(type==='stage'){if(d&&d.stage_category==='fierce_enemy_assault'){void feaHydrateActiveDifficulty();return}document.getElementById('detailStageRestrictionsContainer').innerHTML=renderStageRestrictions(d);document.getElementById('detailStageMapContainer').innerHTML=renderStageMapSection(d);document.getElementById('detailNpcContainer').innerHTML=renderNpcDetails(d.npc_details||[],d.id,S._stageDetailUiRestore);ensureStageMapNpcHoverBound();ensureStageNpcCompactHoverBound();hideStageNpcHoverPop();scheduleWarmStageNpcHoverThumbs();syncNpcUnitConditionHighlights();const kickTape=()=>kickStageHazardTapeAnimations(document.getElementById('detailStageRestrictionsContainer'));requestAnimationFrame(()=>requestAnimationFrame(kickTape));setTimeout(kickTape,400)}if(type==='character'||type==='unit')requestAnimationFrame(adjustDetailModalLayout)}
+function updateDetailDynamicSections(type,opts){opts=opts||{};const d=S.currentDetailData;if(type!=='supporter'&&type!=='stage'){const _sp=renderStatsWrapper(d,type);const _tog=document.getElementById('detailStatsToggles');const _st=document.getElementById('detailStatsWrapper');if(_tog&&!opts.keepToggles)_tog.innerHTML=_sp.head||'';if(_st)_st.innerHTML=_tog?(_sp.grid||''):((_sp.head||'')+(_sp.grid||''));ensureDetailRankingToggleDom(type);applyDetailRankingInline(type)}if(type==='character'){const extra=document.getElementById('charExtraInfo');if(extra)extra.innerHTML=renderCharacterExtraInfo(d);const ucHost=document.getElementById('npcUnitCondTargets');if(ucHost)ucHost.innerHTML=renderNpcUnitConditionTargetsRow(d);document.getElementById('detailAbilitiesContainer').innerHTML=renderAbilsDynamic(d.abilities,t('sec_abilities'),false,S.spActive);document.getElementById('detailSkillsContainer').innerHTML=renderSkills(d.skills,S.spActive);syncNpcUnitConditionHighlights();syncAffinityExPairHighlights();syncPilotCondHighlights()}else if(type==='unit'){syncUnitLbVideoUi();void ensureUnitBestPilotsLoaded().then(api=>{if(api&&typeof api.syncUi==='function'&&S.currentDetailType==='unit'&&S.currentDetailData&&String(S.currentDetailData.id)===String(d&&d.id))api.syncUi(S.currentDetailData)});document.getElementById('detailAbilitiesContainer').innerHTML=renderAbilsDynamic(d.abilities,t('sec_abilities'),S.sspActive,false);document.getElementById('detailUnitSkillsContainer').innerHTML=renderSkills(d.skills||[],false);const modEl=document.getElementById('detailModifiersContainer');if(modEl)modEl.innerHTML=renderModifiers(d.modifiers||[]);setDetailWeaponsHtml(renderWeaponsDynamic(withNpcMapWeaponStrategyHints(d.weapons,d),S.sspActive,d));document.getElementById('detailMechanismsContainer').innerHTML=renderMechanisms(d.mechanisms);fillDetailSspMaterials('unit');fillDetailUltAlteration('unit');const tr=document.getElementById('detailUnitTerrainRow');if(tr){const base=d.terrain||[];const ter=S.sspActive&&(d.terrain_ssp&&d.terrain_ssp.length)?d.terrain_ssp:base;const hasTerrainEnh=!!(S.sspActive&&(d.has_terrain_enhancement===true||(d.terrain_ssp&&d.terrain&&d.terrain_ssp.some((ts,i)=>ts.level!==(d.terrain[i]?.level??-1)))));tr.innerHTML=renderHeaderTerrain(ter,S.sspActive,hasTerrainEnh)}syncPilotCondHighlights();syncUnitCondAbilityHighlights()}else if(type==='supporter'){let lh='';if(d.leader_skills&&d.leader_skills.length){lh=`<div class="detail-section"><div class="section-title">${t('sec_leader_skill')}</div><div class="ability-list">${d.leader_skills.map(ls=>{let ts2=ls.tags.map(t=>t.name).join(',');return`<div class="ability-item" style="flex-direction:column;gap:10px;cursor:pointer;" onclick="openTagModal('${esc(ts2)}','${ls.separator}')"><div class="ability-detail" style="margin:0;">${esc(ls.desc)}</div>${ls.tags&&ls.tags.length?`<div class="detail-tags-row" style="margin-top:0;align-items:center;">${renderSkillTags([{tags:ls.tags,separator:ls.separator}])}</div>`:''}</div>`}).join('')}</div></div>`}document.getElementById('detailLeaderSkillContainer').innerHTML=lh;let ah='';if(d.active_skills&&d.active_skills.length){ah=`<div class="detail-section"><div class="section-title">${t('sec_active_skills')}</div><div class="ability-list">${d.active_skills.map(sk=>`<div class="ability-item"><div class="ability-icon-wrap">${renderAbilIcon({icon:sk.icon})}</div><div class="ability-info"><div class="ability-name">${esc(sk.name)}</div><div class="ability-detail" style="margin:0;white-space:pre-wrap;">${esc(sk.desc)}</div></div></div>`).join('')}</div></div>`}document.getElementById('detailAbilitiesContainer').innerHTML=ah}else if(type==='stage'){if(d&&d.stage_category==='fierce_enemy_assault'){void feaHydrateActiveDifficulty();return}document.getElementById('detailStageRestrictionsContainer').innerHTML=renderStageRestrictions(d);document.getElementById('detailStageMapContainer').innerHTML=renderStageMapSection(d);document.getElementById('detailNpcContainer').innerHTML=renderNpcDetails(d.npc_details||[],d.id,S._stageDetailUiRestore);ensureStageMapNpcHoverBound();ensureStageNpcCompactHoverBound();hideStageNpcHoverPop();scheduleWarmStageNpcHoverThumbs();syncNpcUnitConditionHighlights();const kickTape=()=>kickStageHazardTapeAnimations(document.getElementById('detailStageRestrictionsContainer'));requestAnimationFrame(()=>requestAnimationFrame(kickTape));setTimeout(kickTape,400)}if(type==='character'||type==='unit')requestAnimationFrame(adjustDetailModalLayout)}
 function renderStatsWrapper(d,type){
 /* Prefer has_ex_stats over a false has_conditional_passive (API can clear the latter on unmet pair gates while Vigor Extended etc. still apply). */
 let hcf=type==='character'?(!!(d.has_ex_stats||d.has_conditional_passive||(d.ex_supercharged_tiers&&d.ex_supercharged_tiers.length>1))):((d.has_cond_stats)||_detailUnitHasCondWeaponRange(d)||_detailUnitPilotMovCpGate(d));
@@ -8156,7 +8326,7 @@ if(type==='unit'&&S.pilotConditionalPassiveActive&&S.pilotCondCharData){prePilot
 if(type==='unit'){sr=_detailApplyUltAltMaxStatRows(sr,d);bs=_detailApplyUltAltMaxStatRows(bs,d);if(prePilotSr)prePilotSr=_detailApplyUltAltMaxStatRows(prePilotSr,d)}
 let th='';
 if(hcf||(type==='unit'&&d.has_pilot_cond_passive)){th=`<div class="detail-cond-toggle-stack">`;
-if(hcf){const cplab=t('conditional_passive');const unitCombatStack=(type==='unit'&&d.unit_combat_count_atk)?_detailUnitCombatStackSliderHtml(d.unit_combat_count_atk):'';const unitHpTier=(type==='unit'&&d.unit_hp_atk_tiers)?_detailAbilityHpTierRowHtml(d.unit_hp_atk_tiers):'';const unitDmgDef=(type==='unit'&&d.unit_damage_taken_def)?_detailUnitDamageTakenDefSliderHtml(d.unit_damage_taken_def):'';const unitCpExtras=unitCombatStack+unitHpTier+unitDmgDef;th+=`<div class="conditional-toggle detail-unit-cp-block"><div class="toggle-clickable ${S.conditionalPassiveActive?'active':''}" role="button" tabindex="0" onclick="toggleConditionalPassive(!S.conditionalPassiveActive)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleConditionalPassive(!S.conditionalPassiveActive)}"><span class="toggle-control-slot"><span class="toggle-switch"></span></span><span class="toggle-label">${esc(cplab)}</span></div>${unitCpExtras?`<div class="detail-unit-cp-stack-slot">${unitCpExtras}</div>`:''}</div>`}
+if(hcf){const cplab=t('conditional_passive');const unitCombatStack=(type==='unit'&&d.unit_combat_count_atk)?_detailUnitCombatStackSliderHtml(d.unit_combat_count_atk):'';const unitHpTier=(type==='unit'&&d.unit_hp_atk_tiers)?_detailAbilityHpTierRowHtml(d.unit_hp_atk_tiers):'';const unitDmgDef=(type==='unit'&&d.unit_damage_taken_def)?_detailUnitDamageTakenDefSliderHtml(d.unit_damage_taken_def):'';const unitCpExtras=unitCombatStack+unitHpTier+unitDmgDef;const unitCpCanStack=type==='unit'&&!!(d.unit_combat_count_atk||(d.unit_hp_atk_tiers&&d.unit_hp_atk_tiers.tiers&&d.unit_hp_atk_tiers.tiers.length>1)||d.unit_damage_taken_def);const unitCpSlot=unitCpExtras||(unitCpCanStack?'<div class="detail-pilot-stack-row is-reserved detail-unit-cond-stack-row" aria-hidden="true"><input type="range" class="detail-pilot-stack-slider" disabled tabindex="-1"><span class="detail-pilot-stack-val">+0%</span></div>':'');th+=`<div class="conditional-toggle detail-unit-cp-block"><div class="toggle-clickable ${S.conditionalPassiveActive?'active':''}" role="button" tabindex="0" onclick="toggleConditionalPassive(!S.conditionalPassiveActive)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleConditionalPassive(!S.conditionalPassiveActive)}"><span class="toggle-control-slot"><span class="toggle-switch"></span></span><span class="toggle-label">${esc(cplab)}</span></div>${unitCpSlot?`<div class="detail-unit-cp-stack-slot">${unitCpSlot}</div>`:''}</div>`}
 if(type==='unit'&&d.has_pilot_cond_passive){const pplab=t('pilot_exclusive_passive')||'Pilot Exclusive Passive';const stackHtml=_detailPilotStackSliderHtml(d);th+=`<div class="detail-pilot-ep-block"><div class="conditional-toggle detail-pilot-ep-toggle"><div class="toggle-clickable ${S.pilotConditionalPassiveActive?'active':''}" role="button" tabindex="0" title="${escAttr(pplab)}" aria-label="${escAttr(pplab)}" onclick="togglePilotConditionalPassive(!S.pilotConditionalPassiveActive)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togglePilotConditionalPassive(!S.pilotConditionalPassiveActive)}"><span class="toggle-control-slot">${_detailPilotEpChipSpanHtml(!!S.pilotConditionalPassiveActive)}</span><div class="detail-pilot-ep-label-col"><span class="toggle-label">${esc(pplab)}</span>${stackHtml}</div></div></div></div>`}
 th+=`</div>`}
 let exRow='';
@@ -8187,13 +8357,18 @@ const meta=detailRankingMetaFor(type,d.id,s.name);const loading=!meta||!meta.ran
 return`<div class="stat-card stat-card--ranking ${cardHi} ${loading?'is-loading':''}"><div class="stat-rank-head"><div class="stat-card-label stat-rank-label">${esc(tStat(s.name,type))}</div><div class="stat-rank-bar"><span class="stat-rank-fill ${loading?'is-loading':''}" style="width:${w.toFixed(2)}%"></span></div><div class="stat-rank-pos ${loading?'is-loading':''} ${splitPos?'is-split':''}">${posHtml}</div></div><div class="stat-card-value stat-rank-value ${valHi}">${valTxt}</div>${eb}</div>`
 }).join('');
 /* One scale for the whole row — sized by the longest value so buffed HP doesn't leave EN huge.
-   Use the max across base/SP/SSP (current LB) so toggling SP/SSP cannot flip mid→long and reflow the header plate (Zirius vs Dark Gundam Jr). */
+   Use the max across base/SP/SSP (current LB) so toggling SP/SSP cannot flip mid→long and reflow the header plate (Zirius vs Dark Gundam Jr).
+   Also probe PEP-on lengths so Pilot Exclusive Passive cannot flip the scale either. */
 let maxValLen=0;
 const _noteStatValLen=(rows)=>{if(!rows||!rows.length)return;for(let i=0;i<rows.length;i++){const n=String(fmtN(rows[i].total)).replace(/\s/g,'').length;if(n>maxValLen)maxValLen=n}};
 _noteStatValLen(sr);
 if(type==='unit'&&d&&d.lb_data){
 const td=Array.isArray(d.lb_data)?d.lb_data[S.currentLbTier]:(d.lb_data[S.currentLbTier]||d.lb_data[String(S.currentLbTier)]);
 if(td){['stats_no_cond','stats_with_cond','sp_stats_no_cond','sp_stats_with_cond','ssp_stats_no_cond','ssp_stats_with_cond'].forEach(k=>_noteStatValLen(td[k]))}
+if(d.has_pilot_cond_passive&&S.pilotCondCharData){
+const was=S.pilotConditionalPassiveActive;S.pilotConditionalPassiveActive=true;
+try{if(td){['stats_no_cond','stats_with_cond','sp_stats_no_cond','sp_stats_with_cond','ssp_stats_no_cond','ssp_stats_with_cond'].forEach(k=>{const rows=td[k];if(rows&&rows.length)_noteStatValLen(_detailApplyPilotStatBonusRows(rows.map(s=>Object.assign({},s)),d))})}}finally{S.pilotConditionalPassiveActive=was}
+}
 }else if(type==='character'&&d){
 _noteStatValLen(d.stats);_noteStatValLen(d.sp_stats);_noteStatValLen(d.stats_with_ex);_noteStatValLen(d.sp_stats_with_ex);
 if(d.ex_supercharged_tiers)d.ex_supercharged_tiers.forEach(tier=>_noteStatValLen(tier&&tier.stats));
@@ -16008,33 +16183,54 @@ if(cc&&cc.max_stacks)S.dc.unitCondStackCount=cc.max_stacks|0;
 const dd=ud.unit_damage_taken_def;
 if(dd&&dd.max_stacks)S.dc.unitDamageTakenDefStacks=dd.max_stacks|0;
 }
-function setDcUnitCondStackCount(n){
+function setDcUnitCondStackCount(n,opts){
+opts=opts||{};
 const ud=S.dc.atkUnitData;
 const cc=ud&&ud.unit_combat_count_atk;
 if(!cc)return;
 /* 0 = no prior combat damage (Cond: Combat inactive); 1..max = stacks after dealing damage. */
-S.dc.unitCondStackCount=Math.max(0,Math.min(cc.max_stacks|0,Number(n)||0));
+const next=Math.max(0,Math.min(cc.max_stacks|0,Number(n)||0));
+const soft=!!opts.soft;
+const changed=((S.dc.unitCondStackCount|0)!==next);
+S.dc.unitCondStackCount=next;
 /* Combat-count is the CP for these kits — chip tracks whether any stacks are active. */
 S.dc.unitCondPassive=S.dc.unitCondStackCount>0;
-_dcSyncUnitCondSliderLabels();
+if(changed||soft)_dcSyncUnitCondSliderLabels();
+if(soft){S._dcUnitCondStackDirty=true;return}
+if(!changed&&!S._dcUnitCondStackDirty)return;
+S._dcUnitCondStackDirty=false;
 renderDcAtkUnit();
 renderDcAtkChar();
 onDcParamChange();
 }
-function setDcUnitHpAtkTierIndex(i){
+function setDcUnitHpAtkTierIndex(i,opts){
+opts=opts||{};
 const ud=S.dc.atkUnitData;
 const hp=ud&&ud.unit_hp_atk_tiers;
 if(!hp||!hp.tiers||!hp.tiers.length)return;
-S.dc.unitHpAtkTierIndex=Math.max(0,Math.min(hp.tiers.length-1,Number(i)||0));
-_dcSyncUnitCondSliderLabels();
+const next=Math.max(0,Math.min(hp.tiers.length-1,Number(i)||0));
+const soft=!!opts.soft;
+const changed=((S.dc.unitHpAtkTierIndex|0)!==next);
+S.dc.unitHpAtkTierIndex=next;
+if(changed||soft)_dcSyncUnitCondSliderLabels();
+if(soft){S._dcUnitHpTierDirty=true;return}
+if(!changed&&!S._dcUnitHpTierDirty)return;
+S._dcUnitHpTierDirty=false;
 onDcParamChange();
 }
-function setDcUnitDamageTakenDefStacks(n){
+function setDcUnitDamageTakenDefStacks(n,opts){
+opts=opts||{};
 const ud=S.dc.atkUnitData;
 const dd=ud&&ud.unit_damage_taken_def;
 if(!dd)return;
-S.dc.unitDamageTakenDefStacks=Math.max(1,Math.min(dd.max_stacks|0,Number(n)||0));
-_dcSyncUnitCondSliderLabels();
+const next=Math.max(1,Math.min(dd.max_stacks|0,Number(n)||0));
+const soft=!!opts.soft;
+const changed=((S.dc.unitDamageTakenDefStacks|0)!==next);
+S.dc.unitDamageTakenDefStacks=next;
+if(changed||soft)_dcSyncUnitCondSliderLabels();
+if(soft){S._dcUnitDmgDefDirty=true;return}
+if(!changed&&!S._dcUnitDmgDefDirty)return;
+S._dcUnitDmgDefDirty=false;
 onDcParamChange();
 }
 function _dcSyncUnitCondSliderLabels(){
@@ -16043,25 +16239,20 @@ const cc=ud&&ud.unit_combat_count_atk;
 if(cc){
 const max=Math.max(1,cc.max_stacks|0);
 const cur=Math.max(0,Math.min(max,S.dc.unitCondStackCount|0));
-const pct=Math.min(cc.max|0,cc.per*cur);
-document.querySelectorAll('.dc-unit-cond-stack-row .detail-pilot-stack-val').forEach(el=>{el.textContent='+'+pct+'%'});
-document.querySelectorAll('.dc-unit-cond-stack-row input[type=range]').forEach(inp=>{inp.value=String(cur);inp.setAttribute('aria-valuenow',String(cur))});
+const info={per:cc.per|0,maxPct:cc.max|0,maxStacks:max,minVal:0};
+document.querySelectorAll('.dc-unit-cond-stack-row').forEach(row=>_stackMsSyncPct(row,info,cur));
 }
 const hp=ud&&ud.unit_hp_atk_tiers;
 if(hp&&hp.tiers&&hp.tiers.length>1){
 const ti=Math.min(Math.max(0,S.dc.unitHpAtkTierIndex|0),hp.tiers.length-1);
-const tier=hp.tiers[ti];
-const lab=`${tier.hp_pct}% +${tier.atk_pct}%`;
-document.querySelectorAll('.dc-unit-hp-tier-row .detail-pilot-stack-val').forEach(el=>{el.textContent=lab});
-document.querySelectorAll('.dc-unit-hp-tier-row input[type=range]').forEach(inp=>{inp.value=String(ti);inp.setAttribute('aria-valuenow',String(ti))});
+document.querySelectorAll('.dc-unit-hp-tier-row').forEach(row=>_stackMsSyncTier(row,hp.tiers,ti));
 }
 const dd=ud&&ud.unit_damage_taken_def;
 if(dd){
 const max=Math.max(1,dd.max_stacks|0);
 const cur=Math.max(1,Math.min(max,S.dc.unitDamageTakenDefStacks|0||max));
-const pct=Math.min(dd.max|0,dd.per*cur);
-document.querySelectorAll('.dc-unit-dmg-taken-def-row .detail-pilot-stack-val').forEach(el=>{el.textContent='+'+pct+'%'});
-document.querySelectorAll('.dc-unit-dmg-taken-def-row input[type=range]').forEach(inp=>{inp.value=String(cur);inp.setAttribute('aria-valuenow',String(cur))});
+const info={per:dd.per|0,maxPct:dd.max|0,maxStacks:max,minVal:1};
+document.querySelectorAll('.dc-unit-dmg-taken-def-row').forEach(row=>_stackMsSyncPct(row,info,cur));
 }
 }
 function _dcUnitCombatStackSliderHtml(cc){
@@ -16069,24 +16260,35 @@ if(!cc)return'';
 const max=Math.max(1,cc.max_stacks|0);
 const cur=Math.max(0,Math.min(max,S.dc.unitCondStackCount|0));
 const pct=Math.min(cc.max|0,cc.per*cur);
+const maxPct=Math.max(1,cc.max|0);
+const p=pct/maxPct;
 const stackLab=t('unit_combat_stack_label')||'Combat stack level';
-return`<div class="detail-pilot-stack-row is-open detail-unit-cond-stack-row dc-unit-cond-stack-row" onclick="event.stopPropagation()"><input type="range" class="detail-pilot-stack-slider" min="0" max="${max}" step="1" value="${cur}" aria-valuemin="0" aria-valuemax="${max}" aria-valuenow="${cur}" aria-label="${escAttr(stackLab)}" oninput="setDcUnitCondStackCount(this.value)"><span class="detail-pilot-stack-val">+${pct}%</span></div>`;
+const dots=_stackMsPctDotsHtml(cc.per|0,maxPct,max,cur,pct,0);
+const inner=_stackMsInnerHtml({p,dots,min:0,max,cur,aria:stackLab,fnName:'setDcUnitCondStackCount'});
+return`<div class="detail-pilot-stack-row is-open detail-unit-cond-stack-row dc-unit-cond-stack-row detail-pep-ms" onclick="event.stopPropagation()">${inner}<span class="detail-pilot-stack-val">+${pct}%</span></div>`;
 }
 function _dcUnitHpAtkSliderHtml(hp){
 if(!S.dc.unitCondPassive||!hp||!hp.tiers||hp.tiers.length<2)return'';
 const max=hp.tiers.length-1;
 const ti=Math.min(Math.max(0,S.dc.unitHpAtkTierIndex|0),max);
 const tier=hp.tiers[ti];
+const p=max>0?ti/max:0;
 const lab=t('unit_hp_atk_tier_label')||'HP ATK tier';
-return`<div class="detail-pilot-stack-row is-open detail-unit-cond-stack-row dc-unit-hp-tier-row" onclick="event.stopPropagation()"><input type="range" class="detail-pilot-stack-slider" min="0" max="${max}" step="1" value="${ti}" aria-valuemin="0" aria-valuemax="${max}" aria-valuenow="${ti}" aria-label="${escAttr(lab)}" oninput="setDcUnitHpAtkTierIndex(this.value)"><span class="detail-pilot-stack-val">${esc(String(tier.hp_pct))}% +${esc(String(tier.atk_pct))}%</span></div>`;
+const dots=_stackMsTierDotsHtml(hp.tiers,ti);
+const inner=_stackMsInnerHtml({p,dots,min:0,max,cur:ti,aria:lab,fnName:'setDcUnitHpAtkTierIndex'});
+return`<div class="detail-pilot-stack-row is-open detail-unit-cond-stack-row dc-unit-hp-tier-row detail-pep-ms" onclick="event.stopPropagation()">${inner}<span class="detail-pilot-stack-val">${esc(String(tier.hp_pct))}% +${esc(String(tier.atk_pct))}%</span></div>`;
 }
 function _dcUnitDamageTakenDefSliderHtml(dd){
 if(!S.dc.unitCondPassive||!dd)return'';
 const max=Math.max(1,dd.max_stacks|0);
 const cur=Math.max(1,Math.min(max,S.dc.unitDamageTakenDefStacks|0||max));
 const pct=Math.min(dd.max|0,dd.per*cur);
+const maxPct=Math.max(1,dd.max|0);
+const p=pct/maxPct;
 const stackLab=t('unit_damage_taken_def_label')||'Damage taken DEF stacks';
-return`<div class="detail-pilot-stack-row is-open detail-unit-cond-stack-row dc-unit-dmg-taken-def-row" onclick="event.stopPropagation()"><input type="range" class="detail-pilot-stack-slider" min="1" max="${max}" step="1" value="${cur}" aria-valuemin="1" aria-valuemax="${max}" aria-valuenow="${cur}" aria-label="${escAttr(stackLab)}" oninput="setDcUnitDamageTakenDefStacks(this.value)"><span class="detail-pilot-stack-val">+${pct}%</span></div>`;
+const dots=_stackMsPctDotsHtml(dd.per|0,maxPct,max,cur,pct,1);
+const inner=_stackMsInnerHtml({p,dots,min:1,max,cur,aria:stackLab,fnName:'setDcUnitDamageTakenDefStacks'});
+return`<div class="detail-pilot-stack-row is-open detail-unit-cond-stack-row dc-unit-dmg-taken-def-row detail-pep-ms" onclick="event.stopPropagation()">${inner}<span class="detail-pilot-stack-val">+${pct}%</span></div>`;
 }
 function _dcUnitCombatStackPassiveBonusRowHtml(cc){
 if(!cc)return'';
