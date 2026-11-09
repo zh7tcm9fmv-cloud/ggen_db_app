@@ -1,82 +1,12 @@
 {
   "v": 1,
-  "saved_ms": 1794210214037,
+  "saved_ms": 1794210827462,
   "meta": {
-    "last_ok_ms": 1794210152984,
+    "last_ok_ms": 1794210769039,
     "last_err": "",
     "started_ms": 1793557196594
   },
   "samples": [
-    {
-      "t": 1793864799656,
-      "countries": {
-        "hk": {
-          "overall": 26,
-          "games": 16,
-          "gamei_today": 25
-        },
-        "mo": {
-          "overall": 25,
-          "games": 16,
-          "gamei_today": null
-        },
-        "tw": {
-          "overall": null,
-          "games": null,
-          "gamei_today": 229
-        },
-        "jp": {
-          "overall": null,
-          "games": 70,
-          "gamei_today": 117
-        },
-        "sg": {
-          "overall": null,
-          "games": null,
-          "gamei_today": 527
-        },
-        "kr": {
-          "overall": null,
-          "games": null,
-          "gamei_today": 404
-        }
-      }
-    },
-    {
-      "t": 1793865006806,
-      "countries": {
-        "hk": {
-          "overall": 26,
-          "games": 16,
-          "gamei_today": 25
-        },
-        "mo": {
-          "overall": 25,
-          "games": 16,
-          "gamei_today": null
-        },
-        "tw": {
-          "overall": null,
-          "games": null,
-          "gamei_today": 229
-        },
-        "jp": {
-          "overall": null,
-          "games": 70,
-          "gamei_today": 117
-        },
-        "sg": {
-          "overall": null,
-          "games": null,
-          "gamei_today": 527
-        },
-        "kr": {
-          "overall": null,
-          "games": null,
-          "gamei_today": 404
-        }
-      }
-    },
     {
       "t": 1793865625218,
       "countries": {
@@ -20024,6 +19954,41 @@
           "overall": null,
           "games": null,
           "gamei_today": 382
+        }
+      }
+    },
+    {
+      "t": 1794210769039,
+      "countries": {
+        "hk": {
+          "overall": 46,
+          "games": 25,
+          "gamei_today": 46
+        },
+        "mo": {
+          "overall": 17,
+          "games": 10,
+          "gamei_today": null
+        },
+        "tw": {
+          "overall": null,
+          "games": null,
+          "gamei_today": 252
+        },
+        "jp": {
+          "overall": null,
+          "games": 88,
+          "gamei_today": 166
+        },
+        "sg": {
+          "overall": null,
+          "games": null,
+          "gamei_today": 385
+        },
+        "kr": {
+          "overall": null,
+          "games": null,
+          "gamei_today": 420
         }
       }
     }
