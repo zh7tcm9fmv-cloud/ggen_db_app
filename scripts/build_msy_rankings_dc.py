@@ -157,8 +157,21 @@ def _add_permanent_skip(uid, reason):
     uid = msy._app().normalize_id(uid)
     if not uid:
         return
-    skips = _load_permanent_skips()
     reason = str(reason or 'permanent skip')[:240]
+    # Transient Playwright /cal "Unit … not found" must NOT blacklist real kits
+    # (Oct 2026: 23 Astraea/GN-X/Susanowo rows stuck skipped through full --force).
+    try:
+        info = (msy._app().unit_info_map or {}).get(uid) or {}
+    except Exception:
+        info = {}
+    if info and ('not found' in reason.lower() or '404' in reason.lower()):
+        print(
+            f'  skip permanent blacklist for {uid}: catalog unit exists '
+            f'(reason was {reason!r})',
+            flush=True,
+        )
+        return
+    skips = _load_permanent_skips()
     if skips.get(uid) == reason:
         return
     skips[uid] = reason
