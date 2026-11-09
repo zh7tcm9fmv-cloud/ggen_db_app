@@ -453,7 +453,7 @@ assert(rules.checkHit(parryAtk, Object.assign({}, parryDef, { usedParryCount: 0,
   assert(!mapPlanSoft, 'F90 Barrage MAP skipped when Barrage EX kills engage, got ' +
     (mapPlanSoft && mapPlanSoft.weapon && mapPlanSoft.weapon.name));
 
-  /* EX cannot kill, MAP can KO 2 in cone → MAP allowed. */
+  /* EX cannot kill, MAP KO's engage + 2+ in cone → MAP allowed. */
   const midEx = {
     name: 'Barrage EX', power: 3000, min_range: 1, max_range: 5, en: 43, en_cost: 43, ammo: 0,
     is_map: false, is_ex: true, usage_restrictions: []
@@ -467,8 +467,54 @@ assert(rules.checkHit(parryAtk, Object.assign({}, parryDef, { usedParryCount: 0,
     f90Mid, midFoes[1], midFoes, [f90Mid].concat(midFoes), lineBounds, (a, d, w) => w.power | 0
   );
   assert(mapPlanMid && mapPlanMid.weapon && mapPlanMid.weapon.name === 'Barrage',
-    'F90 Barrage MAP used when EX cannot kill engage and 2+ in cone, got ' +
+    'F90 Barrage MAP used when EX cannot kill engage, MAP kills engage, 2+ in cone, got ' +
     (mapPlanMid && mapPlanMid.weapon && mapPlanMid.weapon.name));
+
+  /* Side-only MAP kill (engage survives MAP) → still prefer EX path (no MAP). */
+  const tankEngage = [
+    { id: 't2', hp: 4000, x: 8, y: 9, size: 1, side: 'enemy' },
+    { id: 't4', hp: 80000, x: 8, y: 7, size: 1, side: 'enemy' }
+  ];
+  const mapPlanSideOnly = rules.evaluateMapWeapon(
+    f90Mid, tankEngage[1], tankEngage, [f90Mid].concat(tankEngage), lineBounds, (a, d, w) => w.power | 0
+  );
+  assert(!mapPlanSideOnly, 'F90 Barrage MAP skipped when only a side foe dies (engage lives), got ' +
+    (mapPlanSideOnly && mapPlanSideOnly.weapon && mapPlanSideOnly.weapon.name));
+
+  /* MAP bypasses Shield — raw KO still opens MAP even if Shield Defense is equipped. */
+  const rollingMap = Object.assign({}, barrageMap, { name: 'Rolling Buster Rifle', power: 100000 });
+  rollingMap.raw = Object.assign({}, barrageMap.raw, { map_coords: barrageMap.map_coords });
+  const wingLike = Object.assign({}, f90, {
+    weapons: [rollingMap, midEx]
+  });
+  const shieldEngage = [
+    {
+      id: 'sh2', hp: 80000, x: 8, y: 9, size: 1, side: 'enemy',
+      mechanisms: [{ mechanism_type_key: 'ShieldDefense', name: 'Shield Defense' }]
+    },
+    {
+      id: 'sh4', hp: 80000, x: 8, y: 7, size: 1, side: 'enemy',
+      mechanisms: [{ mechanism_type_key: 'ShieldDefense', name: 'Shield Defense' }]
+    }
+  ];
+  const mapPlanShield = rules.evaluateMapWeapon(
+    wingLike, shieldEngage[1], shieldEngage, [wingLike].concat(shieldEngage), lineBounds,
+    (a, d, w) => w.power | 0
+  );
+  assert(mapPlanShield && mapPlanShield.weapon && mapPlanShield.weapon.name === 'Rolling Buster Rifle',
+    'MAP opens on raw KO (Shield ignored on MAP), got ' +
+    (mapPlanShield && mapPlanShield.weapon && mapPlanShield.weapon.name));
+
+  /* Strong EX finishes engage (Defend/Shield/Evade on EX path) → still prefer EX over MAP. */
+  const strongEx = Object.assign({}, barrageEx, { power: 150000 });
+  const wingEx = Object.assign({}, f90, { weapons: [rollingMap, strongEx] });
+  const mapPlanExFirst = rules.evaluateMapWeapon(
+    wingEx, shieldEngage[1], shieldEngage, [wingEx].concat(shieldEngage), lineBounds,
+    (a, d, w) => w.power | 0
+  );
+  assert(!mapPlanExFirst,
+    'MAP skipped when Twin Buster–class EX finishes engage (prefer EX), got ' +
+    (mapPlanExFirst && mapPlanExFirst.weapon && mapPlanExFirst.weapon.name));
 }
 
 /* V2AB Wings of Light — dash MAP (type 4): land at far shooting_coord; skip when EX kills. */
@@ -519,7 +565,7 @@ assert(rules.checkHit(parryAtk, Object.assign({}, parryDef, { usedParryCount: 0,
     v2Weak, soft[0], soft, [v2Weak].concat(soft), bounds, (a, d, w) => w.power | 0
   );
   assert(mapWings && mapWings.weapon && mapWings.weapon.name === 'Wings of Light',
-    'V2AB Wings used when EX cannot kill and 2+ on path, got ' +
+    'V2AB Wings used when EX cannot kill, MAP kills engage, 2+ on path, got ' +
     (mapWings && mapWings.weapon && mapWings.weapon.name));
   assert(mapWings.dashTo && mapWings.dashTo.x === 8 && mapWings.dashTo.y === 7,
     'V2AB Wings plan includes dashTo (8,7), got ' + JSON.stringify(mapWings && mapWings.dashTo));

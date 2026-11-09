@@ -2156,12 +2156,121 @@
   }
 
   /**
-   * MLS MAP interrupt (ML priority — owner / recorded matches):
-   *   1. Prefer EX / highest non-MAP damage first — never open with MAP when that
-   *      normal shot kills the engage target (even if MAP would multi-kill).
-   *   2. Only then use MAP when the engage foe survives the best normal shot AND
-   *      the MAP shape hits 2+ living enemies (single-spot impact kits still need
-   *      their designate count; multi AoE requires ≥2).
+   * Non-MAP (EX) kill planning vs AI Defend ×0.8 / Shield ×0.6 / Evade.
+   * MAP never offers that menu — plan MAP KO with raw damageOf only.
+   * Lethal EX that forces Evade still counts as “prefer EX” (skip MAP).
+   */
+  function damageAfterAiDefense(actor, defender, weapon, damageOf) {
+    var raw;
+    var act;
+    var withFlags;
+    if (!defender || !weapon) return { dmg: 0, act: 'none' };
+    raw = typeof damageOf === 'function'
+      ? (damageOf(actor, defender, weapon) | 0)
+      : (weapon.power | 0);
+    if (raw <= 0) return { dmg: 0, act: 'none' };
+    act = determineDefenseAction(defender, raw, false, false);
+    if (act === 'evade') return { dmg: 0, act: 'evade', raw: raw };
+    if (act === 'defend' || act === 'shield') {
+      if (typeof damageOf === 'function') {
+        withFlags = damageOf(actor, defender, weapon, {
+          defending: true,
+          shield: act === 'shield'
+        });
+        if (withFlags != null && isFinite(withFlags)) {
+          return { dmg: withFlags | 0, act: act, raw: raw };
+        }
+      }
+      return {
+        dmg: Math.floor(raw * (act === 'shield' ? 0.6 : 0.8)),
+        act: act,
+        raw: raw
+      };
+    }
+    return { dmg: raw, act: 'none', raw: raw };
+  }
+
+  function expectedDamageWithAiDefense(actor, defender, weapon, damageOf) {
+    return damageAfterAiDefense(actor, defender, weapon, damageOf).dmg | 0;
+  }
+
+  /** Guaranteed KO through Defend/Shield, or lethal→Evade (EX-gate). */
+  function killsUnderAiDefense(actor, defender, weapon, damageOf, forExGate) {
+    var info = damageAfterAiDefense(actor, defender, weapon, damageOf);
+    if (info.act === 'evade') return !!forExGate;
+    return ((defender.hp | 0) - (info.dmg | 0)) <= 0;
+  }
+
+  function rawWeaponDamage(actor, defender, weapon, damageOf) {
+    if (!weapon) return 0;
+    return typeof damageOf === 'function'
+      ? (damageOf(actor, defender, weapon) | 0)
+      : (weapon.power | 0);
+  }
+
+  /** True when best non-MAP (current tile or after a normal move) finishes engage. */
+  function nonMapKillsEngage(actor, target, allUnits, bounds, damageOf) {
+    var nonMap;
+    var probe;
+    var list;
+    var i;
+    var wpn;
+    var wi;
+    var w;
+    var minR;
+    var maxR;
+    var dest;
+    var movedProbe;
+    if (!actor || !target || (target.hp | 0) <= 0) return false;
+    nonMap = (actor.weapons || []).filter(function (x) { return !isMapWeapon(x); });
+    if (!nonMap.length) return false;
+
+    function anyLethalFrom(fromPos) {
+      list = weaponsInRange(
+        {
+          weapons: nonMap,
+          x: fromPos.x | 0,
+          y: fromPos.y | 0,
+          size: unitSize(actor),
+          side: actor.side
+        },
+        target
+      );
+      for (i = 0; i < list.length; i++) {
+        wpn = list[i];
+        if (killsUnderAiDefense(actor, target, wpn, damageOf, true)) return true;
+      }
+      return false;
+    }
+
+    probe = { x: actor.x | 0, y: actor.y | 0 };
+    if (anyLethalFrom(probe)) return true;
+
+    minR = 99;
+    maxR = 0;
+    for (wi = 0; wi < nonMap.length; wi++) {
+      w = nonMap[wi];
+      if (isMoveBeforeOnly(w) && actorHasMoved(actor)) continue;
+      minR = Math.min(minR, w.min_range != null ? w.min_range | 0 : 1);
+      maxR = Math.max(maxR, w.max_range != null ? w.max_range | 0 : 5);
+    }
+    if (maxR < minR || maxR <= 0) return false;
+    dest = getBestMoveDestination(actor, target, actor.move | 0, minR, maxR, allUnits, bounds);
+    if (!dest || !dest.moved) return false;
+    movedProbe = { x: dest.x | 0, y: dest.y | 0 };
+    return anyLethalFrom(movedProbe);
+  }
+
+  /**
+   * MLS MAP interrupt (EX-first — MAP is rare in live ML):
+   *   1. Prefer EX / highest non-MAP first — never open with MAP when that shot
+   *      (from current tile or after a normal move) kills the engage target under
+   *      AI Defend/Shield (even if MAP would multi-kill).
+   *   2. Only then use MAP when ALL of:
+   *        - engage survives best non-MAP
+   *        - MAP shape hits 2+ living enemies including the engage target
+   *        - raw MAP damage kills that engage target (Defend/Shield never apply to MAP)
+   *      (No chip-MAP; killing only a side foe is not enough.)
    * Dash MAP (type 4, e.g. V2AB Wings of Light / 光之翼): fire from the current
    * tile (no pre-move); land at `dashTo` after hits resolve.
    */
@@ -2169,25 +2278,13 @@
     var candidates = getValidWeapons(actor, null, false).filter(isMapWeapon);
     var best = null;
     var ci, wpn, free, cost, canFire, rawDist, mn, mx, needMove, simPos;
-    var cells, inArea, maxSel, isSingle, minNeed, mapKills, totalDmg, i, mt, mDmg;
-    var normalPick, normalDmg, normalKills, better, mapPrimary;
+    var cells, inArea, maxSel, minNeed, mapKills, totalDmg, i, mt, mDmg;
+    var better, mapDmgOnEngage, engageKilled;
     var impactMode, isDash, dashTo, dest, picked, key, seen, cellList, j, ec;
     var fireActor;
 
-    /* Gate once from the current tile: if EX/best normal kills engage, skip all MAP. */
-    normalPick = pickWeapon(
-      {
-        weapons: (actor.weapons || []).filter(function (w) { return !isMapWeapon(w); }),
-        x: actor.x | 0, y: actor.y | 0, size: unitSize(actor), side: actor.side
-      },
-      target,
-      function (a, d, w) {
-        return typeof damageOf === 'function' ? damageOf(actor, d, w) : (w.power | 0);
-      }
-    );
-    normalDmg = normalPick ? (normalPick.damage | 0) : 0;
-    normalKills = (target.hp | 0) - normalDmg <= 0 ? 1 : 0;
-    if (normalKills > 0) return null;
+    /* Gate: if EX/best normal KO's engage (here or after move), skip all MAP. */
+    if (nonMapKillsEngage(actor, target, allUnits, bounds, damageOf)) return null;
 
     for (ci = 0; ci < candidates.length; ci++) {
       wpn = candidates[ci];
@@ -2294,39 +2391,29 @@
         }
       }
 
-      isSingle = impactMode || maxSel > 0 ||
-        !!(wpn.map_single_pou || (wpn.raw && wpn.raw.map_single_pou)) ||
-        ((wpn.min_range | 0) === 1 && (wpn.max_range | 0) === 1);
-      /* Rule 2: multi AoE / dash MAP need 2+ living enemies in the shape. */
-      minNeed = isSingle ? 1 : 2;
+      /* Always 2+ living enemies in the shape, including engage (MAP is rare vs EX). */
+      minNeed = 2;
       if (inArea.length < minNeed) continue;
+      if (!inArea.some(function (e) { return e === target; })) continue;
 
       mapKills = 0;
       totalDmg = 0;
+      mapDmgOnEngage = 0;
       for (i = 0; i < inArea.length; i++) {
         mt = inArea[i];
-        mDmg = typeof damageOf === 'function' ? (damageOf(actor, mt, wpn) | 0) : (wpn.power | 0);
+        /* MAP bypasses Defend/Shield — plan with full damage. */
+        mDmg = rawWeaponDamage(actor, mt, wpn, damageOf);
         totalDmg += mDmg;
+        if (mt === target) mapDmgOnEngage = mDmg;
         if ((mt.hp | 0) - mDmg <= 0) mapKills++;
       }
-
+      engageKilled = (target.hp | 0) - mapDmgOnEngage <= 0;
       /*
        * Engage already known to survive best non-MAP (gate above).
-       * Prefer MAP when it scores any kills, or on chip only when MAP primary
-       * ≥ best non-MAP and AoE sum beats that single shot (F90 Barrage lesson).
+       * MAP only if raw damage KO's that same engage target
+       * (not side-only kills / chip).
        */
-      better = false;
-      if (mapKills > 0) better = true;
-      else {
-        mapPrimary = typeof damageOf === 'function'
-          ? (damageOf(actor, target, wpn) | 0)
-          : (wpn.power | 0);
-        if (!normalPick || normalDmg <= 0) {
-          better = inArea.length >= minNeed && totalDmg > 0;
-        } else if (mapPrimary >= normalDmg && inArea.length >= 2 && totalDmg > normalDmg) {
-          better = true;
-        }
-      }
+      better = !!engageKilled;
       if (!better) continue;
 
       if (isDash) {
@@ -3013,6 +3100,7 @@
     grantsGuaranteedCsAfterCombat: grantsGuaranteedCsAfterCombat,
     chanceStepLabels: chanceStepLabels,
     evaluateMapWeapon: evaluateMapWeapon,
+    expectedDamageWithAiDefense: expectedDamageWithAiDefense,
     isDashMapWeapon: isDashMapWeapon,
     resolveDashLandCell: resolveDashLandCell,
     mapWeaponWorldCells: mapWeaponWorldCells,

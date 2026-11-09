@@ -10248,19 +10248,18 @@
             );
             hitAny = false;
             mapPlan.targets.forEach(function (mt) {
-              var expectedMap, defActMap, res;
+              var res;
               if ((mt.hp | 0) <= 0) return;
-              /* MAP: no Support Defense / counter, but self Defend/Shield/Evade still apply. */
-              expectedMap = battleDamage(u, mt, mapPlan.weapon) | 0;
-              defActMap = R.determineDefenseAction
-                ? R.determineDefenseAction(mt, expectedMap, false, false)
-                : 'none';
-              /* Beat 3+ — each target takes damage once; range stays lit via mapCells. */
+              /*
+               * MAP: no Support Defense / counter, and no Defend/Shield/Evade pick —
+               * targets never get that menu, so damage is full (Parry/Sway still blocked
+               * inside checkHit / tryParry for MAP).
+               */
               res = applyHit(u, mt, 'MAP', 'MAP', null, {
                 weapon: mapPlan.weapon,
-                defAction: defActMap,
-                defending: defActMap === 'defend' || defActMap === 'shield',
-                shield: defActMap === 'shield',
+                defAction: 'none',
+                defending: false,
+                shield: false,
                 skipCost: true,
                 skipWeaponAnnounce: true,
                 mapCells: mapCellsSnap
@@ -10305,7 +10304,9 @@
              * - Auto-Chance Step does not activate after MAP Weapons.
              * Guaranteed Chance Step still applies (end of any non-wait action).
              * Weapon “CS on hit” traits still spend the phase budget when present.
-             * AI: evaluateMapWeapon skips MAP when EX/best normal already kills the engage target.
+             * AI: evaluateMapWeapon skips MAP when EX/best normal already kills the engage
+             * target (current tile or after move; Defend/Shield matter for EX only).
+             * MAP itself bypasses Defend/Shield — plan KO uses raw damage.
              */
             if ((u.hp | 0) > 0 && living(foes).length) {
               if (hitAny && !u._weaponCsGrantedThisAction &&
