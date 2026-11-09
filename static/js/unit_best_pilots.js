@@ -41,7 +41,8 @@
     loading: false,
     loaded: false,
     loadGen: 0,
-    excludeUr: false,
+    // all | no_ur | ur_only (cycle on the UR rarity filter button)
+    urMode: 'all',
     excludeShinn: false,
     // all | same | support (support only offered on Attack units)
     roleMode: 'all',
@@ -304,9 +305,13 @@
     return t('msy_role_all') || 'All roles';
   }
 
+  function isNoUrMode() { return state.urMode === 'no_ur'; }
+  function isUrOnlyMode() { return state.urMode === 'ur_only'; }
+
   function shinnFilterRelevant() {
     // Shinn is Attack-role; same-role on Defense/Support and Supporters-only already exclude him.
-    if (state.excludeUr) return false;
+    // No-UR already drops all UR (incl. Shinn). UR-only keeps Shinn unless the No-Shinn chip is on.
+    if (isNoUrMode()) return false;
     if (isSupportRoleMode()) return false;
     if (isSameRoleMode() && !isAttackUnit()) return false;
     return true;
@@ -329,12 +334,48 @@
     if (urBtn) {
       urBtn.style.display = defender ? 'none' : '';
       urBtn.setAttribute('aria-hidden', defender ? 'true' : 'false');
-      urBtn.classList.toggle('is-active', !!state.excludeUr);
-      urBtn.classList.toggle('active', !!state.excludeUr);
-      urBtn.setAttribute('aria-pressed', state.excludeUr ? 'true' : 'false');
-      urBtn.title = state.excludeUr
-        ? (t('msy_exclude_ur_on') || 'Showing non-UR pilots only')
-        : (t('msy_exclude_ur') || 'Exclude UR pilots');
+      var urActive = isNoUrMode() || isUrOnlyMode();
+      urBtn.classList.toggle('is-active', urActive);
+      urBtn.classList.toggle('active', urActive);
+      urBtn.classList.toggle('is-ur-only', isUrOnlyMode());
+      urBtn.classList.toggle('is-no-ur', isNoUrMode());
+      urBtn.classList.toggle('has-ur-chip', false);
+      urBtn.setAttribute('aria-pressed', urActive ? 'true' : 'false');
+      var urLabel = urBtn.querySelector('.msy-exclude-ur-label');
+      var urIcon = urBtn.querySelector('.msy-exclude-ur-icon');
+      var urImg = urBtn.querySelector('.msy-exclude-ur-rarity');
+      var chipTitle = '';
+      var chipAria = '';
+      var iconPath = '/static/images/Rarity/UI_Common_RarityIcon_UR.webp';
+      if (isUrOnlyMode()) {
+        chipTitle = t('unit_best_pilot_ur_only_on') || t('msy_ur_only_on') || 'Showing UR pilots only';
+        chipAria = t('unit_best_pilot_ur_chip_only') || 'UR only';
+        iconPath = '/static/images/Rarity/UI_Common_RarityIcon_UR.webp';
+      } else if (isNoUrMode()) {
+        chipTitle = t('msy_exclude_ur_on') || 'Showing non-UR pilots only';
+        chipAria = t('unit_best_pilot_ur_chip_ssr') || 'SSR↓';
+        iconPath = '/static/images/Rarity/UI_Common_RarityIcon_SSR.webp';
+      } else {
+        chipTitle = t('unit_best_pilot_ur_filter_cycle')
+          || t('msy_exclude_ur')
+          || 'UR filter: No UR → UR only';
+        chipAria = chipTitle;
+        iconPath = '/static/images/Rarity/UI_Common_RarityIcon_UR.webp';
+      }
+      urBtn.title = chipTitle;
+      urBtn.setAttribute('aria-label', chipAria);
+      if (urLabel) {
+        urLabel.textContent = '';
+        urLabel.hidden = true;
+      }
+      if (urIcon) urIcon.hidden = false;
+      if (urImg) {
+        var nextSrc = (typeof global.imgUrl === 'function') ? global.imgUrl(iconPath) : iconPath;
+        if (urImg.getAttribute('src') !== nextSrc) {
+          urImg.style.display = '';
+          urImg.setAttribute('src', nextSrc);
+        }
+      }
     }
     if (shBtn) {
       if (!shinnFilterRelevant()) state.excludeShinn = false;
@@ -678,8 +719,12 @@
 
   function toggleFilter(kind) {
     if (kind === 'no_ur') {
-      state.excludeUr = !state.excludeUr;
-      if (state.excludeUr) state.excludeShinn = true;
+      // Cycle: all → no_ur → ur_only → all
+      if (state.urMode === 'all') state.urMode = 'no_ur';
+      else if (state.urMode === 'no_ur') state.urMode = 'ur_only';
+      else state.urMode = 'all';
+      if (isNoUrMode()) state.excludeShinn = true;
+      else if (isUrOnlyMode()) state.excludeShinn = false;
     } else if (kind === 'no_shinn') {
       if (!shinnFilterRelevant()) return;
       state.excludeShinn = !state.excludeShinn;
@@ -692,17 +737,18 @@
     renderActivePanel();
   }
 
-  function filterPilotsLocal(pilots, noUr, noShinn, sameRole, supportRole) {
+  function filterPilotsLocal(pilots, noUr, noShinn, sameRole, supportRole, urOnly) {
     if (!pilots || !pilots.length) return [];
     if (noUr) noShinn = true;
     var unitRole = sameRole ? unitRoleId() : null;
-    if (!noUr && !noShinn && !sameRole && !supportRole) return pilots.slice();
+    if (!noUr && !urOnly && !noShinn && !sameRole && !supportRole) return pilots.slice();
     return pilots.filter(function (p) {
       var ch = (p && p.char) || {};
       var rarity = String(ch.rarity || '');
       var cid = String(ch.id || '');
       var role = String(ch.role_id || '');
       if (noUr && rarity === 'UR') return false;
+      if (urOnly && rarity !== 'UR') return false;
       if (noShinn && cid === SHINN_EX_CHAR_ID) return false;
       if (supportRole && role !== SUPPORT_ROLE_ID) return false;
       if (sameRole && unitRole != null && role !== unitRole) return false;
@@ -759,7 +805,8 @@
     // pilots rarely appear in the generic skills-off top 20).
     if (!state.skillsOn) {
       var off = board.pilots_no_active_skills || [];
-      var noUrOff = !!state.excludeUr;
+      var noUrOff = isNoUrMode();
+      var urOnlyOff = isUrOnlyMode();
       var noShinnOff = noUrOff || (!!state.excludeShinn && shinnFilterRelevant());
       var sameOff = isSameRoleMode();
       var supportOff = isSupportRoleMode();
@@ -771,7 +818,15 @@
         partial = !!markPartial;
       }
 
-      if (supportOff && noUrOff) {
+      if (supportOff && urOnlyOff) {
+        if (board.pilots_ur_only_no_active_skills && board.pilots_ur_only_no_active_skills.length) {
+          takeOff(filterPilotsLocal(board.pilots_ur_only_no_active_skills, false, false, false, true, false), !!board.ur_only_partial);
+        } else if (board.pilots_support_role_no_active_skills && board.pilots_support_role_no_active_skills.length) {
+          takeOff(filterPilotsLocal(board.pilots_support_role_no_active_skills, false, false, false, false, true), !!board.support_role_partial);
+        } else {
+          takeOff(filterPilotsLocal(off, false, false, false, true, true), true);
+        }
+      } else if (supportOff && noUrOff) {
         if (board.pilots_support_role_no_active_skills && board.pilots_support_role_no_active_skills.length) {
           takeOff(filterPilotsLocal(board.pilots_support_role_no_active_skills, true, true, false, false), !!board.support_role_partial);
         } else if (board.pilots_no_ur_no_active_skills && board.pilots_no_ur_no_active_skills.length) {
@@ -788,6 +843,14 @@
           takeOff(board.pilots_support_role, true);
         } else {
           takeOff(filterPilotsLocal(off, false, false, false, true), true);
+        }
+      } else if (sameOff && urOnlyOff) {
+        if (board.pilots_ur_only_no_active_skills && board.pilots_ur_only_no_active_skills.length) {
+          takeOff(filterPilotsLocal(board.pilots_ur_only_no_active_skills, false, noShinnOff, true, false, false), !!board.ur_only_partial);
+        } else if (board.pilots_same_role_no_active_skills && board.pilots_same_role_no_active_skills.length) {
+          takeOff(filterPilotsLocal(board.pilots_same_role_no_active_skills, false, noShinnOff, false, false, true), !!board.same_role_partial);
+        } else {
+          takeOff(filterPilotsLocal(off, false, noShinnOff, true, false, true), true);
         }
       } else if (sameOff && noUrOff) {
         if (board.pilots_same_role_no_active_skills && board.pilots_same_role_no_active_skills.length) {
@@ -811,6 +874,20 @@
         } else {
           takeOff(filterPilotsLocal(off, false, false, true, false), true);
         }
+      } else if (urOnlyOff && noShinnOff) {
+        if (board.pilots_ur_only_no_active_skills && board.pilots_ur_only_no_active_skills.length) {
+          takeOff(filterPilotsLocal(board.pilots_ur_only_no_active_skills, false, true, false, false, false), !!board.ur_only_partial);
+        } else if (board.pilots_no_shinn_no_active_skills && board.pilots_no_shinn_no_active_skills.length) {
+          takeOff(filterPilotsLocal(board.pilots_no_shinn_no_active_skills, false, false, false, false, true), !!board.no_shinn_partial);
+        } else {
+          takeOff(filterPilotsLocal(off, false, true, false, false, true), true);
+        }
+      } else if (urOnlyOff) {
+        if (board.pilots_ur_only_no_active_skills && board.pilots_ur_only_no_active_skills.length) {
+          takeOff(board.pilots_ur_only_no_active_skills, !!board.ur_only_partial && board.pilots_ur_only_no_active_skills.length < 10);
+        } else {
+          takeOff(filterPilotsLocal(off, false, false, false, false, true), true);
+        }
       } else if (noUrOff) {
         if (board.pilots_no_ur_no_active_skills && board.pilots_no_ur_no_active_skills.length) {
           takeOff(board.pilots_no_ur_no_active_skills, !!board.no_ur_partial && board.pilots_no_ur_no_active_skills.length < 10);
@@ -832,8 +909,10 @@
       };
     }
 
-    var noUr = !!state.excludeUr;
+    var noUr = isNoUrMode();
+    var urOnly = isUrOnlyMode();
     // Same-role on non-Attack / Supporters-only already excludes Shinn — don't apply No Shinn on top.
+    // No-UR already drops Shinn (UR). UR-only keeps him unless the No-Shinn chip is on.
     var noShinn = noUr || (!!state.excludeShinn && shinnFilterRelevant());
     var sameRole = isSameRoleMode();
     var supportRole = isSupportRoleMode();
@@ -847,7 +926,15 @@
 
     // Prefer dedicated calculator boards. Combined filters start from the richest
     // matching board, then apply the remaining constraints (never invent damage).
-    if (supportRole && noUr) {
+    if (supportRole && urOnly) {
+      if (board.pilots_ur_only && board.pilots_ur_only.length) {
+        take(filterPilotsLocal(board.pilots_ur_only, false, false, false, true, false), !!board.ur_only_partial);
+      } else if (board.pilots_support_role && board.pilots_support_role.length) {
+        take(filterPilotsLocal(board.pilots_support_role, false, false, false, false, true), !!board.support_role_partial);
+      } else {
+        take(filterPilotsLocal(board.pilots || [], false, false, false, true, true), true);
+      }
+    } else if (supportRole && noUr) {
       if (board.pilots_support_role && board.pilots_support_role.length) {
         take(filterPilotsLocal(board.pilots_support_role, true, true, false, false), !!board.support_role_partial);
       } else if (board.pilots_no_ur && board.pilots_no_ur.length) {
@@ -860,6 +947,14 @@
         take(board.pilots_support_role, !!board.support_role_partial && board.pilots_support_role.length < 10);
       } else {
         take(filterPilotsLocal(board.pilots || [], false, false, false, true), true);
+      }
+    } else if (sameRole && urOnly) {
+      if (board.pilots_ur_only && board.pilots_ur_only.length) {
+        take(filterPilotsLocal(board.pilots_ur_only, false, noShinn, true, false, false), !!board.ur_only_partial);
+      } else if (board.pilots_same_role && board.pilots_same_role.length) {
+        take(filterPilotsLocal(board.pilots_same_role, false, noShinn, false, false, true), !!board.same_role_partial);
+      } else {
+        take(filterPilotsLocal(board.pilots || [], false, noShinn, true, false, true), true);
       }
     } else if (sameRole && noUr) {
       // Prefer same-role board (deeper store) then strip UR — fills Support/Defense lists.
@@ -889,6 +984,20 @@
         take(board.pilots_same_role, !!board.same_role_partial && board.pilots_same_role.length < 10);
       } else {
         take(filterPilotsLocal(board.pilots || [], false, false, true, false), true);
+      }
+    } else if (urOnly && noShinn) {
+      if (board.pilots_ur_only && board.pilots_ur_only.length) {
+        take(filterPilotsLocal(board.pilots_ur_only, false, true, false, false, false), !!board.ur_only_partial);
+      } else if (board.pilots_no_shinn && board.pilots_no_shinn.length) {
+        take(filterPilotsLocal(board.pilots_no_shinn, false, false, false, false, true), !!board.no_shinn_partial);
+      } else {
+        take(filterPilotsLocal(board.pilots || [], false, true, false, false, true), true);
+      }
+    } else if (urOnly) {
+      if (board.pilots_ur_only && board.pilots_ur_only.length) {
+        take(board.pilots_ur_only, !!board.ur_only_partial && board.pilots_ur_only.length < 10);
+      } else {
+        take(filterPilotsLocal(board.pilots || [], false, false, false, false, true), true);
       }
     } else if (noUr) {
       if (board.pilots_no_ur && board.pilots_no_ur.length) {
@@ -938,6 +1047,7 @@
     forEachBoard(entry, function (board) {
       enrich(board.pilots);
       enrich(board.pilots_no_ur);
+      enrich(board.pilots_ur_only);
       enrich(board.pilots_no_shinn);
       enrich(board.pilots_same_role);
       enrich(board.pilots_support_role);
@@ -966,6 +1076,7 @@
     forEachBoard(entry, function (board) {
       collect(board.pilots);
       collect(board.pilots_no_ur);
+      collect(board.pilots_ur_only);
       collect(board.pilots_no_shinn);
       collect(board.pilots_same_role);
       collect(board.pilots_support_role);
@@ -999,6 +1110,7 @@
       forEachBoard(entry, function (board) {
         attachSkills(board.pilots);
         attachSkills(board.pilots_no_ur);
+        attachSkills(board.pilots_ur_only);
         attachSkills(board.pilots_no_shinn);
         attachSkills(board.pilots_same_role);
         attachSkills(board.pilots_support_role);
@@ -1519,6 +1631,7 @@
     return {
       pilots: sortPilotsByCalcDamage(clonePilotList(payload.pilots), mode),
       pilots_no_ur: sortPilotsByCalcDamage(clonePilotList(payload.pilots_no_ur), mode),
+      pilots_ur_only: sortPilotsByCalcDamage(clonePilotList(payload.pilots_ur_only), mode),
       pilots_no_shinn: sortPilotsByCalcDamage(clonePilotList(payload.pilots_no_shinn), mode),
       pilots_same_role: sortPilotsByCalcDamage(clonePilotList(payload.pilots_same_role), mode),
       pilots_support_role: sortPilotsByCalcDamage(clonePilotList(payload.pilots_support_role), mode),
@@ -1526,10 +1639,12 @@
       pilots_support_role_no_active_skills: sortPilotsByCalcDamage(clonePilotList(payload.pilots_support_role_no_active_skills), mode),
       pilots_same_role_no_active_skills: sortPilotsByCalcDamage(clonePilotList(payload.pilots_same_role_no_active_skills), mode),
       pilots_no_ur_no_active_skills: sortPilotsByCalcDamage(clonePilotList(payload.pilots_no_ur_no_active_skills), mode),
+      pilots_ur_only_no_active_skills: sortPilotsByCalcDamage(clonePilotList(payload.pilots_ur_only_no_active_skills), mode),
       pilots_no_shinn_no_active_skills: sortPilotsByCalcDamage(clonePilotList(payload.pilots_no_shinn_no_active_skills), mode),
       pilots_defender: sortPilotsByDefenderScore(clonePilotList(payload.pilots_defender)),
       pilots_defender_no_skills: sortPilotsByDefenderScore(clonePilotList(payload.pilots_defender_no_skills)),
       no_ur_partial: !!payload.no_ur_partial,
+      ur_only_partial: !!payload.ur_only_partial,
       no_shinn_partial: !!payload.no_shinn_partial,
       same_role_partial: !!payload.same_role_partial,
       support_role_partial: !!payload.support_role_partial,
@@ -1567,6 +1682,7 @@
     return {
       pilots: primary.pilots,
       pilots_no_ur: primary.pilots_no_ur,
+      pilots_ur_only: primary.pilots_ur_only,
       pilots_no_shinn: primary.pilots_no_shinn,
       pilots_same_role: primary.pilots_same_role,
       pilots_support_role: primary.pilots_support_role,
@@ -1574,10 +1690,12 @@
       pilots_support_role_no_active_skills: primary.pilots_support_role_no_active_skills,
       pilots_same_role_no_active_skills: primary.pilots_same_role_no_active_skills,
       pilots_no_ur_no_active_skills: primary.pilots_no_ur_no_active_skills,
+      pilots_ur_only_no_active_skills: primary.pilots_ur_only_no_active_skills,
       pilots_no_shinn_no_active_skills: primary.pilots_no_shinn_no_active_skills,
       pilots_defender: defenders,
       pilots_defender_no_skills: defendersOff,
       no_ur_partial: primary.no_ur_partial,
+      ur_only_partial: primary.ur_only_partial,
       no_shinn_partial: primary.no_shinn_partial,
       same_role_partial: primary.same_role_partial,
       support_role_partial: primary.support_role_partial,
@@ -1629,13 +1747,16 @@
     var board = boardFromPayload({
       pilots: fetched.pilots,
       pilots_no_ur: fetched.pilots_no_ur,
+      pilots_ur_only: fetched.pilots_ur_only,
       pilots_no_shinn: fetched.pilots_no_shinn,
       pilots_same_role: fetched.pilots_same_role,
       pilots_support_role: fetched.pilots_support_role,
       pilots_no_active_skills: fetched.pilots_no_active_skills,
+      pilots_ur_only_no_active_skills: fetched.pilots_ur_only_no_active_skills,
       pilots_defender: fetched.pilots_defender,
       pilots_defender_no_skills: fetched.pilots_defender_no_skills,
       no_ur_partial: fetched.no_ur_partial,
+      ur_only_partial: fetched.ur_only_partial,
       no_shinn_partial: fetched.no_shinn_partial,
       same_role_partial: fetched.same_role_partial,
       support_role_partial: fetched.support_role_partial,
@@ -1767,6 +1888,7 @@
       }
       if (!pilots.length) return null;
       var noUrBlock = ((group.rankings_no_ur || {})[mode]) || {};
+      var urOnlyBlock = ((group.rankings_ur_only || {})[mode]) || {};
       var noShinnBlock = ((group.rankings_no_shinn || {})[mode]) || {};
       var sameRoleBlock = ((group.rankings_same_role || {})[mode]) || {};
       var supportRoleBlock = ((group.rankings_support_role || {})[mode]) || {};
@@ -1777,6 +1899,9 @@
       return {
         pilots: pilots,
         pilots_no_ur: sortPilotsByCalcDamage(noUrBlock.pilots || filterPilotsLocal(pilots, true, true), mode),
+        pilots_ur_only: sortPilotsByCalcDamage(
+          urOnlyBlock.pilots || filterPilotsLocal(pilots, false, false, false, false, true), mode
+        ),
         pilots_no_shinn: sortPilotsByCalcDamage(noShinnBlock.pilots || filterPilotsLocal(pilots, false, true), mode),
         pilots_same_role: sortPilotsByCalcDamage(sameRoleBlock.pilots || filterPilotsLocal(pilots, false, false, true), mode),
         pilots_support_role: sortPilotsByCalcDamage(
@@ -1786,6 +1911,7 @@
         pilots_defender: sortPilotsByDefenderScore(defBlock.pilots || []),
         pilots_defender_no_skills: sortPilotsByDefenderScore(defOffBlock.pilots || []),
         no_ur_partial: !(noUrBlock.pilots && noUrBlock.pilots.length >= 10),
+        ur_only_partial: !(urOnlyBlock.pilots && urOnlyBlock.pilots.length >= 10),
         no_shinn_partial: !(noShinnBlock.pilots && noShinnBlock.pilots.length >= 10),
         same_role_partial: !(sameRoleBlock.pilots && sameRoleBlock.pilots.length >= 10),
         support_role_partial: !(supportRoleBlock.pilots && supportRoleBlock.pilots.length >= 10),
@@ -1808,6 +1934,7 @@
     return {
       pilots: primary.pilots,
       pilots_no_ur: primary.pilots_no_ur,
+      pilots_ur_only: primary.pilots_ur_only,
       pilots_no_shinn: primary.pilots_no_shinn,
       pilots_same_role: primary.pilots_same_role,
       pilots_support_role: primary.pilots_support_role,
@@ -1815,10 +1942,12 @@
       pilots_support_role_no_active_skills: primary.pilots_support_role_no_active_skills,
       pilots_same_role_no_active_skills: primary.pilots_same_role_no_active_skills,
       pilots_no_ur_no_active_skills: primary.pilots_no_ur_no_active_skills,
+      pilots_ur_only_no_active_skills: primary.pilots_ur_only_no_active_skills,
       pilots_no_shinn_no_active_skills: primary.pilots_no_shinn_no_active_skills,
       pilots_defender: primary.pilots_defender,
       pilots_defender_no_skills: primary.pilots_defender_no_skills,
       no_ur_partial: primary.no_ur_partial,
+      ur_only_partial: primary.ur_only_partial,
       no_shinn_partial: primary.no_shinn_partial,
       same_role_partial: primary.same_role_partial,
       support_role_partial: primary.support_role_partial,
