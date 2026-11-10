@@ -206,6 +206,189 @@ def _hostname_from_origin_or_host(value):
     return raw.split(':', 1)[0]
 
 
+# ---------------------------------------------------------------------------
+# Anti-mirror guard (leakage friction without changing browser UX)
+#
+# Public game LANG can always be rebuilt from MasterData. What clones steal is
+# *our* computed boards + API shape. Blunt low RPM rate-limits would risk
+# hurting real users (prefetch, filters, detail storms). Instead:
+#   1) In production, require same-origin browser signals (or a soft site cookie)
+#      for fat/product APIs — curl/archive mirrors get 403; site fetch() is fine.
+#   2) Soft, very high RPM ceiling only for already-allowed clients (scrapers
+#      that drive a real browser still slow down; normal browse never hits it).
+#   3) Provenance headers + SPI `_ggen` canary for attribution next time.
+# Local Flask stays open by default so build scripts keep working.
+# ---------------------------------------------------------------------------
+_GGEN_SITE_COOKIE = 'ggen_site'
+_GGEN_PROVENANCE_CANARY = (
+    (os.environ.get('GGEN_PROVENANCE_CANARY') or '').strip()
+    or hashlib.sha256(b'ggendb-eternal-database-provenance-v1').hexdigest()[:20]
+)
+_GGEN_API_GUARD_PROTECTED_PREFIXES = (
+    '/api/sp_investment',
+    '/api/tag_matrix',
+    '/api/debuff_matrix',
+    '/api/banner_timeline',
+    '/api/whats_new',
+    '/api/units',
+    '/api/characters',
+    '/api/supporters',
+    '/api/modifications',
+    '/api/option_parts',
+    '/api/unit/',
+    '/api/character/',
+    '/api/supporter/',
+    '/api/collections',
+    '/api/meta_synergy',
+    '/api/msy_',
+)
+_GGEN_API_GUARD_EXEMPT_EXACT = frozenset({
+    '/health',
+    '/api/client_version',
+    '/api/languages',
+    '/api/game_enums',
+})
+_GGEN_API_RL_LOCK = threading.Lock()
+_GGEN_API_RL = {}
+try:
+    _GGEN_API_RL_MAX = max(120, min(5000, int(os.environ.get('GGEN_API_GUARD_RPM', '480') or '480')))
+except Exception:
+    _GGEN_API_RL_MAX = 480
+_GGEN_API_RL_WINDOW = 60.0
+
+
+def _ggen_provenance_public():
+    """Top-level JSON provenance (ignored by clients that only read known keys)."""
+    return {
+        'origin': 'ggendb',
+        'product': 'GGen Eternal Database',
+        'canary': _GGEN_PROVENANCE_CANARY,
+    }
+
+
+def _api_mirror_guard_enabled():
+    raw = (os.environ.get('GGEN_API_MIRROR_GUARD') or '').strip().lower()
+    if raw in ('0', 'false', 'off', 'no'):
+        return False
+    if raw in ('1', 'true', 'on', 'yes'):
+        return True
+    # Default on only in Railway production — keep local builders/scripts open.
+    return bool(
+        (os.environ.get('RAILWAY_ENVIRONMENT') or '').strip()
+        or (os.environ.get('RAILWAY_PROJECT_ID') or '').strip()
+    )
+
+
+def _api_guard_path_protected(path):
+    p = path or ''
+    if p in _GGEN_API_GUARD_EXEMPT_EXACT:
+        return False
+    if not p.startswith('/api/'):
+        return False
+    for pref in _GGEN_API_GUARD_PROTECTED_PREFIXES:
+        if p == pref.rstrip('/') or p.startswith(pref):
+            return True
+    return False
+
+
+def _api_guard_client_is_local():
+    try:
+        addr = (request.remote_addr or '').strip()
+    except RuntimeError:
+        return True
+    if not addr or addr in ('127.0.0.1', '::1', 'localhost'):
+        return True
+    return False
+
+
+def _api_guard_origin_or_referer_ok():
+    try:
+        host = _hostname_from_origin_or_host(request.host or '')
+    except Exception:
+        host = ''
+    if not host:
+        return False
+    for hdr in ('Origin', 'Referer'):
+        raw = (request.headers.get(hdr) or '').strip()
+        if not raw:
+            continue
+        h = _hostname_from_origin_or_host(raw)
+        if h and h == host:
+            return True
+    return False
+
+
+def _api_request_looks_like_site_browser():
+    """True for normal same-origin site traffic (fetch / XHR / navigation)."""
+    sfs = (request.headers.get('Sec-Fetch-Site') or '').strip().lower()
+    if sfs in ('same-origin', 'same-site'):
+        return True
+    if _api_guard_origin_or_referer_ok():
+        return True
+    if (request.cookies.get(_GGEN_SITE_COOKIE) or '') == '1':
+        return True
+    tok = (os.environ.get('GGEN_BUILD_API_TOKEN') or '').strip()
+    if tok and (request.headers.get('X-GGen-Build-Token') or '').strip() == tok:
+        return True
+    return False
+
+
+def _api_guard_rate_ok(ip):
+    """Very high ceiling — only slows sustained full-catalog browser automation."""
+    if not ip:
+        return True
+    now = time.time()
+    with _GGEN_API_RL_LOCK:
+        arr = [t for t in (_GGEN_API_RL.get(ip) or []) if (now - t) < _GGEN_API_RL_WINDOW]
+        if len(arr) >= _GGEN_API_RL_MAX:
+            _GGEN_API_RL[ip] = arr
+            return False
+        arr.append(now)
+        _GGEN_API_RL[ip] = arr
+        if len(_GGEN_API_RL) > 4096:
+            for k in list(_GGEN_API_RL.keys())[:512]:
+                _GGEN_API_RL.pop(k, None)
+        return True
+
+
+@app.before_request
+def _ggen_api_mirror_guard():
+    if not _api_mirror_guard_enabled():
+        return None
+    path = request.path or ''
+    if not _api_guard_path_protected(path):
+        return None
+    if _api_guard_client_is_local():
+        return None
+    if not _api_request_looks_like_site_browser():
+        resp = jsonify({
+            'error': 'browser_required',
+            'message': 'Open this data through the GGen Eternal Database site.',
+        })
+        resp.status_code = 403
+        resp.headers['X-GGen-Origin'] = 'ggendb'
+        resp.headers['X-GGen-Canary'] = _GGEN_PROVENANCE_CANARY
+        resp.headers['Cache-Control'] = 'no-store'
+        return resp
+    try:
+        ip = (request.headers.get('X-Forwarded-For') or '').split(',')[0].strip()
+        if not ip:
+            ip = (request.remote_addr or '').strip()
+    except Exception:
+        ip = ''
+    if ip and not _api_guard_rate_ok(ip):
+        resp = jsonify({
+            'error': 'rate_limited',
+            'message': 'Too many requests. Try again shortly.',
+        })
+        resp.status_code = 429
+        resp.headers['Retry-After'] = '30'
+        resp.headers['X-GGen-Origin'] = 'ggendb'
+        resp.headers['Cache-Control'] = 'no-store'
+        return resp
+    return None
+
+
 def _dc_allowed_hosts():
     """Hostnames where client calculateDamage may return honest numbers.
 
@@ -442,6 +625,33 @@ def _apply_seo_and_static_cache_headers(response):
     # APIs / unlock endpoints must never look indexable (Google still discovers linked POST URLs).
     if path.startswith('/api/'):
         response.headers.setdefault('X-Robots-Tag', 'noindex, nofollow')
+        # Provenance for attribution if JSON is mirrored (no client UX change).
+        response.headers.setdefault('X-GGen-Origin', 'ggendb')
+        response.headers.setdefault('X-GGen-Canary', _GGEN_PROVENANCE_CANARY)
+    # Soft site cookie on HTML — helps privacy browsers that strip Sec-Fetch/Referer
+    # still call same-origin APIs after the first page load. Not a secret.
+    try:
+        ctype = (response.headers.get('Content-Type') or '').split(';')[0].strip().lower()
+        if (
+            response.status_code == 200
+            and ctype == 'text/html'
+            and (request.cookies.get(_GGEN_SITE_COOKIE) or '') != '1'
+        ):
+            secure = bool(
+                (os.environ.get('RAILWAY_ENVIRONMENT') or '').strip()
+                or (request.is_secure if hasattr(request, 'is_secure') else False)
+            )
+            response.set_cookie(
+                _GGEN_SITE_COOKIE,
+                '1',
+                max_age=60 * 60 * 24 * 30,
+                samesite='Lax',
+                secure=secure,
+                httponly=False,
+                path='/',
+            )
+    except Exception:
+        pass
     # Bundles/fonts/images are not pages — keep Google off /static (CDN for game art; allowlisted fonts stay same-origin for UI).
     if path.startswith('/static/') or path.startswith('/font/'):
         response.headers['X-Robots-Tag'] = 'noindex, nofollow'
@@ -26197,6 +26407,11 @@ def _sp_investment_prepare_payload(path):
     _sp_investment_strip_payload_bloat(payload)
     # Convert CDN image URLs once so jsonify_cacheable can skip re-walking.
     payload = convert_image_urls(payload)
+    # Invisible provenance canary (clients only read known SPI keys).
+    try:
+        payload['_ggen'] = _ggen_provenance_public()
+    except Exception:
+        pass
     cached['mtime'] = mtime
     cached['payload'] = payload
     cached['by_lang'] = {}
@@ -26235,7 +26450,8 @@ def api_sp_investment():
         board_mtime = 0
     votes_mtime = int(_SPI_VOTES_CACHE.get('mtime') or 0)
     # wire_nodup: drop duplicate top-level sp/ssp + slim recommended_* (2026-10 audit).
-    ck = f"sp_investment_v1_wire_nodup_recslim_{lc}_{board_mtime}_{votes_mtime}"
+    # prov1: top-level `_ggen` provenance canary.
+    ck = f"sp_investment_v1_wire_nodup_recslim_prov1_{lc}_{board_mtime}_{votes_mtime}"
     etag = _api_etag_from_cache_key(ck) if (_API_ETAG_ENABLED and ck) else None
     cc = _api_cache_control_header(public=True, max_age=300, private=False, no_store=False)
     if etag and _api_if_none_match_matches(request.headers.get('If-None-Match'), etag):
@@ -26266,7 +26482,7 @@ def api_sp_investment():
     votes_data = _spi_votes_load()
     votes_mtime = int(_SPI_VOTES_CACHE.get('mtime') or 0)
     payload = _spi_payload_with_community_votes(payload, votes_data)
-    ck = f"sp_investment_v1_wire_nodup_recslim_{lc}_{int(mtime)}_{votes_mtime}"
+    ck = f"sp_investment_v1_wire_nodup_recslim_prov1_{lc}_{int(mtime)}_{votes_mtime}"
     etag = _api_etag_from_cache_key(ck) if (_API_ETAG_ENABLED and ck) else None
     if etag and _api_if_none_match_matches(request.headers.get('If-None-Match'), etag):
         resp = make_response('', 304)
