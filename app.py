@@ -21309,8 +21309,14 @@ def api_unit_best_synergy_pilots(unit_id):
         )
         # Warm/304 BEFORE payload build — published Top 10 was paying multi-second rebuild
         # on every open even when gzip body was already cached (same class as SPI fix).
+        # Honor all_modes: never serve a modes=0 body when the client asked for all_modes=1
+        # (metric switch used to re-fetch single-mode boards and drop SAC / variant lists).
+        want_modes = str(kwargs.get('all_modes') or '1').lower() not in ('0', 'false', 'no')
+        mode_order = (1, 0) if want_modes else (0, 1)
         for source in ('published_dc', 'x'):
-            for modes in (1, 0):
+            for modes in mode_order:
+                if want_modes and modes == 0:
+                    continue
                 ck_try = f'{base}_{source}_{modes}_{ver}'
                 early = try_serve_preserialized(ck_try, public=True, max_age=0)
                 if early is not None:

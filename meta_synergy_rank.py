@@ -1948,6 +1948,7 @@ _MSY_DISK_VERSION = 'v14'
 _BSP_DC_RULES_VERSION = 12  # All-role BSP candidates: cheap-score fill; Support reserve on every unit role
 _DEFENDER_BOARD_VERSION = 9  # Stale v0 boards (all SD=18 / no Force Guard) must rebuild
 _SKILLS_OFF_BOARD_VERSION = 2
+_SUPPORT_COUNTER_BOARD_VERSION = 3  # v3: + same-role / no-UR×same-role SAC boards (Matching Role Top 10)
 _BSP_DC_BUILD_ENGINE = 'calculateDamage'
 # From v16 onward: formula/criteria rebuilds only refresh top-N + newly added units.
 # Full-catalog rebuilds are intentional opt-in only (users rarely open the long tail).
@@ -4592,6 +4593,80 @@ def attach_dc_skills_off_rankings(g, pairs_by_tier, pilot_ids, exclude, lc, top_
     return out
 
 
+def attach_dc_support_counter_rankings(g, pairs_by_tier, pilot_ids, exclude, lc, top_pilots):
+    """Attach Support Attack/Counter MS ATK % board (skills on, supportCounterAtk=true).
+
+    Only meaningful for Support-role units; Attack/Durability MS get 0% from the DC gate.
+
+    Also stores dedicated no-UR / UR-only / same-role SAC boards from the same /cal
+    pairs so 排除 UR and Matching Role show real Top 10s (SP stats), not leftovers
+    from filtering a mixed store.
+    """
+    if not g or not pairs_by_tier:
+        return g
+    A = _app()
+    uid = A.normalize_id((g.get('unit') or {}).get('id'))
+    if not uid:
+        return g
+    active_pilots = _eligible_pilots_for_unit(uid, pilot_ids, exclude)
+    active_set = set(active_pilots)
+    store_top = max(int(top_pilots or 10), _BSP_STORE_TOP_PILOTS)
+    dt = 3 if 3 in pairs_by_tier or '3' in pairs_by_tier else None
+    if dt is None:
+        dt = next(iter(pairs_by_tier))
+    raw = pairs_by_tier.get(int(dt)) or pairs_by_tier.get(str(dt)) or []
+    pairs = [
+        (cid, bv) for cid, bv in raw
+        if A.normalize_id(cid) in active_set and bv
+    ]
+    if not pairs:
+        return g
+
+    def _mark_sac(rk):
+        for block in (rk or {}).values():
+            for p in block.get('pilots') or []:
+                p['support_counter_atk'] = True
+                p['active_skills_on'] = True
+        return rk
+
+    def _rank_pairs(pair_rows):
+        if not pair_rows:
+            return {}
+        return _mark_sac(_rankings_from_multi_vigor_pairs(pair_rows, store_top, lc))
+
+    rk = _rank_pairs(pairs)
+    if not rk:
+        return g
+    non_ur_ids = set(_filter_non_ur(active_pilots))
+    ur_ids = set(_filter_ur_only(active_pilots))
+    same_role_ids = {
+        A.normalize_id(cid)
+        for cid in active_pilots
+        if _pilot_role_matches_unit(uid, A.normalize_id(cid))
+    }
+    pairs_no_ur = [(cid, bv) for cid, bv in pairs if A.normalize_id(cid) in non_ur_ids]
+    pairs_ur = [(cid, bv) for cid, bv in pairs if A.normalize_id(cid) in ur_ids]
+    pairs_same = [(cid, bv) for cid, bv in pairs if A.normalize_id(cid) in same_role_ids]
+    pairs_no_ur_same = [
+        (cid, bv) for cid, bv in pairs
+        if A.normalize_id(cid) in non_ur_ids and A.normalize_id(cid) in same_role_ids
+    ]
+    pairs_ur_same = [
+        (cid, bv) for cid, bv in pairs
+        if A.normalize_id(cid) in ur_ids and A.normalize_id(cid) in same_role_ids
+    ]
+    out = dict(g)
+    out['rankings_support_counter'] = rk
+    out['rankings_support_counter_no_ur'] = _rank_pairs(pairs_no_ur)
+    out['rankings_support_counter_ur_only'] = _rank_pairs(pairs_ur)
+    out['rankings_support_counter_same_role'] = _rank_pairs(pairs_same)
+    out['rankings_support_counter_no_ur_same_role'] = _rank_pairs(pairs_no_ur_same)
+    out['rankings_support_counter_ur_only_same_role'] = _rank_pairs(pairs_ur_same)
+    out['support_counter_board_version'] = _SUPPORT_COUNTER_BOARD_VERSION
+    out['support_counter_build_engine'] = _BSP_DC_BUILD_ENGINE
+    return out
+
+
 def assemble_unit_group_from_dc(uid, pairs_by_tier, pilot_ids, lc, top_pilots, exclude, metric='super_crit',
                                 pairs_by_tier_no_cp=None, same_role_only=False, pairs_by_tier_no_skills=None,
                                 attach_skills=True):
@@ -4784,16 +4859,23 @@ def _atomic_replace_with_retry(tmp, path, *, attempts=8, delay_sec=0.35):
             time.sleep(delay_sec * (1.0 + 0.4 * i))
         except OSError as e:
             last = e
-            # WinError 5 / sharing violation
-            if getattr(e, 'winerror', None) not in (5, 32) and e.errno not in (13, 11):
+            # WinError 5 / sharing violation; errno 22 = Invalid argument (locked gzip race)
+            winerr = getattr(e, 'winerror', None)
+            if winerr not in (5, 32) and e.errno not in (13, 11, 22):
                 raise
             time.sleep(delay_sec * (1.0 + 0.4 * i))
     if last:
         raise last
 
 
-def save_published_master_cache(cache_key, result, *, build_engine=None):
-    """Write MSY master cache to data/published/ (for Railway deploy)."""
+def save_published_master_cache(cache_key, result, *, build_engine=None, write_shards=True,
+                                patch_groups=None):
+    """Write MSY master cache to data/published/ (for Railway deploy).
+
+    write_shards=False: monolith only (fast mid-build checkpoints).
+    patch_groups: when write_shards is False, still atomically refresh these unit shards
+    so local Flask can pick up SAC/skills-off boards without rewriting the full catalog.
+    """
     path = _msy_published_path(cache_key)
     payload = {
         'version': _MSY_DISK_VERSION,
@@ -4808,17 +4890,28 @@ def save_published_master_cache(cache_key, result, *, build_engine=None):
     _msy_gzip_json_atomic_write(path, payload)
     print(f'MSY published cache saved: {len(payload["groups"])} units ({path})')
     if build_engine == _BSP_DC_BUILD_ENGINE and payload['groups']:
+        pub_shards = _bsp_shard_dir_candidates(cache_key)[0]
         try:
-            # Prefer published tree so deploys can ship shards next to the monolith.
-            # candidates[0] = data/published/bsp_shards, [1] = persistent extract.
-            pub_shards = _bsp_shard_dir_candidates(cache_key)[0]
-            _bsp_write_shards_from_groups(
-                cache_key, payload['groups'],
-                source_path=path,
-                total_pilot_candidates=payload['total_pilot_candidates'],
-                bsp_rules_version=payload.get('bsp_rules_version') or _BSP_DC_RULES_VERSION,
-                shard_dir=pub_shards,
-            )
+            if write_shards:
+                # Prefer published tree so deploys can ship shards next to the monolith.
+                # candidates[0] = data/published/bsp_shards, [1] = persistent extract.
+                _bsp_write_shards_from_groups(
+                    cache_key, payload['groups'],
+                    source_path=path,
+                    total_pilot_candidates=payload['total_pilot_candidates'],
+                    bsp_rules_version=payload.get('bsp_rules_version') or _BSP_DC_RULES_VERSION,
+                    shard_dir=pub_shards,
+                )
+            elif patch_groups:
+                n = 0
+                for g in patch_groups:
+                    uid = _app().normalize_id((g.get('unit') or {}).get('id'))
+                    if not uid:
+                        continue
+                    _bsp_write_unit_shard(pub_shards, uid, g, atomic=True)
+                    n += 1
+                if n:
+                    print(f'BSP shards patched: {n} units ({pub_shards})')
         except Exception as e:
             print(f'BSP shard write after publish failed: {e}')
     return path
@@ -4885,7 +4978,13 @@ def _bsp_candidate_pilots_for_unit(uid, active, info, unit_wpn, stat_mode, lc, *
             same_role.append(cid_n)
         if _char_is_support_role(cid_n):
             support_role.append(cid_n)
+    non_ur_set = set(non_ur)
+    same_role_non_ur = [cid for cid in same_role if cid in non_ur_set]
     _add_scored(non_ur, min(_BSP_NON_UR_RESERVE, max(0, cap - len(out))))
+
+    # 2b) Non-UR Matching Role seats — SAC/No-UR×same-role Top 10 must not starve
+    # after UR-heavy same-role fill (Support MS + 排除 UR was stuck at 9).
+    _add_scored(same_role_non_ur, min(32, max(0, cap - len(out))))
 
     # 3) Same-role seats for Matching Role top-10
     _add_scored(same_role, min(24, max(0, cap - len(out))))
@@ -5166,7 +5265,7 @@ def _unit_best_pilot_api_cache_key(uid, lc, kwargs):
         max(1, min(4, int(kwargs.get('def_tier') or 3))),
         kwargs.get('rank_mode', 'super_crit') or 'super_crit',
         # Bump when published catalog preference / variant boards / locale patch change.
-        'bsp_v17_def_sync9',
+        'bsp_v17_def_sync10_sac',
     )
 
 
@@ -5204,7 +5303,14 @@ def _schedule_bsp_board_refresh(g, uid, lc, *, rank_mode='super_crit', def_tier=
             if isinstance(g, dict) and isinstance(row, dict):
                 for k in (
                     'rankings_no_active_skills', 'rankings_defender',
+                    'rankings_support_counter',
+                    'rankings_support_counter_no_ur',
+                    'rankings_support_counter_ur_only',
+                    'rankings_support_counter_same_role',
+                    'rankings_support_counter_no_ur_same_role',
+                    'rankings_support_counter_ur_only_same_role',
                     'skills_off_board_version', 'skills_off_build_engine',
+                    'support_counter_board_version', 'support_counter_build_engine',
                 ):
                     if k in row:
                         g[k] = row[k]
@@ -5243,8 +5349,13 @@ def _persist_bsp_published_group(uid, g):
         return False
     patched = False
     overlay_keys = (
-        'rankings_defender', 'rankings_no_active_skills', 'skills_off_board_version',
-        'skills_off_build_engine',
+        'rankings_defender', 'rankings_no_active_skills', 'rankings_support_counter',
+        'rankings_support_counter_no_ur', 'rankings_support_counter_ur_only',
+        'rankings_support_counter_same_role',
+        'rankings_support_counter_no_ur_same_role',
+        'rankings_support_counter_ur_only_same_role',
+        'skills_off_board_version', 'skills_off_build_engine',
+        'support_counter_board_version', 'support_counter_build_engine',
     )
     with _BSP_PUBLISHED_MEMORY_LOCK:
         cache_keys = list(_BSP_PUBLISHED_MEMORY.keys())
@@ -5436,7 +5547,9 @@ def _bsp_write_unit_shard(shard_dir, uid, group, *, atomic=True):
     os.makedirs(shard_dir, exist_ok=True)
     path = _bsp_unit_shard_path(shard_dir, uid)
     # compresslevel=1: bulk extract of ~1300 units must finish quickly.
-    if atomic:
+    # Always atomic on Windows — non-atomic gzip.open(path,'wt') races Flask readers
+    # (Errno 22 Invalid argument) when checkpoints rewrite shards mid-serve.
+    if atomic or os.name == 'nt':
         _msy_gzip_json_atomic_write(path, group, compresslevel=1)
         return
     with gzip.open(path, 'wt', encoding='utf-8', compresslevel=1) as f:
@@ -6130,10 +6243,22 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
                          pilots_support_role=None, pilots_no_active_skills=None,
                          pilots_same_role_no_active_skills=None,
                          pilots_support_role_no_active_skills=None,
+                         pilots_support_counter=None,
+                         pilots_support_counter_no_ur=None,
+                         pilots_support_counter_ur_only=None,
+                         pilots_support_counter_same_role=None,
+                         pilots_support_counter_no_ur_same_role=None,
+                         pilots_support_counter_ur_only_same_role=None,
                          pilots_defender=None, pilots_defender_no_skills=None,
                          no_ur_partial=False, ur_only_partial=False, no_shinn_partial=False,
                          same_role_partial=False,
                          support_role_partial=False, no_active_skills_partial=False,
+                         support_counter_partial=False,
+                         support_counter_no_ur_partial=False,
+                         support_counter_ur_only_partial=False,
+                         support_counter_same_role_partial=False,
+                         support_counter_no_ur_same_role_partial=False,
+                         support_counter_ur_only_same_role_partial=False,
                          defender_partial=False, defender_no_skills_partial=False):
     mode = rank_mode or 'super_crit'
     store_n = int(_BSP_STORE_TOP_PILOTS)
@@ -6219,6 +6344,24 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
     )
     # Keep store depth so No Shinn / role filters can promote ranks 11–20 into Top 10.
     no_active = _rank(_sync_skills_off(list(pilots_no_active_skills or [])), store_n)
+    support_counter = _rank(
+        _sync_skills_on(list(pilots_support_counter or [])), store_n,
+    )
+    support_counter_no_ur = _rank(
+        _sync_skills_on(list(pilots_support_counter_no_ur or [])), store_n,
+    )
+    support_counter_ur_only = _rank(
+        _sync_skills_on(list(pilots_support_counter_ur_only or [])), store_n,
+    )
+    support_counter_same_role = _rank(
+        _sync_skills_on(list(pilots_support_counter_same_role or [])), store_n,
+    )
+    support_counter_no_ur_same_role = _rank(
+        _sync_skills_on(list(pilots_support_counter_no_ur_same_role or [])), store_n,
+    )
+    support_counter_ur_only_same_role = _rank(
+        _sync_skills_on(list(pilots_support_counter_ur_only_same_role or [])), store_n,
+    )
     support_role_off = _rank(
         _sync_skills_off(list(pilots_support_role_no_active_skills or [])),
         store_n,
@@ -6251,6 +6394,12 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
     _bsp_relocalize_pilot_chars(same_role, lc)
     _bsp_relocalize_pilot_chars(support_role, lc)
     _bsp_relocalize_pilot_chars(no_active, lc)
+    _bsp_relocalize_pilot_chars(support_counter, lc)
+    _bsp_relocalize_pilot_chars(support_counter_no_ur, lc)
+    _bsp_relocalize_pilot_chars(support_counter_ur_only, lc)
+    _bsp_relocalize_pilot_chars(support_counter_same_role, lc)
+    _bsp_relocalize_pilot_chars(support_counter_no_ur_same_role, lc)
+    _bsp_relocalize_pilot_chars(support_counter_ur_only_same_role, lc)
     _bsp_relocalize_pilot_chars(support_role_off, lc)
     _bsp_relocalize_pilot_chars(same_role_off, lc)
     _bsp_relocalize_pilot_chars(no_ur_off, lc)
@@ -6265,6 +6414,12 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
     _bsp_patch_guaranteed_crit_flags(same_role, lc, rank_mode=mode)
     _bsp_patch_guaranteed_crit_flags(support_role, lc, rank_mode=mode)
     _bsp_patch_guaranteed_crit_flags(no_active, lc, rank_mode=mode, allow_skill_crit=False)
+    _bsp_patch_guaranteed_crit_flags(support_counter, lc, rank_mode=mode)
+    _bsp_patch_guaranteed_crit_flags(support_counter_no_ur, lc, rank_mode=mode)
+    _bsp_patch_guaranteed_crit_flags(support_counter_ur_only, lc, rank_mode=mode)
+    _bsp_patch_guaranteed_crit_flags(support_counter_same_role, lc, rank_mode=mode)
+    _bsp_patch_guaranteed_crit_flags(support_counter_no_ur_same_role, lc, rank_mode=mode)
+    _bsp_patch_guaranteed_crit_flags(support_counter_ur_only_same_role, lc, rank_mode=mode)
     _bsp_patch_guaranteed_crit_flags(support_role_off, lc, rank_mode=mode, allow_skill_crit=False)
     _bsp_patch_guaranteed_crit_flags(same_role_off, lc, rank_mode=mode, allow_skill_crit=False)
     _bsp_patch_guaranteed_crit_flags(no_ur_off, lc, rank_mode=mode, allow_skill_crit=False)
@@ -6278,6 +6433,12 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
     same_role = _rank(same_role, store_n)
     support_role = _rank(support_role, store_n)
     no_active = _rank(no_active, store_n)
+    support_counter = _rank(support_counter, store_n)
+    support_counter_no_ur = _rank(support_counter_no_ur, store_n)
+    support_counter_ur_only = _rank(support_counter_ur_only, store_n)
+    support_counter_same_role = _rank(support_counter_same_role, store_n)
+    support_counter_no_ur_same_role = _rank(support_counter_no_ur_same_role, store_n)
+    support_counter_ur_only_same_role = _rank(support_counter_ur_only_same_role, store_n)
     support_role_off = _rank(support_role_off, store_n)
     same_role_off = _rank(same_role_off, store_n)
     no_ur_off = _rank(no_ur_off, store_n)
@@ -6295,6 +6456,12 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
         'pilots_same_role': same_role,
         'pilots_support_role': support_role,
         'pilots_no_active_skills': no_active,
+        'pilots_support_counter': support_counter,
+        'pilots_support_counter_no_ur': support_counter_no_ur,
+        'pilots_support_counter_ur_only': support_counter_ur_only,
+        'pilots_support_counter_same_role': support_counter_same_role,
+        'pilots_support_counter_no_ur_same_role': support_counter_no_ur_same_role,
+        'pilots_support_counter_ur_only_same_role': support_counter_ur_only_same_role,
         'pilots_support_role_no_active_skills': support_role_off,
         'pilots_same_role_no_active_skills': same_role_off,
         'pilots_no_ur_no_active_skills': no_ur_off,
@@ -6312,6 +6479,33 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
         'no_active_skills_partial': bool(no_active_skills_partial) or (
             bool(pilots_no_active_skills is not None) and len(no_active) < _BSP_UI_TOP_PILOTS
         ),
+        'support_counter_partial': bool(support_counter_partial) or (
+            bool(pilots_support_counter is not None) and len(support_counter) < _BSP_UI_TOP_PILOTS
+        ),
+        'support_counter_no_ur_partial': bool(support_counter_no_ur_partial) or (
+            bool(pilots_support_counter_no_ur is not None)
+            and len(support_counter_no_ur) < _BSP_UI_TOP_PILOTS
+        ),
+        'support_counter_ur_only_partial': bool(support_counter_ur_only_partial) or (
+            bool(pilots_support_counter_ur_only is not None)
+            and len(support_counter_ur_only) < _BSP_UI_TOP_PILOTS
+        ),
+        'support_counter_same_role_partial': bool(support_counter_same_role_partial) or (
+            bool(pilots_support_counter_same_role is not None)
+            and len(support_counter_same_role) < _BSP_UI_TOP_PILOTS
+        ),
+        'support_counter_no_ur_same_role_partial': bool(
+            support_counter_no_ur_same_role_partial
+        ) or (
+            bool(pilots_support_counter_no_ur_same_role is not None)
+            and len(support_counter_no_ur_same_role) < _BSP_UI_TOP_PILOTS
+        ),
+        'support_counter_ur_only_same_role_partial': bool(
+            support_counter_ur_only_same_role_partial
+        ) or (
+            bool(pilots_support_counter_ur_only_same_role is not None)
+            and len(support_counter_ur_only_same_role) < _BSP_UI_TOP_PILOTS
+        ),
         'defender_partial': bool(defender_partial) or (
             _unit_is_defense_role(uid) and len(defenders) < _BSP_UI_DEFENDER_TOP
         ),
@@ -6321,6 +6515,7 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
             and len(defenders_off) < _BSP_UI_DEFENDER_TOP
         ),
         'is_defense_unit': _unit_is_defense_role(uid),
+        'is_support_unit': _unit_role(uid) == _SUPPORT_ROLE_ID,
         'source': source,
         'rank_mode': mode,
         'def_tier': def_tier,
@@ -6401,6 +6596,48 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
             g_row.get('rankings_no_active_skills') or row.get('rankings_no_active_skills'),
             mode, fallback_pilots=[],
         )
+        pilots_support_counter, support_counter_partial = _bsp_dc_variant_pilots(
+            g_row.get('rankings_support_counter') or row.get('rankings_support_counter'),
+            mode, fallback_pilots=[],
+        )
+        pilots_support_counter_no_ur, support_counter_no_ur_partial = _bsp_dc_variant_pilots(
+            g_row.get('rankings_support_counter_no_ur')
+            or row.get('rankings_support_counter_no_ur'),
+            mode, fallback_pilots=[],
+        )
+        pilots_support_counter_ur_only, support_counter_ur_only_partial = _bsp_dc_variant_pilots(
+            g_row.get('rankings_support_counter_ur_only')
+            or row.get('rankings_support_counter_ur_only'),
+            mode, fallback_pilots=[],
+        )
+        pilots_support_counter_same_role, support_counter_same_role_partial = (
+            _bsp_dc_variant_pilots(
+                g_row.get('rankings_support_counter_same_role')
+                or row.get('rankings_support_counter_same_role'),
+                mode, fallback_pilots=[],
+            )
+        )
+        pilots_support_counter_no_ur_same_role, support_counter_no_ur_same_role_partial = (
+            _bsp_dc_variant_pilots(
+                g_row.get('rankings_support_counter_no_ur_same_role')
+                or row.get('rankings_support_counter_no_ur_same_role'),
+                mode, fallback_pilots=[],
+            )
+        )
+        pilots_support_counter_ur_only_same_role, support_counter_ur_only_same_role_partial = (
+            _bsp_dc_variant_pilots(
+                g_row.get('rankings_support_counter_ur_only_same_role')
+                or row.get('rankings_support_counter_ur_only_same_role'),
+                mode, fallback_pilots=[],
+            )
+        )
+        if _unit_role(uid) != _SUPPORT_ROLE_ID:
+            pilots_support_counter, support_counter_partial = [], False
+            pilots_support_counter_no_ur, support_counter_no_ur_partial = [], False
+            pilots_support_counter_ur_only, support_counter_ur_only_partial = [], False
+            pilots_support_counter_same_role, support_counter_same_role_partial = [], False
+            pilots_support_counter_no_ur_same_role, support_counter_no_ur_same_role_partial = [], False
+            pilots_support_counter_ur_only_same_role, support_counter_ur_only_same_role_partial = [], False
         pilots_support_off, _support_off_partial = _bsp_dc_variant_pilots(
             g_row.get('rankings_no_active_skills_support_role')
             or row.get('rankings_no_active_skills_support_role'),
@@ -6431,6 +6668,12 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
             pilots_same_role=pilots_same_role,
             pilots_support_role=pilots_support_role,
             pilots_no_active_skills=pilots_no_active,
+            pilots_support_counter=pilots_support_counter,
+            pilots_support_counter_no_ur=pilots_support_counter_no_ur,
+            pilots_support_counter_ur_only=pilots_support_counter_ur_only,
+            pilots_support_counter_same_role=pilots_support_counter_same_role,
+            pilots_support_counter_no_ur_same_role=pilots_support_counter_no_ur_same_role,
+            pilots_support_counter_ur_only_same_role=pilots_support_counter_ur_only_same_role,
             pilots_support_role_no_active_skills=pilots_support_off,
             pilots_same_role_no_active_skills=pilots_same_off,
             pilots_defender=pilots_defender,
@@ -6441,6 +6684,12 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
             same_role_partial=same_role_partial,
             support_role_partial=support_role_partial,
             no_active_skills_partial=no_active_partial,
+            support_counter_partial=support_counter_partial,
+            support_counter_no_ur_partial=support_counter_no_ur_partial,
+            support_counter_ur_only_partial=support_counter_ur_only_partial,
+            support_counter_same_role_partial=support_counter_same_role_partial,
+            support_counter_no_ur_same_role_partial=support_counter_no_ur_same_role_partial,
+            support_counter_ur_only_same_role_partial=support_counter_ur_only_same_role_partial,
             defender_partial=defender_partial,
             defender_no_skills_partial=defender_off_partial,
         )
@@ -8026,6 +8275,24 @@ def _normalize_group_for_mode(g, rank_mode):
         rankings_no_active_skills = _slim_variant_rankings_if_populated(
             g.get('rankings_no_active_skills'), rank_mode,
         )
+        rankings_support_counter = _slim_variant_rankings_if_populated(
+            g.get('rankings_support_counter'), rank_mode,
+        )
+        rankings_support_counter_no_ur = _slim_variant_rankings_if_populated(
+            g.get('rankings_support_counter_no_ur'), rank_mode,
+        )
+        rankings_support_counter_ur_only = _slim_variant_rankings_if_populated(
+            g.get('rankings_support_counter_ur_only'), rank_mode,
+        )
+        rankings_support_counter_same_role = _slim_variant_rankings_if_populated(
+            g.get('rankings_support_counter_same_role'), rank_mode,
+        )
+        rankings_support_counter_no_ur_same_role = _slim_variant_rankings_if_populated(
+            g.get('rankings_support_counter_no_ur_same_role'), rank_mode,
+        )
+        rankings_support_counter_ur_only_same_role = _slim_variant_rankings_if_populated(
+            g.get('rankings_support_counter_ur_only_same_role'), rank_mode,
+        )
         rankings_defender = g.get('rankings_defender')
         return {
             'unit': g.get('unit'),
@@ -8041,6 +8308,12 @@ def _normalize_group_for_mode(g, rank_mode):
             'rankings_same_role': rankings_same_role,
             'rankings_support_role': rankings_support_role,
             'rankings_no_active_skills': rankings_no_active_skills,
+            'rankings_support_counter': rankings_support_counter,
+            'rankings_support_counter_no_ur': rankings_support_counter_no_ur,
+            'rankings_support_counter_ur_only': rankings_support_counter_ur_only,
+            'rankings_support_counter_same_role': rankings_support_counter_same_role,
+            'rankings_support_counter_no_ur_same_role': rankings_support_counter_no_ur_same_role,
+            'rankings_support_counter_ur_only_same_role': rankings_support_counter_ur_only_same_role,
             'rankings_defender': rankings_defender,
             'weapon_info': g.get('weapon_info'),
             'is_sd': g.get('is_sd', False),

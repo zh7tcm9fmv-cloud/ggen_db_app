@@ -119,12 +119,13 @@ if not os.environ.get('PLAYWRIGHT_BROWSERS_PATH') or 'cursor-sandbox-cache' in o
 import meta_synergy_rank as msy
 
 EVAL_VIA_MSY_DC_JS = """
-async ({ unitId, pilotIds, defTiers, lang, skillsOn }) => {
+async ({ unitId, pilotIds, defTiers, lang, skillsOn, supportCounterAtk }) => {
   return await MsyDcEngine.evalUnit(unitId, pilotIds, defTiers, {
     lang: lang,
     cpOn: true,
     pepOn: true,
     skillsOn: skillsOn !== false,
+    supportCounterAtk: !!supportCounterAtk,
   });
 }
 """
@@ -253,10 +254,11 @@ def _load_existing_v15(lang, top_pilots, *, for_build=False, allow_stale_rules=F
     return cache_key, []
 
 
-def _save_v15(cache_key, groups, pilot_count):
+def _save_v15(cache_key, groups, pilot_count, *, write_shards=True, patch_groups=None):
     result = {'groups': groups, 'total_pilot_candidates': pilot_count}
     path = msy.save_published_master_cache(
         cache_key, result, build_engine=msy._BSP_DC_BUILD_ENGINE,
+        write_shards=write_shards, patch_groups=patch_groups,
     )
     msy._save_master_to_disk(cache_key, {
         **result,
@@ -399,7 +401,7 @@ async def _recover_dc_page(page, base, *, pilot_ids=None, lang='EN', soft_first=
 
 
 async def _eval_unit_raw(page, base, uid, lang, candidates, def_tier_payload, *,
-                         skills_on=True, pilot_ids=None):
+                         skills_on=True, support_counter_atk=False, pilot_ids=None):
     last_err = None
     for attempt in range(3):
         try:
@@ -411,6 +413,7 @@ async def _eval_unit_raw(page, base, uid, lang, candidates, def_tier_payload, *,
                     'defTiers': def_tier_payload,
                     'lang': lang,
                     'skillsOn': bool(skills_on),
+                    'supportCounterAtk': bool(support_counter_atk),
                 },
             )
             return raw
@@ -458,12 +461,14 @@ def _dc_raw_to_pairs(raw, def_tier_payload, def_tiers):
 
 
 async def _build_one_unit(page, base, uid, lang, pilot_ids, exclude, top_pilots, def_tiers, def_tier_payload,
-                          *, skills_off_dc=False, skills_off_only=False, existing_group=None):
+                          *, skills_off_dc=False, skills_off_only=False,
+                          support_counter_dc=False, support_counter_only=False,
+                          existing_group=None):
     candidates = msy.dc_candidate_pilots_for_unit(uid, pilot_ids, exclude, lang, bsp=True)
     if not candidates:
         return None
     by_tier = None
-    if not skills_off_only:
+    if not skills_off_only and not support_counter_only:
         raw = await _eval_unit_raw(
             page, base, uid, lang, candidates, def_tier_payload,
             skills_on=True, pilot_ids=pilot_ids,
@@ -475,7 +480,7 @@ async def _build_one_unit(page, base, uid, lang, pilot_ids, exclude, top_pilots,
                 _add_permanent_skip(uid, err)
             return None
     by_tier_off = None
-    if skills_off_dc:
+    if skills_off_dc and not support_counter_only:
         raw_off = await _eval_unit_raw(
             page, base, uid, lang, candidates, def_tier_payload,
             skills_on=False, pilot_ids=pilot_ids,
@@ -483,6 +488,21 @@ async def _build_one_unit(page, base, uid, lang, pilot_ids, exclude, top_pilots,
         by_tier_off, err_off = _dc_raw_to_pairs(raw_off, def_tier_payload, def_tiers)
         if not by_tier_off:
             print(f'  skills-off skip {uid}: {err_off}')
+    by_tier_sac = None
+    if support_counter_dc or support_counter_only:
+        raw_sac = await _eval_unit_raw(
+            page, base, uid, lang, candidates, def_tier_payload,
+            skills_on=True, support_counter_atk=True, pilot_ids=pilot_ids,
+        )
+        by_tier_sac, err_sac = _dc_raw_to_pairs(raw_sac, def_tier_payload, def_tiers)
+        if not by_tier_sac:
+            print(f'  support-counter skip {uid}: {err_sac}')
+    if support_counter_only:
+        if not existing_group or not by_tier_sac:
+            return None
+        return msy.attach_dc_support_counter_rankings(
+            existing_group, by_tier_sac, pilot_ids, exclude, lang, top_pilots,
+        )
     if skills_off_only:
         if not existing_group or not by_tier_off:
             return None
@@ -490,16 +510,24 @@ async def _build_one_unit(page, base, uid, lang, pilot_ids, exclude, top_pilots,
             existing_group, by_tier_off, pilot_ids, exclude, lang, top_pilots,
         )
         return g
-    return msy.assemble_unit_group_from_dc(
+    g = msy.assemble_unit_group_from_dc(
         uid, by_tier, pilot_ids, lang, top_pilots, exclude,
         pairs_by_tier_no_skills=by_tier_off,
     )
+    if g and by_tier_sac:
+        g = msy.attach_dc_support_counter_rankings(
+            g, by_tier_sac, pilot_ids, exclude, lang, top_pilots,
+        )
+    return g
 
 
 async def build_units(base, lang, unit_ids, pilot_ids, exclude, top_pilots, def_tiers, *,
-                      limit=None, on_checkpoint=None, workers=1,
-                      skills_off_dc=False, skills_off_only=False, existing_by_uid=None):
+                      limit=None, on_checkpoint=None, workers=1, checkpoint_every=25,
+                      skills_off_dc=False, skills_off_only=False,
+                      support_counter_dc=False, support_counter_only=False,
+                      existing_by_uid=None):
     workers = max(1, int(workers or 1))
+    checkpoint_every = max(1, int(checkpoint_every or 25))
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True, args=list(_CHROMIUM_BUILD_ARGS))
         pages = []
@@ -521,24 +549,43 @@ async def build_units(base, lang, unit_ids, pilot_ids, exclude, top_pilots, def_
         done = 0
         lock = asyncio.Lock()
 
+        def _progress_top_pilot(g):
+            """Prefer the board we just baked (SAC / skills-off) for log lines."""
+            if support_counter_only:
+                block = (g.get('rankings_support_counter') or {}).get('super_crit') or {}
+                rows = block.get('pilots') or []
+                if rows:
+                    return rows[0]
+            if skills_off_only:
+                block = (g.get('rankings_no_active_skills') or {}).get('super_crit') or {}
+                rows = block.get('pilots') or []
+                if rows:
+                    return rows[0]
+            return (g.get('pilots') or [{}])[0]
+
         async def run_unit(i, uid, page):
             nonlocal done
             g = await _build_one_unit(
                 page, base, uid, lang, pilot_ids, exclude, top_pilots, def_tiers, def_tier_payload,
                 skills_off_dc=skills_off_dc, skills_off_only=skills_off_only,
+                support_counter_dc=support_counter_dc,
+                support_counter_only=support_counter_only,
                 existing_group=(existing_by_uid or {}).get(msy._app().normalize_id(uid)),
             )
             async with lock:
                 done += 1
                 if g:
                     groups.append(g)
-                    top = (g.get('pilots') or [{}])[0]
+                    top = _progress_top_pilot(g) or {}
                     peak = top.get('peak_dmg') or top.get('super_crit_dmg') or top.get('score') or 0
                     print(
                         f'[{done}/{len(ids)}] {g["unit"].get("name")} '
-                        f'#1 {top.get("char", {}).get("name")} {peak:,}'
+                        f'#1 {(top.get("char") or {}).get("name")} {peak:,}'
                     )
-                if on_checkpoint and groups and (skills_off_only or done % 25 == 0):
+                # Honor --checkpoint N (was every unit for SAC/skills-off → full mono+shard rewrite races).
+                if on_checkpoint and groups and (
+                    done % checkpoint_every == 0 or done == len(ids)
+                ):
                     on_checkpoint(list(groups))
                 if done % 20 == 0:
                     elapsed = time.perf_counter() - t0
@@ -610,6 +657,17 @@ def main():
         help='Only rebuild the No Skills board; keep existing skills-on /cal rows.',
     )
     ap.add_argument(
+        '--support-counter-dc',
+        action='store_true',
+        help='Also bake Support Attack/Counter MS ATK %% board from live /cal (toggle on).',
+    )
+    ap.add_argument(
+        '--support-counter-only',
+        action='store_true',
+        help='Only rebuild Support Attack/Counter board; keep existing skills-on /cal rows. '
+             'Prefer with --unit-role 3 (Support MS).',
+    )
+    ap.add_argument(
         '--latest-new',
         action='store_true',
         help='Newest mobile suits: uncached first, else highest playable MS ids (skips warships).',
@@ -617,6 +675,8 @@ def main():
     args = ap.parse_args()
     if args.skills_off_only:
         args.skills_off_dc = True
+    if args.support_counter_only:
+        args.support_counter_dc = True
 
     workers = _resolve_workers(args.workers)
     _print_build_preflight(args.base, workers)
@@ -674,6 +734,10 @@ def main():
                 child.append('--skills-off-dc')
             if args.skills_off_only:
                 child.append('--skills-off-only')
+            if args.support_counter_dc:
+                child.append('--support-counter-dc')
+            if args.support_counter_only:
+                child.append('--support-counter-only')
             if args.latest_new:
                 child.append('--latest-new')
             rc = os.spawnv(os.P_WAIT, sys.executable, child)
@@ -783,7 +847,9 @@ def main():
     role_want = str(args.unit_role or '').strip()
     cache_key, existing_groups = _load_existing_v15(
         lang, top_pilots, for_build=True,
-        allow_stale_rules=bool(args.incremental or args.skills_off_only),
+        allow_stale_rules=bool(
+            args.incremental or args.skills_off_only or args.support_counter_only
+        ),
     )
     existing_by_uid = {
         msy._app().normalize_id((g.get('unit') or {}).get('id')): g
@@ -791,7 +857,13 @@ def main():
         if (g.get('unit') or {}).get('id')
     }
     # Avoid wiping full catalog when --force is used with explicit --unit ids.
-    if args.force and not args.incremental and not args.skills_off_only:
+    # skills-off / support-counter-only patch existing groups — never wipe.
+    if (
+        args.force
+        and not args.incremental
+        and not args.skills_off_only
+        and not args.support_counter_only
+    ):
         if args.unit:
             drop = {msy._app().normalize_id(u) for u in args.unit}
             existing_groups = [
@@ -874,7 +946,27 @@ def main():
 
     if args.resume:
         # Formula incremental rebuilds re-sim top-N even when cached, unless --resume.
-        if args.skills_off_only:
+        if args.support_counter_only:
+            # v3+ requires no-UR×same-role SAC board (Matching Role + 排除 UR Top 10).
+            done_sac = {
+                uid for uid, g in existing_by_uid.items()
+                if str((g or {}).get('support_counter_build_engine') or '') == msy._BSP_DC_BUILD_ENGINE
+                and int((g or {}).get('support_counter_board_version') or 0)
+                >= int(msy._SUPPORT_COUNTER_BOARD_VERSION)
+                and ((g.get('rankings_support_counter') or {}).get('super_crit') or {}).get('pilots')
+                and ((g.get('rankings_support_counter_no_ur') or {}).get('super_crit') or {}).get('pilots')
+                and ((g.get('rankings_support_counter_no_ur_same_role') or {}).get('super_crit') or {}).get('pilots')
+            }
+            unit_ids = [
+                u for u in unit_ids
+                if msy._app().normalize_id(u) not in done_sac
+                and msy._app().normalize_id(u) not in permanent_skips
+            ]
+            print(
+                f'Resume support-counter DC: {len(done_sac)} already live /cal, '
+                f'{len(permanent_skips)} permanent skips, {len(unit_ids)} remaining'
+            )
+        elif args.skills_off_only:
             done_off = {
                 uid for uid, g in existing_by_uid.items()
                 if str((g or {}).get('skills_off_build_engine') or '') == msy._BSP_DC_BUILD_ENGINE
@@ -920,6 +1012,8 @@ def main():
         f'BSP DC build ({scope_label}): {len(unit_ids)} units, '
         f'base={args.base}, store_top={top_pilots}, workers={workers}, '
         f'skills_off_dc={bool(args.skills_off_dc)} skills_off_only={bool(args.skills_off_only)}, '
+        f'support_counter_dc={bool(args.support_counter_dc)} '
+        f'support_counter_only={bool(args.support_counter_only)}, '
         f'pool=bsp (~{msy._BSP_PILOT_CAP} pilots/unit, nonUR reserve {msy._BSP_NON_UR_RESERVE})'
     )
 
@@ -928,7 +1022,11 @@ def main():
     def on_checkpoint(session_groups):
         merged = _merge_groups(existing_groups, session_groups)
         merged_holder['groups'] = merged
-        path = _save_v15(cache_key, merged, len(pilot_ids))
+        # Mid-build: monolith + patch only newly baked units (full shard rewrite at end).
+        path = _save_v15(
+            cache_key, merged, len(pilot_ids),
+            write_shards=False, patch_groups=session_groups,
+        )
         print(f'  checkpoint {len(merged)} units -> {path}')
 
     t0 = time.perf_counter()
@@ -936,8 +1034,11 @@ def main():
         args.base, lang, unit_ids, pilot_ids, exclude, top_pilots, def_tiers,
         limit=limit, on_checkpoint=on_checkpoint if checkpoint else None,
         workers=workers,
+        checkpoint_every=checkpoint,
         skills_off_dc=bool(args.skills_off_dc),
         skills_off_only=bool(args.skills_off_only),
+        support_counter_dc=bool(args.support_counter_dc),
+        support_counter_only=bool(args.support_counter_only),
         existing_by_uid=existing_by_uid,
     ))
     merged = _merge_groups(existing_groups, new_groups)

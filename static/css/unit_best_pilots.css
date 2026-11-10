@@ -339,6 +339,36 @@
   transform: translate(-50%, -50%) rotate(-45deg) scaleX(1);
 }
 
+.unit-best-pilot-filters .ubp-support-counter-btn .ubp-support-counter-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+}
+
+.unit-best-pilot-filters .ubp-support-counter-trait {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  display: block;
+  filter: grayscale(0.35) brightness(0.95);
+  opacity: 0.85;
+}
+
+.unit-best-pilot-filters .ubp-support-counter-btn.is-active .ubp-support-counter-trait,
+.unit-best-pilot-filters .ubp-support-counter-btn.active .ubp-support-counter-trait {
+  filter: none;
+  opacity: 1;
+}
+
+.unit-best-pilot-filters .ubp-support-counter-btn.is-active,
+.unit-best-pilot-filters .ubp-support-counter-btn.active {
+  border-color: rgba(56, 189, 248, 0.75);
+  background: rgba(14, 116, 144, 0.35);
+  box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.25);
+}
+
 .msy-pilot-card--defender .msy-pilot-dmg {
   color: #93c5fd;
   cursor: help;
@@ -773,20 +803,37 @@
   transform: translate(-50%, -50%) rotate(-45deg) scaleX(0.2);
 }
 
-/* No-UR mode: SSR rarity icon (no slash) — means SSR and below */
+/* No-UR mode: SSR rarity icon + ↓ (SSR and below) — no slash */
 .unit-best-pilot-filters .msy-exclude-ur-btn.is-active.is-no-ur,
 .unit-best-pilot-filters .msy-exclude-ur-btn.active.is-no-ur {
   border-color: rgba(125, 211, 252, 0.55);
   background: rgba(14, 116, 144, 0.22);
   color: #e0f2fe;
   box-shadow: none;
+  gap: 1px;
+  min-width: 36px;
+  padding-left: 4px;
+  padding-right: 3px;
 }
 .unit-best-pilot-filters .msy-exclude-ur-btn.is-active.is-no-ur .msy-exclude-ur-x::before,
 .unit-best-pilot-filters .msy-exclude-ur-btn.active.is-no-ur .msy-exclude-ur-x::before {
   opacity: 0;
   transform: translate(-50%, -50%) rotate(-45deg) scaleX(0.2);
 }
+.unit-best-pilot-filters .msy-exclude-ur-down {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  color: #7dd3fc;
+  margin-left: -1px;
+  transform: translateY(-0.5px);
+  font-family: var(--font-body, inherit);
+}
 .unit-best-pilot-filters .msy-exclude-ur-btn .msy-exclude-ur-icon[hidden],
+.unit-best-pilot-filters .msy-exclude-ur-btn .msy-exclude-ur-down[hidden],
 .unit-best-pilot-filters .msy-exclude-ur-btn .msy-exclude-ur-label[hidden] {
   display: none !important;
 }

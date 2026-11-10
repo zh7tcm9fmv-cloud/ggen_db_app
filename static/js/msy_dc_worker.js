@@ -91,7 +91,7 @@
     }
   }
 
-  function buildMsySlot(ud, cd, vigor, cpEnabled, skillsOn) {
+  function buildMsySlot(ud, cd, vigor, cpEnabled, skillsOn, supportCounterAtk) {
     var slot = _dcCreateEmptyAttackerSlot();
     var charMode = msyCharStatMode(cd);
     slot.atkUnit = String(ud.id);
@@ -116,7 +116,8 @@
     slot.terrain = 0;
     slot.optionParts = [];
     slot.supporters = [];
-    slot.supportCounterAtk = false;
+    slot.supportCounterAtk = !!supportCounterAtk;
+    S.dc.supportCounterAtk = !!supportCounterAtk;
     slot.finalWpnPow = 0;
     slot.applyAdvantageEnemyTag = true;
     slot.charCondPassive = cpEnabled && (typeof _dcShouldAutoCharCondPassive === 'function'
@@ -172,10 +173,10 @@
     return bestKey;
   }
 
-  function evalPair(ud, cd, uDef, cDef, vigor, cpEnabled, skillsOn) {
+  function evalPair(ud, cd, uDef, cDef, vigor, cpEnabled, skillsOn, supportCounterAtk) {
     S.dc.defTargetMode = 'custom';
     S.dc.defNpc = defNpc(uDef, cDef);
-    var slot = buildMsySlot(ud, cd, vigor, cpEnabled, skillsOn);
+    var slot = buildMsySlot(ud, cd, vigor, cpEnabled, skillsOn, supportCounterAtk);
     if (!S.dc.atkSlots || !Array.isArray(S.dc.atkSlots)) S.dc.atkSlots = [null, null, null];
     S.dc.atkSlotIndex = 0;
     S.dc.atkSlots[0] = slot;
@@ -256,6 +257,7 @@
     var cpOn = job.cpOn !== false;
     var pepOn = job.pepOn !== false;
     var skillsOn = job.skillsOn !== false;
+    var supportCounterAtk = !!job.supportCounterAtk;
     if (!ud || ud.error) return { error: ud && ud.error, unitId: job.unitId };
     applyPepState(ud, pepOn, job.pepState || {});
     try {
@@ -272,7 +274,7 @@
           var byVigor = {};
           for (var vi = 0; vi < VIGORS.length; vi++) {
             var v = VIGORS[vi];
-            var d = evalPair(ud, cd, stats.unit_def, stats.char_def, v, cpOn, skillsOn);
+            var d = evalPair(ud, cd, stats.unit_def, stats.char_def, v, cpOn, skillsOn, supportCounterAtk);
             if (d) byVigor[v] = enrichPairRow(d, dt, stats);
           }
           if (Object.keys(byVigor).length) tierPairs.push([cid, byVigor]);
@@ -285,6 +287,7 @@
       S.pilotCondCharData = null;
       S.pilotCondStackCount = 0;
       S.currentDetailData = null;
+      S.dc.supportCounterAtk = false;
     }
   }
 

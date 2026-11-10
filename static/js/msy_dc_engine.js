@@ -65,7 +65,7 @@
     return Math.min(100, Math.max(0, crit));
   }
 
-  function buildMsySlot(ud, cd, vigor, cpEnabled, skillsOn) {
+  function buildMsySlot(ud, cd, vigor, cpEnabled, skillsOn, supportCounterAtk) {
     var slot = global._dcCreateEmptyAttackerSlot();
     var S = global.S;
     var charMode = msyCharStatMode(cd);
@@ -95,6 +95,9 @@
         && global._dcNormMpLevel(vigor) === 'super') {
       slot.dcSuperchargedExTier = cd.ex_supercharged_tiers.length - 1;
     }
+    // Support Attack/Counter MS ATK % — only meaningful on Support-role MS + pilots with that trait.
+    slot.supportCounterAtk = !!supportCounterAtk;
+    S.dc.supportCounterAtk = !!supportCounterAtk;
     S.dc.atkCharData = cd;
     S.dc.atkUnitData = ud;
     S.dc.charStatMode = charMode;
@@ -135,11 +138,11 @@
     return bestKey;
   }
 
-  function evalPair(ud, cd, uDef, cDef, vigor, cpEnabled, skillsOn) {
+  function evalPair(ud, cd, uDef, cDef, vigor, cpEnabled, skillsOn, supportCounterAtk) {
     var S = global.S;
     S.dc.defTargetMode = 'custom';
     S.dc.defNpc = defNpc(uDef, cDef);
-    var slot = buildMsySlot(ud, cd, vigor, cpEnabled, skillsOn);
+    var slot = buildMsySlot(ud, cd, vigor, cpEnabled, skillsOn, supportCounterAtk);
     if (!S.dc.atkSlots || !Array.isArray(S.dc.atkSlots)) S.dc.atkSlots = [null, null, null];
     S.dc.atkSlotIndex = 0;
     S.dc.atkSlots[0] = slot;
@@ -328,7 +331,8 @@
       opts.lang || (global.S && global.S.lang) || 'EN',
       opts.cpOn !== false ? 'cp1' : 'cp0',
       opts.pepOn !== false ? 'pep1' : 'pep0',
-      opts.skillsOn !== false ? 'sk1' : 'sk0'
+      opts.skillsOn !== false ? 'sk1' : 'sk0',
+      opts.supportCounterAtk ? 'sac1' : 'sac0'
     ].join('|');
   }
 
@@ -480,6 +484,7 @@
     var cpOn = opts.cpOn !== false;
     var pepOn = opts.pepOn !== false;
     var skillsOn = opts.skillsOn !== false;
+    var supportCounterAtk = !!opts.supportCounterAtk;
     var ud = await loadUnit(unitId, lang);
     if (!ud || ud.error) return { error: ud && ud.error, unitId: unitId };
     var restorePep = await setupPep(ud, pepOn);
@@ -497,7 +502,7 @@
           var byVigor = {};
           for (var vi = 0; vi < VIGORS.length; vi++) {
             var v = VIGORS[vi];
-            var d = evalPair(ud, cd, stats.unit_def, stats.char_def, v, cpOn, skillsOn);
+            var d = evalPair(ud, cd, stats.unit_def, stats.char_def, v, cpOn, skillsOn, supportCounterAtk);
             if (d) byVigor[v] = enrichPairRow(d, dt, stats);
           }
           if (Object.keys(byVigor).length) tierPairs.push([String(cid), byVigor]);
@@ -515,6 +520,7 @@
     var cpOn = opts.cpOn !== false;
     var pepOn = opts.pepOn !== false;
     var skillsOn = opts.skillsOn !== false;
+    var supportCounterAtk = !!opts.supportCounterAtk;
     var ud = await loadUnit(unitId, lang);
     if (!ud || ud.error) return { error: ud && ud.error, unitId: unitId };
     var pilots = {};
@@ -533,6 +539,7 @@
       cpOn: cpOn,
       pepOn: pepOn,
       skillsOn: skillsOn,
+      supportCounterAtk: supportCounterAtk,
       pepState: pepState
     });
     return raw;

@@ -49,6 +49,8 @@
     rankMode: 'normal',
     // Active skills in damage ranking (false = fair skills-off Top 10)
     skillsOn: true,
+    // Support Attack/Counter MS ATK % board (Support-role units only; skills on)
+    supportCounterOn: false,
     // damage | defender (defender only on Defense-role units)
     boardKind: 'damage',
     isDefenseUnit: false,
@@ -270,6 +272,10 @@
     return state.roleMode === 'support' && isAttackUnit();
   }
 
+  function isSupportUnit() {
+    return unitRoleId() === SUPPORT_ROLE_ID;
+  }
+
   function roleIconsHtml(ids) {
     return (ids || []).map(function (id) {
       var src = ROLE_FILTER_ICONS[String(id)];
@@ -344,6 +350,7 @@
       var urLabel = urBtn.querySelector('.msy-exclude-ur-label');
       var urIcon = urBtn.querySelector('.msy-exclude-ur-icon');
       var urImg = urBtn.querySelector('.msy-exclude-ur-rarity');
+      var urDown = urBtn.querySelector('.msy-exclude-ur-down');
       var chipTitle = '';
       var chipAria = '';
       var iconPath = '/static/images/Rarity/UI_Common_RarityIcon_UR.webp';
@@ -369,6 +376,16 @@
         urLabel.hidden = true;
       }
       if (urIcon) urIcon.hidden = false;
+      if (!urDown && urIcon && urIcon.parentNode === urBtn) {
+        urDown = global.document.createElement('span');
+        urDown.className = 'msy-exclude-ur-down';
+        urDown.setAttribute('aria-hidden', 'true');
+        urBtn.insertBefore(urDown, urLabel || null);
+      }
+      if (urDown) {
+        urDown.textContent = '\u2193';
+        urDown.hidden = !isNoUrMode();
+      }
       if (urImg) {
         var nextSrc = (typeof global.imgUrl === 'function') ? global.imgUrl(iconPath) : iconPath;
         if (urImg.getAttribute('src') !== nextSrc) {
@@ -396,6 +413,7 @@
     syncMetricButtons();
     syncBoardModeButtons();
     syncSkillsToggle();
+    syncSupportCounterToggle();
     syncPanelTitle();
   }
 
@@ -430,6 +448,24 @@
     btn.title = off
       ? (t('unit_best_pilot_skills_off_on') || 'Showing rankings without active skills')
       : (t('unit_best_pilot_skills_off') || 'Rank without active skills');
+  }
+
+  function syncSupportCounterToggle() {
+    var btn = global.document.getElementById('ubpSupportCounterBtn');
+    if (!btn) return;
+    var show = isSupportUnit() && !isDefenderBoard();
+    if (!show) state.supportCounterOn = false;
+    if (show) btn.removeAttribute('hidden');
+    else btn.setAttribute('hidden', '');
+    btn.style.display = show ? '' : 'none';
+    btn.setAttribute('aria-hidden', show ? 'false' : 'true');
+    var on = !!state.supportCounterOn;
+    btn.classList.toggle('is-active', on);
+    btn.classList.toggle('active', on);
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    btn.title = on
+      ? (t('unit_best_pilot_support_counter_on') || 'Showing Support Attack/Counter ATK % rankings')
+      : (t('unit_best_pilot_support_counter') || 'Support Attack/Counter');
   }
 
   function syncPanelTitle() {
@@ -730,6 +766,11 @@
       state.excludeShinn = !state.excludeShinn;
     } else if (kind === 'no_skills') {
       state.skillsOn = !state.skillsOn;
+      if (!state.skillsOn) state.supportCounterOn = false;
+    } else if (kind === 'support_counter') {
+      if (!isSupportUnit() || isDefenderBoard()) return;
+      state.supportCounterOn = !state.supportCounterOn;
+      if (state.supportCounterOn) state.skillsOn = true;
     } else {
       return;
     }
@@ -797,6 +838,82 @@
         partial: defPartial && defRows.length < 10,
         defender: true,
         skillsOff: !state.skillsOn
+      };
+    }
+
+    // Support Attack/Counter: dedicated board (skills on + SA/Counter MS ATK %).
+    // No UR / UR-only use dedicated SAC variant boards (real SSR-and-under Top 10 from
+    // the same /cal pairs) — never client-filter the mixed UR-heavy store.
+    // Prefer non-empty lists — mode boards from ensureModeBoard used to ship [] and
+    // block fallback ([] is truthy in JS).
+    if (state.supportCounterOn && isSupportUnit()) {
+      var noUrSac = isNoUrMode();
+      var urOnlySac = isUrOnlyMode();
+      var noShinnSac = noUrSac || (!!state.excludeShinn && shinnFilterRelevant());
+      var sameSac = isSameRoleMode();
+      function pickSacList(boardKey, entryKey, partialKey) {
+        var b = board[boardKey];
+        var e = entry[entryKey];
+        if (b && b.length) {
+          return { rows: b, partial: board[partialKey] };
+        }
+        if (e && e.length) {
+          return { rows: e, partial: entry[partialKey] };
+        }
+        return { rows: [], partial: false };
+      }
+      var sacPick;
+      // Prefer dedicated combo boards (Matching Role × rarity) — never client-filter
+      // a mixed top-20 down to 9 Support SSR/under.
+      if (noUrSac && sameSac) {
+        sacPick = pickSacList(
+          'pilots_support_counter_no_ur_same_role',
+          'pilots_support_counter_no_ur_same_role',
+          'support_counter_no_ur_same_role_partial'
+        );
+      } else if (urOnlySac && sameSac) {
+        sacPick = pickSacList(
+          'pilots_support_counter_ur_only_same_role',
+          'pilots_support_counter_ur_only_same_role',
+          'support_counter_ur_only_same_role_partial'
+        );
+      } else if (sameSac) {
+        sacPick = pickSacList(
+          'pilots_support_counter_same_role',
+          'pilots_support_counter_same_role',
+          'support_counter_same_role_partial'
+        );
+      } else if (noUrSac) {
+        sacPick = pickSacList(
+          'pilots_support_counter_no_ur',
+          'pilots_support_counter_no_ur',
+          'support_counter_no_ur_partial'
+        );
+      } else if (urOnlySac) {
+        sacPick = pickSacList(
+          'pilots_support_counter_ur_only',
+          'pilots_support_counter_ur_only',
+          'support_counter_ur_only_partial'
+        );
+      } else {
+        sacPick = pickSacList(
+          'pilots_support_counter',
+          'pilots_support_counter',
+          'support_counter_partial'
+        );
+      }
+      var sac = sacPick.rows;
+      var rowsSac = sac;
+      var partialSac = !(sac && sac.length >= 10) || !!sacPick.partial;
+      // No Shinn only when not already implied by No UR; same-role already on dedicated board.
+      if (noShinnSac && !noUrSac) {
+        rowsSac = filterPilotsLocal(sac, false, true, false, false, false);
+        partialSac = true;
+      }
+      return {
+        pilots: sortPilotsByCalcDamage(rowsSac, mode).slice(0, 10),
+        partial: partialSac || rowsSac.length < 10,
+        supportCounter: true
       };
     }
 
@@ -1128,9 +1245,11 @@
     var view = pilotsForView(entry);
     var pilots = view.pilots || [];
     if (!pilots.length) {
-      setPanelHtml('<div class="unit-best-pilot-empty">'
-        + esc(t('msy_no_eligible_pilots') || 'No eligible pilots for this filter.')
-        + '</div>');
+      var emptyMsg = view.supportCounter
+        ? (t('unit_best_pilot_support_counter_pending')
+          || 'Support Attack/Counter board not cached yet — rebuild Support units or try again shortly.')
+        : (t('msy_no_eligible_pilots') || 'No eligible pilots for this filter.');
+      setPanelHtml('<div class="unit-best-pilot-empty">' + esc(emptyMsg) + '</div>');
       return;
     }
     var note = '';
@@ -1138,6 +1257,11 @@
       note = '<div class="unit-best-pilot-filter-note">'
         + esc(t('unit_best_pilot_filter_partial')
           || 'Showing calculator pilots that match this filter from the main top 10. A full non-UR / No-Shinn top 10 needs a dedicated calculator rebuild.')
+        + '</div>';
+    } else if (view.supportCounter) {
+      note = '<div class="unit-best-pilot-filter-note">'
+        + esc(t('unit_best_pilot_support_counter_note')
+          || 'Ranked with Support Attack/Counter MS ATK % on (same as Damage Calculator toggle).')
         + '</div>';
     } else if (view.skillsOff) {
       note = '<div class="unit-best-pilot-filter-note">'
@@ -1636,6 +1760,12 @@
       pilots_same_role: sortPilotsByCalcDamage(clonePilotList(payload.pilots_same_role), mode),
       pilots_support_role: sortPilotsByCalcDamage(clonePilotList(payload.pilots_support_role), mode),
       pilots_no_active_skills: sortPilotsByCalcDamage(clonePilotList(payload.pilots_no_active_skills), mode),
+      pilots_support_counter: sortPilotsByCalcDamage(clonePilotList(payload.pilots_support_counter), mode),
+      pilots_support_counter_no_ur: sortPilotsByCalcDamage(clonePilotList(payload.pilots_support_counter_no_ur), mode),
+      pilots_support_counter_ur_only: sortPilotsByCalcDamage(clonePilotList(payload.pilots_support_counter_ur_only), mode),
+      pilots_support_counter_same_role: sortPilotsByCalcDamage(clonePilotList(payload.pilots_support_counter_same_role), mode),
+      pilots_support_counter_no_ur_same_role: sortPilotsByCalcDamage(clonePilotList(payload.pilots_support_counter_no_ur_same_role), mode),
+      pilots_support_counter_ur_only_same_role: sortPilotsByCalcDamage(clonePilotList(payload.pilots_support_counter_ur_only_same_role), mode),
       pilots_support_role_no_active_skills: sortPilotsByCalcDamage(clonePilotList(payload.pilots_support_role_no_active_skills), mode),
       pilots_same_role_no_active_skills: sortPilotsByCalcDamage(clonePilotList(payload.pilots_same_role_no_active_skills), mode),
       pilots_no_ur_no_active_skills: sortPilotsByCalcDamage(clonePilotList(payload.pilots_no_ur_no_active_skills), mode),
@@ -1649,6 +1779,12 @@
       same_role_partial: !!payload.same_role_partial,
       support_role_partial: !!payload.support_role_partial,
       no_active_skills_partial: !!payload.no_active_skills_partial,
+      support_counter_partial: !!payload.support_counter_partial,
+      support_counter_no_ur_partial: !!payload.support_counter_no_ur_partial,
+      support_counter_ur_only_partial: !!payload.support_counter_ur_only_partial,
+      support_counter_same_role_partial: !!payload.support_counter_same_role_partial,
+      support_counter_no_ur_same_role_partial: !!payload.support_counter_no_ur_same_role_partial,
+      support_counter_ur_only_same_role_partial: !!payload.support_counter_ur_only_same_role_partial,
       defender_partial: !!payload.defender_partial,
       defender_no_skills_partial: !!payload.defender_no_skills_partial,
       is_defense_unit: !!payload.is_defense_unit,
@@ -1687,6 +1823,12 @@
       pilots_same_role: primary.pilots_same_role,
       pilots_support_role: primary.pilots_support_role,
       pilots_no_active_skills: primary.pilots_no_active_skills,
+      pilots_support_counter: primary.pilots_support_counter,
+      pilots_support_counter_no_ur: primary.pilots_support_counter_no_ur,
+      pilots_support_counter_ur_only: primary.pilots_support_counter_ur_only,
+      pilots_support_counter_same_role: primary.pilots_support_counter_same_role,
+      pilots_support_counter_no_ur_same_role: primary.pilots_support_counter_no_ur_same_role,
+      pilots_support_counter_ur_only_same_role: primary.pilots_support_counter_ur_only_same_role,
       pilots_support_role_no_active_skills: primary.pilots_support_role_no_active_skills,
       pilots_same_role_no_active_skills: primary.pilots_same_role_no_active_skills,
       pilots_no_ur_no_active_skills: primary.pilots_no_ur_no_active_skills,
@@ -1700,6 +1842,12 @@
       same_role_partial: primary.same_role_partial,
       support_role_partial: primary.support_role_partial,
       no_active_skills_partial: primary.no_active_skills_partial,
+      support_counter_partial: primary.support_counter_partial,
+      support_counter_no_ur_partial: primary.support_counter_no_ur_partial,
+      support_counter_ur_only_partial: primary.support_counter_ur_only_partial,
+      support_counter_same_role_partial: primary.support_counter_same_role_partial,
+      support_counter_no_ur_same_role_partial: primary.support_counter_no_ur_same_role_partial,
+      support_counter_ur_only_same_role_partial: primary.support_counter_ur_only_same_role_partial,
       defender_partial: primary.defender_partial,
       defender_no_skills_partial: primary.defender_no_skills_partial,
       is_defense_unit: !!(payload.is_defense_unit || primary.is_defense_unit),
@@ -1752,7 +1900,17 @@
       pilots_same_role: fetched.pilots_same_role,
       pilots_support_role: fetched.pilots_support_role,
       pilots_no_active_skills: fetched.pilots_no_active_skills,
+      pilots_support_counter: fetched.pilots_support_counter,
+      pilots_support_counter_no_ur: fetched.pilots_support_counter_no_ur,
+      pilots_support_counter_ur_only: fetched.pilots_support_counter_ur_only,
+      pilots_support_counter_same_role: fetched.pilots_support_counter_same_role,
+      pilots_support_counter_no_ur_same_role: fetched.pilots_support_counter_no_ur_same_role,
+      pilots_support_counter_ur_only_same_role: fetched.pilots_support_counter_ur_only_same_role,
+      pilots_support_role_no_active_skills: fetched.pilots_support_role_no_active_skills,
+      pilots_same_role_no_active_skills: fetched.pilots_same_role_no_active_skills,
+      pilots_no_ur_no_active_skills: fetched.pilots_no_ur_no_active_skills,
       pilots_ur_only_no_active_skills: fetched.pilots_ur_only_no_active_skills,
+      pilots_no_shinn_no_active_skills: fetched.pilots_no_shinn_no_active_skills,
       pilots_defender: fetched.pilots_defender,
       pilots_defender_no_skills: fetched.pilots_defender_no_skills,
       no_ur_partial: fetched.no_ur_partial,
@@ -1761,6 +1919,12 @@
       same_role_partial: fetched.same_role_partial,
       support_role_partial: fetched.support_role_partial,
       no_active_skills_partial: fetched.no_active_skills_partial,
+      support_counter_partial: fetched.support_counter_partial,
+      support_counter_no_ur_partial: fetched.support_counter_no_ur_partial,
+      support_counter_ur_only_partial: fetched.support_counter_ur_only_partial,
+      support_counter_same_role_partial: fetched.support_counter_same_role_partial,
+      support_counter_no_ur_same_role_partial: fetched.support_counter_no_ur_same_role_partial,
+      support_counter_ur_only_same_role_partial: fetched.support_counter_ur_only_same_role_partial,
       defender_partial: fetched.defender_partial,
       defender_no_skills_partial: fetched.defender_no_skills_partial,
       is_defense_unit: fetched.is_defense_unit,
@@ -2208,6 +2372,8 @@
     if (state.unitId !== String(d.id)) {
       state.unitId = String(d.id);
       state.loaded = false;
+      state.supportCounterOn = false;
+      state.skillsOn = true;
     }
     var cachedOpen = getCachedEntry(state.unitId);
     if (cachedOpen) {
