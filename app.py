@@ -351,6 +351,83 @@ def _api_guard_rate_ok(ip):
         return True
 
 
+# Known AI / LLM crawler User-Agents (training scrapers + agent fetchers).
+# Blocks bots — not a human using ChatGPT offline. Real browsers never send these.
+_GGEN_AI_CRAWLER_UA_NEEDLES = (
+    'gptbot',
+    'chatgpt-user',
+    'chatgpt-user/',
+    'oai-searchbot',
+    'claudebot',
+    'claude-web',
+    'anthropic-ai',
+    'google-extended',
+    'bytespider',
+    'ccbot',
+    'perplexitybot',
+    'perplexity-user',
+    'cohere-ai',
+    'cohere-training-data-crawler',
+    'ai2bot',
+    'diffbot',
+    'omgili',
+    'omgilibot',
+    'meta-externalagent',
+    'meta-externalfetcher',
+    'amazonbot',
+    'applebot-extended',
+    'youbot',
+    'img2dataset',
+    'webzio-extended',
+    'timpibot',
+    'nocoiabot',
+    'scrapy',
+    'petalbot',
+)
+
+
+def _ai_crawler_block_enabled():
+    raw = (os.environ.get('GGEN_BLOCK_AI_CRAWLERS') or '').strip().lower()
+    if raw in ('0', 'false', 'off', 'no'):
+        return False
+    if raw in ('1', 'true', 'on', 'yes'):
+        return True
+    # Default on in Railway; safe everywhere (only matches known bot UAs).
+    return bool(
+        (os.environ.get('RAILWAY_ENVIRONMENT') or '').strip()
+        or (os.environ.get('RAILWAY_PROJECT_ID') or '').strip()
+    )
+
+
+def _request_user_agent_is_ai_crawler():
+    ua = (request.headers.get('User-Agent') or '').strip().lower()
+    if not ua:
+        return False
+    return any(n in ua for n in _GGEN_AI_CRAWLER_UA_NEEDLES)
+
+
+@app.before_request
+def _ggen_block_ai_crawlers():
+    """Refuse known AI crawler User-Agents on all pages/APIs (except health)."""
+    if not _ai_crawler_block_enabled():
+        return None
+    path = request.path or ''
+    if path == '/health' or path.startswith('/health/'):
+        return None
+    if _api_guard_client_is_local():
+        return None
+    if not _request_user_agent_is_ai_crawler():
+        return None
+    resp = jsonify({
+        'error': 'ai_crawler_blocked',
+        'message': 'Automated AI crawlers are not allowed.',
+    })
+    resp.status_code = 403
+    resp.headers['X-Robots-Tag'] = 'noindex, nofollow, noai, noimageai'
+    resp.headers['Cache-Control'] = 'no-store'
+    return resp
+
+
 @app.before_request
 def _ggen_api_mirror_guard():
     if not _api_mirror_guard_enabled():
@@ -39739,8 +39816,29 @@ def _not_found_page():
 def _robots_txt_body(base):
     # Block all /static (CSS/JS/fonts/images) — not indexable pages. Game art is on IMAGE_CDN;
     # allowlisted UI fonts remain same-origin for the browser but must not be crawled as URLs.
+    # AI crawler UAs: polite bots honor Disallow; Flask also 403s these User-Agents in production.
+    ai_bots = (
+        'GPTBot',
+        'ChatGPT-User',
+        'OAI-SearchBot',
+        'ClaudeBot',
+        'anthropic-ai',
+        'Google-Extended',
+        'Bytespider',
+        'CCBot',
+        'PerplexityBot',
+        'cohere-ai',
+        'Applebot-Extended',
+        'Amazonbot',
+        'meta-externalagent',
+        'meta-externalfetcher',
+    )
+    ai_rules = ''.join(
+        f'User-agent: {ua}\nDisallow: /\n\n' for ua in ai_bots
+    )
     return (
-        'User-agent: *\n'
+        ai_rules
+        + 'User-agent: *\n'
         'Allow: /\n'
         'Disallow: /api/\n'
         'Disallow: /admin/\n'
