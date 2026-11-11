@@ -75,8 +75,8 @@
   }
 
   function cacheKey(unitId) {
-    // Include deploy version so in-memory Top 10 entries die after Railway commits.
-    return appVersion() + ':' + currentLang() + ':' + String(unitId || '');
+    // Include deploy + this script's ?v= so Support×UR field wiring isn't stuck on an old entry.
+    return appVersion() + ':' + scriptVersion() + ':' + currentLang() + ':' + String(unitId || '');
   }
 
   function getCachedEntry(unitId) {
@@ -733,7 +733,12 @@
       var entry = getCachedEntry(uid);
       if (entry && (!entry.modes || !entry.modes[mode])) {
         void ensureModeBoard(uid, currentLang(), mode).then(function () {
-          if (state.rankMode === mode && state.open) renderActivePanel();
+          if (state.rankMode !== mode) return;
+          var fresh = getCachedEntry(uid);
+          // New mode boards are fresh clones — re-attach affinity before paint.
+          void enrichAffinityMatches(fresh, uid, currentLang()).then(function () {
+            if (state.rankMode === mode && state.open) renderActivePanel();
+          });
         });
       }
     }
@@ -795,6 +800,57 @@
       if (sameRole && unitRole != null && role !== unitRole) return false;
       return true;
     });
+  }
+
+  /** Union pilot rows by char id, keeping the higher calc damage for the active mode. */
+  function mergePilotListsByChar(a, b, mode) {
+    var map = {};
+    function absorb(list) {
+      (list || []).forEach(function (p) {
+        var cid = String(((p && p.char) || {}).id || '');
+        if (!cid) return;
+        var prev = map[cid];
+        if (!prev) { map[cid] = p; return; }
+        var dNew = _pilotSortDamage(p, mode);
+        var dOld = _pilotSortDamage(prev, mode);
+        if (dNew > dOld) map[cid] = p;
+      });
+    }
+    absorb(a);
+    absorb(b);
+    return Object.keys(map).map(function (k) { return map[k]; });
+  }
+
+  function _pilotSortDamage(p, mode) {
+    if (!p) return 0;
+    if (mode === 'normal') return parseFloat(p.normal_dmg != null ? p.normal_dmg : p.damage) || 0;
+    if (mode === 'crit') return parseFloat(p.crit_dmg != null ? p.crit_dmg : p.damage) || 0;
+    return parseFloat(p.damage != null ? p.damage : p.crit_dmg) || 0;
+  }
+
+  function pickSupportUrOnlyRows(board, skillsOff) {
+    var mode = state.rankMode || 'super_crit';
+    var dedicated = skillsOff
+      ? (board.pilots_support_role_ur_only_no_active_skills || [])
+      : (board.pilots_support_role_ur_only || []);
+    if (dedicated && dedicated.length) {
+      return {
+        rows: dedicated,
+        partial: !!(skillsOff ? board.support_role_ur_only_no_active_skills_partial : board.support_role_ur_only_partial)
+          || dedicated.length < 10
+      };
+    }
+    var supportBoard = skillsOff
+      ? (board.pilots_support_role_no_active_skills || board.pilots_support_role || [])
+      : (board.pilots_support_role || []);
+    var urBoard = skillsOff
+      ? (board.pilots_ur_only_no_active_skills || board.pilots_ur_only || [])
+      : (board.pilots_ur_only || []);
+    // Prefer Support-store ∩ UR (more Support URs) and merge UR-store ∩ Support.
+    var fromSupport = filterPilotsLocal(supportBoard, false, false, false, false, true);
+    var fromUr = filterPilotsLocal(urBoard, false, false, false, true, false);
+    var merged = mergePilotListsByChar(fromSupport, fromUr, mode);
+    return { rows: merged, partial: true };
   }
 
   function modeEntry(entry) {
@@ -936,20 +992,21 @@
       }
 
       if (supportOff && urOnlyOff) {
-        if (board.pilots_ur_only_no_active_skills && board.pilots_ur_only_no_active_skills.length) {
-          takeOff(filterPilotsLocal(board.pilots_ur_only_no_active_skills, false, false, false, true, false), !!board.ur_only_partial);
-        } else if (board.pilots_support_role_no_active_skills && board.pilots_support_role_no_active_skills.length) {
-          takeOff(filterPilotsLocal(board.pilots_support_role_no_active_skills, false, false, false, false, true), !!board.support_role_partial);
+        var suppUrOff = pickSupportUrOnlyRows(board, true);
+        if (suppUrOff.rows && suppUrOff.rows.length) {
+          takeOff(suppUrOff.rows, !!suppUrOff.partial);
         } else {
           takeOff(filterPilotsLocal(off, false, false, false, true, true), true);
         }
       } else if (supportOff && noUrOff) {
-        if (board.pilots_support_role_no_active_skills && board.pilots_support_role_no_active_skills.length) {
-          takeOff(filterPilotsLocal(board.pilots_support_role_no_active_skills, true, true, false, false), !!board.support_role_partial);
+        if (board.pilots_support_role_no_ur_no_active_skills && board.pilots_support_role_no_ur_no_active_skills.length) {
+          takeOff(board.pilots_support_role_no_ur_no_active_skills, !!board.support_role_no_ur_partial && board.pilots_support_role_no_ur_no_active_skills.length < 10);
+        } else if (board.pilots_support_role_no_ur && board.pilots_support_role_no_ur.length) {
+          takeOff(board.pilots_support_role_no_ur, true);
         } else if (board.pilots_no_ur_no_active_skills && board.pilots_no_ur_no_active_skills.length) {
           takeOff(filterPilotsLocal(board.pilots_no_ur_no_active_skills, false, false, false, true), !!board.no_ur_partial);
-        } else if (board.pilots_support_role && board.pilots_support_role.length) {
-          takeOff(filterPilotsLocal(board.pilots_support_role, true, true, false, false), true);
+        } else if (board.pilots_support_role_no_active_skills && board.pilots_support_role_no_active_skills.length) {
+          takeOff(filterPilotsLocal(board.pilots_support_role_no_active_skills, true, true, false, false), true);
         } else {
           takeOff(filterPilotsLocal(off, true, true, false, true), true);
         }
@@ -1043,19 +1100,23 @@
 
     // Prefer dedicated calculator boards. Combined filters start from the richest
     // matching board, then apply the remaining constraints (never invent damage).
+    // Support + UR-only: never filter the open UR top-20 alone (Support URs rarely
+    // fill that board) — use dedicated Support×UR store, else merge both stores.
     if (supportRole && urOnly) {
-      if (board.pilots_ur_only && board.pilots_ur_only.length) {
-        take(filterPilotsLocal(board.pilots_ur_only, false, false, false, true, false), !!board.ur_only_partial);
-      } else if (board.pilots_support_role && board.pilots_support_role.length) {
-        take(filterPilotsLocal(board.pilots_support_role, false, false, false, false, true), !!board.support_role_partial);
+      var suppUrOn = pickSupportUrOnlyRows(board, false);
+      if (suppUrOn.rows && suppUrOn.rows.length) {
+        take(suppUrOn.rows, !!suppUrOn.partial);
       } else {
         take(filterPilotsLocal(board.pilots || [], false, false, false, true, true), true);
       }
     } else if (supportRole && noUr) {
-      if (board.pilots_support_role && board.pilots_support_role.length) {
-        take(filterPilotsLocal(board.pilots_support_role, true, true, false, false), !!board.support_role_partial);
+      // Dedicated Support×No-UR store — never strip UR from mixed Support top-20 (~6 SSR).
+      if (board.pilots_support_role_no_ur && board.pilots_support_role_no_ur.length) {
+        take(board.pilots_support_role_no_ur, !!board.support_role_no_ur_partial && board.pilots_support_role_no_ur.length < 10);
       } else if (board.pilots_no_ur && board.pilots_no_ur.length) {
         take(filterPilotsLocal(board.pilots_no_ur, false, false, false, true), !!board.no_ur_partial);
+      } else if (board.pilots_support_role && board.pilots_support_role.length) {
+        take(filterPilotsLocal(board.pilots_support_role, true, true, false, false), true);
       } else {
         take(filterPilotsLocal(board.pilots || [], true, true, false, true), true);
       }
@@ -1133,7 +1194,7 @@
     }
     return {
       pilots: sortPilotsByCalcDamage(rows, mode).slice(0, 10),
-      partial: partial && rows.length < 10
+      partial: !!partial || rows.length < 10
     };
   }
 
@@ -1146,6 +1207,41 @@
         if (board && board !== entry) fn(board);
       });
     }
+  }
+
+  // Every BSP board list that can appear in the Top 10 UI (incl. Support×UR).
+  var BOARD_PILOT_LIST_KEYS = [
+    'pilots',
+    'pilots_no_ur',
+    'pilots_ur_only',
+    'pilots_no_shinn',
+    'pilots_same_role',
+    'pilots_support_role',
+    'pilots_support_role_ur_only',
+    'pilots_support_role_no_ur',
+    'pilots_no_active_skills',
+    'pilots_support_role_no_active_skills',
+    'pilots_support_role_ur_only_no_active_skills',
+    'pilots_support_role_no_ur_no_active_skills',
+    'pilots_same_role_no_active_skills',
+    'pilots_no_ur_no_active_skills',
+    'pilots_ur_only_no_active_skills',
+    'pilots_no_shinn_no_active_skills',
+    'pilots_support_counter',
+    'pilots_support_counter_no_ur',
+    'pilots_support_counter_ur_only',
+    'pilots_support_counter_same_role',
+    'pilots_support_counter_no_ur_same_role',
+    'pilots_support_counter_ur_only_same_role',
+    'pilots_defender',
+    'pilots_defender_no_skills'
+  ];
+
+  function forEachBoardPilotList(board, fn) {
+    if (!board || typeof fn !== 'function') return;
+    BOARD_PILOT_LIST_KEYS.forEach(function (key) {
+      fn(board[key], key);
+    });
   }
 
   function applyAffinityToEntry(entry, affinityMap, unitId) {
@@ -1162,15 +1258,7 @@
       });
     }
     forEachBoard(entry, function (board) {
-      enrich(board.pilots);
-      enrich(board.pilots_no_ur);
-      enrich(board.pilots_ur_only);
-      enrich(board.pilots_no_shinn);
-      enrich(board.pilots_same_role);
-      enrich(board.pilots_support_role);
-      enrich(board.pilots_no_active_skills);
-      enrich(board.pilots_defender);
-      enrich(board.pilots_defender_no_skills);
+      forEachBoardPilotList(board, function (list) { enrich(list); });
     });
     enrich(entry.pilots_defender);
     enrich(entry.pilots_defender_no_skills);
@@ -1191,15 +1279,7 @@
       });
     }
     forEachBoard(entry, function (board) {
-      collect(board.pilots);
-      collect(board.pilots_no_ur);
-      collect(board.pilots_ur_only);
-      collect(board.pilots_no_shinn);
-      collect(board.pilots_same_role);
-      collect(board.pilots_support_role);
-      collect(board.pilots_no_active_skills);
-      collect(board.pilots_defender);
-      collect(board.pilots_defender_no_skills);
+      forEachBoardPilotList(board, function (list) { collect(list); });
     });
     collect(entry.pilots_defender);
     collect(entry.pilots_defender_no_skills);
@@ -1225,14 +1305,11 @@
         });
       }
       forEachBoard(entry, function (board) {
-        attachSkills(board.pilots);
-        attachSkills(board.pilots_no_ur);
-        attachSkills(board.pilots_ur_only);
-        attachSkills(board.pilots_no_shinn);
-        attachSkills(board.pilots_same_role);
-        attachSkills(board.pilots_support_role);
-        attachSkills(board.pilots_no_active_skills);
-        // Defender boards ship survival skills from the server — do not attach ATK skills.
+        forEachBoardPilotList(board, function (list, key) {
+          // Defender boards ship survival skills from the server — do not attach ATK skills.
+          if (key === 'pilots_defender' || key === 'pilots_defender_no_skills') return;
+          attachSkills(list);
+        });
       });
     } catch (_) {}
     return entry;
@@ -1759,6 +1836,8 @@
       pilots_no_shinn: sortPilotsByCalcDamage(clonePilotList(payload.pilots_no_shinn), mode),
       pilots_same_role: sortPilotsByCalcDamage(clonePilotList(payload.pilots_same_role), mode),
       pilots_support_role: sortPilotsByCalcDamage(clonePilotList(payload.pilots_support_role), mode),
+      pilots_support_role_ur_only: sortPilotsByCalcDamage(clonePilotList(payload.pilots_support_role_ur_only), mode),
+      pilots_support_role_no_ur: sortPilotsByCalcDamage(clonePilotList(payload.pilots_support_role_no_ur), mode),
       pilots_no_active_skills: sortPilotsByCalcDamage(clonePilotList(payload.pilots_no_active_skills), mode),
       pilots_support_counter: sortPilotsByCalcDamage(clonePilotList(payload.pilots_support_counter), mode),
       pilots_support_counter_no_ur: sortPilotsByCalcDamage(clonePilotList(payload.pilots_support_counter_no_ur), mode),
@@ -1767,6 +1846,8 @@
       pilots_support_counter_no_ur_same_role: sortPilotsByCalcDamage(clonePilotList(payload.pilots_support_counter_no_ur_same_role), mode),
       pilots_support_counter_ur_only_same_role: sortPilotsByCalcDamage(clonePilotList(payload.pilots_support_counter_ur_only_same_role), mode),
       pilots_support_role_no_active_skills: sortPilotsByCalcDamage(clonePilotList(payload.pilots_support_role_no_active_skills), mode),
+      pilots_support_role_ur_only_no_active_skills: sortPilotsByCalcDamage(clonePilotList(payload.pilots_support_role_ur_only_no_active_skills), mode),
+      pilots_support_role_no_ur_no_active_skills: sortPilotsByCalcDamage(clonePilotList(payload.pilots_support_role_no_ur_no_active_skills), mode),
       pilots_same_role_no_active_skills: sortPilotsByCalcDamage(clonePilotList(payload.pilots_same_role_no_active_skills), mode),
       pilots_no_ur_no_active_skills: sortPilotsByCalcDamage(clonePilotList(payload.pilots_no_ur_no_active_skills), mode),
       pilots_ur_only_no_active_skills: sortPilotsByCalcDamage(clonePilotList(payload.pilots_ur_only_no_active_skills), mode),
@@ -1778,6 +1859,8 @@
       no_shinn_partial: !!payload.no_shinn_partial,
       same_role_partial: !!payload.same_role_partial,
       support_role_partial: !!payload.support_role_partial,
+      support_role_ur_only_partial: !!payload.support_role_ur_only_partial,
+      support_role_no_ur_partial: !!payload.support_role_no_ur_partial,
       no_active_skills_partial: !!payload.no_active_skills_partial,
       support_counter_partial: !!payload.support_counter_partial,
       support_counter_no_ur_partial: !!payload.support_counter_no_ur_partial,
@@ -1804,6 +1887,8 @@
         if (board) modes[mode] = board;
       });
     }
+    var primaryMode = payload.rank_mode || 'super_crit';
+    if (!modes[primaryMode]) modes[primaryMode] = primary;
     if (!modes.super_crit) modes.super_crit = primary;
     var wi = payload.weapon_info || primary.weapon_info || null;
     if (!wi && modes.super_crit) wi = modes.super_crit.weapon_info || null;
@@ -1822,6 +1907,8 @@
       pilots_no_shinn: primary.pilots_no_shinn,
       pilots_same_role: primary.pilots_same_role,
       pilots_support_role: primary.pilots_support_role,
+      pilots_support_role_ur_only: primary.pilots_support_role_ur_only,
+      pilots_support_role_no_ur: primary.pilots_support_role_no_ur,
       pilots_no_active_skills: primary.pilots_no_active_skills,
       pilots_support_counter: primary.pilots_support_counter,
       pilots_support_counter_no_ur: primary.pilots_support_counter_no_ur,
@@ -1830,6 +1917,8 @@
       pilots_support_counter_no_ur_same_role: primary.pilots_support_counter_no_ur_same_role,
       pilots_support_counter_ur_only_same_role: primary.pilots_support_counter_ur_only_same_role,
       pilots_support_role_no_active_skills: primary.pilots_support_role_no_active_skills,
+      pilots_support_role_ur_only_no_active_skills: primary.pilots_support_role_ur_only_no_active_skills,
+      pilots_support_role_no_ur_no_active_skills: primary.pilots_support_role_no_ur_no_active_skills,
       pilots_same_role_no_active_skills: primary.pilots_same_role_no_active_skills,
       pilots_no_ur_no_active_skills: primary.pilots_no_ur_no_active_skills,
       pilots_ur_only_no_active_skills: primary.pilots_ur_only_no_active_skills,
@@ -1841,6 +1930,8 @@
       no_shinn_partial: primary.no_shinn_partial,
       same_role_partial: primary.same_role_partial,
       support_role_partial: primary.support_role_partial,
+      support_role_ur_only_partial: primary.support_role_ur_only_partial,
+      support_role_no_ur_partial: primary.support_role_no_ur_partial,
       no_active_skills_partial: primary.no_active_skills_partial,
       support_counter_partial: primary.support_counter_partial,
       support_counter_no_ur_partial: primary.support_counter_no_ur_partial,
@@ -1899,6 +1990,8 @@
       pilots_no_shinn: fetched.pilots_no_shinn,
       pilots_same_role: fetched.pilots_same_role,
       pilots_support_role: fetched.pilots_support_role,
+      pilots_support_role_ur_only: fetched.pilots_support_role_ur_only,
+      pilots_support_role_no_ur: fetched.pilots_support_role_no_ur,
       pilots_no_active_skills: fetched.pilots_no_active_skills,
       pilots_support_counter: fetched.pilots_support_counter,
       pilots_support_counter_no_ur: fetched.pilots_support_counter_no_ur,
@@ -1907,6 +2000,8 @@
       pilots_support_counter_no_ur_same_role: fetched.pilots_support_counter_no_ur_same_role,
       pilots_support_counter_ur_only_same_role: fetched.pilots_support_counter_ur_only_same_role,
       pilots_support_role_no_active_skills: fetched.pilots_support_role_no_active_skills,
+      pilots_support_role_ur_only_no_active_skills: fetched.pilots_support_role_ur_only_no_active_skills,
+      pilots_support_role_no_ur_no_active_skills: fetched.pilots_support_role_no_ur_no_active_skills,
       pilots_same_role_no_active_skills: fetched.pilots_same_role_no_active_skills,
       pilots_no_ur_no_active_skills: fetched.pilots_no_ur_no_active_skills,
       pilots_ur_only_no_active_skills: fetched.pilots_ur_only_no_active_skills,
@@ -1918,6 +2013,8 @@
       no_shinn_partial: fetched.no_shinn_partial,
       same_role_partial: fetched.same_role_partial,
       support_role_partial: fetched.support_role_partial,
+      support_role_ur_only_partial: fetched.support_role_ur_only_partial,
+      support_role_no_ur_partial: fetched.support_role_no_ur_partial,
       no_active_skills_partial: fetched.no_active_skills_partial,
       support_counter_partial: fetched.support_counter_partial,
       support_counter_no_ur_partial: fetched.support_counter_no_ur_partial,

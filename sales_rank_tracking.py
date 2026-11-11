@@ -202,6 +202,10 @@ def _load_locked() -> None:
         if isinstance(meta, dict):
             _meta.update(meta)
         _trim_locked()
+        try:
+            _scrub_rank_spikes_locked()
+        except Exception:
+            pass
     except Exception as e:
         _meta["last_err"] = f"load:{e}"
 
@@ -548,6 +552,74 @@ def fetch_apple_rank(country: str, app_id: str, games: bool = False) -> Optional
     return None
 
 
+
+def _despike_optional_ints(vals: List[Optional[int]]) -> List[Optional[int]]:
+    """Null one-sample rank cliffs (scrape glitches) using neighbor context.
+
+    Same rule as static/js/sales_tracking.js ``despikeRankPts``: far from BOTH
+    neighbors, while neighbors stay nearer each other than to the spike
+    (e.g. KR Game-i 405→1220→515).
+    """
+    n = len(vals or [])
+    if n < 3:
+        return list(vals or [])
+    out: List[Optional[int]] = list(vals)
+    for i in range(1, n - 1):
+        a, b, c = out[i - 1], out[i], out[i + 1]
+        if a is None or b is None or c is None:
+            continue
+        try:
+            ai, bi, ci = int(a), int(b), int(c)
+        except (TypeError, ValueError):
+            continue
+        da, dc = abs(bi - ai), abs(bi - ci)
+        neigh = abs(ai - ci)
+        lim = max(80, int(min(da, dc) * 0.55))
+        if da >= 120 and dc >= 120 and neigh <= lim:
+            out[i] = None
+    # Unconfirmed tip cliff off a stable band — hold until next sample.
+    if len(out) >= 3 and out[-1] is not None and out[-2] is not None and out[-3] is not None:
+        try:
+            x, y, z = int(out[-3]), int(out[-2]), int(out[-1])
+        except (TypeError, ValueError):
+            x = y = z = None  # type: ignore
+        if (
+            x is not None
+            and abs(y - x) <= 80
+            and abs(z - y) >= 120
+            and abs(z - x) >= 120
+        ):
+            out[-1] = None
+    return out
+
+
+def _scrub_rank_spikes_locked() -> int:
+    """Null spiked overall/games/gamei values in the in-memory ring. Returns edits."""
+    if len(_samples) < 3:
+        return 0
+    fields = ("overall", "games", "gamei_today")
+    edits = 0
+    for c in COUNTRIES:
+        code = c["code"]
+        for field in fields:
+            vals: List[Optional[int]] = []
+            for s in _samples:
+                crow = (s.get("countries") or {}).get(code) or {}
+                v = crow.get(field)
+                try:
+                    vals.append(int(v) if v is not None else None)
+                except (TypeError, ValueError):
+                    vals.append(None)
+            cleaned = _despike_optional_ints(vals)
+            for s, old, new in zip(_samples, vals, cleaned):
+                if old == new:
+                    continue
+                crow = (s.setdefault("countries", {})).setdefault(code, {})
+                crow[field] = new
+                edits += 1
+    return edits
+
+
 def fetch_gamei_today_ranks(apid: str = APP_ID_JP) -> Dict[str, Optional[int]]:
     """Parse Game-i world_analytics 「本日」 ranks keyed by our country codes."""
     url = f"https://game-i.daa.jp/?cmd=world_analytics&apid={apid}"
@@ -616,6 +688,11 @@ def take_sample() -> Dict[str, Any]:
     with _lock:
         _samples.append(sample)
         _trim_locked(t)
+        # Incremental neighbor check: null one-sample Game-i/Apple cliffs.
+        try:
+            _scrub_rank_spikes_locked()
+        except Exception:
+            pass
         _meta["last_ok_ms"] = t
         if err_bits:
             _meta["last_err"] = "; ".join(err_bits)[:500]

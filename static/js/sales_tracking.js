@@ -360,8 +360,9 @@
 
   /**
    * Drop single-sample rank spikes (scrape glitches).
-   * Interior point far from both neighbors while neighbors agree → omit from the trail.
-   * Worldwide for Apple + Game-i lines (e.g. KR Game-i 295→567→295).
+   * Interior point far from BOTH neighbors, while neighbors are closer to each
+   * other than to the spike → omit (e.g. KR Game-i 405→1220→515).
+   * Worldwide for Apple + Game-i lines.
    */
   function despikeRankPts(pts, rankKey) {
     rankKey = rankKey || 'rank';
@@ -370,7 +371,7 @@
     });
     if (src.length < 3) return src;
     var out = [src[0]];
-    var i, prev, cur, next, a, b, c, jump, neigh;
+    var i, prev, cur, next, a, b, c, da, dc, neigh, lim;
     for (i = 1; i < src.length - 1; i++) {
       prev = src[i - 1];
       cur = src[i];
@@ -378,13 +379,26 @@
       a = prev[rankKey] | 0;
       b = cur[rankKey] | 0;
       c = next[rankKey] | 0;
-      jump = Math.min(Math.abs(b - a), Math.abs(b - c));
+      da = Math.abs(b - a);
+      dc = Math.abs(b - c);
       neigh = Math.abs(a - c);
-      /* Spike: ≥120 places vs both sides, while neighbors within 40 of each other. */
-      if (jump >= 120 && neigh <= 40) continue;
+      /* Allow neighbors to drift (real incremental drop) while still killing cliffs. */
+      lim = Math.max(80, Math.floor(Math.min(da, dc) * 0.55));
+      if (da >= 120 && dc >= 120 && neigh <= lim) continue;
       out.push(cur);
     }
     out.push(src[src.length - 1]);
+    /* Unconfirmed tip cliff off a stable band — hold until next sample confirms. */
+    while (out.length >= 3) {
+      var x = out[out.length - 3][rankKey] | 0;
+      var y = out[out.length - 2][rankKey] | 0;
+      var z = out[out.length - 1][rankKey] | 0;
+      if (Math.abs(y - x) <= 80 && Math.abs(z - y) >= 120 && Math.abs(z - x) >= 120) {
+        out.pop();
+        continue;
+      }
+      break;
+    }
     return out;
   }
 
@@ -464,11 +478,22 @@
     allPts.forEach(function (p) {
       if (p.rank > rMax) rMax = p.rank;
     });
-    rMax = Math.max(5, Math.ceil(rMax / 5) * 5);
+    /* Density-aware Y steps — fixed step=25 floods ~#1000+ charts (labels overlap). */
+    var yLabelPx = 20;
+    var maxYTicks = Math.max(4, Math.min(11, Math.floor(plotH / yLabelPx)));
+    var rawStep = Math.max(1, (rMax - 1) / Math.max(1, maxYTicks - 1));
+    var niceSteps = [1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000, 2000];
+    var step = niceSteps[niceSteps.length - 1];
+    for (var si = 0; si < niceSteps.length; si++) {
+      if (niceSteps[si] >= rawStep) {
+        step = niceSteps[si];
+        break;
+      }
+    }
+    rMax = Math.max(step, Math.ceil(rMax / step) * step);
 
     var grid = '';
     var yTicks = [1];
-    var step = rMax <= 20 ? 5 : rMax <= 50 ? 10 : 25;
     for (var r = step; r <= rMax; r += step) yTicks.push(r);
     if (yTicks[yTicks.length - 1] !== rMax) yTicks.push(rMax);
     yTicks.forEach(function (rk) {

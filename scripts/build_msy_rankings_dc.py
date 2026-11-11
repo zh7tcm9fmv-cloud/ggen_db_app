@@ -5,7 +5,7 @@ v18 (rules v7): full catalog — SSR and lower always use SSP unit stats; weapon
 highest-power non-MAP under that mode. Includes Attack / Defense / Support.
 
 v17 (Supporters-only): Attack units store rankings_support_role from calculator pairs.
-Kept as fallback while v18 rebuilds.
+Rules v13+: also rankings_support_role_ur_only + Support×UR candidate seats.
 
 v16 (rules v3): full-catalog DC rankings with deeper store (top 20), real
 No UR / No Shinn / same-role variant lists from calculator pairs only.

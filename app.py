@@ -2168,6 +2168,7 @@ def browse_combo_from_unit_args(args):
         'ability_combine': normalize_filter_combine_op(args.get('ability_op'), 'and'),
         'terrain_combine': normalize_filter_combine_op(args.get('terrain_op'), 'and'),
         'weapon_debuff_combine': normalize_filter_combine_op(args.get('weapon_debuff_op'), 'and'),
+        'ability_effect_combine': normalize_filter_combine_op(args.get('ability_effect_op'), 'and'),
         'weapon_attr_combine': normalize_filter_combine_op(args.get('weapon_attr_op'), 'and'),
         'weapon_range_combine': normalize_filter_combine_op(args.get('weapon_range_op'), 'and'),
         'weapon_range_non_map_combine': normalize_filter_combine_op(args.get('weapon_range_non_map_op'), 'and'),
@@ -2379,6 +2380,41 @@ def unit_weapon_debuff_filter_cache_fragment(expr):
     if expr is None:
         return 'w0'
     return ('w' + '__'.join(expr))[:220]
+
+
+
+UNIT_ABILITY_EFFECT_DR_KEYS = frozenset({
+    'dr_beam', 'dr_phys', 'dr_spec', 'dr_multi', 'dr_ranged', 'dr_range',
+})
+UNIT_ABILITY_EFFECT_FILTER_KEYS = frozenset({
+    'dr_any', *UNIT_ABILITY_EFFECT_DR_KEYS, 'en_restore', 'hp_restore', 'cond_area',
+})
+
+
+def parse_unit_ability_effect_filter(val):
+    """Comma-separated ability effect category keys (Phase 1: damage-reduction families)."""
+    if val is None:
+        return None
+    s = (val or '').strip()
+    if not s or s.upper() == 'ALL':
+        return None
+    out = []
+    seen = set()
+    for token in [p.strip() for p in s.replace(';', ',').split(',') if p.strip()]:
+        if token not in UNIT_ABILITY_EFFECT_FILTER_KEYS:
+            continue
+        if token not in seen:
+            seen.add(token)
+            out.append(token)
+    if not out:
+        return None
+    return tuple(out)
+
+
+def unit_ability_effect_filter_cache_fragment(expr):
+    if expr is None:
+        return 'ae0'
+    return ('ae' + '__'.join(expr))[:220]
 
 
 UNIT_WEAPON_ATTR_FILTER_KEYS = frozenset({'physical', 'beam', 'special'})
@@ -3646,8 +3682,11 @@ def _ability_text_has_pilot_tag_affinity_prefix(txt):
     if not txt or not isinstance(txt, str):
         return False
     return bool(re.search(
-        r'piloting units with specified tags|指定.*?タグ|指定.*?標籤|指定.*?标签|'
-        r'含有上述「標籤」|搭乘單位含有上述「標籤」|上記の「タグ」|搭乗ユニットが上記の「タグ」|'
+        r'piloting units with (?:the )?specified tags(?:\s+or\s+series)?|'
+        r'指定.*?タグ|指定.*?標籤|指定.*?标签|'
+        r'含有上述「標籤」|含有上述「標籤／系列」|'
+        r'搭乘單位含有上述「標籤」|搭乘單位含有上述「標籤／系列」|'
+        r'上記の「タグ」|搭乗ユニットが上記の「タグ」|'
         r"탑승\s*유닛이\s*위\s*'태그'|탑승\s*유닛이\s*위\s*「태그」|"
         r"탑승\s*캐릭터가\s*위\s*'태그'|탑승캐릭터\s*위\s*'태그'",
         txt, re.I))
@@ -4645,6 +4684,163 @@ def enrich_weapon_levels_with_enemy_def_debuff(levels, ssp_trait_lines):
         d['enemy_def_debuff_supercharged_pct'] = vig_m
         out.append(d)
     return out
+
+
+
+def classify_unit_ability_dr_effect_keys(line):
+    """Map one unit-ability name/detail line to Phase-1 DR category keys.
+
+    Uses EN (and mixed-locale) phrasing. Named series mechanics (I-Field / Escutcheon /
+    Phase Shift Armor / …) classify from their trait text — not the display name alone.
+    """
+    s = (line or '').strip()
+    if not s:
+        return frozenset()
+    # Offensive "damage taken from X up" inflicted on the enemy — not self DR.
+    if re.search(
+        r'damage\s+taken\s+from\s+.+\s+up\b|被ダメージ.*(?:アップ|上昇)|遭.+武裝攻擊時[，,]?受到的?損傷提升|'
+        r'遭.+武装攻撃時[，,]?受到的?損傷提升',
+        s,
+        re.I,
+    ):
+        return frozenset()
+    if not re.search(
+        r'reduce(?:\s+own)?\s+damage\s+taken|被ダメージ.*(?:軽減|減少)|損傷(?:減輕|減少)|ダメージ軽減',
+        s,
+        re.I,
+    ):
+        return frozenset()
+    has_beam = bool(re.search(r'\bbeam\b|ビーム|光束|鐳射', s, re.I))
+    has_phys = bool(re.search(r'\bphysical\b|物理', s, re.I))
+    has_spec = bool(re.search(r'\bspecial\b|特殊', s, re.I))
+    # Non-attribute DR (no Beam/Physical/Special): ranged-weapon or Cond:Range distance.
+    # There is no catalog-wide "untyped absolute DR" — do not invent a generic chip.
+    has_ranged = bool(re.search(
+        r'\branged\s+weapon\b|射撃武装|射擊武裝|遠隔武器|遠距離武器',
+        s,
+        re.I,
+    ))
+    has_range_cond = bool(re.search(
+        r'\(Cond:\s*Range\)|from\s+\d+\s+or\s+more\s+spaces?\s+away|'
+        r'距離条件|距離條件|マス以上|格以上',
+        s,
+        re.I,
+    ))
+    keys = set()
+    n = int(has_beam) + int(has_phys) + int(has_spec)
+    if n:
+        if has_beam:
+            keys.add('dr_beam')
+        if has_phys:
+            keys.add('dr_phys')
+        if has_spec:
+            keys.add('dr_spec')
+        if n >= 2:
+            keys.add('dr_multi')
+    elif has_ranged:
+        keys.add('dr_ranged')
+    elif has_range_cond:
+        keys.add('dr_range')
+    return frozenset(keys)
+
+
+def classify_unit_ability_effect_keys(line):
+    """Ability-effect category keys from one trait line (EN text; locale-stable).
+
+    Phase 1: DR families. Phase 2: Any-DR umbrella is added at unit collect-time;
+    EN/HP Restoration; Cond:Area aura.
+    """
+    keys = set(classify_unit_ability_dr_effect_keys(line))
+    s = (line or '').strip()
+    if not s:
+        return frozenset(keys)
+    if re.search(r'\(Cond:\s*Area\)|エリア条件|區域條件', s, re.I):
+        keys.add('cond_area')
+    # EN/HP Restoration (incl. composites like "Increased ATK & EN Restoration").
+    # Do not match bare "Increased Max EN/HP" without a restore clause.
+    if re.search(
+        r'EN\s+Restoration|Restore\s+own\s+EN|EN回復|EN恢復',
+        s,
+        re.I,
+    ):
+        keys.add('en_restore')
+    if re.search(
+        r'HP\s+Restoration|Restore\s+own\s+HP|HP回復|HP恢復',
+        s,
+        re.I,
+    ):
+        keys.add('hp_restore')
+    return frozenset(keys)
+
+
+def _iter_unit_ability_ids_for_effect_filter(uid):
+    """Base abilities + SSP replacements + SSP gains (same coverage as ability_id browse)."""
+    uid = normalize_id(uid)
+    seen = set()
+    out = []
+    ua = unit_abil_map.get(uid, []) or []
+    rm = unit_ssp_abil_replace_map.get(uid, {}) or {}
+    for ab in ua:
+        aid = normalize_id(str(ab.get('id') or ''))
+        if aid and aid != '0' and aid not in seen:
+            seen.add(aid)
+            out.append(aid)
+        if aid and aid in rm:
+            rid = normalize_id(rm[aid])
+            if rid and rid != '0' and rid not in seen:
+                seen.add(rid)
+                out.append(rid)
+    for gain_aid in unit_ssp_abil_gain_list.get(uid, []) or []:
+        gid = normalize_id(str(gain_aid))
+        if gid and gid != '0' and gid not in seen:
+            seen.add(gid)
+            out.append(gid)
+    if not out:
+        # SSP-only shells (no m_unit_ability_set rows)
+        for gain_aid in unit_ssp_abil_gain_list.get(uid, []) or []:
+            gid = normalize_id(str(gain_aid))
+            if gid and gid != '0' and gid not in seen:
+                seen.add(gid)
+                out.append(gid)
+    return out
+
+
+def collect_unit_ability_effect_keys(uid, ld=None, lc=None):
+    """DR category keys present on a unit's abilities (EN trait text for locale-stable matching)."""
+    uid = normalize_id(uid)
+    cache = globals().get('UNIT_ABILITY_EFFECT_KEYS_CACHE')
+    # After boot precompute, always serve from cache (EN classification is locale-stable).
+    if isinstance(cache, dict) and cache:
+        return cache.get(uid, frozenset())
+    ld_f, _lc_f = _lang_data_for_weapon_debuff_filter(ld, lc or 'EN')
+    if not ld_f:
+        return frozenset()
+    acc = set()
+    for aid in _iter_unit_ability_ids_for_effect_filter(uid):
+        blob = collect_ability_search_text(str(aid), ld_f)
+        if not blob:
+            continue
+        # Soft-wrap newlines inside one trait ("…physical weapon,\nreduce damage taken…")
+        # must stay one unit — splitting them falsely tags the % line as untyped/generic.
+        # Split only on hard separators between distinct trait texts.
+        for part in re.split(r'[|;]+', blob):
+            part = re.sub(r'\s+', ' ', (part or '').replace('\n', ' ')).strip()
+            if part:
+                acc |= set(classify_unit_ability_effect_keys(part))
+    if acc & UNIT_ABILITY_EFFECT_DR_KEYS:
+        acc.add('dr_any')
+    return frozenset(acc)
+
+
+def unit_matches_ability_effect_filter(uid, want_filter, combine='and', info=None, ld=None, lc=None):
+    if want_filter is None:
+        return True
+    finfo = info if info is not None else unit_info_map.get(normalize_id(uid), {})
+    for fid in _unit_ids_for_terrain_filter(uid, finfo):
+        have = collect_unit_ability_effect_keys(fid, ld, lc)
+        if apply_browse_combine_match(want_filter, lambda k, _h=have: k in _h, combine):
+            return True
+    return False
 
 
 def _lang_data_for_weapon_debuff_filter(ld_request, lc_request):
@@ -15635,6 +15831,30 @@ WEAPON_DEBUFF_KEYS_PRESENT_BY_LANG = _precompute_weapon_debuff_keys_present_by_l
 WEAPON_DEBUFF_KEYS_PRESENT_UNION = frozenset(
     k for fs in WEAPON_DEBUFF_KEYS_PRESENT_BY_LANG.values() for k in fs
 )
+
+
+def _precompute_unit_ability_effect_keys_cache():
+    """uid -> frozenset of ability DR category keys (EN text)."""
+    ld_en = LANG_DATA.get('EN')
+    if not ld_en:
+        return {}
+    out = {}
+    for uid in unit_info_map:
+        keys = collect_unit_ability_effect_keys(uid, ld_en, 'EN')
+        if keys:
+            out[normalize_id(uid)] = keys
+    return out
+
+
+UNIT_ABILITY_EFFECT_KEYS_CACHE = _precompute_unit_ability_effect_keys_cache()
+ABILITY_EFFECT_KEYS_PRESENT = frozenset(
+    k for fs in UNIT_ABILITY_EFFECT_KEYS_CACHE.values() for k in fs
+)
+print(
+    f"Ability effect DR categories: {len(UNIT_ABILITY_EFFECT_KEYS_CACHE)} units, "
+    f"keys={sorted(ABILITY_EFFECT_KEYS_PRESENT)}"
+)
+
 
 # Limited-time Characters: SD Unit Assembly pickups often have RecommendCharacterId=0;
 # pull the linked Character so limited unit + pilot stay in sync.
@@ -28921,9 +29141,10 @@ _AFFINITY_FACTION_LV_RE = re.compile(
 )
 _AFFINITY_LINEAGE_CANONICAL = None
 _AFFINITY_PILOTING_TAG_RE = re.compile(
-    r'piloting units with specified tags|'
+    # EN: "specified tags" / "the specified tags or series" (Argi EX update, etc.)
+    r'piloting units with (?:the )?specified tags(?:\s+or\s+series)?|'
     r'指定.*?タグ|指定.*?標籤|指定.*?标签|'
-    r'含有上述「標籤」|搭乘單位含有上述「標籤」|'
+    r'含有上述「標籤」|含有上述「標籤／系列」|搭乘單位含有上述「標籤」|搭乘單位含有上述「標籤／系列」|'
     r'上記の「タグ」|搭乗ユニットが上記の「タグ」',
     re.IGNORECASE,
 )
@@ -30090,6 +30311,8 @@ def browse_filters_pool_signature(args, entity=None):
             parts.append(normalize_filter_combine_op(args.get('terrain_op'), 'and'))
             parts.append(args.get('weapon_debuff', '').strip())
             parts.append(normalize_filter_combine_op(args.get('weapon_debuff_op'), 'and'))
+            parts.append(args.get('ability_effect', '').strip())
+            parts.append(normalize_filter_combine_op(args.get('ability_effect_op'), 'and'))
             parts.append(args.get('weapon_attr', '').strip())
             parts.append(normalize_filter_combine_op(args.get('weapon_attr_op'), 'and'))
             parts.append(args.get('weapon_range', '').strip())
@@ -30799,12 +31022,13 @@ def unit_passes_browse_pool_filters(
     lineage_filter, series_filter, ability_filter, terrain_filter=None, stat_mode='normal',
     weapon_debuff_filter=None,
     weapon_attr_filter=None,
+    ability_effect_filter=None,
     *, q_scope='name_id', apply_lineage=True, apply_series=True, apply_ability=True, apply_terrain=True, apply_weapon_debuff=True,
-    apply_weapon_attr=True,
+    apply_weapon_attr=True, apply_ability_effect=True,
     weapon_range_filter=None, apply_weapon_range=True, weapon_range_non_map_filter=None, apply_weapon_range_non_map=True,
     weapon_range_non_map_ssp_ex=False,
     map_weapon_range_filter=None, apply_map_weapon_range=True,
-    lineage_combine='and', series_combine='or', ability_combine='and', terrain_combine='and', weapon_debuff_combine='and',
+    lineage_combine='and', series_combine='or', ability_combine='and', terrain_combine='and', weapon_debuff_combine='and', ability_effect_combine='and',
     weapon_attr_combine='and', weapon_range_combine='and', weapon_range_non_map_combine='and', map_weapon_range_combine='and',
     cond_active=False,
     pilot_cond_active=False,
@@ -30877,6 +31101,10 @@ def unit_passes_browse_pool_filters(
             return False
     if apply_ability and ability_filter is not None:
         if not (direct_seek or npc123_list) and not entity_matches_unit_abilities_filter(uid, ability_filter, ability_combine):
+            return False
+    if apply_ability_effect and ability_effect_filter is not None:
+        if not (direct_seek or npc123_list) and not unit_matches_ability_effect_filter(
+                uid, ability_effect_filter, ability_effect_combine, info=info, ld=ld, lc=lc):
             return False
     if apply_weapon_attr and weapon_attr_filter is not None:
         if not (direct_seek or npc123_list) and not unit_matches_weapon_attr_filter(
@@ -31853,6 +32081,8 @@ def list_units():
     mov_ck = mov_filter_cache_fragment(mov_filter)
     weapon_debuff_arg = request.args.get('weapon_debuff', '').strip()
     weapon_debuff_filter = parse_unit_weapon_debuff_filter(weapon_debuff_arg)
+    ability_effect_arg = request.args.get('ability_effect', '').strip()
+    ability_effect_filter = parse_unit_ability_effect_filter(ability_effect_arg)
     weapon_attr_arg = request.args.get('weapon_attr', '').strip()
     weapon_attr_filter = parse_unit_weapon_attr_filter(weapon_attr_arg)
     weapon_range_arg = request.args.get('weapon_range', '').strip()
@@ -31871,6 +32101,7 @@ def list_units():
     ability_ck = ability_filter_cache_fragment(ability_filter)
     terrain_ck = unit_terrain_filter_cache_fragment(terrain_filter)
     weapon_debuff_ck = unit_weapon_debuff_filter_cache_fragment(weapon_debuff_filter)
+    ability_effect_ck = unit_ability_effect_filter_cache_fragment(ability_effect_filter)
     weapon_attr_ck = unit_weapon_attr_filter_cache_fragment(weapon_attr_filter)
     weapon_range_ck = unit_weapon_range_filter_cache_fragment(weapon_range_filter)
     weapon_range_non_map_ck = unit_weapon_range_non_map_filter_cache_fragment(weapon_range_non_map_filter, weapon_range_non_map_ssp_ex)
@@ -31903,8 +32134,9 @@ def list_units():
     # ul72: exclude_escape_alt — hide Escape Function post-evac forms (MLS formation picker)
     # ul73: unit_skill=1 — only units with Unit Skills (base + max ALT ULT unlocks)
     # ul74: mov=3,4,5,6 official movement search filter
+    # ul78: ability_effect=dr_any|dr_*|en_restore|hp_restore|cond_area
     uskill_ck = 'usk1' if unit_skill_only else 'usk0'
-    ck = f"ul74_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{uskill_ck}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{mov_ck}_{weapon_debuff_ck}_{weapon_attr_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_waop{_cbu['weapon_attr_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{esc_alt_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    ck = f"ul78_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{uskill_ck}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{ability_effect_ck}_{terrain_ck}_{mov_ck}_{weapon_debuff_ck}_{weapon_attr_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_waop{_cbu['weapon_attr_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{esc_alt_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached:
         return jsonify_preserialized(cached, ck, public=True, max_age=3600, convert_images=False)
@@ -31962,6 +32194,11 @@ def list_units():
                 continue
         if ability_filter is not None:
             if not (direct_seek or npc123_list) and not entity_matches_unit_abilities_filter(uid, ability_filter, _cbu['ability_combine']):
+                continue
+        if ability_effect_filter is not None:
+            if not (direct_seek or npc123_list) and not unit_matches_ability_effect_filter(
+                    uid, ability_effect_filter, _cbu.get('ability_effect_combine', 'and'),
+                    info=info, ld=ld, lc=lc):
                 continue
         if weapon_attr_filter is not None:
             if not (direct_seek or npc123_list) and not unit_matches_weapon_attr_filter(
@@ -32131,7 +32368,7 @@ def list_units():
     _wr_auto_ssp = sorted(weapon_range_non_map_auto_ssp_tiers(), key=int)
     _wr_auto_pep = sorted(weapon_range_non_map_auto_pep_tiers(), key=int)
     _mech_rows = mechanism_list_filter_rows_from_ids(mechanism_union, ld)
-    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'ability_filter': ability_arg, 'terrain_filter': terrain_arg, 'mov_filter': mov_arg, 'mov_auto_ssp_values': sorted(MOV_AUTO_SSP_VALUES), 'mov_auto_sp_values': sorted(MOV_AUTO_SP_VALUES), 'mov_auto_cond_values': sorted(MOV_AUTO_COND_VALUES), 'weapon_debuff': weapon_debuff_arg, 'weapon_range': weapon_range_arg, 'weapon_range_non_map': weapon_range_non_map_arg, 'map_weapon_range': map_weapon_range_arg, 'weapon_debuff_present_keys': _wbp, 'weapon_debuff_auto_pep_keys': _wb_auto_pep, 'weapon_range_auto_ssp_tiers': _wr_auto_ssp, 'weapon_range_auto_pep_tiers': _wr_auto_pep, 'terrain_present_tokens': sorted(UNIT_TERRAIN_FILTER_TOKENS_PRESENT), 'weapon_range_ssp_ex_present': sorted(WEAPON_RANGE_SSP_EX_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_present': sorted(WEAPON_RANGE_SSP_EX_SSP_VALUES_PRESENT, key=int), 'weapon_range_non_map_present': sorted(WEAPON_RANGE_NON_MAP_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_present': sorted(WEAPON_RANGE_NON_MAP_SSP_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_present': sorted(WEAPON_RANGE_ALL_SSP_VALUES_PRESENT, key=int), 'weapon_range_non_map_cond_present': sorted(WEAPON_RANGE_NON_MAP_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_cond_present': sorted(WEAPON_RANGE_ALL_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_cond_present': sorted(WEAPON_RANGE_SSP_EX_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_pilot_cond_present': sorted(WEAPON_RANGE_NON_MAP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_pilot_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_pilot_cond_present': sorted(WEAPON_RANGE_ALL_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_pilot_cond_present': sorted(WEAPON_RANGE_SSP_EX_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_pilot_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_full_cond_present': sorted(WEAPON_RANGE_NON_MAP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_full_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_full_cond_present': sorted(WEAPON_RANGE_ALL_SSP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_full_cond_present': sorted(WEAPON_RANGE_SSP_EX_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_full_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_FULL_COND_VALUES_PRESENT, key=int), 'mechanism': mechanism_arg, 'mechanism_present': _mech_rows, 'stat_bounds': stat_bounds, 'sort_priority_band': sort_priority_band}
+    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'ability_filter': ability_arg, 'ability_effect': ability_effect_arg, 'ability_effect_present_keys': sorted(ABILITY_EFFECT_KEYS_PRESENT), 'terrain_filter': terrain_arg, 'mov_filter': mov_arg, 'mov_auto_ssp_values': sorted(MOV_AUTO_SSP_VALUES), 'mov_auto_sp_values': sorted(MOV_AUTO_SP_VALUES), 'mov_auto_cond_values': sorted(MOV_AUTO_COND_VALUES), 'weapon_debuff': weapon_debuff_arg, 'weapon_range': weapon_range_arg, 'weapon_range_non_map': weapon_range_non_map_arg, 'map_weapon_range': map_weapon_range_arg, 'weapon_debuff_present_keys': _wbp, 'weapon_debuff_auto_pep_keys': _wb_auto_pep, 'weapon_range_auto_ssp_tiers': _wr_auto_ssp, 'weapon_range_auto_pep_tiers': _wr_auto_pep, 'terrain_present_tokens': sorted(UNIT_TERRAIN_FILTER_TOKENS_PRESENT), 'weapon_range_ssp_ex_present': sorted(WEAPON_RANGE_SSP_EX_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_present': sorted(WEAPON_RANGE_SSP_EX_SSP_VALUES_PRESENT, key=int), 'weapon_range_non_map_present': sorted(WEAPON_RANGE_NON_MAP_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_present': sorted(WEAPON_RANGE_NON_MAP_SSP_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_present': sorted(WEAPON_RANGE_ALL_SSP_VALUES_PRESENT, key=int), 'weapon_range_non_map_cond_present': sorted(WEAPON_RANGE_NON_MAP_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_cond_present': sorted(WEAPON_RANGE_ALL_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_cond_present': sorted(WEAPON_RANGE_SSP_EX_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_pilot_cond_present': sorted(WEAPON_RANGE_NON_MAP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_pilot_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_pilot_cond_present': sorted(WEAPON_RANGE_ALL_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_pilot_cond_present': sorted(WEAPON_RANGE_SSP_EX_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_pilot_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_full_cond_present': sorted(WEAPON_RANGE_NON_MAP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_full_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_full_cond_present': sorted(WEAPON_RANGE_ALL_SSP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_full_cond_present': sorted(WEAPON_RANGE_SSP_EX_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_full_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_FULL_COND_VALUES_PRESENT, key=int), 'mechanism': mechanism_arg, 'mechanism_present': _mech_rows, 'stat_bounds': stat_bounds, 'sort_priority_band': sort_priority_band}
     if not sq:
         result['transform_alt_browse_rows'] = _build_transform_alt_browse_rows(ld, lc, stat_mode, cond_list)
     result = convert_image_urls(result)
