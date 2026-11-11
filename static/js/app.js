@@ -20074,21 +20074,22 @@ const roles=Array.isArray(f.roles)?f.roles:ROLE_LIST_IDS.slice();
 const rars=Array.isArray(f.rarities)?f.rarities:_DC_PICKER_RARITY_KEYS.slice();
 const serLbl=serN?t('list_filter_series')+' ×'+serN:t('filter_series_all');
 const linLbl=linN?t('list_filter_lineage')+' ×'+linN:t('filter_tags_all');
-const roleActive=roles.length!==ROLE_LIST_IDS.length;
-const rarActive=rars.length!==_DC_PICKER_RARITY_KEYS.length;
+const roleSolo=roles.length===1;
+const rarSolo=rars.length===1;
 let h='';
 h+=`<button type="button" class="dc-picker-filter-chip${serN||f.panel==='series'?' is-active':''}" data-dc-pf="series" title="${escAttr(t('list_filter_series'))}"><img src="${imgUrl(SERIES_FILTER_ALL_LOGO)}" alt="" role="presentation"><span>${esc(serLbl)}</span></button>`;
 h+=`<button type="button" class="dc-picker-filter-chip${linN||f.panel==='lineage'?' is-active':''}" data-dc-pf="lineage" title="${escAttr(t('list_filter_lineage'))}"><img src="${imgUrl(tagIc)}" alt="" role="presentation"><span>${esc(linLbl)}</span></button>`;
 ROLE_LIST_IDS.forEach((rid,i)=>{
-const on=roles.indexOf(rid)>=0;
+const solo=roleSolo&&roles[0]===rid;
 const nm=t(['role_attack','role_defense','role_support'][i]);
 const ic=ROLE_FILTER_ICONS[rid]?`<img src="${imgUrl(ROLE_FILTER_ICONS[rid])}" alt="" role="presentation">`:'';
-h+=`<button type="button" class="dc-picker-filter-chip${on?(roleActive?' is-on':''):''}" data-dc-pf-role="${rid}" title="${escAttr(nm)}" aria-pressed="${on?'true':'false'}">${ic}<span>${esc(nm)}</span></button>`;
+/* Default = all roles (neutral chips). Click → that role only (is-on). Click again → all. */
+h+=`<button type="button" class="dc-picker-filter-chip${solo?' is-on is-active':''}" data-dc-pf-role="${rid}" title="${escAttr(nm)}" aria-pressed="${solo?'true':'false'}">${ic}<span>${esc(nm)}</span></button>`;
 });
 _DC_PICKER_RARITY_KEYS.forEach(rk=>{
-const on=rars.indexOf(rk)>=0;
+const solo=rarSolo&&rars[0]===rk;
 const ic=RARITY_FILTER_ICONS[rk]?`<img src="${imgUrl(RARITY_FILTER_ICONS[rk])}" alt="" role="presentation">`:'';
-h+=`<button type="button" class="dc-picker-filter-chip${on?(rarActive?' is-on':''):''}" data-dc-pf-rar="${rk}" title="${escAttr(rk)}" aria-pressed="${on?'true':'false'}">${ic}<span>${esc(rk)}</span></button>`;
+h+=`<button type="button" class="dc-picker-filter-chip${solo?' is-on is-active':''}" data-dc-pf-rar="${rk}" title="${escAttr(rk)}" aria-pressed="${solo?'true':'false'}">${ic}<span>${esc(rk)}</span></button>`;
 });
 if(_dcPickerHasActiveFilters())h+=`<button type="button" class="dc-picker-filter-chip dc-picker-filter-chip--clear" data-dc-pf="clear">${esc(t('browse_filters_clear')||'Clear')}</button>`;
 row.innerHTML=h;
@@ -20102,18 +20103,16 @@ const f2=_dcPickerFiltState();
 if(btn.hasAttribute('data-dc-pf-role')){
 const rid=btn.getAttribute('data-dc-pf-role');
 let roles2=Array.isArray(f2.roles)?f2.roles.slice():ROLE_LIST_IDS.slice();
-const ix=roles2.indexOf(rid);
-if(ix>=0){if(roles2.length>1)roles2.splice(ix,1)}else roles2.push(rid);
-roles2=ROLE_LIST_IDS.filter(x=>roles2.indexOf(x)>=0);
+if(roles2.length===1&&roles2[0]===rid)roles2=ROLE_LIST_IDS.slice();
+else roles2=[rid];
 f2.roles=roles2;
 _dcRenderPickerFilterBar();_dcDoPickerSearch();return;
 }
 if(btn.hasAttribute('data-dc-pf-rar')){
 const rk=btn.getAttribute('data-dc-pf-rar');
 let rars2=Array.isArray(f2.rarities)?f2.rarities.slice():_DC_PICKER_RARITY_KEYS.slice();
-const ix=rars2.indexOf(rk);
-if(ix>=0){if(rars2.length>1)rars2.splice(ix,1)}else rars2.push(rk);
-rars2=_DC_PICKER_RARITY_KEYS.filter(x=>rars2.indexOf(x)>=0);
+if(rars2.length===1&&rars2[0]===rk)rars2=_DC_PICKER_RARITY_KEYS.slice();
+else rars2=[rk];
 f2.rarities=rars2;
 _dcRenderPickerFilterBar();_dcDoPickerSearch();return;
 }
