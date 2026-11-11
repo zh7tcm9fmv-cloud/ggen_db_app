@@ -5195,7 +5195,8 @@ const pilotCond=opts.listUnitPilotCondPerspective?'1':'0';
 rankSuf=`&view=ranking&stat_mode=${encodeURIComponent(sm)}&cond=${cond}&pilot_cond=${pilotCond}`;
 }
 }
-if(type==='character')return`/api/character/${eid}?lang=${lang}${rankSuf}`;
+/* sv=c27: empty-text ActiveCondition siblings no longer paint Mercenary/IBO onto ungated SAC ATK lines (Argi EX). */
+if(type==='character')return`/api/character/${eid}?lang=${lang}${rankSuf}&sv=c27`;
 /* sv=usk5: unit-skill details = LANG desc only (no trait paraphrase duplicates). */
 if(type==='unit')return`/api/unit/${eid}?lang=${lang}${rankSuf}&sv=usk5`;
 if(type==='supporter')return`/api/supporter/${eid}?lang=${lang}&level=100&lb_tier=3&sv=s8`;
@@ -18198,8 +18199,9 @@ const condGroups=(ln&&ln.condition_groups)||[];
 if(condGroups.length){
 if(!_dcAbilityCondContextMeetsGroups(unitRef,cd,condGroups))return;
 }else{
-/* Some EX lines only ship bare `conditions` (no condition_groups), e.g. Argi Mirage
-   Support Attack/Counter +10% ATK gated to Mercenary / IBO series. */
+/* Some EX lines only ship bare `conditions` (no condition_groups). Empty bare =
+   action-only gate (e.g. Argi Mirage Support Attack/Counter ATK +10% — in-game has
+   no unit tags). Non-empty bare must still match the MS. */
 const bare=(ln&&ln.conditions)||[];
 if(bare.length&&!_dcConditionGroupMatches(unitRef,cd,{conditions:bare}))return;
 }

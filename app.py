@@ -13134,9 +13134,60 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
                 if cond_groups:
                     details[-1]['condition_groups'] = cond_groups
         else:
-            if details:
-                for c in conds:
-                    if c not in details[-1]['conditions']: details[-1]['conditions'].append(c)
+            # Empty-text trait row (effect sibling). Attach its ActiveCondition tags to the
+            # prose detail that owns that scope — NOT blindly details[-1].
+            # Argi EX 2016801: MP row 201680104 (Mercenary|IBO) must merge into the
+            # "specified tags/series" MP+Damage Dealt line, not the following ungated
+            # Support Attack/Counter ATK +10% line (in-game shows no tags there).
+            if details and conds:
+                def _detail_cond_sig(clist):
+                    return tuple(sorted(
+                        (str(c.get('id') or ''), str(c.get('type') or ''))
+                        for c in (clist or [])
+                        if isinstance(c, dict)
+                    ))
+                sig = _detail_cond_sig(conds)
+                target = None
+                if sig:
+                    for d2 in reversed(details):
+                        if _detail_cond_sig(d2.get('conditions')) == sig:
+                            target = d2
+                            break
+                if target is None:
+                    for d2 in reversed(details):
+                        tx = str(d2.get('text') or '')
+                        if not trait_text_implies_show_target_condition_tags('', tx):
+                            continue
+                        ds = _detail_cond_sig(d2.get('conditions'))
+                        if (not ds) or ds == sig or (sig and set(sig).issubset(set(ds))):
+                            target = d2
+                            break
+                if target is None:
+                    last = details[-1]
+                    last_sig = _detail_cond_sig(last.get('conditions'))
+                    last_tx = str(last.get('text') or '')
+                    # Only fall back when the previous prose is the specified-tags owner
+                    # still waiting for empty-sibling actives — never paint unit tags onto
+                    # an intervening action-only line (Support Attack/Counter ATK %, etc.).
+                    if (not last_sig) and trait_text_implies_show_target_condition_tags('', last_tx):
+                        target = last
+                if target is not None:
+                    for c in conds:
+                        if c not in target['conditions']:
+                            target['conditions'].append(c)
+                    # Keep condition_groups Condition 1 in sync when present.
+                    cgs = target.get('condition_groups')
+                    if isinstance(cgs, list) and cgs:
+                        for g in cgs:
+                            if not isinstance(g, dict):
+                                continue
+                            lab = str(g.get('label') or '').strip().lower()
+                            if lab in ('condition 1', 'target tags', ''):
+                                gc = g.setdefault('conditions', [])
+                                for c in conds:
+                                    if c not in gc:
+                                        gc.append(c)
+                                break
     if not details:
         old_descs = abil_desc_map.get(lookup_id, abil_desc_map.get(trait_set_id, []))
         for entry in old_descs:
@@ -39100,7 +39151,8 @@ def get_character(char_id):
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
         view_ranking = request.args.get('view', '').strip().lower() == 'ranking'
         # r21: condition chips use in-game id order (Zeon & Land, not file order).
-        ck = f"c_{char_id}_{lc}_r26_{1 if view_ranking else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        # r27: empty-text ActiveCondition siblings attach to specified-tags prose, not next SAC ATK line (Argi EX).
+        ck = f"c_{char_id}_{lc}_r27_{1 if view_ranking else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         _cc = _detail_http_cache_kwargs()
         # Warm body/304 before dict lookup — keeps detail storms off the rebuild path.
         early = try_serve_preserialized(ck, **_cc)
