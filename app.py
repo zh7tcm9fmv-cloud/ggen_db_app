@@ -18277,6 +18277,11 @@ def _map_npc_escape_name_base(name):
     return re.sub(r'[_]?\d+$', '', n, flags=re.I).lower()
 
 
+def _map_npc_escape_name_suffix_num(name):
+    m = re.search(r'(\d+)$', str(name or '').strip())
+    return int(m.group(1)) if m else 0
+
+
 def _map_npc_escape_is_sequel_name(parent_name, spawn_name):
     """True when spawn NpcUniqueName is a numbered sequel of the parent name."""
     p = str(parent_name or '').strip().lower()
@@ -18285,7 +18290,10 @@ def _map_npc_escape_is_sequel_name(parent_name, spawn_name):
         return False
     if _map_npc_escape_name_base(p) != _map_npc_escape_name_base(s):
         return False
-    return s.startswith(p + '_') or (s.startswith(p) and len(s) > len(p))
+    if s.startswith(p + '_') or (s.startswith(p) and len(s) > len(p)):
+        return True
+    # char_aznable_01 → char_aznable_02 / _03 (same base, different numeric suffix)
+    return _map_npc_escape_name_suffix_num(p) != _map_npc_escape_name_suffix_num(s)
 
 
 def _pair_map_npc_escape_spawns_by_name(placed, unplaced, meta, paired_parents, paired_spawns, link_fn):
@@ -18317,6 +18325,56 @@ def _pair_map_npc_escape_spawns_by_name(placed, unplaced, meta, paired_parents, 
             matches.append(sp)
         if len(matches) == 1:
             link_fn(par, matches[0])
+        elif len(matches) > 1:
+            # Prefer nearest by step / name suffix (Escape×2 leaves multiple name matches).
+            def _match_key(sp):
+                sid = str(sp.get('npc_id', ''))
+                srow = meta.get(normalize_id(sid), {})
+                sname = srow.get('NpcUniqueName') or srow.get('npc_unique_name') or ''
+                step = safe_int(sp.get('step_order'), 0) or safe_int(srow.get('step_order'), 0)
+                return (step or _map_npc_escape_name_suffix_num(sname), _map_npc_escape_name_suffix_num(sname), sid)
+            matches.sort(key=_match_key)
+            link_fn(par, matches[0])
+
+
+def _pair_map_npc_escape_spawns_by_name_chains(side_units, meta, paired_parents, paired_spawns, link_fn):
+    """Chain Escape×N name groups (char_aznable_01→_02→_03) across differing character_ids."""
+    by_base = {}
+    for u in side_units or []:
+        nid = str(u.get('npc_id', '') or '')
+        if not nid:
+            continue
+        row = meta.get(normalize_id(nid), {})
+        name = row.get('NpcUniqueName') or row.get('npc_unique_name') or ''
+        base = _map_npc_escape_name_base(name)
+        if not base:
+            continue
+        by_base.setdefault(base, []).append(u)
+    for _base, group in by_base.items():
+        if len(group) < 2:
+            continue
+        if not any(u.get('pilot_has_escape') for u in group):
+            continue
+
+        def _chain_key(u):
+            nid = str(u.get('npc_id', '') or '')
+            row = meta.get(normalize_id(nid), {})
+            name = row.get('NpcUniqueName') or row.get('npc_unique_name') or ''
+            step = safe_int(u.get('step_order'), 0) or safe_int(row.get('step_order'), 0)
+            return (step or _map_npc_escape_name_suffix_num(name), _map_npc_escape_name_suffix_num(name), nid)
+
+        ordered = sorted(group, key=_chain_key)
+        for i in range(len(ordered) - 1):
+            cur = ordered[i]
+            nxt = ordered[i + 1]
+            if not cur.get('pilot_has_escape'):
+                continue
+            # Do not chain two initially-placed on-map units.
+            if cur.get('is_initially_placed', True) and nxt.get('is_initially_placed', True):
+                continue
+            if not cur.get('is_initially_placed', True) and nxt.get('is_initially_placed', True):
+                continue
+            link_fn(cur, nxt)
 
 
 def _pair_map_npc_escape_spawns_for_side(side_units, meta):
@@ -18342,6 +18400,8 @@ def _pair_map_npc_escape_spawns_for_side(side_units, meta):
         sid = str(spawn.get('npc_id', ''))
         if not pid or not sid or pid in paired_parents or sid in paired_spawns:
             return False
+        if parent.get('escape_spawn_npc_id') or spawn.get('escape_from_npc_id'):
+            return False
         parent['escape_spawn_npc_id'] = sid
         spawn['escape_from_npc_id'] = pid
         paired_parents.add(pid)
@@ -18366,6 +18426,8 @@ def _pair_map_npc_escape_spawns_for_side(side_units, meta):
     rem_placed = [u for u in placed if str(u.get('npc_id', '')) not in paired_parents]
     rem_unplaced = [u for u in unplaced if str(u.get('npc_id', '')) not in paired_spawns]
     _pair_map_npc_escape_spawns_by_name(rem_placed, rem_unplaced, meta, paired_parents, paired_spawns, _link)
+    # Escape×2+: chain name groups so intermediate spawns can also Escape (01→02→03).
+    _pair_map_npc_escape_spawns_by_name_chains(side_units, meta, paired_parents, paired_spawns, _link)
 
 
 def _pair_map_npc_escape_spawns_by_pilot(placed, unplaced, paired_parents, paired_spawns, link_fn):
@@ -18422,6 +18484,7 @@ def _pair_map_npc_escape_spawns_cross_side(units, meta):
     rem_placed = [u for u in placed if str(u.get('npc_id', '')) not in paired_parents]
     rem_unplaced = [u for u in unplaced if str(u.get('npc_id', '')) not in paired_spawns]
     _pair_map_npc_escape_spawns_by_name(rem_placed, rem_unplaced, meta, paired_parents, paired_spawns, _link)
+    _pair_map_npc_escape_spawns_by_name_chains(units, meta, paired_parents, paired_spawns, _link)
 
 
 def pair_map_npc_escape_spawns(units, npc_rows):
@@ -18660,8 +18723,29 @@ def _map_buff_area_effect_meta(buff_id, lc):
     }
 
 
+def _map_buff_area_source_is_hostile(src):
+    """Enemy-sourced map auras are hostile to the player (red), even when the text is an ATK buff for that NPC."""
+    if not src or not isinstance(src, dict):
+        return False
+    side = str(src.get('source_side') or '').strip().lower()
+    if side in ('enemy', 'hostile'):
+        return True
+    if side in ('guest', 'ally', 'friendly', 'gimmick'):
+        return False
+    # BattleSidePlacedTypeIndex: 1 guest, 2 enemy, 4 friendly force
+    bst = normalize_id(src.get('battle_side_type'), '')
+    if bst in ('1', '4'):
+        return False
+    if bst and bst not in ('0',):
+        return True
+    return False
+
+
 def build_map_buff_area_cells(buff_sources, width, height, lc):
-    """Merge map buff/debuff auras into per-cell tint + hover tooltip payload for the stage map."""
+    """Merge map buff/debuff auras into per-cell tint + hover tooltip payload for the stage map.
+
+    Tint: blue = ally/guest buff, red = decrease-text debuff OR any enemy-sourced aura, purple = both.
+    """
     layers = {}
     for src in buff_sources or []:
         bid = normalize_id(src.get('buff_id', '0'))
@@ -18690,10 +18774,12 @@ def build_map_buff_area_cells(buff_sources, width, height, lc):
             cell_iter = _map_buff_range_cells_1based(
                 cx, cy, row.get('range_min'), row.get('range_max'), width, height,
             )
+        # Player-facing tint: enemy auras read as red (hostile), ally/guest stay blue.
+        as_hostile = bool(meta.get('is_debuff')) or _map_buff_area_source_is_hostile(src)
         for x1, y1 in cell_iter:
             key = f'{x1}_{y1}'
             cell = layers.setdefault(key, {'buff': False, 'debuff': False, 'effects': []})
-            if meta['is_debuff']:
+            if as_hostile:
                 cell['debuff'] = True
             else:
                 cell['buff'] = True
@@ -19181,6 +19267,25 @@ def resolve_npc_unit_weapons(wsid, uid, ubr, lc, extra_ex_icon_candidates=None):
         osr = (w.get('override_shooting_range') or '').strip()
         mc = _parse_map_weapon_override_coords(oer) if oer else [dict(c) for c in (ws.get('map_coords') or [])]
         sc = _parse_map_weapon_override_coords(osr) if osr else [dict(c) for c in (ws.get('shooting_coords') or [])]
+        # Override ranges are raw master cells — apply the same OccupiedAreaId-2 widen as resolve_weapon_stats.
+        # (Non-override path already receives widened coords from resolve_weapon_stats.)
+        if str(wt) == '3' and (oer or osr):
+            mrt_ov = normalize_id(wm.get('map_range_type') or '0', '0')
+            if mrt_ov == '2':
+                if osr:
+                    sc = augment_map_coords_for_occupied_area_2(sc, uid)
+            elif mrt_ov == '1':
+                if oer:
+                    _oa_info = unit_info_map.get(normalize_id(uid) if uid else '0') or {}
+                    if safe_int(_oa_info.get('occupied_area_id'), 1) == 2 and not map_coords_already_2x2_footprint_aware(mc):
+                        mc = minkowski_map_coords_with_2x2_footprint(mc)
+                if osr:
+                    sc = augment_map_coords_for_occupied_area_2(sc, uid)
+            else:
+                if oer:
+                    mc = augment_map_coords_for_occupied_area_2(mc, uid)
+                if osr:
+                    sc = augment_map_coords_for_occupied_area_2(sc, uid)
         is_dash = bool(ws.get('is_dash', False))
         if oer and not osr:
             is_dash = False
@@ -38821,12 +38926,21 @@ def get_stage(stage_id):
                     if nu_b:
                         uid_b = normalize_id(nu_b[0].get('unit_id', '0'))
                         npc_oaid = safe_int((unit_info_map.get(uid_b) or {}).get('occupied_area_id'), 1)
+                    bst_buff = normalize_id(npc.get('battle_side_type', '2'), '2')
+                    if bst_buff == '1':
+                        src_side = 'guest'
+                    elif bst_buff == '4':
+                        src_side = 'friendly'
+                    else:
+                        src_side = 'enemy'
                     buff_sources.append({
                         'x': npc.get('x', 0),
                         'y': npc.get('y', 0),
                         'buff_id': bid,
                         'direction': normalize_id(npc.get('direction', '1'), '1'),
                         'occupied_area_id': npc_oaid,
+                        'battle_side_type': bst_buff,
+                        'source_side': src_side,
                         'footprint': get_map_npc_unit_footprint_cells(
                             npc['id'], npc.get('x', 0), npc.get('y', 0), npc.get('direction'), for_buff=True,
                         ),
@@ -38844,6 +38958,7 @@ def get_stage(stage_id):
                         'buff_id': bid,
                         'direction': normalize_id(gimmick.get('direction', '1'), '1'),
                         'occupied_area_id': gimmick_oaid,
+                        'source_side': 'gimmick',
                         'footprint': get_map_npc_unit_footprint_cells(
                             gid, gimmick['x'], gimmick['y'], gimmick.get('direction'), for_buff=True,
                         ),

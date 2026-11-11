@@ -432,10 +432,10 @@ Object.assign(T.TW,{item_sp_conversion:'SP化'});
 Object.assign(T.HK,{item_sp_conversion:'SP化'});
 Object.assign(T.JA,{item_sp_conversion:'SP化'});
 Object.assign(T.JP,{item_sp_conversion:'SP化'});
-Object.assign(T.EN,{kofi_promo_kw_sneak:'exclusive sneak peeks',kofi_promo_kw_bonus:'bonus content',kofi_post_notice_aria:'New Ko-fi post',kofi_promo_notice_line:'New exclusive sneak peeks are live right now — get an early look at what’s coming before everyone else. Don’t miss out!',kofi_wall_title:'Thank you to {n} Newtypes keeping this database alive.',kofi_wall_join:'Join the wall',kofi_wall_rank1:'1st place',kofi_wall_rank2:'2nd place',kofi_wall_rank3:'3rd place',kofi_wall_aria:'Supporters',tab_meta_synergy:'Meta Synergistic Rankings',msy_hero_sub:'All sim-eligible units ranked by max pair damage (top 10 pilots each) — Damage Simulator rules (Eternal Expert DEF default, CP+PEP on, max Supercharged EX, super vigor, LB3).',msy_empty:'No pairings match your filters',msy_warming:'Computing rankings…',msy_warming_partial:'Updating rankings…',msy_warming_slow:'Rankings are still building. Shown results may be incomplete — refresh in a minute.',msy_cp_on:'Conditional Passive on (unit + character)',msy_cp_off:'Conditional Passive off (unit + character)',msy_pep_on:'Pilot Exclusive Passive on',msy_pep_off:'Pilot Exclusive Passive off',msy_exclude_ur:'Exclude UR pilots',msy_exclude_ur_on:'Showing non-UR pilots only',msy_exclude_shinn:'Exclude Shinn Asuka (EX)',msy_exclude_shinn_on:'Hiding Shinn Asuka (EX)',msy_sd_note:'Linked Character — locked to this unit only',msy_rank_super_crit:'Super Critical Damage',msy_rank_crit:'Critical Damage',msy_rank_normal:'Normal Damage',msy_squad_title:'Squad simulation',msy_squad_hint:'Used units and pilots are temporarily removed from rankings below.',msy_squad_reset:'Reset squad',msy_squad_empty:'Empty slot — add from a pairing row',msy_squad_slot:'Slot {n}',msy_search_ph:'Search units by name or ID…',msy_def_difficulty:'Difficulty Level',msy_def_hard3:'Story Hard',msy_def_challenge:'Challenge Hard',msy_def_eternal:'Eternal Expert',msy_def_avg:'Avg NPC',msy_def_unit_ph:'MS DEF',msy_def_char_ph:'Pilot DEF',msy_view_grouped:'Grouped',msy_view_table:'Table view',msy_view_barchart:'Bar chart view',msy_chart:'Bar chart view',msy_metric_peak:'Peak',msy_metric_super_crit:'Super Critical',msy_metric_crit:'Critical',msy_metric_normal:'Normal',msy_metric_expected:'Expected (crit%)',msy_status_units:'{n} units ranked',msy_status_showing:'Showing {n}',msy_status_match:'{n} match',msy_status_page:'Page {page}/{pages}',msy_status_metric:'Metric: {m}',msy_status_vigor:'Vigor: {v}',msy_open_unit:'Unit',msy_open_char:'Pilot',msy_add_squad:'+ Squad',msy_open_sim:'Simulator',msy_crit_rate:'{n}% Crit',msy_guaranteed_crit:'Guaranteed Critical',msy_affinity_match:'Affinity match',msy_no_eligible_pilots:'No eligible pilots for this filter.',msy_formula_stat:'{stat}: {val}',msy_pilot_loading:'Loading pilots…',msy_role_all:'All roles',msy_same_role:'Same Role Characters Only',msy_same_role_on:'Showing same-role pilots only',msy_support_role:'Supporters only',msy_support_role_on:'Showing Support-role pilots only',msy_role_filter_cycle:'Role filter: Same Role → Supporters only',unit_best_pilot_support_role:'Supporters',msy_abbr_exp:'Exp',msy_abbr_crit:'Crit',unit_best_pilot_title:'Top 10 Damage Pilot',unit_best_pilot_title_damage_tip:'Ranks pilots by peak pair damage vs Eternal Expert DEF (same rules as the Damage Simulator).\n\nDefaults: LB3, best EX weapon, Super vigor, Conditional Passive + Pilot Exclusive Passive on.\nMetric buttons switch Super Crit / Crit / Normal. 0% crit pilots use Normal for Crit metrics.\n\nToggle Skills to include/exclude active skills (ATK buffs, damage dealt, crit rate, etc.).',unit_best_pilot_btn:'Top 10 Damage Pilot',unit_best_pilot_loading:'Loading top 10 damage pilots…',unit_best_pilot_empty:'No eligible pilots found.',unit_best_pilot_error:'Could not load rankings.',unit_best_pilot_note:'Eternal Expert: MS DEF: {ms} Pilot DEF: {pilot}',unit_best_pilot_filters:'Pilot filters',unit_best_pilot_no_shinn:'No Shinn',unit_best_pilot_no_ur:'No UR',unit_best_pilot_ur_only_on:'Showing UR pilots only',unit_best_pilot_ur_filter_cycle:'UR filter: No UR → UR only',unit_best_pilot_ur_chip_ssr:'SSR↓',unit_best_pilot_ur_chip_only:'UR only',msy_ur_only_on:'Showing UR pilots only',unit_best_pilot_same_role:'Role',unit_best_pilot_filter_partial:'Showing calculator pilots that match this filter from the main top 10. A full non-UR / No-Shinn top 10 needs a dedicated calculator rebuild.',unit_best_pilot_title_skills_off:'Top 10 Damage (Skills Off)',unit_best_pilot_title_defender:'Top 10 Defender Pilots',unit_best_pilot_title_defender_tip:'Survivability ranking vs Destiny Gundam + Shinn (shield on, Super vigor).\n\nScore = Survival (~72%) + Support Defense + EN sustain + light counter damage (~5%).\nSurvival uses hits-to-kill vs EX + next weapon (55%/45%), soft HTK, and damage-taken-down % (affinity + Force Guard when Skills On).\n\nToggle Skills to include/exclude active skills like Force Guard. Not a full PvP sim.',unit_best_pilot_title_defender_skills_off:'Top 10 Defender (Skills Off)',unit_best_pilot_survival_skills:'Active skills used for survivability',unit_best_pilot_score_dr:'Damage taken down (total): {n}%',unit_best_pilot_score_dr_passive:'Damage taken down (affinity): {n}%',unit_best_pilot_score_dr_skill:'Damage taken down (active skills): {n}%',unit_best_pilot_score_series_sd:'Series Support Defense bonus: +{n}',unit_best_pilot_board_mode:'Ranking mode',unit_best_pilot_board_damage:'Damage ranking',unit_best_pilot_board_defender:'Defender ranking',unit_best_pilot_board_damage_short:'DMG',unit_best_pilot_board_defender_short:'DEF',unit_best_pilot_skills_toggle:'Active skills',unit_best_pilot_skills_on:'Active skills on',unit_best_pilot_skills_off:'Active skills off',unit_best_pilot_skills_on_short:'Skills',unit_best_pilot_skills_off_short:'No Skills',unit_best_pilot_skills_off_note:'Ranked without active skills (stats, affinity, and best weapon only).',unit_best_pilot_defender_note:'Defender score: survival (EHTK vs Destiny+Shinn) + SD×2 + EN sustain + counter damage.',unit_best_pilot_ehtk:'EHTK {n}',unit_best_pilot_counter_dmg:'Atk {n}',unit_best_pilot_defender_score:'Defender score',unit_best_pilot_skills_off_on:'Showing rankings without active skills',unit_best_pilot_score_survival:'Survival (tankiness × {w}): {n}',unit_best_pilot_score_htk_ex:'HTK vs Weapon A (EX): {n}',unit_best_pilot_score_htk_next:'HTK vs Weapon B: {n}',unit_best_pilot_score_ehtk_soft:'Soft EHTK (HP ÷ dmg taken): {n}',unit_best_pilot_score_ehtk:'Combined EHTK (0.55xA + 0.45xB): {n}',unit_best_pilot_score_sd:'Support Defense bonus: {n} (SD +{c})',unit_best_pilot_score_en:'EN sustain: {n}',unit_best_pilot_score_counter:'Counter damage (tiebreaker × {w}): {n}',unit_best_pilot_score_revive:'Revive floor: +{n}',unit_best_pilot_score_total:'Total: {n}',unit_best_pilot_defender_bully:'Inbound hits: Destiny Gundam EX + Shinn (Weapon A EX + Weapon B). Combined into one EHTK score.'});
-Object.assign(T.TW,{tab_meta_synergy:'Meta Synergistic Rankings',msy_hero_sub:'以本站損傷模擬器公式計算單位×駕駛員最高損傷配對——含超一擊戰意、爆擊與 LB3 EX 武裝。',msy_squad_title:'隊伍模擬',msy_squad_hint:'已使用的機體與駕駛員會從下方排行中暫時排除。',msy_squad_reset:'重置隊伍',msy_squad_empty:'空位 — 從配對列加入',msy_squad_slot:'位置 {n}',msy_search_ph:'搜尋機體名稱或 ID…',msy_view_grouped:'分組',msy_view_table:'表格',msy_metric_super_crit:'超爆擊',msy_metric_crit:'爆擊',msy_metric_normal:'通常',msy_metric_expected:'期望值（爆擊%）',msy_status_units:'{n} 部機體',msy_status_showing:'顯示 {n}',msy_status_match:'{n} 筆符合',msy_status_page:'第 {page}/{pages} 頁',msy_status_metric:'指標：{m}',msy_status_vigor:'戰意：{v}',msy_open_unit:'機體',msy_open_char:'駕駛',msy_add_squad:'+ 隊伍',msy_open_sim:'模擬器',msy_crit_rate:'{n}% 爆擊',msy_formula_stat:'{stat}：{val}',msy_role_all:'全部類型',msy_same_role:'僅限同類型駕駛員',msy_same_role_on:'僅顯示與機體同類型的駕駛員',msy_support_role:'僅支援類型',msy_support_role_on:'僅顯示支援類型駕駛員',msy_role_filter_cycle:'角色篩選：同類型 → 僅支援',unit_best_pilot_support_role:'支援',msy_abbr_exp:'期望',msy_abbr_crit:'爆擊',msy_guaranteed_crit:'確定爆擊',unit_best_pilot_title:'前10名損傷駕駛員',unit_best_pilot_btn:'前10名損傷駕駛員'});
-Object.assign(T.HK,{tab_meta_synergy:'Meta Synergistic Rankings',msy_hero_sub:'以本站損傷模擬器公式計算單位×駕駛員最高損傷配對。',msy_squad_title:'隊伍模擬',msy_squad_hint:'已使用的機體與駕駛員會從排行中暫時排除。',msy_squad_reset:'重置隊伍',msy_squad_empty:'空位',msy_squad_slot:'位置 {n}',msy_search_ph:'搜尋機體…',msy_view_grouped:'分組',msy_view_table:'表格',msy_metric_super_crit:'超爆擊',msy_metric_crit:'爆擊',msy_metric_normal:'通常',msy_metric_expected:'期望值',msy_status_units:'{n} 部機體',msy_status_showing:'顯示 {n}',msy_status_match:'{n} 筆符合',msy_status_page:'第 {page}/{pages} 頁',msy_status_metric:'指標：{m}',msy_status_vigor:'戰意：{v}',msy_open_unit:'機體',msy_open_char:'駕駛',msy_add_squad:'+ 隊伍',msy_open_sim:'模擬器',msy_crit_rate:'{n}% 爆擊',msy_formula_stat:'{stat}：{val}',msy_role_all:'全部類型',msy_same_role:'僅限同類型駕駛員',msy_same_role_on:'僅顯示與機體同類型的駕駛員',msy_support_role:'僅支援類型',msy_support_role_on:'僅顯示支援類型駕駛員',msy_role_filter_cycle:'角色篩選：同類型 → 僅支援',unit_best_pilot_support_role:'支援',msy_abbr_exp:'期望',msy_abbr_crit:'爆擊',msy_guaranteed_crit:'確定爆擊',unit_best_pilot_title:'前10名損傷駕駛員',unit_best_pilot_btn:'前10名損傷駕駛員'});
-Object.assign(T.JA,{tab_meta_synergy:'メタシナジーランキング',msy_hero_sub:'ダメージシミュレーターと同じ式でユニット×パイロットの最大ダメージ配対を表示（超一撃、クリティカル、LB3 EX武装）。',msy_squad_title:'編成シミュレーション',msy_squad_hint:'使用済みのユニットとパイロットはランキングから一時除外されます。',msy_squad_reset:'編成リセット',msy_squad_empty:'空きスロット',msy_squad_slot:'スロット {n}',msy_search_ph:'ユニット名またはID…',msy_view_grouped:'グループ',msy_view_table:'表',msy_metric_super_crit:'スーパークリティカル',msy_metric_crit:'クリティカル',msy_metric_normal:'通常',msy_metric_expected:'期待値',msy_status_units:'{n} 機',msy_status_showing:'{n} 件表示',msy_status_match:'{n} 件一致',msy_status_page:'{page}/{pages} ページ',msy_status_metric:'指標: {m}',msy_status_vigor:'テンション: {v}',msy_open_unit:'ユニット',msy_open_char:'パイロット',msy_add_squad:'+ 編成',msy_open_sim:'シミュレータ',msy_crit_rate:'クリティカル {n}%',msy_formula_stat:'{stat}: {val}',msy_role_all:'全ロール',msy_same_role:'同タイプのパイロットのみ',msy_same_role_on:'ユニットと同タイプのパイロットのみ表示',msy_support_role:'支援のみ',msy_support_role_on:'支援タイプのパイロットのみ表示',msy_role_filter_cycle:'ロール絞り込み：同タイプ → 支援のみ',unit_best_pilot_support_role:'支援',msy_abbr_exp:'期待',msy_abbr_crit:'クリティカル',msy_guaranteed_crit:'確定クリティカル',unit_best_pilot_title:'ダメージパイロット Top10',unit_best_pilot_btn:'ダメージパイロット Top10'});
+Object.assign(T.EN,{kofi_promo_kw_sneak:'exclusive sneak peeks',kofi_promo_kw_bonus:'bonus content',kofi_post_notice_aria:'New Ko-fi post',kofi_promo_notice_line:'New exclusive sneak peeks are live right now — get an early look at what’s coming before everyone else. Don’t miss out!',kofi_wall_title:'Thank you to {n} Newtypes keeping this database alive.',kofi_wall_join:'Join the wall',kofi_wall_rank1:'1st place',kofi_wall_rank2:'2nd place',kofi_wall_rank3:'3rd place',kofi_wall_aria:'Supporters',tab_meta_synergy:'Meta Synergistic Rankings',msy_hero_sub:'All sim-eligible units ranked by max pair damage (top 10 pilots each) — Damage Simulator rules (Eternal Expert DEF default, CP+PEP on, max Supercharged EX, super vigor, LB3).',msy_empty:'No pairings match your filters',msy_warming:'Computing rankings…',msy_warming_partial:'Updating rankings…',msy_warming_slow:'Rankings are still building. Shown results may be incomplete — refresh in a minute.',msy_cp_on:'Conditional Passive on (unit + character)',msy_cp_off:'Conditional Passive off (unit + character)',msy_pep_on:'Pilot Exclusive Passive on',msy_pep_off:'Pilot Exclusive Passive off',msy_exclude_ur:'Exclude UR pilots',msy_exclude_ur_on:'Showing non-UR pilots only',msy_exclude_shinn:'Exclude Shinn Asuka (EX)',msy_exclude_shinn_on:'Hiding Shinn Asuka (EX)',msy_sd_note:'Linked Character — locked to this unit only',msy_rank_super_crit:'Super Critical Damage',msy_rank_crit:'Critical Damage',msy_rank_normal:'Normal Damage',msy_squad_title:'Squad simulation',msy_squad_hint:'Used units and pilots are temporarily removed from rankings below.',msy_squad_reset:'Reset squad',msy_squad_empty:'Empty slot — add from a pairing row',msy_squad_slot:'Slot {n}',msy_search_ph:'Search units by name or ID…',msy_def_difficulty:'Difficulty Level',msy_def_hard3:'Story Hard',msy_def_challenge:'Challenge Hard',msy_def_eternal:'Eternal Expert',msy_def_avg:'Avg NPC',msy_def_unit_ph:'MS DEF',msy_def_char_ph:'Pilot DEF',msy_view_grouped:'Grouped',msy_view_table:'Table view',msy_view_barchart:'Bar chart view',msy_chart:'Bar chart view',msy_metric_peak:'Peak',msy_metric_super_crit:'Super Critical',msy_metric_crit:'Critical',msy_metric_normal:'Normal',msy_metric_expected:'Expected (crit%)',msy_status_units:'{n} units ranked',msy_status_showing:'Showing {n}',msy_status_match:'{n} match',msy_status_page:'Page {page}/{pages}',msy_status_metric:'Metric: {m}',msy_status_vigor:'Vigor: {v}',msy_open_unit:'Unit',msy_open_char:'Pilot',msy_add_squad:'+ Squad',msy_open_sim:'Simulator',msy_crit_rate:'{n}% Crit',msy_guaranteed_crit:'Guaranteed Critical',msy_dmg_if_crit_tip:'Damage if this attack crits',msy_dmg_if_normal_tip:'Damage if this attack does not crit',msy_dmg_pair_tip:'If crit: {c} · Otherwise: {n}',msy_affinity_match:'Affinity match',msy_no_eligible_pilots:'No eligible pilots for this filter.',msy_formula_stat:'{stat}: {val}',msy_pilot_loading:'Loading pilots…',msy_role_all:'All roles',msy_same_role:'Same Role Characters Only',msy_same_role_on:'Showing same-role pilots only',msy_support_role:'Supporters only',msy_support_role_on:'Showing Support-role pilots only',msy_role_filter_cycle:'Role filter: Same Role → Supporters only',unit_best_pilot_support_role:'Supporters',msy_abbr_exp:'Exp',msy_abbr_crit:'Crit',unit_best_pilot_title:'Top 10 Damage Pilot',unit_best_pilot_title_damage_tip:'Ranks pilots by peak pair damage vs Eternal Expert DEF (same rules as the Damage Simulator).\n\nDefaults: LB3, best EX weapon, Super vigor, Conditional Passive + Pilot Exclusive Passive on.\nMetric buttons switch Super Crit / Crit / Normal. 0% crit pilots use Normal for Crit metrics.\n\nToggle Skills to include/exclude active skills (ATK buffs, damage dealt, crit rate, etc.).',unit_best_pilot_btn:'Top 10 Damage Pilot',unit_best_pilot_loading:'Loading top 10 damage pilots…',unit_best_pilot_empty:'No eligible pilots found.',unit_best_pilot_error:'Could not load rankings.',unit_best_pilot_note:'Eternal Expert: MS DEF: {ms} Pilot DEF: {pilot}',unit_best_pilot_filters:'Pilot filters',unit_best_pilot_no_shinn:'No Shinn',unit_best_pilot_no_ur:'No UR',unit_best_pilot_ur_only_on:'Showing UR pilots only',unit_best_pilot_ur_filter_cycle:'UR filter: No UR → UR only',unit_best_pilot_ur_chip_ssr:'SSR↓',unit_best_pilot_ur_chip_only:'UR only',msy_ur_only_on:'Showing UR pilots only',unit_best_pilot_same_role:'Role',unit_best_pilot_filter_partial:'Showing calculator pilots that match this filter from the main top 10. A full non-UR / No-Shinn top 10 needs a dedicated calculator rebuild.',unit_best_pilot_title_skills_off:'Top 10 Damage (Skills Off)',unit_best_pilot_title_defender:'Top 10 Defender Pilots',unit_best_pilot_title_defender_tip:'Survivability ranking vs Destiny Gundam + Shinn (shield on, Super vigor).\n\nScore = Survival (~72%) + Support Defense + EN sustain + light counter damage (~5%).\nSurvival uses hits-to-kill vs EX + next weapon (55%/45%), soft HTK, and damage-taken-down % (affinity + Force Guard when Skills On).\n\nToggle Skills to include/exclude active skills like Force Guard. Not a full PvP sim.',unit_best_pilot_title_defender_skills_off:'Top 10 Defender (Skills Off)',unit_best_pilot_survival_skills:'Active skills used for survivability',unit_best_pilot_score_dr:'Damage taken down (total): {n}%',unit_best_pilot_score_dr_passive:'Damage taken down (affinity): {n}%',unit_best_pilot_score_dr_skill:'Damage taken down (active skills): {n}%',unit_best_pilot_score_series_sd:'Series Support Defense bonus: +{n}',unit_best_pilot_board_mode:'Ranking mode',unit_best_pilot_board_damage:'Damage ranking',unit_best_pilot_board_defender:'Defender ranking',unit_best_pilot_board_damage_short:'DMG',unit_best_pilot_board_defender_short:'DEF',unit_best_pilot_skills_toggle:'Active skills',unit_best_pilot_skills_on:'Active skills on',unit_best_pilot_skills_off:'Active skills off',unit_best_pilot_skills_on_short:'Skills',unit_best_pilot_skills_off_short:'No Skills',unit_best_pilot_skills_off_note:'Ranked without active skills (stats, affinity, and best weapon only).',unit_best_pilot_defender_note:'Defender score: survival (EHTK vs Destiny+Shinn) + SD×2 + EN sustain + counter damage.',unit_best_pilot_ehtk:'EHTK {n}',unit_best_pilot_counter_dmg:'Atk {n}',unit_best_pilot_defender_score:'Defender score',unit_best_pilot_skills_off_on:'Showing rankings without active skills',unit_best_pilot_score_survival:'Survival (tankiness × {w}): {n}',unit_best_pilot_score_htk_ex:'HTK vs Weapon A (EX): {n}',unit_best_pilot_score_htk_next:'HTK vs Weapon B: {n}',unit_best_pilot_score_ehtk_soft:'Soft EHTK (HP ÷ dmg taken): {n}',unit_best_pilot_score_ehtk:'Combined EHTK (0.55xA + 0.45xB): {n}',unit_best_pilot_score_sd:'Support Defense bonus: {n} (SD +{c})',unit_best_pilot_score_en:'EN sustain: {n}',unit_best_pilot_score_counter:'Counter damage (tiebreaker × {w}): {n}',unit_best_pilot_score_revive:'Revive floor: +{n}',unit_best_pilot_score_total:'Total: {n}',unit_best_pilot_defender_bully:'Inbound hits: Destiny Gundam EX + Shinn (Weapon A EX + Weapon B). Combined into one EHTK score.'});
+Object.assign(T.TW,{tab_meta_synergy:'Meta Synergistic Rankings',msy_hero_sub:'以本站損傷模擬器公式計算單位×駕駛員最高損傷配對——含超一擊戰意、爆擊與 LB3 EX 武裝。',msy_squad_title:'隊伍模擬',msy_squad_hint:'已使用的機體與駕駛員會從下方排行中暫時排除。',msy_squad_reset:'重置隊伍',msy_squad_empty:'空位 — 從配對列加入',msy_squad_slot:'位置 {n}',msy_search_ph:'搜尋機體名稱或 ID…',msy_view_grouped:'分組',msy_view_table:'表格',msy_metric_super_crit:'超爆擊',msy_metric_crit:'爆擊',msy_metric_normal:'通常',msy_metric_expected:'期望值（爆擊%）',msy_status_units:'{n} 部機體',msy_status_showing:'顯示 {n}',msy_status_match:'{n} 筆符合',msy_status_page:'第 {page}/{pages} 頁',msy_status_metric:'指標：{m}',msy_status_vigor:'戰意：{v}',msy_open_unit:'機體',msy_open_char:'駕駛',msy_add_squad:'+ 隊伍',msy_open_sim:'模擬器',msy_crit_rate:'{n}% 爆擊',msy_formula_stat:'{stat}：{val}',msy_role_all:'全部類型',msy_same_role:'僅限同類型駕駛員',msy_same_role_on:'僅顯示與機體同類型的駕駛員',msy_support_role:'僅支援類型',msy_support_role_on:'僅顯示支援類型駕駛員',msy_role_filter_cycle:'角色篩選：同類型 → 僅支援',unit_best_pilot_support_role:'支援',msy_abbr_exp:'期望',msy_abbr_crit:'爆擊',msy_guaranteed_crit:'確定爆擊',msy_dmg_if_crit_tip:'若爆擊時的損傷',msy_dmg_if_normal_tip:'未爆擊時的損傷',msy_dmg_pair_tip:'爆擊：{c} · 否則：{n}',unit_best_pilot_title:'前10名損傷駕駛員',unit_best_pilot_btn:'前10名損傷駕駛員'});
+Object.assign(T.HK,{tab_meta_synergy:'Meta Synergistic Rankings',msy_hero_sub:'以本站損傷模擬器公式計算單位×駕駛員最高損傷配對。',msy_squad_title:'隊伍模擬',msy_squad_hint:'已使用的機體與駕駛員會從排行中暫時排除。',msy_squad_reset:'重置隊伍',msy_squad_empty:'空位',msy_squad_slot:'位置 {n}',msy_search_ph:'搜尋機體…',msy_view_grouped:'分組',msy_view_table:'表格',msy_metric_super_crit:'超爆擊',msy_metric_crit:'爆擊',msy_metric_normal:'通常',msy_metric_expected:'期望值',msy_status_units:'{n} 部機體',msy_status_showing:'顯示 {n}',msy_status_match:'{n} 筆符合',msy_status_page:'第 {page}/{pages} 頁',msy_status_metric:'指標：{m}',msy_status_vigor:'戰意：{v}',msy_open_unit:'機體',msy_open_char:'駕駛',msy_add_squad:'+ 隊伍',msy_open_sim:'模擬器',msy_crit_rate:'{n}% 爆擊',msy_formula_stat:'{stat}：{val}',msy_role_all:'全部類型',msy_same_role:'僅限同類型駕駛員',msy_same_role_on:'僅顯示與機體同類型的駕駛員',msy_support_role:'僅支援類型',msy_support_role_on:'僅顯示支援類型駕駛員',msy_role_filter_cycle:'角色篩選：同類型 → 僅支援',unit_best_pilot_support_role:'支援',msy_abbr_exp:'期望',msy_abbr_crit:'爆擊',msy_guaranteed_crit:'確定爆擊',msy_dmg_if_crit_tip:'若爆擊時的損傷',msy_dmg_if_normal_tip:'未爆擊時的損傷',msy_dmg_pair_tip:'爆擊：{c} · 否則：{n}',unit_best_pilot_title:'前10名損傷駕駛員',unit_best_pilot_btn:'前10名損傷駕駛員'});
+Object.assign(T.JA,{tab_meta_synergy:'メタシナジーランキング',msy_hero_sub:'ダメージシミュレーターと同じ式でユニット×パイロットの最大ダメージ配対を表示（超一撃、クリティカル、LB3 EX武装）。',msy_squad_title:'編成シミュレーション',msy_squad_hint:'使用済みのユニットとパイロットはランキングから一時除外されます。',msy_squad_reset:'編成リセット',msy_squad_empty:'空きスロット',msy_squad_slot:'スロット {n}',msy_search_ph:'ユニット名またはID…',msy_view_grouped:'グループ',msy_view_table:'表',msy_metric_super_crit:'スーパークリティカル',msy_metric_crit:'クリティカル',msy_metric_normal:'通常',msy_metric_expected:'期待値',msy_status_units:'{n} 機',msy_status_showing:'{n} 件表示',msy_status_match:'{n} 件一致',msy_status_page:'{page}/{pages} ページ',msy_status_metric:'指標: {m}',msy_status_vigor:'テンション: {v}',msy_open_unit:'ユニット',msy_open_char:'パイロット',msy_add_squad:'+ 編成',msy_open_sim:'シミュレータ',msy_crit_rate:'クリティカル {n}%',msy_formula_stat:'{stat}: {val}',msy_role_all:'全ロール',msy_same_role:'同タイプのパイロットのみ',msy_same_role_on:'ユニットと同タイプのパイロットのみ表示',msy_support_role:'支援のみ',msy_support_role_on:'支援タイプのパイロットのみ表示',msy_role_filter_cycle:'ロール絞り込み：同タイプ → 支援のみ',unit_best_pilot_support_role:'支援',msy_abbr_exp:'期待',msy_abbr_crit:'クリティカル',msy_guaranteed_crit:'確定クリティカル',msy_dmg_if_crit_tip:'クリティカル時のダメージ',msy_dmg_if_normal_tip:'非クリティカル時のダメージ',msy_dmg_pair_tip:'クリティカル時：{c} · それ以外：{n}',unit_best_pilot_title:'ダメージパイロット Top10',unit_best_pilot_btn:'ダメージパイロット Top10'});
 Object.assign(T.JP,T.JA);Object.assign(T.JP,{bt_pity:'天井',bt_pity_after:'{n}回でUR確定',bt_exchange:'交換',bt_exchangeable_pts:'交換 - {n} pt',bt_exchangeable_tab:'交換 - {n} pt',bt_drop_rate:'排出率',bt_drop_10th:'10回目',bt_drop_1to9:'排出率（1〜9回目）',bt_drop_10th_pull:'排出率（10回目）',bt_drop_pity100:'排出率（100回目）',bt_drop_pity_nth:'排出率（{n}回目）',bt_drop_unit:'ユニット',bt_drop_supp:'サポ',bt_drop_pity_guaranteed:'UR確定 {pct}',bt_drop_pity_featured:'ピックアップ {pct}',bt_drop_pity_other:'その他UR {pct} — {n}機 × 各{each}',bt_drop_pity_other_share:'その他UR {pct} — 残りURで均等配分'});
 const KR_CORE_LABELS={
 ally:'전체y',applies_to:'적용 대상',atk_support:'공격력 Support',branch_victory_conditions:'분기 승리 조건',browse_filter_combine_and:'AND',
@@ -488,10 +488,10 @@ dc_squad_cond_label:'소대 conditions',dc_squad_cond_manual_tip:'자동 판정 
 dc_squad_cond_tip:'Manual % for EX / unit passives that scale with allies in the same squad (including yourself). 팀 빌더 applies this automatically from tags. Default on pick is the maximum the ability allows.',
 dc_stage_list_aria:'이터널 로드와 대규모 공략전 스코어 어택 스테이지',dc_stage_search_ph:'이터널 로드 / 대규모 공략전 스코어 어택 스테이지 검색…',dc_super_crit_dmg:'슈퍼 크리티컬 대미지',
 dc_support_counter_battle_stat:'지원 공격/반격 MS ATK',dc_support_counter_desc:'When executing 지원 공격/반격 — +{pct}% MS ATK',
-dc_support_counter_pilot_note:'Support-role pilot: +{pct}% MS ATK when executing 지원 공격/반격 on a <strong>Support-type (role)</strong> attacker MS. With other unit roles the pilot can still use Support 공격력 mechanics, but this ATK&nbsp;% does not apply—공격력er Parameters shows the toggle dimmed until the attacker MS is Support-class.',
-dc_support_counter_tip:'지원형 공격기 + 이 파일럿: 지원 공격/반격 시 선택적 MS 공격력 %. 파일럿 어빌리티 문구에서 해석.',
-dc_support_counter_tip_disabled:'This pilot\\\'s ATK boost applies only when piloting a Support-type (role) mobile suit. Pick a Support-class attacker unit to enable the bonus in 대미지 math.',
-dc_support_counter_tip_enabled:'Support-type MS + this pilot: MS ATK % while executing 지원 공격/반격. Off by default (matches normal/main attack preview). Turn On to include the bonus.',
+dc_support_counter_pilot_note:'This pilot has Support Attack/Counter MS ATK % (+{pct}% when conditions match). Support-type MS gates are per ability line — ungated EX lines still apply on Attack/Durability MS.',
+dc_support_counter_tip:'Pilot (and MS) Support Attack/Counter MS ATK %. Many lines require Support-type MS; some EX lines apply on any role while executing 지원 공격/반격.',
+dc_support_counter_tip_disabled:'No Support Attack/Counter MS ATK % applies for this pilot + MS (ability conditions not met).',
+dc_support_counter_tip_enabled:'MS ATK % while executing 지원 공격/반격 (ability conditions for this pilot + MS). Off by default. Turn On to include the bonus.',
 dc_support_counter_title:'지원 공격/반격 — MS 공격력 %',dc_terrain:'지형 %',dc_title:'대미지 시뮬레이터',dc_toggle_grand_offensive:'대규모 공략전 보정 +100%',
 dc_toggle_master_league:'마스터 리그 보정 +50%',dc_unit_stats:'유닛 Stats',dc_vigor_dmg_bonus_sub:'+{pct}%（{label}·위 줄과 대미지에 포함）',dc_vigor_high:'강기',dc_vigor_max:'초강기',
 dc_vigor_medium:'보통',dc_vigor_prefix:'텐션',dc_vigor_super:'초일격',dc_weapon:'무장',dc_wpn_level:'무장 Lv',dc_wpn_trait_custom_core:'커스텀 코어（SSP）',
@@ -677,12 +677,12 @@ Object.assign(T.TW,{npc_unit_cond_targets:'條件被動 — 加成對象單位',
 Object.assign(T.HK,{npc_unit_cond_targets:'條件被動 — 加成對象單位',npc_unit_cond_target_short:'加成單位',schedule_shell_flag:'NPC／未排程'});
 Object.assign(T.JA,{npc_unit_cond_targets:'条件付きパッシブ — 対象ユニット',npc_unit_cond_target_short:'対象ユニット',schedule_shell_flag:'NPC／未スケジュール'});
 Object.assign(T.EN,{schedule_shell_flag:'NPC/Unscheduled',schedule_shell_flag_tip:'ScheduleId 9999990001 — stage/NPC shell, not obtainable in-game.'});
-Object.assign(T.EN,{unit_best_pilot_support_counter:'Support Attack/Counter',unit_best_pilot_support_counter_on:'Showing Support Attack/Counter ATK % rankings',unit_best_pilot_support_counter_note:'Ranked with Support Attack/Counter MS ATK % on (same as Damage Calculator toggle).',unit_best_pilot_support_counter_pending:'Support Attack/Counter board not cached yet — rebuild Support units or try again shortly.',dc_support_counter_title:'Support Attack/Counter — MS ATK %',dc_support_counter_tip:'Support-type attacker MS plus this pilot: optional MS ATK % during Support Attack/Counter. Parsed from pilot ability text.',dc_support_counter_desc:'When executing Support Attack/Counter — +{pct}% MS ATK',dc_support_counter_tip_disabled:'This pilot\'s ATK boost applies only when piloting a Support-type (role) mobile suit. Pick a Support-class attacker unit to enable the bonus in damage math.',dc_support_counter_tip_enabled:'Support-type MS + this pilot: MS ATK % while executing Support Attack/Counter. Off by default (matches normal/main attack preview). Turn On to include the bonus.',dc_support_counter_pilot_note:'Support-role pilot: +{pct}% MS ATK when executing Support Attack/Counter on a <strong>Support-type (role)</strong> attacker MS. With other unit roles the pilot can still use Support Attack mechanics, but this ATK&nbsp;% does not apply—Attacker Parameters shows the toggle dimmed until the attacker MS is Support-class.',dc_support_counter_battle_stat:'Support Attack/Counter MS ATK'});
-Object.assign(T.TW,{unit_best_pilot_support_counter:'支援攻擊／支援反擊',unit_best_pilot_support_counter_on:'顯示含支援攻擊／支援反擊攻擊力%的排名',unit_best_pilot_support_counter_note:'以支援攻擊／支援反擊機體攻擊力%開啟時排名（與損傷模擬器相同）。',unit_best_pilot_support_counter_pending:'支援攻擊／支援反擊榜尚未快取 — 請重建支援型單位後再試。',dc_support_counter_title:'支援攻擊／支援反擊 — 機體攻擊力 %',dc_support_counter_tip:'支援型攻擊機與此駕駛員：執行支援攻擊／支援反擊時可選的機體攻擊力 %。數值由駕駛員能力文字解析。',dc_support_counter_desc:'執行支援攻擊／支援反擊時 — 機體攻擊力 +{pct}%',dc_support_counter_tip_disabled:'此駕駛員的攻擊力加成僅在搭乘支援型（角色）機體時生效。請選擇支援型攻擊機以納入損傷計算。',dc_support_counter_tip_enabled:'支援型機體＋此駕駛員：執行支援攻擊／支援反擊時的機體攻擊力 %。預設關閉（符合一般／主動攻擊預覽）。開啟後才納入加成。',dc_support_counter_pilot_note:'支援型駕駛員：對<strong>支援型（角色）</strong>攻擊機執行支援攻擊／支援反擊時，機體攻擊力 +{pct}%。其他機體類型仍可使用支援攻擊機制，但此攻擊力&nbsp;% 不適用—請在攻擊方參數選擇支援型攻擊機以啟用（未符合時切換為灰色）。',dc_support_counter_battle_stat:'支援攻擊／支援反擊 機體攻擊力'});
-Object.assign(T.HK,{unit_best_pilot_support_counter:'支援攻擊／支援反擊',unit_best_pilot_support_counter_on:'顯示含支援攻擊／支援反擊攻擊力%的排名',unit_best_pilot_support_counter_note:'以支援攻擊／支援反擊機體攻擊力%開啟時排名（與損傷模擬器相同）。',unit_best_pilot_support_counter_pending:'支援攻擊／支援反擊榜尚未快取 — 請重建支援型單位後再試。',dc_support_counter_title:'支援攻擊／支援反擊 — 機體攻擊力 %',dc_support_counter_tip:'支援型攻擊機與此駕駛員：執行支援攻擊／支援反擊時可選的機體攻擊力 %。數值由駕駛員能力文字解析。',dc_support_counter_desc:'執行支援攻擊／支援反擊時 — 機體攻擊力 +{pct}%',dc_support_counter_tip_disabled:'此駕駛員的攻擊力加成僅在搭乘支援型（角色）機體時生效。請選擇支援型攻擊機以納入損傷計算。',dc_support_counter_tip_enabled:'支援型機體＋此駕駛員：執行支援攻擊／支援反擊時的機體攻擊力 %。預設關閉（符合一般／主動攻擊預覽）。開啟後才納入加成。',dc_support_counter_pilot_note:'支援型駕駛員：對<strong>支援型（角色）</strong>攻擊機執行支援攻擊／支援反擊時，機體攻擊力 +{pct}%。其他機體類型仍可使用支援攻擊機制，但此攻擊力&nbsp;% 不適用—請在攻擊方參數選擇支援型攻擊機以啟用（未符合時切換為灰色）。',dc_support_counter_battle_stat:'支援攻擊／支援反擊 機體攻擊力'});
+Object.assign(T.EN,{unit_best_pilot_support_counter:'Support Attack/Counter',unit_best_pilot_support_counter_on:'Showing Support Attack/Counter ATK % rankings',unit_best_pilot_support_counter_note:'Ranked with Support Attack/Counter MS ATK % on (same as Damage Calculator toggle).',unit_best_pilot_support_counter_pending:'Support Attack/Counter board not cached yet — rebuild BSP (support-counter) after deploy, then retry.',unit_best_pilot_title_support_attack:'Top 10 Support Attack Pilots',unit_best_pilot_support_attack_note:'Supporters on Attack MS: Support Attack ranking (fair /cal: LB3, Eternal Expert, no OP/supporter). Matching affinity is critical (+10–15% Damage Dealt). SAC ATK % only when the pilot’s line matches this kit. Cards show SAC ATK +N% when it applies. Personal /cal shares with stage DEF/LB2/OPs can rank differently.',unit_best_pilot_sac_atk_pct:'SAC ATK +{n}%',unit_best_pilot_sac_atk:'SAC ATK %',unit_best_pilot_sac_atk_tip:'Support Attack/Counter MS ATK % that matches this unit (not Support-type-only lines on Attack MS).',msy_support_role_attack_on:'Supporters only — Support Attack ranking (matching affinity + SAC ATK %)',dc_support_counter_title:'Support Attack/Counter — MS ATK %',dc_support_counter_tip:'Pilot (and MS) Support Attack/Counter MS ATK %. Many lines require a Support-type MS; some EX lines apply on any role while executing Support Attack/Counter. Parsed from ability text + conditions.',dc_support_counter_desc:'When executing Support Attack/Counter — +{pct}% MS ATK',dc_support_counter_tip_disabled:'No Support Attack/Counter MS ATK % applies for this pilot + MS (ability conditions not met).',dc_support_counter_tip_enabled:'MS ATK % while executing Support Attack/Counter (ability conditions for this pilot + MS). Off by default (matches normal/main attack preview). Turn On to include the bonus.',dc_support_counter_pilot_note:'This pilot has Support Attack/Counter MS ATK % (+{pct}% when conditions match). Support-type MS gates are per ability line — ungated EX lines still apply on Attack/Durability MS.',dc_support_counter_battle_stat:'Support Attack/Counter MS ATK'});
+Object.assign(T.TW,{unit_best_pilot_support_counter:'支援攻擊／支援反擊',unit_best_pilot_support_counter_on:'顯示含支援攻擊／支援反擊攻擊力%的排名',unit_best_pilot_support_counter_note:'以支援攻擊／支援反擊機體攻擊力%開啟時排名（與損傷模擬器相同）。',unit_best_pilot_support_counter_pending:'支援攻擊／支援反擊榜尚未快取 — 請重建 BSP（support-counter）後再試。',unit_best_pilot_title_support_attack:'支援攻擊 Top 10 駕駛',unit_best_pilot_support_attack_note:'攻擊型機體＋僅支援：以支援攻擊排名（公平 /cal：LB3、永恆之路 Expert、無選擇性零件／支援人員）。符合的親和很關鍵（損傷加成約 +10～15%）。SAC 攻擊力%僅在條件符合時生效；有套用時卡片顯示 SAC 攻擊力 +N%。個人 /cal 分享（關卡 DEF／LB2／零件）排名可能不同。',unit_best_pilot_sac_atk_pct:'SAC 攻擊力 +{n}%',unit_best_pilot_sac_atk:'SAC 攻擊力%',unit_best_pilot_sac_atk_tip:'符合此機體條件的支援攻擊／支援反擊機體攻擊力%（攻擊型機體不含「僅支援型」條件行）。',msy_support_role_attack_on:'僅支援 — 支援攻擊排名（含符合的親和與 SAC 攻擊力%）',dc_support_counter_title:'支援攻擊／支援反擊 — 機體攻擊力 %',dc_support_counter_tip:'駕駛員（與機體）的支援攻擊／支援反擊機體攻擊力 %。多數效果需支援型機體；部分 EX 在執行支援攻擊／支援反擊時不限機體類型。由能力文字與條件解析。',dc_support_counter_desc:'執行支援攻擊／支援反擊時 — 機體攻擊力 +{pct}%',dc_support_counter_tip_disabled:'此駕駛員＋機體組合沒有可套用的支援攻擊／支援反擊機體攻擊力 %（條件不符）。',dc_support_counter_tip_enabled:'執行支援攻擊／支援反擊時的機體攻擊力 %（依此駕駛員＋機體的能力條件）。預設關閉（符合一般／主動攻擊預覽）。開啟後才納入加成。',dc_support_counter_pilot_note:'此駕駛員具支援攻擊／支援反擊機體攻擊力 %（條件符合時 +{pct}%）。支援型機體限制依各能力行判定——無限制的 EX 在攻擊型／耐久型機體上仍可生效。',dc_support_counter_battle_stat:'支援攻擊／支援反擊 機體攻擊力'});
+Object.assign(T.HK,{unit_best_pilot_support_counter:'支援攻擊／支援反擊',unit_best_pilot_support_counter_on:'顯示含支援攻擊／支援反擊攻擊力%的排名',unit_best_pilot_support_counter_note:'以支援攻擊／支援反擊機體攻擊力%開啟時排名（與損傷模擬器相同）。',unit_best_pilot_support_counter_pending:'支援攻擊／支援反擊榜尚未快取 — 請重建 BSP（support-counter）後再試。',unit_best_pilot_title_support_attack:'支援攻擊 Top 10 駕駛',unit_best_pilot_support_attack_note:'攻擊型機體＋僅支援：以支援攻擊排名（公平 /cal：LB3、永恆之路 Expert、無選擇性零件／支援人員）。符合的親和很關鍵（損傷加成約 +10～15%）。SAC 攻擊力%僅在條件符合時生效；有套用時卡片顯示 SAC 攻擊力 +N%。個人 /cal 分享（關卡 DEF／LB2／零件）排名可能不同。',unit_best_pilot_sac_atk_pct:'SAC 攻擊力 +{n}%',unit_best_pilot_sac_atk:'SAC 攻擊力%',unit_best_pilot_sac_atk_tip:'符合此機體條件的支援攻擊／支援反擊機體攻擊力%（攻擊型機體不含「僅支援型」條件行）。',msy_support_role_attack_on:'僅支援 — 支援攻擊排名（含符合的親和與 SAC 攻擊力%）',dc_support_counter_title:'支援攻擊／支援反擊 — 機體攻擊力 %',dc_support_counter_tip:'駕駛員（與機體）的支援攻擊／支援反擊機體攻擊力 %。多數效果需支援型機體；部分 EX 在執行支援攻擊／支援反擊時不限機體類型。由能力文字與條件解析。',dc_support_counter_desc:'執行支援攻擊／支援反擊時 — 機體攻擊力 +{pct}%',dc_support_counter_tip_disabled:'此駕駛員＋機體組合沒有可套用的支援攻擊／支援反擊機體攻擊力 %（條件不符）。',dc_support_counter_tip_enabled:'執行支援攻擊／支援反擊時的機體攻擊力 %（依此駕駛員＋機體的能力條件）。預設關閉（符合一般／主動攻擊預覽）。開啟後才納入加成。',dc_support_counter_pilot_note:'此駕駛員具支援攻擊／支援反擊機體攻擊力 %（條件符合時 +{pct}%）。支援型機體限制依各能力行判定——無限制的 EX 在攻擊型／耐久型機體上仍可生效。',dc_support_counter_battle_stat:'支援攻擊／支援反擊 機體攻擊力'});
 Object.assign(T.HK,{dc_accuracy:'命中',dc_atk_label:'我方單位（攻擊方）',dc_atk_params_section:'攻擊方參數',dc_change:'更換',dc_char_stats:'角色能力值',dc_crit_dmg:'爆擊損傷',dc_crit_final_dmg:'爆擊最終損傷',dc_critical:'爆擊',dc_def_char_stats_note:'數值含被動能力加成（與關卡詳情相同）。綠色 (+n) 為加成量。',dc_def_label:'NPC目標（防禦方）',dc_def_params_section:'防禦方參數',dc_def_preset_mode:'預設（永恆之路、大規模攻略戰積分挑戰）',dc_def_preset_target_label:'預設目標（永恆之路、大規模攻略戰積分挑戰）',dc_def_stats_map_note:'數值含地圖／隊伍加成（與關卡詳情相同）。綠色 (+n) 為加成量。',dc_defend:'防禦行動',dc_defender_status:'防禦方狀態',dc_distance:'距離',dc_en_cost:'EN',dc_final_dmg:'最終損傷',dc_hit_rate:'命中率',dc_hp_remaining:'剩餘HP',dc_hp_remaining_crit:'剩餘 HP（爆擊）',dc_hp_remaining_normal:'剩餘 HP（通常）',dc_hp_remaining_super_crit:'剩餘 HP（超爆擊）',dc_in_range:'射程內',dc_lb_tier:'突破界限階段',dc_mp_level:'MP等級',dc_normal_dmg:'通常損傷',dc_off:'關',dc_on:'開',dc_out_range:'射程外',dc_panel_attacker_heading:'攻擊方',dc_panel_defender_heading:'防禦方（目標）',dc_pick_char:'選擇角色',dc_pick_unit:'選擇單位',dc_power:'威力',dc_range:'射程',dc_range_check:'射程確認',dc_score_attack_preset:'積分 #{n}',dc_select_both:'請選擇攻擊方和防禦方以計算損傷',dc_select_npc:'-- 選擇NPC --',dc_shield:'盾牌',dc_stage_list_aria:'永恆之路與大規模攻略戰積分挑戰關卡',dc_stage_search_ph:'搜尋永恆之路與大規模攻略戰積分挑戰關卡…',dc_super_crit_dmg:'超爆擊損傷',dc_terrain:'地形 %',dc_title:'損傷模擬器',dc_unit_stats:'單位能力值',dc_vigor_dmg_bonus_sub:'+{pct}% 來自「{label}」戰意（已併入上方與損傷）',dc_vigor_high:'強勢',dc_vigor_max:'超強勢',dc_vigor_medium:'一般',dc_vigor_prefix:'戰意',dc_vigor_super:'超一擊',dc_weapon:'武裝',dc_wpn_level:'武裝等級'});
 
-Object.assign(T.JA,{unit_best_pilot_support_counter:'支援攻撃・支援反撃',unit_best_pilot_support_counter_on:'支援攻撃・支援反撃の攻撃力%込みで表示中',unit_best_pilot_support_counter_note:'支援攻撃・支援反撃の機体攻撃力%をONにした順位（ダメージシミュレーターと同じ）。',unit_best_pilot_support_counter_pending:'支援攻撃・支援反撃ボード未キャッシュ — Support機体の再計算後に再試行。',dc_support_counter_title:'支援攻撃・支援反撃 — 機体攻撃力 %',dc_support_counter_tip:'支援型の攻撃機とこのパイロット：支援攻撃・支援反撃実行時の任意の機体攻撃力％。パイロット能力文から解析。',dc_support_counter_desc:'支援攻撃・支援反撃実行時 — 攻撃力 +{pct}%',dc_support_counter_tip_disabled:'このパイロットの攻撃力上昇は、支援型（ロール）の機体搭乗時のみ有効です。支援型攻撃機を選ぶとダメージ計算に反映できます。',dc_support_counter_tip_enabled:'支援型機体＋このパイロット：支援攻撃・支援反撃中の機体攻撃力％。通常はOFF（通常攻撃プレビューに合わせる）。ONでボーナスを反映。',dc_support_counter_pilot_note:'支援型パイロット：<strong>支援型（ロール）</strong>の攻撃機で支援攻撃・支援反撃を実行した場合、ユニット攻撃力 +{pct}%。他タイプの機体でも支援攻撃は使えますが、この攻撃力&nbsp;% は反映されません—攻撃側パラメータで支援型攻撃機を選ぶと有効になります（未対応時はトグルが灰色）。',dc_support_counter_battle_stat:'支援攻撃・支援反撃 機体攻撃力'});
+Object.assign(T.JA,{unit_best_pilot_support_counter:'支援攻撃・支援反撃',unit_best_pilot_support_counter_on:'支援攻撃・支援反撃の攻撃力%込みで表示中',unit_best_pilot_support_counter_note:'支援攻撃・支援反撃の機体攻撃力%をONにした順位（ダメージシミュレーターと同じ）。',unit_best_pilot_support_counter_pending:'支援攻撃・支援反撃ボード未キャッシュ — BSP（support-counter）再計算後に再試行。',unit_best_pilot_title_support_attack:'支援攻撃 Top 10 パイロット',unit_best_pilot_support_attack_note:'攻撃型ユニット＋支援のみ：支援攻撃順位（公平/cal：LB3・エターナルExpert・OP/サポーターなし）。合う親和は重要（与ダメージ+10～15%）。SAC攻撃力%は条件一致時のみ。カードに SAC攻撃力 +N%。個人/cal共有（ステージDEF/LB2/OP）は順位が変わり得る。',unit_best_pilot_sac_atk_pct:'SAC攻撃力 +{n}%',unit_best_pilot_sac_atk:'SAC攻撃力%',unit_best_pilot_sac_atk_tip:'この機体に条件が合う支援攻撃・支援反撃の機体攻撃力%（攻撃型では支援型限定行は含まない）。',msy_support_role_attack_on:'支援のみ — 支援攻撃順位（合う親和＋SAC攻撃力%）',dc_support_counter_title:'支援攻撃・支援反撃 — 機体攻撃力 %',dc_support_counter_tip:'パイロット（と機体）の支援攻撃・支援反撃の機体攻撃力％。多くは支援型機体が条件。一部EXは実行時に機体ロール不問。能力文と条件から解析。',dc_support_counter_desc:'支援攻撃・支援反撃実行時 — 攻撃力 +{pct}%',dc_support_counter_tip_disabled:'このパイロット＋機体では適用できる支援攻撃・支援反撃の機体攻撃力％がありません（条件不一致）。',dc_support_counter_tip_enabled:'支援攻撃・支援反撃実行時の機体攻撃力％（このパイロット＋機体の能力条件）。通常はOFF。ONでボーナスを反映。',dc_support_counter_pilot_note:'このパイロットは支援攻撃・支援反撃の機体攻撃力％を持ちます（条件一致時 +{pct}%）。支援型機体制限は能力行ごと——制限のないEXは攻撃型／耐久型でも有効です。',dc_support_counter_battle_stat:'支援攻撃・支援反撃 機体攻撃力'});
 Object.assign(T.TW,{dc_score_attack_preset:'積分 #{n}',dc_lb_tier:'突破界限階段',dc_normal_dmg:'通常損傷',dc_defend:'防禦行動',dc_weapon:'武裝',dc_wpn_level:'武裝等級',dc_super_crit_dmg:'超爆擊損傷',dc_hp_remaining_normal:'剩餘 HP（通常）'});
 Object.assign(T.JA,{dc_lb_tier:'限界突破段階',dc_weapon:'武装',dc_wpn_level:'武装Lv',dc_defend:'防御行動'});
 Object.assign(T.EN,{dc_battle_stats:'Battle Stats',dc_preset_database:'Preset (Database)',dc_custom_stats:'Custom stats',dc_database_mode:'Database (unit + pilot)',dc_select_stage:'-- Select Stage --',dc_terrain_normal:'Normal',dc_terrain_halved:'Halved (50%)',dc_terrain_penalty:'Terrain Penalty',dc_vigor_level:'Vigor Level',dc_final_weapon_power:'Final weapon power',dc_crit_dmg_up:'Critical Damage Up %',dc_dmg_dealt_up:'Damage Dealt Up %',dc_def_debuff_pct:'DEF debuff (target) %',dc_total_debuffs:'Total Debuffs %',dc_dtd_char:'Damage Taken Down (character) %',dc_dtd_unit:'Damage Taken Down (Unit) %',dc_inflicted_debuffs:'Inflicted Type of Debuffs',dc_attr_beam:'Beam',dc_attr_physical:'Physical',dc_attr_special:'Special',dc_what_affects_dmg:'What affects final damage?',dc_copy_results:'Copy Results',dc_bs_unit:'Unit',dc_bs_pilot:'Pilot',dc_bs_ms_atk:'MS ATK',dc_bs_weapon:'Weapon',dc_bs_weapon_power:'Weapon Power',dc_bs_dmg_dealt_total:'Damage Dealt % Total',dc_bs_crit_rate_wpn:'Crit rate (weapon %)',dc_bs_vigor_state:'Vigor state',dc_bs_active:'active',dc_bs_attacker_n:'Attacker {n}',dc_bs_damage_delta:'Damage delta vs active',dc_option_part_section:'Option Part',dc_supporter_section:'Supporter'});
@@ -9301,22 +9301,48 @@ function _stageMapAllySquadAimTargets(pool){
   });
   return Object.values(groups).filter(g=>g.n>0).map(g=>({x:g.sx/g.n,y:g.sy/g.n}));
 }
+/** Face the whole player force (centroid), not the nearest flank squad — e.g. Apsaras III reinf at left edge aims east. */
+function _stageMapAllyForceAimCentroid(pool){
+  const targets=_stageMapAllySquadAimTargets(pool);
+  if(!targets.length)return null;
+  let sx=0,sy=0;
+  targets.forEach(t=>{sx+=t.x;sy+=t.y});
+  return{x:sx/targets.length,y:sy/targets.length};
+}
 function _stageMapWeaponAimDir(u,weapon,pool){
   const stored=String(u?.direction||'1');
   const side=String(u?.side||'').toLowerCase();
   if(side!=='enemy')return stored;
   const mrt=String(weapon?.map_range_type||'0');
   if(mrt==='1'||mrt==='5'||mrt==='6')return stored;
-  const targets=_stageMapAllySquadAimTargets(pool);
-  if(!targets.length)return stored;
+  const aim=_stageMapAllyForceAimCentroid(pool);
+  if(!aim)return stored;
   const px=Number(u?.x)||0,py=Number(u?.y)||0;
-  let best=null,bestD=Infinity;
-  targets.forEach(t=>{
-    const d=(t.x-px)*(t.x-px)+(t.y-py)*(t.y-py);
-    if(d<bestD){bestD=d;best=t}
+  return _stageMapCardinalDirToward(px,py,aim.x,aim.y);
+}
+/** Mirror app.py map_coords_already_2x2_footprint_aware / augment_map_coords_for_occupied_area_2. */
+function _stageMapMapCoordsAlready2x2Aware(coords){
+  if(!coords||coords.length<2)return false;
+  const xs=coords.map(c=>Number(c.x)).filter(Number.isFinite);
+  if(xs.length<2)return false;
+  return(Math.min(...xs)+Math.max(...xs))===1;
+}
+function _stageMapAugmentMapCoordsOA2(coords){
+  if(!coords||!coords.length)return coords||[];
+  if(_stageMapMapCoordsAlready2x2Aware(coords))return coords.map(c=>({x:c.x,y:c.y}));
+  const out=coords.map(c=>({x:Number(c.x)||0,y:Number(c.y)||0}));
+  const seen=new Set(out.map(c=>`${c.x}|${c.y}`));
+  const byY={};
+  out.forEach(c=>{if(!byY[c.y])byY[c.y]=[];byY[c.y].push(c.x)});
+  Object.keys(byY).forEach(yk=>{
+    const y=Number(yk),xs=byY[yk],nx=Math.max(...xs)+1;
+    const key=`${nx}|${y}`;
+    if(!seen.has(key)){seen.add(key);out.push({x:nx,y})}
   });
-  if(!best)return stored;
-  return _stageMapCardinalDirToward(px,py,best.x,best.y);
+  return out;
+}
+function _stageMapUnitIsLargeFootprint(u){
+  return!!(u&&(u.is_large||Number(u.occupied_area_id)===2));
 }
 function _stageMapClassifyMapWeapon(weapon){
   const ec=weapon?.map_coords||[],sc=weapon?.shooting_coords||[];
@@ -9332,6 +9358,35 @@ function _stageMapClassifyMapWeapon(weapon){
 }
 function _stageMapWeaponPivot0(u){
   return{x:Number(u?.x)||0,y:Number(u?.y)||0};
+}
+/** 0-based front-left of an OA2 footprint in weapon-local space (forward clears the body). */
+function _stageMapLargeWeaponFrontLeftPivot(u,dir){
+  const cells=(u&&Array.isArray(u.cells)&&u.cells.length)?u.cells:[{x:Number(u?.x)||0,y:Number(u?.y)||0}];
+  let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity;
+  cells.forEach(c=>{
+    const x=Number(c.x),y=Number(c.y);
+    if(!Number.isFinite(x)||!Number.isFinite(y))return;
+    if(x<minX)minX=x;if(x>maxX)maxX=x;if(y<minY)minY=y;if(y>maxY)maxY=y;
+  });
+  if(minX===Infinity)return _stageMapWeaponPivot0(u);
+  const d=String(dir||'1');
+  if(d==='3')return{x:maxX,y:maxY}; // east: +x forward, +y left
+  if(d==='2')return{x:minX,y:minY}; // west: -x forward, -y left
+  if(d==='4')return{x:maxX,y:minY}; // north/-y: -y forward, +x left
+  return{x:minX,y:maxY}; // south/+y: +y forward, -x left
+}
+function _stageMapWeaponPivotForMap(u,dir){
+  if(_stageMapUnitIsLargeFootprint(u))return _stageMapLargeWeaponFrontLeftPivot(u,dir);
+  return _stageMapWeaponPivot0(u);
+}
+function _stageMapUnitFootprintKeySet(u){
+  const out=new Set();
+  const cells=(u&&Array.isArray(u.cells)&&u.cells.length)?u.cells:[{x:Number(u?.x)||0,y:Number(u?.y)||0}];
+  cells.forEach(c=>{
+    const x=Number(c.x),y=Number(c.y);
+    if(Number.isFinite(x)&&Number.isFinite(y))out.add(`${x}|${y}`);
+  });
+  return out;
 }
 function _stageMapWeaponCoordXY(c){
   if(!c||typeof c!=='object')return null;
@@ -9377,11 +9432,23 @@ function _stageMapImpactSelectionRel(weapon){
 function _stageMapMapWeaponWorldCells(u,weapon,pool){
   const kind=_stageMapClassifyMapWeapon(weapon);
   const dir=_stageMapWeaponAimDir(u,weapon,pool);
-  const pivot=_stageMapWeaponPivot0(u);
-  const sc=(weapon.shooting_coords||[]).map(_stageMapWeaponCoordXY).filter(Boolean);
-  const ec=_stageMapDashEffectRelCoords(weapon);
+  // Large OA2: pivot at facing front-left so local y≥1 clears the 2×2 (anchor min-corner overlaps the body).
+  const pivot=_stageMapWeaponPivotForMap(u,dir);
+  const foot=_stageMapUnitFootprintKeySet(u);
+  const mrt=String(weapon?.map_range_type||'0');
+  const large=_stageMapUnitIsLargeFootprint(u);
+  // Impact effect is impact-relative — never widen. Directional/around/dash: +x per row for OA2 (server may already have done this).
+  let sc=(weapon.shooting_coords||[]).map(_stageMapWeaponCoordXY).filter(Boolean);
+  if(large&&kind==='impact')sc=_stageMapAugmentMapCoordsOA2(sc);
+  let ec=_stageMapDashEffectRelCoords(weapon);
+  if(large&&kind!=='impact'&&mrt!=='2')ec=_stageMapAugmentMapCoordsOA2(ec);
   const range=new Set(),effect=new Set();
   let selection=null;
+  const addEffect=(wx,wy)=>{
+    const key=`${wx}|${wy}`;
+    if(foot.has(key))return;
+    effect.add(key);
+  };
   if(kind==='impact'){
     const sel=_stageMapImpactSelectionRel(weapon);
     const selOff=_stageMapRotateWeaponCoord(sel.x,sel.y,dir);
@@ -9393,13 +9460,13 @@ function _stageMapMapWeaponWorldCells(u,weapon,pool){
     });
     (weapon.map_coords||[]).map(_stageMapWeaponCoordXY).filter(Boolean).forEach(c=>{
       const r=_stageMapRotateWeaponCoord(c.x,c.y,dir);
-      effect.add(`${ix+r.x}|${iy+r.y}`);
+      addEffect(ix+r.x,iy+r.y);
     });
     return{kind,range,effect,selection};
   }
   ec.forEach(c=>{
     const r=_stageMapRotateWeaponCoord(c.x,c.y,dir);
-    effect.add(`${pivot.x+r.x}|${pivot.y+r.y}`);
+    addEffect(pivot.x+r.x,pivot.y+r.y);
   });
   return{kind,range,effect,selection:null};
 }
@@ -9789,10 +9856,40 @@ function setStageMapSpawnOrderVisible(on){
 }
 function setStageMapBuffAreasVisible(on){
   S.stageMapBuffAreasVisible=!!on;
+  /* Soft-replace grid / viewport only — never remount the whole section in a way that
+     drops Key Units (aside.stage-map-roster is a sibling of .stage-map-grid-wrap). */
   if(S.currentDetailType==='stage'&&S.stageMapExpanded){
-    const gridWrap=document.getElementById('stageMapGridWrap');
-    const md=S.currentDetailData&&S.currentDetailData.map_data;
-    if(gridWrap&&md&&md.width>0&&md.height>0)gridWrap.innerHTML=renderStageMapGrid(md)
+    const wrap=document.getElementById('stageMapGridWrap');
+    const d=S.currentDetailData;
+    const md=d&&d.map_data;
+    if(wrap&&md&&md.width>0&&md.height>0){
+      const snap=_stageMapCaptureView();
+      const cur=wrap.querySelector('.stage-map-grid-wrap');
+      if(cur){
+        const tmp=document.createElement('div');
+        tmp.innerHTML=renderStageMapGrid(md);
+        const neu=tmp.firstElementChild;
+        if(neu){
+          cur.replaceWith(neu);
+          _stageMapRestoreView(snap);
+          return;
+        }
+      }
+      /* Fallback: rebuild viewport+roster inside #stageMapGridWrap — keep Key Units. */
+      const mapInner=renderStageMapGrid(md);
+      const escapeOn=!!S.stageMapEscapeLayerVisible;
+      const reinfOn=!!S.stageMapReinforcementOnly;
+      const rosterHtml=renderStageMapUnitRoster(d);
+      const vpCls='stage-map-viewport'+(escapeOn?' stage-map-viewport--escape':'')+(reinfOn?' stage-map-viewport--reinf':'')+(rosterHtml?' stage-map-viewport--with-roster':'');
+      wrap.innerHTML=`<div class="${vpCls}">${mapInner}${rosterHtml}</div>`;
+      const hasDock=_stageMapParentDockUnits(md.units||[]).length>0;
+      wrap.className='map-grid-container'+(S.stageMapExpanded?' active':'')+(hasDock?' has-escape-dock':'')+(rosterHtml?' has-map-roster':'');
+      _stageMapRestoreView(snap);
+      ensureStageMapNpcHoverBound();
+      ensureStageNpcCompactHoverBound();
+      hideStageNpcHoverPop();
+      syncNpcUnitConditionHighlights();
+    }
   }
 }
 function setStageMapMapWeaponVisible(on){
@@ -11928,7 +12025,7 @@ const factorsLab=document.getElementById('dcDamageFactorsSummaryLab');
 if(factorsLab)factorsLab.textContent=t('dc_what_affects_dmg');
 }
 
-const DC_ATK_SLOT_COUNT=3;
+const DC_ATK_SLOT_COUNT=4;
 const DC_SHINN_ASUKA_CHAR_IDS=new Set(['1330000101','1330000102','1330000103','1330000104','1330000105']);
 function _dcIsZhCalcLang(){const lc=(S.lang||'EN').toUpperCase();return lc==='TW'||lc==='HK';}
 function _dcIsJaCalcLang(){return (S.lang||'EN').toUpperCase()==='JA';}
@@ -12588,7 +12685,7 @@ _dcCloseDcStageDd();_dcUpdateDcStageDdLabel();
 setDcMp('medium');setDcDefend(false);setDcShield(false);setDcTerrain('normal');
 renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();renderDcDefStats();onDcParamChange();
 S.dc.atkSlotIndex=0;
-S.dc.atkSlots=[_dcReadAttackerFromDc(),_dcCreateEmptyAttackerSlot(),_dcCreateEmptyAttackerSlot()];
+S.dc.atkSlots=Array.from({length:DC_ATK_SLOT_COUNT},(_,i)=>i===0?_dcReadAttackerFromDc():_dcCreateEmptyAttackerSlot());
 _dcRefreshAtkSlotUi();
 _dcSyncAtkModeUiFromState();
 }
@@ -13478,8 +13575,8 @@ const sel=document.getElementById('dcStageSelect');
 if(sel){sel.value=D.s;if(sel.value===D.s)await onDcStageChange()}
 }
 }
-const arr=Array.isArray(obj.S)?obj.S:[null,null,null];
-const loaded=await Promise.all([0,1,2].map(i=>{
+const arr=Array.isArray(obj.S)?obj.S:[];
+const loaded=await Promise.all(Array.from({length:DC_ATK_SLOT_COUNT},(_,i)=>{
 const o=arr[i];
 return o?_dcLoadSlotFromPackedObj(o):Promise.resolve(null);
 }));
@@ -13566,7 +13663,7 @@ S.dc._integratedWpnCritDmgUp=S.dc._wpnCritDmgUp|0;
 onDcParamChange();
 if(!isMultiSlotUrl){
 S.dc.atkSlotIndex=0;
-S.dc.atkSlots=[_dcReadAttackerFromDc(),_dcCreateEmptyAttackerSlot(),_dcCreateEmptyAttackerSlot()];
+S.dc.atkSlots=Array.from({length:DC_ATK_SLOT_COUNT},(_,i)=>i===0?_dcReadAttackerFromDc():_dcCreateEmptyAttackerSlot());
 }
 _dcRefreshAtkSlotUi();
 }
@@ -18098,14 +18195,19 @@ let abMax=0;
 const tx=typeof ln==='string'?ln:(ln&&ln.text)||'';
 if(!tx||!_dcAbilityBlobMentionsSupportCounter(tx))return;
 const condGroups=(ln&&ln.condition_groups)||[];
-if(condGroups.length&&!_dcAbilityCondContextMeetsGroups(unitRef,cd,condGroups))return;
+if(condGroups.length){
+if(!_dcAbilityCondContextMeetsGroups(unitRef,cd,condGroups))return;
+}else{
+/* Some EX lines only ship bare `conditions` (no condition_groups), e.g. Argi Mirage
+   Support Attack/Counter +10% ATK gated to Mercenary / IBO series. */
+const bare=(ln&&ln.conditions)||[];
+if(bare.length&&!_dcConditionGroupMatches(unitRef,cd,{conditions:bare}))return;
+}
 const p=_dcExtractSupportCounterAtkPctFromBlob(tx);
 if(p>abMax)abMax=p;
 });
-if(abMax<=0&&allowJoinedBlob){
-const blob=(r.details||[]).map(d=>typeof d==='string'?d:(d&&d.text)||'').join('\n');
-if(_dcAbilityBlobMentionsSupportCounter(blob))abMax=_dcExtractSupportCounterAtkPctFromBlob(blob);
-}
+/* Do NOT fall back to allowJoinedBlob ATK% — joining lines skips condition_groups and
+   wrongly grants Support-type-gated ATK% on Attack/Durability MS (Argi LV4 +20%). */
 if(abMax>0)total+=abMax;
 });
 return total;
@@ -18202,7 +18304,10 @@ total+=unitPct;
 return total;
 }
 function _dcSupportCntEligiblePairSnap(cd,ud){
-if(!cd||cd._manual||!ud||ud._manual||String(ud.role_id)!=='3')return '';
+/* Eligibility is ability-condition based (Support-type MS gates live on condition_groups).
+   Do NOT hard-require unit role_id===3 — ungated EX lines (e.g. Argi Mirage +10% ATK on
+   Support Attack/Counter) apply on Attack/Durability MS too. */
+if(!cd||cd._manual||!ud||ud._manual)return '';
 const rawPct=_dcParseMaxSupportCounterAtkPctFromChar(cd,ud,{unitCondPassive:false})|0;
 if(rawPct<=0)return '';
 return `${String(cd.id||'')}|${String(ud.id||'')}|${rawPct}`;
@@ -18211,8 +18316,9 @@ function _dcEffectiveSupportCounterAtkPctFromCtx(ctx){
 const c=ctx||{};
 if(!c.supportCounterAtk)return 0;
 const cd=c.atkCharData,ud=c.atkUnitData;
-if(!cd||cd._manual||!ud||ud._manual||String(ud.role_id)!=='3')return 0;
-/* Recompute with current unit CP so Action:Support MS ATK is not double-counted vs stats_with_cond. */
+if(!cd||cd._manual||!ud||ud._manual)return 0;
+/* Per-line condition_groups already drop Support-type-only ATK% when the MS is not Support.
+   Hard-gating all SAC ATK% to role_id===3 hid ungated Support Attack/Counter ATK (Argi on Barbatos EX). */
 return _dcParseMaxSupportCounterAtkPctFromChar(cd,ud,{unitCondPassive:!!c.unitCondPassive})|0;
 }
 function _dcEffectiveSupportCounterAtkPct(){return _dcEffectiveSupportCounterAtkPctFromCtx(S.dc);}
@@ -19901,17 +20007,200 @@ onDcParamChange();
 let _dcPickerDebounce=null;
 let _dcPickerSearchAbort=null;
 let _dcPickerSearchGen=0;
+const _DC_PICKER_RARITY_KEYS=['UR','SSR','SR','R','N'];
+function _dcPickerFiltState(){
+if(!S._dcPickFilt)S._dcPickFilt={series:[],lineage:[],roles:ROLE_LIST_IDS.slice(),rarities:_DC_PICKER_RARITY_KEYS.slice(),panel:null};
+return S._dcPickFilt;
+}
+function _dcPickerResetFilt(){
+S._dcPickFilt={series:[],lineage:[],roles:ROLE_LIST_IDS.slice(),rarities:_DC_PICKER_RARITY_KEYS.slice(),panel:null};
+}
+function _dcPickerHasActiveFilters(){
+const f=_dcPickerFiltState();
+return(f.series&&f.series.length>0)||(f.lineage&&f.lineage.length>0)||(f.roles&&f.roles.length!==ROLE_LIST_IDS.length)||(f.rarities&&f.rarities.length!==_DC_PICKER_RARITY_KEYS.length);
+}
+function _dcPickerFiltQuery(){
+const f=_dcPickerFiltState();
+let q='';
+if(f.series&&f.series.length)q+='&series_id='+encodeURIComponent(f.series.join(','));
+if(f.lineage&&f.lineage.length)q+='&lineage_id='+encodeURIComponent(f.lineage.join(','));
+const roles=Array.isArray(f.roles)?f.roles:[];
+if(!roles.length)q+='&role=__NONE__';
+else if(roles.length<ROLE_LIST_IDS.length)q+='&role='+encodeURIComponent(roles.join(','));
+const rars=Array.isArray(f.rarities)?f.rarities:[];
+if(!rars.length)q+='&rarity=__NONE__';
+else if(rars.length<_DC_PICKER_RARITY_KEYS.length)q+='&rarity='+encodeURIComponent(rars.join(','));
+return q;
+}
+function _dcPickerEmptyHintHtml(){
+const tip=_dcPickerHasActiveFilters()?'No results':('Type at least 2 characters, or use '+t('list_filter_series')+' / '+t('list_filter_lineage'));
+return'<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px">'+esc(tip)+'</div>';
+}
+function _dcPickerEntityBrowseKey(type){
+return(type==='character'||type==='def_character')?'char':'unit';
+}
+function _dcPickerHideFilterUi(){
+const bar=document.getElementById('dcPickerFilterBar');
+const panel=document.getElementById('dcPickerFilterPanel');
+if(bar)bar.hidden=true;
+if(panel){panel.hidden=true;panel.innerHTML=''}
+const f=_dcPickerFiltState();f.panel=null;
+}
+function _dcPickerFilterDdLocal(kind,q){
+const panel=document.getElementById('dcPickerFilterPanel');
+if(!panel)return;
+const grid=panel.querySelector(kind==='lineage'?'.browse-lineage-grid':'.browse-series-grid');
+if(!grid)return;
+const qn=String(q||'').trim().toLowerCase();
+grid.querySelectorAll('.list-filter-tag-item').forEach(el=>{
+const ft=el.getAttribute('data-filter-text')||'';
+el.style.display=!qn||ft.indexOf(qn)>=0?'':'none';
+});
+}
+function _dcRenderPickerFilterBar(){
+const type=S._dcPickerType;
+const bar=document.getElementById('dcPickerFilterBar');
+const row=document.getElementById('dcPickerFilterRow');
+const panel=document.getElementById('dcPickerFilterPanel');
+if(!bar||!row)return;
+if(!_dcPickerIsEntityType(type)){_dcPickerHideFilterUi();return}
+bar.hidden=false;
+const f=_dcPickerFiltState();
+const kind=_dcPickerEntityBrowseKey(type);
+const tagIc=kind==='char'?LINEAGE_TAG_ICON_CHAR:LINEAGE_TAG_ICON_UNIT;
+const serN=(f.series&&f.series.length)||0;
+const linN=(f.lineage&&f.lineage.length)||0;
+const roles=Array.isArray(f.roles)?f.roles:ROLE_LIST_IDS.slice();
+const rars=Array.isArray(f.rarities)?f.rarities:_DC_PICKER_RARITY_KEYS.slice();
+const serLbl=serN?t('list_filter_series')+' ×'+serN:t('filter_series_all');
+const linLbl=linN?t('list_filter_lineage')+' ×'+linN:t('filter_tags_all');
+const roleActive=roles.length!==ROLE_LIST_IDS.length;
+const rarActive=rars.length!==_DC_PICKER_RARITY_KEYS.length;
+let h='';
+h+=`<button type="button" class="dc-picker-filter-chip${serN||f.panel==='series'?' is-active':''}" data-dc-pf="series" title="${escAttr(t('list_filter_series'))}"><img src="${imgUrl(SERIES_FILTER_ALL_LOGO)}" alt="" role="presentation"><span>${esc(serLbl)}</span></button>`;
+h+=`<button type="button" class="dc-picker-filter-chip${linN||f.panel==='lineage'?' is-active':''}" data-dc-pf="lineage" title="${escAttr(t('list_filter_lineage'))}"><img src="${imgUrl(tagIc)}" alt="" role="presentation"><span>${esc(linLbl)}</span></button>`;
+ROLE_LIST_IDS.forEach((rid,i)=>{
+const on=roles.indexOf(rid)>=0;
+const nm=t(['role_attack','role_defense','role_support'][i]);
+const ic=ROLE_FILTER_ICONS[rid]?`<img src="${imgUrl(ROLE_FILTER_ICONS[rid])}" alt="" role="presentation">`:'';
+h+=`<button type="button" class="dc-picker-filter-chip${on?(roleActive?' is-on':''):''}" data-dc-pf-role="${rid}" title="${escAttr(nm)}" aria-pressed="${on?'true':'false'}">${ic}<span>${esc(nm)}</span></button>`;
+});
+_DC_PICKER_RARITY_KEYS.forEach(rk=>{
+const on=rars.indexOf(rk)>=0;
+const ic=RARITY_FILTER_ICONS[rk]?`<img src="${imgUrl(RARITY_FILTER_ICONS[rk])}" alt="" role="presentation">`:'';
+h+=`<button type="button" class="dc-picker-filter-chip${on?(rarActive?' is-on':''):''}" data-dc-pf-rar="${rk}" title="${escAttr(rk)}" aria-pressed="${on?'true':'false'}">${ic}<span>${esc(rk)}</span></button>`;
+});
+if(_dcPickerHasActiveFilters())h+=`<button type="button" class="dc-picker-filter-chip dc-picker-filter-chip--clear" data-dc-pf="clear">${esc(t('browse_filters_clear')||'Clear')}</button>`;
+row.innerHTML=h;
+if(!row.dataset.dcPfWired){
+row.dataset.dcPfWired='1';
+row.addEventListener('click',function(ev){
+const btn=ev.target.closest('[data-dc-pf],[data-dc-pf-role],[data-dc-pf-rar]');
+if(!btn||!row.contains(btn))return;
+ev.preventDefault();
+const f2=_dcPickerFiltState();
+if(btn.hasAttribute('data-dc-pf-role')){
+const rid=btn.getAttribute('data-dc-pf-role');
+let roles2=Array.isArray(f2.roles)?f2.roles.slice():ROLE_LIST_IDS.slice();
+const ix=roles2.indexOf(rid);
+if(ix>=0){if(roles2.length>1)roles2.splice(ix,1)}else roles2.push(rid);
+roles2=ROLE_LIST_IDS.filter(x=>roles2.indexOf(x)>=0);
+f2.roles=roles2;
+_dcRenderPickerFilterBar();_dcDoPickerSearch();return;
+}
+if(btn.hasAttribute('data-dc-pf-rar')){
+const rk=btn.getAttribute('data-dc-pf-rar');
+let rars2=Array.isArray(f2.rarities)?f2.rarities.slice():_DC_PICKER_RARITY_KEYS.slice();
+const ix=rars2.indexOf(rk);
+if(ix>=0){if(rars2.length>1)rars2.splice(ix,1)}else rars2.push(rk);
+rars2=_DC_PICKER_RARITY_KEYS.filter(x=>rars2.indexOf(x)>=0);
+f2.rarities=rars2;
+_dcRenderPickerFilterBar();_dcDoPickerSearch();return;
+}
+const act=btn.getAttribute('data-dc-pf');
+if(act==='clear'){_dcPickerResetFilt();_dcRenderPickerFilterBar();_dcDoPickerSearch();return}
+if(act==='series'||act==='lineage'){
+const next=(f2.panel===act)?null:act;
+f2.panel=next;
+_dcRenderPickerFilterBar();
+if(next)void _dcOpenPickerFilterPanel(next);
+return;
+}
+});
+}
+if(!(f.panel==='series'||f.panel==='lineage')){
+if(panel){panel.hidden=true;panel.innerHTML=''}
+}
+}
+async function _dcOpenPickerFilterPanel(kind){
+const panel=document.getElementById('dcPickerFilterPanel');
+if(!panel)return;
+const type=S._dcPickerType;
+if(!_dcPickerIsEntityType(type)){panel.hidden=true;return}
+const f=_dcPickerFiltState();
+if(f.panel!==kind){panel.hidden=true;panel.innerHTML='';return}
+panel.hidden=false;
+panel.innerHTML='<div style="padding:10px;text-align:center;color:var(--text-muted);font-size:12px">…</div>';
+const ent=_dcPickerEntityBrowseKey(type);
+await ensureBrowseFiltersEntity(ent);
+if(f.panel!==kind||S._dcPickerType!==type)return;
+const pack=getBrowsePack(ent)||{};
+const tagIc=ent==='char'?LINEAGE_TAG_ICON_CHAR:LINEAGE_TAG_ICON_UNIT;
+let html=`<input type="search" class="filter-dd-search" placeholder="${escAttr(t('list_filter_search_placeholder')||'Search…')}" autocomplete="off" spellcheck="false">`;
+if(kind==='series'){
+const rows=(pack.series||[]).slice().sort((a,b)=>{const ia=parseInt(String(a&&a.id),10),ib=parseInt(String(b&&b.id),10);const na=Number.isFinite(ia)?ia:0,nb=Number.isFinite(ib)?ib:0;if(na!==nb)return na-nb;return String(a&&a.name||'').localeCompare(String(b&&b.name||''))});
+const sel=new Set((f.series||[]).map(String));
+html+='<div class="filter-panel-grid browse-series-grid">';
+rows.forEach(row=>{
+const ft=String(row.name||'').toLowerCase();
+const ic=row.icon?`<img class="tag-icon-fg" src="${imgUrl(row.icon)}" alt="" loading="lazy">`:`<span class="series-icon-fallback"></span>`;
+html+=`<label class="list-filter-tag-item" data-filter-text="${escAttr(ft)}"><input type="checkbox" class="list-filter-sr series-filter-item" value="${escAttr(row.id)}"${sel.has(String(row.id))?' checked':''}><span class="tag-composite list-filter-tag-composite list-filter-series-row"><span class="tag-part-icon">${ic}</span><span class="tag-part-value">${esc(row.name)}</span></span></label>`;
+});
+html+='</div>';
+}else{
+const rows=pack.lineages||[];
+const selArr=Array.isArray(f.lineage)?f.lineage:[];
+html+='<div class="filter-panel-grid browse-lineage-grid">';
+rows.forEach(row=>{
+const ft=String(row.name||'').toLowerCase();
+const on=selArr.some(s=>lineageIdsMatch(s,row.id));
+html+=`<label class="list-filter-tag-item" data-filter-text="${escAttr(ft)}"><input type="checkbox" class="list-filter-sr lineage-filter-item" value="${escAttr(row.id)}"${on?' checked':''}><span class="tag-composite list-filter-tag-composite"><span class="tag-part-icon"><img class="tag-icon-fg" src="${imgUrl(tagIc)}" alt="" loading="lazy"></span><span class="tag-part-value">${esc(row.name)}</span></span></label>`;
+});
+html+='</div>';
+}
+panel.innerHTML=html;
+const search=panel.querySelector('.filter-dd-search');
+if(search){
+search.addEventListener('input',function(){_dcPickerFilterDdLocal(kind,search.value)});
+search.addEventListener('compositionend',function(){_dcPickerFilterDdLocal(kind,search.value)});
+try{search.focus({preventScroll:true})}catch(_){}
+}
+panel.querySelectorAll('input.series-filter-item,input.lineage-filter-item').forEach(inp=>{
+inp.addEventListener('change',function(){
+const f2=_dcPickerFiltState();
+if(kind==='series'){
+f2.series=Array.from(panel.querySelectorAll('input.series-filter-item:checked')).map(i=>i.value);
+}else{
+f2.lineage=Array.from(panel.querySelectorAll('input.lineage-filter-item:checked')).map(i=>String(i.value));
+}
+_dcRenderPickerFilterBar();
+_dcDoPickerSearch();
+});
+});
+}
 async function openDcPicker(type){
 clearTimeout(_dcPickerDebounce);_dcPickerDebounce=null;
 if(_dcPickerSearchAbort){try{_dcPickerSearchAbort.abort()}catch(_){}_dcPickerSearchAbort=null}
 _dcPickerSearchGen++;
 S._dcPickerType=type;S._dcPickerCache=[];S._dcPickerFullCache=null;
+_dcPickerResetFilt();
 const overlay=document.getElementById('dcPickerOverlay');
 overlay.classList.add('active');
 const inp=document.getElementById('dcPickerSearch');
 const body=document.getElementById('dcPickerBody');
 inp.value='';
 if(type==='option_parts'||type==='supporter'||type==='def_option_parts'||type==='def_supporter'){
+_dcPickerHideFilterUi();
 inp.placeholder=(type==='supporter'||type==='def_supporter')?(t('search_supporter')||'Search name, series, tags…'):'Search by name or keyword…';
 body.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px">Loading applicable items…</div>';
 const hasAtk=!!(S.dc.atkUnit||(S.dc.atkUnitData&&S.dc.atkUnitData._manual));
@@ -19938,13 +20227,16 @@ if(!S._dcPickerCache.length){body.innerHTML='<div style="padding:20px;text-align
 setTimeout(()=>inp.focus(),50);
 return;
 }
-inp.placeholder=(type==='character'||type==='def_character')?'Type to search characters...':'Type to search units...';
-body.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px">Type at least 2 characters to search</div>';
+_dcRenderPickerFilterBar();
+inp.placeholder=(type==='character'||type==='def_character')?(t('search_char')||'Type to search characters...'):(t('search_unit')||'Type to search units...');
+body.innerHTML=_dcPickerEmptyHintHtml();
+void ensureBrowseFiltersEntity(_dcPickerEntityBrowseKey(type),{priority:'low'});
 setTimeout(()=>inp.focus(),50);
 }
 function closeDcPicker(){
 clearTimeout(_dcPickerDebounce);_dcPickerDebounce=null;
 if(_dcPickerSearchAbort){try{_dcPickerSearchAbort.abort()}catch(_){}_dcPickerSearchAbort=null}
+_dcPickerHideFilterUi();
 document.getElementById('dcPickerOverlay').classList.remove('active');
 _ggenArmPickerSearchReadonly('dcPickerSearch')}
 function filterDcPicker(ev,force){
@@ -20053,17 +20345,17 @@ if(body)body.innerHTML='<div style="padding:20px;text-align:center;color:var(--t
 }
 const _dcPickerSearchResultCache=new Map();
 const _DC_PICKER_SEARCH_CACHE_MAX=32;
-function _dcPickerSearchCacheKey(type,qExp){return String(S.lang||'EN')+'|'+String(type||'')+'|'+String(qExp||'')}
-function _dcPickerSearchCacheGet(type,qExp){
-const k=_dcPickerSearchCacheKey(type,qExp);
+function _dcPickerSearchCacheKey(type,qExp,filtQ){return String(S.lang||'EN')+'|'+String(type||'')+'|'+String(qExp||'')+'|'+String(filtQ||'')}
+function _dcPickerSearchCacheGet(type,qExp,filtQ){
+const k=_dcPickerSearchCacheKey(type,qExp,filtQ);
 const hit=_dcPickerSearchResultCache.get(k);
 if(hit==null)return null;
 _dcPickerSearchResultCache.delete(k);
 _dcPickerSearchResultCache.set(k,hit);
 return hit;
 }
-function _dcPickerSearchCachePut(type,qExp,rows){
-const k=_dcPickerSearchCacheKey(type,qExp);
+function _dcPickerSearchCachePut(type,qExp,filtQ,rows){
+const k=_dcPickerSearchCacheKey(type,qExp,filtQ);
 if(_dcPickerSearchResultCache.has(k))_dcPickerSearchResultCache.delete(k);
 _dcPickerSearchResultCache.set(k,rows||[]);
 while(_dcPickerSearchResultCache.size>_DC_PICKER_SEARCH_CACHE_MAX){
@@ -20071,14 +20363,20 @@ const oldest=_dcPickerSearchResultCache.keys().next().value;
 _dcPickerSearchResultCache.delete(oldest);
 }
 }
-function _dcPickerSearchCachePrefixHit(type,qExp){
+function _dcPickerSearchCachePrefixHit(type,qExp,filtQ){
 const qe=String(qExp||'');
-if(qe.length<2)return null;
+const fq=String(filtQ||'');
+if(qe.length<2||fq)return null;
 let bestQ='',bestRows=null;
 _dcPickerSearchResultCache.forEach((rows,k)=>{
 const pref=String(S.lang||'EN')+'|'+String(type||'')+'|';
 if(k.indexOf(pref)!==0)return;
-const cq=k.slice(pref.length);
+const rest=k.slice(pref.length);
+const pipe=rest.lastIndexOf('|');
+if(pipe<0)return;
+const cq=rest.slice(0,pipe);
+const cf=rest.slice(pipe+1);
+if(cf!==fq)return;
 if(!cq||qe.indexOf(cq)!==0)return;
 if(cq.length>bestQ.length){bestQ=cq;bestRows=rows}
 });
@@ -20096,19 +20394,22 @@ const body=document.getElementById('dcPickerBody');
 const type=S._dcPickerType;
 if(type==='option_parts'||type==='supporter'||type==='def_option_parts'||type==='def_supporter'){_dcFilterDcPickerClientSide();return}
 if(_dcPickerSearchAbort){try{_dcPickerSearchAbort.abort()}catch(_){}_dcPickerSearchAbort=null}
-if(qRaw.length<2){
+const filtQ=_dcPickerFiltQuery();
+const hasFilt=_dcPickerHasActiveFilters();
+if(qRaw.length<2&&!hasFilt){
 _dcPickerSearchGen++;
-body.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px">Type at least 2 characters to search</div>';
+S._dcPickerCache=[];
+body.innerHTML=_dcPickerEmptyHintHtml();
 return
 }
-const qExp=(type==='character'||type==='def_character'||type==='unit'||type==='def_unit')?expandUnitSearchQuery(qRaw):qRaw;
-const exact=_dcPickerSearchCacheGet(type,qExp);
+const qExp=(qRaw.length>=2&&(type==='character'||type==='def_character'||type==='unit'||type==='def_unit'))?expandUnitSearchQuery(qRaw):(qRaw.length>=2?qRaw:'');
+const exact=_dcPickerSearchCacheGet(type,qExp,filtQ);
 if(exact){
 S._dcPickerCache=_tbSortPickerEntityRows(exact);
 renderDcPickerList();
 return;
 }
-const prefixCached=_dcPickerSearchCachePrefixHit(type,qExp);
+const prefixCached=_dcPickerSearchCachePrefixHit(type,qExp,filtQ);
 if(prefixCached&&prefixCached.length){
 S._dcPickerCache=_tbSortPickerEntityRows(prefixCached);
 renderDcPickerList();
@@ -20120,11 +20421,12 @@ const base=(type==='character'||type==='def_character')?'/api/characters':'/api/
 const haveVisible=!!(S._dcPickerCache&&S._dcPickerCache.length);
 if(!haveVisible)body.innerHTML='<div style="padding:10px;text-align:center;color:var(--text-muted);font-size:12px">Searching...</div>';
 try{
-const r=await fetch(`${base}?lang=${S.lang}&page=1&per_page=50&sort=rarity&dir=desc&q=${encodeURIComponent(qExp)}`,{signal:ac.signal});
+const pp=(hasFilt&&!qExp)?100:50;
+const r=await fetch(`${base}?lang=${S.lang}&page=1&per_page=${pp}&sort=rarity&dir=desc&q=${encodeURIComponent(qExp)}${filtQ}`,{signal:ac.signal});
 const d=await r.json();
 if(myGen!==_dcPickerSearchGen)return;
 const rows=_tbSortPickerEntityRows(d.rows||[]);
-_dcPickerSearchCachePut(type,qExp,rows);
+_dcPickerSearchCachePut(type,qExp,filtQ,rows);
 S._dcPickerCache=rows;
 renderDcPickerList();
 }catch(e){
@@ -21134,7 +21436,6 @@ const fullPct=_dcParseMaxSupportCounterAtkPctFromChar(cd,ud,{unitCondPassive:fal
 const effPct=_dcParseMaxSupportCounterAtkPctFromChar(cd,ud)|0;
 S.dc._supportCounterAtkPct=effPct;
 const pctOk=fullPct>0;
-const unitOk=!!(ud&&!ud._manual&&String(ud.role_id)==='3');
 const cid=cd&&!cd._manual?String(cd.id||''):'';
 if(!pctOk||fullPct<=0){
 w.style.display='none';
@@ -21149,23 +21450,9 @@ tog.tabIndex=-1;
 _dcSyncSupportCounterHighlight();
 return;
 }
+/* Show + enable whenever parsed ATK% survives ability conditions for this MS+pilot
+   (Support-type gates are per-line; ungated EX SAC ATK works on Attack/Durability MS). */
 w.style.display='';
-if(!unitOk){
-S.dc.supportCounterAtk=false;
-snapMap[si]=null;
-tog.classList.remove('active');
-tog.setAttribute('aria-pressed','false');
-w.classList.add('is-disabled');
-w.style.opacity='0.55';
-tog.tabIndex=-1;
-_dcApplySupportCounterLang(fullPct);
-if(lbl){
-lbl.textContent=t('dc_support_counter_desc').replace('{pct}',String(fullPct));
-lbl.title=t('dc_support_counter_tip_disabled');
-}
-_dcSyncSupportCounterHighlight();
-return;
-}
 w.style.opacity='';
 w.classList.remove('is-disabled');
 const kNow=`${cid}|${String(ud.id||'')}|${fullPct}`;

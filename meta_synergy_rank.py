@@ -2020,7 +2020,7 @@ _MSY_DISK_VERSION = 'v14'
 _BSP_DC_RULES_VERSION = 16  # Support UR + Support mixed reserved early (SR Supports were capped out)
 _DEFENDER_BOARD_VERSION = 9  # Stale v0 boards (all SD=18 / no Force Guard) must rebuild
 _SKILLS_OFF_BOARD_VERSION = 2
-_SUPPORT_COUNTER_BOARD_VERSION = 3  # v3: + same-role / no-UR×same-role SAC boards (Matching Role Top 10)
+_SUPPORT_COUNTER_BOARD_VERSION = 5  # v5: Attack MS Supporters-only boards from SAC pairs (+ ungated SAC ATK%)
 _BSP_DC_BUILD_ENGINE = 'calculateDamage'
 # From v16 onward: formula/criteria rebuilds only refresh top-N + newly added units.
 # Full-catalog rebuilds are intentional opt-in only (users rarely open the long tail).
@@ -4694,10 +4694,58 @@ def attach_dc_skills_off_rankings(g, pairs_by_tier, pilot_ids, exclude, lc, top_
     return out
 
 
+_SAC_ATK_PCT_RE = re.compile(
+    r'(?:increase|Increases)\s+(?:own\s+)?(?:MS\s+)?(?:ATK|Attack)\s+by\s+(\d+)\s*%|'
+    r'攻撃力が(\d+)\s*[%％]上昇|'
+    r'攻擊力提升(\d+)\s*[%％]|'
+    r'攻擊力提昇(\d+)\s*[%％]',
+    re.I,
+)
+
+
+def _pair_support_counter_atk_pct(uid, cid, lc):
+    """Matching Support Attack/Counter MS ATK % for this unit×pilot (Support-type gates apply)."""
+    A = _app()
+    uid = A.normalize_id(uid)
+    cid = A.normalize_id(cid)
+    if not uid or not cid:
+        return 0
+    total = 0
+    for bab in _build_char_ac_calc(cid, lc):
+        for src in _iter_char_ability_active(bab, cid):
+            ab_max = 0
+            for d2 in src.get('details') or []:
+                if not isinstance(d2, dict):
+                    continue
+                txt = str(d2.get('text') or '')
+                if not txt or not A._char_ability_blob_mentions_support_counter(txt):
+                    continue
+                groups = d2.get('condition_groups') or []
+                bare = d2.get('conditions') or []
+                if groups:
+                    if not _msy_ability_cond_meets(uid, cid, lc, groups):
+                        continue
+                elif bare:
+                    if not _msy_condition_group_matches(uid, cid, lc, {'conditions': bare}):
+                        continue
+                m = _SAC_ATK_PCT_RE.search(txt)
+                if not m:
+                    continue
+                for g in m.groups():
+                    if g:
+                        ab_max = max(ab_max, int(g))
+                        break
+            if ab_max > 0:
+                total += ab_max
+    return int(total)
+
+
 def attach_dc_support_counter_rankings(g, pairs_by_tier, pilot_ids, exclude, lc, top_pilots):
     """Attach Support Attack/Counter MS ATK % board (skills on, supportCounterAtk=true).
 
-    Only meaningful for Support-role units; Attack/Durability MS get 0% from the DC gate.
+    Meaningful for every unit role. Many SAC ATK% lines still require a Support-type MS
+    via ability condition_groups; ungated EX lines (e.g. Argi Mirage +10% ATK) apply on
+    Attack/Durability MS too. DC must not hard-zero SAC ATK% when role_id !== 3.
 
     Also stores dedicated no-UR / UR-only / same-role SAC boards from the same /cal
     pairs so 排除 UR and Matching Role show real Top 10s (SP stats), not leftovers
@@ -4728,6 +4776,14 @@ def attach_dc_support_counter_rankings(g, pairs_by_tier, pilot_ids, exclude, lc,
             for p in block.get('pilots') or []:
                 p['support_counter_atk'] = True
                 p['active_skills_on'] = True
+                ch = p.get('char') if isinstance(p.get('char'), dict) else {}
+                cid = A.normalize_id(ch.get('id'))
+                if cid:
+                    pct = _pair_support_counter_atk_pct(uid, cid, lc)
+                    if pct > 0:
+                        p['support_counter_atk_pct'] = pct
+                    else:
+                        p.pop('support_counter_atk_pct', None)
         return rk
 
     def _rank_pairs(pair_rows):
@@ -4756,6 +4812,22 @@ def attach_dc_support_counter_rankings(g, pairs_by_tier, pilot_ids, exclude, lc,
         (cid, bv) for cid, bv in pairs
         if A.normalize_id(cid) in ur_ids and A.normalize_id(cid) in same_role_ids
     ]
+    # Support-role pilots under SAC — Attack MS "Supporters only" must rank Support Attack,
+    # not main EX (Argi +10% SAC ATK on Barbatos EX vs Ribbons gated +15% needing Support MS).
+    support_role_ids = {
+        A.normalize_id(cid)
+        for cid in active_pilots
+        if _char_role(A.normalize_id(cid)) == _SUPPORT_ROLE_ID
+    }
+    pairs_support_role = [
+        (cid, bv) for cid, bv in pairs if A.normalize_id(cid) in support_role_ids
+    ]
+    pairs_support_role_ur = [
+        (cid, bv) for cid, bv in pairs_support_role if A.normalize_id(cid) in ur_ids
+    ]
+    pairs_support_role_no_ur = [
+        (cid, bv) for cid, bv in pairs_support_role if A.normalize_id(cid) in non_ur_ids
+    ]
     out = dict(g)
     out['rankings_support_counter'] = rk
     out['rankings_support_counter_no_ur'] = _rank_pairs(pairs_no_ur)
@@ -4763,6 +4835,9 @@ def attach_dc_support_counter_rankings(g, pairs_by_tier, pilot_ids, exclude, lc,
     out['rankings_support_counter_same_role'] = _rank_pairs(pairs_same)
     out['rankings_support_counter_no_ur_same_role'] = _rank_pairs(pairs_no_ur_same)
     out['rankings_support_counter_ur_only_same_role'] = _rank_pairs(pairs_ur_same)
+    out['rankings_support_counter_support_role'] = _rank_pairs(pairs_support_role)
+    out['rankings_support_counter_support_role_ur_only'] = _rank_pairs(pairs_support_role_ur)
+    out['rankings_support_counter_support_role_no_ur'] = _rank_pairs(pairs_support_role_no_ur)
     out['support_counter_board_version'] = _SUPPORT_COUNTER_BOARD_VERSION
     out['support_counter_build_engine'] = _BSP_DC_BUILD_ENGINE
     return out
@@ -5446,6 +5521,9 @@ def _schedule_bsp_board_refresh(g, uid, lc, *, rank_mode='super_crit', def_tier=
                     'rankings_support_counter_same_role',
                     'rankings_support_counter_no_ur_same_role',
                     'rankings_support_counter_ur_only_same_role',
+                    'rankings_support_counter_support_role',
+                    'rankings_support_counter_support_role_ur_only',
+                    'rankings_support_counter_support_role_no_ur',
                     'skills_off_board_version', 'skills_off_build_engine',
                     'support_counter_board_version', 'support_counter_build_engine',
                 ):
@@ -5491,6 +5569,9 @@ def _persist_bsp_published_group(uid, g):
         'rankings_support_counter_same_role',
         'rankings_support_counter_no_ur_same_role',
         'rankings_support_counter_ur_only_same_role',
+        'rankings_support_counter_support_role',
+        'rankings_support_counter_support_role_ur_only',
+        'rankings_support_counter_support_role_no_ur',
         'skills_off_board_version', 'skills_off_build_engine',
         'support_counter_board_version', 'support_counter_build_engine',
     )
@@ -6223,7 +6304,20 @@ def _bsp_dc_variant_pilots(block, rank_mode, *, fallback_pilots, no_ur=False, ur
     """
     store_n = int(_BSP_STORE_TOP_PILOTS)
     rows = _bsp_pilots_from_rankings_block(block, rank_mode)
+    need_filter = bool(no_ur or ur_only or no_shinn or same_role or support_role)
     if rows and _bsp_pilots_look_like_dc(rows):
+        if need_filter:
+            # e.g. SAC mixed store → Support-role / UR slice for Attack MS Supporters-only
+            filtered = _bsp_filter_pilots_client_side(
+                rows,
+                no_ur=no_ur,
+                ur_only=ur_only,
+                no_shinn=no_shinn or no_ur,
+                same_role=same_role,
+                support_role=support_role,
+                unit_id=unit_id,
+            )
+            return filtered[:store_n], len(filtered) < _BSP_UI_TOP_PILOTS
         return rows[:store_n], len(rows) < _BSP_UI_TOP_PILOTS
     filtered = _bsp_filter_pilots_client_side(
         fallback_pilots,
@@ -6350,6 +6444,12 @@ def _bsp_resync_pilot_rows(uid, rows, lc, def_tier, rank_mode, *, active_skills=
             row['char'] = dict(ch)
         cid = A.normalize_id((row.get('char') or {}).get('id'))
         if not cid:
+            out.append(row)
+            continue
+        # Published Support Attack/Counter boards are live /cal with SAC ATK% on.
+        # python-lite resync has no supportCounterAtk and would wipe those scores
+        # (Attack MS Supporters-only / Argi +10% on Barbatos EX).
+        if row.get('support_counter_atk'):
             out.append(row)
             continue
         dmg = _bsp_live_pair_damage(
@@ -6852,13 +6952,79 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
                 mode, fallback_pilots=[],
             )
         )
-        if _unit_role(uid) != _SUPPORT_ROLE_ID:
-            pilots_support_counter, support_counter_partial = [], False
-            pilots_support_counter_no_ur, support_counter_no_ur_partial = [], False
-            pilots_support_counter_ur_only, support_counter_ur_only_partial = [], False
-            pilots_support_counter_same_role, support_counter_same_role_partial = [], False
-            pilots_support_counter_no_ur_same_role, support_counter_no_ur_same_role_partial = [], False
-            pilots_support_counter_ur_only_same_role, support_counter_ur_only_same_role_partial = [], False
+        # Attack MS + Supporters only → Support Attack ranking (matching affinity + SAC ATK%).
+        # SAC toggle stays Support-MS-only in the UI; this remaps the Supporters filter.
+        if _unit_is_attack_role(uid):
+            sac_sr, sac_sr_partial = _bsp_dc_variant_pilots(
+                g_row.get('rankings_support_counter_support_role')
+                or row.get('rankings_support_counter_support_role'),
+                mode, fallback_pilots=[],
+            )
+            sac_sr_ur, sac_sr_ur_partial = _bsp_dc_variant_pilots(
+                g_row.get('rankings_support_counter_support_role_ur_only')
+                or row.get('rankings_support_counter_support_role_ur_only'),
+                mode, fallback_pilots=[],
+            )
+            sac_sr_no_ur, sac_sr_no_ur_partial = _bsp_dc_variant_pilots(
+                g_row.get('rankings_support_counter_support_role_no_ur')
+                or row.get('rankings_support_counter_support_role_no_ur'),
+                mode, fallback_pilots=[],
+            )
+            if sac_sr:
+                pilots_support_role, support_role_partial = sac_sr, sac_sr_partial
+            elif pilots_support_counter:
+                pilots_support_role, support_role_partial = _bsp_dc_variant_pilots(
+                    g_row.get('rankings_support_counter') or row.get('rankings_support_counter'),
+                    mode,
+                    fallback_pilots=pilots_support_counter,
+                    support_role=True, unit_id=uid,
+                )
+            if sac_sr_ur:
+                pilots_support_role_ur_only, support_role_ur_only_partial = (
+                    sac_sr_ur, sac_sr_ur_partial
+                )
+            elif pilots_support_counter_ur_only or pilots_support_counter:
+                pilots_support_role_ur_only, support_role_ur_only_partial = _bsp_dc_variant_pilots(
+                    g_row.get('rankings_support_counter_ur_only')
+                    or row.get('rankings_support_counter_ur_only')
+                    or g_row.get('rankings_support_counter')
+                    or row.get('rankings_support_counter'),
+                    mode,
+                    fallback_pilots=pilots_support_counter_ur_only or pilots_support_counter,
+                    support_role=True, ur_only=True, unit_id=uid,
+                )
+            if sac_sr_no_ur:
+                pilots_support_role_no_ur, support_role_no_ur_partial = (
+                    sac_sr_no_ur, sac_sr_no_ur_partial
+                )
+            elif pilots_support_counter_no_ur or pilots_support_counter:
+                pilots_support_role_no_ur, support_role_no_ur_partial = _bsp_dc_variant_pilots(
+                    g_row.get('rankings_support_counter_no_ur')
+                    or row.get('rankings_support_counter_no_ur')
+                    or g_row.get('rankings_support_counter')
+                    or row.get('rankings_support_counter'),
+                    mode,
+                    fallback_pilots=pilots_support_counter_no_ur or pilots_support_counter,
+                    support_role=True, no_ur=True, no_shinn=True, unit_id=uid,
+                )
+            _A = _app()
+            for _plist in (
+                pilots_support_role,
+                pilots_support_role_ur_only,
+                pilots_support_role_no_ur,
+            ):
+                for p in _plist or []:
+                    if not isinstance(p, dict):
+                        continue
+                    p['support_counter_atk'] = True
+                    ch = p.get('char') if isinstance(p.get('char'), dict) else {}
+                    cid = _A.normalize_id(ch.get('id'))
+                    if cid:
+                        pct = _pair_support_counter_atk_pct(uid, cid, lc)
+                        if pct > 0:
+                            p['support_counter_atk_pct'] = pct
+                        else:
+                            p.pop('support_counter_atk_pct', None)
         pilots_support_off, _support_off_partial = _bsp_dc_variant_pilots(
             g_row.get('rankings_no_active_skills_support_role')
             or row.get('rankings_no_active_skills_support_role'),

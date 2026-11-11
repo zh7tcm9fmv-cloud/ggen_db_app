@@ -358,6 +358,7 @@
 <button type="button" class="dc-atk-slot-pill is-active" id="dcAtkSlotPill0" data-slot="0" onclick="setDcAttackerSlot(0)" role="tab" aria-selected="true" title="Attacker 1">1</button>
 <button type="button" class="dc-atk-slot-pill" id="dcAtkSlotPill1" data-slot="1" onclick="setDcAttackerSlot(1)" role="tab" aria-selected="false" title="Attacker 2">2</button>
 <button type="button" class="dc-atk-slot-pill" id="dcAtkSlotPill2" data-slot="2" onclick="setDcAttackerSlot(2)" role="tab" aria-selected="false" title="Attacker 3">3</button>
+<button type="button" class="dc-atk-slot-pill" id="dcAtkSlotPill3" data-slot="3" onclick="setDcAttackerSlot(3)" role="tab" aria-selected="false" title="Attacker 4">4</button>
 </div>
 <button type="button" class="dc-atk-slot-toggle" id="dcAtkSlotToggle" onclick="toggleDcAttackerSlot()" title="Next attacker loadout (cycle)" aria-label="Next attacker loadout">
 <img src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_MenuIcon_Data.webp{% else %}/static/images/UI/UI_Common_MenuIcon_Data.webp{% endif %}" alt="" width="28" height="28" loading="lazy" decoding="async" onerror="this.style.display='none'">
@@ -675,6 +676,10 @@
 <div class="dc-overlay" id="dcPickerOverlay" onclick="if(event.target===event.currentTarget)closeDcPicker()" style="z-index:510">
 <div class="cmp-picker">
 <div class="cmp-picker-header"><input type="search" id="dcPickerSearch" name="ggen_dc_picker_q" placeholder="Search..." autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="search" data-lpignore="true" data-1p-ignore="true" data-form-type="other" readonly onfocus="this.removeAttribute('readonly')" oninput="filterDcPicker(event)" oncompositionstart="onBrowseFilterCompositionStart(event)" oncompositionend="filterDcPicker(event,true)"><button type="button" class="cmp-picker-close" onclick="closeDcPicker()" aria-label="Close">{{ ui_close_icon() }}</button></div>
+<div id="dcPickerFilterBar" class="dc-picker-filter-bar" hidden>
+<div class="dc-picker-filter-row" id="dcPickerFilterRow"></div>
+<div id="dcPickerFilterPanel" class="dc-picker-filter-panel" hidden></div>
+</div>
 <div class="cmp-picker-body" id="dcPickerBody"></div>
 </div>
 </div>

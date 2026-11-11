@@ -68,6 +68,27 @@ class TestMapBuffRangeCells(unittest.TestCase):
         self.assertIn((15, 10), seen)
         self.assertIn((20, 10), seen)
 
+    def test_enemy_source_is_hostile_guest_is_not(self):
+        # Mirror app._map_buff_area_source_is_hostile — keep in sync with app.py.
+        def hostile(src):
+            side = str((src or {}).get('source_side') or '').strip().lower()
+            if side in ('enemy', 'hostile'):
+                return True
+            if side in ('guest', 'ally', 'friendly', 'gimmick'):
+                return False
+            bst = str((src or {}).get('battle_side_type') or '').strip()
+            if bst in ('1', '4'):
+                return False
+            if bst and bst not in ('0',):
+                return True
+            return False
+
+        self.assertTrue(hostile({'source_side': 'enemy'}))
+        self.assertFalse(hostile({'source_side': 'guest'}))
+        self.assertFalse(hostile({'source_side': 'gimmick'}))
+        self.assertTrue(hostile({'battle_side_type': '2'}))
+        self.assertFalse(hostile({'battle_side_type': '1'}))
+
 
 if __name__ == '__main__':
     unittest.main()

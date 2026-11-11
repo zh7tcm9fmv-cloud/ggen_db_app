@@ -997,6 +997,14 @@
   margin-top: 2px;
 }
 
+.unit-best-pilot-panel .msy-pilot-sac-atk-pct {
+  font-size: 10px;
+  color: var(--accent-cyan, #00d4ff);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  margin-top: 2px;
+}
+
 .unit-best-pilot-panel .msy-pilot-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1047,6 +1055,15 @@
   color: var(--accent-cyan);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
+}
+
+.unit-best-pilot-panel .msy-pilot-dmg-alt {
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  line-height: 1.2;
 }
 
 .unit-best-pilot-panel .msy-pilot-dmg-col {

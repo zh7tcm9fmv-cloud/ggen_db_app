@@ -49,7 +49,7 @@
     rankMode: 'normal',
     // Active skills in damage ranking (false = fair skills-off Top 10)
     skillsOn: true,
-    // Support Attack/Counter MS ATK % board (Support-role units only; skills on)
+    // Support Attack/Counter MS ATK % board (any unit role; skills on; per-ability MS gates)
     supportCounterOn: false,
     // damage | defender (defender only on Defense-role units)
     boardKind: 'damage',
@@ -300,7 +300,13 @@
   }
 
   function roleModeTitle(mode) {
-    if (mode === 'support') return t('msy_support_role_on') || 'Showing Support-role pilots only';
+    if (mode === 'support') {
+      if (isAttackUnit()) {
+        return t('msy_support_role_attack_on')
+          || 'Supporters only — Support Attack ranking (matching affinity + SAC ATK %)';
+      }
+      return t('msy_support_role_on') || 'Showing Support-role pilots only';
+    }
     if (mode === 'same') return t('msy_same_role_on') || 'Showing same-role pilots only';
     return t('msy_role_all') || 'All roles';
   }
@@ -453,6 +459,7 @@
   function syncSupportCounterToggle() {
     var btn = global.document.getElementById('ubpSupportCounterBtn');
     if (!btn) return;
+    /* Support-type MS only — Attack kits must not show this toggle. */
     var show = isSupportUnit() && !isDefenderBoard();
     if (!show) state.supportCounterOn = false;
     if (show) btn.removeAttribute('hidden');
@@ -483,6 +490,20 @@
         + 'Survival uses hits-to-kill vs EX + next weapon (55%/45%), soft HTK, and damage-taken-down % '
         + '(affinity + Force Guard when Skills On).\n\n'
         + 'Toggle Skills to include/exclude active skills like Force Guard. Not a full PvP sim.'
+      );
+    } else if (isSupportRoleMode()) {
+      title = t('unit_best_pilot_title_support_attack')
+        || 'Top 10 Support Attack Pilots';
+      tip = t('unit_best_pilot_title_support_attack_tip') || (
+        'Supporters only on an Attack MS: Support Attack ranking to find support pilots '
+        + '(BSP filters — not only the open-pool Top 10).\n\n'
+        + 'Same engine as /cal, fair pool only: LB3, Eternal Expert DEF, best EX weapon, '
+        + 'Super vigor, CP+PEP on, no Option Parts / Supporters / manual Damage Dealt or Crit Dmg Up. '
+        + 'A personal /cal share (stage NPC, LB2, OPs, supporter, +Crit Dmg) can rank differently.\n\n'
+        + 'Matching affinity is critical (often +10–15% Damage Dealt). '
+        + 'SAC ATK % applies only when the pilot’s line matches this kit '
+        + '(Support-type-only SAC does not apply on Attack MS). '
+        + 'Cards show SAC ATK +N% when it applies (e.g. Argi SAC ATK +10%).'
       );
     } else {
       title = state.skillsOn
@@ -755,6 +776,7 @@
     state.roleMode = next;
     if (!shinnFilterRelevant()) state.excludeShinn = false;
     syncFilterButtons();
+    syncPanelTitle();
     renderActivePanel();
   }
 
@@ -1079,7 +1101,9 @@
       return {
         pilots: sortPilotsByCalcDamage(rows, mode).slice(0, 10),
         partial: partial || rows.length < 10,
-        skillsOff: true
+        skillsOff: true,
+        /* Skills-off Supporters is not the SAC Support Attack board. */
+        supportAttackBoard: false
       };
     }
 
@@ -1194,7 +1218,8 @@
     }
     return {
       pilots: sortPilotsByCalcDamage(rows, mode).slice(0, 10),
-      partial: !!partial || rows.length < 10
+      partial: !!partial || rows.length < 10,
+      supportAttackBoard: !!(supportRole && isAttackUnit())
     };
   }
 
@@ -1339,6 +1364,11 @@
       note = '<div class="unit-best-pilot-filter-note">'
         + esc(t('unit_best_pilot_support_counter_note')
           || 'Ranked with Support Attack/Counter MS ATK % on (same as Damage Calculator toggle).')
+        + '</div>';
+    } else if (view.supportAttackBoard) {
+      note = '<div class="unit-best-pilot-filter-note">'
+        + esc(t('unit_best_pilot_support_attack_note')
+          || 'Supporters on Attack MS: Support Attack ranking (fair /cal: LB3, Eternal Expert, no OP/supporter). Matching affinity is critical (+10–15% Damage Dealt). SAC ATK % only when the pilot’s line matches this kit. Cards show SAC ATK +N% when it applies. Personal /cal shares with stage DEF/LB2/OPs can rank differently.')
         + '</div>';
     } else if (view.skillsOff) {
       note = '<div class="unit-best-pilot-filter-note">'
@@ -1516,6 +1546,17 @@
         .replace('{v}', '0');
       parts += '<div class="msy-pilot-dmg-dealt-pct" title="' + escAttr(title) + '">'
         + esc(dmgLine) + '</div>';
+    }
+    /* Only stamp when this pilot actually gets SAC ATK % on this kit (e.g. Argi +10%).
+       Do not put a blank “SAC ATK %” on every Supporters-board row. */
+    var sacPct = pilot.support_counter_atk_pct | 0;
+    if (sacPct > 0) {
+      var sacTpl = t('unit_best_pilot_sac_atk_pct') || 'SAC ATK +{n}%';
+      var sacLine = sacTpl.replace('{n}', String(sacPct));
+      var sacTip = t('unit_best_pilot_sac_atk_tip')
+        || 'Support Attack/Counter MS ATK % that matches this unit (not Support-type-only lines on Attack MS).';
+      parts += '<div class="msy-pilot-sac-atk-pct" title="' + escAttr(sacTip) + '">'
+        + esc(sacLine) + '</div>';
     }
     // Affinity match wording is redundant — tag/detail icons already indicate the match.
     return parts;
@@ -1720,6 +1761,7 @@
         + skillIcons
         + '</div></div>';
     }
+    var mode = state.rankMode || 'normal';
     var dmg = pilotDamage(pilot);
     var subD = '';
     var critPct = pilot.crit_rate | 0;
@@ -1731,6 +1773,30 @@
     } else {
       // Always show crit % (including 0) so non-Shinn rates are visible.
       subD += '<div class="msy-pilot-sub">' + esc(crTpl.replace('{n}', String(critPct))) + '</div>';
+    }
+    /* Non-GC: show both hit outcomes — ranking number stays the selected metric. */
+    var normalDmg = parseFloat(pilot.normal_dmg != null ? pilot.normal_dmg : 0) || 0;
+    var critDmg = parseFloat(
+      mode === 'super_crit'
+        ? (pilot.super_crit_dmg != null ? pilot.super_crit_dmg : pilot.crit_dmg)
+        : (pilot.crit_dmg != null ? pilot.crit_dmg : pilot.super_crit_dmg)
+    ) || 0;
+    var altDmgHtml = '';
+    var dmgTitle = '';
+    if (!isGc && critPct > 0 && normalDmg > 0 && critDmg > 0 && normalDmg !== critDmg) {
+      if (mode === 'normal') {
+        altDmgHtml = '<div class="msy-pilot-dmg-alt" title="'
+          + escAttr(t('msy_dmg_if_crit_tip') || 'Damage if this attack crits') + '">'
+          + esc(metricLabel('crit')) + ' ' + fmtN(critDmg) + '</div>';
+        dmgTitle = (t('msy_dmg_pair_tip') || 'Normal hit: {n} · If crit: {c}')
+          .replace('{n}', fmtN(normalDmg)).replace('{c}', fmtN(critDmg));
+      } else {
+        altDmgHtml = '<div class="msy-pilot-dmg-alt" title="'
+          + escAttr(t('msy_dmg_if_normal_tip') || 'Damage if this attack does not crit') + '">'
+          + esc(metricLabel('normal')) + ' ' + fmtN(normalDmg) + '</div>';
+        dmgTitle = (t('msy_dmg_pair_tip') || 'If crit: {c} · Otherwise: {n}')
+          .replace('{c}', fmtN(critDmg)).replace('{n}', fmtN(normalDmg));
+      }
     }
     var skillIcons = state.skillsOn ? pilotActiveSkillIconsHtml(pilot) : '';
     return '<div class="msy-pilot-card">'
@@ -1744,7 +1810,9 @@
       + subD
       + pilotAffinityHtml(pilot)
       + '</div></button>'
-      + '<div class="msy-pilot-dmg-col"><div class="msy-pilot-dmg">' + fmtN(dmg) + '</div>'
+      + '<div class="msy-pilot-dmg-col"><div class="msy-pilot-dmg"'
+      + (dmgTitle ? ' title="' + escAttr(dmgTitle) + '"' : '') + '>' + fmtN(dmg) + '</div>'
+      + altDmgHtml
       + pilotFormulaStatHtml(pilot)
       + skillIcons
       + '</div></div>';
