@@ -1050,11 +1050,35 @@
 }
 
 .unit-best-pilot-panel .msy-pilot-dmg {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
   font-size: 12px;
   font-weight: 800;
   color: var(--accent-cyan);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
+  max-width: 100%;
+}
+
+.unit-best-pilot-panel .msy-pilot-dmg-kind {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.unit-best-pilot-panel .msy-pilot-dmg--crit .msy-pilot-dmg-kind {
+  color: var(--accent-gold);
+}
+
+.unit-best-pilot-panel .msy-pilot-dmg--normal .msy-pilot-dmg-kind {
+  color: var(--text-muted);
+}
+
+.unit-best-pilot-panel .msy-pilot-dmg-val {
+  min-width: 0;
 }
 
 .unit-best-pilot-panel .msy-pilot-dmg-alt {

@@ -3013,16 +3013,37 @@ def _rankings_from_multi_vigor_pairs(all_pairs, top_pilots, lc, *, attach_skills
         scored.sort(key=lambda x: (-x[0], x[1]))
         top = scored[: max(1, int(top_pilots or 10))]
         pilots_out = []
+        by_cid = {str(cid0): (bv or {}) for cid0, bv in (all_pairs or [])}
         for i, (sc, cid, d) in enumerate(top):
+            by_v = by_cid.get(str(cid)) or {}
+            d_high = by_v.get('high') or {}
+            d_max = by_v.get('max') or {}
+            d_super = by_v.get('super') or {}
             if 'guaranteed_crit' in d:
                 gc = bool(d.get('guaranteed_crit'))
             else:
                 gc = _char_guaranteed_crit(cid, lc, vigor=vigor_key, cp_on=True)
             crit_rate = 100 if gc else int(d.get('crit_rate') or 0)
             can_crit = gc or crit_rate > 0
-            normal = int(d.get('normal_dmg') or 0)
-            super_crit = int(d.get('super_crit_dmg') or 0)
-            crit_dmg = int(d.get('crit_dmg') or 0)
+            # Cross-vigor fields so metric switch / dual display is Max vs Supercharged, not one vigor copied thrice.
+            # published_dc rows set crit_dmg==super_crit_dmg within a single vigor run — take each vigor's hit.
+            normal = int(
+                d_high.get('normal_dmg')
+                or d.get('normal_dmg')
+                or 0
+            )
+            crit_dmg = int(
+                d_max.get('super_crit_dmg')
+                or d_max.get('crit_dmg')
+                or d.get('crit_dmg')
+                or 0
+            )
+            super_crit = int(
+                d_super.get('super_crit_dmg')
+                or d_super.get('crit_dmg')
+                or d.get('super_crit_dmg')
+                or 0
+            )
             peak = int(d.get('peak_dmg') or 0)
             if not can_crit:
                 # Sanitize older DC rows that stored theoretical crit as peak.
@@ -6374,6 +6395,65 @@ def _bsp_copy_pilot_rows(rows):
     return out
 
 
+def _bsp_index_pilots_by_cid(pilots):
+    A = _app()
+    out = {}
+    for p in pilots or []:
+        if not isinstance(p, dict):
+            continue
+        ch = p.get('char') if isinstance(p.get('char'), dict) else {}
+        cid = A.normalize_id(ch.get('id'))
+        if cid:
+            out[cid] = p
+    return out
+
+
+def _bsp_cross_fill_dmg_fields(pilots, by_mode_pilots):
+    """Fill normal/crit/super_crit from each metric board for the same char.
+
+    published_dc JS stores one vigor per board with crit_dmg==super_crit_dmg inside
+    that board. Metric switch needs Max vs Supercharged numbers on every row.
+    """
+    if not pilots:
+        return pilots
+    idx = {
+        m: _bsp_index_pilots_by_cid(rows)
+        for m, rows in (by_mode_pilots or {}).items()
+    }
+    A = _app()
+    for p in pilots:
+        if not isinstance(p, dict):
+            continue
+        ch = p.get('char') if isinstance(p.get('char'), dict) else {}
+        cid = A.normalize_id(ch.get('id'))
+        if not cid:
+            continue
+        n_src = (idx.get('normal') or {}).get(cid)
+        c_src = (idx.get('crit') or {}).get(cid)
+        s_src = (idx.get('super_crit') or {}).get(cid)
+        if n_src:
+            p['normal_dmg'] = int(n_src.get('normal_dmg') or 0)
+        if c_src:
+            p['crit_dmg'] = int(
+                c_src.get('crit_dmg') or c_src.get('super_crit_dmg') or 0
+            )
+        if s_src:
+            p['super_crit_dmg'] = int(
+                s_src.get('super_crit_dmg') or s_src.get('crit_dmg') or 0
+            )
+    return pilots
+
+
+def _bsp_cross_fill_dmg_from_store(pilots, store_block):
+    """Cross-fill from a rankings_* store that has super_crit/crit/normal keys."""
+    if not pilots or not isinstance(store_block, dict):
+        return pilots
+    by_mode = {}
+    for mode in ('super_crit', 'crit', 'normal'):
+        by_mode[mode] = _bsp_pilots_from_rankings_block(store_block, mode)
+    return _bsp_cross_fill_dmg_fields(pilots, by_mode)
+
+
 def _bsp_merge_live_damage(pilot, dmg, rank_mode):
     """Overlay live calculator fields onto a pilot row."""
     if not pilot or not dmg:
@@ -7049,6 +7129,56 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
             pilots_support_off, _support_off_partial = [], False
             pilots_support_ur_off, _support_ur_off_partial = [], False
             pilots_support_no_ur_off, _support_no_ur_off_partial = [], False
+        # Overlay Max vs Supercharged damages from sibling metric boards (published_dc
+        # stores one vigor per board; SAC rows also skip python-lite resync).
+        _bsp_cross_fill_dmg_from_store(pilots, g_row.get('rankings') or row.get('rankings'))
+        _bsp_cross_fill_dmg_from_store(
+            pilots_no_ur, g_row.get('rankings_no_ur') or row.get('rankings_no_ur')
+        )
+        _bsp_cross_fill_dmg_from_store(
+            pilots_ur_only, g_row.get('rankings_ur_only') or row.get('rankings_ur_only')
+        )
+        _bsp_cross_fill_dmg_from_store(
+            pilots_no_shinn, g_row.get('rankings_no_shinn') or row.get('rankings_no_shinn')
+        )
+        _bsp_cross_fill_dmg_from_store(
+            pilots_same_role, g_row.get('rankings_same_role') or row.get('rankings_same_role')
+        )
+        _sac_sr_store = (
+            g_row.get('rankings_support_counter_support_role')
+            or row.get('rankings_support_counter_support_role')
+            or g_row.get('rankings_support_role')
+            or row.get('rankings_support_role')
+        )
+        _bsp_cross_fill_dmg_from_store(pilots_support_role, _sac_sr_store)
+        _bsp_cross_fill_dmg_from_store(
+            pilots_support_role_ur_only,
+            g_row.get('rankings_support_counter_support_role_ur_only')
+            or row.get('rankings_support_counter_support_role_ur_only')
+            or _sac_sr_store,
+        )
+        _bsp_cross_fill_dmg_from_store(
+            pilots_support_role_no_ur,
+            g_row.get('rankings_support_counter_support_role_no_ur')
+            or row.get('rankings_support_counter_support_role_no_ur')
+            or _sac_sr_store,
+        )
+        for _plist, _store in (
+            (pilots_support_counter, 'rankings_support_counter'),
+            (pilots_support_counter_no_ur, 'rankings_support_counter_no_ur'),
+            (pilots_support_counter_ur_only, 'rankings_support_counter_ur_only'),
+            (pilots_support_counter_same_role, 'rankings_support_counter_same_role'),
+            (pilots_support_counter_no_ur_same_role, 'rankings_support_counter_no_ur_same_role'),
+            (pilots_support_counter_ur_only_same_role, 'rankings_support_counter_ur_only_same_role'),
+            (pilots_no_active, 'rankings_no_active_skills'),
+            (pilots_support_off, 'rankings_no_active_skills_support_role'),
+            (pilots_support_ur_off, 'rankings_no_active_skills_support_role_ur_only'),
+            (pilots_support_no_ur_off, 'rankings_no_active_skills_support_role_no_ur'),
+            (pilots_same_off, 'rankings_no_active_skills_same_role'),
+        ):
+            _bsp_cross_fill_dmg_from_store(
+                _plist, g_row.get(_store) or row.get(_store)
+            )
         def_block = (g_row.get('rankings_defender') or row.get('rankings_defender') or {})
         pilots_defender = list((def_block.get('defender') or {}).get('pilots') or [])
         pilots_defender_off = list(

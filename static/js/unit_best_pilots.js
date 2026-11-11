@@ -46,7 +46,7 @@
     excludeShinn: false,
     // all | same | support (support only offered on Attack units)
     roleMode: 'all',
-    rankMode: 'normal',
+    rankMode: 'super_crit',
     // Active skills in damage ranking (false = fair skills-off Top 10)
     skillsOn: true,
     // Support Attack/Counter MS ATK % board (any unit role; skills on; per-ability MS gates)
@@ -371,7 +371,7 @@
       } else {
         chipTitle = t('unit_best_pilot_ur_filter_cycle')
           || t('msy_exclude_ur')
-          || 'UR filter: No UR → UR only';
+          || 'UR filter: All → UR only → SSR↓';
         chipAria = chipTitle;
         iconPath = '/static/images/Rarity/UI_Common_RarityIcon_UR.webp';
       }
@@ -782,9 +782,9 @@
 
   function toggleFilter(kind) {
     if (kind === 'no_ur') {
-      // Cycle: all → no_ur → ur_only → all
-      if (state.urMode === 'all') state.urMode = 'no_ur';
-      else if (state.urMode === 'no_ur') state.urMode = 'ur_only';
+      // Cycle: all → ur_only → no_ur (SSR↓) → all
+      if (state.urMode === 'all') state.urMode = 'ur_only';
+      else if (state.urMode === 'ur_only') state.urMode = 'no_ur';
       else state.urMode = 'all';
       if (isNoUrMode()) state.excludeShinn = true;
       else if (isUrOnlyMode()) state.excludeShinn = false;
@@ -847,7 +847,7 @@
     if (!p) return 0;
     if (mode === 'normal') return parseFloat(p.normal_dmg != null ? p.normal_dmg : p.damage) || 0;
     if (mode === 'crit') return parseFloat(p.crit_dmg != null ? p.crit_dmg : p.damage) || 0;
-    return parseFloat(p.damage != null ? p.damage : p.crit_dmg) || 0;
+    return parseFloat(p.super_crit_dmg != null ? p.super_crit_dmg : (p.damage != null ? p.damage : p.crit_dmg)) || 0;
   }
 
   function pickSupportUrOnlyRows(board, skillsOff) {
@@ -879,6 +879,11 @@
     if (!entry) return null;
     var mode = state.rankMode || 'super_crit';
     if (entry.modes && entry.modes[mode]) return entry.modes[mode];
+    /* Never paint another metric's board under Max/Super labels (was High Crit 113699 for both). */
+    if (entry.modes) {
+      var keys = Object.keys(entry.modes);
+      if (keys.length) return null;
+    }
     return entry;
   }
 
@@ -1783,7 +1788,8 @@
     ) || 0;
     var altDmgHtml = '';
     var dmgTitle = '';
-    if (!isGc && critPct > 0 && normalDmg > 0 && critDmg > 0 && normalDmg !== critDmg) {
+    var showDual = !isGc && critPct > 0 && normalDmg > 0 && critDmg > 0 && normalDmg !== critDmg;
+    if (showDual) {
       if (mode === 'normal') {
         altDmgHtml = '<div class="msy-pilot-dmg-alt" title="'
           + escAttr(t('msy_dmg_if_crit_tip') || 'Damage if this attack crits') + '">'
@@ -1798,6 +1804,13 @@
           .replace('{c}', fmtN(critDmg)).replace('{n}', fmtN(normalDmg));
       }
     }
+    /* Primary number follows the metric dropdown — label Crit/Super Crit so it is not mistaken for Normal. */
+    var primaryKind = metricLabel(mode);
+    var dmgKindCls = 'msy-pilot-dmg'
+      + (mode === 'crit' || mode === 'super_crit' || isGc ? ' msy-pilot-dmg--crit' : '')
+      + (mode === 'normal' ? ' msy-pilot-dmg--normal' : '');
+    var dmgInner = '<span class="msy-pilot-dmg-kind">' + esc(primaryKind) + '</span>'
+      + '<span class="msy-pilot-dmg-val">' + fmtN(dmg) + '</span>';
     var skillIcons = state.skillsOn ? pilotActiveSkillIconsHtml(pilot) : '';
     return '<div class="msy-pilot-card">'
       + '<span class="msy-pilot-rank">' + esc(String(pilot.rank || '')) + '</span>'
@@ -1810,8 +1823,8 @@
       + subD
       + pilotAffinityHtml(pilot)
       + '</div></button>'
-      + '<div class="msy-pilot-dmg-col"><div class="msy-pilot-dmg"'
-      + (dmgTitle ? ' title="' + escAttr(dmgTitle) + '"' : '') + '>' + fmtN(dmg) + '</div>'
+      + '<div class="msy-pilot-dmg-col"><div class="' + dmgKindCls + '"'
+      + (dmgTitle ? ' title="' + escAttr(dmgTitle) + '"' : '') + '>' + dmgInner + '</div>'
       + altDmgHtml
       + pilotFormulaStatHtml(pilot)
       + skillIcons
@@ -1957,7 +1970,7 @@
     }
     var primaryMode = payload.rank_mode || 'super_crit';
     if (!modes[primaryMode]) modes[primaryMode] = primary;
-    if (!modes.super_crit) modes.super_crit = primary;
+    /* Never alias another metric board onto super_crit — that made Max/Super Crit show identical High-vigor numbers. */
     var wi = payload.weapon_info || primary.weapon_info || null;
     if (!wi && modes.super_crit) wi = modes.super_crit.weapon_info || null;
     var defenders = primary.pilots_defender || [];
@@ -2259,7 +2272,6 @@
     });
     var primary = modes.super_crit || modes[state.rankMode] || null;
     if (!primary) return null;
-    if (!modes.super_crit) modes.super_crit = primary;
     return {
       pilots: primary.pilots,
       pilots_no_ur: primary.pilots_no_ur,
@@ -2334,7 +2346,11 @@
     var uid = String(unitId);
     var ck = cacheKey(uid);
     var cached = getCachedEntry(uid);
-    if (cached && cached.pilots && cached.pilots.length) {
+    var cachedModes = cached && cached.modes ? cached.modes : null;
+    var cachedHasAllModes = !!(
+      cachedModes && cachedModes.super_crit && cachedModes.crit && cachedModes.normal
+    );
+    if (cached && cached.pilots && cached.pilots.length && cachedHasAllModes) {
       commitEntry(unitId, cached, gen);
       return;
     }
@@ -2350,7 +2366,7 @@
         var ctrl = typeof AbortController === 'function' ? new AbortController() : null;
         if (ctrl) state.fetchAbort = ctrl;
         var p = fetchPublishedPilots(unitId, lang, {
-          allModes: false,
+          allModes: true,
           priority: state.open ? 'high' : 'low',
           signal: ctrl ? ctrl.signal : undefined
         }).then(function (e) {
@@ -2608,7 +2624,7 @@
     if (ctrl) state.fetchAbort = ctrl;
     var lang = currentLang();
     var promise = fetchPublishedPilots(unitId, lang, {
-      allModes: false,
+      allModes: true,
       priority: 'low',
       signal: ctrl ? ctrl.signal : undefined
     }).then(function (entry) {
