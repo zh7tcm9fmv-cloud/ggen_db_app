@@ -618,6 +618,8 @@ def _app_js_bundle_version_tag():
         'font/FOTK-YoonGothic780_JP-brand.woff2',
         'font/Teko-SemiBold.ttf',
         'font/Teko-Bold.ttf',
+        'font/Teko-Regular.ttf',
+        'font/Teko-Light.ttf',
     )
     parts = []
     git_rev = _app_git_revision()
@@ -1187,6 +1189,8 @@ _RAILWAY_SAME_ORIGIN_FONTS = frozenset({
     'roboto_medium_numbers.ttf',
     'Teko-Bold.ttf',
     'Teko-SemiBold.ttf',
+    'Teko-Regular.ttf',
+    'Teko-Light.ttf',
     'Orbitron-Black.otf',
 })
 

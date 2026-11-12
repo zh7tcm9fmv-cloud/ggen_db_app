@@ -617,19 +617,13 @@
   height: 29px;
   filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.65));
 }
-.mls-picker-season-tags .mls-season-tag .tag-part-icon {
-  width: 29px;
-  height: 29px;
-}
-.mls-picker-season-tags .mls-season-tag .tag-icon-fg {
-  width: 17px;
-  height: 17px;
+.mls-picker-season-tags .mls-season-tag .tag-composite {
+  --tag-h: 24px;
+  --tag-icon-inset: 4px;
 }
 .mls-picker-season-tags .mls-season-tag .tag-part-value {
-  height: 29px;
-  font-size: 13px;
-  padding: 0 10px;
-  color: #eef4ff;
+  font-size: 11px;
+  padding: 0 8px;
 }
 .mls-chip {
   border: 1px solid var(--border-color);

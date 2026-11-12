@@ -632,19 +632,13 @@
   height: 29px;
   filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.65));
 }
-.ml-boost-tags .tag-part-icon {
-  width: 29px;
-  height: 29px;
-}
-.ml-boost-tags .tag-icon-fg {
-  width: 17px;
-  height: 17px;
+.ml-boost-tags .tag-composite {
+  --tag-h: 24px;
+  --tag-icon-inset: 4px;
 }
 .ml-boost-tags .tag-part-value {
-  height: 29px;
-  font-size: 13px;
-  padding: 0 10px;
-  color: #eef4ff;
+  font-size: 11px;
+  padding: 0 8px;
 }
 
 /* Info panels */

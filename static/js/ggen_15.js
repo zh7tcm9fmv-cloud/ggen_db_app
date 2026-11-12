@@ -69,6 +69,12 @@
     st.id = 'ggen15FontsInline';
     /* font-display:swap — optional left mobile on system font forever when preload raced. */
     st.textContent =
+      "@font-face{font-family:'Teko';src:url('/static/font/Teko-Light.ttf?v=" +
+      qv +
+      "') format('truetype');font-weight:300;font-style:normal;font-display:swap}" +
+      "@font-face{font-family:'Teko';src:url('/static/font/Teko-Regular.ttf?v=" +
+      qv +
+      "') format('truetype');font-weight:400;font-style:normal;font-display:swap}" +
       "@font-face{font-family:'Teko';src:url('/static/font/Teko-SemiBold.ttf?v=" +
       qv +
       "') format('truetype');font-weight:500;font-style:normal;font-display:swap}" +

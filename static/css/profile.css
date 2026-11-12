@@ -294,14 +294,9 @@
   letter-spacing:.02em;line-height:1;min-width:3.2em;
 }
 
-.profile-page .tag-composite{display:inline-flex;align-items:center;height:24px;border-radius:4px;overflow:hidden;filter:drop-shadow(0 2px 4px rgba(0,0,0,.5));background:linear-gradient(135deg,#2a3a5c,#1e2d4a);border:1px solid rgba(74,144,217,.3);cursor:default}
-.profile-page .tag-composite--lg{height:34px}
-.profile-page .tag-composite--lg .tag-part-icon{width:34px;height:34px}
-.profile-page .tag-composite--lg .tag-icon-fg{width:20px;height:20px}
-.profile-page .tag-composite--lg .tag-part-value{height:34px;font-size:14px;padding:0 12px}
-.profile-page .tag-part-icon{width:24px;height:24px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:linear-gradient(135deg,#3b5998,#2a437c);border-right:1px solid rgba(74,144,217,.3)}
-.profile-page .tag-icon-fg{width:15px;height:15px;object-fit:contain;filter:brightness(1.3)}
-.profile-page .tag-part-value{font-size:12px;font-weight:700;height:24px;display:flex;align-items:center;padding:0 8px;white-space:nowrap;color:#c8d6e8;letter-spacing:.3px}
+.profile-page .tag-composite{cursor:default}
+.profile-page .tag-composite--lg{--tag-h:28px;--tag-icon-inset:4px;height:var(--tag-h)}
+.profile-page .tag-composite--lg .tag-part-value{font-size:12px;padding:0 10px}
 
 .profile-rate-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-top:10px}
 .profile-rate{position:relative;border:1px solid rgba(255,255,255,.1);padding:14px 14px 14px 48px;background:rgba(0,0,0,.28);min-height:96px}
