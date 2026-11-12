@@ -2660,10 +2660,11 @@ html[data-ui-lang="KR"] .detail-rec-link-card .detail-rec-limited-wrap--on-thumb
   --tag-icon-inset:3px;
   --tag-icon-base:url(/static/images/UI/UI_Common_Label_Tag_icon_Base.webp);
   --tag-label-plate:url(/static/images/UI/UI_Common_Label_Tag_Text.webp);
-  display:inline-flex;align-items:stretch;height:var(--tag-h);border-radius:0;overflow:hidden;
+  display:inline-flex;align-items:center;height:var(--tag-h);max-height:var(--tag-h);min-height:var(--tag-h);
+  border-radius:0;overflow:hidden;
   filter:none;background:transparent;border:none;cursor:pointer;transition:var(--transition);
   gap:0;line-height:0;box-sizing:border-box;max-width:100%;min-width:0;
-  box-shadow:none;outline:none
+  box-shadow:none;outline:none;vertical-align:middle
 }
 .tag-composite--tag{--tag-plate-fill:var(--tag-plate-blue)}
 .tag-composite--series{
@@ -2675,13 +2676,14 @@ html[data-ui-lang="KR"] .detail-rec-link-card .detail-rec-limited-wrap--on-thumb
 .tag-part-icon,
 .tag-part-label,
 .tag-part-value{
-  /* flush neighbors: no margin gap, no negative overlap */
-  margin:0;border:none;box-shadow:none;outline:none;position:relative;z-index:0
+  /* lock plate height — never let text/stroke stretch SERIES/TAG art */
+  margin:0;border:none;box-shadow:none;outline:none;position:relative;z-index:0;
+  height:var(--tag-h);min-height:var(--tag-h);max-height:var(--tag-h);
+  align-self:center;flex-shrink:0;box-sizing:border-box;overflow:hidden
 }
 .tag-part-icon{
-  height:100%;width:auto;aspect-ratio:var(--tag-icon-ar);flex:0 0 auto;
+  width:auto;aspect-ratio:var(--tag-icon-ar);flex:0 0 auto;
   display:inline-flex;align-items:center;justify-content:flex-end;
-  box-sizing:border-box;overflow:hidden;
   padding:var(--tag-icon-inset) var(--tag-icon-inset) var(--tag-icon-inset) 0;
   background-color:transparent;background-image:var(--tag-icon-base);background-repeat:no-repeat;
   background-position:center;background-size:100% 100%
@@ -2694,48 +2696,36 @@ html[data-ui-lang="KR"] .detail-rec-link-card .detail-rec-limited-wrap--on-thumb
   filter:brightness(1.35)
 }
 .tag-part-label{
-  height:100%;width:auto;aspect-ratio:var(--tag-label-ar);flex:0 0 auto;
-  box-sizing:border-box;overflow:hidden;padding:0;
+  width:auto;aspect-ratio:var(--tag-label-ar);flex:0 0 auto;padding:0;
   background-color:transparent;
   background-image:var(--tag-label-plate);background-repeat:no-repeat;
   background-position:center;background-size:100% 100%
 }
 .tag-part-value{
-  /* Same height; sits flush against label with no gap */
-  font-family:Teko,var(--font-tag-ui);font-size:13px;font-weight:400;line-height:1;
-  height:100%;min-height:0;max-height:none;
-  flex:1 1 auto;min-width:0;max-width:100%;
-  display:inline-flex;align-items:center;justify-content:flex-start;box-sizing:border-box;overflow:hidden;
-  padding:0 6px;white-space:nowrap;letter-spacing:.6px;
+  font-family:Teko,var(--font-tag-ui);font-size:12px;font-weight:400;line-height:1;
+  flex:1 1 auto;min-width:0;max-width:100%;flex-shrink:1;
+  display:inline-flex;align-items:center;justify-content:flex-start;
+  padding:0 6px;white-space:nowrap;letter-spacing:.5px;
   background:#c9cdd4;border-radius:0;color:#3d72e0
 }
 .tag-part-value-text{
-  --tag-value-optical-y:1px;
-  display:inline-block;flex:0 0 auto;max-width:none;
+  display:block;flex:0 0 auto;max-width:none;margin:0;padding:0;
   color:#3d72e0;-webkit-text-fill-color:#3d72e0;
   background:none;-webkit-background-clip:border-box;background-clip:border-box;
-  /* light blue frame around each glyph */
-  -webkit-text-stroke:.45px #a8c6ff;
-  paint-order:stroke fill;
+  /* light blue glyph frame via shadow — stroke was clipping + stretching plates online */
+  -webkit-text-stroke:0;paint-order:normal;
+  text-shadow:
+    .35px 0 0 #a8c6ff,-.35px 0 0 #a8c6ff,0 .35px 0 #a8c6ff,0 -.35px 0 #a8c6ff,
+    .25px .25px 0 #a8c6ff,-.25px .25px 0 #a8c6ff,.25px -.25px 0 #a8c6ff,-.25px -.25px 0 #a8c6ff;
   font:inherit;font-family:inherit;font-weight:400;letter-spacing:inherit;line-height:1;white-space:nowrap;
-  /* optical vertical center — Latin caps / CJK ink sit high in the em box */
-  transform:translateY(var(--tag-value-optical-y));will-change:auto;
+  transform:none;will-change:auto;
   -webkit-font-smoothing:antialiased
-}
-/* CJK/KR: between EN (1px) and the 3px overshoot */
-html[data-ui-lang="JA"] .tag-part-value-text,
-html[data-ui-lang="JP"] .tag-part-value-text,
-html[data-ui-lang="TW"] .tag-part-value-text,
-html[data-ui-lang="HK"] .tag-part-value-text,
-html[data-ui-lang="KR"] .tag-part-value-text,
-html[data-ui-lang="HR"] .tag-part-value-text{
-  --tag-value-optical-y:2px
 }
 .tag-part-value-word{
   display:inline;
   background:none;-webkit-background-clip:border-box;background-clip:border-box;
   color:inherit;-webkit-text-fill-color:inherit;
-  -webkit-text-stroke:inherit;paint-order:inherit
+  -webkit-text-stroke:0;text-shadow:inherit
 }
 .tag-part-value--crawl .tag-part-value-text{
   will-change:transform;
@@ -2743,8 +2733,8 @@ html[data-ui-lang="HR"] .tag-part-value-text{
   animation-delay:.6s
 }
 @keyframes tagValueCrawl{
-  0%,12%{transform:translate(0,var(--tag-value-optical-y,1px))}
-  88%,100%{transform:translate(calc(-1 * var(--tag-crawl-dist,0px)),var(--tag-value-optical-y,1px))}
+  0%,12%{transform:translateX(0)}
+  88%,100%{transform:translateX(calc(-1 * var(--tag-crawl-dist,0px)))}
 }
 @media (prefers-reduced-motion:reduce){
   .tag-part-value--crawl .tag-part-value-text{animation:none}
@@ -2766,10 +2756,10 @@ html[data-ui-lang="HR"] .tag-part-value-text{
 }
 .list-filter-tag-composite .tag-part-label{display:none!important}
 .list-filter-tag-composite .tag-part-icon{
-  background:transparent!important;background-image:none!important;width:auto;height:auto;border:none
+  background:transparent!important;background-image:none!important;width:auto;height:auto;min-height:0;max-height:none;border:none
 }
 .list-filter-tag-composite .tag-part-value{
-  background:transparent!important;border:none!important;box-shadow:none!important;color:var(--text-secondary);border-radius:0;padding:0 0 0 6px;height:auto
+  background:transparent!important;border:none!important;box-shadow:none!important;color:var(--text-secondary);border-radius:0;padding:0 0 0 6px;height:auto;min-height:0;max-height:none
 }
 .list-filter-tag-composite .tag-part-value-text{
   background:none!important;-webkit-background-clip:unset!important;background-clip:unset!important;
