@@ -8030,12 +8030,24 @@ def _http_json_body_cache_evict_oldest(store, *, prefer_unpinned=True):
 def _http_json_body_cache_put(cache_key, raw, compressed, etag):
     with _HTTP_JSON_BODY_CACHE_LOCK:
         raw_len = len(raw) if raw is not None else 0
+        gz_len = len(compressed) if compressed is not None else 0
         # Never retain multi‑MB decompressed boards in the warm store.
         keep_raw = raw if (raw is not None and raw_len <= _HTTP_JSON_BODY_RAW_KEEP_MAX) else None
         entry = {'raw': keep_raw, 'gzip': compressed, 'etag': etag}
-        if _http_json_is_detail_body_key(cache_key) and raw_len <= _HTTP_JSON_DETAIL_BODY_MAX_RAW:
+        # Dossier prefixes stay in the small detail LRU so SPI/timeline storms do not
+        # thrash them. BSP Top 10 (`ubp_`) gzip is ~90KB but raw JSON often exceeds
+        # DETAIL_BODY_MAX_RAW — previously fell into the large-body store, got evicted
+        # under mid rpm, then paid cold shard + rebuild on the next open (same rankings).
+        is_detail = _http_json_is_detail_body_key(cache_key)
+        ubp_gzip_ok = (
+            str(cache_key or '').startswith('ubp_')
+            and compressed is not None
+            and gz_len <= 262144
+        )
+        if is_detail and (raw_len <= _HTTP_JSON_DETAIL_BODY_MAX_RAW or ubp_gzip_ok):
+            detail_raw = raw if (raw is not None and raw_len <= _HTTP_JSON_DETAIL_BODY_MAX_RAW) else None
             _HTTP_JSON_DETAIL_BODY_CACHE[cache_key] = {
-                'raw': raw, 'gzip': compressed, 'etag': etag,
+                'raw': detail_raw, 'gzip': compressed, 'etag': etag,
             }
             while len(_HTTP_JSON_DETAIL_BODY_CACHE) > _HTTP_JSON_DETAIL_BODY_CACHE_MAX:
                 if _http_json_body_cache_evict_oldest(
