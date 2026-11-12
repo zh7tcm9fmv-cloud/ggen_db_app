@@ -45,7 +45,22 @@ HISTORY_STORE = Path(__file__).with_name("load_perf_dashboard_history.json")
 
 def fetch(base: str, path: str, timeout: float = 45.0) -> dict[str, Any]:
     url = base.rstrip("/") + path
-    req = urllib.request.Request(url, headers={"Accept-Encoding": "gzip", "User-Agent": UA})
+    # Same-origin Referer/Origin so live API guard treats probes as site traffic
+    # (bare curl / dashboard UA without Referer gets 403 on /api/*).
+    origin = base.rstrip("/")
+    req = urllib.request.Request(
+        url,
+        headers={
+            "Accept-Encoding": "gzip",
+            "User-Agent": UA,
+            "Accept": "application/json,text/html,*/*",
+            "Referer": origin + "/",
+            "Origin": origin,
+            "Sec-Fetch-Site": "same-origin",
+            "Sec-Fetch-Mode": "cors",
+            "Sec-Fetch-Dest": "empty",
+        },
+    )
     t0 = time.perf_counter()
     try:
         with urllib.request.urlopen(req, timeout=timeout) as r:
