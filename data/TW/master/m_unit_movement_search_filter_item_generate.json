@@ -1,18 +1,18 @@
 [
   {
-    "Tags": 3,
-    "Unknown_Col_1": 0
+    "Movement": 3,
+    "ScheduleId": 0
   },
   {
-    "Tags": 4,
-    "Unknown_Col_1": 0
+    "Movement": 4,
+    "ScheduleId": 0
   },
   {
-    "Tags": 5,
-    "Unknown_Col_1": 0
+    "Movement": 5,
+    "ScheduleId": 0
   },
   {
-    "Tags": 6,
-    "Unknown_Col_1": 2511209901
+    "Movement": 6,
+    "ScheduleId": 2511209901
   }
 ]

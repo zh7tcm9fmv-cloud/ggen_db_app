@@ -35,9 +35,9 @@
     "TopBgmResourceId": "bgm_0000_0142",
     "StageSelectBgmResourceId": "bgm_0000_0143",
     "BossBattleBgmResourceId": "bgm_0000_0144",
-    "Unknown_Col_35": "",
-    "Unknown_Col_36": "",
-    "Unknown_Col_37": ""
+    "ChallengeBattleThumbnailResourceId": "",
+    "ChallengeBattleBgResourceId": "",
+    "ChallengeBattleBgmResourceId": ""
   },
   {
     "Id": 200002,
@@ -75,9 +75,9 @@
     "TopBgmResourceId": "bgm_3050_0001",
     "StageSelectBgmResourceId": "bgm_3050_0005",
     "BossBattleBgmResourceId": "bgm_3050_0003",
-    "Unknown_Col_35": "",
-    "Unknown_Col_36": "",
-    "Unknown_Col_37": ""
+    "ChallengeBattleThumbnailResourceId": "",
+    "ChallengeBattleBgResourceId": "",
+    "ChallengeBattleBgmResourceId": ""
   },
   {
     "Id": 200003,
@@ -115,9 +115,9 @@
     "TopBgmResourceId": "",
     "StageSelectBgmResourceId": "",
     "BossBattleBgmResourceId": "",
-    "Unknown_Col_35": "",
-    "Unknown_Col_36": "",
-    "Unknown_Col_37": ""
+    "ChallengeBattleThumbnailResourceId": "",
+    "ChallengeBattleBgResourceId": "",
+    "ChallengeBattleBgmResourceId": ""
   },
   {
     "Id": 200004,
@@ -155,9 +155,9 @@
     "TopBgmResourceId": "",
     "StageSelectBgmResourceId": "",
     "BossBattleBgmResourceId": "",
-    "Unknown_Col_35": "",
-    "Unknown_Col_36": "",
-    "Unknown_Col_37": ""
+    "ChallengeBattleThumbnailResourceId": "",
+    "ChallengeBattleBgResourceId": "",
+    "ChallengeBattleBgmResourceId": ""
   },
   {
     "Id": 200005,
@@ -195,9 +195,9 @@
     "TopBgmResourceId": "bgm_4310_0008",
     "StageSelectBgmResourceId": "bgm_4310_0006",
     "BossBattleBgmResourceId": "bgm_4310_0016",
-    "Unknown_Col_35": "",
-    "Unknown_Col_36": "",
-    "Unknown_Col_37": ""
+    "ChallengeBattleThumbnailResourceId": "",
+    "ChallengeBattleBgResourceId": "",
+    "ChallengeBattleBgmResourceId": ""
   },
   {
     "Id": 200006,
@@ -235,9 +235,9 @@
     "TopBgmResourceId": "bgm_0000_0142",
     "StageSelectBgmResourceId": "bgm_0000_0143",
     "BossBattleBgmResourceId": "bgm_0000_0144",
-    "Unknown_Col_35": "",
-    "Unknown_Col_36": "",
-    "Unknown_Col_37": ""
+    "ChallengeBattleThumbnailResourceId": "",
+    "ChallengeBattleBgResourceId": "",
+    "ChallengeBattleBgmResourceId": ""
   },
   {
     "Id": 200007,
@@ -275,9 +275,9 @@
     "TopBgmResourceId": "bgm_0220_0004",
     "StageSelectBgmResourceId": "bgm_0220_0001",
     "BossBattleBgmResourceId": "bgm_0220_0006",
-    "Unknown_Col_35": "",
-    "Unknown_Col_36": "",
-    "Unknown_Col_37": ""
+    "ChallengeBattleThumbnailResourceId": "",
+    "ChallengeBattleBgResourceId": "",
+    "ChallengeBattleBgmResourceId": ""
   },
   {
     "Id": 200008,
@@ -315,9 +315,9 @@
     "TopBgmResourceId": "bgm_0000_0142",
     "StageSelectBgmResourceId": "bgm_0000_0143",
     "BossBattleBgmResourceId": "bgm_0000_0144",
-    "Unknown_Col_35": "",
-    "Unknown_Col_36": "",
-    "Unknown_Col_37": ""
+    "ChallengeBattleThumbnailResourceId": "",
+    "ChallengeBattleBgResourceId": "",
+    "ChallengeBattleBgmResourceId": ""
   },
   {
     "Id": 200009,
@@ -355,9 +355,9 @@
     "TopBgmResourceId": "bgm_0090_0005",
     "StageSelectBgmResourceId": "bgm_0090_0002",
     "BossBattleBgmResourceId": "",
-    "Unknown_Col_35": "",
-    "Unknown_Col_36": "",
-    "Unknown_Col_37": ""
+    "ChallengeBattleThumbnailResourceId": "",
+    "ChallengeBattleBgResourceId": "",
+    "ChallengeBattleBgmResourceId": ""
   },
   {
     "Id": 200010,
@@ -395,9 +395,9 @@
     "TopBgmResourceId": "bgm_3080_0003",
     "StageSelectBgmResourceId": "bgm_3080_0005",
     "BossBattleBgmResourceId": "bgm_3080_0004",
-    "Unknown_Col_35": "",
-    "Unknown_Col_36": "",
-    "Unknown_Col_37": ""
+    "ChallengeBattleThumbnailResourceId": "",
+    "ChallengeBattleBgResourceId": "",
+    "ChallengeBattleBgmResourceId": ""
   },
   {
     "Id": 200011,
@@ -435,9 +435,9 @@
     "TopBgmResourceId": "bgm_0000_0142",
     "StageSelectBgmResourceId": "bgm_0000_0143",
     "BossBattleBgmResourceId": "bgm_0000_0144",
-    "Unknown_Col_35": "",
-    "Unknown_Col_36": "",
-    "Unknown_Col_37": ""
+    "ChallengeBattleThumbnailResourceId": "",
+    "ChallengeBattleBgResourceId": "",
+    "ChallengeBattleBgmResourceId": ""
   },
   {
     "Id": 200012,
@@ -475,9 +475,9 @@
     "TopBgmResourceId": "bgm_0000_0142",
     "StageSelectBgmResourceId": "bgm_0000_0143",
     "BossBattleBgmResourceId": "bgm_0000_0144",
-    "Unknown_Col_35": "",
-    "Unknown_Col_36": "",
-    "Unknown_Col_37": ""
+    "ChallengeBattleThumbnailResourceId": "",
+    "ChallengeBattleBgResourceId": "",
+    "ChallengeBattleBgmResourceId": ""
   },
   {
     "Id": 200013,
@@ -515,9 +515,9 @@
     "TopBgmResourceId": "bgm_0210_0001",
     "StageSelectBgmResourceId": "bgm_0210_0003",
     "BossBattleBgmResourceId": "bgm_0210_0002",
-    "Unknown_Col_35": "",
-    "Unknown_Col_36": "",
-    "Unknown_Col_37": ""
+    "ChallengeBattleThumbnailResourceId": "",
+    "ChallengeBattleBgResourceId": "",
+    "ChallengeBattleBgmResourceId": ""
   },
   {
     "Id": 200014,
@@ -555,9 +555,9 @@
     "TopBgmResourceId": "bgm_3360_0001",
     "StageSelectBgmResourceId": "bgm_3360_0003",
     "BossBattleBgmResourceId": "bgm_3360_0002",
-    "Unknown_Col_35": "",
-    "Unknown_Col_36": "",
-    "Unknown_Col_37": ""
+    "ChallengeBattleThumbnailResourceId": "",
+    "ChallengeBattleBgResourceId": "",
+    "ChallengeBattleBgmResourceId": ""
   },
   {
     "Id": 200015,
@@ -595,9 +595,9 @@
     "TopBgmResourceId": "",
     "StageSelectBgmResourceId": "",
     "BossBattleBgmResourceId": "",
-    "Unknown_Col_35": "",
-    "Unknown_Col_36": "",
-    "Unknown_Col_37": ""
+    "ChallengeBattleThumbnailResourceId": "",
+    "ChallengeBattleBgResourceId": "",
+    "ChallengeBattleBgmResourceId": ""
   },
   {
     "Id": 200016,
@@ -635,9 +635,9 @@
     "TopBgmResourceId": "",
     "StageSelectBgmResourceId": "",
     "BossBattleBgmResourceId": "",
-    "Unknown_Col_35": "",
-    "Unknown_Col_36": "",
-    "Unknown_Col_37": ""
+    "ChallengeBattleThumbnailResourceId": "",
+    "ChallengeBattleBgResourceId": "",
+    "ChallengeBattleBgmResourceId": ""
   },
   {
     "Id": 200017,
@@ -675,9 +675,9 @@
     "TopBgmResourceId": "bgm_3760_0003",
     "StageSelectBgmResourceId": "bgm_3760_0006",
     "BossBattleBgmResourceId": "bgm_3760_0008",
-    "Unknown_Col_35": "",
-    "Unknown_Col_36": "",
-    "Unknown_Col_37": ""
+    "ChallengeBattleThumbnailResourceId": "",
+    "ChallengeBattleBgResourceId": "",
+    "ChallengeBattleBgmResourceId": ""
   },
   {
     "Id": 200018,
@@ -715,8 +715,8 @@
     "TopBgmResourceId": "bgm_0240_0001",
     "StageSelectBgmResourceId": "bgm_0240_0004",
     "BossBattleBgmResourceId": "bgm_0240_0007",
-    "Unknown_Col_35": "",
-    "Unknown_Col_36": "",
-    "Unknown_Col_37": ""
+    "ChallengeBattleThumbnailResourceId": "",
+    "ChallengeBattleBgResourceId": "",
+    "ChallengeBattleBgmResourceId": ""
   }
 ]

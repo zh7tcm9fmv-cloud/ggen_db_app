@@ -1,149 +1,149 @@
 [
-  [
-    1,
-    141800000000000008,
-    "trait_10010401",
-    0,
-    8
-  ],
-  [
-    2,
-    141800000000000009,
-    "trait_10020501",
-    0,
-    9
-  ],
-  [
-    3,
-    141800000000000003,
-    "trait_10280101",
-    0,
-    3
-  ],
-  [
-    4,
-    141800000000000011,
-    "trait_10120701",
-    0,
-    11
-  ],
-  [
-    5,
-    141800000000000017,
-    "trait_10150101",
-    0,
-    17
-  ],
-  [
-    6,
-    141800000000000018,
-    "trait_10060101",
-    0,
-    18
-  ],
-  [
-    7,
-    141800000000000004,
-    "trait_10270101",
-    0,
-    4
-  ],
-  [
-    8,
-    141800000000000001,
-    "trait_10310101",
-    0,
-    1
-  ],
-  [
-    9,
-    141800000000000014,
-    "trait_10090101",
-    0,
-    14
-  ],
-  [
-    10,
-    141800000000000015,
-    "trait_10100101",
-    0,
-    15
-  ],
-  [
-    11,
-    141800000000000016,
-    "trait_10110101",
-    0,
-    16
-  ],
-  [
-    12,
-    141800000000000002,
-    "trait_10030101",
-    0,
-    2
-  ],
-  [
-    13,
-    141800000000000006,
-    "trait_10150101",
-    0,
-    6
-  ],
-  [
-    14,
-    141800000000000005,
-    "trait_10060101",
-    0,
-    5
-  ],
-  [
-    15,
-    141800000000000010,
-    "trait_10870501",
-    0,
-    10
-  ],
-  [
-    17,
-    141800000000000007,
-    "trait_10510101",
-    0,
-    7
-  ],
-  [
-    25,
-    141800000000000021,
-    "trait_10070701",
-    0,
-    21
-  ],
-  [
-    26,
-    141800000000000019,
-    "trait_10180103",
-    0,
-    19
-  ],
-  [
-    27,
-    141800000000000020,
-    "trait_10210103",
-    0,
-    20
-  ],
-  [
-    29,
-    141800000000000013,
-    "trait_11400501",
-    2601509901,
-    13
-  ],
-  [
-    30,
-    141800000000000012,
-    "trait_10870501",
-    2601509901,
-    12
-  ]
+  {
+    "CharacterSkillTraitTypeIndex": 1,
+    "NameLanguageId": 141800000000000008,
+    "IconResourceId": "trait_10010401",
+    "ScheduleId": 0,
+    "SortOrder": 8
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 2,
+    "NameLanguageId": 141800000000000009,
+    "IconResourceId": "trait_10020501",
+    "ScheduleId": 0,
+    "SortOrder": 9
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 3,
+    "NameLanguageId": 141800000000000003,
+    "IconResourceId": "trait_10280101",
+    "ScheduleId": 0,
+    "SortOrder": 3
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 4,
+    "NameLanguageId": 141800000000000011,
+    "IconResourceId": "trait_10120701",
+    "ScheduleId": 0,
+    "SortOrder": 11
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 5,
+    "NameLanguageId": 141800000000000017,
+    "IconResourceId": "trait_10150101",
+    "ScheduleId": 0,
+    "SortOrder": 17
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 6,
+    "NameLanguageId": 141800000000000018,
+    "IconResourceId": "trait_10060101",
+    "ScheduleId": 0,
+    "SortOrder": 18
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 7,
+    "NameLanguageId": 141800000000000004,
+    "IconResourceId": "trait_10270101",
+    "ScheduleId": 0,
+    "SortOrder": 4
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 8,
+    "NameLanguageId": 141800000000000001,
+    "IconResourceId": "trait_10310101",
+    "ScheduleId": 0,
+    "SortOrder": 1
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 9,
+    "NameLanguageId": 141800000000000014,
+    "IconResourceId": "trait_10090101",
+    "ScheduleId": 0,
+    "SortOrder": 14
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 10,
+    "NameLanguageId": 141800000000000015,
+    "IconResourceId": "trait_10100101",
+    "ScheduleId": 0,
+    "SortOrder": 15
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 11,
+    "NameLanguageId": 141800000000000016,
+    "IconResourceId": "trait_10110101",
+    "ScheduleId": 0,
+    "SortOrder": 16
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 12,
+    "NameLanguageId": 141800000000000002,
+    "IconResourceId": "trait_10030101",
+    "ScheduleId": 0,
+    "SortOrder": 2
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 13,
+    "NameLanguageId": 141800000000000006,
+    "IconResourceId": "trait_10150101",
+    "ScheduleId": 0,
+    "SortOrder": 6
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 14,
+    "NameLanguageId": 141800000000000005,
+    "IconResourceId": "trait_10060101",
+    "ScheduleId": 0,
+    "SortOrder": 5
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 15,
+    "NameLanguageId": 141800000000000010,
+    "IconResourceId": "trait_10870501",
+    "ScheduleId": 0,
+    "SortOrder": 10
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 17,
+    "NameLanguageId": 141800000000000007,
+    "IconResourceId": "trait_10510101",
+    "ScheduleId": 0,
+    "SortOrder": 7
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 25,
+    "NameLanguageId": 141800000000000021,
+    "IconResourceId": "trait_10070701",
+    "ScheduleId": 0,
+    "SortOrder": 21
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 26,
+    "NameLanguageId": 141800000000000019,
+    "IconResourceId": "trait_10180103",
+    "ScheduleId": 0,
+    "SortOrder": 19
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 27,
+    "NameLanguageId": 141800000000000020,
+    "IconResourceId": "trait_10210103",
+    "ScheduleId": 0,
+    "SortOrder": 20
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 29,
+    "NameLanguageId": 141800000000000013,
+    "IconResourceId": "trait_11400501",
+    "ScheduleId": 2601509901,
+    "SortOrder": 13
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 30,
+    "NameLanguageId": 141800000000000012,
+    "IconResourceId": "trait_10870501",
+    "ScheduleId": 2601509901,
+    "SortOrder": 12
+  }
 ]
