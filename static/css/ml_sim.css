@@ -612,18 +612,50 @@
 .mls-picker-season-tags .mls-season-tag:hover {
   transform: translateY(-1px);
 }
+/* Same chip metrics as detail /u /c /s — match /ml (no taller plate + smaller type) */
 .mls-picker-season-tags .mls-season-tag .tag-composite {
   pointer-events: none;
-  height: 29px;
   filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.65));
 }
-.mls-picker-season-tags .mls-season-tag .tag-composite {
-  --tag-h: 24px;
-  --tag-icon-inset: 4px;
+/* /mls Boost: Tag filter — one-row equalize to longest (same sheet idea as /ml) */
+.mls-picker-season-tags-row.ml-boost-tags:has(> .mls-season-tag:nth-child(2)) {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  justify-items: stretch;
+  align-items: center;
+  gap: 9px 12px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
-.mls-picker-season-tags .mls-season-tag .tag-part-value {
-  font-size: 11px;
-  padding: 0 8px;
+.mls-picker-season-tags-row.ml-boost-tags:has(> .mls-season-tag:nth-child(2)):not(:has(> .mls-season-tag:nth-child(3))) {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.mls-picker-season-tags-row.ml-boost-tags:has(> .mls-season-tag:nth-child(2)):not(:has(> .mls-season-tag:nth-child(4))) {
+  display: inline-grid;
+  width: max-content;
+  max-width: 100%;
+}
+.mls-picker-season-tags-row.ml-boost-tags:has(> .mls-season-tag:nth-child(2)) > .mls-season-tag {
+  width: 100%;
+  min-width: 0;
+  justify-self: stretch;
+}
+.mls-picker-season-tags-row.ml-boost-tags:has(> .mls-season-tag:nth-child(2)) .tag-composite {
+  width: 100%;
+  max-width: 100%;
+  display: grid;
+  grid-template-columns: var(--tag-icon-w) var(--tag-label-w) minmax(0, 1fr);
+}
+.mls-picker-season-tags-row.ml-boost-tags:has(> .mls-season-tag:nth-child(2)) .tag-part-value {
+  width: auto;
+  min-width: 0;
+  max-width: none;
+  justify-content: center;
+  text-align: center;
+}
+.mls-picker-season-tags-row.ml-boost-tags:has(> .mls-season-tag:nth-child(2)) .tag-part-value-text {
+  text-align: center;
 }
 .mls-chip {
   border: 1px solid var(--border-color);

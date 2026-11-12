@@ -627,18 +627,47 @@
   flex: 0 0 auto;
   margin: 0;
 }
+/* Same sheet uniformity as detail tags: equal cols, stretch value, center text */
+.ml-boost-tags:not(:has(> :not(.tag-composite))):has(> .tag-composite:nth-child(2)) {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  justify-items: stretch;
+  align-items: center;
+  gap: 9px 12px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.ml-boost-tags:not(:has(> :not(.tag-composite))):has(> .tag-composite:nth-child(2)):not(:has(> .tag-composite:nth-child(3))) {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+/* One row (2–3 tags): size to longest chip, then equalize (no leftover empty 3rd track) */
+.ml-boost-tags:not(:has(> :not(.tag-composite))):has(> .tag-composite:nth-child(2)):not(:has(> .tag-composite:nth-child(4))) {
+  display: inline-grid;
+  width: max-content;
+  max-width: 100%;
+}
+.ml-boost-tags:not(:has(> :not(.tag-composite))):has(> .tag-composite:nth-child(2)) > .tag-composite {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  justify-self: stretch;
+  grid-template-columns: var(--tag-icon-w) var(--tag-label-w) minmax(0, 1fr);
+}
+.ml-boost-tags:not(:has(> :not(.tag-composite))):has(> .tag-composite:nth-child(2)) > .tag-composite .tag-part-value {
+  width: auto;
+  min-width: 0;
+  max-width: none;
+  justify-content: center;
+  text-align: center;
+}
+.ml-boost-tags:not(:has(> :not(.tag-composite))):has(> .tag-composite:nth-child(2)) > .tag-composite .tag-part-value-text {
+  text-align: center;
+}
+/* Same chip metrics as detail /u /c /s (--tag-h 20px, Teko 12px) — do not upscale plate + downscale type */
 .ml-boost-tags .tag-composite {
   flex-shrink: 0;
-  height: 29px;
   filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.65));
-}
-.ml-boost-tags .tag-composite {
-  --tag-h: 24px;
-  --tag-icon-inset: 4px;
-}
-.ml-boost-tags .tag-part-value {
-  font-size: 11px;
-  padding: 0 8px;
 }
 
 /* Info panels */

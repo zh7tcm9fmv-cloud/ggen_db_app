@@ -2649,18 +2649,70 @@ html[data-ui-lang="KR"] .detail-rec-link-card .detail-rec-limited-wrap--on-thumb
 .supporter-gacha-quote .ability-detail{opacity:.92}
 .supporter-meta-row .supporter-lb-group{flex-shrink:0}
 .detail-tags-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;align-items:center}
+/*
+ * Entity tag lists only (no 或/+ joiners): excel-like sheet.
+ * Full width so tags line up with LB tier row on mobile; equal columns;
+ * value bars stretch; text centered. Skill rows with joiners keep flex wrap.
+ */
+.detail-tags-row:not(:has(> :not(.tag-composite))):has(> .tag-composite:nth-child(2)){
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  justify-items:stretch;
+  align-items:center;
+  justify-content:stretch;
+  gap:6px;
+  width:100%;
+  max-width:100%;
+  box-sizing:border-box
+}
+/* One row of exactly 2 tags — equalize to the longer chip (2 cols) */
+.detail-tags-row:not(:has(> :not(.tag-composite))):has(> .tag-composite:nth-child(2)):not(:has(> .tag-composite:nth-child(3))){
+  grid-template-columns:repeat(2,minmax(0,1fr))
+}
+.detail-tags-row:not(:has(> :not(.tag-composite))):has(> .tag-composite:nth-child(2)) > .tag-composite{
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  justify-self:stretch;
+  grid-template-columns:var(--tag-icon-w) var(--tag-label-w) minmax(0,1fr)
+}
+.detail-tags-row:not(:has(> :not(.tag-composite))):has(> .tag-composite:nth-child(2)) > .tag-composite .tag-part-value{
+  width:auto;min-width:0;max-width:none;
+  justify-content:center;text-align:center
+}
+.detail-tags-row:not(:has(> :not(.tag-composite))):has(> .tag-composite:nth-child(2)) > .tag-composite .tag-part-value-text{
+  text-align:center
+}
+/* Mobile: LB tier strip already width:100% — keep it locked to the tags sheet width */
+@media(max-width:768px){
+  .modal-content.unit-detail:not(.detail-ranking-view) .header-stats-wrapper .lb-control-row,
+  .modal-content.char-detail:not(.detail-ranking-view) .header-stats-wrapper .lb-control-row{
+    width:100%;
+    max-width:100%
+  }
+  .modal-content.unit-detail:not(.detail-ranking-view) .header-stats-wrapper .lb-btn-group,
+  .modal-content.char-detail:not(.detail-ranking-view) .header-stats-wrapper .lb-btn-group{
+    width:100%;
+    max-width:100%
+  }
+}
 /* In-game Label plates — opaque crop 42×36 / 53×36; abut flush (no gap, no overlap) */
 .tag-composite{
   --tag-h:20px;
   --tag-icon-ar:calc(42 / 36);
   --tag-label-ar:calc(53 / 36);
+  /* fixed plate widths so every TAG/SERIES chip shares icon | label tracks */
+  --tag-icon-w:calc(var(--tag-h) * 42 / 36);
+  --tag-label-w:calc(var(--tag-h) * 53 / 36);
   --tag-plate-blue:#2d61d8;
   --tag-plate-teal:#006a6b;
   /* equal inset on top / right / bottom of chevron face (left is tip) */
   --tag-icon-inset:3px;
   --tag-icon-base:url(/static/images/UI/UI_Common_Label_Tag_icon_Base.webp);
   --tag-label-plate:url(/static/images/UI/UI_Common_Label_Tag_Text.webp);
-  display:inline-flex;align-items:center;height:var(--tag-h);max-height:var(--tag-h);min-height:var(--tag-h);
+  display:inline-grid;
+  grid-template-columns:var(--tag-icon-w) var(--tag-label-w) minmax(0,max-content);
+  align-items:center;height:var(--tag-h);max-height:var(--tag-h);min-height:var(--tag-h);
   border-radius:0;overflow:hidden;
   filter:none;background:transparent;border:none;cursor:pointer;transition:var(--transition);
   gap:0;line-height:0;box-sizing:border-box;max-width:100%;min-width:0;
@@ -2682,7 +2734,7 @@ html[data-ui-lang="KR"] .detail-rec-link-card .detail-rec-limited-wrap--on-thumb
   align-self:center;flex-shrink:0;box-sizing:border-box;overflow:hidden
 }
 .tag-part-icon{
-  width:auto;aspect-ratio:var(--tag-icon-ar);flex:0 0 auto;
+  width:var(--tag-icon-w);min-width:var(--tag-icon-w);max-width:var(--tag-icon-w);
   display:inline-flex;align-items:center;justify-content:flex-end;
   padding:var(--tag-icon-inset) var(--tag-icon-inset) var(--tag-icon-inset) 0;
   background-color:transparent;background-image:var(--tag-icon-base);background-repeat:no-repeat;
@@ -2696,14 +2748,14 @@ html[data-ui-lang="KR"] .detail-rec-link-card .detail-rec-limited-wrap--on-thumb
   filter:brightness(1.35)
 }
 .tag-part-label{
-  width:auto;aspect-ratio:var(--tag-label-ar);flex:0 0 auto;padding:0;
+  width:var(--tag-label-w);min-width:var(--tag-label-w);max-width:var(--tag-label-w);padding:0;
   background-color:transparent;
   background-image:var(--tag-label-plate);background-repeat:no-repeat;
   background-position:center;background-size:100% 100%
 }
 .tag-part-value{
   font-family:Teko,var(--font-tag-ui);font-size:12px;font-weight:400;line-height:1;
-  flex:1 1 auto;min-width:0;max-width:100%;flex-shrink:1;
+  min-width:0;max-width:100%;width:auto;
   display:inline-flex;align-items:center;justify-content:flex-start;
   padding:0 6px;white-space:nowrap;letter-spacing:.5px;
   background:#c9cdd4;border-radius:0;color:#3d72e0
@@ -2752,11 +2804,12 @@ html[data-ui-lang="KR"] .detail-rec-link-card .detail-rec-limited-wrap--on-thumb
 .tag-composite:not(.list-filter-tag-composite) .tag-part-label{display:block}
 .list-filter-tag-composite.tag-composite,
 .list-filter-tag-composite{
-  --tag-icon-base:none;--tag-label-plate:none;filter:none!important;background:transparent!important;border:none!important
+  --tag-icon-base:none;--tag-label-plate:none;filter:none!important;background:transparent!important;border:none!important;
+  display:inline-flex;grid-template-columns:none;height:auto;max-height:none;min-height:0;overflow:visible
 }
 .list-filter-tag-composite .tag-part-label{display:none!important}
 .list-filter-tag-composite .tag-part-icon{
-  background:transparent!important;background-image:none!important;width:auto;height:auto;min-height:0;max-height:none;border:none
+  background:transparent!important;background-image:none!important;width:auto;min-width:0;max-width:none;height:auto;min-height:0;max-height:none;border:none
 }
 .list-filter-tag-composite .tag-part-value{
   background:transparent!important;border:none!important;box-shadow:none!important;color:var(--text-secondary);border-radius:0;padding:0 0 0 6px;height:auto;min-height:0;max-height:none
