@@ -1,0 +1,20 @@
+{
+  "label": "thrash_before",
+  "bsp_gzip": 93592,
+  "ok": true,
+  "source_check": "published_dc",
+  "p50": 315,
+  "mean": 344,
+  "min": 284,
+  "max": 511,
+  "samples": [
+    351,
+    335,
+    511,
+    290,
+    296,
+    284
+  ],
+  "pilots_n": 10,
+  "has_modes": true
+}

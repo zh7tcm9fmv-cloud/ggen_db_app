@@ -1,0 +1,167 @@
+{
+  "label": "before_stage1_bsp_detail_cache",
+  "rows": [
+    {
+      "path": "/health",
+      "ok": true,
+      "status": 200,
+      "gzip": 700,
+      "n": 5,
+      "p50": 277,
+      "mean": 273,
+      "min": 257,
+      "max": 284,
+      "samples": [
+        277,
+        269,
+        257,
+        284,
+        279
+      ]
+    },
+    {
+      "path": "/api/characters?lang=EN",
+      "ok": true,
+      "status": 200,
+      "gzip": 3856,
+      "n": 5,
+      "p50": 272,
+      "mean": 271,
+      "min": 262,
+      "max": 280,
+      "samples": [
+        279,
+        272,
+        262,
+        280,
+        262
+      ]
+    },
+    {
+      "path": "/api/units?lang=EN",
+      "ok": true,
+      "status": 200,
+      "gzip": 10002,
+      "n": 5,
+      "p50": 294,
+      "mean": 292,
+      "min": 250,
+      "max": 326,
+      "samples": [
+        294,
+        302,
+        290,
+        326,
+        250
+      ]
+    },
+    {
+      "path": "/api/banner_timeline?lang=EN&sv=23",
+      "ok": true,
+      "status": 200,
+      "gzip": 38320,
+      "n": 5,
+      "p50": 298,
+      "mean": 317,
+      "min": 278,
+      "max": 413,
+      "samples": [
+        413,
+        298,
+        307,
+        292,
+        278
+      ]
+    },
+    {
+      "path": "/api/unit/1001000150?lang=EN",
+      "ok": true,
+      "status": 200,
+      "gzip": 2867,
+      "n": 5,
+      "p50": 291,
+      "mean": 292,
+      "min": 244,
+      "max": 363,
+      "samples": [
+        256,
+        244,
+        307,
+        291,
+        363
+      ]
+    },
+    {
+      "path": "/api/character/1001000100?lang=EN",
+      "ok": true,
+      "status": 200,
+      "gzip": 1487,
+      "n": 5,
+      "p50": 276,
+      "mean": 330,
+      "min": 251,
+      "max": 575,
+      "samples": [
+        276,
+        274,
+        575,
+        278,
+        251
+      ]
+    },
+    {
+      "path": "/api/unit/1001000150/best_synergy_pilots?lang=EN",
+      "ok": true,
+      "status": 200,
+      "gzip": 93592,
+      "n": 5,
+      "p50": 283,
+      "mean": 308,
+      "min": 277,
+      "max": 391,
+      "samples": [
+        313,
+        391,
+        283,
+        279,
+        277
+      ]
+    },
+    {
+      "path": "/api/sp_investment?lang=EN",
+      "ok": true,
+      "status": 200,
+      "gzip": 726527,
+      "n": 5,
+      "p50": 403,
+      "mean": 443,
+      "min": 359,
+      "max": 627,
+      "samples": [
+        359,
+        627,
+        403,
+        402,
+        426
+      ]
+    },
+    {
+      "path": "/api/whats_new?lang=EN",
+      "ok": true,
+      "status": 200,
+      "gzip": 34010,
+      "n": 5,
+      "p50": 475,
+      "mean": 949,
+      "min": 337,
+      "max": 2620,
+      "samples": [
+        475,
+        2620,
+        435,
+        337,
+        879
+      ]
+    }
+  ]
+}

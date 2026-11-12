@@ -1,132 +1,132 @@
 {
-  "at": "2026-11-04T10:27:53+08:00",
+  "at": "2026-11-13T01:03:58+08:00",
   "live": {
     "label": "live",
     "base": "https://ggendb.up.railway.app",
-    "wall_ms": 50241,
+    "wall_ms": 14124,
     "health": {
-      "ms": 9389,
+      "ms": 352,
       "ok": true,
       "reachable": true,
       "err": null,
       "booting": false,
       "browse_ready": true,
-      "rss_mb": 1144.1,
-      "band": "mid",
-      "pair_len": 3750,
-      "pair_max": 3750,
+      "rss_mb": 980.5,
+      "band": "pressure",
+      "pair_len": 1500,
+      "pair_max": 1500,
       "pair_ceiling": 6000,
-      "weapon_len": 1280,
-      "weapon_max": 1280,
-      "rpm": 42,
-      "api_cache_keys": 178,
+      "weapon_len": 512,
+      "weapon_max": 512,
+      "rpm": 56,
+      "api_cache_keys": 189,
       "body_keys": 32,
-      "detail_keys": 384,
-      "body_mb": 3.02,
-      "detail_mb": 8.91,
+      "detail_keys": 254,
+      "body_mb": 1.39,
+      "detail_mb": 6.54,
       "body_budget_mb": 8.0,
-      "bsp_lru": 64,
+      "bsp_lru": 26,
       "bsp_lru_max": 64,
       "bsp_sharded": true
     },
     "health_after": {
-      "ms": 617,
+      "ms": 244,
       "ok": true,
       "reachable": true,
       "err": null,
       "booting": false,
       "browse_ready": true,
-      "rss_mb": 1144.1,
-      "band": "mid",
-      "pair_len": 3750,
-      "pair_max": 3750,
+      "rss_mb": 980.1,
+      "band": "pressure",
+      "pair_len": 1500,
+      "pair_max": 1500,
       "pair_ceiling": 6000,
-      "weapon_len": 1280,
-      "weapon_max": 1280,
-      "rpm": 117,
-      "api_cache_keys": 196,
+      "weapon_len": 512,
+      "weapon_max": 512,
+      "rpm": 141,
+      "api_cache_keys": 177,
       "body_keys": 32,
-      "detail_keys": 384,
-      "body_mb": 3.7,
-      "detail_mb": 8.87,
+      "detail_keys": 281,
+      "body_mb": 1.51,
+      "detail_mb": 7.2,
       "body_budget_mb": 8.0,
-      "bsp_lru": 64,
+      "bsp_lru": 28,
       "bsp_lru_max": 64,
       "bsp_sharded": true
     },
     "cold": {
       "/": {
-        "ms": 7459,
+        "ms": 278,
         "ok": true,
         "status": 200,
-        "gzip": 38728,
+        "gzip": 41809,
         "err": null
       },
       "/api/characters?lang=EN": {
-        "ms": 2132,
+        "ms": 437,
         "ok": true,
         "status": 200,
-        "gzip": 3660,
+        "gzip": 3856,
         "err": null
       },
       "/api/units?lang=EN": {
-        "ms": 2520,
+        "ms": 785,
         "ok": true,
         "status": 200,
-        "gzip": 9831,
+        "gzip": 10002,
         "err": null
       },
       "/api/banner_timeline?lang=EN&sv=23": {
-        "ms": 923,
+        "ms": 267,
         "ok": true,
         "status": 200,
-        "gzip": 38330,
+        "gzip": 38320,
         "err": null
       },
       "/api/unit/1001000150?lang=EN": {
-        "ms": 355,
+        "ms": 404,
         "ok": true,
         "status": 200,
         "gzip": 2867,
         "err": null
       },
       "/api/character/1001000100?lang=EN": {
-        "ms": 598,
+        "ms": 280,
         "ok": true,
         "status": 200,
         "gzip": 1487,
         "err": null
       },
       "/api/unit/1001000150/best_synergy_pilots?lang=EN": {
-        "ms": 1204,
+        "ms": 3129,
         "ok": true,
         "status": 200,
-        "gzip": 12987,
+        "gzip": 93592,
         "err": null
       },
       "/api/tag_matrix?lang=EN": {
-        "ms": 810,
+        "ms": 264,
         "ok": true,
         "status": 200,
         "gzip": 134005,
         "err": null
       },
       "/api/debuff_matrix?lang=EN": {
-        "ms": 549,
+        "ms": 361,
         "ok": true,
         "status": 200,
         "gzip": 165802,
         "err": null
       },
       "/api/tag_matrix?lang=JA": {
-        "ms": 632,
+        "ms": 307,
         "ok": true,
         "status": 200,
         "gzip": 143368,
         "err": null
       },
       "/api/debuff_matrix?lang=JA": {
-        "ms": 527,
+        "ms": 291,
         "ok": true,
         "status": 200,
         "gzip": 177394,
@@ -135,77 +135,77 @@
     },
     "warm": {
       "/": {
-        "ms": 4593,
+        "ms": 373,
         "ok": true,
         "status": 200,
-        "gzip": 38729,
+        "gzip": 41808,
         "err": null
       },
       "/api/characters?lang=EN": {
-        "ms": 4177,
+        "ms": 246,
         "ok": true,
         "status": 200,
-        "gzip": 3660,
+        "gzip": 3856,
         "err": null
       },
       "/api/units?lang=EN": {
-        "ms": 1225,
+        "ms": 255,
         "ok": true,
         "status": 200,
-        "gzip": 9831,
+        "gzip": 10002,
         "err": null
       },
       "/api/banner_timeline?lang=EN&sv=23": {
-        "ms": 1162,
+        "ms": 319,
         "ok": true,
         "status": 200,
-        "gzip": 38330,
+        "gzip": 38320,
         "err": null
       },
       "/api/unit/1001000150?lang=EN": {
-        "ms": 304,
+        "ms": 318,
         "ok": true,
         "status": 200,
         "gzip": 2867,
         "err": null
       },
       "/api/character/1001000100?lang=EN": {
-        "ms": 505,
+        "ms": 277,
         "ok": true,
         "status": 200,
         "gzip": 1487,
         "err": null
       },
       "/api/unit/1001000150/best_synergy_pilots?lang=EN": {
-        "ms": 680,
+        "ms": 265,
         "ok": true,
         "status": 200,
-        "gzip": 12987,
+        "gzip": 93592,
         "err": null
       },
       "/api/tag_matrix?lang=EN": {
-        "ms": 383,
+        "ms": 259,
         "ok": true,
         "status": 200,
         "gzip": 134005,
         "err": null
       },
       "/api/debuff_matrix?lang=EN": {
-        "ms": 367,
+        "ms": 303,
         "ok": true,
         "status": 200,
         "gzip": 165802,
         "err": null
       },
       "/api/tag_matrix?lang=JA": {
-        "ms": 368,
+        "ms": 288,
         "ok": true,
         "status": 200,
         "gzip": 143368,
         "err": null
       },
       "/api/debuff_matrix?lang=JA": {
-        "ms": 365,
+        "ms": 287,
         "ok": true,
         "status": 200,
         "gzip": 177394,
@@ -215,33 +215,33 @@
     "steady": {
       "unit": {
         "n": 4,
-        "p50": 443,
-        "mean": 480,
-        "min": 340,
-        "max": 694
+        "p50": 246,
+        "mean": 245,
+        "min": 240,
+        "max": 249
       },
       "char": {
         "n": 4,
-        "p50": 406,
-        "mean": 388,
-        "min": 291,
-        "max": 449
+        "p50": 256,
+        "mean": 253,
+        "min": 238,
+        "max": 265
       },
       "bsp": {
         "n": 4,
-        "p50": 1100,
-        "mean": 1135,
-        "min": 861,
-        "max": 1481
+        "p50": 275,
+        "mean": 278,
+        "min": 274,
+        "max": 289
       }
     }
   },
   "local": {
     "label": "local",
     "base": "http://127.0.0.1:5000",
-    "wall_ms": 4120,
+    "wall_ms": 581,
     "health": {
-      "ms": 1,
+      "ms": 3,
       "ok": true,
       "reachable": true,
       "err": null,
@@ -249,24 +249,24 @@
       "browse_ready": true,
       "rss_mb": null,
       "band": "calm",
-      "pair_len": 72,
+      "pair_len": 3565,
       "pair_max": 6000,
       "pair_ceiling": 6000,
-      "weapon_len": 1458,
+      "weapon_len": 1463,
       "weapon_max": 2048,
-      "rpm": 22,
-      "api_cache_keys": 23,
-      "body_keys": 13,
-      "detail_keys": 2,
-      "body_mb": 0.84,
-      "detail_mb": 0.07,
+      "rpm": 0,
+      "api_cache_keys": 175,
+      "body_keys": 32,
+      "detail_keys": 91,
+      "body_mb": 1.71,
+      "detail_mb": 1.58,
       "body_budget_mb": 8.0,
-      "bsp_lru": 1,
+      "bsp_lru": 26,
       "bsp_lru_max": 64,
       "bsp_sharded": true
     },
     "health_after": {
-      "ms": 1,
+      "ms": 3,
       "ok": true,
       "reachable": true,
       "err": null,
@@ -274,70 +274,70 @@
       "browse_ready": true,
       "rss_mb": null,
       "band": "calm",
-      "pair_len": 222,
+      "pair_len": 3565,
       "pair_max": 6000,
       "pair_ceiling": 6000,
-      "weapon_len": 1458,
+      "weapon_len": 1463,
       "weapon_max": 2048,
-      "rpm": 59,
-      "api_cache_keys": 28,
-      "body_keys": 20,
-      "detail_keys": 5,
-      "body_mb": 1.5,
-      "detail_mb": 0.11,
+      "rpm": 34,
+      "api_cache_keys": 175,
+      "body_keys": 32,
+      "detail_keys": 91,
+      "body_mb": 2.1,
+      "detail_mb": 1.58,
       "body_budget_mb": 8.0,
-      "bsp_lru": 2,
+      "bsp_lru": 26,
       "bsp_lru_max": 64,
       "bsp_sharded": true
     },
     "cold": {
       "/": {
-        "ms": 4,
+        "ms": 10,
         "ok": true,
         "status": 200,
-        "gzip": 229203,
+        "gzip": 244789,
         "err": null
       },
       "/api/characters?lang=EN": {
-        "ms": 1,
+        "ms": 4,
         "ok": true,
         "status": 200,
-        "gzip": 3588,
+        "gzip": 3766,
         "err": null
       },
       "/api/units?lang=EN": {
-        "ms": 1,
+        "ms": 4,
         "ok": true,
         "status": 200,
-        "gzip": 9474,
+        "gzip": 9643,
         "err": null
       },
       "/api/banner_timeline?lang=EN&sv=23": {
-        "ms": 1,
+        "ms": 2,
         "ok": true,
         "status": 200,
-        "gzip": 36247,
+        "gzip": 36238,
         "err": null
       },
       "/api/unit/1001000150?lang=EN": {
-        "ms": 19,
+        "ms": 2,
         "ok": true,
         "status": 200,
         "gzip": 2803,
         "err": null
       },
       "/api/character/1001000100?lang=EN": {
-        "ms": 8,
+        "ms": 3,
         "ok": true,
         "status": 200,
         "gzip": 1439,
         "err": null
       },
       "/api/unit/1001000150/best_synergy_pilots?lang=EN": {
-        "ms": 3636,
+        "ms": 34,
         "ok": true,
         "status": 200,
-        "gzip": 48028,
+        "gzip": 87076,
         "err": null
       },
       "/api/tag_matrix?lang=EN": {
@@ -348,14 +348,14 @@
         "err": null
       },
       "/api/debuff_matrix?lang=EN": {
-        "ms": 2,
+        "ms": 3,
         "ok": true,
         "status": 200,
         "gzip": 165802,
         "err": null
       },
       "/api/tag_matrix?lang=JA": {
-        "ms": 3,
+        "ms": 2,
         "ok": true,
         "status": 200,
         "gzip": 143368,
@@ -371,52 +371,52 @@
     },
     "warm": {
       "/": {
-        "ms": 4,
+        "ms": 10,
         "ok": true,
         "status": 200,
-        "gzip": 229203,
+        "gzip": 244789,
         "err": null
       },
       "/api/characters?lang=EN": {
-        "ms": 1,
+        "ms": 22,
         "ok": true,
         "status": 200,
-        "gzip": 3588,
+        "gzip": 3766,
         "err": null
       },
       "/api/units?lang=EN": {
         "ms": 1,
         "ok": true,
         "status": 200,
-        "gzip": 9474,
+        "gzip": 9643,
         "err": null
       },
       "/api/banner_timeline?lang=EN&sv=23": {
-        "ms": 21,
+        "ms": 1,
         "ok": true,
         "status": 200,
-        "gzip": 36247,
+        "gzip": 36238,
         "err": null
       },
       "/api/unit/1001000150?lang=EN": {
-        "ms": 1,
+        "ms": 16,
         "ok": true,
         "status": 200,
         "gzip": 2803,
         "err": null
       },
       "/api/character/1001000100?lang=EN": {
-        "ms": 1,
+        "ms": 2,
         "ok": true,
         "status": 200,
         "gzip": 1439,
         "err": null
       },
       "/api/unit/1001000150/best_synergy_pilots?lang=EN": {
-        "ms": 2,
+        "ms": 4,
         "ok": true,
         "status": 200,
-        "gzip": 48028,
+        "gzip": 87076,
         "err": null
       },
       "/api/tag_matrix?lang=EN": {
@@ -434,14 +434,14 @@
         "err": null
       },
       "/api/tag_matrix?lang=JA": {
-        "ms": 1,
+        "ms": 2,
         "ok": true,
         "status": 200,
         "gzip": 143368,
         "err": null
       },
       "/api/debuff_matrix?lang=JA": {
-        "ms": 1,
+        "ms": 2,
         "ok": true,
         "status": 200,
         "gzip": 177394,
@@ -454,7 +454,7 @@
         "p50": 1,
         "mean": 1,
         "min": 1,
-        "max": 2
+        "max": 3
       },
       "char": {
         "n": 4,
@@ -465,145 +465,145 @@
       },
       "bsp": {
         "n": 4,
-        "p50": 2,
-        "mean": 2,
-        "min": 2,
-        "max": 3
+        "p50": 6,
+        "mean": 6,
+        "min": 5,
+        "max": 7
       }
     }
   },
   "insights": [
-    "Live RSS 1144.1 MB is elevated (mid band). Watch if it keeps climbing.",
-    "Live body cache 3.7 MB is within budget (gzip-first boards OK).",
-    "Live unit warm p50 443 ms is in the normal TW\u2192Railway range.",
-    "Live homepage warm 4593 ms \u2014 above snappy bar; check RSS / worker.",
-    "Local unit warm p50 1 ms vs live 443 ms (local should be near 1\u201320 ms if the process is warm).",
-    "Body cache MB \u2014 local 1.5 \u00b7 live 3.7.",
+    "Live RSS 980.1 MB looks calm relative to the ~1.1\u20131.25 GB pressure bands.",
+    "Live body cache 1.51 MB is within budget (gzip-first boards OK).",
+    "Band is pressure from traffic (rpm\u2248141), not only RSS. Pair cache stays floored \u2014 expected under load.",
+    "Live unit warm p50 246 ms is in the normal TW\u2192Railway range.",
+    "Local unit warm p50 1 ms vs live 246 ms (local should be near 1\u201320 ms if the process is warm).",
+    "Body cache MB \u2014 local 2.1 \u00b7 live 1.51.",
     "Live and local both expose body cache budget fields (deploy fingerprint OK)."
   ],
   "verdict": {
     "tone": "ok",
-    "title": "Verdict: warm paths OK \u2014 RSS 1144.1 MB \u00b7 body 3.7 MB \u00b7 unit p50 443 ms \u00b7 BSP p50 1100 ms",
-    "body": "Live RSS 1144.1 MB is elevated (mid band). Watch if it keeps climbing. Live body cache 3.7 MB is within budget (gzip-first boards OK). Live unit warm p50 443 ms is in the normal TW\u2192Railway range."
+    "title": "Verdict: snappy warm paths \u2014 band=pressure is traffic, not a stuck heap",
+    "body": "Live RSS 980.1 MB looks calm relative to the ~1.1\u20131.25 GB pressure bands. Live body cache 1.51 MB is within budget (gzip-first boards OK). Band is pressure from traffic (rpm\u2248141), not only RSS. Pair cache stays floored \u2014 expected under load."
   },
   "chart_bars": [
     {
       "label": "unit warm p50",
-      "ms": 443
+      "ms": 246
     },
     {
       "label": "char warm p50",
-      "ms": 406
+      "ms": 256
     },
     {
       "label": "BSP warm p50",
-      "ms": 1100
+      "ms": 275
     },
     {
       "label": "/health after",
-      "ms": 617
+      "ms": 244
     },
     {
       "label": "/api/characters",
-      "ms": 4177
+      "ms": 246
     },
     {
       "label": "/api/banner_timeline",
-      "ms": 1162
+      "ms": 319
     },
     {
       "label": "tag_matrix EN",
-      "ms": 383
+      "ms": 259
     },
     {
       "label": "debuff_matrix EN",
-      "ms": 367
+      "ms": 303
     }
   ],
   "compare_rows": [
     {
       "name": "Homepage",
       "path": "/",
-      "live_ms": 4593,
-      "local_ms": 4
+      "live_ms": 373,
+      "local_ms": 10
     },
     {
       "name": "Characters list",
       "path": "/api/characters?lang=EN",
-      "live_ms": 4177,
-      "local_ms": 1
+      "live_ms": 246,
+      "local_ms": 22
     },
     {
       "name": "Units list",
       "path": "/api/units?lang=EN",
-      "live_ms": 1225,
+      "live_ms": 255,
       "local_ms": 1
     },
     {
       "name": "Banner timeline",
       "path": "/api/banner_timeline?lang=EN&sv=23",
-      "live_ms": 1162,
-      "local_ms": 21
+      "live_ms": 319,
+      "local_ms": 1
     },
     {
       "name": "Unit detail",
       "path": "/api/unit/1001000150?lang=EN",
-      "live_ms": 304,
-      "local_ms": 1
+      "live_ms": 318,
+      "local_ms": 16
     },
     {
       "name": "Character detail",
       "path": "/api/character/1001000100?lang=EN",
-      "live_ms": 505,
-      "local_ms": 1
+      "live_ms": 277,
+      "local_ms": 2
     },
     {
       "name": "BSP Top 10",
       "path": "/api/unit/1001000150/best_synergy_pilots?lang=EN",
-      "live_ms": 680,
-      "local_ms": 2
+      "live_ms": 265,
+      "local_ms": 4
     },
     {
       "name": "Tag matrix EN",
       "path": "/api/tag_matrix?lang=EN",
-      "live_ms": 383,
+      "live_ms": 259,
       "local_ms": 1
     },
     {
       "name": "Debuff matrix EN",
       "path": "/api/debuff_matrix?lang=EN",
-      "live_ms": 367,
+      "live_ms": 303,
       "local_ms": 2
     },
     {
       "name": "Tag matrix JA",
       "path": "/api/tag_matrix?lang=JA",
-      "live_ms": 368,
-      "local_ms": 1
+      "live_ms": 288,
+      "local_ms": 2
     },
     {
       "name": "Debuff matrix JA",
       "path": "/api/debuff_matrix?lang=JA",
-      "live_ms": 365,
-      "local_ms": 1
+      "live_ms": 287,
+      "local_ms": 2
     },
     {
       "name": "Unit steady p50",
       "path": "unit",
-      "live_ms": 443,
+      "live_ms": 246,
       "local_ms": 1
     },
     {
       "name": "Char steady p50",
       "path": "char",
-      "live_ms": 406,
+      "live_ms": 256,
       "local_ms": 1
     },
     {
       "name": "BSP steady p50",
       "path": "bsp",
-      "live_ms": 1100,
-      "local_ms": 2
+      "live_ms": 275,
+      "local_ms": 6
     }
   ],
   "dashboard": {
@@ -613,19 +613,15 @@
         "active": true
       },
       {
-        "text": "RSS 826.4 \u2192 1144.1 MB",
+        "text": "RSS 1014.6 \u2192 980.1 MB",
+        "active": true
+      },
+      {
+        "text": "Body cache ~1.51 MB (budget 8.0)",
         "active": false
       },
       {
-        "text": "Body cache ~3.7 MB (budget 8.0)",
-        "active": false
-      },
-      {
-        "text": "RSS elevated ~1144.1 MB",
-        "active": false
-      },
-      {
-        "text": "Band: mid",
+        "text": "Band: pressure",
         "active": false
       }
     ],
@@ -633,25 +629,25 @@
       {
         "key": "rss",
         "label": "Live RSS",
-        "value": "1144.1 MB",
-        "tone": "warn"
+        "value": "980.1 MB",
+        "tone": "ok"
       },
       {
         "key": "body",
         "label": "Body cache",
-        "value": "3.7 MB",
+        "value": "1.51 MB",
         "tone": "ok"
       },
       {
         "key": "unit",
         "label": "Unit warm p50",
-        "value": "443ms",
+        "value": "246ms",
         "tone": "ok"
       },
       {
         "key": "bsp",
         "label": "BSP warm p50",
-        "value": "1100ms",
+        "value": "275ms",
         "tone": "ok"
       }
     ],
@@ -659,25 +655,25 @@
       {
         "key": "prior_rss",
         "label": "Prior Update RSS",
-        "value": "826.4 MB",
+        "value": "1014.6 MB",
         "tone": "ok"
       },
       {
         "key": "prior_body",
         "label": "Prior body cache",
-        "value": "1.52 MB",
+        "value": "2.34 MB",
         "tone": "ok"
       },
       {
         "key": "char",
         "label": "Char warm p50",
-        "value": "406ms",
+        "value": "256ms",
         "tone": "ok"
       },
       {
         "key": "health",
         "label": "/health after",
-        "value": "617ms",
+        "value": "244ms",
         "tone": "ok"
       }
     ],
@@ -685,128 +681,110 @@
       {
         "metric": "Unit warm",
         "n": 4,
-        "p50": 443,
-        "mean": 480,
-        "min": 340,
-        "max": 694
+        "p50": 246,
+        "mean": 245,
+        "min": 240,
+        "max": 249
       },
       {
         "metric": "Char warm",
         "n": 4,
-        "p50": 406,
-        "mean": 388,
-        "min": 291,
-        "max": 449
+        "p50": 256,
+        "mean": 253,
+        "min": 238,
+        "max": 265
       },
       {
         "metric": "BSP warm",
         "n": 4,
-        "p50": 1100,
-        "mean": 1135,
-        "min": 861,
-        "max": 1481
+        "p50": 275,
+        "mean": 278,
+        "min": 274,
+        "max": 289
       }
     ],
     "critical_rows": [
       {
         "path": "/",
-        "cold": 7459,
-        "warm": 4593,
-        "gzip": "37.8 KB",
-        "local_warm": 4
+        "cold": 278,
+        "warm": 373,
+        "gzip": "40.8 KB",
+        "local_warm": 10
       },
       {
         "path": "/api/characters",
-        "cold": 2132,
-        "warm": 4177,
-        "gzip": "3.6 KB",
-        "local_warm": 1
+        "cold": 437,
+        "warm": 246,
+        "gzip": "3.8 KB",
+        "local_warm": 22
       },
       {
         "path": "/api/units",
-        "cold": 2520,
-        "warm": 1225,
-        "gzip": "9.6 KB",
+        "cold": 785,
+        "warm": 255,
+        "gzip": "9.8 KB",
         "local_warm": 1
       },
       {
         "path": "/api/banner_timeline",
-        "cold": 923,
-        "warm": 1162,
+        "cold": 267,
+        "warm": 319,
         "gzip": "37.4 KB",
-        "local_warm": 21
+        "local_warm": 1
       },
       {
         "path": "/api/unit/\u2026 (detail)",
-        "cold": 355,
-        "warm": 304,
+        "cold": 404,
+        "warm": 318,
         "gzip": "2.8 KB",
-        "local_warm": 1
+        "local_warm": 16
       },
       {
         "path": "/api/character/\u2026",
-        "cold": 598,
-        "warm": 505,
+        "cold": 280,
+        "warm": 277,
         "gzip": "1.5 KB",
-        "local_warm": 1
+        "local_warm": 2
       },
       {
         "path": "/api/\u2026/best_synergy_pilots",
-        "cold": 1204,
-        "warm": 680,
-        "gzip": "12.7 KB",
-        "local_warm": 2
+        "cold": 3129,
+        "warm": 265,
+        "gzip": "91.4 KB",
+        "local_warm": 4
       }
     ],
     "matrix_rows": [
       {
         "path": "tag_matrix EN",
-        "p50": 383,
-        "min": 383,
-        "max": 810,
+        "p50": 259,
+        "min": 259,
+        "max": 264,
         "gzip": "130.9 KB"
       },
       {
         "path": "debuff_matrix EN",
-        "p50": 367,
-        "min": 367,
-        "max": 549,
+        "p50": 303,
+        "min": 303,
+        "max": 361,
         "gzip": "161.9 KB"
       },
       {
         "path": "tag_matrix JA",
-        "p50": 368,
-        "min": 368,
-        "max": 632,
+        "p50": 288,
+        "min": 288,
+        "max": 307,
         "gzip": "140.0 KB"
       },
       {
         "path": "debuff_matrix JA",
-        "p50": 365,
-        "min": 365,
-        "max": 527,
+        "p50": 287,
+        "min": 287,
+        "max": 291,
         "gzip": "173.2 KB"
       }
     ],
     "rss_rows": [
-      {
-        "when": "2026-11-02T15:08:17+08:00",
-        "rss": "936.8 MB",
-        "body": "3.25 MB \u00b7 detail 2.74",
-        "note": "\u2014"
-      },
-      {
-        "when": "2026-11-02T21:22:56+08:00",
-        "rss": "1094.0 MB",
-        "body": "2.58 MB \u00b7 detail 2.7",
-        "note": "\u2014"
-      },
-      {
-        "when": "2026-11-02T23:26:40+08:00",
-        "rss": "1073.2 MB",
-        "body": "3.49 MB \u00b7 detail 2.78",
-        "note": "\u2014"
-      },
       {
         "when": "2026-11-03T01:28:13+08:00",
         "rss": "1041.6 MB",
@@ -817,57 +795,75 @@
         "when": "2026-11-03T23:31:15+08:00",
         "rss": "826.4 MB",
         "body": "1.52 MB \u00b7 detail 0.15",
-        "note": "previous Update"
+        "note": "\u2014"
       },
       {
         "when": "2026-11-04T10:27:53+08:00",
         "rss": "1144.1 MB",
         "body": "3.7 MB \u00b7 detail 8.87",
+        "note": "\u2014"
+      },
+      {
+        "when": "2026-11-12T22:31:28+08:00",
+        "rss": "956.0 MB",
+        "body": "1.7 MB \u00b7 detail 2.54",
+        "note": "\u2014"
+      },
+      {
+        "when": "2026-11-12T22:37:57+08:00",
+        "rss": "1014.6 MB",
+        "body": "2.34 MB \u00b7 detail 8.13",
+        "note": "previous Update"
+      },
+      {
+        "when": "2026-11-13T01:03:58+08:00",
+        "rss": "980.1 MB",
+        "body": "1.51 MB \u00b7 detail 7.2",
         "note": "this Update"
       }
     ],
     "adaptive_rows": [
       {
         "field": "band",
-        "start": "mid (rpm ~42)",
-        "after": "mid (rpm ~117)",
-        "prior": "pressure (rpm ~106)"
+        "start": "pressure (rpm ~56)",
+        "after": "pressure (rpm ~141)",
+        "prior": "mid (rpm ~131)"
       },
       {
         "field": "pair cache",
-        "start": "3750 / 3750",
-        "after": "3750 / 3750",
-        "prior": "150 / 1500"
+        "start": "1500 / 1500",
+        "after": "1500 / 1500",
+        "prior": "3750 / 3750"
       },
       {
         "field": "weapon cache",
-        "start": "1280 / 1280",
-        "after": "1280 / 1280",
-        "prior": "3 / 512"
+        "start": "512 / 512",
+        "after": "512 / 512",
+        "prior": "1280 / 1280"
       },
       {
         "field": "body cache MB",
-        "start": "3.02 / 8.0",
-        "after": "3.7 / 8.0",
-        "prior": "1.52 / 8.0"
+        "start": "1.39 / 8.0",
+        "after": "1.51 / 8.0",
+        "prior": "2.34 / 8.0"
       },
       {
         "field": "detail body MB",
-        "start": "8.91",
-        "after": "8.87",
-        "prior": "0.15"
+        "start": "6.54",
+        "after": "7.2",
+        "prior": "8.13"
       },
       {
         "field": "BSP group LRU",
-        "start": "64 / 64",
-        "after": "64 / 64",
-        "prior": "1 / 64"
+        "start": "26 / 64",
+        "after": "28 / 64",
+        "prior": "35 / 64"
       },
       {
         "field": "api_cache keys",
-        "start": "178",
-        "after": "196",
-        "prior": "41"
+        "start": "189",
+        "after": "177",
+        "prior": "200"
       },
       {
         "field": "bsp_sharded",
@@ -879,7 +875,7 @@
     "gate_rows": [
       {
         "check": "http_json_body_cache_mb on /health",
-        "value": "3.7",
+        "value": "1.51",
         "pass": true
       },
       {
@@ -899,12 +895,12 @@
       },
       {
         "check": "Body cache within budget after warm",
-        "value": "3.7 / 8.0",
+        "value": "1.51 / 8.0",
         "pass": true
       },
       {
         "check": "Unit warm p50 under 600 ms",
-        "value": "443 ms",
+        "value": "246 ms",
         "pass": true
       }
     ],
@@ -917,57 +913,6 @@
     "chart_caption": "Source: this Update run \u00b7 Y-axis = response time (ms). First BSP after recycle can cold-shard once; warm p50 is the settled path."
   },
   "history": [
-    {
-      "at": "2026-10-31T19:17:50+08:00",
-      "rss_mb": 1258.2,
-      "body_mb": 2.73,
-      "detail_mb": 1.19,
-      "band": "pressure",
-      "rpm": 256,
-      "pair_len": 1500,
-      "pair_max": 1500,
-      "body_budget_mb": 8.0,
-      "bsp_lru": 32,
-      "bsp_lru_max": 64,
-      "api_cache_keys": 191,
-      "bsp_sharded": true,
-      "weapon_len": 512,
-      "weapon_max": 512
-    },
-    {
-      "at": "2026-11-01T15:43:50+08:00",
-      "rss_mb": 910.8,
-      "body_mb": 3.05,
-      "detail_mb": 0.94,
-      "band": "pressure",
-      "rpm": 203,
-      "pair_len": 1500,
-      "pair_max": 1500,
-      "body_budget_mb": 8.0,
-      "bsp_lru": 11,
-      "bsp_lru_max": 64,
-      "api_cache_keys": 103,
-      "bsp_sharded": true,
-      "weapon_len": 512,
-      "weapon_max": 512
-    },
-    {
-      "at": "2026-11-01T16:08:35+08:00",
-      "rss_mb": 856.2,
-      "body_mb": 3.78,
-      "detail_mb": 2.85,
-      "band": "pressure",
-      "rpm": 184,
-      "pair_len": 1500,
-      "pair_max": 1500,
-      "body_budget_mb": 8.0,
-      "bsp_lru": 15,
-      "bsp_lru_max": 64,
-      "api_cache_keys": 190,
-      "bsp_sharded": true,
-      "weapon_len": 512,
-      "weapon_max": 512
-    },
     {
       "at": "2026-11-01T16:25:16+08:00",
       "rss_mb": 875.9,
@@ -1120,6 +1065,57 @@
       "bsp_sharded": true,
       "weapon_len": 1280,
       "weapon_max": 1280
+    },
+    {
+      "at": "2026-11-12T22:31:28+08:00",
+      "rss_mb": 956.0,
+      "body_mb": 1.7,
+      "detail_mb": 2.54,
+      "band": "pressure",
+      "rpm": 211,
+      "pair_len": 1296,
+      "pair_max": 1500,
+      "body_budget_mb": 8.0,
+      "bsp_lru": 10,
+      "bsp_lru_max": 64,
+      "api_cache_keys": 163,
+      "bsp_sharded": true,
+      "weapon_len": 512,
+      "weapon_max": 512
+    },
+    {
+      "at": "2026-11-12T22:37:57+08:00",
+      "rss_mb": 1014.6,
+      "body_mb": 2.34,
+      "detail_mb": 8.13,
+      "band": "mid",
+      "rpm": 131,
+      "pair_len": 3750,
+      "pair_max": 3750,
+      "body_budget_mb": 8.0,
+      "bsp_lru": 35,
+      "bsp_lru_max": 64,
+      "api_cache_keys": 200,
+      "bsp_sharded": true,
+      "weapon_len": 1280,
+      "weapon_max": 1280
+    },
+    {
+      "at": "2026-11-13T01:03:58+08:00",
+      "rss_mb": 980.1,
+      "body_mb": 1.51,
+      "detail_mb": 7.2,
+      "band": "pressure",
+      "rpm": 141,
+      "pair_len": 1500,
+      "pair_max": 1500,
+      "body_budget_mb": 8.0,
+      "bsp_lru": 28,
+      "bsp_lru_max": 64,
+      "api_cache_keys": 177,
+      "bsp_sharded": true,
+      "weapon_len": 512,
+      "weapon_max": 512
     }
   ]
 }
