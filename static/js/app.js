@@ -852,7 +852,7 @@ Object.assign(T.TW,{char_grid_stat_ranged:'射擊',char_grid_stat_melee:'格鬥'
 Object.assign(T.HK,{char_grid_stat_ranged:'射擊',char_grid_stat_melee:'格鬥',char_grid_stat_awaken:'覺醒',char_grid_stat_defense:'防禦',char_grid_stat_reaction:'反應',bt_vote_err_ip:'已達投票上限',gs_hard_pity_unit:'保證獲得單位',gs_hover_preview_tap:'點一下預覽',unit_model_stage:'關卡',msy_empty:'無符合項目',msy_warming:'載入中…',msy_warming_partial:'部分載入中…',msy_warming_slow:'準備較久，請稍候…',msy_cp_on:'條件被動 ON（單位＋角色）',msy_cp_off:'條件被動 OFF（單位＋角色）',msy_pep_on:'駕駛 EX 被動 ON',msy_pep_off:'駕駛 EX 被動 OFF',msy_exclude_ur:'排除 UR',msy_exclude_ur_on:'已排除 UR',msy_exclude_shinn:'排除真飛鳥',msy_exclude_shinn_on:'已排除真飛鳥',msy_sd_note:'SD 單位另行處理',msy_rank_super_crit:'超爆擊',msy_rank_crit:'爆擊',msy_rank_normal:'一般',msy_def_difficulty:'防守難度',msy_def_hard3:'HARD ×3',msy_def_challenge:'挑戰',msy_def_eternal:'永恆之路',msy_def_avg:'平均',msy_def_unit_ph:'搜尋防守單位…',msy_def_char_ph:'搜尋防守角色…',msy_view_barchart:'長條圖',msy_chart:'長條圖',msy_metric_peak:'峰值',msy_no_eligible_pilots:'沒有符合的駕駛',msy_pilot_loading:'駕駛載入中…',unit_best_pilot_loading:'載入中…',unit_best_pilot_empty:'沒有結果',unit_best_pilot_error:'載入失敗',unit_best_pilot_note:'已發布的最佳協同駕駛',unit_best_pilot_filters:'篩選',unit_best_pilot_no_shinn:'排除真飛鳥',unit_best_pilot_no_ur:'排除 UR',unit_best_pilot_ur_only_on:'僅顯示 UR 駕駛',unit_best_pilot_ur_filter_cycle:'UR 篩選：全部 → 僅 UR → SSR↓',unit_best_pilot_ur_chip_ssr:'SSR↓',unit_best_pilot_ur_chip_only:'僅 UR',unit_best_pilot_same_role:'相同類型',unit_best_pilot_filter_partial:'部分套用',unit_best_pilot_title_skills_off:'技能 OFF',unit_best_pilot_score_dr:'受傷減輕',unit_best_pilot_score_dr_passive:'受傷減輕（被動）',unit_best_pilot_score_dr_skill:'受傷減輕（技能）',unit_best_pilot_score_series_sd:'系列 SD',unit_best_pilot_board_mode:'看板',unit_best_pilot_board_damage:'造成損傷',unit_best_pilot_board_defender:'承受損傷',unit_best_pilot_board_damage_short:'輸出',unit_best_pilot_board_defender_short:'坦度',unit_best_pilot_skills_toggle:'技能',unit_best_pilot_skills_on:'技能 ON',unit_best_pilot_skills_off:'技能 OFF',unit_best_pilot_skills_on_short:'ON',unit_best_pilot_skills_off_short:'OFF',unit_best_pilot_skills_off_note:'不含技能效果',unit_best_pilot_defender_note:'防守看板',unit_best_pilot_ehtk:'EHTK',unit_best_pilot_counter_dmg:'反擊損傷',unit_best_pilot_defender_score:'防守分數',unit_best_pilot_skills_off_on:'技能 OFF → ON',unit_best_pilot_score_survival:'生存',unit_best_pilot_score_htk_ex:'HTK（EX）',unit_best_pilot_score_htk_next:'下一個 HTK',unit_best_pilot_score_ehtk_soft:'EHTK（緩和）',unit_best_pilot_score_ehtk:'EHTK',unit_best_pilot_score_sd:'SD',unit_best_pilot_score_en:'EN',unit_best_pilot_score_counter:'反擊',unit_best_pilot_score_revive:'復活',unit_best_pilot_score_total:'合計',unit_best_pilot_defender_bully:'對抗高輸出',feedback_title:'意見回饋',feedback_intro:'簡短問卷，協助改進本站（選填）',feedback_q1_title:'Q1',feedback_q1_prompt:'整體好不好用？',feedback_q1_lo:'不好用',feedback_q1_hi:'好用',feedback_q2_title:'Q2',feedback_q2_prompt:'搜尋／瀏覽好不好找？',feedback_q2_lo:'不好找',feedback_q2_hi:'好找',feedback_q3_title:'Q3',feedback_q3_prompt:'詳細頁清不清楚？',feedback_q3_lo:'不清楚',feedback_q3_hi:'清楚',feedback_q4_title:'Q4',feedback_q4_prompt:'速度／流暢度？',feedback_q4_lo:'慢',feedback_q4_hi:'快',feedback_q5_title:'Q5',feedback_q5_prompt:'翻譯／用語準不準？',feedback_q5_lo:'不準',feedback_q5_hi:'準確',feedback_q6_title:'Q6',feedback_q6_prompt:'之後還會再用嗎？',feedback_q6_lo:'不會',feedback_q6_hi:'會',feedback_q7_title:'Q7',feedback_q7_prompt:'會推薦給朋友嗎？',feedback_q7_lo:'不會',feedback_q7_hi:'會',feedback_q8_section_title:'各工具',feedback_q8_damage_title:'損傷模擬器',feedback_q8_damage_prompt:'損傷模擬器有沒有幫助？',feedback_q8_team_title:'隊伍編成',feedback_q8_team_prompt:'隊伍編成有沒有幫助？',feedback_q8_lo:'沒幫助',feedback_q8_hi:'有幫助',feedback_device_label:'裝置',feedback_device_desktop:'電腦',feedback_device_mobile:'手機',feedback_device_tablet:'平板',feedback_liked_label:'喜歡的地方（選填）',feedback_improve_label:'想改進的地方（選填）',feedback_submit:'送出',feedback_submitting:'送出中…',feedback_success:'已送出，謝謝！',feedback_err_required:'請填寫必填項目',feedback_err_submit:'送出失敗',feedback_err_rate_limit:'送出太頻繁，請稍後再試',feedback_privacy_note:'請勿填寫可識別個人的資訊',feedback_close:'關閉',schedule_shell_flag_tip:'顯示行程',video_volume_aria:'音量',video_size_aria:'大小',video_fullscreen:'全螢幕',video_exit_fullscreen:'結束全螢幕',tab_meta_synergy:'Meta 協同',tb_op_count:'OP {n}',tb_op_label:'選擇性零件',stage_challenge_series_all:'全部系列',stage_challenge_series_msg:'挑戰系列',stage_challenge_series_seed:'系列',mod_filter_effect_hp:'最大HP ↑',mod_filter_effect_en:'最大EN ↑',browse_filter_esc:'Esc',browse_filter_combine_btn:'組合',sort_priority_band:'區段',gs_share_to_x_short:'X',gs_share_none:'無',stage_tower_e:'塔 E',stage_tower_w:'塔 W',stage_challenge_hard_label:'HARD',dc_squad_buff_ex_atk_pct:'EX攻擊 {n}%',dc_squad_buff_atk_pct:'攻擊 {n}%',dc_squad_buff_def_pct:'防禦 {n}%',dc_squad_buff_applied_split:'套用明細'});
 Object.assign(T.KR,{whats_new_slot:'슬롯',whats_new_before:'변경 전',whats_new_after:'변경 후',whats_new_tab_manual:'수동',whats_new_select_period:'기간 선택',whats_new_manual_note:'수동 입력 메모',er_stage_unlock_btn:'해금',er_stage_locked_badge:'잠김',col_hp:'HP',col_en:'EN',col_stage_no:'No.',wp_type:'유형',wp_range:'사거리',wp_power:'위력',wp_en:'EN',wp_ammo:'탄수',stat_hp:'HP',stat_en:'EN',stat_move:'이동',terrain_ground:'지상',conditional_passive_abbr:'조건',limited_label:'기간 한정',map_legend_range:'사거리',tag_or:'또는',terrain:'지형',none:'없음',difficulty_hard:'HARD',difficulty_expert:'EXPERT',browse_filter_esc:'Esc',browse_filter_combine_btn:'결합',browse_filter_combine_and:'AND',browse_filter_combine_or:'OR',cmp_terrain:'지형',cmp_remove:'제거',cmp_selected:'선택됨',dc_panel_attacker_heading:'공격측',dc_change:'변경',dc_distance:'거리',dc_shield:'실드',dc_on:'ON',dc_off:'OFF',dc_power:'위력',dc_range:'사거리',dc_en_cost:'EN 소비',supp_level:'레벨',supp_formula:'공식',tb_front:'전위',tb_rear:'후위',tb_rearrange:'재배치',tb_save:'저장',tb_load:'불러오기',tb_cancel:'취소',tb_confirm:'확인',tb_apply:'적용',tb_op_count:'OP {n}',ml_status_active:'진행 중',ml_status_upcoming:'예정',ml_status_ended:'종료',ml_col_rank:'순위',gs_kicker:'가챠 시뮬',gs_session:'세션',gs_reset:'리셋',gs_ur_ssr_empty_short:'없음',gs_ready:'준비',gs_back:'뒤로',gs_new:'신규',gs_pickup:'픽업',gs_saving:'저장 중',gs_saving_caps:'저장 중',gs_share_to_x_short:'X',gs_share_none:'없음',ssp_materials:'SSP 소재',ssp_mat_unlock:'SSP 해금 비용',ssp_mat_custom_core:'커스텀 코어 소재',msy_status_units:'유닛',msy_status_page:'페이지',msy_status_metric:'지표',msy_formula_stat:'스탯',msy_abbr_exp:'경험',msy_abbr_crit:'크리',unit_best_pilot_loading:'로딩 중…',unit_best_pilot_no_shinn:'신 제외',unit_best_pilot_no_ur:'UR 제외',unit_best_pilot_ur_only_on:'UR만 표시',unit_best_pilot_ur_filter_cycle:'UR 필터: 전체 → UR만 → SSR↓',unit_best_pilot_ur_chip_ssr:'SSR↓',unit_best_pilot_ur_chip_only:'UR만',unit_best_pilot_filter_partial:'일부 적용',unit_best_pilot_title_skills_off:'스킬 OFF',unit_best_pilot_score_dr:'피격 감소',unit_best_pilot_score_dr_passive:'피격 감소（패시브）',unit_best_pilot_score_dr_skill:'피격 감소（스킬）',unit_best_pilot_score_series_sd:'시리즈 SD',unit_best_pilot_board_damage_short:'딜',unit_best_pilot_board_defender_short:'탱',unit_best_pilot_skills_toggle:'스킬',unit_best_pilot_skills_on:'스킬 ON',unit_best_pilot_skills_off_short:'OFF',unit_best_pilot_skills_off_note:'스킬 효과 제외',unit_best_pilot_defender_note:'방어 보드',unit_best_pilot_ehtk:'EHTK',unit_best_pilot_skills_off_on:'스킬 OFF → ON',unit_best_pilot_score_survival:'생존',unit_best_pilot_score_htk_ex:'HTK（EX）',unit_best_pilot_score_htk_next:'다음 HTK',unit_best_pilot_score_ehtk_soft:'EHTK（완화）',unit_best_pilot_score_ehtk:'EHTK',unit_best_pilot_score_sd:'SD',unit_best_pilot_score_en:'EN',unit_best_pilot_score_counter:'반격',unit_best_pilot_score_revive:'부활',unit_best_pilot_score_total:'합계',sort_priority_hint:'우선순위 정렬',sort_priority_n:'{n}',sort_priority_band:'구간',dc_squad_buff_applied:'적용됨',dc_squad_buff_sources:'출처',dc_squad_buff_ex_atk_pct:'EX 공격 {n}%',dc_squad_buff_atk_def_pct:'공/방 {n}%',dc_squad_buff_atk_pct:'공격 {n}%',dc_squad_buff_def_pct:'방어 {n}%',dc_squad_buff_applied_split:'적용 내역',npc_unit_cond_target_short:'대상',tb_op_label:'옵션 파츠',tb_pick_pilot_unit:'파일럿／유닛 선택',tb_stat_sp:'SP',tb_change_unit:'유닛 변경',tb_supp_level_adjust:'서포터 레벨',dc_wpn_trait_lines:'무기 특성',schedule_shell_flag:'일정',stage_tower_e:'탑 E',stage_tower_w:'탑 W',stage_challenge_hard_label:'HARD',esim_type_story:'스토리',esim_type_report:'리포트',esim_div_original:'오리지널',esim_div_if:'IF',stage_capturable_pickup:'포획 픽업',stage_map_escape_stack_tt:'탈출 스택',stage_map_escape_dock:'탈출 도크',gacha_assault_tap:'탭'});T.HR=T.KR;
 
-const S={lang:'EN',languages:[],currentTab:'characters',listView:{characters:'grid',units:'grid',supporters:'grid',stages:'grid',modifications:'grid'},characters:{page:1,sort:'rarity',dir:'desc',q:'',sortPriority:[]},units:{page:1,sort:'rarity',dir:'desc',q:'',sortPriority:[]},supporters:{page:1,sort:'rarity',dir:'desc',q:''},stages:{page:1,q:'',difficultyFilter:'ALL',sort:'stage_number',dir:'asc',source:'eternal',challengeSeries:'ALL'},modifications:{page:1,sort:'rarity',dir:'desc',q:'',effectFilter:'ALL'},_modEffectFilterIcons:null,ft:null,currentDetailData:null,currentDetailType:null,conditionalPassiveActive:false,pilotConditionalPassiveActive:false,pilotCondCharData:null,_pilotCondCharFetchId:null,_pilotCondCharInflight:null,pilotCondStackCount:0,unitCondStackCount:0,unitHpAtkTierIndex:0,unitDamageTakenDefStacks:0,charSuperchargedExTier:0,spActive:false,sspActive:false,ultAltActive:false,_tagRarityFilter:'ALL',_tagAcqFilter:'ALL',_tagTargetType:'unit',_tagModalMode:'tags',_seriesModalSid:'',_seriesModalName:'',_currentTagStr:'',_currentTagOp:'and',currentLbTier:3,currentWeaponLevels:{},stageMapExpanded:false,stageMapZoom:1,stageMapAutoFit:true,stageMapReinforcementOnly:false,stageMapSpawnOrderVisible:false,stageMapBuffAreasVisible:true,compareList:[],compareData:[],compareType:'unit',_cmpPickerCache:[],cmpSpActive:false,cmpSspActive:false,cmpCpActive:false,cmpPepActive:false,cmpPepCharById:{},cmpLbByUnit:{},cmpMobilePickMode:false,listCharSp:false,listUnitSp:false,listUnitSsp:false,listUnitSkill:false,listCharCond:false,listUnitCond:false,listUnitPilotCond:false,listSelectedUnitId:null,listCharSource:'ALL',listUnitSource:'ALL',listMsyUnitSource:'ALL',listCharLineage:[],listCharSeries:[],listCharSkills:[],listCharAbilities:[],listUnitLineage:[],listUnitSeries:[],listUnitAbilities:[],listUnitAbilityEffect:[],listMsyUnitSeries:[],listMsyUnitLineage:[],listUnitTerrain:[],listUnitMov:[],listRankUnitMov:[],listUnitWeaponDebuff:[],listUnitWeaponAttrSet:[],listUnitWeaponRange:[],listUnitWeaponRangeNonMap:[],listUnitWeaponRangeNonMapSspExOnly:false,listUnitMapWeapon:false,listUnitMapWeaponRange:[],listUnitMechanism:[],listSuppLineage:[],listSuppSkills:[],listModLineage:[],browseCombCharLineage:'and',browseCombUnitLineage:'and',browseCombSuppLineage:'and',browseCombModLineage:'and',browseCombCharSeries:'or',browseCombUnitSeries:'or',browseCombMsyUnitSeries:'or',browseCombMsyUnitLineage:'and',browseCombCharSkill:'and',browseCombUnitAbil:'and',browseCombCharTrait:'and',browseCombTerrain:'and',browseCombWb:'and',browseCombAe:'and',browseCombRankAe:'and',browseCombWa:'and',browseCombWr:'and',browseCombWrNm:'and',browseCombMapWr:'and',browseCombMech:'and',listGridVariant:{characters:2,units:2},weaponDebuffPresentKeys:null,terrainPresentTokens:null,weaponRangeSspExPresent:null,weaponRangeNonMapPresent:null,mechanismPresentRows:null,lrCacheKey:null,lrCacheData:null,btCacheKey:null,btCacheData:null,btBannerSortDir:'desc',_browsePrimed:{},dc:{atkUnit:null,atkChar:null,atkUnitData:null,atkCharData:null,defNpc:null,defUnitData:null,defCharData:null,defLbTier:3,npcList:[],wpnIdx:0,wpnLv:0,lbTier:3,distance:1,terrain:0,mpLevel:'medium',defending:false,shield:false,optionParts:[],supporters:[],debuffs:[],unitStatMode:'normal',charStatMode:'normal',unitCondPassive:false,charCondPassive:false,dcSuperchargedExTier:0,masterLeagueBuff:false,grandOffensiveBuff:false,squadCondPct:0,squadCondAtkPct:0,squadCondDefPct:0,bigRangZeonSquadBuff:false,defNpcMapBonusesOn:true,_applicableOptionRows:null,_applicableSupporterRows:null},tb:null,_dcPickerType:null,_dcPickerCache:[],_searchRecallObs:null,_suspendRarityItemChange:false,ranking:{mode:'units',viewMode:'list',sortChar:'Ranged',sortUnit:'HP',dirChar:'desc',dirUnit:'desc',pageChar:1,pageUnit:1},listRankCharSource:'ALL',listRankUnitSource:'ALL',listRankCharLineage:[],listRankCharSeries:[],listRankCharSkills:[],listRankCharAbilities:[],listRankUnitLineage:[],listRankUnitSeries:[],listRankUnitAbilities:[],listRankUnitAbilityEffect:[],listRankUnitTerrain:[],listRankUnitWeaponDebuff:[],listRankUnitWeaponAttrSet:[],listRankUnitWeaponRange:[],listRankUnitWeaponRangeNonMap:[],listRankUnitWeaponRangeNonMapSspExOnly:false,listRankUnitMapWeapon:false,listRankUnitMapWeaponRange:[],listRankUnitMechanism:[],listRankCharSp:false,listRankCharCond:false,listRankUnitSp:false,listRankUnitSsp:false,listRankUnitSkill:false,listRankUnitCond:false,listRankUnitPilotCond:false,browseCombRankCharLineage:'and',browseCombRankUnitLineage:'and',browseCombRankCharSeries:'or',browseCombRankUnitSeries:'or',browseCombRankCharSkill:'and',browseCombRankUnitAbil:'and',browseCombRankCharTrait:'and',browseCombRankTerrain:'and',browseCombRankWb:'and',browseCombRankWa:'and',browseCombRankWr:'and',browseCombRankWrNm:'and',browseCombRankMapWr:'and',browseCombRankMech:'and'};
+const S={lang:'EN',languages:[],currentTab:'characters',listView:{characters:'grid',units:'grid',supporters:'grid',stages:'grid',modifications:'grid'},characters:{page:1,sort:'rarity',dir:'desc',q:'',sortPriority:[]},units:{page:1,sort:'rarity',dir:'desc',q:'',sortPriority:[]},supporters:{page:1,sort:'rarity',dir:'desc',q:''},stages:{page:1,q:'',difficultyFilter:'ALL',sort:'stage_number',dir:'asc',source:'eternal',challengeSeries:'ALL'},modifications:{page:1,sort:'rarity',dir:'desc',q:'',effectFilter:'ALL'},_modEffectFilterIcons:null,ft:null,currentDetailData:null,currentDetailType:null,conditionalPassiveActive:false,pilotConditionalPassiveActive:false,pilotCondCharData:null,_pilotCondCharFetchId:null,_pilotCondCharInflight:null,pilotCondStackCount:0,unitCondStackCount:0,unitHpAtkTierIndex:0,unitDamageTakenDefStacks:0,charSuperchargedExTier:0,spActive:false,sspActive:false,ultAltActive:false,_tagRarityFilter:'ALL',_tagAcqFilter:'ALL',_tagTargetType:'unit',_tagModalMode:'tags',_seriesModalSid:'',_seriesModalName:'',_currentTagStr:'',_currentTagOp:'and',currentLbTier:3,currentWeaponLevels:{},stageMapExpanded:false,stageMapZoom:1,stageMapAutoFit:true,stageMapReinforcementOnly:false,stageMapSpawnOrderVisible:false,stageMapBuffAreasVisible:true,compareList:[],compareData:[],compareType:'unit',_cmpPickerCache:[],cmpSpActive:false,cmpSspActive:false,cmpCpActive:false,cmpPepActive:false,cmpPepCharById:{},cmpLbByUnit:{},cmpMobilePickMode:false,listCharSp:false,listUnitSp:false,listUnitSsp:false,listUnitSkill:false,listCharCond:false,listUnitCond:false,listUnitPilotCond:false,listSelectedUnitId:null,listCharSource:'ALL',listUnitSource:'ALL',listMsyUnitSource:'ALL',listCharLineage:[],listCharSeries:[],listCharSkills:[],listCharAbilities:[],listUnitLineage:[],listUnitSeries:[],listUnitAbilities:[],listUnitAbilityEffect:[],listMsyUnitSeries:[],listMsyUnitLineage:[],listUnitTerrain:[],listUnitMov:[],listRankUnitMov:[],listUnitWeaponDebuff:[],listUnitWeaponAttrSet:[],listUnitWeaponRange:[],listUnitWeaponRangeNonMap:[],listUnitWeaponRangeNonMapSspExOnly:false,listUnitMapWeapon:false,listUnitMapWeaponRange:[],listUnitMechanism:[],listSuppLineage:[],listSuppSkills:[],listModLineage:[],browseCombCharLineage:'and',browseCombUnitLineage:'and',browseCombSuppLineage:'and',browseCombModLineage:'and',browseCombCharSeries:'or',browseCombUnitSeries:'or',browseCombMsyUnitSeries:'or',browseCombMsyUnitLineage:'and',browseCombCharSkill:'and',browseCombUnitAbil:'and',browseCombCharTrait:'and',browseCombTerrain:'and',browseCombWb:'and',browseCombAe:'and',browseCombRankAe:'and',browseCombWa:'and',browseCombWr:'and',browseCombWrNm:'and',browseCombMapWr:'and',browseCombMech:'and',listGridVariant:{characters:2,units:2},weaponDebuffPresentKeys:null,terrainPresentTokens:null,weaponRangeSspExPresent:null,weaponRangeNonMapPresent:null,mechanismPresentRows:null,lrCacheKey:null,lrCacheData:null,btCacheKey:null,btCacheData:null,btBannerSortDir:'desc',_browsePrimed:{},dc:{atkUnit:null,atkChar:null,atkUnitData:null,atkCharData:null,defNpc:null,defUnitData:null,defCharData:null,defLbTier:3,npcList:[],wpnIdx:0,wpnLv:0,wpnTraitPowPct:null,lbTier:3,distance:1,terrain:0,mpLevel:'medium',defending:false,shield:false,optionParts:[],supporters:[],debuffs:[],unitStatMode:'normal',charStatMode:'normal',unitCondPassive:false,charCondPassive:false,dcSuperchargedExTier:0,masterLeagueBuff:false,grandOffensiveBuff:false,squadCondPct:0,squadCondAtkPct:0,squadCondDefPct:0,bigRangZeonSquadBuff:false,defNpcMapBonusesOn:true,_applicableOptionRows:null,_applicableSupporterRows:null},tb:null,_dcPickerType:null,_dcPickerCache:[],_searchRecallObs:null,_suspendRarityItemChange:false,ranking:{mode:'units',viewMode:'list',sortChar:'Ranged',sortUnit:'HP',dirChar:'desc',dirUnit:'desc',pageChar:1,pageUnit:1},listRankCharSource:'ALL',listRankUnitSource:'ALL',listRankCharLineage:[],listRankCharSeries:[],listRankCharSkills:[],listRankCharAbilities:[],listRankUnitLineage:[],listRankUnitSeries:[],listRankUnitAbilities:[],listRankUnitAbilityEffect:[],listRankUnitTerrain:[],listRankUnitWeaponDebuff:[],listRankUnitWeaponAttrSet:[],listRankUnitWeaponRange:[],listRankUnitWeaponRangeNonMap:[],listRankUnitWeaponRangeNonMapSspExOnly:false,listRankUnitMapWeapon:false,listRankUnitMapWeaponRange:[],listRankUnitMechanism:[],listRankCharSp:false,listRankCharCond:false,listRankUnitSp:false,listRankUnitSsp:false,listRankUnitSkill:false,listRankUnitCond:false,listRankUnitPilotCond:false,browseCombRankCharLineage:'and',browseCombRankUnitLineage:'and',browseCombRankCharSeries:'or',browseCombRankUnitSeries:'or',browseCombRankCharSkill:'and',browseCombRankUnitAbil:'and',browseCombRankCharTrait:'and',browseCombRankTerrain:'and',browseCombRankWb:'and',browseCombRankWa:'and',browseCombRankWr:'and',browseCombRankWrNm:'and',browseCombRankMapWr:'and',browseCombRankMech:'and'};
 window.S=S;
 function primeBrowseTabIfNeeded(tab){reloadBrowseTab(tab)}
 function browseTabLooksEmpty(tab){
@@ -12443,8 +12443,32 @@ const ud=S.dc.atkUnitData;if(!ud||!ud.weapons)return null;
 const wpns=_dcNonMapWeapons(ud);const wpn=wpns[S.dc.wpnIdx];if(!wpn)return null;
 return _dcEffectiveWeaponPowerWithOptionParts(wpn,S.dc.wpnLv,S.dc.optionParts,ud);
 }
+/** Auto max trait % (dist + HP/MP/EN scaling), excluding option-part weapon Power %. */
+function _dcWpnTraitPowAutoMaxFromBuckets(b){
+if(!b)return 0;
+return(b.traitDistPow|0)+(b.traitScaling|0);
+}
+/** Applied trait % for damage / sheet: null/empty S.dc.wpnTraitPowPct = auto max (default). */
+function _dcWpnTraitPowAppliedPct(autoMax){
+const max=Math.max(0,autoMax|0);
+if(max<=0)return 0;
+const v=S.dc&&S.dc.wpnTraitPowPct;
+if(v==null||v==='')return max;
+const n=Number(v);
+if(!Number.isFinite(n))return max;
+return Math.max(0,Math.min(max,Math.round(n)));
+}
+function _dcCurrentWpnTraitPowAutoMax(){
+const ud=S.dc&&S.dc.atkUnitData;if(!ud||!ud.weapons)return 0;
+const wpns=_dcNonMapWeapons(ud);const w=wpns[S.dc.wpnIdx];if(!w)return 0;
+const lvIdx=S.dc.wpnLv|0;
+const traitLv=(w.levels&&w.levels.length)?Math.min(Math.max(0,lvIdx),w.levels.length-1):0;
+const wt=_dcParseWeaponTraits(w,traitLv);
+return _dcWpnTraitPowAutoMaxFromBuckets(_dcWeaponTraitPowerBuckets(wt,_dcCurrentMpLevel()));
+}
 /** Combat weapon power used by damage: weapon traits + option-part weapon Power % stack additively on sheet PWR (in-game).
- *  Versal Sword EX Lv5 8040 +20% dist +7% OP → floor(8040×127/100)=10210 — not multiply-after. */
+ *  Versal Sword EX Lv5 8040 +20% dist +7% OP → floor(8040×127/100)=10210 — not multiply-after.
+ *  Trait % can be dialed down via S.dc.wpnTraitPowPct (default = auto max). */
 function _dcEffectiveWeaponPowerWithOptionParts(wpn,lvIdx,optionParts,atkUnitData){
 const lvData=_dcWeaponLevelRow(wpn,lvIdx);
 const baseLv=lvData.power||0;
@@ -12453,8 +12477,9 @@ const sheetPow=baseLv+sspFlat;
 const traitLv=(wpn&&wpn.levels&&wpn.levels.length)?Math.min(Math.max(0,lvIdx|0),wpn.levels.length-1):0;
 const wt=_dcParseWeaponTraits(wpn,traitLv);
 const b=_dcWeaponTraitPowerBuckets(wt,_dcCurrentMpLevel());
+const traitPct=_dcWpnTraitPowAppliedPct(_dcWpnTraitPowAutoMaxFromBuckets(b));
 const opPct=_dcOptionPartWeaponPowerPct(optionParts||[],wpn,atkUnitData)|0;
-return Math.floor(sheetPow*(100+b.traitDistPow+b.traitScaling+opPct)/100);
+return Math.floor(sheetPow*(100+traitPct+opPct)/100);
 }
 function _dcRefreshFinalWpnPowPlaceholder(){
 const el=document.getElementById('dcFinalWpnPow');if(!el)return;
@@ -12524,7 +12549,7 @@ el.textContent=String(_dcWeaponDtuSumPct(w)||0);
 function _dcCreateEmptyAttackerSlot(){
 return JSON.parse(JSON.stringify({
 atkUnit:null,atkChar:null,atkUnitData:null,atkCharData:null,
-lbTier:3,wpnIdx:0,wpnLv:0,
+lbTier:3,wpnIdx:0,wpnLv:0,wpnTraitPowPct:null,
 unitStatMode:'normal',charStatMode:'normal',unitCondPassive:false,charCondPassive:false,unitCondStackCount:0,unitHpAtkTierIndex:0,unitDamageTakenDefStacks:0,dcSuperchargedExTier:0,_dcSuperchargedExManual:false,
 optionParts:[],supporters:[],
 _unitIsSD:false,
@@ -12543,6 +12568,7 @@ return JSON.parse(JSON.stringify({
 atkUnit:S.dc.atkUnit,atkChar:S.dc.atkChar,
 atkUnitData:S.dc.atkUnitData,atkCharData:S.dc.atkCharData,
 lbTier:S.dc.lbTier,wpnIdx:S.dc.wpnIdx,wpnLv:S.dc.wpnLv,
+wpnTraitPowPct:S.dc.wpnTraitPowPct==null||S.dc.wpnTraitPowPct===''?null:(S.dc.wpnTraitPowPct|0),
 unitStatMode:S.dc.unitStatMode||'normal',charStatMode:S.dc.charStatMode||'normal',
 unitCondPassive:!!S.dc.unitCondPassive,charCondPassive:!!S.dc.charCondPassive,unitCondStackCount:Math.max(0,S.dc.unitCondStackCount|0),unitHpAtkTierIndex:Math.max(0,S.dc.unitHpAtkTierIndex|0),unitDamageTakenDefStacks:Math.max(0,S.dc.unitDamageTakenDefStacks|0),dcSuperchargedExTier:Math.max(0,S.dc.dcSuperchargedExTier|0),_dcSuperchargedExManual:!!S.dc._dcSuperchargedExManual,
 optionParts:S.dc.optionParts||[],supporters:S.dc.supporters||[],
@@ -12572,6 +12598,7 @@ if(_dcCharShouldShowSquadCondUi(slot.atkCharData,slot.atkUnitData))slot.squadCon
 S.dc.atkUnit=slot.atkUnit;S.dc.atkChar=slot.atkChar;
 S.dc.atkUnitData=slot.atkUnitData;S.dc.atkCharData=slot.atkCharData;
 S.dc.lbTier=slot.lbTier;S.dc.wpnIdx=slot.wpnIdx;S.dc.wpnLv=slot.wpnLv;
+S.dc.wpnTraitPowPct=slot.wpnTraitPowPct==null||slot.wpnTraitPowPct===''?null:(slot.wpnTraitPowPct|0);
 S.dc.unitStatMode=slot.unitStatMode||'normal';S.dc.charStatMode=slot.charStatMode||'normal';
 S.dc.unitCondPassive=!!slot.unitCondPassive;S.dc.charCondPassive=!!slot.charCondPassive;S.dc.unitCondStackCount=Math.max(0,slot.unitCondStackCount|0);S.dc.unitHpAtkTierIndex=Math.max(0,slot.unitHpAtkTierIndex|0);S.dc.unitDamageTakenDefStacks=Math.max(0,slot.unitDamageTakenDefStacks|0);S.dc.dcSuperchargedExTier=Math.max(0,slot.dcSuperchargedExTier|0);S.dc._dcSuperchargedExManual=!!slot._dcSuperchargedExManual;
 S.dc.optionParts=Array.isArray(slot.optionParts)?slot.optionParts:[];S.dc.supporters=Array.isArray(slot.supporters)?slot.supporters:[];
@@ -12765,7 +12792,7 @@ if(_dcSlotNeedsAutoFit(S.dc.atkSlots[S.dc.atkSlotIndex|0]))_dcScheduleAutoFitOpt
 function initDmgCalc(){
 S._dcAtkPresetBackup=null;S._dcAtkManualPackBackup=null;S._dcDefPresetNpcBackup=null;S._dcDefDbBackup=null;S._dcDefCustomPackBackup=null;
 S.dc.atkUnit=null;S.dc.atkChar=null;S.dc.atkUnitData=null;S.dc.atkCharData=null;S.dc.lbTier=3;
-S.dc.defNpc=null;S.dc.defTargetMode='preset';S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defLbTier=3;S.dc.defUnitCondPassive=false;S.dc.defCharCondPassive=false;S.dc.defUnitSkillActive=false;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.exSquadAtkPct=0;S.dc.exSquadAtkPctExplicitZero=false;S.dc.squadCondPct=0;S.dc.squadCondAtkPct=0;S.dc.squadCondDefPct=0;S.dc.bigRangZeonSquadBuff=false;S.dc.defNpcMapBonusesOn=true;S.dc.atkCounterOwnAtk=false;S.dc.supportCounterAtk=false;S.dc._supportCounterAtkPct=0;S.dc.applyAdvantageEnemyTag=true;S.dc.applyZeonEnemyTag=true;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.unitCondStackCount=0;S.dc.unitHpAtkTierIndex=0;S.dc.unitDamageTakenDefStacks=0;S.dc.dcSuperchargedExTier=0;S.dc._dcSuperchargedExManual=false;S.dc.optionParts=[];S.dc.supporters=[];S.dc.defOptionParts=[];S.dc.defSupporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._wpnCritDmgUp=0;S.dc._integratedWpnCritDmgUp=0;S.dc._vigorCondThreshold=null;S.dc._activeSkills={};S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false;S.dc.masterLeagueBuff=false;S.dc.grandOffensiveBuff=false;S.dc.multiPctCompare=false;S.dc._dcAutoFitGen=0;S.dc._supportCntAtkPairSnapBySlot={};
+S.dc.defNpc=null;S.dc.defTargetMode='preset';S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defLbTier=3;S.dc.defUnitCondPassive=false;S.dc.defCharCondPassive=false;S.dc.defUnitSkillActive=false;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.wpnTraitPowPct=null;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.exSquadAtkPct=0;S.dc.exSquadAtkPctExplicitZero=false;S.dc.squadCondPct=0;S.dc.squadCondAtkPct=0;S.dc.squadCondDefPct=0;S.dc.bigRangZeonSquadBuff=false;S.dc.defNpcMapBonusesOn=true;S.dc.atkCounterOwnAtk=false;S.dc.supportCounterAtk=false;S.dc._supportCounterAtkPct=0;S.dc.applyAdvantageEnemyTag=true;S.dc.applyZeonEnemyTag=true;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.unitCondStackCount=0;S.dc.unitHpAtkTierIndex=0;S.dc.unitDamageTakenDefStacks=0;S.dc.dcSuperchargedExTier=0;S.dc._dcSuperchargedExManual=false;S.dc.optionParts=[];S.dc.supporters=[];S.dc.defOptionParts=[];S.dc.defSupporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._wpnCritDmgUp=0;S.dc._integratedWpnCritDmgUp=0;S.dc._vigorCondThreshold=null;S.dc._activeSkills={};S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false;S.dc.masterLeagueBuff=false;S.dc.grandOffensiveBuff=false;S.dc.multiPctCompare=false;S.dc._dcAutoFitGen=0;S.dc._supportCntAtkPairSnapBySlot={};
 renderDcDefDbPicks();
 const _drp=document.getElementById('dcDefModePreset'),_drc=document.getElementById('dcDefModeCustom'),_ddb=document.getElementById('dcDefModeDatabase'),_dpw=document.getElementById('dcDefPresetWrap'),_dcw=document.getElementById('dcDefCustomWrap'),_ddbw=document.getElementById('dcDefDatabaseWrap');
 if(_drp)_drp.checked=true;if(_drc)_drc.checked=false;if(_ddb)_ddb.checked=false;if(_dpw)_dpw.style.display='';if(_dcw)_dcw.style.display='none';if(_ddbw)_ddbw.style.display='none';
@@ -13301,7 +13328,7 @@ S.dc.atkCharData=_dcBuildManualAtkCharFromDom();
 S.dc.atkUnitData._manual=true;
 S.dc._unitIsSD=false;
 S.dc.lbTier=0;
-S.dc.wpnIdx=0;S.dc.wpnLv=0;
+S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.wpnTraitPowPct=null;
 S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._wpnCritDmgUp=0;
 S.dc._vigorCondThreshold=null;
 _dcSyncAtkModeUiFromState();
@@ -13400,6 +13427,7 @@ if((sl.unitStatMode||'normal')!=='normal')o.um=sl.unitStatMode;
 if((sl.charStatMode||'normal')!=='normal')o.cm=sl.charStatMode;
 if((sl.terrainMode||'normal')!=='normal')o.t=sl.terrainMode;
 if(sl.finalWpnPow)o.fwp=sl.finalWpnPow;
+if(sl.wpnTraitPowPct!=null&&sl.wpnTraitPowPct!=='')o.wtp=sl.wpnTraitPowPct|0;
 if((sl.exSquadAtkPct|0)>0)o.exa=sl.exSquadAtkPct;else if(sl.exSquadAtkPctExplicitZero)o.exa=0;
 if(_dcSlotShouldPackSquadCond(sl))o.sqc=sl.squadCondPct|0;
 if(sl._wpnTraitDistPow)o.td=sl._wpnTraitDistPow;
@@ -13525,6 +13553,7 @@ if(o.t==='halved'){slot.terrainMode='halved';slot.terrain=50}
 else if(o.t){slot.terrainMode=o.t;slot.terrain=0}
 else{slot.terrainMode='normal';slot.terrain=0}
 if(o.fwp!==undefined){const n=parseInt(o.fwp,10);if(Number.isFinite(n))slot.finalWpnPow=n}
+if(o.wtp!==undefined){const n=parseInt(o.wtp,10);if(Number.isFinite(n)&&n>=0)slot.wpnTraitPowPct=n}else slot.wpnTraitPowPct=null;
 if(o.di!==undefined){const n=parseInt(o.di,10);if(Number.isFinite(n)){slot.dmgIncrease=n;slot._dmgIncreasePacked=n;slot._pilotDmgCritExplicit=true}}
 if(o.cu!==undefined){const n=parseInt(o.cu,10);if(Number.isFinite(n)){slot.critDmgUp=n;slot._critDmgUpPacked=n;slot._pilotDmgCritExplicit=true}}
 if(o.exa!==undefined){const n=parseInt(o.exa,10);if(Number.isFinite(n)){slot.exSquadAtkPct=Math.min(20,Math.max(0,n));slot.exSquadAtkPctExplicitZero=(n===0)}}else slot.exSquadAtkPctExplicitZero=false;
@@ -19347,15 +19376,17 @@ const attrHtml=_dcWeaponAttributeDisplayHtml(cw);
 const exBadge=cw.is_ex?`<span style="margin-left:6px;padding:1px 6px;border-radius:4px;background:rgba(34,211,238,.15);color:var(--accent-cyan);font-size:10px;font-weight:700">EX</span>`:'';
 const sheetPow=_dcWpnSheetFlatPower(cw,S.dc.wpnLv);
 const opWpnPct=_dcOptionPartWeaponPowerPct(S.dc.optionParts,cw,ud);
+const wt=_dcParseWeaponTraits(cw,S.dc.wpnLv);
+const traitBuckets=_dcWeaponTraitPowerBuckets(wt,_dcCurrentMpLevel());
+const autoTraitMax=_dcWpnTraitPowAutoMaxFromBuckets(traitBuckets);
 const combatPow=_dcEffectiveWeaponPowerWithOptionParts(cw,S.dc.wpnLv,S.dc.optionParts,ud);
 const powLabel=_dcWpnPowDisplayHtml(sheetPow,combatPow);
 h+=`<div class="dc-wpn-info"><span>${t('dc_power')}: <span class="val" id="dcWpnSheetPow">${powLabel}</span></span><span>${t('dc_range')}: <span class="val">${rangeStr}</span></span><span>${t('dc_accuracy')}: <span class="val">${ld.accuracy}%</span></span><span>${t('dc_critical')}: <span class="val">${ld.critical}%</span></span><span>${t('dc_en_cost')}: <span class="val">${ld.en}</span></span><span>${t('wp_type')}: <span class="val" style="display:inline-flex;align-items:center;flex-wrap:wrap;gap:4px"><span class="dc-wpn-atk-icons">${atkTypeIconsHtml}</span>${attrHtml}</span>${exBadge}</span></div>`;
-if(opWpnPct){
+if(autoTraitMax>0){
+h+=_dcWpnTraitPowSliderHtml(sheetPow,opWpnPct,autoTraitMax);
+}else if(opWpnPct){
 h+=`<div style="margin-top:4px;font-size:11px;color:#4ade80">Option part weapon Power +${opWpnPct}% (stacks with distance/HP/MP/EN % on sheet ${fmtN(sheetPow)} → ${fmtN(combatPow)}). Does not change MS ATK.</div>`;
-}else if(combatPow>sheetPow){
-h+=`<div style="margin-top:4px;font-size:11px;color:#4ade80">${esc(t('dc_wpn_trait_effects'))}: ${fmtN(sheetPow)} → ${fmtN(combatPow)} (${esc(t('dc_wpn_trait_max_applied'))})</div>`;
 }
-const wt=_dcParseWeaponTraits(cw,S.dc.wpnLv);
 S.dc._wpnTraits=wt;
 S.dc._wpnCritDmgUp=wt.critDmgUp|0;
 const distBase=wt.distPowerMax|0;
@@ -19396,15 +19427,17 @@ const attrHtml=_dcWeaponAttributeDisplayHtml(cw);
 const exBadge=cw.is_ex?`<span style="margin-left:6px;padding:1px 6px;border-radius:4px;background:rgba(34,211,238,.15);color:var(--accent-cyan);font-size:10px;font-weight:700">EX</span>`:'';
 const sheetPow=_dcWpnSheetFlatPower(cw,0);
 const opWpnPct=_dcOptionPartWeaponPowerPct(S.dc.optionParts,cw,ud);
+const wt=_dcParseWeaponTraits(cw,0);
+const traitBuckets=_dcWeaponTraitPowerBuckets(wt,_dcCurrentMpLevel());
+const autoTraitMax=_dcWpnTraitPowAutoMaxFromBuckets(traitBuckets);
 const combatPow=_dcEffectiveWeaponPowerWithOptionParts(cw,0,S.dc.optionParts,ud);
 const powLabel=_dcWpnPowDisplayHtml(sheetPow,combatPow);
 h+=`<div class="dc-wpn-info"><span>${t('dc_power')}: <span class="val" id="dcWpnSheetPow">${powLabel}</span></span><span>${t('dc_range')}: <span class="val">${rangeStr}</span></span><span>${t('dc_accuracy')}: <span class="val">${ld.accuracy}%</span></span><span>${t('dc_critical')}: <span class="val">${ld.critical}%</span></span><span>${t('dc_en_cost')}: <span class="val">${ld.en}</span></span><span>${t('wp_type')}: <span class="val" style="display:inline-flex;align-items:center;flex-wrap:wrap;gap:4px"><span class="dc-wpn-atk-icons">${atkTypeIconsHtml}</span>${attrHtml}</span>${exBadge}</span></div>`;
-if(opWpnPct){
+if(autoTraitMax>0){
+h+=_dcWpnTraitPowSliderHtml(sheetPow,opWpnPct,autoTraitMax);
+}else if(opWpnPct){
 h+=`<div style="margin-top:4px;font-size:11px;color:#4ade80">Option part weapon Power +${opWpnPct}% (stacks with distance/HP/MP/EN % on sheet ${fmtN(sheetPow)} → ${fmtN(combatPow)}). Does not change MS ATK.</div>`;
-}else if(combatPow>sheetPow){
-h+=`<div style="margin-top:4px;font-size:11px;color:#4ade80">${esc(t('dc_wpn_trait_effects'))}: ${fmtN(sheetPow)} → ${fmtN(combatPow)} (${esc(t('dc_wpn_trait_max_applied'))})</div>`;
 }
-const wt=_dcParseWeaponTraits(cw,0);
 S.dc._wpnTraits=wt;
 S.dc._wpnCritDmgUp=wt.critDmgUp|0;
 const distBase=wt.distPowerMax|0;
@@ -19959,6 +19992,7 @@ function setDcWeapon(idx){
 const ud=S.dc.atkUnitData;const wpns=ud?_dcNonMapWeapons(ud):[];
 const w=wpns[idx];
 S.dc.wpnIdx=idx;S.dc.wpnLv=w?_dcDefaultWpnLvIndex(w):0;
+S.dc.wpnTraitPowPct=null;
 const wt=w?_dcParseWeaponTraits(w,S.dc.wpnLv):{};
 S.dc._wpnCritDmgUp=wt.critDmgUp|0;
 _dcApplyParsedWpnTraitPowToState(wt);
@@ -19968,6 +20002,7 @@ else onDcParamChange();
 }
 function setDcWpnLv(lv){
 S.dc.wpnLv=lv;
+S.dc.wpnTraitPowPct=null;
 const ud=S.dc.atkUnitData;const wpns=ud?_dcNonMapWeapons(ud):[];const w=wpns[S.dc.wpnIdx];
 if(w){
 const wt=_dcParseWeaponTraits(w,lv);
@@ -19977,6 +20012,74 @@ _dcApplyParsedWpnTraitPowToState(wt);
 renderDcWeaponArea();
 if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses(false);
 else onDcParamChange();
+}
+function setDcWpnTraitPowPct(n,opts){
+opts=opts||{};
+const max=_dcCurrentWpnTraitPowAutoMax();
+const next=Math.max(0,Math.min(max,Math.round(Number(n)||0)));
+const soft=!!opts.soft;
+const cur=_dcWpnTraitPowAppliedPct(max);
+const changed=cur!==next;
+/* null = default auto-max (follows vigor / trait changes). */
+S.dc.wpnTraitPowPct=(next>=max)?null:next;
+if(changed||soft)_dcSyncWpnTraitPowSliderUi();
+if(soft){S._dcWpnTraitPowDirty=true;return}
+if(!changed&&!S._dcWpnTraitPowDirty)return;
+S._dcWpnTraitPowDirty=false;
+onDcParamChange();
+}
+function _dcSyncWpnTraitPowSliderUi(){
+const ud=S.dc.atkUnitData;if(!ud||!ud.weapons)return;
+const wpns=_dcNonMapWeapons(ud);const w=wpns[S.dc.wpnIdx];if(!w)return;
+const sheetPow=_dcWpnSheetFlatPower(w,S.dc.wpnLv);
+const opPct=_dcOptionPartWeaponPowerPct(S.dc.optionParts,w,ud)|0;
+const max=_dcCurrentWpnTraitPowAutoMax();
+const applied=_dcWpnTraitPowAppliedPct(max);
+const combat=Math.floor(sheetPow*(100+applied+opPct)/100);
+const powEl=document.getElementById('dcWpnSheetPow');
+if(powEl)powEl.innerHTML=_dcWpnPowDisplayHtml(sheetPow,combat);
+const combatLab=document.getElementById('dcWpnTraitPowCombat');
+if(combatLab)combatLab.textContent=fmtN(combat);
+const pctLab=document.getElementById('dcWpnTraitPowPctLab');
+if(pctLab)pctLab.textContent='+'+applied+'%';
+const note=document.getElementById('dcWpnTraitPowNote');
+if(note){
+const atMax=applied>=max;
+note.style.display=atMax?'':'none';
+note.textContent=t('dc_wpn_trait_max_applied');
+const sep=document.getElementById('dcWpnTraitPowNoteSep');
+if(sep)sep.style.display=atMax?'':'none';
+}
+const row=document.getElementById('dcWpnTraitPowRow');
+if(row){
+const p=max>0?applied/max:0;
+const ms=row.querySelector('.pep-ms');
+if(ms)ms.style.setProperty('--pep-ms-p',String(p));
+const val=row.querySelector('.detail-pilot-stack-val');
+if(val)val.textContent='+'+applied+'%';
+const inp=row.querySelector('input.detail-pilot-stack-slider');
+if(inp){
+inp.max=String(max);
+inp.value=String(applied);
+inp.setAttribute('aria-valuemax',String(max));
+inp.setAttribute('aria-valuenow',String(applied));
+}
+}
+_dcRefreshFinalWpnPowPlaceholder();
+}
+/** Green summary + optional dial for trait weapon Power % (default = auto max). */
+function _dcWpnTraitPowSliderHtml(sheetPow,opPct,autoMax){
+const max=autoMax|0;
+if(max<=0)return'';
+const applied=_dcWpnTraitPowAppliedPct(max);
+const combat=Math.floor((sheetPow|0)*(100+applied+(opPct|0))/100);
+const p=max>0?applied/max:1;
+const atMax=applied>=max;
+const opBit=(opPct|0)?` · OP +${opPct|0}%`:'';
+const noteVis=atMax?'':'display:none';
+const lab=`${esc(t('dc_wpn_trait_effects'))}: ${fmtN(sheetPow)} → <span id="dcWpnTraitPowCombat">${fmtN(combat)}</span> (<span id="dcWpnTraitPowPctLab">+${applied}%</span><span id="dcWpnTraitPowNoteSep" style="${noteVis}"> · </span><span id="dcWpnTraitPowNote" style="${noteVis}">${esc(t('dc_wpn_trait_max_applied'))}</span>${opBit})`;
+const inner=_stackMsInnerHtml({p,dots:'',min:0,max,cur:applied,aria:t('dc_wpn_trait_effects'),fnName:'setDcWpnTraitPowPct'});
+return`<div id="dcWpnTraitPowRow" class="dc-wpn-trait-pow-row" style="margin-top:4px" onclick="event.stopPropagation()"><div style="font-size:11px;color:#4ade80;line-height:1.4">${lab}</div><div class="detail-pilot-stack-row is-open detail-pep-ms dc-wpn-trait-pow-slider" style="margin-top:4px;width:min(100%,220px)">${inner}<span class="detail-pilot-stack-val">+${applied}%</span></div></div>`;
 }
 function setDcMp(lv){
 const prevKey=_dcGetUnitStatKey();
@@ -21970,6 +22073,9 @@ const wpnTraitB=_dcWeaponTraitPowerBuckets(wtTraits,_dcCurrentMpLevel());
 const traitDistPow=wpnTraitB.traitDistPow;
 const traitHpPow=wpnTraitB.hpPow;
 const traitMpPow=wpnTraitB.mpPow;
+const traitEnPow=wpnTraitB.enPow|0;
+const traitPowAutoMax=_dcWpnTraitPowAutoMaxFromBuckets(wpnTraitB);
+const traitPowApplied=_dcWpnTraitPowAppliedPct(traitPowAutoMax);
 const finalOverride=S.dc.finalWpnPow||0;
 const finalWpnPowOverride=finalOverride>0;
 const weaponPower=finalOverride>0?finalOverride:computedWpnPow;
@@ -22096,7 +22202,7 @@ characterStatRatio,unitStatRatio,charSigmoid,unitSigmoid,
 atkCombined,defCombined,offenseComponent,defenseComponent,
 damageCorrection:C(damageCorrection),terrainCorrection,totalNormalMultPct,totalCritMultPct,critCorrectionPct,critPreVigor,crit125Trim,scaledNormal,scaledCrit,defendMult,unitSkillMult,postDmgMult,isExWeapon,
 defMsDefensePair,defMsStatsRawDefense,defMsBonusDefense,defDebuffFlatSubtract,qubPlusOneApplied,
-traitDistPow,traitHpPow,traitMpPow,traitWpnDistBasePct:wtTraits.distPowerMax|0,traitWpnCoreBonusPct:wtTraits.distCoreMax|0,finalWpnPowOverride,vigorDmgBonusPct,userDmgIncreasePct,unitSkillDmgDealtPct,exSquadAtkPct,squadCondAtkPct,squadCondDefPct,counterOwnAtkPct,supportCounterAtkPctApplied,supportDefenseDefPctApplied,advantageTagAtkPct,advantageGrowthFlatOmitted:false,userCritDmgUpPct,dmgTakenUpPct,dmgTakenUpGeneric,dmgTakenUpTyped,takenDown,unitSkillDtdPct,unitSkillBarrierPct,unitSkillBarrierCap,unitSkillBarrierAbsorb,unitSkillInitialNull,defDebuffPct,
+traitDistPow,traitHpPow,traitMpPow,traitEnPow,traitPowAutoMax,traitPowApplied,traitWpnDistBasePct:wtTraits.distPowerMax|0,traitWpnCoreBonusPct:wtTraits.distCoreMax|0,finalWpnPowOverride,vigorDmgBonusPct,userDmgIncreasePct,unitSkillDmgDealtPct,exSquadAtkPct,squadCondAtkPct,squadCondDefPct,counterOwnAtkPct,supportCounterAtkPctApplied,supportDefenseDefPctApplied,advantageTagAtkPct,advantageGrowthFlatOmitted:false,userCritDmgUpPct,dmgTakenUpPct,dmgTakenUpGeneric,dmgTakenUpTyped,takenDown,unitSkillDtdPct,unitSkillBarrierPct,unitSkillBarrierCap,unitSkillBarrierAbsorb,unitSkillInitialNull,defDebuffPct,
 pilotBoostPct:0,pilotAtkDownPct:0,unitAtkDownPct:unitAtkDownPct|0,accDownPct,mobDownPct,wpnElem:_dcWeaponAttributeKeys(wpn).join('/'),
 hitRate:accResult.finalHitRate,hitRateDetails:accResult,isSuperVigor:_dcNormMpLevel(S.dc.mpLevel)==='super'});
 }
@@ -22334,29 +22440,34 @@ return`<div class="dc-battle-stats-row${rowClass}"><span class="dc-battle-stats-
 }
 function _dcHasWeaponTraitBonus(r){
 if(!r)return false;
-return((r.traitWpnDistBasePct|0)>0||(r.traitWpnCoreBonusPct|0)>0||(r.traitHpPow|0)>0||(r.traitMpPow|0)>0);
+return((r.traitWpnDistBasePct|0)>0||(r.traitWpnCoreBonusPct|0)>0||(r.traitHpPow|0)>0||(r.traitMpPow|0)>0||(r.traitEnPow|0)>0||(r.traitPowAutoMax|0)>0);
 }
 function _dcAppendWeaponTraitBattleStats(h,r){
 if(!_dcHasWeaponTraitBonus(r))return h;
-const tot=(r.traitDistPow|0)+(r.traitHpPow|0)+(r.traitMpPow|0);
-h+=_dcBattleStatsRow(t('dc_wpn_trait_effects'),`+${tot}% (${esc(t('dc_wpn_trait_max_applied'))})`);
+const autoMax=(r.traitPowAutoMax!=null?r.traitPowAutoMax|0:((r.traitDistPow|0)+(r.traitHpPow|0)+(r.traitMpPow|0)+(r.traitEnPow|0)));
+const applied=(r.traitPowApplied!=null?r.traitPowApplied|0:autoMax);
+const totNote=applied>=autoMax?`+${applied}% (${esc(t('dc_wpn_trait_max_applied'))})`:`+${applied}% / +${autoMax}%`;
+h+=_dcBattleStatsRow(t('dc_wpn_trait_effects'),totNote);
 if(r.finalWpnPowOverride)h+=`<div class="dc-battle-stats-row" style="grid-column:1/-1;font-size:11px;color:var(--text-muted)">${esc(t('dc_wpn_trait_override_note'))}</div>`;
 if(r.traitWpnDistBasePct)h+=_dcBattleStatsRow(t('dc_wpn_trait_dist'),`+${r.traitWpnDistBasePct|0}%`);
 if(r.traitWpnCoreBonusPct)h+=_dcBattleStatsRow(t('dc_wpn_trait_custom_core'),`+${r.traitWpnCoreBonusPct|0}%`);
 if(r.traitHpPow)h+=_dcBattleStatsRow(t('dc_wpn_trait_hp'),`+${r.traitHpPow|0}%`);
 if(r.traitMpPow)h+=_dcBattleStatsRow(t('dc_wpn_trait_mp'),`+${r.traitMpPow|0}%`);
+if(r.traitEnPow)h+=_dcBattleStatsRow(t('dc_wpn_trait_en')||'EN scaling',`+${r.traitEnPow|0}%`);
 return h;
 }
 function _dcCopyLinesWeaponTraitBonus(rr){
 if(!_dcHasWeaponTraitBonus(rr))return[];
-const tot=(rr.traitDistPow|0)+(rr.traitHpPow|0)+(rr.traitMpPow|0);
+const autoMax=(rr.traitPowAutoMax!=null?rr.traitPowAutoMax|0:((rr.traitDistPow|0)+(rr.traitHpPow|0)+(rr.traitMpPow|0)+(rr.traitEnPow|0)));
+const applied=(rr.traitPowApplied!=null?rr.traitPowApplied|0:autoMax);
 const o=[];
-o.push(`${t('dc_wpn_trait_effects')}: +${tot}% (${t('dc_wpn_trait_max_applied')})`);
+o.push(applied>=autoMax?`${t('dc_wpn_trait_effects')}: +${applied}% (${t('dc_wpn_trait_max_applied')})`:`${t('dc_wpn_trait_effects')}: +${applied}% / +${autoMax}%`);
 if(rr.finalWpnPowOverride)o.push(t('dc_wpn_trait_override_note'));
 if(rr.traitWpnDistBasePct)o.push(`  ${t('dc_wpn_trait_dist')}: +${rr.traitWpnDistBasePct|0}%`);
 if(rr.traitWpnCoreBonusPct)o.push(`  ${t('dc_wpn_trait_custom_core')}: +${rr.traitWpnCoreBonusPct|0}%`);
 if(rr.traitHpPow)o.push(`  ${t('dc_wpn_trait_hp')}: +${rr.traitHpPow|0}%`);
 if(rr.traitMpPow)o.push(`  ${t('dc_wpn_trait_mp')}: +${rr.traitMpPow|0}%`);
+if(rr.traitEnPow)o.push(`  ${t('dc_wpn_trait_en')||'EN scaling'}: +${rr.traitEnPow|0}%`);
 return o;
 }
 function _dcBattleStatsBlock(lab,innerHtml){

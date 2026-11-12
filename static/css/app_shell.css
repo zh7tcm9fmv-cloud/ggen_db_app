@@ -4632,6 +4632,8 @@ html.cmp-bar-open .main-content{padding-bottom:calc(56px + env(safe-area-inset-b
 .dc-wpn-info{display:flex;gap:12px;flex-wrap:wrap;padding:8px;background:rgba(0,0,0,.15);border-radius:4px;font-size:12px;color:var(--text-secondary)}
 .dc-wpn-info span{display:flex;align-items:center;gap:4px}
 .dc-wpn-info .val{color:var(--text-primary);font-weight:700;font-family:'RobotoMediumNumbers',monospace}
+.dc-wpn-trait-pow-row .dc-wpn-trait-pow-slider{width:min(100%,220px);max-width:min(100%,220px)}
+.dc-wpn-trait-pow-row .detail-pilot-stack-val{color:#4ade80;min-width:3.25em}
 .dc-controls{padding:0 24px 16px}
 .dc-controls-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
 .dc-ctrl-group{display:flex;flex-direction:column;gap:4px;min-width:0}
