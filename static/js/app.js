@@ -4603,6 +4603,12 @@ function toggleStatState(type){
   else if(type==='ult'){if(S.ultAltActive){S.ultAltActive=false}else{S.ultAltActive=true;S.spActive=false;S.sspActive=false}}
   const spBtn=document.getElementById('spToggleBtn');const spBtnChar=document.getElementById('spToggleBtnChar');const sspBtn=document.getElementById('sspToggleBtn');const ultBtn=document.getElementById('ultAltToggleBtn');
   if(spBtn)spBtn.classList.toggle('active',S.spActive);if(spBtnChar)spBtnChar.classList.toggle('active',S.spActive);if(sspBtn)sspBtn.classList.toggle('active',S.sspActive);if(ultBtn)ultBtn.classList.toggle('active',S.ultAltActive);
+  /* SSP-only unit CP (e.g. damage-taken DEF on Custom Core) disappears when SSP turns off. */
+  if(S.currentDetailType==='unit'&&S.currentDetailData&&!_detailUnitHasCondStats(S.currentDetailData)&&!_detailUnitHasCondWeaponRange(S.currentDetailData)&&!_detailUnitPilotMovCpGate(S.currentDetailData)){
+    S.conditionalPassiveActive=false;S.unitCondStackCount=0;S.unitHpAtkTierIndex=0;S.unitDamageTakenDefStacks=0;
+  }else if(S.currentDetailType==='unit'&&S.currentDetailData&&S.conditionalPassiveActive){
+    _detailInitUnitCondControls(S.currentDetailData);
+  }
   invalidateDetailRankingCachesForPerspectiveChange();updateDetailDynamicSections(S.currentDetailType)
 }
 function _ultAltMaxAddMap(d){
@@ -6117,7 +6123,7 @@ S._detailModalLayoutObs.observe(mc);
 }else adjustDetailModalLayout();
 requestAnimationFrame(adjustDetailModalLayout);
 }
-async function openDetail(type,id,opts){opts=opts||{};try{destroyDetailPortraitHolo()}catch(_){};const skipHistory=!!opts.skipHistory||S._historyApplyingPopstate;if(document.getElementById('searchSpotlightOverlay')&&document.getElementById('searchSpotlightOverlay').classList.contains('active'))closeSearchSpotlight();const m=document.getElementById('detailModal'),mc=document.getElementById('modalContent'),inn=document.getElementById('detailInner');const detailWasActive=m.classList.contains('active');/* Capture browse *list* Y before modal/lock. keepIfSet: openStageFromBrowse may have armed pending Y on pointerdown. */if(!detailWasActive){captureDetailBrowseReturn(type,id,{keepIfSet:true});stampHistoryBrowseScrollY(S._detailBrowseReturn&&S._detailBrowseReturn.y)}if(opts.returnStageSnapshot&&S.currentDetailType==='stage'&&S.currentDetailData&&!S.currentDetailData.content_locked){S._stageDetailUiRestore=captureStageDetailUiState();if(opts.stageNpcKey!=null&&String(opts.stageNpcKey).trim()!=='')S._stageDetailUiRestore.returnNpcId=String(opts.stageNpcKey).trim()}mc.className='modal-content';if(type==='profile_title')mc.classList.add('profile-title-detail','stage-detail');else if(type==='item')mc.classList.add('item-detail','option-part-detail','stage-detail');else mc.classList.add(type==='character'?'char-detail':(type==='unit'?'unit-detail':(type==='supporter'?'supporter-detail':(type==='option_part'?'option-part-detail':'stage-detail'))));m.classList.add('active');document.body.classList.add('detail-modal-open');try{if(typeof window.__ggenPauseBrandFonts==='function')window.__ggenPauseBrandFonts()}catch(_){}if(!detailWasActive)applyBackgroundScrollLock();updateScrollTopFabVisibility();resetDetailModalScroll();S._detailOpenToken=(S._detailOpenToken||0)+1;(function(){try{if(S._detailOpenSpinTimer){clearTimeout(S._detailOpenSpinTimer);S._detailOpenSpinTimer=null}}catch(_){}const _same=!!(detailWasActive&&S.currentDetailType===type&&S.currentDetailData&&String(S.currentDetailData.id)===String(id)&&!(opts&&(opts.stageNpcEmbed||opts.forceReload)));if(_same)return;inn.innerHTML='<div class="loading-overlay"><div class="spinner"></div></div>';})();syncModalDetailChrome();syncDetailBrowseNavUi();try{const d=await fetchDetailPayload(type,id,opts);S._detailOpenToken=(S._detailOpenToken||0)+1;try{if(S._detailOpenSpinTimer){clearTimeout(S._detailOpenSpinTimer);S._detailOpenSpinTimer=null}}catch(_){}if(type==='option_part'){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false;S.ultAltActive=false;S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;attachStageDetailReturnIfNeeded(d,opts);S.currentDetailData=d;S.currentDetailType=type;inn.innerHTML=renderOptionPartShell(d);syncModalDetailChrome();pinDetailModalScrollTop(0);if(!skipHistory)_syncDetailBrowseHistory(type,id,detailWasActive,skipHistory);syncDetailBrowseNavUi();return}if(type==='profile_title'||type==='item'){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false;S.ultAltActive=false;S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;attachStageDetailReturnIfNeeded(d,opts);S.currentDetailData=d;S.currentDetailType=type;inn.innerHTML=type==='item'?renderItemShell(d):renderProfileTitleShell(d);syncModalDetailChrome();pinDetailModalScrollTop(0);if(!skipHistory)_syncDetailBrowseHistory(type,id,detailWasActive,skipHistory);syncDetailBrowseNavUi();return}const _pu=type==='unit'&&!!opts.preserveUnitSpSsp;const _pcp=!!opts.preserveConditionalPassive||!!opts.unitConditionCpTarget;const _vr=!!opts.viewRanking;d.ranking_context=!!_vr;if(_vr){d.view_ranking=false}if(type==='character'||type==='unit')d.ranking_available=true;if(!_pu&&!_pcp){S.conditionalPassiveActive=false;S.pilotConditionalPassiveActive=false;S.pilotCondCharData=null;S._pilotCondCharFetchId=null;S._pilotCondCharInflight=null;S._pilotCondPrefetchUnitId=null;S.pilotCondStackCount=0;S.unitCondStackCount=0;S.unitHpAtkTierIndex=0;S.spActive=false;S.sspActive=false}S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;S.detailRankingOverlay=false;if(type==='stage'){S.stageMapAutoFit=true;S.stageMapZoom=1}if(!_pu){if(type==='character'){S.spActive=!!S.listCharSp;if(!_pcp)S.conditionalPassiveActive=!!S.listCharCond}else if(type==='unit'){if(S.listUnitSsp){S.sspActive=true;S.spActive=false}else if(S.listUnitSp){S.spActive=true;S.sspActive=false}else{S.spActive=false;S.sspActive=false}if(!_pcp){if(opts.viewRanking){S.conditionalPassiveActive=!!opts.listUnitCondPerspective;S.pilotConditionalPassiveActive=!!opts.listUnitPilotCondPerspective}else{S.conditionalPassiveActive=!!(d&&d.has_cond_stats)||!!S.listUnitCond;S.pilotConditionalPassiveActive=!!(S.listUnitPilotCond&&d&&d.has_pilot_cond_passive)}}}}if(_pcp)S.conditionalPassiveActive=true;if(!_pcp&&!opts.viewRanking&&type==='unit'&&d&&d.has_cond_stats)S.conditionalPassiveActive=true;if(opts.unitConditionCpTarget&&d)d.unit_condition_cp_target=true;if(opts.affinityHighlightUnitId&&d)d.affinity_highlight_unit_id=String(opts.affinityHighlightUnitId);if(opts.pilotCondHighlightUnitId&&d){d.pilot_cond_highlight_unit_id=String(opts.pilotCondHighlightUnitId);if(opts.pilotCondHighlightUnitStub)d.pilot_cond_highlight_unit_stub=opts.pilotCondHighlightUnitStub;}attachStageDetailReturnIfNeeded(d,opts);S.currentDetailData=d;S.currentDetailType=type;if(type==='character'&&S.conditionalPassiveActive&&d.ex_supercharged_tiers&&d.ex_supercharged_tiers.length>1)S.charSuperchargedExTier=d.ex_supercharged_tiers.length-1;if(type==='supporter'){applySupporterLeaderSepSticky(d);S.currentSupporterLbTier=d.lb_tier??3;S.currentSupporterLevel=Math.max(1,Number(d.level)||Math.max(1,Number(d.max_level)||100))}if(type==='unit'){_detailInitUnitCondControls(d);S.listSelectedUnitId=String(opts.listUnitFocusId!=null?opts.listUnitFocusId:id);syncUnitListDetailHighlight()}if((type==='character'||type==='unit')&&d.portrait)void warmPathDetailImg(d.portrait);if(type==='character'){inn.innerHTML=renderCharShell(d);queueMicrotask(function(){try{bindUnitPortraitFx(inn)}catch(_){}})}else if(type==='unit'){if(d.weapons)d.weapons.forEach(w=>S.currentWeaponLevels[w.id]=5);void warmUnitModelStageAssets(d);inn.innerHTML=renderUnitShell(d);bindUnitModelStageReveal(inn);queueMicrotask(function(){try{bindUnitPortraitFx(inn)}catch(_){}})}else if(type==='supporter'){inn.innerHTML=renderSupporterShell(d);queueMicrotask(function(){try{bindUnitPortraitFx(inn)}catch(_){}})}else{if(type==='stage'&&d&&d.stage_category==='fierce_enemy_assault'){S.feaDiff='normal';S.feaLevel=null}inn.innerHTML=(d.content_locked?renderEternalStageLockedPanel(d):renderStageShell(d))}syncModalDetailChrome();if(type==='stage'&&!d.content_locked)wireRewardDetailClicks(inn);if(d&&d.ranking_available&&(type==='character'||type==='unit'))ensureDetailRankingToggleDom(type);if(!(type==='stage'&&d.content_locked)){updateDetailDynamicSections(type);if(type==='unit')queuePilotCondCharPrefetch(d);if(d&&d.ranking_available&&(type==='character'||type==='unit')){(function(_t,_i){setTimeout(function(){if(S.currentDetailType!==_t||!S.currentDetailData||String(S.currentDetailData.id)!==String(_i))return;void ensureDetailRankingStats(_t,_i).then(function(){if(S.currentDetailType===_t&&S.currentDetailData&&String(S.currentDetailData.id)===String(_i)){updateDetailDynamicSections(_t);adjustDetailModalLayout()}}).catch(function(){})},5000)})(type,id)}}pinDetailModalScrollTop(0);if(!skipHistory)_syncDetailBrowseHistory(type,id,detailWasActive,skipHistory);syncDetailBrowseNavUi()}catch(e){const msg=String((e&&e.message)||e||'');const soft=!!(e&&(e.name==='AbortError'||e.name==='TypeError'))||/networkerror|failed to fetch|load failed|the operation was aborted|^network$/i.test(msg);if(!soft)console.error(e);inn.innerHTML=`<div class="empty-state" style="padding:60px 20px"><div class="empty-state-icon">⚠️</div><div class="empty-state-text">${esc(soft?'Could not load details. Check your connection and try again.':('Failed: '+msg))}</div></div>`;syncModalDetailChrome();syncDetailBrowseNavUi()}}
+async function openDetail(type,id,opts){opts=opts||{};try{destroyDetailPortraitHolo()}catch(_){};const skipHistory=!!opts.skipHistory||S._historyApplyingPopstate;if(document.getElementById('searchSpotlightOverlay')&&document.getElementById('searchSpotlightOverlay').classList.contains('active'))closeSearchSpotlight();const m=document.getElementById('detailModal'),mc=document.getElementById('modalContent'),inn=document.getElementById('detailInner');const detailWasActive=m.classList.contains('active');/* Capture browse *list* Y before modal/lock. keepIfSet: openStageFromBrowse may have armed pending Y on pointerdown. */if(!detailWasActive){captureDetailBrowseReturn(type,id,{keepIfSet:true});stampHistoryBrowseScrollY(S._detailBrowseReturn&&S._detailBrowseReturn.y)}if(opts.returnStageSnapshot&&S.currentDetailType==='stage'&&S.currentDetailData&&!S.currentDetailData.content_locked){S._stageDetailUiRestore=captureStageDetailUiState();if(opts.stageNpcKey!=null&&String(opts.stageNpcKey).trim()!=='')S._stageDetailUiRestore.returnNpcId=String(opts.stageNpcKey).trim()}mc.className='modal-content';if(type==='profile_title')mc.classList.add('profile-title-detail','stage-detail');else if(type==='item')mc.classList.add('item-detail','option-part-detail','stage-detail');else mc.classList.add(type==='character'?'char-detail':(type==='unit'?'unit-detail':(type==='supporter'?'supporter-detail':(type==='option_part'?'option-part-detail':'stage-detail'))));m.classList.add('active');document.body.classList.add('detail-modal-open');try{if(typeof window.__ggenPauseBrandFonts==='function')window.__ggenPauseBrandFonts()}catch(_){}if(!detailWasActive)applyBackgroundScrollLock();updateScrollTopFabVisibility();resetDetailModalScroll();S._detailOpenToken=(S._detailOpenToken||0)+1;(function(){try{if(S._detailOpenSpinTimer){clearTimeout(S._detailOpenSpinTimer);S._detailOpenSpinTimer=null}}catch(_){}const _same=!!(detailWasActive&&S.currentDetailType===type&&S.currentDetailData&&String(S.currentDetailData.id)===String(id)&&!(opts&&(opts.stageNpcEmbed||opts.forceReload)));if(_same)return;inn.innerHTML='<div class="loading-overlay"><div class="spinner"></div></div>';})();syncModalDetailChrome();syncDetailBrowseNavUi();try{const d=await fetchDetailPayload(type,id,opts);S._detailOpenToken=(S._detailOpenToken||0)+1;try{if(S._detailOpenSpinTimer){clearTimeout(S._detailOpenSpinTimer);S._detailOpenSpinTimer=null}}catch(_){}if(type==='option_part'){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false;S.ultAltActive=false;S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;attachStageDetailReturnIfNeeded(d,opts);S.currentDetailData=d;S.currentDetailType=type;inn.innerHTML=renderOptionPartShell(d);syncModalDetailChrome();pinDetailModalScrollTop(0);if(!skipHistory)_syncDetailBrowseHistory(type,id,detailWasActive,skipHistory);syncDetailBrowseNavUi();return}if(type==='profile_title'||type==='item'){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false;S.ultAltActive=false;S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;attachStageDetailReturnIfNeeded(d,opts);S.currentDetailData=d;S.currentDetailType=type;inn.innerHTML=type==='item'?renderItemShell(d):renderProfileTitleShell(d);syncModalDetailChrome();pinDetailModalScrollTop(0);if(!skipHistory)_syncDetailBrowseHistory(type,id,detailWasActive,skipHistory);syncDetailBrowseNavUi();return}const _pu=type==='unit'&&!!opts.preserveUnitSpSsp;const _pcp=!!opts.preserveConditionalPassive||!!opts.unitConditionCpTarget;const _vr=!!opts.viewRanking;d.ranking_context=!!_vr;if(_vr){d.view_ranking=false}if(type==='character'||type==='unit')d.ranking_available=true;if(!_pu&&!_pcp){S.conditionalPassiveActive=false;S.pilotConditionalPassiveActive=false;S.pilotCondCharData=null;S._pilotCondCharFetchId=null;S._pilotCondCharInflight=null;S._pilotCondPrefetchUnitId=null;S.pilotCondStackCount=0;S.unitCondStackCount=0;S.unitHpAtkTierIndex=0;S.spActive=false;S.sspActive=false}S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;S.detailRankingOverlay=false;if(type==='stage'){S.stageMapAutoFit=true;S.stageMapZoom=1}if(!_pu){if(type==='character'){S.spActive=!!S.listCharSp;if(!_pcp)S.conditionalPassiveActive=!!S.listCharCond}else if(type==='unit'){if(S.listUnitSsp){S.sspActive=true;S.spActive=false}else if(S.listUnitSp){S.spActive=true;S.sspActive=false}else{S.spActive=false;S.sspActive=false}if(!_pcp){if(opts.viewRanking){S.conditionalPassiveActive=!!opts.listUnitCondPerspective;S.pilotConditionalPassiveActive=!!opts.listUnitPilotCondPerspective}else{S.conditionalPassiveActive=!!(d&&_detailUnitHasCondStats(d))||!!S.listUnitCond;S.pilotConditionalPassiveActive=!!(S.listUnitPilotCond&&d&&d.has_pilot_cond_passive)}}}}if(_pcp)S.conditionalPassiveActive=true;if(!_pcp&&!opts.viewRanking&&type==='unit'&&d&&_detailUnitHasCondStats(d))S.conditionalPassiveActive=true;if(opts.unitConditionCpTarget&&d)d.unit_condition_cp_target=true;if(opts.affinityHighlightUnitId&&d)d.affinity_highlight_unit_id=String(opts.affinityHighlightUnitId);if(opts.pilotCondHighlightUnitId&&d){d.pilot_cond_highlight_unit_id=String(opts.pilotCondHighlightUnitId);if(opts.pilotCondHighlightUnitStub)d.pilot_cond_highlight_unit_stub=opts.pilotCondHighlightUnitStub;}attachStageDetailReturnIfNeeded(d,opts);S.currentDetailData=d;S.currentDetailType=type;if(type==='character'&&S.conditionalPassiveActive&&d.ex_supercharged_tiers&&d.ex_supercharged_tiers.length>1)S.charSuperchargedExTier=d.ex_supercharged_tiers.length-1;if(type==='supporter'){applySupporterLeaderSepSticky(d);S.currentSupporterLbTier=d.lb_tier??3;S.currentSupporterLevel=Math.max(1,Number(d.level)||Math.max(1,Number(d.max_level)||100))}if(type==='unit'){_detailInitUnitCondControls(d);S.listSelectedUnitId=String(opts.listUnitFocusId!=null?opts.listUnitFocusId:id);syncUnitListDetailHighlight()}if((type==='character'||type==='unit')&&d.portrait)void warmPathDetailImg(d.portrait);if(type==='character'){inn.innerHTML=renderCharShell(d);queueMicrotask(function(){try{bindUnitPortraitFx(inn)}catch(_){}})}else if(type==='unit'){if(d.weapons)d.weapons.forEach(w=>S.currentWeaponLevels[w.id]=5);void warmUnitModelStageAssets(d);inn.innerHTML=renderUnitShell(d);bindUnitModelStageReveal(inn);queueMicrotask(function(){try{bindUnitPortraitFx(inn)}catch(_){}})}else if(type==='supporter'){inn.innerHTML=renderSupporterShell(d);queueMicrotask(function(){try{bindUnitPortraitFx(inn)}catch(_){}})}else{if(type==='stage'&&d&&d.stage_category==='fierce_enemy_assault'){S.feaDiff='normal';S.feaLevel=null}inn.innerHTML=(d.content_locked?renderEternalStageLockedPanel(d):renderStageShell(d))}syncModalDetailChrome();if(type==='stage'&&!d.content_locked)wireRewardDetailClicks(inn);if(d&&d.ranking_available&&(type==='character'||type==='unit'))ensureDetailRankingToggleDom(type);if(!(type==='stage'&&d.content_locked)){updateDetailDynamicSections(type);if(type==='unit')queuePilotCondCharPrefetch(d);if(d&&d.ranking_available&&(type==='character'||type==='unit')){(function(_t,_i){setTimeout(function(){if(S.currentDetailType!==_t||!S.currentDetailData||String(S.currentDetailData.id)!==String(_i))return;void ensureDetailRankingStats(_t,_i).then(function(){if(S.currentDetailType===_t&&S.currentDetailData&&String(S.currentDetailData.id)===String(_i)){updateDetailDynamicSections(_t);adjustDetailModalLayout()}}).catch(function(){})},5000)})(type,id)}}pinDetailModalScrollTop(0);if(!skipHistory)_syncDetailBrowseHistory(type,id,detailWasActive,skipHistory);syncDetailBrowseNavUi()}catch(e){const msg=String((e&&e.message)||e||'');const soft=!!(e&&(e.name==='AbortError'||e.name==='TypeError'))||/networkerror|failed to fetch|load failed|the operation was aborted|^network$/i.test(msg);if(!soft)console.error(e);inn.innerHTML=`<div class="empty-state" style="padding:60px 20px"><div class="empty-state-icon">⚠️</div><div class="empty-state-text">${esc(soft?'Could not load details. Check your connection and try again.':('Failed: '+msg))}</div></div>`;syncModalDetailChrome();syncDetailBrowseNavUi()}}
 function closeModal(){
 const m=document.getElementById('detailModal');
 const wasOpen=!!(m&&m.classList.contains('active'));
@@ -6752,6 +6758,33 @@ if(!d)return false;
 const ssp=sspOn!=null?!!sspOn:!!S.sspActive;
 return !!(d.has_cond_weapon_range||(ssp&&d.has_cond_weapon_range_ssp));
 }
+/** Unit dossier CP (stat buckets + stack sliders). SSP-only Custom Core CP needs SSP on — same class as has_cond_weapon_range_ssp. */
+function _detailUnitHasCondStats(d,sspOn){
+if(!d)return false;
+const ssp=sspOn!=null?!!sspOn:!!S.sspActive;
+if(d.has_cond_stats_ssp!=null)return !!(d.has_cond_stats||(ssp&&d.has_cond_stats_ssp));
+return !!d.has_cond_stats;
+}
+/** Active combat / HP-tier / damage-taken DEF slider meta for the current SP/SSP mode. */
+function _detailUnitCondStackMeta(ud,sspOn){
+if(!ud)return{cc:null,hp:null,dd:null};
+const ssp=sspOn!=null?!!sspOn:!!S.sspActive;
+if(ssp){
+return{
+cc:ud.unit_combat_count_atk_ssp||ud.unit_combat_count_atk||null,
+hp:ud.unit_hp_atk_tiers_ssp||ud.unit_hp_atk_tiers||null,
+dd:ud.unit_damage_taken_def_ssp||ud.unit_damage_taken_def||null
+};
+}
+return{
+cc:ud.unit_combat_count_atk||null,
+hp:ud.unit_hp_atk_tiers||null,
+dd:ud.unit_damage_taken_def||null
+};
+}
+function _dcUnitSspOn(){return !!(S.dc&&S.dc.unitStatMode==='ssp')}
+function _dcUnitHasCondStats(ud){return _detailUnitHasCondStats(ud,_dcUnitSspOn())}
+function _dcUnitCondStackMeta(ud){return _detailUnitCondStackMeta(ud,_dcUnitSspOn())}
 function _detailUnitCpWeaponRangeMods(d,sspOn){
 if(!d)return[];
 const ssp=sspOn!=null?!!sspOn:!!S.sspActive;
@@ -6764,7 +6797,7 @@ const sspOn=opts.sspOn!=null?!!opts.sspOn:undefined;
 const mods=_detailUnitCpWeaponRangeMods(unitData,sspOn);
 if(!unitData||!mods.length)return 0;
 const cpOn=opts.assumeCondMet!=null?!!opts.assumeCondMet:(!!S.conditionalPassiveActive||!!(S.dc&&S.dc.unitCondPassive));
-const vigorOnly=_detailUnitHasCondWeaponRange(unitData,sspOn)&&!unitData.has_cond_stats;
+const vigorOnly=_detailUnitHasCondWeaponRange(unitData,sspOn)&&!_detailUnitHasCondStats(unitData,sspOn);
 if(!cpOn&&!vigorOnly)return 0;
 if(!cpOn&&vigorOnly&&!_dcVigorAtLeast(S.dc?S.dc.mpLevel:S.mpLevel||'medium',S.dc?._vigorCondThreshold||_dcVigorThresholdFromUnit(unitData)||'max'))return 0;
 const wpnKeySet=new Set(_dcWeaponAttributeKeys(wpn));
@@ -6787,7 +6820,7 @@ return bonus;
 function _dcUnitCpRangeModsActive(){
 const ud=S.dc&&S.dc.atkUnitData;
 if(!ud||ud._manual)return false;
-if(_detailUnitHasCondWeaponRange(ud,!!(S.dc&&S.dc.unitStatMode==='ssp'))&&!ud.has_cond_stats)return _dcIsVigorCondActive()||!!S.dc.unitCondPassive;
+if(_detailUnitHasCondWeaponRange(ud,!!(S.dc&&S.dc.unitStatMode==='ssp'))&&!_detailUnitHasCondStats(ud,!!(S.dc&&S.dc.unitStatMode==='ssp')))return _dcIsVigorCondActive()||!!S.dc.unitCondPassive;
 return !!S.dc.unitCondPassive;
 }
 function _dcUnitCpWeaponRangeBonusForDc(wpn){
@@ -7316,7 +7349,7 @@ if(!slot)return;
 if(!(d&&d.ranking_available&&(type==='character'||type==='unit')&&!d.detail_npc_context)){slot.innerHTML='';return}
 slot.innerHTML=renderDetailRankingToggle(d,type)||'';
 }
-function detailStatRowsForCurrentState(d,type){let hcf=type==='character'?(!!(d.has_ex_stats||d.has_conditional_passive||(d.ex_supercharged_tiers&&d.ex_supercharged_tiers.length>1))):d.has_cond_stats;const cp=hcf&&S.conditionalPassiveActive;let sr;if(type==='unit'){const td=(d.lb_data&&d.lb_data[S.currentLbTier])||(d.stats&&{stats_no_cond:d.stats,stats_with_cond:d.stats,sp_stats_no_cond:d.stats,sp_stats_with_cond:d.stats,ssp_stats_no_cond:d.stats,ssp_stats_with_cond:d.stats});if(!td)return[];if(d.has_sp){if(S.sspActive)sr=cp?td.ssp_stats_with_cond:td.ssp_stats_no_cond;else if(S.spActive)sr=cp?td.sp_stats_with_cond:td.sp_stats_no_cond;else sr=cp?td.stats_with_cond:td.stats_no_cond}else sr=cp?td.stats_with_cond:td.stats_no_cond}else{const exTiers=d.ex_supercharged_tiers;if(cp&&exTiers&&exTiers.length>1){const ti=Math.min(Math.max(0,S.charSuperchargedExTier|0),exTiers.length-1);sr=exTiers[ti].stats}else if(d.has_sp){if(S.spActive)sr=cp?d.sp_stats_with_ex:d.sp_stats;else sr=cp?d.stats_with_ex:d.stats}else sr=cp?d.stats_with_ex:d.stats}if(type==='unit')sr=_detailApplyUltAltMaxStatRows(sr,d);return Array.isArray(sr)?sr:[]}
+function detailStatRowsForCurrentState(d,type){let hcf=type==='character'?(!!(d.has_ex_stats||d.has_conditional_passive||(d.ex_supercharged_tiers&&d.ex_supercharged_tiers.length>1))):_detailUnitHasCondStats(d);const cp=hcf&&S.conditionalPassiveActive;let sr;if(type==='unit'){const td=(d.lb_data&&d.lb_data[S.currentLbTier])||(d.stats&&{stats_no_cond:d.stats,stats_with_cond:d.stats,sp_stats_no_cond:d.stats,sp_stats_with_cond:d.stats,ssp_stats_no_cond:d.stats,ssp_stats_with_cond:d.stats});if(!td)return[];if(d.has_sp){if(S.sspActive)sr=cp?td.ssp_stats_with_cond:td.ssp_stats_no_cond;else if(S.spActive)sr=cp?td.sp_stats_with_cond:td.sp_stats_no_cond;else sr=cp?td.stats_with_cond:td.stats_no_cond}else sr=cp?td.stats_with_cond:td.stats_no_cond}else{const exTiers=d.ex_supercharged_tiers;if(cp&&exTiers&&exTiers.length>1){const ti=Math.min(Math.max(0,S.charSuperchargedExTier|0),exTiers.length-1);sr=exTiers[ti].stats}else if(d.has_sp){if(S.spActive)sr=cp?d.sp_stats_with_ex:d.sp_stats;else sr=cp?d.stats_with_ex:d.stats}else sr=cp?d.stats_with_ex:d.stats}if(type==='unit')sr=_detailApplyUltAltMaxStatRows(sr,d);return Array.isArray(sr)?sr:[]}
 function renderDetailInlineRankRadial(meta){
 if(!meta||!meta.rank||!meta.total)return`<div class="stat-inline-rank is-loading"><div class="radial-loading">...</div></div>`;
 const rk=Math.max(1,Number(meta.rank)||1);
@@ -7898,11 +7931,12 @@ if(!ud)return;
 S.unitCondStackCount=0;
 S.unitHpAtkTierIndex=0;
 S.unitDamageTakenDefStacks=0;
-const hp=ud.unit_hp_atk_tiers;
+const meta=_detailUnitCondStackMeta(ud);
+const hp=meta.hp;
 if(hp&&hp.tiers&&hp.tiers.length)S.unitHpAtkTierIndex=hp.tiers.length-1;
-const cc=ud.unit_combat_count_atk;
+const cc=meta.cc;
 if(cc&&cc.max_stacks)S.unitCondStackCount=cc.max_stacks|0;
-const dd=ud.unit_damage_taken_def;
+const dd=meta.dd;
 if(dd&&dd.max_stacks)S.unitDamageTakenDefStacks=dd.max_stacks|0;
 }
 function _stackSliderBindAttrs(fnName){
@@ -7997,19 +8031,20 @@ function _detailSyncUnitCondSliderLabels(){
 const d=S.currentDetailData;
 if(!d||S.currentDetailType!=='unit')return;
 const root=document.getElementById('detailStatsToggles')||document;
-const cc=d.unit_combat_count_atk;
+const meta=_detailUnitCondStackMeta(d);
+const cc=meta.cc;
 if(cc){
 const max=Math.max(1,cc.max_stacks|0);
 const cur=Math.max(1,Math.min(max,S.unitCondStackCount|0||max));
 const info={per:cc.per|0,maxPct:cc.max|0,maxStacks:max,minVal:1};
 root.querySelectorAll('.detail-unit-combat-stack-row').forEach(row=>_stackMsSyncPct(row,info,cur));
 }
-const hp=d.unit_hp_atk_tiers;
+const hp=meta.hp;
 if(hp&&hp.tiers&&hp.tiers.length>1){
 const ti=Math.min(Math.max(0,S.unitHpAtkTierIndex|0),hp.tiers.length-1);
 root.querySelectorAll('.dc-unit-hp-tier-row').forEach(row=>_stackMsSyncTier(row,hp.tiers,ti));
 }
-const dd=d.unit_damage_taken_def;
+const dd=meta.dd;
 if(dd){
 const max=Math.max(1,dd.max_stacks|0);
 const cur=Math.max(1,Math.min(max,S.unitDamageTakenDefStacks|0||max));
@@ -8020,7 +8055,7 @@ root.querySelectorAll('.detail-unit-dmg-taken-def-row').forEach(row=>_stackMsSyn
 function setUnitCondStackCount(n,opts){
 opts=opts||{};
 const d=S.currentDetailData;
-const cc=d&&d.unit_combat_count_atk;
+const cc=d&&_detailUnitCondStackMeta(d).cc;
 if(!cc)return;
 const next=Math.max(1,Math.min(cc.max_stacks|0,Number(n)||0));
 const soft=!!opts.soft;
@@ -8036,7 +8071,7 @@ updateDetailDynamicSections('unit',{keepToggles:true});
 function setUnitHpAtkTierIndex(i,opts){
 opts=opts||{};
 const d=S.currentDetailData;
-const hp=d&&d.unit_hp_atk_tiers;
+const hp=d&&_detailUnitCondStackMeta(d).hp;
 if(!hp||!hp.tiers||!hp.tiers.length)return;
 const next=Math.max(0,Math.min(hp.tiers.length-1,Number(i)||0));
 const soft=!!opts.soft;
@@ -8052,7 +8087,7 @@ updateDetailDynamicSections('unit',{keepToggles:true});
 function setUnitDamageTakenDefStacks(n,opts){
 opts=opts||{};
 const d=S.currentDetailData;
-const dd=d&&d.unit_damage_taken_def;
+const dd=d&&_detailUnitCondStackMeta(d).dd;
 if(!dd)return;
 const next=Math.max(1,Math.min(dd.max_stacks|0,Number(n)||0));
 const soft=!!opts.soft;
@@ -8106,9 +8141,10 @@ return'';
 }
 function _detailApplyUnitCondAdjustRows(sr,bs,ud,cp){
 if(!cp||!ud||!sr||!sr.length||!bs||!bs.length)return sr;
-const cc=ud.unit_combat_count_atk;
-const hp=ud.unit_hp_atk_tiers;
-const dd=ud.unit_damage_taken_def;
+const meta=_detailUnitCondStackMeta(ud);
+const cc=meta.cc;
+const hp=meta.hp;
+const dd=meta.dd;
 const hasAtk=!!(cc&&cc.per>0)||!!(hp&&hp.tiers&&hp.tiers.length>1);
 const hasDef=!!(dd&&dd.per>0);
 if(!hasAtk&&!hasDef)return sr;
@@ -8152,9 +8188,10 @@ return out;
 function syncUnitCondAbilityHighlights(){
 const on=!!(S.currentDetailType==='unit'&&S.conditionalPassiveActive&&S.currentDetailData);
 const ud=S.currentDetailData;
-const cc=on&&ud?ud.unit_combat_count_atk:null;
-const hp=on&&ud?ud.unit_hp_atk_tiers:null;
-const dd=on&&ud?ud.unit_damage_taken_def:null;
+const meta=on&&ud?_detailUnitCondStackMeta(ud):{cc:null,hp:null,dd:null};
+const cc=meta.cc;
+const hp=meta.hp;
+const dd=meta.dd;
 document.querySelectorAll('#detailAbilitiesContainer .ability-item').forEach(item=>{
 const aid=item.getAttribute('data-ability-id')||'';
 let hit=false;
@@ -8345,7 +8382,7 @@ finish();
 function updateDetailDynamicSections(type,opts){opts=opts||{};const d=S.currentDetailData;if(type!=='supporter'&&type!=='stage'){const _sp=renderStatsWrapper(d,type);const _tog=document.getElementById('detailStatsToggles');const _st=document.getElementById('detailStatsWrapper');if(_tog&&!opts.keepToggles)_tog.innerHTML=_sp.head||'';if(_st)_st.innerHTML=_tog?(_sp.grid||''):((_sp.head||'')+(_sp.grid||''));ensureDetailRankingToggleDom(type);applyDetailRankingInline(type)}if(type==='character'){const extra=document.getElementById('charExtraInfo');if(extra)extra.innerHTML=renderCharacterExtraInfo(d);const ucHost=document.getElementById('npcUnitCondTargets');if(ucHost)ucHost.innerHTML=renderNpcUnitConditionTargetsRow(d);document.getElementById('detailAbilitiesContainer').innerHTML=renderAbilsDynamic(d.abilities,t('sec_abilities'),false,S.spActive);document.getElementById('detailSkillsContainer').innerHTML=renderSkills(d.skills,S.spActive);syncNpcUnitConditionHighlights();syncAffinityExPairHighlights();syncPilotCondHighlights()}else if(type==='unit'){syncUnitLbVideoUi();void ensureUnitBestPilotsLoaded().then(api=>{if(api&&typeof api.syncUi==='function'&&S.currentDetailType==='unit'&&S.currentDetailData&&String(S.currentDetailData.id)===String(d&&d.id))api.syncUi(S.currentDetailData)});document.getElementById('detailAbilitiesContainer').innerHTML=renderAbilsDynamic(d.abilities,t('sec_abilities'),S.sspActive,false);document.getElementById('detailUnitSkillsContainer').innerHTML=renderSkills(d.skills||[],false);const modEl=document.getElementById('detailModifiersContainer');if(modEl)modEl.innerHTML=renderModifiers(d.modifiers||[]);setDetailWeaponsHtml(renderWeaponsDynamic(withNpcMapWeaponStrategyHints(d.weapons,d),S.sspActive,d));document.getElementById('detailMechanismsContainer').innerHTML=renderMechanisms(d.mechanisms);fillDetailSspMaterials('unit');fillDetailUltAlteration('unit');const tr=document.getElementById('detailUnitTerrainRow');if(tr){const base=d.terrain||[];const ter=S.sspActive&&(d.terrain_ssp&&d.terrain_ssp.length)?d.terrain_ssp:base;const hasTerrainEnh=!!(S.sspActive&&(d.has_terrain_enhancement===true||(d.terrain_ssp&&d.terrain&&d.terrain_ssp.some((ts,i)=>ts.level!==(d.terrain[i]?.level??-1)))));tr.innerHTML=renderHeaderTerrain(ter,S.sspActive,hasTerrainEnh)}syncPilotCondHighlights();syncUnitCondAbilityHighlights()}else if(type==='supporter'){let lh='';if(d.leader_skills&&d.leader_skills.length){lh=`<div class="detail-section"><div class="section-title">${t('sec_leader_skill')}</div><div class="ability-list">${d.leader_skills.map(ls=>{let ts2=ls.tags.map(t=>t.name).join(',');return`<div class="ability-item" style="flex-direction:column;gap:0;cursor:pointer;" onclick="openTagModal('${esc(ts2)}','${ls.separator}')"><div class="ability-detail ability-detail--supporter-leader" style="margin:0;"><img class="ability-detail-leader-ic" src="${imgUrl(SUPPORTER_LEADER_ICON)}" alt="" width="22" height="22" loading="lazy" decoding="async" onerror="this.style.display='none'"><span class="ability-detail-leader-text">${esc(ls.desc)}</span></div>${ls.tags&&ls.tags.length?`<div class="detail-tags-row" style="margin-top:0;align-items:center;">${renderSkillTags([{tags:ls.tags,separator:ls.separator}])}</div>`:''}</div>`}).join('')}</div></div>`}document.getElementById('detailLeaderSkillContainer').innerHTML=lh;let ah='';if(d.active_skills&&d.active_skills.length){ah=`<div class="detail-section"><div class="section-title">${t('sec_active_skills')}</div><div class="ability-list">${d.active_skills.map(sk=>`<div class="ability-item"><div class="ability-icon-wrap">${renderAbilIcon({icon:sk.icon})}</div><div class="ability-info"><div class="ability-name">${esc(sk.name)}</div><div class="ability-detail" style="margin:0;white-space:pre-wrap;">${esc(sk.desc)}</div></div></div>`).join('')}</div></div>`}document.getElementById('detailAbilitiesContainer').innerHTML=ah}else if(type==='stage'){if(d&&d.stage_category==='fierce_enemy_assault'){void feaHydrateActiveDifficulty();return}document.getElementById('detailStageRestrictionsContainer').innerHTML=renderStageRestrictions(d);document.getElementById('detailStageMapContainer').innerHTML=renderStageMapSection(d);document.getElementById('detailNpcContainer').innerHTML=renderNpcDetails(d.npc_details||[],d.id,S._stageDetailUiRestore);ensureStageMapNpcHoverBound();ensureStageNpcCompactHoverBound();hideStageNpcHoverPop();scheduleWarmStageNpcHoverThumbs();syncNpcUnitConditionHighlights();const kickTape=()=>kickStageHazardTapeAnimations(document.getElementById('detailStageRestrictionsContainer'));requestAnimationFrame(()=>requestAnimationFrame(kickTape));setTimeout(kickTape,400)}if(type==='character'||type==='unit')requestAnimationFrame(adjustDetailModalLayout);try{scheduleSyncTagValueCrawlers(document.getElementById('detailInner')||document)}catch(_e){}}
 function renderStatsWrapper(d,type){
 /* Prefer has_ex_stats over a false has_conditional_passive (API can clear the latter on unmet pair gates while Vigor Extended etc. still apply). */
-let hcf=type==='character'?(!!(d.has_ex_stats||d.has_conditional_passive||(d.ex_supercharged_tiers&&d.ex_supercharged_tiers.length>1))):((d.has_cond_stats)||_detailUnitHasCondWeaponRange(d)||_detailUnitPilotMovCpGate(d));
+let hcf=type==='character'?(!!(d.has_ex_stats||d.has_conditional_passive||(d.ex_supercharged_tiers&&d.ex_supercharged_tiers.length>1))):((_detailUnitHasCondStats(d))||_detailUnitHasCondWeaponRange(d)||_detailUnitPilotMovCpGate(d));
 if(type==='character'&&characterHasConditionalChanceOrSupportAbility(d))hcf=true;
 const cp=hcf&&S.conditionalPassiveActive;
 let sr,bs;
@@ -8371,7 +8408,7 @@ if(type==='unit'&&S.pilotConditionalPassiveActive&&S.pilotCondCharData){prePilot
 if(type==='unit'){sr=_detailApplyUltAltMaxStatRows(sr,d);bs=_detailApplyUltAltMaxStatRows(bs,d);if(prePilotSr)prePilotSr=_detailApplyUltAltMaxStatRows(prePilotSr,d)}
 let th='';
 if(hcf||(type==='unit'&&d.has_pilot_cond_passive)){th=`<div class="detail-cond-toggle-stack">`;
-if(hcf){const cplab=t('conditional_passive');const unitCombatStack=(type==='unit'&&d.unit_combat_count_atk)?_detailUnitCombatStackSliderHtml(d.unit_combat_count_atk):'';const unitHpTier=(type==='unit'&&d.unit_hp_atk_tiers)?_detailAbilityHpTierRowHtml(d.unit_hp_atk_tiers):'';const unitDmgDef=(type==='unit'&&d.unit_damage_taken_def)?_detailUnitDamageTakenDefSliderHtml(d.unit_damage_taken_def):'';const unitCpExtras=unitCombatStack+unitHpTier+unitDmgDef;const unitCpCanStack=type==='unit'&&!!(d.unit_combat_count_atk||(d.unit_hp_atk_tiers&&d.unit_hp_atk_tiers.tiers&&d.unit_hp_atk_tiers.tiers.length>1)||d.unit_damage_taken_def);const unitCpSlot=unitCpExtras||(unitCpCanStack?'<div class="detail-pilot-stack-row is-reserved detail-unit-cond-stack-row" aria-hidden="true"><input type="range" class="detail-pilot-stack-slider" disabled tabindex="-1"><span class="detail-pilot-stack-val">+0%</span></div>':'');th+=`<div class="conditional-toggle detail-unit-cp-block"><div class="toggle-clickable ${S.conditionalPassiveActive?'active':''}" role="button" tabindex="0" onclick="toggleConditionalPassive(!S.conditionalPassiveActive)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleConditionalPassive(!S.conditionalPassiveActive)}"><span class="toggle-control-slot"><span class="toggle-switch"></span></span><span class="toggle-label">${esc(cplab)}</span></div>${unitCpSlot?`<div class="detail-unit-cp-stack-slot">${unitCpSlot}</div>`:''}</div>`}
+if(hcf){const cplab=t('conditional_passive');const _ucm=type==='unit'?_detailUnitCondStackMeta(d):{cc:null,hp:null,dd:null};const unitCombatStack=(type==='unit'&&_ucm.cc)?_detailUnitCombatStackSliderHtml(_ucm.cc):'';const unitHpTier=(type==='unit'&&_ucm.hp)?_detailAbilityHpTierRowHtml(_ucm.hp):'';const unitDmgDef=(type==='unit'&&_ucm.dd)?_detailUnitDamageTakenDefSliderHtml(_ucm.dd):'';const unitCpExtras=unitCombatStack+unitHpTier+unitDmgDef;const unitCpCanStack=type==='unit'&&!!(_ucm.cc||(_ucm.hp&&_ucm.hp.tiers&&_ucm.hp.tiers.length>1)||_ucm.dd);const unitCpSlot=unitCpExtras||(unitCpCanStack?'<div class="detail-pilot-stack-row is-reserved detail-unit-cond-stack-row" aria-hidden="true"><input type="range" class="detail-pilot-stack-slider" disabled tabindex="-1"><span class="detail-pilot-stack-val">+0%</span></div>':'');th+=`<div class="conditional-toggle detail-unit-cp-block"><div class="toggle-clickable ${S.conditionalPassiveActive?'active':''}" role="button" tabindex="0" onclick="toggleConditionalPassive(!S.conditionalPassiveActive)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleConditionalPassive(!S.conditionalPassiveActive)}"><span class="toggle-control-slot"><span class="toggle-switch"></span></span><span class="toggle-label">${esc(cplab)}</span></div>${unitCpSlot?`<div class="detail-unit-cp-stack-slot">${unitCpSlot}</div>`:''}</div>`}
 if(type==='unit'&&d.has_pilot_cond_passive){const pplab=t('pilot_exclusive_passive')||'Pilot Exclusive Passive';const stackHtml=_detailPilotStackSliderHtml(d);th+=`<div class="detail-pilot-ep-block"><div class="conditional-toggle detail-pilot-ep-toggle"><div class="toggle-clickable ${S.pilotConditionalPassiveActive?'active':''}" role="button" tabindex="0" title="${escAttr(pplab)}" aria-label="${escAttr(pplab)}" onclick="togglePilotConditionalPassive(!S.pilotConditionalPassiveActive)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togglePilotConditionalPassive(!S.pilotConditionalPassiveActive)}"><span class="toggle-control-slot">${_detailPilotEpChipSpanHtml(!!S.pilotConditionalPassiveActive)}</span><div class="detail-pilot-ep-label-col"><span class="toggle-label">${esc(pplab)}</span>${stackHtml}</div></div></div></div>`}
 th+=`</div>`}
 let exRow='';
@@ -11505,7 +11542,7 @@ if(S.compareType==='character')renderCompareSkills()
 function renderCompareToggles(){
 const isUnit=S.compareType==='unit';
 const hasSp=S.compareData.some(d=>d.has_sp);
-const hasCp=S.compareData.some(d=>isUnit?!!(d.has_cond_stats||_detailUnitHasCondWeaponRange(d,!!S.cmpSspActive)||d.has_cond_weapon_range_ssp):!!(d.has_conditional_passive||d.has_ex_stats||(d.ex_supercharged_tiers&&d.ex_supercharged_tiers.length>1)));
+const hasCp=S.compareData.some(d=>isUnit?!!(_detailUnitHasCondStats(d,!!S.cmpSspActive)||_detailUnitHasCondWeaponRange(d,!!S.cmpSspActive)||d.has_cond_weapon_range_ssp):!!(d.has_conditional_passive||d.has_ex_stats||(d.ex_supercharged_tiers&&d.ex_supercharged_tiers.length>1)));
 const hasPep=isUnit&&S.compareData.some(d=>!!(d.has_pilot_cond_passive&&d.recommend_character&&d.recommend_character.id));
 if(!hasSp&&!hasCp&&!hasPep){document.getElementById('cmpToggles')&&(document.getElementById('cmpToggles').innerHTML='');return}
 const spIcon=imgUrl('/static/images/UI/UI_Common_Icon_Sp.webp');
@@ -13003,7 +13040,7 @@ const tier=Math.min(Math.max(0,S.dc.defLbTier|0),maxT);
 S.dc.defLbTier=tier;
 const row=lb&&lb[tier]?lb[tier]:null;
 /* When-attacking Cond:Combat DEF is attack-only — never bake into the defender sheet. */
-let uCp=!!(ud.has_cond_stats&&S.dc.defUnitCondPassive);
+let uCp=!!(_dcUnitHasCondStats(ud)&&S.dc.defUnitCondPassive);
 if(uCp&&_dcShouldSuppressWhenAttackingCombatCp(ud,{asDefender:true})&&_dcUnitCpIsOnlyWhenAttackingCombat(ud))uCp=false;
 const uKey=uCp?'stats_with_cond':'stats_no_cond';
 const ustats=row?(row[uKey]||row.stats_no_cond):(Array.isArray(ud.stats)?ud.stats:null);
@@ -13084,7 +13121,7 @@ lbMenu+=`<button type="button" class="cmp-lb-opt${tt===tier?' is-active':''}" on
 lbBlock=`<div class="dc-lb-inline-wrap dc-lb-inline-wrap--badge"><details id="dcDefLbTierDetails" class="cmp-lb-details dc-lb-tier-details"><summary class="cmp-lb-summary" title="${esc(t('cmp_lb'))}">${cmpLbPipsRow(cur[0],cur[1],cur[2])}</summary><div class="cmp-lb-menu" role="listbox" aria-label="${esc(t('cmp_lb'))}">${lbMenu}</div></details></div>`;
 }
 let unitCpBeside='';
-if(ud.has_cond_stats||_detailUnitHasCondWeaponRange(ud,!!(S.dc&&S.dc.unitStatMode==='ssp'))){
+if(_dcUnitHasCondStats(ud)||_detailUnitHasCondWeaponRange(ud,!!(S.dc&&S.dc.unitStatMode==='ssp'))){
 unitCpBeside=_dcPickedCpBesideRoleHtml(!!S.dc.defUnitCondPassive,'toggleDcDefUnitCondPassive');
 }
 uEl.innerHTML=`<div class="dc-picked">${_dcPickedEntityThumbHtml(ud,'unit',52)}<div class="dc-picked-info"><div class="dc-picked-name">${esc(ud.name)}</div><div class="dc-picked-badges">${ud.rarity_icon?`<img src="${imgUrl(ud.rarity_icon)}">`:''}${ud.role_icon?`<img src="${imgUrl(ud.role_icon)}">`:''}${unitCpBeside}${lbBlock}</div></div><button type="button" class="dc-picked-change" onclick="openDcPicker('def_unit')">${t('dc_change')}</button></div>`;
@@ -14145,11 +14182,12 @@ const ud=sl.unitData;
 sl.unitCondStackCount=0;
 sl.unitHpAtkTierIndex=0;
 sl.unitDamageTakenDefStacks=0;
-const hp=ud.unit_hp_atk_tiers;
+const meta=_detailUnitCondStackMeta(ud, (sl.unitStatMode||'')==='ssp');
+const hp=meta.hp;
 if(hp&&hp.tiers&&hp.tiers.length)sl.unitHpAtkTierIndex=hp.tiers.length-1;
-const cc=ud.unit_combat_count_atk;
+const cc=meta.cc;
 if(cc&&cc.max_stacks)sl.unitCondStackCount=cc.max_stacks|0;
-const dd=ud.unit_damage_taken_def;
+const dd=meta.dd;
 if(dd&&dd.max_stacks)sl.unitDamageTakenDefStacks=dd.max_stacks|0;
 }
 /** Match Damage Calculator: auto-on unit/pilot Conditional Passive when gates pass (pair EX, HP-tier, etc.). */
@@ -14182,7 +14220,7 @@ function _tbGetUnitStatKey(ud,slot){
 if(!ud)return'stats_no_cond';
 const hasSp=ud.has_sp!==undefined?ud.has_sp:(parseInt(ud.rarity_id||'5')<=4);
 const mode=slot.unitStatMode||'normal';
-const hasCond=!!ud.has_cond_stats;
+const hasCond=!!_detailUnitHasCondStats(ud,mode==='ssp');
 const passiveOn=!!(hasCond&&slot.unitCondPassive);
 const sfx=passiveOn?'_with_cond':'_no_cond';
 if(mode==='ssp'&&hasSp)return'ssp_stats'+sfx;
@@ -15317,7 +15355,7 @@ return parts.join('');
 }
 function _tbSlotCpToggleHtml(key,sl){
 const ud=sl.unitData,cd=sl.charData;
-const showU=!!(ud&&!ud._manual&&ud.has_cond_stats);
+const showU=!!(ud&&!ud._manual&&_dcUnitHasCondStats(ud));
 const showC=!!(cd&&!cd._manual&&ud&&!ud._manual&&_dcCharHasConditional(cd));
 if(!showU&&!showC)return'';
 const _cpL=escAttr(t('conditional_passive')||'CP');
@@ -15335,7 +15373,7 @@ function tbToggleSlotUnitCondPassive(key,ev){
 if(ev){ev.preventDefault();ev.stopPropagation()}
 initTeamBuilder();
 const sl=_tbSquFromKey(key).slots[_tbIdxFromKey(key)];
-if(!sl||!sl.unitData||!sl.unitData.has_cond_stats)return;
+if(!sl||!sl.unitData||!_dcUnitHasCondStats(sl.unitData))return;
 sl.unitCondPassive=!sl.unitCondPassive;
 if(sl.unitCondPassive)_tbInitSlotUnitCondControls(sl);
 else{sl.unitCondStackCount=0;sl.unitHpAtkTierIndex=0;sl.unitDamageTakenDefStacks=0}
@@ -16393,17 +16431,18 @@ if(!ud)return;
 S.dc.unitCondStackCount=0;
 S.dc.unitHpAtkTierIndex=0;
 S.dc.unitDamageTakenDefStacks=0;
-const hp=ud.unit_hp_atk_tiers;
+const meta=_dcUnitCondStackMeta(ud);
+const hp=meta.hp;
 if(hp&&hp.tiers&&hp.tiers.length)S.dc.unitHpAtkTierIndex=hp.tiers.length-1;
-const cc=ud.unit_combat_count_atk;
+const cc=meta.cc;
 if(cc&&cc.max_stacks)S.dc.unitCondStackCount=cc.max_stacks|0;
-const dd=ud.unit_damage_taken_def;
+const dd=meta.dd;
 if(dd&&dd.max_stacks)S.dc.unitDamageTakenDefStacks=dd.max_stacks|0;
 }
 function setDcUnitCondStackCount(n,opts){
 opts=opts||{};
 const ud=S.dc.atkUnitData;
-const cc=ud&&ud.unit_combat_count_atk;
+const cc=ud&&_dcUnitCondStackMeta(ud).cc;
 if(!cc)return;
 /* 0 = no prior combat damage (Cond: Combat inactive); 1..max = stacks after dealing damage. */
 const next=Math.max(0,Math.min(cc.max_stacks|0,Number(n)||0));
@@ -16423,7 +16462,7 @@ onDcParamChange();
 function setDcUnitHpAtkTierIndex(i,opts){
 opts=opts||{};
 const ud=S.dc.atkUnitData;
-const hp=ud&&ud.unit_hp_atk_tiers;
+const hp=ud&&_dcUnitCondStackMeta(ud).hp;
 if(!hp||!hp.tiers||!hp.tiers.length)return;
 const next=Math.max(0,Math.min(hp.tiers.length-1,Number(i)||0));
 const soft=!!opts.soft;
@@ -16438,7 +16477,7 @@ onDcParamChange();
 function setDcUnitDamageTakenDefStacks(n,opts){
 opts=opts||{};
 const ud=S.dc.atkUnitData;
-const dd=ud&&ud.unit_damage_taken_def;
+const dd=ud&&_dcUnitCondStackMeta(ud).dd;
 if(!dd)return;
 const next=Math.max(1,Math.min(dd.max_stacks|0,Number(n)||0));
 const soft=!!opts.soft;
@@ -16452,19 +16491,20 @@ onDcParamChange();
 }
 function _dcSyncUnitCondSliderLabels(){
 const ud=S.dc.atkUnitData;
-const cc=ud&&ud.unit_combat_count_atk;
+const meta=ud?_dcUnitCondStackMeta(ud):{cc:null,hp:null,dd:null};
+const cc=meta.cc;
 if(cc){
 const max=Math.max(1,cc.max_stacks|0);
 const cur=Math.max(0,Math.min(max,S.dc.unitCondStackCount|0));
 const info={per:cc.per|0,maxPct:cc.max|0,maxStacks:max,minVal:0};
 document.querySelectorAll('.dc-unit-cond-stack-row').forEach(row=>_stackMsSyncPct(row,info,cur));
 }
-const hp=ud&&ud.unit_hp_atk_tiers;
+const hp=meta.hp;
 if(hp&&hp.tiers&&hp.tiers.length>1){
 const ti=Math.min(Math.max(0,S.dc.unitHpAtkTierIndex|0),hp.tiers.length-1);
 document.querySelectorAll('.dc-unit-hp-tier-row').forEach(row=>_stackMsSyncTier(row,hp.tiers,ti));
 }
-const dd=ud&&ud.unit_damage_taken_def;
+const dd=meta.dd;
 if(dd){
 const max=Math.max(1,dd.max_stacks|0);
 const cur=Math.max(1,Math.min(max,S.dc.unitDamageTakenDefStacks|0||max));
@@ -16536,7 +16576,7 @@ return`<div class="dc-pilot-bonus-row dc-pilot-bonus-row--unit-combat-stack" onc
 }
 /** CP-on sheet deltas vs CP-off (Cond:Vigor ATK/MOV, etc.) — listed under Conditional Bonuses. */
 function _dcUnitCpStatDeltaBonusRowsHtml(ud){
-if(!ud||!S.dc.unitCondPassive||!ud.has_cond_stats)return'';
+if(!ud||!S.dc.unitCondPassive||!_dcUnitHasCondStats(ud))return'';
 const lb=ud.lb_data;if(!lb||!lb.length)return'';
 const maxTier=lb.length-1;const tier=Math.min(S.dc.lbTier|0,maxTier);
 const td=lb[tier];if(!td)return'';
@@ -16545,7 +16585,7 @@ const statsOn=td[keyOn]||td.stats_with_cond||[];
 const statsOff=td[keyOff]||td.stats_no_cond||[];
 if(!statsOn.length||!statsOff.length)return'';
 const names=['HP','EN','Attack','Defense','Mobility','Move'];
-const skipAtk=!!ud.unit_combat_count_atk; /* Combat ATK is the slider row, not a fixed sheet delta. */
+const skipAtk=!!_dcUnitCondStackMeta(ud).cc; /* Combat ATK is the slider row, not a fixed sheet delta. */
 let html='';
 names.forEach(nm=>{
 if(skipAtk&&nm==='Attack')return;
@@ -16565,9 +16605,10 @@ return html;
 function _dcUnitCondPassiveBonusRowsHtml(ud){
 if(!ud)return'';
 /* Cond: Combat slider is always listed (0 = off). Other CP rows need the chip on. */
-const combat=_dcUnitCombatStackPassiveBonusRowHtml(ud.unit_combat_count_atk);
+const meta=_dcUnitCondStackMeta(ud);
+const combat=_dcUnitCombatStackPassiveBonusRowHtml(meta.cc);
 if(!S.dc.unitCondPassive)return combat;
-return _dcUnitCpStatDeltaBonusRowsHtml(ud)+combat+_dcUnitHpAtkPassiveBonusRowHtml(ud.unit_hp_atk_tiers)+_dcUnitDamageTakenDefPassiveBonusRowHtml(ud.unit_damage_taken_def);
+return _dcUnitCpStatDeltaBonusRowsHtml(ud)+combat+_dcUnitHpAtkPassiveBonusRowHtml(meta.hp)+_dcUnitDamageTakenDefPassiveBonusRowHtml(meta.dd);
 }
 /** Cond:Combat “When attacking, increase ATK/DEF … *Excluding Counter, Support Attack, and Counter Support.” */
 function _dcAbilityDetailBlob(ab){
@@ -16598,10 +16639,11 @@ return found?{atkPct:atkPct|0,defPct:defPct|0}:null;
 }
 /** True when the unit’s only Cond: sheet delta is when-attacking Cond:Combat (e.g. Avalanche Astraea Type-F'). */
 function _dcUnitCpIsOnlyWhenAttackingCombat(ud){
-if(!ud||!ud.has_cond_stats)return false;
+if(!ud||!_dcUnitHasCondStats(ud))return false;
 if(!_dcUnitWhenAttackingCombatBonuses(ud))return false;
-if(ud.unit_combat_count_atk||ud.unit_damage_taken_def)return false;
-if(ud.unit_hp_atk_tiers&&ud.unit_hp_atk_tiers.tiers&&ud.unit_hp_atk_tiers.tiers.length>1)return false;
+const meta=_dcUnitCondStackMeta(ud);
+if(meta.cc||meta.dd)return false;
+if(meta.hp&&meta.hp.tiers&&meta.hp.tiers.length>1)return false;
 const condAbs=((ud.abilities)||[]).filter(ab=>/\(\s*(?:Cond|Cnd):/i.test(String((ab&&ab.name)||'')));
 if(!condAbs.length)return false;
 return condAbs.every(ab=>{
@@ -16621,9 +16663,10 @@ return false;
 }
 function _dcApplyUnitCondStatAdjustments(stats,statsNoCond,ud,cpOn){
 if(!ud||!stats||!stats.length)return stats;
-const cc=ud.unit_combat_count_atk;
-const hp=ud.unit_hp_atk_tiers;
-const dd=ud.unit_damage_taken_def;
+const meta=_dcUnitCondStackMeta(ud);
+const cc=meta.cc;
+const hp=meta.hp;
+const dd=meta.dd;
 const hasCombat=!!(cc&&cc.per>0);
 const hasHp=!!(cpOn&&hp&&hp.tiers&&hp.tiers.length>1);
 const hasDef=!!(cpOn&&dd&&dd.per>0);
@@ -16776,12 +16819,12 @@ return _dcOwnEnGatesAtFullEnFromAbilities(ud.abilities,_dcResolveUnitAbilityForM
  */
 function _dcShouldAutoUnitCondPassive(ud,mpOpt){
 if(!ud||ud._manual)return false;
-if(!ud.has_cond_stats)return false;
+if(!_dcUnitHasCondStats(ud))return false;
 const hpGate=_dcUnitOwnHpGateAtFullHp(ud);
 if(hpGate==='unmet')return false;
 const enGate=_dcUnitOwnEnGateAtFullEn(ud);
 if(enGate==='unmet')return false;
-const hpTiers=ud.unit_hp_atk_tiers;
+const hpTiers=_dcUnitCondStackMeta(ud).hp;
 const hasHpTiers=!!(hpTiers&&hpTiers.tiers&&hpTiers.tiers.length);
 if(!hasHpTiers&&hpGate!=='met'&&enGate!=='met')return false;
 const thr=_dcVigorThresholdFromUnit(ud);
@@ -16804,7 +16847,7 @@ S.dc.unitCondPassive=true;
 return;
 }
 if(!S.dc._vigorCondThreshold)return;
-if(!ud.has_cond_stats&&!_detailUnitHasCondWeaponRange(ud,!!(S.dc&&S.dc.unitStatMode==='ssp')))return;
+if(!_dcUnitHasCondStats(ud)&&!_detailUnitHasCondWeaponRange(ud,!!(S.dc&&S.dc.unitStatMode==='ssp')))return;
 const req=_dcUnitCpVigorRequirement();
 if(!req)return;
 S.dc.unitCondPassive=_dcVigorAtLeast(S.dc.mpLevel,req);
@@ -16821,7 +16864,7 @@ function _dcGetUnitStatKeyForCp(useCondPassive){
 const ud=S.dc.atkUnitData;if(!ud)return 'stats_no_cond';
 const hasSp=ud.has_sp!==undefined?ud.has_sp:(parseInt(ud.rarity_id||'5')<=4);
 const mode=S.dc.unitStatMode||'normal';
-const hasCond=!!ud.has_cond_stats;
+const hasCond=!!_dcUnitHasCondStats(ud);
 const passiveOn=!!(hasCond&&useCondPassive);
 const sfx=passiveOn?'_with_cond':'_no_cond';
 if(mode==='ssp'&&hasSp)return 'ssp_stats'+sfx;
@@ -17619,7 +17662,7 @@ lbMenu+=`<button type="button" class="cmp-lb-opt${tt===tier?' is-active':''}" on
 lbBlock=`<div class="dc-lb-inline-wrap dc-lb-inline-wrap--badge"><details id="dcLbTierDetails" class="cmp-lb-details dc-lb-tier-details"><summary class="cmp-lb-summary" title="${esc(t('cmp_lb'))}">${cmpLbPipsRow(cur[0],cur[1],cur[2])}</summary><div class="cmp-lb-menu" role="listbox" aria-label="${esc(t('cmp_lb'))}">${lbMenu}</div></details></div>`;
 }
 let unitCpBeside='';
-if(ud.has_cond_stats||_detailUnitHasCondWeaponRange(ud,!!(S.dc&&S.dc.unitStatMode==='ssp'))){
+if(_dcUnitHasCondStats(ud)||_detailUnitHasCondWeaponRange(ud,!!(S.dc&&S.dc.unitStatMode==='ssp'))){
 const vExtra=S.dc._vigorCondThreshold?'Default: on when Vigor is Max or Supercharged (or higher than text if ability requires Supercharged only). Changing vigor updates the default; you can still toggle for comparisons.':'';
 unitCpBeside=_dcPickedCpBesideRoleHtml(!!S.dc.unitCondPassive,'toggleDcUnitCondPassive',vExtra||undefined);
 }
@@ -17641,12 +17684,12 @@ const uEff=_dcGetModifiedAttackerUnitStatsForPanel(stats);
 const msEnh=_dcMsStatEnhancementLinesHtml(S.dc,stats);
 const atkS=uEff.unitAtk,defS=uEff.unitDefVal,mobS=uEff.unitMob,hpS=uEff.unitHp;
 const uMode=S.dc.unitStatMode||'normal';
-const uCp=!!(ud.has_cond_stats&&S.dc.unitCondPassive);
+const uCp=!!(_dcUnitHasCondStats(ud)&&S.dc.unitCondPassive);
 let statsNoCp=statsNoCpBase;
-if(ud.has_cond_stats&&td&&!ud.unit_combat_count_atk&&!(ud.unit_hp_atk_tiers&&ud.unit_hp_atk_tiers.tiers&&ud.unit_hp_atk_tiers.tiers.length>1)&&!ud.unit_damage_taken_def){
+if(_dcUnitHasCondStats(ud)&&td){const _ucmSheet=_dcUnitCondStackMeta(ud);if(!_ucmSheet.cc&&!(_ucmSheet.hp&&_ucmSheet.hp.tiers&&_ucmSheet.hp.tiers.length>1)&&!_ucmSheet.dd){
 const kn=_dcGetUnitStatKeyForCp(false);
 statsNoCp=td[kn]||stats;
-}
+}}
 function _uCpCell(nm){if(!uCp)return'';const a=Math.round(_dcFindStat(statsNoCp,nm)||0),b=Math.round(_dcFindStat(stats,nm)||0);if(a===b)return'';return b>a?' dc-stat-mini--cp':' dc-stat-mini--cp-penalty'}
 function _uCpValBuff(nm){if(!uCp)return'';const a=Math.round(_dcFindStat(statsNoCp,nm)||0),b=Math.round(_dcFindStat(stats,nm)||0);if(a===b)return'';return b>a?'dc-stat-val--buffed':'dc-stat-val--penalized'}
 function _uCpBonusHtml(nm){if(!uCp)return'';const a=Math.round(_dcFindStat(statsNoCp,nm)||0),b=Math.round(_dcFindStat(stats,nm)||0);const d=b-a;if(d===0)return'';const tipUp='Conditional passive — extra growth stat vs off (LB row; main number may include modifiers).';const tipDn='Conditional passive — stat change vs off (LB row; main number may include modifiers).';const ico=_dcStatBonusSrcIconHtml('cp');if(d>0)return`<div class="stat-card-bonus" style="margin-top:2px" title="${escAttr(tipUp)}">${ico}(+${fmtN(d)})</div>`;return`<div class="stat-card-bonus stat-card-penalty" style="margin-top:2px" title="${escAttr(tipDn)}">${ico}(${fmtN(d)})</div>`}
@@ -17781,9 +17824,9 @@ const atkDisp=atkMid;
 const atkBonusRe=Math.max(0,atkDisp-(uEff.advantageFlatGrowthAtk|0));
 const bonusEl=document.getElementById('dcAtkUnitAtkInlineBonus');
 if(bonusEl)bonusEl.textContent=atkBonusRe>0?`(+${fmtN(atkBonusRe)})`:'';
-const uCp=!!(ud.has_cond_stats&&S.dc.unitCondPassive);
+const uCp=!!(_dcUnitHasCondStats(ud)&&S.dc.unitCondPassive);
 let statsNoCp=stats;
-if(ud.has_cond_stats&&td){
+if(_dcUnitHasCondStats(ud)&&td){
 const kn=_dcGetUnitStatKeyForCp(false);
 statsNoCp=td[kn]||stats;
 }
@@ -18279,7 +18322,7 @@ return total;
 }
 /** Unit Action:Support ATK % already baked into stats_with_cond (has_cond_stats). */
 function _dcUnitSupportAtkPctInCondSheet(ud){
-if(!ud||ud._manual||!ud.has_cond_stats)return 0;
+if(!ud||ud._manual||!_dcUnitHasCondStats(ud))return 0;
 const unitSup=_dcSumSupportCounterAtkPctFromAbilities(
 ud.abilities,
 _dcResolveUnitAbilityForMode,
@@ -18300,7 +18343,7 @@ return 0;
 }
 /** True when unit CP Attack delta is exactly Action:Support ATK (same condition as Support Attack/Counter). */
 function _dcUnitCpIsSupportActionAtkOnly(ud){
-if(!ud||ud._manual||!ud.has_cond_stats)return false;
+if(!ud||ud._manual||!_dcUnitHasCondStats(ud))return false;
 if(String(ud.role_id||'')!=='3')return false;
 const unitSup=_dcSumSupportCounterAtkPctFromAbilities(
 ud.abilities,
@@ -19894,7 +19937,7 @@ const maxT=lb&&lb.length?lb.length-1:0;
 const tier=Math.min(Math.max(0,S.dc.defLbTier|0),maxT);
 const td=(lb&&lb[tier])||(ud.stats&&{stats_no_cond:ud.stats});
 /* When-attacking Cond:Combat DEF never applies on the defending unit. */
-let uCp=!!(ud.has_cond_stats&&S.dc.defUnitCondPassive);
+let uCp=!!(_dcUnitHasCondStats(ud)&&S.dc.defUnitCondPassive);
 if(uCp&&_dcShouldSuppressWhenAttackingCombatCp(ud,{asDefender:true})&&_dcUnitCpIsOnlyWhenAttackingCombat(ud))uCp=false;
 const uKey=uCp?'stats_with_cond':'stats_no_cond';
 const defUnitStats=td?(td[uKey]||td.stats_no_cond||td.stats||[]):[];

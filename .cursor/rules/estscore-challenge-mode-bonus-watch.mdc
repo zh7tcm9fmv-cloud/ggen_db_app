@@ -1,0 +1,31 @@
+---
+description: Watch m_league_matching_group_range.ChallengeModeBonusValue for /estscore mapping
+alwaysApply: true
+---
+
+# `/estscore` — ChallengeModeBonusValue watch (2.8+)
+
+Owner note (**Nov 2026 / dump 2.8**): keep an eye on MasterData field
+
+`m_league_matching_group_range.ChallengeModeBonusValue`
+
+for properly mapping **Master League Challenge Mode** into **`/estscore`** (MAX SS Pt estimate / ROI ladders).
+
+## Current state (2.8 ship)
+
+- Column exists on live `m_league_matching_group_range`.
+- **All rows are 0** → scaffold only; do **not** invent a formula from the name alone.
+- `/estscore` today uses hardcoded `ML_CHALLENGE_LADDERS` from Challenge Mode matching MD + `m_league_matching_group_range` **SortOrder → CP band** (see comment above `ML_CHALLENGE_LADDERS` in `static/js/app.js`). **BonusValue is not wired yet.**
+
+## When a future dump / MasterData update lands
+
+1. Check whether `ChallengeModeBonusValue` is **non-zero** on any matching-group range rows.
+2. If non-zero: report counts, example rows (group / SortOrder / CP lo–hi / bonus), and how it relates to Challenge Mode ladders vs Regular ML.
+3. Tell the owner explicitly before changing `/estscore` — map the field into ladder / Pt math only after the live meaning is clear (in-game Challenge Mode behavior + LANG if any).
+4. Prefer loading bands/bonus from published MD (or API) over growing the hardcoded ladder table once the field is real.
+
+## Do not
+
+- Assume “bonus” = % of CP, flat Pt, or match-band shift without evidence.
+- Quietly ship `/estscore` changes from a zero-filled scaffold column.
+- Drop this watch from Report on dump / update-diff notes while the column stays unused — call out “still 0” or “now populated” in the dump companion.

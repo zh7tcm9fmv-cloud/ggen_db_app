@@ -7174,10 +7174,26 @@ def _unit_adjust_hp_condition_increased_atk_buckets(ad, spb, spc, added_b=0, add
         spc[atk_key] = spc.get(atk_key, 0) + (lo_cum - hi_cum)
 
 
-def _collect_unit_hp_atk_tiers_meta(ac):
+def _iter_unit_calc_abilities_for_mode(ac, ssp_mode=False):
+    """Yield ability cards active in normal/SP (ssp_mode=False) or SSP (True).
+
+    SSP Custom Core gains are ``ssp_only`` and must not feed the base CP toggle/sliders.
+    """
+    for ab in ac or []:
+        if ab.get('ssp_only'):
+            if ssp_mode:
+                yield ab
+            continue
+        if ssp_mode and ab.get('ssp_replacement'):
+            yield ab['ssp_replacement']
+        else:
+            yield ab
+
+
+def _collect_unit_hp_atk_tiers_meta(ac, ssp_mode=False):
     """Expose cumulative HP-or-above ATK tiers for unit detail CP slider."""
     best = None
-    for ab in ac or []:
+    for ab in _iter_unit_calc_abilities_for_mode(ac, ssp_mode=ssp_mode):
         name = (ab.get('name') or '').strip()
         if not _ability_title_is_cond_hp(name):
             continue
@@ -7210,9 +7226,9 @@ def _collect_unit_hp_atk_tiers_meta(ac):
     return best
 
 
-def _collect_unit_combat_count_atk_meta(ac):
+def _collect_unit_combat_count_atk_meta(ac, ssp_mode=False):
     """Combat-count stack ATK (e.g. +4% per combat, up to 20%) for unit detail CP slider."""
-    for ab in ac or []:
+    for ab in _iter_unit_calc_abilities_for_mode(ac, ssp_mode=ssp_mode):
         name = (ab.get('name') or '').strip()
         if not _ability_title_is_combat_count_cond(name):
             continue
@@ -7247,9 +7263,9 @@ def _collect_unit_combat_count_atk_meta(ac):
     return None
 
 
-def _collect_unit_damage_taken_def_meta(ac):
+def _collect_unit_damage_taken_def_meta(ac, ssp_mode=False):
     """Damage-taken stack DEF (e.g. +10% DEF per hit, up to 50%) for unit detail CP slider."""
-    for ab in ac or []:
+    for ab in _iter_unit_calc_abilities_for_mode(ac, ssp_mode=ssp_mode):
         name = (ab.get('name') or '').strip()
         if not _ability_title_is_damage_taken_def_cond(name):
             continue
@@ -39508,11 +39524,15 @@ def get_unit(unit_id):
             spc[s] = spc.get(s, 0) + nxs.get(s, 0)
             sspc[s] = sspc.get(s, 0) + nxss.get(s, 0)
         # Use != 0 so negative spc (e.g. HP-tier ATK exclusive fix) still enables the conditional toggle.
-        hcond = (any(spc.get(s, 0) != 0 for s in UNIT_STAT_ORDER) or
-                 any(sspc.get(s, 0) != 0 for s in UNIT_STAT_ORDER) or
-                 spc_move_flat[0] != 0 or sspc_move_flat[0] != 0 or
-                 spc_crit[0] != 0 or sspc_crit[0] != 0 or
-                 en_cost_inc_c[0] != 0 or en_cost_inc_sspc[0] != 0)
+        # Split base vs SSP: ssp_only Custom Core conditionals must not show CP until SSP is on.
+        hcond_base = (any(spc.get(s, 0) != 0 for s in UNIT_STAT_ORDER) or
+                      spc_move_flat[0] != 0 or
+                      spc_crit[0] != 0 or
+                      en_cost_inc_c[0] != 0)
+        hcond_ssp = (any(sspc.get(s, 0) != 0 for s in UNIT_STAT_ORDER) or
+                     sspc_move_flat[0] != 0 or
+                     sspc_crit[0] != 0 or
+                     en_cost_inc_sspc[0] != 0)
         ability_passive_crit_dmg_pct = {
             'no_cond': spb_crit[0],
             'cond_only': spc_crit[0],
@@ -39768,29 +39788,56 @@ def get_unit(unit_id):
                 or _pilot_en_red):
             _has_pilot_cond = True
         _is_sd_unit = _unit_has_sd_mechanism(info, unit_id)
-        _unit_hp_atk_tiers = _collect_unit_hp_atk_tiers_meta(ac)
-        _unit_combat_count_atk = _collect_unit_combat_count_atk_meta(ac)
-        _unit_damage_taken_def = _collect_unit_damage_taken_def_meta(ac)
-        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'skills': skills, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'ability_passive_crit_dmg_pct': ability_passive_crit_dmg_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'has_cond_weapon_range': _has_cond_weapon_range, 'has_cond_weapon_range_ssp': _has_cond_weapon_range_ssp, 'has_pilot_cond_passive': _has_pilot_cond, 'cp_weapon_range_mods': _cp_wpn_range_mods, 'cp_weapon_range_mods_ssp': _cp_wpn_range_mods_ssp, 'pilot_weapon_effect_bonuses': _pilot_wpn_fx, 'pilot_tag_weapon_stat_bonuses': _pilot_tag_wpn, 'pilot_en_cost_reduction_pct': _pilot_en_red, 'weapon_en_cost_increase_pct': {'sp': en_cost_inc_b[0], 'ssp': en_cost_inc_sspb[0], 'sp_cond': en_cost_inc_c[0], 'ssp_cond': en_cost_inc_sspc[0]}, 'is_large': il, 'occupied_area_id': safe_int(info.get('occupied_area_id'), 1), 'is_sd': _is_sd_unit, 'recommend_character': recommend_character, 'body_type': info.get('body_type', '1'), 'is_limited_time': unit_id in LIMITED_TIME_UNIT_IDS, 'is_schedule_shell': is_shell, 'main_unit_id': _muid, 'is_transform_alternate': unit_id != _muid, 'limit_break_movie_id': _lb_movie_id, 'gacha_pull_movie_id': _gacha_pull_movie_id}
+        _unit_hp_atk_tiers = _collect_unit_hp_atk_tiers_meta(ac, ssp_mode=False)
+        _unit_combat_count_atk = _collect_unit_combat_count_atk_meta(ac, ssp_mode=False)
+        _unit_damage_taken_def = _collect_unit_damage_taken_def_meta(ac, ssp_mode=False)
+        _unit_hp_atk_tiers_ssp = _collect_unit_hp_atk_tiers_meta(ac, ssp_mode=True)
+        _unit_combat_count_atk_ssp = _collect_unit_combat_count_atk_meta(ac, ssp_mode=True)
+        _unit_damage_taken_def_ssp = _collect_unit_damage_taken_def_meta(ac, ssp_mode=True)
+        # Stack-slider metas are CP even when % is applied client-side (not in spc/sspc buckets).
+        if _unit_hp_atk_tiers or _unit_combat_count_atk or _unit_damage_taken_def:
+            hcond_base = True
+        if _unit_hp_atk_tiers_ssp or _unit_combat_count_atk_ssp or _unit_damage_taken_def_ssp:
+            hcond_ssp = True
+        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'skills': skills, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'ability_passive_crit_dmg_pct': ability_passive_crit_dmg_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond_base, 'has_cond_stats_ssp': hcond_ssp, 'has_cond_weapon_range': _has_cond_weapon_range, 'has_cond_weapon_range_ssp': _has_cond_weapon_range_ssp, 'has_pilot_cond_passive': _has_pilot_cond, 'cp_weapon_range_mods': _cp_wpn_range_mods, 'cp_weapon_range_mods_ssp': _cp_wpn_range_mods_ssp, 'pilot_weapon_effect_bonuses': _pilot_wpn_fx, 'pilot_tag_weapon_stat_bonuses': _pilot_tag_wpn, 'pilot_en_cost_reduction_pct': _pilot_en_red, 'weapon_en_cost_increase_pct': {'sp': en_cost_inc_b[0], 'ssp': en_cost_inc_sspb[0], 'sp_cond': en_cost_inc_c[0], 'ssp_cond': en_cost_inc_sspc[0]}, 'is_large': il, 'occupied_area_id': safe_int(info.get('occupied_area_id'), 1), 'is_sd': _is_sd_unit, 'recommend_character': recommend_character, 'body_type': info.get('body_type', '1'), 'is_limited_time': unit_id in LIMITED_TIME_UNIT_IDS, 'is_schedule_shell': is_shell, 'main_unit_id': _muid, 'is_transform_alternate': unit_id != _muid, 'limit_break_movie_id': _lb_movie_id, 'gacha_pull_movie_id': _gacha_pull_movie_id}
         _koma_id = info.get('koma_resource_id') or ''
         _koma_path = _unit_koma_model_public_path(_koma_id)
         if _koma_id:
             result['koma_resource_id'] = _koma_id
         if _koma_path:
             result['koma_model'] = _koma_path
+        def _localize_dd_meta(meta):
+            if not meta:
+                return meta
+            _dd_aid = str(meta.get('ability_id') or '')
+            for _ab in abilities or []:
+                if str(_ab.get('id') or '') == _dd_aid and (_ab.get('name') or '').strip():
+                    meta = dict(meta)
+                    meta['ability_name'] = (_ab.get('name') or '').strip()
+                    return meta
+                _rep = _ab.get('ssp_replacement') if isinstance(_ab, dict) else None
+                if _rep and str(_rep.get('id') or '') == _dd_aid and (_rep.get('name') or '').strip():
+                    meta = dict(meta)
+                    meta['ability_name'] = (_rep.get('name') or '').strip()
+                    return meta
+                if _ab.get('ssp_only') and str(_ab.get('id') or '') == _dd_aid and (_ab.get('name') or '').strip():
+                    meta = dict(meta)
+                    meta['ability_name'] = (_ab.get('name') or '').strip()
+                    return meta
+            return meta
         if _unit_hp_atk_tiers:
             result['unit_hp_atk_tiers'] = _unit_hp_atk_tiers
         if _unit_combat_count_atk:
             result['unit_combat_count_atk'] = _unit_combat_count_atk
         if _unit_damage_taken_def:
             # Stat parse uses CALC_LANG ability cards; prefer display-locale name for UI labels.
-            _dd_aid = str(_unit_damage_taken_def.get('ability_id') or '')
-            for _ab in abilities or []:
-                if str(_ab.get('id') or '') == _dd_aid and (_ab.get('name') or '').strip():
-                    _unit_damage_taken_def = dict(_unit_damage_taken_def)
-                    _unit_damage_taken_def['ability_name'] = (_ab.get('name') or '').strip()
-                    break
-            result['unit_damage_taken_def'] = _unit_damage_taken_def
+            result['unit_damage_taken_def'] = _localize_dd_meta(_unit_damage_taken_def)
+        if _unit_hp_atk_tiers_ssp:
+            result['unit_hp_atk_tiers_ssp'] = _unit_hp_atk_tiers_ssp
+        if _unit_combat_count_atk_ssp:
+            result['unit_combat_count_atk_ssp'] = _unit_combat_count_atk_ssp
+        if _unit_damage_taken_def_ssp:
+            result['unit_damage_taken_def_ssp'] = _localize_dd_meta(_unit_damage_taken_def_ssp)
         if not view_ranking:
             ssp_mats = _build_unit_ssp_materials(unit_id, lc)
             if ssp_mats:

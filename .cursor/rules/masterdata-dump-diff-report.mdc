@@ -10,11 +10,22 @@ alwaysApply: true
 When the owner says **Report on dump**, **dump report**, **update diff**, **vX.Y changelog from MasterData**, or hands you a dump/HTML diff after a client import — do a **deep dive**. List **all** meaningful diffs clearly. Explain every player-facing term in **EN + TW/HK in-game LANG** (not free translation).
 
 Typical inputs: `Desktop/dump/dump*.cs`, `Diff Report - dumpA vs dumpB.html`, current `ggen_db_app/data/{EN,TW,HK}/{master,lang}/`.  
-Default output: `Desktop/dump/` bilingual markdown (Detail + Not-live companion).
+Default output: `Desktop/dump/` bilingual markdown — **two files**:
 
-## Hard rule
+| File | Role |
+|---|---|
+| `GGEN_Detail_Report_dump…_EN_TW.md` | **Full** deep dive — Enums, MemoryTables, schema fields, TypeIndex, counts, MD status, LANG cites |
+| `GGEN_Not_Live_Yet_Features_dump…_EN_TW.md` | **Short share note only** — community bullets; no Enum/MT soup |
 
-1. **Write for reading** — prefer a community-note shape:
+## Hard rule — Detail vs Not-live (owner — Nov 2026 / 2.8)
+
+1. **All technical detail stays on the Detail report** — every MemoryTable / Enum / schema field / TypeIndex / row count / LIVE·PARTIAL·SCAFFOLD·CLIENT ONLY / file+field cite. Do **not** thin the Detail report to match the share note.
+2. **Not-live companion = shareable TW/EN bullets** — short player-facing list (Unit Skills, IR conditions, Story Event Challenge Battle, victory conditions, “already in client”). Match the owner’s preferred shape (see 2.8 lesson). **No** enum names, MT keys, or schema tables in Not-live unless the owner asks.
+3. Do **not** rewrite Not-live into a second Detail report. If something needs Enums/MTs, it goes in Detail (or a one-line pointer to Detail).
+
+## Hard rule — Detail report content
+
+1. **Write for reading** — prefer a community-note shape for *headings and lead insights*, but keep full technical annexes:
    - Lead with **insights the owner would not already have** (mission condition enums, swap tables, dual SSP/Ult channels, Style product, battle-power on buffs, …) — not a restatement of a six-bullet community note
    - New effects / skills (numbered list)
    - New fields on traits / conditions / Unit Skills (what each enables)
@@ -42,6 +53,8 @@ Default output: `Desktop/dump/` bilingual markdown (Detail + Not-live companion)
 
 - Only “6 new abilities” without the new trait/condition/Unit Skill fields
 - Restating a short community list with nicer formatting and calling it a deep dive
+- Putting Enums / MemoryTables / schema tables into the **Not-live** share file
+- Thinning the **Detail** report so Enums/MTs only appear in Not-live (or nowhere)
 - EN-only report
 - Free-translated TW/HK
 - Calling scaffolds “not in the dump”
@@ -51,6 +64,16 @@ Default output: `Desktop/dump/` bilingual markdown (Detail + Not-live companion)
 - Padding the dump report with site-bug writeups
 
 ## Lessons
+
+### v2.8 Not-live share shape (owner — Nov 2026)
+
+Owner’s preferred Not-live bullets (keep this class; Detail still holds all Enums/MTs):
+
+- 兩個新單位技能（估計之後／月底池）— 爆擊率改變 / 必定爆擊
+- 下次特務模式限制條件 — 指定角色標籤 / 指定角色系列
+- 故事事件追加「挑戰戰鬥」— N、H、EX、Hell、Inferno
+- 勝利條件新增 — 最後才擊敗敵人
+- 其餘已在客戶端 — Splash、略過庫存、活動開放獎勵、夥伴滿解替換、簡介任務、單位搜尋篩選強化
 
 ### v2.7 (owner)
 
