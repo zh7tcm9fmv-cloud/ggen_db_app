@@ -1,0 +1,42 @@
+---
+description: Tag/Series composites — locked 20px plates; smoke before ship (local≠live trap)
+alwaysApply: true
+---
+
+# Tag / Series composites — locked plates
+
+Owner lesson (**Nov 2026**): local Cursor preview looked fine while **live** SERIES/TAG chips stair-stepped, SERIES art stretched, and value text clipped. Cause: `-webkit-text-stroke` + vertical `translateY` inflated the value line box → flex children grew past `--tag-h` → plate `background-size:100% 100%` warped the baked TAG/SERIES WebP. Teko/font load also differs local vs Railway, so “looks OK in preview” is not enough.
+
+## Hard rule
+
+1. **Lock height** — `.tag-composite` and `.tag-part-icon` / `-label` / `-value` stay exactly `--tag-h` (20px). Never let text metrics grow the row.
+2. **No `-webkit-text-stroke`** on `.tag-part-value` / `-text` / `-word`. Light-blue glyph frame = `text-shadow` ring only.
+3. **No vertical optical `translateY`** on value text for “centering.” Use flex `align-items:center` inside the locked box. Crawl animation = **X only**.
+4. **Do not stretch plates** — keep opaque crop aspect (`42/36`, `53/36`) + `background-size:100% 100%` only while height is locked. If height drifts, SERIES/TAG look “broken,” not “slightly off.”
+5. **CDN plates must match local tight crops** — icon `42×36`, label `53×36`. If GitHub `ggen_db_images` still has `53×50` / `50×50` full-canvas plates, live (and any local session with `IMAGE_CDN`) will stretch SERIES/TAG and look stair-stepped even when CSS is correct. After plate edits: **commit + push `ggen_db_images`**, then verify live URL bytes/size.
+
+6. After **any** edit to tag composite CSS/JS/plates (or Teko faces used by values), run:
+
+```text
+python scripts/smoke_tag_composites.py
+python scripts/smoke_tag_composites.py --base https://ggendb.up.railway.app
+```
+
+(Local Flask must be up for the first; second before claiming live OK.)
+
+7. Honest status: CSS-only fix is **local until deploy**; plate fixes are **not live until `ggen_db_images` is pushed**. Do not say “fixed” for Railway until live smoke passes (see `verify-live-before-fixed.mdc`).
+
+## Forbidden
+
+| Pattern | Why |
+|---|---|
+| `-webkit-text-stroke` on tag value | Inflates ink box → clips + stretches plates online |
+| `translateY` optical nudge on `.tag-part-value-text` | Fights `overflow:hidden`; locale tweaks overshoot |
+| `height:100%` / stretch without `max-height:var(--tag-h)` | Content min-size grows the composite |
+| Preview-only visual OK as ship gate | Font/subpixel differ local vs live |
+
+## Checklist before “done”
+
+- [ ] `smoke_tag_composites.py` exit 0 on local
+- [ ] Live base smoke if owner will wire Railway
+- [ ] Bundle rebuilt (`node scripts/build_shell_css.mjs`; JS gate if `app.js` touched)
