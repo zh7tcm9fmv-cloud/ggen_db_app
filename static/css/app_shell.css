@@ -6407,6 +6407,46 @@ textarea:focus-visible,
   #panel-banner_timeline .bt-gacha-preview-btn:hover{
     border-color:rgba(0,212,255,.55);
   }
+  /* Filter dropdowns sit in a tight flex row; later siblings paint over an
+     outset ring and eat the right edge (Firefox). Keep the frame inside. */
+  .rarity-filter-btn:hover,
+  .role-filter-dd-btn:hover{
+    box-shadow:inset 0 0 0 1px rgba(0,212,255,.35);
+  }
+}
+/* Raise the hovered/open wrap above neighbors so border + ring stay intact. */
+.rarity-filter-wrap:hover,
+.rarity-filter-wrap:focus-within,
+.rarity-filter-wrap:has(> [aria-expanded="true"]),
+.role-filter-wrap:hover,
+.role-filter-wrap:focus-within,
+.role-filter-wrap:has(> [aria-expanded="true"]),
+.source-filter-wrap:hover,
+.source-filter-wrap:focus-within,
+.source-filter-wrap:has(> [aria-expanded="true"]),
+.lineage-filter-wrap:hover,
+.lineage-filter-wrap:focus-within,
+.lineage-filter-wrap:has(> [aria-expanded="true"]),
+.series-filter-wrap:hover,
+.series-filter-wrap:focus-within,
+.series-filter-wrap:has(> [aria-expanded="true"]),
+.terrain-filter-wrap:hover,
+.terrain-filter-wrap:focus-within,
+.terrain-filter-wrap:has(> [aria-expanded="true"]),
+.debuff-filter-wrap:hover,
+.debuff-filter-wrap:focus-within,
+.debuff-filter-wrap:has(> [aria-expanded="true"]),
+.mechanism-filter-wrap:hover,
+.mechanism-filter-wrap:focus-within,
+.mechanism-filter-wrap:has(> [aria-expanded="true"]),
+.skill-filter-wrap:hover,
+.skill-filter-wrap:focus-within,
+.skill-filter-wrap:has(> [aria-expanded="true"]),
+.ability-filter-wrap:hover,
+.ability-filter-wrap:focus-within,
+.ability-filter-wrap:has(> [aria-expanded="true"]){
+  z-index:8;
+  overflow:visible;
 }
 .ranking-mode-btn.active,
 .ranking-stat-pill.active,
