@@ -369,6 +369,44 @@
   box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.25);
 }
 
+/* Attack MS: S.Attack toggle on ungated SAC pilot cards only (not filter bar). */
+.msy-pilot-sac-toggle.ubp-support-counter-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 6px;
+  width: 28px;
+  height: 26px;
+  padding: 0;
+  border-radius: var(--radius-sm, 6px);
+  border: 1px solid var(--border-color, #2a3654);
+  background: rgba(13, 19, 33, 0.85);
+  cursor: pointer;
+}
+.msy-pilot-sac-toggle .ubp-support-counter-icon {
+  display: inline-flex;
+  width: 18px;
+  height: 18px;
+}
+.msy-pilot-sac-toggle .ubp-support-counter-trait {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  filter: grayscale(0.35) brightness(0.95);
+  opacity: 0.85;
+}
+.msy-pilot-sac-toggle.is-active,
+.msy-pilot-sac-toggle.active {
+  border-color: rgba(56, 189, 248, 0.75);
+  background: rgba(14, 116, 144, 0.35);
+  box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.25);
+}
+.msy-pilot-sac-toggle.is-active .ubp-support-counter-trait,
+.msy-pilot-sac-toggle.active .ubp-support-counter-trait {
+  filter: none;
+  opacity: 1;
+}
+
 .msy-pilot-card--defender .msy-pilot-dmg {
   color: #93c5fd;
   cursor: help;

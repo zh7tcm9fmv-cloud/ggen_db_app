@@ -76,7 +76,8 @@
 
   function cacheKey(unitId) {
     // Include deploy + this script's ?v= so Support×UR field wiring isn't stuck on an old entry.
-    return appVersion() + ':' + scriptVersion() + ':' + currentLang() + ':' + String(unitId || '');
+    // sac6: Attack MS S.Attack toggle on ungated SAC cards only (not filter bar).
+    return appVersion() + ':' + scriptVersion() + ':sac6:' + currentLang() + ':' + String(unitId || '');
   }
 
   function getCachedEntry(unitId) {
@@ -276,6 +277,51 @@
     return unitRoleId() === SUPPORT_ROLE_ID;
   }
 
+  /** Attack-MS Supporters / S.Attack toggle — rank by expected (crit-weighted) damage. */
+  function usesExpectedDmgRank() {
+    if (isDefenderBoard()) return false;
+    if (isSupportRoleMode()) return true;
+    return !!state.supportCounterOn;
+  }
+
+  /** Keep SAC ATK% discoverability — skills-off boards strip Support Attack MS ATK %. */
+  function ensureSupportAttackSkillsOn() {
+    if (isSupportRoleMode() || state.supportCounterOn) {
+      state.skillsOn = true;
+    }
+  }
+
+  /**
+   * Attack MS S.Attack toggle: only ungated SAC ATK% kits (e.g. Argi +10%) change numbers.
+   * Support-gated SAC lines do not apply on Attack MS — leave those pilots unchanged.
+   * Scale damage fields by (100+pct)/100 (same ATK% lever as /cal).
+   */
+  function applyAttackMsUngatedSacOverlay(pilots) {
+    if (!isAttackUnit() || !state.supportCounterOn) return pilots || [];
+    return (pilots || []).map(function (p) {
+      if (!p) return p;
+      var pct = p.support_counter_atk_pct | 0;
+      if (pct <= 0) return p;
+      if (p._sacAtkOverlayApplied) return p;
+      var mult = (100 + pct) / 100;
+      var row = Object.assign({}, p);
+      if (p.char && typeof p.char === 'object') row.char = Object.assign({}, p.char);
+      ['expected_dmg', 'super_crit_dmg', 'crit_dmg', 'normal_dmg', 'peak_dmg', 'score', 'max_damage', 'damage'].forEach(function (k) {
+        if (row[k] == null || row[k] === '') return;
+        var v = parseFloat(row[k]);
+        if (!isFinite(v) || v <= 0) return;
+        row[k] = Math.round(v * mult);
+      });
+      row._sacAtkOverlayApplied = true;
+      return row;
+    });
+  }
+
+  function sortDamageTop10(rows, mode) {
+    var list = applyAttackMsUngatedSacOverlay(rows || []);
+    return sortPilotsByCalcDamage(list, mode).slice(0, 10);
+  }
+
   function roleIconsHtml(ids) {
     return (ids || []).map(function (id) {
       var src = ROLE_FILTER_ICONS[String(id)];
@@ -459,9 +505,9 @@
   function syncSupportCounterToggle() {
     var btn = global.document.getElementById('ubpSupportCounterBtn');
     if (!btn) return;
-    /* Support-type MS only — Attack kits must not show this toggle. */
-    var show = isSupportUnit() && !isDefenderBoard();
-    if (!show) state.supportCounterOn = false;
+    /* Header toggle: Support MS only. Attack MS uses per-card toggle on ungated SAC kits. */
+    var show = !isDefenderBoard() && isSupportUnit();
+    if (isDefenderBoard()) state.supportCounterOn = false;
     if (show) btn.removeAttribute('hidden');
     else btn.setAttribute('hidden', '');
     btn.style.display = show ? '' : 'none';
@@ -473,6 +519,34 @@
     btn.title = on
       ? (t('unit_best_pilot_support_counter_on') || 'Showing Support Attack/Counter ATK % rankings')
       : (t('unit_best_pilot_support_counter') || 'Support Attack/Counter');
+  }
+
+  function supportCounterTraitIconSrc() {
+    return imgUrl('/static/images/Trait/trait_10030102.webp');
+  }
+
+  /** Attack MS: S.Attack toggle lives on ungated SAC cards (pct > 0), not the filter bar. */
+  function attackMsCardSacToggleHtml(pilot) {
+    if (!isAttackUnit() || isDefenderBoard()) return '';
+    var pct = (pilot && pilot.support_counter_atk_pct) | 0;
+    if (pct <= 0) return '';
+    var on = !!state.supportCounterOn;
+    var tip = on
+      ? (t('unit_best_pilot_support_counter_attack_on')
+        || 'S.Attack ON — this pilot’s ungated SAC ATK +{n}% is in Expected').replace('{n}', String(pct))
+      : (t('unit_best_pilot_support_counter_attack')
+        || 'Toggle S.Attack — apply ungated SAC ATK +{n}% to this pilot only').replace('{n}', String(pct));
+    var label = t('unit_best_pilot_support_counter') || 'Support Attack/Counter';
+    return '<button type="button" class="msy-pilot-sac-toggle ubp-support-counter-btn'
+      + (on ? ' is-active active' : '') + '"'
+      + ' data-ubp-filter="support_counter"'
+      + ' aria-pressed="' + (on ? 'true' : 'false') + '"'
+      + ' title="' + escAttr(tip) + '"'
+      + ' aria-label="' + escAttr(label) + '">'
+      + '<span class="ubp-support-counter-icon" aria-hidden="true">'
+      + '<img class="ubp-support-counter-trait" src="' + supportCounterTraitIconSrc() + '" alt="" width="18" height="18"'
+      + ' loading="lazy" decoding="async" onerror="this.style.display=\'none\'">'
+      + '</span></button>';
   }
 
   function syncPanelTitle() {
@@ -774,6 +848,7 @@
     closeMetricDropdown();
     if (state.roleMode === next) return;
     state.roleMode = next;
+    if (next === 'support' && isAttackUnit()) state.skillsOn = true;
     if (!shinnFilterRelevant()) state.excludeShinn = false;
     syncFilterButtons();
     syncPanelTitle();
@@ -792,10 +867,17 @@
       if (!shinnFilterRelevant()) return;
       state.excludeShinn = !state.excludeShinn;
     } else if (kind === 'no_skills') {
+      /* Attack-MS Support Attack list / Support-MS SAC keep Skills on — skills-off drops SAC ATK%. */
+      if (isSupportRoleMode() || state.supportCounterOn) {
+        state.skillsOn = true;
+        syncFilterButtons();
+        renderActivePanel();
+        return;
+      }
       state.skillsOn = !state.skillsOn;
       if (!state.skillsOn) state.supportCounterOn = false;
     } else if (kind === 'support_counter') {
-      if (!isSupportUnit() || isDefenderBoard()) return;
+      if (isDefenderBoard() || !(isSupportUnit() || isAttackUnit())) return;
       state.supportCounterOn = !state.supportCounterOn;
       if (state.supportCounterOn) state.skillsOn = true;
     } else {
@@ -845,6 +927,10 @@
 
   function _pilotSortDamage(p, mode) {
     if (!p) return 0;
+    if (usesExpectedDmgRank()) {
+      var exp = parseFloat(p.expected_dmg != null ? p.expected_dmg : 0) || 0;
+      if (exp > 0) return exp;
+    }
     if (mode === 'normal') return parseFloat(p.normal_dmg != null ? p.normal_dmg : p.damage) || 0;
     if (mode === 'crit') return parseFloat(p.crit_dmg != null ? p.crit_dmg : p.damage) || 0;
     return parseFloat(p.super_crit_dmg != null ? p.super_crit_dmg : (p.damage != null ? p.damage : p.crit_dmg)) || 0;
@@ -904,6 +990,7 @@
     var board = modeEntry(entry);
     if (!board) return { pilots: [], partial: false };
     var mode = state.rankMode || 'super_crit';
+    ensureSupportAttackSkillsOn();
 
     if (isDefenderBoard()) {
       var defRows = state.skillsOn
@@ -929,6 +1016,7 @@
     // the same /cal pairs) — never client-filter the mixed UR-heavy store.
     // Prefer non-empty lists — mode boards from ensureModeBoard used to ship [] and
     // block fallback ([] is truthy in JS).
+    /* Support-type MS only: full SAC /cal board. Attack MS uses ungated overlay below. */
     if (state.supportCounterOn && isSupportUnit()) {
       var noUrSac = isNoUrMode();
       var urOnlySac = isUrOnlyMode();
@@ -985,16 +1073,16 @@
           'support_counter_partial'
         );
       }
-      var sac = sacPick.rows;
+      var sac = sacPick.rows || [];
       var rowsSac = sac;
       var partialSac = !(sac && sac.length >= 10) || !!sacPick.partial;
       // No Shinn only when not already implied by No UR; same-role already on dedicated board.
       if (noShinnSac && !noUrSac) {
-        rowsSac = filterPilotsLocal(sac, false, true, false, false, false);
+        rowsSac = filterPilotsLocal(rowsSac, false, true, false, false, false);
         partialSac = true;
       }
       return {
-        pilots: sortPilotsByCalcDamage(rowsSac, mode).slice(0, 10),
+        pilots: sortDamageTop10(rowsSac, mode),
         partial: partialSac || rowsSac.length < 10,
         supportCounter: true
       };
@@ -1104,7 +1192,7 @@
       }
 
       return {
-        pilots: sortPilotsByCalcDamage(rows, mode).slice(0, 10),
+        pilots: sortDamageTop10(rows, mode),
         partial: partial || rows.length < 10,
         skillsOff: true,
         /* Skills-off Supporters is not the SAC Support Attack board. */
@@ -1150,8 +1238,17 @@
         take(filterPilotsLocal(board.pilots || [], true, true, false, true), true);
       }
     } else if (supportRole) {
-      if (board.pilots_support_role && board.pilots_support_role.length) {
-        take(board.pilots_support_role, !!board.support_role_partial && board.pilots_support_role.length < 10);
+      /* Mixed Support top-20 is cut by Super Crit at bake — high expected / SAC kits
+         (e.g. Argi +10%) can sit only on Support×UR. Merge then re-rank by expected. */
+      var suppMain = board.pilots_support_role || [];
+      var suppUr = board.pilots_support_role_ur_only || [];
+      if (suppMain.length || suppUr.length) {
+        var mergedSupp = mergePilotListsByChar(suppMain, suppUr, mode);
+        take(
+          mergedSupp.length ? mergedSupp : (suppMain.length ? suppMain : suppUr),
+          !!(board.support_role_partial || board.support_role_ur_only_partial)
+            || (mergedSupp.length || suppMain.length || suppUr.length) < 10
+        );
       } else {
         take(filterPilotsLocal(board.pilots || [], false, false, false, true), true);
       }
@@ -1222,9 +1319,10 @@
       rows = board.pilots || [];
     }
     return {
-      pilots: sortPilotsByCalcDamage(rows, mode).slice(0, 10),
+      pilots: sortDamageTop10(rows, mode),
       partial: !!partial || rows.length < 10,
-      supportAttackBoard: !!(supportRole && isAttackUnit())
+      supportAttackBoard: !!(supportRole && isAttackUnit()),
+      supportCounter: !!(isAttackUnit() && state.supportCounterOn)
     };
   }
 
@@ -1365,6 +1463,11 @@
         + esc(t('unit_best_pilot_filter_partial')
           || 'Showing calculator pilots that match this filter from the main top 10. A full non-UR / No-Shinn top 10 needs a dedicated calculator rebuild.')
         + '</div>';
+    } else if (view.supportCounter && isAttackUnit()) {
+      note = '<div class="unit-best-pilot-filter-note">'
+        + esc(t('unit_best_pilot_support_counter_attack_note')
+          || 'S.Attack ON (Attack MS): only ungated SAC ATK% changes Expected (e.g. Argi +10%). Other Supporters stay the same — their SAC lines need a Support-type MS.')
+        + '</div>';
     } else if (view.supportCounter) {
       note = '<div class="unit-best-pilot-filter-note">'
         + esc(t('unit_best_pilot_support_counter_note')
@@ -1373,7 +1476,7 @@
     } else if (view.supportAttackBoard) {
       note = '<div class="unit-best-pilot-filter-note">'
         + esc(t('unit_best_pilot_support_attack_note')
-          || 'Supporters on Attack MS: Support Attack ranking (fair /cal: LB3, Eternal Expert, no OP/supporter). Matching affinity is critical (+10–15% Damage Dealt). SAC ATK % only when the pilot’s line matches this kit. Cards show SAC ATK +N% when it applies. Personal /cal shares with stage DEF/LB2/OPs can rank differently.')
+          || 'Supporters on Attack MS: ranked by expected damage. Use the S.Attack icon on ungated SAC pilots (e.g. Argi) to apply their ATK% — other Supporters unchanged. Fair /cal: LB3, Eternal Expert, no OP/supporter.')
         + '</div>';
     } else if (view.skillsOff) {
       note = '<div class="unit-best-pilot-filter-note">'
@@ -1552,10 +1655,10 @@
       parts += '<div class="msy-pilot-dmg-dealt-pct" title="' + escAttr(title) + '">'
         + esc(dmgLine) + '</div>';
     }
-    /* Only stamp when this pilot actually gets SAC ATK % on this kit (e.g. Argi +10%).
-       Do not put a blank “SAC ATK %” on every Supporters-board row. */
+    /* Attack MS: badge only while card S.Attack is on. Support MS SAC board: always if stamped. */
     var sacPct = pilot.support_counter_atk_pct | 0;
-    if (sacPct > 0) {
+    var showSacBadge = sacPct > 0 && (!isAttackUnit() || !!state.supportCounterOn);
+    if (showSacBadge) {
       var sacTpl = t('unit_best_pilot_sac_atk_pct') || 'SAC ATK +{n}%';
       var sacLine = sacTpl.replace('{n}', String(sacPct));
       var sacTip = t('unit_best_pilot_sac_atk_tip')
@@ -1569,6 +1672,12 @@
 
   function pilotDamage(pilot, modeOverride) {
     if (!pilot) return 0;
+    /* Support Attack discoverability: crit-weighted expected damage (Argi 65% crit + SAC).
+       Must apply even when sort passes rankMode — otherwise UI shows Expected but ranks by Super Crit. */
+    if (usesExpectedDmgRank()) {
+      var exp = parseFloat(pilot.expected_dmg != null ? pilot.expected_dmg : 0) || 0;
+      if (exp > 0) return exp;
+    }
     var mode = modeOverride || state.rankMode || 'super_crit';
     var field = RANK_MODE_DMG[mode] || 'super_crit_dmg';
     var cr = pilot.crit_rate | 0;
@@ -1767,6 +1876,7 @@
         + '</div></div>';
     }
     var mode = state.rankMode || 'normal';
+    var rankExpected = usesExpectedDmgRank();
     var dmg = pilotDamage(pilot);
     var subD = '';
     var critPct = pilot.crit_rate | 0;
@@ -1789,7 +1899,17 @@
     var altDmgHtml = '';
     var dmgTitle = '';
     var showDual = !isGc && critPct > 0 && normalDmg > 0 && critDmg > 0 && normalDmg !== critDmg;
-    if (showDual) {
+    if (rankExpected) {
+      /* Expected primary; keep Super Crit as secondary so users can still compare. */
+      if (critDmg > 0 && critDmg !== dmg) {
+        altDmgHtml = '<div class="msy-pilot-dmg-alt" title="'
+          + escAttr(t('msy_dmg_if_crit_tip') || 'Damage if this attack crits') + '">'
+          + esc(metricLabel('super_crit')) + ' ' + fmtN(critDmg) + '</div>';
+      }
+      dmgTitle = (t('unit_best_pilot_expected_tip')
+        || 'Expected damage (crit rate weighted). Better match for Support Attack feel than forced Super Critical.')
+        + (critDmg > 0 ? ' · ' + metricLabel('super_crit') + ': ' + fmtN(critDmg) : '');
+    } else if (showDual) {
       if (mode === 'normal') {
         altDmgHtml = '<div class="msy-pilot-dmg-alt" title="'
           + escAttr(t('msy_dmg_if_crit_tip') || 'Damage if this attack crits') + '">'
@@ -1804,15 +1924,18 @@
           .replace('{c}', fmtN(critDmg)).replace('{n}', fmtN(normalDmg));
       }
     }
-    /* Primary number follows the metric dropdown — label Crit/Super Crit so it is not mistaken for Normal. */
-    var primaryKind = metricLabel(mode);
+    /* Primary number: Expected on Support Attack discoverability; else metric dropdown. */
+    var primaryKind = rankExpected
+      ? (t('unit_best_pilot_expected') || 'Expected')
+      : metricLabel(mode);
     var dmgKindCls = 'msy-pilot-dmg'
-      + (mode === 'crit' || mode === 'super_crit' || isGc ? ' msy-pilot-dmg--crit' : '')
-      + (mode === 'normal' ? ' msy-pilot-dmg--normal' : '');
+      + (rankExpected || mode === 'crit' || mode === 'super_crit' || isGc ? ' msy-pilot-dmg--crit' : '')
+      + (!rankExpected && mode === 'normal' ? ' msy-pilot-dmg--normal' : '');
     var dmgInner = '<span class="msy-pilot-dmg-kind">' + esc(primaryKind) + '</span>'
       + '<span class="msy-pilot-dmg-val">' + fmtN(dmg) + '</span>';
     var skillIcons = state.skillsOn ? pilotActiveSkillIconsHtml(pilot) : '';
-    return '<div class="msy-pilot-card">'
+    var sacCardToggle = attackMsCardSacToggleHtml(pilot);
+    return '<div class="msy-pilot-card' + (sacCardToggle ? ' msy-pilot-card--has-sac-toggle' : '') + '">'
       + '<span class="msy-pilot-rank">' + esc(String(pilot.rank || '')) + '</span>'
       + '<button type="button" class="msy-pilot-open" title="' + escAttr(t('msy_open_char') || 'Open pilot') + '" onclick="openDetail(\'character\',\'' + escJs(String(c.id)) + '\')">'
       + '<div class="msy-pilot-thumb">' + pilotThumb(c) + '</div>'
@@ -1828,6 +1951,7 @@
       + altDmgHtml
       + pilotFormulaStatHtml(pilot)
       + skillIcons
+      + sacCardToggle
       + '</div></div>';
   }
 
@@ -2041,7 +2165,7 @@
     var q = 'lang=' + encodeURIComponent(lang)
       + '&lb_tier=3&def_tier=3&rank_mode=' + encodeURIComponent(mode)
       + '&top_pilots=10&all_modes=' + allModes
-      + '&_v=' + encodeURIComponent(appVersion() || '0');
+      + '&_v=' + encodeURIComponent((appVersion() || '0') + '-sac6');
     var fetchOpts = { credentials: 'same-origin', cache: 'no-store' };
     if (opts.priority === 'high') fetchOpts.priority = 'high';
     else if (opts.priority === 'low') fetchOpts.priority = 'low';
@@ -2669,6 +2793,7 @@
     state.loading = false;
     state.roleMode = 'all';
     state.skillsOn = true;
+    state.supportCounterOn = false;
     state.boardKind = 'damage';
     state.isDefenseUnit = !!(d && String(d.role_id || '') === DEFENSE_ROLE_ID);
     state.loadGen++;

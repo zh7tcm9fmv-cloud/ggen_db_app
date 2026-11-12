@@ -2020,7 +2020,7 @@ _MSY_DISK_VERSION = 'v14'
 _BSP_DC_RULES_VERSION = 16  # Support UR + Support mixed reserved early (SR Supports were capped out)
 _DEFENDER_BOARD_VERSION = 9  # Stale v0 boards (all SD=18 / no Force Guard) must rebuild
 _SKILLS_OFF_BOARD_VERSION = 2
-_SUPPORT_COUNTER_BOARD_VERSION = 5  # v5: Attack MS Supporters-only boards from SAC pairs (+ ungated SAC ATK%)
+_SUPPORT_COUNTER_BOARD_VERSION = 6  # v6: ungated SAC ATK% (Argi EX +10% on any MS) rebake + badge annotate
 _BSP_DC_BUILD_ENGINE = 'calculateDamage'
 # From v16 onward: formula/criteria rebuilds only refresh top-N + newly added units.
 # Full-catalog rebuilds are intentional opt-in only (users rarely open the long tail).
@@ -4761,6 +4761,30 @@ def _pair_support_counter_atk_pct(uid, cid, lc):
     return int(total)
 
 
+def _annotate_support_counter_atk_pct(pilots, uid, lc):
+    """Stamp support_counter_atk + matching SAC ATK % on BSP pilot rows (serve or build)."""
+    if not pilots:
+        return pilots
+    A = _app()
+    uid = A.normalize_id(uid)
+    for p in pilots:
+        if not isinstance(p, dict):
+            continue
+        p['support_counter_atk'] = True
+        p['active_skills_on'] = True
+        ch = p.get('char') if isinstance(p.get('char'), dict) else {}
+        cid = A.normalize_id(ch.get('id'))
+        if not cid:
+            p.pop('support_counter_atk_pct', None)
+            continue
+        pct = _pair_support_counter_atk_pct(uid, cid, lc)
+        if pct > 0:
+            p['support_counter_atk_pct'] = pct
+        else:
+            p.pop('support_counter_atk_pct', None)
+    return pilots
+
+
 def attach_dc_support_counter_rankings(g, pairs_by_tier, pilot_ids, exclude, lc, top_pilots):
     """Attach Support Attack/Counter MS ATK % board (skills on, supportCounterAtk=true).
 
@@ -4794,17 +4818,7 @@ def attach_dc_support_counter_rankings(g, pairs_by_tier, pilot_ids, exclude, lc,
 
     def _mark_sac(rk):
         for block in (rk or {}).values():
-            for p in block.get('pilots') or []:
-                p['support_counter_atk'] = True
-                p['active_skills_on'] = True
-                ch = p.get('char') if isinstance(p.get('char'), dict) else {}
-                cid = A.normalize_id(ch.get('id'))
-                if cid:
-                    pct = _pair_support_counter_atk_pct(uid, cid, lc)
-                    if pct > 0:
-                        p['support_counter_atk_pct'] = pct
-                    else:
-                        p.pop('support_counter_atk_pct', None)
+            _annotate_support_counter_atk_pct(block.get('pilots') or [], uid, lc)
         return rk
 
     def _rank_pairs(pair_rows):
@@ -6380,6 +6394,44 @@ def _bsp_pilot_sort_damage(pilot, rank_mode='super_crit'):
     return val
 
 
+def _bsp_merge_pilot_stores_prefer_expected(primary, secondary, limit, rank_mode='super_crit'):
+    """Union Support stores by char id.
+
+    Mixed Support top-N is cut by Super Crit at bake; high expected / SAC kits (e.g. Argi)
+    can live only on Support×UR. Merge so Attack-MS Supporters discoverability sees them.
+    Prefer higher expected_dmg; fall back to metric damage.
+    """
+    A = _app()
+    by = {}
+
+    def _key(p):
+        exp = int((p or {}).get('expected_dmg') or 0)
+        if exp > 0:
+            return (exp, _bsp_pilot_sort_damage(p, rank_mode))
+        return (0, _bsp_pilot_sort_damage(p, rank_mode))
+
+    for src in (primary or [], secondary or []):
+        for p in src:
+            if not isinstance(p, dict):
+                continue
+            ch = p.get('char') if isinstance(p.get('char'), dict) else {}
+            cid = A.normalize_id(ch.get('id'))
+            if not cid:
+                continue
+            prev = by.get(cid)
+            if prev is None or _key(p) > _key(prev):
+                by[cid] = dict(p)
+                if isinstance(ch, dict):
+                    by[cid]['char'] = dict(ch)
+    merged = sorted(by.values(), key=_key, reverse=True)
+    out = []
+    for i, p in enumerate(merged[: max(1, int(limit or 0))]):
+        row = dict(p)
+        row['rank'] = i + 1
+        out.append(row)
+    return out
+
+
 def _bsp_copy_pilot_rows(rows):
     """Shallow-copy pilot dicts so rank/locale patches never mutate published cache."""
     out = []
@@ -6806,6 +6858,25 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
     support_role = _rank(support_role, store_n)
     support_role_ur_only = _rank(support_role_ur_only, store_n)
     support_role_no_ur = _rank(support_role_no_ur, store_n)
+    # Attack MS Supporters list must include Support×UR SAC/expected kits cut from mixed store.
+    if _unit_is_attack_role(uid):
+        support_role = _bsp_merge_pilot_stores_prefer_expected(
+            support_role, support_role_ur_only, store_n, mode,
+        )
+        # Stamp matching SAC % only (do not mark whole list as SAC board).
+        A = _app()
+        for p in support_role or []:
+            if not isinstance(p, dict):
+                continue
+            ch = p.get('char') if isinstance(p.get('char'), dict) else {}
+            cid = A.normalize_id(ch.get('id'))
+            if not cid:
+                continue
+            pct = _pair_support_counter_atk_pct(uid, cid, lc)
+            if pct > 0:
+                p['support_counter_atk_pct'] = pct
+            else:
+                p.pop('support_counter_atk_pct', None)
     no_active = _rank(no_active, store_n)
     support_counter = _rank(support_counter, store_n)
     support_counter_no_ur = _rank(support_counter_no_ur, store_n)
@@ -7032,6 +7103,17 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
                 mode, fallback_pilots=[],
             )
         )
+        # Always re-stamp SAC ATK % from live ability parse (ungated EX lines like Argi +10%).
+        # Published boards may predate the empty-condition fix and omit support_counter_atk_pct.
+        for _plist in (
+            pilots_support_counter,
+            pilots_support_counter_no_ur,
+            pilots_support_counter_ur_only,
+            pilots_support_counter_same_role,
+            pilots_support_counter_no_ur_same_role,
+            pilots_support_counter_ur_only_same_role,
+        ):
+            _annotate_support_counter_atk_pct(_plist, uid, lc)
         # Attack MS + Supporters only → Support Attack ranking (matching affinity + SAC ATK%).
         # SAC toggle stays Support-MS-only in the UI; this remaps the Supporters filter.
         if _unit_is_attack_role(uid):
@@ -7087,24 +7169,12 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
                     fallback_pilots=pilots_support_counter_no_ur or pilots_support_counter,
                     support_role=True, no_ur=True, no_shinn=True, unit_id=uid,
                 )
-            _A = _app()
             for _plist in (
                 pilots_support_role,
                 pilots_support_role_ur_only,
                 pilots_support_role_no_ur,
             ):
-                for p in _plist or []:
-                    if not isinstance(p, dict):
-                        continue
-                    p['support_counter_atk'] = True
-                    ch = p.get('char') if isinstance(p.get('char'), dict) else {}
-                    cid = _A.normalize_id(ch.get('id'))
-                    if cid:
-                        pct = _pair_support_counter_atk_pct(uid, cid, lc)
-                        if pct > 0:
-                            p['support_counter_atk_pct'] = pct
-                        else:
-                            p.pop('support_counter_atk_pct', None)
+                _annotate_support_counter_atk_pct(_plist, uid, lc)
         pilots_support_off, _support_off_partial = _bsp_dc_variant_pilots(
             g_row.get('rankings_no_active_skills_support_role')
             or row.get('rankings_no_active_skills_support_role'),
