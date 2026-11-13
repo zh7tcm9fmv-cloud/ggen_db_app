@@ -17226,6 +17226,11 @@ if(!b)return false;
 if(b.pilotGroups&&b.pilotGroups.length&&!_dcAbilityCondContextMeetsGroups(ud,cd,b.pilotGroups))return false;
 return true;
 }
+/** After unit/pilot change: arm ability default when the pair has an active squad UI; otherwise keep typed % (manual 其它加成) so pilot-swap does not wipe it. */
+function _dcRefreshSquadCondPctForCurrentPair(){
+const cd=S.dc.atkCharData,ud=S.dc.atkUnitData;
+if(_dcCharShouldShowSquadCondUi(cd,ud))S.dc.squadCondPct=_dcDefaultSquadCondPctForCdUd(cd,ud);
+}
 function _dcSquadRecvGroupMet(ud,cd,rg){
 if(!rg)return true;
 const conds=rg.conditions||[];
@@ -17425,9 +17430,17 @@ return;
 }
 const raw=Math.max(0,S.dc.squadCondPct|0);
 const b=_scFindSquadConditionBinding(cd,ud);
+const applyManualTypedSquadPct=()=>{
+/* Same as “no auto binding”: typed 小队条件 models flat ATK+DEF (sheet 其它加成, etc.). */
+const v=Math.min(100,raw);
+S.dc.squadCondAtkPct=v;
+S.dc.squadCondDefPct=v;
+};
 if(b){
 if(b.pilotGroups&&b.pilotGroups.length&&!_dcAbilityCondContextMeetsGroups(ud,cd,b.pilotGroups)){
-/* fall through — still allow Big-Rang Zeon aura / external auras */
+/* Binding exists but pilot gate fails (e.g. Creuset EX only on Providence, user on Crossbone).
+   UI treats this as manual 0–100 — must apply typed %; do not drop it. External auras still stack below. */
+applyManualTypedSquadPct();
 }else{
 if(b.kind==='dual_flat_ad'){
 const eff=_dcEffectiveDualFlatAdPct(b,ud,cd,raw);
@@ -17462,10 +17475,7 @@ S.dc.squadCondDefPct=0;
 }
 }
 }else{
-/* Manual typed % with no auto binding: ATK+DEF when used to model flat AD auras. */
-const v=Math.min(100,raw);
-S.dc.squadCondAtkPct=v;
-S.dc.squadCondDefPct=v;
+applyManualTypedSquadPct();
 }
 applyExtAndBigRang();
 }
@@ -17825,8 +17835,7 @@ const _bw=_dcPickBestWeaponIndices(d);
 S.dc.wpnIdx=_bw.wpnIdx;
 S.dc.wpnLv=_bw.wpnLv;
 _dcDetectVigorCondAbilities(d);
-if(_dcCharShouldShowSquadCondUi(S.dc.atkCharData,S.dc.atkUnitData))S.dc.squadCondPct=_dcDefaultSquadCondPctForCdUd(S.dc.atkCharData,S.dc.atkUnitData);
-else S.dc.squadCondPct=0;
+_dcRefreshSquadCondPctForCurrentPair();
 S.dc.optionParts=[];S.dc.supporters=[];
 renderDcAtkUnit();
 renderDcAtkChar();
@@ -20966,8 +20975,7 @@ _dcSyncCharCondPassiveFromPair();
 const autoV=S.dc.atkCharData&&_dcShouldAutoSuperchargedVigorOnCharCp(S.dc.atkCharData);
 if(autoV)setDcMp('super');
 else _dcAutoSetVigor();
-if(_dcCharShouldShowSquadCondUi(S.dc.atkCharData,S.dc.atkUnitData))S.dc.squadCondPct=_dcDefaultSquadCondPctForCdUd(S.dc.atkCharData,S.dc.atkUnitData);
-else S.dc.squadCondPct=0;
+_dcRefreshSquadCondPctForCurrentPair();
 renderDcAtkUnit();renderDcAtkChar();
 renderDcOptionParts();renderDcSupporters();
 _dcSyncAtkModeUiFromState();
