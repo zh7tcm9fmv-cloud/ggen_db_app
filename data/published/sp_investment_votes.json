@@ -14423,7 +14423,6 @@
     "ip_14afa31f0b70357bdfca94a23104aae0:unit:1007001160:ssp": "up",
     "ip_02a67e4455df6f052b03ea0ee0efda67:unit:1175005500:ssp": "up",
     "ip_2145b6d79bf1b13d336d4996d632db55:unit:1175001000:ssp": "up",
-    "ip_2145b6d79bf1b13d336d4996d632db55:unit:1175001900:ssp": "up",
     "ip_66fe741ec399c848e3a954c08daf5654:unit:1850001400:sp": "up",
     "ip_3b3bd0ae8828391ed6c3bc8eb5cc4600:character:1370000202:sp": "up",
     "ip_3b3bd0ae8828391ed6c3bc8eb5cc4600:character:1370003702:sp": "up",
@@ -19141,7 +19140,9 @@
     "ip_4af9b143e5ad651962aa1667551780de:unit:1115000400:ssp": "up",
     "ip_4af9b143e5ad651962aa1667551780de:unit:1007000960:ssp": "up",
     "ip_4af9b143e5ad651962aa1667551780de:unit:1409000200:ssp": "up",
-    "ip_8fd5468e71e6ff5ad53d33d2a1b3f05a:unit:1007001160:sp": "up"
+    "ip_8fd5468e71e6ff5ad53d33d2a1b3f05a:unit:1007001160:sp": "up",
+    "ip_2145b6d79bf1b13d336d4996d632db55:unit:1370005900:ssp": "up",
+    "ip_2145b6d79bf1b13d336d4996d632db55:unit:1175001900:ssp": "up"
   },
   "targets": {
     "unit:1155000700:sp": {
@@ -22293,7 +22294,7 @@
       "down": 23
     },
     "unit:1370005900:ssp": {
-      "up": 227,
+      "up": 228,
       "down": 14
     },
     "unit:1370005700:sp": {
