@@ -4465,6 +4465,9 @@ def classify_unit_weapon_trait_debuff_keys(line):
         keys.add('en_dmg')
     if (
         (re.search(r'\bhp restoration\b', sl) and 'damage dealt' not in sl and 'based on' not in sl)
+        or (re.search(r'recovers?\s+\d+\s*%\s*hp\b', sl) and 'damage' not in sl)
+        or (re.search(r'使用時[、,]?\s*HPを\d+%回復', s) and '与ダメージ' not in s)
+        or (re.search(r'使用時恢復\d+%HP', s) and '造成的損傷' not in s)
         or (s.strip().startswith('HP回復') and '与ダメージ' not in s)
         or (s.strip().startswith('HP恢復') and '造成的損傷' not in s)
         or re.search(r'^HP回復(?:\s|LV|Lv|$)', s)
@@ -4474,6 +4477,8 @@ def classify_unit_weapon_trait_debuff_keys(line):
     if (
         re.search(r'\bincreased mp\b', sl)
         or re.search(r'increase(?:s|d)?\s+mp\s+by\s+\d+', sl)
+        or re.search(r'MPを\d+上昇', s)
+        or re.search(r'提升MP\d+', s)
         or s.strip().startswith('MP上昇')
         or s.strip().startswith('MP提升')
         or re.search(r'^MP上昇(?:\s|LV|Lv|$)', s)
@@ -4866,7 +4871,13 @@ def collect_unit_weapon_trait_only_debuff_keys(uid, ld, lc, stat_mode='normal'):
         wt = str(wm.get('weapon_type', '1') or '1')
         if wt == '3' and _map_weapon_eligible_for_browse(wid, wt, stat_mode):
             acc.add('map_weapon')
-            break
+        # MAP / weapon status recovery lines are restrictions (not trait text) — still filterable.
+        if _weapon_status_hp_recovery_at_lv5(wid) > 0:
+            acc.add('hp_heal')
+        if _weapon_status_mp_recovery_at_lv5(wid) > 0:
+            acc.add('mp_up')
+        elif is_map_weapon_recovery_supply_mp(uid, wid, wt):
+            acc.add('mp_up')
     if _unit_has_multi_damage_type_weapon(uid):
         acc.add('multi_dmg')
     return frozenset(acc)
@@ -6008,17 +6019,17 @@ MAP_WEAPON_SUPPLY_TYPE_MP_ICON = '/static/images/UI/Sprite/UI_Common_Icon_MapWea
 MAP_WEAPON_BLUE_BATTLE_UI_ICON = '/static/images/UI/UI_Battle_MapUI_MapWeapon_Icon_Blue.webp'
 
 
-def _weapon_status_mp_recovery_at_lv5(wid):
-    """MpRecoveryValue at weapon level 5 from status growth/override correction, or 0."""
+def _weapon_status_lv5_correction(wid):
+    """Level-5 status growth/override correction dict for a weapon, or {}."""
     w = normalize_id(wid) if wid else '0'
     if w == '0':
-        return 0
+        return {}
     wm = (globals().get('weapon_info_map') or {}).get(w) or {}
     wsid = normalize_id(wm.get('weapon_status_id') or w)
     wsm = globals().get('weapon_status_map') or {}
     ws = wsm.get(wsid) or wsm.get(w)
     if not ws:
-        return 0
+        return {}
     spi = normalize_id(ws.get('override_correction_id') or '0')
     if spi == '0':
         gi = normalize_id(ws.get('growth_pattern_id') or '0')
@@ -6026,12 +6037,20 @@ def _weapon_status_mp_recovery_at_lv5(wid):
             gd = (globals().get('growth_pattern_map') or {}).get(gi) or {}
             spi = normalize_id(gd.get('status_change_set_id') or '0')
     if spi == '0':
-        return 0
+        return {}
     pc = (globals().get('weapon_correction_map') or {}).get(spi) or {}
     lv_corr = pc.get(5) if isinstance(pc, dict) else None
-    if not isinstance(lv_corr, dict):
-        return 0
-    return int(lv_corr.get('mp_recovery') or 0)
+    return lv_corr if isinstance(lv_corr, dict) else {}
+
+
+def _weapon_status_mp_recovery_at_lv5(wid):
+    """MpRecoveryValue at weapon level 5 from status growth/override correction, or 0."""
+    return int(_weapon_status_lv5_correction(wid).get('mp_recovery') or 0)
+
+
+def _weapon_status_hp_recovery_at_lv5(wid):
+    """HpRecoveryRate at weapon level 5 from status growth/override correction, or 0."""
+    return int(_weapon_status_lv5_correction(wid).get('hp_recovery_rate') or 0)
 
 
 def is_map_weapon_recovery_supply_mp(unit_id, wid, wt):
@@ -6046,8 +6065,21 @@ def is_map_weapon_recovery_supply_mp(unit_id, wid, wt):
     return bool(u and w and (u, w) in MAP_WEAPON_RECOVERY_SUPPLY_MP_PAIRS)
 
 
+def is_map_weapon_recovery_supply_hp(unit_id, wid, wt):
+    """True for MAP weapons that recover HP when used (e.g. Supply Function)."""
+    wts = str(wt) if wt is not None else ''
+    if wts != '3':
+        return False
+    return _weapon_status_hp_recovery_at_lv5(wid) > 0
+
+
+def is_map_weapon_recovery_supply(unit_id, wid, wt):
+    """MAP supply / recovery weapons (HP or MP) — blue MAP chrome, no red battle frame."""
+    return is_map_weapon_recovery_supply_mp(unit_id, wid, wt) or is_map_weapon_recovery_supply_hp(unit_id, wid, wt)
+
+
 def is_map_weapon_blue_battle_ui(unit_id, wid, wt):
-    return is_map_weapon_recovery_supply_mp(unit_id, wid, wt)
+    return is_map_weapon_recovery_supply(unit_id, wid, wt)
 
 
 def _weapon_status_map_can_use_after_move(wid):
@@ -9820,7 +9852,7 @@ SUPPORTER_SKILL_KIND_ICONS = {
     SUPPORTER_SKILL_KIND_EN: 'trait_10020501',
     SUPPORTER_SKILL_KIND_HYBRID: 'trait_10780401',
 }
-# Official in-game search filters (m_supporter_skill_search_filter_generate.Id).
+# Official in-game search filters (TraitTypeIndex / legacy generate.Id): 3=HP, 4=EN, 8=DR.
 SUPPORTER_OFFICIAL_SKILL_FILTER_KEY_BY_ID = {
     3: SUPPORTER_SKILL_KIND_HP,
     4: SUPPORTER_SKILL_KIND_EN,
@@ -9831,12 +9863,26 @@ SUPPORTER_OFFICIAL_SKILL_FILTER_KEYS = frozenset(SUPPORTER_OFFICIAL_SKILL_FILTER
 SUPPORTER_SUPPORT_SKILLS_HELP_LANG_ID = '170200000001031041'
 
 
+def _supporter_official_skill_filter_type_id(item):
+    """Filter type id from generate/target row (legacy Id or TraitTypeIndex)."""
+    if not isinstance(item, dict):
+        return 0
+    # 2026-11+ MD: SupporterActiveSkillTraitTypeIndex (3=HP, 4=EN, 8=DR).
+    # Older packs used Id with the same numeric values.
+    for k in (
+        'SupporterActiveSkillTraitTypeIndex', 'supporterActiveSkillTraitTypeIndex',
+        'Id', 'id',
+    ):
+        if k in item and item.get(k) is not None:
+            return safe_int(item.get(k), 0)
+    return 0
+
+
 def create_supporter_official_skill_filter_maps(generate_data, target_data):
     """Official supporter skill search filters → meta + supporter-id sets.
 
-    Target.NameLanguageId is the supporter Id (client field name quirk).
-    Filter names come from generate.NameLanguageId via LANG
-    m_supporter_skill_search_filter_generate.json.
+    Generate: NameLanguageId + IconResourceId (legacy: DescriptionLanguageId as icon).
+    Target: SupporterId (legacy quirk: NameLanguageId held the supporter Id).
     """
     meta = []
     by_key_ids = {k: set() for k in SUPPORTER_OFFICIAL_SKILL_FILTER_KEYS}
@@ -9845,15 +9891,24 @@ def create_supporter_official_skill_filter_maps(generate_data, target_data):
     for item in extract_data_list(generate_data):
         if not isinstance(item, dict):
             continue
-        fid = safe_int(item.get('Id') or item.get('id'), 0)
+        fid = _supporter_official_skill_filter_type_id(item)
         key = SUPPORTER_OFFICIAL_SKILL_FILTER_KEY_BY_ID.get(fid)
         if not key:
             continue
-        gen_rows.append((safe_int(item.get('RarityIndex') or item.get('rarityIndex'), 99), fid, key, item))
+        sort_ord = safe_int(
+            item.get('SortOrder') or item.get('sortOrder')
+            or item.get('RarityIndex') or item.get('rarityIndex'),
+            99,
+        )
+        gen_rows.append((sort_ord, fid, key, item))
     gen_rows.sort(key=lambda x: (x[0], x[1]))
-    for _ri, fid, key, item in gen_rows:
+    for _so, fid, key, item in gen_rows:
         name_lid = normalize_id(item.get('NameLanguageId') or item.get('nameLanguageId'))
-        icon_res = str(item.get('DescriptionLanguageId') or item.get('descriptionLanguageId') or '').strip()
+        icon_res = str(
+            item.get('IconResourceId') or item.get('iconResourceId')
+            or item.get('DescriptionLanguageId') or item.get('descriptionLanguageId')
+            or ''
+        ).strip()
         icf = find_trait_icon(icon_res) if icon_res else None
         icon = f'/static/images/Trait/{icf}' if icf else ''
         meta.append({
@@ -9866,11 +9921,14 @@ def create_supporter_official_skill_filter_maps(generate_data, target_data):
     for item in extract_data_list(target_data):
         if not isinstance(item, dict):
             continue
-        fid = safe_int(item.get('Id') or item.get('id'), 0)
+        fid = _supporter_official_skill_filter_type_id(item)
         key = SUPPORTER_OFFICIAL_SKILL_FILTER_KEY_BY_ID.get(fid)
         if not key:
             continue
-        sid = normalize_id(item.get('NameLanguageId') or item.get('nameLanguageId'))
+        sid = normalize_id(
+            item.get('SupporterId') or item.get('supporterId')
+            or item.get('NameLanguageId') or item.get('nameLanguageId')
+        )
         if sid == '0':
             continue
         by_key_ids.setdefault(key, set()).add(sid)
@@ -15720,7 +15778,6 @@ def _precompute_weapon_debuff_keys_present_by_lang():
                     uid, ld_en, 'EN', sm, pilot_cond_active=False))
         # Always list Critical: some kits only gain Crit% with PEP (pilot_cond=1 at filter time).
         acc.add('crit')
-        # hp_heal / mp_up official catalog stubs are shown greyed in UI when absent — not marked present.
         fs = frozenset(acc)
         for lc in ('EN', 'TW', 'HK', 'JA'):
             if LANG_DATA.get(lc):
@@ -19321,6 +19378,7 @@ def resolve_npc_unit_weapons(wsid, uid, ubr, lc, extra_ex_icon_candidates=None):
         at = resolve_attack_attribute_types(wm.get('attack_attribute', '0'), ld)
         ws = resolve_weapon_stats(wm, weapon_status_map, weapon_correction_map, ld.get('weapon_trait_map', {}), ld.get('weapon_capability_map', {}), growth_pattern_map, weapon_trait_change_map, wtdm, wid=wid, lang_code=lc, unit_id=uid)
         ic = resolve_weapon_icon(wt, ai, ubr, extra_ex_icon_candidates, wid=wid, unit_id=uid)
+        map_supply = is_map_weapon_recovery_supply(uid, wid, wt)
         if is_map_weapon_recovery_supply_mp(uid, wid, wt):
             at = [{'is_supply': True, 'icon': game_image_public_url(MAP_WEAPON_SUPPLY_TYPE_MP_ICON), 'label': 'MP'}]
         base_levels = ws.get('levels') or []
@@ -19372,7 +19430,7 @@ def resolve_npc_unit_weapons(wsid, uid, ubr, lc, extra_ex_icon_candidates=None):
         is_dash = bool(ws.get('is_dash', False))
         if oer and not osr:
             is_dash = False
-        weapons.append({'id': wid, 'name': wn, 'attribute': attr_label, 'attribute_id': ai, 'weapon_type': wt, 'attack_types': at, 'levels': levels, 'min_range': min_r, 'max_range': max_r, 'usage_restrictions': ws.get('usage_restrictions', []), 'sort': w.get('sort_order', 0), 'icon': ic['icon'], 'overlay': ic['overlay'], 'is_ex': ic['is_ex'], 'is_map': ic['is_map'], 'icon_color': icc, 'ssp_icon_color': icc, 'map_range_type': wm.get('map_range_type', '0'), 'map_coords': mc, 'shooting_coords': sc, 'is_dash': is_dash, 'map_dash_dual_wide': ws.get('map_dash_dual_wide', False), 'map_dash_dual_end_coords': [dict(c) for c in (ws.get('map_dash_dual_end_coords') or [])], 'map_single_pou': ws.get('map_single_pou', False), 'is_ssp_weapon': False, 'ssp_icon': '', 'ssp_power_bonus': 0, 'ssp_ammo_bonus': 0, 'ssp_range_bonus': 0, 'ssp_traits': [], 'is_preemptive': ip})
+        weapons.append({'id': wid, 'name': wn, 'attribute': attr_label, 'attribute_id': ai, 'weapon_type': wt, 'attack_types': at, 'levels': levels, 'min_range': min_r, 'max_range': max_r, 'usage_restrictions': ws.get('usage_restrictions', []), 'sort': w.get('sort_order', 0), 'icon': ic['icon'], 'overlay': ic['overlay'], 'is_ex': ic['is_ex'], 'is_map': ic['is_map'], 'map_supply': bool(map_supply), 'icon_color': icc, 'ssp_icon_color': icc, 'map_range_type': wm.get('map_range_type', '0'), 'map_coords': mc, 'shooting_coords': sc, 'is_dash': is_dash, 'map_dash_dual_wide': ws.get('map_dash_dual_wide', False), 'map_dash_dual_end_coords': [dict(c) for c in (ws.get('map_dash_dual_end_coords') or [])], 'map_single_pou': ws.get('map_single_pou', False), 'is_ssp_weapon': False, 'ssp_icon': '', 'ssp_power_bonus': 0, 'ssp_ammo_bonus': 0, 'ssp_range_bonus': 0, 'ssp_traits': [], 'is_preemptive': ip})
     weapons.sort(key=lambda x: (0 if x['weapon_type'] == '3' else 1, x['sort']))
     return weapons
 
@@ -39639,6 +39697,7 @@ def get_unit(unit_id):
                 # ULT Alteration weapons: SSP-style unit portrait + corner ULT badge (not EX/ULT_Mask overlay —
                 # overlay collided with Preemptive Strike corner badge).
                 ic = resolve_weapon_icon(wt, ai, ubr, info.get('resource_ids'), wid=wid, unit_id=unit_id)
+                map_supply = is_map_weapon_recovery_supply(unit_id, wid, wt)
                 if is_map_weapon_recovery_supply_mp(unit_id, wid, wt):
                     at = [{'label': 'MP', 'icon': game_image_public_url(MAP_WEAPON_SUPPLY_TYPE_MP_ICON), 'is_supply': True}]
                 pw, en, acc, crit = ws.get('power',0), ws.get('en',0), ws.get('accuracy',0), ws.get('critical',0)
@@ -39686,7 +39745,7 @@ def get_unit(unit_id):
                             break
                     if not siu:
                         siu = portrait or ''
-                weapons.append({'id': wid, 'name': wn, 'attribute': attr_label, 'attribute_id': ai, 'weapon_type': wt, 'attack_attribute': str(wm.get('attack_attribute', '0') or '0'), 'attack_types': at, 'levels': levels, 'power': pw, 'min_range': ws['range_min'], 'max_range': ws['range_max'], 'en_cost': en, 'accuracy': acc, 'critical': crit, 'ammo': am, 'traits': trl, 'usage_restrictions': ws['usage_restrictions'], 'sort': wp['sort'], 'icon': ic['icon'], 'overlay': ic['overlay'], 'is_ex': ic['is_ex'], 'is_map': ic['is_map'], 'icon_color': icc, 'ssp_icon_color': sicc, 'map_range_type': wm.get('map_range_type', '0'), 'map_coords': ws.get('map_coords', []), 'shooting_coords': ws.get('shooting_coords', []), 'is_dash': ws.get('is_dash', False), 'map_dash_dual_wide': ws.get('map_dash_dual_wide', False), 'map_dash_dual_end_coords': ws.get('map_dash_dual_end_coords', []), 'map_single_pou': ws.get('map_single_pou', False), 'is_ssp_weapon': isw, 'is_ult_weapon': is_ult_wpn, 'ssp_icon': siu, 'ssp_power_bonus': ssp_power, 'ssp_ammo_bonus': ssp_ammo, 'ssp_range_bonus': ssp_range, 'ssp_traits': sat, 'is_preemptive': ip})
+                weapons.append({'id': wid, 'name': wn, 'attribute': attr_label, 'attribute_id': ai, 'weapon_type': wt, 'attack_attribute': str(wm.get('attack_attribute', '0') or '0'), 'attack_types': at, 'levels': levels, 'power': pw, 'min_range': ws['range_min'], 'max_range': ws['range_max'], 'en_cost': en, 'accuracy': acc, 'critical': crit, 'ammo': am, 'traits': trl, 'usage_restrictions': ws['usage_restrictions'], 'sort': wp['sort'], 'icon': ic['icon'], 'overlay': ic['overlay'], 'is_ex': ic['is_ex'], 'is_map': ic['is_map'], 'map_supply': bool(map_supply), 'icon_color': icc, 'ssp_icon_color': sicc, 'map_range_type': wm.get('map_range_type', '0'), 'map_coords': ws.get('map_coords', []), 'shooting_coords': ws.get('shooting_coords', []), 'is_dash': ws.get('is_dash', False), 'map_dash_dual_wide': ws.get('map_dash_dual_wide', False), 'map_dash_dual_end_coords': ws.get('map_dash_dual_end_coords', []), 'map_single_pou': ws.get('map_single_pou', False), 'is_ssp_weapon': isw, 'is_ult_weapon': is_ult_wpn, 'ssp_icon': siu, 'ssp_power_bonus': ssp_power, 'ssp_ammo_bonus': ssp_ammo, 'ssp_range_bonus': ssp_range, 'ssp_traits': sat, 'is_preemptive': ip})
             weapons.sort(key=lambda w: (0 if w['weapon_type']=='3' else 1, w['sort']))
         sicons = []
         if info.get('is_ultimate', False): sicons.append(ULT_ICON)

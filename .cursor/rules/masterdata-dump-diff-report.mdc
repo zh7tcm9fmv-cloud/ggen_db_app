@@ -35,19 +35,20 @@ Default output: `Desktop/dump/` bilingual markdown — **two files**:
 2. **Actually deep-dive the dump** — parse MemoryTable + Enum diffs (`_mt_diff_key` / `_enum_diff_key` / HTML / CS). Cross-check live `data/*/master` row usage. Surface **every** new `GameEventConditionType`, function/payload enum, user table, and schema field — not only headline features. If the report only repeats what a short community list already said, it failed.
 3. **List all diffs** — not only flashy items. Include new/removed tables, schema fields (even if all default), new enums/TypeIndex with counts, new content rows, LANG-only changes when relevant.
 4. **Do not omit scaffolds** — column exists but unused → still report, say unused / no content yet, and what it is *for* when inferable from sibling live content (e.g. `TargetWeaponConditionId` + max-range Unit Skill ≈ “Beam／光束／鐳射 weapons max range +1”).
-5. **Substance over labels** — empty one-liners (“Profile 2.0 — partial”) are not enough. For Profile / systems: list real table counts, LANG examples (ranks, records, titles, styles), and what is still blocked.
-6. **Bilingual — in-game LANG only**
+5. **Combat correction shape (mandatory for new TraitTypes)** — open `TraitCorrection*` / `*CalculateService` in the dump CS. Count **how many numbers** the correction stores, merge/highest helpers, and whether values read from the **unit** (skills／abilities can stack) vs weapon-only. Example: Splash = **Rate + Range** (`TraitCorrectionSplashDamage`), `_SelectHighestSplashDamage`, `GetSplashDamageRange(attacker)` → skills/abilities can expand **Range** later. Put the player-facing dual numbers in **both** Detail and Not-live — never flatten to “Splash added.” Pair new `TraitValue2` / dual MD columns with what the second number **is**.
+6. **Substance over labels** — empty one-liners (“Profile 2.0 — partial”) are not enough. For Profile / systems: list real table counts, LANG examples (ranks, records, titles, styles), and what is still blocked.
+7. **Bilingual — in-game LANG only**
    - EN: `data/EN/lang/` · Trad Chinese: prefer **TW**; note **HK** when different (Beam→鐳射)
    - Start with a **LANG glossary** for terms used in that report
    - No fan translations. Missing mode/item **title** → keep client EN + mark **`LANG missing` / `LANG 未進包`**
    - Traps: Chance Step→**額外行動** (not CS); Preemptive Strike→**先發攻擊** (not 先制); Skip Great Success→**超成功**; Ult Custom→**ULT改造**; Profile→**簡介**; Style→**風格**; Stage Skip→**略過關卡**; Tags→**標籤**; weapon attributes→**武裝屬性**; damage noun→**損傷**
-7. **LANG missing ≠ omit the feature** — many client diffs are not in the live update / LANG pack yet. Still **list them in full**. Explain with **in-game LANG vocabulary** already used elsewhere (e.g. **故事事件**, **增幅**, **編制**, **標籤**, **系列**, **單位技能**, **損傷**, **額外行動**, **簡介**). Pattern:
+8. **LANG missing ≠ omit the feature** — many client diffs are not in the live update / LANG pack yet. Still **list them in full**. Explain with **in-game LANG vocabulary** already used elsewhere (e.g. **故事事件**, **增幅**, **編制**, **標籤**, **系列**, **單位技能**, **損傷**, **額外行動**, **簡介**). Pattern:
    - Keep client EN name as the temporary title (`Invasion Restriction`, …) + `LANG 未進包`
    - Body: describe flow/effects using existing help/trait words in **EN | TW/HK**
    - Never drop a whole system because its menu title string is absent
-8. Cite **file + field** (`m_trait.RangeMin`, `m_trait_condition.IsHpDamaged`, `m_unit_skill_trait.TargetWeaponConditionId`, …).
-9. Pair Detail with a **Not live yet** companion when client ships systems without MD / with scaffolds only.
-10. **Do not put website-only bugs in Report on dump** (e.g. UI inventing a Tag from a field). Fix the site separately; the dump report stays MasterData / client content.
+9. Cite **file + field** (`m_trait.RangeMin`, `m_trait_condition.IsHpDamaged`, `m_unit_skill_trait.TargetWeaponConditionId`, …).
+10. Pair Detail with a **Not live yet** companion when client ships systems without MD / with scaffolds only.
+11. **Do not put website-only bugs in Report on dump** (e.g. UI inventing a Tag from a field). Fix the site separately; the dump report stays MasterData / client content.
 
 ## Anti-patterns
 
@@ -62,18 +63,32 @@ Default output: `Desktop/dump/` bilingual markdown — **two files**:
 - One-liner stubs for LANG-pending features (“client only, title pending”) with no player-facing explanation
 - Section titles nobody can parse (“Schema”, “A6b”, internal enum soup as the only heading)
 - Padding the dump report with site-bug writeups
+- Flattening dual-value combat systems to a single label (e.g. “Splash added” without **Rate + Range**, merge/highest, skill/ability expand path)
 
 ## Lessons
 
+### v2.8 Splash Rate + Range (owner — Nov 2026)
+
+**Proven:** Splash combat correction is **Rate + Range** (`TraitCorrectionSplashDamage`); build param has `TraitValue`+`TraitValue2`; `_SelectHighestSplashDamage`; `GetSplashDamageRange(attacker)`. MD `TraitValue2` still all 0. Grant pipelines onto `TraitType`: weapon **GrantTrait** / ability **TraitSet**.
+
+**Not proven:** “skills/abilities expand Splash Range.” In Not-live say **not confirmed**／**尚未確認** — simple, direct; no “client,” “our guess,” or GrantTrait jargon. Detail may keep grant-path evidence.
+
+**Must appear in Detail + Not-live:** Rate+Range; honest grant-path wording — not only “範圍損傷／map preview.”
+
 ### v2.8 Not-live share shape (owner — Nov 2026)
 
-Owner’s preferred Not-live bullets (keep this class; Detail still holds all Enums/MTs):
+Owner’s preferred Not-live bullets (keep this class; Detail still holds all Enums/MTs). Prefer community code-analysis polish (Grok/EN+繁中 share tone) when wording Splash / Skip / Unit Skills:
 
-- 兩個新單位技能（估計之後／月底池）— 爆擊率改變 / 必定爆擊
-- 下次特務模式限制條件 — 指定角色標籤 / 指定角色系列
-- 故事事件追加「挑戰戰鬥」— N、H、EX、Hell、Inferno
-- 勝利條件新增 — 最後才擊敗敵人
-- 其餘已在客戶端 — Splash、略過庫存、活動開放獎勵、夥伴滿解替換、簡介任務、單位搜尋篩選強化
+- 新增單位技能 — **爆擊提升**（Critical Boost）/ **確定爆擊**（Guaranteed Critical）— LANG **爆擊** not 暴擊
+- 武裝新增 Splash — 周邊數格**衰減損傷**；弱化擴散周邊；**Rate＋Range** 分開、多筆取最高；「技能／能力擴大範圍」標 **尚未確認／not confirmed**（簡寫，勿寫 client／our guess／GrantTrait 術語）
+- 戰役／活動 **略過次數繰越**（Skip Stock）— 各關卡未使用略過可繰越至隔天之後（LANG **略過** not 跳過）
+- 地圖活動改修 — 夥伴滿解可替換能力
+- 下次特務模式限制 — 指定角色標籤／系列
+- 故事事件挑戰戰鬥 — N、H、EX、Hell、Inferno
+- 勝利條件 — 最後才擊敗敵人
+- 其餘已在客戶端 — 活動開放獎勵、簡介任務、單位搜尋篩選強化
+
+Detail keeps the honest grant-path note (UnitSkillTraitType has no Splash; skill Range-up = **not confirmed**).
 
 ### v2.7 (owner)
 
