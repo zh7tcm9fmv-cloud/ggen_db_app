@@ -2177,12 +2177,14 @@
   function tagFilterRowHtml(tagName, en, checked) {
     const ft = `${tagName} ${en || ''}`.toLowerCase();
     const ic = spiTagIconPath();
+    /* Match browse Tags filter: plated TAG chrome (same CSS as /u /c). */
     return `<label class="list-filter-tag-item" data-filter-text="${escAttr(ft)}">
       <input type="checkbox" class="list-filter-sr" name="spiDd_tag" value="${escAttr(tagName)}" ${checked ? 'checked' : ''}>
-      <span class="tag-composite list-filter-tag-composite">
-        <span class="tag-part-icon"><img class="tag-icon-fg" src="${esc(imgUrl(ic))}" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback(this)"></span>
-        <span class="tag-part-value">${esc(tagName)}</span>
-      </span>
+      <div class="tag-composite tag-composite--tag filter-browse-tag-chip" title="${escAttr(tagName)}">
+        <div class="tag-part-icon"><img class="tag-icon-fg" src="${esc(imgUrl(ic))}" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback(this)"></div>
+        <div class="tag-part-label" aria-hidden="true"></div>
+        <div class="tag-part-value"><span class="tag-part-value-text">${esc(tagName)}</span></div>
+      </div>
     </label>`;
   }
 
@@ -2226,6 +2228,9 @@
       },
       'tag'
     );
+    try {
+      if (typeof scheduleSyncTagValueCrawlers === 'function') scheduleSyncTagValueCrawlers(panel);
+    } catch (_) {}
   }
 
   function seriesCatalogRows() {
@@ -2260,10 +2265,11 @@
       : `<span class="series-icon-fallback"></span>`;
     return `<label class="list-filter-tag-item" data-filter-text="${escAttr(ft)}">
       <input type="checkbox" class="list-filter-sr" name="spiDd_series" value="${escAttr(row.id)}" ${checked ? 'checked' : ''}>
-      <span class="tag-composite list-filter-tag-composite list-filter-series-row">
-        <span class="tag-part-icon">${ic}</span>
-        <span class="tag-part-value">${esc(row.name)}</span>
-      </span>
+      <div class="tag-composite tag-composite--series filter-browse-tag-chip filter-browse-tag-chip--series" title="${escAttr(row.name)}">
+        <div class="tag-part-icon">${ic}</div>
+        <div class="tag-part-label" aria-hidden="true"></div>
+        <div class="tag-part-value"><span class="tag-part-value-text">${esc(row.name)}</span></div>
+      </div>
     </label>`;
   }
 
@@ -2301,6 +2307,9 @@
       },
       'series'
     );
+    try {
+      if (typeof scheduleSyncTagValueCrawlers === 'function') scheduleSyncTagValueCrawlers(panel);
+    } catch (_) {}
   }
 
   function updateSeriesFilterLabel() {
