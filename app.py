@@ -38128,7 +38128,7 @@ def dc_autofit_supporters():
 def list_dc_targets():
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-        ck = f"dc_targets_v1_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_{eternal_stage_session_cache_key_fragment()}"
+        ck = f"dc_targets_v2_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_{eternal_stage_session_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600)
@@ -38164,10 +38164,52 @@ def list_dc_targets():
                 'score_attack_index': sn,
             })
 
+        # GTower floors (canonical E/W/S only — same dedupe as /api/stages?category=tower_stage).
+        for tid, tes in (tower_event_stage_map or {}).items():
+            gid = normalize_id(tes.get('tower_event_stage_group_id'))
+            floor = safe_int(tes.get('floor_count'), 0)
+            gname = resolve_tower_stage_group_name(ld, gid)
+            ginfo = (tower_event_stage_group_map or {}).get(gid, {})
+            grid = str(ginfo.get('resource_id') or '').strip() if isinstance(ginfo, dict) else ''
+            sname = resolve_tower_event_stage_name(
+                ld,
+                tes.get('stage_name_lang_id', '0'),
+                tid,
+                group_id=gid,
+                floor_count=floor,
+            )
+            side = classify_tower_side(sname, gname, grid)
+            if side not in ('E', 'W', 'S'):
+                continue
+            canonical = (TOWER_CANONICAL_STAGE_BY_SIDE_FLOOR or {}).get((side, floor))
+            if canonical and normalize_id(tid) != canonical:
+                continue
+            rows.append({
+                'id': normalize_id(tid),
+                'name': sname,
+                'stage_number': floor,
+                'difficulty': '',
+                'difficulty_code': '',
+                'difficulty_order': 50,
+                'content_locked': False,
+                'stage_category': 'tower_stage',
+                'tower_side': side,
+            })
+
+        _dc_cat_ord = {'eternal': 0, 'score_attack': 1, 'tower_stage': 2}
+        _dc_side_ord = {'E': 0, 'W': 1, 'S': 2}
+
         def _dc_targets_sort_key(row):
             cat = row.get('stage_category') or 'eternal'
-            cat_ord = 0 if cat == 'eternal' else 1
-            return (cat_ord, row.get('difficulty_order', 99), safe_int(row['id'], 0))
+            cat_ord = _dc_cat_ord.get(cat, 9)
+            side_ord = _dc_side_ord.get(row.get('tower_side'), 9)
+            return (
+                cat_ord,
+                row.get('difficulty_order', 99),
+                side_ord,
+                safe_int(row.get('stage_number'), 0),
+                safe_int(row.get('id'), 0),
+            )
 
         rows.sort(key=_dc_targets_sort_key)
         set_cached_response(ck, rows)

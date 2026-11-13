@@ -446,18 +446,18 @@
 <div class="dc-defender-head-spacer" aria-hidden="true"></div>
 </div>
 <div class="dc-def-mode-row" style="margin-bottom:12px;display:flex;gap:18px;flex-wrap:wrap;align-items:center">
-<label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;color:var(--text-secondary)"><input type="radio" name="dcDefTargetMode" id="dcDefModePreset" value="preset" checked onchange="setDcDefTargetMode('preset')"> <span id="dcDefPresetRadioLbl">Preset (ER Stages, Grand Offensive Score Attack Stages)</span></label>
+<label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;color:var(--text-secondary)"><input type="radio" name="dcDefTargetMode" id="dcDefModePreset" value="preset" checked onchange="setDcDefTargetMode('preset')"> <span id="dcDefPresetRadioLbl">Preset (ER Stages, Grand Offensive Score Attack Stages, GTower)</span></label>
 <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;color:var(--text-secondary)"><input type="radio" name="dcDefTargetMode" id="dcDefModeDatabase" value="database" onchange="setDcDefTargetMode('database')"> <span id="dcDefModeDatabaseLbl">Database (unit + pilot)</span></label>
 <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;color:var(--text-secondary)"><input type="radio" name="dcDefTargetMode" id="dcDefModeCustom" value="custom" onchange="setDcDefTargetMode('custom')"> <span id="dcDefModeCustomLbl" data-i18n-dc="dc_custom_stats">Custom stats</span></label>
 </div>
 <div id="dcDefPresetWrap" class="dc-def-preset-wrap" style="margin-bottom:12px">
-<span class="dc-ctrl-label" style="display:block;margin-bottom:4px" id="dcDefPresetTargetLbl">Preset Target (ER Stages, Grand Offensive Score Attack Stages)</span>
+<span class="dc-ctrl-label" style="display:block;margin-bottom:4px" id="dcDefPresetTargetLbl">Preset Target (ER Stages, Grand Offensive Score Attack Stages, GTower)</span>
 <div class="dc-stage-dd-wrap" id="dcStageDdWrap">
 <select class="dc-stage-select-hidden dc-npc-select" id="dcStageSelect" onchange="onDcStageChange()" tabindex="-1" aria-hidden="true"><option value="">-- Select Stage --</option></select>
 <button type="button" class="dc-input-sm dc-stage-dd-btn" id="dcStageDdBtn" onclick="_dcToggleDcStageDd(event)" aria-expanded="false" aria-haspopup="listbox" aria-controls="dcStageDdPanel">-- Select Stage --</button>
 <div id="dcStageDdPanel" class="dc-stage-dd-panel" hidden>
-<input type="search" class="dc-input-sm dc-stage-search" id="dcStageSearch" placeholder="Search ER &amp; Grand Offensive Score Attack stages…" autocomplete="off" oninput="_dcOnDcStageSearchInput(event)" oncompositionstart="onBrowseFilterCompositionStart(event)" oncompositionend="_dcOnDcStageSearchCompositionEnd(event)" aria-label="Search ER &amp; Grand Offensive Score Attack stages">
-<div id="dcStageList" class="dc-stage-list" role="listbox" aria-label="ER and Grand Offensive Score Attack stages"></div>
+<input type="search" class="dc-input-sm dc-stage-search" id="dcStageSearch" placeholder="Search ER, Grand Offensive Score Attack &amp; GTower stages…" autocomplete="off" oninput="_dcOnDcStageSearchInput(event)" oncompositionstart="onBrowseFilterCompositionStart(event)" oncompositionend="_dcOnDcStageSearchCompositionEnd(event)" aria-label="Search ER, Grand Offensive Score Attack &amp; GTower stages">
+<div id="dcStageList" class="dc-stage-list" role="listbox" aria-label="ER, Grand Offensive Score Attack, and GTower stages"></div>
 </div>
 </div>
 <div id="dcStageContentLockMsg" class="dc-stage-lock-msg" style="display:none" role="status"></div>
