@@ -1,0 +1,26 @@
+# /cal damage formula — locked (Nov 2026)
+
+Owner: freeze the in-game-matched core after community TRUNC(5) + hybrid correction. Do **not** tweak the math for copycat deterrence, style, or “maybe closer” without an **owner ask** plus a new in-game repro.
+
+## Locked core (`static/js/app.js` → `calculateDamage`)
+
+Marker: `DC_FORMULA_LOCK_ID` (`2026-11-14-trunc5-hybrid`).
+
+1. **MS growth / pilot skill %** — integer floor buckets (`dc_ms_stat_rounding_test.py`, `dc_pilot_skill_rounding_test.py`).
+2. **baseDamage** — `ceil(TRUNC(statRatioSum, 5) × combatWeaponPower)` (`DC_BASE_DMG_RATIO_TRUNC_DP=5`).
+3. **⑦ correction** — hybrid round-away (`DC_CORR_HYBRID_FLOAT_FRAC` + ATK≥DEF float); locked cases in `scripts/dc_correction_round_away_test.py`.
+4. **⑧⑨** — battleDamage / scaled % / Defend × unit-skill DR / crit125 trim as shipped with the lock id.
+
+Do **not** TRUNC correction sigmoids (breaks Freedom / Patulia locks). Do **not** change hybrid thresholds to chase a ±1 elsewhere.
+
+## Anti-lift (production)
+
+- Prefer `*.min.js`; Railway **404**s readable sources for `/cal` + `/mls` engines when mins exist.
+- Live **Copy Results** omits formula dump unless `window.__GGEN_DC_FORMULA_DEBUG__ === true` (or localhost).
+- Keep MLS on min bundles (`ml_sim.min.js`, `ml_sim_rules.min.js`).
+
+## When changing the formula
+
+1. Owner-approved in-game pair (IDs + sheet numbers).
+2. Update lock id + regression scripts.
+3. `node scripts/minify_app_js.mjs` + `verify_app_js_bundle.mjs`; say **local vs live**.

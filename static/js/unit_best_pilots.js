@@ -2011,7 +2011,9 @@
     }
     if (!dcEnginePromise) {
       var ver = scriptVersion();
-      var src = '/static/js/msy_dc_engine.js' + (ver ? '?v=' + encodeURIComponent(ver) : '');
+      var eng = String(global.__GGEN_MSY_DC_ENGINE_JS__ || 'msy_dc_engine.js').replace(/^\/+/, '');
+      if (eng.indexOf('js/') === 0) eng = eng.slice(3);
+      var src = '/static/js/' + eng + (ver ? '?v=' + encodeURIComponent(ver) : '');
       dcEnginePromise = loadScriptOnce(src).then(function () {
         if (!global.MsyDcEngine) throw new Error('MsyDcEngine not loaded');
         return global.MsyDcEngine.ensureReady().then(function () { return global.MsyDcEngine; });

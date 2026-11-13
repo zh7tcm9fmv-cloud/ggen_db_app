@@ -362,7 +362,14 @@
     var jobSeq = 0;
 
     function workerUrl() {
-      return '/static/js/msy_dc_worker.js?v=' + encodeURIComponent(appVer || '');
+      var w = 'msy_dc_worker.js';
+      try {
+        if (typeof window !== 'undefined' && window.__GGEN_MSY_DC_WORKER_JS__) {
+          w = String(window.__GGEN_MSY_DC_WORKER_JS__).replace(/^\/+/, '');
+          if (w.indexOf('js/') === 0) w = w.slice(3);
+        }
+      } catch (_) {}
+      return '/static/js/' + w + '?v=' + encodeURIComponent(appVer || '');
     }
 
     function attachWorker(w) {

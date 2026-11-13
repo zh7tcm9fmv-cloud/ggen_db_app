@@ -411,7 +411,7 @@
 <div id="dcSquadBuffSources" class="dc-pilot-bonus-list dc-squad-buff-sources" style="display:none;margin-bottom:8px"></div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
 <div class="dc-ctrl-group" style="grid-column:1/-1;display:none" id="dcExSquadAtkWrap"><span class="dc-ctrl-label"><span class="dc-tip" title="Manual bonus for EX ability squad synergy (e.g. +4% ATK per qualifying allied unit, up to 20%). On Attack: option-part % on growth → EX squad on growth → supporter leader % on the EX-boosted growth line (same order as unit ATK under Unit Attack).">EX squad ATK %</span> <span style="font-size:10px;color:var(--text-muted)">(0–20)</span></span><input type="number" class="dc-input-sm" id="dcExSquadAtkPct" min="0" max="20" value="" placeholder="max" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
-<div class="dc-ctrl-group" style="grid-column:1/-1;display:none" id="dcSquadCondWrap"><span class="dc-ctrl-label"><span class="dc-tip" id="dcSquadCondTip" title="">Squad conditions</span> <span id="dcSquadCondRange" style="font-size:10px;color:var(--text-muted)"></span></span><input type="number" class="dc-input-sm" id="dcSquadCondPct" min="0" max="100" value="" placeholder="" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
+<div class="dc-ctrl-group" style="grid-column:1/-1;display:none" id="dcSquadCondWrap"><span class="dc-ctrl-label"><span class="dc-tip" id="dcSquadCondTip" title="">Squad conditions</span> <span id="dcSquadCondRange" style="font-size:10px;color:var(--text-muted)"></span></span><input type="number" class="dc-input-sm" id="dcSquadCondPct" min="0" max="1000" value="" placeholder="" oninput="onDcParamChange()" onchange="onDcParamChange()"></div>
 <div class="dc-ctrl-group" style="grid-column:1/-1;display:none" id="dcSquadCondFlatAdWrap"><label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--text-secondary)"><input type="checkbox" id="dcSquadCondFlatAdApply" onchange="toggleDcSquadCondFlatAdApply()"><span class="dc-tip" id="dcSquadCondFlatAdLbl" title="">+ATK/DEF squad passive</span></label></div>
 <div class="dc-ctrl-group" style="grid-column:1/-1;display:none" id="dcBigRangZeonSquadWrap"><label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--text-secondary)"><input type="checkbox" id="dcBigRangZeonSquadApply" onchange="setDcBigRangZeonSquadBuff(this.checked)"><span class="dc-tip" id="dcBigRangZeonSquadLbl" title="">Big-Rang EX + pilot: +5% ATK/DEF (Zeon)</span></label></div>
 </div>
@@ -752,6 +752,8 @@ window.__GGEN_VIDEO_HASH_SUFFIX__ = '{{ video_hash_suffix | default("", true) }}
 window.__GGEN_VIDEO_UNIT_SUBDIR__ = '{{ video_unit_subdir | default("unit", true) }}';
 window.__GGEN_VIDEO_PROXY__ = {{ (video_proxy_enabled if video_proxy_enabled is defined else false)|tojson }};
 window.__GGEN_GAME_IMAGES_USE_CDN__ = {{ (game_images_use_cdn if game_images_use_cdn is defined else false) | tojson }};
+window.__GGEN_MSY_DC_ENGINE_JS__ = {{ (msy_dc_engine_js_bundle or 'msy_dc_engine.js') | tojson }};
+window.__GGEN_MSY_DC_WORKER_JS__ = {{ (msy_dc_worker_js_bundle or 'msy_dc_worker.js') | tojson }};
 window.__GGEN_KOFI_PAGE_URL__ = {{ (kofi_page_url if kofi_page_url is defined else 'https://ko-fi.com/E1E21WL8RV') | tojson }};
 window.__GGEN_DC_ALLOWED_HOSTS__ = {{ (dc_allowed_hosts if dc_allowed_hosts is defined else []) | tojson }};
 window.__SPI_DECISION_UI__ = true;
@@ -785,8 +787,8 @@ window.__GGEN_LAZY__=(function(){
     'sp_investment_i18n_guide': url_for('static', filename='js/sp_investment_i18n_guide.js'),
     'sp_investment': url_for('static', filename='js/sp_investment.js'),
     'gacha_sim': url_for('static', filename='js/gacha_sim.js'),
-    'ml_sim_rules': url_for('static', filename='js/ml_sim_rules.js'),
-    'ml_sim': url_for('static', filename='js/ml_sim.js'),
+    'ml_sim_rules': url_for('static', filename='js/' + (ml_sim_rules_js_bundle or 'ml_sim_rules.js')),
+    'ml_sim': url_for('static', filename='js/' + (ml_sim_js_bundle or 'ml_sim.js')),
     'sales_tracking': url_for('static', filename='js/sales_tracking.js'),
     'unit_holo_card': url_for('static', filename='js/' + (holo_js_bundle or 'unit_holo_card.js'))
   } | tojson }};

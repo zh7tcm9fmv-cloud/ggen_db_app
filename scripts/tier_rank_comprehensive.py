@@ -576,7 +576,10 @@ def _sim_calc_normal_damage(
     unit_stat_ratio = MX(0, C(unit_atk / 10 - unit_def_after / 10)) / 5000
     char_sigmoid = 1 / (EXP(250 * (char_def - char_atk) / 100000) + 1)
     unit_sigmoid = 1 / (EXP(25 * (unit_def_after - unit_atk) / 100000) + 1)
-    base_damage = C((character_stat_ratio + unit_stat_ratio + char_sigmoid + unit_sigmoid) * wp)
+    # Match app.js: TRUNC(ratioSum, 5) before × weaponPower (community / Excel vs real battle).
+    _ratio = character_stat_ratio + unit_stat_ratio + char_sigmoid + unit_sigmoid
+    _ratio_t = math.trunc(_ratio * 1e5) / 1e5
+    base_damage = C(_ratio_t * wp)
     atk_combined = C((unit_atk + 2 * char_atk) / 10)
     def_combined = C((unit_def_after + 2 * char_def) / 10)
     off_exp = ((5000 - atk_combined) * 30) / 100000

@@ -506,6 +506,10 @@ def _inject_public_origin():
         # without each route having to pass app_js_version explicitly.
         'app_js_version': _app_js_bundle_version_tag(),
         'holo_js_bundle': _holo_js_served_bundle_name(),
+        'ml_sim_js_bundle': _ml_sim_js_served_bundle_name(),
+        'ml_sim_rules_js_bundle': _ml_sim_rules_js_served_bundle_name(),
+        'msy_dc_engine_js_bundle': _msy_dc_engine_js_served_bundle_name(),
+        'msy_dc_worker_js_bundle': _msy_dc_worker_js_served_bundle_name(),
         'dc_allowed_hosts': _dc_allowed_hosts(),
     }
 
@@ -564,6 +568,71 @@ def _holo_js_served_bundle_name():
     return 'unit_holo_card.js'
 
 
+def _prefer_min_js(src_name, min_name):
+    root = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'js')
+    if os.path.isfile(os.path.join(root, min_name)):
+        return min_name
+    return src_name
+
+
+def _ml_sim_js_served_bundle_name():
+    return _prefer_min_js('ml_sim.js', 'ml_sim.min.js')
+
+
+def _ml_sim_rules_js_served_bundle_name():
+    return _prefer_min_js('ml_sim_rules.js', 'ml_sim_rules.min.js')
+
+
+def _msy_dc_engine_js_served_bundle_name():
+    return _prefer_min_js('msy_dc_engine.js', 'msy_dc_engine.min.js')
+
+
+def _msy_dc_worker_js_served_bundle_name():
+    return _prefer_min_js('msy_dc_worker.js', 'msy_dc_worker.min.js')
+
+
+# Readable sources that ship a .min twin — blocked on Railway so copycats cannot wget the formula / MLS engine.
+_GGEN_JS_SOURCE_BLOCK = frozenset({
+    'js/app.js',
+    'js/unit_holo_card.js',
+    'js/ml_sim.js',
+    'js/ml_sim_rules.js',
+    'js/msy_dc_engine.js',
+    'js/msy_dc_worker.js',
+})
+
+
+def _ggen_block_js_source_enabled():
+    raw = (os.environ.get('GGEN_SERVE_JS_SOURCE') or '').strip().lower()
+    if raw in ('1', 'true', 'on', 'yes'):
+        return False
+    if raw in ('0', 'false', 'off', 'no'):
+        return True
+    return bool(
+        (os.environ.get('RAILWAY_ENVIRONMENT') or '').strip()
+        or (os.environ.get('RAILWAY_PROJECT_ID') or '').strip()
+    )
+
+
+@app.before_request
+def _ggen_block_js_source_on_prod():
+    """On Railway, 404 unminified /cal + /mls engines when the .min bundle exists."""
+    if not _ggen_block_js_source_enabled():
+        return None
+    path = request.path or ''
+    if not path.startswith('/static/'):
+        return None
+    rel = path[len('/static/'):].lstrip('/')
+    if rel not in _GGEN_JS_SOURCE_BLOCK:
+        return None
+    leaf = os.path.basename(rel)
+    min_leaf = leaf[:-3] + '.min.js' if leaf.endswith('.js') else ''
+    root = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'js')
+    if min_leaf and os.path.isfile(os.path.join(root, min_leaf)):
+        abort(404)
+    return None
+
+
 def _app_js_bundle_version_tag():
     root = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static')
     assets = (
@@ -571,8 +640,10 @@ def _app_js_bundle_version_tag():
         ('js', 'app.js'),
         ('js', _holo_js_served_bundle_name()),
         ('js', 'unit_holo_card.js'),
-        ('js', 'msy_dc_engine.js'),
-        ('js', 'msy_dc_worker.js'),
+        ('js', _ml_sim_js_served_bundle_name()),
+        ('js', _ml_sim_rules_js_served_bundle_name()),
+        ('js', _msy_dc_engine_js_served_bundle_name()),
+        ('js', _msy_dc_worker_js_served_bundle_name()),
         ('js', 'unit_best_pilots.js'),
         ('js', 'content_notices.js'),
         ('js', 'meta_synergy.js'),
@@ -815,6 +886,13 @@ def _apply_seo_and_static_cache_headers(response):
         path.endswith('/js/app.js')
         or path.endswith('/js/app.min.js')
         or path.endswith('/js/msy_dc_engine.js')
+        or path.endswith('/js/msy_dc_engine.min.js')
+        or path.endswith('/js/msy_dc_worker.js')
+        or path.endswith('/js/msy_dc_worker.min.js')
+        or path.endswith('/js/ml_sim.js')
+        or path.endswith('/js/ml_sim.min.js')
+        or path.endswith('/js/ml_sim_rules.js')
+        or path.endswith('/js/ml_sim_rules.min.js')
         or path.endswith('/js/unit_best_pilots.js')
         or path.endswith('/css/app_shell.css')
         or path.endswith('/css/app_shell_bundle.min.css')

@@ -59,7 +59,9 @@ def normal_dmg(
     unit_stat_ratio = MX(0, C(unit_atk / 10 - unit_def / 10)) / 5000
     char_sigmoid = 1 / (EXP(250 * (char_def - char_atk) / 100000) + 1)
     unit_sigmoid = 1 / (EXP(25 * (unit_def - unit_atk) / 100000) + 1)
-    base = C((character_stat_ratio + unit_stat_ratio + char_sigmoid + unit_sigmoid) * wpn)
+    _ratio = character_stat_ratio + unit_stat_ratio + char_sigmoid + unit_sigmoid
+    _ratio_t = math.trunc(_ratio * 1e5) / 1e5
+    base = C(_ratio_t * wpn)
     atk_c = C((unit_atk + 2 * char_atk) / 10)
     def_c = C((unit_def + 2 * char_def) / 10)
     off = 100 / (EXP(((5000 - atk_c) * 30) / 100000) + 1)
