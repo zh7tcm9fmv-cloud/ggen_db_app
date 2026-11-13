@@ -12215,7 +12215,7 @@ const dsl=document.getElementById('dcStageList');
 if(dsl)dsl.setAttribute('aria-label',t('dc_stage_list_aria'));
 }
 
-const DC_ATK_SLOT_COUNT=4;
+const DC_ATK_SLOT_COUNT=5;
 const DC_SHINN_ASUKA_CHAR_IDS=new Set(['1330000101','1330000102','1330000103','1330000104','1330000105']);
 function _dcIsZhCalcLang(){const lc=(S.lang||'EN').toUpperCase();return lc==='TW'||lc==='HK';}
 function _dcIsJaCalcLang(){return (S.lang||'EN').toUpperCase()==='JA';}
@@ -12777,8 +12777,10 @@ S.dc.terrainMode=slot.terrainMode||'normal';S.dc.terrain=slot.terrain||0;
 S.dc.finalWpnPow=slot.finalWpnPow||0;S.dc.dmgIncrease=slot.dmgIncrease||0;S.dc.critDmgUp=slot.critDmgUp||0;S.dc.exSquadAtkPct=slot.exSquadAtkPct||0;S.dc.exSquadAtkPctExplicitZero=!!slot.exSquadAtkPctExplicitZero;S.dc.squadCondPct=slot.squadCondPct|0;S.dc.atkCounterOwnAtk=!!slot.atkCounterOwnAtk;S.dc.supportCounterAtk=!!slot.supportCounterAtk;{const _cdw=slot.atkCharData,_udw=slot.atkUnitData;let _scp=0;if(_cdw&&!_cdw._manual){const _fr=_dcParseMaxSupportCounterAtkPctFromChar(_cdw,_udw)|0;_scp=_fr>0?_fr:(slot._supportCounterAtkPct|0)}S.dc._supportCounterAtkPct=_scp}{const wi=supportSnapSlotIdx!==undefined&&supportSnapSlotIdx!==null?Math.min(Math.max(supportSnapSlotIdx|0,0),DC_ATK_SLOT_COUNT-1):Math.min(Math.max(S.dc.atkSlotIndex|0,0),DC_ATK_SLOT_COUNT-1);if(!S.dc._supportCntAtkPairSnapBySlot)S.dc._supportCntAtkPairSnapBySlot={};const skProvided=slot&&Object.prototype.hasOwnProperty.call(slot,'supportCntPairSnap')&&slot.supportCntPairSnap!=null&&String(slot.supportCntPairSnap).trim()!=='';S.dc._supportCntAtkPairSnapBySlot[wi]=skProvided?String(slot.supportCntPairSnap):(_dcSupportCntEligiblePairSnap(slot.atkCharData,slot.atkUnitData)||null)}S.dc.applyAdvantageEnemyTag=slot.applyAdvantageEnemyTag!==false;
 S.dc.applyZeonEnemyTag=slot.applyZeonEnemyTag!==false;
 {const _ut=!!(slot.unitTurnBuffAtk||slot.unitTurnBuffDef);S.dc.unitTurnBuffAtk=_ut;S.dc.unitTurnBuffDef=_ut}
-S.dc.masterLeagueBuff=!!slot.masterLeagueBuff;
-S.dc.grandOffensiveBuff=!!slot.grandOffensiveBuff;
+/* Master League / Grand Offensive are team-wide for multi-attacker /cal (same toggle for every pill).
+   Do not load per-slot mlb/ogb into S.dc — stamp the live panel flags onto the slot instead. */
+slot.masterLeagueBuff=!!S.dc.masterLeagueBuff;
+slot.grandOffensiveBuff=!!S.dc.grandOffensiveBuff;
 S.dc.bigRangZeonSquadBuff=!!slot.bigRangZeonSquadBuff;
 S.dc._pilotDmgCritExplicit=!!slot._pilotDmgCritExplicit;
 _dcSyncSquadCondEffectiveFromState();
@@ -13877,6 +13879,12 @@ return o?_dcLoadSlotFromPackedObj(o):Promise.resolve(null);
 const slots=[];
 for(let i=0;i<DC_ATK_SLOT_COUNT;i++)slots.push(loaded[i]||_dcCreateEmptyAttackerSlot());
 S.dc.atkSlots=slots;
+/* Sheet buffs are team-wide: if any packed slot had ML/GO, arm all pills (avoids mixed ogb/mlb shares). */
+{let _ml=false,_go=false;
+for(let i=0;i<slots.length;i++){const sl=slots[i];if(!sl)continue;if(sl.masterLeagueBuff)_ml=true;if(sl.grandOffensiveBuff)_go=true}
+S.dc.masterLeagueBuff=_ml;S.dc.grandOffensiveBuff=_go;
+_dcPropagateSheetBuffFlagsToAllAtkSlots();
+}
 _dcDedupeSsrOptionPartsAcrossDcSlots();
 {const _prevIdx=Math.min(Math.max(S.dc.atkSlotIndex|0,0),DC_ATK_SLOT_COUNT-1);
 for(let si=0;si<DC_ATK_SLOT_COUNT;si++){
@@ -18184,8 +18192,20 @@ if(!el)return;
 if((S.dc.defTargetMode||'preset')!=='database'){el.innerHTML='';return}
 el.innerHTML=_dcHtmlDefMasterLeagueToggle()+_dcHtmlDefUnitSkillToggle();
 }
-function setDcMasterLeagueBuff(on){S.dc.masterLeagueBuff=!!on;renderDcAtkUnit();renderDcAtkChar();if((S.dc.defTargetMode||'preset')==='database'){renderDcDefSheetBuffToggles();renderDcDefStats()}onDcParamChange()}
-function setDcGrandOffensiveBuff(on){S.dc.grandOffensiveBuff=!!on;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
+/** Stamp Master League / Grand Offensive onto every attacker pill (team-wide sheet buffs). */
+function _dcPropagateSheetBuffFlagsToAllAtkSlots(){
+const ml=!!S.dc.masterLeagueBuff,go=!!S.dc.grandOffensiveBuff;
+const slots=S.dc.atkSlots;
+if(!slots||!slots.length)return;
+for(let i=0;i<slots.length;i++){
+const sl=slots[i];
+if(!sl)continue;
+sl.masterLeagueBuff=ml;
+sl.grandOffensiveBuff=go;
+}
+}
+function setDcMasterLeagueBuff(on){S.dc.masterLeagueBuff=!!on;_dcPropagateSheetBuffFlagsToAllAtkSlots();renderDcAtkUnit();renderDcAtkChar();if((S.dc.defTargetMode||'preset')==='database'){renderDcDefSheetBuffToggles();renderDcDefStats()}onDcParamChange()}
+function setDcGrandOffensiveBuff(on){S.dc.grandOffensiveBuff=!!on;_dcPropagateSheetBuffFlagsToAllAtkSlots();renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
 function toggleDcMasterLeagueBuff(){setDcMasterLeagueBuff(!S.dc.masterLeagueBuff)}
 function toggleDcGrandOffensiveBuff(){setDcGrandOffensiveBuff(!S.dc.grandOffensiveBuff)}
 function setDcCharCondPassive(on){S.dc.charCondPassive=!!on;if(!on){S.dc.dcSuperchargedExTier=0;S.dc._dcSuperchargedExManual=false}else{S.dc._dcSuperchargedExManual=false;_dcSyncSuperchargedExTierForVigor(true)}renderDcAtkUnit();renderDcAtkChar();if(S.dc.atkCharData&&!S.dc.atkCharData._manual){_dcAutoEnableMaxDamageSkills();_dcRecalcPilotBonuses(true)}const autoV=S.dc.atkCharData&&_dcShouldAutoSuperchargedVigorOnCharCp(S.dc.atkCharData);if(on&&autoV)setDcMp('super');else if(!on&&autoV)_dcAutoSetVigor();else onDcParamChange()}
