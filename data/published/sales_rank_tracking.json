@@ -1,47 +1,12 @@
 {
   "v": 1,
-  "saved_ms": 1794630209429,
+  "saved_ms": 1794630823875,
   "meta": {
-    "last_ok_ms": 1794630151425,
+    "last_ok_ms": 1794630764431,
     "last_err": "",
     "started_ms": 1793557196594
   },
   "samples": [
-    {
-      "t": 1794285102046,
-      "countries": {
-        "hk": {
-          "overall": 42,
-          "games": 24,
-          "gamei_today": 44
-        },
-        "mo": {
-          "overall": 16,
-          "games": 8,
-          "gamei_today": null
-        },
-        "tw": {
-          "overall": null,
-          "games": null,
-          "gamei_today": 254
-        },
-        "jp": {
-          "overall": null,
-          "games": 83,
-          "gamei_today": 155
-        },
-        "sg": {
-          "overall": null,
-          "games": null,
-          "gamei_today": 492
-        },
-        "kr": {
-          "overall": null,
-          "games": null,
-          "gamei_today": 375
-        }
-      }
-    },
     {
       "t": 1794285716008,
       "countries": {
@@ -20014,6 +19979,41 @@
           "overall": null,
           "games": null,
           "gamei_today": 196
+        },
+        "sg": {
+          "overall": null,
+          "games": null,
+          "gamei_today": 509
+        },
+        "kr": {
+          "overall": null,
+          "games": null,
+          "gamei_today": 429
+        }
+      }
+    },
+    {
+      "t": 1794630764431,
+      "countries": {
+        "hk": {
+          "overall": 57,
+          "games": 30,
+          "gamei_today": 56
+        },
+        "mo": {
+          "overall": 41,
+          "games": 25,
+          "gamei_today": null
+        },
+        "tw": {
+          "overall": null,
+          "games": null,
+          "gamei_today": 285
+        },
+        "jp": {
+          "overall": null,
+          "games": null,
+          "gamei_today": 191
         },
         "sg": {
           "overall": null,
