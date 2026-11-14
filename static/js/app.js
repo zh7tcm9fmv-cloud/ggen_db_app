@@ -1557,26 +1557,48 @@ if(panel.classList.contains('skill-filter-panel'))return true;
 if(panel.classList.contains('mod-effect-filter-panel'))return true;
 const id=panel.id||'';return /TerrainFilterPanel|WeaponDebuffFilterPanel|MechanismFilterPanel|MapWeaponRangeFilterPanel|WeaponRangeNonMapFilterPanel|WeaponAttrSetFilterPanel|AbilityEffectFilterPanel|MovFilterPanel/i.test(id);
 }
-function _applyFilterPanelViewportFit(panel,vw,vh,maxW){
-panel.classList.remove('filter-panel--align-end');
-panel.classList.add('filter-panel--viewport-fit');
-panel.style.maxWidth=maxW+'px';
-panel.style.width=Math.min(maxW,Math.max(panel.getBoundingClientRect().width||0,Math.min(640,maxW)))+'px';
-const mobile=window.matchMedia&&window.matchMedia('(max-width:768px)').matches;
-if(mobile){
+/** Desktop: keep absolute under the trigger (scrolls with toolbar like Rarity); shift left so it stays on-screen. */
+function _applyFilterPanelDesktopAnchorClamp(panel,vw,maxW){
+const pad=12;
+panel.classList.remove('filter-panel--viewport-fit','filter-panel--align-end');
+panel.style.position='absolute';
 panel.style.top='';
-return;
-}
+panel.style.right='auto';
+panel.style.transform='none';
+panel.style.maxWidth=maxW+'px';
+panel.style.removeProperty('width');
 const wrap=panel.parentElement;
 const wr=wrap&&wrap.getBoundingClientRect?wrap.getBoundingClientRect():null;
-const top=wr?Math.round(wr.bottom+4):72;
-panel.style.top=Math.max(8,Math.min(top,Math.max(8,vh-100)))+'px';
+if(!wr){panel.style.left='0';return}
+let rect;
+try{rect=panel.getBoundingClientRect()}catch(_){panel.style.left='0';return}
+const width=Math.min(Math.max(rect.width||0,1),maxW);
+let left=0;
+const minLeft=pad-wr.left;
+const maxLeft=vw-pad-width-wr.left;
+if(left<minLeft)left=minLeft;
+if(left>maxLeft)left=maxLeft;
+panel.style.left=Math.round(left)+'px';
+}
+/** Mobile: fixed centered sheet. Desktop: absolute clamp under trigger. */
+function _applyFilterPanelViewportFit(panel,vw,vh,maxW){
+panel.classList.remove('filter-panel--align-end');
+const mobile=window.matchMedia&&window.matchMedia('(max-width:768px)').matches;
+if(mobile){
+panel.classList.add('filter-panel--viewport-fit');
+panel.style.maxWidth=maxW+'px';
+panel.style.top='';
+panel.style.removeProperty('width');
+return;
+}
+_applyFilterPanelDesktopAnchorClamp(panel,vw,maxW);
 }
 /**
  * Native viewport clamp for every browse filter panel:
  * — always cap max-width to the viewport
- * — large sheets (Tags/Series/Skills/Abilities/…) → fixed + centered
- * — compact dropdowns that clip right → align-end; still clip → escalate to centered
+ * — desktop: stay absolute under the trigger (page scroll keeps panel with the button)
+ * — mobile: large sheets → fixed + centered
+ * — compact dropdowns that clip right → align-end; still clip → escalate
  */
 function fitFilterDropdownToViewport(panel){
 if(!panel||panel.hidden)return;
@@ -1594,10 +1616,12 @@ const overflowsLeft=rect.left<pad-0.5;
 const tooWide=rect.width>=maxW-1;
 const isCompact=panel.classList.contains('filter-dropdown-panel')||panel.classList.contains('skill-filter-panel--compact');
 const namedSheet=_filterPanelIsNamedLargeSheet(panel);
-if(namedSheet||tooWide||(overflowsLeft&&overflowsRight)||(overflowsRight&&!isCompact&&rect.width>Math.min(420,vw*0.55))){
-_applyFilterPanelViewportFit(panel,vw,vh,maxW);
-return;
-}
+const mobile=window.matchMedia&&window.matchMedia('(max-width:768px)').matches;
+const needsFit=tooWide||(overflowsLeft&&overflowsRight)||(overflowsRight&&!isCompact&&rect.width>Math.min(420,vw*0.55))||(overflowsRight&&namedSheet)||(overflowsLeft&&namedSheet);
+/* Mobile named sheets always fixed-center; desktop only when they would clip. */
+if(namedSheet&&mobile){_applyFilterPanelViewportFit(panel,vw,vh,maxW);return}
+if(needsFit){_applyFilterPanelViewportFit(panel,vw,vh,maxW);return}
+if(namedSheet)return;
 if(overflowsRight){
 panel.classList.add('filter-panel--align-end');
 try{

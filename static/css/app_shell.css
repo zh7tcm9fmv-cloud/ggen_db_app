@@ -1542,15 +1542,14 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
   left:auto!important;
   right:var(--filter-cell-inset)
 }
-/* Series / Tags sheets: viewport-centered fixed (not absolute left:0 under Tags —
- * mid-toolbar trigger + 960px width clipped the right column on desktop).
- * Exclude .filter-dropdown-panel (SPI / under-trigger menus). */
+/* Series / Tags: desktop = absolute under trigger (scrolls with toolbar like Rarity).
+ * Mobile ≤768 keeps fixed centered sheets. JS clamps left so wide sheets do not clip. */
 .lineage-filter-panel:not(.filter-dropdown-panel),
 .series-filter-panel:not(.filter-dropdown-panel){
-  position:fixed;
-  left:50%;
+  position:absolute;
+  left:0;
   right:auto;
-  transform:translateX(-50%);
+  transform:none;
   width:min(960px,calc(100vw - 24px));
   max-width:min(960px,calc(100vw - 24px));
   max-height:none;
@@ -5538,16 +5537,18 @@ display:flex;flex-direction:column;gap:12px;align-items:stretch;width:100%;min-w
   max-width:min(100%,calc(100vw - 24px));
   box-sizing:border-box
 }
-/* Large sheets that would clip: JS adds .filter-panel--viewport-fit (fixed + centered) */
-.filter-panel--viewport-fit{
-  position:fixed!important;
-  left:50%!important;
-  right:auto!important;
-  transform:translateX(-50%)!important;
-  box-sizing:border-box;
-  z-index:5000!important;
-  overflow-x:hidden;
-  max-width:calc(100vw - 24px)!important
+/* Phone/tablet sheets only — desktop uses absolute clamp under the trigger (scrolls with toolbar) */
+@media (max-width:768px){
+  .filter-panel--viewport-fit{
+    position:fixed!important;
+    left:50%!important;
+    right:auto!important;
+    transform:translateX(-50%)!important;
+    box-sizing:border-box;
+    z-index:5000!important;
+    overflow-x:hidden;
+    max-width:calc(100vw - 24px)!important
+  }
 }
 .skill-filter-panel{min-width:min(92vw,420px);max-width:min(480px,calc(100vw - 24px))}
 /* Compact chips (supporter Support Skills / MOV: short LANG labels) — fit content, not char skill grid width.
