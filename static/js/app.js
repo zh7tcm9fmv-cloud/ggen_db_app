@@ -1478,7 +1478,45 @@ function closeAllSeriesPanels(){['char','unit','rankChar','rankUnit','msyUnit'].
 function closeAllSkillPanels(){['char','unit','rankChar','rankUnit'].forEach(p=>{const panel=document.getElementById(p+'SkillFilterPanel');const btn=document.getElementById(p+'SkillFilterBtn');if(panel)panel.hidden=true;if(btn)btn.setAttribute('aria-expanded','false')})}
 function closeAllAbilPanels(){['char','rankChar'].forEach(pfx=>{const panel=document.getElementById(pfx+'AbilFilterPanel');const btn=document.getElementById(pfx+'AbilFilterBtn');if(panel)panel.hidden=true;if(btn)btn.setAttribute('aria-expanded','false')})}
 function closeSuppSkillPanel(){const panel=document.getElementById('suppSkillFilterPanel');const btn=document.getElementById('suppSkillFilterBtn');if(panel)panel.hidden=true;if(btn)btn.setAttribute('aria-expanded','false')}
-function closeAllFilterPanels(){clearFilterDropdownAlign();closeAllRarityPanels();closeAllRolePanels();closeStageDiffPanel();closeStageChallengeSeriesPanel();closeAllSourcePanels();closeAllTerrainPanels();closeUnitMovPanel();closeAllUnitWeaponDebuffPanels();closeAllUnitAbilityEffectPanels();closeAllUnitWeaponAttrSetPanels();closeAllUnitWeaponRangePanels();closeAllUnitMechanismPanels();closeAllLineagePanels();closeAllSeriesPanels();closeAllSkillPanels();closeAllAbilPanels();closeSuppSkillPanel();closeModEffectPanel();closeMlSeasonPanels()}
+function scheduleBrowseFilterSheetChromeSync(){
+/* Sync immediately so open paint already blurs the header away, then rAF for closeAll→open races. */
+try{syncBrowseFilterSheetChrome()}catch(_){}
+try{
+if(window.__ggenFilterChromeSync)cancelAnimationFrame(window.__ggenFilterChromeSync);
+if(window.__ggenFilterChromeSyncTimer){clearTimeout(window.__ggenFilterChromeSyncTimer);window.__ggenFilterChromeSyncTimer=0}
+window.__ggenFilterChromeSync=requestAnimationFrame(function(){
+window.__ggenFilterChromeSync=0;
+syncBrowseFilterSheetChrome();
+});
+}catch(_){try{syncBrowseFilterSheetChrome()}catch(__){}}
+}
+function closeAllFilterPanels(){clearFilterDropdownAlign();closeAllRarityPanels();closeAllRolePanels();closeStageDiffPanel();closeStageChallengeSeriesPanel();closeAllSourcePanels();closeAllTerrainPanels();closeUnitMovPanel();closeAllUnitWeaponDebuffPanels();closeAllUnitAbilityEffectPanels();closeAllUnitWeaponAttrSetPanels();closeAllUnitWeaponRangePanels();closeAllUnitMechanismPanels();closeAllLineagePanels();closeAllSeriesPanels();closeAllSkillPanels();closeAllAbilPanels();closeSuppSkillPanel();closeModEffectPanel();closeMlSeasonPanels();scheduleBrowseFilterSheetChromeSync()}
+/** Large top sheets only (Tags / Series / Skills / Mechanisms / …). Compact
+ *  .filter-dropdown-panel menus sit under their trigger — do not hide the nav. */
+function anyBrowseFilterPanelOpen(){
+try{
+return!!document.querySelector(
+'.list-toolbar .rarity-filter-panel:not(.filter-dropdown-panel):not([hidden]),'+
+'.list-toolbar .role-filter-panel:not(.filter-dropdown-panel):not([hidden]),'+
+'.list-toolbar .source-filter-panel:not(.filter-dropdown-panel):not([hidden]),'+
+'.list-toolbar .lineage-filter-panel:not([hidden]),'+
+'.list-toolbar .series-filter-panel:not([hidden]),'+
+'.list-toolbar .skill-filter-panel:not(.filter-dropdown-panel):not([hidden]),'+
+'.list-toolbar .mod-effect-filter-panel:not(.filter-dropdown-panel):not([hidden]),'+
+'#panel-meta_synergy .rarity-filter-panel:not(.filter-dropdown-panel):not([hidden]),'+
+'#panel-meta_synergy .lineage-filter-panel:not([hidden]),'+
+'#panel-meta_synergy .series-filter-panel:not([hidden])'
+)}catch(_){return false}
+}
+function syncBrowseFilterSheetChrome(){
+const open=!!anyBrowseFilterPanelOpen();
+try{document.body.classList.toggle('browse-filter-sheet-open',open)}catch(_){}
+if(open){
+try{document.documentElement.style.setProperty('--list-thead-sticky-top','0px')}catch(_){}
+}else{
+try{scheduleSyncListTheadStickyTop()}catch(_){}
+}
+}
 function afterBrowseCombineOpChange(ent){/* keepInstant: filter AND/OR is InstantBrowse chip-side. */if(ent==='char'){browseListJsonCacheClearPrefix('/api/characters?',{keepInstant:true});scheduleBrowseListReload('characters')}else if(ent==='unit'){browseListJsonCacheClearPrefix('/api/units?',{keepInstant:true});scheduleBrowseListReload('units')}else if(ent==='supp'){browseListJsonCacheClearPrefix('/api/supporters?',{keepInstant:true});scheduleBrowseListReload('supporters')}else if(ent==='mod'){browseListJsonCacheClearPrefix('/api/option_parts?',{keepInstant:true});scheduleBrowseListReload('modifications')}else if(ent==='msyUnit'){msyBrowseFilterApplied();if(window.GgenMetaSynergy&&typeof GgenMetaSynergy.scheduleReload==='function')GgenMetaSynergy.scheduleReload()}else if(ent==='rankChar'||ent==='rankUnit')scheduleRankingListReload()}
 function lineageIdsMatch(a,b){const sa=String(a||'').trim(),sb=String(b||'').trim();if(!sa||!sb)return false;if(sa===sb)return true;if(sa.length>=4&&sb.endsWith(sa))return true;if(sb.length>=4&&sa.endsWith(sb))return true;return false}
 function browseCombineOp(v){return v==='or'||v==='and_or'?v:'and'}
@@ -1496,9 +1534,82 @@ function syncBrowseCombineToggleUi(wrap,combKey){if(!wrap||!combKey)return;const
 function attachFilterPanelFooterHandlers(wrap,opts){const onClear=opts.onClear;const combKey=opts.combineKey||null;const ent=opts.combineEntity||null;const escBtn=wrap.querySelector('[data-filter-esc]');const clrBtn=wrap.querySelector('[data-filter-clear]');const combBtn=wrap.querySelector('.browse-filter-combine-toggle');if(escBtn){escBtn.textContent=t('browse_filter_esc');escBtn.onclick=function(ev){ev.preventDefault();ev.stopPropagation();closeAllFilterPanels()}}if(clrBtn){clrBtn.textContent=t('browse_filters_clear');clrBtn.onclick=function(ev){ev.preventDefault();ev.stopPropagation();try{onClear&&onClear()}catch(_){}}}if(combBtn&&combKey){combBtn.onclick=function(ev){ev.preventDefault();ev.stopPropagation();const next=browseCombineModeFromClick(ev,combBtn);if(S[combKey]===next)return;S[combKey]=next;syncBrowseCombineToggleUi(wrap,combKey);if(ent)afterBrowseCombineOpChange(ent)}};if(combBtn&&combKey)syncBrowseCombineToggleUi(wrap,combKey)}
 function weaponRangeNonMapSspExOnlyBtnLabel(){return t('unit_filter_weapon_range_nm_ssp_ex_only')}
 function syncWeaponRangeNonMapSspExFooterBtn(pfx){const panel=document.getElementById(pfx+'WeaponRangeNonMapFilterPanel');if(!panel)return;const wrap=panel.querySelector('.filter-panel-clear-wrap');if(!wrap||wrap.dataset.footerReady!=='1')return;let btn=wrap.querySelector('[data-weapon-range-nm-ssp-ex]');if(!btn){btn=document.createElement('button');btn.type='button';btn.className='filter-panel-ssp-ex-btn';btn.setAttribute('data-weapon-range-nm-ssp-ex','1');const right=wrap.querySelector('.filter-panel-footer-right');if(right)right.insertBefore(btn,right.firstChild);else wrap.appendChild(btn);btn.addEventListener('click',function(ev){ev.preventDefault();ev.stopPropagation();const k=pfx==='rankUnit'?'listRankUnitWeaponRangeNonMapSspExOnly':'listUnitWeaponRangeNonMapSspExOnly';S[k]=!S[k];syncWeaponRangeNonMapSspExFooterBtn(pfx);syncUnitListSspForWeaponRangeNonMapSspExOnly();const sk=pfx==='rankUnit'?'listRankUnitWeaponRangeNonMap':'listUnitWeaponRangeNonMap';let sel=Array.isArray(S[sk])?S[sk]:[];if(sel.length&&!isUnitWeaponRangeNonMapAvailable(String(sel[0]),sk))S[sk]=[];const body=document.getElementById(pfx+'WeaponRangeNonMapFilterBody');if(body)body.innerHTML=buildUnitWeaponRangeNonMapFilterHtml(sk);updateUnitWeaponRangeNonMapFilterLabel(pfx);onUnitWeaponRangeNonMapChange()})}const k=pfx==='rankUnit'?'listRankUnitWeaponRangeNonMapSspExOnly':'listUnitWeaponRangeNonMapSspExOnly';const on=!!S[k];const lab=weaponRangeNonMapSspExOnlyBtnLabel();btn.textContent=lab;btn.setAttribute('aria-pressed',on?'true':'false');btn.classList.toggle('filter-panel-ssp-ex-btn--active',on);btn.title=lab}
-function fitFilterDropdownToViewport(panel){if(!panel||panel.hidden)return;panel.classList.remove('filter-panel--align-end');const pad=12;const vw=window.innerWidth||document.documentElement.clientWidth||0;if(vw<1)return;const rect=panel.getBoundingClientRect();if(rect.right>vw-pad)panel.classList.add('filter-panel--align-end')}
-function scheduleFitFilterDropdown(panel){if(!panel)return;if(!window.__ggenFilterPanelFitBound){window.__ggenFilterPanelFitBound=1;window.addEventListener('resize',function(){try{document.querySelectorAll('.rarity-filter-panel:not([hidden]),.role-filter-panel:not([hidden]),.source-filter-panel:not([hidden]),.lineage-filter-panel:not([hidden]),.series-filter-panel:not([hidden]),.skill-filter-panel:not([hidden])').forEach(fitFilterDropdownToViewport)}catch(_){}},{passive:true})}requestAnimationFrame(function(){fitFilterDropdownToViewport(panel);requestAnimationFrame(function(){fitFilterDropdownToViewport(panel)})})}
-function clearFilterDropdownAlign(){try{document.querySelectorAll('.filter-panel--align-end').forEach(function(el){el.classList.remove('filter-panel--align-end')})}catch(_){}}
+function _clearFilterPanelFitStyles(panel){
+if(!panel||!panel.style)return;
+try{
+panel.classList.remove('filter-panel--align-end','filter-panel--viewport-fit');
+panel.style.removeProperty('top');
+panel.style.removeProperty('left');
+panel.style.removeProperty('right');
+panel.style.removeProperty('transform');
+panel.style.removeProperty('position');
+panel.style.removeProperty('max-width');
+panel.style.removeProperty('width');
+}catch(_){}
+}
+function _filterPanelIsNamedLargeSheet(panel){
+if(!panel||!panel.classList)return false;
+if(panel.classList.contains('filter-dropdown-panel'))return false;
+if(panel.classList.contains('skill-filter-panel--compact'))return false;
+if((panel.classList.contains('lineage-filter-panel')||panel.classList.contains('series-filter-panel')))return true;
+if(panel.classList.contains('ability-filter-panel'))return true;
+if(panel.classList.contains('skill-filter-panel'))return true;
+if(panel.classList.contains('mod-effect-filter-panel'))return true;
+const id=panel.id||'';return /TerrainFilterPanel|WeaponDebuffFilterPanel|MechanismFilterPanel|MapWeaponRangeFilterPanel|WeaponRangeNonMapFilterPanel|WeaponAttrSetFilterPanel|AbilityEffectFilterPanel|MovFilterPanel/i.test(id);
+}
+function _applyFilterPanelViewportFit(panel,vw,vh,maxW){
+panel.classList.remove('filter-panel--align-end');
+panel.classList.add('filter-panel--viewport-fit');
+panel.style.maxWidth=maxW+'px';
+panel.style.width=Math.min(maxW,Math.max(panel.getBoundingClientRect().width||0,Math.min(640,maxW)))+'px';
+const mobile=window.matchMedia&&window.matchMedia('(max-width:768px)').matches;
+if(mobile){
+panel.style.top='';
+return;
+}
+const wrap=panel.parentElement;
+const wr=wrap&&wrap.getBoundingClientRect?wrap.getBoundingClientRect():null;
+const top=wr?Math.round(wr.bottom+4):72;
+panel.style.top=Math.max(8,Math.min(top,Math.max(8,vh-100)))+'px';
+}
+/**
+ * Native viewport clamp for every browse filter panel:
+ * — always cap max-width to the viewport
+ * — large sheets (Tags/Series/Skills/Abilities/…) → fixed + centered
+ * — compact dropdowns that clip right → align-end; still clip → escalate to centered
+ */
+function fitFilterDropdownToViewport(panel){
+if(!panel||panel.hidden)return;
+const pad=12;
+const vw=window.innerWidth||document.documentElement.clientWidth||0;
+const vh=window.innerHeight||document.documentElement.clientHeight||0;
+if(vw<1)return;
+const maxW=Math.max(180,vw-pad*2);
+_clearFilterPanelFitStyles(panel);
+panel.style.maxWidth=maxW+'px';
+let rect;
+try{rect=panel.getBoundingClientRect()}catch(_){return}
+const overflowsRight=rect.right>vw-pad+0.5;
+const overflowsLeft=rect.left<pad-0.5;
+const tooWide=rect.width>=maxW-1;
+const isCompact=panel.classList.contains('filter-dropdown-panel')||panel.classList.contains('skill-filter-panel--compact');
+const namedSheet=_filterPanelIsNamedLargeSheet(panel);
+if(namedSheet||tooWide||(overflowsLeft&&overflowsRight)||(overflowsRight&&!isCompact&&rect.width>Math.min(420,vw*0.55))){
+_applyFilterPanelViewportFit(panel,vw,vh,maxW);
+return;
+}
+if(overflowsRight){
+panel.classList.add('filter-panel--align-end');
+try{
+const r2=panel.getBoundingClientRect();
+if(r2.left<pad-0.5||r2.right>vw-pad+0.5||r2.width>maxW){
+_applyFilterPanelViewportFit(panel,vw,vh,maxW);
+}
+}catch(_){_applyFilterPanelViewportFit(panel,vw,vh,maxW)}
+}
+}
+function scheduleFitFilterDropdown(panel){if(!panel)return;if(!window.__ggenFilterPanelFitBound){window.__ggenFilterPanelFitBound=1;window.addEventListener('resize',function(){try{document.querySelectorAll('.rarity-filter-panel:not([hidden]),.role-filter-panel:not([hidden]),.source-filter-panel:not([hidden]),.lineage-filter-panel:not([hidden]),.series-filter-panel:not([hidden]),.skill-filter-panel:not([hidden]),.mod-effect-filter-panel:not([hidden]),.filter-dropdown-panel:not([hidden])').forEach(fitFilterDropdownToViewport);syncBrowseFilterSheetChrome()}catch(_){}},{passive:true});window.addEventListener('orientationchange',function(){try{document.querySelectorAll('.rarity-filter-panel:not([hidden]),.skill-filter-panel:not([hidden]),.lineage-filter-panel:not([hidden]),.series-filter-panel:not([hidden])').forEach(fitFilterDropdownToViewport)}catch(_){}},{passive:true})}requestAnimationFrame(function(){fitFilterDropdownToViewport(panel);syncBrowseFilterSheetChrome();requestAnimationFrame(function(){fitFilterDropdownToViewport(panel);syncBrowseFilterSheetChrome()})})}
+function clearFilterDropdownAlign(){try{document.querySelectorAll('.filter-panel--align-end,.filter-panel--viewport-fit').forEach(_clearFilterPanelFitStyles)}catch(_){}}
 function ensureFilterPanelFooter(panelId,opts){const o=opts||{};const combKey=o.combineKey||null;const panel=document.getElementById(panelId);if(!panel)return;let wrap=panel.querySelector('.filter-panel-clear-wrap');if(!wrap){wrap=document.createElement('div');wrap.className='filter-panel-clear-wrap';panel.appendChild(wrap)}if(!wrap.dataset.footerReady){wrap.dataset.footerReady='1';wrap.innerHTML='';const left=document.createElement('div');left.className='filter-panel-footer-left';const right=document.createElement('div');right.className='filter-panel-footer-right';const eb=document.createElement('button');eb.type='button';eb.className='filter-panel-esc-btn';eb.setAttribute('data-filter-esc','1');const cb=document.createElement('button');cb.type='button';cb.className='filter-panel-clear-btn';cb.setAttribute('data-filter-clear','1');right.appendChild(eb);right.appendChild(cb);wrap.appendChild(left);wrap.appendChild(right)}wrap.dataset.browseCombKey=combKey||'';wrap.classList.toggle('filter-panel-clear-wrap--actions-only',!combKey);const leftSlot=wrap.querySelector('.filter-panel-footer-left');if(combKey){const tb=leftSlot&&leftSlot.querySelector('.browse-filter-combine-toggle');const compactCls=o.compactCombine?' browse-filter-combine-toggle--compact':'';if(!tb||tb.querySelector('.browse-combine-bar')||tb.querySelector('.browse-combine-sq')||!tb.querySelector('.browse-combine-seg-toggle')||!tb.querySelector('.browse-combine-seg--and')||!tb.querySelector('.browse-combine-seg--and-or')){if(leftSlot)leftSlot.innerHTML='<button type="button" class="browse-filter-combine-toggle'+compactCls+'" role="button"><span class="browse-combine-seg-toggle" aria-hidden="true">'+browseCombineSegToggleMarkup()+'</span></button>'}else if(o.compactCombine){tb.classList.add('browse-filter-combine-toggle--compact')}else{tb.classList.remove('browse-filter-combine-toggle--compact')}}else if(leftSlot){leftSlot.innerHTML=''}attachFilterPanelFooterHandlers(wrap,o);scheduleFitFilterDropdown(panel)}
 function refreshFilterFooterI18n(){document.querySelectorAll('.filter-panel-clear-wrap[data-footer-ready="1"]').forEach(wrap=>{const escBtn=wrap.querySelector('[data-filter-esc]');const clrBtn=wrap.querySelector('[data-filter-clear]');if(escBtn)escBtn.textContent=t('browse_filter_esc');if(clrBtn)clrBtn.textContent=t('browse_filters_clear');const ck=wrap.dataset.browseCombKey||'';if(ck){syncBrowseCombineToggleUi(wrap,ck)}});['unit','rankUnit'].forEach(syncWeaponRangeNonMapSspExFooterBtn)}
 function ensurePanelClearButton(panelId,onClear){ensureFilterPanelFooter(panelId,{onClear})}
@@ -1637,8 +1748,10 @@ const UNIT_WEAPON_ATTR_SET_DEFS=[{id:'1',keys:['physical']},{id:'2',keys:['beam'
 /* Official in-game UI_Common_WeaponIcon_General_*: 01=Beam, 02=Physical, 03=Special. */
 const WEAPON_ATTR_KEY_ICONS={beam:'/static/images/UI/UI_Common_WeaponIcon_General_01.webp',physical:'/static/images/UI/UI_Common_WeaponIcon_General_02.webp',special:'/static/images/UI/UI_Common_WeaponIcon_General_03.webp'};
 function unitWeaponAttrSetLabel(id){const def=UNIT_WEAPON_ATTR_SET_DEFS.find(d=>d.id===String(id));if(!def)return String(id);return def.keys.map(k=>_tbWeaponAttrChipLabel(k)).join('/')}
+/* Escaped label with <wbr> after each / so "Physical/Special" wraps between words, never "Speci"+"al". */
+function unitWeaponAttrSetLabelHtml(id){const def=UNIT_WEAPON_ATTR_SET_DEFS.find(d=>d.id===String(id));if(!def)return esc(String(id));return def.keys.map(k=>esc(_tbWeaponAttrChipLabel(k))).join('/<wbr>')}
 function unitWeaponAttrSetIconsHtml(id,opts){const def=UNIT_WEAPON_ATTR_SET_DEFS.find(d=>d.id===String(id));if(!def||!def.keys.length)return'';const compact=!!(opts&&opts.compact);const multi=def.keys.length>1;const imgs=def.keys.map((k,i)=>{const path=WEAPON_ATTR_KEY_ICONS[k];if(!path)return'';const a=imgSrcAttr(path);return a?`<img class="weapon-attr-filter-icon" style="z-index:${i+1}"${a} alt="" role="presentation">`:''}).join('');if(!imgs)return'';/* Same overlap language as Support Skills toolbar icons (horizontal stack). */return`<span class="weapon-attr-icon-stack${multi?' weapon-attr-icon-stack--multi':''}${compact?' weapon-attr-icon-stack--toolbar':''}" aria-hidden="true">${imgs}</span>`}
-function buildUnitWeaponAttrSetFilterHtml(skOpt){const sk=skOpt||unitWeaponAttrSetStateKey();const selArr=Array.isArray(S[sk])?S[sk]:[];const selSet=new Set(selArr.map(v=>String(v)));const defs=UNIT_WEAPON_ATTR_SET_DEFS;let h='<div class="unit-debuff-grid unit-debuff-grid--weapon-attr">';for(let i=0;i<defs.length;i+=2){const a=defs[i],b=defs[i+1];const mk=(d)=>{if(!d)return'<span class="unit-debuff-fill" aria-hidden="true"></span>';const active=selSet.has(d.id)?' is-active':'';const lab=unitWeaponAttrSetLabel(d.id);const ic=unitWeaponAttrSetIconsHtml(d.id);return`<button type="button" class="unit-debuff-item unit-debuff-item--weapon-attr${active}" data-was-id="${d.id}" title="${escAttr(lab)}" aria-label="${escAttr(lab)}" onclick="onUnitWeaponAttrSetRowClick('${d.id}',event)" onkeydown="onUnitWeaponAttrSetRowKey(event,'${d.id}')"><span class="weapon-attr-filter-chip">${ic||''}<span class="weapon-attr-filter-label">${esc(lab)}</span></span></button>`};h+=`<div class="unit-debuff-grid-row">${mk(a)}${mk(b)}</div>`}h+='</div>';return h}
+function buildUnitWeaponAttrSetFilterHtml(skOpt){const sk=skOpt||unitWeaponAttrSetStateKey();const selArr=Array.isArray(S[sk])?S[sk]:[];const selSet=new Set(selArr.map(v=>String(v)));const defs=UNIT_WEAPON_ATTR_SET_DEFS;let h='<div class="unit-debuff-grid unit-debuff-grid--weapon-attr">';for(let i=0;i<defs.length;i+=2){const a=defs[i],b=defs[i+1];const mk=(d)=>{if(!d)return'<span class="unit-debuff-fill" aria-hidden="true"></span>';const active=selSet.has(d.id)?' is-active':'';const lab=unitWeaponAttrSetLabel(d.id);const labHtml=unitWeaponAttrSetLabelHtml(d.id);const ic=unitWeaponAttrSetIconsHtml(d.id);return`<button type="button" class="unit-debuff-item unit-debuff-item--weapon-attr${active}" data-was-id="${d.id}" title="${escAttr(lab)}" aria-label="${escAttr(lab)}" onclick="onUnitWeaponAttrSetRowClick('${d.id}',event)" onkeydown="onUnitWeaponAttrSetRowKey(event,'${d.id}')"><span class="weapon-attr-filter-chip">${ic||''}<span class="weapon-attr-filter-label">${labHtml}</span></span></button>`};h+=`<div class="unit-debuff-grid-row">${mk(a)}${mk(b)}</div>`}h+='</div>';return h}
 function syncUnitWeaponAttrSetCheckboxes(){const pfx=unitWeaponDebuffDomPrefix();const body=document.getElementById(pfx+'WeaponAttrSetFilterBody');if(body)body.innerHTML=buildUnitWeaponAttrSetFilterHtml();syncUnitWeaponAttrSetCombinePriorityMark(pfx)}
 function closeAllUnitWeaponAttrSetPanels(){['unit','rankUnit'].forEach(pfx=>{const panel=document.getElementById(pfx+'WeaponAttrSetFilterPanel');const btn=document.getElementById(pfx+'WeaponAttrSetFilterBtn');if(panel)panel.hidden=true;if(btn)btn.setAttribute('aria-expanded','false')})}
 function setupUnitWeaponAttrSetFilterDom(pfx,debWrap){if(!debWrap||document.getElementById(pfx+'WeaponAttrSetWrap'))return;const clone=debWrap.cloneNode(true);clone.id=pfx+'WeaponAttrSetWrap';clone.classList.add('weapon-attr-set-filter-wrap');const btn=clone.querySelector('#'+pfx+'WeaponDebuffFilterBtn');if(btn){btn.id=pfx+'WeaponAttrSetFilterBtn';btn.setAttribute('onclick','toggleUnitWeaponAttrSetPanel(event)');btn.setAttribute('title',t('unit_filter_weapon_attr'));btn.setAttribute('aria-expanded','false')}const lbl=clone.querySelector('#'+pfx+'WeaponDebuffFilterLabel');if(lbl){lbl.id=pfx+'WeaponAttrSetFilterLabel';lbl.innerHTML=`<span class="source-filter-btn-plain">${esc(t('unit_filter_weapon_attr_all'))}</span>`}const panel=clone.querySelector('#'+pfx+'WeaponDebuffFilterPanel');if(panel){panel.id=pfx+'WeaponAttrSetFilterPanel';panel.hidden=true}const body=clone.querySelector('#'+pfx+'WeaponDebuffFilterBody');if(body){body.id=pfx+'WeaponAttrSetFilterBody';body.innerHTML=''}debWrap.insertAdjacentElement('afterend',clone);updateUnitWeaponAttrSetFilterLabel(pfx)}
@@ -5018,6 +5131,71 @@ if(rp==='/tm'||rp==='/dm')S._historyModalPushed=true;
 }catch(_){}
 }
 function _historyIsDetailPath(path){const n=_historyPathNorm(path||location.pathname);return n==='/roadmap'||/^\/(?:u|c|s|es|op|pt|item)\/[^/]+\/?$/.test(n)}
+function clearDetailCoverPaintLock(){
+const mc=document.getElementById('modalContent');
+if(!mc)return;
+try{delete mc.dataset.ggenCoverLocked}catch(_){mc.removeAttribute('data-ggen-cover-locked')}
+mc.style.removeProperty('--ggen-detail-cover-w');
+mc.style.removeProperty('--ggen-detail-cover-h');
+mc.querySelectorAll('.detail-header.unit-detail-header,.detail-header.char-detail-header,.detail-header.supporter-detail-header').forEach(hdr=>{
+hdr.style.removeProperty('--ggen-header-cover-w');
+hdr.style.removeProperty('--ggen-header-cover-h');
+hdr.style.removeProperty('min-height');
+try{delete hdr.dataset.ggenLayoutLocked}catch(_){hdr.removeAttribute('data-ggen-layout-locked')}
+});
+}
+/** Freeze dossier/header cover paint box to current client size. Toggle reflow must not rescale cover. */
+function lockDetailCoverPaintBoxes(opts){
+opts=opts||{};
+const force=!!opts.force;
+const m=document.getElementById('detailModal');
+const mc=document.getElementById('modalContent');
+if(!m||!mc||!m.classList.contains('active'))return;
+if(!force&&mc.dataset.ggenCoverLocked==='1')return;
+const w=Math.max(1,mc.clientWidth|0);
+const h=Math.max(1,mc.clientHeight|0);
+mc.style.setProperty('--ggen-detail-cover-w',w+'px');
+mc.style.setProperty('--ggen-detail-cover-h',h+'px');
+mc.dataset.ggenCoverLocked='1';
+const hdr=mc.querySelector('.detail-header.unit-detail-header,.detail-header.char-detail-header,.detail-header.supporter-detail-header');
+if(hdr){
+const lockedMin=parseInt(hdr.style.minHeight,10)||0;
+const hh=Math.max(1,hdr.offsetHeight|0,lockedMin);
+const hw=Math.max(1,hdr.offsetWidth|0);
+hdr.style.setProperty('--ggen-header-cover-w',hw+'px');
+hdr.style.setProperty('--ggen-header-cover-h',hh+'px');
+/* Layout lock: keep header from shrinking under reserved PEP/CP chrome; never below current paint. */
+if(force||hdr.dataset.ggenLayoutLocked!=='1'){
+hdr.style.minHeight=hh+'px';
+hdr.dataset.ggenLayoutLocked='1';
+}else if(lockedMin&&hh>lockedMin){
+hdr.style.minHeight=hh+'px';
+}
+}
+}
+/** Lock header min-height + cover paint to current box (reserved bonus/stack already sized for PEP on). */
+function lockDetailHeaderLayoutForPep(){
+const m=document.getElementById('detailModal');
+const mc=document.getElementById('modalContent');
+if(!m||!mc||!m.classList.contains('active'))return;
+const hdr=mc.querySelector('.detail-header.unit-detail-header,.detail-header.char-detail-header,.detail-header.supporter-detail-header');
+if(!hdr)return;
+const hh=Math.max(1,hdr.offsetHeight|0);
+const prev=parseInt(hdr.style.minHeight,10)||0;
+const lockH=Math.max(hh,prev);
+hdr.style.minHeight=lockH+'px';
+hdr.dataset.ggenLayoutLocked='1';
+hdr.style.setProperty('--ggen-header-cover-w',Math.max(1,hdr.offsetWidth|0)+'px');
+hdr.style.setProperty('--ggen-header-cover-h',lockH+'px');
+}
+function scheduleLockDetailCoverPaintBoxes(){
+requestAnimationFrame(()=>{
+requestAnimationFrame(()=>{
+try{lockDetailHeaderLayoutForPep()}catch(_){}
+try{lockDetailCoverPaintBoxes({force:true})}catch(_){}
+});
+});
+}
 function closeModalDomOnly(){
 try{destroyDetailPortraitHolo()}catch(_){}
 const m=document.getElementById('detailModal');
@@ -5029,6 +5207,7 @@ try{if(typeof window.__ggenResumeBrandFonts==='function')window.__ggenResumeBran
 try{const ae=document.activeElement;if(ae&&ae!==document.body&&ae!==document.documentElement&&typeof ae.blur==='function')ae.blur()}catch(_){}
 releaseBackgroundScrollLock();
 const mc=document.getElementById('modalContent');
+try{clearDetailCoverPaintLock()}catch(_){}
 if(mc)mc.className='modal-content';
 const chrome=document.getElementById('modalDetailChrome');
 if(chrome)chrome.classList.remove('modal-detail-chrome--scrolled');
@@ -6225,7 +6404,7 @@ S._detailModalLayoutObs.observe(mc);
 }else adjustDetailModalLayout();
 requestAnimationFrame(adjustDetailModalLayout);
 }
-async function openDetail(type,id,opts){opts=opts||{};try{destroyDetailPortraitHolo()}catch(_){};const skipHistory=!!opts.skipHistory||S._historyApplyingPopstate;if(document.getElementById('searchSpotlightOverlay')&&document.getElementById('searchSpotlightOverlay').classList.contains('active'))closeSearchSpotlight();const m=document.getElementById('detailModal'),mc=document.getElementById('modalContent'),inn=document.getElementById('detailInner');const detailWasActive=m.classList.contains('active');/* Capture browse *list* Y before modal/lock. keepIfSet: openStageFromBrowse may have armed pending Y on pointerdown. */if(!detailWasActive){captureDetailBrowseReturn(type,id,{keepIfSet:true});stampHistoryBrowseScrollY(S._detailBrowseReturn&&S._detailBrowseReturn.y)}if(opts.returnStageSnapshot&&S.currentDetailType==='stage'&&S.currentDetailData&&!S.currentDetailData.content_locked){S._stageDetailUiRestore=captureStageDetailUiState();if(opts.stageNpcKey!=null&&String(opts.stageNpcKey).trim()!=='')S._stageDetailUiRestore.returnNpcId=String(opts.stageNpcKey).trim()}mc.className='modal-content';if(type==='profile_title')mc.classList.add('profile-title-detail','stage-detail');else if(type==='item')mc.classList.add('item-detail','option-part-detail','stage-detail');else mc.classList.add(type==='character'?'char-detail':(type==='unit'?'unit-detail':(type==='supporter'?'supporter-detail':(type==='option_part'?'option-part-detail':'stage-detail'))));m.classList.add('active');document.body.classList.add('detail-modal-open');try{if(typeof window.__ggenPauseBrandFonts==='function')window.__ggenPauseBrandFonts()}catch(_){}if(!detailWasActive)applyBackgroundScrollLock();updateScrollTopFabVisibility();resetDetailModalScroll();S._detailOpenToken=(S._detailOpenToken||0)+1;(function(){try{if(S._detailOpenSpinTimer){clearTimeout(S._detailOpenSpinTimer);S._detailOpenSpinTimer=null}}catch(_){}const _same=!!(detailWasActive&&S.currentDetailType===type&&S.currentDetailData&&String(S.currentDetailData.id)===String(id)&&!(opts&&(opts.stageNpcEmbed||opts.forceReload)));if(_same)return;inn.innerHTML='<div class="loading-overlay"><div class="spinner"></div></div>';})();syncModalDetailChrome();syncDetailBrowseNavUi();try{const d=await fetchDetailPayload(type,id,opts);S._detailOpenToken=(S._detailOpenToken||0)+1;try{if(S._detailOpenSpinTimer){clearTimeout(S._detailOpenSpinTimer);S._detailOpenSpinTimer=null}}catch(_){}if(type==='option_part'){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false;S.ultAltActive=false;S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;attachStageDetailReturnIfNeeded(d,opts);S.currentDetailData=d;S.currentDetailType=type;inn.innerHTML=renderOptionPartShell(d);syncModalDetailChrome();pinDetailModalScrollTop(0);if(!skipHistory)_syncDetailBrowseHistory(type,id,detailWasActive,skipHistory);syncDetailBrowseNavUi();return}if(type==='profile_title'||type==='item'){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false;S.ultAltActive=false;S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;attachStageDetailReturnIfNeeded(d,opts);S.currentDetailData=d;S.currentDetailType=type;inn.innerHTML=type==='item'?renderItemShell(d):renderProfileTitleShell(d);syncModalDetailChrome();pinDetailModalScrollTop(0);if(!skipHistory)_syncDetailBrowseHistory(type,id,detailWasActive,skipHistory);syncDetailBrowseNavUi();return}const _pu=type==='unit'&&!!opts.preserveUnitSpSsp;const _pcp=!!opts.preserveConditionalPassive||!!opts.unitConditionCpTarget;const _vr=!!opts.viewRanking;d.ranking_context=!!_vr;if(_vr){d.view_ranking=false}if(type==='character'||type==='unit')d.ranking_available=true;if(!_pu&&!_pcp){S.conditionalPassiveActive=false;S.pilotConditionalPassiveActive=false;S.pilotCondCharData=null;S._pilotCondCharFetchId=null;S._pilotCondCharInflight=null;S._pilotCondPrefetchUnitId=null;S.pilotCondStackCount=0;S.unitCondStackCount=0;S.unitHpAtkTierIndex=0;S.spActive=false;S.sspActive=false}S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;S.detailRankingOverlay=false;if(type==='stage'){S.stageMapAutoFit=true;S.stageMapZoom=1}if(!_pu){if(type==='character'){S.spActive=!!S.listCharSp;if(!_pcp)S.conditionalPassiveActive=!!S.listCharCond}else if(type==='unit'){if(S.listUnitSsp){S.sspActive=true;S.spActive=false}else if(S.listUnitSp){S.spActive=true;S.sspActive=false}else{S.spActive=false;S.sspActive=false}if(!_pcp){if(opts.viewRanking){S.conditionalPassiveActive=!!opts.listUnitCondPerspective;S.pilotConditionalPassiveActive=!!opts.listUnitPilotCondPerspective}else{S.conditionalPassiveActive=!!(d&&_detailUnitHasCondStats(d))||!!S.listUnitCond;S.pilotConditionalPassiveActive=!!(S.listUnitPilotCond&&d&&d.has_pilot_cond_passive)}}}}if(_pcp)S.conditionalPassiveActive=true;if(!_pcp&&!opts.viewRanking&&type==='unit'&&d&&_detailUnitHasCondStats(d))S.conditionalPassiveActive=true;if(opts.unitConditionCpTarget&&d)d.unit_condition_cp_target=true;if(opts.affinityHighlightUnitId&&d)d.affinity_highlight_unit_id=String(opts.affinityHighlightUnitId);if(opts.pilotCondHighlightUnitId&&d){d.pilot_cond_highlight_unit_id=String(opts.pilotCondHighlightUnitId);if(opts.pilotCondHighlightUnitStub)d.pilot_cond_highlight_unit_stub=opts.pilotCondHighlightUnitStub;}attachStageDetailReturnIfNeeded(d,opts);S.currentDetailData=d;S.currentDetailType=type;if(type==='character'&&S.conditionalPassiveActive&&d.ex_supercharged_tiers&&d.ex_supercharged_tiers.length>1)S.charSuperchargedExTier=d.ex_supercharged_tiers.length-1;if(type==='supporter'){applySupporterLeaderSepSticky(d);S.currentSupporterLbTier=d.lb_tier??3;S.currentSupporterLevel=Math.max(1,Number(d.level)||Math.max(1,Number(d.max_level)||100))}if(type==='unit'){_detailInitUnitCondControls(d);S.listSelectedUnitId=String(opts.listUnitFocusId!=null?opts.listUnitFocusId:id);syncUnitListDetailHighlight()}if((type==='character'||type==='unit')&&d.portrait)void warmPathDetailImg(d.portrait);if(type==='character'){inn.innerHTML=renderCharShell(d);queueMicrotask(function(){try{bindUnitPortraitFx(inn)}catch(_){}})}else if(type==='unit'){if(d.weapons)d.weapons.forEach(w=>S.currentWeaponLevels[w.id]=5);void warmUnitModelStageAssets(d);inn.innerHTML=renderUnitShell(d);bindUnitModelStageReveal(inn);queueMicrotask(function(){try{bindUnitPortraitFx(inn)}catch(_){}})}else if(type==='supporter'){inn.innerHTML=renderSupporterShell(d);queueMicrotask(function(){try{bindUnitPortraitFx(inn)}catch(_){}})}else{if(type==='stage'&&d&&d.stage_category==='fierce_enemy_assault'){S.feaDiff='normal';S.feaLevel=null}inn.innerHTML=(d.content_locked?renderEternalStageLockedPanel(d):renderStageShell(d))}syncModalDetailChrome();if(type==='stage'&&!d.content_locked)wireRewardDetailClicks(inn);if(d&&d.ranking_available&&(type==='character'||type==='unit'))ensureDetailRankingToggleDom(type);if(!(type==='stage'&&d.content_locked)){updateDetailDynamicSections(type);if(type==='unit')queuePilotCondCharPrefetch(d);if(d&&d.ranking_available&&(type==='character'||type==='unit')){(function(_t,_i){setTimeout(function(){if(S.currentDetailType!==_t||!S.currentDetailData||String(S.currentDetailData.id)!==String(_i))return;void ensureDetailRankingStats(_t,_i).then(function(){if(S.currentDetailType===_t&&S.currentDetailData&&String(S.currentDetailData.id)===String(_i)){updateDetailDynamicSections(_t);adjustDetailModalLayout()}}).catch(function(){})},5000)})(type,id)}}pinDetailModalScrollTop(0);if(!skipHistory)_syncDetailBrowseHistory(type,id,detailWasActive,skipHistory);syncDetailBrowseNavUi()}catch(e){const msg=String((e&&e.message)||e||'');const soft=!!(e&&(e.name==='AbortError'||e.name==='TypeError'))||/networkerror|failed to fetch|load failed|the operation was aborted|^network$/i.test(msg);if(!soft)console.error(e);inn.innerHTML=`<div class="empty-state" style="padding:60px 20px"><div class="empty-state-icon">⚠️</div><div class="empty-state-text">${esc(soft?'Could not load details. Check your connection and try again.':('Failed: '+msg))}</div></div>`;syncModalDetailChrome();syncDetailBrowseNavUi()}}
+async function openDetail(type,id,opts){opts=opts||{};try{destroyDetailPortraitHolo()}catch(_){};const skipHistory=!!opts.skipHistory||S._historyApplyingPopstate;if(document.getElementById('searchSpotlightOverlay')&&document.getElementById('searchSpotlightOverlay').classList.contains('active'))closeSearchSpotlight();const m=document.getElementById('detailModal'),mc=document.getElementById('modalContent'),inn=document.getElementById('detailInner');const detailWasActive=m.classList.contains('active');/* Capture browse *list* Y before modal/lock. keepIfSet: openStageFromBrowse may have armed pending Y on pointerdown. */if(!detailWasActive){captureDetailBrowseReturn(type,id,{keepIfSet:true});stampHistoryBrowseScrollY(S._detailBrowseReturn&&S._detailBrowseReturn.y)}if(opts.returnStageSnapshot&&S.currentDetailType==='stage'&&S.currentDetailData&&!S.currentDetailData.content_locked){S._stageDetailUiRestore=captureStageDetailUiState();if(opts.stageNpcKey!=null&&String(opts.stageNpcKey).trim()!=='')S._stageDetailUiRestore.returnNpcId=String(opts.stageNpcKey).trim()}try{clearDetailCoverPaintLock()}catch(_){}mc.className='modal-content';if(type==='profile_title')mc.classList.add('profile-title-detail','stage-detail');else if(type==='item')mc.classList.add('item-detail','option-part-detail','stage-detail');else mc.classList.add(type==='character'?'char-detail':(type==='unit'?'unit-detail':(type==='supporter'?'supporter-detail':(type==='option_part'?'option-part-detail':'stage-detail'))));m.classList.add('active');document.body.classList.add('detail-modal-open');try{if(typeof window.__ggenPauseBrandFonts==='function')window.__ggenPauseBrandFonts()}catch(_){}if(!detailWasActive)applyBackgroundScrollLock();updateScrollTopFabVisibility();resetDetailModalScroll();S._detailOpenToken=(S._detailOpenToken||0)+1;(function(){try{if(S._detailOpenSpinTimer){clearTimeout(S._detailOpenSpinTimer);S._detailOpenSpinTimer=null}}catch(_){}const _same=!!(detailWasActive&&S.currentDetailType===type&&S.currentDetailData&&String(S.currentDetailData.id)===String(id)&&!(opts&&(opts.stageNpcEmbed||opts.forceReload)));if(_same)return;inn.innerHTML='<div class="loading-overlay"><div class="spinner"></div></div>';})();syncModalDetailChrome();syncDetailBrowseNavUi();try{const d=await fetchDetailPayload(type,id,opts);S._detailOpenToken=(S._detailOpenToken||0)+1;try{if(S._detailOpenSpinTimer){clearTimeout(S._detailOpenSpinTimer);S._detailOpenSpinTimer=null}}catch(_){}if(type==='option_part'){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false;S.ultAltActive=false;S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;attachStageDetailReturnIfNeeded(d,opts);S.currentDetailData=d;S.currentDetailType=type;inn.innerHTML=renderOptionPartShell(d);syncModalDetailChrome();pinDetailModalScrollTop(0);try{scheduleLockDetailCoverPaintBoxes()}catch(_){}if(!skipHistory)_syncDetailBrowseHistory(type,id,detailWasActive,skipHistory);syncDetailBrowseNavUi();return}if(type==='profile_title'||type==='item'){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false;S.ultAltActive=false;S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;attachStageDetailReturnIfNeeded(d,opts);S.currentDetailData=d;S.currentDetailType=type;inn.innerHTML=type==='item'?renderItemShell(d):renderProfileTitleShell(d);syncModalDetailChrome();pinDetailModalScrollTop(0);try{scheduleLockDetailCoverPaintBoxes()}catch(_){}if(!skipHistory)_syncDetailBrowseHistory(type,id,detailWasActive,skipHistory);syncDetailBrowseNavUi();return}const _pu=type==='unit'&&!!opts.preserveUnitSpSsp;const _pcp=!!opts.preserveConditionalPassive||!!opts.unitConditionCpTarget;const _vr=!!opts.viewRanking;d.ranking_context=!!_vr;if(_vr){d.view_ranking=false}if(type==='character'||type==='unit')d.ranking_available=true;if(!_pu&&!_pcp){S.conditionalPassiveActive=false;S.pilotConditionalPassiveActive=false;S.pilotCondCharData=null;S._pilotCondCharFetchId=null;S._pilotCondCharInflight=null;S._pilotCondPrefetchUnitId=null;S.pilotCondStackCount=0;S.unitCondStackCount=0;S.unitHpAtkTierIndex=0;S.spActive=false;S.sspActive=false}S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;S.detailRankingOverlay=false;if(type==='stage'){S.stageMapAutoFit=true;S.stageMapZoom=1}if(!_pu){if(type==='character'){S.spActive=!!S.listCharSp;if(!_pcp)S.conditionalPassiveActive=!!S.listCharCond}else if(type==='unit'){if(S.listUnitSsp){S.sspActive=true;S.spActive=false}else if(S.listUnitSp){S.spActive=true;S.sspActive=false}else{S.spActive=false;S.sspActive=false}if(!_pcp){if(opts.viewRanking){S.conditionalPassiveActive=!!opts.listUnitCondPerspective;S.pilotConditionalPassiveActive=!!opts.listUnitPilotCondPerspective}else{S.conditionalPassiveActive=!!(d&&_detailUnitHasCondStats(d))||!!S.listUnitCond;S.pilotConditionalPassiveActive=!!(S.listUnitPilotCond&&d&&d.has_pilot_cond_passive)}}}}if(_pcp)S.conditionalPassiveActive=true;if(!_pcp&&!opts.viewRanking&&type==='unit'&&d&&_detailUnitHasCondStats(d))S.conditionalPassiveActive=true;if(opts.unitConditionCpTarget&&d)d.unit_condition_cp_target=true;if(opts.affinityHighlightUnitId&&d)d.affinity_highlight_unit_id=String(opts.affinityHighlightUnitId);if(opts.pilotCondHighlightUnitId&&d){d.pilot_cond_highlight_unit_id=String(opts.pilotCondHighlightUnitId);if(opts.pilotCondHighlightUnitStub)d.pilot_cond_highlight_unit_stub=opts.pilotCondHighlightUnitStub;}attachStageDetailReturnIfNeeded(d,opts);S.currentDetailData=d;S.currentDetailType=type;if(type==='character'&&S.conditionalPassiveActive&&d.ex_supercharged_tiers&&d.ex_supercharged_tiers.length>1)S.charSuperchargedExTier=d.ex_supercharged_tiers.length-1;if(type==='supporter'){applySupporterLeaderSepSticky(d);S.currentSupporterLbTier=d.lb_tier??3;S.currentSupporterLevel=Math.max(1,Number(d.level)||Math.max(1,Number(d.max_level)||100))}if(type==='unit'){_detailInitUnitCondControls(d);S.listSelectedUnitId=String(opts.listUnitFocusId!=null?opts.listUnitFocusId:id);syncUnitListDetailHighlight()}if((type==='character'||type==='unit')&&d.portrait)void warmPathDetailImg(d.portrait);if(type==='character'){inn.innerHTML=renderCharShell(d);queueMicrotask(function(){try{bindUnitPortraitFx(inn)}catch(_){}})}else if(type==='unit'){if(d.weapons)d.weapons.forEach(w=>S.currentWeaponLevels[w.id]=5);void warmUnitModelStageAssets(d);inn.innerHTML=renderUnitShell(d);bindUnitModelStageReveal(inn);queueMicrotask(function(){try{bindUnitPortraitFx(inn)}catch(_){}})}else if(type==='supporter'){inn.innerHTML=renderSupporterShell(d);queueMicrotask(function(){try{bindUnitPortraitFx(inn)}catch(_){}})}else{if(type==='stage'&&d&&d.stage_category==='fierce_enemy_assault'){S.feaDiff='normal';S.feaLevel=null}inn.innerHTML=(d.content_locked?renderEternalStageLockedPanel(d):renderStageShell(d))}syncModalDetailChrome();if(type==='stage'&&!d.content_locked)wireRewardDetailClicks(inn);if(d&&d.ranking_available&&(type==='character'||type==='unit'))ensureDetailRankingToggleDom(type);if(!(type==='stage'&&d.content_locked)){updateDetailDynamicSections(type);if(type==='unit')queuePilotCondCharPrefetch(d);if(d&&d.ranking_available&&(type==='character'||type==='unit')){(function(_t,_i){setTimeout(function(){if(S.currentDetailType!==_t||!S.currentDetailData||String(S.currentDetailData.id)!==String(_i))return;void ensureDetailRankingStats(_t,_i).then(function(){if(S.currentDetailType===_t&&S.currentDetailData&&String(S.currentDetailData.id)===String(_i)){updateDetailDynamicSections(_t);adjustDetailModalLayout()}}).catch(function(){})},5000)})(type,id)}}pinDetailModalScrollTop(0);try{scheduleLockDetailCoverPaintBoxes()}catch(_){}if(!skipHistory)_syncDetailBrowseHistory(type,id,detailWasActive,skipHistory);syncDetailBrowseNavUi()}catch(e){const msg=String((e&&e.message)||e||'');const soft=!!(e&&(e.name==='AbortError'||e.name==='TypeError'))||/networkerror|failed to fetch|load failed|the operation was aborted|^network$/i.test(msg);if(!soft)console.error(e);inn.innerHTML=`<div class="empty-state" style="padding:60px 20px"><div class="empty-state-icon">⚠️</div><div class="empty-state-text">${esc(soft?'Could not load details. Check your connection and try again.':('Failed: '+msg))}</div></div>`;syncModalDetailChrome();syncDetailBrowseNavUi();try{scheduleLockDetailCoverPaintBoxes()}catch(_){}}}
 function closeModal(){
 const m=document.getElementById('detailModal');
 const wasOpen=!!(m&&m.classList.contains('active'));
@@ -6366,6 +6545,7 @@ S.currentDetailType='stage';
 if(pay&&pay.stage_category==='fierce_enemy_assault'&&!ui){S.feaDiff='normal';S.feaLevel=null;S.feaChallengeExpanded=false}
 inn.innerHTML=pay.content_locked?renderEternalStageLockedPanel(pay):renderStageShell(pay);
 syncModalDetailChrome();
+try{clearDetailCoverPaintLock();scheduleLockDetailCoverPaintBoxes()}catch(_){}
 try{
 const bp=browseShortPathForDetailType('stage',pay.id);
 if(bp)replaceHistoryToBrowsePath(bp,{ggenDetail:1});
@@ -8023,8 +8203,12 @@ void ensurePilotCondCharData(d,true).then(r=>{
 if(!r||!r.data)return;
 if(S.currentDetailType==='unit'&&S.currentDetailData&&String(S.currentDetailData.id)===uid){
 if(S.pilotConditionalPassiveActive)_detailInitPilotCondStackCount(S.currentDetailData);
-updateDetailDynamicSections('unit');
+/* Soft path: keep toggles DOM, insert reserved stack, re-lock header so PEP toggle cannot push detail-body. */
+S._pilotStackSliderAnimate=false;
+updateDetailDynamicSections('unit',{keepToggles:true});
+try{_detailSoftSyncPilotEpToggleDom()}catch(_){}
 syncPilotCondHighlights();
+try{scheduleLockDetailCoverPaintBoxes()}catch(_){}
 }
 }).catch(()=>{});
 }
@@ -8349,16 +8533,16 @@ const stackInfo=_detailPilotStackSliderInfo(ud,{probe:true});
 if(!stackInfo)return'';
 const maxS=stackInfo.maxStacks;
 const maxPct=Math.max(1,stackInfo.maxPct|0);
-/* Reserved invisible row when PEP off — same height as open slider so garage cover never rescales. */
+const stackLab=t('pilot_exclusive_stack_label')||'Pilot exclusive stack level';
+/* Reserved invisible row when PEP off — same height/bind attrs as open so soft toggle never rebuilds. */
 if(!S.pilotConditionalPassiveActive){
 const dots=_stackMsPctDotsHtml(stackInfo.per,maxPct,maxS,maxS,maxPct,1);
-const inner=_stackMsInnerHtml({p:1,dots,min:1,max:maxS,cur:maxS,aria:'',disabled:true});
+const inner=_stackMsInnerHtml({p:1,dots,min:1,max:maxS,cur:maxS,aria:stackLab,fnName:'setPilotCondStackCount',disabled:true});
 return`<div class="detail-pilot-stack-row is-reserved detail-pep-ms" aria-hidden="true">${inner}<span class="detail-pilot-stack-val">+0%</span></div>`;
 }
 const cur=Math.max(1,Math.min(maxS,S.pilotCondStackCount|0||maxS));
 const pct=Math.min(stackInfo.maxPct,stackInfo.per*cur);
 const p=pct/maxPct;
-const stackLab=t('pilot_exclusive_stack_label')||'Pilot exclusive stack level';
 const enterCls=S._pilotStackSliderAnimate?' detail-pilot-stack-row--enter':'';
 const dots=_stackMsPctDotsHtml(stackInfo.per,maxPct,maxS,cur,pct,1);
 const inner=_stackMsInnerHtml({p,dots,min:1,max:maxS,cur,aria:stackLab,fnName:'setPilotCondStackCount'});
@@ -8450,30 +8634,70 @@ if(_pilotRangeTypeKeysMatchWeapon(mod.wpnTypes,wpn))bonus+=mod.inc;
 });
 return bonus;
 }
+function _detailSoftSyncPilotEpToggleDom(){
+/* Patch PEP/CP chrome in place — never rebuild #detailStatsToggles (header height → garage cover rescale). */
+const root=document.getElementById('detailStatsToggles');
+if(!root)return;
+const pepClick=root.querySelector('.detail-pilot-ep-toggle .toggle-clickable');
+if(pepClick){
+pepClick.classList.toggle('active',!!S.pilotConditionalPassiveActive);
+const slot=pepClick.querySelector('.toggle-control-slot');
+if(slot)slot.innerHTML=_detailPilotEpChipSpanHtml(!!S.pilotConditionalPassiveActive);
+const labelCol=pepClick.querySelector('.detail-pilot-ep-label-col');
+if(labelCol){
+S._pilotStackSliderAnimate=false;
+const on=!!S.pilotConditionalPassiveActive;
+let row=labelCol.querySelector('.detail-pilot-stack-row');
+const want=_detailPilotStackSliderHtml(S.currentDetailData);
+if(!want){if(row)row.remove()}
+else if(!row){labelCol.insertAdjacentHTML('beforeend',want);row=labelCol.querySelector('.detail-pilot-stack-row')}
+else{
+/* Toggle reserved↔open in place — same box, no header reflow. */
+row.classList.toggle('is-reserved',!on);
+row.classList.toggle('is-open',!!on);
+row.classList.remove('detail-pilot-stack-row--enter');
+if(on){
+row.removeAttribute('aria-hidden');
+row.setAttribute('onclick','event.stopPropagation()');
+const info=_detailPilotStackSliderInfo(S.currentDetailData);
+const cur=info?Math.max(1,Math.min(info.maxStacks,S.pilotCondStackCount|0||info.maxStacks)):1;
+if(info)_stackMsSyncPct(row,info,cur);
+const inp=row.querySelector('input.detail-pilot-stack-slider');
+if(inp){
+inp.disabled=false;inp.removeAttribute('tabindex');
+const lab=t('pilot_exclusive_stack_label')||'Pilot exclusive stack level';
+inp.setAttribute('aria-label',lab);
+}
+}else{
+row.setAttribute('aria-hidden','true');
+row.removeAttribute('onclick');
+const val=row.querySelector('.detail-pilot-stack-val');
+if(val)val.textContent='+0%';
+const inp=row.querySelector('input.detail-pilot-stack-slider');
+if(inp){inp.disabled=true;inp.tabIndex=-1}
+}
+}
+}
+}
+const cpClick=root.querySelector('.detail-unit-cp-block > .toggle-clickable');
+if(cpClick)cpClick.classList.toggle('active',!!S.conditionalPassiveActive);
+}
 function togglePilotConditionalPassive(c){
 S.pilotConditionalPassiveActive=!!c;
-if(!c){S.pilotCondStackCount=0;S._pilotStackSliderAnimate=false}
-else S._pilotStackSliderAnimate=true;
+/* Soft path: never animate stack in/out (keeps header box stable for cover bg). */
+S._pilotStackSliderAnimate=false;
+if(!c)S.pilotCondStackCount=0;
 invalidateDetailRankingCachesForPerspectiveChange();
 const d=S.currentDetailData;
-const afterRender=()=>{
-if(S._pilotStackSliderAnimate){
-requestAnimationFrame(()=>{
-document.querySelectorAll('.detail-pilot-stack-row--enter').forEach(el=>{
-el.addEventListener('animationend',()=>{el.classList.remove('detail-pilot-stack-row--enter');S._pilotStackSliderAnimate=false},{once:true});
-});
-});
-}
-syncPilotCondHighlights();
-};
 const finish=()=>{
 if(c&&d&&S.pilotCondCharData){
 _detailInitPilotCondStackCount(d);
 /* Dual-gate MOV (e.g. Master Asia): PEP on → auto-arm Supercharged CP. PEP-only MOV (Athrun) skips. */
 if(_detailUnitPilotMovCpGate(d))S.conditionalPassiveActive=true;
 }
-updateDetailDynamicSections(S.currentDetailType);
-afterRender();
+updateDetailDynamicSections(S.currentDetailType,{keepToggles:true});
+_detailSoftSyncPilotEpToggleDom();
+syncPilotCondHighlights();
 };
 if(c&&d&&d.has_pilot_cond_passive&&d.recommend_character&&d.recommend_character.id){
 void ensurePilotCondCharData(d,true).then(()=>finish()).catch(()=>finish());
@@ -8528,8 +8752,10 @@ const ucGold=type==='unit'&&isCurrentDetailUnitConditionCpTarget();
 const pilotGold=type==='unit'&&!!S.pilotConditionalPassiveActive;
 const body=sr.map((s,i)=>{
 const b=bs[i];const pilotBon=!!(s.pilot_bonus>0);const prePilotTot=prePilotSr?prePilotSr[i].total|0:s.total|0;const cpHi=cp&&prePilotTot>(b.total|0);const pilotHi=pilotBon&&s.total>prePilotTot;const hcb=cpHi||pilotHi;const hcp=cp&&prePilotTot<(b.total|0);let eb='';
+/* Always emit a bonus slot (empty when unused) so PEP/CP cannot grow card height and shove the rank toggle / detail-body. */
 if(hcp){const cpDelta=prePilotTot-(b.total|0);eb=`<div class="stat-card-bonus stat-card-penalty">(${fmtN(cpDelta)})</div>`}
 else if(s.bonus>0){const showSsp=(type==='unit'&&S.sspActive&&s.name==='Move');const showUlt=(type==='unit'&&S.ultAltActive&&(s.ult_alt_bonus|0)>0);eb=`<div class="stat-card-bonus">${showUlt?`<img src="${imgUrl('/static/images/Rarity/UI_Common_Icon_ULT_Mask.webp')}" alt="ULT" style="height:14px;vertical-align:-2px;margin-right:4px;" onerror="this.style.display='none'">`:(showSsp?`<img src="${imgUrl('/static/images/UI/UI_Common_Icon_Ssp.webp')}" alt="SSP" style="height:14px;vertical-align:-2px;margin-right:4px;" onerror="this.style.display='none'">`:'')}+${fmtN(s.bonus)}</div>`}
+else{eb=`<div class="stat-card-bonus is-empty" aria-hidden="true">+0</div>`}
 const cardHi=hcb?(ucGold&&cpHi&&!pilotHi?'has-cond-bonus--gold':(pilotGold&&pilotHi?'has-cond-bonus--pilot':'has-cond-bonus')):hcp?'has-cond-penalty':'';
 const valHi=hcb?(ucGold&&cpHi&&!pilotHi?'has-bonus-val--gold':(pilotGold&&pilotHi?'has-bonus-val--pilot':'has-bonus-val')):hcp?'has-penalty-val':'';
 const statHintFor=(nm)=>{if(type!=='unit')return'';if(nm==='Attack'&&atkHint)return atkHint;if(nm==='HP'&&hpHint)return hpHint;if(nm==='EN'&&enHint)return enHint;if(nm==='Defense'&&defHint)return defHint;if(nm==='Mobility'&&mobHint)return mobHint;if(nm==='Move'&&mvHint)return mvHint;return''};
@@ -10924,7 +11150,8 @@ function syncTagValueCrawlers(root){
     const need=text.scrollWidth>avail+1;
     if(!need)return;
     const dist=Math.max(0,text.scrollWidth-avail);
-    const dur=Math.max(4,Math.min(18,dist/18));
+    /* Slower crawl — was dist/18 (~4–18s); longer hold+scroll cycle for readable titles */
+    const dur=Math.max(7,Math.min(24,dist/11));
     text.style.setProperty('--tag-crawl-dist',dist+'px');
     text.style.setProperty('--tag-crawl-dur',dur+'s');
     el.classList.add('tag-part-value--crawl');
@@ -10935,7 +11162,7 @@ function scheduleSyncTagValueCrawlers(root){
     requestAnimationFrame(()=>{requestAnimationFrame(()=>{try{syncTagValueCrawlers(root)}catch(e){}})});
   }catch(e){try{syncTagValueCrawlers(root)}catch(e2){}}
 }
-try{if(typeof window!=='undefined'&&!window.GGEN_TAG_CRAWL_RESIZE){window.GGEN_TAG_CRAWL_RESIZE=1;window.addEventListener('resize',function(){try{scheduleSyncTagValueCrawlers(document)}catch(e){}});}}catch(_e){}
+try{if(typeof window!=='undefined'&&!window.GGEN_TAG_CRAWL_RESIZE){window.GGEN_TAG_CRAWL_RESIZE=1;window.addEventListener('resize',function(){try{scheduleSyncTagValueCrawlers(document)}catch(e){}try{const dm=document.getElementById('detailModal');if(dm&&dm.classList.contains('active')){clearDetailCoverPaintLock();scheduleLockDetailCoverPaintBoxes()}}catch(e2){}});}}catch(_e){}
 
 
 function createTagHtml(tag,opts){const o=opts||{};const tn=typeof tag==='string'?tag:(tag.name||'');const tt=typeof tag==='string'?'':(tag.type||'');const tid=typeof tag==='string'?'':(tag.id||'');const preferred=(o.defaultTarget==='unit'||o.defaultTarget==='character')?o.defaultTarget:'';const forceTagModal=!!o.force_tag_modal;let li='';if(tt==='character')li='/static/images/UI/UI_Common_Icon_Category_Chara_Main.webp';else li='/static/images/UI/UI_Common_Icon_Category_MS_Main.webp';let onClick=`openTagModal('${escJs(tn)}','or'${preferred?`,'${preferred}'`:''})`;if(tt==='series'&&tid&&!forceTagModal){const tab=(preferred==='character')?'characters':'units';onClick=`openSeriesModal('${escJs(tid)}','${tab}','${escJs(tn)}')`}const dataUnit=tt==='unit'&&tid&&String(tid).length>=9?` data-cond-unit-id="${escAttr(String(tid))}"`:'';return tagCompositeHtml({variant:tt,iconSrc:li,value:tn,onClick,attrs:dataUnit})}
@@ -10949,14 +11176,18 @@ function conditionJoiner(prevTag,curTag,allTags){const j=String(curTag&&curTag.j
 function renderConditionTagsWithJoiners(tags){const arr=Array.isArray(tags)?tags:[];let h='';for(let i=0;i<arr.length;i++){if(i>0)h+=conditionJoiner(arr[i-1],arr[i],arr);h+=createTagHtml(arr[i],{defaultTarget:'unit'})}return h}
 function normalizeAbilityDetailTextForSplit(raw){let s=String(raw||'').trim();if(!s)return s;s=s.replace(/([.%])\s+(?=When\s+Vigor\b)/gi,'$1\n');s=s.replace(/([;；])\s*(?=When\s+Vigor\b)/gi,'$1\n');s=s.replace(/,\s+and\s+(?=when\s+vigor\b)/gi,',\n');s=s.replace(/,\s+(?=when\s+vigor\b)/gi,',\n');s=s.replace(/\.\s+(?=\b(?:Increase|Increases)\b)/gi,'.\n');s=s.replace(/;\s+(?=\b(?:Increase|Increases)\b)/gi,';\n');s=s.replace(/([^\s\n%])\s+(?=When\s+Vigor\b)/gi,'$1\n');return s}
 function abilityValidConditionGroupsSorted(detail){const groups=Array.isArray(detail&&detail.condition_groups)?detail.condition_groups.slice():[];if(!groups.length)return[];groups.sort((a,b)=>_conditionLabelSortKey(a&&a.label)-_conditionLabelSortKey(b&&b.label));return groups.filter(g=>Array.isArray(g&&g.conditions)&&g.conditions.length)}
-function _detailProseContainsAllConditionNames(prose,tags){const hay=String(prose||'').toLowerCase().replace(/\s+/g,' ').trim();if(!hay)return false;for(let i=0;i<(tags||[]).length;i++){const n=String(tags[i]&&tags[i].name||'').trim().toLowerCase().replace(/\s+/g,' ');if(!n)return false;if(!hay.includes(n))return false}return true}
-function _abilityConditionGroupPilotUnitRedundant(prose,g){const conds=Array.isArray(g&&g.conditions)?g.conditions:[];if(!conds.length)return false;if(!conds.every(c=>String(c&&c.source||'')==='unit_ids'))return false;const low=String(prose||'').toLowerCase();if(!/\b(?:when\s+)?piloting\b/i.test(low))return false;return _detailProseContainsAllConditionNames(prose,conds)}
+function _normAbilityProseName(s){return String(s||'').toLowerCase().replace(/\([^)]*\)/g,' ').replace(/[^a-z0-9\u3040-\u30ff\u3400-\u9fff]+/g,' ').replace(/\s+/g,' ').trim()}
+function _abilityTokenEditDistAtMost1(a,b){if(a===b)return true;const na=a.length,nb=b.length;if(Math.abs(na-nb)>1)return false;if(na>nb)return _abilityTokenEditDistAtMost1(b,a);let i=0,j=0,edits=0;while(i<na&&j<nb){if(a[i]===b[j]){i++;j++;continue}if(++edits>1)return false;if(na===nb){i++;j++}else j++}return true}
+function _abilityProseHasNameToken(hay,token){if(!token)return false;if(hay.includes(token))return true;if(token.length<4)return false;return hay.split(' ').some(w=>w.length>=3&&_abilityTokenEditDistAtMost1(w,token))}
+function _detailProseContainsAllConditionNames(prose,tags){const hay=_normAbilityProseName(prose);if(!hay)return false;for(let i=0;i<(tags||[]).length;i++){const n=_normAbilityProseName(tags[i]&&tags[i].name);if(!n)return false;if(hay.includes(n))continue;const toks=n.split(' ').filter(t=>t.length>=3);if(!toks.length||!toks.every(t=>_abilityProseHasNameToken(hay,t)))return false}return true}
+function _abilityProseHasPilotingGate(prose){return/\b(?:when\s+)?piloting\b|搭乘|搭乗|탑승/i.test(String(prose||''))}
+function _abilityConditionGroupPilotUnitRedundant(prose,g){const conds=Array.isArray(g&&g.conditions)?g.conditions:[];if(!conds.length)return false;if(!conds.every(c=>String(c&&c.source||'')==='unit_ids'))return false;/* Named MS UnitIds under “when piloting …” are unit pairing, not Tags — hide even when LANG typos (Gumdam vs Gundam) break exact includes. */if(!_abilityProseHasPilotingGate(prose))return false;return true}
 /** Weapon/attack attribute gates are not game Tags — never render as MS/Chara tag composites. */
 function _abilityConditionIsWeaponAttrPill(c){const ty=String(c&&c.type||'').toLowerCase();return ty==='weapon_attribute'||ty==='attack_attribute'}
 function _abilityUiFilterConditionTags(tags){return(Array.isArray(tags)?tags:[]).filter(c=>!_abilityConditionIsWeaponAttrPill(c))}
 /** Detail modal only: hides pilot-only unit_id pills duplicated by “when piloting …” prose. Keeps JSON intact for simulator / TB. */
 function abilityUiConditionGroupsSorted(detail){const prose=String(detail&&detail.text||'');return abilityValidConditionGroupsSorted(detail).map(g=>{const conds=_abilityUiFilterConditionTags(g&&g.conditions);return{...g,conditions:conds}}).filter(g=>Array.isArray(g.conditions)&&g.conditions.length&&!_abilityConditionGroupPilotUnitRedundant(prose,g))}
-function abilityUiFallbackConditionsSorted(detail){const raw=_abilityUiFilterConditionTags(detail&&detail.conditions);const prose=String(detail&&detail.text||'');const low=prose.toLowerCase();if(!/\b(?:when\s+)?piloting\b/i.test(low))return raw;return raw.filter(c=>!(String(c&&c.source||'')==='unit_ids'&&_detailProseContainsAllConditionNames(prose,[c])))}
+function abilityUiFallbackConditionsSorted(detail){const raw=_abilityUiFilterConditionTags(detail&&detail.conditions);const prose=String(detail&&detail.text||'');if(!_abilityProseHasPilotingGate(prose))return raw;return raw.filter(c=>String(c&&c.source||'')!=='unit_ids')}
 function renderAbilityConditionGroups(detail){const valid=abilityUiConditionGroupsSorted(detail);if(valid.length){const showLabels=valid.length>=2;const seqLabels=valid.map((_,i)=>`Condition ${i+1}`);return`<div class="ability-conditions">${valid.map((g,gi)=>{const tags=Array.isArray(g&&g.conditions)?g.conditions:[];const tagsHtml=renderConditionTagsWithJoiners(tags);return`<div class="ability-condition-group">${showLabels?`<div class="ability-condition-label">${esc(abilityConditionLabel(seqLabels[gi]))}</div>`:''}<div class="ability-condition-tags">${tagsHtml}</div></div>`}).join('')}</div>`}const conds=abilityUiFallbackConditionsSorted(detail);if(!conds.length)return'';const tagsHtml=renderConditionTagsWithJoiners(conds);return`<div class="ability-conditions ability-conditions--after-text"><div class="ability-condition-group"><div class="ability-condition-tags">${tagsHtml}</div></div></div>`}
 function renderAbilityConditionGroupAt(detail,gi){const valid=abilityUiConditionGroupsSorted(detail);if(gi<0||gi>=valid.length)return'';const showLabels=valid.length>=2;const seqLabels=valid.map((_,i)=>`Condition ${i+1}`);const g=valid[gi];const tags=Array.isArray(g&&g.conditions)?g.conditions:[];const tagsHtml=renderConditionTagsWithJoiners(tags);return`<div class="ability-conditions"><div class="ability-condition-group">${showLabels?`<div class="ability-condition-label">${esc(abilityConditionLabel(seqLabels[gi]))}</div>`:''}<div class="ability-condition-tags">${tagsHtml}</div></div></div>`}
 function splitAbilityTextIntoBlocks(raw){const lines=String(raw||'').split(/\r?\n/).map(l=>l.trim()).filter(l=>l.length);if(lines.length<=1)return lines.length?[lines[0]]:[];const out=[];let cur=[];function startsNewBlock(ln){if(!ln.length)return false;if(/^when\s/.test(ln))return false;if(/^When\s+effect\s+ends?[,:]/i.test(ln))return false;if(/^When\s+Vigor\b/i.test(ln))return true;return /^When\s/.test(ln)}for(let i=0;i<lines.length;i++){const ln=lines[i];if(cur.length&&startsNewBlock(ln)){out.push(cur.join('\n'));cur=[ln]}else{cur.push(ln)}}if(cur.length)out.push(cur.join('\n'));return out}

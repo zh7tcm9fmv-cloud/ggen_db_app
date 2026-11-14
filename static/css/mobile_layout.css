@@ -207,6 +207,35 @@
     max-width: none;
   }
 
+  /*
+   * Compact under-trigger menus (Role / Rarity / Source / Move): hug the trigger.
+   * Must live HERE — this file concatenates after app_shell.css, so earlier
+   * width:max-content hug rules were overwritten by width:auto above.
+   */
+  .list-toolbar-left--browse > .rarity-filter-wrap:has(.filter-dropdown-panel),
+  .list-toolbar-left--browse > .role-filter-wrap:has(.filter-dropdown-panel),
+  .list-toolbar-left--browse > .source-filter-wrap:has(.filter-dropdown-panel),
+  .list-toolbar-left--browse > .skill-filter-wrap:has(.filter-dropdown-panel) {
+    width: max-content;
+    max-width: 100%;
+    min-width: 0;
+    justify-self: start;
+    align-self: start;
+    align-items: center;
+    overflow: visible;
+  }
+  .list-toolbar-left--browse > .rarity-filter-wrap:has(.filter-dropdown-panel) > .rarity-filter-btn,
+  .list-toolbar-left--browse > .role-filter-wrap:has(.filter-dropdown-panel) > .rarity-filter-btn,
+  .list-toolbar-left--browse > .role-filter-wrap:has(.filter-dropdown-panel) > .role-filter-dd-btn,
+  .list-toolbar-left--browse > .source-filter-wrap:has(.filter-dropdown-panel) > .rarity-filter-btn,
+  .list-toolbar-left--browse > .skill-filter-wrap:has(.filter-dropdown-panel) > .rarity-filter-btn,
+  .list-toolbar-left--browse > .skill-filter-wrap:has(.filter-dropdown-panel) > .role-filter-dd-btn {
+    flex: 0 0 auto !important;
+    width: max-content;
+    max-width: 100%;
+    min-width: 0;
+  }
+
   #panel-meta_synergy .list-toolbar-left--browse > .msy-def-tier-wrap {
     grid-column: 1 / -1;
     width: 100%;

@@ -1515,14 +1515,53 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
   -webkit-font-smoothing:antialiased;
 }
 .rarity-filter-btn:hover,.role-filter-dd-btn:hover{border-color:var(--accent-blue);color:var(--text-primary);-webkit-text-fill-color:var(--text-primary)}.rarity-filter-btn.active,.role-filter-dd-btn.active{border-color:var(--accent-cyan);color:var(--accent-cyan);-webkit-text-fill-color:var(--accent-cyan);background:rgba(0,212,255,0.1)}.rarity-filter-caret{font-size:11px;opacity:.85;flex-shrink:0;margin-left:2px;line-height:1}.filter-btn-label-inner{display:inline-flex;align-items:center;gap:6px;flex-wrap:nowrap;min-width:0;min-height:0;max-width:100%;overflow:hidden;color:inherit;-webkit-text-fill-color:inherit;font-size:inherit;font-weight:inherit;line-height:inherit}.filter-inline-icon.rarity-filter-chip,.filter-inline-icon.role-filter-chip{height:20px;width:auto;object-fit:contain;vertical-align:middle;display:inline-block;flex-shrink:0}.series-filter-toolbar-icons{display:inline-flex;align-items:center;flex-wrap:nowrap;gap:4px;max-width:min(200px,46vw);justify-content:flex-start;overflow:hidden}.series-filter-toolbar-ic{height:20px;width:auto;max-width:72px;object-fit:contain;display:block;flex-shrink:0}.series-filter-toolbar-fallback{display:inline-block;width:22px;height:22px;border-radius:4px;background:rgba(255,255,255,.12);flex-shrink:0}.filter-all-icons-row{display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap}.rarity-filter-panel,.role-filter-panel{position:absolute;left:0;top:calc(100% + 4px);width:max-content;max-width:min(280px,92vw);min-width:0;max-height:min(70vh,400px);overflow-y:auto;z-index:120;background:var(--bg-card);border:1px solid rgba(0,212,255,.22);border-radius:var(--radius-sm);box-shadow:0 0 0 1px rgba(0,212,255,.06),0 8px 24px rgba(0,0,0,.4);padding:6px 0}
-/* Flip wide dropdowns to the trigger's trailing edge when they would clip past the viewport */
-.rarity-filter-panel.filter-panel--align-end,
-.role-filter-panel.filter-panel--align-end,
-.source-filter-panel.filter-panel--align-end,
-.lineage-filter-panel.filter-panel--align-end,
-.series-filter-panel.filter-panel--align-end,
-.skill-filter-panel.filter-panel--align-end{left:auto!important;right:0}
-.lineage-filter-panel,.series-filter-panel{left:0;width:min(92vw,620px);max-width:min(92vw,620px);max-height:none;overflow:visible;padding:0;box-sizing:border-box}.lineage-filter-panel .filter-panel-scroll,.series-filter-panel .filter-panel-scroll{max-height:none;overflow:visible;padding:6px 8px 8px}.filter-dd-search{width:100%;box-sizing:border-box;margin:0 0 6px;padding:8px 10px;border-radius:var(--radius-sm);border:1px solid var(--border-color);background:var(--bg-input);color:var(--text-primary);font-size:15px}.filter-panel-scroll-inner{max-height:min(70vh,480px);overflow-y:auto;padding:2px 0 2px}.filter-panel-grid.browse-lineage-grid,.filter-panel-grid.browse-series-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px 6px;align-items:stretch}.list-filter-tag-item{display:block;position:relative;margin:0;cursor:pointer;min-width:0;max-width:100%;overflow:hidden;box-sizing:border-box}.list-filter-tag-item .list-filter-sr{position:absolute;opacity:0;width:0;height:0;pointer-events:none}.list-filter-tag-composite.tag-composite{display:flex;width:100%;max-width:100%;min-width:0;min-height:32px;height:auto;align-items:center;cursor:pointer;box-sizing:border-box;overflow:hidden}.list-filter-tag-item:hover .list-filter-tag-composite.tag-composite{border-color:var(--accent-cyan)}.browse-lineage-grid .list-filter-tag-item:has(input:checked) .list-filter-tag-composite.tag-composite{border-color:var(--accent-cyan);background:linear-gradient(135deg,rgba(0,212,255,0.22),rgba(0,212,255,0.06));box-shadow:0 0 0 1px rgba(0,212,255,0.45)}.browse-lineage-grid .list-filter-tag-item:has(input:checked) .list-filter-tag-composite .tag-part-value{color:var(--accent-cyan);font-weight:800}.browse-lineage-grid .list-filter-tag-item:has(input:checked) .list-filter-tag-composite .tag-part-icon{background:linear-gradient(135deg,rgba(0,180,230,0.45),rgba(0,90,130,0.55));border-right-color:rgba(0,212,255,0.5)}.filter-panel--combine-and-or .browse-lineage-grid .list-filter-tag-item.browse-combine-priority-a:has(input:checked) .list-filter-tag-composite.tag-composite{border-color:rgba(168,120,255,.78);background:linear-gradient(135deg,rgba(168,120,255,.32),rgba(168,120,255,.1));box-shadow:0 0 0 1px rgba(168,120,255,.55),0 0 12px rgba(168,120,255,.2)}.filter-panel--combine-and-or .browse-lineage-grid .list-filter-tag-item.browse-combine-priority-a:has(input:checked) .list-filter-tag-composite .tag-part-value{color:rgba(232,220,255,.98);font-weight:800}.filter-panel--combine-and-or .browse-lineage-grid .list-filter-tag-item.browse-combine-priority-a:has(input:checked) .list-filter-tag-composite .tag-part-icon{background:linear-gradient(135deg,rgba(168,120,255,.52),rgba(100,60,180,.58));border-right-color:rgba(168,120,255,.58)}.filter-panel--combine-and-or .browse-lineage-grid .list-filter-tag-item.browse-combine-priority-a:has(input:checked) .list-filter-tag-composite .tag-icon-fg{filter:drop-shadow(0 0 4px rgba(168,120,255,.45))}.browse-series-grid .list-filter-tag-item:has(input:checked) .list-filter-tag-composite.tag-composite{border-color:var(--accent-cyan);background:linear-gradient(135deg,rgba(0,212,255,0.22),rgba(0,212,255,0.06));box-shadow:0 0 0 1px rgba(0,212,255,0.45)}.browse-series-grid .list-filter-tag-item:has(input:checked) .list-filter-tag-composite .tag-part-value{color:var(--accent-cyan);font-weight:800}.browse-series-grid .list-filter-tag-item:has(input:checked) .list-filter-tag-composite .tag-part-icon{background:linear-gradient(135deg,rgba(0,180,230,0.45),rgba(0,90,130,0.55));border-right-color:rgba(0,212,255,0.5)}.list-filter-tag-item .list-filter-tag-composite .tag-part-icon{flex:0 0 auto;align-self:center;display:flex;align-items:center;justify-content:center;min-width:28px;max-width:32px;padding:0 4px;overflow:hidden}.list-filter-tag-item .list-filter-tag-composite .tag-part-value{flex:1 1 0;min-width:0;max-width:100%;font-family:var(--font-tag-ui);font-size:13px;font-weight:600;letter-spacing:0;padding:5px 8px 5px 6px;height:auto;min-height:0;white-space:normal;word-break:break-word;overflow-wrap:anywhere;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis}.list-filter-tag-item .list-filter-tag-composite .tag-icon-fg,.list-filter-tag-item .list-filter-tag-composite .tag-part-icon img{width:20px;height:20px;object-fit:contain;flex-shrink:0}.list-filter-btn-mini{display:inline-flex;align-items:center;gap:4px;max-width:100%}.tag-part-icon-series-all{display:flex;align-items:center;justify-content:center;width:32px;min-height:32px;background:linear-gradient(135deg,#3b5998,#2a437c);border-right:1px solid rgba(74,144,217,0.3)}.series-all-glyph{font-size:13px;font-weight:700;color:#c8d6e8;opacity:.9}.list-filter-series-row .tag-part-icon img.tag-icon-fg{width:22px;height:22px;object-fit:contain}.series-icon-fallback{display:inline-block;width:15px;height:15px;opacity:.4}.filter-panel-scroll{max-height:min(70vh,520px);overflow-y:auto;padding:4px 0}.series-filter-row{display:flex;align-items:center;gap:8px;padding:8px 12px;min-height:36px;box-sizing:border-box;cursor:pointer;font-family:var(--font-body);font-size:13px;font-weight:600;line-height:1.25;color:var(--text-primary);user-select:none}.series-filter-row:hover{background:rgba(0,212,255,.08)}.series-filter-row input{accent-color:var(--accent-cyan);width:15px;height:15px;flex-shrink:0}.series-filter-opt-icon{width:28px;height:28px;object-fit:contain;flex-shrink:0;border-radius:4px;background:rgba(0,0,0,.15)}.filter-long-label{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;font-weight:600}.lineage-filter-panel .rarity-filter-row{padding:6px 10px}.rarity-filter-row,.role-filter-row{display:flex;align-items:center;gap:8px;padding:8px 12px;min-height:36px;box-sizing:border-box;cursor:pointer;font-family:var(--font-body);font-size:13px;font-weight:600;line-height:1.25;color:var(--text-primary);user-select:none}.rarity-filter-row:hover,.role-filter-row:hover{background:rgba(0,212,255,.12)}.rarity-filter-row:has(input:checked),.role-filter-row:has(input:checked){background:rgba(0,212,255,.14);color:var(--accent-cyan)}.rarity-filter-row:focus-within,.role-filter-row:focus-within{background:rgba(0,212,255,.1);outline:none;box-shadow:inset 0 0 0 1px rgba(0,212,255,.35)}.rarity-filter-row input,.role-filter-row input{accent-color:var(--accent-cyan);width:15px;height:15px;flex-shrink:0}.role-filter-row .role-filter-type-label{font-size:13px;font-weight:600;color:var(--text-primary)}.role-filter-row-label{display:inline-flex;align-items:center;gap:8px;flex:0 1 auto;min-width:0;flex-wrap:nowrap}.role-filter-row-label .role-filter-type-label{flex:0 1 auto}.role-filter-row .role-filter-all-label{color:var(--text-secondary);font-weight:600;font-size:13px}.rarity-filter-row .rarity-filter-all-label{font-size:13px;font-weight:600;color:var(--text-primary)}.rarity-filter-panel .rarity-row-one-icon,.role-filter-panel .rarity-row-one-icon{min-width:20px;min-height:18px}
+/* Flip wide under-trigger dropdowns only — never Tags/Series fixed sheets */
+.rarity-filter-panel.filter-dropdown-panel.filter-panel--align-end,
+.role-filter-panel.filter-dropdown-panel.filter-panel--align-end,
+.source-filter-panel.filter-dropdown-panel.filter-panel--align-end,
+.skill-filter-panel.filter-dropdown-panel.filter-panel--align-end,
+.stage-diff-filter-panel.filter-dropdown-panel.filter-panel--align-end,
+.mod-effect-filter-panel.filter-dropdown-panel.filter-panel--align-end{left:auto!important;right:0}
+/* Shared inset for under-trigger menus only (never fight fixed mobile sheets) */
+:root{--filter-cell-inset:6px}
+.rarity-filter-panel.filter-dropdown-panel:not(.skill-filter-panel),
+.role-filter-panel.filter-dropdown-panel,
+.source-filter-panel.filter-dropdown-panel,
+.stage-diff-filter-panel.filter-dropdown-panel,
+.mod-effect-filter-panel.filter-dropdown-panel,
+.ml-season-filter-panel.filter-dropdown-panel{
+  left:var(--filter-cell-inset);
+  top:calc(100% + var(--filter-cell-inset))
+}
+.rarity-filter-panel.filter-dropdown-panel:not(.skill-filter-panel).filter-panel--align-end,
+.role-filter-panel.filter-dropdown-panel.filter-panel--align-end,
+.source-filter-panel.filter-dropdown-panel.filter-panel--align-end,
+.stage-diff-filter-panel.filter-dropdown-panel.filter-panel--align-end,
+.mod-effect-filter-panel.filter-dropdown-panel.filter-panel--align-end,
+.ml-season-filter-panel.filter-dropdown-panel.filter-panel--align-end{
+  left:auto!important;
+  right:var(--filter-cell-inset)
+}
+/* Series / Tags sheets: viewport-centered fixed (not absolute left:0 under Tags —
+ * mid-toolbar trigger + 960px width clipped the right column on desktop).
+ * Exclude .filter-dropdown-panel (SPI / under-trigger menus). */
+.lineage-filter-panel:not(.filter-dropdown-panel),
+.series-filter-panel:not(.filter-dropdown-panel){
+  position:fixed;
+  left:50%;
+  right:auto;
+  transform:translateX(-50%);
+  width:min(960px,calc(100vw - 24px));
+  max-width:min(960px,calc(100vw - 24px));
+  max-height:none;
+  overflow-x:hidden;
+  overflow-y:visible;
+  padding:0;
+  box-sizing:border-box;
+  z-index:5000
+}
+.lineage-filter-panel.filter-dropdown-panel,
+.series-filter-panel.filter-dropdown-panel{left:0;width:min(96vw,620px);max-width:min(96vw,620px);max-height:none;overflow:visible;padding:0;box-sizing:border-box}.lineage-filter-panel .filter-panel-scroll,.series-filter-panel .filter-panel-scroll{max-height:none;overflow:visible;padding:6px 8px 8px}.filter-dd-search{width:100%;box-sizing:border-box;margin:0 0 6px;padding:8px 10px;border-radius:var(--radius-sm);border:1px solid var(--border-color);background:var(--bg-input);color:var(--text-primary);font-size:15px}.filter-panel-scroll-inner{max-height:min(70vh,480px);overflow-y:auto;padding:2px 0 2px}.filter-panel-grid.browse-lineage-grid,.filter-panel-grid.browse-series-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px 6px;align-items:stretch}.list-filter-tag-item{display:block;position:relative;margin:0;cursor:pointer;min-width:0;max-width:100%;overflow:hidden;box-sizing:border-box}.list-filter-tag-item .list-filter-sr{position:absolute;opacity:0;width:0;height:0;pointer-events:none}.list-filter-tag-composite.tag-composite{display:flex;width:100%;max-width:100%;min-width:0;min-height:32px;height:auto;align-items:center;cursor:pointer;box-sizing:border-box;overflow:hidden}.list-filter-tag-item:hover .list-filter-tag-composite.tag-composite{border-color:var(--accent-cyan)}.browse-lineage-grid .list-filter-tag-item:has(input:checked) .list-filter-tag-composite.tag-composite{border-color:var(--accent-cyan);background:linear-gradient(135deg,rgba(0,212,255,0.22),rgba(0,212,255,0.06));box-shadow:0 0 0 1px rgba(0,212,255,0.45)}.browse-lineage-grid .list-filter-tag-item:has(input:checked) .list-filter-tag-composite .tag-part-value{color:var(--accent-cyan);font-weight:800}.browse-lineage-grid .list-filter-tag-item:has(input:checked) .list-filter-tag-composite .tag-part-icon{background:linear-gradient(135deg,rgba(0,180,230,0.45),rgba(0,90,130,0.55));border-right-color:rgba(0,212,255,0.5)}.filter-panel--combine-and-or .browse-lineage-grid .list-filter-tag-item.browse-combine-priority-a:has(input:checked) .list-filter-tag-composite.tag-composite{border-color:rgba(168,120,255,.78);background:linear-gradient(135deg,rgba(168,120,255,.32),rgba(168,120,255,.1));box-shadow:0 0 0 1px rgba(168,120,255,.55),0 0 12px rgba(168,120,255,.2)}.filter-panel--combine-and-or .browse-lineage-grid .list-filter-tag-item.browse-combine-priority-a:has(input:checked) .list-filter-tag-composite .tag-part-value{color:rgba(232,220,255,.98);font-weight:800}.filter-panel--combine-and-or .browse-lineage-grid .list-filter-tag-item.browse-combine-priority-a:has(input:checked) .list-filter-tag-composite .tag-part-icon{background:linear-gradient(135deg,rgba(168,120,255,.52),rgba(100,60,180,.58));border-right-color:rgba(168,120,255,.58)}.filter-panel--combine-and-or .browse-lineage-grid .list-filter-tag-item.browse-combine-priority-a:has(input:checked) .list-filter-tag-composite .tag-icon-fg{filter:drop-shadow(0 0 4px rgba(168,120,255,.45))}.browse-series-grid .list-filter-tag-item:has(input:checked) .list-filter-tag-composite.tag-composite{border-color:var(--accent-cyan);background:linear-gradient(135deg,rgba(0,212,255,0.22),rgba(0,212,255,0.06));box-shadow:0 0 0 1px rgba(0,212,255,0.45)}.browse-series-grid .list-filter-tag-item:has(input:checked) .list-filter-tag-composite .tag-part-value{color:var(--accent-cyan);font-weight:800}.browse-series-grid .list-filter-tag-item:has(input:checked) .list-filter-tag-composite .tag-part-icon{background:linear-gradient(135deg,rgba(0,180,230,0.45),rgba(0,90,130,0.55));border-right-color:rgba(0,212,255,0.5)}.list-filter-tag-item .list-filter-tag-composite .tag-part-icon{flex:0 0 auto;align-self:center;display:flex;align-items:center;justify-content:center;min-width:28px;max-width:32px;padding:0 4px;overflow:hidden}.list-filter-tag-item .list-filter-tag-composite .tag-part-value{flex:1 1 0;min-width:0;max-width:100%;font-family:var(--font-tag-ui);font-size:13px;font-weight:600;letter-spacing:0;padding:5px 8px 5px 6px;height:auto;min-height:0;white-space:normal;word-break:break-word;overflow-wrap:anywhere;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis}.list-filter-tag-item .list-filter-tag-composite .tag-icon-fg,.list-filter-tag-item .list-filter-tag-composite .tag-part-icon img{width:20px;height:20px;object-fit:contain;flex-shrink:0}.list-filter-btn-mini{display:inline-flex;align-items:center;gap:4px;max-width:100%}.tag-part-icon-series-all{display:flex;align-items:center;justify-content:center;width:32px;min-height:32px;background:linear-gradient(135deg,#3b5998,#2a437c);border-right:1px solid rgba(74,144,217,0.3)}.series-all-glyph{font-size:13px;font-weight:700;color:#c8d6e8;opacity:.9}.list-filter-series-row .tag-part-icon img.tag-icon-fg{width:22px;height:22px;object-fit:contain}.series-icon-fallback{display:inline-block;width:15px;height:15px;opacity:.4}.filter-panel-scroll{max-height:min(70vh,520px);overflow-y:auto;padding:4px 0}.series-filter-row{display:flex;align-items:center;gap:8px;padding:8px 12px;min-height:36px;box-sizing:border-box;cursor:pointer;font-family:var(--font-body);font-size:13px;font-weight:600;line-height:1.25;color:var(--text-primary);user-select:none}.series-filter-row:hover{background:rgba(0,212,255,.08)}.series-filter-row input{accent-color:var(--accent-cyan);width:15px;height:15px;flex-shrink:0}.series-filter-opt-icon{width:28px;height:28px;object-fit:contain;flex-shrink:0;border-radius:4px;background:rgba(0,0,0,.15)}.filter-long-label{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;font-weight:600}.lineage-filter-panel .rarity-filter-row{padding:6px 10px}.rarity-filter-row,.role-filter-row{display:flex;align-items:center;gap:8px;padding:8px 12px;min-height:36px;box-sizing:border-box;cursor:pointer;font-family:var(--font-body);font-size:13px;font-weight:600;line-height:1.25;color:var(--text-primary);user-select:none}.rarity-filter-row:hover,.role-filter-row:hover{background:rgba(0,212,255,.12)}.rarity-filter-row:has(input:checked),.role-filter-row:has(input:checked){background:rgba(0,212,255,.14);color:var(--accent-cyan)}.rarity-filter-row:focus-within,.role-filter-row:focus-within{background:rgba(0,212,255,.1);outline:none;box-shadow:inset 0 0 0 1px rgba(0,212,255,.35)}.rarity-filter-row input,.role-filter-row input{accent-color:var(--accent-cyan);width:15px;height:15px;flex-shrink:0}.role-filter-row .role-filter-type-label{font-size:13px;font-weight:600;color:var(--text-primary)}.role-filter-row-label{display:inline-flex;align-items:center;gap:8px;flex:0 1 auto;min-width:0;flex-wrap:nowrap}.role-filter-row-label .role-filter-type-label{flex:0 1 auto}.role-filter-row .role-filter-all-label{color:var(--text-secondary);font-weight:600;font-size:13px}.rarity-filter-row .rarity-filter-all-label{font-size:13px;font-weight:600;color:var(--text-primary)}.rarity-filter-panel .rarity-row-one-icon,.role-filter-panel .rarity-row-one-icon{min-width:20px;min-height:18px}
 /* Rarity filter: 2-col check+icon cells + Limited footer */
 .rarity-filter-panel:has(.rarity-star-grid){display:flex;flex-direction:column;align-items:stretch;gap:4px;padding:6px;width:max-content;min-width:0;max-width:min(220px,92vw);box-sizing:border-box}
 .rarity-star-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;padding:0}
@@ -1538,6 +1577,65 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .rarity-star-opt--lt{width:100%;justify-content:flex-start;padding:8px 10px;margin-top:2px;border-top:1px solid rgba(255,255,255,.06);border-radius:0 0 4px 4px;box-sizing:border-box}
 .rarity-star-opt--lt .rarity-row-limited-cell{display:flex;align-items:center;justify-content:flex-start;gap:8px;pointer-events:none;flex:0 1 auto;min-width:0}
 .rarity-filter-panel:has(.rarity-star-grid) .filter-panel-clear-wrap{margin-top:2px;padding-top:4px;border-top:1px solid rgba(255,255,255,.06)}
+/* Role dropdown: same chip chrome + inset padding as rarity (not flush list rows) */
+.role-filter-panel.filter-dropdown-panel{
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  gap:4px;
+  padding:6px;
+  width:max-content;
+  min-width:0;
+  max-width:min(220px,92vw);
+  box-sizing:border-box
+}
+.role-filter-panel.filter-dropdown-panel .role-filter-row{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  margin:0;
+  padding:6px 8px;
+  min-height:0;
+  border-radius:6px;
+  border:1px solid transparent;
+  background:transparent;
+  box-shadow:none;
+  transition:background .15s ease,box-shadow .15s ease,border-color .15s ease
+}
+.role-filter-panel.filter-dropdown-panel .role-filter-row:hover{
+  background:rgba(0,212,255,.1);
+  border-color:rgba(0,212,255,.22)
+}
+.role-filter-panel.filter-dropdown-panel .role-filter-row:focus-within{
+  outline:none;
+  background:rgba(0,212,255,.1);
+  box-shadow:inset 0 0 0 1px rgba(0,212,255,.45)
+}
+.role-filter-panel.filter-dropdown-panel .role-filter-row:has(input:checked){
+  background:rgba(0,212,255,.14);
+  border-color:rgba(0,212,255,.4);
+  color:var(--text-primary)
+}
+.role-filter-panel.filter-dropdown-panel .role-filter-row input{
+  accent-color:var(--accent-cyan);
+  width:15px;
+  height:15px;
+  flex-shrink:0;
+  margin:0;
+  cursor:pointer
+}
+.role-filter-panel.filter-dropdown-panel .role-row-hit{
+  flex:1;
+  min-width:0;
+  display:inline-flex;
+  align-items:center;
+  gap:8px
+}
+.role-filter-panel.filter-dropdown-panel .filter-panel-clear-wrap{
+  margin-top:2px;
+  padding-top:4px;
+  border-top:1px solid rgba(255,255,255,.06)
+}
 
 
 .rarity-filter-panel .rarity-row-one-icon .filter-inline-icon.rarity-filter-chip,.role-filter-panel .rarity-row-one-icon .filter-inline-icon.role-filter-chip,.role-filter-panel .filter-all-icons-row .filter-inline-icon.role-filter-chip{height:20px;width:auto;object-fit:contain}.diff-pill{display:inline-flex;align-items:center;justify-content:center;padding:5px 14px 3px;border-radius:999px;font-weight:700;font-size:12px;line-height:1;color:#fff;text-align:center;min-width:5em;box-sizing:border-box;box-shadow:inset 0 1px 0 rgba(255,255,255,.1)}.diff-pill-normal{background:linear-gradient(180deg,#3b82f6 0%,#1d4ed8 100%);border:1px solid rgba(0,0,0,.2)}.diff-pill-hard{background:linear-gradient(180deg,#d97706 0%,#92400e 100%);border:1px solid rgba(0,0,0,.2)}.diff-pill-expert{background:linear-gradient(180deg,#ef4444 0%,#991b1b 100%);border:1px solid rgba(0,0,0,.2)}.stage-diff-btn-plain{font-size:13px;font-weight:600;color:var(--text-secondary)}.stage-diff-filter-panel .rarity-filter-row{align-items:center}.rarity-filter-row-icon{height:24px;width:auto;object-fit:contain;flex-shrink:0}.rarity-row-one-icon{display:inline-flex;align-items:center;justify-content:flex-start;min-width:24px;min-height:22px;flex-shrink:0}.rarity-row-one-icon .filter-inline-icon.rarity-filter-chip,.rarity-row-one-icon .filter-inline-icon.role-filter-chip{display:block;height:22px;width:auto;object-fit:contain}.role-filter-btn{padding:8px 14px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:var(--radius-sm);color:var(--text-secondary);font-size:14px;font-weight:600;cursor:pointer;transition:var(--transition);display:flex;align-items:center;gap:6px}.role-filter-btn:hover{border-color:var(--accent-blue);color:var(--text-primary)}.role-filter-btn.active{border-color:var(--accent-cyan);color:var(--accent-cyan);background:rgba(0,212,255,0.1)}
@@ -1686,8 +1784,53 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 /* No backdrop-filter: blur here — full-viewport blur + solid wash = GPU thrash / “everything dies” the moment detail opens. */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:300;display:none;align-items:flex-start;justify-content:center;padding:30px 20px;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}.modal-overlay.active{display:flex}
 .modal-content{background:var(--bg-modal);border:1px solid var(--border-color);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);max-width:1100px;width:100%;position:relative;overflow:hidden;overflow-x:hidden}
-.modal-content.char-detail,.modal-content.supporter-detail{background:linear-gradient(135deg,rgba(20,28,46,0.97),rgba(20,28,46,0.92)),url('/static/images/Background/obg_031.webp');background-size:cover;background-position:center}
-.modal-content.unit-detail,.modal-content.stage-detail,.modal-content.profile-title-detail,.modal-content.item-detail{background:linear-gradient(135deg,rgba(20,28,46,0.97),rgba(20,28,46,0.92)),url('/static/images/Background/obg_012_garage.webp');background-size:cover;background-position:center}
+/* Detail dossier art: paint on ::before sized by --ggen-detail-cover-* (JS lock).
+   Root bug: background-size:cover on the scrollport rescales whenever scrollHeight /
+   clientHeight changes (PEP/CP/SP toggle, weapon notes, etc.). Locked paint box
+   keeps cover framing; toggles cannot rescale. */
+.modal-content.char-detail,.modal-content.supporter-detail,
+.modal-content.unit-detail,.modal-content.stage-detail,.modal-content.profile-title-detail,.modal-content.item-detail{
+  background-color:#0a0e17;
+  background-image:none;
+  isolation:isolate;
+}
+.modal-content.char-detail::before,.modal-content.supporter-detail::before,
+.modal-content.unit-detail::before,.modal-content.stage-detail::before,
+.modal-content.profile-title-detail::before,.modal-content.item-detail::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;
+  width:var(--ggen-detail-cover-w,100%);
+  height:var(--ggen-detail-cover-h,100%);
+  z-index:0;
+  pointer-events:none;
+  background-color:#0a0e17;
+  background-repeat:no-repeat;
+  background-size:cover;
+  background-position:center;
+}
+.modal-content.char-detail::before,.modal-content.supporter-detail::before{
+  background-image:linear-gradient(135deg,rgba(20,28,46,0.97),rgba(20,28,46,0.92)),url('/static/images/Background/obg_031.webp');
+}
+.modal-content.unit-detail::before,.modal-content.stage-detail::before,
+.modal-content.profile-title-detail::before,.modal-content.item-detail::before{
+  background-image:linear-gradient(135deg,rgba(20,28,46,0.97),rgba(20,28,46,0.92)),url('/static/images/Background/obg_012_garage.webp');
+}
+/* Do not force position on chrome — sticky must stay sticky. */
+.modal-content.char-detail > #detailInner,.modal-content.supporter-detail > #detailInner,
+.modal-content.unit-detail > #detailInner,.modal-content.stage-detail > #detailInner,
+.modal-content.profile-title-detail > #detailInner,.modal-content.item-detail > #detailInner{
+  position:relative;
+  z-index:1;
+}
+.modal-content.char-detail > .modal-detail-chrome,
+.modal-content.supporter-detail > .modal-detail-chrome,
+.modal-content.unit-detail > .modal-detail-chrome,
+.modal-content.stage-detail > .modal-detail-chrome,
+.modal-content.profile-title-detail > .modal-detail-chrome,
+.modal-content.item-detail > .modal-detail-chrome{
+  z-index:100;
+}
 .modal-content.char-detail:not(.detail-ranking-view) .detail-header,.modal-content.unit-detail:not(.detail-ranking-view) .detail-header{overflow:visible}
 .modal-content.char-detail,.modal-content.unit-detail{overflow-x:clip;overflow-y:auto}
 .modal-top-label{position:absolute;top:14px;left:28px;font-size:14px;font-weight:700;color:var(--accent-cyan);letter-spacing:1px;text-transform:uppercase;background:rgba(0,212,255,0.1);padding:4px 13px 4px 15px;border-radius:20px;border:1px solid rgba(0,212,255,0.3);z-index:100}
@@ -1805,27 +1948,44 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .detail-back-btn:hover{color:var(--accent-cyan);border-color:rgba(34,211,238,.55);background:rgba(15,23,42,.75)}
 .detail-header{display:flex;gap:28px;padding:52px 28px 24px;border-bottom:1px solid var(--border-color);background:rgba(0,0,0,0.2);overflow:hidden;position:relative}
 .detail-portrait-wrap{flex-shrink:0;width:300px;max-width:100%;position:relative}.detail-portrait{width:100%;max-width:300px;height:400px;object-fit:contain;object-position:center calc(50% + var(--portrait-optical-y));border-radius:var(--radius-md);border:2px solid var(--border-color);background:rgba(13,19,33,0.8)}
-/* Header garage/office plate — full cover on the header box.
-   SP/SSP digit reflow: stable stats-grid scale (JS).
-   PEP stack slider: reserved label-col height (CSS) so toggle never grows the plate. */
+/* Header garage/office plate — cover on locked ::before (same class as modal dossier lock). */
 .modal-content.unit-detail:not(.detail-ranking-view) .detail-header.unit-detail-header,
 .modal-content.supporter-detail .detail-header.supporter-detail-header,
 .modal-content.char-detail:not(.detail-ranking-view) .detail-header.char-detail-header{
   background-color:#0a0e17;
-  background-size:cover,cover;
-  background-position:center,center 42%;
-  background-repeat:no-repeat;
+  background-image:none;
+  isolation:isolate;
 }
-.modal-content.unit-detail:not(.detail-ranking-view) .detail-header.unit-detail-header,
-.modal-content.supporter-detail .detail-header.supporter-detail-header{
+.modal-content.unit-detail:not(.detail-ranking-view) .detail-header.unit-detail-header::before,
+.modal-content.supporter-detail .detail-header.supporter-detail-header::before,
+.modal-content.char-detail:not(.detail-ranking-view) .detail-header.char-detail-header::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;
+  width:var(--ggen-header-cover-w,100%);
+  height:var(--ggen-header-cover-h,100%);
+  z-index:0;
+  pointer-events:none;
+  background-color:#0a0e17;
+  background-repeat:no-repeat;
+  background-size:cover;
+  background-position:center 42%;
+}
+.modal-content.unit-detail:not(.detail-ranking-view) .detail-header.unit-detail-header::before,
+.modal-content.supporter-detail .detail-header.supporter-detail-header::before{
   background-image:
     linear-gradient(90deg,rgba(10,14,23,.22) 0%,rgba(10,14,23,.55) 42%,rgba(10,14,23,.82) 100%),
     url('/static/images/Background/obg_011_garage.webp');
 }
-.modal-content.char-detail:not(.detail-ranking-view) .detail-header.char-detail-header{
+.modal-content.char-detail:not(.detail-ranking-view) .detail-header.char-detail-header::before{
   background-image:
     linear-gradient(90deg,rgba(10,14,23,.22) 0%,rgba(10,14,23,.55) 42%,rgba(10,14,23,.82) 100%),
     url('/static/images/Background/obg_021_office.webp');
+}
+.modal-content.unit-detail:not(.detail-ranking-view) .detail-header.unit-detail-header > *,
+.modal-content.supporter-detail .detail-header.supporter-detail-header > *,
+.modal-content.char-detail:not(.detail-ranking-view) .detail-header.char-detail-header > *{
+  z-index:1;
 }
 .modal-content.supporter-detail .detail-header.supporter-detail-header .supporter-portrait,
 .modal-content.supporter-detail .detail-header.supporter-detail-header .supporter-portrait-placeholder{
@@ -2719,6 +2879,15 @@ html[data-ui-lang="KR"] .detail-rec-link-card .detail-rec-limited-wrap--on-thumb
 .detail-tags-row:not(:has(> :not(.tag-composite))):has(> .tag-composite:nth-child(2)) > .tag-composite .tag-part-value-text{
   text-align:center
 }
+/* Crawl must start at the left edge — center overflow clips the title start
+ * (e.g. "Asticassia" never appears; only "School of Technology"). */
+.detail-tags-row:not(:has(> :not(.tag-composite))):has(> .tag-composite:nth-child(2)) > .tag-composite .tag-part-value.tag-part-value--crawl{
+  justify-content:flex-start;
+  text-align:left
+}
+.detail-tags-row:not(:has(> :not(.tag-composite))):has(> .tag-composite:nth-child(2)) > .tag-composite .tag-part-value--crawl .tag-part-value-text{
+  text-align:left
+}
 /* Mobile: LB tier strip already width:100% — keep it locked to the tags sheet width */
 @media(max-width:768px){
   .modal-content.unit-detail:not(.detail-ranking-view) .header-stats-wrapper .lb-control-row,
@@ -2834,12 +3003,14 @@ html[data-ui-lang="HR"] .tag-composite:not(.list-filter-tag-composite) .tag-part
 }
 .tag-part-value--crawl .tag-part-value-text{
   will-change:transform;
-  animation:tagValueCrawl var(--tag-crawl-dur,6s) linear infinite alternate;
-  animation-delay:.6s
+  /* One-shot cycle: hold start → crawl → hold end → return (JS sets --tag-crawl-dur). */
+  animation:tagValueCrawl var(--tag-crawl-dur,12s) linear infinite;
+  animation-delay:.5s
 }
 @keyframes tagValueCrawl{
-  0%,12%{transform:translateX(0)}
-  88%,100%{transform:translateX(calc(-1 * var(--tag-crawl-dist,0px)))}
+  0%,22%{transform:translateX(0)}
+  48%,68%{transform:translateX(calc(-1 * var(--tag-crawl-dist,0px)))}
+  92%,100%{transform:translateX(0)}
 }
 @media (prefers-reduced-motion:reduce){
   .tag-part-value--crawl .tag-part-value-text{animation:none}
@@ -2926,6 +3097,14 @@ html[data-ui-lang="HR"] .browse-series-grid .filter-browse-tag-chip .tag-part-va
 .browse-series-grid .list-filter-tag-composite--plated .tag-part-value--crawl{
   justify-content:flex-start
 }
+/* Phone only — 2-col Tags/Series (tablets keep 3-col from base rule) */
+@media (max-width:480px){
+  .filter-panel-grid.browse-lineage-grid,
+  .filter-panel-grid.browse-series-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:6px 8px
+  }
+}
 /* Overflow uses detail crawl (syncTagValueCrawlers) — do not ellipsis/kill animation. */
 .browse-lineage-grid .filter-browse-tag-chip .tag-part-value-text,
 .browse-series-grid .filter-browse-tag-chip .tag-part-value-text,
@@ -3000,9 +3179,11 @@ html[data-ui-lang="HR"] .browse-series-grid .filter-browse-tag-chip .tag-part-va
   width:auto;
   flex:0 0 auto;
   display:flex;
-  align-items:center;
+  align-items:flex-start;
   justify-content:center;
-  align-self:center;
+  /* Pin to top of stats row — do not vertically center (PEP bonus lines used to shove this down). */
+  align-self:flex-start;
+  padding-top:2px;
   pointer-events:auto;
   z-index:2;
 }
@@ -3079,7 +3260,7 @@ html[data-ui-lang="HR"] .browse-series-grid .filter-browse-tag-chip .tag-part-va
 .stats-grid.stats-grid--val-mid .stat-card-value{font-size:clamp(15px,1.9vw + .35rem,20px)}
 .stats-grid.stats-grid--val-long .stat-card-value{font-size:clamp(13px,1.55vw + .3rem,17px)}
 .stats-grid.stats-grid--val-xl .stat-card-value{font-size:clamp(12px,1.25vw + .28rem,15px);letter-spacing:-.02em}
-.has-bonus-val{color:#4a90d9!important;text-shadow:0 0 8px rgba(74,144,217,.4)!important}.has-penalty-val{color:#f87171!important;text-shadow:0 0 8px rgba(248,113,113,.35)!important}.ssp-highlight-val{color:#ffd700!important;text-shadow:0 0 8px rgba(255,215,0,.4)!important}.stat-card-bonus{font-size:12px;color:var(--accent-green);font-weight:700;margin-top:0;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}.stat-card-bonus.stat-card-penalty{color:var(--accent-red)}.stat-card-bonus.stat-card-bonus--supporter-flat,#panel-calculator .dc-atk-ers .stat-card-bonus.stat-card-bonus--supporter-flat{color:var(--accent-orange)!important;text-shadow:0 0 8px rgba(255,149,0,.4)}.stat-card-value-row{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;max-width:100%;min-width:0;width:100%}.strategy-hint-badge--stat-value{position:static!important;top:auto!important;left:auto!important;width:22px;height:22px;flex-shrink:0;margin:0;z-index:1}
+.has-bonus-val{color:#4a90d9!important;text-shadow:0 0 8px rgba(74,144,217,.4)!important}.has-penalty-val{color:#f87171!important;text-shadow:0 0 8px rgba(248,113,113,.35)!important}.ssp-highlight-val{color:#ffd700!important;text-shadow:0 0 8px rgba(255,215,0,.4)!important}.stat-card-bonus{font-size:12px;line-height:1.2;min-height:1.2em;color:var(--accent-green);font-weight:700;margin-top:0;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}.stat-card-bonus.is-empty{visibility:hidden;color:transparent;pointer-events:none}.stat-card-bonus.stat-card-penalty{color:var(--accent-red);visibility:visible}.stat-card-bonus.stat-card-bonus--supporter-flat,#panel-calculator .dc-atk-ers .stat-card-bonus.stat-card-bonus--supporter-flat{color:var(--accent-orange)!important;text-shadow:0 0 8px rgba(255,149,0,.4)}.stat-card-value-row{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;max-width:100%;min-width:0;width:100%}.strategy-hint-badge--stat-value{position:static!important;top:auto!important;left:auto!important;width:22px;height:22px;flex-shrink:0;margin:0;z-index:1}
 .stats-grid--ranking-list{display:flex;flex-direction:column;gap:6px;width:100%;min-width:0}
 .stat-card--ranking{padding:10px 12px;gap:5px;align-items:stretch;text-align:left;background:rgba(8,18,35,.7);border:1px solid rgba(34,211,238,.22);width:100%;min-width:0;overflow:hidden;box-sizing:border-box}
 .stat-rank-head{display:grid;grid-template-columns:minmax(52px,auto) minmax(72px,1fr) minmax(64px,auto);align-items:center;gap:9px;width:100%;min-width:0}
@@ -5185,7 +5366,7 @@ display:flex;flex-direction:column;gap:12px;align-items:stretch;width:100%;min-w
 .browse-filter-combine-toggle--compact.browse-filter-combine-toggle--and-or .browse-combine-seg-thumb{transform:translateX(calc(100% + 3px))}
 .browse-filter-combine-toggle--compact.browse-filter-combine-toggle--or .browse-combine-seg-thumb{transform:translateX(calc(200% + 6px))}
 .browse-filter-combine-toggle--compact .browse-combine-venn{width:24px;height:16px}
-#unitWeaponAttrSetFilterPanel,#rankUnitWeaponAttrSetFilterPanel{min-width:min(96vw,268px);max-width:min(96vw,300px)}
+#unitWeaponAttrSetFilterPanel,#rankUnitWeaponAttrSetFilterPanel{min-width:min(96vw,300px);max-width:min(96vw,360px);width:min(96vw,340px);box-sizing:border-box}
 #unitWeaponAttrSetFilterPanel .filter-panel-clear-wrap,#rankUnitWeaponAttrSetFilterPanel .filter-panel-clear-wrap{gap:6px;flex-wrap:wrap}
 #unitWeaponAttrSetFilterPanel .filter-panel-esc-btn,#rankUnitWeaponAttrSetFilterPanel .filter-panel-esc-btn,#unitWeaponAttrSetFilterPanel .filter-panel-clear-btn,#rankUnitWeaponAttrSetFilterPanel .filter-panel-clear-btn{padding:5px 8px;font-size:11px}
 .unit-debuff-item.browse-combine-priority-a{box-shadow:0 0 0 1px rgba(168,120,255,.45),0 0 12px rgba(168,120,255,.18)}
@@ -5196,7 +5377,7 @@ display:flex;flex-direction:column;gap:12px;align-items:stretch;width:100%;min-w
 .filter-panel-clear-btn:hover{border-color:var(--accent-cyan);color:var(--accent-cyan);-webkit-text-fill-color:var(--accent-cyan)}
 .unit-terrain-grid{display:flex;flex-direction:column;gap:6px}
 .unit-terrain-grid-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
-.unit-terrain-item{display:grid;grid-template-columns:auto minmax(0,1fr) 30px;align-items:center;column-gap:8px;padding:10px 12px;min-height:40px;box-sizing:border-box;border:1px solid var(--border-color);border-radius:8px;background:rgba(26,34,54,.6);cursor:pointer;font-family:var(--font-body);color:var(--text-primary);-webkit-text-fill-color:var(--text-primary);font-synthesis:none;text-shadow:none;-webkit-font-smoothing:antialiased;font-size:13px;font-weight:600;line-height:1.25}
+.unit-terrain-item{display:grid;grid-template-columns:auto minmax(0,1fr) 30px;align-items:center;column-gap:8px;padding:10px 12px;min-height:40px;box-sizing:border-box;border:1px solid var(--border-color);border-radius:8px;background:rgba(26,34,54,.6);cursor:pointer;font-family:var(--font-body);color:var(--text-primary);-webkit-text-fill-color:var(--text-primary);font-synthesis:none;text-shadow:none;-webkit-font-smoothing:antialiased;font-size:13px;font-weight:600;line-height:1.25;transition:border-color .2s cubic-bezier(.2,0,0,1),background .2s cubic-bezier(.2,0,0,1),box-shadow .2s cubic-bezier(.2,0,0,1)}
 .unit-terrain-item>.source-filter-opt-icon{grid-column:1;justify-self:start}
 .unit-terrain-item>span:not(.unit-terrain-lv-wrap){grid-column:2;min-width:0;text-align:left;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;white-space:normal;word-break:break-word;padding-right:4px}
 .unit-terrain-item.is-active{border-color:var(--accent-cyan);background:rgba(6,182,212,.12)}
@@ -5215,10 +5396,12 @@ display:flex;flex-direction:column;gap:12px;align-items:stretch;width:100%;min-w
 .unit-debuff-section-sub{font-size:11px;font-weight:700;color:var(--text-secondary);-webkit-text-fill-color:var(--text-secondary);line-height:1.2;opacity:.92}
 .unit-debuff-grid{display:flex;flex-direction:column;gap:6px}
 .unit-debuff-grid-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6px}
-.unit-debuff-item{display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 12px;min-height:40px;box-sizing:border-box;border:1px solid var(--border-color);border-radius:8px;background:rgba(26,34,54,.6);cursor:pointer;font-family:var(--font-body);font-size:13px;font-weight:600;line-height:1.25;text-align:center;color:var(--text-primary);-webkit-text-fill-color:var(--text-primary);font-synthesis:none;text-shadow:none;-webkit-font-smoothing:antialiased}
+.unit-debuff-item{display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 12px;min-height:40px;box-sizing:border-box;border:1px solid var(--border-color);border-radius:8px;background:rgba(26,34,54,.6);cursor:pointer;font-family:var(--font-body);font-size:13px;font-weight:600;line-height:1.25;text-align:center;color:var(--text-primary);-webkit-text-fill-color:var(--text-primary);font-synthesis:none;text-shadow:none;-webkit-font-smoothing:antialiased;transition:border-color .2s cubic-bezier(.2,0,0,1),background .2s cubic-bezier(.2,0,0,1),box-shadow .2s cubic-bezier(.2,0,0,1)}
 .unit-debuff-item--weapon-attr{min-height:40px;padding:6px 8px;justify-content:flex-start;text-align:left}
 .weapon-attr-filter-chip{display:inline-flex!important;align-items:center;justify-content:flex-start;gap:6px;width:auto!important;max-width:100%;min-width:0;line-height:1.25;text-align:left}
-.weapon-attr-filter-label{display:inline!important;width:auto!important;flex:1 1 auto;min-width:0;white-space:normal;word-break:break-word;hyphens:auto;color:inherit;-webkit-text-fill-color:inherit}
+/* Beat `.unit-debuff-item span{hyphens:auto}` — never mid-word "Speci"+"al"; wrap at / via <wbr> */
+.unit-debuff-item .weapon-attr-filter-label,
+.weapon-attr-filter-label{display:inline!important;width:auto!important;flex:1 1 auto;min-width:0;white-space:normal;word-break:normal;overflow-wrap:normal;hyphens:none!important;-webkit-hyphens:none!important;-ms-hyphens:none!important;color:inherit;-webkit-text-fill-color:inherit}
 /* Support Skills–style horizontal stack (tight overlap, left→right in set order). */
 .weapon-attr-icon-stack{--wa-icon-size:18px;display:inline-flex!important;align-items:center;flex-shrink:0;width:auto!important;line-height:0;padding-right:1px}
 .weapon-attr-icon-stack--toolbar{--wa-icon-size:18px}
@@ -5228,6 +5411,21 @@ display:flex;flex-direction:column;gap:12px;align-items:stretch;width:100%;min-w
 .unit-debuff-item--weapon-attr > span.weapon-attr-filter-chip{width:auto}
 .unit-debuff-item.is-active{border-color:var(--accent-cyan);background:rgba(6,182,212,.12)}
 .unit-debuff-item.filter-opt-unavailable.is-active{border-color:rgba(255,255,255,.12);background:rgba(26,34,54,.32);box-shadow:none}
+/* Match .list-grid-card:hover (unconditional :hover — not gated on hover:hover media) */
+.unit-debuff-item:hover:not(.filter-opt-unavailable),
+.unit-terrain-item:hover:not(.filter-opt-unavailable),
+.map-wrt-type-block:hover{
+  border-color:var(--accent-orange);
+  background:var(--bg-card-hover);
+  box-shadow:var(--shadow-surface),0 4px 18px rgba(0,0,0,.28)
+}
+.unit-debuff-item.is-active:hover:not(.filter-opt-unavailable),
+.unit-terrain-item.is-active:hover:not(.filter-opt-unavailable),
+.map-wrt-type-block.is-active:hover{
+  border-color:var(--accent-cyan);
+  background:rgba(6,182,212,.16);
+  box-shadow:var(--shadow-surface),0 0 0 1px rgba(0,212,255,.28),0 4px 18px rgba(0,0,0,.28)
+}
 .unit-debuff-item--map-wrt{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;justify-items:start;column-gap:6px;text-align:left;padding:6px 8px;min-width:0}
 .unit-debuff-item--map-wrt>span{display:block;width:auto;text-align:left;white-space:normal;word-break:break-word;font-size:11px;line-height:1.25}
 .unit-debuff-grid--map-wrt{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
@@ -5260,9 +5458,19 @@ display:flex;flex-direction:column;gap:12px;align-items:stretch;width:100%;min-w
 .map-weapon-filter-toolbar-ic:not(.is-dim){cursor:pointer}
 .rarity-filter-btn.active .map-weapon-filter-toolbar-ic:not(.is-dim){opacity:1;filter:none}
 .unit-debuff-fill{display:block;min-height:42px;border-radius:8px;visibility:hidden;pointer-events:none;box-sizing:border-box}
-#unitWeaponDebuffFilterPanel,#rankUnitWeaponDebuffFilterPanel,#unitWeaponRangeNonMapFilterPanel,#rankUnitWeaponRangeNonMapFilterPanel,#unitMapWeaponRangeFilterPanel,#rankUnitMapWeaponRangeFilterPanel{min-width:min(96vw,500px);max-width:min(96vw,560px)}
-/* Weapon effects: one scrollbar on the chip body; footer pinned (no nested panel+body scroll).
-   CRITICAL: only :not([hidden]) — bare display:flex overrides [hidden] and leaves an invisible hit-target over sibling filters. */
+#unitWeaponDebuffFilterPanel,#rankUnitWeaponDebuffFilterPanel{min-width:min(96vw,500px);max-width:min(96vw,560px)}
+#unitMapWeaponRangeFilterPanel,#rankUnitMapWeaponRangeFilterPanel{min-width:min(96vw,360px);max-width:min(96vw,400px)}
+/* Weapon effects: layout always on (incl. while exiting). [hidden] uses display:none
+   WITHOUT !important so allow-discrete can fade without a mid-exit reflow/squeeze.
+   ID-level display:flex needs matching ID[hidden]{display:none} (beats class [hidden]). */
+#unitWeaponDebuffFilterPanel,#rankUnitWeaponDebuffFilterPanel{
+  display:flex;
+  flex-direction:column;
+  max-height:min(70vh,520px);
+  overflow:hidden;
+  padding:6px 6px 0;
+  box-sizing:border-box;
+}
 #unitWeaponDebuffFilterPanel[hidden],
 #rankUnitWeaponDebuffFilterPanel[hidden],
 #unitWeaponRangeNonMapFilterPanel[hidden],
@@ -5271,16 +5479,8 @@ display:flex;flex-direction:column;gap:12px;align-items:stretch;width:100%;min-w
 #rankUnitMapWeaponRangeFilterPanel[hidden],
 #unitAbilityEffectFilterPanel[hidden],
 #rankUnitAbilityEffectFilterPanel[hidden]{
-  display:none!important;
+  display:none;
   pointer-events:none!important;
-}
-#unitWeaponDebuffFilterPanel:not([hidden]),#rankUnitWeaponDebuffFilterPanel:not([hidden]){
-  display:flex;
-  flex-direction:column;
-  max-height:min(70vh,520px);
-  overflow:hidden;
-  padding:6px 6px 0;
-  box-sizing:border-box;
 }
 #unitWeaponDebuffFilterBody,#rankUnitWeaponDebuffFilterBody{
   flex:1 1 auto;
@@ -5296,8 +5496,10 @@ display:flex;flex-direction:column;gap:12px;align-items:stretch;width:100%;min-w
   flex:0 0 auto;
   margin-top:0;
 }
-/* Damage Reduction chips: wider than default 280px source panel + inset so options clear the frame */
-#unitAbilityEffectFilterPanel,#rankUnitAbilityEffectFilterPanel{
+/* Shared 2-col chip sheet width (Ability Effect + All-weapon Ranges) */
+#unitAbilityEffectFilterPanel,#rankUnitAbilityEffectFilterPanel,
+#unitWeaponRangeNonMapFilterPanel,#rankUnitWeaponRangeNonMapFilterPanel,
+.weapon-range-non-map-panel{
   min-width:min(96vw,360px);
   max-width:min(96vw,400px);
   width:min(96vw,380px);
@@ -5305,11 +5507,16 @@ display:flex;flex-direction:column;gap:12px;align-items:stretch;width:100%;min-w
   padding:8px 10px 0;
 }
 #unitAbilityEffectFilterPanel .unit-debuff-grid,
-#rankUnitAbilityEffectFilterPanel .unit-debuff-grid{gap:8px}
+#rankUnitAbilityEffectFilterPanel .unit-debuff-grid,
+#unitWeaponRangeNonMapFilterPanel .unit-debuff-grid,
+#rankUnitWeaponRangeNonMapFilterPanel .unit-debuff-grid{gap:8px}
 #unitAbilityEffectFilterPanel .unit-debuff-grid-row,
-#rankUnitAbilityEffectFilterPanel .unit-debuff-grid-row{gap:8px}
-#unitAbilityEffectFilterBody,#rankUnitAbilityEffectFilterBody{padding:2px 0 6px;box-sizing:border-box}
-.weapon-range-non-map-panel,.map-wrt-filter-panel{min-width:min(96vw,360px)!important;max-width:min(96vw,360px)}
+#rankUnitAbilityEffectFilterPanel .unit-debuff-grid-row,
+#unitWeaponRangeNonMapFilterPanel .unit-debuff-grid-row,
+#rankUnitWeaponRangeNonMapFilterPanel .unit-debuff-grid-row{gap:8px}
+#unitAbilityEffectFilterBody,#rankUnitAbilityEffectFilterBody,
+#unitWeaponRangeNonMapFilterBody,#rankUnitWeaponRangeNonMapFilterBody{padding:2px 0 6px;box-sizing:border-box}
+.map-wrt-filter-panel{min-width:min(96vw,360px)!important;max-width:min(96vw,400px);width:min(96vw,380px);box-sizing:border-box}
 .map-wrt-filter-panel:not([hidden]){overflow-y:visible;max-height:none}
 .unit-map-preview{display:flex;align-items:center;gap:10px;margin-top:8px;padding:6px 8px;border-radius:8px;border:1px solid rgba(56,189,248,.22);background:rgba(15,23,42,.55);max-width:max-content;opacity:0;transform:translateY(6px);animation:unit-map-preview-in .38s ease forwards}
 .unit-map-preview-stack{display:flex;flex-direction:column;align-items:flex-start;gap:6px;margin-top:8px;max-width:max-content}
@@ -5320,7 +5527,29 @@ display:flex;flex-direction:column;gap:12px;align-items:stretch;width:100%;min-w
 .list-grid-card--map-preview .unit-map-preview-stack{margin-top:6px;max-width:100%}
 @keyframes unit-map-preview-in{to{opacity:1;transform:translateY(0)}}
 @media (prefers-reduced-motion:reduce){.unit-map-preview{animation:none;opacity:1;transform:none}}
-.skill-filter-panel{min-width:min(92vw,420px);max-width:min(92vw,480px)}
+/* Universal viewport ceiling — absolute panels under mid-toolbar triggers still need JS fit */
+.list-toolbar .rarity-filter-panel,
+.list-toolbar .role-filter-panel,
+.list-toolbar .source-filter-panel,
+.list-toolbar .skill-filter-panel,
+.list-toolbar .filter-dropdown-panel,
+.list-toolbar .mod-effect-filter-panel,
+.list-toolbar .ml-season-filter-panel{
+  max-width:min(100%,calc(100vw - 24px));
+  box-sizing:border-box
+}
+/* Large sheets that would clip: JS adds .filter-panel--viewport-fit (fixed + centered) */
+.filter-panel--viewport-fit{
+  position:fixed!important;
+  left:50%!important;
+  right:auto!important;
+  transform:translateX(-50%)!important;
+  box-sizing:border-box;
+  z-index:5000!important;
+  overflow-x:hidden;
+  max-width:calc(100vw - 24px)!important
+}
+.skill-filter-panel{min-width:min(92vw,420px);max-width:min(480px,calc(100vw - 24px))}
 /* Compact chips (supporter Support Skills / MOV: short LANG labels) — fit content, not char skill grid width.
    Flex column + stretch so Esc/重置 footer width does not leave option chips left-offset in empty panel space. */
 .skill-filter-panel.skill-filter-panel--compact{
@@ -5401,7 +5630,7 @@ display:flex;flex-direction:column;gap:12px;align-items:stretch;width:100%;min-w
   padding:6px 10px;
   font-size:12px;
 }
-.skill-filter-panel.ability-filter-panel{min-width:min(96vw,560px);max-width:min(96vw,640px)}
+.skill-filter-panel.ability-filter-panel{min-width:min(560px,calc(100vw - 24px));max-width:min(640px,calc(100vw - 24px))}
 .skill-filter-panel:has(.filter-panel-scroll-inner .skill-filter-grid-browse){overflow:visible;max-height:none}
 .skill-filter-panel .filter-panel-scroll-inner:has(.skill-filter-grid-browse){overflow:visible;max-height:none;padding:0}
 .skill-filter-grid-browse{display:grid;grid-template-columns:1fr 1fr;gap:6px 10px;max-height:min(50vh,360px);overflow-y:auto;padding:4px 2px 8px}
@@ -5576,15 +5805,77 @@ display:flex;flex-direction:column;gap:12px;align-items:stretch;width:100%;min-w
     gap:calc(var(--mobile-grid-gutter,16px)*0.375);
     box-sizing:border-box;
   }
+  /*
+   * Slight inset from the grid cell — same design language on every browse filter
+   * (Role / Rarity / Source / Tags / Series / Skills / Terrain / Move / Mechanisms / …).
+   */
+  .list-toolbar-left--browse>.rarity-filter-wrap,
+  .list-toolbar-left--browse>.role-filter-wrap,
+  .list-toolbar-left--browse>.source-filter-wrap,
+  .list-toolbar-left--browse>.lineage-filter-wrap,
+  .list-toolbar-left--browse>.series-filter-wrap,
+  .list-toolbar-left--browse>.skill-filter-wrap,
+  .list-toolbar-left--browse>.ability-filter-wrap,
+  .list-toolbar-left--browse>.terrain-filter-wrap,
+  .list-toolbar-left--browse>.debuff-filter-wrap,
+  .list-toolbar-left--browse>.mechanism-filter-wrap,
+  #panel-supporters .list-toolbar>.list-toolbar-left>.rarity-filter-wrap,
+  #panel-supporters .list-toolbar>.list-toolbar-left>.lineage-filter-wrap,
+  #panel-supporters .list-toolbar>.list-toolbar-left>.skill-filter-wrap,
+  #panel-modifications .list-toolbar>.list-toolbar-left>.lineage-filter-wrap,
+  #panel-modifications .list-toolbar>.list-toolbar-left>.mod-effect-wrap,
+  #panel-stages .list-toolbar>.list-toolbar-left>.rarity-filter-wrap,
+  #panel-stages #stageDiffWrap,
+  #panel-stages #stageChallengeSeriesWrap{
+    margin-inline-start:var(--filter-cell-inset,6px);
+    box-sizing:border-box
+  }
   /* Wraps that host filter-dropdown-panel shrink to trigger width (:has supported on current mobile browsers) */
   .list-toolbar-left--browse>.rarity-filter-wrap:has(.filter-dropdown-panel),
   .list-toolbar-left--browse>.role-filter-wrap:has(.filter-dropdown-panel),
   .list-toolbar-left--browse>.source-filter-wrap:has(.filter-dropdown-panel),
-  #panel-supporters .list-toolbar>.list-toolbar-left>.rarity-filter-wrap:has(.filter-dropdown-panel){
+  .list-toolbar-left--browse>.skill-filter-wrap:has(.filter-dropdown-panel),
+  #panel-supporters .list-toolbar>.list-toolbar-left>.rarity-filter-wrap:has(.filter-dropdown-panel),
+  #panel-supporters .list-toolbar>.list-toolbar-left>.skill-filter-wrap:has(.filter-dropdown-panel){
     width:max-content;
     max-width:100%;
     justify-self:start;
-    overflow:visible;
+    align-self:start;
+    align-items:center;
+    overflow:visible
+  }
+  /* Icon chip triggers (Role / Rarity / Move): hug content — do not stretch to the grid cell */
+  .list-toolbar-left--browse>.rarity-filter-wrap:has(.filter-dropdown-panel)>.rarity-filter-btn,
+  .list-toolbar-left--browse>.role-filter-wrap:has(.filter-dropdown-panel)>.rarity-filter-btn,
+  .list-toolbar-left--browse>.role-filter-wrap:has(.filter-dropdown-panel)>.role-filter-dd-btn,
+  .list-toolbar-left--browse>.skill-filter-wrap:has(.filter-dropdown-panel)>.rarity-filter-btn,
+  .list-toolbar-left--browse>.skill-filter-wrap:has(.filter-dropdown-panel)>.role-filter-dd-btn{
+    flex:0 0 auto!important;
+    width:max-content;
+    max-width:100%;
+    min-width:0;
+    justify-content:flex-start;
+    align-items:center;
+    line-height:1;
+    padding-top:6px;
+    padding-bottom:6px
+  }
+  .list-toolbar-left--browse>.rarity-filter-wrap:has(.filter-dropdown-panel) .filter-btn-label-inner,
+  .list-toolbar-left--browse>.role-filter-wrap:has(.filter-dropdown-panel) .filter-btn-label-inner{
+    align-items:center;
+    min-height:0;
+    line-height:1
+  }
+  .list-toolbar-left--browse>.rarity-filter-wrap:has(.filter-dropdown-panel) .filter-inline-icon.rarity-filter-chip,
+  .list-toolbar-left--browse>.role-filter-wrap:has(.filter-dropdown-panel) .filter-inline-icon.role-filter-chip{
+    display:block;
+    vertical-align:middle
+  }
+  .list-toolbar-left--browse>.rarity-filter-wrap:has(.filter-dropdown-panel) .rarity-filter-caret,
+  .list-toolbar-left--browse>.role-filter-wrap:has(.filter-dropdown-panel) .rarity-filter-caret{
+    line-height:1;
+    display:inline-flex;
+    align-items:center
   }
   #panel-modifications .mod-effect-wrap:has(.filter-dropdown-panel),
   #panel-modifications .lineage-filter-wrap:has(.filter-dropdown-panel){
@@ -5611,11 +5902,23 @@ display:flex;flex-direction:column;gap:12px;align-items:stretch;width:100%;min-w
   #panel-stages .list-toolbar-left{
     overflow:visible;
   }
-  .list-toolbar-left--browse .rarity-filter-btn,
-  .list-toolbar-left--browse .role-filter-dd-btn{
+  /* Stretch text-label triggers to the grid cell; icon menus (Role/Rarity/Move) hug via
+   * :has(.filter-dropdown-panel) rules — including the mobile_layout.css overrides. */
+  .list-toolbar-left--browse .rarity-filter-wrap:not(:has(.filter-dropdown-panel)) > .rarity-filter-btn,
+  .list-toolbar-left--browse .role-filter-wrap:not(:has(.filter-dropdown-panel)) > .role-filter-dd-btn,
+  .list-toolbar-left--browse .source-filter-wrap:not(:has(.filter-dropdown-panel)) > .rarity-filter-btn,
+  .list-toolbar-left--browse .skill-filter-wrap:not(:has(.filter-dropdown-panel)) > .rarity-filter-btn,
+  .list-toolbar-left--browse .skill-filter-wrap:not(:has(.filter-dropdown-panel)) > .role-filter-dd-btn,
+  .list-toolbar-left--browse .lineage-filter-wrap > .rarity-filter-btn,
+  .list-toolbar-left--browse .series-filter-wrap > .rarity-filter-btn,
+  .list-toolbar-left--browse .ability-filter-wrap > .rarity-filter-btn,
+  .list-toolbar-left--browse .terrain-filter-wrap > .rarity-filter-btn,
+  .list-toolbar-left--browse .debuff-filter-wrap > .rarity-filter-btn,
+  .list-toolbar-left--browse .mechanism-filter-wrap > .rarity-filter-btn{
     max-width:none!important;
     flex:1 1 auto;
     min-width:0;
+    width:100%;
   }
   .list-toolbar-left--browse .browse-filters-clear-btn{flex:0 0 auto}
   .list-toolbar-right{gap:8px}
@@ -5634,12 +5937,15 @@ display:flex;flex-direction:column;gap:12px;align-items:stretch;width:100%;min-w
   .sp-toggle-btn img{height:20px}
   .list-cond-toggle{height:30px;width:40px;padding:2px}.list-cond-toggle .cp-wide{font-size:22px}
 
-  /* --- Small-option filter lists (.filter-dropdown-panel): anchored under trigger; width ~= button; Clear scrolls with safe-area inset --- */
+  /*
+   * Under-trigger menus (Rarity / Role / Source / Move / Stage Diff / …).
+   * Compact skill menus (.skill-filter-panel.filter-dropdown-panel) stay here — NOT fixed sheets.
+   */
   .list-toolbar #stageDiffFilterPanel.filter-dropdown-panel:not([hidden]){
     position:absolute!important;
-    left:0!important;
+    left:var(--filter-cell-inset,6px)!important;
     right:auto!important;
-    top:calc(100% + 4px)!important;
+    top:calc(100% + var(--filter-cell-inset,6px))!important;
     transform:none!important;
     width:max-content!important;
     min-width:0!important;
@@ -5648,9 +5954,9 @@ display:flex;flex-direction:column;gap:12px;align-items:stretch;width:100%;min-w
   }
   .list-toolbar .filter-dropdown-panel:not([hidden]){
     position:absolute;
-    left:0;
+    left:var(--filter-cell-inset,6px);
     right:auto;
-    top:calc(100% + 4px);
+    top:calc(100% + var(--filter-cell-inset,6px));
     transform:none;
     width:max-content;
     min-width:100%;
@@ -5664,38 +5970,176 @@ display:flex;flex-direction:column;gap:12px;align-items:stretch;width:100%;min-w
     overflow-y:auto;
     padding-bottom:max(14px,calc(8px + env(safe-area-inset-bottom,0px)));
     -webkit-overflow-scrolling:touch;
-    z-index:250;
+    z-index:480;
     box-shadow:0 10px 36px rgba(0,0,0,.52);
     border-radius:var(--radius-md)
   }
-  .list-toolbar .map-wrt-filter-panel.filter-dropdown-panel:not([hidden]){max-height:none;overflow-y:visible}
-  /* --- Large grids / long panels: viewport sheet — exclude .filter-dropdown-panel (:not prevents [hidden]/display bleed) --- */
-  .list-toolbar .rarity-filter-panel:not([hidden]):not(.filter-dropdown-panel),
-  .list-toolbar .role-filter-panel:not([hidden]):not(.filter-dropdown-panel),
-  .list-toolbar .source-filter-panel:not([hidden]):not(.filter-dropdown-panel),
-  .list-toolbar .skill-filter-panel:not([hidden]){
-    position:fixed;
-    left:max(8px,env(safe-area-inset-left,0px));
-    right:max(8px,env(safe-area-inset-right,0px));
-    top:max(8px, env(safe-area-inset-top, 0px));
-    bottom:auto;
-    transform:none;
-    width:auto;
+  .list-toolbar .filter-dropdown-panel.filter-panel--align-end:not([hidden]){
+    left:auto!important;
+    right:var(--filter-cell-inset,6px)
+  }
+  /* Fixed Tags/Series sheets stay centered — ignore any leftover align-end class */
+  .list-toolbar .lineage-filter-panel.filter-panel--align-end,
+  .list-toolbar .series-filter-panel.filter-panel--align-end,
+  .list-toolbar .skill-filter-panel:not(.filter-dropdown-panel).filter-panel--align-end,
+  .list-toolbar .source-filter-panel:not(.filter-dropdown-panel).filter-panel--align-end{
+    left:50%!important;
+    right:auto!important;
+    transform:translateX(-50%)!important
+  }
+  .list-toolbar .rarity-filter-panel.filter-dropdown-panel:has(.rarity-star-grid):not([hidden]),
+  .list-toolbar .role-filter-panel.filter-dropdown-panel:not([hidden]),
+  .list-toolbar .skill-filter-panel.filter-dropdown-panel:not([hidden]){
     min-width:0!important;
-    max-width:none!important;
+    width:max-content!important;
+    padding:6px;
+    padding-bottom:max(10px,calc(6px + env(safe-area-inset-bottom,0px)))
+  }
+  .list-toolbar .map-wrt-filter-panel.filter-dropdown-panel:not([hidden]){max-height:none;overflow-y:visible}
+  /*
+   * Large top sheets: filterbox stays sharp on top; nav chrome blurs underneath.
+   * Do NOT elevate / isolate <main> — that painted a lighter stacking layer over
+   * .list-toolbar (looked like the browse background “got lighter”).
+   * Drop sticky header under the fixed sheet instead (z-index only).
+   */
+  .app-header .header-inner,
+  .app-header .nav-tabs-shell{
+    opacity:1;
+    filter:blur(0);
+    transition:
+      opacity var(--motion-dur-filter-sheet,420ms) var(--motion-ease-filter-sheet,cubic-bezier(0.33,1,0.68,1)),
+      filter var(--motion-dur-filter-sheet,420ms) var(--motion-ease-filter-sheet,cubic-bezier(0.33,1,0.68,1))
+  }
+  body.browse-filter-sheet-open .app-header,
+  body:has(.list-toolbar .lineage-filter-panel:not([hidden])) .app-header,
+  body:has(.list-toolbar .series-filter-panel:not([hidden])) .app-header,
+  body:has(.list-toolbar .skill-filter-panel:not(.filter-dropdown-panel):not([hidden])) .app-header,
+  body:has(.list-toolbar .rarity-filter-panel:not(.filter-dropdown-panel):not([hidden])) .app-header,
+  body:has(.list-toolbar .role-filter-panel:not(.filter-dropdown-panel):not([hidden])) .app-header,
+  body:has(.list-toolbar .source-filter-panel:not(.filter-dropdown-panel):not([hidden])) .app-header,
+  body:has(.list-toolbar .mod-effect-filter-panel:not(.filter-dropdown-panel):not([hidden])) .app-header{
+    z-index:0!important;
+    pointer-events:none
+  }
+  body.browse-filter-sheet-open .app-header .header-inner,
+  body.browse-filter-sheet-open .app-header .nav-tabs-shell,
+  body:has(.list-toolbar .lineage-filter-panel:not([hidden])) .app-header .header-inner,
+  body:has(.list-toolbar .lineage-filter-panel:not([hidden])) .app-header .nav-tabs-shell,
+  body:has(.list-toolbar .series-filter-panel:not([hidden])) .app-header .header-inner,
+  body:has(.list-toolbar .series-filter-panel:not([hidden])) .app-header .nav-tabs-shell,
+  body:has(.list-toolbar .skill-filter-panel:not(.filter-dropdown-panel):not([hidden])) .app-header .header-inner,
+  body:has(.list-toolbar .skill-filter-panel:not(.filter-dropdown-panel):not([hidden])) .app-header .nav-tabs-shell,
+  body:has(.list-toolbar .rarity-filter-panel:not(.filter-dropdown-panel):not([hidden])) .app-header .header-inner,
+  body:has(.list-toolbar .rarity-filter-panel:not(.filter-dropdown-panel):not([hidden])) .app-header .nav-tabs-shell,
+  body:has(.list-toolbar .role-filter-panel:not(.filter-dropdown-panel):not([hidden])) .app-header .header-inner,
+  body:has(.list-toolbar .role-filter-panel:not(.filter-dropdown-panel):not([hidden])) .app-header .nav-tabs-shell,
+  body:has(.list-toolbar .source-filter-panel:not(.filter-dropdown-panel):not([hidden])) .app-header .header-inner,
+  body:has(.list-toolbar .source-filter-panel:not(.filter-dropdown-panel):not([hidden])) .app-header .nav-tabs-shell,
+  body:has(.list-toolbar .mod-effect-filter-panel:not(.filter-dropdown-panel):not([hidden])) .app-header .header-inner,
+  body:has(.list-toolbar .mod-effect-filter-panel:not(.filter-dropdown-panel):not([hidden])) .app-header .nav-tabs-shell{
+    opacity:.42;
+    filter:blur(10px)
+  }
+  @media (prefers-reduced-motion:reduce){
+    .app-header .header-inner,
+    .app-header .nav-tabs-shell,
+    body.browse-filter-sheet-open .app-header .header-inner,
+    body.browse-filter-sheet-open .app-header .nav-tabs-shell,
+    body:has(.list-toolbar .lineage-filter-panel:not([hidden])) .app-header .header-inner,
+    body:has(.list-toolbar .lineage-filter-panel:not([hidden])) .app-header .nav-tabs-shell,
+    body:has(.list-toolbar .series-filter-panel:not([hidden])) .app-header .header-inner,
+    body:has(.list-toolbar .series-filter-panel:not([hidden])) .app-header .nav-tabs-shell,
+    body:has(.list-toolbar .skill-filter-panel:not(.filter-dropdown-panel):not([hidden])) .app-header .header-inner,
+    body:has(.list-toolbar .skill-filter-panel:not(.filter-dropdown-panel):not([hidden])) .app-header .nav-tabs-shell,
+    body:has(.list-toolbar .rarity-filter-panel:not(.filter-dropdown-panel):not([hidden])) .app-header .header-inner,
+    body:has(.list-toolbar .rarity-filter-panel:not(.filter-dropdown-panel):not([hidden])) .app-header .nav-tabs-shell,
+    body:has(.list-toolbar .role-filter-panel:not(.filter-dropdown-panel):not([hidden])) .app-header .header-inner,
+    body:has(.list-toolbar .role-filter-panel:not(.filter-dropdown-panel):not([hidden])) .app-header .nav-tabs-shell,
+    body:has(.list-toolbar .source-filter-panel:not(.filter-dropdown-panel):not([hidden])) .app-header .header-inner,
+    body:has(.list-toolbar .source-filter-panel:not(.filter-dropdown-panel):not([hidden])) .app-header .nav-tabs-shell,
+    body:has(.list-toolbar .mod-effect-filter-panel:not(.filter-dropdown-panel):not([hidden])) .app-header .header-inner,
+    body:has(.list-toolbar .mod-effect-filter-panel:not(.filter-dropdown-panel):not([hidden])) .app-header .nav-tabs-shell{
+      filter:none!important;
+      transition:opacity 150ms ease!important
+    }
+  }
+  /* Filterbox: top layer, always clear */
+  .list-toolbar :is(.rarity-filter-panel,.role-filter-panel,.source-filter-panel,.lineage-filter-panel,.series-filter-panel,.skill-filter-panel,.filter-dropdown-panel,.mod-effect-filter-panel):not([hidden]){
+    z-index:5000!important;
+    filter:none!important;
+    -webkit-backdrop-filter:none!important;
+    backdrop-filter:none!important;
+    opacity:1
+  }
+  /*
+   * Large mobile sheets only — exclude .filter-dropdown-panel (Move / Rarity / Role / Source).
+   * Slight inset from viewport edges (same --filter-cell-inset language as under-trigger menus)
+   * so the blurred header peeks behind the sheet.
+   */
+  .list-toolbar .rarity-filter-panel:not(.filter-dropdown-panel),
+  .list-toolbar .role-filter-panel:not(.filter-dropdown-panel),
+  .list-toolbar .source-filter-panel:not(.filter-dropdown-panel),
+  .list-toolbar .lineage-filter-panel,
+  .list-toolbar .series-filter-panel,
+  .list-toolbar .skill-filter-panel:not(.filter-dropdown-panel){
+    position:fixed!important;
+    left:50%!important;
+    right:auto!important;
+    top:max(
+      calc(var(--filter-cell-inset,6px) + env(safe-area-inset-top, 0px)),
+      calc(8px + var(--filter-cell-inset,6px))
+    )!important;
+    bottom:auto!important;
+    transform:translateX(-50%)!important;
+    width:calc(100vw - 16px - (2 * var(--filter-cell-inset,6px)) - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px));
+    min-width:0!important;
+    max-width:calc(100vw - 16px - (2 * var(--filter-cell-inset,6px)))!important;
+    margin-left:0;
+    margin-right:0;
     box-sizing:border-box;
-    display:flex;
     flex-direction:column;
     align-items:stretch;
-    max-height:min(92vh, calc(100vh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 24px));
-    max-height:min(92vh, calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 24px));
+    max-height:min(88vh, calc(100vh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 16px - (2 * var(--filter-cell-inset,6px))));
+    max-height:min(88dvh, calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 16px - (2 * var(--filter-cell-inset,6px))));
     overflow-x:hidden;
     overflow-y:auto;
-    padding-bottom:max(12px, env(safe-area-inset-bottom, 0px));
+    padding:var(--filter-cell-inset,6px);
+    padding-bottom:max(12px, calc(var(--filter-cell-inset,6px) + env(safe-area-inset-bottom, 0px)));
     -webkit-overflow-scrolling:touch;
-    z-index:250;
+    z-index:480;
     box-shadow:0 12px 40px rgba(0,0,0,.65);
     border-radius:var(--radius-md)
+  }
+  /* Compact chip sheets only — never Tags/Series (those also carry .rarity-filter-panel) */
+  .list-toolbar .rarity-filter-panel:not(.filter-dropdown-panel):not(.lineage-filter-panel):not(.series-filter-panel),
+  .list-toolbar .role-filter-panel:not(.filter-dropdown-panel),
+  .list-toolbar .source-filter-panel:not(.filter-dropdown-panel){
+    width:min(380px,calc(100vw - 16px - (2 * var(--filter-cell-inset,6px)) - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px)))!important;
+    max-width:min(380px,calc(100vw - 16px - (2 * var(--filter-cell-inset,6px))))!important
+  }
+  /*
+   * TAG / SERIES sheet: outer panel scrolls as a flex column; chip grid scrolls in
+   * .filter-panel-scroll-inner only. Do NOT overflow:hidden the panel + max-height the
+   * outer .filter-panel-scroll — that flex-shrinks the grid to 0 (search+footer only).
+   */
+  .list-toolbar .lineage-filter-panel:not([hidden]),
+  .list-toolbar .series-filter-panel:not([hidden]){
+    overflow-x:hidden;
+    overflow-y:auto;
+  }
+  .list-toolbar .lineage-filter-panel:not([hidden])>.filter-panel-scroll,
+  .list-toolbar .series-filter-panel:not([hidden])>.filter-panel-scroll{
+    flex:1 1 auto;
+    min-height:0;
+    max-height:none!important;
+    overflow:visible!important;
+  }
+  .list-toolbar .lineage-filter-panel:not([hidden]) .filter-panel-scroll-inner,
+  .list-toolbar .series-filter-panel:not([hidden]) .filter-panel-scroll-inner{
+    max-height:min(50dvh,360px)!important;
+    min-height:min(28dvh,160px);
+    overflow-y:auto!important;
+    -webkit-overflow-scrolling:touch
   }
   .list-toolbar .rarity-filter-panel .filter-panel-clear-wrap,
   .list-toolbar .role-filter-panel .filter-panel-clear-wrap,
@@ -5727,15 +6171,34 @@ display:flex;flex-direction:column;gap:12px;align-items:stretch;width:100%;min-w
     align-items:flex-start;
     line-height:1.35
   }
-  .list-toolbar .rarity-filter-panel .rarity-filter-row,
-  .list-toolbar .rarity-filter-panel .role-filter-row,
-  .list-toolbar .role-filter-panel .role-filter-row,
-  .list-toolbar .source-filter-panel .rarity-filter-row{
+  .list-toolbar .rarity-filter-panel:not(.filter-dropdown-panel) .rarity-filter-row,
+  .list-toolbar .rarity-filter-panel:not(.filter-dropdown-panel) .role-filter-row,
+  .list-toolbar .role-filter-panel:not(.filter-dropdown-panel) .role-filter-row,
+  .list-toolbar .source-filter-panel:not(.filter-dropdown-panel) .rarity-filter-row{
     align-items:flex-start;
     min-height:48px;
     padding-top:11px;
     padding-bottom:11px;
     box-sizing:border-box
+  }
+  /* Source / compact dropdowns: hug content — no sheet-tall empty band under the last row */
+  .list-toolbar .source-filter-panel.filter-dropdown-panel:not([hidden]){
+    max-height:none;
+    padding:var(--filter-cell-inset,6px);
+    padding-bottom:max(10px,calc(var(--filter-cell-inset,6px) + env(safe-area-inset-bottom,0px)));
+    gap:2px
+  }
+  .list-toolbar .source-filter-panel.filter-dropdown-panel .rarity-filter-row{
+    align-items:center;
+    min-height:0;
+    padding-top:8px;
+    padding-bottom:8px
+  }
+  /* Role chip dropdown keeps rarity-star-opt sizing (not the tall sheet rows above) */
+  .list-toolbar .role-filter-panel.filter-dropdown-panel .role-filter-row{
+    align-items:center;
+    min-height:40px;
+    padding:8px 8px
   }
   .list-toolbar .source-filter-panel .role-filter-row-label,
   .list-toolbar .source-filter-panel .source-filter-row-label{
@@ -5752,32 +6215,54 @@ display:flex;flex-direction:column;gap:12px;align-items:stretch;width:100%;min-w
   }
   .skill-filter-grid-browse{max-height:min(48vh,300px)}
 
-  /* --- Filter panels: legacy max-width --- */
-  .rarity-filter-panel,.role-filter-panel,.source-filter-panel{max-width:min(280px,calc(100vw - 24px))}
-  #stageDiffFilterPanel.stage-diff-filter-panel{max-width:min(220px,calc(100vw - 24px))!important}
-  #unitWeaponRangeNonMapFilterPanel.rarity-filter-panel,#rankUnitWeaponRangeNonMapFilterPanel.rarity-filter-panel,#unitMapWeaponRangeFilterPanel.rarity-filter-panel,#rankUnitMapWeaponRangeFilterPanel.rarity-filter-panel{max-width:min(400px,calc(100vw - 24px))}
-  #unitAbilityEffectFilterPanel,#rankUnitAbilityEffectFilterPanel{max-width:min(400px,calc(100vw - 24px));min-width:min(360px,calc(100vw - 24px));width:min(380px,calc(100vw - 24px))}
-  .lineage-filter-panel,.series-filter-panel{left:0;right:0;width:auto;max-width:calc(100vw - 24px);transform:none}
-  .skill-filter-panel{max-width:calc(100vw - 24px)}
-  #unitTerrainFilterPanel,#rankUnitTerrainFilterPanel{max-width:min(calc(100vw - 24px),640px)}
-  /* Weapon debuff panel: absolute + wide min-width extends past viewport when body is overflow-x:hidden — pin to viewport like other large menus */
-  #unitWeaponDebuffFilterPanel:not([hidden]),
-  #rankUnitWeaponDebuffFilterPanel:not([hidden]),
-  #unitWeaponRangeNonMapFilterPanel:not([hidden]),
-  #rankUnitWeaponRangeNonMapFilterPanel:not([hidden]),
-  #unitMapWeaponRangeFilterPanel:not([hidden]),
-  #rankUnitMapWeaponRangeFilterPanel:not([hidden]){
-    position:fixed;
-    left:max(8px, env(safe-area-inset-left, 0px));
-    right:max(8px, env(safe-area-inset-right, 0px));
-    top:max(8px, env(safe-area-inset-top, 0px));
-    bottom:auto;
-    transform:none;
-    width:auto;
+  /* --- Filter panels: mobile max-width (layout kept while [hidden] so exit does not resize) --- */
+  #stageDiffFilterPanel.stage-diff-filter-panel{max-width:min(220px,calc(100vw - 24px))!important;width:min(220px,calc(100vw - 24px))!important}
+  #unitWeaponAttrSetFilterPanel,
+  #rankUnitWeaponAttrSetFilterPanel{
+    width:min(340px,calc(100vw - 16px - (2 * var(--filter-cell-inset,6px)) - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px)))!important;
+    max-width:min(360px,calc(100vw - 16px - (2 * var(--filter-cell-inset,6px))))!important
+  }
+  .list-toolbar .lineage-filter-panel,
+  .list-toolbar .series-filter-panel,
+  .list-toolbar .rarity-filter-panel.lineage-filter-panel,
+  .list-toolbar .rarity-filter-panel.series-filter-panel{
+    /* Edge-to-edge minus inset — maximize title track width / fewer crawlers */
+    width:calc(100vw - (2 * var(--filter-cell-inset,6px)) - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px))!important;
+    max-width:calc(100vw - (2 * var(--filter-cell-inset,6px)))!important
+  }
+  .list-toolbar .skill-filter-panel:not(.skill-filter-panel--compact){
+    width:calc(100vw - 16px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px))!important;
+    max-width:calc(100vw - 16px)!important
+  }
+  /* Tablet (≤768): keep 3-col Tags/Series — 2-col is phone-only (see max-width:480) */
+  #unitTerrainFilterPanel,
+  #rankUnitTerrainFilterPanel{
+    width:min(640px,calc(100vw - 16px - (2 * var(--filter-cell-inset,6px)) - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px)))!important;
+    max-width:min(640px,calc(100vw - 16px - (2 * var(--filter-cell-inset,6px))))!important
+  }
+  #unitTerrainFilterPanel .unit-terrain-grid,
+  #rankUnitTerrainFilterPanel .unit-terrain-grid{
+    margin:0;
+    padding:0
+  }
+  /* Weapon debuff + MAP range: wider centered sheet (same layout while exiting) */
+  #unitWeaponDebuffFilterPanel,
+  #rankUnitWeaponDebuffFilterPanel,
+  #unitMapWeaponRangeFilterPanel,
+  #rankUnitMapWeaponRangeFilterPanel{
+    position:fixed!important;
+    left:50%!important;
+    right:auto!important;
+    top:max(
+      calc(var(--filter-cell-inset,6px) + env(safe-area-inset-top, 0px)),
+      calc(8px + var(--filter-cell-inset,6px))
+    )!important;
+    bottom:auto!important;
+    transform:translateX(-50%)!important;
+    width:min(560px,calc(100vw - 16px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px)))!important;
+    max-width:min(560px,calc(100vw - 16px))!important;
     min-width:0!important;
-    max-width:none!important;
     box-sizing:border-box;
-    display:flex;
     flex-direction:column;
     align-items:stretch;
     max-height:min(92vh, calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 24px));
@@ -5786,20 +6271,41 @@ display:flex;flex-direction:column;gap:12px;align-items:stretch;width:100%;min-w
     overflow-y:auto;
     overflow-x:hidden;
     -webkit-overflow-scrolling:touch;
-    z-index:250;
-    box-shadow:0 12px 40px rgba(0,0,0,.6);
-    border-radius:var(--radius-md);
+    z-index:480;
+    box-shadow:0 12px 40px rgba(0,0,0,.65);
+    border-radius:var(--radius-md)
   }
   /* Debuff chips: scroll the body only (avoid panel+body double scrollbar on mobile). */
-  #unitWeaponDebuffFilterPanel:not([hidden]),
-  #rankUnitWeaponDebuffFilterPanel:not([hidden]){
+  #unitWeaponDebuffFilterPanel,
+  #rankUnitWeaponDebuffFilterPanel{
     overflow:hidden;
     -webkit-overflow-scrolling:auto;
   }
   #unitWeaponDebuffFilterBody,#rankUnitWeaponDebuffFilterBody{
     -webkit-overflow-scrolling:touch;
   }
-  .unit-debuff-grid-row{grid-template-columns:1fr;gap:8px}
+  /* Keep 2-col filter chips on mobile (MOV 3|4 / 5|6, Mechanisms, Debuffs) — was forced to 1fr and ate vertical space */
+  .unit-debuff-grid-row{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px
+  }
+  .unit-debuff-grid--map-wrt{
+    grid-template-columns:repeat(2,minmax(0,1fr))
+  }
+  /* MOV compact sheet: widen enough for a 2×2 number pad (not a 124px tall stack) */
+  #unitMovFilterPanel.skill-filter-panel--compact,
+  #rankUnitMovFilterPanel.skill-filter-panel--compact{
+    width:min(92vw,220px)!important;
+    max-width:min(92vw,220px)!important;
+    min-width:0!important
+  }
+  #unitMovFilterPanel .unit-debuff-item,
+  #rankUnitMovFilterPanel .unit-debuff-item{
+    min-height:44px;
+    padding:10px 8px;
+    font-size:16px;
+    font-weight:800
+  }
   .unit-terrain-item{grid-template-columns:auto minmax(0,1fr) 28px;column-gap:7px;padding:8px 9px;font-size:12px}
   .unit-terrain-lv-wrap{width:28px}
 
@@ -5820,6 +6326,12 @@ display:flex;flex-direction:column;gap:12px;align-items:stretch;width:100%;min-w
 }
 
 @media(max-width:480px){
+  /* Phones: keep 2-col Series/Tags (set at 768); tighten scroll height */
+  .list-toolbar .lineage-filter-panel:not([hidden]) .filter-panel-scroll-inner,
+  .list-toolbar .series-filter-panel:not([hidden]) .filter-panel-scroll-inner{
+    max-height:min(46dvh,300px)!important;
+    min-height:min(32dvh,180px)
+  }
   /* --- Filter buttons: phone compact --- */
   .list-toolbar-left--browse .rarity-filter-btn,.list-toolbar-left--browse .role-filter-dd-btn{max-width:none!important}
   .rarity-filter-btn,.role-filter-dd-btn{padding:5px 8px;font-size:12px;min-height:36px;max-width:min(160px,42vw);gap:4px}
@@ -6518,7 +7030,7 @@ display:flex;flex-direction:column;gap:12px;align-items:stretch;width:100%;min-w
 .ult-alt-mission-ch-list{display:grid;gap:4px;margin-top:6px;max-width:100%;min-width:0}
 
 @media(max-width:768px){
-.list-toolbar .rarity-filter-panel:has(.rarity-star-grid):not([hidden]){width:max-content!important;min-width:0!important;max-width:min(220px,calc(100vw - 24px))!important;padding:6px!important}
+.list-toolbar .rarity-filter-panel:has(.rarity-star-grid){width:max-content!important;min-width:0!important;max-width:min(220px,calc(100vw - 24px))!important;padding:6px!important}
 .list-toolbar .rarity-filter-panel .rarity-star-opt{padding:8px 8px;min-height:40px;gap:7px}
 .list-toolbar .rarity-filter-panel .rarity-star-opt--lt{min-height:44px}
 .list-toolbar .rarity-filter-panel .rarity-star-check{width:18px;height:18px}

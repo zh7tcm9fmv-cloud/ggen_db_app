@@ -426,6 +426,25 @@
   }
 }
 @media (max-width:768px){
+  /* Dock to bottom center — enter slides up from below the fold */
+  .kofi-donate-promo.kofi-donate-promo--from-bottom{
+    left:50%!important;
+    right:auto!important;
+    top:auto!important;
+    bottom:max(12px,env(safe-area-inset-bottom,0px))!important;
+    transform:translateX(-50%);
+    width:min(420px,calc(100vw - 16px));
+    max-width:calc(100vw - 16px);
+  }
+  .kofi-donate-promo.kofi-donate-promo--from-bottom .kofi-donate-promo-panel{
+    width:100%;
+    max-width:100%;
+    transform-origin:50% 100%;
+  }
+  .kofi-donate-promo.kofi-donate-promo--from-bottom.is-visible.is-entering .kofi-donate-promo-panel{
+    -webkit-animation-name:kofi-promo-panel-enter-from-bottom;
+    animation-name:kofi-promo-panel-enter-from-bottom;
+  }
   .kofi-donate-promo-panel{
     max-width:calc(100vw - 16px);
     grid-template-columns:minmax(0,80px) minmax(0,1fr);
@@ -460,6 +479,14 @@
     width:12px;
     height:12px;
   }
+}
+@-webkit-keyframes kofi-promo-panel-enter-from-bottom{
+  0%{opacity:0;transform:translate3d(0,72px,0)}
+  100%{opacity:1;transform:translate3d(0,0,0)}
+}
+@keyframes kofi-promo-panel-enter-from-bottom{
+  0%{opacity:0;transform:translate3d(0,72px,0)}
+  100%{opacity:1;transform:translate3d(0,0,0)}
 }
 /* Keep Maria | bubble side-by-side on phones (same as desktop); only tighten sizes */
 @media (max-width:480px){

@@ -670,12 +670,32 @@
     };
   }
 
+  function isMobilePromoDock() {
+    return !!(global.matchMedia && global.matchMedia('(max-width:768px)').matches);
+  }
+
   function positionPromo() {
     var els = getEls();
     if (!els.root || !els.panel || !els.target || !els.root.classList.contains('is-visible')) return;
 
     var tr = els.target.getBoundingClientRect();
     if (!tr.width || !tr.height) return;
+
+    /* Phones: dock + slide up from the bottom (header-anchored placement eats vertical space). */
+    if (isMobilePromoDock()) {
+      els.root.classList.add('kofi-donate-promo--from-bottom');
+      els.root.style.left = '';
+      els.root.style.top = '';
+      els.root.style.right = '';
+      els.root.style.bottom = '';
+      els.root.style.transform = '';
+      els.panel.style.setProperty('--kofi-promo-origin-x', '50%');
+      els.panel.style.setProperty('--kofi-promo-origin-y', '100%');
+      setTargetHighlight(true);
+      return;
+    }
+
+    els.root.classList.remove('kofi-donate-promo--from-bottom');
 
     var bubble = els.root.querySelector('.kofi-donate-promo-bubble');
     if (!bubble) return;
@@ -731,7 +751,7 @@
   function closeKofiDonatePromo(snooze) {
     var els = getEls();
     if (!els.root || !els.root.classList.contains('is-visible')) return;
-    els.root.classList.remove('is-visible', 'is-entering', 'is-text-ready', 'is-text-fallback');
+    els.root.classList.remove('is-visible', 'is-entering', 'is-text-ready', 'is-text-fallback', 'kofi-donate-promo--from-bottom');
     els.root.setAttribute('aria-hidden', 'true');
     els.root.hidden = true;
     setTargetHighlight(false);
@@ -753,6 +773,8 @@
     _shown = true;
     cancelShowTimer();
     els.root.hidden = false;
+    if (isMobilePromoDock()) els.root.classList.add('kofi-donate-promo--from-bottom');
+    else els.root.classList.remove('kofi-donate-promo--from-bottom');
     els.root.classList.add('is-visible', 'is-entering');
     els.root.setAttribute('aria-hidden', 'false');
     startSlotTextAnimation();

@@ -329,9 +329,10 @@ input[type=range].ui-range.ui-range-snap::-moz-range-thumb{
   transition-timing-function:var(--ui-spring);
 }
 
-/* —— Dropdown / filter panels: @starting-style entry (display:none → open, no JS) ——
-   Matches sanyampunia tip: transition alone fails from display:none; @starting-style
-   supplies the first frame. Uses allow-discrete so display can participate. */
+/* —— Dropdown / filter panels: Takayu dialog-top-layer (opacity 0→1, Y18→0, allow-discrete)
+   https://motion-reference.takayustudio.jp/#motion=dialog-top-layer
+   easeOutCubic; duration tightened vs 620ms for browse sheets. Mobile center uses
+   transform:translateX(-50%) — keep enter on the `translate` property (Y only). */
 @keyframes ggen-filter-panel-enter-reduced{
   from{opacity:0}
   to{opacity:1}
@@ -339,62 +340,82 @@ input[type=range].ui-range.ui-range-snap::-moz-range-thumb{
 .rarity-filter-panel,
 .role-filter-panel,
 .source-filter-panel,
+.lineage-filter-panel,
+.series-filter-panel,
+.skill-filter-panel,
 .filter-dropdown-panel,
 .ml-season-filter-panel,
 .dc-stage-dd-panel,
 .lang-dropdown,
 .site-feedback-lang-dropdown{
+  --motion-dur-filter-sheet:420ms;
+  --motion-ease-filter-sheet:cubic-bezier(0.33,1,0.68,1); /* easeOutCubic */
+  /* Always flex — if display:flex is only on :not([hidden]), ESC snaps flex→block mid-fade (squeeze). */
+  display:flex;
+  flex-direction:column;
   opacity:1;
   translate:0 0;
-  /* Open: short Corporate enter. Close overridden below — snap-in exit felt sluggish. */
   transition:
-    opacity var(--motion-dur-standard) var(--motion-ease-enter),
-    translate var(--motion-dur-standard) var(--motion-ease-enter),
-    display var(--motion-dur-standard) allow-discrete,
-    overlay var(--motion-dur-standard) allow-discrete;
+    opacity var(--motion-dur-filter-sheet) var(--motion-ease-filter-sheet),
+    translate var(--motion-dur-filter-sheet) var(--motion-ease-filter-sheet),
+    display var(--motion-dur-filter-sheet),
+    overlay var(--motion-dur-filter-sheet);
+  transition-behavior:allow-discrete;
 }
-/* Closed: [hidden] panels + lang menus without .active — fast dismiss */
+/*
+ * Closed / ESC — Takayu reverse: opacity + Y18 only. display:none without !important
+ * so allow-discrete can keep the flex box painted until the fade finishes.
+ */
 .rarity-filter-panel[hidden],
 .role-filter-panel[hidden],
 .source-filter-panel[hidden],
+.lineage-filter-panel[hidden],
+.series-filter-panel[hidden],
+.skill-filter-panel[hidden],
 .filter-dropdown-panel[hidden],
 .ml-season-filter-panel[hidden],
 .dc-stage-dd-panel[hidden],
 .lang-dropdown:not(.active),
 .site-feedback-lang-dropdown:not(.active){
   opacity:0;
-  translate:0 -6px;
+  translate:0 18px;
   display:none;
-  transition-duration:100ms,100ms,100ms,100ms;
-  transition-timing-function:var(--motion-ease-exit),var(--motion-ease-exit),var(--motion-ease-exit),var(--motion-ease-exit);
+  pointer-events:none;
 }
-/* Open states (display must be set so allow-discrete can animate in) */
 .rarity-filter-panel:not([hidden]),
 .role-filter-panel:not([hidden]),
 .source-filter-panel:not([hidden]),
+.lineage-filter-panel:not([hidden]),
+.series-filter-panel:not([hidden]),
+.skill-filter-panel:not([hidden]),
 .filter-dropdown-panel:not([hidden]),
 .ml-season-filter-panel:not([hidden]),
 .dc-stage-dd-panel:not([hidden]){
-  display:block;
-}
-.lang-dropdown.active,
-.site-feedback-lang-dropdown.active{
-  display:block;
   opacity:1;
   translate:0 0;
 }
-/* First frame when opening from display:none */
+.lang-dropdown.active,
+.site-feedback-lang-dropdown.active{
+  display:flex;
+  flex-direction:column;
+  opacity:1;
+  translate:0 0;
+}
+/* First frame when opening from display:none (Takayu Y18 lift) */
 @starting-style{
   .rarity-filter-panel:not([hidden]),
   .role-filter-panel:not([hidden]),
   .source-filter-panel:not([hidden]),
+  .lineage-filter-panel:not([hidden]),
+  .series-filter-panel:not([hidden]),
+  .skill-filter-panel:not([hidden]),
   .filter-dropdown-panel:not([hidden]),
   .ml-season-filter-panel:not([hidden]),
   .dc-stage-dd-panel:not([hidden]),
   .lang-dropdown.active,
   .site-feedback-lang-dropdown.active{
     opacity:0;
-    translate:0 -6px;
+    translate:0 18px;
   }
 }
 .rarity-filter-row,
@@ -661,17 +682,24 @@ body:not(.tm-page):not(.dm-page).nav-tabs-collapsed #navTabsShell{
   .rarity-filter-panel,
   .role-filter-panel,
   .source-filter-panel,
+  .lineage-filter-panel,
+  .series-filter-panel,
+  .skill-filter-panel,
   .filter-dropdown-panel,
   .ml-season-filter-panel,
   .dc-stage-dd-panel,
   .lang-dropdown,
   .site-feedback-lang-dropdown{
-    transition:opacity 150ms ease,display 150ms allow-discrete,overlay 150ms allow-discrete!important;
+    transition:opacity 150ms ease,display 150ms,overlay 150ms!important;
+    transition-behavior:allow-discrete!important;
     translate:none!important;
   }
   .rarity-filter-panel[hidden],
   .role-filter-panel[hidden],
   .source-filter-panel[hidden],
+  .lineage-filter-panel[hidden],
+  .series-filter-panel[hidden],
+  .skill-filter-panel[hidden],
   .filter-dropdown-panel[hidden],
   .ml-season-filter-panel[hidden],
   .dc-stage-dd-panel[hidden],
@@ -684,6 +712,9 @@ body:not(.tm-page):not(.dm-page).nav-tabs-collapsed #navTabsShell{
     .rarity-filter-panel:not([hidden]),
     .role-filter-panel:not([hidden]),
     .source-filter-panel:not([hidden]),
+    .lineage-filter-panel:not([hidden]),
+    .series-filter-panel:not([hidden]),
+    .skill-filter-panel:not([hidden]),
     .filter-dropdown-panel:not([hidden]),
     .ml-season-filter-panel:not([hidden]),
     .dc-stage-dd-panel:not([hidden]),
