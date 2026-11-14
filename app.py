@@ -8255,9 +8255,15 @@ def pressure_trim_aux_caches(*, rss_mb=None):
     """Background-only: free retainable warm bytes without changing API features.
 
     Never call from the /health request path (Railway probes). Safe to call from the
-    adaptive cache tick when RSS is already at the MSY floor.
+    adaptive cache tick when RSS is elevated (mid or pressure).
     """
-    info = {'stripped_raw': 0, 'spi_stripped_raw': 0, 'api_evicted': 0, 'detail_evicted': 0}
+    info = {
+        'stripped_raw': 0,
+        'spi_stripped_raw': 0,
+        'api_evicted': 0,
+        'detail_evicted': 0,
+        'detail_raw_stripped': 0,
+    }
     try:
         info['stripped_raw'] = int(_http_json_body_cache_strip_large_raw() or 0)
     except Exception:
@@ -8270,11 +8276,21 @@ def pressure_trim_aux_caches(*, rss_mb=None):
         rss = float(rss_mb) if rss_mb is not None else None
     except (TypeError, ValueError):
         rss = None
-    # Hard pressure: shrink detail-body LRU and unpinned API dicts (misses recompute).
-    if rss is not None and rss >= 1250.0:
+    # Mid+ (default MSY mid ~1100): drop duplicate detail raw when gzip is kept, and
+    # shrink the detail LRU. Misses recompute the same JSON — no look/feature change.
+    # Audit 2026-11-14: RSS ~1111 / detail_mb ~9.6 with band mid at quiet rpm.
+    if rss is not None and rss >= 1100.0:
         try:
             with _HTTP_JSON_BODY_CACHE_LOCK:
-                while len(_HTTP_JSON_DETAIL_BODY_CACHE) > 64:
+                for _ent in _HTTP_JSON_DETAIL_BODY_CACHE.values():
+                    if not _ent:
+                        continue
+                    if _ent.get('raw') is not None and _ent.get('gzip') is not None:
+                        _ent['raw'] = None
+                        info['detail_raw_stripped'] += 1
+                # Soft mid keep 192; hard pressure (≥1250) keep 64.
+                keep = 64 if rss >= 1250.0 else 192
+                while len(_HTTP_JSON_DETAIL_BODY_CACHE) > keep:
                     try:
                         oldest = next(iter(_HTTP_JSON_DETAIL_BODY_CACHE))
                     except StopIteration:
@@ -8283,6 +8299,8 @@ def pressure_trim_aux_caches(*, rss_mb=None):
                     info['detail_evicted'] += 1
         except Exception:
             pass
+    # Hard pressure: also shed unpinned API dicts (misses recompute).
+    if rss is not None and rss >= 1250.0:
         try:
             with _api_cache_lock:
                 keys = list(_api_cache.keys())

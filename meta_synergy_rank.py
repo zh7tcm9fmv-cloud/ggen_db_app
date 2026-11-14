@@ -2654,23 +2654,18 @@ def _adaptive_tick():
     _adaptive_wpn_max = wpn_max
     dropped_pair = _trim_bounded_cache_to(_char_pair_cache, pair_max) if len(_char_pair_cache) > pair_max else 0
     dropped_wpn = _trim_bounded_cache_to(_unit_weapon_cache, wpn_max) if len(_unit_weapon_cache) > wpn_max else 0
-    # Under pressure the pair cache is already at the floor — free other retainers
-    # (matrix raw bodies, fat API dicts, BSP group LRU). Features unchanged; misses reload.
+    # Elevated RSS (mid+) — free retainable warm bytes. Features unchanged; misses reload.
+    # Hard pressure also shrinks BSP group LRU. Never sync from /health.
     aux = {}
     dropped_lru = 0
-    if band == 'pressure' or (rss is not None and float(rss) >= _ADAPTIVE_RSS_PRESSURE_MB):
+    rss_mid = rss is not None and float(rss) >= _ADAPTIVE_RSS_MID_MB
+    rss_hot = rss is not None and float(rss) >= _ADAPTIVE_RSS_PRESSURE_MB
+    if band == 'pressure' or rss_hot:
         lru_keep = 24 if (rss is not None and float(rss) >= 1300.0) else 32
         with _BSP_GROUP_LRU_LOCK:
             while len(_BSP_GROUP_LRU) > lru_keep:
                 _BSP_GROUP_LRU.popitem(last=False)
                 dropped_lru += 1
-        try:
-            A = _app()
-            trim = getattr(A, 'pressure_trim_aux_caches', None)
-            if callable(trim):
-                aux = trim(rss_mb=rss) or {}
-        except Exception as exc:
-            aux = {'err': str(exc)[:120]}
         # Drop accidental full-catalog rankings blobs (sharded BSP is the serve path).
         try:
             for rk, rv in list(_rankings_result_cache.items()):
@@ -2680,16 +2675,28 @@ def _adaptive_tick():
                     aux['rankings_full_dropped'] = int(aux.get('rankings_full_dropped') or 0) + 1
         except Exception:
             pass
+    if band in ('mid', 'pressure') or rss_mid or rss_hot:
+        try:
+            A = _app()
+            trim = getattr(A, 'pressure_trim_aux_caches', None)
+            if callable(trim):
+                aux2 = trim(rss_mb=rss) or {}
+                for _k, _v in aux2.items():
+                    if isinstance(_v, int) and isinstance(aux.get(_k), int):
+                        aux[_k] = int(aux.get(_k) or 0) + int(_v)
+                    elif _k not in aux or aux.get(_k) in (None, 0, ''):
+                        aux[_k] = _v
+        except Exception as exc:
+            aux['err'] = str(exc)[:120]
     # Quiet by default. Oct 2026: mid↔pressure flaps from rpm (while RSS stays ~1.1–1.2GB)
     # logged every tick with huge pair→floor drops — noise, not owner action. Log only when:
     #   • aux trim actually freed retained bodies / API dicts / err, or
     #   • band changes while RSS is in the true pressure zone (≥1250).
     # Routine rpm floor trim (dropped_pair / dropped_wpn) is silent.
     band_changed = band != prev_band
-    stripped = int(aux.get('stripped_raw') or 0)
-    api_evicted = int(aux.get('api_evicted') or 0)
+    stripped = int(aux.get('stripped_raw') or 0) + int(aux.get('detail_raw_stripped') or 0)
+    api_evicted = int(aux.get('api_evicted') or 0) + int(aux.get('detail_evicted') or 0)
     rankings_dropped = int(aux.get('rankings_full_dropped') or 0)
-    rss_hot = rss is not None and float(rss) >= _ADAPTIVE_RSS_PRESSURE_MB
     notable_aux = (
         stripped > 0
         or api_evicted > 0
