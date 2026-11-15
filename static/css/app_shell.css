@@ -1559,17 +1559,22 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
   box-sizing:border-box;
   z-index:5000
 }
-/* Sticky thead (z-index 40) lives in a later sibling under .list-toolbar.
- * Any open filter panel must raise toolbar-left above that stacking context. */
-.list-toolbar:has(.rarity-filter-panel:not([hidden]))>.list-toolbar-left,
-.list-toolbar:has(.role-filter-panel:not([hidden]))>.list-toolbar-left,
-.list-toolbar:has(.source-filter-panel:not([hidden]))>.list-toolbar-left,
-.list-toolbar:has(.skill-filter-panel:not([hidden]))>.list-toolbar-left,
-.list-toolbar:has(.lineage-filter-panel:not([hidden]))>.list-toolbar-left,
-.list-toolbar:has(.series-filter-panel:not([hidden]))>.list-toolbar-left,
-.list-toolbar:has(.filter-dropdown-panel:not([hidden]))>.list-toolbar-left,
-.list-toolbar:has(.mod-effect-filter-panel:not([hidden]))>.list-toolbar-left,
-.list-toolbar:has(.ml-season-filter-panel:not([hidden]))>.list-toolbar-left,
+/*
+ * Browse filter vs sticky thead — stable stacking (no open/close z-index flip).
+ * Flipping thead 40→1→40 on Esc left a ghost bar over HP/Name (compositor + sticky).
+ * Keep toolbar-left above list-view always; thead z-index stays 40 inside list-view only.
+ */
+.list-toolbar>.list-toolbar-left{
+  position:relative;
+  z-index:2
+}
+.list-toolbar>#unitListViewArea,
+.list-toolbar>#charListViewArea,
+.list-toolbar>.list-view-area{
+  position:relative;
+  z-index:1
+}
+/* Open panel: raise the wrap so the dropdown beats other toolbar chips */
 .rarity-filter-wrap:has(.rarity-filter-panel:not([hidden])),
 .role-filter-wrap:has(.role-filter-panel:not([hidden])),
 .source-filter-wrap:has(.source-filter-panel:not([hidden])),
@@ -1579,43 +1584,6 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .mod-effect-filter-wrap:has(.mod-effect-filter-panel:not([hidden])){
   position:relative;
   z-index:80
-}
-.list-toolbar:has(.rarity-filter-panel:not([hidden]))>#unitListViewArea,
-.list-toolbar:has(.rarity-filter-panel:not([hidden]))>#charListViewArea,
-.list-toolbar:has(.role-filter-panel:not([hidden]))>#unitListViewArea,
-.list-toolbar:has(.role-filter-panel:not([hidden]))>#charListViewArea,
-.list-toolbar:has(.source-filter-panel:not([hidden]))>#unitListViewArea,
-.list-toolbar:has(.source-filter-panel:not([hidden]))>#charListViewArea,
-.list-toolbar:has(.skill-filter-panel:not([hidden]))>#unitListViewArea,
-.list-toolbar:has(.skill-filter-panel:not([hidden]))>#charListViewArea,
-.list-toolbar:has(.lineage-filter-panel:not([hidden]))>#unitListViewArea,
-.list-toolbar:has(.lineage-filter-panel:not([hidden]))>#charListViewArea,
-.list-toolbar:has(.series-filter-panel:not([hidden]))>#unitListViewArea,
-.list-toolbar:has(.series-filter-panel:not([hidden]))>#charListViewArea,
-.list-toolbar:has(.filter-dropdown-panel:not([hidden]))>#unitListViewArea,
-.list-toolbar:has(.filter-dropdown-panel:not([hidden]))>#charListViewArea,
-.list-toolbar:has(.mod-effect-filter-panel:not([hidden]))>#unitListViewArea,
-.list-toolbar:has(.mod-effect-filter-panel:not([hidden]))>#charListViewArea,
-.list-toolbar:has(.rarity-filter-panel:not([hidden])) .list-view-area,
-.list-toolbar:has(.role-filter-panel:not([hidden])) .list-view-area,
-.list-toolbar:has(.source-filter-panel:not([hidden])) .list-view-area,
-.list-toolbar:has(.skill-filter-panel:not([hidden])) .list-view-area,
-.list-toolbar:has(.lineage-filter-panel:not([hidden])) .list-view-area,
-.list-toolbar:has(.series-filter-panel:not([hidden])) .list-view-area,
-.list-toolbar:has(.filter-dropdown-panel:not([hidden])) .list-view-area,
-.list-toolbar:has(.mod-effect-filter-panel:not([hidden])) .list-view-area{
-  position:relative;
-  z-index:1
-}
-body:has(.rarity-filter-panel:not([hidden])) .data-table thead th,
-body:has(.role-filter-panel:not([hidden])) .data-table thead th,
-body:has(.source-filter-panel:not([hidden])) .data-table thead th,
-body:has(.skill-filter-panel:not([hidden])) .data-table thead th,
-body:has(.lineage-filter-panel:not([hidden])) .data-table thead th,
-body:has(.series-filter-panel:not([hidden])) .data-table thead th,
-body:has(.filter-dropdown-panel:not([hidden])) .data-table thead th,
-body:has(.mod-effect-filter-panel:not([hidden])) .data-table thead th{
-  z-index:1
 }
 .lineage-filter-panel.filter-dropdown-panel,
 .series-filter-panel.filter-dropdown-panel{left:0;width:min(96vw,620px);max-width:min(96vw,620px);max-height:none;overflow:visible;padding:0;box-sizing:border-box}.lineage-filter-panel .filter-panel-scroll,.series-filter-panel .filter-panel-scroll{max-height:none;overflow:visible;padding:6px 8px 8px}.filter-dd-search{width:100%;box-sizing:border-box;margin:0 0 6px;padding:8px 10px;border-radius:var(--radius-sm);border:1px solid var(--border-color);background:var(--bg-input);color:var(--text-primary);font-size:15px}.filter-panel-scroll-inner{max-height:min(70vh,480px);overflow-y:auto;padding:2px 0 2px}.filter-panel-grid.browse-lineage-grid,.filter-panel-grid.browse-series-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px 6px;align-items:stretch}.list-filter-tag-item{display:block;position:relative;margin:0;cursor:pointer;min-width:0;max-width:100%;overflow:hidden;box-sizing:border-box}.list-filter-tag-item .list-filter-sr{position:absolute;opacity:0;width:0;height:0;pointer-events:none}.list-filter-tag-composite.tag-composite{display:flex;width:100%;max-width:100%;min-width:0;min-height:32px;height:auto;align-items:center;cursor:pointer;box-sizing:border-box;overflow:hidden}.list-filter-tag-item:hover .list-filter-tag-composite.tag-composite{border-color:var(--accent-cyan)}.browse-lineage-grid .list-filter-tag-item:has(input:checked) .list-filter-tag-composite.tag-composite{border-color:var(--accent-cyan);background:linear-gradient(135deg,rgba(0,212,255,0.22),rgba(0,212,255,0.06));box-shadow:0 0 0 1px rgba(0,212,255,0.45)}.browse-lineage-grid .list-filter-tag-item:has(input:checked) .list-filter-tag-composite .tag-part-value{color:var(--accent-cyan);font-weight:800}.browse-lineage-grid .list-filter-tag-item:has(input:checked) .list-filter-tag-composite .tag-part-icon{background:linear-gradient(135deg,rgba(0,180,230,0.45),rgba(0,90,130,0.55));border-right-color:rgba(0,212,255,0.5)}.filter-panel--combine-and-or .browse-lineage-grid .list-filter-tag-item.browse-combine-priority-a:has(input:checked) .list-filter-tag-composite.tag-composite{border-color:rgba(168,120,255,.78);background:linear-gradient(135deg,rgba(168,120,255,.32),rgba(168,120,255,.1));box-shadow:0 0 0 1px rgba(168,120,255,.55),0 0 12px rgba(168,120,255,.2)}.filter-panel--combine-and-or .browse-lineage-grid .list-filter-tag-item.browse-combine-priority-a:has(input:checked) .list-filter-tag-composite .tag-part-value{color:rgba(232,220,255,.98);font-weight:800}.filter-panel--combine-and-or .browse-lineage-grid .list-filter-tag-item.browse-combine-priority-a:has(input:checked) .list-filter-tag-composite .tag-part-icon{background:linear-gradient(135deg,rgba(168,120,255,.52),rgba(100,60,180,.58));border-right-color:rgba(168,120,255,.58)}.filter-panel--combine-and-or .browse-lineage-grid .list-filter-tag-item.browse-combine-priority-a:has(input:checked) .list-filter-tag-composite .tag-icon-fg{filter:drop-shadow(0 0 4px rgba(168,120,255,.45))}.browse-series-grid .list-filter-tag-item:has(input:checked) .list-filter-tag-composite.tag-composite{border-color:var(--accent-cyan);background:linear-gradient(135deg,rgba(0,212,255,0.22),rgba(0,212,255,0.06));box-shadow:0 0 0 1px rgba(0,212,255,0.45)}.browse-series-grid .list-filter-tag-item:has(input:checked) .list-filter-tag-composite .tag-part-value{color:var(--accent-cyan);font-weight:800}.browse-series-grid .list-filter-tag-item:has(input:checked) .list-filter-tag-composite .tag-part-icon{background:linear-gradient(135deg,rgba(0,180,230,0.45),rgba(0,90,130,0.55));border-right-color:rgba(0,212,255,0.5)}.list-filter-tag-item .list-filter-tag-composite .tag-part-icon{flex:0 0 auto;align-self:center;display:flex;align-items:center;justify-content:center;min-width:28px;max-width:32px;padding:0 4px;overflow:hidden}.list-filter-tag-item .list-filter-tag-composite .tag-part-value{flex:1 1 0;min-width:0;max-width:100%;font-family:var(--font-tag-ui);font-size:13px;font-weight:600;letter-spacing:0;padding:5px 8px 5px 6px;height:auto;min-height:0;white-space:normal;word-break:break-word;overflow-wrap:anywhere;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis}.list-filter-tag-item .list-filter-tag-composite .tag-icon-fg,.list-filter-tag-item .list-filter-tag-composite .tag-part-icon img{width:20px;height:20px;object-fit:contain;flex-shrink:0}.list-filter-btn-mini{display:inline-flex;align-items:center;gap:4px;max-width:100%}.tag-part-icon-series-all{display:flex;align-items:center;justify-content:center;width:32px;min-height:32px;background:linear-gradient(135deg,#3b5998,#2a437c);border-right:1px solid rgba(74,144,217,0.3)}.series-all-glyph{font-size:13px;font-weight:700;color:#c8d6e8;opacity:.9}.list-filter-series-row .tag-part-icon img.tag-icon-fg{width:22px;height:22px;object-fit:contain}.series-icon-fallback{display:inline-block;width:15px;height:15px;opacity:.4}.filter-panel-scroll{max-height:min(70vh,520px);overflow-y:auto;padding:4px 0}.series-filter-row{display:flex;align-items:center;gap:8px;padding:8px 12px;min-height:36px;box-sizing:border-box;cursor:pointer;font-family:var(--font-body);font-size:13px;font-weight:600;line-height:1.25;color:var(--text-primary);user-select:none}.series-filter-row:hover{background:rgba(0,212,255,.08)}.series-filter-row input{accent-color:var(--accent-cyan);width:15px;height:15px;flex-shrink:0}.series-filter-opt-icon{width:28px;height:28px;object-fit:contain;flex-shrink:0;border-radius:4px;background:rgba(0,0,0,.15)}.filter-long-label{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;font-weight:600}.lineage-filter-panel .rarity-filter-row{padding:6px 10px}.rarity-filter-row,.role-filter-row{display:flex;align-items:center;gap:8px;padding:8px 12px;min-height:36px;box-sizing:border-box;cursor:pointer;font-family:var(--font-body);font-size:13px;font-weight:600;line-height:1.25;color:var(--text-primary);user-select:none}.rarity-filter-row:hover,.role-filter-row:hover{background:rgba(0,212,255,.12)}.rarity-filter-row:has(input:checked),.role-filter-row:has(input:checked){background:rgba(0,212,255,.14);color:var(--accent-cyan)}.rarity-filter-row:focus-within,.role-filter-row:focus-within{background:rgba(0,212,255,.1);outline:none;box-shadow:inset 0 0 0 1px rgba(0,212,255,.35)}.rarity-filter-row input,.role-filter-row input{accent-color:var(--accent-cyan);width:15px;height:15px;flex-shrink:0}.role-filter-row .role-filter-type-label{font-size:13px;font-weight:600;color:var(--text-primary)}.role-filter-row-label{display:inline-flex;align-items:center;gap:8px;flex:0 1 auto;min-width:0;flex-wrap:nowrap}.role-filter-row-label .role-filter-type-label{flex:0 1 auto}.role-filter-row .role-filter-all-label{color:var(--text-secondary);font-weight:600;font-size:13px}.rarity-filter-row .rarity-filter-all-label{font-size:13px;font-weight:600;color:var(--text-primary)}.rarity-filter-panel .rarity-row-one-icon,.role-filter-panel .rarity-row-one-icon{min-width:20px;min-height:18px}
