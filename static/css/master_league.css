@@ -433,26 +433,33 @@
   );
 }
 /*
- * Gold rim inside clipped body (same polygon as clip-path).
- * Was a sibling outside body → 2px stroke hung past the wash at taper tips →
- * dark page showed through (missing red/blue tint on live).
+ * Gold rim OUTSIDE the clipped body — exact taper polygon (never inside clip-path;
+ * that ate the diagonal gold). Underlay = tip tint; overlay = full gold stroke on top.
  */
 .ml-deploy-rim {
   position: absolute;
   left: 0;
   top: 0;
-  width: 100%;
-  height: 100%;
   pointer-events: none;
-  z-index: 6;
   overflow: visible;
+}
+.ml-deploy-rim--under {
+  z-index: 0;
+}
+.ml-deploy-rim--over {
+  z-index: 6;
+}
+.ml-deploy-rim-fill {
+  stroke: none;
+  pointer-events: none;
 }
 .ml-deploy-rim-path {
   fill: none;
   stroke: #f0d060;
-  stroke-width: 2;
+  stroke-width: 2.25;
   stroke-linejoin: miter;
-  stroke-miterlimit: 8;
+  stroke-miterlimit: 10;
+  stroke-linecap: square;
   vector-effect: non-scaling-stroke;
 }
 .ml-deploy-title {

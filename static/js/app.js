@@ -3388,9 +3388,22 @@ cellsHtml+='<div class="ml-deploy-cell" data-x="'+x+'" data-y="'+y+'" style="gri
 const enemyLab='<div class="ml-deploy-force-lab ml-deploy-force-lab--enemy"><span class="ml-deploy-force-name">'+esc(t('mls_enemy_forces'))+'</span><span class="ml-deploy-textline" style="--ml-textline:url(\''+textlineUrl+'\')" aria-hidden="true"></span></div>';
 const allyLab='<div class="ml-deploy-force-lab ml-deploy-force-lab--ally"><span class="ml-deploy-force-name">'+esc(t('mls_your_forces'))+'</span><span class="ml-deploy-textline" style="--ml-textline:url(\''+textlineUrl+'\')" aria-hidden="true"></span></div>';
 const fpJson=escAttr(JSON.stringify(fpById));
+/* Underlay (tip tint) behind body; gold stroke SVG on top — never inside clip-path
+ * (clip ate the diagonal frame). Paths match body clip-path 17×13 @ 993. */
+const washId='mlDeployWash_'+String((S._mlDeployWashSeq=(S._mlDeployWashSeq|0)+1));
 return '<section class="ml-deploy" aria-label="'+escAttr(t('ml_battle_deployment'))+'" data-ml-fp-map="'+fpJson+'">'
++'<svg class="ml-deploy-rim ml-deploy-rim--under" aria-hidden="true">'
++'<defs><linearGradient id="'+washId+'" x1="0" y1="0" x2="1" y2="0">'
++'<stop offset="0%" stop-color="rgb(196,33,38)" stop-opacity="0.42"/>'
++'<stop offset="22%" stop-color="rgb(196,33,38)" stop-opacity="0.14"/>'
++'<stop offset="48%" stop-color="rgb(196,33,38)" stop-opacity="0"/>'
++'<stop offset="52%" stop-color="rgb(13,73,193)" stop-opacity="0"/>'
++'<stop offset="78%" stop-color="rgb(13,73,193)" stop-opacity="0.14"/>'
++'<stop offset="100%" stop-color="rgb(13,73,193)" stop-opacity="0.42"/>'
++'</linearGradient></defs>'
++'<path class="ml-deploy-rim-fill" fill="url(#'+washId+')"/>'
++'</svg>'
 +'<div class="ml-deploy-body">'
-+'<svg class="ml-deploy-rim" aria-hidden="true"><path class="ml-deploy-rim-path"/></svg>'
 +'<h3 class="ml-deploy-title">'+esc(t('ml_battle_deployment'))+'</h3>'
 +'<div class="ml-deploy-stage">'
 +'<div class="ml-deploy-side ml-deploy-side--enemy" style="--ml-wm:url(\''+wmEnemy+'\')">'+enemyLab+'</div>'
@@ -3398,37 +3411,33 @@ return '<section class="ml-deploy" aria-label="'+escAttr(t('ml_battle_deployment
 +'<div class="ml-deploy-side ml-deploy-side--ally" style="--ml-wm:url(\''+wmAlly+'\')">'+allyLab+'</div>'
 +'</div>'
 +'</div>'
++'<svg class="ml-deploy-rim ml-deploy-rim--over" aria-hidden="true"><path class="ml-deploy-rim-path"/></svg>'
 +'</section>';
 }
-/**
- * Gold rim path = same taper polygon as .ml-deploy-body clip-path (17×13 @ 993).
- * Rim lives INSIDE the clipped body so stroke can’t hang past the red|blue wash
- * (live bug: dark missing tint at bottom tapered corners).
- */
+/** Gold rim = exact Boost taper polygon (17×13 @ 993), matching body clip-path. */
 function mlSyncDeployRim(scope){
 const root=scope&&scope.querySelectorAll?scope:document;
 root.querySelectorAll('.ml-deploy').forEach(function(sec){
 const body=sec.querySelector('.ml-deploy-body');
-const svg=sec.querySelector('svg.ml-deploy-rim');
-const path=sec.querySelector('.ml-deploy-rim-path');
-if(!body||!svg||!path)return;
+if(!body)return;
 const w=body.offsetWidth|0,h=body.offsetHeight|0;
 if(w<2||h<2)return;
-svg.setAttribute('viewBox','0 0 '+w+' '+h);
-svg.setAttribute('width',String(w));
-svg.setAttribute('height',String(h));
-const th=w*17/993,ti=w*13/993;
-const yK=h-th;
-/* Exact clip silhouette — inset 1px so 2px stroke stays inside wash (no exterior dark tips). */
-const o=1;
-path.setAttribute('d',
-'M'+o+' '+o+
-'L'+(w-o)+' '+o+
-'L'+(w-o)+' '+(yK)+
-'L'+(w-ti)+' '+(h-o)+
-'L'+ti+' '+(h-o)+
-'L'+o+' '+yK+
-'Z');
+const th=w*17/993,ti=w*13/993,yK=h-th;
+const dExact='M0 0L'+w+' 0L'+w+' '+yK+'L'+(w-ti)+' '+h+'L'+ti+' '+h+'L0 '+yK+'Z';
+const o=2;
+const dFill='M'+(-o)+' '+(-o)+'L'+(w+o)+' '+(-o)+'L'+(w+o)+' '+yK+'L'+(w-ti)+' '+(h+o)+'L'+ti+' '+(h+o)+'L'+(-o)+' '+yK+'Z';
+const bleed=4;
+sec.querySelectorAll('svg.ml-deploy-rim').forEach(function(svg){
+svg.setAttribute('viewBox',(-bleed)+' '+(-bleed)+' '+(w+bleed*2)+' '+(h+bleed*2));
+svg.setAttribute('width',String(w+bleed*2));
+svg.setAttribute('height',String(h+bleed*2));
+svg.style.left=(-bleed)+'px';
+svg.style.top=(-bleed)+'px';
+});
+const fill=sec.querySelector('.ml-deploy-rim-fill');
+const path=sec.querySelector('.ml-deploy-rim-path');
+if(fill)fill.setAttribute('d',dFill);
+if(path)path.setAttribute('d',dExact);
 });
 }
 function mlBindDeployRimResize(){
