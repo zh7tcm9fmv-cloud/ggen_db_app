@@ -3390,6 +3390,7 @@ const allyLab='<div class="ml-deploy-force-lab ml-deploy-force-lab--ally"><span 
 const fpJson=escAttr(JSON.stringify(fpById));
 return '<section class="ml-deploy" aria-label="'+escAttr(t('ml_battle_deployment'))+'" data-ml-fp-map="'+fpJson+'">'
 +'<div class="ml-deploy-body">'
++'<svg class="ml-deploy-rim" aria-hidden="true"><path class="ml-deploy-rim-path"/></svg>'
 +'<h3 class="ml-deploy-title">'+esc(t('ml_battle_deployment'))+'</h3>'
 +'<div class="ml-deploy-stage">'
 +'<div class="ml-deploy-side ml-deploy-side--enemy" style="--ml-wm:url(\''+wmEnemy+'\')">'+enemyLab+'</div>'
@@ -3397,10 +3398,13 @@ return '<section class="ml-deploy" aria-label="'+escAttr(t('ml_battle_deployment
 +'<div class="ml-deploy-side ml-deploy-side--ally" style="--ml-wm:url(\''+wmAlly+'\')">'+allyLab+'</div>'
 +'</div>'
 +'</div>'
-+'<svg class="ml-deploy-rim" aria-hidden="true"><path class="ml-deploy-rim-path"/></svg>'
 +'</section>';
 }
-/** Sync deploy gold rim path to body box — uniform 2px stroke (Boost rim), taper 17×13 @ 993. */
+/**
+ * Gold rim path = same taper polygon as .ml-deploy-body clip-path (17×13 @ 993).
+ * Rim lives INSIDE the clipped body so stroke can’t hang past the red|blue wash
+ * (live bug: dark missing tint at bottom tapered corners).
+ */
 function mlSyncDeployRim(scope){
 const root=scope&&scope.querySelectorAll?scope:document;
 root.querySelectorAll('.ml-deploy').forEach(function(sec){
@@ -3413,12 +3417,18 @@ if(w<2||h<2)return;
 svg.setAttribute('viewBox','0 0 '+w+' '+h);
 svg.setAttribute('width',String(w));
 svg.setAttribute('height',String(h));
-const th=w*17/993,ti=w*13/993,r=1;
-const L=Math.sqrt(13*13+17*17),nx=17/L,ny=13/L;
-const kinkY=h-th+r*(1-nx)*th/ti-r*ny;
-const tipL=ti-r*(1-ny)*ti/th+r*nx;
-const tipR=w-ti+r*(1-ny)*ti/th-r*nx;
-path.setAttribute('d','M'+r+' '+r+'L'+(w-r)+' '+r+'L'+(w-r)+' '+kinkY+'L'+tipR+' '+(h-r)+'L'+tipL+' '+(h-r)+'L'+r+' '+kinkY+'Z');
+const th=w*17/993,ti=w*13/993;
+const yK=h-th;
+/* Exact clip silhouette — inset 1px so 2px stroke stays inside wash (no exterior dark tips). */
+const o=1;
+path.setAttribute('d',
+'M'+o+' '+o+
+'L'+(w-o)+' '+o+
+'L'+(w-o)+' '+(yK)+
+'L'+(w-ti)+' '+(h-o)+
+'L'+ti+' '+(h-o)+
+'L'+o+' '+yK+
+'Z');
 });
 }
 function mlBindDeployRimResize(){
