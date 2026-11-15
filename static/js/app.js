@@ -3286,17 +3286,18 @@ wmAlly:'/static/images/Master League/ML_GFight_PartsText_01.webp',
 wmEnemy:'/static/images/Master League/ML_GFight_PartsText_02.webp'
 };
 function mlDeployCellKey(x,y){return String(x)+','+String(y)}
-/** 2×2 preview footprint — same expand-behind-facing rule as MLS (enemy right→−x, ally left→+x, −y). */
-function mlDeployFootprintCells(force,x,y,direction){
+/**
+ * Deploy preview 2×2 from MD home (X,Y):
+ * — behind facing (enemy Right→−x, ally Left→+x), same as /mls
+ * — LINE: south (−y), digit on bottom-front
+ * — standard: all slots north (+y); digit on MD home
+ */
+function mlDeployFootprintCells(force,x,y,direction,expandY){
 const dir=direction!=null?(direction|0):(force==='ally'?3:1);
 const dx=dir===1?-1:(dir===3?1:(force==='ally'?1:-1));
+const dy=(expandY|0)===1?1:-1;
 const xi=x|0,yi=y|0;
-return[{x:xi,y:yi},{x:xi+dx,y:yi},{x:xi,y:yi-1},{x:xi+dx,y:yi-1}];
-}
-function mlDeployFootprintOrigin(cells){
-let ox=cells[0].x,oy=cells[0].y;
-cells.forEach(function(c){if(c.x<ox)ox=c.x;if(c.y>oy)oy=c.y});
-return{x:ox,y:oy};
+return[{x:xi,y:yi},{x:xi+dx,y:yi},{x:xi,y:yi+dy},{x:xi+dx,y:yi+dy}];
 }
 function mlStageHeadingLabel(){
 const raw=String(t('ml_stage_label')||'Stage: {terrain}');
@@ -3306,24 +3307,27 @@ return cut.replace(/[:：]\s*$/,'').trim()||'Stage';
 function mlRenderDeploymentBoard(season){
 const dep=season&&season.deployment;const sides=(dep&&dep.sides)||[];
 if(!sides.length)return'';
+const isLine=String((dep&&dep.formation)||'').toLowerCase()==='line';
 const units=[];
+const fpById=Object.create(null);
 sides.forEach(function(side){
 const ps=side.player_side|0;const force=ps===1?'ally':(ps===2?'enemy':null);if(!force)return;
 const direction=side.direction;
 (side.cells||[]).forEach(function(c){
-const px=c.x|0,py=c.y|0;
-const fp=mlDeployFootprintCells(force,px,py,direction);
-const origin=mlDeployFootprintOrigin(fp);
-/* Number on bottom row of 2×2, center-facing column (enemy→right, ally→left). */
-let nx=fp[0].x,ny=fp[0].y;
-fp.forEach(function(fc){if(fc.y<ny)ny=fc.y});
-if(force==='ally'){nx=fp[0].x;fp.forEach(function(fc){if(fc.x<nx)nx=fc.x})}
-else{nx=fp[0].x;fp.forEach(function(fc){if(fc.x>nx)nx=fc.x})}
-units.push({force:force,n:c.n|0,direction:direction|0,fp:fp,ox:origin.x,oy:origin.y,px:px,py:py,nx:nx,ny:ny});
+const px=c.x|0,py=c.y|0,n=c.n|0;
+/* Standard: every slot grows up (+y). LINE: always down (−y). */
+const expandY=isLine?-1:1;
+const fp=mlDeployFootprintCells(force,px,py,direction,expandY);
+const fpId=force+'-'+String(n);
+const fpSet=Object.create(null);
+fp.forEach(function(cell){fpSet[mlDeployCellKey(cell.x,cell.y)]=1});
+fpById[fpId]=fp;
+const nx=px,ny=isLine?(py-1):py;
+units.push({force:force,n:n,direction:direction|0,posType:c.type|0,fp:fp,fpSet:fpSet,fpId:fpId,px:px,py:py,nx:nx,ny:ny});
 });
 });
 if(!units.length)return'';
-let minX=units[0].ox,maxX=units[0].ox,minY=units[0].oy,maxY=units[0].oy;
+let minX=units[0].px,maxX=units[0].px,minY=units[0].py,maxY=units[0].py;
 units.forEach(function(u){
 u.fp.forEach(function(c){
 if(c.x<minX)minX=c.x;if(c.x>maxX)maxX=c.x;
@@ -3331,16 +3335,24 @@ if(c.y<minY)minY=c.y;if(c.y>maxY)maxY=c.y;
 });
 });
 const padX=2;
+const padY=1; /* one empty row top + bottom (LINE + standard) */
 minX-=padX;maxX+=padX;
+minY-=padY;maxY+=padY;
 const cols=(maxX-minX+1)|0;
 const yRows=[];
 for(let y=maxY;y>=minY;y--)yRows.push(y);
 const rows=yRows.length;
-const yIndex=Object.create(null);
-yRows.forEach(function(y,i){yIndex[y]=i});
+/* Number cells reserved first (keeps #4 on shared edges); then remaining fp tiles. */
 const occupied=Object.create(null);
-units.forEach(function(u){
-u.fp.forEach(function(c){occupied[mlDeployCellKey(c.x,c.y)]=u});
+const sorted=units.slice().sort(function(a,b){return(a.n|0)-(b.n|0)});
+sorted.forEach(function(u){
+occupied[mlDeployCellKey(u.nx|0,u.ny|0)]=u;
+});
+sorted.forEach(function(u){
+u.fp.forEach(function(c){
+const k=mlDeployCellKey(c.x,c.y);
+if(!occupied[k])occupied[k]=u;
+});
 });
 const textlineUrl=escAttr(imgUrlPreferCdn(ML_DEPLOY_ASSETS.textline));
 const blue1=escAttr(imgUrlPreferCdn(ML_DEPLOY_ASSETS.blue1));
@@ -3354,25 +3366,29 @@ for(let r=0;r<rows;r++){
 const y=yRows[r]|0;
 for(let c=0;c<cols;c++){
 const x=minX+c;
-const k=mlDeployCellKey(x,y);
-const u=occupied[k];
+const u=occupied[mlDeployCellKey(x,y)];
 if(u){
 const isAlly=u.force==='ally';
 const isNum=(x===(u.nx|0)&&y===(u.ny|0));
-/* Numbered cell = *_01; other 3 footprint cells = *_02 (2×2 preview). */
 const plate=isNum?(isAlly?blue1:red1):(isAlly?blue2:red2);
 const numHtml=isNum?'<span class="ml-deploy-num">'+esc(String(u.n))+'</span>':'';
-const aria=isNum?' aria-label="'+escAttr(String(u.n))+'"':' aria-hidden="true"';
-cellsHtml+='<div class="ml-deploy-cell ml-deploy-cell--unit ml-deploy-cell--fp ml-deploy-cell--'+u.force+(isNum?' ml-deploy-cell--num':'')+'" style="grid-column:'+(c+1)+';grid-row:'+(r+1)+';--ml-unit-base:url(\''+plate+'\')"'+aria+'>'+numHtml+'</div>';
+const fp=u.fpSet||Object.create(null);
+const edgeCls=
+(!fp[mlDeployCellKey(x,y+1)]?' ml-deploy-fp-n':'')+
+(!fp[mlDeployCellKey(x,y-1)]?' ml-deploy-fp-s':'')+
+(!fp[mlDeployCellKey(x-1,y)]?' ml-deploy-fp-w':'')+
+(!fp[mlDeployCellKey(x+1,y)]?' ml-deploy-fp-e':'');
+const aria=isNum?' aria-label="'+escAttr(String(u.n)+' · 2×2')+'" title="'+escAttr(String(u.n)+' · 2×2')+'"':' aria-hidden="true"';
+cellsHtml+='<div class="ml-deploy-cell ml-deploy-cell--unit ml-deploy-cell--fp ml-deploy-cell--'+u.force+(isNum?' ml-deploy-cell--num':'')+edgeCls+'" data-ml-fp="'+escAttr(u.fpId)+'" data-x="'+x+'" data-y="'+y+'" style="grid-column:'+(c+1)+';grid-row:'+(r+1)+';--ml-unit-base:url(\''+plate+'\')"'+aria+'>'+numHtml+'</div>';
 }else{
-cellsHtml+='<div class="ml-deploy-cell" style="grid-column:'+(c+1)+';grid-row:'+(r+1)+'" aria-hidden="true"></div>';
+cellsHtml+='<div class="ml-deploy-cell" data-x="'+x+'" data-y="'+y+'" style="grid-column:'+(c+1)+';grid-row:'+(r+1)+'" aria-hidden="true"></div>';
 }
 }
 }
 const enemyLab='<div class="ml-deploy-force-lab ml-deploy-force-lab--enemy"><span class="ml-deploy-force-name">'+esc(t('mls_enemy_forces'))+'</span><span class="ml-deploy-textline" style="--ml-textline:url(\''+textlineUrl+'\')" aria-hidden="true"></span></div>';
 const allyLab='<div class="ml-deploy-force-lab ml-deploy-force-lab--ally"><span class="ml-deploy-force-name">'+esc(t('mls_your_forces'))+'</span><span class="ml-deploy-textline" style="--ml-textline:url(\''+textlineUrl+'\')" aria-hidden="true"></span></div>';
-/* Silhouette CSS clip; gold rim = SVG 2px stroke (even on taper). */
-return '<section class="ml-deploy" aria-label="'+escAttr(t('ml_battle_deployment'))+'">'
+const fpJson=escAttr(JSON.stringify(fpById));
+return '<section class="ml-deploy" aria-label="'+escAttr(t('ml_battle_deployment'))+'" data-ml-fp-map="'+fpJson+'">'
 +'<div class="ml-deploy-body">'
 +'<h3 class="ml-deploy-title">'+esc(t('ml_battle_deployment'))+'</h3>'
 +'<div class="ml-deploy-stage">'
@@ -3413,6 +3429,65 @@ window.addEventListener('resize',function(){
 if(t)clearTimeout(t);
 t=setTimeout(function(){mlSyncDeployRim(document.getElementById('masterLeagueRoot')||document)},80);
 },{passive:true});
+}
+/** Hover/tap lights the whole 2×2 rim (behind-facing footprint) for one spawn. */
+function mlBindDeployFpHighlight(scope){
+const root=scope&&scope.querySelector?scope:document.getElementById('masterLeagueRoot');
+if(!root)return;
+root._mlFpPinned=null;
+if(root._mlFpHlBound)return;
+root._mlFpHlBound=1;
+function clearMarks(cls){
+root.querySelectorAll('.ml-deploy-cell.'+cls).forEach(function(el){
+el.classList.remove(cls,'ml-deploy-fp-n','ml-deploy-fp-s','ml-deploy-fp-e','ml-deploy-fp-w');
+if(!el.classList.contains('ml-deploy-cell--unit')){
+el.classList.remove('ml-deploy-cell--enemy','ml-deploy-cell--ally');
+}
+});
+}
+function paintFp(id,cls){
+if(!id)return;
+const sec=root.querySelector('.ml-deploy[data-ml-fp-map]');
+if(!sec)return;
+let map={};
+try{map=JSON.parse(sec.getAttribute('data-ml-fp-map')||'{}')||{}}catch(_){map={}}
+const cells=map[id]||[];
+const set=Object.create(null);
+cells.forEach(function(c){set[mlDeployCellKey(c.x,c.y)]=1});
+const force=id.indexOf('enemy')===0?'enemy':'ally';
+cells.forEach(function(c){
+const el=sec.querySelector('.ml-deploy-cell[data-x="'+c.x+'"][data-y="'+c.y+'"]');
+if(!el)return;
+el.classList.add(cls,'ml-deploy-cell--'+force);
+if(!set[mlDeployCellKey(c.x,c.y+1)])el.classList.add('ml-deploy-fp-n');
+if(!set[mlDeployCellKey(c.x,c.y-1)])el.classList.add('ml-deploy-fp-s');
+if(!set[mlDeployCellKey(c.x-1,c.y)])el.classList.add('ml-deploy-fp-w');
+if(!set[mlDeployCellKey(c.x+1,c.y)])el.classList.add('ml-deploy-fp-e');
+});
+}
+function setLit(id){clearMarks('is-fp-lit');paintFp(id,'is-fp-lit')}
+function setPin(id){clearMarks('is-fp-on');root._mlFpPinned=id||null;if(id)paintFp(id,'is-fp-on')}
+root.addEventListener('pointerover',function(e){
+const c=e.target&&e.target.closest&&e.target.closest('.ml-deploy-cell--fp');
+if(!c||!root.contains(c))return;
+const id=c.getAttribute('data-ml-fp');
+if(id)setLit(id);
+});
+root.addEventListener('pointerout',function(e){
+const c=e.target&&e.target.closest&&e.target.closest('.ml-deploy-cell--fp');
+if(!c||!root.contains(c))return;
+const id=c.getAttribute('data-ml-fp');
+const to=e.relatedTarget&&e.relatedTarget.closest&&e.relatedTarget.closest('.ml-deploy-cell--fp');
+if(to&&to.getAttribute('data-ml-fp')===id)return;
+clearMarks('is-fp-lit');
+});
+root.addEventListener('click',function(e){
+const c=e.target&&e.target.closest&&e.target.closest('.ml-deploy-cell--fp');
+if(!c||!root.contains(c))return;
+const id=c.getAttribute('data-ml-fp');
+if(!id)return;
+if(root._mlFpPinned===id)setPin(null);else setPin(id);
+});
 }
 function mlRenderBoostCard(season){
 const ML_BOOST_BANNER_BG='/static/images/UI/UI_Event_ML_BG_Result_FrontSpark.webp';
@@ -3475,7 +3550,7 @@ async function mlPickSeason(eventId){closeMlSeasonPanels();if(!eventId||!S.mlCac
 function mlBuildSeasonPanelHtml(rows,selectedId){if(!rows||!rows.length)return'<div class="ml-season-empty">'+esc(t('none'))+'</div>';return rows.map(s=>{const id=String(s.event_id);const sel=id===String(selectedId);return'<button type="button" role="menuitem" class="ml-season-opt'+(sel?' is-selected':'')+'" onclick="mlPickSeason(\''+escJs(id)+'\')">'+esc(s.title||('S'+s.season_number))+'</button>'}).join('')}
 function mlPopulateSeasonSelect(data,selectedId){const seasons=data.seasons||[];const past=mlSeasonsPastActive(seasons);const upcoming=mlSeasonsUpcoming(seasons);const pick=String(selectedId||mlDefaultSeasonEventId(data)||data.active_event_id||'');S.mlSelectedEventId=pick;const inPast=!!(pick&&past.some(s=>String(s.event_id)===pick));const inUp=!!(pick&&upcoming.some(s=>String(s.event_id)===pick));const pastActive=inPast||(!inPast&&!inUp);const pastSeason=past.find(s=>String(s.event_id)===pick);const upSeason=upcoming.find(s=>String(s.event_id)===pick);const pastCat=document.getElementById('mlSeasonPastCatLbl');const upCat=document.getElementById('mlSeasonUpcomingCatLbl');if(pastCat)pastCat.textContent=t('ml_status_ended')+' / '+t('ml_status_active');if(upCat)upCat.textContent=t('ml_status_upcoming');const pastBtn=document.getElementById('mlSeasonPastBtn');const upBtn=document.getElementById('mlSeasonUpcomingBtn');const pastLabel=document.getElementById('mlSeasonPastLabel');const upLabel=document.getElementById('mlSeasonUpcomingLabel');const pastBody=document.getElementById('mlSeasonPastBody');const upBody=document.getElementById('mlSeasonUpcomingBody');const pastWrap=document.getElementById('mlSeasonPastWrap');const upWrap=document.getElementById('mlSeasonUpcomingWrap');if(pastLabel)pastLabel.textContent=pastSeason?(pastSeason.title||('S'+pastSeason.season_number)):(past.length?(past[past.length-1].title||('S'+past[past.length-1].season_number)):'—');if(upLabel)upLabel.textContent=upSeason?(upSeason.title||('S'+upSeason.season_number)):(upcoming.length?(upcoming[0].title||('S'+upcoming[0].season_number)):'—');if(pastBody)pastBody.innerHTML=mlBuildSeasonPanelHtml(past,pick);if(upBody)upBody.innerHTML=mlBuildSeasonPanelHtml(upcoming,pick);if(pastBtn){pastBtn.disabled=!past.length;pastBtn.classList.toggle('active',pastActive&&!!pastSeason);pastBtn.setAttribute('aria-label',t('ml_season_select_aria')+' — '+t('ml_status_ended')+' / '+t('ml_status_active'))}if(upBtn){upBtn.disabled=!upcoming.length;upBtn.classList.toggle('active',inUp&&!!upSeason);upBtn.setAttribute('aria-label',t('ml_season_select_aria')+' — '+t('ml_status_upcoming'))}if(pastWrap){pastWrap.classList.toggle('is-active',pastActive);pastWrap.classList.toggle('is-inactive',!pastActive)}if(upWrap){upWrap.classList.toggle('is-active',inUp);upWrap.classList.toggle('is-inactive',!inUp)}}
 function mlUpdateStatusPill(season){const pill=document.getElementById('mlSeasonStatus');if(!pill||!season){if(pill)pill.hidden=true;return}pill.hidden=false;pill.textContent=mlStatusLabel(season.status);pill.className='ml-status-pill ml-status-pill--'+(season.status||'ended')}
-function renderMasterLeague(data,eventId){const root=document.getElementById('masterLeagueRoot');if(!root)return;const seasons=data.seasons||[];if(!seasons.length){mlUpdateHero(null);root.innerHTML='<div class="ml-empty">'+esc(t('ml_empty'))+'</div>';return}const eid=String(eventId||S.mlSelectedEventId||mlDefaultSeasonEventId(data)||data.active_event_id||'');mlPopulateSeasonSelect(data,eid);const season=seasons.find(s=>String(s.event_id)===eid)||seasons[seasons.length-1];mlUpdateStatusPill(season);mlUpdateHero(season);root.innerHTML=mlRenderSeasonDetail(season,data.scoring||{});wireRewardDetailClicks(root);mlBindDeployRimResize();requestAnimationFrame(()=>{mlSyncDeployRim(root);armScrollTopFabBaseline();updateScrollTopFabVisibility()})}
+function renderMasterLeague(data,eventId){const root=document.getElementById('masterLeagueRoot');if(!root)return;const seasons=data.seasons||[];if(!seasons.length){mlUpdateHero(null);root.innerHTML='<div class="ml-empty">'+esc(t('ml_empty'))+'</div>';return}const eid=String(eventId||S.mlSelectedEventId||mlDefaultSeasonEventId(data)||data.active_event_id||'');mlPopulateSeasonSelect(data,eid);const season=seasons.find(s=>String(s.event_id)===eid)||seasons[seasons.length-1];mlUpdateStatusPill(season);mlUpdateHero(season);root.innerHTML=mlRenderSeasonDetail(season,data.scoring||{});wireRewardDetailClicks(root);mlBindDeployRimResize();mlBindDeployFpHighlight(root);requestAnimationFrame(()=>{mlSyncDeployRim(root);armScrollTopFabBaseline();updateScrollTopFabVisibility()})}
 function mlOpenUnitsForTag(q){if(!q)return;switchTab('units');const inp=document.getElementById('unitFilter');if(inp){inp.value=q;syncBrowseSearchWidth('unitFilter')}loadUnits(1);try{window.scrollTo({top:0,behavior:'smooth'})}catch(_){window.scrollTo(0,0)}}
 async function loadMasterLeague(){const cssP=ensureMasterLeagueCss();const root=document.getElementById('masterLeagueRoot');const load=document.getElementById('masterLeagueLoading');if(!root)return;if(S.currentTab==='master_league')armScrollTopFabBaseline();const cacheKey=S.lang+'_v31';if(load)load.style.display='flex';try{if(S.mlCacheKey===cacheKey&&S.mlCacheData){await cssP;renderMasterLeague(S.mlCacheData);mlEnsureCalcMounted();mlApplyCalcLang();if(S.currentTab==='master_league')markMasterLeaguePageVisited()}else{const [data]=await Promise.all([fetch('/api/master_league?lang='+encodeURIComponent(S.lang)+'&dv=31',{credentials:'same-origin',cache:'no-store'}).then(async r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json()}),cssP]);S.mlCacheKey=cacheKey;S.mlCacheData=data;renderMasterLeague(data);mlEnsureCalcMounted();mlApplyCalcLang();if(S.currentTab==='master_league')markMasterLeaguePageVisited()}}catch(e){S.mlCacheKey=null;S.mlCacheData=null;root.innerHTML='<div class="ml-empty">'+esc(String(e))+'</div>'}finally{try{await revealMasterLeagueSkin()}catch(_){}if(load)load.style.display='none'}}
 const ML_CALC_SLOT_CELLS=[

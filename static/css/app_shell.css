@@ -1560,28 +1560,38 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
   z-index:5000
 }
 /*
- * Browse filter vs sticky thead — stable stacking (no open/close z-index flip).
- * Flipping thead 40→1→40 on Esc left a ghost bar over HP/Name (compositor + sticky).
- * Keep toolbar-left above list-view always; thead z-index stays 40 inside list-view only.
+ * Browse filter vs sticky thead — worldwide, all list tabs (/c /u /s /st /op /ml /r …).
+ * Sticky thead uses z-index:40 and can paint in the scrollport layer; toolbar-left at
+ * z-index:2 loses → filters buried under Name/Series/Boost headers (and Esc “ghost bar”
+ * if thead is flipped 40↔1). Keep toolbar-left ALWAYS above thead (50>40); never flip
+ * thead. Isolate list-view so sticky stays under the filter stack.
  */
 .list-toolbar>.list-toolbar-left{
   position:relative;
-  z-index:2
+  z-index:50
 }
 .list-toolbar>#unitListViewArea,
 .list-toolbar>#charListViewArea,
+.list-toolbar>#suppListViewArea,
+.list-toolbar>#modListViewArea,
+.list-toolbar>#stageListViewArea,
 .list-toolbar>.list-view-area{
   position:relative;
-  z-index:1
+  z-index:1;
+  isolation:isolate
 }
-/* Open panel: raise the wrap so the dropdown beats other toolbar chips */
+/* Open panel: raise the wrap so the dropdown beats sibling toolbar chips */
 .rarity-filter-wrap:has(.rarity-filter-panel:not([hidden])),
+.rarity-filter-wrap:has(.filter-dropdown-panel:not([hidden])),
 .role-filter-wrap:has(.role-filter-panel:not([hidden])),
 .source-filter-wrap:has(.source-filter-panel:not([hidden])),
 .skill-filter-wrap:has(.skill-filter-panel:not([hidden])),
 .lineage-filter-wrap:has(.lineage-filter-panel:not([hidden])),
 .series-filter-wrap:has(.series-filter-panel:not([hidden])),
-.mod-effect-filter-wrap:has(.mod-effect-filter-panel:not([hidden])){
+.mod-effect-filter-wrap:has(.mod-effect-filter-panel:not([hidden])),
+.mod-effect-wrap:has(.mod-effect-filter-panel:not([hidden])),
+.ml-season-filter-wrap:has(.ml-season-filter-panel:not([hidden])),
+.ml-season-filter-wrap:has(.rarity-filter-panel:not([hidden])){
   position:relative;
   z-index:80
 }
