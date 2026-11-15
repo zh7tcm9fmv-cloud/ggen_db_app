@@ -365,19 +365,279 @@
 .ml-boost-banner {
   position: relative;
   overflow: hidden;
-  margin: 10px 0 18px;
+  margin: 10px 0 0;
   padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/*
+ * Battle Deployment gold frame — design mirror of BoostInfoBase_02 rim only:
+ * Base measured 993×257: top taper ~17px tall, tip inset ~13px (angle = that ratio).
+ * Deploy uses same length/angle at current width (cqw); taper at bottom; square top.
+ * No flipped Base art — CSS stroke only. Interior: title + stage + wash.
+ */
+.ml-deploy {
+  position: relative;
+  margin: 0 0 18px;
+  border: none;
+  border-radius: 0;
+  overflow: visible;
+  box-shadow: none;
+  background: transparent;
+}
+.ml-deploy-body {
+  container-type: inline-size;
+  /* BoostInfoBase_02 taper: Δy≈17, tip inset≈13 @ width 993 — silhouette only; gold = SVG stroke */
+  --ml-deploy-taper-h: calc(100cqw * 17 / 993);
+  --ml-deploy-taper-inset: calc(100cqw * 13 / 993);
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 14px 18px 16px;
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 70% 90% at 50% 40%, #0c1424 0%, #060a12 55%, #030508 100%);
+  clip-path: polygon(
+    0% 0%,
+    100% 0%,
+    100% calc(100% - var(--ml-deploy-taper-h)),
+    calc(100% - var(--ml-deploy-taper-inset)) 100%,
+    var(--ml-deploy-taper-inset) 100%,
+    0% calc(100% - var(--ml-deploy-taper-h))
+  );
+}
+/* Red|blue wash — flush to tapered silhouette */
+.ml-deploy-body::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(196, 33, 38, 0.38) 0%,
+    rgba(196, 33, 38, 0.16) 18%,
+    rgba(196, 33, 38, 0.05) 36%,
+    transparent 48%,
+    transparent 52%,
+    rgba(13, 73, 193, 0.05) 64%,
+    rgba(13, 73, 193, 0.16) 82%,
+    rgba(13, 73, 193, 0.38) 100%
+  );
+}
+/* Uniform 2px gold rim (Boost match) — SVG path, not clip-ring (diagonals were uneven) */
+.ml-deploy-rim {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  z-index: 6;
+  overflow: visible;
+}
+.ml-deploy-rim-path {
+  fill: none;
+  stroke: #f0d060;
+  stroke-width: 2;
+  stroke-linejoin: miter;
+  vector-effect: non-scaling-stroke;
+}
+.ml-deploy-title {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 8px;
+  font-size: clamp(12px, 1.5vw, 14px);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: rgba(242, 245, 251, 0.92);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
+}
+.ml-deploy-stage {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(110px, 1fr) minmax(240px, 1.8fr) minmax(110px, 1fr);
+  align-items: center;
+  gap: 4px 8px;
+  width: 100%;
+  max-width: min(720px, 100%);
+  margin: 0 auto;
+  padding: 4px 0 8px;
+}
+.ml-deploy-side {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 160px;
+  padding: 4px 4px;
+}
+/* In-game PartsText — a bit stronger than faint, still watermark (not white) */
+.ml-deploy-side::before {
+  content: '';
+  position: absolute;
+  inset: 0% -6%;
+  background-color: rgba(190, 198, 214, 0.42);
+  -webkit-mask-image: var(--ml-wm);
+  mask-image: var(--ml-wm);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  opacity: 0.55;
+  pointer-events: none;
+  z-index: 0;
+}
+.ml-deploy-side--enemy::before {
+  background-color: rgba(196, 33, 38, 0.38);
+  opacity: 0.58;
+}
+.ml-deploy-side--ally::before {
+  background-color: rgba(13, 73, 193, 0.38);
+  opacity: 0.58;
+}
+.ml-deploy-force-lab {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  width: max-content;
+  max-width: 100%;
+}
+.ml-deploy-force-name {
+  font-size: clamp(15px, 2.1vw, 20px);
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
+  white-space: nowrap;
+}
+.ml-deploy-textline {
+  display: block;
+  width: 110px;
+  height: 11px;
+  background-color: #fff;
+  -webkit-mask-image: var(--ml-textline);
+  mask-image: var(--ml-textline);
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+.ml-deploy-force-lab--enemy .ml-deploy-textline {
+  background-color: #c42126;
+}
+.ml-deploy-force-lab--ally .ml-deploy-textline {
+  background-color: #0d49c1;
+}
+.ml-deploy-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  /* Square cells: board aspect = cols/rows so each cell is 1×1 */
+  grid-template-columns: repeat(var(--ml-cols, 10), 1fr);
+  grid-template-rows: repeat(var(--ml-rows, 10), 1fr);
+  gap: 1px;
+  width: min(100%, calc(var(--ml-cols, 10) * 24px + (var(--ml-cols, 10) - 1) * 1px + 4px));
+  max-width: 100%;
+  aspect-ratio: var(--ml-cols, 10) / var(--ml-rows, 10);
+  height: auto;
+  min-height: 0;
+  margin: 0 auto;
+  padding: 2px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+.ml-deploy-cell {
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
+  /* In-game empty cells: near-black with thin grey hairline */
+  background: rgba(6, 10, 18, 0.92);
+  box-shadow: inset 0 0 0 1px rgba(120, 130, 150, 0.22);
+}
+.ml-deploy-cell--unit,
+.ml-deploy-cell--fp {
+  display: grid;
+  place-items: center;
+  background-color: transparent;
+  background-image: var(--ml-unit-base);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  box-shadow: none;
+  overflow: hidden;
+}
+.ml-deploy-cell--num .ml-deploy-num {
+  font-size: clamp(13px, 2.2vw, 20px);
+}
+.ml-deploy-num {
+  font-family: var(--font-teko, Teko, Impact, sans-serif);
+  font-size: clamp(13px, 2.2vw, 20px);
+  font-weight: 600;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+  /* Teko sits optically high — nudge into true cell center */
+  transform: translateY(0.06em);
+}
+@media (max-width: 768px) {
+  .ml-deploy-body {
+    padding: 10px 12px 2px;
+  }
+  .ml-deploy-stage {
+    grid-template-columns: minmax(72px, 0.9fr) minmax(160px, 2fr) minmax(72px, 0.9fr);
+    gap: 4px 6px;
+    max-width: min(520px, 100%);
+  }
+  .ml-deploy-side {
+    min-height: 110px;
+    padding: 2px 2px;
+  }
+  .ml-deploy-force-name {
+    font-size: clamp(13px, 3.4vw, 16px);
+  }
+  .ml-deploy-textline {
+    width: 88px;
+    height: 9px;
+  }
+  .ml-deploy-grid {
+    gap: 2px;
+  }
 }
 .ml-boost-banner > .ml-boost-card {
   position: relative;
   z-index: 1;
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .ml-boost-card {
   position: relative;
   margin: 0;
-  padding: 16px 0 14px;
-  min-height: 196px;
+  padding: 14px 0 12px;
+  min-height: 0;
   border-radius: 2px;
   overflow: hidden;
   background:
@@ -523,6 +783,265 @@
   gap: 10px;
   text-align: center;
   padding: 0 18px;
+}
+/*
+ * BoostInfoBase_02 gold lines (993×257 measured):
+ *   H @ 34% · V @ 24.5% · outer ~1–2% / 96–99%
+ * A = top band · B = BL · C = BR
+ */
+/* Stack wraps plate + schedule; plate size is the anchor (not shrunk by stack width) */
+.ml-boost-stack {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0 12px 10px;
+  box-sizing: border-box;
+}
+/* Anchor: Base_02 plate — original scale, centered in banner */
+.ml-boost-card--info-base .ml-boost-inner--info-base {
+  position: relative;
+  width: min(560px, 78%);
+  margin: 0 auto;
+  display: block;
+  padding: 0;
+  min-height: 0;
+  aspect-ratio: 993 / 257;
+  box-sizing: border-box;
+  text-align: left;
+  background-image: var(--ml-boost-info-base);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+  box-shadow: none;
+  overflow: hidden;
+  flex: 0 0 auto;
+}
+/* Schedule matches plate width, centered under it */
+.ml-boost-schedule {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: center;
+  gap: 12px 28px;
+  width: min(560px, 78%);
+  margin: 0 auto;
+  padding: 4px 4px 2px;
+  box-sizing: border-box;
+}
+.ml-boost-sched-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+  flex: 1 1 0;
+  text-align: center;
+}
+.ml-boost-sched-k {
+  font-size: clamp(9px, 1.05vw, 11px);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(220, 225, 235, 0.78);
+  line-height: 1.1;
+  white-space: nowrap;
+}
+.ml-boost-sched-v {
+  font-size: clamp(11px, 1.25vw, 13px);
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.2;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.75);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+/* A — title band, horizontally centered */
+.ml-boost-card--info-base .ml-boost-info-title {
+  position: absolute;
+  left: 2%;
+  right: 2%;
+  top: 2%;
+  height: 30%;
+  margin: 0;
+  padding: 0;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  font-size: clamp(11px, 1.4vw, 15px);
+  font-weight: 800;
+  color: #fff;
+  text-align: center;
+  letter-spacing: 0.03em;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
+  line-height: 1.15;
+  z-index: 1;
+}
+/* B — Stage top-left; Space centered in whole cell */
+.ml-boost-card--info-base .ml-boost-info-stage {
+  position: absolute;
+  left: 2%;
+  width: 21.5%;
+  top: 36%;
+  bottom: 4%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  text-align: left;
+  z-index: 1;
+}
+/* C — heading top; tags + pct fill remaining height */
+.ml-boost-card--info-base .ml-boost-info-boost-main {
+  position: absolute;
+  left: 26%;
+  right: 2%;
+  top: 36%;
+  bottom: 4%;
+  margin: 0;
+  padding: 4px 6px 6px;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  align-items: start;
+  justify-items: start;
+  gap: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  text-align: left;
+  z-index: 1;
+}
+.ml-boost-kicker {
+  font-size: clamp(10px, 1.2vw, 12px);
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.75);
+  letter-spacing: 0.02em;
+  text-align: left;
+  width: 100%;
+}
+/* Stage kicker + Boost heading share size + baseline in Base_02 */
+.ml-boost-card--info-base .ml-boost-kicker,
+.ml-boost-card--info-base .ml-boost-heading {
+  margin: 0;
+  padding: 0;
+  font-size: clamp(13px, 1.55vw, 16px);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: 0.03em;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
+  text-align: left;
+  width: 100%;
+}
+.ml-boost-card--info-base .ml-boost-kicker {
+  position: absolute;
+  top: 4px;
+  left: 6px;
+  right: 4px;
+  z-index: 2;
+}
+.ml-boost-card--info-base .ml-boost-heading {
+  align-self: start;
+}
+.ml-boost-terrain-line {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  gap: 4px 6px;
+  min-width: 0;
+  width: 100%;
+}
+/* Space + icon: true center of section B */
+.ml-boost-card--info-base .ml-boost-terrain-line {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  min-height: 0;
+  pointer-events: none;
+}
+.ml-boost-card--info-base .ml-boost-terrain-line > * {
+  pointer-events: auto;
+}
+.ml-boost-terrain-name {
+  font-size: clamp(15px, 2.1vw, 22px);
+  font-weight: 900;
+  line-height: 1.05;
+  color: #b56cff;
+  text-shadow:
+    0 0 10px rgba(160, 80, 255, 0.45),
+    0 2px 4px rgba(0, 0, 0, 0.85);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+.ml-boost-card--info-base .ml-boost-terrain-ic {
+  width: 18px;
+  height: 18px;
+}
+.ml-boost-card--info-base .ml-boost-tags {
+  justify-content: flex-start;
+  align-self: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  max-height: none;
+  overflow: visible;
+  width: 100%;
+}
+.ml-boost-card--info-base .ml-boost-tags .tag-composite {
+  transform: none;
+}
+.ml-boost-card--info-base .ml-boost-pct {
+  text-align: left;
+  margin-top: 0;
+  align-self: end;
+  font-size: clamp(12px, 1.45vw, 15px);
+  font-weight: 800;
+  line-height: 1.15;
+  color: #fff;
+  /* Purple stroke ring — matches in-game BoostInfo text edge (#57026f) */
+  text-shadow:
+    -1px -1px 0 #57026f,
+     1px -1px 0 #57026f,
+    -1px  1px 0 #57026f,
+     1px  1px 0 #57026f,
+    -1px  0 0 #57026f,
+     1px  0 0 #57026f,
+     0 -1px 0 #57026f,
+     0  1px 0 #57026f,
+     0 0 6px rgba(87, 2, 111, 0.55);
+}
+/* Finished / motif seasons — restore homeimg bg, no red tint */
+.ml-boost-card--motif-bg {
+  background: #0a0e18;
+}
+.ml-boost-card--motif-bg::before {
+  opacity: 0.72;
+  filter: none;
+}
+.ml-boost-card--motif-bg::after {
+  background:
+    linear-gradient(90deg, rgba(6, 10, 20, 0.55) 0%, rgba(6, 10, 20, 0.08) 22%, rgba(6, 10, 20, 0.05) 50%, rgba(6, 10, 20, 0.08) 78%, rgba(6, 10, 20, 0.55) 100%),
+    linear-gradient(180deg, rgba(6, 10, 20, 0.2) 0%, transparent 35%, rgba(6, 10, 20, 0.35) 100%);
+}
+.ml-boost-card--portraits.ml-boost-card--info-base .ml-boost-inner--info-base {
+  width: min(560px, 78%);
+  min-height: 0;
+  padding: 0;
+  gap: 0;
 }
 .ml-boost-card--portraits {
   background:

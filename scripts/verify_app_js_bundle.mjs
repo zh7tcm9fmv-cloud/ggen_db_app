@@ -39,6 +39,7 @@ const REQUIRED_FUNCTIONS = [
   'btFeaturedMergedCell',
   'loadBannerTimeline',
   'renderBannerTimeline',
+  'mlRenderDeploymentBoard',
 ];
 
 const REQUIRED_CONSTS = ['TB_TRASH_ICON'];

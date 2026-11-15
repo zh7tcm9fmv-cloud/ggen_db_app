@@ -36107,6 +36107,107 @@ def _ml_master_file(lc, name):
     return os.path.join(app_dir, 'data', lc, 'master', name)
 
 
+def _ml_build_deployment_for_event(lc, event_id, ev=None):
+    """Initial spawn grid for Master League Battle Deployment / sim board.
+
+    Returns sides + a compact display grid (unique Y rows, padded X) matching the
+    in-game Next Stage / Boost Info preview (LINE = single column each side).
+    """
+    event_id = normalize_id(event_id or '0')
+    if event_id == '0':
+        return None
+    if not isinstance(ev, dict):
+        events = extract_data_list(load_json(_ml_master_file(lc, 'm_league_event.json')))
+        ev = None
+        for row in events:
+            if isinstance(row, dict) and normalize_id(row.get('EventId')) == event_id:
+                ev = row
+                break
+    if not isinstance(ev, dict):
+        return None
+    try:
+        set_id = int(ev.get('LeagueStageInitialPositionGroupSetId') or 0)
+    except (TypeError, ValueError):
+        set_id = 0
+    sets = extract_data_list(load_json(_ml_master_file(lc, 'm_league_stage_initial_position_group_set.json')))
+    groups = extract_data_list(load_json(_ml_master_file(lc, 'm_league_stage_initial_position_group.json')))
+    by_group = {}
+    for g in groups:
+        if not isinstance(g, dict):
+            continue
+        try:
+            gid = int(g.get('Id') or 0)
+        except (TypeError, ValueError):
+            continue
+        by_group.setdefault(gid, []).append({
+            'n': int(g.get('PositionNumber') or 0),
+            'x': int(g.get('X') or 0),
+            'y': int(g.get('Y') or 0),
+            'type': int(g.get('InitialPositionTypeIndex') or 0),
+        })
+    for cells in by_group.values():
+        cells.sort(key=lambda c: c['n'])
+    sides = []
+    for row in sets:
+        if not isinstance(row, dict):
+            continue
+        try:
+            if int(row.get('Id') or 0) != set_id:
+                continue
+            gid = int(row.get('LeagueStageInitialPositionGroupId') or 0)
+            side = int(row.get('PlayerSideTypeIndex') or 0)
+            direction = int(row.get('DirectionTypeIndex') or 0)
+        except (TypeError, ValueError):
+            continue
+        sides.append({
+            'player_side': side,
+            'group_id': gid,
+            'direction': direction,
+            'cells': by_group.get(gid) or [],
+        })
+    sides.sort(key=lambda s: s['player_side'])
+    all_cells = []
+    for s in sides:
+        all_cells.extend(s.get('cells') or [])
+    if not all_cells:
+        return {
+            'event_id': event_id,
+            'set_id': set_id,
+            'formation': 'line' if set_id == 3 else 'standard',
+            'sides': sides,
+            'grid': None,
+        }
+    xs = [c['x'] for c in all_cells]
+    ys = [c['y'] for c in all_cells]
+    # Pad X so empty map cells frame the two force columns (≈ in-game 10-wide preview).
+    pad_x = 3
+    min_x = min(xs) - pad_x
+    max_x = max(xs) + pad_x
+    # Compact rows: only spawn Y bands (LINE uses every-other map Y).
+    y_rows = sorted(set(ys), reverse=True)
+    width = max_x - min_x + 1
+    height = len(y_rows)
+    enemy_xs = [c['x'] for s in sides if int(s.get('player_side') or 0) == 2 for c in (s.get('cells') or [])]
+    ally_xs = [c['x'] for s in sides if int(s.get('player_side') or 0) == 1 for c in (s.get('cells') or [])]
+    enemy_col = (sorted(set(enemy_xs))[len(set(enemy_xs)) // 2] - min_x) if enemy_xs else None
+    ally_col = (sorted(set(ally_xs))[len(set(ally_xs)) // 2] - min_x) if ally_xs else None
+    return {
+        'event_id': event_id,
+        'set_id': set_id,
+        'formation': 'line' if set_id == 3 else 'standard',
+        'sides': sides,
+        'grid': {
+            'min_x': min_x,
+            'max_x': max_x,
+            'y_rows': y_rows,
+            'width': width,
+            'height': height,
+            'enemy_col': enemy_col,
+            'ally_col': ally_col,
+        },
+    }
+
+
 def _ml_stage_terrain_icons(stage_row):
     icons = []
     if not isinstance(stage_row, dict):
@@ -36162,7 +36263,7 @@ def api_master_league_sim_board():
     event_id = normalize_id(request.args.get('event_id') or '300021')
     if event_id == '0':
         event_id = '300021'
-    ck = f'ml_sim_board_v3_{lc}_{event_id}'
+    ck = f'ml_sim_board_v4_{lc}_{event_id}'
     cached = get_cached_response(ck)
     if cached:
         return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
@@ -36174,47 +36275,7 @@ def api_master_league_sim_board():
             break
     if not ev:
         return jsonify({'error': 'event_not_found', 'event_id': event_id}), 404
-    try:
-        set_id = int(ev.get('LeagueStageInitialPositionGroupSetId') or 0)
-    except (TypeError, ValueError):
-        set_id = 0
-    sets = extract_data_list(load_json(_ml_master_file(lc, 'm_league_stage_initial_position_group_set.json')))
-    groups = extract_data_list(load_json(_ml_master_file(lc, 'm_league_stage_initial_position_group.json')))
-    by_group = {}
-    for g in groups:
-        if not isinstance(g, dict):
-            continue
-        try:
-            gid = int(g.get('Id') or 0)
-        except (TypeError, ValueError):
-            continue
-        by_group.setdefault(gid, []).append({
-            'n': int(g.get('PositionNumber') or 0),
-            'x': int(g.get('X') or 0),
-            'y': int(g.get('Y') or 0),
-            'type': int(g.get('InitialPositionTypeIndex') or 0),
-        })
-    for cells in by_group.values():
-        cells.sort(key=lambda c: c['n'])
-    sides = []
-    for row in sets:
-        if not isinstance(row, dict):
-            continue
-        try:
-            if int(row.get('Id') or 0) != set_id:
-                continue
-            gid = int(row.get('LeagueStageInitialPositionGroupId') or 0)
-            side = int(row.get('PlayerSideTypeIndex') or 0)
-            direction = int(row.get('DirectionTypeIndex') or 0)
-        except (TypeError, ValueError):
-            continue
-        sides.append({
-            'player_side': side,
-            'group_id': gid,
-            'direction': direction,
-            'cells': by_group.get(gid) or [],
-        })
-    sides.sort(key=lambda s: s['player_side'])
+    dep = _ml_build_deployment_for_event(lc, event_id, ev=ev) or {}
     try:
         limit_turns = int(ev.get('LimitTurnCount') or 5)
     except (TypeError, ValueError):
@@ -36239,10 +36300,10 @@ def api_master_league_sim_board():
     payload = {
         'event_id': event_id,
         'stage_id': stage_id,
-        'set_id': set_id,
+        'set_id': dep.get('set_id'),
         'limit_turns': limit_turns,
         'buff_id': normalize_id(ev.get('BuffId')),
-        'formation': 'line' if set_id == 3 else 'standard',
+        'formation': dep.get('formation') or ('line' if dep.get('set_id') == 3 else 'standard'),
         'layout': {
             'left': 'enemy',
             'right': 'ally',
@@ -36250,7 +36311,8 @@ def api_master_league_sim_board():
             'ally_player_side': 1,
         },
         'map': map_payload,
-        'sides': sides,
+        'sides': dep.get('sides') or [],
+        'grid': dep.get('grid'),
     }
     set_cached_response(ck, payload)
     return jsonify_cacheable(payload, ck, public=True, max_age=3600, convert_images=True)
@@ -36267,7 +36329,7 @@ def api_master_league():
     force_event_id = normalize_id(request.args.get('event_id') or '')
     if force_event_id == '0':
         force_event_id = ''
-    ck = f'master_league_v27_{lc}'
+    ck = f'master_league_v31_{lc}'
     if force_event_id:
         ck_detail = f'{ck}_ev_{force_event_id}'
         cached_detail = get_cached_response(ck_detail)
@@ -36584,6 +36646,7 @@ def api_master_league():
             'spark_banner': spark_banner,
             'top_percentile_threshold': safe_int(lx.get('RankingTopPercentileDisplayScoreThreshold') or lx.get('rankingTopPercentileDisplayScoreThreshold'), 0),
             'is_skip_shop_reset': bool(lx.get('IsSkipShopReset')),
+            'deployment': _ml_build_deployment_for_event(lc, event_id, ev=lx),
         })
 
     seasons.sort(key=lambda s: safe_int(s.get('season_number'), 0))
