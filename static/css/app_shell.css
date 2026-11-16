@@ -3149,12 +3149,15 @@ html[data-ui-lang="KR"] .detail-rec-link-card .detail-rec-limited-wrap--on-thumb
   align-self:center
 }
 .tag-composite--type .tag-part-value{
+  display:inline-flex;
   gap:4px;
   align-items:center;
   justify-content:flex-start;
   box-sizing:border-box;
-  /* 1px even vertical — between Teko-alone 2px-top and flat 0 (words were floating high) */
-  padding:1px 6px 1px 4px
+  /* No Teko optical pads — those drift on iOS/WebKit vs desktop Chromium */
+  padding:0 6px 0 4px;
+  -webkit-text-size-adjust:100%;
+  text-size-adjust:100%
 }
 .tag-composite--type .tag-type-role-in-value{
   width:14px;
@@ -3168,15 +3171,17 @@ html[data-ui-lang="KR"] .detail-rec-link-card .detail-rec-limited-wrap--on-thumb
   padding:0;
   filter:none
 }
-/* Must stay block — inline-flex collapses the space between .tag-part-value-word spans */
+/* Keep block so spaces between .tag-part-value-word survive; line-height fills the bar */
 .tag-composite--type .tag-part-value-text{
   display:block;
-  line-height:1;
-  /* Teko ink sits high in the em-box — 1px top pad (not translateY) matches role badge */
-  padding:1px 0 0;
+  line-height:var(--tag-h);
+  height:var(--tag-h);
+  max-height:var(--tag-h);
+  padding:0;
   margin:0;
   align-self:center;
-  transform:none
+  transform:none;
+  overflow:hidden
 }
 .tag-composite:hover{filter:brightness(1.05)}
 .tag-part-icon,
