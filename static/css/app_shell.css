@@ -3114,6 +3114,70 @@ html[data-ui-lang="KR"] .detail-rec-link-card .detail-rec-limited-wrap--on-thumb
   --tag-label-plate:url(/static/images/UI/UI_Common_Label_Series_Text.webp);
   --tag-plate-fill:var(--tag-plate-teal)
 }
+/* Support/Durability Type — same height/chrome as TAG (icon | white value), no TAG label.
+   Left = Type_icon_Base (tight 42×36) + Bromide_Chara. White value = role TypeIcon + type name. */
+.tag-composite--type{
+  --tag-icon-base:url(/static/images/UI/UI_Common_Label_Type_icon_Base.webp);
+  --tag-label-plate:none;
+  --tag-icon-ar:calc(42 / 36);
+  --tag-icon-w:calc(var(--tag-h) * 42 / 36);
+  --tag-plate-fill:var(--tag-plate-blue);
+  /* Bromide_MS reads muddy at 14px — 1px inset → ~18px fg (plate height stays --tag-h) */
+  --tag-icon-inset:1px;
+  grid-template-columns:var(--tag-icon-w) minmax(0,max-content)
+}
+.tag-composite--type .tag-part-label{display:none!important;width:0;min-width:0;max-width:0;padding:0;background:none}
+.tag-composite--type .tag-part-icon,
+.tag-composite--type .tag-part-value{
+  height:var(--tag-h);min-height:var(--tag-h);max-height:var(--tag-h);
+  align-self:stretch
+}
+/* Chevron tip is empty — pin fg to the plate face (same as TAG), vertically centered */
+.tag-composite--type .tag-part-icon{
+  display:inline-flex;
+  align-items:center;
+  justify-content:flex-end;
+  padding:var(--tag-icon-inset) var(--tag-icon-inset) var(--tag-icon-inset) 0;
+  box-sizing:border-box
+}
+.tag-composite--type .tag-icon-fg{
+  width:calc(var(--tag-h) - 2 * var(--tag-icon-inset));
+  height:calc(var(--tag-h) - 2 * var(--tag-icon-inset));
+  max-width:100%;
+  max-height:100%;
+  margin:0;
+  align-self:center
+}
+.tag-composite--type .tag-part-value{
+  gap:4px;
+  align-items:center;
+  justify-content:flex-start;
+  box-sizing:border-box;
+  /* 1px even vertical — between Teko-alone 2px-top and flat 0 (words were floating high) */
+  padding:1px 6px 1px 4px
+}
+.tag-composite--type .tag-type-role-in-value{
+  width:14px;
+  height:14px;
+  max-height:14px;
+  object-fit:contain;
+  flex:0 0 auto;
+  display:block;
+  align-self:center;
+  margin:0;
+  padding:0;
+  filter:none
+}
+/* Must stay block — inline-flex collapses the space between .tag-part-value-word spans */
+.tag-composite--type .tag-part-value-text{
+  display:block;
+  line-height:1;
+  /* Teko ink sits high in the em-box — 1px top pad (not translateY) matches role badge */
+  padding:1px 0 0;
+  margin:0;
+  align-self:center;
+  transform:none
+}
 .tag-composite:hover{filter:brightness(1.05)}
 .tag-part-icon,
 .tag-part-label,
@@ -3205,13 +3269,13 @@ html[data-ui-lang="HR"] .tag-composite:not(.list-filter-tag-composite) .tag-part
 .list-grid-card .detail-tags-row{width:100%;max-width:100%;justify-content:center;min-width:0}
 /* Same TAG/SERIES chips as /c /u detail — do not restyle browse (font/size/pad). */
 .list-grid-card .detail-tags-row .tag-composite{max-width:100%}
-/* Legacy composites without --tag/--series still get Tag plates */
-.tag-composite:not(.tag-composite--tag):not(.tag-composite--series):not(.list-filter-tag-composite){
+/* Legacy composites without --tag/--series/--type still get Tag plates */
+.tag-composite:not(.tag-composite--tag):not(.tag-composite--series):not(.tag-composite--type):not(.list-filter-tag-composite){
   --tag-icon-base:url(/static/images/UI/UI_Common_Label_Tag_icon_Base.webp);
   --tag-label-plate:url(/static/images/UI/UI_Common_Label_Tag_Text.webp);
   --tag-plate-fill:var(--tag-plate-blue)
 }
-.tag-composite:not(.list-filter-tag-composite) .tag-part-label{display:block}
+.tag-composite:not(.list-filter-tag-composite):not(.tag-composite--type) .tag-part-label{display:block}
 .list-filter-tag-composite.tag-composite,
 .list-filter-tag-composite{
   --tag-icon-base:none;--tag-label-plate:none;filter:none!important;background:transparent!important;border:none!important;

@@ -30,6 +30,8 @@ PLATE_EXPECT = {
     "UI_Common_Label_Tag_Text.webp": (53, 36),
     "UI_Common_Label_Series_icon_Base.webp": (42, 36),
     "UI_Common_Label_Series_Text.webp": (53, 36),
+    # Support/Durability Type plate — tight opaque crop (same fill as Tag 42×36)
+    "UI_Common_Label_Type_icon_Base.webp": (42, 36),
 }
 
 
