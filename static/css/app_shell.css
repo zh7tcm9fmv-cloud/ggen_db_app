@@ -3130,15 +3130,17 @@ html[data-ui-lang="KR"] .detail-rec-link-card .detail-rec-limited-wrap--on-thumb
 .tag-composite--type .tag-part-icon,
 .tag-composite--type .tag-part-value{
   height:var(--tag-h);min-height:var(--tag-h);max-height:var(--tag-h);
-  align-self:stretch
+  /* center — not stretch; iOS WebKit + nested line-height:20px was shifting the grey bar up */
+  align-self:center;
+  overflow:hidden;
+  box-sizing:border-box
 }
 /* Chevron tip is empty — pin fg to the plate face (same as TAG), vertically centered */
 .tag-composite--type .tag-part-icon{
   display:inline-flex;
   align-items:center;
   justify-content:flex-end;
-  padding:var(--tag-icon-inset) var(--tag-icon-inset) var(--tag-icon-inset) 0;
-  box-sizing:border-box
+  padding:var(--tag-icon-inset) var(--tag-icon-inset) var(--tag-icon-inset) 0
 }
 .tag-composite--type .tag-icon-fg{
   width:calc(var(--tag-h) - 2 * var(--tag-icon-inset));
@@ -3153,8 +3155,6 @@ html[data-ui-lang="KR"] .detail-rec-link-card .detail-rec-limited-wrap--on-thumb
   gap:4px;
   align-items:center;
   justify-content:flex-start;
-  box-sizing:border-box;
-  /* No Teko optical pads — those drift on iOS/WebKit vs desktop Chromium */
   padding:0 6px 0 4px;
   -webkit-text-size-adjust:100%;
   text-size-adjust:100%
@@ -3171,17 +3171,18 @@ html[data-ui-lang="KR"] .detail-rec-link-card .detail-rec-limited-wrap--on-thumb
   padding:0;
   filter:none
 }
-/* Keep block so spaces between .tag-part-value-word survive; line-height fills the bar */
+/* Block keeps spaces between words. Do NOT set height/line-height to --tag-h here —
+   that nested 20px box inside a 20px flex item shifts the grey bar on iOS Safari. */
 .tag-composite--type .tag-part-value-text{
   display:block;
-  line-height:var(--tag-h);
-  height:var(--tag-h);
-  max-height:var(--tag-h);
+  line-height:1;
+  height:auto;
+  max-height:none;
   padding:0;
   margin:0;
   align-self:center;
   transform:none;
-  overflow:hidden
+  overflow:visible
 }
 .tag-composite:hover{filter:brightness(1.05)}
 .tag-part-icon,
