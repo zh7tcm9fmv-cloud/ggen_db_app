@@ -3170,22 +3170,38 @@ html[data-ui-lang="KR"] .detail-rec-link-card .detail-rec-limited-wrap--on-thumb
   gap:4px;
   align-items:center;
   justify-content:flex-start;
-  padding:0 6px 0 4px;
+  /* Same Teko optical top pad as TAG/SERIES (2px) — Type had zeroed this and words sat high */
+  padding:2px 6px 0 4px;
   background-color:#c9cdd4;
   -webkit-text-size-adjust:100%;
   text-size-adjust:100%
 }
-.tag-composite--type .tag-type-role-in-value{
-  width:14px;
-  height:14px;
-  max-height:14px;
-  object-fit:contain;
-  flex:0 0 auto;
-  display:block;
+/* Role badge + type name share one flex cross-axis center (never baseline-align). */
+.tag-composite--type .tag-type-role-in-value,
+.tag-composite--type .tag-part-value-text{
   align-self:center;
-  margin:0;
+  margin-top:0;
+  margin-bottom:0
+}
+/* Support_S / Defense_S are 46×46 squares — lock 1:1 box so flex cannot squash them.
+   Teko caps sit high in the em-box; 1px optical lift keeps the badge mid with the letters. */
+.tag-composite--type .tag-type-role-in-value{
+  width:15px;
+  height:15px;
+  min-width:15px;
+  min-height:15px;
+  max-width:15px;
+  max-height:15px;
+  aspect-ratio:1 / 1;
+  object-fit:contain;
+  object-position:center;
+  flex:0 0 15px;
+  display:block;
   padding:0;
-  filter:none
+  border:0;
+  filter:none;
+  position:relative;
+  top:-1px
 }
 /* Block keeps spaces between words. Do NOT set height/line-height to --tag-h here —
    that nested 20px box inside a 20px flex item shifts the grey bar on iOS Safari. */
@@ -3195,8 +3211,6 @@ html[data-ui-lang="KR"] .detail-rec-link-card .detail-rec-limited-wrap--on-thumb
   height:auto;
   max-height:none;
   padding:0;
-  margin:0;
-  align-self:center;
   transform:none;
   overflow:visible
 }
@@ -8055,5 +8069,13 @@ button.stage-fea-diff-tab.diff-pill:focus-visible{
   margin:10px 0 0;font-size:13px;color:var(--text-muted);min-height:1.2em;
 }
 html.human-gate-open,html.human-gate-open body{overflow:hidden!important}
+/* Gate is z-index 620; detail is 300. Still kill detail hits — deep-link /u open under the
+   gate left an active #detailModal that could confuse taps / focus (owner report Nov 2026). */
 body.human-gate-open .app-header,
-body.human-gate-open main.main-content{pointer-events:none!important}
+body.human-gate-open main.main-content,
+body.human-gate-open #detailModal,
+body.human-gate-open .whats-new-overlay,
+body.human-gate-open .search-spotlight-overlay{
+  pointer-events:none!important
+}
+body.human-gate-open #humanGateOverlay{pointer-events:auto!important}

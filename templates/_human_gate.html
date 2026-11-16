@@ -31,6 +31,15 @@
   var st=document.getElementById('humanGateStatus');
   if(!ov||!tray)return;
   try{document.documentElement.classList.add('human-gate-open');document.body.classList.add('human-gate-open')}catch(_){}
+  /* If a unit/char deep-link opened detail under the gate, park it so Haro taps are unambiguous. */
+  try{
+    var dm=document.getElementById('detailModal');
+    if(dm&&dm.classList.contains('active')){
+      dm.setAttribute('data-hg-parked','1');
+      dm.classList.remove('active');
+      document.body.classList.remove('detail-modal-open');
+    }
+  }catch(_){}
   var HARO={
     bronze:{{ human_gate_haro.bronze|tojson }},
     silver:{{ human_gate_haro.silver|tojson }},
@@ -187,20 +196,41 @@
     try{ov.classList.remove('active');ov.setAttribute('aria-hidden','true')}catch(_){}
     try{document.documentElement.classList.remove('human-gate-open');document.body.classList.remove('human-gate-open')}catch(_){}
   }
+  function resetHaros(){
+    /* After a failed verify, gold used to stay .is-collect (opacity 0) — user could not retry. */
+    var buttons=tray.querySelectorAll('.human-gate-haro');
+    for(var i=0;i<buttons.length;i++){
+      buttons[i].classList.remove('is-collect','is-fade','is-wrong');
+      try{
+        buttons[i].style.removeProperty('--dx');
+        buttons[i].style.removeProperty('--dy');
+      }catch(_){}
+    }
+  }
   function fail(msg){
     busy=0;
     tray.classList.remove('is-locked');
     if(wallet)wallet.classList.remove('is-hit');
+    resetHaros();
     if(st){st.hidden=false;st.textContent=msg||copy.fail}
   }
   function verify(){
     if(st){st.hidden=false;st.textContent='…'}
+    var ctrl=null;
+    var timer=null;
+    try{ctrl=new AbortController()}catch(_){ctrl=null}
+    if(ctrl){
+      timer=window.setTimeout(function(){
+        try{ctrl.abort()}catch(_){}
+      },15000);
+    }
     fetch('/api/human_gate/verify',{
       method:'POST',
       credentials:'same-origin',
       headers:{'Accept':'application/json','Content-Type':'application/json'},
       body:JSON.stringify({pick:'gold'}),
-      cache:'no-store'
+      cache:'no-store',
+      signal:ctrl?ctrl.signal:undefined
     }).then(function(r){
       if(!r.ok)throw new Error('http '+r.status);
       return r.json();
@@ -210,6 +240,8 @@
       done();
     }).catch(function(){
       fail(copy.fail);
+    }).then(function(){
+      if(timer)try{window.clearTimeout(timer)}catch(_){}
     });
   }
   function flyToWallet(btn){

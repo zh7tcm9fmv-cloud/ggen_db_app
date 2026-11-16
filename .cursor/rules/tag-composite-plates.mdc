@@ -15,7 +15,14 @@ Owner lesson (**Nov 2026**): local Cursor preview looked fine while **live** SER
 4. **Do not stretch plates** — keep opaque crop aspect (`42/36`, `53/36`) + `background-size:100% 100%` only while height is locked. If height drifts, SERIES/TAG look “broken,” not “slightly off.”
 5. **CDN plates must match local tight crops** — icon `42×36`, label `53×36`. If GitHub `ggen_db_images` still has `53×50` / `50×50` full-canvas plates, live (and any local session with `IMAGE_CDN`) will stretch SERIES/TAG and look stair-stepped even when CSS is correct. After plate edits: **commit + push `ggen_db_images`**, then verify live URL bytes/size.
 
-6. After **any** edit to tag composite CSS/JS/plates (or Teko faces used by values), run:
+6. **Type tip (`tag-composite--type`) — proven fix (owner confirmed iOS Nov 2026)**  
+   Padded CDN `Type_icon_Base` (**46×40** with transparent rows) stretched via `background-size:100% 100%` makes the tip look **shorter than the grey value bar** on WebKit/iOS even when DOM boxes are both `--tag-h`.  
+   **Do not** keep chasing webp crops / solid-underlay under chevron alpha (solid fill under a chevron webp squares off the tip cutouts and “ruins” desktop).  
+   **Use CSS tip instead:** `background-color: #6678a2` (Type plate mid RGB) + `clip-path` chevron matching Tag tip cut (~`21.43%` / 9÷42) + `background-image: none`. Bromide_MS stays as `.tag-icon-fg`; role TypeIcon stays in the grey value.  
+   Grey value must keep the same **Teko optical top pad** as TAG/SERIES (`padding:2px 6px 0 …`). Zeroing it makes “Durability Type” / “Support Type” sit high in the bar.  
+   Local Flask prefers `ggen_db_images` over `app/static` when CDN is off — a bad checkout plate fools local even when app static is correct.
+
+7. After **any** edit to tag composite CSS/JS/plates (or Teko faces used by values), run:
 
 ```text
 python scripts/smoke_tag_composites.py
@@ -24,7 +31,7 @@ python scripts/smoke_tag_composites.py --base https://ggendb.up.railway.app
 
 (Local Flask must be up for the first; second before claiming live OK.)
 
-7. Honest status: CSS-only fix is **local until deploy**; plate fixes are **not live until `ggen_db_images` is pushed**. Do not say “fixed” for Railway until live smoke passes (see `verify-live-before-fixed.mdc`).
+8. Honest status: CSS-only fix is **local until deploy**; plate fixes are **not live until `ggen_db_images` is pushed**. Do not say “fixed” for Railway / iOS until proven (see `verify-live-before-fixed.mdc` + `ios-safari-and-desktop-audience.mdc`). DOM equal heights alone ≠ visual tip/value edge match when a padded webp is the paint.
 
 ## Forbidden
 
@@ -36,6 +43,9 @@ python scripts/smoke_tag_composites.py --base https://ggendb.up.railway.app
 | Preview-only visual OK as ship gate | Font/subpixel differ local vs live |
 | Nested `height`/`line-height:var(--tag-h)` inside a `--tag-h` flex value | iOS Safari shifts the grey bar up; Chrome mobile preview can miss it — see `ios-safari-and-desktop-audience.mdc` |
 | Chrome device-mode “fixed on phone” | Audience is desktop + **real iOS Safari**; Blink ≠ WebKit |
+| Type tip via padded `Type_icon_Base` webp + `background-size:100% 100%` | Transparent pad → tip looks shorter than grey bar on iOS; crop not live until CDN push |
+| `background-color` under chevron webp to “fill pad” | Fills tip cutouts → square tip; ruins desktop |
+| Inventing `_white` TypeIcon assets for the grey value | Use normal `TypeIcon_*_S.webp` + CSS size (14px) |
 
 ## Checklist before “done”
 

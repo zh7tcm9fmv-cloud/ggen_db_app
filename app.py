@@ -222,7 +222,9 @@ def _hostname_from_origin_or_host(value):
 _GGEN_SITE_COOKIE = 'ggen_site'
 # First-visit human gate (click + signed cookie). Not Cloudflare — stops non-JS scrapers only.
 _GGEN_HUMAN_COOKIE = 'ggen_human'
+_GGEN_HUMAN_CHAL_COOKIE = 'ggen_hg_chal'  # short-lived; set with gate HTML for verify POST
 _GGEN_HUMAN_MAX_AGE = 60 * 60 * 24 * 30  # 30 days
+_GGEN_HUMAN_CHAL_MAX_AGE = 60 * 60  # 1 hour
 _GGEN_PROVENANCE_CANARY = (
     (os.environ.get('GGEN_PROVENANCE_CANARY') or '').strip()
     or hashlib.sha256(b'ggendb-eternal-database-provenance-v1').hexdigest()[:20]
@@ -376,21 +378,42 @@ def _human_gate_issue_token():
     return _human_gate_serializer().dumps({'v': 1})
 
 
-def _human_gate_set_cookie(resp):
-    secure = bool(
+def _human_gate_cookie_secure_flag():
+    return bool(
         (os.environ.get('RAILWAY_ENVIRONMENT') or '').strip()
         or (getattr(request, 'is_secure', False) if request else False)
     )
+
+
+def _human_gate_set_cookie(resp):
     resp.set_cookie(
         _GGEN_HUMAN_COOKIE,
         _human_gate_issue_token(),
         max_age=_GGEN_HUMAN_MAX_AGE,
         samesite='Lax',
-        secure=secure,
+        secure=_human_gate_cookie_secure_flag(),
         httponly=True,
         path='/',
     )
     return resp
+
+
+def _human_gate_set_challenge_cookie(resp):
+    """Allow /api/human_gate/verify when privacy browsers strip Origin/Sec-Fetch."""
+    resp.set_cookie(
+        _GGEN_HUMAN_CHAL_COOKIE,
+        '1',
+        max_age=_GGEN_HUMAN_CHAL_MAX_AGE,
+        samesite='Lax',
+        secure=_human_gate_cookie_secure_flag(),
+        httponly=True,
+        path='/',
+    )
+    return resp
+
+
+def _human_gate_challenge_ok():
+    return (request.cookies.get(_GGEN_HUMAN_CHAL_COOKIE) or '').strip() == '1'
 
 
 # —— Human-gate visitor counter (passed verifications) ——
@@ -21580,6 +21603,11 @@ def _serve_index():
     if _human_gate_enabled():
         r.headers['Cache-Control'] = 'private, no-store'
         r.headers['Vary'] = 'Cookie'
+        try:
+            if not _human_gate_cookie_ok() or _human_gate_force_show():
+                _human_gate_set_challenge_cookie(r)
+        except Exception as e:
+            print(f'human_gate: set challenge cookie failed: {e}')
     elif INDEX_HTML_CACHE_CONTROL:
         r.headers['Cache-Control'] = INDEX_HTML_CACHE_CONTROL
     else:
@@ -21761,8 +21789,13 @@ def api_human_gate_verify():
         r = make_response(jsonify({'ok': True, 'enabled': False}))
         r.headers['Cache-Control'] = 'no-store'
         return r
-    # Same-origin browser only — not a secret challenge, just cut dumb scrapers.
-    if not _api_guard_client_is_local() and not _api_request_looks_like_site_browser():
+    # Same-origin browser, soft site cookie, or short-lived HTML challenge cookie.
+    # Challenge covers privacy / in-app WebViews that strip Origin + Sec-Fetch-*.
+    if (
+        not _api_guard_client_is_local()
+        and not _api_request_looks_like_site_browser()
+        and not _human_gate_challenge_ok()
+    ):
         r = make_response(jsonify({'ok': False, 'error': 'browser_required'}), 403)
         r.headers['Cache-Control'] = 'no-store'
         return r
@@ -21771,7 +21804,12 @@ def api_human_gate_verify():
         already = bool(_human_gate_cookie_ok())
     except Exception:
         already = False
-    passed = int((_human_gate_stats_get(hydrate=True) or {}).get('passed') or 0)
+    # Never block entry on stats I/O — cookie issue is the product; counter is best-effort.
+    passed = 0
+    try:
+        passed = int((_human_gate_stats_get(hydrate=False) or {}).get('passed') or 0)
+    except Exception:
+        passed = 0
     if not already:
         try:
             passed = int(_human_gate_stats_increment() or passed)
@@ -21781,8 +21819,8 @@ def api_human_gate_verify():
     r.headers['Cache-Control'] = 'no-store'
     try:
         _human_gate_set_cookie(r)
-    except Exception:
-        pass
+    except Exception as e:
+        print(f'human_gate: set pass cookie failed: {e}')
     return r
 
 

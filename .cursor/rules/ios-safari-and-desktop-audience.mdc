@@ -14,6 +14,7 @@ Owner lesson (**Nov 2026** — Type condition chips): Cursor/Chrome **device too
 3. Do **not** tell the owner a phone UI issue is fixed after only local Chrome device emulation.
 4. For detail chips / tag composites / locked-height HUD rows: prefer **font-agnostic** flex centering; avoid nested `height`/`line-height: var(--tag-h)` inside a `--tag-h` flex child (iOS shifts the paint box).
 5. Still honor `verify-live-before-fixed.mdc`: local-only vs **deployed** Safari on `ggendb.up.railway.app` must be stated honestly.
+6. **Type condition tip (owner confirmed iOS Nov 2026):** padded CDN plate + webp stretch ≠ fixed. Proven path = CSS solid + `clip-path` tip (see `tag-composite-plates.mdc`). Playwright **WebKit** iPhone viewport is a useful stand-in while iterating; **owner’s real iPhone Safari** is still the final gate before saying “fixed on iOS.” Do not claim phone-fixed from desktop Cursor preview alone.
 
 ## When touching UI that ships to phones
 
@@ -21,9 +22,10 @@ Owner lesson (**Nov 2026** — Type condition chips): Cursor/Chrome **device too
 |---|---|
 | Desktop local / live | needed |
 | Chrome device mode only | **not** enough for “works on phone” |
-| Real iOS Safari (owner device or WebKit) after deploy | required before “fixed on phone” |
+| Playwright WebKit iPhone viewport | good while iterating; not a substitute for owner device |
+| Real iOS Safari (owner device) after deploy | required before “fixed on phone” |
 
 ## Related
 
-- Tag/SERIES plate locks: `tag-composite-plates.mdc`
+- Tag/SERIES/Type plate locks: `tag-composite-plates.mdc`
 - Live vs local claims: `verify-live-before-fixed.mdc`
