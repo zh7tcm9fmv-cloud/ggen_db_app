@@ -1817,7 +1817,7 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .page-info{font-size:16px;color:var(--text-muted);margin:0 8px}
 .stage-diff-badge{display:inline-block;padding:4px 10px;border-radius:999px;font-size:13px;font-weight:800;color:#fff;letter-spacing:.4px}.stage-diff-normal{background:#55c7ff}.stage-diff-hard{background:#ff9a3d}.stage-diff-expert{background:#ff4b4b}.stage-diff-unknown{background:#667085}
 /* No backdrop-filter: blur here — full-viewport blur + solid wash = GPU thrash / “everything dies” the moment detail opens. */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:300;display:none;align-items:flex-start;justify-content:center;padding:30px 20px;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}.modal-overlay.active{display:flex}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:300;display:none;align-items:flex-start;justify-content:center;padding:30px 20px;overflow-y:auto;overflow-x:clip;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}.modal-overlay.active{display:flex}
 .modal-content{background:var(--bg-modal);border:1px solid var(--border-color);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);max-width:1100px;width:100%;position:relative;overflow:clip;overflow-x:clip}
 /* Detail dossier art: paint on ::before sized by --ggen-detail-cover-* (JS lock).
    Root bug: background-size:cover on the scrollport rescales whenever scrollHeight /
@@ -1868,6 +1868,41 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 }
 .modal-content.char-detail:not(.detail-ranking-view) .detail-header,.modal-content.unit-detail:not(.detail-ranking-view) .detail-header{overflow:visible}
 .modal-content.char-detail,.modal-content.unit-detail{overflow-x:clip;overflow-y:auto}
+/* Detail: sole scrollport = #modalContent (keeps sticky chrome). Overlay does not
+   scroll (no nested bars). Scrollbar hidden — wheel/touch still scroll. */
+#detailModal.modal-overlay{
+  --detail-modal-vh-chrome:60px;
+  overflow-x:clip;
+  overflow-y:hidden;
+}
+@media(max-width:768px){
+  #detailModal.modal-overlay{--detail-modal-vh-chrome:16px}
+}
+#detailModal .modal-content.char-detail,
+#detailModal .modal-content.unit-detail,
+#detailModal .modal-content.supporter-detail,
+#detailModal .modal-content.stage-detail,
+#detailModal .modal-content.option-part-detail,
+#detailModal .modal-content.item-detail,
+#detailModal .modal-content.profile-title-detail{
+  overflow-x:clip;
+  overflow-y:auto;
+  max-height:calc(100vh - var(--detail-modal-vh-chrome,60px));
+  max-height:calc(100dvh - var(--detail-modal-vh-chrome,60px));
+  scrollbar-width:none;
+  -ms-overflow-style:none;
+}
+#detailModal .modal-content.char-detail::-webkit-scrollbar,
+#detailModal .modal-content.unit-detail::-webkit-scrollbar,
+#detailModal .modal-content.supporter-detail::-webkit-scrollbar,
+#detailModal .modal-content.stage-detail::-webkit-scrollbar,
+#detailModal .modal-content.option-part-detail::-webkit-scrollbar,
+#detailModal .modal-content.item-detail::-webkit-scrollbar,
+#detailModal .modal-content.profile-title-detail::-webkit-scrollbar{
+  width:0;
+  height:0;
+  display:none;
+}
 .modal-top-label{position:absolute;top:14px;left:28px;font-size:14px;font-weight:700;color:var(--accent-cyan);letter-spacing:1px;text-transform:uppercase;background:rgba(0,212,255,0.1);padding:4px 13px 4px 15px;border-radius:20px;border:1px solid rgba(0,212,255,0.3);z-index:100}
 .modal-entity-id{position:absolute;top:20px;right:60px;font-size:16px;font-weight:700;color:var(--text-muted);letter-spacing:1px;z-index:100}
 .modal-entity-id-flag{margin-left:8px;font-size:12px;font-weight:600;color:var(--accent-orange);letter-spacing:.3px;white-space:nowrap}
@@ -7654,4 +7689,3 @@ button.stage-fea-diff-tab.diff-pill:focus-visible{
 ){
   overflow:hidden;
 }
-

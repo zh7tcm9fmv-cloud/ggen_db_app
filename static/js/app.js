@@ -1277,7 +1277,7 @@ function clearRankingBrowseFilters(which){if(which==='rankChar'){S.listRankCharS
 function refreshRankingFilterLabels(){updateRarityFilterButtonLabel('rankChar');updateRoleFilterButtonLabel('rankChar');updateSourceFilterButtonLabel('rankChar');updateLineageFilterButtonLabel('rankChar');updateSeriesFilterButtonLabel('rankChar');updateSkillBrowseFilterLabel('rankChar');updateAbilBrowseFilterLabel('rankChar');updateRarityFilterButtonLabel('rankUnit');updateRoleFilterButtonLabel('rankUnit');updateSourceFilterButtonLabel('rankUnit');updateLineageFilterButtonLabel('rankUnit');updateSeriesFilterButtonLabel('rankUnit');updateSkillBrowseFilterLabel('rankUnit');updateUnitTerrainFilterLabel();updateUnitMovFilterLabel();updateUnitWeaponDebuffFilterLabel();updateUnitWeaponAttrSetFilterLabel();updateUnitMapWeaponRangeFilterLabel('rankUnit');updateUnitWeaponRangeFilterLabel('rankUnit');updateUnitWeaponRangeNonMapFilterLabel('rankUnit');updateUnitMechanismFilterLabel();updateUnitAbilityEffectFilterLabel('rankUnit');fillSourcePanel('rankChar');fillSourcePanel('rankUnit');syncRankListStatToggleUi()}
 function onRankingTabShown(){document.querySelectorAll('.ranking-mode-btn').forEach(b=>b.classList.toggle('active',b.dataset.rankingMode===S.ranking.mode));const ch=document.getElementById('rankingCharToolbarHost'),un=document.getElementById('rankingUnitToolbarHost');if(ch)ch.style.display=S.ranking.mode==='characters'?'block':'none';if(un)un.style.display=S.ranking.mode==='units'?'block':'none';if(S.ranking.mode==='units')ensureUnitWeaponRangeFilterDom();syncRankingFiltersFromBrowse();invalidateRankingBrowseFilterPanels();refreshRankingFilterLabels();syncMapWeaponRangeFilterVisibility();renderRankingStatPills();syncRankListStatToggleUi();syncRankingViewModeUi();const ibTab=S.ranking.mode==='units'?'rankUnits':'rankCharacters';scheduleInstantBrowseWarm(ibTab);void loadRankingList(S.ranking.mode==='characters'?S.ranking.pageChar:S.ranking.pageUnit)}
 function resetEphemeralBrowseFilterDomState(){['char','unit','mod','rankChar','rankUnit'].forEach(which=>{const rp=rarityPrefix(which);rarityKeysFor(which).forEach(k=>{const el=document.getElementById(rp+'Rarity'+k);if(el)el.checked=true});if(which!=='mod'){const ltEl=document.getElementById(rp+'RarityLT');if(ltEl)ltEl.checked=true}});['char','unit','rankChar','rankUnit'].forEach(which=>{const rpf=rolePrefix(which);ROLE_LIST_IDS.forEach(id=>{const el=document.getElementById(rpf+'Role'+id);if(el)el.checked=true})})}
-document.addEventListener('DOMContentLoaded',async()=>{removeLegacyBrowseTableStickyBars();try{const _bsd=sessionStorage.getItem('ggen_bt_sort');if(_bsd==='asc'||_bsd==='desc')S.btBannerSortDir=_bsd}catch(_){}loadPersistedListView();loadPersistedListGridVariant();applyModEffectDropdownIcons();(function(){const saved=readPersistedLang();if(saved)S.lang=displayLangCode(saved);else{const h=window.__GGEN_LANG_HINT__;const sug=h&&(h.suggested||h.lang);if(sug)S.lang=displayLangCode(sug)}syncUiLangDocumentAttr()})();void loadLangs();loadPersistedListStatToggles();resetEphemeralBrowseFilterDomState();applyLang();['characters','units','supporters','stages','modifications'].forEach(t=>{syncListViewToggleUI(t);applyListViewVisibility(t)});syncGridVariantBadge('char');syncGridVariantBadge('unit');buildTableHeaders();initSearchHints();syncBrowseSearchWidths();let _bwResize;window.addEventListener('resize',()=>{clearTimeout(_bwResize);_bwResize=setTimeout(()=>{syncBrowseSearchWidths();syncRankingTailControlsPlacement()},120)});initSeriesIconNav();bindSearchRecallObserver();syncListCharToggle();syncListUnitStatToggles();syncListCondToggles();setupKeys();initDetailBrowseSwipe();initDetailModalChromeScroll();initScrollTopFab();initNavTabsAutoHide();initBannerTimelineExtras();bindBannerTimelineNavPrefetch();bindHeavyTabNavPrefetch();initCmpSafeArea();initBrowseHistory();syncCmpMobilePickChrome();initDetailPrefetchIntentHandlers();bindRewardDetailDelegation();bindUnitLbVideoDelegation();wireTbPickerBodyClicks();wireDcPickerBodyClicks();wireStageMapNpcClicks();const _qs=new URLSearchParams(location.search);const _hasDcShare=!!(_qs.get('d')||_qs.get('dc'));const _tabRaw=String(_qs.get('tab')||'').trim();const _hasTbShare=!!_qs.get('team')&&(_tabRaw==='TB'||_tabRaw==='team_builder');const _tabBlocksShort=urlTabParamBlocksBrowseShortPath(_qs.get('tab'));let _shortRouted=false;if(!_tabBlocksShort)_shortRouted=!!applyBrowseShortPathOnLoad();if(!_shortRouted){stagesOrModsTabFromQueryOnLoad();if(S.currentTab==='characters'&&!_tabBlocksShort)primeBrowseTabIfNeeded('characters')}else{stagesOrModsTabFromQueryOnLoad()}if(_hasDcShare)try{await _dcCheckUrlParams()}catch(e){console.warn('dc share restore',e)}if(_hasTbShare)_tbCheckUrlParams();updateCompareUI();setTimeout(()=>{if(!S._contentBootstrapDone)scheduleDeferredContentBootstraps(false)},8000)});
+document.addEventListener('DOMContentLoaded',async()=>{removeLegacyBrowseTableStickyBars();try{bindFilterDdEnterOnce()}catch(_){}try{const _bsd=sessionStorage.getItem('ggen_bt_sort');if(_bsd==='asc'||_bsd==='desc')S.btBannerSortDir=_bsd}catch(_){}loadPersistedListView();loadPersistedListGridVariant();applyModEffectDropdownIcons();(function(){const saved=readPersistedLang();if(saved)S.lang=displayLangCode(saved);else{const h=window.__GGEN_LANG_HINT__;const sug=h&&(h.suggested||h.lang);if(sug)S.lang=displayLangCode(sug)}syncUiLangDocumentAttr()})();void loadLangs();loadPersistedListStatToggles();resetEphemeralBrowseFilterDomState();applyLang();['characters','units','supporters','stages','modifications'].forEach(t=>{syncListViewToggleUI(t);applyListViewVisibility(t)});syncGridVariantBadge('char');syncGridVariantBadge('unit');buildTableHeaders();initSearchHints();syncBrowseSearchWidths();let _bwResize;window.addEventListener('resize',()=>{clearTimeout(_bwResize);_bwResize=setTimeout(()=>{syncBrowseSearchWidths();syncRankingTailControlsPlacement()},120)});initSeriesIconNav();bindSearchRecallObserver();syncListCharToggle();syncListUnitStatToggles();syncListCondToggles();setupKeys();initDetailBrowseSwipe();initDetailModalChromeScroll();initScrollTopFab();initNavTabsAutoHide();initBannerTimelineExtras();bindBannerTimelineNavPrefetch();bindHeavyTabNavPrefetch();initCmpSafeArea();initBrowseHistory();syncCmpMobilePickChrome();initDetailPrefetchIntentHandlers();bindRewardDetailDelegation();bindUnitLbVideoDelegation();wireTbPickerBodyClicks();wireDcPickerBodyClicks();wireStageMapNpcClicks();const _qs=new URLSearchParams(location.search);const _hasDcShare=!!(_qs.get('d')||_qs.get('dc'));const _tabRaw=String(_qs.get('tab')||'').trim();const _hasTbShare=!!_qs.get('team')&&(_tabRaw==='TB'||_tabRaw==='team_builder');const _tabBlocksShort=urlTabParamBlocksBrowseShortPath(_qs.get('tab'));let _shortRouted=false;if(!_tabBlocksShort)_shortRouted=!!applyBrowseShortPathOnLoad();if(!_shortRouted){stagesOrModsTabFromQueryOnLoad();if(S.currentTab==='characters'&&!_tabBlocksShort)primeBrowseTabIfNeeded('characters')}else{stagesOrModsTabFromQueryOnLoad()}if(_hasDcShare)try{await _dcCheckUrlParams()}catch(e){console.warn('dc share restore',e)}if(_hasTbShare)_tbCheckUrlParams();updateCompareUI();setTimeout(()=>{if(!S._contentBootstrapDone)scheduleDeferredContentBootstraps(false)},8000)});
 const LANG_STORAGE_KEY='ggen_lang';
 function readPersistedLang(){try{const s=localStorage.getItem(LANG_STORAGE_KEY);return s&&String(s).trim()||''}catch(e){return''}}
 /** Persist UI display codes only (JP / KR), never internal JA / HR pack ids. */
@@ -1882,7 +1882,69 @@ function filterSkillDropdown(p,q){const grid=document.getElementById(p+'SkillGri
 /* Dropdown filters only toggle display:none — safe during IME. Do NOT skip on
    isComposing: iOS Safari often leaves isComposing true (or skips compositionend)
    after the glyph is already in the field, which jammed tag/skill droplist search. */
-function wireFilterDdSearchListeners(root,p,kind){const inp=root&&root.querySelector?root.querySelector('.filter-dd-search'):null;if(!inp||inp._ggenDdWired)return;inp._ggenDdWired=1;inp.addEventListener('input',function(ev){debounceFilterBrowseDropdown(ev,p,kind)});inp.addEventListener('compositionend',function(ev){debounceFilterBrowseDropdown(ev,p,kind,true)});}function _imeDeferDropdownFilter(run,force){const delay=force?Math.max(BROWSE_DROPDOWN_FILTER_MS,48):BROWSE_DROPDOWN_FILTER_MS;return setTimeout(run,delay)}
+function wireFilterDdSearchListeners(root,p,kind){const inp=root&&root.querySelector?root.querySelector('.filter-dd-search'):null;if(!inp||inp._ggenDdWired)return;inp._ggenDdWired=1;inp.addEventListener('input',function(ev){debounceFilterBrowseDropdown(ev,p,kind)});inp.addEventListener('compositionend',function(ev){debounceFilterBrowseDropdown(ev,p,kind,true)});bindFilterDdEnterOnce()}
+function _imeDeferDropdownFilter(run,force){const delay=force?Math.max(BROWSE_DROPDOWN_FILTER_MS,48):BROWSE_DROPDOWN_FILTER_MS;return setTimeout(run,delay)}
+/** Enter in any .filter-dd-search → apply best visible option (exact → prefix → first). */
+function filterDdItemIsVisible(el){
+if(!el||el.classList.contains('skill-browse-all-row'))return false;
+if(el.style.display==='none'||el.getAttribute('aria-hidden')==='true')return false;
+try{const st=window.getComputedStyle(el);if(st&&(st.display==='none'||st.visibility==='hidden'))return false}catch(_){}
+return true;
+}
+function flushFilterDdSearchNow(inp){
+if(!inp)return;
+const q=inp.value||'';
+const id=String(inp.id||'');
+try{
+if(id.endsWith('SkillFilterSearch')){filterSkillDropdown(id.replace(/SkillFilterSearch$/,''),q);return}
+if(id.endsWith('AbilFilterSearch')){filterAbilDropdown(id.replace(/AbilFilterSearch$/,''),q);return}
+const body=inp.closest('[id$="SeriesFilterBody"],[id$="LineageFilterBody"]');
+if(body&&body.id){const m=String(body.id).match(/^(.*)(Series|Lineage)FilterBody$/);if(m){filterBrowseDropdown(m[1],m[2]==='Series'?'series':'lineage',q);return}}
+const dcPanel=document.getElementById('dcPickerFilterPanel');
+if(dcPanel&&dcPanel.contains(inp)&&typeof _dcPickerFilterDdLocal==='function'){_dcPickerFilterDdLocal(dcPanel.querySelector('.browse-series-grid')?'series':'lineage',q)}
+}catch(_){}
+}
+function pickFilterDdEnterTarget(inp){
+const root=inp.closest('.filter-dropdown-panel,.skill-filter-panel,.lineage-filter-panel,.series-filter-panel,[id$="FilterPanel"],[id$="FilterBody"]')||inp.parentElement;
+if(!root)return null;
+const q=(inp.value||'').trim().toLowerCase();
+const items=Array.from(root.querySelectorAll('.list-filter-tag-item')).filter(filterDdItemIsVisible);
+if(!items.length)return null;
+let exact=null,prefix=null;
+for(let i=0;i<items.length;i++){
+const ft=(items[i].getAttribute('data-filter-text')||'').toLowerCase();
+if(q&&ft===q){exact=items[i];break}
+if(q&&!prefix&&ft.startsWith(q))prefix=items[i];
+}
+return exact||prefix||items[0];
+}
+function applyFilterDdEnter(inp){
+const item=pickFilterDdEnterTarget(inp);
+if(!item)return false;
+const cb=item.querySelector('input.list-filter-sr,input[type="checkbox"],input[type="radio"]');
+if(cb){
+if(cb.disabled)return false;
+if(cb.type==='radio'){if(!cb.checked){cb.checked=true;cb.dispatchEvent(new Event('change',{bubbles:true}))}return true}
+if(!cb.checked){cb.checked=true;cb.dispatchEvent(new Event('change',{bubbles:true}))}
+return true;
+}
+const btn=item.querySelector('button:not([disabled])');
+if(btn){btn.click();return true}
+return false;
+}
+function bindFilterDdEnterOnce(){
+if(document.documentElement._ggenFilterDdEnter)return;
+document.documentElement._ggenFilterDdEnter=1;
+document.addEventListener('keydown',function(ev){
+if(ev.key!=='Enter'||ev.defaultPrevented)return;
+if(ev.isComposing||ev.keyCode===229)return;
+const t=ev.target;
+if(!t||!t.classList||!t.classList.contains('filter-dd-search'))return;
+ev.preventDefault();
+flushFilterDdSearchNow(t);
+applyFilterDdEnter(t);
+},true);
+}
 function debounceFilterSkillDropdown(evOrP,pMaybe,force){let p=evOrP,ev=null;if(typeof evOrP==='object'&&evOrP&&evOrP.target!=null){ev=evOrP;p=pMaybe}if(ev)clearImeComposingState(ev.target);const k='_skSchFt'+p;clearTimeout(S[k]);S[k]=_imeDeferDropdownFilter(()=>{S[k]=null;const el=document.getElementById(p+'SkillFilterSearch');filterSkillDropdown(p,el&&el.value||'')},!!force)}
 function debounceFilterBrowseDropdown(a,b,c,d){let ev=null,p,kind,force=false;if(typeof a==='object'&&a&&a.target!=null){ev=a;p=b;kind=c;force=!!d}else{p=a;kind=b;force=!!c}if(ev)clearImeComposingState(ev.target);const k='_brDd_'+kind+p;clearTimeout(S[k]);S[k]=_imeDeferDropdownFilter(()=>{S[k]=null;const body=document.getElementById(p+(kind==='lineage'?'LineageFilterBody':'SeriesFilterBody'));const inp=body&&body.querySelector('.filter-dd-search');filterBrowseDropdown(p,kind,inp&&inp.value||'')},!!force)}
 function debounceFilterAbilDropdown(evOrP,pMaybe,force){let p=evOrP,ev=null;if(typeof evOrP==='object'&&evOrP&&evOrP.target!=null){ev=evOrP;p=pMaybe}if(ev)clearImeComposingState(ev.target);const k='_abilSchFt'+p;clearTimeout(S[k]);S[k]=_imeDeferDropdownFilter(()=>{S[k]=null;const el=document.getElementById(p+'AbilFilterSearch');filterAbilDropdown(p,el&&el.value||'')},!!force)}
@@ -3288,13 +3350,15 @@ wmEnemy:'/static/images/Master League/ML_GFight_PartsText_02.webp'
 function mlDeployCellKey(x,y){return String(x)+','+String(y)}
 /**
  * Deploy preview 2×2 from MD home (X,Y):
- * — behind facing (enemy Right→−x, ally Left→+x), same as /mls
- * — LINE: south (−y), digit on bottom-front
- * — standard: all slots north (+y); digit on MD home
+ * — lateral: behind facing (enemy Right→−x, ally Left→+x), same as /mls
+ *   or toward opponent (standard slots 2 & 3 only)
+ * — LINE: south (−y); digit bottom-front
+ * — standard: all slots north (+y); slots 2 & 3 toward opponent (not behind); digit on MD
  */
-function mlDeployFootprintCells(force,x,y,direction,expandY){
+function mlDeployFootprintCells(force,x,y,direction,expandY,lateralMode){
 const dir=direction!=null?(direction|0):(force==='ally'?3:1);
-const dx=dir===1?-1:(dir===3?1:(force==='ally'?1:-1));
+let dx=dir===1?-1:(dir===3?1:(force==='ally'?1:-1));
+if(lateralMode==='toward')dx=-dx;
 const dy=(expandY|0)===1?1:-1;
 const xi=x|0,yi=y|0;
 return[{x:xi,y:yi},{x:xi+dx,y:yi},{x:xi,y:yi+dy},{x:xi+dx,y:yi+dy}];
@@ -3315,9 +3379,12 @@ const ps=side.player_side|0;const force=ps===1?'ally':(ps===2?'enemy':null);if(!
 const direction=side.direction;
 (side.cells||[]).forEach(function(c){
 const px=c.x|0,py=c.y|0,n=c.n|0;
-/* Standard: every slot grows up (+y). LINE: always down (−y). */
+/* LINE: all slots behind + south (−y), digit bottom-front.
+ * Standard: north (+y); 1/4/5 behind, 2 & 3 toward opponent; digit on MD. */
+const stdTowardOpp=!isLine&&(n===2||n===3);
 const expandY=isLine?-1:1;
-const fp=mlDeployFootprintCells(force,px,py,direction,expandY);
+const lateral=stdTowardOpp?'toward':'behind';
+const fp=mlDeployFootprintCells(force,px,py,direction,expandY,lateral);
 const fpId=force+'-'+String(n);
 const fpSet=Object.create(null);
 fp.forEach(function(cell){fpSet[mlDeployCellKey(cell.x,cell.y)]=1});
