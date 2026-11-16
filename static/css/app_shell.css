@@ -3115,16 +3115,20 @@ html[data-ui-lang="KR"] .detail-rec-link-card .detail-rec-limited-wrap--on-thumb
   --tag-plate-fill:var(--tag-plate-teal)
 }
 /* Support/Durability Type — same height lock as TAG (icon | white value), no TAG label.
-   Left = Type_icon_Base (opaque-tight 42×36) + Bromide_MS. White value = role TypeIcon + type name.
-   Plate must be 42×36 full-bleed (same as Tag tip). Padded 46×40 canvases shrink the blue tip. */
+   Tip is CSS solid + chevron clip (Type plate fill #6678a2), NOT Type_icon_Base.webp.
+   Live CDN still ships a padded 46×40 Type plate; stretching that webp always makes the
+   blue tip look shorter than the grey bar on WebKit/iOS. CSS tip removes that dependency.
+   White value = role TypeIcon + type name. Left fg = Bromide_MS. */
 .tag-composite--type{
-  --tag-icon-base:url(/static/images/UI/UI_Common_Label_Type_icon_Base.webp);
+  --tag-icon-base:none;
   --tag-label-plate:none;
   --tag-icon-ar:calc(42 / 36);
   --tag-icon-w:calc(var(--tag-h) * 42 / 36);
-  --tag-plate-fill:#6679a2; /* matches Type_icon_Base fill — not TAG cyan */
+  --tag-plate-fill:#6678a2; /* Type_icon_Base mid RGB 102,120,162 */
   /* Bromide_MS reads muddy at 14px — 1px inset → ~18px fg (plate height stays --tag-h) */
   --tag-icon-inset:1px;
+  /* Tip cut matches Tag_icon_Base left edge (~9/42) */
+  --tag-type-tip-cut:21.43%;
   grid-template-columns:var(--tag-icon-w) minmax(0,max-content);
   align-items:center;
   height:var(--tag-h);
@@ -3142,17 +3146,16 @@ html[data-ui-lang="KR"] .detail-rec-link-card .detail-rec-limited-wrap--on-thumb
   box-sizing:border-box;
   margin:0
 }
-/* Same paint path as TAG tip — plate webp fills the locked box edge-to-edge */
+/* Solid tip — full --tag-h every engine; clip-path = left chevron (same class as TAG tip art) */
 .tag-composite--type .tag-part-icon{
   display:inline-flex;
   align-items:center;
   justify-content:flex-end;
   padding:var(--tag-icon-inset) var(--tag-icon-inset) var(--tag-icon-inset) 0;
-  background-color:transparent;
-  background-image:var(--tag-icon-base);
-  background-repeat:no-repeat;
-  background-position:center;
-  background-size:100% 100%
+  background-color:var(--tag-plate-fill);
+  background-image:none;
+  -webkit-clip-path:polygon(0 50%,var(--tag-type-tip-cut) 0,100% 0,100% 100%,var(--tag-type-tip-cut) 100%);
+  clip-path:polygon(0 50%,var(--tag-type-tip-cut) 0,100% 0,100% 100%,var(--tag-type-tip-cut) 100%)
 }
 .tag-composite--type .tag-icon-fg{
   width:calc(var(--tag-h) - 2 * var(--tag-icon-inset));
