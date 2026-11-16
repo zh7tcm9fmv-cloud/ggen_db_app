@@ -1278,7 +1278,7 @@ function clearRankingBrowseFilters(which){if(which==='rankChar'){S.listRankCharS
 function refreshRankingFilterLabels(){updateRarityFilterButtonLabel('rankChar');updateRoleFilterButtonLabel('rankChar');updateSourceFilterButtonLabel('rankChar');updateLineageFilterButtonLabel('rankChar');updateSeriesFilterButtonLabel('rankChar');updateSkillBrowseFilterLabel('rankChar');updateAbilBrowseFilterLabel('rankChar');updateRarityFilterButtonLabel('rankUnit');updateRoleFilterButtonLabel('rankUnit');updateSourceFilterButtonLabel('rankUnit');updateLineageFilterButtonLabel('rankUnit');updateSeriesFilterButtonLabel('rankUnit');updateSkillBrowseFilterLabel('rankUnit');updateUnitTerrainFilterLabel();updateUnitMovFilterLabel();updateUnitWeaponDebuffFilterLabel();updateUnitWeaponAttrSetFilterLabel();updateUnitMapWeaponRangeFilterLabel('rankUnit');updateUnitWeaponRangeFilterLabel('rankUnit');updateUnitWeaponRangeNonMapFilterLabel('rankUnit');updateUnitMechanismFilterLabel();updateUnitAbilityEffectFilterLabel('rankUnit');fillSourcePanel('rankChar');fillSourcePanel('rankUnit');syncRankListStatToggleUi()}
 function onRankingTabShown(){document.querySelectorAll('.ranking-mode-btn').forEach(b=>b.classList.toggle('active',b.dataset.rankingMode===S.ranking.mode));const ch=document.getElementById('rankingCharToolbarHost'),un=document.getElementById('rankingUnitToolbarHost');if(ch)ch.style.display=S.ranking.mode==='characters'?'block':'none';if(un)un.style.display=S.ranking.mode==='units'?'block':'none';if(S.ranking.mode==='units')ensureUnitWeaponRangeFilterDom();syncRankingFiltersFromBrowse();invalidateRankingBrowseFilterPanels();refreshRankingFilterLabels();syncMapWeaponRangeFilterVisibility();renderRankingStatPills();syncRankListStatToggleUi();syncRankingViewModeUi();const ibTab=S.ranking.mode==='units'?'rankUnits':'rankCharacters';scheduleInstantBrowseWarm(ibTab);void loadRankingList(S.ranking.mode==='characters'?S.ranking.pageChar:S.ranking.pageUnit)}
 function resetEphemeralBrowseFilterDomState(){['char','unit','mod','rankChar','rankUnit'].forEach(which=>{const rp=rarityPrefix(which);rarityKeysFor(which).forEach(k=>{const el=document.getElementById(rp+'Rarity'+k);if(el)el.checked=true});if(which!=='mod'){const ltEl=document.getElementById(rp+'RarityLT');if(ltEl)ltEl.checked=true}});['char','unit','rankChar','rankUnit'].forEach(which=>{const rpf=rolePrefix(which);ROLE_LIST_IDS.forEach(id=>{const el=document.getElementById(rpf+'Role'+id);if(el)el.checked=true})})}
-document.addEventListener('DOMContentLoaded',async()=>{removeLegacyBrowseTableStickyBars();try{bindFilterDdEnterOnce()}catch(_){}try{const _bsd=sessionStorage.getItem('ggen_bt_sort');if(_bsd==='asc'||_bsd==='desc')S.btBannerSortDir=_bsd}catch(_){}loadPersistedListView();loadPersistedListGridVariant();applyModEffectDropdownIcons();(function(){const saved=readPersistedLang();if(saved)S.lang=displayLangCode(saved);else{const h=window.__GGEN_LANG_HINT__;const sug=h&&(h.suggested||h.lang);if(sug)S.lang=displayLangCode(sug)}syncUiLangDocumentAttr()})();void loadLangs();loadPersistedListStatToggles();resetEphemeralBrowseFilterDomState();applyLang();['characters','units','supporters','stages','modifications'].forEach(t=>{syncListViewToggleUI(t);applyListViewVisibility(t)});syncGridVariantBadge('char');syncGridVariantBadge('unit');buildTableHeaders();initSearchHints();syncBrowseSearchWidths();let _bwResize;window.addEventListener('resize',()=>{clearTimeout(_bwResize);_bwResize=setTimeout(()=>{syncBrowseSearchWidths();syncRankingTailControlsPlacement()},120)});initSeriesIconNav();bindSearchRecallObserver();syncListCharToggle();syncListUnitStatToggles();syncListCondToggles();setupKeys();initDetailBrowseSwipe();initDetailModalChromeScroll();initScrollTopFab();initNavTabsAutoHide();initBannerTimelineExtras();bindBannerTimelineNavPrefetch();bindHeavyTabNavPrefetch();initCmpSafeArea();initBrowseHistory();syncCmpMobilePickChrome();initDetailPrefetchIntentHandlers();bindRewardDetailDelegation();bindUnitLbVideoDelegation();wireTbPickerBodyClicks();wireDcPickerBodyClicks();wireStageMapNpcClicks();const _qs=new URLSearchParams(location.search);const _hasDcShare=!!(_qs.get('d')||_qs.get('dc'));const _tabRaw=String(_qs.get('tab')||'').trim();const _hasTbShare=!!_qs.get('team')&&(_tabRaw==='TB'||_tabRaw==='team_builder');const _tabBlocksShort=urlTabParamBlocksBrowseShortPath(_qs.get('tab'));let _shortRouted=false;if(!_tabBlocksShort)_shortRouted=!!applyBrowseShortPathOnLoad();if(!_shortRouted){stagesOrModsTabFromQueryOnLoad();if(S.currentTab==='characters'&&!_tabBlocksShort)primeBrowseTabIfNeeded('characters')}else{stagesOrModsTabFromQueryOnLoad()}if(_hasDcShare)try{await _dcCheckUrlParams()}catch(e){console.warn('dc share restore',e)}if(_hasTbShare)_tbCheckUrlParams();updateCompareUI();setTimeout(()=>{if(!S._contentBootstrapDone)scheduleDeferredContentBootstraps(false)},8000)});
+document.addEventListener('DOMContentLoaded',async()=>{removeLegacyBrowseTableStickyBars();try{bindFilterDdEnterOnce()}catch(_){}try{const _bsd=sessionStorage.getItem('ggen_bt_sort');if(_bsd==='asc'||_bsd==='desc')S.btBannerSortDir=_bsd}catch(_){}loadPersistedListView();loadPersistedListGridVariant();applyModEffectDropdownIcons();(function(){const saved=readPersistedLang();if(saved)S.lang=displayLangCode(saved);else{const h=window.__GGEN_LANG_HINT__;const sug=h&&(h.suggested||h.lang);if(sug)S.lang=displayLangCode(sug)}syncUiLangDocumentAttr()})();void loadLangs();loadPersistedListStatToggles();resetEphemeralBrowseFilterDomState();applyLang();['characters','units','supporters','stages','modifications'].forEach(t=>{syncListViewToggleUI(t);applyListViewVisibility(t)});syncGridVariantBadge('char');syncGridVariantBadge('unit');buildTableHeaders();initSearchHints();syncBrowseSearchWidths();let _bwResize;window.addEventListener('resize',()=>{clearTimeout(_bwResize);_bwResize=setTimeout(()=>{syncBrowseSearchWidths();syncRankingTailControlsPlacement()},120)});initSeriesIconNav();bindSearchRecallObserver();syncListCharToggle();syncListUnitStatToggles();syncListCondToggles();setupKeys();initDetailBrowseSwipe();initDetailModalChromeScroll();initDetailModalOutsideScroll();initScrollTopFab();initNavTabsAutoHide();initBannerTimelineExtras();bindBannerTimelineNavPrefetch();bindHeavyTabNavPrefetch();initCmpSafeArea();initBrowseHistory();syncCmpMobilePickChrome();initDetailPrefetchIntentHandlers();bindRewardDetailDelegation();bindUnitLbVideoDelegation();wireTbPickerBodyClicks();wireDcPickerBodyClicks();wireStageMapNpcClicks();const _qs=new URLSearchParams(location.search);const _hasDcShare=!!(_qs.get('d')||_qs.get('dc'));const _tabRaw=String(_qs.get('tab')||'').trim();const _hasTbShare=!!_qs.get('team')&&(_tabRaw==='TB'||_tabRaw==='team_builder');const _tabBlocksShort=urlTabParamBlocksBrowseShortPath(_qs.get('tab'));let _shortRouted=false;if(!_tabBlocksShort)_shortRouted=!!applyBrowseShortPathOnLoad();if(!_shortRouted){stagesOrModsTabFromQueryOnLoad();if(S.currentTab==='characters'&&!_tabBlocksShort)primeBrowseTabIfNeeded('characters')}else{stagesOrModsTabFromQueryOnLoad()}if(_hasDcShare)try{await _dcCheckUrlParams()}catch(e){console.warn('dc share restore',e)}if(_hasTbShare)_tbCheckUrlParams();updateCompareUI();setTimeout(()=>{if(!S._contentBootstrapDone)scheduleDeferredContentBootstraps(false)},8000)});
 const LANG_STORAGE_KEY='ggen_lang';
 function readPersistedLang(){try{const s=localStorage.getItem(LANG_STORAGE_KEY);return s&&String(s).trim()||''}catch(e){return''}}
 /** Persist UI display codes only (JP / KR), never internal JA / HR pack ids. */
@@ -2255,9 +2255,120 @@ document.documentElement.classList.remove('ggen-scroll-pin');
 }catch(_){}
 },420);
 }
+function _scrollbarGapPx(){
+try{return Math.max(0,Math.round((window.innerWidth||0)-(document.documentElement?document.documentElement.clientWidth:0)))}catch(_){return 0}
+}
+function _lockBrowsePanelCoverPaint(){
+try{
+document.querySelectorAll('.tab-panel').forEach(function(panel){
+if(!panel||!panel.classList.contains('active'))return;
+const w=Math.max(1,panel.offsetWidth|0);
+const h=Math.max(1,panel.offsetHeight|0);
+panel.style.setProperty('--ggen-panel-cover-w',w+'px');
+panel.style.setProperty('--ggen-panel-cover-h',h+'px');
+panel.dataset.ggenPanelCoverLocked='1';
+});
+}catch(_){}
+}
+function _clearBrowsePanelCoverPaint(){
+try{
+document.querySelectorAll('.tab-panel[data-ggen-panel-cover-locked="1"]').forEach(function(panel){
+try{delete panel.dataset.ggenPanelCoverLocked}catch(_){panel.removeAttribute('data-ggen-panel-cover-locked')}
+panel.style.removeProperty('--ggen-panel-cover-w');
+panel.style.removeProperty('--ggen-panel-cover-h');
+});
+}catch(_){}
+}
+function _freezeBrowseListGrids(){
+['charGrid','unitGrid','suppGrid','stageGrid','modGrid'].forEach(function(id){
+const el=document.getElementById(id);
+if(!el)return;
+try{
+const wrap=el.closest('.list-grid-wrap');
+if(wrap&&wrap.hidden)return;
+if(el.offsetParent===null&&!(wrap&&!wrap.hidden))return;
+const tracks=getComputedStyle(el).gridTemplateColumns;
+if(!tracks||tracks==='none')return;
+el.style.gridTemplateColumns=tracks;
+el.dataset.ggenGridFrozen='1';
+}catch(_){}
+});
+}
+function _unfreezeBrowseListGrids(){
+['charGrid','unitGrid','suppGrid','stageGrid','modGrid'].forEach(function(id){
+const el=document.getElementById(id);
+if(!el||el.dataset.ggenGridFrozen!=='1')return;
+try{el.style.gridTemplateColumns='';delete el.dataset.ggenGridFrozen}catch(_){}
+});
+}
+function _clearPageScrollLockScrollbarPad(){
+try{
+document.documentElement.classList.remove('page-scroll-lock-sb');
+document.documentElement.style.removeProperty('--page-scroll-lock-sb');
+}catch(_){}
+S._pageScrollLockSb=0;
+}
+function _armDetailCloseScrollHold(){
+try{
+document.documentElement.classList.add('detail-close-scroll-hold');
+document.documentElement.classList.remove('is-scrolling');
+/* Keep width pad if we measured a gutter — prevents layout jump when page-scroll-lock drops. */
+if((S._pageScrollLockSb||0)>0){
+document.documentElement.style.setProperty('--page-scroll-lock-sb',S._pageScrollLockSb+'px');
+document.documentElement.classList.add('page-scroll-lock-sb');
+}
+}catch(_){}
+}
+function _clearDetailCloseScrollHold(){
+try{
+document.documentElement.classList.remove('detail-close-scroll-hold');
+document.documentElement.classList.remove('is-scrolling');
+}catch(_){}
+_clearPageScrollLockScrollbarPad();
+/* After gutter is real again, drop frozen panel plate so cover can track layout. */
+try{
+requestAnimationFrame(function(){
+requestAnimationFrame(function(){try{_clearBrowsePanelCoverPaint()}catch(_){}});
+});
+}catch(_){try{_clearBrowsePanelCoverPaint()}catch(_2){}}
+}
+function _cancelDetailCloseScrollHoldTimer(){
+if(S._detailCloseScrollHoldTimer){
+try{clearTimeout(S._detailCloseScrollHoldTimer)}catch(_){}
+S._detailCloseScrollHoldTimer=null;
+}
+}
+/** After overlay is gone: keep overflow+gutter held until scroll pin settles so the page bar does not pop mid-exit. */
+function _scheduleReleaseDetailCloseScrollHold(){
+_cancelDetailCloseScrollHoldTimer();
+S._detailCloseScrollHoldTimer=setTimeout(function(){
+S._detailCloseScrollHoldTimer=null;
+_clearDetailCloseScrollHold();
+_clearDetailCloseSettling();
+try{_unfreezeBrowseListGrids()}catch(_){}
+try{updateScrollTopFabVisibility()}catch(_){}
+},320);
+}
 function applyBackgroundScrollLock(){
+_cancelDetailCloseScrollHoldTimer();
+try{document.documentElement.classList.remove('detail-close-scroll-hold')}catch(_){}
 if(typeof S._pageScrollLock!=='number')S._pageScrollLock=0;
 if(S._pageScrollLock===0){
+/* Remember nav hide/show before lock — unlock scroll must not flip it. */
+try{if(window.GgenNavTabsAutoHide&&typeof GgenNavTabsAutoHide.snapshotForOverlay==='function')GgenNavTabsAutoHide.snapshotForOverlay()}catch(_){}
+/* Freeze panel office/garage plate at pre-lock size, then pad — otherwise enter
+   detail reframes cover under .list-toolbar (grid lives inside that flex wrap). */
+try{_lockBrowsePanelCoverPaint()}catch(_){}
+/* Measure before overflow:hidden — missing scrollbar widens auto-fill browse grids. */
+const sb=_scrollbarGapPx();
+S._pageScrollLockSb=sb;
+if(sb>0){
+try{
+document.documentElement.style.setProperty('--page-scroll-lock-sb',sb+'px');
+document.documentElement.classList.add('page-scroll-lock-sb');
+}catch(_){}
+}
+_freezeBrowseListGrids();
 const y=_browseListScrollYSaved();
 const lockY=(typeof y==='number')?y:_readPageScrollY();
 S._browseListScrollY=lockY;
@@ -2267,27 +2378,41 @@ document.documentElement.classList.add('page-scroll-lock');
 }
 S._pageScrollLock++;
 }
-function releaseBackgroundScrollLock(){
+function releaseBackgroundScrollLock(opts){
+opts=opts||{};
+/* Detail Esc wash: unlock fixed body/scroll Y, but hold overflow+gutter until fade ends
+   so the page scrollbar does not pop in mid discrete-exit. */
+const holdScrollbar=!!opts.holdScrollbar||!!S._detailCloseCover||(!!document.body&&document.body.classList.contains('detail-close-settling'));
 if(typeof S._pageScrollLock!=='number'||S._pageScrollLock<=0){
 S._pageScrollLock=0;
 document.documentElement.classList.remove('page-scroll-lock');
+if(holdScrollbar)_armDetailCloseScrollHold();
+else _clearDetailCloseScrollHold();
 try{document.documentElement.style.removeProperty('--page-scroll-lock-top')}catch(_){}
 _clearBrowseScrollPinListener();
+_unfreezeBrowseListGrids();
 return;
 }
 S._pageScrollLock--;
 if(S._pageScrollLock!==0)return;
 const y=_browseListScrollYSaved();
 S._pageScrollLockY=null;
+/* Freeze nav BEFORE unlock scroll — otherwise auto-hide sees a huge dy and opacity-flickers. */
+try{if(window.GgenNavTabsAutoHide&&typeof GgenNavTabsAutoHide.prepareUnlock==='function')GgenNavTabsAutoHide.prepareUnlock()}catch(_){}
 /* Instant restore in the SAME turn as unlock — before paint — so smooth-scroll never flashes top. */
 document.documentElement.classList.add('ggen-scroll-pin');
+if(holdScrollbar)_armDetailCloseScrollHold();
 document.documentElement.classList.remove('page-scroll-lock');
+if(!holdScrollbar){_clearPageScrollLockScrollbarPad();try{_clearBrowsePanelCoverPaint()}catch(_){}}
 try{document.documentElement.style.removeProperty('--page-scroll-lock-top')}catch(_){}
 _clearBrowseScrollPinListener();
 if(typeof y==='number'){
 _applyPageScrollY(y);
 _pinBrowseListScrollY(y,{ms:280});
 }
+try{if(window.GgenNavTabsAutoHide&&typeof GgenNavTabsAutoHide.restoreAfterOverlay==='function')GgenNavTabsAutoHide.restoreAfterOverlay()}catch(_){}
+/* Drop frozen tracks after width/scroll settle so auto-fill does not reshuffle mid-paint. */
+setTimeout(function(){_unfreezeBrowseListGrids()},560);
 }
 const BROWSE_TAG_FILTER_UI_V='plated2';
 function browseFilterPanelNeedsRebuild(el,entity){
@@ -3719,6 +3844,8 @@ function scrollBannerTimelineToTop(){scrollToTop()}
 function scrollTopFabIsBlocked(){
 if(document.body.classList.contains('detail-modal-open'))return true;
 if(document.documentElement.classList.contains('page-scroll-lock'))return true;
+/* Exit hold still pads body for missing scrollbar — keep FAB hidden until gutter is real again. */
+if(document.documentElement.classList.contains('detail-close-scroll-hold'))return true;
 const spot=document.getElementById('searchSpotlightOverlay');
 if(spot&&spot.classList.contains('active'))return true;
 return false;
@@ -5555,19 +5682,235 @@ try{lockDetailCoverPaintBoxes({force:true})}catch(_){}
 });
 });
 }
-function closeModalDomOnly(){
+function _armDetailCloseSettling(){
+S._detailCloseCover=true;
+try{document.body.classList.add('detail-close-settling')}catch(_){}
+}
+function _clearDetailCloseSettling(){
+S._detailCloseCover=false;
+try{document.body.classList.remove('detail-close-settling','detail-close-revealing')}catch(_){}
+}
+function _resetDetailExitFlags(){
+S._detailExitDone=0;
+S._detailExitPhase=null;
+if(S._detailExitTimer){try{clearTimeout(S._detailExitTimer)}catch(_){}S._detailExitTimer=null}
+if(S._detailRevealRaf){try{cancelAnimationFrame(S._detailRevealRaf)}catch(_){}S._detailRevealRaf=0}
+try{
+const m=document.getElementById('detailModal');
+if(m&&S._detailExitHandler)m.removeEventListener('animationend',S._detailExitHandler);
+}catch(_){}
+S._detailExitHandler=null;
+}
+function _dropDetailOverlayDom(){
+try{_killDetailModalMotion(document.getElementById('modalContent'))}catch(_){}
+const m=document.getElementById('detailModal');
+if(m){
+m.classList.remove('active','is-detail-exiting','is-detail-wash','is-detail-wash-empty','is-detail-wash-out');
+try{m.style.animation='';m.style.opacity='';m.style.transform='';m.style.willChange='';m.style.background='';m.style.transition=''}catch(_){}
+}
+document.body.classList.remove('detail-modal-open');
+const mc=document.getElementById('modalContent');
+if(mc){
+mc.className='modal-content';
+try{mc.style.animation='';mc.style.transform='';mc.style.opacity='';mc.style.willChange='';mc.style.visibility=''}catch(_){}
+}
+try{const inn=document.getElementById('detailInner');if(inn)inn.innerHTML=''}catch(_){}
+}
+/** Opaque wash behind morph-exit — browse reflow must not show through rgba(.82). */
+function _armDetailExitWashBg(m){
+if(!m)return;
+try{
+m.classList.remove('is-detail-exiting','is-detail-wash-out','is-detail-wash-empty');
+m.classList.add('is-detail-wash');
+m.style.opacity='1';
+m.style.animation='none';
+m.style.transition='none';
+m.style.background='#05070c';
+m.style.transform='';
+m.style.willChange='opacity';
+}catch(_){}
+}
+/** After morph-exit: clear dossier so unlock runs under empty opaque wash. */
+function _armDetailExitWashEmpty(m,mc){
+_armDetailExitWashBg(m);
+try{if(m)m.classList.add('is-detail-wash-empty')}catch(_){}
+try{
+if(mc){
+mc.classList.remove('is-detail-morph-enter','is-detail-morph-exit');
+mc.style.visibility='hidden';
+mc.style.opacity='0';
+mc.style.animation='none';
+mc.style.transform='none';
+mc.style.willChange='';
+}
+const inn=document.getElementById('detailInner');
+if(inn)inn.innerHTML='';
+}catch(_){}
+}
+function _unlockBrowseUnderDetailShell(){
+try{if(window.GgenNavTabsAutoHide&&typeof GgenNavTabsAutoHide.prepareUnlock==='function')GgenNavTabsAutoHide.prepareUnlock()}catch(_){}
+/* holdScrollbar: keep overflow+gutter until scroll pin settles — clearing pad here made the bar pop + shove main. */
+releaseBackgroundScrollLock({holdScrollbar:true});
+const exitSnap=S._detailExitScrollSnap||null;
+const exitY=(typeof S._detailExitScrollY==='number')?S._detailExitScrollY:null;
+S._detailExitScrollSnap=null;
+S._detailExitScrollY=null;
+if(exitSnap){
+S._detailBrowseReturn=exitSnap;
+if(typeof exitSnap.y==='number')S._browseListScrollY=exitSnap.y;
+}else if(exitY!=null){
+S._browseListScrollY=exitY;
+}
+try{restoreDetailBrowseScroll(exitY!=null?exitY:undefined)}catch(_){}
+}
+function _runDeferredDetailHistory(){
+if(S._detailExitDoHistoryBack){
+S._detailExitDoHistoryBack=false;
+try{history.back()}catch(_){}
+return;
+}
+if(S._detailExitBrowsePath){
+const bp=S._detailExitBrowsePath;
+S._detailExitBrowsePath=null;
+try{replaceHistoryToBrowsePath(bp)}catch(_){}
+try{const _bt={characters:1,units:1,supporters:1,stages:1,modifications:1};ensureBrowseTabPainted(_bt[S.currentTab]?S.currentTab:'characters')}catch(_){}
+}
+}
+function _clearDetailExitListeners(){
+if(S._detailExitTimer){try{clearTimeout(S._detailExitTimer)}catch(_){}S._detailExitTimer=null}
+try{
+const m=document.getElementById('detailModal');
+if(m&&S._detailExitHandler)m.removeEventListener('animationend',S._detailExitHandler);
+}catch(_){}
+S._detailExitHandler=null;
+}
+/**
+ * Finish after unlock ran under opaque wash and wash fade completed.
+ */
+function _finishDetailOverlayGone(force){
+if(S._detailExitDone&&!force){
+try{if(S._detailExitPhase==='exiting')S._detailExitPhase=null}catch(_){}
+return;
+}
+S._detailExitDone=1;
+S._detailExitPhase=null;
+S._detailExitType=null;
+S._detailExitId=null;
+try{S._detailMorphExitDone=1}catch(_){}
+_clearDetailExitListeners();
+try{_killDetailModalMotion(document.getElementById('modalContent'))}catch(_){}
+_dropDetailOverlayDom();
+_scheduleReleaseDetailCloseScrollHold();
+updateScrollTopFabVisibility();
+syncDetailBrowseNavUi();
+}
+function _fadeDetailExitWashThenFinish(m){
+if(!m){_finishDetailOverlayGone();return}
+const done=function(ev){
+if(ev&&ev.target!==m)return;
+if(ev&&ev.propertyName&&ev.propertyName!=='opacity')return;
+_finishDetailOverlayGone();
+};
+try{if(S._detailExitHandler)m.removeEventListener('transitionend',S._detailExitHandler)}catch(_){}
+S._detailExitHandler=done;
+try{m.addEventListener('transitionend',done)}catch(_){}
+try{
+m.classList.add('is-detail-wash-out');
+/* Force transition after opaque settle paint. */
+void m.offsetWidth;
+m.style.transition='opacity 120ms ease';
+m.style.opacity='0';
+}catch(_){}
+S._detailExitTimer=setTimeout(function(){S._detailExitTimer=null;_finishDetailOverlayGone()},220);
+}
+/**
+ * Takayu modal-morph exit, then flicker-safe unlock:
+ * morph over normal dimmed browse (not empty black) → brief opaque wash → unlock → fade.
+ */
+function _revealBrowseAfterDetailClose(){
+if(S._detailExitPhase==='exiting')return;
+S._detailExitPhase='exiting';
+S._detailExitDone=0;
+_clearDetailExitListeners();
+const m=document.getElementById('detailModal');
+const mc=document.getElementById('modalContent');
+if(!m||!m.classList.contains('active')){
+_unlockBrowseUnderDetailShell();
+_runDeferredDetailHistory();
+try{if(window.GgenNavTabsAutoHide&&typeof GgenNavTabsAutoHide.releaseOverlayFreeze==='function')GgenNavTabsAutoHide.releaseOverlayFreeze({forceTopReveal:true})}catch(_){}
+try{if(typeof window.__ggenResumeBrandFonts==='function')window.__ggenResumeBrandFonts()}catch(_){}
+try{syncListTheadStickyTop()}catch(_){}
+_finishDetailOverlayGone();
+return;
+}
+/* Keep normal rgba overlay during morph — opaque wash early = empty black for ~700ms. */
+try{if(window.GgenNavTabsAutoHide&&typeof GgenNavTabsAutoHide.prepareUnlock==='function')GgenNavTabsAutoHide.prepareUnlock()}catch(_){}
+let morphDone=0;
+const afterMorph=function(){
+if(morphDone)return;
+if(S._detailExitDone||S._detailExitPhase!=='exiting')return;
+morphDone=1;
+/* Opaque only for unlock frames, then fade — not for the whole morph. */
+_armDetailExitWashEmpty(m,mc);
+_unlockBrowseUnderDetailShell();
+_runDeferredDetailHistory();
+try{if(window.GgenNavTabsAutoHide&&typeof GgenNavTabsAutoHide.releaseOverlayFreeze==='function')GgenNavTabsAutoHide.releaseOverlayFreeze({forceTopReveal:true})}catch(_){}
+try{if(typeof window.__ggenResumeBrandFonts==='function')window.__ggenResumeBrandFonts()}catch(_){}
+try{syncListTheadStickyTop()}catch(_){}
+let frames=0;
+const afterPaint=function(){
+frames++;
+if(frames<2){S._detailRevealRaf=requestAnimationFrame(afterPaint);return}
+S._detailRevealRaf=0;
+_fadeDetailExitWashThenFinish(m);
+};
+S._detailRevealRaf=requestAnimationFrame(afterPaint);
+};
+playDetailModalMorphExit(mc,afterMorph);
+/* Failsafe — morph 700ms + brief wash unlock. */
+S._detailExitTimer=setTimeout(function(){S._detailExitTimer=null;afterMorph()},1200);
+}
+function _scheduleRevealBrowseAfterDetailClose(){
+if(S._detailRevealRaf){try{cancelAnimationFrame(S._detailRevealRaf)}catch(_){}S._detailRevealRaf=0}
+S._detailRevealRaf=requestAnimationFrame(function(){
+S._detailRevealRaf=0;
+_revealBrowseAfterDetailClose();
+});
+}
+function closeModalDomOnly(opts){
+opts=opts||{};
+/* keepCover + deferUnlock: leave page-scroll-lock up for discrete-exit (Ko-fi-clean). */
+const keepCover=!!opts.keepCover||!!S._detailCloseCover;
+const deferUnlock=keepCover&&opts.deferUnlock!==false;
+if(keepCover)_armDetailCloseSettling();
 try{destroyDetailPortraitHolo()}catch(_){}
 const m=document.getElementById('detailModal');
-if(m)m.classList.remove('active');
-document.body.classList.remove('detail-modal-open');
+if(m&&!keepCover)m.classList.remove('active');
+/* Kill enter morph; keep normal dimmed overlay so browse stays visible during exit morph. */
+try{_killDetailModalMotion(document.getElementById('modalContent'))}catch(_){}
 try{const fr=document.querySelector('#detailInner .roadmap-calendar-frame');if(fr)fr.src='about:blank'}catch(_){}
+if(!keepCover){
 try{if(typeof window.__ggenResumeBrandFonts==='function')window.__ggenResumeBrandFonts()}catch(_){}
-/* Blur before unlock — returning focus to a list control otherwise scrollIntoViews and fights restore. */
+}
+/* Blur before any unlock — focus scrollIntoView fights restore. */
 try{const ae=document.activeElement;if(ae&&ae!==document.body&&ae!==document.documentElement&&typeof ae.blur==='function')ae.blur()}catch(_){}
+if(deferUnlock){
+try{if(window.GgenNavTabsAutoHide&&typeof GgenNavTabsAutoHide.prepareUnlock==='function')GgenNavTabsAutoHide.prepareUnlock()}catch(_){}
+}else{
 releaseBackgroundScrollLock();
+}
+if(!keepCover){
+document.body.classList.remove('detail-modal-open');
+_clearDetailCloseSettling();
+_clearDetailCloseScrollHold();
+}
 const mc=document.getElementById('modalContent');
+/* Keep header/dossier cover lock during exit morph — clearing mid-exit makes
+   garage/office background-size:cover reflow (looks like a rescale). */
+if(!keepCover){
 try{clearDetailCoverPaintLock()}catch(_){}
-if(mc)mc.className='modal-content';
+}
+if(mc&&!keepCover)mc.className='modal-content';
 const chrome=document.getElementById('modalDetailChrome');
 if(chrome)chrome.classList.remove('modal-detail-chrome--scrolled');
 S.currentDetailData=null;
@@ -5589,8 +5932,10 @@ S.stageMapExpanded=false;
 S.stageMapReinforcementOnly=false;
 S.stageMapSpawnOrderVisible=false;
 S._stageDetailUiRestore=null;
+if(!keepCover){
 syncDetailBrowseNavUi();
 updateScrollTopFabVisibility();
+}
 if(window.GgenUnitBestPilots&&typeof GgenUnitBestPilots.onDetailClose==='function')GgenUnitBestPilots.onDetailClose();
 if(window.GgenSpInvestment&&typeof GgenSpInvestment.onAppDetailClosed==='function')GgenSpInvestment.onAppDetailClosed();
 }
@@ -5662,12 +6007,27 @@ S._historyApplyingPopstate=true;
 S._historyModalPushed=false;
 const hadBrowseReturn=!!S._detailBrowseReturn;
 const stateY=(ev&&ev.state&&typeof ev.state.ggenScrollY==='number')?ev.state.ggenScrollY:null;
+const dmOpen=!!(document.getElementById('detailModal')&&document.getElementById('detailModal').classList.contains('active'));
+/* Browser Back from detail: same unlock-under-shell + fade as Esc.
+   Skip if Esc exit already in flight (history is deferred until finish). */
+if(dmOpen&&S._detailExitPhase!=='exiting'){
+_resetDetailExitFlags();
+if(!S._detailCloseCover)_armDetailCloseSettling();
+S._detailExitScrollSnap=S._detailBrowseReturn?Object.assign({},S._detailBrowseReturn):_readPersistedBrowseScrollReturn();
+S._detailExitScrollY=(typeof stateY==='number')?stateY:_browseListScrollYSaved();
+S._detailExitType=S.currentDetailType||(S._detailExitScrollSnap&&S._detailExitScrollSnap.type)||null;
+S._detailExitId=(S.currentDetailData&&S.currentDetailData.id!=null)?S.currentDetailData.id:(S._detailExitScrollSnap&&S._detailExitScrollSnap.id!=null?S._detailExitScrollSnap.id:null);
+S._detailExitDoHistoryBack=false;
+S._detailExitBrowsePath=null;
+closeModalDomOnly({keepCover:true,deferUnlock:true});
+}
 try{applyBrowseRouteFromLocation({fromPopstate:true,skipHistory:true})}finally{
 S._historyApplyingPopstate=false;
 try{
 const dm=document.getElementById('detailModal');
-const closed=!(dm&&dm.classList.contains('active'));
-if(closed&&(hadBrowseReturn||stateY!=null))restoreDetailBrowseScroll(hadBrowseReturn?undefined:stateY);
+const stillCover=!!(dm&&dm.classList.contains('active')&&S._detailCloseCover);
+if(stillCover&&S._detailExitPhase!=='exiting')_scheduleRevealBrowseAfterDetailClose();
+else if(!stillCover&&(hadBrowseReturn||stateY!=null))restoreDetailBrowseScroll(hadBrowseReturn?undefined:stateY);
 }catch(_){}
 }
 });
@@ -6718,6 +7078,64 @@ const mc=document.getElementById('modalContent');
 const onScroll=()=>updateModalDetailChromeScroll();
 [m,mc].forEach(el=>{if(el)el.addEventListener('scroll',onScroll,{passive:true})});
 }
+/** While detail is open, wheel/trackpad anywhere (incl. dimmed padding / locked page)
+ *  scrolls #modalContent — not the browse list underneath. Nested detail scrollers
+ *  (weapon tables, etc.) keep priority while they can still move. */
+function initDetailModalOutsideScroll(){
+if(S._detailOutsideScrollInit)return;
+S._detailOutsideScrollInit=1;
+const TOP_OVERLAY_IDS=['tagModal','skillModal','whatsNewOverlay','alipayhkOverlay','searchSpotlightOverlay','mediaVideoOverlay'];
+function _detailTopOverlayOpen(){
+for(let i=0;i<TOP_OVERLAY_IDS.length;i++){
+const el=document.getElementById(TOP_OVERLAY_IDS[i]);
+if(el&&el.classList.contains('active'))return true;
+}
+try{if(document.documentElement.classList.contains('media-video-open-lock'))return true}catch(_){}
+return false;
+}
+function _detailWheelDeltaY(e){
+let dy=e.deltaY;
+if(e.deltaMode===1)dy*=16;
+else if(e.deltaMode===2)dy*=Math.max(240,(window.innerHeight||800)*0.85);
+return dy;
+}
+function _detailNestedScroller(from,root){
+let n=(from&&from.nodeType===1)?from:(from&&from.parentElement);
+while(n&&n!==root){
+if(n===document.body||n===document.documentElement)break;
+try{
+const st=window.getComputedStyle(n);
+const oy=st.overflowY;
+if((oy==='auto'||oy==='scroll'||oy==='overlay')&&(n.scrollHeight-n.clientHeight)>2)return n;
+}catch(_){}
+n=n.parentElement;
+}
+return null;
+}
+function _detailCanScroll(el,dy){
+if(!el)return false;
+const max=el.scrollHeight-el.clientHeight;
+if(max<=1)return false;
+if(dy<0)return el.scrollTop>0.5;
+return el.scrollTop<(max-0.5);
+}
+window.addEventListener('wheel',function(e){
+const m=document.getElementById('detailModal');
+if(!m||!m.classList.contains('active'))return;
+if(_detailTopOverlayOpen())return;
+const mc=document.getElementById('modalContent');
+if(!mc)return;
+const dy=_detailWheelDeltaY(e);
+if(!dy)return;
+const nested=_detailNestedScroller(e.target,mc);
+if(nested&&_detailCanScroll(nested,dy))return;
+e.preventDefault();
+if(_detailCanScroll(mc,dy)){
+mc.scrollTop+=dy;
+try{updateModalDetailChromeScroll()}catch(_){}
+}
+},{capture:true,passive:false});
+}
 function adjustDetailModalLayout(){
 const mc=document.getElementById('modalContent');
 if(!mc||!mc.classList.contains('modal-content'))return;
@@ -6763,11 +7181,95 @@ S._detailModalLayoutObs.observe(mc);
 }else adjustDetailModalLayout();
 requestAnimationFrame(adjustDetailModalLayout);
 }
-async function openDetail(type,id,opts){opts=opts||{};try{destroyDetailPortraitHolo()}catch(_){};const skipHistory=!!opts.skipHistory||S._historyApplyingPopstate;if(document.getElementById('searchSpotlightOverlay')&&document.getElementById('searchSpotlightOverlay').classList.contains('active'))closeSearchSpotlight();const m=document.getElementById('detailModal'),mc=document.getElementById('modalContent'),inn=document.getElementById('detailInner');const detailWasActive=m.classList.contains('active');/* Capture browse *list* Y before modal/lock. keepIfSet: openStageFromBrowse may have armed pending Y on pointerdown. */if(!detailWasActive){captureDetailBrowseReturn(type,id,{keepIfSet:true});stampHistoryBrowseScrollY(S._detailBrowseReturn&&S._detailBrowseReturn.y)}if(opts.returnStageSnapshot&&S.currentDetailType==='stage'&&S.currentDetailData&&!S.currentDetailData.content_locked){S._stageDetailUiRestore=captureStageDetailUiState();if(opts.stageNpcKey!=null&&String(opts.stageNpcKey).trim()!=='')S._stageDetailUiRestore.returnNpcId=String(opts.stageNpcKey).trim()}try{clearDetailCoverPaintLock()}catch(_){}mc.className='modal-content';if(type==='profile_title')mc.classList.add('profile-title-detail','stage-detail');else if(type==='item')mc.classList.add('item-detail','option-part-detail','stage-detail');else mc.classList.add(type==='character'?'char-detail':(type==='unit'?'unit-detail':(type==='supporter'?'supporter-detail':(type==='option_part'?'option-part-detail':'stage-detail'))));m.classList.add('active');document.body.classList.add('detail-modal-open');try{if(typeof window.__ggenPauseBrandFonts==='function')window.__ggenPauseBrandFonts()}catch(_){}if(!detailWasActive)applyBackgroundScrollLock();updateScrollTopFabVisibility();resetDetailModalScroll();S._detailOpenToken=(S._detailOpenToken||0)+1;(function(){try{if(S._detailOpenSpinTimer){clearTimeout(S._detailOpenSpinTimer);S._detailOpenSpinTimer=null}}catch(_){}const _same=!!(detailWasActive&&S.currentDetailType===type&&S.currentDetailData&&String(S.currentDetailData.id)===String(id)&&!(opts&&(opts.stageNpcEmbed||opts.forceReload)));if(_same)return;inn.innerHTML='<div class="loading-overlay"><div class="spinner"></div></div>';})();syncModalDetailChrome();syncDetailBrowseNavUi();try{const d=await fetchDetailPayload(type,id,opts);S._detailOpenToken=(S._detailOpenToken||0)+1;try{if(S._detailOpenSpinTimer){clearTimeout(S._detailOpenSpinTimer);S._detailOpenSpinTimer=null}}catch(_){}if(type==='option_part'){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false;S.ultAltActive=false;S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;attachStageDetailReturnIfNeeded(d,opts);S.currentDetailData=d;S.currentDetailType=type;inn.innerHTML=renderOptionPartShell(d);syncModalDetailChrome();pinDetailModalScrollTop(0);try{scheduleLockDetailCoverPaintBoxes()}catch(_){}if(!skipHistory)_syncDetailBrowseHistory(type,id,detailWasActive,skipHistory);syncDetailBrowseNavUi();return}if(type==='profile_title'||type==='item'){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false;S.ultAltActive=false;S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;attachStageDetailReturnIfNeeded(d,opts);S.currentDetailData=d;S.currentDetailType=type;inn.innerHTML=type==='item'?renderItemShell(d):renderProfileTitleShell(d);syncModalDetailChrome();pinDetailModalScrollTop(0);try{scheduleLockDetailCoverPaintBoxes()}catch(_){}if(!skipHistory)_syncDetailBrowseHistory(type,id,detailWasActive,skipHistory);syncDetailBrowseNavUi();return}const _pu=type==='unit'&&!!opts.preserveUnitSpSsp;const _pcp=!!opts.preserveConditionalPassive||!!opts.unitConditionCpTarget;const _vr=!!opts.viewRanking;d.ranking_context=!!_vr;if(_vr){d.view_ranking=false}if(type==='character'||type==='unit')d.ranking_available=true;if(!_pu&&!_pcp){S.conditionalPassiveActive=false;S.pilotConditionalPassiveActive=false;S.pilotCondCharData=null;S._pilotCondCharFetchId=null;S._pilotCondCharInflight=null;S._pilotCondPrefetchUnitId=null;S.pilotCondStackCount=0;S.unitCondStackCount=0;S.unitHpAtkTierIndex=0;S.spActive=false;S.sspActive=false}S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;S.detailRankingOverlay=false;if(type==='stage'){S.stageMapAutoFit=true;S.stageMapZoom=1}if(!_pu){if(type==='character'){S.spActive=!!S.listCharSp;if(!_pcp)S.conditionalPassiveActive=!!S.listCharCond}else if(type==='unit'){if(S.listUnitSsp){S.sspActive=true;S.spActive=false}else if(S.listUnitSp){S.spActive=true;S.sspActive=false}else{S.spActive=false;S.sspActive=false}if(!_pcp){if(opts.viewRanking){S.conditionalPassiveActive=!!opts.listUnitCondPerspective;S.pilotConditionalPassiveActive=!!opts.listUnitPilotCondPerspective}else{S.conditionalPassiveActive=!!(d&&_detailUnitHasCondStats(d))||!!S.listUnitCond;S.pilotConditionalPassiveActive=!!(S.listUnitPilotCond&&d&&d.has_pilot_cond_passive)}}}}if(_pcp)S.conditionalPassiveActive=true;if(!_pcp&&!opts.viewRanking&&type==='unit'&&d&&_detailUnitHasCondStats(d))S.conditionalPassiveActive=true;if(opts.unitConditionCpTarget&&d)d.unit_condition_cp_target=true;if(opts.affinityHighlightUnitId&&d)d.affinity_highlight_unit_id=String(opts.affinityHighlightUnitId);if(opts.pilotCondHighlightUnitId&&d){d.pilot_cond_highlight_unit_id=String(opts.pilotCondHighlightUnitId);if(opts.pilotCondHighlightUnitStub)d.pilot_cond_highlight_unit_stub=opts.pilotCondHighlightUnitStub;}attachStageDetailReturnIfNeeded(d,opts);S.currentDetailData=d;S.currentDetailType=type;if(type==='character'&&S.conditionalPassiveActive&&d.ex_supercharged_tiers&&d.ex_supercharged_tiers.length>1)S.charSuperchargedExTier=d.ex_supercharged_tiers.length-1;if(type==='supporter'){applySupporterLeaderSepSticky(d);S.currentSupporterLbTier=d.lb_tier??3;S.currentSupporterLevel=Math.max(1,Number(d.level)||Math.max(1,Number(d.max_level)||100))}if(type==='unit'){_detailInitUnitCondControls(d);S.listSelectedUnitId=String(opts.listUnitFocusId!=null?opts.listUnitFocusId:id);syncUnitListDetailHighlight()}if((type==='character'||type==='unit')&&d.portrait)void warmPathDetailImg(d.portrait);if(type==='character'){inn.innerHTML=renderCharShell(d);queueMicrotask(function(){try{bindUnitPortraitFx(inn)}catch(_){}})}else if(type==='unit'){if(d.weapons)d.weapons.forEach(w=>S.currentWeaponLevels[w.id]=5);void warmUnitModelStageAssets(d);inn.innerHTML=renderUnitShell(d);bindUnitModelStageReveal(inn);queueMicrotask(function(){try{bindUnitPortraitFx(inn)}catch(_){}})}else if(type==='supporter'){inn.innerHTML=renderSupporterShell(d);queueMicrotask(function(){try{bindUnitPortraitFx(inn)}catch(_){}})}else{if(type==='stage'&&d&&d.stage_category==='fierce_enemy_assault'){S.feaDiff='normal';S.feaLevel=null}inn.innerHTML=(d.content_locked?renderEternalStageLockedPanel(d):renderStageShell(d))}syncModalDetailChrome();if(type==='stage'&&!d.content_locked)wireRewardDetailClicks(inn);if(d&&d.ranking_available&&(type==='character'||type==='unit'))ensureDetailRankingToggleDom(type);if(!(type==='stage'&&d.content_locked)){updateDetailDynamicSections(type);if(type==='unit')queuePilotCondCharPrefetch(d);if(d&&d.ranking_available&&(type==='character'||type==='unit')){(function(_t,_i){setTimeout(function(){if(S.currentDetailType!==_t||!S.currentDetailData||String(S.currentDetailData.id)!==String(_i))return;void ensureDetailRankingStats(_t,_i).then(function(){if(S.currentDetailType===_t&&S.currentDetailData&&String(S.currentDetailData.id)===String(_i)){updateDetailDynamicSections(_t);adjustDetailModalLayout()}}).catch(function(){})},5000)})(type,id)}}pinDetailModalScrollTop(0);try{scheduleLockDetailCoverPaintBoxes()}catch(_){}if(!skipHistory)_syncDetailBrowseHistory(type,id,detailWasActive,skipHistory);syncDetailBrowseNavUi()}catch(e){const msg=String((e&&e.message)||e||'');const soft=!!(e&&(e.name==='AbortError'||e.name==='TypeError'))||/networkerror|failed to fetch|load failed|the operation was aborted|^network$/i.test(msg);if(!soft)console.error(e);inn.innerHTML=`<div class="empty-state" style="padding:60px 20px"><div class="empty-state-icon">⚠️</div><div class="empty-state-text">${esc(soft?'Could not load details. Check your connection and try again.':('Failed: '+msg))}</div></div>`;syncModalDetailChrome();syncDetailBrowseNavUi();try{scheduleLockDetailCoverPaintBoxes()}catch(_){}}}
+
+/** Takayu #motion=modal-morph enter — scale .36→1 / 700ms easeInOutCubic. */
+function playDetailModalMorphEnter(mc){
+if(!mc)return;
+try{
+if(S._detailMorphEnd){mc.removeEventListener('animationend',S._detailMorphEnd);S._detailMorphEnd=null}
+mc.classList.remove('is-detail-morph-enter','is-detail-morph-exit');
+mc.style.animation='none';
+mc.style.transform='';
+mc.style.opacity='';
+mc.style.willChange='transform, opacity';
+void mc.offsetWidth;
+mc.classList.add('is-detail-morph-enter');
+mc.style.animation='';
+const done=function(ev){
+if(ev&&ev.target!==mc)return;
+if(ev&&ev.animationName&&String(ev.animationName).indexOf('ggen-detail-morph-enter')<0&&String(ev.animationName).indexOf('ggen-detail-morph-fade')<0)return;
+try{mc.removeEventListener('animationend',done)}catch(_){}
+if(S._detailMorphEnd===done)S._detailMorphEnd=null;
+try{mc.classList.remove('is-detail-morph-enter');mc.style.willChange=''}catch(_){}
+};
+S._detailMorphEnd=done;
+mc.addEventListener('animationend',done);
+}catch(_){}
+}
+/** Takayu modal-morph exit — reverse scale, then callback (unlock under wash). */
+function playDetailModalMorphExit(mc,onDone){
+const finish=function(){
+if(S._detailMorphExitDone)return;
+S._detailMorphExitDone=1;
+try{if(S._detailMorphExitTimer){clearTimeout(S._detailMorphExitTimer);S._detailMorphExitTimer=null}}catch(_){}
+try{if(mc&&S._detailMorphEnd)mc.removeEventListener('animationend',S._detailMorphEnd)}catch(_){}
+S._detailMorphEnd=null;
+try{if(typeof onDone==='function')onDone()}catch(_){}
+};
+S._detailMorphExitDone=0;
+if(!mc){finish();return}
+try{
+if(S._detailMorphEnd){mc.removeEventListener('animationend',S._detailMorphEnd);S._detailMorphEnd=null}
+mc.classList.remove('is-detail-morph-enter','is-detail-morph-exit');
+mc.style.animation='none';
+mc.style.transform='';
+mc.style.opacity='';
+mc.style.willChange='transform, opacity';
+void mc.offsetWidth;
+mc.classList.add('is-detail-morph-exit');
+mc.style.animation='';
+const done=function(ev){
+if(ev&&ev.target!==mc)return;
+if(ev&&ev.animationName&&String(ev.animationName).indexOf('ggen-detail-morph-exit')<0&&String(ev.animationName).indexOf('ggen-detail-morph-fade')<0)return;
+finish();
+};
+S._detailMorphEnd=done;
+mc.addEventListener('animationend',done);
+S._detailMorphExitTimer=setTimeout(finish,780);
+}catch(_){finish()}
+}
+function _killDetailModalMotion(mc){
+if(!mc)mc=document.getElementById('modalContent');
+if(!mc)return;
+try{
+if(S._detailMorphEnd){mc.removeEventListener('animationend',S._detailMorphEnd);S._detailMorphEnd=null}
+if(S._detailMorphExitTimer){clearTimeout(S._detailMorphExitTimer);S._detailMorphExitTimer=null}
+mc.classList.remove('is-detail-morph-enter','is-detail-morph-exit');
+mc.style.animation='none';
+mc.style.transform='none';
+mc.style.opacity='1';
+mc.style.willChange='';
+}catch(_){}
+}
+async function openDetail(type,id,opts){opts=opts||{};try{if(S._detailExitPhase==='exiting')_finishDetailOverlayGone(true);else{_cancelDetailCloseScrollHoldTimer();_clearDetailCloseSettling();_clearDetailCloseScrollHold();_resetDetailExitFlags()}}catch(_){};try{destroyDetailPortraitHolo()}catch(_){};const skipHistory=!!opts.skipHistory||S._historyApplyingPopstate;if(document.getElementById('searchSpotlightOverlay')&&document.getElementById('searchSpotlightOverlay').classList.contains('active'))closeSearchSpotlight();const m=document.getElementById('detailModal'),mc=document.getElementById('modalContent'),inn=document.getElementById('detailInner');const detailWasActive=m.classList.contains('active');/* Capture browse *list* Y before modal/lock. keepIfSet: openStageFromBrowse may have armed pending Y on pointerdown. */if(!detailWasActive){captureDetailBrowseReturn(type,id,{keepIfSet:true});stampHistoryBrowseScrollY(S._detailBrowseReturn&&S._detailBrowseReturn.y)}if(opts.returnStageSnapshot&&S.currentDetailType==='stage'&&S.currentDetailData&&!S.currentDetailData.content_locked){S._stageDetailUiRestore=captureStageDetailUiState();if(opts.stageNpcKey!=null&&String(opts.stageNpcKey).trim()!=='')S._stageDetailUiRestore.returnNpcId=String(opts.stageNpcKey).trim()}try{clearDetailCoverPaintLock()}catch(_){}mc.className='modal-content';if(type==='profile_title')mc.classList.add('profile-title-detail','stage-detail');else if(type==='item')mc.classList.add('item-detail','option-part-detail','stage-detail');else mc.classList.add(type==='character'?'char-detail':(type==='unit'?'unit-detail':(type==='supporter'?'supporter-detail':(type==='option_part'?'option-part-detail':'stage-detail'))));m.classList.add('active');document.body.classList.add('detail-modal-open');try{if(!detailWasActive)playDetailModalMorphEnter(mc)}catch(_){};try{if(typeof window.__ggenPauseBrandFonts==='function')window.__ggenPauseBrandFonts()}catch(_){}if(!detailWasActive)applyBackgroundScrollLock();updateScrollTopFabVisibility();resetDetailModalScroll();S._detailOpenToken=(S._detailOpenToken||0)+1;(function(){try{if(S._detailOpenSpinTimer){clearTimeout(S._detailOpenSpinTimer);S._detailOpenSpinTimer=null}}catch(_){}const _same=!!(detailWasActive&&S.currentDetailType===type&&S.currentDetailData&&String(S.currentDetailData.id)===String(id)&&!(opts&&(opts.stageNpcEmbed||opts.forceReload)));if(_same)return;inn.innerHTML='<div class="loading-overlay"><div class="spinner"></div></div>';})();syncModalDetailChrome();syncDetailBrowseNavUi();try{const d=await fetchDetailPayload(type,id,opts);S._detailOpenToken=(S._detailOpenToken||0)+1;try{if(S._detailOpenSpinTimer){clearTimeout(S._detailOpenSpinTimer);S._detailOpenSpinTimer=null}}catch(_){}if(type==='option_part'){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false;S.ultAltActive=false;S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;attachStageDetailReturnIfNeeded(d,opts);S.currentDetailData=d;S.currentDetailType=type;inn.innerHTML=renderOptionPartShell(d);syncModalDetailChrome();pinDetailModalScrollTop(0);try{scheduleLockDetailCoverPaintBoxes()}catch(_){}if(!skipHistory)_syncDetailBrowseHistory(type,id,detailWasActive,skipHistory);syncDetailBrowseNavUi();return}if(type==='profile_title'||type==='item'){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false;S.ultAltActive=false;S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;attachStageDetailReturnIfNeeded(d,opts);S.currentDetailData=d;S.currentDetailType=type;inn.innerHTML=type==='item'?renderItemShell(d):renderProfileTitleShell(d);syncModalDetailChrome();pinDetailModalScrollTop(0);try{scheduleLockDetailCoverPaintBoxes()}catch(_){}if(!skipHistory)_syncDetailBrowseHistory(type,id,detailWasActive,skipHistory);syncDetailBrowseNavUi();return}const _pu=type==='unit'&&!!opts.preserveUnitSpSsp;const _pcp=!!opts.preserveConditionalPassive||!!opts.unitConditionCpTarget;const _vr=!!opts.viewRanking;d.ranking_context=!!_vr;if(_vr){d.view_ranking=false}if(type==='character'||type==='unit')d.ranking_available=true;if(!_pu&&!_pcp){S.conditionalPassiveActive=false;S.pilotConditionalPassiveActive=false;S.pilotCondCharData=null;S._pilotCondCharFetchId=null;S._pilotCondCharInflight=null;S._pilotCondPrefetchUnitId=null;S.pilotCondStackCount=0;S.unitCondStackCount=0;S.unitHpAtkTierIndex=0;S.spActive=false;S.sspActive=false}S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;S.detailRankingOverlay=false;if(type==='stage'){S.stageMapAutoFit=true;S.stageMapZoom=1}if(!_pu){if(type==='character'){S.spActive=!!S.listCharSp;if(!_pcp)S.conditionalPassiveActive=!!S.listCharCond}else if(type==='unit'){if(S.listUnitSsp){S.sspActive=true;S.spActive=false}else if(S.listUnitSp){S.spActive=true;S.sspActive=false}else{S.spActive=false;S.sspActive=false}if(!_pcp){if(opts.viewRanking){S.conditionalPassiveActive=!!opts.listUnitCondPerspective;S.pilotConditionalPassiveActive=!!opts.listUnitPilotCondPerspective}else{S.conditionalPassiveActive=!!(d&&_detailUnitHasCondStats(d))||!!S.listUnitCond;S.pilotConditionalPassiveActive=!!(S.listUnitPilotCond&&d&&d.has_pilot_cond_passive)}}}}if(_pcp)S.conditionalPassiveActive=true;if(!_pcp&&!opts.viewRanking&&type==='unit'&&d&&_detailUnitHasCondStats(d))S.conditionalPassiveActive=true;if(opts.unitConditionCpTarget&&d)d.unit_condition_cp_target=true;if(opts.affinityHighlightUnitId&&d)d.affinity_highlight_unit_id=String(opts.affinityHighlightUnitId);if(opts.pilotCondHighlightUnitId&&d){d.pilot_cond_highlight_unit_id=String(opts.pilotCondHighlightUnitId);if(opts.pilotCondHighlightUnitStub)d.pilot_cond_highlight_unit_stub=opts.pilotCondHighlightUnitStub;}attachStageDetailReturnIfNeeded(d,opts);S.currentDetailData=d;S.currentDetailType=type;if(type==='character'&&S.conditionalPassiveActive&&d.ex_supercharged_tiers&&d.ex_supercharged_tiers.length>1)S.charSuperchargedExTier=d.ex_supercharged_tiers.length-1;if(type==='supporter'){applySupporterLeaderSepSticky(d);S.currentSupporterLbTier=d.lb_tier??3;S.currentSupporterLevel=Math.max(1,Number(d.level)||Math.max(1,Number(d.max_level)||100))}if(type==='unit'){_detailInitUnitCondControls(d);S.listSelectedUnitId=String(opts.listUnitFocusId!=null?opts.listUnitFocusId:id);syncUnitListDetailHighlight()}if((type==='character'||type==='unit')&&d.portrait)void warmPathDetailImg(d.portrait);if(type==='character'){inn.innerHTML=renderCharShell(d);queueMicrotask(function(){try{bindUnitPortraitFx(inn)}catch(_){}})}else if(type==='unit'){if(d.weapons)d.weapons.forEach(w=>S.currentWeaponLevels[w.id]=5);void warmUnitModelStageAssets(d);inn.innerHTML=renderUnitShell(d);bindUnitModelStageReveal(inn);queueMicrotask(function(){try{bindUnitPortraitFx(inn)}catch(_){}})}else if(type==='supporter'){inn.innerHTML=renderSupporterShell(d);queueMicrotask(function(){try{bindUnitPortraitFx(inn)}catch(_){}})}else{if(type==='stage'&&d&&d.stage_category==='fierce_enemy_assault'){S.feaDiff='normal';S.feaLevel=null}inn.innerHTML=(d.content_locked?renderEternalStageLockedPanel(d):renderStageShell(d))}syncModalDetailChrome();if(type==='stage'&&!d.content_locked)wireRewardDetailClicks(inn);if(d&&d.ranking_available&&(type==='character'||type==='unit'))ensureDetailRankingToggleDom(type);if(!(type==='stage'&&d.content_locked)){updateDetailDynamicSections(type);if(type==='unit')queuePilotCondCharPrefetch(d);if(d&&d.ranking_available&&(type==='character'||type==='unit')){(function(_t,_i){setTimeout(function(){if(S.currentDetailType!==_t||!S.currentDetailData||String(S.currentDetailData.id)!==String(_i))return;void ensureDetailRankingStats(_t,_i).then(function(){if(S.currentDetailType===_t&&S.currentDetailData&&String(S.currentDetailData.id)===String(_i)){updateDetailDynamicSections(_t);adjustDetailModalLayout()}}).catch(function(){})},5000)})(type,id)}}pinDetailModalScrollTop(0);try{scheduleLockDetailCoverPaintBoxes()}catch(_){}if(!skipHistory)_syncDetailBrowseHistory(type,id,detailWasActive,skipHistory);syncDetailBrowseNavUi()}catch(e){const msg=String((e&&e.message)||e||'');const soft=!!(e&&(e.name==='AbortError'||e.name==='TypeError'))||/networkerror|failed to fetch|load failed|the operation was aborted|^network$/i.test(msg);if(!soft)console.error(e);inn.innerHTML=`<div class="empty-state" style="padding:60px 20px"><div class="empty-state-icon">⚠️</div><div class="empty-state-text">${esc(soft?'Could not load details. Check your connection and try again.':('Failed: '+msg))}</div></div>`;syncModalDetailChrome();syncDetailBrowseNavUi();try{scheduleLockDetailCoverPaintBoxes()}catch(_){}}}
 function closeModal(){
 const m=document.getElementById('detailModal');
 const wasOpen=!!(m&&m.classList.contains('active'));
-if(!wasOpen||S._historyApplyingPopstate)return;
+if(S._historyApplyingPopstate)return;
+/* Mid-exit Esc: finish hard instead of resetting timers and getting stuck. */
+if(S._detailExitPhase==='exiting'){
+try{
+S._detailExitDone=0;
+_clearDetailExitListeners();
+_killDetailModalMotion(document.getElementById('modalContent'));
+_finishDetailOverlayGone(true);
+}catch(_){}
+return;
+}
+if(!wasOpen){
+try{_clearDetailCloseSettling();_clearDetailCloseScrollHold();_resetDetailExitFlags()}catch(_){}
+return;
+}
 const ret=S.currentDetailData&&S.currentDetailData.detail_return;
 if(ret&&ret.type==='stage'&&ret.payload){
 restoreStageDetailReturn();
@@ -6775,26 +7277,50 @@ return;
 }
 const scrollSnap=S._detailBrowseReturn?Object.assign({},S._detailBrowseReturn):_readPersistedBrowseScrollReturn();
 const scrollY=_browseListScrollYSaved();
-closeModalDomOnly();
+_resetDetailExitFlags();
+_armDetailCloseSettling();
+S._detailExitScrollSnap=scrollSnap||null;
+S._detailExitScrollY=(typeof scrollY==='number')?scrollY:null;
+S._detailExitType=S.currentDetailType||(scrollSnap&&scrollSnap.type)||null;
+S._detailExitId=(S.currentDetailData&&S.currentDetailData.id!=null)?S.currentDetailData.id:(scrollSnap&&scrollSnap.id!=null?scrollSnap.id:null);
+S._detailExitDoHistoryBack=false;
+S._detailExitBrowsePath=null;
 if(S._historyModalPushed){
 S._historyModalPushed=false;
-try{history.back()}catch(_){}
-/* history.back can reset scroll after unlock — re-apply saved list Y instantly. */
-if(scrollSnap){S._detailBrowseReturn=scrollSnap;if(typeof scrollSnap.y==='number')S._browseListScrollY=scrollSnap.y}
-else if(typeof scrollY==='number')S._browseListScrollY=scrollY;
-restoreDetailBrowseScroll(typeof scrollY==='number'?scrollY:undefined);
-return;
-}
-if(_historyIsDetailPath(location.pathname)||(history.state&&history.state.ggenDetail)){
+S._detailExitDoHistoryBack=true;
+}else if(_historyIsDetailPath(location.pathname)||(history.state&&history.state.ggenDetail)){
 let browsePath=S.currentTab==='ranking'?'/rk':(MAIN_TAB_PATH_SHORT[S.currentTab]||'/');
 if(S.currentTab==='stages')browsePath=stagesBrowsePathForSource(S.stages.source||'eternal');
-replaceHistoryToBrowsePath(browsePath);
-try{const _bt={characters:1,units:1,supporters:1,stages:1,modifications:1};ensureBrowseTabPainted(_bt[S.currentTab]?S.currentTab:'characters')}catch(_rmPaint){}
+S._detailExitBrowsePath=browsePath;
 }
-if(scrollSnap){S._detailBrowseReturn=scrollSnap;if(typeof scrollSnap.y==='number')S._browseListScrollY=scrollSnap.y}
-restoreDetailBrowseScroll(typeof scrollY==='number'?scrollY:undefined);
+closeModalDomOnly({keepCover:true,deferUnlock:true});
+_scheduleRevealBrowseAfterDetailClose();
 }
 function closeModalOverlay(e){if(e.target===e.currentTarget)closeModal()}
+/* While detail is open, never let browse/header receive clicks through the dimmed shell. */
+(function(){
+if(window.__ggenDetailClickShield)return;
+window.__ggenDetailClickShield=1;
+function _detailShieldShouldBlock(t){
+if(!t||!t.closest)return false;
+if(!document.body.classList.contains('detail-modal-open'))return false;
+const m=document.getElementById('detailModal');
+if(!m||!m.classList.contains('active'))return false;
+if(m.contains(t))return false;
+if(t.closest('#skillModal.active,#tagModal.active,#whatsNewOverlay.active,#siteFeedbackOverlay.active,#alipayhkOverlay.active,#tbPickerOverlay.active,#tbFormationOverlay.active,#tbRearrangeOverlay.active,.media-video-overlay.active,.search-spotlight-overlay.active'))return false;
+return true;
+}
+function _detailShieldEvent(e){
+try{
+if(!_detailShieldShouldBlock(e.target))return;
+e.preventDefault();
+e.stopPropagation();
+if(typeof e.stopImmediatePropagation==='function')e.stopImmediatePropagation();
+}catch(_){}
+}
+document.addEventListener('pointerdown',_detailShieldEvent,true);
+document.addEventListener('click',_detailShieldEvent,true);
+})();
 function _resolveStageNpcRow(npcId){
 const nid=String(npcId!=null?npcId:'').trim();
 if(!nid)return null;
@@ -10777,6 +11303,9 @@ if(!el)return 0;
 return Math.max(0,Math.round(el.getBoundingClientRect().bottom))
 }
 function syncListTheadStickyTop(){
+/* While detail locks the page, header is position:fixed off-screen → bottom≈0.
+   Writing that into --list-thead-sticky-top makes browse chrome jump on Esc. */
+if(document.documentElement.classList.contains('page-scroll-lock')||document.body.classList.contains('detail-modal-open'))return;
 document.documentElement.style.setProperty('--list-thead-sticky-top',getAppHeaderBottomPx()+'px')
 }
 const _BROWSE_TABLE_WRAP_IDS=['charTableWrap','unitTableWrap','suppTableWrap','stageTableWrap','modTableWrap'];
@@ -11521,7 +12050,7 @@ function scheduleSyncTagValueCrawlers(root){
     requestAnimationFrame(()=>{requestAnimationFrame(()=>{try{syncTagValueCrawlers(root)}catch(e){}})});
   }catch(e){try{syncTagValueCrawlers(root)}catch(e2){}}
 }
-try{if(typeof window!=='undefined'&&!window.GGEN_TAG_CRAWL_RESIZE){window.GGEN_TAG_CRAWL_RESIZE=1;window.addEventListener('resize',function(){try{scheduleSyncTagValueCrawlers(document)}catch(e){}try{const dm=document.getElementById('detailModal');if(dm&&dm.classList.contains('active')){clearDetailCoverPaintLock();scheduleLockDetailCoverPaintBoxes()}}catch(e2){}});}}catch(_e){}
+try{if(typeof window!=='undefined'&&!window.GGEN_TAG_CRAWL_RESIZE){window.GGEN_TAG_CRAWL_RESIZE=1;window.addEventListener('resize',function(){try{scheduleSyncTagValueCrawlers(document)}catch(e){}try{const dm=document.getElementById('detailModal');if(!dm||!dm.classList.contains('active'))return;if(S._detailExitPhase==='exiting')return;if(document.body.classList.contains('detail-close-settling'))return;if(document.documentElement.classList.contains('detail-close-scroll-hold'))return;clearDetailCoverPaintLock();scheduleLockDetailCoverPaintBoxes()}catch(e2){}});}}catch(_e){}
 
 
 function createTagHtml(tag,opts){const o=opts||{};const tn=typeof tag==='string'?tag:(tag.name||'');const tt=typeof tag==='string'?'':(tag.type||'');const tid=typeof tag==='string'?'':(tag.id||'');const preferred=(o.defaultTarget==='unit'||o.defaultTarget==='character')?o.defaultTarget:'';const forceTagModal=!!o.force_tag_modal;let li='';if(tt==='character')li='/static/images/UI/UI_Common_Icon_Category_Chara_Main.webp';else li='/static/images/UI/UI_Common_Icon_Category_MS_Main.webp';let onClick=`openTagModal('${escJs(tn)}','or'${preferred?`,'${preferred}'`:''})`;if(tt==='series'&&tid&&!forceTagModal){const tab=(preferred==='character')?'characters':'units';onClick=`openSeriesModal('${escJs(tid)}','${tab}','${escJs(tn)}')`}const dataUnit=tt==='unit'&&tid&&String(tid).length>=9?` data-cond-unit-id="${escAttr(String(tid))}"`:'';return tagCompositeHtml({variant:tt,iconSrc:li,value:tn,onClick,attrs:dataUnit})}

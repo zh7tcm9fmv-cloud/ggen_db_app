@@ -1,0 +1,253 @@
+{# First-visit human gate — pick Gold Haro → Eternal Base wallet. Env: GGEN_HUMAN_GATE. #}
+{% if human_gate_enabled and human_gate_required %}
+<div class="human-gate-overlay active" id="humanGateOverlay" role="dialog" aria-modal="true" aria-labelledby="humanGateTitle" aria-describedby="humanGateWelcome humanGateHint">
+  <div class="human-gate-card" onclick="event.stopPropagation()" style="--human-gate-deco:url('{{ human_gate_deco_url }}')">
+    <div class="human-gate-card-deco" aria-hidden="true"></div>
+    <div class="human-gate-card-frame" aria-hidden="true"></div>
+    <div class="human-gate-badge" id="humanGateBadge">Verification</div>
+    <div class="human-gate-head">
+      <h2 class="human-gate-title" id="humanGateTitle">Welcome to GGen Eternal Database</h2>
+      <p class="human-gate-welcome" id="humanGateWelcome">Thank you for visiting — we are glad you are here.</p>
+      <p class="human-gate-hint" id="humanGateHint">Please complete the step below once to continue browsing.</p>
+    </div>
+    <div class="human-gate-action">
+      <p class="human-gate-action-label" id="humanGateActionLabel">Tap the gold Haro</p>
+      <div class="human-gate-wallet" id="humanGateWallet" aria-hidden="true">
+        <img class="human-gate-wallet-img" src="{{ human_gate_wallet_url }}" alt="" width="72" height="72" decoding="async">
+      </div>
+      <div class="human-gate-haro-tray" id="humanGateHaroTray" role="group" aria-labelledby="humanGateActionLabel"></div>
+    </div>
+    <p class="human-gate-visitors" id="humanGateVisitors" data-count="{{ human_gate_passed_count|default(0) }}">0 Commanders have visited the database</p>
+    <p class="human-gate-foot" id="humanGateFoot">This only appears on your first visit.</p>
+    <p class="human-gate-status" id="humanGateStatus" hidden aria-live="polite"></p>
+  </div>
+</div>
+<script>
+(function(){
+  var ov=document.getElementById('humanGateOverlay');
+  var tray=document.getElementById('humanGateHaroTray');
+  var wallet=document.getElementById('humanGateWallet');
+  var visitors=document.getElementById('humanGateVisitors');
+  var st=document.getElementById('humanGateStatus');
+  if(!ov||!tray)return;
+  try{document.documentElement.classList.add('human-gate-open');document.body.classList.add('human-gate-open')}catch(_){}
+  var HARO={
+    bronze:{{ human_gate_haro.bronze|tojson }},
+    silver:{{ human_gate_haro.silver|tojson }},
+    gold:{{ human_gate_haro.gold|tojson }}
+  };
+  var COPY={
+    EN:{
+      badge:'Verification',
+      title:'Welcome to GGen Eternal Database',
+      welcome:'Thank you for visiting — we are glad you are here.',
+      hint:'Please complete the step below once to continue browsing.',
+      action:'Tap the gold Haro',
+      /* LANG glossary: Commander / 指揮官 / 지휘관 */
+      visitors:'{n} Commanders have visited the database',
+      foot:'This only appears on your first visit.',
+      ariaGold:'Gold Haro — correct',
+      ariaSilver:'Silver Haro',
+      ariaBronze:'Bronze Haro',
+      wrong:'Not that one — tap the gold Haro.',
+      fail:'Something went wrong. Please try again — thank you for your patience.'
+    },
+    JA:{
+      badge:'確認',
+      /* Site title only — avoid second ようこそ beside LANG welcome */
+      title:'GGen Eternal Database',
+      /* LANG m_navigation_character 101200000010000010 */
+      welcome:'「SDガンダム ジージェネレーション エターナル」へようこそ！',
+      hint:'下の手順を一度完了して、閲覧を続けてください。',
+      action:'金色のハロをタップ',
+      visitors:'{n}人の指揮官がデータベースを訪れました',
+      foot:'初回訪問時のみ表示されます。',
+      ariaGold:'金色のハロ — 正解',
+      ariaSilver:'銀色のハロ',
+      ariaBronze:'銅色のハロ',
+      wrong:'違います。金色のハロをタップしてください。',
+      fail:'確認できませんでした。もう一度お試しください。'
+    },
+    TW:{
+      badge:'驗證',
+      /* Site title only — avoid double 歡迎來到 with LANG welcome */
+      title:'GGen Eternal Database',
+      /* LANG m_navigation_character 101200000010000010 */
+      welcome:'歡迎來到《SD鋼彈 G世代 永恆》！',
+      hint:'請完成下列動作以繼續瀏覽。',
+      action:'請點選金色哈囉',
+      visitors:'已有 {n} 位指揮官造訪本資料庫',
+      foot:'僅在第一次造訪時顯示。',
+      ariaGold:'金色哈囉 — 正確',
+      ariaSilver:'銀色哈囉',
+      ariaBronze:'銅色哈囉',
+      wrong:'不對喔 — 請點選金色哈囉。',
+      fail:'暫時無法確認，請再試一次，謝謝。'
+    },
+    HK:{
+      badge:'驗證',
+      title:'GGen Eternal Database',
+      /* LANG m_navigation_character 101200000010000010 */
+      welcome:'歡迎來到《SD高達 G世代 永恆》！',
+      hint:'請完成下列動作以繼續瀏覽。',
+      action:'請點選金色哈囉',
+      visitors:'已有 {n} 位指揮官造訪本資料庫',
+      foot:'僅在第一次造訪時顯示。',
+      ariaGold:'金色哈囉 — 正確',
+      ariaSilver:'銀色哈囉',
+      ariaBronze:'銅色哈囉',
+      wrong:'不對喔 — 請點選金色哈囉。',
+      fail:'暫時無法確認，請再試一次，謝謝。'
+    },
+    /* Site KR code; LANG pack lives under data/HR */
+    KR:{
+      badge:'확인',
+      title:'GGen Eternal Database',
+      /* LANG HR m_navigation_character 101200000010000010 */
+      welcome:"'SD건담 지 제네레이션 이터널'에 오신 것을 환영합니다!",
+      hint:'아래 절차를 완료한 뒤 계속 이용해 주세요.',
+      action:'금색 하로를 탭하세요',
+      visitors:'{n}명의 지휘관이 데이터베이스를 방문했습니다',
+      foot:'첫 방문 시에만 표시됩니다.',
+      ariaGold:'금색 하로 — 정답',
+      ariaSilver:'은색 하로',
+      ariaBronze:'동색 하로',
+      wrong:'다시 선택해 주세요 — 금색 하로를 탭하세요.',
+      fail:'확인할 수 없습니다. 다시 시도해 주세요.'
+    }
+  };
+  COPY.HR=COPY.KR;
+  function lang(){
+    try{
+      var L=(localStorage.getItem('ggen_lang')||localStorage.getItem('lang')||document.documentElement.getAttribute('data-ui-lang')||'EN').toUpperCase();
+      if(L==='JP')L='JA';
+      if(L==='HR')L='KR';
+      if(COPY[L])return L;
+    }catch(_){}
+    return 'EN';
+  }
+  function fmtVisitors(n,c){
+    var tpl=(c&&c.visitors)||COPY.EN.visitors;
+    var num=String(Math.max(0,parseInt(n,10)||0));
+    try{num=(parseInt(n,10)||0).toLocaleString()}catch(_){}
+    return String(tpl).split('{n}').join(num);
+  }
+  function setVisitors(n){
+    if(!visitors)return;
+    visitors.setAttribute('data-count',String(Math.max(0,parseInt(n,10)||0)));
+    visitors.textContent=fmtVisitors(n,copy);
+  }
+  function applyCopy(){
+    var c=COPY[lang()]||COPY.EN;
+    var map=[
+      ['humanGateBadge','badge'],
+      ['humanGateTitle','title'],
+      ['humanGateWelcome','welcome'],
+      ['humanGateHint','hint'],
+      ['humanGateActionLabel','action'],
+      ['humanGateFoot','foot']
+    ];
+    for(var i=0;i<map.length;i++){
+      var el=document.getElementById(map[i][0]);
+      if(el)el.textContent=c[map[i][1]];
+    }
+    return c;
+  }
+  function shuffle(arr){
+    var a=arr.slice();
+    for(var i=a.length-1;i>0;i--){
+      var j=Math.floor(Math.random()*(i+1));
+      var t=a[i];a[i]=a[j];a[j]=t;
+    }
+    return a;
+  }
+  var copy=applyCopy();
+  setVisitors((visitors&&visitors.getAttribute('data-count'))||0);
+  var busy=0;
+  var order=shuffle(['bronze','silver','gold']);
+  var ariaMap={bronze:'ariaBronze',silver:'ariaSilver',gold:'ariaGold'};
+  order.forEach(function(kind,idx){
+    var btn=document.createElement('button');
+    btn.type='button';
+    btn.className='human-gate-haro';
+    btn.setAttribute('data-haro',kind);
+    btn.setAttribute('aria-label',copy[ariaMap[kind]]||kind);
+    btn.style.setProperty('--haro-i',String(idx));
+    var img=document.createElement('img');
+    img.className='human-gate-haro-img';
+    img.src=HARO[kind];
+    img.alt='';
+    img.width=72;img.height=72;
+    img.decoding='async';
+    if(kind==='gold')img.fetchPriority='high';
+    btn.appendChild(img);
+    tray.appendChild(btn);
+  });
+  function done(){
+    try{ov.classList.remove('active');ov.setAttribute('aria-hidden','true')}catch(_){}
+    try{document.documentElement.classList.remove('human-gate-open');document.body.classList.remove('human-gate-open')}catch(_){}
+  }
+  function fail(msg){
+    busy=0;
+    tray.classList.remove('is-locked');
+    if(wallet)wallet.classList.remove('is-hit');
+    if(st){st.hidden=false;st.textContent=msg||copy.fail}
+  }
+  function verify(){
+    if(st){st.hidden=false;st.textContent='…'}
+    fetch('/api/human_gate/verify',{
+      method:'POST',
+      credentials:'same-origin',
+      headers:{'Accept':'application/json','Content-Type':'application/json'},
+      body:JSON.stringify({pick:'gold'}),
+      cache:'no-store'
+    }).then(function(r){
+      if(!r.ok)throw new Error('http '+r.status);
+      return r.json();
+    }).then(function(d){
+      if(d&&d.ok===false)throw new Error(d.error||'denied');
+      if(d&&typeof d.passed!=='undefined')setVisitors(d.passed);
+      done();
+    }).catch(function(){
+      fail(copy.fail);
+    });
+  }
+  function flyToWallet(btn){
+    if(!wallet){
+      btn.classList.add('is-collect');
+      return 500;
+    }
+    var br=btn.getBoundingClientRect();
+    var wr=wallet.getBoundingClientRect();
+    var dx=(wr.left+wr.width/2)-(br.left+br.width/2);
+    var dy=(wr.top+wr.height/2)-(br.top+br.height/2);
+    btn.style.setProperty('--dx',dx+'px');
+    btn.style.setProperty('--dy',dy+'px');
+    btn.classList.add('is-collect');
+    window.setTimeout(function(){
+      try{wallet.classList.add('is-hit')}catch(_){}
+    },420);
+    return 560;
+  }
+  tray.addEventListener('click',function(ev){
+    if(busy)return;
+    var btn=ev.target&&ev.target.closest?ev.target.closest('.human-gate-haro'):null;
+    if(!btn||!tray.contains(btn))return;
+    var kind=btn.getAttribute('data-haro')||'';
+    if(kind!=='gold'){
+      btn.classList.remove('is-wrong');
+      void btn.offsetWidth;
+      btn.classList.add('is-wrong');
+      if(st){st.hidden=false;st.textContent=copy.wrong}
+      return;
+    }
+    busy=1;
+    tray.classList.add('is-locked');
+    var others=tray.querySelectorAll('.human-gate-haro:not([data-haro="gold"])');
+    for(var i=0;i<others.length;i++)others[i].classList.add('is-fade');
+    var wait=flyToWallet(btn);
+    window.setTimeout(verify,wait);
+  });
+})();
+</script>
+{% endif %}

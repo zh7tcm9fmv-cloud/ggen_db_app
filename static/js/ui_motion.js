@@ -28,6 +28,14 @@
     root.classList.add('ggen-scrollbar-ready');
     var hideTimer = 0;
     function onScroll() {
+      /* Detail Esc unlock restores Y under hold/pin — do not flash the overlay thumb then. */
+      if (
+        root.classList.contains('page-scroll-lock') ||
+        root.classList.contains('detail-close-scroll-hold') ||
+        root.classList.contains('ggen-scroll-pin')
+      ) {
+        return;
+      }
       root.classList.add('is-scrolling');
       if (hideTimer) window.clearTimeout(hideTimer);
       hideTimer = window.setTimeout(function () {

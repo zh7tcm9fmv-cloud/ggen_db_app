@@ -257,6 +257,25 @@ a.nav-tab:any-link:hover:not(.active),a.nav-tab:visited:hover:not(.active){color
 .main-content{max-width:1600px;margin:0 auto;padding:20px 24px 40px;flex:1;min-width:0;width:100%}
 .tab-panel{display:none;position:relative;min-height:calc(100vh - 200px)}.tab-panel.active{display:block}
 .tab-panel::before{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;background-size:cover;background-position:center;background-repeat:no-repeat;opacity:0.15;border-radius:var(--radius-lg)}
+/* Detail open/exit: freeze browse plate box so scrollbar pad unlock does not reframe cover under the toolbar. */
+.tab-panel[data-ggen-panel-cover-locked="1"]::before{
+  inset:auto;
+  top:0;
+  left:0;
+  width:var(--ggen-panel-cover-w,100%);
+  height:var(--ggen-panel-cover-h,100%);
+  background-size:cover;
+  background-position:center;
+}
+/* While detail (or scroll-lock) covers browse, hide the plate — morph/dim still shows the toolbar
+   area, and cover reflow there reads as “bg painted on list-toolbar”. */
+body.detail-modal-open .tab-panel::before,
+html.page-scroll-lock .tab-panel::before,
+body.detail-close-settling .tab-panel::before,
+html.detail-close-scroll-hold .tab-panel::before{
+  opacity:0!important;
+  transition:none!important;
+}
 #panel-characters::before,#panel-supporters::before{background-image:url('/static/images/Background/obg_022_office.webp')}
 #panel-units::before,#panel-stages::before{background-image:url('/static/images/Background/obg_011_garage.webp')}
 #panel-ranking::before{background-image:url('/static/images/UI/UI_Home_Campaign_Image_01.webp')}
@@ -1204,7 +1223,15 @@ html[data-ui-lang="HK"] #panel-banner_timeline .bt-table .bt-strip .lr-card.bt-l
 @media(prefers-reduced-motion:reduce){
 .scroll-top-fab:hover .scroll-top-fab-ic,.banner-timeline-scroll-top-fab:hover .banner-timeline-scroll-top-fab-ic{animation:none}
 }
-body.detail-modal-open .scroll-top-fab,body.detail-modal-open .banner-timeline-scroll-top-fab,body.search-spotlight-open .scroll-top-fab,body.search-spotlight-open .banner-timeline-scroll-top-fab,html.page-scroll-lock .scroll-top-fab,html.page-scroll-lock .banner-timeline-scroll-top-fab{display:none!important}
+body.detail-modal-open .scroll-top-fab,body.detail-modal-open .banner-timeline-scroll-top-fab,body.search-spotlight-open .scroll-top-fab,body.search-spotlight-open .banner-timeline-scroll-top-fab,html.page-scroll-lock .scroll-top-fab,html.page-scroll-lock .banner-timeline-scroll-top-fab,html.detail-close-scroll-hold .scroll-top-fab,html.detail-close-scroll-hold .banner-timeline-scroll-top-fab{display:none!important}
+/* Fixed FABs use viewport `right` — while body has scrollbar pad (lock/hold), nudge them by the same gutter so they do not sit in the missing-bar lane. */
+html.page-scroll-lock-sb .scroll-top-fab,
+html.page-scroll-lock-sb .banner-timeline-scroll-top-fab{
+  right:max(16px,calc(env(safe-area-inset-right,0px) + var(--page-scroll-lock-sb,0px)));
+}
+html.page-scroll-lock-sb .search-recall-fab{
+  right:max(16px,calc(env(safe-area-inset-right,0px) + var(--page-scroll-lock-sb,0px)));
+}
 /* State classes — avoid landmark :has(html/body) (Chrome dirties large subtrees on toggle). */
 html.search-recall-open .scroll-top-fab,html.search-recall-open .banner-timeline-scroll-top-fab{bottom:calc(96px + env(safe-area-inset-bottom,0px))}
 html.cmp-bar-open .scroll-top-fab,html.cmp-bar-open .banner-timeline-scroll-top-fab{bottom:calc(68px + env(safe-area-inset-bottom,0px))}
@@ -1427,7 +1454,7 @@ html.cmp-bar-open.search-recall-open .scroll-top-fab,html.cmp-bar-open.search-re
 .filter-input-wrap{position:relative;display:inline-flex;vertical-align:middle;max-width:100%}.filter-input{padding:9px 36px 9px 14px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:var(--radius-sm);color:var(--text-primary);font-size:16px;outline:none;width:260px;max-width:100%;transition:width .22s ease,max-width .22s ease,border-color .2s ease,box-shadow .2s ease;box-shadow:var(--shadow-surface)}.filter-input::placeholder{color:var(--text-muted)}.filter-input:focus{border-color:var(--accent-blue);box-shadow:var(--shadow-surface),0 0 0 2px rgba(74,144,217,0.1)}
 .filter-input-clear{position:absolute;right:6px;top:50%;transform:translateY(-50%);z-index:2;width:24px;height:24px;padding:0;margin:0;border:0;border-radius:6px;background:transparent;color:var(--text-muted);font-size:18px;line-height:1;cursor:pointer;display:none;align-items:center;justify-content:center;appearance:none;-webkit-appearance:none}.filter-input-clear:hover,.filter-input-clear:focus-visible{color:var(--text-primary);background:rgba(255,255,255,.08);outline:none}.filter-input-wrap.has-value .filter-input-clear{display:inline-flex}
 .search-hint-popover{position:absolute;left:0;top:calc(100% + 10px);z-index:130;width:min(380px,calc(100vw - 48px));padding:12px 14px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);box-shadow:0 10px 32px rgba(0,0,0,.5);font-size:13px;line-height:1.55;color:var(--text-secondary);pointer-events:none;opacity:0;visibility:hidden;display:none;transition:opacity .18s ease,visibility .18s ease;text-align:left}.search-hint-inner strong{color:var(--accent-cyan);font-weight:800}.search-hint-inner code{font-size:12px;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.25);padding:1px 6px;border-radius:4px;color:var(--text-primary);font-weight:600}.filter-input-wrap.show-hint:not(.hint-suppressed) .search-hint-popover{opacity:0;visibility:hidden}
-.search-recall-fab{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:355;width:52px;height:52px;border-radius:50%;border:1px solid var(--border-color);background:linear-gradient(145deg,var(--bg-card),var(--bg-secondary));box-shadow:0 6px 24px rgba(0,0,0,.45);cursor:pointer;display:none;align-items:center;justify-content:center;font-size:22px;line-height:1;padding:0;transition:var(--transition)}.search-recall-fab.visible{display:flex}.search-recall-fab:hover,.search-recall-fab:focus-visible{border-color:var(--accent-cyan);background:var(--bg-card-hover);outline:none;box-shadow:0 0 0 2px rgba(0,212,255,.25)}body.detail-modal-open .search-recall-fab{display:none!important}
+.search-recall-fab{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:355;width:52px;height:52px;border-radius:50%;border:1px solid var(--border-color);background:linear-gradient(145deg,var(--bg-card),var(--bg-secondary));box-shadow:0 6px 24px rgba(0,0,0,.45);cursor:pointer;display:none;align-items:center;justify-content:center;font-size:22px;line-height:1;padding:0;transition:var(--transition)}.search-recall-fab.visible{display:flex}.search-recall-fab:hover,.search-recall-fab:focus-visible{border-color:var(--accent-cyan);background:var(--bg-card-hover);outline:none;box-shadow:0 0 0 2px rgba(0,212,255,.25)}body.detail-modal-open .search-recall-fab,html.detail-close-scroll-hold .search-recall-fab,html.page-scroll-lock .search-recall-fab{display:none!important}
 /* Mobile-safe browse freeze: body position:fixed at the pre-open list Y (CSS var).
    #detailModal is its own fixed overlay scroller — body lock does not steal detail scroll. */
 html.page-scroll-lock{overflow:hidden!important;overscroll-behavior:none;height:100%}
@@ -1440,6 +1467,34 @@ html.page-scroll-lock body{
   width:100%;
   top:var(--page-scroll-lock-top,0px);
   touch-action:none;
+}
+/* Keep browse auto-fill grids from gaining a column while the scrollbar is gone. */
+html.page-scroll-lock.page-scroll-lock-sb body{
+  padding-right:calc(env(safe-area-inset-right,0px) + var(--page-scroll-lock-sb,0px))!important;
+}
+/* Detail Esc: keep page gutter locked (no scrollbar pop) until scroll pin settles after unlock. */
+html.detail-close-scroll-hold{
+  overflow:hidden!important;
+  overscroll-behavior:none;
+  scrollbar-width:none!important;
+}
+html.detail-close-scroll-hold::-webkit-scrollbar,
+html.detail-close-scroll-hold *::-webkit-scrollbar{
+  width:0!important;
+  height:0!important;
+  display:none!important;
+}
+html.detail-close-scroll-hold.page-scroll-lock-sb body{
+  padding-right:calc(env(safe-area-inset-right,0px) + var(--page-scroll-lock-sb,0px))!important;
+}
+/* While hold is up, never paint the overlay thumb from restore scroll events. */
+html.detail-close-scroll-hold.is-scrolling,
+html.ggen-scroll-pin.is-scrolling{
+  scrollbar-color:transparent transparent;
+}
+html.detail-close-scroll-hold.is-scrolling ::-webkit-scrollbar-thumb,
+html.ggen-scroll-pin.is-scrolling ::-webkit-scrollbar-thumb{
+  background:transparent!important;
 }
 html.page-scroll-lock #detailModal,
 html.page-scroll-lock #detailModal *{touch-action:pan-y}
@@ -1818,38 +1873,83 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .stage-diff-badge{display:inline-block;padding:4px 10px;border-radius:999px;font-size:13px;font-weight:800;color:#fff;letter-spacing:.4px}.stage-diff-normal{background:#55c7ff}.stage-diff-hard{background:#ff9a3d}.stage-diff-expert{background:#ff4b4b}.stage-diff-unknown{background:#667085}
 /* No backdrop-filter: blur here — full-viewport blur + solid wash = GPU thrash / “everything dies” the moment detail opens. */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:300;display:none;align-items:flex-start;justify-content:center;padding:30px 20px;overflow-y:auto;overflow-x:clip;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}.modal-overlay.active{display:flex}
+/* Detail open: never let browse/header eat clicks through the dimmed shell. */
+body.detail-modal-open .app-header,
+body.detail-modal-open main.main-content,
+body.detail-modal-open .bg-pattern{
+  pointer-events:none!important;
+}
+#detailModal.modal-overlay.active{
+  pointer-events:auto!important;
+}
+/* Esc close: morph over normal dimmed browse; opaque WASH only for unlock frames, then fade.
+   Do not arm opaque wash during morph — that left an empty black screen for ~700ms.
+   Never pointer-events:none on the active overlay — that let unit cards be clicked behind. */
+body.detail-close-settling #detailModal.modal-overlay.active{
+  animation:none!important;
+  pointer-events:auto!important;
+}
+body.detail-close-settling #detailModal.modal-overlay.active.is-detail-wash{
+  background:#05070c!important;
+  opacity:1!important;
+  transition:none!important;
+}
+/* After morph-exit finishes — hide empty shell before unlock. */
+body.detail-close-settling #detailModal.modal-overlay.active.is-detail-wash-empty .modal-content,
+body.detail-close-settling #detailModal.modal-overlay.active.is-detail-wash-empty #detailInner{
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+body.detail-close-settling #detailModal.modal-overlay.active.is-detail-wash-out{
+  background:#05070c!important;
+  opacity:0!important;
+  transition:opacity 120ms ease!important;
+  animation:none!important;
+}
+body.detail-close-settling #detailModal.modal-overlay{
+  scrollbar-width:none!important;
+}
+body.detail-close-settling #detailModal.modal-overlay::-webkit-scrollbar{
+  width:0!important;
+  height:0!important;
+  display:none!important;
+}
+body.detail-close-settling .app-header .header-inner,
+body.detail-close-settling .app-header .nav-tabs-shell,
+body.nav-tabs-overlay-freeze .app-header .header-inner,
+body.nav-tabs-overlay-freeze .app-header .nav-tabs-shell{
+  transition:none!important;
+  filter:none!important;
+  opacity:1!important;
+}
 .modal-content{background:var(--bg-modal);border:1px solid var(--border-color);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);max-width:1100px;width:100%;position:relative;overflow:clip;overflow-x:clip}
-/* Detail dossier art: paint on ::before sized by --ggen-detail-cover-* (JS lock).
-   Root bug: background-size:cover on the scrollport rescales whenever scrollHeight /
-   clientHeight changes (PEP/CP/SP toggle, weapon notes, etc.). Locked paint box
-   keeps cover framing; toggles cannot rescale. */
+/* Detail dossier art: paint on the scrollport itself (padding box).
+   Absolute ::before locked to clientHeight only covered the top slice and
+   scrolled away — stats sat on flat #0a0e17. With max-height-capped scrollport,
+   used height stays stable across PEP/CP toggles (scrollHeight-only changes),
+   so cover framing no longer rescales. */
 .modal-content.char-detail,.modal-content.supporter-detail,
 .modal-content.unit-detail,.modal-content.stage-detail,.modal-content.profile-title-detail,.modal-content.item-detail{
-  background-color:#0a0e17;
-  background-image:none;
-  isolation:isolate;
-}
-.modal-content.char-detail::before,.modal-content.supporter-detail::before,
-.modal-content.unit-detail::before,.modal-content.stage-detail::before,
-.modal-content.profile-title-detail::before,.modal-content.item-detail::before{
-  content:'';
-  position:absolute;
-  top:0;left:0;
-  width:var(--ggen-detail-cover-w,100%);
-  height:var(--ggen-detail-cover-h,100%);
-  z-index:0;
-  pointer-events:none;
   background-color:#0a0e17;
   background-repeat:no-repeat;
   background-size:cover;
   background-position:center;
+  isolation:isolate;
 }
-.modal-content.char-detail::before,.modal-content.supporter-detail::before{
+.modal-content.char-detail,.modal-content.supporter-detail{
   background-image:linear-gradient(135deg,rgba(20,28,46,0.97),rgba(20,28,46,0.92)),url('/static/images/Background/obg_031.webp');
 }
+.modal-content.unit-detail,.modal-content.stage-detail,
+.modal-content.profile-title-detail,.modal-content.item-detail{
+  background-image:linear-gradient(135deg,rgba(20,28,46,0.97),rgba(20,28,46,0.92)),url('/static/images/Background/obg_012_garage.webp');
+}
+/* Kill legacy absolute cover layer if any cached CSS still expects it */
+.modal-content.char-detail::before,.modal-content.supporter-detail::before,
 .modal-content.unit-detail::before,.modal-content.stage-detail::before,
 .modal-content.profile-title-detail::before,.modal-content.item-detail::before{
-  background-image:linear-gradient(135deg,rgba(20,28,46,0.97),rgba(20,28,46,0.92)),url('/static/images/Background/obg_012_garage.webp');
+  content:none;
+  display:none;
 }
 /* Do not force position on chrome — sticky must stay sticky. */
 .modal-content.char-detail > #detailInner,.modal-content.supporter-detail > #detailInner,
@@ -1869,14 +1969,16 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .modal-content.char-detail:not(.detail-ranking-view) .detail-header,.modal-content.unit-detail:not(.detail-ranking-view) .detail-header{overflow:visible}
 .modal-content.char-detail,.modal-content.unit-detail{overflow-x:clip;overflow-y:auto}
 /* Detail: sole scrollport = #modalContent (keeps sticky chrome). Overlay does not
-   scroll (no nested bars). Scrollbar hidden — wheel/touch still scroll. */
+   scroll (no nested bars). Scrollbar hidden — wheel/touch still scroll.
+   Tight chrome inset so the dossier uses nearly full viewport (was 60px + 30px pad). */
 #detailModal.modal-overlay{
-  --detail-modal-vh-chrome:60px;
+  --detail-modal-vh-chrome:16px;
+  padding:8px 12px;
   overflow-x:clip;
   overflow-y:hidden;
 }
 @media(max-width:768px){
-  #detailModal.modal-overlay{--detail-modal-vh-chrome:16px}
+  #detailModal.modal-overlay{--detail-modal-vh-chrome:8px}
 }
 #detailModal .modal-content.char-detail,
 #detailModal .modal-content.unit-detail,
@@ -1887,8 +1989,9 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 #detailModal .modal-content.profile-title-detail{
   overflow-x:clip;
   overflow-y:auto;
-  max-height:calc(100vh - var(--detail-modal-vh-chrome,60px));
-  max-height:calc(100dvh - var(--detail-modal-vh-chrome,60px));
+  max-height:calc(100vh - var(--detail-modal-vh-chrome,16px));
+  max-height:calc(100dvh - var(--detail-modal-vh-chrome,16px));
+  max-width:min(1200px,100%);
   scrollbar-width:none;
   -ms-overflow-style:none;
 }
@@ -2040,6 +2143,18 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
   background-repeat:no-repeat;
   background-size:cover;
   background-position:center 42%;
+}
+/* Exit morph: never fall back to % box — locked px keep garage/office crop stable while scale runs. */
+#detailModal .modal-content.is-detail-morph-exit .detail-header.unit-detail-header::before,
+#detailModal .modal-content.is-detail-morph-exit .detail-header.char-detail-header::before,
+#detailModal .modal-content.is-detail-morph-exit .detail-header.supporter-detail-header::before,
+body.detail-close-settling #detailModal .detail-header.unit-detail-header::before,
+body.detail-close-settling #detailModal .detail-header.char-detail-header::before,
+body.detail-close-settling #detailModal .detail-header.supporter-detail-header::before{
+  width:var(--ggen-header-cover-w,100%)!important;
+  height:var(--ggen-header-cover-h,100%)!important;
+  background-size:cover!important;
+  background-position:center 42%!important;
 }
 .modal-content.unit-detail:not(.detail-ranking-view) .detail-header.unit-detail-header::before,
 .modal-content.supporter-detail .detail-header.supporter-detail-header::before{
@@ -7689,3 +7804,170 @@ button.stage-fea-diff-tab.diff-pill:focus-visible{
 ){
   overflow:hidden;
 }
+
+/* —— Human gate (first-visit verification; LVUp deco on card only) —— */
+.human-gate-overlay{
+  position:fixed;inset:0;z-index:620;display:none;align-items:center;justify-content:center;
+  padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(20px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));
+  background:rgba(5,8,15,.88);pointer-events:none;isolation:isolate;
+}
+.human-gate-overlay.active{display:flex;pointer-events:auto}
+.human-gate-card{
+  --human-gate-deco:none;
+  position:relative;z-index:1;width:min(440px,100%);
+  padding:26px 22px 20px;
+  text-align:center;
+  color:var(--text-primary);
+  overflow:hidden;
+  background:
+    linear-gradient(168deg,rgba(26,34,54,.97) 0%,rgba(14,20,34,.98) 48%,rgba(10,14,24,.99) 100%);
+  border:1px solid rgba(0,212,255,.42);
+  border-radius:2px;
+  clip-path:polygon(
+    14px 0, calc(100% - 14px) 0, 100% 14px,
+    100% calc(100% - 14px), calc(100% - 14px) 100%, 14px 100%,
+    0 calc(100% - 14px), 0 14px
+  );
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,.55),
+    0 18px 48px rgba(0,0,0,.65),
+    inset 0 1px 0 rgba(255,255,255,.08),
+    inset 0 0 0 1px rgba(0,212,255,.12),
+    0 0 32px rgba(0,212,255,.12);
+}
+.human-gate-card-deco{
+  position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-image:var(--human-gate-deco);
+  background-repeat:no-repeat;
+  background-position:62% 40%;
+  background-size:140% auto;
+  opacity:.42;
+  filter:brightness(1.2) contrast(1.05);
+}
+.human-gate-card-deco::after{
+  content:"";position:absolute;inset:0;
+  background:
+    linear-gradient(180deg,rgba(14,20,34,.55) 0%,rgba(14,20,34,.78) 42%,rgba(10,14,24,.92) 100%),
+    linear-gradient(105deg,transparent 28%,rgba(0,212,255,.12) 52%,transparent 76%);
+  mix-blend-mode:normal;
+  pointer-events:none;
+}
+.human-gate-card-frame{
+  position:absolute;inset:5px;z-index:1;pointer-events:none;
+  border:1px solid rgba(0,212,255,.16);
+  clip-path:polygon(
+    10px 0, calc(100% - 10px) 0, 100% 10px,
+    100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%,
+    0 calc(100% - 10px), 0 10px
+  );
+}
+.human-gate-card-frame::before,
+.human-gate-card-frame::after{
+  content:"";position:absolute;width:18px;height:18px;
+  border-color:var(--accent-gold);border-style:solid;opacity:.85;
+}
+.human-gate-card-frame::before{
+  top:-1px;left:-1px;border-width:2px 0 0 2px;
+}
+.human-gate-card-frame::after{
+  right:-1px;bottom:-1px;border-width:0 2px 2px 0;
+}
+.human-gate-badge{
+  position:relative;z-index:1;
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  margin:0 auto 14px;padding:5px 14px 5px 10px;
+  font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;
+  color:#061018;
+  background:linear-gradient(90deg,var(--accent-cyan),#5ce8ff 55%,var(--accent-gold));
+  border-radius:2px;
+  box-shadow:0 0 0 1px rgba(0,0,0,.35),0 2px 10px rgba(0,212,255,.35);
+}
+.human-gate-badge::before{
+  content:"";width:7px;height:7px;border-radius:50%;
+  background:#061018;box-shadow:0 0 0 2px rgba(6,16,24,.35);
+  flex:0 0 auto;
+}
+.human-gate-head{position:relative;z-index:1;padding:0 4px}
+.human-gate-title{
+  margin:0 0 12px;font-size:clamp(18px,4.2vw,22px);font-weight:800;
+  color:var(--accent-cyan);letter-spacing:.02em;line-height:1.3;
+  text-shadow:0 0 18px rgba(0,212,255,.22);
+}
+.human-gate-welcome{
+  margin:0 0 8px;font-size:15px;line-height:1.55;color:var(--text-primary);font-weight:600;
+}
+.human-gate-hint{
+  margin:0 0 16px;font-size:13px;line-height:1.55;color:var(--text-secondary);
+}
+.human-gate-action{
+  position:relative;z-index:1;
+  margin:0 2px 12px;padding:14px 12px 12px;
+  background:rgba(0,0,0,.28);
+  border:1px dashed rgba(0,212,255,.38);
+  border-radius:var(--radius-sm);
+  box-shadow:inset 0 0 0 1px rgba(255,215,0,.08);
+}
+.human-gate-action-label{
+  margin:0 0 10px;font-size:12px;font-weight:700;letter-spacing:.04em;
+  color:var(--text-secondary);line-height:1.4;
+}
+.human-gate-wallet{
+  position:relative;z-index:1;
+  display:flex;align-items:center;justify-content:center;
+  width:76px;height:76px;margin:0 auto 10px;
+  border-radius:50%;
+  background:radial-gradient(circle at 50% 42%,rgba(0,212,255,.14),rgba(0,0,0,.25) 70%);
+  box-shadow:inset 0 0 0 1px rgba(0,212,255,.28),0 0 16px rgba(0,212,255,.12);
+}
+.human-gate-wallet-img{
+  display:block;width:64px;height:64px;object-fit:contain;pointer-events:none;
+  filter:drop-shadow(0 2px 6px rgba(0,0,0,.45));
+}
+.human-gate-haro-tray{
+  display:flex;align-items:center;justify-content:center;gap:clamp(12px,4vw,22px);
+  min-height:88px;padding:4px 0 2px;
+}
+.human-gate-haro-tray.is-locked{pointer-events:none}
+.human-gate-haro{
+  --haro-i:0;
+  position:relative;appearance:none;-webkit-appearance:none;
+  width:76px;height:76px;margin:0;padding:0;border:0;border-radius:50%;
+  background:transparent;cursor:pointer;line-height:0;
+  transform:translate3d(0,0,0);
+  filter:drop-shadow(0 4px 10px rgba(0,0,0,.45));
+  transition:filter var(--motion-dur-quick,120ms) var(--motion-ease-standard,cubic-bezier(.2,0,0,1));
+}
+.human-gate-haro-img{
+  display:block;width:100%;height:100%;object-fit:contain;pointer-events:none;
+  user-select:none;-webkit-user-drag:none;
+}
+.human-gate-haro:hover:not(.is-collect),.human-gate-haro:focus-visible:not(.is-collect){
+  filter:drop-shadow(0 6px 14px rgba(0,212,255,.35)) brightness(1.06);
+  outline:none;
+}
+.human-gate-haro:focus-visible:not(.is-collect){
+  box-shadow:var(--chrome-focus-ring,0 0 0 2px rgba(0,212,255,.5));
+}
+.human-gate-haro[data-haro="gold"]:hover:not(.is-collect),
+.human-gate-haro[data-haro="gold"]:focus-visible:not(.is-collect){
+  filter:drop-shadow(0 6px 16px rgba(255,215,0,.45)) brightness(1.08);
+}
+.human-gate-visitors{
+  position:relative;z-index:1;
+  margin:4px 0 8px;padding:0 6px;
+  font-size:12px;font-weight:700;line-height:1.45;
+  color:var(--accent-gold);letter-spacing:.02em;
+  font-variant-numeric:tabular-nums;
+  text-shadow:0 0 12px rgba(255,215,0,.18);
+}
+.human-gate-foot{
+  position:relative;z-index:1;
+  margin:0;font-size:11px;line-height:1.45;color:var(--text-muted);letter-spacing:.02em;
+}
+.human-gate-status{
+  position:relative;z-index:1;
+  margin:10px 0 0;font-size:13px;color:var(--text-muted);min-height:1.2em;
+}
+html.human-gate-open,html.human-gate-open body{overflow:hidden!important}
+body.human-gate-open .app-header,
+body.human-gate-open main.main-content{pointer-events:none!important}

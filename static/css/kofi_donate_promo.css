@@ -19,9 +19,11 @@
 .kofi-donate-promo-panel{
   position:relative;
   display:grid;
-  grid-template-columns:minmax(0,120px) minmax(0,1fr);
+  /* Portrait column hugs each Popup art; copy fills remaining room. */
+  grid-template-columns:auto minmax(0,1fr);
   column-gap:8px;
-  align-items:end;
+  align-items:stretch;
+  width:fit-content;
   padding:8px;
   overflow:visible;
   max-width:min(420px,calc(100vw - 24px));
@@ -205,16 +207,20 @@
   z-index:1;
   grid-column:1;
   grid-row:1;
-  width:120px;
-  max-width:100%;
-  align-self:end;
+  width:fit-content;
+  max-width:min(120px,28vw);
+  align-self:stretch;
+  display:flex;
+  align-items:flex-end;
+  justify-content:flex-start;
   line-height:0;
   filter:drop-shadow(0 6px 16px rgba(0,0,0,.55));
 }
 .kofi-donate-promo-maria{
   display:block;
-  width:100%;
+  width:auto;
   height:auto;
+  max-width:100%;
   max-height:132px;
   object-fit:contain;
   object-position:left bottom;
@@ -224,12 +230,22 @@
   z-index:1;
   grid-column:2;
   grid-row:1;
-  min-width:0;
-  align-self:end;
+  min-width:min(240px,52vw);
+  max-width:min(286px,calc(100vw - 148px));
+  align-self:stretch;
+  display:flex;
+  flex-direction:column;
   overflow:visible;
 }
 .kofi-donate-promo-bubble{
   position:relative;
+  flex:1 1 auto;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  box-sizing:border-box;
+  width:100%;
+  min-height:100%;
   padding:9px 34px 10px 11px;
   background:rgba(0,0,0,.32);
   border:1px solid rgba(0,212,255,.16);
@@ -447,15 +463,19 @@
   }
   .kofi-donate-promo-panel{
     max-width:calc(100vw - 16px);
-    grid-template-columns:minmax(0,80px) minmax(0,1fr);
+    grid-template-columns:auto minmax(0,1fr);
     column-gap:8px;
     padding:8px 10px;
   }
   .kofi-donate-promo-maria-wrap{
-    width:80px;
+    max-width:min(80px,22vw);
   }
   .kofi-donate-promo-maria{
     max-height:96px;
+  }
+  .kofi-donate-promo-copy{
+    min-width:min(180px,48vw);
+    max-width:min(260px,calc(100vw - 112px));
   }
   .kofi-donate-promo-bubble{
     padding:10px 34px 11px 11px;
@@ -492,15 +512,19 @@
 @media (max-width:480px){
   .kofi-donate-promo-panel{
     max-width:calc(100vw - 12px);
-    grid-template-columns:minmax(0,72px) minmax(0,1fr);
+    grid-template-columns:auto minmax(0,1fr);
     column-gap:6px;
     padding:8px;
   }
   .kofi-donate-promo-maria-wrap{
-    width:72px;
+    max-width:min(72px,20vw);
   }
   .kofi-donate-promo-maria{
     max-height:88px;
+  }
+  .kofi-donate-promo-copy{
+    min-width:min(160px,46vw);
+    max-width:min(240px,calc(100vw - 96px));
   }
   .kofi-donate-promo-bubble{
     padding:9px 32px 10px 10px;

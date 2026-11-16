@@ -443,10 +443,16 @@
     var path = pickPromoPortraitPath();
     var src = promoImgUrl(path);
     if (!src) return;
+    var onSized = function () {
+      requestAnimationFrame(positionPromo);
+    };
+    img.onload = onSized;
     img.src = src;
+    if (img.complete && img.naturalWidth) onSized();
     img.onerror = function () {
       if (typeof global.gameImageUrlFallback === 'function') {
         global.gameImageUrlFallback(img);
+        onSized();
         return;
       }
       img.onerror = null;

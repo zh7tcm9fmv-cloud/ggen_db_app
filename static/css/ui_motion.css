@@ -24,6 +24,9 @@
   --motion-dur-quick:120ms;
   --motion-dur-standard:220ms;
   --motion-dur-modal:320ms;
+  /* Takayu modal-morph — detail enter/exit (catalog #motion=modal-morph) */
+  --motion-dur-modal-morph:700ms;
+  --motion-ease-modal-morph:cubic-bezier(0.65,0,0.35,1); /* easeInOutCubic */
   /* Takayu glitch-in — FEA Special Ops theme enter */
   --motion-dur-glitch-in:420ms;
   /* Brand title center-out (takayu tx-center-out-reveal) — elegant hover */
@@ -81,6 +84,56 @@
   opacity:1;
 }
 
+/* —— Human gate checkpoint (Corporate enter + Haro → Eternal Base wallet) —— */
+.human-gate-overlay.active .human-gate-card{
+  animation:ggen-modal-enter var(--motion-dur-modal) var(--motion-ease-enter) both;
+}
+/* catalog-game-hud-coin-collect taste: idle bob → wrong shake → stash into wallet */
+@keyframes human-gate-haro-bob{
+  0%,100%{transform:translate3d(0,0,0)}
+  50%{transform:translate3d(0,-5px,0)}
+}
+@keyframes human-gate-haro-wrong{
+  0%,100%{transform:translate3d(0,0,0)}
+  20%{transform:translate3d(-7px,0,0)}
+  40%{transform:translate3d(7px,0,0)}
+  60%{transform:translate3d(-5px,0,0)}
+  80%{transform:translate3d(4px,0,0)}
+}
+@keyframes human-gate-haro-collect{
+  0%{transform:translate3d(0,0,0) scale(1);opacity:1}
+  18%{transform:translate3d(calc(var(--dx,0px) * .08),calc(var(--dy,0px) * .08 + 6px),0) scale(1.08);opacity:1}
+  100%{transform:translate3d(var(--dx,0px),var(--dy,-72px),0) scale(.18);opacity:0}
+}
+@keyframes human-gate-haro-fade{
+  to{opacity:.28;transform:translate3d(0,4px,0) scale(.92)}
+}
+@keyframes human-gate-wallet-hit{
+  0%{transform:scale(1)}
+  40%{transform:scale(1.18)}
+  100%{transform:scale(1)}
+}
+.human-gate-haro:not(.is-collect):not(.is-wrong):not(.is-fade){
+  animation:human-gate-haro-bob 2.2s var(--motion-ease-standard) infinite;
+  animation-delay:calc(var(--haro-i,0) * 140ms);
+}
+.human-gate-haro.is-wrong{
+  animation:human-gate-haro-wrong 380ms var(--motion-ease-standard) both;
+}
+.human-gate-haro.is-collect{
+  z-index:3;
+  animation:human-gate-haro-collect 500ms cubic-bezier(.36,0,.66,-.56) forwards;
+  filter:drop-shadow(0 0 14px rgba(255,215,0,.55));
+}
+.human-gate-haro.is-fade{
+  animation:human-gate-haro-fade 320ms var(--motion-ease-exit) forwards;
+  pointer-events:none;
+}
+.human-gate-wallet.is-hit{
+  animation:human-gate-wallet-hit 350ms cubic-bezier(.34,1.45,.64,1) both;
+  box-shadow:inset 0 0 0 1px rgba(255,215,0,.55),0 0 22px rgba(255,215,0,.35);
+}
+
 /* —— Modal / dialog entrance (Corporate rise + fade) —— */
 @keyframes ggen-modal-enter{
   from{opacity:0;transform:translate3d(0,14px,0) scale(0.985)}
@@ -90,20 +143,54 @@
   from{opacity:0}
   to{opacity:1}
 }
-/* Detail modal: no enter animation — owner requires instant open (spinner/lag feel). */
-#detailModal.active .modal-content,
-#detailModal .modal-content{
-  animation:none!important;
-  opacity:1!important;
-  transform:none!important;
-}
-
+/* Default dialog enter (non-detail). Detail uses Takayu modal-morph below. */
 .modal-content,
 .tag-modal-content,
 .cmp-modal,
 .cmp-picker,
 .dc-modal{
   animation:ggen-modal-enter var(--motion-dur-modal) var(--motion-ease-enter) both!important;
+}
+/* Takayu modal-morph (catalog): scale .36→1 + opacity, 700ms easeInOutCubic.
+   Exit reverses on the dossier, then opaque wash unlock (flicker-safe). */
+@keyframes ggen-detail-morph-enter{
+  0%{opacity:.75;transform:scale(.36)}
+  72%{opacity:1;transform:scale(1)}
+  100%{opacity:1;transform:scale(1)}
+}
+@keyframes ggen-detail-morph-exit{
+  0%{opacity:1;transform:scale(1)}
+  28%{opacity:1;transform:scale(1)}
+  100%{opacity:0;transform:scale(.36)}
+}
+@keyframes ggen-detail-morph-fade{
+  from{opacity:0}
+  to{opacity:1}
+}
+#detailModal .modal-content{
+  animation:none!important;
+  opacity:1;
+  transform:none;
+  transform-origin:50% 42%;
+}
+#detailModal .modal-content.is-detail-morph-enter{
+  animation:ggen-detail-morph-enter var(--motion-dur-modal-morph) var(--motion-ease-modal-morph) both!important;
+  will-change:transform,opacity;
+}
+#detailModal .modal-content.is-detail-morph-exit{
+  animation:ggen-detail-morph-exit var(--motion-dur-modal-morph) var(--motion-ease-modal-morph) forwards!important;
+  will-change:transform,opacity;
+}
+@keyframes ggen-detail-overlay-enter{
+  from{opacity:0}
+  to{opacity:1}
+}
+#detailModal.modal-overlay.active:not(.is-detail-wash):not(.is-detail-wash-out){
+  animation:ggen-detail-overlay-enter var(--motion-dur-modal-morph) var(--motion-ease-modal-morph) both;
+}
+#detailModal.modal-overlay.is-detail-exiting{
+  animation:none!important;
+  pointer-events:none;
 }
 
 /* —— Spring knobs (pill switches + ranking/DC compare switches) —— */
@@ -606,6 +693,10 @@ body:not(.tm-page):not(.dm-page).nav-tabs-collapsed #navTabsShell{
   margin:0 !important;
   padding:0 !important;
 }
+/* Detail/spotlight unlock: snap chrome with no opacity tween (avoids Esc flicker). */
+body:not(.tm-page):not(.dm-page).nav-tabs-overlay-freeze #navTabsShell{
+  transition:none !important;
+}
 
 @media (prefers-reduced-motion:reduce){
   /* Brand center-out hover: no stagger */
@@ -637,12 +728,40 @@ body:not(.tm-page):not(.dm-page).nav-tabs-collapsed #navTabsShell{
     transform:none!important;
     opacity:1!important;
   }
+  .human-gate-overlay.active .human-gate-card{
+    animation:ggen-modal-enter-reduced var(--motion-dur-modal) var(--motion-ease-standard) both!important;
+  }
+  .human-gate-haro:not(.is-collect):not(.is-wrong):not(.is-fade),
+  .human-gate-haro.is-wrong,
+  .human-gate-haro.is-collect,
+  .human-gate-haro.is-fade,
+  .human-gate-wallet.is-hit{
+    animation:none!important;
+  }
+  .human-gate-haro.is-collect{opacity:0!important}
+  .human-gate-haro.is-fade{opacity:.35!important}
   .modal-content,
   .tag-modal-content,
   .cmp-modal,
   .cmp-picker,
   .dc-modal{
     animation:ggen-modal-enter-reduced 150ms ease both!important;
+  }
+  #detailModal .modal-content{
+    animation:none!important;
+    transform:none!important;
+    will-change:auto!important;
+  }
+  #detailModal .modal-content.is-detail-morph-enter{
+    animation:ggen-detail-morph-fade 180ms ease both!important;
+    transform:none!important;
+  }
+  #detailModal .modal-content.is-detail-morph-exit{
+    animation:ggen-detail-morph-fade 150ms ease reverse both!important;
+    transform:none!important;
+  }
+  #detailModal.modal-overlay.active:not(.is-detail-wash):not(.is-detail-wash-out){
+    animation-duration:180ms!important;
   }
   .ggen-ripple-wave{
     display:none!important;

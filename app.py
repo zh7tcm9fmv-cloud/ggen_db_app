@@ -220,6 +220,9 @@ def _hostname_from_origin_or_host(value):
 # Local Flask stays open by default so build scripts keep working.
 # ---------------------------------------------------------------------------
 _GGEN_SITE_COOKIE = 'ggen_site'
+# First-visit human gate (click + signed cookie). Not Cloudflare — stops non-JS scrapers only.
+_GGEN_HUMAN_COOKIE = 'ggen_human'
+_GGEN_HUMAN_MAX_AGE = 60 * 60 * 24 * 30  # 30 days
 _GGEN_PROVENANCE_CANARY = (
     (os.environ.get('GGEN_PROVENANCE_CANARY') or '').strip()
     or hashlib.sha256(b'ggendb-eternal-database-provenance-v1').hexdigest()[:20]
@@ -331,6 +334,291 @@ def _api_request_looks_like_site_browser():
     if tok and (request.headers.get('X-GGen-Build-Token') or '').strip() == tok:
         return True
     return False
+
+
+def _human_gate_enabled():
+    """Popup human gate: default on for Railway, off locally; override with GGEN_HUMAN_GATE."""
+    raw = (os.environ.get('GGEN_HUMAN_GATE') or '').strip().lower()
+    if raw in ('0', 'false', 'off', 'no'):
+        return False
+    if raw in ('1', 'true', 'yes', 'on'):
+        return True
+    return bool((os.environ.get('RAILWAY_ENVIRONMENT') or os.environ.get('RAILWAY_PROJECT_ID') or '').strip())
+
+
+def _human_gate_serializer():
+    from itsdangerous import URLSafeTimedSerializer
+    return URLSafeTimedSerializer(str(app.secret_key or 'ggen-dev-secret'), salt='ggen-human-gate-v1')
+
+
+def _human_gate_cookie_ok():
+    tok = (request.cookies.get(_GGEN_HUMAN_COOKIE) or '').strip()
+    if not tok:
+        return False
+    try:
+        from itsdangerous import BadSignature, SignatureExpired
+        data = _human_gate_serializer().loads(tok, max_age=_GGEN_HUMAN_MAX_AGE)
+        return isinstance(data, dict) and int(data.get('v') or 0) == 1
+    except Exception:
+        return False
+
+
+def _human_gate_force_show():
+    """Local preview: ?human_gate=1 (or ?hg=1) shows the popup even with a pass cookie."""
+    try:
+        v = (request.args.get('human_gate') or request.args.get('hg') or '').strip().lower()
+    except RuntimeError:
+        return False
+    return v in ('1', 'true', 'yes', 'on', 'force', 'show')
+
+
+def _human_gate_issue_token():
+    return _human_gate_serializer().dumps({'v': 1})
+
+
+def _human_gate_set_cookie(resp):
+    secure = bool(
+        (os.environ.get('RAILWAY_ENVIRONMENT') or '').strip()
+        or (getattr(request, 'is_secure', False) if request else False)
+    )
+    resp.set_cookie(
+        _GGEN_HUMAN_COOKIE,
+        _human_gate_issue_token(),
+        max_age=_GGEN_HUMAN_MAX_AGE,
+        samesite='Lax',
+        secure=secure,
+        httponly=True,
+        path='/',
+    )
+    return resp
+
+
+# —— Human-gate visitor counter (passed verifications) ——
+# Local working cache under data/persistent (or volume when mounted).
+# Durable on Railway via same banner-votes-data GitHub branch when token is set.
+try:
+    from contextlib import nullcontext as _human_gate_nullcontext
+except Exception:  # pragma: no cover
+    class _human_gate_nullcontext:  # type: ignore
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            return False
+
+
+_HUMAN_GATE_STATS_LOCK = threading.Lock()
+_HUMAN_GATE_STATS_CACHE = None  # type: ignore
+_HUMAN_GATE_STATS_HYDRATED = False
+_HUMAN_GATE_STATS_PUSH_TIMER = None
+_HUMAN_GATE_STATS_GITHUB_SHA = None
+
+
+def _human_gate_stats_file_path():
+    custom = (os.environ.get('GGEN_HUMAN_GATE_STATS_PATH') or '').strip()
+    if custom:
+        return os.path.abspath(custom)
+    vol = (os.environ.get('GGEN_PERSISTENT_DIR') or os.environ.get('RAILWAY_VOLUME_MOUNT_PATH') or '').strip()
+    if vol:
+        return os.path.join(vol, 'human_gate_stats.json')
+    return os.path.join(app_dir, 'data', 'persistent', 'human_gate_stats.json')
+
+
+def _human_gate_stats_github_path():
+    return (
+        os.environ.get('GGEN_HUMAN_GATE_STATS_GITHUB_PATH')
+        or 'data/published/human_gate_stats.json'
+    ).strip().lstrip('/')
+
+
+def _human_gate_stats_empty():
+    return {'version': 1, 'passed': 0}
+
+
+def _human_gate_stats_normalize(data):
+    out = _human_gate_stats_empty()
+    if not isinstance(data, dict):
+        return out
+    try:
+        out['passed'] = max(0, int(data.get('passed') or 0))
+    except (TypeError, ValueError):
+        out['passed'] = 0
+    try:
+        out['version'] = max(1, int(data.get('version') or 1))
+    except (TypeError, ValueError):
+        out['version'] = 1
+    return out
+
+
+def _human_gate_stats_read_disk():
+    path = _human_gate_stats_file_path()
+    try:
+        with open(path, 'r', encoding='utf-8') as f:
+            return _human_gate_stats_normalize(json.load(f))
+    except Exception:
+        return _human_gate_stats_empty()
+
+
+def _human_gate_stats_write_disk(data):
+    path = _human_gate_stats_file_path()
+    parent = os.path.dirname(path) or '.'
+    try:
+        os.makedirs(parent, exist_ok=True)
+    except OSError:
+        pass
+    payload = json.dumps(_human_gate_stats_normalize(data), ensure_ascii=False, separators=(',', ':'))
+    tmp = f'{path}.tmp.{os.getpid()}.{threading.get_ident()}'
+    try:
+        with open(tmp, 'w', encoding='utf-8') as f:
+            f.write(payload)
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(tmp, path)
+    except Exception:
+        try:
+            if os.path.isfile(tmp):
+                os.remove(tmp)
+        except OSError:
+            pass
+        raise
+
+
+def _human_gate_stats_fetch_github():
+    """Best-effort hydrate from banner-votes-data (tiny JSON)."""
+    try:
+        token = (os.environ.get('GGEN_BANNER_VOTES_GITHUB_TOKEN') or '').strip()
+        repo = _banner_pool_votes_github_repo()
+        branch = _banner_pool_votes_github_branch_safe(_banner_pool_votes_github_branch())
+        path = _human_gate_stats_github_path()
+        if not repo or not branch or not path:
+            return None
+        raw_url = f'https://raw.githubusercontent.com/{repo}/{branch}/{path}'
+        headers = {'Accept': 'application/json', 'User-Agent': 'ggen-db-app-human-gate'}
+        if token:
+            headers['Authorization'] = f'Bearer {token}'
+        raw = _http_request_bytes(raw_url, headers=headers, timeout=12, retries=1, log_prefix='human_gate_stats')
+        return _human_gate_stats_normalize(json.loads(raw.decode('utf-8')))
+    except Exception:
+        return None
+
+
+def _human_gate_stats_schedule_github_push():
+    global _HUMAN_GATE_STATS_PUSH_TIMER
+    token = (os.environ.get('GGEN_BANNER_VOTES_GITHUB_TOKEN') or '').strip()
+    if not token:
+        return
+    delay = 45.0
+    try:
+        delay = max(15.0, float(os.environ.get('GGEN_BANNER_VOTES_PUSH_DEBOUNCE_SEC', '45') or '45'))
+    except (TypeError, ValueError):
+        delay = 45.0
+
+    def _fire():
+        global _HUMAN_GATE_STATS_PUSH_TIMER
+        _HUMAN_GATE_STATS_PUSH_TIMER = None
+        try:
+            _human_gate_stats_push_github()
+        except Exception as e:
+            print(f'human_gate_stats: GitHub push failed: {e}')
+
+    with _HUMAN_GATE_STATS_LOCK:
+        t = _HUMAN_GATE_STATS_PUSH_TIMER
+        if t is not None:
+            try:
+                t.cancel()
+            except Exception:
+                pass
+        timer = threading.Timer(delay, _fire)
+        timer.daemon = True
+        _HUMAN_GATE_STATS_PUSH_TIMER = timer
+        timer.start()
+
+
+def _human_gate_stats_push_github():
+    global _HUMAN_GATE_STATS_GITHUB_SHA
+    token = (os.environ.get('GGEN_BANNER_VOTES_GITHUB_TOKEN') or '').strip()
+    repo = _banner_pool_votes_github_repo()
+    branch = _banner_pool_votes_github_branch_safe(_banner_pool_votes_github_branch())
+    path = _human_gate_stats_github_path()
+    if not token or not repo or not branch:
+        return False
+    data = _human_gate_stats_get(hydrate=False)
+    payload = json.dumps(data, ensure_ascii=False, separators=(',', ':')).encode('utf-8')
+    try:
+        _banner_pool_votes_ensure_github_branch()
+    except Exception:
+        pass
+    ok = _collections_github_push_via_contents(
+        token,
+        repo,
+        path,
+        branch,
+        payload,
+        f'human_gate_stats: passed={data.get("passed", 0)}',
+        '_HUMAN_GATE_STATS_GITHUB_SHA',
+    )
+    if ok:
+        print(f'human_gate_stats: GitHub snapshot (passed={data.get("passed", 0)})')
+    return bool(ok)
+
+
+def _human_gate_stats_get(*, hydrate=True):
+    """Return {'version','passed'}; optionally merge GitHub once per process."""
+    global _HUMAN_GATE_STATS_CACHE, _HUMAN_GATE_STATS_HYDRATED
+    need_remote = False
+    with _HUMAN_GATE_STATS_LOCK:
+        if _HUMAN_GATE_STATS_CACHE is None:
+            _HUMAN_GATE_STATS_CACHE = _human_gate_stats_read_disk()
+        local = _human_gate_stats_normalize(_HUMAN_GATE_STATS_CACHE)
+        if hydrate and not _HUMAN_GATE_STATS_HYDRATED:
+            _HUMAN_GATE_STATS_HYDRATED = True
+            need_remote = True
+        else:
+            return local
+    if need_remote:
+        remote = _human_gate_stats_fetch_github()
+        if remote is not None:
+            with _HUMAN_GATE_STATS_LOCK:
+                cur = _human_gate_stats_normalize(_HUMAN_GATE_STATS_CACHE or local)
+                merged_n = max(int(cur.get('passed') or 0), int(remote.get('passed') or 0))
+                if merged_n != int(cur.get('passed') or 0):
+                    cur['passed'] = merged_n
+                    _HUMAN_GATE_STATS_CACHE = cur
+                    try:
+                        _human_gate_stats_write_disk(cur)
+                    except Exception as e:
+                        print(f'human_gate_stats: disk write after hydrate failed: {e}')
+                return _human_gate_stats_normalize(_HUMAN_GATE_STATS_CACHE)
+    with _HUMAN_GATE_STATS_LOCK:
+        return _human_gate_stats_normalize(_HUMAN_GATE_STATS_CACHE or local)
+
+
+def _human_gate_stats_increment():
+    """Bump passed count by 1 (first-time verify only). Returns new total."""
+    global _HUMAN_GATE_STATS_CACHE
+    # Ensure hydrate once so we do not clobber a higher GitHub total.
+    _human_gate_stats_get(hydrate=True)
+    path_lock = _human_gate_stats_file_path() + '.lock'
+    try:
+        lock_cm = _SpiVotesFileLock(path_lock, timeout=6.0)
+    except NameError:
+        lock_cm = _human_gate_nullcontext()
+    with lock_cm:
+        with _HUMAN_GATE_STATS_LOCK:
+            disk = _human_gate_stats_read_disk()
+            mem = _human_gate_stats_normalize(_HUMAN_GATE_STATS_CACHE or disk)
+            n = max(int(disk.get('passed') or 0), int(mem.get('passed') or 0)) + 1
+            data = {'version': 1, 'passed': n}
+            _HUMAN_GATE_STATS_CACHE = data
+            try:
+                _human_gate_stats_write_disk(data)
+            except Exception as e:
+                print(f'human_gate_stats: disk write failed: {e}')
+    try:
+        _human_gate_stats_schedule_github_push()
+    except Exception:
+        pass
+    return n
 
 
 def _api_guard_rate_ok(ip):
@@ -499,6 +787,33 @@ def _inject_public_origin():
     # large in-page images (e.g. Alipay QR) when og:image is missing.
     # Query bump forces Meta to refetch when the file/content changes (their CDN
     # caches by exact image URL — same path keeps the old Alipay/other thumb).
+    gate_on = False
+    gate_need = False
+    try:
+        gate_on = _human_gate_enabled()
+        gate_need = bool(gate_on and (not _human_gate_cookie_ok() or _human_gate_force_show()))
+    except Exception:
+        gate_on = False
+        gate_need = False
+    def _gate_img(rel):
+        try:
+            return game_image_public_url(rel) or rel
+        except Exception:
+            return rel
+    gate_deco = _gate_img('/static/images/UI/UI_ULT_Deco_LVUpBG.webp')
+    gate_wallet = _gate_img('/static/images/UI/IMG_Common_Logo_ETERNALBASE.webp')
+    gate_haro = {
+        'bronze': _gate_img('/static/images/UI/UI_Common_Icon_Haro_Bronze.webp'),
+        'silver': _gate_img('/static/images/UI/UI_Common_Icon_Haro_Silver.webp'),
+        'gold': _gate_img('/static/images/UI/UI_Common_Icon_Haro_Gold.webp'),
+    }
+    passed_n = 0
+    if gate_on:
+        try:
+            # hydrate=False on HTML path — keep browse snappy; GitHub merge on verify/increment
+            passed_n = int((_human_gate_stats_get(hydrate=False) or {}).get('passed') or 0)
+        except Exception:
+            passed_n = 0
     return {
         'public_origin': origin,
         'og_image_url': origin + '/static/og/site-logo.png?v=20260910',
@@ -511,6 +826,12 @@ def _inject_public_origin():
         'msy_dc_engine_js_bundle': _msy_dc_engine_js_served_bundle_name(),
         'msy_dc_worker_js_bundle': _msy_dc_worker_js_served_bundle_name(),
         'dc_allowed_hosts': _dc_allowed_hosts(),
+        'human_gate_enabled': gate_on,
+        'human_gate_required': gate_need,
+        'human_gate_deco_url': gate_deco or '/static/images/UI/UI_ULT_Deco_LVUpBG.webp',
+        'human_gate_wallet_url': gate_wallet or '/static/images/UI/IMG_Common_Logo_ETERNALBASE.webp',
+        'human_gate_haro': gate_haro,
+        'human_gate_passed_count': passed_n,
     }
 
 # Bust cache when static assets change OR when a new git commit is deployed.
@@ -21255,7 +21576,11 @@ def _serve_index():
         page_title=page_title,
         page_description=page_description,
     ))
-    if INDEX_HTML_CACHE_CONTROL:
+    # Human-gate HTML depends on cookie — never publicly cache a required/skip mix.
+    if _human_gate_enabled():
+        r.headers['Cache-Control'] = 'private, no-store'
+        r.headers['Vary'] = 'Cookie'
+    elif INDEX_HTML_CACHE_CONTROL:
         r.headers['Cache-Control'] = INDEX_HTML_CACHE_CONTROL
     else:
         r.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
@@ -21426,6 +21751,38 @@ def api_client_version():
     r = make_response(jsonify(payload))
     r.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate'
     r.headers['Pragma'] = 'no-cache'
+    return r
+
+
+@app.route('/api/human_gate/verify', methods=['POST'])
+def api_human_gate_verify():
+    """Issue signed human-gate cookie after the continue click (JS popup)."""
+    if not _human_gate_enabled():
+        r = make_response(jsonify({'ok': True, 'enabled': False}))
+        r.headers['Cache-Control'] = 'no-store'
+        return r
+    # Same-origin browser only — not a secret challenge, just cut dumb scrapers.
+    if not _api_guard_client_is_local() and not _api_request_looks_like_site_browser():
+        r = make_response(jsonify({'ok': False, 'error': 'browser_required'}), 403)
+        r.headers['Cache-Control'] = 'no-store'
+        return r
+    already = False
+    try:
+        already = bool(_human_gate_cookie_ok())
+    except Exception:
+        already = False
+    passed = int((_human_gate_stats_get(hydrate=True) or {}).get('passed') or 0)
+    if not already:
+        try:
+            passed = int(_human_gate_stats_increment() or passed)
+        except Exception as e:
+            print(f'human_gate_stats: increment failed: {e}')
+    r = make_response(jsonify({'ok': True, 'enabled': True, 'passed': passed}))
+    r.headers['Cache-Control'] = 'no-store'
+    try:
+        _human_gate_set_cookie(r)
+    except Exception:
+        pass
     return r
 
 

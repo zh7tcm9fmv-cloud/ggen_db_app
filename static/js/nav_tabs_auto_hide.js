@@ -7,6 +7,13 @@
   /* Collections: collapsing tall intro drops scrollY into TOP_SHOW → hide↔reveal loop.
      Keep collapsed until user leaves the synthetic top or shows upward intent. */
   var pinnedCollapsed = false;
+  var lastY = 0;
+  var upAccum = 0;
+  /** Snapshot of .nav-tabs-collapsed before detail/spotlight overlay; restored on close. */
+  var overlayCollapsedSnap = null;
+  /** True from prepareUnlock until settle — blocks auto-hide + CSS transition flicker. */
+  var overlayUnlockFreeze = false;
+  var overlayUnlockSettleTimer = null;
 
   function isMatrixBoardPage() {
     var b = document.body;
@@ -33,9 +40,10 @@
     var mls = isMlsBattleFocus();
     var aggressive = col || mls;
     if (shortLandscape) {
-      return { HIDE_AFTER: 4, REVEAL_UP: aggressive ? 260 : 220, TOP_SHOW: 16 };
+      return { HIDE_AFTER: 4, REVEAL_UP: aggressive ? 240 : 160, TOP_SHOW: 16 };
     }
-    return { HIDE_AFTER: 10, REVEAL_UP: aggressive ? 480 : 400, TOP_SHOW: 40 };
+    /* Normal browse: strong flick (~280px) OR absolute top. Collections/MLS stay pickier. */
+    return { HIDE_AFTER: 10, REVEAL_UP: aggressive ? 420 : 280, TOP_SHOW: 40 };
   }
 
   function pageScrollY() {
@@ -49,9 +57,24 @@
     return Math.max(w, d, b, vv) || 0;
   }
 
+  function bumpIgnore(ms) {
+    ignoreUntil = Date.now() + (ms || 320);
+    try {
+      if (global.S) global.S._navTabsScrollIgnoreUntil = ignoreUntil;
+    } catch (_) {}
+  }
+
+  function setOverlayFreezeClass(on) {
+    try {
+      if (!document.body) return;
+      document.body.classList.toggle('nav-tabs-overlay-freeze', !!on);
+    } catch (_) {}
+  }
+
   function setNavTabsCollapsed(collapsed) {
     /* /tm and /dm use their own board-scroll chrome hide */
     if (isMatrixBoardPage()) return;
+    if (overlayUnlockFreeze) return;
     var want = !!collapsed;
     var already = document.body.classList.contains('nav-tabs-collapsed') === want;
     var y = pageScrollY();
@@ -61,10 +84,7 @@
     if (!already) {
       document.body.classList.toggle('nav-tabs-collapsed', want);
       /* Height snaps instantly; opacity fades — ignore layout / smooth-scroll noise */
-      ignoreUntil = Date.now() + (col ? 700 : mls ? 900 : 320);
-      try {
-        if (global.S) global.S._navTabsScrollIgnoreUntil = ignoreUntil;
-      } catch (_) {}
+      bumpIgnore(col ? 700 : mls ? 900 : 320);
     }
     /* Pin so programmatic scroll-up (MLS battle into view / collections chrome) cannot reveal. */
     if (want && (mls || (col && y > t.TOP_SHOW))) {
@@ -81,63 +101,206 @@
     }
   }
 
+  /** Call when opening detail (or similar overlay) — remember nav chrome state. */
+  function snapshotForOverlay() {
+    if (isMatrixBoardPage()) return;
+    overlayCollapsedSnap = document.body.classList.contains('nav-tabs-collapsed');
+    lastY = pageScrollY();
+    upAccum = 0;
+    bumpIgnore(1200);
+  }
+
+  function _applyOverlaySnap(clearSnap) {
+    if (typeof overlayCollapsedSnap !== 'boolean') return;
+    var want = overlayCollapsedSnap;
+    if (clearSnap) overlayCollapsedSnap = null;
+    var already = document.body.classList.contains('nav-tabs-collapsed') === want;
+    if (!already) {
+      document.body.classList.toggle('nav-tabs-collapsed', want);
+      if (!want) pinnedCollapsed = false;
+      if (typeof global.scheduleSyncListTheadStickyTop === 'function') {
+        global.scheduleSyncListTheadStickyTop();
+        requestAnimationFrame(function () {
+          global.scheduleSyncListTheadStickyTop();
+          setTimeout(global.scheduleSyncListTheadStickyTop, 120);
+        });
+      }
+    }
+  }
+
+  /**
+   * Call BEFORE removing page-scroll-lock / applying browse Y.
+   * Freezes auto-hide + disables nav opacity transition so unlock scroll cannot flicker chrome.
+   */
+  function prepareUnlock() {
+    if (isMatrixBoardPage()) return;
+    if (typeof overlayCollapsedSnap !== 'boolean') {
+      overlayCollapsedSnap = document.body.classList.contains('nav-tabs-collapsed');
+    }
+    overlayUnlockFreeze = true;
+    setOverlayFreezeClass(true);
+    bumpIgnore(2500);
+    upAccum = 0;
+    _applyOverlaySnap(false);
+  }
+
+  /**
+   * End overlay freeze after detail exit wash is fully gone.
+   * Do NOT unfreeze mid-fade — toggling nav/header height under a translucent wash
+   * looks like .header-inner “trying to hide.”
+   */
+  function releaseOverlayFreeze(opts) {
+    opts = opts || {};
+    if (overlayUnlockSettleTimer) {
+      try {
+        clearTimeout(overlayUnlockSettleTimer);
+      } catch (_) {}
+      overlayUnlockSettleTimer = null;
+    }
+    if (!overlayUnlockFreeze && !document.body.classList.contains('nav-tabs-overlay-freeze')) {
+      if (opts.forceTopReveal) {
+        try {
+          var t0 = thresholds();
+          if (pageScrollY() <= t0.TOP_SHOW && !isMlsBattleFocus()) {
+            pinnedCollapsed = false;
+            if (document.body.classList.contains('nav-tabs-collapsed')) {
+              document.body.classList.remove('nav-tabs-collapsed');
+              if (typeof global.scheduleSyncListTheadStickyTop === 'function') {
+                global.scheduleSyncListTheadStickyTop();
+              }
+            }
+          }
+        } catch (_) {}
+      }
+      return;
+    }
+    bumpIgnore(280);
+    _applyOverlaySnap(true);
+    lastY = pageScrollY();
+    upAccum = 0;
+    overlayUnlockFreeze = false;
+    setOverlayFreezeClass(false);
+    try {
+      var t = thresholds();
+      if (pageScrollY() <= t.TOP_SHOW && !isMlsBattleFocus()) {
+        pinnedCollapsed = false;
+        if (document.body.classList.contains('nav-tabs-collapsed')) {
+          document.body.classList.remove('nav-tabs-collapsed');
+          if (typeof global.scheduleSyncListTheadStickyTop === 'function') {
+            global.scheduleSyncListTheadStickyTop();
+          }
+        }
+      }
+    } catch (_) {}
+  }
+
+  /** Call after detail close + browse scroll restore — put nav back as it was. */
+  function restoreAfterOverlay() {
+    if (isMatrixBoardPage()) return;
+    overlayUnlockFreeze = true;
+    setOverlayFreezeClass(true);
+    bumpIgnore(2500);
+    upAccum = 0;
+    _applyOverlaySnap(false);
+    lastY = pageScrollY();
+    if (overlayUnlockSettleTimer) {
+      try {
+        clearTimeout(overlayUnlockSettleTimer);
+      } catch (_) {}
+      overlayUnlockSettleTimer = null;
+    }
+    /* Safety only — normal path releases from _finishDetailOverlayGone after exit motion. */
+    overlayUnlockSettleTimer = setTimeout(function () {
+      overlayUnlockSettleTimer = null;
+      releaseOverlayFreeze();
+    }, 2400);
+  }
+
   function initNavTabsAutoHide() {
     if (inited) return;
     inited = true;
     if (!document.getElementById('navTabs') || isMatrixBoardPage()) return;
 
-    var lastY = pageScrollY();
-    var upAccum = 0;
+    lastY = pageScrollY();
+    upAccum = 0;
     var touchY0 = null;
 
-    function locked() {
+    function hardLocked() {
       return (
+        overlayUnlockFreeze ||
         document.documentElement.classList.contains('page-scroll-lock') ||
         document.body.classList.contains('detail-modal-open') ||
         document.body.classList.contains('search-spotlight-open') ||
         document.body.classList.contains('gacha-sim-stage-open') ||
-        (ignoreUntil && Date.now() < ignoreUntil)
+        document.body.classList.contains('nav-tabs-overlay-freeze')
       );
+    }
+
+    function softIgnored() {
+      return !!(ignoreUntil && Date.now() < ignoreUntil);
+    }
+
+    function locked() {
+      return hardLocked() || softIgnored();
+    }
+
+    function revealAtTop(y, t, mls, dy) {
+      /* MLS battle: stay collapsed at top until aggressive upward scroll. */
+      if (mls && (pinnedCollapsed || document.body.classList.contains('nav-tabs-collapsed'))) {
+        if (dy < 0) {
+          upAccum += -dy;
+          if (upAccum >= t.REVEAL_UP) {
+            upAccum = 0;
+            pinnedCollapsed = false;
+            setNavTabsCollapsed(false);
+          }
+        } else if (dy > 0) {
+          upAccum = 0;
+        }
+        return;
+      }
+      upAccum = 0;
+      var col = isCollectionsPage();
+      /* Collections: collapsing tall intro can land in TOP_SHOW — need upward intent
+         unless we are truly at the page top (owner: top always reveals nav). */
+      if (pinnedCollapsed && col && y > 2) {
+        if (dy < -10) {
+          pinnedCollapsed = false;
+          setNavTabsCollapsed(false);
+        }
+        return;
+      }
+      /* True top (or normal browse TOP_SHOW): always show nav tabs. */
+      pinnedCollapsed = false;
+      setNavTabsCollapsed(false);
     }
 
     function onScroll() {
       var y = pageScrollY();
-      if (locked()) {
-        lastY = y;
+      if (hardLocked()) {
+        /* Keep lastY frozen while detail locks the page. Syncing to lock-time Y
+           (often ~0 under position:fixed) makes unlock look like a huge dy and
+           flips nav hide/show → Esc flicker. */
         return;
       }
-      var dy = y - lastY;
-      lastY = y;
       var t = thresholds();
       var mls = isMlsBattleFocus();
+      /* Soft ignore after hide/reveal must NOT block "scrolled all the way to top"
+         — that was why nav stayed collapsed at y≈0. */
+      if (!mls && y <= t.TOP_SHOW) {
+        var dyTop = y - lastY;
+        lastY = y;
+        revealAtTop(y, t, mls, dyTop);
+        return;
+      }
+      if (softIgnored()) return;
+      var dy = y - lastY;
+      lastY = y;
       /* Collections: leave synthetic top → unpin. MLS battle: keep pin through
          scroll-into-view mid-page; only aggressive REVEAL_UP (or leave battle) clears. */
       if (!mls && y > t.TOP_SHOW + 64) pinnedCollapsed = false;
       if (y <= t.TOP_SHOW) {
-        /* MLS battle stays collapsed at top until aggressive upward scroll. */
-        if (mls && (pinnedCollapsed || document.body.classList.contains('nav-tabs-collapsed'))) {
-          if (dy < 0) {
-            upAccum += -dy;
-            if (upAccum >= t.REVEAL_UP) {
-              upAccum = 0;
-              pinnedCollapsed = false;
-              setNavTabsCollapsed(false);
-            }
-          } else if (dy > 0) {
-            upAccum = 0;
-          }
-          return;
-        }
-        upAccum = 0;
-        /* Synthetic top after tall chrome hide — do not auto-reveal (loop) */
-        if (pinnedCollapsed) {
-          if (dy < -10) {
-            pinnedCollapsed = false;
-            setNavTabsCollapsed(false);
-          }
-          return;
-        }
-        setNavTabsCollapsed(false);
+        revealAtTop(y, t, mls, dy);
         return;
       }
       if (dy > 0) {
@@ -177,7 +340,7 @@
     global.addEventListener(
       'touchmove',
       function (ev) {
-        if (touchY0 == null || locked()) return;
+        if (touchY0 == null || hardLocked()) return;
         var cy = null;
         try {
           cy = ev.touches && ev.touches[0] ? ev.touches[0].clientY : null;
@@ -186,20 +349,24 @@
         var fingerUp = touchY0 - cy;
         var y = pageScrollY();
         var t = thresholds();
+        var mls = isMlsBattleFocus();
+        /* Top reveal ignores soft post-hide debounce. */
+        if (fingerUp < -28 && y <= t.TOP_SHOW && !mls) {
+          upAccum = 0;
+          pinnedCollapsed = false;
+          setNavTabsCollapsed(false);
+          touchY0 = cy;
+          return;
+        }
+        if (softIgnored()) return;
         if (fingerUp > 12 && y > t.TOP_SHOW) {
           upAccum = 0;
           setNavTabsCollapsed(true);
           touchY0 = cy;
         } else if (fingerUp < -28) {
           /* finger moves down → content scrolls up */
-          if (isMlsBattleFocus()) {
-            upAccum += -fingerUp;
-            if (upAccum >= t.REVEAL_UP) {
-              upAccum = 0;
-              pinnedCollapsed = false;
-              setNavTabsCollapsed(false);
-            }
-          } else if (pinnedCollapsed && y <= t.TOP_SHOW + 8) {
+          upAccum += -fingerUp;
+          if (upAccum >= t.REVEAL_UP) {
             upAccum = 0;
             pinnedCollapsed = false;
             setNavTabsCollapsed(false);
@@ -230,6 +397,10 @@
   global.GgenNavTabsAutoHide = {
     init: initNavTabsAutoHide,
     setCollapsed: setNavTabsCollapsed,
+    snapshotForOverlay: snapshotForOverlay,
+    prepareUnlock: prepareUnlock,
+    restoreAfterOverlay: restoreAfterOverlay,
+    releaseOverlayFreeze: releaseOverlayFreeze,
   };
   global.setNavTabsCollapsed = setNavTabsCollapsed;
   global.initNavTabsAutoHide = initNavTabsAutoHide;
