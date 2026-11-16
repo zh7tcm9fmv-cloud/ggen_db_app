@@ -34,6 +34,8 @@ python scripts/smoke_tag_composites.py --base https://ggendb.up.railway.app
 | `translateY` optical nudge on `.tag-part-value-text` | Fights `overflow:hidden`; locale tweaks overshoot |
 | `height:100%` / stretch without `max-height:var(--tag-h)` | Content min-size grows the composite |
 | Preview-only visual OK as ship gate | Font/subpixel differ local vs live |
+| Nested `height`/`line-height:var(--tag-h)` inside a `--tag-h` flex value | iOS Safari shifts the grey bar up; Chrome mobile preview can miss it — see `ios-safari-and-desktop-audience.mdc` |
+| Chrome device-mode “fixed on phone” | Audience is desktop + **real iOS Safari**; Blink ≠ WebKit |
 
 ## Checklist before “done”
 

@@ -1,0 +1,29 @@
+---
+description: Audience is desktop + iOS Safari — Chrome mobile preview is not proof
+alwaysApply: true
+---
+
+# Audience: desktop + iOS Safari
+
+Owner lesson (**Nov 2026** — Type condition chips): Cursor/Chrome **device toolbar** looked fine while **real iPhone Safari** on live Railway showed the grey value bar shifted up. Blink ≠ WebKit.
+
+## Hard rule
+
+1. **Primary clients** = **desktop browsers** and **iOS Safari** (many users). Treat both as ship gates for UI layout.
+2. **Chrome / Cursor “mobile view” is not iOS.** It can hide WebKit-only bugs (flex + nested `height`/`line-height`, font metrics, Teko optical pads).
+3. Do **not** tell the owner a phone UI issue is fixed after only local Chrome device emulation.
+4. For detail chips / tag composites / locked-height HUD rows: prefer **font-agnostic** flex centering; avoid nested `height`/`line-height: var(--tag-h)` inside a `--tag-h` flex child (iOS shifts the paint box).
+5. Still honor `verify-live-before-fixed.mdc`: local-only vs **deployed** Safari on `ggendb.up.railway.app` must be stated honestly.
+
+## When touching UI that ships to phones
+
+| Check | Enough? |
+|---|---|
+| Desktop local / live | needed |
+| Chrome device mode only | **not** enough for “works on phone” |
+| Real iOS Safari (owner device or WebKit) after deploy | required before “fixed on phone” |
+
+## Related
+
+- Tag/SERIES plate locks: `tag-composite-plates.mdc`
+- Live vs local claims: `verify-live-before-fixed.mdc`
