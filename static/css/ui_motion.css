@@ -158,6 +158,7 @@
   72%{opacity:1;transform:scale(1)}
   100%{opacity:1;transform:scale(1)}
 }
+/* Exit: Takayu reverse morph. Shell is size-frozen in JS so scale is motion only (no layout jump). */
 @keyframes ggen-detail-morph-exit{
   0%{opacity:1;transform:scale(1)}
   28%{opacity:1;transform:scale(1)}

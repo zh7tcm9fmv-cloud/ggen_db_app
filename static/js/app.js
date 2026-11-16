@@ -5714,6 +5714,7 @@ if(mc){
 mc.className='modal-content';
 try{mc.style.animation='';mc.style.transform='';mc.style.opacity='';mc.style.willChange='';mc.style.visibility=''}catch(_){}
 }
+try{_clearDetailShellExitFreeze(document.getElementById('modalContent'))}catch(_){}
 try{const inn=document.getElementById('detailInner');if(inn)inn.innerHTML=''}catch(_){}
 }
 /** Opaque wash behind morph-exit — browse reflow must not show through rgba(.82). */
@@ -5882,8 +5883,11 @@ opts=opts||{};
 /* keepCover + deferUnlock: leave page-scroll-lock up for discrete-exit (Ko-fi-clean). */
 const keepCover=!!opts.keepCover||!!S._detailCloseCover;
 const deferUnlock=keepCover&&opts.deferUnlock!==false;
+/* Freeze size before settling class (scrollbar hide can widen the shell and shove .detail-body). */
+if(keepCover){try{_freezeDetailShellForExit()}catch(_){}}
 if(keepCover)_armDetailCloseSettling();
-try{destroyDetailPortraitHolo()}catch(_){}
+/* Holo unwrap changes header layout — only destroy after wash covers / drops the DOM. */
+if(!keepCover){try{destroyDetailPortraitHolo()}catch(_){}}
 const m=document.getElementById('detailModal');
 if(m&&!keepCover)m.classList.remove('active');
 /* Kill enter morph; keep normal dimmed overlay so browse stays visible during exit morph. */
@@ -7207,6 +7211,35 @@ mc.addEventListener('animationend',done);
 }catch(_){}
 }
 /** Takayu modal-morph exit — reverse scale, then callback (unlock under wash). */
+function _freezeDetailShellForExit(){
+const mc=document.getElementById('modalContent');
+if(!mc)return;
+try{lockDetailHeaderLayoutForPep()}catch(_){}
+try{lockDetailCoverPaintBoxes({force:true})}catch(_){}
+try{
+const r=mc.getBoundingClientRect();
+const w=Math.max(1,Math.round(r.width||mc.offsetWidth||0));
+const h=Math.max(1,Math.round(r.height||mc.offsetHeight||0));
+mc.style.boxSizing='border-box';
+mc.style.width=w+'px';
+mc.style.maxWidth=w+'px';
+mc.style.minWidth=w+'px';
+mc.style.height=h+'px';
+mc.style.maxHeight=h+'px';
+mc.style.minHeight=h+'px';
+mc.style.overflow='hidden';
+mc.dataset.ggenExitFrozen='1';
+}catch(_){}
+}
+function _clearDetailShellExitFreeze(mc){
+if(!mc)mc=document.getElementById('modalContent');
+if(!mc)return;
+if(String(mc.dataset.ggenExitFrozen||'')!=='1')return;
+try{delete mc.dataset.ggenExitFrozen}catch(_){try{mc.removeAttribute('data-ggen-exit-frozen')}catch(_2){}}
+['width','maxWidth','minWidth','height','maxHeight','minHeight','overflow','boxSizing'].forEach(function(k){
+try{mc.style[k]=''}catch(_){}
+});
+}
 function playDetailModalMorphExit(mc,onDone){
 const finish=function(){
 if(S._detailMorphExitDone)return;
@@ -7217,6 +7250,8 @@ S._detailMorphEnd=null;
 try{if(typeof onDone==='function')onDone()}catch(_){}
 };
 S._detailMorphExitDone=0;
+/* Freeze paint box first so morph scale is motion-only (no header/body reflow jump). */
+try{_freezeDetailShellForExit()}catch(_){}
 if(!mc){finish();return}
 try{
 if(S._detailMorphEnd){mc.removeEventListener('animationend',S._detailMorphEnd);S._detailMorphEnd=null}
@@ -7249,6 +7284,7 @@ mc.style.animation='none';
 mc.style.transform='none';
 mc.style.opacity='1';
 mc.style.willChange='';
+try{_clearDetailShellExitFreeze(mc)}catch(_){}
 }catch(_){}
 }
 async function openDetail(type,id,opts){opts=opts||{};try{if(S._detailExitPhase==='exiting')_finishDetailOverlayGone(true);else{_cancelDetailCloseScrollHoldTimer();_clearDetailCloseSettling();_clearDetailCloseScrollHold();_resetDetailExitFlags()}}catch(_){};try{destroyDetailPortraitHolo()}catch(_){};const skipHistory=!!opts.skipHistory||S._historyApplyingPopstate;if(document.getElementById('searchSpotlightOverlay')&&document.getElementById('searchSpotlightOverlay').classList.contains('active'))closeSearchSpotlight();const m=document.getElementById('detailModal'),mc=document.getElementById('modalContent'),inn=document.getElementById('detailInner');const detailWasActive=m.classList.contains('active');/* Capture browse *list* Y before modal/lock. keepIfSet: openStageFromBrowse may have armed pending Y on pointerdown. */if(!detailWasActive){captureDetailBrowseReturn(type,id,{keepIfSet:true});stampHistoryBrowseScrollY(S._detailBrowseReturn&&S._detailBrowseReturn.y)}if(opts.returnStageSnapshot&&S.currentDetailType==='stage'&&S.currentDetailData&&!S.currentDetailData.content_locked){S._stageDetailUiRestore=captureStageDetailUiState();if(opts.stageNpcKey!=null&&String(opts.stageNpcKey).trim()!=='')S._stageDetailUiRestore.returnNpcId=String(opts.stageNpcKey).trim()}try{clearDetailCoverPaintLock()}catch(_){}mc.className='modal-content';if(type==='profile_title')mc.classList.add('profile-title-detail','stage-detail');else if(type==='item')mc.classList.add('item-detail','option-part-detail','stage-detail');else mc.classList.add(type==='character'?'char-detail':(type==='unit'?'unit-detail':(type==='supporter'?'supporter-detail':(type==='option_part'?'option-part-detail':'stage-detail'))));m.classList.add('active');document.body.classList.add('detail-modal-open');try{if(!detailWasActive)playDetailModalMorphEnter(mc)}catch(_){};try{if(typeof window.__ggenPauseBrandFonts==='function')window.__ggenPauseBrandFonts()}catch(_){}if(!detailWasActive)applyBackgroundScrollLock();updateScrollTopFabVisibility();resetDetailModalScroll();S._detailOpenToken=(S._detailOpenToken||0)+1;(function(){try{if(S._detailOpenSpinTimer){clearTimeout(S._detailOpenSpinTimer);S._detailOpenSpinTimer=null}}catch(_){}const _same=!!(detailWasActive&&S.currentDetailType===type&&S.currentDetailData&&String(S.currentDetailData.id)===String(id)&&!(opts&&(opts.stageNpcEmbed||opts.forceReload)));if(_same)return;inn.innerHTML='<div class="loading-overlay"><div class="spinner"></div></div>';})();syncModalDetailChrome();syncDetailBrowseNavUi();try{const d=await fetchDetailPayload(type,id,opts);S._detailOpenToken=(S._detailOpenToken||0)+1;try{if(S._detailOpenSpinTimer){clearTimeout(S._detailOpenSpinTimer);S._detailOpenSpinTimer=null}}catch(_){}if(type==='option_part'){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false;S.ultAltActive=false;S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;attachStageDetailReturnIfNeeded(d,opts);S.currentDetailData=d;S.currentDetailType=type;inn.innerHTML=renderOptionPartShell(d);syncModalDetailChrome();pinDetailModalScrollTop(0);try{scheduleLockDetailCoverPaintBoxes()}catch(_){}if(!skipHistory)_syncDetailBrowseHistory(type,id,detailWasActive,skipHistory);syncDetailBrowseNavUi();return}if(type==='profile_title'||type==='item'){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false;S.ultAltActive=false;S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;attachStageDetailReturnIfNeeded(d,opts);S.currentDetailData=d;S.currentDetailType=type;inn.innerHTML=type==='item'?renderItemShell(d):renderProfileTitleShell(d);syncModalDetailChrome();pinDetailModalScrollTop(0);try{scheduleLockDetailCoverPaintBoxes()}catch(_){}if(!skipHistory)_syncDetailBrowseHistory(type,id,detailWasActive,skipHistory);syncDetailBrowseNavUi();return}const _pu=type==='unit'&&!!opts.preserveUnitSpSsp;const _pcp=!!opts.preserveConditionalPassive||!!opts.unitConditionCpTarget;const _vr=!!opts.viewRanking;d.ranking_context=!!_vr;if(_vr){d.view_ranking=false}if(type==='character'||type==='unit')d.ranking_available=true;if(!_pu&&!_pcp){S.conditionalPassiveActive=false;S.pilotConditionalPassiveActive=false;S.pilotCondCharData=null;S._pilotCondCharFetchId=null;S._pilotCondCharInflight=null;S._pilotCondPrefetchUnitId=null;S.pilotCondStackCount=0;S.unitCondStackCount=0;S.unitHpAtkTierIndex=0;S.spActive=false;S.sspActive=false}S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;S.detailRankingOverlay=false;if(type==='stage'){S.stageMapAutoFit=true;S.stageMapZoom=1}if(!_pu){if(type==='character'){S.spActive=!!S.listCharSp;if(!_pcp)S.conditionalPassiveActive=!!S.listCharCond}else if(type==='unit'){if(S.listUnitSsp){S.sspActive=true;S.spActive=false}else if(S.listUnitSp){S.spActive=true;S.sspActive=false}else{S.spActive=false;S.sspActive=false}if(!_pcp){if(opts.viewRanking){S.conditionalPassiveActive=!!opts.listUnitCondPerspective;S.pilotConditionalPassiveActive=!!opts.listUnitPilotCondPerspective}else{S.conditionalPassiveActive=!!(d&&_detailUnitHasCondStats(d))||!!S.listUnitCond;S.pilotConditionalPassiveActive=!!(S.listUnitPilotCond&&d&&d.has_pilot_cond_passive)}}}}if(_pcp)S.conditionalPassiveActive=true;if(!_pcp&&!opts.viewRanking&&type==='unit'&&d&&_detailUnitHasCondStats(d))S.conditionalPassiveActive=true;if(opts.unitConditionCpTarget&&d)d.unit_condition_cp_target=true;if(opts.affinityHighlightUnitId&&d)d.affinity_highlight_unit_id=String(opts.affinityHighlightUnitId);if(opts.pilotCondHighlightUnitId&&d){d.pilot_cond_highlight_unit_id=String(opts.pilotCondHighlightUnitId);if(opts.pilotCondHighlightUnitStub)d.pilot_cond_highlight_unit_stub=opts.pilotCondHighlightUnitStub;}attachStageDetailReturnIfNeeded(d,opts);S.currentDetailData=d;S.currentDetailType=type;if(type==='character'&&S.conditionalPassiveActive&&d.ex_supercharged_tiers&&d.ex_supercharged_tiers.length>1)S.charSuperchargedExTier=d.ex_supercharged_tiers.length-1;if(type==='supporter'){applySupporterLeaderSepSticky(d);S.currentSupporterLbTier=d.lb_tier??3;S.currentSupporterLevel=Math.max(1,Number(d.level)||Math.max(1,Number(d.max_level)||100))}if(type==='unit'){_detailInitUnitCondControls(d);S.listSelectedUnitId=String(opts.listUnitFocusId!=null?opts.listUnitFocusId:id);syncUnitListDetailHighlight()}if((type==='character'||type==='unit')&&d.portrait)void warmPathDetailImg(d.portrait);if(type==='character'){inn.innerHTML=renderCharShell(d);queueMicrotask(function(){try{bindUnitPortraitFx(inn)}catch(_){}})}else if(type==='unit'){if(d.weapons)d.weapons.forEach(w=>S.currentWeaponLevels[w.id]=5);void warmUnitModelStageAssets(d);inn.innerHTML=renderUnitShell(d);bindUnitModelStageReveal(inn);queueMicrotask(function(){try{bindUnitPortraitFx(inn)}catch(_){}})}else if(type==='supporter'){inn.innerHTML=renderSupporterShell(d);queueMicrotask(function(){try{bindUnitPortraitFx(inn)}catch(_){}})}else{if(type==='stage'&&d&&d.stage_category==='fierce_enemy_assault'){S.feaDiff='normal';S.feaLevel=null}inn.innerHTML=(d.content_locked?renderEternalStageLockedPanel(d):renderStageShell(d))}syncModalDetailChrome();if(type==='stage'&&!d.content_locked)wireRewardDetailClicks(inn);if(d&&d.ranking_available&&(type==='character'||type==='unit'))ensureDetailRankingToggleDom(type);if(!(type==='stage'&&d.content_locked)){updateDetailDynamicSections(type);if(type==='unit')queuePilotCondCharPrefetch(d);if(d&&d.ranking_available&&(type==='character'||type==='unit')){(function(_t,_i){setTimeout(function(){if(S.currentDetailType!==_t||!S.currentDetailData||String(S.currentDetailData.id)!==String(_i))return;void ensureDetailRankingStats(_t,_i).then(function(){if(S.currentDetailType===_t&&S.currentDetailData&&String(S.currentDetailData.id)===String(_i)){updateDetailDynamicSections(_t);adjustDetailModalLayout()}}).catch(function(){})},5000)})(type,id)}}pinDetailModalScrollTop(0);try{scheduleLockDetailCoverPaintBoxes()}catch(_){}if(!skipHistory)_syncDetailBrowseHistory(type,id,detailWasActive,skipHistory);syncDetailBrowseNavUi()}catch(e){const msg=String((e&&e.message)||e||'');const soft=!!(e&&(e.name==='AbortError'||e.name==='TypeError'))||/networkerror|failed to fetch|load failed|the operation was aborted|^network$/i.test(msg);if(!soft)console.error(e);inn.innerHTML=`<div class="empty-state" style="padding:60px 20px"><div class="empty-state-icon">⚠️</div><div class="empty-state-text">${esc(soft?'Could not load details. Check your connection and try again.':('Failed: '+msg))}</div></div>`;syncModalDetailChrome();syncDetailBrowseNavUi();try{scheduleLockDetailCoverPaintBoxes()}catch(_){}}}
