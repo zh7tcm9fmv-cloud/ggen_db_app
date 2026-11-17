@@ -1889,7 +1889,7 @@ body.detail-close-settling #detailModal.modal-overlay.active{
   animation:none!important;
   pointer-events:auto!important;
 }
-body.detail-close-settling #detailModal.modal-overlay.active.is-detail-wash{
+body.detail-close-settling #detailModal.modal-overlay.active.is-detail-wash:not(.is-detail-wash-out){
   background:#05070c!important;
   opacity:1!important;
   transition:none!important;
@@ -1901,6 +1901,7 @@ body.detail-close-settling #detailModal.modal-overlay.active.is-detail-wash-empt
   opacity:0!important;
   pointer-events:none!important;
 }
+/* Must beat .is-detail-wash opacity:1!important or exit wash sticks black (blank browse). */
 body.detail-close-settling #detailModal.modal-overlay.active.is-detail-wash-out{
   background:#05070c!important;
   opacity:0!important;

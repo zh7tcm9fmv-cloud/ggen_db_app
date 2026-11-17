@@ -3729,8 +3729,10 @@ if(useSparkBanner){
 bgLayer='<img class="ml-boost-spark-bg" src="'+escAttr(imgUrlPreferCdn(ML_BOOST_BANNER_BG))+'" alt="" loading="lazy" decoding="async" aria-hidden="true" onerror="gameImageUrlFallback(this)">';
 cardCls+=' ml-boost-card--spark-bg';
 }else if(battleBg){
+/* Soft texture under the red chrome only. Do NOT switch to --motif-bg: battle_background
+   is currently the homeimg_info fallback (no real battle plate / no portraits) and that
+   dark motif chrome reads as a blank navy banner. Keep the previous red design. */
 bgStyle='--ml-boost-bg:url(\''+escAttr(battleBg)+'\')';
-cardCls+=' ml-boost-card--motif-bg';
 }
 const portraitLayer=(showPortraits&&portraits)?'<div class="ml-boost-portraits">'+portraits+'</div>':'';
 if(showPortraits&&portraits)cardCls+=' ml-boost-card--portraits';
@@ -5693,13 +5695,8 @@ try{document.body.classList.remove('detail-close-settling','detail-close-reveali
 function _resetDetailExitFlags(){
 S._detailExitDone=0;
 S._detailExitPhase=null;
-if(S._detailExitTimer){try{clearTimeout(S._detailExitTimer)}catch(_){}S._detailExitTimer=null}
+_clearDetailExitListeners();
 if(S._detailRevealRaf){try{cancelAnimationFrame(S._detailRevealRaf)}catch(_){}S._detailRevealRaf=0}
-try{
-const m=document.getElementById('detailModal');
-if(m&&S._detailExitHandler)m.removeEventListener('animationend',S._detailExitHandler);
-}catch(_){}
-S._detailExitHandler=null;
 }
 function _dropDetailOverlayDom(){
 try{_killDetailModalMotion(document.getElementById('modalContent'))}catch(_){}
@@ -5779,9 +5776,13 @@ try{const _bt={characters:1,units:1,supporters:1,stages:1,modifications:1};ensur
 }
 function _clearDetailExitListeners(){
 if(S._detailExitTimer){try{clearTimeout(S._detailExitTimer)}catch(_){}S._detailExitTimer=null}
+if(S._detailExitMorphFailsafe){try{clearTimeout(S._detailExitMorphFailsafe)}catch(_){}S._detailExitMorphFailsafe=null}
+if(S._detailExitWashFailsafe){try{clearTimeout(S._detailExitWashFailsafe)}catch(_){}S._detailExitWashFailsafe=null}
+if(S._detailExitHardTimer){try{clearTimeout(S._detailExitHardTimer)}catch(_){}S._detailExitHardTimer=null}
 try{
 const m=document.getElementById('detailModal');
 if(m&&S._detailExitHandler)m.removeEventListener('animationend',S._detailExitHandler);
+if(m&&S._detailExitHandler)m.removeEventListener('transitionend',S._detailExitHandler);
 }catch(_){}
 S._detailExitHandler=null;
 }
@@ -5799,11 +5800,14 @@ S._detailExitType=null;
 S._detailExitId=null;
 try{S._detailMorphExitDone=1}catch(_){}
 _clearDetailExitListeners();
+try{destroyDetailPortraitHolo()}catch(_){}
 try{_killDetailModalMotion(document.getElementById('modalContent'))}catch(_){}
 _dropDetailOverlayDom();
 /* Safety: deferred history.back → applyBrowseRouteFromLocation can re-arm
    prepareUnlock after afterMorph already released — clear stuck nav freeze. */
 try{if(window.GgenNavTabsAutoHide&&typeof GgenNavTabsAutoHide.releaseOverlayFreeze==='function')GgenNavTabsAutoHide.releaseOverlayFreeze({forceTopReveal:true})}catch(_){}
+/* Mid-exit / interrupted wash must not leave settling on — that paints a dead blank. */
+try{_clearDetailCloseSettling()}catch(_){}
 _scheduleReleaseDetailCloseScrollHold();
 updateScrollTopFabVisibility();
 syncDetailBrowseNavUi();
@@ -5819,13 +5823,17 @@ try{if(S._detailExitHandler)m.removeEventListener('transitionend',S._detailExitH
 S._detailExitHandler=done;
 try{m.addEventListener('transitionend',done)}catch(_){}
 try{
+/* Drop is-detail-wash first — its opacity:1!important beats wash-out / inline and
+   leaves a stuck black frame (looks like a blank /new return). */
+m.classList.remove('is-detail-wash');
 m.classList.add('is-detail-wash-out');
 /* Force transition after opaque settle paint. */
 void m.offsetWidth;
 m.style.transition='opacity 80ms ease';
 m.style.opacity='0';
 }catch(_){}
-S._detailExitTimer=setTimeout(function(){S._detailExitTimer=null;_finishDetailOverlayGone()},140);
+if(S._detailExitWashFailsafe){try{clearTimeout(S._detailExitWashFailsafe)}catch(_){}}
+S._detailExitWashFailsafe=setTimeout(function(){S._detailExitWashFailsafe=null;_finishDetailOverlayGone()},180);
 }
 /**
  * Takayu modal-morph exit, then flicker-safe unlock:
@@ -5855,6 +5863,7 @@ const afterMorph=function(){
 if(morphDone)return;
 if(S._detailExitDone||S._detailExitPhase!=='exiting')return;
 morphDone=1;
+if(S._detailExitMorphFailsafe){try{clearTimeout(S._detailExitMorphFailsafe)}catch(_){}S._detailExitMorphFailsafe=null}
 /* Opaque only for unlock frames, then fade — not for the whole morph. */
 _armDetailExitWashEmpty(m,mc);
 _unlockBrowseUnderDetailShell();
@@ -5869,8 +5878,16 @@ _fadeDetailExitWashThenFinish(m);
 });
 };
 playDetailModalMorphExit(mc,afterMorph);
-/* Failsafe — exit morph ~400ms + brief wash unlock. */
-S._detailExitTimer=setTimeout(function(){S._detailExitTimer=null;afterMorph()},520);
+/* Failsafe — exit morph ~400ms + brief wash unlock. Separate from wash/finish timers. */
+S._detailExitMorphFailsafe=setTimeout(function(){S._detailExitMorphFailsafe=null;afterMorph()},520);
+/* Hard ceiling: never leave wash/path stuck (blank /new) if morph/wash callbacks drop. */
+S._detailExitHardTimer=setTimeout(function(){
+S._detailExitHardTimer=null;
+if(S._detailExitDone)return;
+try{_unlockBrowseUnderDetailShell()}catch(_){}
+try{_runDeferredDetailHistory()}catch(_){}
+try{_finishDetailOverlayGone(true)}catch(_){}
+},1100);
 }
 function _scheduleRevealBrowseAfterDetailClose(){
 if(S._detailRevealRaf){try{cancelAnimationFrame(S._detailRevealRaf)}catch(_){}S._detailRevealRaf=0}
@@ -6217,8 +6234,8 @@ rankSuf=`&view=ranking&stat_mode=${encodeURIComponent(sm)}&cond=${cond}&pilot_co
 }
 /* sv=c27: empty-text ActiveCondition siblings no longer paint Mercenary/IBO onto ungated SAC ATK lines (Argi EX). */
 if(type==='character')return`/api/character/${eid}?lang=${lang}${rankSuf}&sv=c27`;
-/* sv=usk5: unit-skill details = LANG desc only (no trait paraphrase duplicates). */
-if(type==='unit')return`/api/unit/${eid}?lang=${lang}${rankSuf}&sv=usk5`;
+/* sv=usk6: bust stale detail prefetch missing limit_break_movie_id after LB manifest sync. */
+if(type==='unit')return`/api/unit/${eid}?lang=${lang}${rankSuf}&sv=usk6`;
 if(type==='supporter')return`/api/supporter/${eid}?lang=${lang}&level=100&lb_tier=3&sv=s8`;
 if(type==='option_part'){
 const vt=opts.variantTag?`&variant_tag=${encodeURIComponent(String(opts.variantTag))}`:'';
@@ -7299,12 +7316,16 @@ function closeModal(){
 const m=document.getElementById('detailModal');
 const wasOpen=!!(m&&m.classList.contains('active'));
 if(S._historyApplyingPopstate)return;
-/* Mid-exit Esc: finish hard instead of resetting timers and getting stuck. */
+/* Mid-exit Esc: finish hard instead of resetting timers and getting stuck.
+   Still run deferred history — otherwise path stays /u|/c/… with modal gone
+   (looks like a blank /new return). */
 if(S._detailExitPhase==='exiting'){
 try{
 S._detailExitDone=0;
 _clearDetailExitListeners();
 _killDetailModalMotion(document.getElementById('modalContent'));
+try{_unlockBrowseUnderDetailShell()}catch(_u){}
+try{_runDeferredDetailHistory()}catch(_h){}
 _finishDetailOverlayGone(true);
 }catch(_){}
 return;
