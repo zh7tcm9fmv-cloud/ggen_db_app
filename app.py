@@ -14423,6 +14423,254 @@ if option_parts_data:
 unit_abil_map = create_unit_ability_map(unit_abil_data); unit_weapon_map = create_unit_weapon_map(unit_weapon_data)
 unit_weapon_lb_movie_map = create_unit_weapon_lb_movie_map(unit_weapon_data)
 
+
+def _master_row_list(data):
+    if data is None:
+        return []
+    if isinstance(data, list):
+        return data
+    rows = extract_data_list(data)
+    return list(rows) if rows else []
+
+
+def _master_id_index(rows, *keys):
+    out = {}
+    for item in rows:
+        if not isinstance(item, dict):
+            continue
+        for k in keys:
+            raw = item.get(k)
+            if raw is None or raw == '':
+                continue
+            nid = normalize_id(raw)
+            if nid != '0':
+                out[nid] = item
+                break
+    return out
+
+
+def _extend_master_missing(en_data, ja_rows, *id_keys):
+    """Append JA rows whose primary id is not already in EN; return (data, added_count)."""
+    en_rows = _master_row_list(en_data)
+    have = set(_master_id_index(en_rows, *id_keys).keys())
+    added = 0
+    for item in ja_rows:
+        if not isinstance(item, dict):
+            continue
+        nid = '0'
+        for k in id_keys:
+            raw = item.get(k)
+            if raw is None or raw == '':
+                continue
+            nid = normalize_id(raw)
+            if nid != '0':
+                break
+        if nid == '0' or nid in have:
+            continue
+        en_rows.append(item)
+        have.add(nid)
+        added += 1
+    return en_rows, added
+
+
+def _extend_master_rows_for_owners(en_data, ja_rows, owner_ids, *owner_keys):
+    """Append JA link-table rows for owner ids that have no EN link rows yet."""
+    if not owner_ids:
+        return _master_row_list(en_data), 0
+    en_rows = _master_row_list(en_data)
+    want = {normalize_id(x) for x in owner_ids if normalize_id(x) != '0'}
+    if not want:
+        return en_rows, 0
+    have_owner = set()
+    for item in en_rows:
+        if not isinstance(item, dict):
+            continue
+        for k in owner_keys:
+            oid = normalize_id(item.get(k))
+            if oid in want:
+                have_owner.add(oid)
+                break
+    still_need = want - have_owner
+    if not still_need:
+        return en_rows, 0
+    added = 0
+    for item in ja_rows:
+        if not isinstance(item, dict):
+            continue
+        oid = '0'
+        for k in owner_keys:
+            oid = normalize_id(item.get(k))
+            if oid != '0':
+                break
+        if oid not in still_need:
+            continue
+        en_rows.append(item)
+        added += 1
+    return en_rows, added
+
+
+def supplement_catalog_from_jp_master():
+    """When JA MasterData is ahead of EN, fold missing kits into the shared catalog.
+
+    JP has its own MD (`data/JA` / GGen_JA). EN remains BASE_DIR, but JP-first drops
+    must still browse/detail on JP locale without waiting for EN MD to catch up.
+    """
+    global unit_master_data, unit_abil_data, unit_weapon_data, unit_status_data
+    global unit_lineage_data, unit_info_map, unit_stat_map, unit_lin_map
+    global unit_abil_map, unit_weapon_map, unit_weapon_lb_movie_map
+    global char_master, char_abil, char_status, char_lineage_data
+    global char_info_map, char_stat_map, char_lin_map, char_skill
+    global weapon_master, weapon_status_data, ability_master
+
+    ja_base = (LANG_PATHS.get('JA') or {}).get('base')
+    if not ja_base or not os.path.isdir(ja_base):
+        return
+    try:
+        if os.path.normcase(os.path.abspath(ja_base)) == os.path.normcase(os.path.abspath(BASE_DIR)):
+            return
+    except Exception:
+        if ja_base == BASE_DIR:
+            return
+
+    ja_units = _master_row_list(load_json(os.path.join(ja_base, 'm_unit.json')))
+    if not ja_units:
+        return
+    en_unit_ids = set(_master_id_index(_master_row_list(unit_master_data), 'Id', 'id').keys())
+    missing_units = [
+        normalize_id(u.get('Id') or u.get('id'))
+        for u in ja_units
+        if isinstance(u, dict) and normalize_id(u.get('Id') or u.get('id')) not in en_unit_ids
+        and normalize_id(u.get('Id') or u.get('id')) != '0'
+    ]
+    missing_unit_set = set(missing_units)
+
+    ja_chars = _master_row_list(load_json(os.path.join(ja_base, 'm_character.json')))
+    en_char_ids = set(_master_id_index(_master_row_list(char_master), 'Id', 'id').keys())
+    missing_chars = [
+        normalize_id(c.get('Id') or c.get('id'))
+        for c in ja_chars
+        if isinstance(c, dict) and normalize_id(c.get('Id') or c.get('id')) not in en_char_ids
+        and normalize_id(c.get('Id') or c.get('id')) != '0'
+    ]
+    missing_char_set = set(missing_chars)
+
+    if not missing_unit_set and not missing_char_set:
+        return
+
+    added_u = added_c = 0
+    if missing_unit_set:
+        unit_master_data, added_u = _extend_master_missing(
+            unit_master_data, ja_units, 'Id', 'id'
+        )
+        unit_abil_data, _ = _extend_master_rows_for_owners(
+            unit_abil_data,
+            _master_row_list(load_json(os.path.join(ja_base, 'm_unit_ability_set.json'))),
+            missing_unit_set,
+            'UnitId', 'unitId',
+        )
+        unit_weapon_data, _ = _extend_master_rows_for_owners(
+            unit_weapon_data,
+            _master_row_list(load_json(os.path.join(ja_base, 'm_unit_weapon.json'))),
+            missing_unit_set,
+            'UnitId', 'unitId',
+        )
+        unit_status_data, _ = _extend_master_rows_for_owners(
+            unit_status_data,
+            _master_row_list(load_json(os.path.join(ja_base, 'm_unit_status.json'))),
+            missing_unit_set,
+            'UnitId', 'unitId', 'Id', 'id',
+        )
+        # m_unit_status is keyed by unit id as Id on many dumps
+        unit_lineage_data, _ = _extend_master_rows_for_owners(
+            unit_lineage_data,
+            _master_row_list(load_json(os.path.join(ja_base, 'm_unit_lineage.json'))),
+            missing_unit_set,
+            'UnitId', 'unitId',
+        )
+
+        # Weapons / abilities referenced by the new kits
+        need_wpn = set()
+        for item in _master_row_list(unit_weapon_data):
+            if not isinstance(item, dict):
+                continue
+            if normalize_id(item.get('UnitId') or item.get('unitId')) not in missing_unit_set:
+                continue
+            wid = normalize_id(item.get('WeaponId') or item.get('weaponId'))
+            if wid != '0':
+                need_wpn.add(wid)
+        if need_wpn:
+            weapon_master, _ = _extend_master_missing(
+                weapon_master,
+                _master_row_list(load_json(os.path.join(ja_base, 'm_weapon.json'))),
+                'Id', 'id',
+            )
+            weapon_status_data, _ = _extend_master_missing(
+                weapon_status_data,
+                _master_row_list(load_json(os.path.join(ja_base, 'm_weapon_status.json'))),
+                'Id', 'id',
+            )
+
+        need_abil = set()
+        for item in _master_row_list(unit_abil_data):
+            if not isinstance(item, dict):
+                continue
+            if normalize_id(item.get('UnitId') or item.get('unitId')) not in missing_unit_set:
+                continue
+            aid = normalize_id(item.get('AbilityId') or item.get('abilityId'))
+            if aid != '0':
+                need_abil.add(aid)
+        if need_abil:
+            ability_master, _ = _extend_master_missing(
+                ability_master,
+                _master_row_list(load_json(os.path.join(ja_base, 'm_ability.json'))),
+                'Id', 'id', 'AbilityId',
+            )
+
+        unit_info_map = create_unit_info_map(unit_master_data)
+        unit_stat_map = create_unit_status_map(unit_status_data)
+        unit_lin_map = create_unit_lineage_link_map(unit_lineage_data)
+        unit_abil_map = create_unit_ability_map(unit_abil_data)
+        unit_weapon_map = create_unit_weapon_map(unit_weapon_data)
+        unit_weapon_lb_movie_map = create_unit_weapon_lb_movie_map(unit_weapon_data)
+
+    if missing_char_set:
+        char_master, added_c = _extend_master_missing(char_master, ja_chars, 'Id', 'id')
+        char_abil, _ = _extend_master_rows_for_owners(
+            char_abil,
+            _master_row_list(load_json(os.path.join(ja_base, 'm_character_ability_set.json'))),
+            missing_char_set,
+            'CharacterId', 'characterId',
+        )
+        char_skill, _ = _extend_master_rows_for_owners(
+            char_skill,
+            _master_row_list(load_json(os.path.join(ja_base, 'm_character_skill_set.json'))),
+            missing_char_set,
+            'CharacterId', 'characterId',
+        )
+        char_status, _ = _extend_master_rows_for_owners(
+            char_status,
+            _master_row_list(load_json(os.path.join(ja_base, 'm_character_status.json'))),
+            missing_char_set,
+            'CharacterId', 'characterId', 'Id', 'id',
+        )
+        char_lineage_data, _ = _extend_master_rows_for_owners(
+            char_lineage_data,
+            _master_row_list(load_json(os.path.join(ja_base, 'm_character_lineage.json'))),
+            missing_char_set,
+            'CharacterId', 'characterId',
+        )
+        char_info_map = create_char_info_map(char_master)
+        char_stat_map = create_char_status_map(char_status)
+        char_lin_map = create_char_lineage_link_map(char_lineage_data)
+
+    print(
+        f"JP master supplement: +{added_u} units, +{added_c} chars "
+        f"(JA ahead of EN; JP locale can use JA MD before EN catches up)"
+    )
+
+
+supplement_catalog_from_jp_master()
+
 def _build_char_list_playable_ids():
     """Character ids that have at least one non-empty ability or skill (excludes story/NPC-only entries)."""
     s = set()
@@ -15321,6 +15569,8 @@ for lang_code, paths in LANG_PATHS.items():
     lang_dir = paths['lang']; lang_base_dir = paths['base']
     if not lang_dir: continue
     
+    # Structural JA-ahead kits are merged earlier via supplement_catalog_from_jp_master().
+    # This pass remains a safety net for thin unit/char info rows from other locales.
     if lang_base_dir and lang_base_dir != BASE_DIR:
         lcm = load_json(os.path.join(lang_base_dir, "m_character.json"))
         lum = load_json(os.path.join(lang_base_dir, "m_unit.json"))
@@ -35514,7 +35764,9 @@ def api_eternal_stages_unlock():
     if pw != ETERNAL_STAGE_PASSWORD:
         return jsonify({'ok': False, 'error': 'invalid_password'}), 403
     session['eternal_stages_unlocked'] = True
-    return jsonify({'ok': True, 'password_required': True})
+    session.permanent = True
+    session.modified = True
+    return jsonify({'ok': True, 'password_required': True, 'unlocked': True})
 
 
 @app.route('/api/jp_mode/status')
@@ -39355,7 +39607,8 @@ def get_stage(stage_id):
                 'lang': lc,
             }
             set_cached_response(ck, result)
-            return jsonify_cacheable(result, ck, private=True, max_age=3600, convert_images=True)
+            # Never let browsers keep a locked stub for an hour — unlock refetch must hit the server.
+            return jsonify_cacheable(result, ck, private=True, max_age=0, no_store=True, convert_images=True)
         sn = est.get('stage_number', 0)
         if is_score_attack:
             sname = resolve_stage_name_from_lang_m_stage(ld, est.get('stage_name_lang_id', '0'), stage_id)

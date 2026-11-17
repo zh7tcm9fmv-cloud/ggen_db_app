@@ -1,0 +1,32 @@
+---
+description: JP/JA has its own MasterData — use it when EN MD lags
+alwaysApply: true
+---
+
+# JP locale has its own MasterData
+
+Owner lesson (**Nov 2026**): JP (`data/JA`, Desktop `GGen_JA`) ships **its own MasterData**, not only LANG. EN often lags a JP-first drop.
+
+## Hard rule
+
+1. **Do not** assume “updated JA lang only” is enough for new JP kits to appear on the site. New units/chars need **JA master** rows (abilities, weapons, status, …).
+2. **EN `BASE_DIR`** is still the default structural load for the shared catalog.
+3. When **JA master is ahead of EN** (extra unit/char ids), the app must **supplement** the global catalog from JA master at boot so **JP locale** can browse/detail those kits **without waiting for EN MD**.
+4. Agent workflow when JP updates first:
+   - Import/decrypt into `data/JA/master` + `data/JA/lang` (and Desktop `GGen_JA` when local).
+   - Prefer syncing JA → EN/TW/HK/HR master when EN arrives or when shipping a full catalog drop.
+   - Until EN catches up, rely on boot supplement — **do not** tell the owner JP content is “impossible” just because EN MD is old.
+5. Live deploy: Railway uses `data/*/master` (deployment mode). Local uses Desktop `GGen_*` latest folders when present.
+
+## Anti-patterns
+
+| Pattern | Why |
+|---|---|
+| Only committing `data/JA/lang` for a JP content drop | New ids never enter `unit_info_map` / ability maps from EN |
+| Saying JP locale “just overlays names on EN master” as absolute | JA has a full MD tree; EN lag is normal |
+| Thin-merge into `unit_info_map` only (no ability/weapon/status) | Detail empty / not playable / Unknown |
+
+## Related
+
+- Boot: `supplement_catalog_from_jp_master()` in `app.py` (before playable-id sets).
+- Post-import caches (`/new`, BSP, SPI) still follow existing rebuild rules once kits are in the catalog.
