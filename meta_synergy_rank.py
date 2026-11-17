@@ -2675,19 +2675,20 @@ def _adaptive_tick():
                     aux['rankings_full_dropped'] = int(aux.get('rankings_full_dropped') or 0) + 1
         except Exception:
             pass
-    if band in ('mid', 'pressure') or rss_mid or rss_hot:
-        try:
-            A = _app()
-            trim = getattr(A, 'pressure_trim_aux_caches', None)
-            if callable(trim):
-                aux2 = trim(rss_mb=rss) or {}
-                for _k, _v in aux2.items():
-                    if isinstance(_v, int) and isinstance(aux.get(_k), int):
-                        aux[_k] = int(aux.get(_k) or 0) + int(_v)
-                    elif _k not in aux or aux.get(_k) in (None, 0, ''):
-                        aux[_k] = _v
-        except Exception as exc:
-            aux['err'] = str(exc)[:120]
+    # Always run aux trim (cheap under budget). Detail can sit at ~9MB / max keys while
+    # RSS stays ~1030 and band is calm — mid-only gate left that pressure untrimmed.
+    try:
+        A = _app()
+        trim = getattr(A, 'pressure_trim_aux_caches', None)
+        if callable(trim):
+            aux2 = trim(rss_mb=rss) or {}
+            for _k, _v in aux2.items():
+                if isinstance(_v, int) and isinstance(aux.get(_k), int):
+                    aux[_k] = int(aux.get(_k) or 0) + int(_v)
+                elif _k not in aux or aux.get(_k) in (None, 0, ''):
+                    aux[_k] = _v
+    except Exception as exc:
+        aux['err'] = str(exc)[:120]
     # Quiet by default. Oct 2026: mid↔pressure flaps from rpm (while RSS stays ~1.1–1.2GB)
     # logged every tick with huge pair→floor drops — noise, not owner action. Log only when:
     #   • aux trim actually freed retained bodies / API dicts / err, or

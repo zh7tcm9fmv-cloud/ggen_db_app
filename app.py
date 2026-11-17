@@ -8377,6 +8377,9 @@ _API_CACHE_PIN_PREFIXES = (
     'banner_tl_v19_',
     'banner_tl_full_v19_',
     'banner_tl_feat_v19_',
+    # /new + What's New are small but cold rebuilds hurt under GIL; pin warm bodies.
+    'lr_v10_',
+    'whats_new_v1_',
     # /tm+/dm boards are multi‑MB each — do NOT pin. Pinning + boot-prewarm (removed)
     # held all locales in RSS and starved homepage (Oct 2026). On-demand + evictable.
 )
@@ -8506,6 +8509,12 @@ _HTTP_JSON_DETAIL_BODY_CACHE = {}
 # Hold more warm unit/char dossiers so detail storms re-hit gzip bytes (no rebuild / no UX change).
 _HTTP_JSON_DETAIL_BODY_CACHE_MAX = max(64, min(512, int(os.environ.get('HTTP_JSON_DETAIL_BODY_CACHE_MAX', '384') or '384')))
 _HTTP_JSON_DETAIL_BODY_MAX_RAW = max(8192, min(262144, int(os.environ.get('HTTP_JSON_DETAIL_BODY_MAX_RAW', '131072') or '131072')))
+# Soft byte budget for detail gzip(+raw). Live audit 2026-11: detail sat at ~9.4MB / 384 keys
+# while RSS stayed ~1030 (below the old RSS≥1100 trim gate) → GIL pressure, nothing felt instant.
+_HTTP_JSON_DETAIL_BODY_BUDGET = max(
+    2 * 1024 * 1024,
+    min(32 * 1024 * 1024, int(os.environ.get('HTTP_JSON_DETAIL_BODY_BUDGET', '6291456') or '6291456')),
+)
 _HTTP_JSON_DETAIL_KEY_PREFIXES = (
     'c_', 'u_', 's8_', 's_', 'op_', 'opd3_', 'item_', 'pt_', 'ubp_',
 )
@@ -8673,7 +8682,8 @@ def pressure_trim_aux_caches(*, rss_mb=None):
     """Background-only: free retainable warm bytes without changing API features.
 
     Never call from the /health request path (Railway probes). Safe to call from the
-    adaptive cache tick when RSS is elevated (mid or pressure).
+    adaptive cache tick every cycle — cheap when under budget; enforces detail byte/key
+    budget even while RSS stays below the old 1100 mid gate.
     """
     info = {
         'stripped_raw': 0,
@@ -8694,20 +8704,35 @@ def pressure_trim_aux_caches(*, rss_mb=None):
         rss = float(rss_mb) if rss_mb is not None else None
     except (TypeError, ValueError):
         rss = None
-    # Mid+ (default MSY mid ~1100): drop duplicate detail raw when gzip is kept, and
-    # shrink the detail LRU. Misses recompute the same JSON — no look/feature change.
-    # Audit 2026-11-14: RSS ~1111 / detail_mb ~9.6 with band mid at quiet rpm.
-    if rss is not None and rss >= 1100.0:
-        try:
-            with _HTTP_JSON_BODY_CACHE_LOCK:
+    # Detail LRU: strip duplicate raw + shrink when over byte budget, at max keys, or
+    # elevated RSS. Live 2026-11-17: RSS ~1034 / detail ~9.4MB / 384 keys / band calm —
+    # old RSS≥1100-only gate never fired → homepage + /new felt dead under GIL.
+    try:
+        with _HTTP_JSON_BODY_CACHE_LOCK:
+            detail_bytes = sum(
+                _http_json_entry_bytes(v) for v in _HTTP_JSON_DETAIL_BODY_CACHE.values()
+            )
+            detail_n = len(_HTTP_JSON_DETAIL_BODY_CACHE)
+            over_budget = detail_bytes > _HTTP_JSON_DETAIL_BODY_BUDGET
+            at_cap = detail_n >= _HTTP_JSON_DETAIL_BODY_CACHE_MAX
+            rss_mid = rss is not None and rss >= 1100.0
+            rss_hot = rss is not None and rss >= 1250.0
+            if over_budget or at_cap or rss_mid or rss_hot:
                 for _ent in _HTTP_JSON_DETAIL_BODY_CACHE.values():
                     if not _ent:
                         continue
                     if _ent.get('raw') is not None and _ent.get('gzip') is not None:
                         _ent['raw'] = None
                         info['detail_raw_stripped'] += 1
-                # Soft mid keep 192; hard pressure (≥1250) keep 64.
-                keep = 64 if rss >= 1250.0 else 192
+                # Soft keep 256 under budget pressure; 192 at mid RSS; 64 at hard pressure.
+                if rss_hot:
+                    keep = 64
+                elif rss_mid:
+                    keep = 192
+                elif over_budget or at_cap:
+                    keep = 256
+                else:
+                    keep = _HTTP_JSON_DETAIL_BODY_CACHE_MAX
                 while len(_HTTP_JSON_DETAIL_BODY_CACHE) > keep:
                     try:
                         oldest = next(iter(_HTTP_JSON_DETAIL_BODY_CACHE))
@@ -8715,8 +8740,25 @@ def pressure_trim_aux_caches(*, rss_mb=None):
                         break
                     _HTTP_JSON_DETAIL_BODY_CACHE.pop(oldest, None)
                     info['detail_evicted'] += 1
-        except Exception:
-            pass
+                # Still over byte budget after key trim — keep evicting oldest.
+                if over_budget:
+                    while _HTTP_JSON_DETAIL_BODY_CACHE:
+                        detail_bytes = sum(
+                            _http_json_entry_bytes(v)
+                            for v in _HTTP_JSON_DETAIL_BODY_CACHE.values()
+                        )
+                        if detail_bytes <= _HTTP_JSON_DETAIL_BODY_BUDGET:
+                            break
+                        if len(_HTTP_JSON_DETAIL_BODY_CACHE) <= 64:
+                            break
+                        try:
+                            oldest = next(iter(_HTTP_JSON_DETAIL_BODY_CACHE))
+                        except StopIteration:
+                            break
+                        _HTTP_JSON_DETAIL_BODY_CACHE.pop(oldest, None)
+                        info['detail_evicted'] += 1
+    except Exception:
+        pass
     # Hard pressure: also shed unpinned API dicts (misses recompute).
     if rss is not None and rss >= 1250.0:
         try:
@@ -20944,6 +20986,16 @@ def _schedule_browse_list_performance_caches():
             _prewarm_banner_timeline_caches()
         except Exception as e:
             print(f'Banner timeline prewarm skipped: {e}')
+        # /new (latest_release) + What's New: small payloads, cold rebuilds feel "forever"
+        # under traffic when every worker misses. Warm default locales after /tl.
+        try:
+            _prewarm_latest_release_caches()
+        except Exception as e:
+            print(f'Latest release prewarm skipped: {e}')
+        try:
+            _prewarm_whats_new_caches()
+        except Exception as e:
+            print(f'Whats New prewarm skipped: {e}')
         # Do NOT prewarm /tm+/dm here. Boards are multi‑MB; boot-prewarm bloated Railway RSS
         # (~1.3GB+) and starved homepage (Oct 2026). Published gzip is served on-demand as
         # bytes (no decoded dict in `_api_cache`).
@@ -20987,6 +21039,49 @@ def _prewarm_banner_timeline_caches():
             print(f'Banner timeline prewarm skipped ({lc}): {e}')
     if warmed:
         print(f'Banner timeline prewarm: {warmed} locale(s) cached', flush=True)
+
+
+def _prewarm_lang_list():
+    langs = []
+    for lc in (DEFAULT_LANG, 'EN', 'TW', 'HK', 'JA', 'JP'):
+        if lc and lc not in langs:
+            langs.append(lc)
+    have = set((LANG_DATA or {}).keys()) if LANG_DATA else set()
+    if have:
+        langs = [lc for lc in langs if lc in have] or list(have)[:1]
+    return langs
+
+
+def _prewarm_latest_release_caches():
+    """Seed /api/latest_release so /new is not a cold catalog scan on first open."""
+    warmed = 0
+    for lc in _prewarm_lang_list():
+        # Matches api_latest_release lock-free recent key: lr_v10_{lc}_na_recent_0
+        ck = f'lr_v10_{lc}_na_recent_0'
+        if get_cached_response(ck):
+            continue
+        try:
+            with app.test_request_context(f'/api/latest_release?lang={lc}'):
+                api_latest_release()
+            warmed += 1
+        except Exception as e:
+            print(f'Latest release prewarm skipped ({lc}): {e}')
+    if warmed:
+        print(f'Latest release prewarm: {warmed} locale(s) cached', flush=True)
+
+
+def _prewarm_whats_new_caches():
+    """Seed /api/whats_new so the news modal is not a multi-second delta rebuild cold."""
+    warmed = 0
+    for lc in _prewarm_lang_list():
+        try:
+            with app.test_request_context(f'/api/whats_new?lang={lc}'):
+                api_whats_new()
+            warmed += 1
+        except Exception as e:
+            print(f'Whats New prewarm skipped ({lc}): {e}')
+    if warmed:
+        print(f'Whats New prewarm: {warmed} locale(s) cached', flush=True)
 
 
 def _prewarm_default_browse_list_api_caches(include_stages=False, stages_only=False):
