@@ -5661,7 +5661,11 @@ hdr.style.minHeight=hh+'px';
 }
 }
 }
-/** Grow-only header min-height (layout). Does not freeze cover paint while open. */
+/**
+ * Grow-only header min-height — EXIT freeze only.
+ * Do not call while the dossier is open: min-height churn reflows the header and can
+ * flip recommend into the mobile slot (CHARACTER card jumps). Cover is 100% while open.
+ */
 function lockDetailHeaderLayoutForPep(){
 const m=document.getElementById('detailModal');
 const mc=document.getElementById('modalContent');
@@ -5674,13 +5678,9 @@ const lockH=Math.max(hh,prev);
 hdr.style.minHeight=lockH+'px';
 hdr.dataset.ggenLayoutLocked='1';
 }
-/** After open/settle: lock layout height only — cover stays 100% while browsing the dossier. */
+/** While open: cover is CSS 100% — no layout lock (avoids recommend-card jump). */
 function scheduleLockDetailCoverPaintBoxes(){
-requestAnimationFrame(()=>{
-requestAnimationFrame(()=>{
-try{lockDetailHeaderLayoutForPep()}catch(_){}
-});
-});
+/* intentionally empty while open; exit path uses lockDetailCoverPaintBoxes via freeze */
 }
 function _armDetailCloseSettling(){
 S._detailCloseCover=true;
@@ -9124,12 +9124,11 @@ void ensurePilotCondCharData(d,true).then(r=>{
 if(!r||!r.data)return;
 if(S.currentDetailType==='unit'&&S.currentDetailData&&String(S.currentDetailData.id)===uid){
 if(S.pilotConditionalPassiveActive)_detailInitPilotCondStackCount(S.currentDetailData);
-/* Soft path: keep toggles DOM, insert reserved stack; header already reserved so no cover re-lock flash. */
+/* Soft path: keep toggles DOM, insert reserved stack — no header min-height lock (rec card jump). */
 S._pilotStackSliderAnimate=false;
 updateDetailDynamicSections('unit',{keepToggles:true,softBody:true});
 try{_detailSoftSyncPilotEpToggleDom()}catch(_){}
 syncPilotCondHighlights();
-try{lockDetailHeaderLayoutForPep()}catch(_){}
 }
 }).catch(()=>{});
 }
@@ -9695,7 +9694,6 @@ if(_detailUnitPilotMovCpGate(d))S.conditionalPassiveActive=true;
 updateDetailDynamicSections(S.currentDetailType,{keepToggles:true,softBody:true});
 _detailSoftSyncPilotEpToggleDom();
 syncPilotCondHighlights();
-try{lockDetailHeaderLayoutForPep()}catch(_){}
 };
 if(c&&d&&d.has_pilot_cond_passive&&d.recommend_character&&d.recommend_character.id){
 void ensurePilotCondCharData(d,true).then(()=>finish()).catch(()=>finish());
@@ -9794,7 +9792,6 @@ invalidateDetailRankingCachesForPerspectiveChange();
 updateDetailDynamicSections(S.currentDetailType,{keepToggles:true,softBody:true});
 try{_detailSoftSyncPilotEpToggleDom()}catch(_){}
 syncNpcUnitConditionHighlights();
-try{lockDetailHeaderLayoutForPep()}catch(_){}
 }
 function setCharSuperchargedExTier(i){
 const d=S.currentDetailData,arr=d&&d.ex_supercharged_tiers;
@@ -9803,7 +9800,6 @@ const n=arr.length;
 S.charSuperchargedExTier=Math.max(0,Math.min(Number(i)||0,n-1));
 updateDetailDynamicSections('character',{keepToggles:true,softBody:true});
 try{_detailSoftSyncPilotEpToggleDom()}catch(_){}
-try{lockDetailHeaderLayoutForPep()}catch(_){}
 }
 function renderStageRestrictionItem(it){
 const o=it&&typeof it==='object'?it:{};
