@@ -1,0 +1,25 @@
+# Latest Release (`/new`) — schedule_id then same-date merge
+
+Owner rule (**Nov 2026**): gacha often ships **multiple `ScheduleId`s** at the same `m_schedule.StartDatetime` (e.g. unit/char banner `2611209903` + supporter `2611209902` both `2026-11-17 12:00:00 JST`). Players see one drop — `/new` must show **one section**.
+
+## Hard rule
+
+1. Collect kits **per `schedule_id`** (unit / character / supporter as today).
+2. **Sort** those buckets by **`schedule_id`** (numeric descending — newer ids first).
+3. If the **displayed StartDatetime (JST)** is the same, **merge into one section** (keep the first / highest `schedule_id` as the section’s `schedule_id`).
+4. Then order sections newest-date-first for the feed.
+
+Do **not** leave same-timestamp ScheduleIds as separate `lr-section` rows.
+
+## Implementation
+
+- `api_latest_release` in `app.py` (`lr_v10_*` cache key; bump when changing shape).
+- Helper: `_lr_schedule_id_sort_key`.
+
+## Anti-patterns
+
+| Pattern | Why |
+|---|---|
+| One section per `schedule_id` only | Same JST stamp → orphan supporter/unit cards |
+| Merge by `start_ms` only, ignore schedule_id order | Owner wants schedule_id sort first, then date coalesce |
+| Inventing a second timestamp for “why Bandai split ids” | MD has two schedules; UI still one section |

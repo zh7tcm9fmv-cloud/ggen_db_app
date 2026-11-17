@@ -35849,9 +35849,19 @@ def api_ml_sim_unlock():
     return jsonify({'ok': True, 'password_required': True})
 
 
+def _lr_schedule_id_sort_key(sid):
+    """Numeric schedule ids descending (newer gasha ids first); non-numeric last."""
+    s = normalize_id(sid)
+    try:
+        return (0, -int(s))
+    except Exception:
+        return (1, str(s))
+
+
 @app.route('/api/latest_release')
 def api_latest_release():
-    """Group units, characters, and supporters by gasha ScheduleId; dates from m_schedule StartDatetime (JST)."""
+    """Latest Release (/new): collect per ScheduleId, sort by schedule_id, then
+    merge adjacent buckets that share the same StartDatetime (JST label)."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
     # Do NOT return 401 for the whole tab — per-schedule lock is applied below via latest_release_schedule_content_locked().
     unlocked = session.get('lr_unlocked') is True
@@ -35859,7 +35869,7 @@ def api_latest_release():
     show_all = request.args.get('full', '').lower() in ('1', 'true', 'yes') or request.args.get('all', '').lower() in ('1', 'true', 'yes')
     scope = 'full' if show_all else 'recent'
     wm_ck = wm or 'na'
-    ck = f"lr_v8_{lc}_{wm_ck}_{scope}_{1 if unlocked else 0}"
+    ck = f"lr_v10_{lc}_{wm_ck}_{scope}_{1 if unlocked else 0}"
     cached = get_cached_response(ck)
     if cached:
         return jsonify_preserialized(cached, ck, public=True, max_age=300, convert_images=False)
@@ -35868,10 +35878,12 @@ def api_latest_release():
     groups = {}
 
     def ensure_group(sched):
-        if sched not in groups:
-            sm = schedule_start_ms_by_id.get(sched, 0)
-            groups[sched] = {'schedule_id': sched, 'start_ms': sm, 'items': []}
-        return groups[sched]
+        """One bucket per ScheduleId (merge same-date later)."""
+        sid = normalize_id(sched)
+        if sid not in groups:
+            sm = schedule_start_ms_by_id.get(sid, 0)
+            groups[sid] = {'schedule_id': sid, 'start_ms': sm, 'items': []}
+        return groups[sid]
 
     for cid, info in char_info_map.items():
         sched = info.get('schedule_id', '0')
@@ -35951,24 +35963,58 @@ def api_latest_release():
             'is_limited_time': normalize_id(sid) in LIMITED_TIME_SUPPORTER_IDS,
         })
 
-    out_list = []
+    # Owner rule: sort by schedule_id first; if StartDatetime (JST) matches, one section.
+    per_sched = []
     for sched, g in groups.items():
         if not g['items']:
             continue
-        g['items'] = sort_latest_release_group_items(g['items'])
-        for _it in g['items']:
-            _it.pop('recommend_character_id', None)
         sm = g['start_ms']
         jst = format_start_datetime_jst(sm)
-        g['start_datetime_jst'] = jst if jst else f'Schedule {sched}'
+        date_key = jst if jst else f'Schedule {sched}'
         if latest_release_schedule_content_locked(sched, sm):
             g['items'] = []
             g['locked'] = True
         else:
+            g['items'] = sort_latest_release_group_items(g['items'])
+            for _it in g['items']:
+                _it.pop('recommend_character_id', None)
             g['locked'] = False
-        del g['start_ms']
-        out_list.append(g)
-    out_list.sort(key=lambda x: schedule_start_ms_by_id.get(x['schedule_id'], 0), reverse=True)
+        g['start_datetime_jst'] = date_key
+        g['_date_key'] = date_key
+        per_sched.append(g)
+    per_sched.sort(key=lambda x: _lr_schedule_id_sort_key(x['schedule_id']))
+
+    merged_by_date = {}
+    date_order = []
+    for g in per_sched:
+        date_key = g.pop('_date_key', g.get('start_datetime_jst'))
+        g.pop('start_ms', None)
+        prev = merged_by_date.get(date_key)
+        if prev is None:
+            merged_by_date[date_key] = g
+            date_order.append(date_key)
+            continue
+        # Same displayed date → merge into the first (highest schedule_id) section.
+        if g.get('locked') and not prev.get('locked'):
+            continue
+        if prev.get('locked') and not g.get('locked'):
+            merged_by_date[date_key] = g
+            continue
+        if g.get('locked') and prev.get('locked'):
+            continue
+        prev['items'].extend(g.get('items') or [])
+        prev['items'] = sort_latest_release_group_items(prev['items'])
+        for _it in prev['items']:
+            _it.pop('recommend_character_id', None)
+
+    out_list = [merged_by_date[k] for k in date_order]
+    # Newest StartDatetime first; same-date ties already collapsed (schedule_id order).
+    out_list.sort(
+        key=lambda x: (
+            -schedule_start_ms_by_id.get(x['schedule_id'], 0),
+            _lr_schedule_id_sort_key(x['schedule_id']),
+        )
+    )
     full_list = out_list
     has_more = False
     if not show_all:

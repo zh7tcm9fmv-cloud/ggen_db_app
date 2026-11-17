@@ -5801,6 +5801,9 @@ try{S._detailMorphExitDone=1}catch(_){}
 _clearDetailExitListeners();
 try{_killDetailModalMotion(document.getElementById('modalContent'))}catch(_){}
 _dropDetailOverlayDom();
+/* Safety: deferred history.back → applyBrowseRouteFromLocation can re-arm
+   prepareUnlock after afterMorph already released — clear stuck nav freeze. */
+try{if(window.GgenNavTabsAutoHide&&typeof GgenNavTabsAutoHide.releaseOverlayFreeze==='function')GgenNavTabsAutoHide.releaseOverlayFreeze({forceTopReveal:true})}catch(_){}
 _scheduleReleaseDetailCloseScrollHold();
 updateScrollTopFabVisibility();
 syncDetailBrowseNavUi();
@@ -5951,9 +5954,14 @@ return'characters';
 function applyBrowseRouteFromLocation(opts){
 opts=opts||{};
 const parsed=parseBrowseShortPath(location.pathname);
-if(parsed&&parsed.kind==='latest_release'){closeModalDomOnly();switchTab('latest_release',{skipHistory:true,fromPopstate:!!opts.fromPopstate});tryLoadLatestRelease();return true}
+/* Esc/Back morph-exit owns modal teardown. A deferred history.back() re-enters here
+   while phase==='exiting'; closeModalDomOnly → prepareUnlock after releaseOverlayFreeze
+   left nav-tabs-overlay-freeze stuck (tabs never come back). */
+const exitOwnsModal=S._detailExitPhase==='exiting';
+const closeRouteModal=function(){if(exitOwnsModal)return;closeModalDomOnly()};
+if(parsed&&parsed.kind==='latest_release'){closeRouteModal();switchTab('latest_release',{skipHistory:true,fromPopstate:!!opts.fromPopstate});tryLoadLatestRelease();return true}
 if(parsed&&parsed.kind==='stages_source'){
-closeModalDomOnly();
+closeRouteModal();
 const src=parsed.source||'eternal';
 const prev=S.stages.source||'eternal';
 S.stages.source=src;
@@ -5982,9 +5990,9 @@ syncStageSourceToolbar();
 if(src==='fierce_enemy_assault')markFeaPageVisited();
 return true;
 }
-if(parsed&&parsed.kind==='e_simulator'){closeModalDomOnly();if((S.stages.source||'eternal')!=='e_simulator')S.stages.source='e_simulator';switchTab('stages',{skipHistory:true,fromPopstate:!!opts.fromPopstate});syncStageSourceToolbar();void ensureESimulatorLoaded().then(es=>{if(es)es.load()});markEsimPageVisited();return true}
-if(parsed&&parsed.kind==='ml_estscore'){closeModalDomOnly();if(S.currentTab!=='master_league')switchTab('master_league',{skipHistory:true,fromPopstate:!!opts.fromPopstate});else{ensureBrowseTabPainted('master_league');loadMasterLeague()}mlOpenCalcView({skipHistory:true});return true}
-if(parsed&&parsed.kind==='main_tab'){closeModalDomOnly();if(parsed.tab==='gacha_sim'){S.gachaSimGashaId=String(parsed.gashaId||'').trim();try{const q=new URLSearchParams(location.search);const qg=q.get('gasha')||q.get('gasha_id');if(!S.gachaSimGashaId&&qg)S.gachaSimGashaId=String(qg).trim()}catch(_){}}if(parsed.tab==='stages'&&(S.stages.source||'')==='e_simulator'){S.stages.source='eternal';if(window.ESimulator)ESimulator.hide()}
+if(parsed&&parsed.kind==='e_simulator'){closeRouteModal();if((S.stages.source||'eternal')!=='e_simulator')S.stages.source='e_simulator';switchTab('stages',{skipHistory:true,fromPopstate:!!opts.fromPopstate});syncStageSourceToolbar();void ensureESimulatorLoaded().then(es=>{if(es)es.load()});markEsimPageVisited();return true}
+if(parsed&&parsed.kind==='ml_estscore'){closeRouteModal();if(S.currentTab!=='master_league')switchTab('master_league',{skipHistory:true,fromPopstate:!!opts.fromPopstate});else{ensureBrowseTabPainted('master_league');loadMasterLeague()}mlOpenCalcView({skipHistory:true});return true}
+if(parsed&&parsed.kind==='main_tab'){closeRouteModal();if(parsed.tab==='gacha_sim'){S.gachaSimGashaId=String(parsed.gashaId||'').trim();try{const q=new URLSearchParams(location.search);const qg=q.get('gasha')||q.get('gasha_id');if(!S.gachaSimGashaId&&qg)S.gachaSimGashaId=String(qg).trim()}catch(_){}}if(parsed.tab==='stages'&&(S.stages.source||'')==='e_simulator'){S.stages.source='eternal';if(window.ESimulator)ESimulator.hide()}
 /* Closing a detail modal back to the same browse tab must not reload the list.
    Cold load of /c (default tab already characters) still needs a first paint. */
 if(parsed.tab==='master_league')try{mlCloseCalcView({skipHistory:true})}catch(_){}
@@ -5993,7 +6001,7 @@ switchTab(parsed.tab,{skipHistory:true,fromPopstate:!!opts.fromPopstate});return
 if(parsed&&parsed.kind==='option_part'){switchTab('modifications',{skipHistory:true,fromPopstate:!!opts.fromPopstate});if(!opts.fromPopstate)_markDetailCloseBackToStandaloneReferrer();openDetail('option_part',parsed.id,{skipHistory:true});if(!opts.fromPopstate)try{window.scrollTo(0,0)}catch(_){}return true}
 if(parsed&&parsed.kind==='roadmap'){openRoadmapCalendar({skipHistory:true});try{const _warm=()=>{if(!(S._browsePrimed&&S._browsePrimed.characters)||browseTabLooksEmpty('characters')){if(!S._browsePrimed)S._browsePrimed={};S._browsePrimed.characters=1;primeBrowseTabIfNeeded('characters')}};if(window.requestIdleCallback)requestIdleCallback(_warm,{timeout:2500});else setTimeout(_warm,400)}catch(_rmWarm){}return true}
 if(parsed&&parsed.kind==='detail'){const t=parsed.type,id=parsed.id;switchTab(_detailTabForType(t),{skipHistory:true,fromPopstate:!!opts.fromPopstate});/* Cold /u|/s|/c/:id from standalone /tm — close/Esc must history.back() to Tag Matrix, not replace to /u|/s. */if(!opts.fromPopstate)_markDetailCloseBackToStandaloneReferrer();openDetail(t,id,{skipHistory:true});return true}
-if(!parsed){closeModalDomOnly();if(S.currentTab!=='characters')switchTab('characters',{skipHistory:true,fromPopstate:!!opts.fromPopstate});else ensureBrowseTabPainted('characters')}
+if(!parsed){closeRouteModal();if(S.currentTab!=='characters')switchTab('characters',{skipHistory:true,fromPopstate:!!opts.fromPopstate});else ensureBrowseTabPainted('characters')}
 return false;
 }
 function initBrowseHistory(){

@@ -226,6 +226,19 @@
     var touchY0 = null;
 
     function hardLocked() {
+      /* Stuck freeze after detail exit (history.back re-armed prepareUnlock): if the
+         modal is gone and unlock flag was cleared, drop the CSS class so scroll can
+         reveal nav again. */
+      try {
+        if (
+          document.body.classList.contains('nav-tabs-overlay-freeze') &&
+          !overlayUnlockFreeze &&
+          !document.body.classList.contains('detail-modal-open') &&
+          !document.documentElement.classList.contains('page-scroll-lock')
+        ) {
+          setOverlayFreezeClass(false);
+        }
+      } catch (_) {}
       return (
         overlayUnlockFreeze ||
         document.documentElement.classList.contains('page-scroll-lock') ||
