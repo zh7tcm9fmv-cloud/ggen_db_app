@@ -1,23 +1,23 @@
 [
   {
-    "Id": 3,
+    "SupporterActiveSkillTraitTypeIndex": 3,
     "NameLanguageId": 141900000000000001,
-    "DescriptionLanguageId": "trait_10010401",
-    "SortNameLanguageId": 0,
-    "RarityIndex": 1
+    "IconResourceId": "trait_10010401",
+    "ScheduleId": 0,
+    "SortOrder": 1
   },
   {
-    "Id": 4,
+    "SupporterActiveSkillTraitTypeIndex": 4,
     "NameLanguageId": 141900000000000002,
-    "DescriptionLanguageId": "trait_10020501",
-    "SortNameLanguageId": 0,
-    "RarityIndex": 2
+    "IconResourceId": "trait_10020501",
+    "ScheduleId": 0,
+    "SortOrder": 2
   },
   {
-    "Id": 8,
+    "SupporterActiveSkillTraitTypeIndex": 8,
     "NameLanguageId": 141900000000000003,
-    "DescriptionLanguageId": "trait_10510101",
-    "SortNameLanguageId": 2603609901,
-    "RarityIndex": 3
+    "IconResourceId": "trait_10510101",
+    "ScheduleId": 2603609901,
+    "SortOrder": 3
   }
 ]

@@ -6655,6 +6655,28 @@
     "CampaignTargetUserTypeTargetId": 0
   },
   {
+    "Id": 126112001,
+    "TargetUserTypeIndex": 1,
+    "CampaignTargetSetId": 126112001,
+    "CampaignEffectId": 126112001,
+    "ScheduleId": 2611201301,
+    "SortOrder": 1,
+    "DescriptionLanguageId": 250200000126112001,
+    "CampaignTargetUserTypeIndex": 1,
+    "CampaignTargetUserTypeTargetId": 0
+  },
+  {
+    "Id": 126112002,
+    "TargetUserTypeIndex": 1,
+    "CampaignTargetSetId": 126112002,
+    "CampaignEffectId": 126112002,
+    "ScheduleId": 2611201301,
+    "SortOrder": 2,
+    "DescriptionLanguageId": 250200000126112002,
+    "CampaignTargetUserTypeIndex": 1,
+    "CampaignTargetUserTypeTargetId": 0
+  },
+  {
     "Id": 260140001,
     "TargetUserTypeIndex": 1,
     "CampaignTargetSetId": 260140001,

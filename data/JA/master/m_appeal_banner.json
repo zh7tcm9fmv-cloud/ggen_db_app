@@ -768,5 +768,15 @@
     "ResourceId": "gasha_2610500306",
     "ScheduleId": 2610501701,
     "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2611200101,
+    "TransitionId": 28002611200302,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2611200302,
+    "SortOrder": 1200,
+    "ResourceId": "gasha_2611200302",
+    "ScheduleId": 2611201701,
+    "BannerResourceTypeIndex": 0
   }
 ]

@@ -1428,6 +1428,34 @@
     "SortOrder": 2
   },
   {
+    "SupporterLeaderSkillContentSetId": 121700015000,
+    "SupporterLeaderSkillTraitSetId": 100250,
+    "DescriptionLanguageId": 160700000000100250,
+    "TraitConditionSetId": 1000673,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillContentSetId": 121700015001,
+    "SupporterLeaderSkillTraitSetId": 100300,
+    "DescriptionLanguageId": 160700000000100300,
+    "TraitConditionSetId": 1000673,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillContentSetId": 121700015002,
+    "SupporterLeaderSkillTraitSetId": 100330,
+    "DescriptionLanguageId": 160700000000100330,
+    "TraitConditionSetId": 1000673,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillContentSetId": 121700015003,
+    "SupporterLeaderSkillTraitSetId": 100360,
+    "DescriptionLanguageId": 160700000000100360,
+    "TraitConditionSetId": 1000673,
+    "SortOrder": 1
+  },
+  {
     "SupporterLeaderSkillContentSetId": 123000015000,
     "SupporterLeaderSkillTraitSetId": 100250,
     "DescriptionLanguageId": 160700000000100250,

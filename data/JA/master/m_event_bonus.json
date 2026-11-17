@@ -815,6 +815,81 @@
     "TargetId": 20001808
   },
   {
+    "Id": 20001901,
+    "EventBonusTargetTypeIndex": 1,
+    "TargetId": 20001901
+  },
+  {
+    "Id": 20001902,
+    "EventBonusTargetTypeIndex": 1,
+    "TargetId": 20001902
+  },
+  {
+    "Id": 20001903,
+    "EventBonusTargetTypeIndex": 1,
+    "TargetId": 20001903
+  },
+  {
+    "Id": 20001904,
+    "EventBonusTargetTypeIndex": 1,
+    "TargetId": 20001904
+  },
+  {
+    "Id": 20001905,
+    "EventBonusTargetTypeIndex": 1,
+    "TargetId": 20001905
+  },
+  {
+    "Id": 20001906,
+    "EventBonusTargetTypeIndex": 1,
+    "TargetId": 20001906
+  },
+  {
+    "Id": 20001907,
+    "EventBonusTargetTypeIndex": 1,
+    "TargetId": 20001907
+  },
+  {
+    "Id": 20001908,
+    "EventBonusTargetTypeIndex": 1,
+    "TargetId": 20001908
+  },
+  {
+    "Id": 20001909,
+    "EventBonusTargetTypeIndex": 1,
+    "TargetId": 20001909
+  },
+  {
+    "Id": 20001910,
+    "EventBonusTargetTypeIndex": 1,
+    "TargetId": 20001910
+  },
+  {
+    "Id": 20001911,
+    "EventBonusTargetTypeIndex": 1,
+    "TargetId": 20001911
+  },
+  {
+    "Id": 20001912,
+    "EventBonusTargetTypeIndex": 1,
+    "TargetId": 20001912
+  },
+  {
+    "Id": 20001913,
+    "EventBonusTargetTypeIndex": 1,
+    "TargetId": 20001913
+  },
+  {
+    "Id": 20001914,
+    "EventBonusTargetTypeIndex": 3,
+    "TargetId": 20001914
+  },
+  {
+    "Id": 20001915,
+    "EventBonusTargetTypeIndex": 3,
+    "TargetId": 20001915
+  },
+  {
     "Id": 25000101,
     "EventBonusTargetTypeIndex": 4,
     "TargetId": 25000101

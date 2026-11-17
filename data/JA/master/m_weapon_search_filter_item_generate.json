@@ -1,322 +1,322 @@
 [
   {
-    "Tags": 1,
-    "Unknown_Col_1": 1001,
-    "Unknown_Col_2": 201,
-    "Unknown_Col_3": 2,
-    "Unknown_Col_4": 141700000000000001,
-    "Unknown_Col_5": 0
+    "FilterCategoryIndex": 1,
+    "FilterValue": 1001,
+    "SortOrder": 201,
+    "WeaponEffectGroupTypeIndex": 2,
+    "NameLanguageId": 141700000000000001,
+    "ScheduleId": 0
   },
   {
-    "Tags": 1,
-    "Unknown_Col_1": 1002,
-    "Unknown_Col_2": 202,
-    "Unknown_Col_3": 2,
-    "Unknown_Col_4": 141700000000000002,
-    "Unknown_Col_5": 0
+    "FilterCategoryIndex": 1,
+    "FilterValue": 1002,
+    "SortOrder": 202,
+    "WeaponEffectGroupTypeIndex": 2,
+    "NameLanguageId": 141700000000000002,
+    "ScheduleId": 0
   },
   {
-    "Tags": 1,
-    "Unknown_Col_1": 1003,
-    "Unknown_Col_2": 203,
-    "Unknown_Col_3": 2,
-    "Unknown_Col_4": 141700000000000003,
-    "Unknown_Col_5": 0
+    "FilterCategoryIndex": 1,
+    "FilterValue": 1003,
+    "SortOrder": 203,
+    "WeaponEffectGroupTypeIndex": 2,
+    "NameLanguageId": 141700000000000003,
+    "ScheduleId": 0
   },
   {
-    "Tags": 1,
-    "Unknown_Col_1": 1005,
-    "Unknown_Col_2": 205,
-    "Unknown_Col_3": 2,
-    "Unknown_Col_4": 141700000000000005,
-    "Unknown_Col_5": 0
+    "FilterCategoryIndex": 1,
+    "FilterValue": 1005,
+    "SortOrder": 205,
+    "WeaponEffectGroupTypeIndex": 2,
+    "NameLanguageId": 141700000000000005,
+    "ScheduleId": 0
   },
   {
-    "Tags": 1,
-    "Unknown_Col_1": 1006,
-    "Unknown_Col_2": 206,
-    "Unknown_Col_3": 2,
-    "Unknown_Col_4": 141700000000000006,
-    "Unknown_Col_5": 2506309901
+    "FilterCategoryIndex": 1,
+    "FilterValue": 1006,
+    "SortOrder": 206,
+    "WeaponEffectGroupTypeIndex": 2,
+    "NameLanguageId": 141700000000000006,
+    "ScheduleId": 2506309901
   },
   {
-    "Tags": 1,
-    "Unknown_Col_1": 1007,
-    "Unknown_Col_2": 207,
-    "Unknown_Col_3": 2,
-    "Unknown_Col_4": 141700000000000007,
-    "Unknown_Col_5": 2506309901
+    "FilterCategoryIndex": 1,
+    "FilterValue": 1007,
+    "SortOrder": 207,
+    "WeaponEffectGroupTypeIndex": 2,
+    "NameLanguageId": 141700000000000007,
+    "ScheduleId": 2506309901
   },
   {
-    "Tags": 1,
-    "Unknown_Col_1": 1008,
-    "Unknown_Col_2": 208,
-    "Unknown_Col_3": 2,
-    "Unknown_Col_4": 141700000000000008,
-    "Unknown_Col_5": 2506309901
+    "FilterCategoryIndex": 1,
+    "FilterValue": 1008,
+    "SortOrder": 208,
+    "WeaponEffectGroupTypeIndex": 2,
+    "NameLanguageId": 141700000000000008,
+    "ScheduleId": 2506309901
   },
   {
-    "Tags": 1,
-    "Unknown_Col_1": 1009,
-    "Unknown_Col_2": 209,
-    "Unknown_Col_3": 2,
-    "Unknown_Col_4": 141700000000000009,
-    "Unknown_Col_5": 0
+    "FilterCategoryIndex": 1,
+    "FilterValue": 1009,
+    "SortOrder": 209,
+    "WeaponEffectGroupTypeIndex": 2,
+    "NameLanguageId": 141700000000000009,
+    "ScheduleId": 0
   },
   {
-    "Tags": 1,
-    "Unknown_Col_1": 1010,
-    "Unknown_Col_2": 210,
-    "Unknown_Col_3": 2,
-    "Unknown_Col_4": 141700000000000010,
-    "Unknown_Col_5": 0
+    "FilterCategoryIndex": 1,
+    "FilterValue": 1010,
+    "SortOrder": 210,
+    "WeaponEffectGroupTypeIndex": 2,
+    "NameLanguageId": 141700000000000010,
+    "ScheduleId": 0
   },
   {
-    "Tags": 1,
-    "Unknown_Col_1": 1011,
-    "Unknown_Col_2": 211,
-    "Unknown_Col_3": 2,
-    "Unknown_Col_4": 141700000000000011,
-    "Unknown_Col_5": 0
+    "FilterCategoryIndex": 1,
+    "FilterValue": 1011,
+    "SortOrder": 211,
+    "WeaponEffectGroupTypeIndex": 2,
+    "NameLanguageId": 141700000000000011,
+    "ScheduleId": 0
   },
   {
-    "Tags": 1,
-    "Unknown_Col_1": 1012,
-    "Unknown_Col_2": 301,
-    "Unknown_Col_3": 3,
-    "Unknown_Col_4": 141700000000000012,
-    "Unknown_Col_5": 2507309901
+    "FilterCategoryIndex": 1,
+    "FilterValue": 1012,
+    "SortOrder": 301,
+    "WeaponEffectGroupTypeIndex": 3,
+    "NameLanguageId": 141700000000000012,
+    "ScheduleId": 2507309901
   },
   {
-    "Tags": 1,
-    "Unknown_Col_1": 1013,
-    "Unknown_Col_2": 302,
-    "Unknown_Col_3": 3,
-    "Unknown_Col_4": 141700000000000013,
-    "Unknown_Col_5": 2605209901
+    "FilterCategoryIndex": 1,
+    "FilterValue": 1013,
+    "SortOrder": 302,
+    "WeaponEffectGroupTypeIndex": 3,
+    "NameLanguageId": 141700000000000013,
+    "ScheduleId": 2605209901
   },
   {
-    "Tags": 1,
-    "Unknown_Col_1": 1014,
-    "Unknown_Col_2": 101,
-    "Unknown_Col_3": 1,
-    "Unknown_Col_4": 141700000000000014,
-    "Unknown_Col_5": 0
+    "FilterCategoryIndex": 1,
+    "FilterValue": 1014,
+    "SortOrder": 101,
+    "WeaponEffectGroupTypeIndex": 1,
+    "NameLanguageId": 141700000000000014,
+    "ScheduleId": 0
   },
   {
-    "Tags": 1,
-    "Unknown_Col_1": 1015,
-    "Unknown_Col_2": 102,
-    "Unknown_Col_3": 1,
-    "Unknown_Col_4": 141700000000000015,
-    "Unknown_Col_5": 0
+    "FilterCategoryIndex": 1,
+    "FilterValue": 1015,
+    "SortOrder": 102,
+    "WeaponEffectGroupTypeIndex": 1,
+    "NameLanguageId": 141700000000000015,
+    "ScheduleId": 0
   },
   {
-    "Tags": 1,
-    "Unknown_Col_1": 1016,
-    "Unknown_Col_2": 103,
-    "Unknown_Col_3": 1,
-    "Unknown_Col_4": 141700000000000016,
-    "Unknown_Col_5": 0
+    "FilterCategoryIndex": 1,
+    "FilterValue": 1016,
+    "SortOrder": 103,
+    "WeaponEffectGroupTypeIndex": 1,
+    "NameLanguageId": 141700000000000016,
+    "ScheduleId": 0
   },
   {
-    "Tags": 1,
-    "Unknown_Col_1": 1017,
-    "Unknown_Col_2": 104,
-    "Unknown_Col_3": 1,
-    "Unknown_Col_4": 141700000000000017,
-    "Unknown_Col_5": 0
+    "FilterCategoryIndex": 1,
+    "FilterValue": 1017,
+    "SortOrder": 104,
+    "WeaponEffectGroupTypeIndex": 1,
+    "NameLanguageId": 141700000000000017,
+    "ScheduleId": 0
   },
   {
-    "Tags": 1,
-    "Unknown_Col_1": 1018,
-    "Unknown_Col_2": 105,
-    "Unknown_Col_3": 1,
-    "Unknown_Col_4": 141700000000000018,
-    "Unknown_Col_5": 2511409901
+    "FilterCategoryIndex": 1,
+    "FilterValue": 1018,
+    "SortOrder": 105,
+    "WeaponEffectGroupTypeIndex": 1,
+    "NameLanguageId": 141700000000000018,
+    "ScheduleId": 2511409901
   },
   {
-    "Tags": 1,
-    "Unknown_Col_1": 1019,
-    "Unknown_Col_2": 106,
-    "Unknown_Col_3": 1,
-    "Unknown_Col_4": 141700000000000019,
-    "Unknown_Col_5": 2607509901
+    "FilterCategoryIndex": 1,
+    "FilterValue": 1019,
+    "SortOrder": 106,
+    "WeaponEffectGroupTypeIndex": 1,
+    "NameLanguageId": 141700000000000019,
+    "ScheduleId": 2607509901
   },
   {
-    "Tags": 1,
-    "Unknown_Col_1": 1020,
-    "Unknown_Col_2": 107,
-    "Unknown_Col_3": 1,
-    "Unknown_Col_4": 141700000000000020,
-    "Unknown_Col_5": 0
+    "FilterCategoryIndex": 1,
+    "FilterValue": 1020,
+    "SortOrder": 107,
+    "WeaponEffectGroupTypeIndex": 1,
+    "NameLanguageId": 141700000000000020,
+    "ScheduleId": 0
   },
   {
-    "Tags": 1,
-    "Unknown_Col_1": 1021,
-    "Unknown_Col_2": 108,
-    "Unknown_Col_3": 1,
-    "Unknown_Col_4": 141700000000000021,
-    "Unknown_Col_5": 2603209901
+    "FilterCategoryIndex": 1,
+    "FilterValue": 1021,
+    "SortOrder": 108,
+    "WeaponEffectGroupTypeIndex": 1,
+    "NameLanguageId": 141700000000000021,
+    "ScheduleId": 2603209901
   },
   {
-    "Tags": 1,
-    "Unknown_Col_1": 1022,
-    "Unknown_Col_2": 401,
-    "Unknown_Col_3": 4,
-    "Unknown_Col_4": 141700000000000022,
-    "Unknown_Col_5": 2511409901
+    "FilterCategoryIndex": 1,
+    "FilterValue": 1022,
+    "SortOrder": 401,
+    "WeaponEffectGroupTypeIndex": 4,
+    "NameLanguageId": 141700000000000022,
+    "ScheduleId": 2511409901
   },
   {
-    "Tags": 1,
-    "Unknown_Col_1": 1023,
-    "Unknown_Col_2": 402,
-    "Unknown_Col_3": 4,
-    "Unknown_Col_4": 141700000000000023,
-    "Unknown_Col_5": 2602209901
+    "FilterCategoryIndex": 1,
+    "FilterValue": 1023,
+    "SortOrder": 402,
+    "WeaponEffectGroupTypeIndex": 4,
+    "NameLanguageId": 141700000000000023,
+    "ScheduleId": 2602209901
   },
   {
-    "Tags": 1,
-    "Unknown_Col_1": 1024,
-    "Unknown_Col_2": 403,
-    "Unknown_Col_3": 4,
-    "Unknown_Col_4": 141700000000000024,
-    "Unknown_Col_5": 2602209901
+    "FilterCategoryIndex": 1,
+    "FilterValue": 1024,
+    "SortOrder": 403,
+    "WeaponEffectGroupTypeIndex": 4,
+    "NameLanguageId": 141700000000000024,
+    "ScheduleId": 2602209901
   },
   {
-    "Tags": 1,
-    "Unknown_Col_1": 1025,
-    "Unknown_Col_2": 303,
-    "Unknown_Col_3": 3,
-    "Unknown_Col_4": 141700000000000025,
-    "Unknown_Col_5": 2602209901
+    "FilterCategoryIndex": 1,
+    "FilterValue": 1025,
+    "SortOrder": 303,
+    "WeaponEffectGroupTypeIndex": 3,
+    "NameLanguageId": 141700000000000025,
+    "ScheduleId": 2602209901
   },
   {
-    "Tags": 1,
-    "Unknown_Col_1": 1026,
-    "Unknown_Col_2": 304,
-    "Unknown_Col_3": 3,
-    "Unknown_Col_4": 141700000000000026,
-    "Unknown_Col_5": 2508109901
+    "FilterCategoryIndex": 1,
+    "FilterValue": 1026,
+    "SortOrder": 304,
+    "WeaponEffectGroupTypeIndex": 3,
+    "NameLanguageId": 141700000000000026,
+    "ScheduleId": 2508109901
   },
   {
-    "Tags": 1,
-    "Unknown_Col_1": 1027,
-    "Unknown_Col_2": 501,
-    "Unknown_Col_3": 5,
-    "Unknown_Col_4": 141700000000000027,
-    "Unknown_Col_5": 2601209901
+    "FilterCategoryIndex": 1,
+    "FilterValue": 1027,
+    "SortOrder": 501,
+    "WeaponEffectGroupTypeIndex": 5,
+    "NameLanguageId": 141700000000000027,
+    "ScheduleId": 2601209901
   },
   {
-    "Tags": 1,
-    "Unknown_Col_1": 1028,
-    "Unknown_Col_2": 502,
-    "Unknown_Col_3": 5,
-    "Unknown_Col_4": 141700000000000028,
-    "Unknown_Col_5": 2512409901
+    "FilterCategoryIndex": 1,
+    "FilterValue": 1028,
+    "SortOrder": 502,
+    "WeaponEffectGroupTypeIndex": 5,
+    "NameLanguageId": 141700000000000028,
+    "ScheduleId": 2512409901
   },
   {
-    "Tags": 2,
-    "Unknown_Col_1": 1,
-    "Unknown_Col_2": 1,
-    "Unknown_Col_3": 0,
-    "Unknown_Col_4": 0,
-    "Unknown_Col_5": 0
+    "FilterCategoryIndex": 2,
+    "FilterValue": 1,
+    "SortOrder": 1,
+    "WeaponEffectGroupTypeIndex": 0,
+    "NameLanguageId": 0,
+    "ScheduleId": 0
   },
   {
-    "Tags": 2,
-    "Unknown_Col_1": 2,
-    "Unknown_Col_2": 2,
-    "Unknown_Col_3": 0,
-    "Unknown_Col_4": 0,
-    "Unknown_Col_5": 0
+    "FilterCategoryIndex": 2,
+    "FilterValue": 2,
+    "SortOrder": 2,
+    "WeaponEffectGroupTypeIndex": 0,
+    "NameLanguageId": 0,
+    "ScheduleId": 0
   },
   {
-    "Tags": 2,
-    "Unknown_Col_1": 3,
-    "Unknown_Col_2": 3,
-    "Unknown_Col_3": 0,
-    "Unknown_Col_4": 0,
-    "Unknown_Col_5": 0
+    "FilterCategoryIndex": 2,
+    "FilterValue": 3,
+    "SortOrder": 3,
+    "WeaponEffectGroupTypeIndex": 0,
+    "NameLanguageId": 0,
+    "ScheduleId": 0
   },
   {
-    "Tags": 3,
-    "Unknown_Col_1": 1,
-    "Unknown_Col_2": 6,
-    "Unknown_Col_3": 0,
-    "Unknown_Col_4": 0,
-    "Unknown_Col_5": 0
+    "FilterCategoryIndex": 3,
+    "FilterValue": 1,
+    "SortOrder": 6,
+    "WeaponEffectGroupTypeIndex": 0,
+    "NameLanguageId": 0,
+    "ScheduleId": 0
   },
   {
-    "Tags": 3,
-    "Unknown_Col_1": 2,
-    "Unknown_Col_2": 5,
-    "Unknown_Col_3": 0,
-    "Unknown_Col_4": 0,
-    "Unknown_Col_5": 0
+    "FilterCategoryIndex": 3,
+    "FilterValue": 2,
+    "SortOrder": 5,
+    "WeaponEffectGroupTypeIndex": 0,
+    "NameLanguageId": 0,
+    "ScheduleId": 0
   },
   {
-    "Tags": 3,
-    "Unknown_Col_1": 3,
-    "Unknown_Col_2": 4,
-    "Unknown_Col_3": 0,
-    "Unknown_Col_4": 0,
-    "Unknown_Col_5": 0
+    "FilterCategoryIndex": 3,
+    "FilterValue": 3,
+    "SortOrder": 4,
+    "WeaponEffectGroupTypeIndex": 0,
+    "NameLanguageId": 0,
+    "ScheduleId": 0
   },
   {
-    "Tags": 3,
-    "Unknown_Col_1": 4,
-    "Unknown_Col_2": 3,
-    "Unknown_Col_3": 0,
-    "Unknown_Col_4": 0,
-    "Unknown_Col_5": 0
+    "FilterCategoryIndex": 3,
+    "FilterValue": 4,
+    "SortOrder": 3,
+    "WeaponEffectGroupTypeIndex": 0,
+    "NameLanguageId": 0,
+    "ScheduleId": 0
   },
   {
-    "Tags": 3,
-    "Unknown_Col_1": 5,
-    "Unknown_Col_2": 2,
-    "Unknown_Col_3": 0,
-    "Unknown_Col_4": 0,
-    "Unknown_Col_5": 0
+    "FilterCategoryIndex": 3,
+    "FilterValue": 5,
+    "SortOrder": 2,
+    "WeaponEffectGroupTypeIndex": 0,
+    "NameLanguageId": 0,
+    "ScheduleId": 0
   },
   {
-    "Tags": 3,
-    "Unknown_Col_1": 6,
-    "Unknown_Col_2": 1,
-    "Unknown_Col_3": 0,
-    "Unknown_Col_4": 0,
-    "Unknown_Col_5": 2511209901
+    "FilterCategoryIndex": 3,
+    "FilterValue": 6,
+    "SortOrder": 1,
+    "WeaponEffectGroupTypeIndex": 0,
+    "NameLanguageId": 0,
+    "ScheduleId": 2511209901
   },
   {
-    "Tags": 4,
-    "Unknown_Col_1": 1,
-    "Unknown_Col_2": 1,
-    "Unknown_Col_3": 0,
-    "Unknown_Col_4": 0,
-    "Unknown_Col_5": 0
+    "FilterCategoryIndex": 4,
+    "FilterValue": 1,
+    "SortOrder": 1,
+    "WeaponEffectGroupTypeIndex": 0,
+    "NameLanguageId": 0,
+    "ScheduleId": 0
   },
   {
-    "Tags": 4,
-    "Unknown_Col_1": 2,
-    "Unknown_Col_2": 2,
-    "Unknown_Col_3": 0,
-    "Unknown_Col_4": 0,
-    "Unknown_Col_5": 0
+    "FilterCategoryIndex": 4,
+    "FilterValue": 2,
+    "SortOrder": 2,
+    "WeaponEffectGroupTypeIndex": 0,
+    "NameLanguageId": 0,
+    "ScheduleId": 0
   },
   {
-    "Tags": 4,
-    "Unknown_Col_1": 3,
-    "Unknown_Col_2": 3,
-    "Unknown_Col_3": 0,
-    "Unknown_Col_4": 0,
-    "Unknown_Col_5": 0
+    "FilterCategoryIndex": 4,
+    "FilterValue": 3,
+    "SortOrder": 3,
+    "WeaponEffectGroupTypeIndex": 0,
+    "NameLanguageId": 0,
+    "ScheduleId": 0
   },
   {
-    "Tags": 4,
-    "Unknown_Col_1": 4,
-    "Unknown_Col_2": 4,
-    "Unknown_Col_3": 0,
-    "Unknown_Col_4": 0,
-    "Unknown_Col_5": 0
+    "FilterCategoryIndex": 4,
+    "FilterValue": 4,
+    "SortOrder": 4,
+    "WeaponEffectGroupTypeIndex": 0,
+    "NameLanguageId": 0,
+    "ScheduleId": 0
   }
 ]

@@ -204,6 +204,12 @@
     "Value": 1063000110
   },
   {
+    "Id": 73566964,
+    "InvasionRestrictionEventRestrictionLevelId": 902000010502,
+    "FormationFilterTypeIndex": 1,
+    "Value": 1217001900
+  },
+  {
     "Id": 74021425,
     "InvasionRestrictionEventRestrictionLevelId": 902000010603,
     "FormationFilterTypeIndex": 1,
@@ -1284,6 +1290,12 @@
     "Value": 1017000100
   },
   {
+    "Id": 445801685,
+    "InvasionRestrictionEventRestrictionLevelId": 902000010503,
+    "FormationFilterTypeIndex": 1,
+    "Value": 1217001900
+  },
+  {
     "Id": 446648050,
     "InvasionRestrictionEventRestrictionLevelId": 902000010402,
     "FormationFilterTypeIndex": 1,
@@ -1414,6 +1426,12 @@
     "InvasionRestrictionEventRestrictionLevelId": 902000010702,
     "FormationFilterTypeIndex": 1,
     "Value": 1850003100
+  },
+  {
+    "Id": 485352783,
+    "InvasionRestrictionEventRestrictionLevelId": 902000010501,
+    "FormationFilterTypeIndex": 1,
+    "Value": 1217001900
   },
   {
     "Id": 485829718,
@@ -1794,6 +1812,12 @@
     "Value": 1070000310
   },
   {
+    "Id": 590793005,
+    "InvasionRestrictionEventRestrictionLevelId": 902000010501,
+    "FormationFilterTypeIndex": 1,
+    "Value": 1217001300
+  },
+  {
     "Id": 598677022,
     "InvasionRestrictionEventRestrictionLevelId": 902000010603,
     "FormationFilterTypeIndex": 1,
@@ -1954,6 +1978,12 @@
     "InvasionRestrictionEventRestrictionLevelId": 902000010401,
     "FormationFilterTypeIndex": 1,
     "Value": 1230003900
+  },
+  {
+    "Id": 642100913,
+    "InvasionRestrictionEventRestrictionLevelId": 902000010502,
+    "FormationFilterTypeIndex": 1,
+    "Value": 1217002410
   },
   {
     "Id": 642685623,
@@ -4806,6 +4836,12 @@
     "Value": 1009000510
   },
   {
+    "Id": 1545699182,
+    "InvasionRestrictionEventRestrictionLevelId": 902000010402,
+    "FormationFilterTypeIndex": 1,
+    "Value": 1217001400
+  },
+  {
     "Id": 1546909323,
     "InvasionRestrictionEventRestrictionLevelId": 902000010402,
     "FormationFilterTypeIndex": 1,
@@ -5418,6 +5454,12 @@
     "Value": 2001000700
   },
   {
+    "Id": 1703870247,
+    "InvasionRestrictionEventRestrictionLevelId": 902000010503,
+    "FormationFilterTypeIndex": 1,
+    "Value": 1217001300
+  },
+  {
     "Id": 1704466655,
     "InvasionRestrictionEventRestrictionLevelId": 902000010401,
     "FormationFilterTypeIndex": 1,
@@ -5446,6 +5488,12 @@
     "InvasionRestrictionEventRestrictionLevelId": 902000010602,
     "FormationFilterTypeIndex": 1,
     "Value": 2031000200
+  },
+  {
+    "Id": 1712939748,
+    "InvasionRestrictionEventRestrictionLevelId": 902000010503,
+    "FormationFilterTypeIndex": 1,
+    "Value": 1217002410
   },
   {
     "Id": 1713026457,
@@ -5692,6 +5740,12 @@
     "InvasionRestrictionEventRestrictionLevelId": 902000010602,
     "FormationFilterTypeIndex": 1,
     "Value": 1031000100
+  },
+  {
+    "Id": 1810343794,
+    "InvasionRestrictionEventRestrictionLevelId": 902000010502,
+    "FormationFilterTypeIndex": 1,
+    "Value": 1217001300
   },
   {
     "Id": 1810713361,
@@ -8650,6 +8704,12 @@
     "InvasionRestrictionEventRestrictionLevelId": 902000010402,
     "FormationFilterTypeIndex": 1,
     "Value": 1001000200
+  },
+  {
+    "Id": 2858449283,
+    "InvasionRestrictionEventRestrictionLevelId": 902000010403,
+    "FormationFilterTypeIndex": 1,
+    "Value": 1217001400
   },
   {
     "Id": 2858835231,
@@ -12246,6 +12306,12 @@
     "Value": 1017000900
   },
   {
+    "Id": 4059081226,
+    "InvasionRestrictionEventRestrictionLevelId": 902000010501,
+    "FormationFilterTypeIndex": 1,
+    "Value": 1217002410
+  },
+  {
     "Id": 4059804933,
     "InvasionRestrictionEventRestrictionLevelId": 902000010403,
     "FormationFilterTypeIndex": 1,
@@ -12664,6 +12730,12 @@
     "InvasionRestrictionEventRestrictionLevelId": 902000010502,
     "FormationFilterTypeIndex": 1,
     "Value": 1095003400
+  },
+  {
+    "Id": 4185649821,
+    "InvasionRestrictionEventRestrictionLevelId": 902000010401,
+    "FormationFilterTypeIndex": 1,
+    "Value": 1217001400
   },
   {
     "Id": 4190966824,

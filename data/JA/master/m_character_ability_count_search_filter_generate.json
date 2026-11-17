@@ -1,32 +1,32 @@
 [
-  [
-    1,
-    2,
-    0
-  ],
-  [
-    2,
-    1,
-    0
-  ],
-  [
-    2,
-    2,
-    0
-  ],
-  [
-    2,
-    3,
-    2509609901
-  ],
-  [
-    3,
-    1,
-    0
-  ],
-  [
-    3,
-    2,
-    0
-  ]
+  {
+    "CategoryIndex": 1,
+    "Count": 2,
+    "ScheduleId": 0
+  },
+  {
+    "CategoryIndex": 2,
+    "Count": 1,
+    "ScheduleId": 0
+  },
+  {
+    "CategoryIndex": 2,
+    "Count": 2,
+    "ScheduleId": 0
+  },
+  {
+    "CategoryIndex": 2,
+    "Count": 3,
+    "ScheduleId": 2509609901
+  },
+  {
+    "CategoryIndex": 3,
+    "Count": 1,
+    "ScheduleId": 0
+  },
+  {
+    "CategoryIndex": 3,
+    "Count": 2,
+    "ScheduleId": 0
+  }
 ]

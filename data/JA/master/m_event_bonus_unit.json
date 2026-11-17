@@ -1159,5 +1159,122 @@
     "LimitBreakBonusItemDropUpRatePercent": 3,
     "LimitBreakBonusDamageUpRatePercent": 0,
     "SortOrder": 2
+  },
+  {
+    "Id": 20001901,
+    "UnitId": 1217000650,
+    "ItemDropUpRatePercent": 15,
+    "DamageUpRatePercent": 15,
+    "LimitBreakBonusItemDropUpRatePercent": 3,
+    "LimitBreakBonusDamageUpRatePercent": 3,
+    "SortOrder": 1
+  },
+  {
+    "Id": 20001902,
+    "UnitId": 1217002150,
+    "ItemDropUpRatePercent": 15,
+    "DamageUpRatePercent": 15,
+    "LimitBreakBonusItemDropUpRatePercent": 3,
+    "LimitBreakBonusDamageUpRatePercent": 3,
+    "SortOrder": 2
+  },
+  {
+    "Id": 20001903,
+    "UnitId": 1217000110,
+    "ItemDropUpRatePercent": 12,
+    "DamageUpRatePercent": 12,
+    "LimitBreakBonusItemDropUpRatePercent": 2,
+    "LimitBreakBonusDamageUpRatePercent": 2,
+    "SortOrder": 3
+  },
+  {
+    "Id": 20001904,
+    "UnitId": 1217000310,
+    "ItemDropUpRatePercent": 12,
+    "DamageUpRatePercent": 12,
+    "LimitBreakBonusItemDropUpRatePercent": 2,
+    "LimitBreakBonusDamageUpRatePercent": 2,
+    "SortOrder": 4
+  },
+  {
+    "Id": 20001905,
+    "UnitId": 1217000510,
+    "ItemDropUpRatePercent": 12,
+    "DamageUpRatePercent": 12,
+    "LimitBreakBonusItemDropUpRatePercent": 2,
+    "LimitBreakBonusDamageUpRatePercent": 2,
+    "SortOrder": 5
+  },
+  {
+    "Id": 20001906,
+    "UnitId": 1217001710,
+    "ItemDropUpRatePercent": 12,
+    "DamageUpRatePercent": 12,
+    "LimitBreakBonusItemDropUpRatePercent": 2,
+    "LimitBreakBonusDamageUpRatePercent": 2,
+    "SortOrder": 6
+  },
+  {
+    "Id": 20001907,
+    "UnitId": 1217002410,
+    "ItemDropUpRatePercent": 12,
+    "DamageUpRatePercent": 12,
+    "LimitBreakBonusItemDropUpRatePercent": 2,
+    "LimitBreakBonusDamageUpRatePercent": 2,
+    "SortOrder": 7
+  },
+  {
+    "Id": 20001908,
+    "UnitId": 1217001900,
+    "ItemDropUpRatePercent": 15,
+    "DamageUpRatePercent": 15,
+    "LimitBreakBonusItemDropUpRatePercent": 3,
+    "LimitBreakBonusDamageUpRatePercent": 3,
+    "SortOrder": 8
+  },
+  {
+    "Id": 20001909,
+    "UnitId": 1217002000,
+    "ItemDropUpRatePercent": 15,
+    "DamageUpRatePercent": 15,
+    "LimitBreakBonusItemDropUpRatePercent": 3,
+    "LimitBreakBonusDamageUpRatePercent": 3,
+    "SortOrder": 9
+  },
+  {
+    "Id": 20001910,
+    "UnitId": 1217002100,
+    "ItemDropUpRatePercent": 15,
+    "DamageUpRatePercent": 15,
+    "LimitBreakBonusItemDropUpRatePercent": 3,
+    "LimitBreakBonusDamageUpRatePercent": 3,
+    "SortOrder": 10
+  },
+  {
+    "Id": 20001911,
+    "UnitId": 1217002200,
+    "ItemDropUpRatePercent": 15,
+    "DamageUpRatePercent": 15,
+    "LimitBreakBonusItemDropUpRatePercent": 3,
+    "LimitBreakBonusDamageUpRatePercent": 3,
+    "SortOrder": 11
+  },
+  {
+    "Id": 20001912,
+    "UnitId": 1217002300,
+    "ItemDropUpRatePercent": 15,
+    "DamageUpRatePercent": 15,
+    "LimitBreakBonusItemDropUpRatePercent": 3,
+    "LimitBreakBonusDamageUpRatePercent": 3,
+    "SortOrder": 12
+  },
+  {
+    "Id": 20001913,
+    "UnitId": 1217000600,
+    "ItemDropUpRatePercent": 15,
+    "DamageUpRatePercent": 15,
+    "LimitBreakBonusItemDropUpRatePercent": 3,
+    "LimitBreakBonusDamageUpRatePercent": 3,
+    "SortOrder": 13
   }
 ]

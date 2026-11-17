@@ -2356,5 +2356,59 @@
     "BattleSideAnotherEnemyBgmId": 179500001,
     "BattleSideSecretEnemyBgmId": 179500001,
     "BattleSideSecretAnotherEnemyBgmId": 179500001
+  },
+  {
+    "Id": 10263,
+    "BattleSideOwnBgmId": 121700003,
+    "BattleSideFriendBgmId": 121700003,
+    "BattleSideEnemyBgmId": 121700005,
+    "BattleSideAnotherEnemyBgmId": 121700005,
+    "BattleSideSecretEnemyBgmId": 121700005,
+    "BattleSideSecretAnotherEnemyBgmId": 121700005
+  },
+  {
+    "Id": 10264,
+    "BattleSideOwnBgmId": 121700002,
+    "BattleSideFriendBgmId": 121700002,
+    "BattleSideEnemyBgmId": 121700005,
+    "BattleSideAnotherEnemyBgmId": 121700005,
+    "BattleSideSecretEnemyBgmId": 121700005,
+    "BattleSideSecretAnotherEnemyBgmId": 121700005
+  },
+  {
+    "Id": 10265,
+    "BattleSideOwnBgmId": 121700002,
+    "BattleSideFriendBgmId": 121700002,
+    "BattleSideEnemyBgmId": 121700009,
+    "BattleSideAnotherEnemyBgmId": 121700009,
+    "BattleSideSecretEnemyBgmId": 121700009,
+    "BattleSideSecretAnotherEnemyBgmId": 121700009
+  },
+  {
+    "Id": 10266,
+    "BattleSideOwnBgmId": 121700004,
+    "BattleSideFriendBgmId": 121700004,
+    "BattleSideEnemyBgmId": 121700005,
+    "BattleSideAnotherEnemyBgmId": 121700005,
+    "BattleSideSecretEnemyBgmId": 121700005,
+    "BattleSideSecretAnotherEnemyBgmId": 121700005
+  },
+  {
+    "Id": 10267,
+    "BattleSideOwnBgmId": 121700004,
+    "BattleSideFriendBgmId": 121700004,
+    "BattleSideEnemyBgmId": 121700009,
+    "BattleSideAnotherEnemyBgmId": 121700009,
+    "BattleSideSecretEnemyBgmId": 121700009,
+    "BattleSideSecretAnotherEnemyBgmId": 121700009
+  },
+  {
+    "Id": 10268,
+    "BattleSideOwnBgmId": 121700002,
+    "BattleSideFriendBgmId": 121700002,
+    "BattleSideEnemyBgmId": 121700007,
+    "BattleSideAnotherEnemyBgmId": 121700007,
+    "BattleSideSecretEnemyBgmId": 121700007,
+    "BattleSideSecretAnotherEnemyBgmId": 121700007
   }
 ]

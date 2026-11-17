@@ -154,6 +154,20 @@
     "TransitionId": 50000002403003
   },
   {
+    "Id": 126112001,
+    "CampaignTargetSetId": 126112001,
+    "CampaignTargetTypeIndex": 13,
+    "TargetId": 21701101,
+    "TransitionId": 50000021701101
+  },
+  {
+    "Id": 126112002,
+    "CampaignTargetSetId": 126112002,
+    "CampaignTargetTypeIndex": 13,
+    "TargetId": 21701101,
+    "TransitionId": 50000021701101
+  },
+  {
     "Id": 12504300101,
     "CampaignTargetSetId": 125043001,
     "CampaignTargetTypeIndex": 4,
