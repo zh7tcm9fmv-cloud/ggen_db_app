@@ -1883,7 +1883,7 @@ body.detail-modal-open .bg-pattern{
   pointer-events:auto!important;
 }
 /* Esc close: morph over normal dimmed browse; opaque WASH only for unlock frames, then fade.
-   Do not arm opaque wash during morph — that left an empty black screen for ~700ms.
+   Do not arm opaque wash during morph — that left an empty black screen for the whole exit.
    Never pointer-events:none on the active overlay — that let unit cards be clicked behind. */
 body.detail-close-settling #detailModal.modal-overlay.active{
   animation:none!important;
@@ -3299,9 +3299,7 @@ html[data-ui-lang="HR"] .tag-composite:not(.list-filter-tag-composite) .tag-part
   48%,68%{transform:translateX(calc(-1 * var(--tag-crawl-dist,0px)))}
   92%,100%{transform:translateX(0)}
 }
-@media (prefers-reduced-motion:reduce){
-  .tag-part-value--crawl .tag-part-value-text{animation:none}
-}
+/* Overflow crawl is functional (read clipped TAG/SERIES titles) — keep it even under prefers-reduced-motion (iOS). */
 .tag-composite--series .tag-part-value{background:#c9cdd4;color:#3d72e0}
 .tag-composite--series .tag-part-value-text{color:#3d72e0;-webkit-text-fill-color:#3d72e0}
 .list-grid-card .detail-tags-row{width:100%;max-width:100%;justify-content:center;min-width:0}

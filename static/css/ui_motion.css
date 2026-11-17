@@ -24,11 +24,12 @@
   --motion-dur-quick:120ms;
   --motion-dur-standard:220ms;
   --motion-dur-modal:320ms;
-  /* Takayu modal-morph — detail enter (catalog #motion=modal-morph).
-     Exit uses a shorter twin so browse return stays snappy. */
-  --motion-dur-modal-morph:700ms;
-  --motion-dur-modal-morph-exit:400ms;
-  --motion-ease-modal-morph:cubic-bezier(0.65,0,0.35,1); /* easeInOutCubic */
+  /* Detail morph off for now (owner) — keep tokens for a future snappy recipe. */
+  --motion-dur-modal-morph:0ms;
+  --motion-dur-modal-morph-exit:0ms;
+  --motion-ease-depth-zoom:cubic-bezier(0.83,0,0.17,1);
+  --motion-ease-collapse-away:cubic-bezier(0.36,0,0.66,-0.56);
+  --motion-ease-modal-morph:var(--motion-ease-enter);
   /* Takayu glitch-in — FEA Special Ops theme enter */
   --motion-dur-glitch-in:420ms;
   /* Brand title center-out (takayu tx-center-out-reveal) — elegant hover */
@@ -145,7 +146,7 @@
   from{opacity:0}
   to{opacity:1}
 }
-/* Default dialog enter (non-detail). Detail uses Takayu modal-morph below. */
+/* Default dialog enter (non-detail). Detail morph temporarily off. */
 .modal-content,
 .tag-modal-content,
 .cmp-modal,
@@ -153,19 +154,13 @@
 .dc-modal{
   animation:ggen-modal-enter var(--motion-dur-modal) var(--motion-ease-enter) both!important;
 }
-/* Takayu modal-morph (catalog): scale .36→1 + opacity, 700ms easeInOutCubic.
-   Exit reverses on the dossier, then opaque wash unlock (flicker-safe). */
-@keyframes ggen-detail-morph-enter{
-  0%{opacity:.75;transform:scale(.36)}
-  72%{opacity:1;transform:scale(1)}
-  100%{opacity:1;transform:scale(1)}
+@keyframes ggen-detail-depth-zoom{
+  from{opacity:.2;filter:blur(6px);transform:scale(.78)}
+  to{opacity:1;filter:blur(0);transform:scale(1)}
 }
-/* Exit: Takayu reverse morph (short hold — old 28% pad felt like dead delay before browse).
-   Shell is size-frozen in JS so scale is motion only (no layout jump). */
-@keyframes ggen-detail-morph-exit{
-  0%{opacity:1;transform:scale(1)}
-  10%{opacity:1;transform:scale(1)}
-  100%{opacity:0;transform:scale(.36)}
+@keyframes ggen-detail-collapse-away{
+  from{opacity:1;transform:scaleY(1)}
+  to{opacity:0;transform:scaleY(.05)}
 }
 @keyframes ggen-detail-morph-fade{
   from{opacity:0}
@@ -175,22 +170,19 @@
   animation:none!important;
   opacity:1;
   transform:none;
-  transform-origin:50% 42%;
+  filter:none;
 }
-#detailModal .modal-content.is-detail-morph-enter{
-  animation:ggen-detail-morph-enter var(--motion-dur-modal-morph) var(--motion-ease-modal-morph) both!important;
-  will-change:transform,opacity;
-}
+#detailModal .modal-content.is-detail-morph-enter,
 #detailModal .modal-content.is-detail-morph-exit{
-  animation:ggen-detail-morph-exit var(--motion-dur-modal-morph-exit) var(--motion-ease-modal-morph) forwards!important;
-  will-change:transform,opacity;
+  animation:none!important;
+  opacity:1!important;
+  transform:none!important;
+  filter:none!important;
+  will-change:auto!important;
 }
-@keyframes ggen-detail-overlay-enter{
-  from{opacity:0}
-  to{opacity:1}
-}
+/* Detail overlay: no enter fade (instant). */
 #detailModal.modal-overlay.active:not(.is-detail-wash):not(.is-detail-wash-out){
-  animation:ggen-detail-overlay-enter var(--motion-dur-modal-morph) var(--motion-ease-modal-morph) both;
+  animation:none!important;
 }
 #detailModal.modal-overlay.is-detail-exiting{
   animation:none!important;
@@ -756,16 +748,14 @@ body:not(.tm-page):not(.dm-page).nav-tabs-overlay-freeze #navTabsShell{
     transform:none!important;
     will-change:auto!important;
   }
-  #detailModal .modal-content.is-detail-morph-enter{
-    animation:ggen-detail-morph-fade 180ms ease both!important;
-    transform:none!important;
-  }
+  #detailModal .modal-content.is-detail-morph-enter,
   #detailModal .modal-content.is-detail-morph-exit{
-    animation:ggen-detail-morph-fade 150ms ease reverse both!important;
+    animation:none!important;
     transform:none!important;
+    filter:none!important;
   }
   #detailModal.modal-overlay.active:not(.is-detail-wash):not(.is-detail-wash-out){
-    animation-duration:180ms!important;
+    animation:none!important;
   }
   .ggen-ripple-wave{
     display:none!important;

@@ -402,22 +402,68 @@
     return out;
   }
 
+  /**
+   * Smooth trail (Polymarket-style) — Catmull-Rom → cubic Bezier.
+   * Still uses exact sample Y so #2 never sits on the #1 grid.
+   */
   function buildPath(pts, x0, y0, w, h, tMin, tMax, rMax, rankKey) {
     rankKey = rankKey || 'rank';
     var usable = despikeRankPts(pts, rankKey);
     if (usable.length < 1) return { d: '', last: null };
     var spanT = Math.max(1, tMax - tMin);
     var spanR = Math.max(1, rMax - 1);
-    var d = '';
+    var coords = [];
     var last = null;
-    usable.forEach(function (p, i) {
+    usable.forEach(function (p) {
       var rk = p[rankKey];
       var x = x0 + ((p.t - tMin) / spanT) * w;
-      // Exact rank Y — never fake-offset (so #2 never sits on the #1 grid).
       var y = y0 + ((rk - 1) / spanR) * h;
       last = { x: x, y: y, rank: rk, t: p.t };
-      d += (i === 0 ? 'M' : 'L') + x.toFixed(1) + ' ' + y.toFixed(1);
+      coords.push({ x: x, y: y });
     });
+    if (coords.length === 1) {
+      return { d: 'M' + coords[0].x.toFixed(1) + ' ' + coords[0].y.toFixed(1), last: last };
+    }
+    if (coords.length === 2) {
+      return {
+        d:
+          'M' +
+          coords[0].x.toFixed(1) +
+          ' ' +
+          coords[0].y.toFixed(1) +
+          'L' +
+          coords[1].x.toFixed(1) +
+          ' ' +
+          coords[1].y.toFixed(1),
+        last: last
+      };
+    }
+    var d = 'M' + coords[0].x.toFixed(1) + ' ' + coords[0].y.toFixed(1);
+    var i;
+    for (i = 0; i < coords.length - 1; i++) {
+      var p0 = coords[i === 0 ? 0 : i - 1];
+      var p1 = coords[i];
+      var p2 = coords[i + 1];
+      var p3 = coords[i + 2] || p2;
+      /* Tension 0.5 — smooth without wild overshoot on stair-step ranks. */
+      var c1x = p1.x + (p2.x - p0.x) / 6;
+      var c1y = p1.y + (p2.y - p0.y) / 6;
+      var c2x = p2.x - (p3.x - p1.x) / 6;
+      var c2y = p2.y - (p3.y - p1.y) / 6;
+      d +=
+        'C' +
+        c1x.toFixed(1) +
+        ' ' +
+        c1y.toFixed(1) +
+        ' ' +
+        c2x.toFixed(1) +
+        ' ' +
+        c2y.toFixed(1) +
+        ' ' +
+        p2.x.toFixed(1) +
+        ' ' +
+        p2.y.toFixed(1);
+    }
     return { d: d, last: last };
   }
 
@@ -449,18 +495,21 @@
     if (empty) empty.hidden = true;
 
     var host = wrap.parentElement && wrap.parentElement.classList.contains('trk-chart-wrap') ? wrap.parentElement : wrap;
-    var W = Math.max(320, Math.floor(host.clientWidth || wrap.clientWidth || 800));
-    var H = Math.max(280, Math.floor(host.clientHeight || wrap.clientHeight || 360));
-    // Extra right gutter so end labels (#2 vs #3) can sit past the line without colliding.
-    var padR = 72;
-    var padT = 16;
-    /* −45° x labels: reserve diagonal footprint so text never clips or overlaps. */
-    var xLabelEstW = 90;
-    var xDiag = Math.ceil(xLabelEstW * Math.SQRT1_2);
-    var padL = Math.max(48, Math.min(72, xDiag + 10));
-    var padB = Math.max(56, xDiag + 22);
+    var W = Math.max(260, Math.floor(host.clientWidth || wrap.clientWidth || 800));
+    /* Match CSS aspect (wide/short). Never floor at 280 — that made phone charts tall + skewered. */
+    var H = Math.max(120, Math.floor(host.clientHeight || wrap.clientHeight || Math.round(W / 2.2)));
+    var narrow = W < 560;
+    // Right gutter: mobile stacks "HK #12" in a clear column (no overlap).
+    var padR = narrow ? 78 : 72;
+    var padT = narrow ? 10 : 14;
+    /* Mobile: flat time labels (no −45°) so the short plot isn’t clipped. */
+    var xRotate = !narrow;
+    var xLabelEstW = narrow ? 56 : 90;
+    var xDiag = xRotate ? Math.ceil(xLabelEstW * Math.SQRT1_2) : 0;
+    var padL = narrow ? 40 : Math.max(44, Math.min(72, xDiag + 8));
+    var padB = narrow ? 28 : Math.max(52, xDiag + 20);
     var plotW = Math.max(80, W - padL - padR);
-    var plotH = Math.max(80, H - padT - padB);
+    var plotH = Math.max(88, H - padT - padB);
     var tMin = Math.min.apply(
       null,
       allPts.map(function (p) {
@@ -517,26 +566,28 @@
         rk +
         '</text>';
     });
-    /* Tick count from diagonal footprint so −45° labels never overlap (esp. mobile). */
-    var xTickGap = xDiag + 14;
-    var xTickCount = Math.max(2, Math.min(5, Math.floor(plotW / xTickGap) + 1));
-    var xLabelY = padT + plotH + 10;
+    var xTickGap = xRotate ? xDiag + 14 : 72;
+    var xTickCount = Math.max(2, Math.min(xRotate ? 5 : 4, Math.floor(plotW / xTickGap) + 1));
+    var xLabelY = padT + plotH + (xRotate ? 10 : 16);
     var xLabels = '';
     for (var i = 0; i < xTickCount; i++) {
       var frac = xTickCount === 1 ? 0 : i / (xTickCount - 1);
       var tt = tMin + (tMax - tMin) * frac;
       var x = padL + frac * plotW;
       var lab = esc(fmtTime(tt));
+      var anchor = xRotate ? 'end' : i === 0 ? 'start' : i === xTickCount - 1 ? 'end' : 'middle';
       xLabels +=
         '<text class="trk-x" x="' +
         x.toFixed(1) +
         '" y="' +
         xLabelY.toFixed(1) +
-        '" text-anchor="end" transform="rotate(-45 ' +
-        x.toFixed(1) +
-        ' ' +
-        xLabelY.toFixed(1) +
-        ')" fill="#9eb6d4">' +
+        '" text-anchor="' +
+        anchor +
+        '"' +
+        (xRotate
+          ? ' transform="rotate(-45 ' + x.toFixed(1) + ' ' + xLabelY.toFixed(1) + ')"'
+          : '') +
+        ' fill="#9eb6d4">' +
         lab +
         '</text>';
     }
@@ -639,37 +690,73 @@
         });
       }
     });
+    /* Top → bottom = better → worse (dot Y). Stack labels with min gap; keep that order. */
     endMarks.sort(function (a, b) {
       return a.y - b.y || a.rank - b.rank || String(a.code).localeCompare(String(b.code));
     });
-    /* Tight tip cluster (e.g. #3 + #7 ≈ 2px apart): stack from the tip.
-       Keep this small — #247 vs #281 is ~16px and must NOT share a cluster
-       (that wrongly nudged Singapore). */
-    var TIP_CLUSTER_Y = 8;
-    var NUDGE_X = 22;
-    var NUDGE_Y = 11;
     var labelYMin = padT + 10;
     var labelYMax = padT + plotH - 2;
-    var labelXMax = padL + plotW + padR - 8;
-    var placed = [];
-    endMarks.forEach(function (m) {
-      var slot = 0;
-      for (var pi = 0; pi < placed.length; pi++) {
-        if (Math.abs(m.y - placed[pi].tipY) < TIP_CLUSTER_Y) slot += 1;
+    var minGap = narrow ? 17 : 13;
+    var nEnd = endMarks.length;
+    var labelYs = endMarks.map(function (m) {
+      return Math.min(labelYMax, Math.max(labelYMin, m.y));
+    });
+    function resolveEndLabelStack(ys) {
+      var i;
+      var out = ys.slice();
+      for (i = 1; i < out.length; i++) {
+        if (out[i] < out[i - 1] + minGap) out[i] = out[i - 1] + minGap;
       }
-      var labelX = Math.min(m.x + 14 + slot * NUDGE_X, labelXMax);
-      var labelY = Math.min(labelYMax, Math.max(labelYMin, m.y + slot * NUDGE_Y));
-      placed.push({ tipY: m.y, x: labelX, y: labelY });
+      if (out.length && out[out.length - 1] > labelYMax) {
+        var over = out[out.length - 1] - labelYMax;
+        for (i = 0; i < out.length; i++) out[i] -= over;
+      }
+      for (i = out.length - 2; i >= 0; i--) {
+        if (out[i] > out[i + 1] - minGap) out[i] = out[i + 1] - minGap;
+      }
+      if (out.length && out[0] < labelYMin) {
+        var under = labelYMin - out[0];
+        for (i = 0; i < out.length; i++) out[i] += under;
+      }
+      for (i = 1; i < out.length; i++) {
+        if (out[i] < out[i - 1] + minGap) out[i] = out[i - 1] + minGap;
+      }
+      /* Still overflowing: compress gaps toward min while keeping order. */
+      if (out.length && out[out.length - 1] > labelYMax) {
+        var spanNeed = (out.length - 1) * minGap;
+        var spanHave = Math.max(minGap, labelYMax - labelYMin);
+        if (spanNeed <= spanHave) {
+          out[0] = labelYMin;
+          for (i = 1; i < out.length; i++) out[i] = out[0] + i * minGap;
+        } else {
+          /* Too many series for plot — even pack. */
+          var step = spanHave / Math.max(1, out.length - 1);
+          for (i = 0; i < out.length; i++) out[i] = labelYMin + i * step;
+        }
+      }
+      return out;
+    }
+    labelYs = resolveEndLabelStack(labelYs);
+    var stackX = padL + plotW + (narrow ? 8 : 12);
+    endMarks.forEach(function (m, ei) {
+      var labelY = labelYs[ei];
+      var labelX = narrow ? stackX : Math.min(m.x + 12, padL + plotW + padR - 8);
+      var cc = String(m.code || '').toUpperCase();
+      var txt = cc + ' #' + m.rank;
+      var dotR = narrow ? 5.5 : 5;
       trails +=
         '<circle class="trk-dot" cx="' +
         m.x.toFixed(1) +
         '" cy="' +
         m.y.toFixed(1) +
-        '" r="5" fill="' +
+        '" r="' +
+        dotR +
+        '" fill="' +
         m.col +
-        '" stroke="#061018" stroke-width="1.5"/>';
+        '" stroke="#061018" stroke-width="1.75"/>';
       trails +=
         '<text class="trk-end-label' +
+        (narrow ? ' trk-end-label--stack' : '') +
         (m.src === 'gamei' ? ' trk-end-label--gamei' : '') +
         '" x="' +
         labelX.toFixed(1) +
@@ -677,8 +764,8 @@
         labelY.toFixed(1) +
         '" fill="' +
         m.col +
-        '">#' +
-        m.rank +
+        '">' +
+        esc(txt) +
         '</text>';
     });
 
@@ -694,6 +781,7 @@
       series: hitSeries
     };
 
+    /* Dual trail layers: dim full series, hot series clipped to scrub X (Polymarket fade). */
     wrap.innerHTML =
       '<svg viewBox="0 0 ' +
       W +
@@ -706,28 +794,73 @@
       '" preserveAspectRatio="xMidYMid meet" role="img" aria-label="' +
       esc(t('chartTitle')) +
       '">' +
+      '<defs><clipPath id="trkScrubClip"><rect id="trkScrubClipRect" x="0" y="0" width="' +
+      W +
+      '" height="' +
+      H +
+      '"/></clipPath></defs>' +
       '<g class="trk-grid">' +
       grid +
       '</g>' +
       '<g class="trk-axis">' +
       xLabels +
       '</g>' +
+      '<g class="trk-trails-dim" opacity="0.22">' +
       trails +
+      '</g>' +
+      '<g class="trk-trails-hot" clip-path="url(#trkScrubClip)">' +
+      trails +
+      '</g>' +
+      '<rect class="trk-hover-mask" id="trkHoverMask" x="0" y="' +
+      padT +
+      '" width="0" height="' +
+      plotH +
+      '" fill="rgba(5,10,20,.55)" visibility="hidden" pointer-events="none"/>' +
       '<line class="trk-hover-x" id="trkHoverX" x1="0" y1="' +
       padT +
       '" x2="0" y2="' +
       (padT + plotH) +
-      '" stroke="rgba(0,212,255,.55)" stroke-width="1" stroke-dasharray="4 3" visibility="hidden"/>' +
+      '" stroke="rgba(255,255,255,.95)" stroke-width="1.75" visibility="hidden"/>' +
       '<g id="trkHoverDots"></g>' +
       '</svg>';
     hideHoverTip();
   }
 
+  function setScrubX(mx, active) {
+    var hit = state.chartHit;
+    if (!hit) return;
+    var clip = document.getElementById('trkScrubClipRect');
+    var line = document.getElementById('trkHoverX');
+    var mask = document.getElementById('trkHoverMask');
+    if (!active) {
+      if (clip) clip.setAttribute('width', String(hit.W));
+      if (line) line.setAttribute('visibility', 'hidden');
+      if (mask) {
+        mask.setAttribute('visibility', 'hidden');
+        mask.setAttribute('width', '0');
+      }
+      return;
+    }
+    var x = Math.max(hit.padL, Math.min(hit.padL + hit.plotW, mx));
+    if (clip) clip.setAttribute('width', x.toFixed(1));
+    if (line) {
+      line.setAttribute('x1', x.toFixed(1));
+      line.setAttribute('x2', x.toFixed(1));
+      line.setAttribute('visibility', 'visible');
+    }
+    if (mask) {
+      var plotRight = hit.padL + hit.plotW;
+      var mw = Math.max(0, plotRight - x);
+      mask.setAttribute('x', x.toFixed(1));
+      mask.setAttribute('width', mw.toFixed(1));
+      mask.setAttribute('visibility', mw > 0.5 ? 'visible' : 'hidden');
+    }
+  }
+
   function hideHoverTip() {
     var tip = document.getElementById('trkHoverTip');
     if (tip) tip.hidden = true;
-    var line = document.getElementById('trkHoverX');
-    if (line) line.setAttribute('visibility', 'hidden');
+    setScrubX(0, false);
     var dots = document.getElementById('trkHoverDots');
     if (dots) dots.innerHTML = '';
   }
@@ -764,12 +897,7 @@
       return;
     }
     var tAt = hit.tMin + ((mx - hit.padL) / Math.max(1, hit.plotW)) * (hit.tMax - hit.tMin);
-    var line = document.getElementById('trkHoverX');
-    if (line) {
-      line.setAttribute('x1', mx.toFixed(1));
-      line.setAttribute('x2', mx.toFixed(1));
-      line.setAttribute('visibility', 'visible');
-    }
+    setScrubX(mx, true);
     var rows = [];
     var dotsHtml = '';
     var ranked = [];
@@ -863,14 +991,12 @@
       '<div class="trk-hover-time">' +
       esc(fmtTime(tAt)) +
       '</div>' +
-      rows.join('');
+      '<div class="trk-hover-grid">' +
+      rows.join('') +
+      '</div>';
     tip.hidden = false;
-    var host = tip.parentElement;
-    var hostW = host ? host.clientWidth : 320;
-    var tipW = Math.min(280, Math.max(200, tip.offsetWidth || 220));
-    var left = Math.min(Math.max(8, mx * (rect.width / hit.W) + 14), hostW - tipW - 8);
-    tip.style.left = left + 'px';
-    tip.style.top = '10px';
+    tip.style.left = '';
+    tip.style.top = '';
   }
 
   function renderStatus(data) {
@@ -982,9 +1108,27 @@
         paint();
       });
     });
-    var chartHost = document.getElementById('trkChart');
+    var chartHost = document.getElementById('trkChartWrap') || document.getElementById('trkChart');
     if (chartHost) {
+      chartHost.addEventListener(
+        'pointerdown',
+        function (ev) {
+          try {
+            if (ev.pointerId != null && chartHost.setPointerCapture) chartHost.setPointerCapture(ev.pointerId);
+          } catch (_) {}
+          onChartPointer(ev);
+        },
+        { passive: true }
+      );
       chartHost.addEventListener('pointermove', onChartPointer, { passive: true });
+      chartHost.addEventListener(
+        'pointerup',
+        function () {
+          /* Keep scrub readout until leave / next chart — Polymarket leaves the as-of visible. */
+        },
+        { passive: true }
+      );
+      chartHost.addEventListener('pointercancel', hideHoverTip, { passive: true });
       chartHost.addEventListener('pointerleave', hideHoverTip, { passive: true });
     }
     window.addEventListener(

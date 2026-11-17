@@ -23,6 +23,8 @@ description: >-
 | `--motion-dur-snap` | `280ms` | Snap-in popovers / filter panels |
 | `--motion-dur-crossfade` | `180ms` | Tab panel opacity enter |
 | `--motion-dur-modal` | `320ms` | Overlay wash |
+| `--motion-dur-modal-morph` | `0ms` | Detail enter morph **off** (instant; recipe TBD) |
+| `--motion-dur-modal-morph-exit` | `0ms` | Detail exit morph **off** (instant) |
 | `--motion-ease-snap` | `cubic-bezier(0.16, 1, 0.3, 1)` | Snap-in / tab indicator settle |
 | `--motion-interactive` | see `static/css/ui_motion.css` | Chrome controls (not `all`) |
 

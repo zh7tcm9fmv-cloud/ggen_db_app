@@ -442,19 +442,19 @@
   }
 }
 @media (max-width:768px){
-  /* Dock to bottom center — enter slides up from below the fold */
+  /* Dock full-bleed bottom — stretch message horizontally across the phone. */
   .kofi-donate-promo.kofi-donate-promo--from-bottom{
-    left:50%!important;
-    right:auto!important;
+    left:max(8px,env(safe-area-inset-left,0px))!important;
+    right:max(8px,env(safe-area-inset-right,0px))!important;
     top:auto!important;
     bottom:max(12px,env(safe-area-inset-bottom,0px))!important;
-    transform:translateX(-50%);
-    width:min(420px,calc(100vw - 16px));
-    max-width:calc(100vw - 16px);
+    transform:none;
+    width:auto;
+    max-width:none;
   }
   .kofi-donate-promo.kofi-donate-promo--from-bottom .kofi-donate-promo-panel{
     width:100%;
-    max-width:100%;
+    max-width:none;
     transform-origin:50% 100%;
   }
   .kofi-donate-promo.kofi-donate-promo--from-bottom.is-visible.is-entering .kofi-donate-promo-panel{
@@ -462,7 +462,8 @@
     animation-name:kofi-promo-panel-enter-from-bottom;
   }
   .kofi-donate-promo-panel{
-    max-width:calc(100vw - 16px);
+    width:100%;
+    max-width:none;
     grid-template-columns:auto minmax(0,1fr);
     column-gap:8px;
     padding:8px 10px;
@@ -474,10 +475,12 @@
     max-height:96px;
   }
   .kofi-donate-promo-copy{
-    min-width:min(180px,48vw);
-    max-width:min(260px,calc(100vw - 112px));
+    min-width:0;
+    max-width:none;
+    width:100%;
   }
   .kofi-donate-promo-bubble{
+    width:100%;
     padding:10px 34px 11px 11px;
   }
   .kofi-donate-promo-text{
@@ -508,10 +511,15 @@
   0%{opacity:0;transform:translate3d(0,72px,0)}
   100%{opacity:1;transform:translate3d(0,0,0)}
 }
-/* Keep Maria | bubble side-by-side on phones (same as desktop); only tighten sizes */
+/* Keep Maria | bubble side-by-side; bubble still fills remaining width. */
 @media (max-width:480px){
+  .kofi-donate-promo.kofi-donate-promo--from-bottom{
+    left:max(6px,env(safe-area-inset-left,0px))!important;
+    right:max(6px,env(safe-area-inset-right,0px))!important;
+  }
   .kofi-donate-promo-panel{
-    max-width:calc(100vw - 12px);
+    width:100%;
+    max-width:none;
     grid-template-columns:auto minmax(0,1fr);
     column-gap:6px;
     padding:8px;
@@ -523,10 +531,12 @@
     max-height:88px;
   }
   .kofi-donate-promo-copy{
-    min-width:min(160px,46vw);
-    max-width:min(240px,calc(100vw - 96px));
+    min-width:0;
+    max-width:none;
+    width:100%;
   }
   .kofi-donate-promo-bubble{
+    width:100%;
     padding:9px 32px 10px 10px;
   }
   .kofi-donate-promo-text{

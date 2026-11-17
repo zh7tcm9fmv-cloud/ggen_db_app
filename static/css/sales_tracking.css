@@ -106,28 +106,53 @@
 
 .trk-chart-shell{
   position:relative;border:1px solid var(--trk-line);border-radius:var(--radius-md,8px);
-  background:rgba(6,12,24,.72);padding:12px 8px 8px;overflow:hidden;
+  background:rgba(6,12,24,.72);padding:12px 8px 8px;overflow:visible;
 }
 .trk-chart-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px;padding:0 8px 8px}
 .trk-chart-title{margin:0;font-size:.95rem;color:var(--text-primary,#e8eef8);font-weight:600}
 .trk-chart-hint{margin:0;font-size:.75rem;color:var(--text-muted,#7a8fa8)}
-.trk-chart-wrap{position:relative;width:100%;height:min(420px,58vh);min-height:280px;overflow:hidden}
-#trkChart{position:absolute;inset:0;width:100%;height:100%;z-index:0;cursor:crosshair}
-.trk-chart-wrap svg{width:100%;height:100%;display:block;touch-action:none}
+/* Polymarket-like: wide plot with room for axis labels (no clip). */
+.trk-chart-wrap{
+  position:relative;width:100%;height:auto;
+  aspect-ratio:2.2 / 1;
+  max-height:min(360px,44vh);
+  min-height:200px;
+  overflow:visible;
+}
+#trkChart{position:absolute;inset:0;width:100%;height:100%;z-index:0;cursor:crosshair;touch-action:none}
+.trk-chart-wrap svg{width:100%;height:100%;display:block;touch-action:none;overflow:visible}
+@media (max-width:768px){
+  .trk-chart-wrap{
+    aspect-ratio:1.75 / 1;
+    max-height:min(240px,34vh);
+    min-height:188px;
+  }
+}
+@media (max-width:420px){
+  .trk-chart-wrap{
+    aspect-ratio:1.65 / 1;
+    max-height:min(220px,32vh);
+    min-height:176px;
+  }
+}
+/* Dock under the plot — never covers scrub / trails. */
 .trk-hover-tip{
-  position:absolute;z-index:4;min-width:200px;max-width:min(280px,92%);padding:10px 12px;
-  border:1px solid rgba(0,212,255,.45);border-radius:var(--radius-sm,6px);
-  background:rgba(6,12,24,.96);color:var(--text-primary,#e8eef8);font-size:.78rem;
-  pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.45);
+  position:relative;z-index:2;width:100%;max-width:none;box-sizing:border-box;
+  margin:8px 0 0;padding:8px 10px;
+  border:1px solid rgba(0,212,255,.4);border-radius:var(--radius-sm,6px);
+  background:rgba(6,12,24,.96);color:var(--text-primary,#e8eef8);font-size:.76rem;
+  pointer-events:none;box-shadow:0 6px 18px rgba(0,0,0,.4);
 }
 .trk-hover-tip[hidden]{display:none!important}
+.trk-hover-tip .trk-hover-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px;
+}
 .trk-hover-time{font-size:.72rem;color:var(--text-muted,#7a8fa8);margin:0 0 8px;letter-spacing:.02em}
 .trk-hover-row{
-  display:flex;flex-direction:column;gap:4px;margin:0 0 8px;padding:7px 8px;
+  display:flex;flex-direction:column;gap:3px;margin:0;padding:6px 8px;
   border-left:3px solid var(--trk-row,#00d4ff);border-radius:0 4px 4px 0;
   background:rgba(255,255,255,.03);line-height:1.2;
 }
-.trk-hover-row:last-child{margin-bottom:0}
 .trk-hover-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
 .trk-hover-name{font-size:.78rem;font-weight:600;opacity:.95;min-width:0}
 .trk-hover-now{
@@ -151,12 +176,30 @@ text.trk-x{
 }
 .trk-grid line{stroke:rgba(100,170,255,.16);stroke-width:1}
 .trk-trail{
-  fill:none;stroke-width:2.75;stroke-linecap:round;stroke-linejoin:round;opacity:0;
+  fill:none;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round;opacity:0;
   animation:trk-trail-fade var(--motion-dur-modal,320ms) var(--motion-ease-enter,cubic-bezier(.05,.7,.1,1)) forwards;
 }
 @keyframes trk-trail-fade{to{opacity:1}}
-.trk-end-label{font-size:12px;font-weight:700;paint-order:stroke;stroke:#061018;stroke-width:3px;dominant-baseline:middle}
-.trk-end-label--gamei{font-style:italic;opacity:.92}
+.trk-trails-dim{pointer-events:none}
+.trk-hover-x{pointer-events:none}
+.trk-hover-mask{pointer-events:none}
+@media (max-width:768px){
+  .trk-trail{stroke-width:1.85}
+  .trk-hover-now{font-size:1.25rem}
+  .trk-hover-meta{grid-template-columns:1fr 1fr;gap:2px 6px;font-size:.64rem}
+}
+.trk-end-label{
+  font-size:12.5px;font-weight:800;letter-spacing:.02em;
+  paint-order:stroke fill;stroke:#05080f;stroke-width:3.5px;
+  dominant-baseline:middle;font-family:var(--font-body,system-ui,sans-serif);
+}
+.trk-end-label--stack{
+  font-size:13.5px;font-weight:800;stroke-width:4px;
+}
+.trk-end-label--gamei{font-style:italic}
+@media (max-width:768px){
+  .trk-end-label,.trk-end-label--stack{font-size:14px;stroke-width:4.25px}
+}
 .trk-trail--hk{stroke:#00d4ff}
 .trk-trail--mo{stroke:#e8c56a}
 .trk-trail--tw{stroke:#ff9d00}
