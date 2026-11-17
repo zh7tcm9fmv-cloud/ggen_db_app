@@ -19278,7 +19278,8 @@
     "ip_ecc11d30854417b14517df0fd134b5e1:unit:1370005900:sp": "up",
     "ip_ecc11d30854417b14517df0fd134b5e1:unit:1200005300:sp": "up",
     "ip_ecc11d30854417b14517df0fd134b5e1:unit:1217002100:sp": "up",
-    "ip_ecc11d30854417b14517df0fd134b5e1:unit:1150000200:sp": "up"
+    "ip_ecc11d30854417b14517df0fd134b5e1:unit:1150000200:sp": "up",
+    "ip_e8df2f46cb06c69d4ab59ae8b6770dc6:unit:1144000500:sp": "up"
   },
   "targets": {
     "unit:1155000700:sp": {
@@ -22446,7 +22447,7 @@
       "down": 14
     },
     "unit:1144000500:sp": {
-      "up": 136,
+      "up": 137,
       "down": 12
     },
     "unit:1144000400:sp": {
