@@ -24,8 +24,10 @@
   --motion-dur-quick:120ms;
   --motion-dur-standard:220ms;
   --motion-dur-modal:320ms;
-  /* Takayu modal-morph — detail enter/exit (catalog #motion=modal-morph) */
+  /* Takayu modal-morph — detail enter (catalog #motion=modal-morph).
+     Exit uses a shorter twin so browse return stays snappy. */
   --motion-dur-modal-morph:700ms;
+  --motion-dur-modal-morph-exit:400ms;
   --motion-ease-modal-morph:cubic-bezier(0.65,0,0.35,1); /* easeInOutCubic */
   /* Takayu glitch-in — FEA Special Ops theme enter */
   --motion-dur-glitch-in:420ms;
@@ -158,10 +160,11 @@
   72%{opacity:1;transform:scale(1)}
   100%{opacity:1;transform:scale(1)}
 }
-/* Exit: Takayu reverse morph. Shell is size-frozen in JS so scale is motion only (no layout jump). */
+/* Exit: Takayu reverse morph (short hold — old 28% pad felt like dead delay before browse).
+   Shell is size-frozen in JS so scale is motion only (no layout jump). */
 @keyframes ggen-detail-morph-exit{
   0%{opacity:1;transform:scale(1)}
-  28%{opacity:1;transform:scale(1)}
+  10%{opacity:1;transform:scale(1)}
   100%{opacity:0;transform:scale(.36)}
 }
 @keyframes ggen-detail-morph-fade{
@@ -179,7 +182,7 @@
   will-change:transform,opacity;
 }
 #detailModal .modal-content.is-detail-morph-exit{
-  animation:ggen-detail-morph-exit var(--motion-dur-modal-morph) var(--motion-ease-modal-morph) forwards!important;
+  animation:ggen-detail-morph-exit var(--motion-dur-modal-morph-exit) var(--motion-ease-modal-morph) forwards!important;
   will-change:transform,opacity;
 }
 @keyframes ggen-detail-overlay-enter{

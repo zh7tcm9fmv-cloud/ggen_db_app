@@ -4681,6 +4681,8 @@ button.stage-map-roster-thumb:disabled{
 .detail-pilot-ep-label-col .toggle-label{align-self:flex-start}
 .detail-pilot-ep-label-col .detail-pilot-stack-row{align-self:stretch;width:100%;max-width:min(100%,200px);padding:0;margin-top:0;justify-content:flex-start}
 .detail-pilot-stack-row.is-reserved{visibility:hidden;pointer-events:none}
+/* EX tier buttons: keep layout box when CP is off so toggle cannot shove the header/cover. */
+.detail-ex-tier-row.is-reserved{visibility:hidden;pointer-events:none;margin:0 0 8px 0}
 .detail-pilot-stack-row.detail-pep-ms{width:min(100%,200px)}
 /* Firefly stack track (PEP + CP): override native range width locks */
 .detail-unit-cp-stack-slot .detail-unit-cond-stack-row.detail-pep-ms,

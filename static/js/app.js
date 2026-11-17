@@ -2347,7 +2347,7 @@ _clearDetailCloseScrollHold();
 _clearDetailCloseSettling();
 try{_unfreezeBrowseListGrids()}catch(_){}
 try{updateScrollTopFabVisibility()}catch(_){}
-},320);
+},90);
 }
 function applyBackgroundScrollLock(){
 _cancelDetailCloseScrollHoldTimer();
@@ -5819,14 +5819,15 @@ try{
 m.classList.add('is-detail-wash-out');
 /* Force transition after opaque settle paint. */
 void m.offsetWidth;
-m.style.transition='opacity 120ms ease';
+m.style.transition='opacity 80ms ease';
 m.style.opacity='0';
 }catch(_){}
-S._detailExitTimer=setTimeout(function(){S._detailExitTimer=null;_finishDetailOverlayGone()},220);
+S._detailExitTimer=setTimeout(function(){S._detailExitTimer=null;_finishDetailOverlayGone()},140);
 }
 /**
  * Takayu modal-morph exit, then flicker-safe unlock:
  * morph over normal dimmed browse (not empty black) → brief opaque wash → unlock → fade.
+ * Exit morph is ~400ms (enter stays 700ms) so returning to browse does not feel gated.
  */
 function _revealBrowseAfterDetailClose(){
 if(S._detailExitPhase==='exiting')return;
@@ -5844,7 +5845,7 @@ try{syncListTheadStickyTop()}catch(_){}
 _finishDetailOverlayGone();
 return;
 }
-/* Keep normal rgba overlay during morph — opaque wash early = empty black for ~700ms. */
+/* Keep normal rgba overlay during morph — opaque wash early = empty black for the whole exit. */
 try{if(window.GgenNavTabsAutoHide&&typeof GgenNavTabsAutoHide.prepareUnlock==='function')GgenNavTabsAutoHide.prepareUnlock()}catch(_){}
 let morphDone=0;
 const afterMorph=function(){
@@ -5858,18 +5859,15 @@ _runDeferredDetailHistory();
 try{if(window.GgenNavTabsAutoHide&&typeof GgenNavTabsAutoHide.releaseOverlayFreeze==='function')GgenNavTabsAutoHide.releaseOverlayFreeze({forceTopReveal:true})}catch(_){}
 try{if(typeof window.__ggenResumeBrandFonts==='function')window.__ggenResumeBrandFonts()}catch(_){}
 try{syncListTheadStickyTop()}catch(_){}
-let frames=0;
-const afterPaint=function(){
-frames++;
-if(frames<2){S._detailRevealRaf=requestAnimationFrame(afterPaint);return}
+/* One paint frame is enough — two frames stacked on a short morph felt sticky. */
+S._detailRevealRaf=requestAnimationFrame(function(){
 S._detailRevealRaf=0;
 _fadeDetailExitWashThenFinish(m);
-};
-S._detailRevealRaf=requestAnimationFrame(afterPaint);
+});
 };
 playDetailModalMorphExit(mc,afterMorph);
-/* Failsafe — morph 700ms + brief wash unlock. */
-S._detailExitTimer=setTimeout(function(){S._detailExitTimer=null;afterMorph()},1200);
+/* Failsafe — exit morph ~400ms + brief wash unlock. */
+S._detailExitTimer=setTimeout(function(){S._detailExitTimer=null;afterMorph()},520);
 }
 function _scheduleRevealBrowseAfterDetailClose(){
 if(S._detailRevealRaf){try{cancelAnimationFrame(S._detailRevealRaf)}catch(_){}S._detailRevealRaf=0}
@@ -7270,7 +7268,8 @@ finish();
 };
 S._detailMorphEnd=done;
 mc.addEventListener('animationend',done);
-S._detailMorphExitTimer=setTimeout(finish,780);
+/* Match --motion-dur-modal-morph-exit (~400ms) + small buffer. */
+S._detailMorphExitTimer=setTimeout(finish,460);
 }catch(_){finish()}
 }
 function _killDetailModalMotion(mc){
@@ -9125,12 +9124,12 @@ void ensurePilotCondCharData(d,true).then(r=>{
 if(!r||!r.data)return;
 if(S.currentDetailType==='unit'&&S.currentDetailData&&String(S.currentDetailData.id)===uid){
 if(S.pilotConditionalPassiveActive)_detailInitPilotCondStackCount(S.currentDetailData);
-/* Soft path: keep toggles DOM, insert reserved stack, re-lock header so PEP toggle cannot push detail-body. */
+/* Soft path: keep toggles DOM, insert reserved stack; header already reserved so no cover re-lock flash. */
 S._pilotStackSliderAnimate=false;
-updateDetailDynamicSections('unit',{keepToggles:true});
+updateDetailDynamicSections('unit',{keepToggles:true,softBody:true});
 try{_detailSoftSyncPilotEpToggleDom()}catch(_){}
 syncPilotCondHighlights();
-try{scheduleLockDetailCoverPaintBoxes()}catch(_){}
+try{lockDetailHeaderLayoutForPep()}catch(_){}
 }
 }).catch(()=>{});
 }
@@ -9274,7 +9273,7 @@ if(soft){S._unitCondStackDirty=true;return}
 if(!changed&&!S._unitCondStackDirty)return;
 S._unitCondStackDirty=false;
 invalidateDetailRankingCachesForPerspectiveChange();
-updateDetailDynamicSections('unit',{keepToggles:true});
+updateDetailDynamicSections('unit',{keepToggles:true,softBody:true});
 }
 function setUnitHpAtkTierIndex(i,opts){
 opts=opts||{};
@@ -9290,7 +9289,7 @@ if(soft){S._unitHpTierDirty=true;return}
 if(!changed&&!S._unitHpTierDirty)return;
 S._unitHpTierDirty=false;
 invalidateDetailRankingCachesForPerspectiveChange();
-updateDetailDynamicSections('unit',{keepToggles:true});
+updateDetailDynamicSections('unit',{keepToggles:true,softBody:true});
 }
 function setUnitDamageTakenDefStacks(n,opts){
 opts=opts||{};
@@ -9306,42 +9305,56 @@ if(soft){S._unitDmgDefDirty=true;return}
 if(!changed&&!S._unitDmgDefDirty)return;
 S._unitDmgDefDirty=false;
 invalidateDetailRankingCachesForPerspectiveChange();
-updateDetailDynamicSections('unit',{keepToggles:true});
+updateDetailDynamicSections('unit',{keepToggles:true,softBody:true});
 }
 function _detailUnitCombatStackSliderHtml(cc){
-if(!S.conditionalPassiveActive||!cc)return'';
+if(!cc)return'';
+/* Always emit reserved↔open same box so CP toggle never rebuilds/grows the header. */
+const on=!!S.conditionalPassiveActive;
 const max=Math.max(1,cc.max_stacks|0);
-const cur=Math.max(1,Math.min(max,S.unitCondStackCount|0||max));
-const pct=Math.min(cc.max|0,cc.per*cur);
+const cur=on?Math.max(1,Math.min(max,S.unitCondStackCount|0||max)):max;
+const pct=on?Math.min(cc.max|0,cc.per*cur):0;
 const maxPct=Math.max(1,cc.max|0);
-const p=pct/maxPct;
+const p=on?(pct/maxPct):0;
 const stackLab=t('unit_combat_stack_label')||'Combat stack level';
 const dots=_stackMsPctDotsHtml(cc.per|0,maxPct,max,cur,pct,1);
-const inner=_stackMsInnerHtml({p,dots,min:1,max,cur,aria:stackLab,fnName:'setUnitCondStackCount'});
-return`<div class="detail-pilot-stack-row is-open detail-unit-cond-stack-row detail-unit-combat-stack-row detail-pep-ms" onclick="event.stopPropagation()">${inner}<span class="detail-pilot-stack-val">+${pct}%</span></div>`;
+const inner=_stackMsInnerHtml({p,dots,min:1,max,cur,aria:stackLab,fnName:'setUnitCondStackCount',disabled:!on});
+const openCls=on?'is-open':'is-reserved';
+const click=on?' onclick="event.stopPropagation()"':'';
+const aria=on?'':' aria-hidden="true"';
+return`<div class="detail-pilot-stack-row ${openCls} detail-unit-cond-stack-row detail-unit-combat-stack-row detail-pep-ms"${click}${aria}>${inner}<span class="detail-pilot-stack-val">+${pct}%</span></div>`;
 }
 function _detailAbilityHpTierRowHtml(hpMeta){
-if(!S.conditionalPassiveActive||!hpMeta||!hpMeta.tiers||hpMeta.tiers.length<2)return'';
+if(!hpMeta||!hpMeta.tiers||hpMeta.tiers.length<2)return'';
+const on=!!S.conditionalPassiveActive;
 const max=hpMeta.tiers.length-1;
-const ti=Math.min(Math.max(0,S.unitHpAtkTierIndex|0),max);
-const tier=hpMeta.tiers[ti];
-const p=max>0?ti/max:0;
+const ti=on?Math.min(Math.max(0,S.unitHpAtkTierIndex|0),max):max;
+const tier=hpMeta.tiers[ti]||hpMeta.tiers[max]||{};
+const p=on&&max>0?ti/max:0;
 const lab=t('unit_hp_atk_tier_label')||'HP ATK tier';
 const dots=_stackMsTierDotsHtml(hpMeta.tiers,ti);
-const inner=_stackMsInnerHtml({p,dots,min:0,max,cur:ti,aria:lab,fnName:'setUnitHpAtkTierIndex'});
-return`<div class="detail-pilot-stack-row is-open detail-unit-cond-stack-row dc-unit-hp-tier-row detail-pep-ms" onclick="event.stopPropagation()">${inner}<span class="detail-pilot-stack-val">${esc(String(tier.hp_pct))}% +${esc(String(tier.atk_pct))}%</span></div>`;
+const inner=_stackMsInnerHtml({p,dots,min:0,max,cur:ti,aria:lab,fnName:'setUnitHpAtkTierIndex',disabled:!on});
+const openCls=on?'is-open':'is-reserved';
+const click=on?' onclick="event.stopPropagation()"':'';
+const aria=on?'':' aria-hidden="true"';
+const valTxt=on?`${esc(String(tier.hp_pct))}% +${esc(String(tier.atk_pct))}%`:'0% +0%';
+return`<div class="detail-pilot-stack-row ${openCls} detail-unit-cond-stack-row dc-unit-hp-tier-row detail-pep-ms"${click}${aria}>${inner}<span class="detail-pilot-stack-val">${valTxt}</span></div>`;
 }
 function _detailUnitDamageTakenDefSliderHtml(dd){
-if(!S.conditionalPassiveActive||!dd)return'';
+if(!dd)return'';
+const on=!!S.conditionalPassiveActive;
 const max=Math.max(1,dd.max_stacks|0);
-const cur=Math.max(1,Math.min(max,S.unitDamageTakenDefStacks|0||max));
-const pct=Math.min(dd.max|0,dd.per*cur);
+const cur=on?Math.max(1,Math.min(max,S.unitDamageTakenDefStacks|0||max)):max;
+const pct=on?Math.min(dd.max|0,dd.per*cur):0;
 const maxPct=Math.max(1,dd.max|0);
-const p=pct/maxPct;
+const p=on?(pct/maxPct):0;
 const stackLab=t('unit_damage_taken_def_label')||'Damage taken DEF stacks';
 const dots=_stackMsPctDotsHtml(dd.per|0,maxPct,max,cur,pct,1);
-const inner=_stackMsInnerHtml({p,dots,min:1,max,cur,aria:stackLab,fnName:'setUnitDamageTakenDefStacks'});
-return`<div class="detail-pilot-stack-row is-open detail-unit-cond-stack-row detail-unit-dmg-taken-def-row detail-pep-ms" onclick="event.stopPropagation()">${inner}<span class="detail-pilot-stack-val">+${pct}%</span></div>`;
+const inner=_stackMsInnerHtml({p,dots,min:1,max,cur,aria:stackLab,fnName:'setUnitDamageTakenDefStacks',disabled:!on});
+const openCls=on?'is-open':'is-reserved';
+const click=on?' onclick="event.stopPropagation()"':'';
+const aria=on?'':' aria-hidden="true"';
+return`<div class="detail-pilot-stack-row ${openCls} detail-unit-cond-stack-row detail-unit-dmg-taken-def-row detail-pep-ms"${click}${aria}>${inner}<span class="detail-pilot-stack-val">+${pct}%</span></div>`;
 }
 function _detailAbilityCondControlHtml(ab,ud){
 /* HP ATK tier / combat / damage-taken DEF sliders live under Conditional Passive (detail-unit-cp-stack-slot), not under ability text. */
@@ -9447,7 +9460,7 @@ if(soft){S._pepStackDirty=true;return}
 if(!changed&&!S._pepStackDirty)return;
 S._pepStackDirty=false;
 invalidateDetailRankingCachesForPerspectiveChange();
-updateDetailDynamicSections('unit',{keepToggles:true});
+updateDetailDynamicSections('unit',{keepToggles:true,softBody:true});
 }
 function _detailPilotStackSliderHtml(ud){
 if(!ud||!S.pilotCondCharData)return'';
@@ -9556,6 +9569,66 @@ if(_pilotRangeTypeKeysMatchWeapon(mod.wpnTypes,wpn))bonus+=mod.inc;
 });
 return bonus;
 }
+function _detailSoftSyncUnitCpStackRows(root){
+const d=S.currentDetailData;
+if(!root||!d||S.currentDetailType!=='unit')return;
+const on=!!S.conditionalPassiveActive;
+const slot=root.querySelector('.detail-unit-cp-stack-slot');
+if(!slot)return;
+const meta=_detailUnitCondStackMeta(d);
+const ensureRow=(sel,html)=>{
+let row=slot.querySelector(sel);
+if(!html){if(row)row.remove();return null}
+if(!row){slot.insertAdjacentHTML('beforeend',html);row=slot.querySelector(sel)}
+return row;
+};
+const syncRow=(row,open)=>{
+if(!row)return;
+row.classList.toggle('is-reserved',!open);
+row.classList.toggle('is-open',!!open);
+row.classList.remove('detail-pilot-stack-row--enter');
+const inp=row.querySelector('input.detail-pilot-stack-slider');
+if(open){
+row.removeAttribute('aria-hidden');
+row.setAttribute('onclick','event.stopPropagation()');
+if(inp){inp.disabled=false;inp.removeAttribute('tabindex')}
+}else{
+row.setAttribute('aria-hidden','true');
+row.removeAttribute('onclick');
+if(inp){inp.disabled=true;inp.tabIndex=-1}
+}
+};
+let combat=ensureRow('.detail-unit-combat-stack-row',meta.cc?_detailUnitCombatStackSliderHtml(meta.cc):'');
+let hp=ensureRow('.dc-unit-hp-tier-row',(meta.hp&&meta.hp.tiers&&meta.hp.tiers.length>1)?_detailAbilityHpTierRowHtml(meta.hp):'');
+let dmg=ensureRow('.detail-unit-dmg-taken-def-row',meta.dd?_detailUnitDamageTakenDefSliderHtml(meta.dd):'');
+/* Rows were built with current S.conditionalPassiveActive — flip if DOM was stale. */
+[combat,hp,dmg].forEach(row=>syncRow(row,on));
+if(on)_detailSyncUnitCondSliderLabels();
+else{
+slot.querySelectorAll('.detail-pilot-stack-val').forEach(val=>{
+if(val.closest('.dc-unit-hp-tier-row'))val.textContent='0% +0%';
+else val.textContent='+0%';
+});
+}
+}
+function _detailSoftSyncCharExTierRow(root){
+const d=S.currentDetailData;
+if(!root||!d||S.currentDetailType!=='character')return;
+const tiers=d.ex_supercharged_tiers;
+if(!tiers||tiers.length<2)return;
+const on=!!S.conditionalPassiveActive;
+let row=root.querySelector('.detail-ex-tier-row');
+if(!row){
+const ti=Math.min(Math.max(0,S.charSuperchargedExTier|0),tiers.length-1);
+const html=`<div class="detail-ex-tier-row${on?'':' is-reserved'}" style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;margin:0 0 8px 0">`+tiers.map((t,idx)=>`<button type="button" class="dc-lb-btn${idx===ti?' active':''}" style="font-size:11px;line-height:1.25;max-width:100%;white-space:normal;text-align:center;padding:6px 8px" onclick="setCharSuperchargedExTier(${idx})">${esc(t.label||('EX '+t.tier))}</button>`).join('')+`</div>`;
+root.insertAdjacentHTML('beforeend',html);
+row=root.querySelector('.detail-ex-tier-row');
+}
+if(!row)return;
+row.classList.toggle('is-reserved',!on);
+const ti=Math.min(Math.max(0,S.charSuperchargedExTier|0),tiers.length-1);
+row.querySelectorAll('.dc-lb-btn').forEach((btn,idx)=>btn.classList.toggle('active',idx===ti));
+}
 function _detailSoftSyncPilotEpToggleDom(){
 /* Patch PEP/CP chrome in place — never rebuild #detailStatsToggles (header height → garage cover rescale). */
 const root=document.getElementById('detailStatsToggles');
@@ -9603,6 +9676,8 @@ if(inp){inp.disabled=true;inp.tabIndex=-1}
 }
 const cpClick=root.querySelector('.detail-unit-cp-block > .toggle-clickable');
 if(cpClick)cpClick.classList.toggle('active',!!S.conditionalPassiveActive);
+try{_detailSoftSyncUnitCpStackRows(root)}catch(_){}
+try{_detailSoftSyncCharExTierRow(root)}catch(_){}
 }
 function togglePilotConditionalPassive(c){
 S.pilotConditionalPassiveActive=!!c;
@@ -9617,7 +9692,7 @@ _detailInitPilotCondStackCount(d);
 /* Dual-gate MOV (e.g. Master Asia): PEP on → auto-arm Supercharged CP. PEP-only MOV (Athrun) skips. */
 if(_detailUnitPilotMovCpGate(d))S.conditionalPassiveActive=true;
 }
-updateDetailDynamicSections(S.currentDetailType,{keepToggles:true});
+updateDetailDynamicSections(S.currentDetailType,{keepToggles:true,softBody:true});
 _detailSoftSyncPilotEpToggleDom();
 syncPilotCondHighlights();
 };
@@ -9627,7 +9702,7 @@ return;
 }
 finish();
 }
-function updateDetailDynamicSections(type,opts){opts=opts||{};const d=S.currentDetailData;if(type!=='supporter'&&type!=='stage'){const _sp=renderStatsWrapper(d,type);const _tog=document.getElementById('detailStatsToggles');const _st=document.getElementById('detailStatsWrapper');if(_tog&&!opts.keepToggles)_tog.innerHTML=_sp.head||'';if(_st)_st.innerHTML=_tog?(_sp.grid||''):((_sp.head||'')+(_sp.grid||''));ensureDetailRankingToggleDom(type);applyDetailRankingInline(type)}if(type==='character'){const extra=document.getElementById('charExtraInfo');if(extra)extra.innerHTML=renderCharacterExtraInfo(d);const ucHost=document.getElementById('npcUnitCondTargets');if(ucHost)ucHost.innerHTML=renderNpcUnitConditionTargetsRow(d);document.getElementById('detailAbilitiesContainer').innerHTML=renderAbilsDynamic(d.abilities,t('sec_abilities'),false,S.spActive);document.getElementById('detailSkillsContainer').innerHTML=renderSkills(d.skills,S.spActive);syncNpcUnitConditionHighlights();syncAffinityExPairHighlights();syncPilotCondHighlights()}else if(type==='unit'){syncUnitLbVideoUi();void ensureUnitBestPilotsLoaded().then(api=>{if(api&&typeof api.syncUi==='function'&&S.currentDetailType==='unit'&&S.currentDetailData&&String(S.currentDetailData.id)===String(d&&d.id))api.syncUi(S.currentDetailData)});document.getElementById('detailAbilitiesContainer').innerHTML=renderAbilsDynamic(d.abilities,t('sec_abilities'),S.sspActive,false);document.getElementById('detailUnitSkillsContainer').innerHTML=renderSkills(d.skills||[],false);const modEl=document.getElementById('detailModifiersContainer');if(modEl)modEl.innerHTML=renderModifiers(d.modifiers||[]);setDetailWeaponsHtml(renderWeaponsDynamic(withNpcMapWeaponStrategyHints(d.weapons,d),S.sspActive,d));document.getElementById('detailMechanismsContainer').innerHTML=renderMechanisms(d.mechanisms);fillDetailSspMaterials('unit');fillDetailUltAlteration('unit');const tr=document.getElementById('detailUnitTerrainRow');if(tr){const base=d.terrain||[];const ter=S.sspActive&&(d.terrain_ssp&&d.terrain_ssp.length)?d.terrain_ssp:base;const hasTerrainEnh=!!(S.sspActive&&(d.has_terrain_enhancement===true||(d.terrain_ssp&&d.terrain&&d.terrain_ssp.some((ts,i)=>ts.level!==(d.terrain[i]?.level??-1)))));tr.innerHTML=renderHeaderTerrain(ter,S.sspActive,hasTerrainEnh)}syncPilotCondHighlights();syncUnitCondAbilityHighlights()}else if(type==='supporter'){let lh='';if(d.leader_skills&&d.leader_skills.length){lh=`<div class="detail-section"><div class="section-title">${t('sec_leader_skill')}</div><div class="ability-list">${d.leader_skills.map(ls=>{let ts2=ls.tags.map(t=>t.name).join(',');return`<div class="ability-item" style="flex-direction:column;gap:0;cursor:pointer;" onclick="openTagModal('${esc(ts2)}','${ls.separator}')"><div class="ability-detail ability-detail--supporter-leader" style="margin:0;"><img class="ability-detail-leader-ic" src="${imgUrl(SUPPORTER_LEADER_ICON)}" alt="" width="22" height="22" loading="lazy" decoding="async" onerror="this.style.display='none'"><span class="ability-detail-leader-text">${esc(ls.desc)}</span></div>${ls.tags&&ls.tags.length?`<div class="detail-tags-row" style="margin-top:0;align-items:center;">${renderSkillTags([{tags:ls.tags,separator:ls.separator}])}</div>`:''}</div>`}).join('')}</div></div>`}document.getElementById('detailLeaderSkillContainer').innerHTML=lh;let ah='';if(d.active_skills&&d.active_skills.length){ah=`<div class="detail-section"><div class="section-title">${t('sec_active_skills')}</div><div class="ability-list">${d.active_skills.map(sk=>`<div class="ability-item"><div class="ability-icon-wrap">${renderAbilIcon({icon:sk.icon})}</div><div class="ability-info"><div class="ability-name">${esc(sk.name)}</div><div class="ability-detail" style="margin:0;white-space:pre-wrap;">${esc(sk.desc)}</div></div></div>`).join('')}</div></div>`}document.getElementById('detailAbilitiesContainer').innerHTML=ah}else if(type==='stage'){if(d&&d.stage_category==='fierce_enemy_assault'){void feaHydrateActiveDifficulty();return}document.getElementById('detailStageRestrictionsContainer').innerHTML=renderStageRestrictions(d);document.getElementById('detailStageMapContainer').innerHTML=renderStageMapSection(d);document.getElementById('detailNpcContainer').innerHTML=renderNpcDetails(d.npc_details||[],d.id,S._stageDetailUiRestore);ensureStageMapNpcHoverBound();ensureStageNpcCompactHoverBound();hideStageNpcHoverPop();scheduleWarmStageNpcHoverThumbs();syncNpcUnitConditionHighlights();const kickTape=()=>kickStageHazardTapeAnimations(document.getElementById('detailStageRestrictionsContainer'));requestAnimationFrame(()=>requestAnimationFrame(kickTape));setTimeout(kickTape,400)}if(type==='character'||type==='unit')requestAnimationFrame(adjustDetailModalLayout);try{scheduleSyncTagValueCrawlers(document.getElementById('detailInner')||document)}catch(_e){}}
+function updateDetailDynamicSections(type,opts){opts=opts||{};const d=S.currentDetailData;const softBody=!!opts.softBody;if(type!=='supporter'&&type!=='stage'){const _sp=renderStatsWrapper(d,type);const _tog=document.getElementById('detailStatsToggles');const _st=document.getElementById('detailStatsWrapper');if(_tog&&!opts.keepToggles)_tog.innerHTML=_sp.head||'';if(_st)_st.innerHTML=_tog?(_sp.grid||''):((_sp.head||'')+(_sp.grid||''));ensureDetailRankingToggleDom(type);applyDetailRankingInline(type)}if(softBody){/* CP/PEP/stack soft path: stats + weapons/highlights only — never wipe ability/skill DOM (flash). */if(type==='unit'&&d){try{setDetailWeaponsHtml(renderWeaponsDynamic(withNpcMapWeaponStrategyHints(d.weapons,d),S.sspActive,d))}catch(_){}syncPilotCondHighlights();syncUnitCondAbilityHighlights()}else if(type==='character'){syncNpcUnitConditionHighlights();syncAffinityExPairHighlights();syncPilotCondHighlights()}try{scheduleSyncTagValueCrawlers(document.getElementById('detailInner')||document)}catch(_e){}return}if(type==='character'){const extra=document.getElementById('charExtraInfo');if(extra)extra.innerHTML=renderCharacterExtraInfo(d);const ucHost=document.getElementById('npcUnitCondTargets');if(ucHost)ucHost.innerHTML=renderNpcUnitConditionTargetsRow(d);document.getElementById('detailAbilitiesContainer').innerHTML=renderAbilsDynamic(d.abilities,t('sec_abilities'),false,S.spActive);document.getElementById('detailSkillsContainer').innerHTML=renderSkills(d.skills,S.spActive);syncNpcUnitConditionHighlights();syncAffinityExPairHighlights();syncPilotCondHighlights()}else if(type==='unit'){syncUnitLbVideoUi();void ensureUnitBestPilotsLoaded().then(api=>{if(api&&typeof api.syncUi==='function'&&S.currentDetailType==='unit'&&S.currentDetailData&&String(S.currentDetailData.id)===String(d&&d.id))api.syncUi(S.currentDetailData)});document.getElementById('detailAbilitiesContainer').innerHTML=renderAbilsDynamic(d.abilities,t('sec_abilities'),S.sspActive,false);document.getElementById('detailUnitSkillsContainer').innerHTML=renderSkills(d.skills||[],false);const modEl=document.getElementById('detailModifiersContainer');if(modEl)modEl.innerHTML=renderModifiers(d.modifiers||[]);setDetailWeaponsHtml(renderWeaponsDynamic(withNpcMapWeaponStrategyHints(d.weapons,d),S.sspActive,d));document.getElementById('detailMechanismsContainer').innerHTML=renderMechanisms(d.mechanisms);fillDetailSspMaterials('unit');fillDetailUltAlteration('unit');const tr=document.getElementById('detailUnitTerrainRow');if(tr){const base=d.terrain||[];const ter=S.sspActive&&(d.terrain_ssp&&d.terrain_ssp.length)?d.terrain_ssp:base;const hasTerrainEnh=!!(S.sspActive&&(d.has_terrain_enhancement===true||(d.terrain_ssp&&d.terrain&&d.terrain_ssp.some((ts,i)=>ts.level!==(d.terrain[i]?.level??-1)))));tr.innerHTML=renderHeaderTerrain(ter,S.sspActive,hasTerrainEnh)}syncPilotCondHighlights();syncUnitCondAbilityHighlights()}else if(type==='supporter'){let lh='';if(d.leader_skills&&d.leader_skills.length){lh=`<div class="detail-section"><div class="section-title">${t('sec_leader_skill')}</div><div class="ability-list">${d.leader_skills.map(ls=>{let ts2=ls.tags.map(t=>t.name).join(',');return`<div class="ability-item" style="flex-direction:column;gap:0;cursor:pointer;" onclick="openTagModal('${esc(ts2)}','${ls.separator}')"><div class="ability-detail ability-detail--supporter-leader" style="margin:0;"><img class="ability-detail-leader-ic" src="${imgUrl(SUPPORTER_LEADER_ICON)}" alt="" width="22" height="22" loading="lazy" decoding="async" onerror="this.style.display='none'"><span class="ability-detail-leader-text">${esc(ls.desc)}</span></div>${ls.tags&&ls.tags.length?`<div class="detail-tags-row" style="margin-top:0;align-items:center;">${renderSkillTags([{tags:ls.tags,separator:ls.separator}])}</div>`:''}</div>`}).join('')}</div></div>`}document.getElementById('detailLeaderSkillContainer').innerHTML=lh;let ah='';if(d.active_skills&&d.active_skills.length){ah=`<div class="detail-section"><div class="section-title">${t('sec_active_skills')}</div><div class="ability-list">${d.active_skills.map(sk=>`<div class="ability-item"><div class="ability-icon-wrap">${renderAbilIcon({icon:sk.icon})}</div><div class="ability-info"><div class="ability-name">${esc(sk.name)}</div><div class="ability-detail" style="margin:0;white-space:pre-wrap;">${esc(sk.desc)}</div></div></div>`).join('')}</div></div>`}document.getElementById('detailAbilitiesContainer').innerHTML=ah}else if(type==='stage'){if(d&&d.stage_category==='fierce_enemy_assault'){void feaHydrateActiveDifficulty();return}document.getElementById('detailStageRestrictionsContainer').innerHTML=renderStageRestrictions(d);document.getElementById('detailStageMapContainer').innerHTML=renderStageMapSection(d);document.getElementById('detailNpcContainer').innerHTML=renderNpcDetails(d.npc_details||[],d.id,S._stageDetailUiRestore);ensureStageMapNpcHoverBound();ensureStageNpcCompactHoverBound();hideStageNpcHoverPop();scheduleWarmStageNpcHoverThumbs();syncNpcUnitConditionHighlights();const kickTape=()=>kickStageHazardTapeAnimations(document.getElementById('detailStageRestrictionsContainer'));requestAnimationFrame(()=>requestAnimationFrame(kickTape));setTimeout(kickTape,400)}if(type==='character'||type==='unit')requestAnimationFrame(adjustDetailModalLayout);try{scheduleSyncTagValueCrawlers(document.getElementById('detailInner')||document)}catch(_e){}}
 function renderStatsWrapper(d,type){
 /* Prefer has_ex_stats over a false has_conditional_passive (API can clear the latter on unmet pair gates while Vigor Extended etc. still apply). */
 let hcf=type==='character'?(!!(d.has_ex_stats||d.has_conditional_passive||(d.ex_supercharged_tiers&&d.ex_supercharged_tiers.length>1))):((_detailUnitHasCondStats(d))||_detailUnitHasCondWeaponRange(d)||_detailUnitPilotMovCpGate(d));
@@ -9656,11 +9731,12 @@ if(type==='unit'&&S.pilotConditionalPassiveActive&&S.pilotCondCharData){prePilot
 if(type==='unit'){sr=_detailApplyUltAltMaxStatRows(sr,d);bs=_detailApplyUltAltMaxStatRows(bs,d);if(prePilotSr)prePilotSr=_detailApplyUltAltMaxStatRows(prePilotSr,d)}
 let th='';
 if(hcf||(type==='unit'&&d.has_pilot_cond_passive)){th=`<div class="detail-cond-toggle-stack">`;
-if(hcf){const cplab=t('conditional_passive');const _ucm=type==='unit'?_detailUnitCondStackMeta(d):{cc:null,hp:null,dd:null};const unitCombatStack=(type==='unit'&&_ucm.cc)?_detailUnitCombatStackSliderHtml(_ucm.cc):'';const unitHpTier=(type==='unit'&&_ucm.hp)?_detailAbilityHpTierRowHtml(_ucm.hp):'';const unitDmgDef=(type==='unit'&&_ucm.dd)?_detailUnitDamageTakenDefSliderHtml(_ucm.dd):'';const unitCpExtras=unitCombatStack+unitHpTier+unitDmgDef;const unitCpCanStack=type==='unit'&&!!(_ucm.cc||(_ucm.hp&&_ucm.hp.tiers&&_ucm.hp.tiers.length>1)||_ucm.dd);const unitCpSlot=unitCpExtras||(unitCpCanStack?'<div class="detail-pilot-stack-row is-reserved detail-unit-cond-stack-row" aria-hidden="true"><input type="range" class="detail-pilot-stack-slider" disabled tabindex="-1"><span class="detail-pilot-stack-val">+0%</span></div>':'');th+=`<div class="conditional-toggle detail-unit-cp-block"><div class="toggle-clickable ${S.conditionalPassiveActive?'active':''}" role="button" tabindex="0" onclick="toggleConditionalPassive(!S.conditionalPassiveActive)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleConditionalPassive(!S.conditionalPassiveActive)}"><span class="toggle-control-slot"><span class="toggle-switch"></span></span><span class="toggle-label">${esc(cplab)}</span></div>${unitCpSlot?`<div class="detail-unit-cp-stack-slot">${unitCpSlot}</div>`:''}</div>`}
+if(hcf){const cplab=t('conditional_passive');const _ucm=type==='unit'?_detailUnitCondStackMeta(d):{cc:null,hp:null,dd:null};const unitCombatStack=(type==='unit'&&_ucm.cc)?_detailUnitCombatStackSliderHtml(_ucm.cc):'';const unitHpTier=(type==='unit'&&_ucm.hp)?_detailAbilityHpTierRowHtml(_ucm.hp):'';const unitDmgDef=(type==='unit'&&_ucm.dd)?_detailUnitDamageTakenDefSliderHtml(_ucm.dd):'';const unitCpSlot=unitCombatStack+unitHpTier+unitDmgDef;th+=`<div class="conditional-toggle detail-unit-cp-block"><div class="toggle-clickable ${S.conditionalPassiveActive?'active':''}" role="button" tabindex="0" onclick="toggleConditionalPassive(!S.conditionalPassiveActive)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleConditionalPassive(!S.conditionalPassiveActive)}"><span class="toggle-control-slot"><span class="toggle-switch"></span></span><span class="toggle-label">${esc(cplab)}</span></div>${unitCpSlot?`<div class="detail-unit-cp-stack-slot">${unitCpSlot}</div>`:''}</div>`}
 if(type==='unit'&&d.has_pilot_cond_passive){const pplab=t('pilot_exclusive_passive')||'Pilot Exclusive Passive';const stackHtml=_detailPilotStackSliderHtml(d);th+=`<div class="detail-pilot-ep-block"><div class="conditional-toggle detail-pilot-ep-toggle"><div class="toggle-clickable ${S.pilotConditionalPassiveActive?'active':''}" role="button" tabindex="0" title="${escAttr(pplab)}" aria-label="${escAttr(pplab)}" onclick="togglePilotConditionalPassive(!S.pilotConditionalPassiveActive)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togglePilotConditionalPassive(!S.pilotConditionalPassiveActive)}"><span class="toggle-control-slot">${_detailPilotEpChipSpanHtml(!!S.pilotConditionalPassiveActive)}</span><div class="detail-pilot-ep-label-col"><span class="toggle-label">${esc(pplab)}</span>${stackHtml}</div></div></div></div>`}
 th+=`</div>`}
 let exRow='';
-if(type==='character'&&cp&&d.ex_supercharged_tiers&&d.ex_supercharged_tiers.length>1){const ti=Math.min(Math.max(0,S.charSuperchargedExTier|0),d.ex_supercharged_tiers.length-1);exRow=`<div class="detail-ex-tier-row" style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;margin:0 0 8px 0">`+d.ex_supercharged_tiers.map((t,idx)=>`<button type="button" class="dc-lb-btn${idx===ti?' active':''}" style="font-size:11px;line-height:1.25;max-width:100%;white-space:normal;text-align:center;padding:6px 8px" onclick="setCharSuperchargedExTier(${idx})">${esc(t.label||('EX '+t.tier))}</button>`).join('')+`</div>`}
+/* Always reserve EX tier row when multi-tier — soft CP toggle must not grow the header. */
+if(type==='character'&&d.ex_supercharged_tiers&&d.ex_supercharged_tiers.length>1){const ti=Math.min(Math.max(0,S.charSuperchargedExTier|0),d.ex_supercharged_tiers.length-1);exRow=`<div class="detail-ex-tier-row${cp?'':' is-reserved'}" style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;margin:0 0 8px 0">`+d.ex_supercharged_tiers.map((t,idx)=>`<button type="button" class="dc-lb-btn${idx===ti?' active':''}" style="font-size:11px;line-height:1.25;max-width:100%;white-space:normal;text-align:center;padding:6px 8px" onclick="setCharSuperchargedExTier(${idx})">${esc(t.label||('EX '+t.tier))}</button>`).join('')+`</div>`}
 const isRankingView=!!(d&&d.view_ranking&&(type==='character'||type==='unit'));
 if(isRankingView){const ck=detailRankingCacheKey(type,d.id);if(!_detailRankingStatsCache.has(ck)&&!_detailRankingStatsInflight.has(ck))void ensureDetailRankingStats(type,d.id).then(()=>{if(S.currentDetailData&&String(S.currentDetailData.id)===String(d.id)&&S.currentDetailType===type)updateDetailDynamicSections(type)}).catch(()=>{});}
 const gridCls=isRankingView?'stats-grid stats-grid--ranking-list':'stats-grid';
@@ -9708,8 +9784,24 @@ if(d.ex_supercharged_tiers)d.ex_supercharged_tiers.forEach(tier=>_noteStatValLen
 const gridScaleCls=maxValLen>=8?' stats-grid--val-xl':maxValLen>=7?' stats-grid--val-long':maxValLen>=6?' stats-grid--val-mid':'';
 return{head:`${th}${exRow}`,grid:`<div class="${gridCls}${gridScaleCls}">${body}</div>`}
 }
-function toggleConditionalPassive(c){S.conditionalPassiveActive=c;if(!c){S.charSuperchargedExTier=0;S.unitCondStackCount=0;S.unitHpAtkTierIndex=0;S.unitDamageTakenDefStacks=0}else{const d=S.currentDetailData,arr=d&&d.ex_supercharged_tiers;if(arr&&arr.length>1)S.charSuperchargedExTier=arr.length-1;if(d)_detailInitUnitCondControls(d)}invalidateDetailRankingCachesForPerspectiveChange();updateDetailDynamicSections(S.currentDetailType);syncNpcUnitConditionHighlights();/* CP stack/EX-tier rows can grow the header past the locked garage ::before box → flat #0a0e17 “black bars”. Same re-lock as PEP prefetch. */try{scheduleLockDetailCoverPaintBoxes()}catch(_){}}
-function setCharSuperchargedExTier(i){const d=S.currentDetailData,arr=d&&d.ex_supercharged_tiers;if(!arr||!arr.length)return;const n=arr.length;S.charSuperchargedExTier=Math.max(0,Math.min(Number(i)||0,n-1));updateDetailDynamicSections('character');try{scheduleLockDetailCoverPaintBoxes()}catch(_){}}
+function toggleConditionalPassive(c){
+S.conditionalPassiveActive=c;
+if(!c){S.charSuperchargedExTier=0;S.unitCondStackCount=0;S.unitHpAtkTierIndex=0;S.unitDamageTakenDefStacks=0}
+else{const d=S.currentDetailData,arr=d&&d.ex_supercharged_tiers;if(arr&&arr.length>1)S.charSuperchargedExTier=arr.length-1;if(d)_detailInitUnitCondControls(d)}
+invalidateDetailRankingCachesForPerspectiveChange();
+/* Soft path: keep toggle DOM + reserved stacks/EX tiers — no full dossier rebuild / cover re-lock flash. */
+updateDetailDynamicSections(S.currentDetailType,{keepToggles:true,softBody:true});
+try{_detailSoftSyncPilotEpToggleDom()}catch(_){}
+syncNpcUnitConditionHighlights();
+}
+function setCharSuperchargedExTier(i){
+const d=S.currentDetailData,arr=d&&d.ex_supercharged_tiers;
+if(!arr||!arr.length)return;
+const n=arr.length;
+S.charSuperchargedExTier=Math.max(0,Math.min(Number(i)||0,n-1));
+updateDetailDynamicSections('character',{keepToggles:true,softBody:true});
+try{_detailSoftSyncPilotEpToggleDom()}catch(_){}
+}
 function renderStageRestrictionItem(it){
 const o=it&&typeof it==='object'?it:{};
 const name=String(o.name||'').trim();
