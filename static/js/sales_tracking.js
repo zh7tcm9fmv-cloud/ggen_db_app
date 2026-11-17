@@ -640,25 +640,26 @@
       }
     });
     endMarks.sort(function (a, b) {
-      return a.y - b.y || a.rank - b.rank;
+      return a.y - b.y || a.rank - b.rank || String(a.code).localeCompare(String(b.code));
     });
+    /* Tight tip cluster (e.g. #3 + #7 ≈ 2px apart): stack from the tip.
+       Keep this small — #247 vs #281 is ~16px and must NOT share a cluster
+       (that wrongly nudged Singapore). */
+    var TIP_CLUSTER_Y = 8;
+    var NUDGE_X = 22;
+    var NUDGE_Y = 11;
+    var labelYMin = padT + 10;
+    var labelYMax = padT + plotH - 2;
+    var labelXMax = padL + plotW + padR - 8;
     var placed = [];
     endMarks.forEach(function (m) {
-      var labelX = m.x + 14;
-      var labelY = m.y + 4;
-      var tries = 0;
-      while (tries < 8) {
-        var hit = false;
-        placed.forEach(function (p) {
-          if (Math.abs(labelY - p.y) < 15 && Math.abs(labelX - p.x) < 40) hit = true;
-        });
-        if (!hit) break;
-        labelY += 14;
-        tries += 1;
+      var slot = 0;
+      for (var pi = 0; pi < placed.length; pi++) {
+        if (Math.abs(m.y - placed[pi].tipY) < TIP_CLUSTER_Y) slot += 1;
       }
-      labelX = Math.min(labelX, padL + plotW + padR - 8);
-      labelY = Math.min(Math.max(padT + 10, labelY), padT + plotH - 2);
-      placed.push({ x: labelX, y: labelY });
+      var labelX = Math.min(m.x + 14 + slot * NUDGE_X, labelXMax);
+      var labelY = Math.min(labelYMax, Math.max(labelYMin, m.y + slot * NUDGE_Y));
+      placed.push({ tipY: m.y, x: labelX, y: labelY });
       trails +=
         '<circle class="trk-dot" cx="' +
         m.x.toFixed(1) +
