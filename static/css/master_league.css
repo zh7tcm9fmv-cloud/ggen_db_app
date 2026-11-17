@@ -660,19 +660,41 @@ html[data-ui-lang="HR"] .ml-deploy-force-name {
 }
 @media (max-width: 768px) {
   .ml-deploy-body {
-    padding: 10px 12px 2px;
+    padding: 12px 10px 10px;
+  }
+  .ml-deploy-title {
+    font-size: clamp(11px, 3.2vw, 13px);
+    margin: 0 0 6px;
   }
   .ml-deploy-stage {
-    grid-template-columns: minmax(72px, 0.9fr) minmax(160px, 2fr) minmax(72px, 0.9fr);
-    gap: 4px 6px;
-    max-width: min(520px, 100%);
+    /* Give the board the width; squeeze force labels so EN names do not clip */
+    grid-template-columns: minmax(56px, 0.62fr) minmax(0, 2.6fr) minmax(56px, 0.62fr);
+    gap: 2px 4px;
+    max-width: 100%;
+    padding: 2px 0 4px;
   }
   .ml-deploy-side {
-    min-height: 110px;
-    padding: 2px 2px;
+    min-height: 0;
+    align-self: center;
+    padding: 2px 0;
+    overflow: hidden;
+  }
+  .ml-deploy-side::before {
+    inset: 8% -28%;
+    opacity: 0.32;
+  }
+  .ml-deploy-force-lab {
+    gap: 3px;
+    max-width: 100%;
   }
   .ml-deploy-force-name {
-    font-size: clamp(13px, 3.4vw, 16px);
+    font-size: clamp(9px, 2.6vw, 11px);
+    white-space: normal;
+    text-align: center;
+    line-height: 1.1;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    hyphens: auto;
   }
   html[data-ui-lang="JA"] .ml-deploy-force-name,
   html[data-ui-lang="JP"] .ml-deploy-force-name,
@@ -680,15 +702,68 @@ html[data-ui-lang="HR"] .ml-deploy-force-name {
   html[data-ui-lang="HK"] .ml-deploy-force-name,
   html[data-ui-lang="KR"] .ml-deploy-force-name,
   html[data-ui-lang="HR"] .ml-deploy-force-name {
-    font-size: clamp(18px, 4.6vw, 22px);
-    letter-spacing: 0.06em;
+    font-size: clamp(14px, 3.8vw, 18px);
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+  .ml-deploy-textline {
+    width: min(72px, 100%);
+    height: 7px;
+  }
+  .ml-deploy-grid {
+    gap: 2px;
+    width: 100%;
+    max-width: 100%;
+    padding: 1px;
+  }
+  .ml-deploy-num,
+  .ml-deploy-cell--num .ml-deploy-num {
+    font-size: clamp(11px, 3vw, 15px);
+  }
+}
+@media (max-width: 480px) {
+  /* Phone portrait: label · board · label — board stays square and readable */
+  .ml-deploy-stage {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+    max-width: 100%;
+  }
+  .ml-deploy-side {
+    min-height: 0;
+    padding: 0;
+    justify-content: flex-start;
+  }
+  .ml-deploy-side::before {
+    display: none;
+  }
+  .ml-deploy-force-lab {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    justify-content: center;
+  }
+  .ml-deploy-force-name {
+    font-size: clamp(11px, 3.2vw, 13px);
+    white-space: nowrap;
+  }
+  html[data-ui-lang="JA"] .ml-deploy-force-name,
+  html[data-ui-lang="JP"] .ml-deploy-force-name,
+  html[data-ui-lang="TW"] .ml-deploy-force-name,
+  html[data-ui-lang="HK"] .ml-deploy-force-name,
+  html[data-ui-lang="KR"] .ml-deploy-force-name,
+  html[data-ui-lang="HR"] .ml-deploy-force-name {
+    font-size: clamp(15px, 4.2vw, 18px);
   }
   .ml-deploy-textline {
     width: 88px;
-    height: 9px;
+    height: 8px;
   }
   .ml-deploy-grid {
-    gap: 3px;
+    width: min(100%, 320px);
+    margin: 0 auto;
   }
 }
 .ml-boost-banner > .ml-boost-card {
@@ -870,10 +945,10 @@ html[data-ui-lang="HR"] .ml-deploy-force-name {
   padding: 0 12px 10px;
   box-sizing: border-box;
 }
-/* Anchor: Base_02 plate — original scale, centered in banner */
+/* Anchor: Base_02 plate — cap 560px; full stack width on phones (was 78% → clipped Stage/tags) */
 .ml-boost-card--info-base .ml-boost-inner--info-base {
   position: relative;
-  width: min(560px, 78%);
+  width: min(560px, 100%);
   margin: 0 auto;
   display: block;
   padding: 0;
@@ -889,6 +964,8 @@ html[data-ui-lang="HR"] .ml-deploy-force-name {
   box-shadow: none;
   overflow: hidden;
   flex: 0 0 auto;
+  container-type: inline-size;
+  container-name: ml-boost-plate;
 }
 /* Schedule matches plate width, centered under it */
 .ml-boost-schedule {
@@ -897,7 +974,7 @@ html[data-ui-lang="HR"] .ml-deploy-force-name {
   align-items: stretch;
   justify-content: center;
   gap: 12px 28px;
-  width: min(560px, 78%);
+  width: min(560px, 100%);
   margin: 0 auto;
   padding: 4px 4px 2px;
   box-sizing: border-box;
@@ -1104,7 +1181,7 @@ html[data-ui-lang="HR"] .ml-deploy-force-name {
     linear-gradient(180deg, rgba(6, 10, 20, 0.2) 0%, transparent 35%, rgba(6, 10, 20, 0.35) 100%);
 }
 .ml-boost-card--portraits.ml-boost-card--info-base .ml-boost-inner--info-base {
-  width: min(560px, 78%);
+  width: min(560px, 100%);
   min-height: 0;
   padding: 0;
   gap: 0;
@@ -1253,6 +1330,75 @@ html[data-ui-lang="HR"] .ml-deploy-force-name {
 .ml-boost-tags .tag-composite {
   flex-shrink: 0;
   filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.65));
+}
+/*
+ * Info-base gold cell is narrow — never let the desktop max-content equalize grid
+ * expand past the Boost compartment (phones were overflowing ~70px).
+ */
+.ml-boost-card--info-base .ml-boost-tags,
+.ml-boost-card--info-base .ml-boost-tags:not(:has(> :not(.tag-composite))):has(> .tag-composite:nth-child(2)),
+.ml-boost-card--info-base .ml-boost-tags:not(:has(> :not(.tag-composite))):has(> .tag-composite:nth-child(2)):not(:has(> .tag-composite:nth-child(4))) {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 4px 6px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.ml-boost-card--info-base .ml-boost-tags > .tag-composite {
+  flex: 0 1 auto;
+  width: auto;
+  max-width: 100%;
+  min-width: 0;
+}
+.ml-boost-card--info-base .ml-boost-info-boost-main {
+  min-width: 0;
+  overflow: hidden;
+}
+.ml-boost-card--info-base .ml-boost-pct {
+  white-space: normal;
+  overflow: hidden;
+  max-width: 100%;
+}
+/* Scale type + tags with the gold plate itself (phones ~340cqw) */
+@container ml-boost-plate (max-width: 420px) {
+  .ml-boost-info-title {
+    font-size: clamp(10px, 3.8cqw, 13px);
+  }
+  .ml-boost-kicker,
+  .ml-boost-heading {
+    font-size: clamp(10px, 4cqw, 13px);
+  }
+  .ml-boost-terrain-name {
+    font-size: clamp(11px, 5cqw, 16px);
+  }
+  .ml-boost-terrain-ic {
+    width: 14px;
+    height: 14px;
+  }
+  .ml-boost-pct {
+    font-size: clamp(9px, 3.6cqw, 12px);
+    line-height: 1.1;
+  }
+  .ml-boost-tags {
+    gap: 2px 4px;
+  }
+  .ml-boost-tags > .tag-composite {
+    transform: scale(0.78);
+    transform-origin: left center;
+    margin-right: -8%;
+  }
+}
+@container ml-boost-plate (max-width: 360px) {
+  .ml-boost-tags > .tag-composite {
+    transform: scale(0.72);
+    margin-right: -12%;
+  }
 }
 
 /* Info panels */
@@ -1496,6 +1642,113 @@ button.ml-reward-chip {
     padding: 12px 0 12px;
     min-height: 172px;
   }
+  /* Info-base plate: hug content — do not force empty portrait chrome height */
+  .ml-boost-card.ml-boost-card--info-base {
+    min-height: 0;
+    padding: 10px 0 8px;
+  }
+  .ml-boost-stack {
+    padding: 0 6px 8px;
+    gap: 6px;
+  }
+  /*
+   * BoostInfoBase_02 on phone: 78% plate was ~260×67 — Stage clipped, tags max-content
+   * spilled ~70px past the gold cell. Use full width + cqw type + constrained tags.
+   */
+  .ml-boost-card--info-base .ml-boost-inner--info-base,
+  .ml-boost-card--portraits.ml-boost-card--info-base .ml-boost-inner--info-base,
+  .ml-boost-schedule {
+    width: min(560px, 100%);
+  }
+  .ml-boost-card--info-base .ml-boost-inner--info-base {
+    /* Slightly taller than 993:257 so buff line is not clipped under tags */
+    aspect-ratio: 993 / 300;
+  }
+  .ml-boost-card--info-base .ml-boost-info-title {
+    font-size: clamp(10px, 3.8cqw, 13px);
+    height: 26%;
+    top: 2%;
+  }
+  .ml-boost-card--info-base .ml-boost-info-stage {
+    left: 1.5%;
+    width: 22.5%;
+    top: 30%;
+    bottom: 6%;
+    overflow: hidden;
+  }
+  .ml-boost-card--info-base .ml-boost-info-boost-main {
+    left: 25.5%;
+    right: 1.5%;
+    top: 30%;
+    bottom: 6%;
+    padding: 2px 4px 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 2px;
+    overflow: hidden;
+  }
+  .ml-boost-card--info-base .ml-boost-kicker,
+  .ml-boost-card--info-base .ml-boost-heading {
+    font-size: clamp(10px, 4cqw, 13px);
+    line-height: 1.1;
+  }
+  .ml-boost-card--info-base .ml-boost-kicker {
+    top: 2px;
+    left: 4px;
+    right: 2px;
+  }
+  .ml-boost-card--info-base .ml-boost-terrain-name {
+    font-size: clamp(11px, 5cqw, 16px);
+  }
+  .ml-boost-card--info-base .ml-boost-terrain-ic {
+    width: 14px;
+    height: 14px;
+  }
+  .ml-boost-card--info-base .ml-boost-terrain-line {
+    gap: 2px 4px;
+    padding: 0 2px;
+    box-sizing: border-box;
+  }
+  /* Kill desktop max-content equalize grid — it overflows the gold Boost cell on phones */
+  .ml-boost-card--info-base .ml-boost-tags,
+  .ml-boost-card--info-base .ml-boost-tags:not(:has(> :not(.tag-composite))):has(> .tag-composite:nth-child(2)),
+  .ml-boost-card--info-base .ml-boost-tags:not(:has(> :not(.tag-composite))):has(> .tag-composite:nth-child(2)):not(:has(> .tag-composite:nth-child(4))) {
+    display: flex !important;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 2px 4px;
+    width: 100% !important;
+    max-width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    align-self: center;
+  }
+  .ml-boost-card--info-base .ml-boost-tags > .tag-composite {
+    flex: 0 1 auto;
+    width: auto !important;
+    max-width: 100%;
+    min-width: 0;
+    transform: scale(0.78);
+    transform-origin: left center;
+    margin-right: -8%;
+  }
+  .ml-boost-card--info-base .ml-boost-pct {
+    font-size: clamp(9px, 3.6cqw, 12px);
+    line-height: 1.1;
+    white-space: normal;
+    overflow: hidden;
+    max-width: 100%;
+  }
+  .ml-boost-sched-k {
+    font-size: clamp(8px, 2.4vw, 10px);
+  }
+  .ml-boost-sched-v {
+    font-size: clamp(10px, 2.8vw, 12px);
+  }
   .ml-boost-card--portraits .ml-boost-portrait {
     width: 50%;
     height: 100%;
@@ -1527,6 +1780,10 @@ button.ml-reward-chip {
 @media (max-width: 480px) {
   .ml-meta-grid {
     grid-template-columns: 1fr;
+  }
+  .ml-boost-card--info-base .ml-boost-tags > .tag-composite {
+    transform: scale(0.72);
+    margin-right: -12%;
   }
 }
 
