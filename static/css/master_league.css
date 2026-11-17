@@ -389,6 +389,7 @@
 }
 .ml-deploy-body {
   container-type: inline-size;
+  container-name: ml-deploy;
   /* BoostInfoBase_02 taper: Δy≈17, tip inset≈13 @ width 993 — silhouette only; gold = SVG stroke */
   --ml-deploy-taper-h: calc(100cqw * 17 / 993);
   --ml-deploy-taper-inset: calc(100cqw * 13 / 993);
@@ -396,7 +397,10 @@
   z-index: 1;
   display: flex;
   flex-direction: column;
-  padding: 14px 18px 16px;
+  padding:
+    clamp(8px, calc(14 * 100cqw / 720), 14px)
+    clamp(10px, calc(18 * 100cqw / 720), 18px)
+    clamp(10px, calc(16 * 100cqw / 720), 16px);
   box-sizing: border-box;
   border: none;
   outline: none;
@@ -465,8 +469,8 @@
 .ml-deploy-title {
   position: relative;
   z-index: 1;
-  margin: 0 0 8px;
-  font-size: clamp(12px, 1.5vw, 14px);
+  margin: 0 0 clamp(4px, calc(8 * 100cqw / 720), 8px);
+  font-size: clamp(10px, calc(14 * 100cqw / 720), 14px);
   font-weight: 800;
   letter-spacing: 0.04em;
   color: rgba(242, 245, 251, 0.92);
@@ -476,9 +480,10 @@
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(110px, 1fr) minmax(240px, 1.8fr) minmax(110px, 1fr);
+  /* Same 1 : 1.8 : 1 desktop ratio at every width (no minmax floors that break phones). */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.8fr) minmax(0, 1fr);
   align-items: center;
-  gap: 4px 8px;
+  gap: 4px clamp(4px, calc(8 * 100cqw / 720), 8px);
   width: 100%;
   max-width: min(720px, 100%);
   margin: 0 auto;
@@ -490,8 +495,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 160px;
-  padding: 4px 4px;
+  min-height: clamp(96px, calc(160 * 100cqw / 720), 160px);
+  padding: 4px clamp(2px, calc(4 * 100cqw / 720), 4px);
+  overflow: hidden;
 }
 /* In-game PartsText — a bit stronger than faint, still watermark (not white) */
 .ml-deploy-side::before {
@@ -530,7 +536,8 @@
   max-width: 100%;
 }
 .ml-deploy-force-name {
-  font-size: clamp(15px, 2.1vw, 20px);
+  /* Desktop 20px @ ~720 deploy width — same relative size on phones */
+  font-size: clamp(10px, calc(20 * 100cqw / 720), 20px);
   font-weight: 800;
   color: #fff;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
@@ -544,14 +551,14 @@ html[data-ui-lang="TW"] .ml-deploy-force-name,
 html[data-ui-lang="HK"] .ml-deploy-force-name,
 html[data-ui-lang="KR"] .ml-deploy-force-name,
 html[data-ui-lang="HR"] .ml-deploy-force-name {
-  font-size: clamp(22px, 3.1vw, 28px);
+  font-size: clamp(14px, calc(28 * 100cqw / 720), 28px);
   letter-spacing: 0.08em;
   line-height: 1.05;
 }
 .ml-deploy-textline {
   display: block;
-  width: 110px;
-  height: 11px;
+  width: clamp(64px, calc(110 * 100cqw / 720), 110px);
+  height: clamp(7px, calc(11 * 100cqw / 720), 11px);
   background-color: #fff;
   -webkit-mask-image: var(--ml-textline);
   mask-image: var(--ml-textline);
@@ -640,11 +647,11 @@ html[data-ui-lang="HR"] .ml-deploy-force-name {
 .ml-deploy-cell--ally.is-fp-lit.ml-deploy-fp-w,
 .ml-deploy-cell--ally.is-fp-on.ml-deploy-fp-w { --ml-fp-w: rgba(190, 220, 255, 0.98); }
 .ml-deploy-cell--num .ml-deploy-num {
-  font-size: clamp(13px, 2.2vw, 20px);
+  font-size: clamp(10px, calc(18 * 100cqw / 720), 20px);
 }
 .ml-deploy-num {
   font-family: var(--font-teko, Teko, Impact, sans-serif);
-  font-size: clamp(13px, 2.2vw, 20px);
+  font-size: clamp(10px, calc(18 * 100cqw / 720), 20px);
   font-weight: 600;
   line-height: 1;
   display: grid;
@@ -658,114 +665,7 @@ html[data-ui-lang="HR"] .ml-deploy-force-name {
   /* Teko sits optically high — nudge into true cell center */
   transform: translateY(0.06em);
 }
-@media (max-width: 768px) {
-  .ml-deploy-body {
-    padding: 12px 10px 10px;
-  }
-  .ml-deploy-title {
-    font-size: clamp(11px, 3.2vw, 13px);
-    margin: 0 0 6px;
-  }
-  .ml-deploy-stage {
-    /* Give the board the width; squeeze force labels so EN names do not clip */
-    grid-template-columns: minmax(56px, 0.62fr) minmax(0, 2.6fr) minmax(56px, 0.62fr);
-    gap: 2px 4px;
-    max-width: 100%;
-    padding: 2px 0 4px;
-  }
-  .ml-deploy-side {
-    min-height: 0;
-    align-self: center;
-    padding: 2px 0;
-    overflow: hidden;
-  }
-  .ml-deploy-side::before {
-    inset: 8% -28%;
-    opacity: 0.32;
-  }
-  .ml-deploy-force-lab {
-    gap: 3px;
-    max-width: 100%;
-  }
-  .ml-deploy-force-name {
-    font-size: clamp(9px, 2.6vw, 11px);
-    white-space: normal;
-    text-align: center;
-    line-height: 1.1;
-    max-width: 100%;
-    overflow-wrap: anywhere;
-    hyphens: auto;
-  }
-  html[data-ui-lang="JA"] .ml-deploy-force-name,
-  html[data-ui-lang="JP"] .ml-deploy-force-name,
-  html[data-ui-lang="TW"] .ml-deploy-force-name,
-  html[data-ui-lang="HK"] .ml-deploy-force-name,
-  html[data-ui-lang="KR"] .ml-deploy-force-name,
-  html[data-ui-lang="HR"] .ml-deploy-force-name {
-    font-size: clamp(14px, 3.8vw, 18px);
-    letter-spacing: 0.04em;
-    white-space: nowrap;
-  }
-  .ml-deploy-textline {
-    width: min(72px, 100%);
-    height: 7px;
-  }
-  .ml-deploy-grid {
-    gap: 2px;
-    width: 100%;
-    max-width: 100%;
-    padding: 1px;
-  }
-  .ml-deploy-num,
-  .ml-deploy-cell--num .ml-deploy-num {
-    font-size: clamp(11px, 3vw, 15px);
-  }
-}
-@media (max-width: 480px) {
-  /* Phone portrait: label · board · label — board stays square and readable */
-  .ml-deploy-stage {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 6px;
-    max-width: 100%;
-  }
-  .ml-deploy-side {
-    min-height: 0;
-    padding: 0;
-    justify-content: flex-start;
-  }
-  .ml-deploy-side::before {
-    display: none;
-  }
-  .ml-deploy-force-lab {
-    flex-direction: row;
-    align-items: center;
-    gap: 8px;
-    width: 100%;
-    justify-content: center;
-  }
-  .ml-deploy-force-name {
-    font-size: clamp(11px, 3.2vw, 13px);
-    white-space: nowrap;
-  }
-  html[data-ui-lang="JA"] .ml-deploy-force-name,
-  html[data-ui-lang="JP"] .ml-deploy-force-name,
-  html[data-ui-lang="TW"] .ml-deploy-force-name,
-  html[data-ui-lang="HK"] .ml-deploy-force-name,
-  html[data-ui-lang="KR"] .ml-deploy-force-name,
-  html[data-ui-lang="HR"] .ml-deploy-force-name {
-    font-size: clamp(15px, 4.2vw, 18px);
-  }
-  .ml-deploy-textline {
-    width: 88px;
-    height: 8px;
-  }
-  .ml-deploy-grid {
-    width: min(100%, 320px);
-    margin: 0 auto;
-  }
-}
+/* Mobile deploy = same 3-col composition as desktop (scaled via cqw above). No restack. */
 .ml-boost-banner > .ml-boost-card {
   position: relative;
   z-index: 1;
@@ -1331,73 +1231,38 @@ html[data-ui-lang="HR"] .ml-deploy-force-name {
   flex-shrink: 0;
   filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.65));
 }
-/*
- * Info-base gold cell is narrow — never let the desktop max-content equalize grid
- * expand past the Boost compartment (phones were overflowing ~70px).
- */
-.ml-boost-card--info-base .ml-boost-tags,
-.ml-boost-card--info-base .ml-boost-tags:not(:has(> :not(.tag-composite))):has(> .tag-composite:nth-child(2)),
-.ml-boost-card--info-base .ml-boost-tags:not(:has(> :not(.tag-composite))):has(> .tag-composite:nth-child(2)):not(:has(> .tag-composite:nth-child(4))) {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 4px 6px;
-  width: 100%;
-  max-width: 100%;
-  min-width: 0;
-  overflow: hidden;
-  box-sizing: border-box;
-}
-.ml-boost-card--info-base .ml-boost-tags > .tag-composite {
-  flex: 0 1 auto;
-  width: auto;
-  max-width: 100%;
-  min-width: 0;
-}
+/* Clip tag equalize overflow inside the gold Boost cell (desktop layout unchanged). */
 .ml-boost-card--info-base .ml-boost-info-boost-main {
   min-width: 0;
   overflow: hidden;
 }
-.ml-boost-card--info-base .ml-boost-pct {
-  white-space: normal;
-  overflow: hidden;
-  max-width: 100%;
-}
-/* Scale type + tags with the gold plate itself (phones ~340cqw) */
-@container ml-boost-plate (max-width: 420px) {
+/*
+ * Same desktop composition at every plate width — scale type/icons/tags with 560px artboard.
+ * Do not move compartments or change aspect; phones are a shrink of desktop.
+ */
+@container ml-boost-plate (max-width: 559px) {
   .ml-boost-info-title {
-    font-size: clamp(10px, 3.8cqw, 13px);
+    font-size: max(9px, calc(15 * 100cqw / 560));
   }
   .ml-boost-kicker,
   .ml-boost-heading {
-    font-size: clamp(10px, 4cqw, 13px);
+    font-size: max(9px, calc(16 * 100cqw / 560));
   }
   .ml-boost-terrain-name {
-    font-size: clamp(11px, 5cqw, 16px);
+    font-size: max(10px, calc(22 * 100cqw / 560));
   }
   .ml-boost-terrain-ic {
-    width: 14px;
-    height: 14px;
+    width: max(12px, calc(18 * 100cqw / 560));
+    height: max(12px, calc(18 * 100cqw / 560));
   }
   .ml-boost-pct {
-    font-size: clamp(9px, 3.6cqw, 12px);
-    line-height: 1.1;
+    font-size: max(9px, calc(15 * 100cqw / 560));
+    line-height: 1.15;
   }
+  /* Keep desktop equalize grid; shrink the whole chip row to plate scale */
   .ml-boost-tags {
-    gap: 2px 4px;
-  }
-  .ml-boost-tags > .tag-composite {
-    transform: scale(0.78);
-    transform-origin: left center;
-    margin-right: -8%;
-  }
-}
-@container ml-boost-plate (max-width: 360px) {
-  .ml-boost-tags > .tag-composite {
-    transform: scale(0.72);
-    margin-right: -12%;
+    transform: scale(calc(100cqw / 560));
+    transform-origin: left top;
   }
 }
 
@@ -1642,112 +1507,14 @@ button.ml-reward-chip {
     padding: 12px 0 12px;
     min-height: 172px;
   }
-  /* Info-base plate: hug content — do not force empty portrait chrome height */
+  /* Same desktop plate chrome — only hug empty portrait min-height on phones */
   .ml-boost-card.ml-boost-card--info-base {
     min-height: 0;
     padding: 10px 0 8px;
   }
   .ml-boost-stack {
-    padding: 0 6px 8px;
-    gap: 6px;
-  }
-  /*
-   * BoostInfoBase_02 on phone: 78% plate was ~260×67 — Stage clipped, tags max-content
-   * spilled ~70px past the gold cell. Use full width + cqw type + constrained tags.
-   */
-  .ml-boost-card--info-base .ml-boost-inner--info-base,
-  .ml-boost-card--portraits.ml-boost-card--info-base .ml-boost-inner--info-base,
-  .ml-boost-schedule {
-    width: min(560px, 100%);
-  }
-  .ml-boost-card--info-base .ml-boost-inner--info-base {
-    /* Slightly taller than 993:257 so buff line is not clipped under tags */
-    aspect-ratio: 993 / 300;
-  }
-  .ml-boost-card--info-base .ml-boost-info-title {
-    font-size: clamp(10px, 3.8cqw, 13px);
-    height: 26%;
-    top: 2%;
-  }
-  .ml-boost-card--info-base .ml-boost-info-stage {
-    left: 1.5%;
-    width: 22.5%;
-    top: 30%;
-    bottom: 6%;
-    overflow: hidden;
-  }
-  .ml-boost-card--info-base .ml-boost-info-boost-main {
-    left: 25.5%;
-    right: 1.5%;
-    top: 30%;
-    bottom: 6%;
-    padding: 2px 4px 4px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: stretch;
-    gap: 2px;
-    overflow: hidden;
-  }
-  .ml-boost-card--info-base .ml-boost-kicker,
-  .ml-boost-card--info-base .ml-boost-heading {
-    font-size: clamp(10px, 4cqw, 13px);
-    line-height: 1.1;
-  }
-  .ml-boost-card--info-base .ml-boost-kicker {
-    top: 2px;
-    left: 4px;
-    right: 2px;
-  }
-  .ml-boost-card--info-base .ml-boost-terrain-name {
-    font-size: clamp(11px, 5cqw, 16px);
-  }
-  .ml-boost-card--info-base .ml-boost-terrain-ic {
-    width: 14px;
-    height: 14px;
-  }
-  .ml-boost-card--info-base .ml-boost-terrain-line {
-    gap: 2px 4px;
-    padding: 0 2px;
-    box-sizing: border-box;
-  }
-  /* Kill desktop max-content equalize grid — it overflows the gold Boost cell on phones */
-  .ml-boost-card--info-base .ml-boost-tags,
-  .ml-boost-card--info-base .ml-boost-tags:not(:has(> :not(.tag-composite))):has(> .tag-composite:nth-child(2)),
-  .ml-boost-card--info-base .ml-boost-tags:not(:has(> :not(.tag-composite))):has(> .tag-composite:nth-child(2)):not(:has(> .tag-composite:nth-child(4))) {
-    display: flex !important;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 2px 4px;
-    width: 100% !important;
-    max-width: 100%;
-    min-width: 0;
-    overflow: hidden;
-    align-self: center;
-  }
-  .ml-boost-card--info-base .ml-boost-tags > .tag-composite {
-    flex: 0 1 auto;
-    width: auto !important;
-    max-width: 100%;
-    min-width: 0;
-    transform: scale(0.78);
-    transform-origin: left center;
-    margin-right: -8%;
-  }
-  .ml-boost-card--info-base .ml-boost-pct {
-    font-size: clamp(9px, 3.6cqw, 12px);
-    line-height: 1.1;
-    white-space: normal;
-    overflow: hidden;
-    max-width: 100%;
-  }
-  .ml-boost-sched-k {
-    font-size: clamp(8px, 2.4vw, 10px);
-  }
-  .ml-boost-sched-v {
-    font-size: clamp(10px, 2.8vw, 12px);
+    padding: 0 8px 8px;
+    gap: 8px;
   }
   .ml-boost-card--portraits .ml-boost-portrait {
     width: 50%;
@@ -1780,10 +1547,6 @@ button.ml-reward-chip {
 @media (max-width: 480px) {
   .ml-meta-grid {
     grid-template-columns: 1fr;
-  }
-  .ml-boost-card--info-base .ml-boost-tags > .tag-composite {
-    transform: scale(0.72);
-    margin-right: -12%;
   }
 }
 
