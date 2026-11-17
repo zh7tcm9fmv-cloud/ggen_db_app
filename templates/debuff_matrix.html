@@ -146,7 +146,7 @@ window.__GGEN_GAME_IMAGES_USE_CDN__={{ game_images_use_cdn|tojson }};
         <button type="button" class="dm-chip is-active" data-tag-group="four" aria-pressed="true" id="dmChipFour">Four</button>
         <button type="button" class="dm-chip is-active" data-tag-group="six" aria-pressed="true" id="dmChipSix">Six</button>
         <button type="button" class="dm-chip is-active" data-tag-group="new" aria-pressed="true" id="dmChipNew">New</button>
-        <button type="button" class="dm-chip is-active" data-tag-group="other" aria-pressed="true" id="dmChipOther">Other</button>
+        <button type="button" class="dm-chip" data-tag-group="other" aria-pressed="false" id="dmChipOther">Other</button>
         <button type="button" class="dm-chip" data-tag-group="series" aria-pressed="false" id="dmChipSeries">Other - Series</button>
       </nav>
     </div>
@@ -236,7 +236,7 @@ window.__GGEN_GAME_IMAGES_USE_CDN__={{ game_images_use_cdn|tojson }};
 window.__DM_CDN__={{ (image_cdn or '')|tojson }};
 </script>
 <script src="{{ url_for('static', filename='js/ggen_15.js') }}?v={{ app_js_version }}&dm=17" defer></script>
-<script src="{{ url_for('static', filename='js/debuff_matrix.js') }}?v={{ app_js_version }}&dm=17" defer></script>
+<script src="{{ url_for('static', filename='js/debuff_matrix.js') }}?v={{ app_js_version }}&dm=18" defer></script>
 {% include '_client_version_reload.html' %}
 {% include '_human_gate.html' %}
 </body>

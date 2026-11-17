@@ -141,7 +141,7 @@ window.__GGEN_GAME_IMAGES_USE_CDN__={{ game_images_use_cdn|tojson }};
         <button type="button" class="tm-chip is-active" data-group="four" aria-pressed="true" id="tmChipFour">Four</button>
         <button type="button" class="tm-chip is-active" data-group="six" aria-pressed="true" id="tmChipSix">Six</button>
         <button type="button" class="tm-chip is-active" data-group="new" aria-pressed="true" id="tmChipNew">New</button>
-        <button type="button" class="tm-chip is-active" data-group="other" aria-pressed="true" id="tmChipOther">Other</button>
+        <button type="button" class="tm-chip" data-group="other" aria-pressed="false" id="tmChipOther">Other</button>
         <button type="button" class="tm-chip" data-group="series" aria-pressed="false" id="tmChipSeries">Other - Series</button>
       </nav>
     </div>
@@ -233,7 +233,7 @@ window.__GGEN_GAME_IMAGES_USE_CDN__={{ game_images_use_cdn|tojson }};
 window.__TM_CDN__={{ (image_cdn or '')|tojson }};
 </script>
 <script src="{{ url_for('static', filename='js/ggen_15.js') }}?v={{ app_js_version }}&tm=nav17" defer></script>
-<script src="{{ url_for('static', filename='js/tag_matrix.js') }}?v={{ app_js_version }}&tm=nav17" defer></script>
+<script src="{{ url_for('static', filename='js/tag_matrix.js') }}?v={{ app_js_version }}&tm=nav18" defer></script>
 {% include '_client_version_reload.html' %}
 {% include '_human_gate.html' %}
 </body>

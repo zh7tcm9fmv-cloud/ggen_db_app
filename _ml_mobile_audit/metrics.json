@@ -1,0 +1,83 @@
+{
+  "vw": 390,
+  "bgSample": "url(\"https://zh7tcm9fmv-cloud.github.io/ggen_db_images/images/Master%20League/ML_GFight_BoostInfoBase_02.webp\")",
+  "plate": {
+    "x": 64.734375,
+    "y": 27.296875,
+    "w": 260.515625,
+    "h": 67.421875
+  },
+  "title": {
+    "x": 69.9375,
+    "y": 28.640625,
+    "w": 250.109375,
+    "h": 20.21875
+  },
+  "stage": {
+    "x": 69.9375,
+    "y": 51.5625,
+    "w": 56,
+    "h": 40.46875
+  },
+  "boost": {
+    "x": 132.453125,
+    "y": 51.5625,
+    "w": 187.59375,
+    "h": 40.46875
+  },
+  "tags": {
+    "x": 138.453125,
+    "y": 70.5,
+    "w": 258.96875,
+    "h": 20
+  },
+  "pct": {
+    "x": 138.453125,
+    "y": 90.5,
+    "w": 258.96875,
+    "h": 13.796875
+  },
+  "terrainName": "15px",
+  "heading": "13px",
+  "titleFs": "11px",
+  "deployBody": {
+    "x": 16,
+    "y": 189.546875,
+    "w": 358,
+    "h": 236.078125
+  },
+  "deployStage": {
+    "x": 28,
+    "y": 226.734375,
+    "w": 334,
+    "h": 196.890625
+  },
+  "grid": {
+    "x": 110.25,
+    "y": 230.734375,
+    "w": 169.484375,
+    "h": 184.890625
+  },
+  "sideE": {
+    "x": 28,
+    "y": 268.171875,
+    "w": 76.25,
+    "h": 110
+  },
+  "sideA": {
+    "x": 285.734375,
+    "y": 268.171875,
+    "w": 76.25,
+    "h": 110
+  },
+  "forceFs": "13.26px",
+  "overflow": {
+    "tagsRightPastPlate": 72,
+    "tagsBottomPastPlate": -4,
+    "pctRightPastPlate": 72,
+    "pctBottomPastPlate": 10,
+    "tagsRightPastBoost": 77,
+    "tagsBottomPastBoost": -2
+  },
+  "plateHtml": "Stage / Boost / Battle Deployment\nStage\nSpace\nBoost: Tag\nUnstoppable\nRed\nIncrease all Stats by 50%"
+}

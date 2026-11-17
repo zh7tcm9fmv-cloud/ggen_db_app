@@ -10,7 +10,7 @@
   var cacheByLang = {};
   var rows = [];
   var loadSeq = 0;
-  var API_SV = 9;
+  var API_SV = 10;
   var _colBags = { units: {}, supporters: {} };
 
   var TERRAIN_TYPE_ICONS = {
@@ -110,8 +110,8 @@
 
   var state = {
     lang: 'EN',
-    /* Multi-select — default majors only (no Other-Series). */
-    groups: { four: 1, six: 1, new: 1, other: 1 },
+    /* Multi-select — default majors only (OTHER / Series off until user opts in). */
+    groups: { four: 1, six: 1, new: 1 },
     role: 'ALL',
     rarity: 'UR',
     exclusive: true,
@@ -183,7 +183,7 @@
       exclusive: 'Exclusive rails',
       supports: 'Supporters',
       searchPh: 'Find tag (shippu, 疾風…)',
-      searchHint: 'Filters tag rows only — not unit names. Browse-style match: any locale / id / alias; spaces & commas = AND; -term excludes.',
+      searchHint: 'Match tag or unit/supporter name / id / alias (any locale). Spaces & commas = AND; -term excludes.',
       noMatch: 'No tags match that search.',
       noOwned: 'No owned kits match. Mark units/supporters on Collections (/col), then turn this on.',
       legFour: 'Four Major',
@@ -267,7 +267,7 @@
       exclusive: '互斥強調',
       supports: 'サポーター',
       searchPh: 'タグ検索（疾風…）',
-      searchHint: 'タグ行のみ絞り込み（ユニット名ではない）。全言語名／ID／別名。空白・カンマはAND、先頭-で除外。',
+      searchHint: 'タグ／ユニット／サポーター名／ID／別名で絞り込み（全言語）。空白・カンマはAND、先頭-で除外。',
       noMatch: '一致するタグがありません。',
       noOwned: '所持キットがありません。先にコレクション（/col）で所持を付けてからONにしてください。',
       legFour: '四大',
@@ -350,7 +350,7 @@
       exclusive: '強調互斥',
       supports: '支援人員',
       searchPh: '搜尋標籤（疾風、shippu…）',
-      searchHint: '只篩選標籤列，不是單位名稱。可用各語名稱／ID／別名；空白與逗號為 AND；-關鍵字排除。',
+      searchHint: '可用標籤／單位／支援人員名稱／ID／別名（各語）；空白與逗號為 AND；-關鍵字排除。',
       noMatch: '沒有符合的標籤。',
       noOwned: '沒有符合的持有機體。請先到收藏（/col）標記持有，再開啟此篩選。',
       legFour: '四大',
@@ -433,7 +433,7 @@
       exclusive: '強調互斥',
       supports: '支援人員',
       searchPh: '搜尋標籤（疾風、shippu…）',
-      searchHint: '只篩選標籤列，不是單位名稱。可用各語名稱／ID／別名；空白與逗號為 AND；-關鍵字排除。',
+      searchHint: '可用標籤／單位／支援人員名稱／ID／別名（各語）；空白與逗號為 AND；-關鍵字排除。',
       noMatch: '沒有符合的標籤。',
       noOwned: '沒有符合的持有機體。請先到收藏（/col）標記持有，再開啟此篩選。',
       legFour: '四大',
@@ -516,7 +516,7 @@
       exclusive: '상호 배타 강조',
       supports: '서포터',
       searchPh: '태그 검색（疾風…）',
-      searchHint: '태그 행만 필터（유닛 이름 아님）. 모든 언어 이름／ID／별명. 공백·쉼표는 AND, 앞의 -로 제외.',
+      searchHint: '태그／유닛／서포터 이름／ID／별명으로 필터（모든 언어）. 공백·쉼표는 AND, 앞의 -로 제외.',
       noMatch: '일치하는 태그가 없습니다.',
       noOwned: '보유 키트가 없습니다. 먼저 컬렉션（/col）에서 보유를 표시한 뒤 ON 하세요.',
       legFour: '사대',
@@ -593,6 +593,29 @@
     if (s.indexOf('/images/') === 0) return cdn + s;
     return s;
   }
+  /* jsDelivr flakes under thumb storms → one-shot github.io mirror, then hide. */
+  function matrixThumOnError(img) {
+    if (!img) return;
+    if (img.getAttribute('data-ggen-fb') === '1') {
+      img.style.visibility = 'hidden';
+      return;
+    }
+    var s = String(img.currentSrc || img.src || '');
+    var next = '';
+    if (/cdn\.jsdelivr\.net\/gh\//i.test(s)) {
+      next = s.replace(
+        /^https?:\/\/cdn\.jsdelivr\.net\/gh\/([^/@]+)\/([^/@]+)(?:@[^/]+)?\//i,
+        'https://$1.github.io/$2/'
+      );
+    }
+    if (next && next !== s) {
+      img.setAttribute('data-ggen-fb', '1');
+      img.src = next;
+      return;
+    }
+    img.style.visibility = 'hidden';
+  }
+  window.__ggenMatrixThumErr = matrixThumOnError;
   function readLang() {
     try {
       var L = (localStorage.getItem(STORAGE_LANG) || 'EN').toUpperCase();
@@ -753,7 +776,7 @@
         sz +
         '" height="' +
         sz +
-        '" onerror="this.style.visibility=\'hidden\'">'
+        '" onerror="window.__ggenMatrixThumErr&&window.__ggenMatrixThumErr(this)">'
       : '';
     var limRibbon =
       item.is_limited_time && opts.showLimBadge ? limitedBadgeHtml(kind) : '';
@@ -1425,6 +1448,19 @@
       var rawAliases = TAG_SEARCH_ALIASES[String(row.raw_id)] || [];
       for (var j = 0; j < rawAliases.length; j++) parts.push(rawAliases[j]);
     }
+    /* Also match unit / supporter names + ids on the row (e.g. Griepe → Tough as Nails). */
+    function pushCard(it) {
+      if (!it) return;
+      if (it.id) parts.push(String(it.id));
+      if (it.name) parts.push(String(it.name));
+    }
+    var units = (row && row.units) || {};
+    ['1', '2', '3'].forEach(function (ri) {
+      var list = units[ri] || [];
+      for (var u = 0; u < list.length; u++) pushCard(list[u]);
+    });
+    var supports = (row && row.supports) || [];
+    for (var s = 0; s < supports.length; s++) pushCard(supports[s]);
     return parts.join(' ').toLowerCase();
   }
 

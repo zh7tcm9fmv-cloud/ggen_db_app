@@ -24590,6 +24590,22 @@ def _matrix_force_live_build():
         return False
 
 
+def _matrix_bust_live_caches(cache_key):
+    """Drop published gzip + decoded board for this key so ?live=1 actually rebuilds.
+
+    Published serve and live rebuild share the same cache_key. Without a bust,
+    jsonify_preserialized() early-returns the stale published gzip via
+    try_serve_preserialized() even after a fresh in-memory rebuild (Griepe EX
+    invisible on /tm+/dm until boards were force-rebuilt with env).
+    """
+    ck = str(cache_key or '')
+    if not ck:
+        return
+    _http_json_body_cache_drop_prefix(ck)
+    with _api_cache_lock:
+        _api_cache.pop(ck, None)
+
+
 def _matrix_published_gz_path(kind, lc):
     ver = _TAG_MATRIX_PUBLISHED_V if kind == 'tag' else _DEBUFF_MATRIX_PUBLISHED_V
     return os.path.join(_MATRIX_PUBLISHED_DIR, f'{kind}_matrix_v{ver}_{lc}.json.gz')
@@ -24618,15 +24634,18 @@ def api_tag_matrix():
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
         ck = f'tag_matrix_v9_{lc}_{lr_schedule_cache_key_fragment()}'
         # Prefer published gzip bytes — never keep decoded multi‑MB boards in `_api_cache`.
-        if not _matrix_force_live_build():
+        force_live = _matrix_force_live_build()
+        if force_live:
+            _matrix_bust_live_caches(ck)
+        else:
             pub_resp = _serve_published_gzip_json(
                 _matrix_published_gz_path('tag', lc), ck, max_age=3600, public=True,
             )
             if pub_resp is not None:
                 return pub_resp
-        cached = get_cached_response(ck)
-        if cached:
-            return jsonify_preserialized(cached, ck, public=True, max_age=3600, convert_images=False)
+            cached = get_cached_response(ck)
+            if cached:
+                return jsonify_preserialized(cached, ck, public=True, max_age=3600, convert_images=False)
         ld = get_lang_data(lc)
         buckets = {}
         row_order = []  # bucket keys in display order
@@ -25196,15 +25215,18 @@ def api_debuff_matrix():
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
         ck = f'debuff_matrix_v15_{lc}_{lr_schedule_cache_key_fragment()}'
-        if not _matrix_force_live_build():
+        force_live = _matrix_force_live_build()
+        if force_live:
+            _matrix_bust_live_caches(ck)
+        else:
             pub_resp = _serve_published_gzip_json(
                 _matrix_published_gz_path('debuff', lc), ck, max_age=3600, public=True,
             )
             if pub_resp is not None:
                 return pub_resp
-        cached = get_cached_response(ck)
-        if cached:
-            return jsonify_preserialized(cached, ck, public=True, max_age=3600, convert_images=False)
+            cached = get_cached_response(ck)
+            if cached:
+                return jsonify_preserialized(cached, ck, public=True, max_age=3600, convert_images=False)
         ld = get_lang_data(lc)
         buckets = {}
         row_order = []

@@ -14,7 +14,7 @@
   var debuffDefs = [];
   var loadSeq = 0;
   var EAGER_THUMB_BUDGET = 24;
-  var API_SV = 15;
+  var API_SV = 16;
   var terrainById = Object.create(null);
   var itemByKey = Object.create(null);
   var hoverPortalEl = null;
@@ -187,7 +187,8 @@
 
   var state = {
     lang: 'EN',
-    tagGroups: { four: 1, six: 1, new: 1, other: 1 },
+    /* Majors only by default — OTHER / Series off until user opts in (lighter first paint). */
+    tagGroups: { four: 1, six: 1, new: 1 },
     debuffGroups: {
       stat: 1,
       power: 1,
@@ -528,6 +529,29 @@
     if (s.indexOf('/images/') === 0) return cdn + s;
     return s;
   }
+  /* jsDelivr flakes under thumb storms → one-shot github.io mirror, then hide. */
+  function matrixThumOnError(img) {
+    if (!img) return;
+    if (img.getAttribute('data-ggen-fb') === '1') {
+      img.style.visibility = 'hidden';
+      return;
+    }
+    var s = String(img.currentSrc || img.src || '');
+    var next = '';
+    if (/cdn\.jsdelivr\.net\/gh\//i.test(s)) {
+      next = s.replace(
+        /^https?:\/\/cdn\.jsdelivr\.net\/gh\/([^/@]+)\/([^/@]+)(?:@[^/]+)?\//i,
+        'https://$1.github.io/$2/'
+      );
+    }
+    if (next && next !== s) {
+      img.setAttribute('data-ggen-fb', '1');
+      img.src = next;
+      return;
+    }
+    img.style.visibility = 'hidden';
+  }
+  window.__ggenMatrixThumErr = matrixThumOnError;
   function readLang() {
     try {
       var L = (localStorage.getItem(STORAGE_LANG) || 'EN').toUpperCase();
@@ -784,6 +808,18 @@
       var rawAliases = TAG_SEARCH_ALIASES[String(row.raw_id)] || [];
       for (var j = 0; j < rawAliases.length; j++) parts.push(rawAliases[j]);
     }
+    function pushCard(it) {
+      if (!it) return;
+      if (it.id) parts.push(String(it.id));
+      if (it.name) parts.push(String(it.name));
+    }
+    var units = (row && row.units) || {};
+    ['1', '2', '3'].forEach(function (ri) {
+      var list = units[ri] || [];
+      for (var u = 0; u < list.length; u++) pushCard(list[u]);
+    });
+    var supports = (row && row.supports) || [];
+    for (var s = 0; s < supports.length; s++) pushCard(supports[s]);
     return parts.join(' ').toLowerCase();
   }
 
@@ -885,7 +921,7 @@
         sz +
         '" height="' +
         sz +
-        '" onerror="this.style.visibility=\'hidden\'">'
+        '" onerror="window.__ggenMatrixThumErr&&window.__ggenMatrixThumErr(this)">'
       : '';
     var limRibbon =
       item.is_limited_time && opts.showLimBadge ? limitedBadgeHtml(kind) : '';
