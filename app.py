@@ -21071,9 +21071,20 @@ def _prewarm_latest_release_caches():
 
 
 def _prewarm_whats_new_caches():
-    """Seed /api/whats_new so the news modal is not a multi-second delta rebuild cold."""
+    """Seed /api/whats_new for default locale only.
+
+    History delta rebuild across every locale at boot spiked RSS (~3GB observed
+    2026-11-17). One warm locale is enough for the common path; others fill on demand.
+    """
+    langs = []
+    for lc in (DEFAULT_LANG, 'EN'):
+        if lc and lc not in langs:
+            langs.append(lc)
+    have = set((LANG_DATA or {}).keys()) if LANG_DATA else set()
+    if have:
+        langs = [lc for lc in langs if lc in have] or list(have)[:1]
     warmed = 0
-    for lc in _prewarm_lang_list():
+    for lc in langs[:1]:
         try:
             with app.test_request_context(f'/api/whats_new?lang={lc}'):
                 api_whats_new()
