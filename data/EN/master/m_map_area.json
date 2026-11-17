@@ -308,6 +308,28 @@
     "AreaUniqueName": "hlv"
   },
   {
+    "Id": 217000500302000001,
+    "MapStageId": 217000500302000000,
+    "GroupNumber": 0,
+    "TargetAreaTypeIndex": 2,
+    "AreaPositionTypeIndex": 2,
+    "CoordX": 8,
+    "CoordY": 8,
+    "CoordW": 2,
+    "CoordH": 6,
+    "IngameEventConditionParameterTypeIndex": 0,
+    "IngameEventConditionParameterValue": "",
+    "PinX": 8,
+    "PinY": 8,
+    "PinW": 2,
+    "PinH": 6,
+    "AreaArrivalTypeIndex": 0,
+    "UnitAreaSize": 0,
+    "IsDisplayPin": true,
+    "IsDisplayArea": true,
+    "AreaUniqueName": "1"
+  },
+  {
     "Id": 219000500202000001,
     "MapStageId": 219000500202000000,
     "GroupNumber": 0,

@@ -3308,16 +3308,120 @@
     "value": "Scorpio MA"
   },
   {
+    "id": 110100001217000100,
+    "value": "Gundam Geminass 01"
+  },
+  {
     "id": 110100001217000110,
     "value": "Gundam Geminass 01"
+  },
+  {
+    "id": 110100001217000200,
+    "value": "Gundam Geminass 01 Assault Booster"
+  },
+  {
+    "id": 110100001217000300,
+    "value": "Gundam Geminass 02"
   },
   {
     "id": 110100001217000310,
     "value": "Gundam Geminass 02"
   },
   {
+    "id": 110100001217000400,
+    "value": "Gundam Geminass 02 Assault Booster"
+  },
+  {
+    "id": 110100001217000500,
+    "value": "Vayeate Suivant"
+  },
+  {
     "id": 110100001217000510,
     "value": "Vayeate Suivant"
+  },
+  {
+    "id": 110100001217000600,
+    "value": "Hydra Gundam"
+  },
+  {
+    "id": 110100001217000650,
+    "value": "Hydra Gundam (EX)"
+  },
+  {
+    "id": 110100001217000700,
+    "value": "D-Unit"
+  },
+  {
+    "id": 110100001217000800,
+    "value": "Leo Space Type (MO-V)"
+  },
+  {
+    "id": 110100001217000900,
+    "value": "Leo EWAC Type"
+  },
+  {
+    "id": 110100001217001000,
+    "value": "OZ Prize's Taurus"
+  },
+  {
+    "id": 110100001217001100,
+    "value": "OZ Prize's Taurus [MA]"
+  },
+  {
+    "id": 110100001217001200,
+    "value": "OZ Prize's Leo"
+  },
+  {
+    "id": 110100001217001300,
+    "value": "Leo-R"
+  },
+  {
+    "id": 110100001217001400,
+    "value": "Leo-S"
+  },
+  {
+    "id": 110100001217001500,
+    "value": "Leo-N"
+  },
+  {
+    "id": 110100001217001600,
+    "value": "Gundam Aesculapius"
+  },
+  {
+    "id": 110100001217001710,
+    "value": "Gundam Aesculapius (PX Mode)"
+  },
+  {
+    "id": 110100001217001800,
+    "value": "Mercurius Suivant"
+  },
+  {
+    "id": 110100001217001900,
+    "value": "Gundam L.O. Booster"
+  },
+  {
+    "id": 110100001217002000,
+    "value": "Gundam L.O. Booster (High-Speed Mode)"
+  },
+  {
+    "id": 110100001217002100,
+    "value": "Gundam Griepe"
+  },
+  {
+    "id": 110100001217002150,
+    "value": "Gundam Griepe (EX)"
+  },
+  {
+    "id": 110100001217002200,
+    "value": "Gundam Griepe [MA]"
+  },
+  {
+    "id": 110100001217002300,
+    "value": "Gundam Burnlapius"
+  },
+  {
+    "id": 110100001217002410,
+    "value": "Gundam Burnlapius (PX Mode)"
   },
   {
     "id": 110100001219000100,
@@ -7008,6 +7112,10 @@
     "value": "-"
   },
   {
+    "id": 110100002217000100,
+    "value": "Grand Chario"
+  },
+  {
     "id": 110100002230000100,
     "value": "Freeden"
   },
@@ -10193,15 +10301,107 @@
   },
   {
     "id": 110200001217000100,
-    "value": "The first prototype Mobile Suit, developed in secret on the MO-V industrial satellite.\nThe cockpit serves as the core component, with the ability to mix-and-match modular G-Units to maximize performance across diverse environments.\nEven at the base level its performance dwarfs that of mass-produced suits, and its rich arsenal includes an Accelerate Rifle and Beam Swords.\nIts PX System boosts performance based on the pilot's psychological state for a short time, but its use requires ability, training, and calibrations unique to each pilot."
+    "value": "The first prototype mobile suit developed in secret on the mining asteroid colony MO-V.\nThe cockpit serves as the core unit, with the ability to mix and match modular G-Units to maximize performance across diverse environments.\nEven at the base level, its performance dwarfs that of mass-produced suits, and its rich arsenal includes an Accelerate Rifle and beam swords.\nIts PX System boosts performance based on the pilot's psychological state for a short time, but its use requires ability, training, and calibrations unique to each pilot."
+  },
+  {
+    "id": 110200001217000200,
+    "value": "A modified Geminass 01 with boosters for zero-g operations.\nThe thrusters on its shoulders, legs, and back give it exceptional maneuverability in zero-g environments.\nThough called the Geminass during the initial development stage, test pilot Odin Barnet dubbed it the Gundam Geminass for its role in fighting for liberation and the colonies."
   },
   {
     "id": 110200001217000300,
-    "value": "The second prototype Mobile Suit, developed in secret on the MO-V industrial satellite.\nThe cockpit serves as the core component, with the ability to mix-and-match modular G-Units to maximize performance across diverse environments.\nThe sole feature distinguishing it from the 01 is its blue coloring."
+    "value": "The second prototype mobile suit developed in secret on the mining asteroid colony MO-V.\nThe cockpit serves as the core unit, with the ability to mix and match modular G-Units to maximize performance across diverse environments.\nThe sole feature distinguishing it from the 01 is its blue coloring."
+  },
+  {
+    "id": 110200001217000400,
+    "value": "A modified Geminass 02 with boosters for zero-g operations.\nThe thrusters on its shoulders, legs, and back give it exceptional maneuverability in zero-g environments.\nIt was severely damaged after charging into a cluster of space mines to protect the Geminass 01 during a battle with OZ Prize's Stardust Knights."
   },
   {
     "id": 110200001217000500,
     "value": "A customized OZ Prize Vayeate.\nAn improvement on the Vayeate developed by the OZ equipped with dual Beam Cannons and Beam Generators, it dwarfs the original in terms of sheer firepower.\nThese machines were used by the personal guard of OZ Prize's Valder Farkill."
+  },
+  {
+    "id": 110200001217000600,
+    "value": "A high-spec prototype suit developed by OZ to combat the five rebel colony Gundams, though some say it was actually intended to go after the Epyon.\nBeing able to retract its legs into its body to use as a propulsion system gives it a solid edge over other suits in terms of zero-g mobility.\nIts Nervous Feedback System links the suit's sensors with the pilot's nervous system, giving them full situational awareness and the ability to attack a target simply by thinking about it.\nIt comes equipped with powerful Buster Cannons in its shoulders, along with a deployable back-mounted Shoulder Claw for closer fights.\nThe Shoulder Claw can also be detached and guided via wire for long-distance attacks."
+  },
+  {
+    "id": 110200001217000650,
+    "value": "-"
+  },
+  {
+    "id": 110200001217000700,
+    "value": "An unmanned mobile suit developed on MO-V.\nThese Leos were upgraded for colony defense purposes using OZ's mobile doll data.\nStreamlined for zero-g battles and base defense with large thrusters for legs and beam cannons for arms; every superfluous part has been removed.\nSurprisingly powerful for the cost, these drones managed to beat back the enemy forces centered around the Virgo II."
+  },
+  {
+    "id": 110200001217000800,
+    "value": "A Leo Space Type belonging to MO-V.\nAs the main workhorse of the Alliance forces, the Leo is deployed in many regions of space, and MO-V also employs them for defensive purposes.\nIt has the letters \"MO-V\" on its chest, but performance-wise, it is no different from a regular Leo.\nWhen the MO-V came under attack by OZ Prize, these were used to defend it.\nDue to a lack of trained and experienced pilots, they were hard-pressed against a squad of Tauruses."
+  },
+  {
+    "id": 110200001217000900,
+    "value": "An OZ Prize Leo scout.\nEnhanced for search and communication, it comes equipped with an oversized head-mounted radar dish and multiple camera eyes.\nThough sent to the MO-V industrial satellite to collect intel on the G-Units, they were spotted by the Geminass 01 and a skirmish ensued."
+  },
+  {
+    "id": 110200001217001000,
+    "value": "An OZ Prize Taurus.\nThe Taurus is the main workhorse of the OZ Space Forces, in place of the Leo.\nIt is equipped with a transforming mechanism that allows it to take on a Mobile Armor form, and it has high mobility of its own.\nThis made it a unit fielded even by OZ Prize.\nLarge numbers of this machine were fielded in OZ Prize's attack on MO-V, and they overwhelmed MO-V's main defense, a team of Leos sent to intercept."
+  },
+  {
+    "id": 110200001217001100,
+    "value": "-"
+  },
+  {
+    "id": 110200001217001200,
+    "value": "An OZ Prize Leo.\nThis machine stood out as easy to mass-produce and easy to apply toward many purposes.\nIt was manufactured in large numbers to be the mainline unit of the Alliance Forces, and some were also deployed to OZ Prize.\nIt has no major differences from a stock Leo other than its custom color scheme."
+  },
+  {
+    "id": 110200001217001300,
+    "value": "A customized OZ Prize Leo.\nThe personal suit of Kratz Silvy, this upgraded Leo is highly-enhanced for greater maneuverability.\nIts long Beam Lance makes it deadly in close quarters.\nWhile it participated in the attack against the MO-V, it could not quite match the performance of a Gundam."
+  },
+  {
+    "id": 110200001217001400,
+    "value": "A customized OZ Prize Leo.\nThe personal suit of Roche Nattono, this upgraded Leo has increased overall performance.\nThough equipped with standard weapons, this well-balanced machine is a threat both at close quarters and at a distance.\nThe cape draped from its shoulders is perhaps a reflection of Roche's personal taste.\nWhile it participated in the attack against the MO-V, it could not quite match the performance of a Gundam."
+  },
+  {
+    "id": 110200001217001500,
+    "value": "A customized OZ Prize Leo.\nThe personal suit of Broom Brooks, this upgraded Leo is heavily armored with greatly enhanced power and defense.\nIts armor is more than enough to repel bullets from an opposing Leo's Machine Gun.\nWhile it participated in the attack against the MO-V, it could not quite match the performance of a Gundam."
+  },
+  {
+    "id": 110200001217001600,
+    "value": "A Geminass 02 captured by OZ Prize with upgraded armor and enhanced hardware.\nIts ability to transform into close combat mode allows it to maintain top performance in any battlefield.\nThe PX System is carried over from the base model, meaning that the Aesculapius outstrips the Geminass in terms of total offensive ability.\nIn addition to the standard Beam Sword and Rapid Shot, switching to close combat mode allows it to unleash its secret weapon, the Python Claw."
+  },
+  {
+    "id": 110200001217001700,
+    "value": "A high-mobility assault-type OZ Prize mobile suit.\nThis suit is a captured Geminass 02 with upgraded armor and enhanced hardware.\nIts ability to transform into close combat mode via a deformation mechanism allows it to maintain top performance on any battlefield.\nIn addition to the standard beam sword and Rapid Shot, switching to close combat mode allows it to unleash its secret weapon: the Python Claw.\nThe PX System is carried over from the Geminass 02, meaning that the Aesculapius outstrips the Geminass in terms of total offensive ability."
+  },
+  {
+    "id": 110200001217001800,
+    "value": "A customized OZ Prize Mercurius.\nAn improvement on the Mercurius developed by OZ, it retains its specialization in defense and enemy management.\nA vast increase in its number of Planet Defensers offers better overall performance than the base model.\nThough generally a suit meant to be piloted, it can also be used as a mobile doll.\nThese machines were used by the personal guard of Valder Farkill, commander of OZ Prize."
+  },
+  {
+    "id": 110200001217001900,
+    "value": "A Geminass 01 equipped with a System 03 L.O. Booster unit for enhanced mobility.\nThe system's generator and boosters work to increase both output and propulsion exponentially, and it now has the added ability to shift into a simple, high-speed flight mode.\nAdditionally, a large radar system supports the suit at high speeds, improving its ability to seek out the enemy.\nIts primary weapon has been switched out to a Lightweight Accelerate Submachine Gun, and the Thrust Beam Cannons contained in each of its shoulders' reactive units give it long-range capabilities."
+  },
+  {
+    "id": 110200001217002000,
+    "value": "-"
+  },
+  {
+    "id": 110200001217002100,
+    "value": "Based on an OZ transforming Mobile Suit prototype and built in secret by Odel Barnet.\nThis high-performance machine combines the best in offense, defense, and mobility.\nShifting from Mobile Armor to an intermediary Assault Mode allows the Griepe to stay highly mobile regardless of the environment, with an output three times higher than that of the Geminass.\nIts MSCS (Mind Sync Control System) allows the unit to be controlled directly through the pilot's nervous system, helping to reduce the strain caused by piloting the suit during high-speed maneuvers.\nEquipped with an exceedingly powerful Beam Lancer and a Hyper Mega Particle Launcher, it can also fire its Buster Mega Particle Cannon while in Mobile Armor mode.\nThe reflect shields on each shoulder can be used to neutralize Beam Weapons."
+  },
+  {
+    "id": 110200001217002150,
+    "value": "Based on an OZ transforming Mobile Suit prototype and built in secret by Odel Barnet.\nThis high-performance machine combines the best in offense, defense, and mobility.\nShifting from Mobile Armor to an intermediary Assault Mode allows the Griepe to stay highly mobile regardless of the environment, with an output three times higher than that of the Geminass.\nIts MSCS (Mind Sync Control System) allows the unit to be controlled directly through the pilot's nervous system, helping to reduce the strain caused by piloting the suit during high-speed maneuvers.\nEquipped with an exceedingly powerful Beam Lancer and a Hyper Mega Particle Launcher, it can also fire its Buster Mega Particle Cannon while in Mobile Armor mode.\nThe reflect shields on each shoulder can be used to neutralize Beam Weapons."
+  },
+  {
+    "id": 110200001217002200,
+    "value": "-"
+  },
+  {
+    "id": 110200001217002300,
+    "value": "A further upgraded version of OZ Prize's Gundam Aesculapius.\nIts visual similarities belie a total performance overhaul, and it now comes equipped with a bayonet.\nThe PX System carried over from the base model offers high performance for pilots who can handle it.\nKratz Silvy piloted the Burnlapius to intercept MO-V's Gundams during the battle with the Grand Chario."
+  },
+  {
+    "id": 110200001217002400,
+    "value": "A high-mobility assault-type OZ Prize mobile suit.\nThis suit is an upgraded version of OZ Prize's Gundam Aesculapius that has undergone a total performance overhaul.\nThe PX System carried over from the base model offers greatly increased performance for pilots who can handle it.\nIt was deployed to intercept MO-V's Gundams during the battle with the Grand Chario, but self-destructed due to a PX System overload."
   },
   {
     "id": 110200001219000100,
@@ -13505,6 +13705,10 @@
   },
   {
     "id": 110200002210000800,
+    "value": "-"
+  },
+  {
+    "id": 110200002217000100,
     "value": "-"
   },
   {
@@ -17100,16 +17304,120 @@
     "value": "Scorpio MA"
   },
   {
+    "id": 110300001217000100,
+    "value": "Gundam Geminass 01"
+  },
+  {
     "id": 110300001217000110,
     "value": "Gundam Geminass 01"
+  },
+  {
+    "id": 110300001217000200,
+    "value": "Gundam Geminass 01 Assault Booster"
+  },
+  {
+    "id": 110300001217000300,
+    "value": "Gundam Geminass 02"
   },
   {
     "id": 110300001217000310,
     "value": "Gundam Geminass 02"
   },
   {
+    "id": 110300001217000400,
+    "value": "Gundam Geminass 02 Assault Booster"
+  },
+  {
+    "id": 110300001217000500,
+    "value": "Vayeate Suivant"
+  },
+  {
     "id": 110300001217000510,
     "value": "Vayeate Suivant"
+  },
+  {
+    "id": 110300001217000600,
+    "value": "Hydra Gundam"
+  },
+  {
+    "id": 110300001217000650,
+    "value": "Hydra Gundam (EX)"
+  },
+  {
+    "id": 110300001217000700,
+    "value": "D-Unit"
+  },
+  {
+    "id": 110300001217000800,
+    "value": "Leo Space Type (MO-V)"
+  },
+  {
+    "id": 110300001217000900,
+    "value": "Leo EWAC Type"
+  },
+  {
+    "id": 110300001217001000,
+    "value": "OZ Prize's Taurus"
+  },
+  {
+    "id": 110300001217001100,
+    "value": "OZ Prize's Taurus [MA]"
+  },
+  {
+    "id": 110300001217001200,
+    "value": "OZ Prize's Leo"
+  },
+  {
+    "id": 110300001217001300,
+    "value": "Leo-R"
+  },
+  {
+    "id": 110300001217001400,
+    "value": "Leo-S"
+  },
+  {
+    "id": 110300001217001500,
+    "value": "Leo-N"
+  },
+  {
+    "id": 110300001217001600,
+    "value": "Gundam Aesculapius"
+  },
+  {
+    "id": 110300001217001710,
+    "value": "Gundam Aesculapius (PX Mode)"
+  },
+  {
+    "id": 110300001217001800,
+    "value": "Mercurius Suivant"
+  },
+  {
+    "id": 110300001217001900,
+    "value": "Gundam L.O. Booster"
+  },
+  {
+    "id": 110300001217002000,
+    "value": "Gundam L.O. Booster (High-Speed Mode)"
+  },
+  {
+    "id": 110300001217002100,
+    "value": "Gundam Griepe"
+  },
+  {
+    "id": 110300001217002150,
+    "value": "Gundam Griepe (EX)"
+  },
+  {
+    "id": 110300001217002200,
+    "value": "Gundam Griepe [MA]"
+  },
+  {
+    "id": 110300001217002300,
+    "value": "Gundam Burnlapius"
+  },
+  {
+    "id": 110300001217002410,
+    "value": "Gundam Burnlapius (PX Mode)"
   },
   {
     "id": 110300001219000100,
@@ -20800,6 +21108,10 @@
     "value": "-"
   },
   {
+    "id": 110300002217000100,
+    "value": "Grand Chario"
+  },
+  {
     "id": 110300002230000100,
     "value": "Freeden"
   },
@@ -24392,16 +24704,120 @@
     "value": "Scorpio MA"
   },
   {
+    "id": 110400001217000100,
+    "value": "Gundam Geminass 01"
+  },
+  {
     "id": 110400001217000110,
     "value": "Gundam Geminass 01"
+  },
+  {
+    "id": 110400001217000200,
+    "value": "Gundam Geminass 01 Assault Booster"
+  },
+  {
+    "id": 110400001217000300,
+    "value": "Gundam Geminass 02"
   },
   {
     "id": 110400001217000310,
     "value": "Gundam Geminass 02"
   },
   {
+    "id": 110400001217000400,
+    "value": "Gundam Geminass 02 Assault Booster"
+  },
+  {
+    "id": 110400001217000500,
+    "value": "Vayeate Suivant"
+  },
+  {
     "id": 110400001217000510,
     "value": "Vayeate Suivant"
+  },
+  {
+    "id": 110400001217000600,
+    "value": "Hydra Gundam"
+  },
+  {
+    "id": 110400001217000650,
+    "value": "Hydra Gundam (EX)"
+  },
+  {
+    "id": 110400001217000700,
+    "value": "D-Unit"
+  },
+  {
+    "id": 110400001217000800,
+    "value": "Leo Space Type (MO-V)"
+  },
+  {
+    "id": 110400001217000900,
+    "value": "Leo EWAC Type"
+  },
+  {
+    "id": 110400001217001000,
+    "value": "OZ Prize's Taurus"
+  },
+  {
+    "id": 110400001217001100,
+    "value": "OZ Prize's Taurus [MA]"
+  },
+  {
+    "id": 110400001217001200,
+    "value": "OZ Prize's Leo"
+  },
+  {
+    "id": 110400001217001300,
+    "value": "Leo-R"
+  },
+  {
+    "id": 110400001217001400,
+    "value": "Leo-S"
+  },
+  {
+    "id": 110400001217001500,
+    "value": "Leo-N"
+  },
+  {
+    "id": 110400001217001600,
+    "value": "Gundam Aesculapius"
+  },
+  {
+    "id": 110400001217001710,
+    "value": "Gundam Aesculapius (PX Mode)"
+  },
+  {
+    "id": 110400001217001800,
+    "value": "Mercurius Suivant"
+  },
+  {
+    "id": 110400001217001900,
+    "value": "Gundam L.O. Booster"
+  },
+  {
+    "id": 110400001217002000,
+    "value": "Gundam L.O. Booster (High-Speed Mode)"
+  },
+  {
+    "id": 110400001217002100,
+    "value": "Gundam Griepe"
+  },
+  {
+    "id": 110400001217002150,
+    "value": "Gundam Griepe (EX)"
+  },
+  {
+    "id": 110400001217002200,
+    "value": "Gundam Griepe [MA]"
+  },
+  {
+    "id": 110400001217002300,
+    "value": "Gundam Burnlapius"
+  },
+  {
+    "id": 110400001217002410,
+    "value": "Gundam Burnlapius (PX Mode)"
   },
   {
     "id": 110400001219000100,
@@ -28090,6 +28506,10 @@
   {
     "id": 110400002210000800,
     "value": "-"
+  },
+  {
+    "id": 110400002217000100,
+    "value": "Grand Chario"
   },
   {
     "id": 110400002230000100,

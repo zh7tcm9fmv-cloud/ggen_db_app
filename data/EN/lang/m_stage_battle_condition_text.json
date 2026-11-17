@@ -3416,6 +3416,190 @@
     "value": "All of your units are defeated."
   },
   {
+    "id": 130300002170010501,
+    "value": "Defeat Broom Brooks."
+  },
+  {
+    "id": 130300002170010504,
+    "value": "All of your units are defeated.\nOdin Barnet and Guest force defeated."
+  },
+  {
+    "id": 130300002170020301,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300002170020302,
+    "value": "Defeat Kratz Silvy."
+  },
+  {
+    "id": 130300002170020304,
+    "value": "All of your units are defeated.\nOdin Barnet and Guest force defeated."
+  },
+  {
+    "id": 130300002170020305,
+    "value": "All of your units are defeated.\nGuest force Odel Barnet is defeated."
+  },
+  {
+    "id": 130300002170030401,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300002170030402,
+    "value": "Defeat Roche Nattono."
+  },
+  {
+    "id": 130300002170030404,
+    "value": "All of your units are defeated.\nGuest force Odin Barnet is defeated."
+  },
+  {
+    "id": 130300002170030405,
+    "value": "All of your units are defeated.\nGuest force Odin Barnet is defeated."
+  },
+  {
+    "id": 130300002170040301,
+    "value": "Defeat Valder Farkill."
+  },
+  {
+    "id": 130300002170040304,
+    "value": "All of your units are defeated.\nGuest force Odin Barnet is defeated."
+  },
+  {
+    "id": 130300002170050301,
+    "value": "Defeat Valder Farkill."
+  },
+  {
+    "id": 130300002170050302,
+    "value": "Guest force Silver Crown reaches the target area."
+  },
+  {
+    "id": 130300002170050304,
+    "value": "All of your units are defeated.\nOdin Barnet and Guest force defeated."
+  },
+  {
+    "id": 130300002170050305,
+    "value": "All of your units are defeated.\nGuest force Silver Crown is defeated."
+  },
+  {
+    "id": 130300002170060401,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300002170060402,
+    "value": "Defeat Kratz Silvy."
+  },
+  {
+    "id": 130300002170060404,
+    "value": "All of your units are defeated.\nOdin Barnet and Guest force defeated."
+  },
+  {
+    "id": 130300002170060405,
+    "value": "All of your units are defeated.\nGuest force Roche Nattono is defeated."
+  },
+  {
+    "id": 130300002170070301,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300002170070302,
+    "value": "Defeat Kratz Silvy."
+  },
+  {
+    "id": 130300002170070304,
+    "value": "All of your units are defeated.\nOdin Barnet and Guest force defeated."
+  },
+  {
+    "id": 130300002170070305,
+    "value": "All of your units are defeated.\nOdin Barnet and Guest force defeated."
+  },
+  {
+    "id": 130300002170080101,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300002170080104,
+    "value": "All of your units are defeated."
+  },
+  {
+    "id": 130300002170090101,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300002170090104,
+    "value": "All of your units are defeated."
+  },
+  {
+    "id": 130300002170100101,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300002170100104,
+    "value": "All of your units are defeated."
+  },
+  {
+    "id": 130300002170110101,
+    "value": "Defeat [Valder Farkill] and [Kratz Silvy]."
+  },
+  {
+    "id": 130300002170110104,
+    "value": "All of your units are defeated."
+  },
+  {
+    "id": 130300002170500101,
+    "value": "Defeat Kratz Silvy."
+  },
+  {
+    "id": 130300002170500104,
+    "value": "All of your units are defeated.\nLimit: 3 turns."
+  },
+  {
+    "id": 130300002170500201,
+    "value": "Defeat Kratz Silvy."
+  },
+  {
+    "id": 130300002170500204,
+    "value": "All of your units are defeated.\nLimit: 3 turns."
+  },
+  {
+    "id": 130300002170500301,
+    "value": "Defeat Kratz Silvy."
+  },
+  {
+    "id": 130300002170500304,
+    "value": "All of your units are defeated.\nLimit: 3 turns."
+  },
+  {
+    "id": 130300002170600101,
+    "value": "Defeat Valder Farkill."
+  },
+  {
+    "id": 130300002170600104,
+    "value": "All of your units are defeated.\nLimit: 3 turns."
+  },
+  {
+    "id": 130300002170600201,
+    "value": "Defeat Valder Farkill."
+  },
+  {
+    "id": 130300002170600204,
+    "value": "All of your units are defeated.\nLimit: 3 turns."
+  },
+  {
+    "id": 130300002170600301,
+    "value": "Defeat Valder Farkill."
+  },
+  {
+    "id": 130300002170600304,
+    "value": "All of your units are defeated.\nLimit: 3 turns."
+  },
+  {
+    "id": 130300002170600401,
+    "value": "Defeat Valder Farkill."
+  },
+  {
+    "id": 130300002170600404,
+    "value": "All of your units are defeated.\nLimit: 3 turns."
+  },
+  {
     "id": 130300002190010301,
     "value": "Defeat all enemy units."
   },
@@ -9485,6 +9669,14 @@
   },
   {
     "id": 130300009052003304,
+    "value": "All of your units are defeated.\nLimit: 3 turns."
+  },
+  {
+    "id": 130300009052003401,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300009052003404,
     "value": "All of your units are defeated.\nLimit: 3 turns."
   },
   {

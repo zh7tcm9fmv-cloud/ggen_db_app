@@ -714,6 +714,12 @@
     "TitleLanguageId": 170700000000900006
   },
   {
+    "FunctionTipsDetailSetId": 9001,
+    "FunctionTipsDetailId": 900019,
+    "SortOrder": 7,
+    "TitleLanguageId": 170700000000900019
+  },
+  {
     "FunctionTipsDetailSetId": 9002,
     "FunctionTipsDetailId": 900007,
     "SortOrder": 1,

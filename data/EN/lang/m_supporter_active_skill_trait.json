@@ -200,6 +200,14 @@
     "value": "EN Restoration"
   },
   {
+    "id": 160400001217000150,
+    "value": "(Cond: Unit Count) HP Restoration"
+  },
+  {
+    "id": 160400001217000151,
+    "value": ""
+  },
+  {
     "id": 160400001230000150,
     "value": "EN Restoration"
   },
@@ -582,6 +590,14 @@
   {
     "id": 160500001210000550,
     "value": "Allies in range:\nRestore EN by 50%"
+  },
+  {
+    "id": 160500001217000150,
+    "value": "Restore HP of damaged allies within range by 20%.\nWhen there are 2 or fewer target units,\nfurther restore HP by 40%."
+  },
+  {
+    "id": 160500001217000151,
+    "value": ""
   },
   {
     "id": 160500001230000150,

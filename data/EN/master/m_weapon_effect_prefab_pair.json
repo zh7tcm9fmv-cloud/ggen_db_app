@@ -1008,6 +1008,12 @@
     "DamagedEffectId": "ef_mpd_0000_000_cmnhit"
   },
   {
+    "Id": 280001,
+    "WeaponEffectPrefabPairSetId": 280001,
+    "WeaponEffectId": "ef_mpa_0021_001_aurabeam",
+    "DamagedEffectId": "ef_mpd_0021_001_supermovehit"
+  },
+  {
     "Id": 280002,
     "WeaponEffectPrefabPairSetId": 280002,
     "WeaponEffectId": "ef_mpa_0021_002_aurabeam",
@@ -3282,6 +3288,12 @@
     "DamagedEffectId": "ef_mpd_0029_002_funnelbeam_netics"
   },
   {
+    "Id": 350040,
+    "WeaponEffectPrefabPairSetId": 350040,
+    "WeaponEffectId": "ef_mpa_0025_001_funnel_hydra",
+    "DamagedEffectId": "ef_mpd_0029_001_funnelbeam"
+  },
+  {
     "Id": 360001,
     "WeaponEffectPrefabPairSetId": 360001,
     "WeaponEffectId": "ef_mpa_0026_002_funnel_phenix",
@@ -3540,6 +3552,12 @@
     "DamagedEffectId": "ef_mpd_0037_001_twinbeamrifle"
   },
   {
+    "Id": 470006,
+    "WeaponEffectPrefabPairSetId": 470006,
+    "WeaponEffectId": "ef_mpa_0037_006_twinbeamrifle",
+    "DamagedEffectId": "ef_mpd_0037_001_twinbeamrifle"
+  },
+  {
     "Id": 470007,
     "WeaponEffectPrefabPairSetId": 470007,
     "WeaponEffectId": "ef_mpa_0037_007_twinbeamrifle",
@@ -3567,6 +3585,12 @@
     "Id": 470015,
     "WeaponEffectPrefabPairSetId": 470015,
     "WeaponEffectId": "ef_mpa_0037_002_twinbeamrifle_wide",
+    "DamagedEffectId": "ef_mpd_0037_001_twinbeamrifle_wide"
+  },
+  {
+    "Id": 470019,
+    "WeaponEffectPrefabPairSetId": 470019,
+    "WeaponEffectId": "ef_mpa_0037_006_twinbeamrifle_wide",
     "DamagedEffectId": "ef_mpd_0037_001_twinbeamrifle_wide"
   },
   {
@@ -3615,6 +3639,12 @@
     "Id": 900003,
     "WeaponEffectPrefabPairSetId": 900003,
     "WeaponEffectId": "ef_mpw_003_01_snipe",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900004,
+    "WeaponEffectPrefabPairSetId": 900004,
+    "WeaponEffectId": "ef_mpw_004_01_threelinemegabeam",
     "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
   },
   {
@@ -4830,6 +4860,12 @@
     "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
   },
   {
+    "Id": 900240,
+    "WeaponEffectPrefabPairSetId": 900240,
+    "WeaponEffectId": "ef_mpw_113_01_defendernet",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
     "Id": 900241,
     "WeaponEffectPrefabPairSetId": 900241,
     "WeaponEffectId": "ef_mpw_003_03_snipe",
@@ -4845,6 +4881,30 @@
     "Id": 900243,
     "WeaponEffectPrefabPairSetId": 900243,
     "WeaponEffectId": "ef_mpw_003_04_snipe",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900251,
+    "WeaponEffectPrefabPairSetId": 900251,
+    "WeaponEffectId": "ef_mpw_114_00_bomb_deathscythehell_ew",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900252,
+    "WeaponEffectPrefabPairSetId": 900252,
+    "WeaponEffectId": "ef_mpw_114_00_bomb_heavyarms_ew",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900253,
+    "WeaponEffectPrefabPairSetId": 900253,
+    "WeaponEffectId": "ef_mpw_114_00_bomb_sandrock_ew",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900254,
+    "WeaponEffectPrefabPairSetId": 900254,
+    "WeaponEffectId": "ef_mpw_114_00_bomb_altron_ew",
     "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
   },
   {
@@ -10132,6 +10192,156 @@
     "WeaponEffectPrefabPairSetId": 80091,
     "WeaponEffectId": "ef_mpa_1000_000_null",
     "DamagedEffectId": "ef_mpd_1000_000_null"
+  },
+  {
+    "Id": 8009201,
+    "WeaponEffectPrefabPairSetId": 80092,
+    "WeaponEffectId": "ef_mpa_1000_000_trailvernier_griepe",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8009202,
+    "WeaponEffectPrefabPairSetId": 80092,
+    "WeaponEffectId": "ef_mpa_1000_000_slash_griepe_ex1",
+    "DamagedEffectId": "ef_mpd_1000_000_slash_griepe_ex1"
+  },
+  {
+    "Id": 8009203,
+    "WeaponEffectPrefabPairSetId": 80092,
+    "WeaponEffectId": "ef_mpa_1000_000_slash_griepe_ex2",
+    "DamagedEffectId": "ef_mpd_1000_000_slash_griepe_ex2"
+  },
+  {
+    "Id": 8009204,
+    "WeaponEffectPrefabPairSetId": 80092,
+    "WeaponEffectId": "ef_mpa_1000_000_slash_griepe_ex3",
+    "DamagedEffectId": "ef_mpd_1000_000_slash_griepe_ex3"
+  },
+  {
+    "Id": 8009205,
+    "WeaponEffectPrefabPairSetId": 80092,
+    "WeaponEffectId": "ef_mpa_1000_000_stab_griepe_ex1",
+    "DamagedEffectId": "ef_mpd_1000_000_stab_griepe_ex1"
+  },
+  {
+    "Id": 8009206,
+    "WeaponEffectPrefabPairSetId": 80092,
+    "WeaponEffectId": "ef_mpa_1000_000_stab_griepe_ex2",
+    "DamagedEffectId": "ef_mpd_1000_000_stab_griepe_ex2"
+  },
+  {
+    "Id": 8009207,
+    "WeaponEffectPrefabPairSetId": 80092,
+    "WeaponEffectId": "ef_mpa_1000_000_stab_griepe_ex3",
+    "DamagedEffectId": "ef_mpd_1000_000_stab_griepe_ex3"
+  },
+  {
+    "Id": 8009208,
+    "WeaponEffectPrefabPairSetId": 80092,
+    "WeaponEffectId": "ef_mpa_1000_000_stab_griepe_ex4",
+    "DamagedEffectId": "ef_mpd_1000_000_stab_griepe_ex4"
+  },
+  {
+    "Id": 8009209,
+    "WeaponEffectPrefabPairSetId": 80092,
+    "WeaponEffectId": "ef_mpa_1000_000_transformer_griepe",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8009210,
+    "WeaponEffectPrefabPairSetId": 80092,
+    "WeaponEffectId": "ef_mpa_1000_000_upper_griepe",
+    "DamagedEffectId": "ef_mpd_1000_000_upper_griepe"
+  },
+  {
+    "Id": 8009211,
+    "WeaponEffectPrefabPairSetId": 80092,
+    "WeaponEffectId": "ef_mpa_1000_000_beambuster_griepe",
+    "DamagedEffectId": "ef_mpd_1000_000_beambuster_griepe"
+  },
+  {
+    "Id": 8009301,
+    "WeaponEffectPrefabPairSetId": 80093,
+    "WeaponEffectId": "ef_mpa_1000_000_crossslash_hydra_ex1",
+    "DamagedEffectId": "ef_mpd_1000_000_crossslash_hydra_ex1"
+  },
+  {
+    "Id": 8009302,
+    "WeaponEffectPrefabPairSetId": 80093,
+    "WeaponEffectId": "ef_mpa_1000_000_crossslash_hydra_ex2",
+    "DamagedEffectId": "ef_mpd_1000_000_crossslash_hydra_ex2"
+  },
+  {
+    "Id": 8009303,
+    "WeaponEffectPrefabPairSetId": 80093,
+    "WeaponEffectId": "ef_mpa_1000_000_stabspark_hydra",
+    "DamagedEffectId": "ef_mpd_1000_000_stabspark_hydra"
+  },
+  {
+    "Id": 8009304,
+    "WeaponEffectPrefabPairSetId": 80093,
+    "WeaponEffectId": "ef_mpa_1000_000_spear_hydra",
+    "DamagedEffectId": "ef_mpd_1000_000_spear_hydra"
+  },
+  {
+    "Id": 8009305,
+    "WeaponEffectPrefabPairSetId": 80093,
+    "WeaponEffectId": "ef_mpa_1000_000_stabrush_hydra",
+    "DamagedEffectId": "ef_mpd_1000_000_stabrush_hydra"
+  },
+  {
+    "Id": 8009306,
+    "WeaponEffectPrefabPairSetId": 80093,
+    "WeaponEffectId": "ef_mpa_1000_000_beamsaber_hydra_ex1",
+    "DamagedEffectId": "ef_mpd_1000_000_beamsaber_hydra_ex1"
+  },
+  {
+    "Id": 8009307,
+    "WeaponEffectPrefabPairSetId": 80093,
+    "WeaponEffectId": "ef_mpa_1000_000_beamsaber_hydra_ex2",
+    "DamagedEffectId": "ef_mpd_1000_000_beamsaber_hydra_ex2"
+  },
+  {
+    "Id": 8009308,
+    "WeaponEffectPrefabPairSetId": 80093,
+    "WeaponEffectId": "ef_mpa_1000_000_beamsaber_hydra_ex3",
+    "DamagedEffectId": "ef_mpd_1000_000_beamsaber_hydra_ex3"
+  },
+  {
+    "Id": 8009309,
+    "WeaponEffectPrefabPairSetId": 80093,
+    "WeaponEffectId": "ef_mpa_1000_000_null",
+    "DamagedEffectId": "ef_mpd_1000_000_null"
+  },
+  {
+    "Id": 8009310,
+    "WeaponEffectPrefabPairSetId": 80093,
+    "WeaponEffectId": "ef_mpa_1000_000_beamsaberpose_hydra",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8009311,
+    "WeaponEffectPrefabPairSetId": 80093,
+    "WeaponEffectId": "ef_mpa_1000_000_trailvernier_hydra",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8009312,
+    "WeaponEffectPrefabPairSetId": 80093,
+    "WeaponEffectId": "ef_mpa_1000_000_tackle_hydra",
+    "DamagedEffectId": "ef_mpd_1000_000_tackle_hydra"
+  },
+  {
+    "Id": 8009313,
+    "WeaponEffectPrefabPairSetId": 80093,
+    "WeaponEffectId": "ef_mpa_1000_000_pose_hydra",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8009314,
+    "WeaponEffectPrefabPairSetId": 80093,
+    "WeaponEffectId": "ef_mpa_1000_000_beambuster_hydra",
+    "DamagedEffectId": "ef_mpd_1000_000_beambuster_hydra"
   },
   {
     "Id": 99999990,

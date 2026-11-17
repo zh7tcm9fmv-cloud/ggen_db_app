@@ -8463,9 +8463,58 @@
     "EffectValue": 350
   },
   {
+    "Id": 121700010002,
+    "TargetWeaponId": 121700010002,
+    "SortOrder": 2,
+    "WeaponEnhanceTypeIndex": 4,
+    "EffectValue": 1
+  },
+  {
+    "Id": 121700010003,
+    "TargetWeaponId": 121700010002,
+    "SortOrder": 2,
+    "WeaponEnhanceTypeIndex": 1,
+    "EffectValue": 350
+  },
+  {
     "Id": 121700011003,
     "TargetWeaponId": 121700011001,
     "SortOrder": 1,
+    "WeaponEnhanceTypeIndex": 1,
+    "EffectValue": 350
+  },
+  {
+    "Id": 121700020001,
+    "TargetWeaponId": 121700020002,
+    "SortOrder": 2,
+    "WeaponEnhanceTypeIndex": 1,
+    "EffectValue": 175
+  },
+  {
+    "Id": 121700020002,
+    "TargetWeaponId": 121700020002,
+    "SortOrder": 2,
+    "WeaponEnhanceTypeIndex": 4,
+    "EffectValue": 1
+  },
+  {
+    "Id": 121700020003,
+    "TargetWeaponId": 121700020002,
+    "SortOrder": 2,
+    "WeaponEnhanceTypeIndex": 1,
+    "EffectValue": 175
+  },
+  {
+    "Id": 121700030002,
+    "TargetWeaponId": 121700030003,
+    "SortOrder": 3,
+    "WeaponEnhanceTypeIndex": 4,
+    "EffectValue": 1
+  },
+  {
+    "Id": 121700030003,
+    "TargetWeaponId": 121700030003,
+    "SortOrder": 3,
     "WeaponEnhanceTypeIndex": 1,
     "EffectValue": 350
   },
@@ -8477,9 +8526,268 @@
     "EffectValue": 400
   },
   {
+    "Id": 121700040001,
+    "TargetWeaponId": 121700040003,
+    "SortOrder": 3,
+    "WeaponEnhanceTypeIndex": 1,
+    "EffectValue": 200
+  },
+  {
+    "Id": 121700040002,
+    "TargetWeaponId": 121700040003,
+    "SortOrder": 3,
+    "WeaponEnhanceTypeIndex": 4,
+    "EffectValue": 1
+  },
+  {
+    "Id": 121700040003,
+    "TargetWeaponId": 121700040003,
+    "SortOrder": 3,
+    "WeaponEnhanceTypeIndex": 1,
+    "EffectValue": 200
+  },
+  {
+    "Id": 121700050001,
+    "TargetWeaponId": 121700050002,
+    "SortOrder": 2,
+    "WeaponEnhanceTypeIndex": 1,
+    "EffectValue": 200
+  },
+  {
+    "Id": 121700050002,
+    "TargetWeaponId": 121700050002,
+    "SortOrder": 2,
+    "WeaponEnhanceTypeIndex": 4,
+    "EffectValue": 1
+  },
+  {
+    "Id": 121700050003,
+    "TargetWeaponId": 121700050002,
+    "SortOrder": 2,
+    "WeaponEnhanceTypeIndex": 1,
+    "EffectValue": 200
+  },
+  {
     "Id": 121700051003,
     "TargetWeaponId": 121700051001,
     "SortOrder": 1,
+    "WeaponEnhanceTypeIndex": 1,
+    "EffectValue": 350
+  },
+  {
+    "Id": 121700060002,
+    "TargetWeaponId": 121700060004,
+    "SortOrder": 4,
+    "WeaponEnhanceTypeIndex": 4,
+    "EffectValue": 1
+  },
+  {
+    "Id": 121700060003,
+    "TargetWeaponId": 121700060002,
+    "SortOrder": 2,
+    "WeaponEnhanceTypeIndex": 1,
+    "EffectValue": 400
+  },
+  {
+    "Id": 121700070002,
+    "TargetWeaponId": 121700070001,
+    "SortOrder": 1,
+    "WeaponEnhanceTypeIndex": 4,
+    "EffectValue": 1
+  },
+  {
+    "Id": 121700070003,
+    "TargetWeaponId": 121700070001,
+    "SortOrder": 1,
+    "WeaponEnhanceTypeIndex": 1,
+    "EffectValue": 350
+  },
+  {
+    "Id": 121700080003,
+    "TargetWeaponId": 121700080001,
+    "SortOrder": 1,
+    "WeaponEnhanceTypeIndex": 1,
+    "EffectValue": 350
+  },
+  {
+    "Id": 121700090002,
+    "TargetWeaponId": 121700090001,
+    "SortOrder": 1,
+    "WeaponEnhanceTypeIndex": 4,
+    "EffectValue": 1
+  },
+  {
+    "Id": 121700090003,
+    "TargetWeaponId": 121700090001,
+    "SortOrder": 1,
+    "WeaponEnhanceTypeIndex": 1,
+    "EffectValue": 350
+  },
+  {
+    "Id": 121700100002,
+    "TargetWeaponId": 121700100002,
+    "SortOrder": 2,
+    "WeaponEnhanceTypeIndex": 4,
+    "EffectValue": 1
+  },
+  {
+    "Id": 121700100003,
+    "TargetWeaponId": 121700100002,
+    "SortOrder": 2,
+    "WeaponEnhanceTypeIndex": 1,
+    "EffectValue": 350
+  },
+  {
+    "Id": 121700120003,
+    "TargetWeaponId": 121700120001,
+    "SortOrder": 1,
+    "WeaponEnhanceTypeIndex": 1,
+    "EffectValue": 350
+  },
+  {
+    "Id": 121700130001,
+    "TargetWeaponId": 121700130002,
+    "SortOrder": 2,
+    "WeaponEnhanceTypeIndex": 1,
+    "EffectValue": 175
+  },
+  {
+    "Id": 121700130002,
+    "TargetWeaponId": 121700130002,
+    "SortOrder": 2,
+    "WeaponEnhanceTypeIndex": 4,
+    "EffectValue": 1
+  },
+  {
+    "Id": 121700130003,
+    "TargetWeaponId": 121700130002,
+    "SortOrder": 2,
+    "WeaponEnhanceTypeIndex": 1,
+    "EffectValue": 175
+  },
+  {
+    "Id": 121700140001,
+    "TargetWeaponId": 121700140001,
+    "SortOrder": 1,
+    "WeaponEnhanceTypeIndex": 1,
+    "EffectValue": 175
+  },
+  {
+    "Id": 121700140003,
+    "TargetWeaponId": 121700140001,
+    "SortOrder": 1,
+    "WeaponEnhanceTypeIndex": 1,
+    "EffectValue": 175
+  },
+  {
+    "Id": 121700150001,
+    "TargetWeaponId": 121700150001,
+    "SortOrder": 1,
+    "WeaponEnhanceTypeIndex": 1,
+    "EffectValue": 175
+  },
+  {
+    "Id": 121700150003,
+    "TargetWeaponId": 121700150001,
+    "SortOrder": 1,
+    "WeaponEnhanceTypeIndex": 1,
+    "EffectValue": 175
+  },
+  {
+    "Id": 121700160001,
+    "TargetWeaponId": 121700160004,
+    "SortOrder": 4,
+    "WeaponEnhanceTypeIndex": 1,
+    "EffectValue": 200
+  },
+  {
+    "Id": 121700160003,
+    "TargetWeaponId": 121700160004,
+    "SortOrder": 4,
+    "WeaponEnhanceTypeIndex": 1,
+    "EffectValue": 200
+  },
+  {
+    "Id": 121700171002,
+    "TargetWeaponId": 121700171002,
+    "SortOrder": 2,
+    "WeaponEnhanceTypeIndex": 4,
+    "EffectValue": 1
+  },
+  {
+    "Id": 121700171003,
+    "TargetWeaponId": 121700171002,
+    "SortOrder": 2,
+    "WeaponEnhanceTypeIndex": 1,
+    "EffectValue": 350
+  },
+  {
+    "Id": 121700180001,
+    "TargetWeaponId": 121700180002,
+    "SortOrder": 2,
+    "WeaponEnhanceTypeIndex": 1,
+    "EffectValue": 175
+  },
+  {
+    "Id": 121700180002,
+    "TargetWeaponId": 121700180002,
+    "SortOrder": 2,
+    "WeaponEnhanceTypeIndex": 4,
+    "EffectValue": 1
+  },
+  {
+    "Id": 121700180003,
+    "TargetWeaponId": 121700180002,
+    "SortOrder": 2,
+    "WeaponEnhanceTypeIndex": 1,
+    "EffectValue": 175
+  },
+  {
+    "Id": 121700190003,
+    "TargetWeaponId": 121700190003,
+    "SortOrder": 3,
+    "WeaponEnhanceTypeIndex": 1,
+    "EffectValue": 400
+  },
+  {
+    "Id": 121700200003,
+    "TargetWeaponId": 121700200001,
+    "SortOrder": 1,
+    "WeaponEnhanceTypeIndex": 1,
+    "EffectValue": 400
+  },
+  {
+    "Id": 121700210003,
+    "TargetWeaponId": 121700210003,
+    "SortOrder": 3,
+    "WeaponEnhanceTypeIndex": 1,
+    "EffectValue": 400
+  },
+  {
+    "Id": 121700220003,
+    "TargetWeaponId": 121700220002,
+    "SortOrder": 2,
+    "WeaponEnhanceTypeIndex": 1,
+    "EffectValue": 400
+  },
+  {
+    "Id": 121700230001,
+    "TargetWeaponId": 121700230004,
+    "SortOrder": 4,
+    "WeaponEnhanceTypeIndex": 1,
+    "EffectValue": 200
+  },
+  {
+    "Id": 121700230003,
+    "TargetWeaponId": 121700230004,
+    "SortOrder": 4,
+    "WeaponEnhanceTypeIndex": 1,
+    "EffectValue": 200
+  },
+  {
+    "Id": 121700241003,
+    "TargetWeaponId": 121700241002,
+    "SortOrder": 2,
     "WeaponEnhanceTypeIndex": 1,
     "EffectValue": 350
   },

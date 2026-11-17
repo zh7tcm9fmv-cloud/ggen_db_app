@@ -200,6 +200,10 @@
     "value": "EN Restoration"
   },
   {
+    "id": 160400001217000150,
+    "value": "(Cond: Unit Count) HP Restoration"
+  },
+  {
     "id": 160400001230000150,
     "value": "EN Restoration"
   },
@@ -580,6 +584,10 @@
     "value": "Allies in range:\nRestore EN by 50%"
   },
   {
+    "id": 160500001217000150,
+    "value": "Restore HP of damaged allies within range by 20%.\nWhen there are 2 or fewer target units,\nfurther restore HP by 40%."
+  },
+  {
     "id": 160500001230000150,
     "value": "Allies in range:\nRestore EN by 50%"
   },
@@ -938,6 +946,10 @@
   {
     "id": 160900001210000550,
     "value": "This is a war for peace!"
+  },
+  {
+    "id": 160900001217000150,
+    "value": "Anyone who can't appreciate my genius can die in ignorance!"
   },
   {
     "id": 160900001230000150,

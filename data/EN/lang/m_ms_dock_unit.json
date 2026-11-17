@@ -128,6 +128,10 @@
     "value": "Gundam Epyon"
   },
   {
+    "id": 110100001217002100,
+    "value": "Gundam Griepe"
+  },
+  {
     "id": 110100001219000100,
     "value": "Wing Gundam Zero (EW)"
   },
@@ -366,6 +370,10 @@
   {
     "id": 110200001210000900,
     "value": "This mobile suit was developed at the behest of OZ leader Treize Khushrenada and based on the Tallgeese and five Gundams.\nIts ability to transform allows it to fly at high speeds for extended periods of time.\nIn keeping with Treize's wishes, it does away with projectile weapons in favor of a Beam Sword and Heat Rod, granting it unmatched performance in close quarters.\nA Zero System similar to the Wing Gundam Zero's grants it high performance along with a risk of driving the pilot completely insane.\nThe suit passed from the hands of Treize to Heero Yuy before being piloted by Milliardo Peacecraft."
+  },
+  {
+    "id": 110200001217002100,
+    "value": "Based on an OZ transforming Mobile Suit prototype and built in secret by Odel Barnet.\nThis high-performance machine combines the best in offense, defense, and mobility.\nShifting from Mobile Armor to an intermediary Assault Mode allows the Griepe to stay highly mobile regardless of the environment, with an output three times higher than that of the Geminass.\nIts MSCS (Mind Sync Control System) allows the unit to be controlled directly through the pilot's nervous system, helping to reduce the strain caused by piloting the suit during high-speed maneuvers.\nEquipped with an exceedingly powerful Beam Lancer and a Hyper Mega Particle Launcher, it can also fire its Buster Mega Particle Cannon while in Mobile Armor mode.\nThe reflect shields on each shoulder can be used to neutralize Beam Weapons."
   },
   {
     "id": 110200001219000100,

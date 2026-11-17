@@ -145,6 +145,16 @@
     "SortOrder": 1
   },
   {
+    "EventBonusSeriesSetId": 20001914,
+    "SeriesId": 2170,
+    "SortOrder": 1
+  },
+  {
+    "EventBonusSeriesSetId": 20001915,
+    "SeriesId": 2100,
+    "SortOrder": 2
+  },
+  {
     "EventBonusSeriesSetId": 25000101,
     "SeriesId": 10,
     "SortOrder": 1

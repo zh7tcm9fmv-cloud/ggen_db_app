@@ -12144,6 +12144,22 @@
     "value": "Beam Bayonet (Rifle) SSP"
   },
   {
+    "id": 120100121700010001,
+    "value": "Beam Sword"
+  },
+  {
+    "id": 120100121700010002,
+    "value": "Accelerate Rifle"
+  },
+  {
+    "id": 120100121700010003,
+    "value": "PX System"
+  },
+  {
+    "id": 120100121700010090,
+    "value": "PX System SSP"
+  },
+  {
     "id": 120100121700011001,
     "value": "Beam Sword"
   },
@@ -12157,6 +12173,42 @@
   },
   {
     "id": 120100121700011090,
+    "value": "PX System SSP"
+  },
+  {
+    "id": 120100121700020001,
+    "value": "Beam Sword"
+  },
+  {
+    "id": 120100121700020002,
+    "value": "Accelerate Rifle"
+  },
+  {
+    "id": 120100121700020003,
+    "value": "PX System"
+  },
+  {
+    "id": 120100121700020004,
+    "value": "Accelerate Rifle"
+  },
+  {
+    "id": 120100121700020090,
+    "value": "Accelerate Rifle SSP"
+  },
+  {
+    "id": 120100121700030001,
+    "value": "Beam Sword"
+  },
+  {
+    "id": 120100121700030002,
+    "value": "Accelerate Rifle"
+  },
+  {
+    "id": 120100121700030003,
+    "value": "PX System"
+  },
+  {
+    "id": 120100121700030090,
     "value": "PX System SSP"
   },
   {
@@ -12176,6 +12228,46 @@
     "value": "PX System SSP"
   },
   {
+    "id": 120100121700040001,
+    "value": "Beam Sword"
+  },
+  {
+    "id": 120100121700040002,
+    "value": "Accelerate Rifle"
+  },
+  {
+    "id": 120100121700040003,
+    "value": "PX System"
+  },
+  {
+    "id": 120100121700040004,
+    "value": "Accelerate Rifle"
+  },
+  {
+    "id": 120100121700040090,
+    "value": "Accelerate Rifle SSP"
+  },
+  {
+    "id": 120100121700050001,
+    "value": "Beam Cannon"
+  },
+  {
+    "id": 120100121700050002,
+    "value": "Double Beam Cannon"
+  },
+  {
+    "id": 120100121700050003,
+    "value": "Double Beam Cannon"
+  },
+  {
+    "id": 120100121700050080,
+    "value": "Double Beam Cannon"
+  },
+  {
+    "id": 120100121700050090,
+    "value": "Double Beam Cannon SSP"
+  },
+  {
     "id": 120100121700051001,
     "value": "Beam Cannon"
   },
@@ -12190,6 +12282,334 @@
   {
     "id": 120100121700051090,
     "value": "Double Beam Cannon SSP"
+  },
+  {
+    "id": 120100121700060001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100121700060002,
+    "value": "Hydra Waltz"
+  },
+  {
+    "id": 120100121700060003,
+    "value": "Shoulder Claw"
+  },
+  {
+    "id": 120100121700060004,
+    "value": "Buster Cannon (Max Output)"
+  },
+  {
+    "id": 120100121700060005,
+    "value": "Buster Cannon"
+  },
+  {
+    "id": 120100121700060090,
+    "value": "Hydra Waltz SSP"
+  },
+  {
+    "id": 120100121700065001,
+    "value": "Hydra Waltz"
+  },
+  {
+    "id": 120100121700065002,
+    "value": "Shoulder Claw"
+  },
+  {
+    "id": 120100121700065003,
+    "value": "Buster Cannon (Max Output)"
+  },
+  {
+    "id": 120100121700065004,
+    "value": "Hydra Waltz EX"
+  },
+  {
+    "id": 120100121700065005,
+    "value": "Buster Cannon"
+  },
+  {
+    "id": 120100121700070001,
+    "value": "Beam Cannon"
+  },
+  {
+    "id": 120100121700070090,
+    "value": "Beam Cannon SSP"
+  },
+  {
+    "id": 120100121700080001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100121700080002,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100121700080090,
+    "value": "Beam Rifle SSP"
+  },
+  {
+    "id": 120100121700090001,
+    "value": "105mm Machine Gun"
+  },
+  {
+    "id": 120100121700090090,
+    "value": "105mm Machine Gun SSP"
+  },
+  {
+    "id": 120100121700100001,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100121700100002,
+    "value": "Beam Cannon"
+  },
+  {
+    "id": 120100121700100090,
+    "value": "Beam Cannon SSP"
+  },
+  {
+    "id": 120100121700110001,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100121700110090,
+    "value": "Beam Cannon SSP"
+  },
+  {
+    "id": 120100121700120001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100121700120002,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100121700120090,
+    "value": "Beam Rifle SSP"
+  },
+  {
+    "id": 120100121700130001,
+    "value": "Long Beam Lance"
+  },
+  {
+    "id": 120100121700130002,
+    "value": "Hyper Launcher"
+  },
+  {
+    "id": 120100121700130090,
+    "value": "Hyper Launcher SSP"
+  },
+  {
+    "id": 120100121700140001,
+    "value": "Beam Duel Saber"
+  },
+  {
+    "id": 120100121700140002,
+    "value": "Beam Musket"
+  },
+  {
+    "id": 120100121700140090,
+    "value": "Beam Duel Saber SSP"
+  },
+  {
+    "id": 120100121700150001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100121700150002,
+    "value": "VULCAN"
+  },
+  {
+    "id": 120100121700150090,
+    "value": "Beam Saber SSP"
+  },
+  {
+    "id": 120100121700160001,
+    "value": "Beam Sword"
+  },
+  {
+    "id": 120100121700160002,
+    "value": "Python Claw"
+  },
+  {
+    "id": 120100121700160003,
+    "value": "Claw Cannon"
+  },
+  {
+    "id": 120100121700160004,
+    "value": "PX System"
+  },
+  {
+    "id": 120100121700160090,
+    "value": "PX System SSP"
+  },
+  {
+    "id": 120100121700171001,
+    "value": "Python Claw"
+  },
+  {
+    "id": 120100121700171002,
+    "value": "Claw Cannon"
+  },
+  {
+    "id": 120100121700171003,
+    "value": "PX System"
+  },
+  {
+    "id": 120100121700171090,
+    "value": "Claw Cannon SSP"
+  },
+  {
+    "id": 120100121700180001,
+    "value": "AS Crash Shield"
+  },
+  {
+    "id": 120100121700180002,
+    "value": "Beam Gun"
+  },
+  {
+    "id": 120100121700180003,
+    "value": "Defenser Net"
+  },
+  {
+    "id": 120100121700180090,
+    "value": "AS Crash Shield SSP"
+  },
+  {
+    "id": 120100121700190001,
+    "value": "Beam Sword"
+  },
+  {
+    "id": 120100121700190002,
+    "value": "Lightweight Accelerate Submachine Gun"
+  },
+  {
+    "id": 120100121700190003,
+    "value": "Thrust Beam Cannon"
+  },
+  {
+    "id": 120100121700190004,
+    "value": "PX System"
+  },
+  {
+    "id": 120100121700190090,
+    "value": "PX System SSP"
+  },
+  {
+    "id": 120100121700200001,
+    "value": "Thrust Beam Cannon"
+  },
+  {
+    "id": 120100121700200090,
+    "value": "PX System SSP"
+  },
+  {
+    "id": 120100121700210001,
+    "value": "Beam Lancer"
+  },
+  {
+    "id": 120100121700210002,
+    "value": "PX System Overdrive"
+  },
+  {
+    "id": 120100121700210003,
+    "value": "PX System"
+  },
+  {
+    "id": 120100121700210004,
+    "value": "Buster Mega Particle Cannon"
+  },
+  {
+    "id": 120100121700210005,
+    "value": "Hyper Mega Particle Launcher"
+  },
+  {
+    "id": 120100121700210006,
+    "value": "Hyper Mega Particle Launcher"
+  },
+  {
+    "id": 120100121700210090,
+    "value": "PX System Overdrive SSP"
+  },
+  {
+    "id": 120100121700215001,
+    "value": "Beam Lancer"
+  },
+  {
+    "id": 120100121700215002,
+    "value": "PX System"
+  },
+  {
+    "id": 120100121700215003,
+    "value": "Buster Mega Particle Cannon"
+  },
+  {
+    "id": 120100121700215004,
+    "value": "Hyper Mega Particle Launcher"
+  },
+  {
+    "id": 120100121700215005,
+    "value": "PX System Overdrive"
+  },
+  {
+    "id": 120100121700215006,
+    "value": "PX System Overdrive EX"
+  },
+  {
+    "id": 120100121700215007,
+    "value": "Buster Mega Particle Cannon"
+  },
+  {
+    "id": 120100121700220001,
+    "value": "PX System Overdrive"
+  },
+  {
+    "id": 120100121700220002,
+    "value": "PX System"
+  },
+  {
+    "id": 120100121700220003,
+    "value": "Buster Mega Particle Cannon"
+  },
+  {
+    "id": 120100121700220090,
+    "value": "PX System Overdrive SSP"
+  },
+  {
+    "id": 120100121700230001,
+    "value": "Golem Claw"
+  },
+  {
+    "id": 120100121700230002,
+    "value": "Assault Bayonet"
+  },
+  {
+    "id": 120100121700230003,
+    "value": "Rapid Shot"
+  },
+  {
+    "id": 120100121700230004,
+    "value": "PX System Overdrive"
+  },
+  {
+    "id": 120100121700230090,
+    "value": "PX System Overdrive SSP"
+  },
+  {
+    "id": 120100121700241001,
+    "value": "Assault Bayonet"
+  },
+  {
+    "id": 120100121700241002,
+    "value": "Rapid Shot"
+  },
+  {
+    "id": 120100121700241003,
+    "value": "PX System Overdrive"
+  },
+  {
+    "id": 120100121700241090,
+    "value": "PX System Overdrive SSP"
   },
   {
     "id": 120100121900010001,
@@ -12284,6 +12704,10 @@
     "value": "Beam Scissor EX"
   },
   {
+    "id": 120100121900026003,
+    "value": "Self-Destruct"
+  },
+  {
     "id": 120100121900030001,
     "value": "Beam Saber"
   },
@@ -12372,6 +12796,10 @@
     "value": "Barrage"
   },
   {
+    "id": 120100121900046004,
+    "value": "Self-Destruct"
+  },
+  {
     "id": 120100121900050001,
     "value": "Heat Shotel"
   },
@@ -12386,6 +12814,10 @@
   {
     "id": 120100121900050090,
     "value": "Heat Shotel SSP"
+  },
+  {
+    "id": 120100121900056003,
+    "value": "Self-Destruct"
   },
   {
     "id": 120100121900060001,
@@ -12422,6 +12854,10 @@
   {
     "id": 120100121900065005,
     "value": "Dragon Fang"
+  },
+  {
+    "id": 120100121900066004,
+    "value": "Self-Destruct"
   },
   {
     "id": 120100121900070001,
@@ -25570,6 +26006,14 @@
   {
     "id": 120100221000080001,
     "value": "-"
+  },
+  {
+    "id": 120100221700010001,
+    "value": "Anti-Air Attack"
+  },
+  {
+    "id": 120100221700010002,
+    "value": "Grand Nova Cannon"
   },
   {
     "id": 120100223000010001,

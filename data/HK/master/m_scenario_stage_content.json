@@ -4060,6 +4060,176 @@
     "StageId": 21002001
   },
   {
+    "ScenarioStageId": 21700105,
+    "SortOrder": 1,
+    "StageId": 21700101
+  },
+  {
+    "ScenarioStageId": 21700105,
+    "SortOrder": 2,
+    "StageId": 21700102
+  },
+  {
+    "ScenarioStageId": 21700105,
+    "SortOrder": 3,
+    "StageId": 21700103
+  },
+  {
+    "ScenarioStageId": 21700105,
+    "SortOrder": 4,
+    "StageId": 21700104
+  },
+  {
+    "ScenarioStageId": 21700105,
+    "SortOrder": 5,
+    "StageId": 21700105
+  },
+  {
+    "ScenarioStageId": 21700203,
+    "SortOrder": 1,
+    "StageId": 21700201
+  },
+  {
+    "ScenarioStageId": 21700203,
+    "SortOrder": 2,
+    "StageId": 21700202
+  },
+  {
+    "ScenarioStageId": 21700203,
+    "SortOrder": 3,
+    "StageId": 21700203
+  },
+  {
+    "ScenarioStageId": 21700304,
+    "SortOrder": 1,
+    "StageId": 21700301
+  },
+  {
+    "ScenarioStageId": 21700304,
+    "SortOrder": 2,
+    "StageId": 21700302
+  },
+  {
+    "ScenarioStageId": 21700304,
+    "SortOrder": 3,
+    "StageId": 21700303
+  },
+  {
+    "ScenarioStageId": 21700304,
+    "SortOrder": 4,
+    "StageId": 21700304
+  },
+  {
+    "ScenarioStageId": 21700304,
+    "SortOrder": 5,
+    "StageId": 21700305
+  },
+  {
+    "ScenarioStageId": 21700403,
+    "SortOrder": 1,
+    "StageId": 21700401
+  },
+  {
+    "ScenarioStageId": 21700403,
+    "SortOrder": 2,
+    "StageId": 21700402
+  },
+  {
+    "ScenarioStageId": 21700403,
+    "SortOrder": 3,
+    "StageId": 21700403
+  },
+  {
+    "ScenarioStageId": 21700403,
+    "SortOrder": 4,
+    "StageId": 21700404
+  },
+  {
+    "ScenarioStageId": 21700503,
+    "SortOrder": 1,
+    "StageId": 21700501
+  },
+  {
+    "ScenarioStageId": 21700503,
+    "SortOrder": 2,
+    "StageId": 21700502
+  },
+  {
+    "ScenarioStageId": 21700503,
+    "SortOrder": 3,
+    "StageId": 21700503
+  },
+  {
+    "ScenarioStageId": 21700503,
+    "SortOrder": 4,
+    "StageId": 21700504
+  },
+  {
+    "ScenarioStageId": 21700604,
+    "SortOrder": 1,
+    "StageId": 21700601
+  },
+  {
+    "ScenarioStageId": 21700604,
+    "SortOrder": 2,
+    "StageId": 21700602
+  },
+  {
+    "ScenarioStageId": 21700604,
+    "SortOrder": 3,
+    "StageId": 21700603
+  },
+  {
+    "ScenarioStageId": 21700604,
+    "SortOrder": 4,
+    "StageId": 21700604
+  },
+  {
+    "ScenarioStageId": 21700604,
+    "SortOrder": 5,
+    "StageId": 21700605
+  },
+  {
+    "ScenarioStageId": 21700703,
+    "SortOrder": 1,
+    "StageId": 21700701
+  },
+  {
+    "ScenarioStageId": 21700703,
+    "SortOrder": 2,
+    "StageId": 21700702
+  },
+  {
+    "ScenarioStageId": 21700703,
+    "SortOrder": 3,
+    "StageId": 21700703
+  },
+  {
+    "ScenarioStageId": 21700703,
+    "SortOrder": 4,
+    "StageId": 21700704
+  },
+  {
+    "ScenarioStageId": 21700801,
+    "SortOrder": 1,
+    "StageId": 21700801
+  },
+  {
+    "ScenarioStageId": 21700901,
+    "SortOrder": 1,
+    "StageId": 21700901
+  },
+  {
+    "ScenarioStageId": 21701001,
+    "SortOrder": 1,
+    "StageId": 21701001
+  },
+  {
+    "ScenarioStageId": 21701101,
+    "SortOrder": 1,
+    "StageId": 21701101
+  },
+  {
     "ScenarioStageId": 21900103,
     "SortOrder": 1,
     "StageId": 21900101

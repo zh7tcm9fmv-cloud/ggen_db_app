@@ -310,6 +310,16 @@
     "ScheduleId": 0
   },
   {
+    "Id": 1217002100,
+    "ResourceId": "g2170u02100",
+    "NameLanguageId": 110100001217002100,
+    "ProfileLanguageId": 110200001217002100,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 2170,
+    "ModelNumber": "OZ-19MASX",
+    "ScheduleId": 2611201303
+  },
+  {
     "Id": 1219000100,
     "ResourceId": "g2190u00100",
     "NameLanguageId": 110100001219000100,

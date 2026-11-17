@@ -3288,9 +3288,21 @@
     "AbilityFrameTypeIndex": 1
   },
   {
+    "Id": 1018501,
+    "ResourceId": "trait_10030102",
+    "TraitSetId": 101850100,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
     "Id": 1018602,
     "ResourceId": "trait_10030102",
     "TraitSetId": 101860201,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 1018703,
+    "ResourceId": "trait_10030100",
+    "TraitSetId": 101870301,
     "AbilityFrameTypeIndex": 1
   },
   {
@@ -7866,9 +7878,69 @@
     "AbilityFrameTypeIndex": 2
   },
   {
+    "Id": 2031301,
+    "ResourceId": "trait_10210100",
+    "TraitSetId": 203130101,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 2031401,
+    "ResourceId": "trait_10070700",
+    "TraitSetId": 203140101,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 2031503,
+    "ResourceId": "trait_10090102",
+    "TraitSetId": 203150300,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 2031504,
+    "ResourceId": "trait_10090102",
+    "TraitSetId": 203150400,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 2031601,
+    "ResourceId": "trait_10070700",
+    "TraitSetId": 203160101,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 2031701,
+    "ResourceId": "trait_10820100",
+    "TraitSetId": 203170100,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 2031702,
+    "ResourceId": "trait_10820100",
+    "TraitSetId": 203170200,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 2031801,
+    "ResourceId": "thum_g2170c00101",
+    "TraitSetId": 203180100,
+    "AbilityFrameTypeIndex": 2
+  },
+  {
+    "Id": 2031901,
+    "ResourceId": "thum_g2170c00401",
+    "TraitSetId": 203190100,
+    "AbilityFrameTypeIndex": 2
+  },
+  {
     "Id": 2033101,
     "ResourceId": "trait_10210100",
     "TraitSetId": 203310101,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 2034002,
+    "ResourceId": "trait_10820100",
+    "TraitSetId": 203400200,
     "AbilityFrameTypeIndex": 1
   },
   {
@@ -10140,9 +10212,57 @@
     "AbilityFrameTypeIndex": 1
   },
   {
+    "Id": 5116201,
+    "ResourceId": "trait_10050102",
+    "TraitSetId": 511620100,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 5116202,
+    "ResourceId": "trait_10050102",
+    "TraitSetId": 511620200,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 5116203,
+    "ResourceId": "trait_10050102",
+    "TraitSetId": 511620300,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 5116204,
+    "ResourceId": "trait_10050102",
+    "TraitSetId": 511620400,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 5116205,
+    "ResourceId": "trait_10050102",
+    "TraitSetId": 511620500,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
     "Id": 5116601,
     "ResourceId": "trait_10030102",
     "TraitSetId": 511660101,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 5117102,
+    "ResourceId": "trait_10030100",
+    "TraitSetId": 511710201,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 5117201,
+    "ResourceId": "trait_10050100",
+    "TraitSetId": 511720101,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 5117301,
+    "ResourceId": "trait_10050100",
+    "TraitSetId": 511730101,
     "AbilityFrameTypeIndex": 1
   },
   {
@@ -13146,6 +13266,114 @@
     "AbilityFrameTypeIndex": 1
   },
   {
+    "Id": 6127801,
+    "ResourceId": "trait_10030102",
+    "TraitSetId": 612780100,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 6127802,
+    "ResourceId": "trait_10030102",
+    "TraitSetId": 612780200,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 6127803,
+    "ResourceId": "trait_10030102",
+    "TraitSetId": 612780300,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 6127804,
+    "ResourceId": "trait_10030102",
+    "TraitSetId": 612780400,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 6127805,
+    "ResourceId": "trait_10030102",
+    "TraitSetId": 612780500,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 6127901,
+    "ResourceId": "trait_10030102",
+    "TraitSetId": 612790100,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 6127902,
+    "ResourceId": "trait_10030102",
+    "TraitSetId": 612790200,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 6128001,
+    "ResourceId": "trait_10030102",
+    "TraitSetId": 612800100,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 6128002,
+    "ResourceId": "trait_10030102",
+    "TraitSetId": 612800200,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 6128003,
+    "ResourceId": "trait_10030102",
+    "TraitSetId": 612800300,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 6128101,
+    "ResourceId": "trait_10770100",
+    "TraitSetId": 612810101,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 6128201,
+    "ResourceId": "trait_12370100",
+    "TraitSetId": 612820100,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 6128401,
+    "ResourceId": "trait_10030100",
+    "TraitSetId": 612840101,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 6128501,
+    "ResourceId": "trait_12380100",
+    "TraitSetId": 612850100,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 6128701,
+    "ResourceId": "trait_10030100",
+    "TraitSetId": 612870101,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 6128801,
+    "ResourceId": "trait_12390100",
+    "TraitSetId": 612880100,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 6129001,
+    "ResourceId": "trait_10030100",
+    "TraitSetId": 612900101,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 6129101,
+    "ResourceId": "trait_10770100",
+    "TraitSetId": 612910101,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
     "Id": 6129201,
     "ResourceId": "trait_12160100",
     "TraitSetId": 612920101,
@@ -13179,6 +13407,78 @@
     "Id": 6130501,
     "ResourceId": "trait_12610100",
     "TraitSetId": 613050101,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 6131401,
+    "ResourceId": "trait_11500100",
+    "TraitSetId": 613140101,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 6131501,
+    "ResourceId": "trait_12620100",
+    "TraitSetId": 613150101,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 6131601,
+    "ResourceId": "trait_10070700",
+    "TraitSetId": 613160101,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 6131701,
+    "ResourceId": "trait_12380100",
+    "TraitSetId": 613170101,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 6131805,
+    "ResourceId": "trait_10070700",
+    "TraitSetId": 613180501,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 6131901,
+    "ResourceId": "trait_12370100",
+    "TraitSetId": 613190101,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 6132005,
+    "ResourceId": "trait_10070700",
+    "TraitSetId": 613200501,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 6132101,
+    "ResourceId": "trait_12390100",
+    "TraitSetId": 613210101,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 6132205,
+    "ResourceId": "trait_10230102",
+    "TraitSetId": 613220501,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 6132905,
+    "ResourceId": "trait_10050100",
+    "TraitSetId": 613290501,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 6133005,
+    "ResourceId": "trait_10050100",
+    "TraitSetId": 613300501,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 6133105,
+    "ResourceId": "trait_12640100",
+    "TraitSetId": 613310501,
     "AbilityFrameTypeIndex": 1
   },
   {

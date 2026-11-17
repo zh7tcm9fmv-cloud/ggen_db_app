@@ -88,5 +88,15 @@
     "Id": 26103003100103,
     "GameEventMultiTargetValueGroupId": 261030031001,
     "TargetValue": 126103011
+  },
+  {
+    "Id": 26112003120101,
+    "GameEventMultiTargetValueGroupId": 261120030901,
+    "TargetValue": 126112003
+  },
+  {
+    "Id": 26112003120103,
+    "GameEventMultiTargetValueGroupId": 261120031001,
+    "TargetValue": 126112003
   }
 ]

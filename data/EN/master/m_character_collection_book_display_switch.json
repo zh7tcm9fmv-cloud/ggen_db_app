@@ -1565,9 +1565,69 @@
     "CharacterId": 1217000200
   },
   {
+    "CharacterCollectionBookId": 21700001,
+    "DisplayPriority": 1217000201,
+    "CharacterId": 1217000201
+  },
+  {
     "CharacterCollectionBookId": 21700002,
     "DisplayPriority": 1,
     "CharacterId": 1217000300
+  },
+  {
+    "CharacterCollectionBookId": 21700003,
+    "DisplayPriority": 1217000100,
+    "CharacterId": 1217000100
+  },
+  {
+    "CharacterCollectionBookId": 21700003,
+    "DisplayPriority": 1217000101,
+    "CharacterId": 1217000101
+  },
+  {
+    "CharacterCollectionBookId": 21700004,
+    "DisplayPriority": 1217000500,
+    "CharacterId": 1217000500
+  },
+  {
+    "CharacterCollectionBookId": 21700005,
+    "DisplayPriority": 1217000700,
+    "CharacterId": 1217000700
+  },
+  {
+    "CharacterCollectionBookId": 21700005,
+    "DisplayPriority": 1217000701,
+    "CharacterId": 1217000701
+  },
+  {
+    "CharacterCollectionBookId": 21700006,
+    "DisplayPriority": 1217000600,
+    "CharacterId": 1217000600
+  },
+  {
+    "CharacterCollectionBookId": 21700006,
+    "DisplayPriority": 1217000601,
+    "CharacterId": 1217000601
+  },
+  {
+    "CharacterCollectionBookId": 21700007,
+    "DisplayPriority": 1217000800,
+    "CharacterId": 1217000800
+  },
+  {
+    "CharacterCollectionBookId": 21700008,
+    "DisplayPriority": 1217000400,
+    "CharacterId": 1217000400
+  },
+  {
+    "CharacterCollectionBookId": 21700008,
+    "DisplayPriority": 1217000401,
+    "CharacterId": 1217000401
+  },
+  {
+    "CharacterCollectionBookId": 21700009,
+    "DisplayPriority": 1217000900,
+    "CharacterId": 1217000900
   },
   {
     "CharacterCollectionBookId": 21900001,

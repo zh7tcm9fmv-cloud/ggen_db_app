@@ -1,0 +1,38 @@
+[
+  {
+    "Id": 100001,
+    "UserRecordTypeIndex": 83,
+    "EventName": "progressUpdate",
+    "PropertyName": "currentProgress"
+  },
+  {
+    "Id": 100002,
+    "UserRecordTypeIndex": 64,
+    "EventName": "MaxTotalBattlePower",
+    "PropertyName": "MaxTotalBattlePower"
+  },
+  {
+    "Id": 100003,
+    "UserRecordTypeIndex": 72,
+    "EventName": "TotalCompleteStage",
+    "PropertyName": "TotalCompleteStage"
+  },
+  {
+    "Id": 100004,
+    "UserRecordTypeIndex": 65,
+    "EventName": "UnitCollectionBookRegister",
+    "PropertyName": "UnitCollectionBookRegister"
+  },
+  {
+    "Id": 100005,
+    "UserRecordTypeIndex": 91,
+    "EventName": "MasterLeagueBestScore",
+    "PropertyName": "MasterLeagueBestScore"
+  },
+  {
+    "Id": 100006,
+    "UserRecordTypeIndex": 54,
+    "EventName": "Specialize",
+    "PropertyName": "Specialize"
+  }
+]

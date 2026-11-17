@@ -127,6 +127,12 @@
   },
   {
     "CharacterSkillTraitTypeIndex": 1,
+    "CharacterId": 1217000601,
+    "IsSp": false,
+    "RequiredLevel": 30
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 1,
     "CharacterId": 1219000201,
     "IsSp": false,
     "RequiredLevel": 60
@@ -937,6 +943,36 @@
   },
   {
     "CharacterSkillTraitTypeIndex": 3,
+    "CharacterId": 1217000101,
+    "IsSp": false,
+    "RequiredLevel": 1
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 3,
+    "CharacterId": 1217000400,
+    "IsSp": false,
+    "RequiredLevel": 30
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 3,
+    "CharacterId": 1217000600,
+    "IsSp": false,
+    "RequiredLevel": 1
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 3,
+    "CharacterId": 1217000700,
+    "IsSp": true,
+    "RequiredLevel": 30
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 3,
+    "CharacterId": 1217000900,
+    "IsSp": true,
+    "RequiredLevel": 30
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 3,
     "CharacterId": 1219000101,
     "IsSp": false,
     "RequiredLevel": 1
@@ -1648,6 +1684,30 @@
     "CharacterId": 1210001600,
     "IsSp": true,
     "RequiredLevel": 30
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 4,
+    "CharacterId": 1217000100,
+    "IsSp": false,
+    "RequiredLevel": 1
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 4,
+    "CharacterId": 1217000201,
+    "IsSp": false,
+    "RequiredLevel": 1
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 4,
+    "CharacterId": 1217000401,
+    "IsSp": false,
+    "RequiredLevel": 30
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 4,
+    "CharacterId": 1217000701,
+    "IsSp": false,
+    "RequiredLevel": 1
   },
   {
     "CharacterSkillTraitTypeIndex": 4,
@@ -3121,6 +3181,18 @@
   },
   {
     "CharacterSkillTraitTypeIndex": 7,
+    "CharacterId": 1217000800,
+    "IsSp": true,
+    "RequiredLevel": 30
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 7,
+    "CharacterId": 1217000900,
+    "IsSp": false,
+    "RequiredLevel": 1
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 7,
     "CharacterId": 1219000501,
     "IsSp": false,
     "RequiredLevel": 1
@@ -4213,9 +4285,39 @@
   },
   {
     "CharacterSkillTraitTypeIndex": 8,
+    "CharacterId": 1217000101,
+    "IsSp": false,
+    "RequiredLevel": 30
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 8,
+    "CharacterId": 1217000201,
+    "IsSp": true,
+    "RequiredLevel": 30
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 8,
     "CharacterId": 1217000300,
     "IsSp": false,
     "RequiredLevel": 30
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 8,
+    "CharacterId": 1217000401,
+    "IsSp": false,
+    "RequiredLevel": 60
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 8,
+    "CharacterId": 1217000601,
+    "IsSp": false,
+    "RequiredLevel": 1
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 8,
+    "CharacterId": 1217000800,
+    "IsSp": false,
+    "RequiredLevel": 1
   },
   {
     "CharacterSkillTraitTypeIndex": 8,
@@ -5155,6 +5257,18 @@
   },
   {
     "CharacterSkillTraitTypeIndex": 9,
+    "CharacterId": 1217000400,
+    "IsSp": false,
+    "RequiredLevel": 1
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 9,
+    "CharacterId": 1217000701,
+    "IsSp": false,
+    "RequiredLevel": 30
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 9,
     "CharacterId": 1219000100,
     "IsSp": true,
     "RequiredLevel": 30
@@ -5600,6 +5714,30 @@
   {
     "CharacterSkillTraitTypeIndex": 10,
     "CharacterId": 1200003600,
+    "IsSp": false,
+    "RequiredLevel": 1
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 10,
+    "CharacterId": 1217000100,
+    "IsSp": false,
+    "RequiredLevel": 30
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 10,
+    "CharacterId": 1217000401,
+    "IsSp": false,
+    "RequiredLevel": 1
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 10,
+    "CharacterId": 1217000500,
+    "IsSp": false,
+    "RequiredLevel": 1
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 10,
+    "CharacterId": 1217000700,
     "IsSp": false,
     "RequiredLevel": 1
   },
@@ -6649,6 +6787,12 @@
   },
   {
     "CharacterSkillTraitTypeIndex": 13,
+    "CharacterId": 1217000600,
+    "IsSp": true,
+    "RequiredLevel": 30
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 13,
     "CharacterId": 1230000100,
     "IsSp": false,
     "RequiredLevel": 1
@@ -7208,6 +7352,12 @@
   {
     "CharacterSkillTraitTypeIndex": 14,
     "CharacterId": 1217000200,
+    "IsSp": false,
+    "RequiredLevel": 30
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 14,
+    "CharacterId": 1217000500,
     "IsSp": false,
     "RequiredLevel": 30
   },
@@ -8116,6 +8266,12 @@
     "CharacterId": 1210001900,
     "IsSp": true,
     "RequiredLevel": 30
+  },
+  {
+    "CharacterSkillTraitTypeIndex": 17,
+    "CharacterId": 1217000101,
+    "IsSp": false,
+    "RequiredLevel": 60
   },
   {
     "CharacterSkillTraitTypeIndex": 17,

@@ -2142,6 +2142,69 @@
     "IsHideVoiceButton": false
   },
   {
+    "Id": 21700003,
+    "DefaultCharacterId": 1217000100,
+    "SortOrder": 21700003,
+    "SeriesId": 2170,
+    "DescriptionLanguageId": 100200001217000100,
+    "ScheduleId": 2611209903,
+    "IsHideVoiceButton": false
+  },
+  {
+    "Id": 21700004,
+    "DefaultCharacterId": 1217000500,
+    "SortOrder": 21700004,
+    "SeriesId": 2170,
+    "DescriptionLanguageId": 100200001217000500,
+    "ScheduleId": 2611209903,
+    "IsHideVoiceButton": false
+  },
+  {
+    "Id": 21700005,
+    "DefaultCharacterId": 1217000700,
+    "SortOrder": 21700005,
+    "SeriesId": 2170,
+    "DescriptionLanguageId": 100200001217000700,
+    "ScheduleId": 2611209903,
+    "IsHideVoiceButton": false
+  },
+  {
+    "Id": 21700006,
+    "DefaultCharacterId": 1217000601,
+    "SortOrder": 21700006,
+    "SeriesId": 2170,
+    "DescriptionLanguageId": 100200001217000601,
+    "ScheduleId": 2611209903,
+    "IsHideVoiceButton": false
+  },
+  {
+    "Id": 21700007,
+    "DefaultCharacterId": 1217000800,
+    "SortOrder": 21700007,
+    "SeriesId": 2170,
+    "DescriptionLanguageId": 100200001217000800,
+    "ScheduleId": 2611209903,
+    "IsHideVoiceButton": false
+  },
+  {
+    "Id": 21700008,
+    "DefaultCharacterId": 1217000400,
+    "SortOrder": 21700008,
+    "SeriesId": 2170,
+    "DescriptionLanguageId": 100200001217000400,
+    "ScheduleId": 2611209903,
+    "IsHideVoiceButton": false
+  },
+  {
+    "Id": 21700009,
+    "DefaultCharacterId": 1217000900,
+    "SortOrder": 21700009,
+    "SeriesId": 2170,
+    "DescriptionLanguageId": 100200001217000900,
+    "ScheduleId": 2611209903,
+    "IsHideVoiceButton": false
+  },
+  {
     "Id": 21900001,
     "DefaultCharacterId": 1219000201,
     "SortOrder": 21900002,

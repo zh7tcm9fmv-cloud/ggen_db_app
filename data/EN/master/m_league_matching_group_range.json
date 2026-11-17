@@ -280,5 +280,71 @@
     "CombatPowerLowerLimit": 280000,
     "CombatPowerUpperLimit": 320000,
     "ChallengeModeBonusValue": 0
+  },
+  {
+    "Id": 4000,
+    "CombatPowerLowerLimit": 195000,
+    "CombatPowerUpperLimit": 210000,
+    "ChallengeModeBonusValue": 0
+  },
+  {
+    "Id": 4001,
+    "CombatPowerLowerLimit": 210000,
+    "CombatPowerUpperLimit": 220000,
+    "ChallengeModeBonusValue": 0
+  },
+  {
+    "Id": 4002,
+    "CombatPowerLowerLimit": 220000,
+    "CombatPowerUpperLimit": 230000,
+    "ChallengeModeBonusValue": 0
+  },
+  {
+    "Id": 4003,
+    "CombatPowerLowerLimit": 230000,
+    "CombatPowerUpperLimit": 240000,
+    "ChallengeModeBonusValue": 0
+  },
+  {
+    "Id": 4004,
+    "CombatPowerLowerLimit": 240000,
+    "CombatPowerUpperLimit": 250000,
+    "ChallengeModeBonusValue": 0
+  },
+  {
+    "Id": 4005,
+    "CombatPowerLowerLimit": 250000,
+    "CombatPowerUpperLimit": 260000,
+    "ChallengeModeBonusValue": 0
+  },
+  {
+    "Id": 4006,
+    "CombatPowerLowerLimit": 260000,
+    "CombatPowerUpperLimit": 270000,
+    "ChallengeModeBonusValue": 500
+  },
+  {
+    "Id": 4007,
+    "CombatPowerLowerLimit": 270000,
+    "CombatPowerUpperLimit": 280000,
+    "ChallengeModeBonusValue": 1000
+  },
+  {
+    "Id": 4008,
+    "CombatPowerLowerLimit": 280000,
+    "CombatPowerUpperLimit": 290000,
+    "ChallengeModeBonusValue": 1600
+  },
+  {
+    "Id": 4009,
+    "CombatPowerLowerLimit": 290000,
+    "CombatPowerUpperLimit": 300000,
+    "ChallengeModeBonusValue": 2300
+  },
+  {
+    "Id": 4010,
+    "CombatPowerLowerLimit": 300000,
+    "CombatPowerUpperLimit": 320000,
+    "ChallengeModeBonusValue": 3100
   }
 ]

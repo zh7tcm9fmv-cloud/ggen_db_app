@@ -3216,12 +3216,24 @@
     "value": "Decrease Beam Ranged & Physical Weapon Power by {0}%"
   },
   {
+    "id": 141200000101850101,
+    "value": "When combating enemies with a specified tag, increase own ATK and DEF by 15%."
+  },
+  {
+    "id": 141200000101850102,
+    "value": ""
+  },
+  {
     "id": 141200000101860201,
     "value": "When own EN is 50% or higher,\nincrease own ATK by 10%\nand own EN consumption by 30%."
   },
   {
     "id": 141200000101860202,
     "value": ""
+  },
+  {
+    "id": 141200000101870301,
+    "value": "When attacking in a combat,\nincrease own ATK by 15%.\n*Excluding Counter, Support Attack, and Counter Support."
   },
   {
     "id": 141200000101880101,
@@ -9212,8 +9224,120 @@
     "value": ""
   },
   {
+    "id": 141200000203130101,
+    "value": "When piloting units with specified tags,\nSupport Defense +1 time(s)."
+  },
+  {
+    "id": 141200000203140101,
+    "value": "When piloting units with specified tags,\nChance Step will trigger 1 time(s) at the end of combat regardless of whether or not enemies have been defeated."
+  },
+  {
+    "id": 141200000203150301,
+    "value": "Increase own Ranged and Melee by 15%."
+  },
+  {
+    "id": 141200000203150302,
+    "value": ""
+  },
+  {
+    "id": 141200000203150401,
+    "value": "Increase own Ranged and Melee by 20%."
+  },
+  {
+    "id": 141200000203150402,
+    "value": ""
+  },
+  {
+    "id": 141200000203160101,
+    "value": "When piloting units with specified tags,\nChance Step +1 time(s)."
+  },
+  {
+    "id": 141200000203170101,
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 5%\nand reduce damage taken by 5%."
+  },
+  {
+    "id": 141200000203170102,
+    "value": ""
+  },
+  {
+    "id": 141200000203170201,
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
+  },
+  {
+    "id": 141200000203170202,
+    "value": ""
+  },
+  {
+    "id": 141200000203180101,
+    "value": "Support Defense +1 time(s)."
+  },
+  {
+    "id": 141200000203180102,
+    "value": "When piloting units with specified tags,\nincrease MP by 6."
+  },
+  {
+    "id": 141200000203180103,
+    "value": "When the piloted unit has the specified tag and executing Support Defense,\nincrease movement range for Support Defense by 1."
+  },
+  {
+    "id": 141200000203180104,
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 15%\nand reduce damage taken by 15%."
+  },
+  {
+    "id": 141200000203180105,
+    "value": ""
+  },
+  {
+    "id": 141200000203190101,
+    "value": "When piloting units with specified tags\nincrease MP by 6, and\nincrease damage dealt to enemies by 15%."
+  },
+  {
+    "id": 141200000203190102,
+    "value": ""
+  },
+  {
     "id": 141200000203310101,
     "value": "When piloting units from specified series,\nSupport Defense +1 time(s)."
+  },
+  {
+    "id": 141200000203400101,
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 5%\nand reduce damage taken by 5%."
+  },
+  {
+    "id": 141200000203400102,
+    "value": ""
+  },
+  {
+    "id": 141200000203400201,
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
+  },
+  {
+    "id": 141200000203400202,
+    "value": ""
+  },
+  {
+    "id": 141200000203400301,
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 15%\nand reduce damage taken by 15%."
+  },
+  {
+    "id": 141200000203400302,
+    "value": ""
+  },
+  {
+    "id": 141200000203400401,
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 20%\nand reduce damage taken by 20%."
+  },
+  {
+    "id": 141200000203400402,
+    "value": ""
+  },
+  {
+    "id": 141200000203400501,
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 25%\nand reduce damage taken by 25%."
+  },
+  {
+    "id": 141200000203400502,
+    "value": ""
   },
   {
     "id": 141200000300010101,
@@ -15680,12 +15804,36 @@
     "value": "When equipped to Dark Gundam Jr.,\nincrease DEF by 2%."
   },
   {
+    "id": 141200000407210101,
+    "value": "Increase ATK by 10%."
+  },
+  {
+    "id": 141200000407210102,
+    "value": "Increase DEF by 5%."
+  },
+  {
     "id": 141200000407230101,
     "value": "Increase ATK by 10%."
   },
   {
     "id": 141200000407230102,
     "value": "When equipped to a Unit possessing a specified Tag,\nincrease ATK by 2%."
+  },
+  {
+    "id": 141200000407240101,
+    "value": "Increase Max HP by 8%."
+  },
+  {
+    "id": 141200000407250101,
+    "value": "Increase Mobility by 8%."
+  },
+  {
+    "id": 141200000407260101,
+    "value": "Increase ATK by 10%."
+  },
+  {
+    "id": 141200000407260102,
+    "value": "Decrease DEF by 3%."
   },
   {
     "id": 141200000510010101,
@@ -17424,6 +17572,46 @@
     "value": "Can re-sortie once after being defeated."
   },
   {
+    "id": 141200000511620101,
+    "value": "When enemies attack from within 3 space(s),\nincrease DEF and MOB by 50%."
+  },
+  {
+    "id": 141200000511620102,
+    "value": ""
+  },
+  {
+    "id": 141200000511620201,
+    "value": "When enemies attack from within 3 space(s),\nincrease DEF and MOB by 100%."
+  },
+  {
+    "id": 141200000511620202,
+    "value": ""
+  },
+  {
+    "id": 141200000511620301,
+    "value": "When enemies attack from within 3 space(s),\nincrease DEF and MOB by 150%."
+  },
+  {
+    "id": 141200000511620302,
+    "value": ""
+  },
+  {
+    "id": 141200000511620401,
+    "value": "When enemies attack from within 3 space(s),\nincrease DEF and MOB by 200%."
+  },
+  {
+    "id": 141200000511620402,
+    "value": ""
+  },
+  {
+    "id": 141200000511620501,
+    "value": "When enemies attack from within 3 space(s),\nincrease DEF and MOB by 250%."
+  },
+  {
+    "id": 141200000511620502,
+    "value": ""
+  },
+  {
     "id": 141200000511660101,
     "value": "When Vigor is \"High\" or greater,\nincrease ATK and DEF by 50%."
   },
@@ -17458,6 +17646,18 @@
   {
     "id": 141200000511680401,
     "value": "Increase squad Max HP by 200%."
+  },
+  {
+    "id": 141200000511710201,
+    "value": "In a one-on-one combat,\nincrease own ATK by 200%."
+  },
+  {
+    "id": 141200000511720101,
+    "value": "When HP is 50% or below,\nincrease own DEF by 100%."
+  },
+  {
+    "id": 141200000511730101,
+    "value": "When HP is 50% or below,\nincrease own DEF by 100%."
   },
   {
     "id": 141200000512910101,
@@ -20080,6 +20280,182 @@
     "value": "Increase squad Dark Gundam Jr. DEF by 200%."
   },
   {
+    "id": 141200000612780101,
+    "value": "When attacking in a combat,\nincrease own ATK by 50%\nand own DEF by 50%.\n*Excluding Counter, Support Attack, and Counter Support."
+  },
+  {
+    "id": 141200000612780102,
+    "value": ""
+  },
+  {
+    "id": 141200000612780201,
+    "value": "When attacking in a combat,\nincrease own ATK by 100%\nand own DEF by 100%.\n*Excluding Counter, Support Attack, and Counter Support."
+  },
+  {
+    "id": 141200000612780202,
+    "value": ""
+  },
+  {
+    "id": 141200000612780301,
+    "value": "When attacking in a combat,\nincrease own ATK by 150%\nand own DEF by 150%.\n*Excluding Counter, Support Attack, and Counter Support."
+  },
+  {
+    "id": 141200000612780302,
+    "value": ""
+  },
+  {
+    "id": 141200000612780401,
+    "value": "When attacking in a combat,\nincrease own ATK by 200%\nand own DEF by 200%.\n*Excluding Counter, Support Attack, and Counter Support."
+  },
+  {
+    "id": 141200000612780402,
+    "value": ""
+  },
+  {
+    "id": 141200000612780501,
+    "value": "When attacking in a combat,\nincrease own ATK by 250%\nand own DEF by 250%.\n*Excluding Counter, Support Attack, and Counter Support."
+  },
+  {
+    "id": 141200000612780502,
+    "value": ""
+  },
+  {
+    "id": 141200000612790101,
+    "value": "At the start of every turn,\nincrease own ATK by 30%\nand decrease own DEF by 30%."
+  },
+  {
+    "id": 141200000612790102,
+    "value": ""
+  },
+  {
+    "id": 141200000612790103,
+    "value": "Increase ATK by 30%."
+  },
+  {
+    "id": 141200000612790104,
+    "value": "Decrease DEF by 30%."
+  },
+  {
+    "id": 141200000612790201,
+    "value": "At the start of every turn,\nincrease own ATK by 50%\nand decrease own DEF by 50%."
+  },
+  {
+    "id": 141200000612790202,
+    "value": ""
+  },
+  {
+    "id": 141200000612790203,
+    "value": "Increase ATK by 50%."
+  },
+  {
+    "id": 141200000612790204,
+    "value": "Decrease DEF by 50%."
+  },
+  {
+    "id": 141200000612800101,
+    "value": "When Vigor is \"Max\" or greater,\nincrease own ATK and DEF by 30%.\nWhen Vigor is \"Supercharged\" or greater,\nfurther increase own ATK and DEF by 30%"
+  },
+  {
+    "id": 141200000612800102,
+    "value": ""
+  },
+  {
+    "id": 141200000612800103,
+    "value": ""
+  },
+  {
+    "id": 141200000612800104,
+    "value": ""
+  },
+  {
+    "id": 141200000612800201,
+    "value": "When Vigor is \"Max\" or greater,\nincrease own ATK and DEF by 50%.\nWhen Vigor is \"Supercharged\" or greater,\nfurther increase own ATK and DEF by 50%"
+  },
+  {
+    "id": 141200000612800202,
+    "value": ""
+  },
+  {
+    "id": 141200000612800203,
+    "value": ""
+  },
+  {
+    "id": 141200000612800204,
+    "value": ""
+  },
+  {
+    "id": 141200000612800301,
+    "value": "When Vigor is \"Max\" or greater,\nincrease own ATK and DEF by 100%.\nWhen Vigor is \"Supercharged\" or greater,\nfurther increase own ATK and DEF by 100%"
+  },
+  {
+    "id": 141200000612800302,
+    "value": ""
+  },
+  {
+    "id": 141200000612800303,
+    "value": ""
+  },
+  {
+    "id": 141200000612800304,
+    "value": ""
+  },
+  {
+    "id": 141200000612810101,
+    "value": "Prioritize attacking the enemy with the lowest HP."
+  },
+  {
+    "id": 141200000612820101,
+    "value": "Increase ATK and DEF by 50%\nfor squad units piloted by Roche Nattono, and Broom Brooks"
+  },
+  {
+    "id": 141200000612820102,
+    "value": ""
+  },
+  {
+    "id": 141200000612840101,
+    "value": "Increase ATK by 50%."
+  },
+  {
+    "id": 141200000612840102,
+    "value": "Increase DEF by 50%."
+  },
+  {
+    "id": 141200000612850101,
+    "value": "Increase ATK and DEF by 50%\nfor squad units piloted by Kratz Silvy, and Broom Brooks"
+  },
+  {
+    "id": 141200000612850102,
+    "value": ""
+  },
+  {
+    "id": 141200000612870101,
+    "value": "Increase ATK by 50%."
+  },
+  {
+    "id": 141200000612870102,
+    "value": "Increase DEF by 50%."
+  },
+  {
+    "id": 141200000612880101,
+    "value": "Increase ATK and DEF by 50%\nfor squad units piloted by Kratz Silvy, and Roche Nattono"
+  },
+  {
+    "id": 141200000612880102,
+    "value": ""
+  },
+  {
+    "id": 141200000612900101,
+    "value": "Increase ATK by 50%."
+  },
+  {
+    "id": 141200000612900102,
+    "value": "Increase DEF by 50%."
+  },
+  {
+    "id": 141200000612910101,
+    "value": "Prioritize attacking enemies that have been attacked by enemy [Valder Farkill]."
+  },
+  {
     "id": 141200000612920101,
     "value": "Increase DEF and MOB by 200%\nfor squad units piloted by Amuro Ray, and Kai Shiden."
   },
@@ -20122,6 +20498,78 @@
   {
     "id": 141200000613050101,
     "value": "When your squad's Dozle Zabi is destroyed,\nincrease own ATK by 100%."
+  },
+  {
+    "id": 141200000613140101,
+    "value": "When Yurin L'Ciel in your squad is defeated,\nincrease own ATK and DEF by 100%."
+  },
+  {
+    "id": 141200000613140111,
+    "value": "Increase ATK by 100%."
+  },
+  {
+    "id": 141200000613140112,
+    "value": "Increase DEF by 100%."
+  },
+  {
+    "id": 141200000613150101,
+    "value": "When Flit Asuno in your squad is defeated,\nincrease own ATK and DEF by 100%."
+  },
+  {
+    "id": 141200000613150111,
+    "value": "Increase ATK by 100%."
+  },
+  {
+    "id": 141200000613150112,
+    "value": "Increase DEF by 100%."
+  },
+  {
+    "id": 141200000613160101,
+    "value": "Your squad's Valder Farkill gets 1 Guaranteed Chance Step."
+  },
+  {
+    "id": 141200000613170101,
+    "value": "Increase DEF by 500% for squad units piloted by Valder Farkill."
+  },
+  {
+    "id": 141200000613180501,
+    "value": "Your squad's Valder Farkill gets 5 Guaranteed Chance Steps."
+  },
+  {
+    "id": 141200000613190101,
+    "value": "Increase DEF by 500% for squad units piloted by Valder Farkill."
+  },
+  {
+    "id": 141200000613200501,
+    "value": "Your squad's Valder Farkill gets 5 Guaranteed Chance Steps."
+  },
+  {
+    "id": 141200000613210101,
+    "value": "Increase DEF by 500% for squad units piloted by Valder Farkill."
+  },
+  {
+    "id": 141200000613220501,
+    "value": "Support Defense +5 time(s)."
+  },
+  {
+    "id": 141200000613220502,
+    "value": "Can execute Support Defense when enemies responds to an ally's attack with a counter during a combat."
+  },
+  {
+    "id": 141200000613220503,
+    "value": "When executing Support Defense.\nReduce damage taken by 80%."
+  },
+  {
+    "id": 141200000613290501,
+    "value": "Increase DEF by 500%."
+  },
+  {
+    "id": 141200000613300501,
+    "value": "Increase DEF by 500%."
+  },
+  {
+    "id": 141200000613310501,
+    "value": "Increase DEF by 500% for squad units piloted by Master Asia, Undefeated of the East."
   },
   {
     "id": 141200000699000101,

@@ -421,7 +421,7 @@
   },
   {
     "id": 100200001080001900,
-    "value": "An MS pilot of the Federation's elite Titans special forces.\nHe is an ambitious man who hopes to take charge of the group.\nHe is an elitist and takes a lot of pride in being selected to be part of the Titans, making him feel superior to all others. But he also strives to learn, and when others question his narrow-mindedness, he tries to learn from them with great sincerity.\nHe has despised the AEUG pilot Kamille Bidan ever since they first met at Green Noa 1. He feels driven to surpass Kamille so that he can become stronger himself. This powerful urge makes him work harder."
+    "value": "An MS pilot of the Federation's elite Titans special forces.\nHe is an ambitious man who hopes to take charge of the group.\nAs an elitist, he takes much pride in being selected to be part of the Titans and tends to assume a superior attitude toward those outside the group. Nevertheless, he strives to better himself, and when others question his narrow-mindedness, he tries to learn from them with great sincerity.\nHe has despised the AEUG pilot Kamille Bidan ever since they first met at Green Noa 1. He feels driven to surpass Kamille so that he can become stronger himself. This powerful urge makes him work harder."
   },
   {
     "id": 100200001080002000,
@@ -944,12 +944,40 @@
     "value": "The granddaughter of Duke Dermail Catalonia,representative of the Romefeller Foundation.\nAn eccentric girl with distinctive forked eyebrows,her behavior is aggressive, provocative, and far beyond the realm of sensibility.\nShe lost both parents to war at a young age, and has nursed some twisted feelings about war ever since.\nShe treats fights as beautiful things and professes to be eagerly awaiting a proper war, but that is only to impress upon others how foolish and miserable wars really are.\nShe showed up in many places during the era of turmoil and served as an element that stirs up chaos.\nThis includes the Sanc Kingdom with its advocation of total pacifism, and White Fang, with its push to regulate the entire Earth and all mankind."
   },
   {
+    "id": 100200001217000100,
+    "value": "A test pilot for the industrial city-colony MO-V.\nHe is a hot-headed and inexperienced pilot, but strives hard to outperform his older brother Odel, all the while bickering with programmer Lucille Aisley.\nHe worked as a test pilot on MO-V for the prototype mobile suit Geminass 01, equipped with the new G-Unit System.\nWhen MO-V came under sudden attack by OZ Prize, he committed himself to fighting to protect the colony, which led to his growing considerably as a pilot."
+  },
+  {
     "id": 100200001217000200,
-    "value": "A test pilot for the industrial colony MO-V.\nHe has a calm and collected demeanor, and is a highly-skilled pilot. He is also the older brother of fellow test pilot Odin.\nHe worked as a test pilot on MO-V for the prototype Mobile Suit Geminass 02, but got caught up in the fighting over the new Gundam model. He went MIA while protecting Odin during a battle with OZ Prize."
+    "value": "A test pilot for the industrial city-colony MO-V.\nHe is calm, collected, and a highly skilled pilot. He is also the older brother of fellow test pilot Odin.\nHe worked as a test pilot on MO-V for the prototype mobile suit Geminass 02, but got caught up in the fighting over the new Gundam model.\nHe went missing in action while protecting Odin during a battle with OZ Prize."
   },
   {
     "id": 100200001217000300,
-    "value": "A trusted associate of Valder Farkill and a Mobile Suit pilot of OZ Prize.\nShe is the elder of two sisters; her younger sister is Luna Armonia.\nThey both lost their parents at a young age.\nThe colonial independence movement raised them to be special agents, but they did not make the cut when the Gundam pilots were selected. Valder Farkill recruited them after that.\nBoth sisters swore loyalty to Valder for saving them, and they have carried out numerous missions under his orders."
+    "value": "A close aide of Valder Farkill and an OZ Prize mobile suit pilot. She is also the older sister of Luna Armonia.\nSoris and Luna lost their parents at a young age. The Colony Liberation Organization raised them to be agents, but they did not make the cut when the Gundam pilots were selected. Valder Farkill recruited them after that.\nBoth sisters swore loyalty to Valder for saving them, and they have carried out numerous missions under his orders."
+  },
+  {
+    "id": 100200001217000400,
+    "value": "The Commander of OZ Prize.\nHe earned the moniker \"Dark General of Destruction\" for the way his black custom Leo relentlessly destroyed one anti-OZ force after another.\nHe is supremely self-assured and ruthless— He would cut down his own subordinates with no hesitation in order to get what he wants.\nHe dreamed of one day overthrowing OZ commander Treize Khushrenada, and his first step on the path to this goal was joining forces with Doctor Berg to take over OZ Prize.\nHe personally piloted the Hydra Gundam and launched an offensive against his enemy at the time, MO-V."
+  },
+  {
+    "id": 100200001217000500,
+    "value": "An OZ Prize Mobile Suit pilot.\nA masked man shrouded in mystery, his true identity is Odel Barnet.\nOdel went MIA during battle, only to join up with OZ Prize under the masked guise of \"Silver Crown\" in order to figure out OZ Prize's motives.\nWhile ostensibly working with OZ Prize, he secretly aided his brother Odin and constructed the new Mobile Suit Gundam Griepe.\nHowever, once Valder Farkill uncovered his intentions, he returned to MO-V and brought Gundam Griepe with him."
+  },
+  {
+    "id": 100200001217000601,
+    "value": "A Mobile Suit pilot with OZ Prize.\nHe is a member of the Stardust Knights, and pilots a customized Leo called the Leo-R.\nA haughty and cowardly man, he was under orders from the Romefeller Foundation to attack MO-V.\nWhen Valder Farkill took over OZ Prize, he turned on his comrades to side with Valder.\nHe was given the Gundam Burnlapius, which he used to fight MO-V's Gundam team."
+  },
+  {
+    "id": 100200001217000700,
+    "value": "A Mobile Suit pilot with OZ Prize.\nHe is the leader of the Stardust Knights, and pilots a customized Leo called the Leo-S.\nHe is a proud and highly chivalrous man.\nHe was under orders from the Romefeller Foundation to attack MO-V.\nWhen Valder Farkill took over OZ Prize, Roche's suit was destroyed, and he ended up getting rescued by Odin Barnet.\nAfter that, circumstances led to him cooperating with MO-V, and he piloted Gundam L.O. Booster in the fight against OZ Prize."
+  },
+  {
+    "id": 100200001217000800,
+    "value": "An OZ Prize mobile suit pilot.\nHe is a member of the Stardust Knights and pilots a customized Leo called the Leo-N.\nHe is a giant of a man with a belligerent attitude. When the Romefeller Foundation ordered an attack on MO-V, he was quick to take the van in the assault."
+  },
+  {
+    "id": 100200001217000900,
+    "value": "A trusted associate of Valder Farkill and a Mobile Suit pilot of OZ Prize.\nShe is the younger of two sisters; her elder sister is Soris Armonia.\nThey both lost their parents at a young age.\nThe colonial independence movement raised them to be special agents, but they did not make the cut when the Gundam pilots were selected.\nValder Farkill recruited them after that.\nWhen she infiltrated MO-V as a spy, she met Odin Barnet.\nThe more dealings she had with him, the more she was drawn to his kindness."
   },
   {
     "id": 100200001219000100,

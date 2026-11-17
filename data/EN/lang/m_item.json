@@ -2860,16 +2860,108 @@
     "value": "SSR Scorpio Limit Break Material"
   },
   {
+    "id": 150100171217000100,
+    "value": "R Gundam Geminass 01 Limit Break Material"
+  },
+  {
     "id": 150100171217000110,
     "value": "SSR Gundam Geminass 01 Limit Break Material"
+  },
+  {
+    "id": 150100171217000200,
+    "value": "SR Gundam Geminass 01 Assault Booster Limit Break Material"
+  },
+  {
+    "id": 150100171217000300,
+    "value": "R Gundam Geminass 02 Limit Break Material"
   },
   {
     "id": 150100171217000310,
     "value": "SSR Gundam Geminass 02 Limit Break Material"
   },
   {
+    "id": 150100171217000400,
+    "value": "SR Gundam Geminass 02 Assault Booster Limit Break Material"
+  },
+  {
+    "id": 150100171217000500,
+    "value": "SR Vayeate Suivant Limit Break Material"
+  },
+  {
     "id": 150100171217000510,
     "value": "SSR Vayeate Suivant Limit Break Material"
+  },
+  {
+    "id": 150100171217000600,
+    "value": "SSR Hydra Gundam Limit Break Material"
+  },
+  {
+    "id": 150100171217000650,
+    "value": "UR Hydra Gundam (EX) Limit Break Material"
+  },
+  {
+    "id": 150100171217000700,
+    "value": "N D-Unit Limit Break Material"
+  },
+  {
+    "id": 150100171217000800,
+    "value": "N Leo Space Type (MO-V) Limit Break Material"
+  },
+  {
+    "id": 150100171217000900,
+    "value": "N Leo EWAC Type Limit Break Material"
+  },
+  {
+    "id": 150100171217001000,
+    "value": "R OZ Prize's Taurus Limit Break Material"
+  },
+  {
+    "id": 150100171217001200,
+    "value": "R OZ Prize's Leo Limit Break Material"
+  },
+  {
+    "id": 150100171217001300,
+    "value": "SR Leo-R Limit Break Material"
+  },
+  {
+    "id": 150100171217001400,
+    "value": "SR Leo-S Limit Break Material"
+  },
+  {
+    "id": 150100171217001500,
+    "value": "SR Leo-N Limit Break Material"
+  },
+  {
+    "id": 150100171217001600,
+    "value": "SR Gundam Aesculapius Limit Break Material"
+  },
+  {
+    "id": 150100171217001710,
+    "value": "SSR Gundam Aesculapius (PX Mode) Limit Break Material"
+  },
+  {
+    "id": 150100171217001800,
+    "value": "SR Mercurius Suivant Limit Break Material"
+  },
+  {
+    "id": 150100171217001900,
+    "value": "SSR Gundam L.O. Booster Limit Break Material"
+  },
+  {
+    "id": 150100171217002100,
+    "value": "SSR Gundam Griepe Limit Break Material"
+  },
+  {
+    "id": 150100171217002150,
+    "value": "UR Gundam Griepe (EX) Limit Break Material"
+  },
+  {
+    "id": 150100171217002300,
+    "value": "SSR Gundam Burnlapius Limit Break Material"
+  },
+  {
+    "id": 150100171217002410,
+    "value": "SSR Gundam Burnlapius (PX Mode) Limit Break Material"
   },
   {
     "id": 150100171219000100,
@@ -5516,6 +5608,10 @@
     "value": "Development Material (W)"
   },
   {
+    "id": 150100180000002170,
+    "value": "Development Material (Mobile Suit Gundam Wing Dual Story -G-Unit-)"
+  },
+  {
     "id": 150100180000002190,
     "value": "Development Material (EW)"
   },
@@ -5894,6 +5990,22 @@
   {
     "id": 150100181210003600,
     "value": "Altron Gundam's Technical Journal"
+  },
+  {
+    "id": 150100181217000600,
+    "value": "Hydra Gundam's Technical Journal"
+  },
+  {
+    "id": 150100181217001900,
+    "value": "Gundam L.O. Booster's Technical Journal"
+  },
+  {
+    "id": 150100181217002100,
+    "value": "Gundam Griepe's Technical Journal"
+  },
+  {
+    "id": 150100181217002300,
+    "value": "Gundam Burnlapius's Technical Journal"
   },
   {
     "id": 150100181219000100,
@@ -6300,6 +6412,10 @@
     "value": "[Limited-Time] Featured Unit Assembly Ticket (9/30/2026 JST)"
   },
   {
+    "id": 150100191100000020,
+    "value": "[Limited-Time] Featured Unit Assembly Ticket (11/17/2026 JST)"
+  },
+  {
     "id": 150100191200000001,
     "value": "SR or Higher Guaranteed Unit Assembly Ticket"
   },
@@ -6568,6 +6684,14 @@
     "value": "Combat Power Upgrade Supplies"
   },
   {
+    "id": 150100222000190001,
+    "value": "Boss Challenge Ticket(Mobile Suit Gundam Wing Dual Story -G-Unit-)"
+  },
+  {
+    "id": 150100222000190002,
+    "value": "Unit Assembly Medal(Mobile Suit Gundam Wing Dual Story -G-Unit-)"
+  },
+  {
     "id": 150100222100010001,
     "value": "Map Medal"
   },
@@ -6778,6 +6902,10 @@
   {
     "id": 150100250000011750,
     "value": "Mobile Suit V Gundam Series SP Conversion Badge"
+  },
+  {
+    "id": 150100250000012170,
+    "value": "Mobile Suit Gundam Wing Dual Story -G-Unit- Series SP Conversion Badge"
   },
   {
     "id": 150100250000013760,
@@ -9796,16 +9924,108 @@
     "value": "An item used to perform Limit Break on SSR Scorpio"
   },
   {
+    "id": 150200171217000100,
+    "value": "An item used to perform Limit Break on R Gundam Geminass 01"
+  },
+  {
     "id": 150200171217000110,
     "value": "An item used to perform Limit Break on SSR Gundam Geminass 01"
+  },
+  {
+    "id": 150200171217000200,
+    "value": "An item used to perform Limit Break on SR Gundam Geminass 01 Assault Booster"
+  },
+  {
+    "id": 150200171217000300,
+    "value": "An item used to perform Limit Break on R Gundam Geminass 02"
   },
   {
     "id": 150200171217000310,
     "value": "An item used to perform Limit Break on SSR Gundam Geminass 02"
   },
   {
+    "id": 150200171217000400,
+    "value": "An item used to perform Limit Break on SR Gundam Geminass 02 Assault Booster"
+  },
+  {
+    "id": 150200171217000500,
+    "value": "An item used to perform Limit Break on SR Vayeate Suivant"
+  },
+  {
     "id": 150200171217000510,
     "value": "An item used to perform Limit Break on SSR Vayeate Suivant"
+  },
+  {
+    "id": 150200171217000600,
+    "value": "An item used to perform Limit Break on SSR Hydra Gundam"
+  },
+  {
+    "id": 150200171217000650,
+    "value": "An item used to perform Limit Break on UR Hydra Gundam (EX)"
+  },
+  {
+    "id": 150200171217000700,
+    "value": "An item used to perform Limit Break on N D-Unit"
+  },
+  {
+    "id": 150200171217000800,
+    "value": "An item used to perform Limit Break on N Leo Space Type (MO-V)"
+  },
+  {
+    "id": 150200171217000900,
+    "value": "An item used to perform Limit Break on N Leo EWAC Type"
+  },
+  {
+    "id": 150200171217001000,
+    "value": "An item used to perform Limit Break on R OZ Prize's Taurus"
+  },
+  {
+    "id": 150200171217001200,
+    "value": "An item used to perform Limit Break on R OZ Prize's Leo"
+  },
+  {
+    "id": 150200171217001300,
+    "value": "An item used to perform Limit Break on SR Leo-R"
+  },
+  {
+    "id": 150200171217001400,
+    "value": "An item used to perform Limit Break on SR Leo-S"
+  },
+  {
+    "id": 150200171217001500,
+    "value": "An item used to perform Limit Break on SR Leo-N"
+  },
+  {
+    "id": 150200171217001600,
+    "value": "An item used to perform Limit Break on SR Gundam Aesculapius"
+  },
+  {
+    "id": 150200171217001710,
+    "value": "An item used to perform Limit Break on SSR Gundam Aesculapius (PX Mode)"
+  },
+  {
+    "id": 150200171217001800,
+    "value": "An item used to perform Limit Break on SR Mercurius Suivant"
+  },
+  {
+    "id": 150200171217001900,
+    "value": "An item used to perform Limit Break on SSR Gundam L.O. Booster"
+  },
+  {
+    "id": 150200171217002100,
+    "value": "An item used to perform Limit Break on SSR Gundam Griepe"
+  },
+  {
+    "id": 150200171217002150,
+    "value": "An item used to perform Limit Break on UR Gundam Griepe (EX)"
+  },
+  {
+    "id": 150200171217002300,
+    "value": "An item used to perform Limit Break on SSR Gundam Burnlapius"
+  },
+  {
+    "id": 150200171217002410,
+    "value": "An item used to perform Limit Break on SSR Gundam Burnlapius (PX Mode)"
   },
   {
     "id": 150200171219000100,
@@ -12452,6 +12672,10 @@
     "value": "Material required for developing units that appear on the [Mobile Suit Gundam Wing] diagram."
   },
   {
+    "id": 150200180000002170,
+    "value": "Material required for developing units that appear on the [Mobile Suit Gundam Wing Dual Story -G-Unit-] diagram."
+  },
+  {
     "id": 150200180000002190,
     "value": "Material required for developing units that appear on the [Mobile Suit Gundam Wing Endless Waltz] diagram."
   },
@@ -12830,6 +13054,22 @@
   {
     "id": 150200181210003600,
     "value": "Material required to develop Altron Gundam appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181217000600,
+    "value": "Material required to develop Hydra Gundam appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181217001900,
+    "value": "Material required to develop Gundam L.O. Booster appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181217002100,
+    "value": "Material required to develop Gundam Griepe appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181217002300,
+    "value": "Material required to develop Gundam Burnlapius appearing in the Development Diagram."
   },
   {
     "id": 150200181219000100,
@@ -13236,6 +13476,10 @@
     "value": "A ticket that lets you pull from the ticket-only Unit Assembly featuring the V2 Assault Buster Gundam (EX), Zanspine (EX) and Gottrlatan (EX)."
   },
   {
+    "id": 150200191100000020,
+    "value": "A ticket that lets you pull from the ticket-only Unit Assembly featuring the Hydra Gundam (EX) and Gundam Griepe (EX)."
+  },
+  {
     "id": 150200191200000001,
     "value": "A ticket that lets you use the SR or Higher Guaranteed Unit Assembly."
   },
@@ -13504,6 +13748,14 @@
     "value": "An item obtainable from the Gundam Side Story 0079: Rise from the Ashes story event.\nCan be used to upgrade Combat Power in Gundam Side Story 0079: Rise from the Ashes."
   },
   {
+    "id": 150200222000190001,
+    "value": "A ticket needed to challenge the boss in story event \"Mobile Suit Gundam Wing Dual Story -G-Unit-\"."
+  },
+  {
+    "id": 150200222000190002,
+    "value": "A medal that can be obtained in the story event \"Mobile Suit Gundam Wing Dual Story -G-Unit-\".\nCan be used in the Medal Unit Assembly."
+  },
+  {
     "id": 150200222100010001,
     "value": "Medal that can be acquired in map events.\nCan be used in the Exchange."
   },
@@ -13713,6 +13965,10 @@
   },
   {
     "id": 150200250000011750,
+    "value": "Usable on non-UR characters from the specified series.\nAn SP conversion item that boosts stats and raises Max Level to 100."
+  },
+  {
+    "id": 150200250000012170,
     "value": "Usable on non-UR characters from the specified series.\nAn SP conversion item that boosts stats and raises Max Level to 100."
   },
   {

@@ -2556,6 +2556,102 @@
     "WeaponEnhancementStep": 0
   },
   {
+    "MainUnitId": 1217000100,
+    "Exp": 1100,
+    "LimitBreakStep": 0,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "MainUnitId": 1217000200,
+    "Exp": 7500,
+    "LimitBreakStep": 0,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "MainUnitId": 1217000300,
+    "Exp": 1100,
+    "LimitBreakStep": 0,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "MainUnitId": 1217000400,
+    "Exp": 7500,
+    "LimitBreakStep": 0,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "MainUnitId": 1217000500,
+    "Exp": 7500,
+    "LimitBreakStep": 0,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "MainUnitId": 1217000600,
+    "Exp": 50000,
+    "LimitBreakStep": 0,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "MainUnitId": 1217001000,
+    "Exp": 1100,
+    "LimitBreakStep": 0,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "MainUnitId": 1217001200,
+    "Exp": 1100,
+    "LimitBreakStep": 0,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "MainUnitId": 1217001300,
+    "Exp": 7500,
+    "LimitBreakStep": 0,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "MainUnitId": 1217001400,
+    "Exp": 7500,
+    "LimitBreakStep": 0,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "MainUnitId": 1217001500,
+    "Exp": 7500,
+    "LimitBreakStep": 0,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "MainUnitId": 1217001600,
+    "Exp": 7500,
+    "LimitBreakStep": 0,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "MainUnitId": 1217001800,
+    "Exp": 7500,
+    "LimitBreakStep": 0,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "MainUnitId": 1217001900,
+    "Exp": 50000,
+    "LimitBreakStep": 0,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "MainUnitId": 1217002100,
+    "Exp": 50000,
+    "LimitBreakStep": 0,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "MainUnitId": 1217002300,
+    "Exp": 50000,
+    "LimitBreakStep": 0,
+    "WeaponEnhancementStep": 0
+  },
+  {
     "MainUnitId": 1219000100,
     "Exp": 500000,
     "LimitBreakStep": 0,

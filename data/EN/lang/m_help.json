@@ -725,7 +725,7 @@
   },
   {
     "id": 170300000001112021,
-    "value": "- Rules\nIn Master League, the same unit cannot be included in a Formation more than once.\n\nAll units will also move and act automatically during battle simulations.\nAdditionally, unlike standard battle rules, only the sum of a Unit's MOB + Reaction determines when it gets to act. The force a Unit belongs to has no bearing on action order.\n\n- Season-Specific Rules\nTerrain type and boosts differ every Season.\n*Boosts are stat increases that apply to all Units with a specific Tag."
+    "value": "- Rules\nIn Master League, the same unit cannot be included in a Formation more than once.\n\nAll units will also move and act automatically during battle simulations.\nAdditionally, unlike standard battle rules, only the sum of a Unit's MOB + Reaction determines when it gets to act. The force a Unit belongs to has no bearing on action order.\n\n- Season-Specific Rules\nTerrain type and boosts differ every Season.\n*Boosts are stat increases that apply to all Units with a specific Tag.\nAlso, initial deployment for squads varies depending on the season."
   },
   {
     "id": 170300000001112031,

@@ -10820,9 +10820,19 @@
     "WeaponTraitId": 300620902
   },
   {
+    "MapNpcWeaponTraitSetId": 300670101,
+    "SortOrder": 1,
+    "WeaponTraitId": 300670101
+  },
+  {
     "MapNpcWeaponTraitSetId": 300670301,
     "SortOrder": 1,
     "WeaponTraitId": 300670301
+  },
+  {
+    "MapNpcWeaponTraitSetId": 300680401,
+    "SortOrder": 1,
+    "WeaponTraitId": 300680401
   },
   {
     "MapNpcWeaponTraitSetId": 300700101,
