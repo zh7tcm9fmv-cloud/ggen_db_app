@@ -1173,6 +1173,12 @@
   let _controlsBound = false;
   let grid = null;
   let statusEl = null;
+  let _spiSearchExpanded = '';
+  let _spiSearchParts = [];
+  let _spiRenderGen = 0;
+  let _spiSearchSoftOk = false;
+  /** True when last full paint already narrowed by search — soft clear must rebuild. */
+  let _spiFullRenderHadSearch = false;
 
   const $ = (sel) => spiRoot().querySelector(sel);
 
@@ -1453,19 +1459,59 @@
     return s.trim();
   }
 
-  function rowMatchesSearch(row, q) {
-    if (!q) return true;
-    const expanded = expandSpiSearchQuery(q).toLowerCase();
+  function spiRowSearchHay(row) {
+    if (!row) return '';
+    if (row._spiSearchHay) return row._spiSearchHay;
     const name = String(row.name || '').toLowerCase();
     const tags = (row.tags || []).join(' ').toLowerCase();
     const tagsEn = (row.tags_en || row.tags || []).join(' ').toLowerCase();
     const id = String(row.id || '').toLowerCase();
-    const hay = `${name} ${tags} ${tagsEn} ${id}`;
-    if (hay.includes(expanded)) return true;
-    // Multi-word expansions (e.g. "strike freedom") — require all tokens.
-    const parts = expanded.split(/\s+/).filter(Boolean);
-    if (parts.length > 1 && parts.every((p) => hay.includes(p))) return true;
+    row._spiSearchHay = `${name} ${tags} ${tagsEn} ${id}`;
+    return row._spiSearchHay;
+  }
+
+  function indexSpiSearchHays() {
+    if (!payload) return;
+    const visit = (buckets) => {
+      Object.keys(buckets || {}).forEach((bk) => {
+        (buckets[bk] || []).forEach((row) => {
+          try {
+            spiRowSearchHay(row);
+          } catch (_) {}
+        });
+      });
+    };
+    const units = payload.units || {};
+    visit(units.sp);
+    visit(units.ssp);
+    visit((payload.characters || {}).sp);
+  }
+
+  function prepareSpiSearchQuery() {
+    const q = String(searchQuery || '').trim().toLowerCase();
+    _spiSearchExpanded = q ? expandSpiSearchQuery(q).toLowerCase() : '';
+    _spiSearchParts = _spiSearchExpanded ? _spiSearchExpanded.split(/\s+/).filter(Boolean) : [];
+  }
+
+  function hayMatchesPreparedSearch(hay) {
+    if (!_spiSearchExpanded) return true;
+    const h = String(hay || '');
+    if (h.includes(_spiSearchExpanded)) return true;
+    if (_spiSearchParts.length > 1 && _spiSearchParts.every((p) => h.includes(p))) return true;
     return false;
+  }
+
+  function rowMatchesSearch(row, q) {
+    if (!q && !_spiSearchExpanded) return true;
+    if (!_spiSearchExpanded && q) {
+      const expanded = expandSpiSearchQuery(q).toLowerCase();
+      const parts = expanded.split(/\s+/).filter(Boolean);
+      const hay = spiRowSearchHay(row);
+      if (hay.includes(expanded)) return true;
+      if (parts.length > 1 && parts.every((p) => hay.includes(p))) return true;
+      return false;
+    }
+    return hayMatchesPreparedSearch(spiRowSearchHay(row));
   }
 
   function syncSearchFromInput() {
@@ -1484,6 +1530,8 @@
     // SP-eligible filter; Ultimate Units use the ULT toggle instead of has_sp.
     if (hasSpOnly && !row.has_sp && !ult) return false;
     if (entity === 'units' && mapOnly && !row.has_map) return false;
+    /* Search before tag/series/ER — cheapest reject while typing. */
+    if (_spiSearchExpanded && !rowMatchesSearch(row)) return false;
     if (sourceFilters.length) {
       const src = String(row.source || '');
       if (!spiCombineMatch(sourceFilters, (want) => src === String(want), sourceCombine)) return false;
@@ -1508,8 +1556,6 @@
       const have = new Set((row.abilities || []).map((a) => String((a && a.id) || '')));
       if (!spiCombineMatch(abilFilterIds, (id) => have.has(String(id)), abilCombine)) return false;
     }
-    const q = searchQuery.trim().toLowerCase();
-    if (q && !rowMatchesSearch(row, q)) return false;
     return true;
   }
 
@@ -3113,7 +3159,8 @@
       ? `<span class="spi-chip spi-chip-adv" title="${esc(t('adv_on', { n: r._advantage_points }))}">${esc(t('adv_chip', { n: r._advantage_points }))}</span>`
       : '';
     const selected = _spiDbSelectedId && String(_spiDbSelectedId) === String(r.id) ? ' is-db-selected' : '';
-    return `<div class="spi-card${selected}" role="button" tabindex="0" data-id="${esc(r.id)}">
+    const hay = escAttr(spiRowSearchHay(r));
+    return `<div class="spi-card${selected}" role="button" tabindex="0" data-id="${esc(r.id)}" data-spi-hay="${hay}">
       ${renderVoteControls(r, kind, true)}
       <div class="spi-card-thumb-wrap" role="link" tabindex="0" data-spi-open-db-thumb="${esc(kind)}:${esc(r.id)}" title="${escAttr(t('open_in_db'))}">${renderFramedThumb(r, kind)}</div>
       <div class="spi-card-name">${esc(r.name || r.id)}</div>
@@ -3125,6 +3172,46 @@
       ${renderHighlightChips(r, 'spi-why-block--card')}
       ${communityAdjLine(r, kind)}
     </div>`;
+  }
+
+  /** Search-only: hide/show existing cards — no full grid rebuild (was the /ip typing lag). */
+  function softApplySpiSearch() {
+    if (!resolveDom() || !grid || !_spiSearchSoftOk) return false;
+    syncSearchFromInput();
+    prepareSpiSearchQuery();
+    let shown = 0;
+    grid.querySelectorAll('.spi-card').forEach((card) => {
+      const ok = hayMatchesPreparedSearch(card.getAttribute('data-spi-hay') || '');
+      card.hidden = !ok;
+      if (ok) shown += 1;
+    });
+    grid.querySelectorAll('.spi-role-group').forEach((grp) => {
+      const any = grp.querySelector('.spi-card:not([hidden])');
+      grp.hidden = !any;
+    });
+    grid.querySelectorAll('.spi-bucket').forEach((sec) => {
+      const cards = sec.querySelectorAll('.spi-card');
+      let n = 0;
+      cards.forEach((c) => {
+        if (!c.hidden) n += 1;
+      });
+      const countEl = sec.querySelector('.spi-bucket-count');
+      if (countEl) countEl.textContent = String(n);
+      sec.hidden = cards.length > 0 && n === 0;
+    });
+    const counts = (payload && payload.counts) || {};
+    const totalBoard =
+      entity === 'characters'
+        ? counts.characters_sp || 0
+        : board === 'ssp'
+          ? counts.units_ssp || counts.ssp || 0
+          : counts.units_sp || counts.sp || 0;
+    const label = entity === 'characters' ? t('pilots_sp') : board.toUpperCase();
+    const cohortNote = showUlt ? t('cohort_ultimate') : '';
+    const advNote = tagFilters.length ? t('adv_note') : '';
+    statusEl.textContent =
+      t('showing', { shown, total: totalBoard, board: label, role: tRole(role) }) + cohortNote + advNote;
+    return true;
   }
 
   function ensureDecisionUiChrome() {
@@ -3167,10 +3254,21 @@
       </ul>`;
   }
 
-  function render() {
+  function render(opts) {
+    opts = opts || {};
     if (!payload) return;
     if (!resolveDom()) return;
     syncSearchFromInput();
+    prepareSpiSearchQuery();
+    if (
+      opts.searchOnly &&
+      _spiSearchSoftOk &&
+      !(_spiFullRenderHadSearch && !_spiSearchExpanded) &&
+      softApplySpiSearch()
+    ) {
+      return;
+    }
+    _spiSearchSoftOk = false;
     syncBoardTabsVisibility();
     const buckets = currentBuckets();
     const labels = payload.bucket_labels || {};
@@ -3222,6 +3320,8 @@
       </section>`;
     });
     grid.innerHTML = html;
+    _spiSearchSoftOk = true;
+    _spiFullRenderHadSearch = !!_spiSearchExpanded;
     grid.setAttribute('aria-busy', 'false');
     const counts = payload.counts || {};
     const totalBoard =
@@ -3772,10 +3872,13 @@
       _ggenBindImeSafeInput(spiSearchEl, (e) => {
         syncSearchClear();
         clearTimeout(searchTimer);
+        const gen = ++_spiRenderGen;
         searchTimer = setTimeout(() => {
+          if (gen !== _spiRenderGen) return;
           searchQuery = (e && e.target ? e.target.value : spiSearchEl.value) || '';
-          render();
-        }, 120);
+          /* Soft path: toggle [hidden] on existing cards — avoid rebuilding ~1k thumbs every key. */
+          render({ searchOnly: true });
+        }, 80);
       });
     }
     const clearBtn = $('#spiSearchClear');
@@ -3785,7 +3888,7 @@
         const input = $('#spiSearch');
         if (input) input.value = '';
         syncSearchClear();
-        render();
+        render({ searchOnly: true });
         if (input) input.focus();
       });
     }
@@ -3946,6 +4049,8 @@
       }
       if (!payload || payload.error) throw new Error((payload && payload.error) || 'empty');
       invalidateUnitBoardIndex();
+      indexSpiSearchHays();
+      _spiSearchSoftOk = false;
       _payloadLang = lang;
       if (votes && typeof votes === 'object') {
         voteTallies = Object.assign(Object.create(null), votes.tallies || {});

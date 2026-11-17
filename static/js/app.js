@@ -5630,7 +5630,10 @@ hdr.style.removeProperty('min-height');
 try{delete hdr.dataset.ggenLayoutLocked}catch(_){hdr.removeAttribute('data-ggen-layout-locked')}
 });
 }
-/** Freeze dossier/header cover paint box to current client size. Toggle reflow must not rescale cover. */
+/**
+ * Freeze header cover to px — EXIT ONLY (morph/settling CSS reads these vars).
+ * While open, ::before is width/height 100% so CP/PEP growth cannot leave #0a0e17 bars.
+ */
 function lockDetailCoverPaintBoxes(opts){
 opts=opts||{};
 const force=!!opts.force;
@@ -5650,7 +5653,6 @@ const hh=Math.max(1,hdr.offsetHeight|0,lockedMin);
 const hw=Math.max(1,hdr.offsetWidth|0);
 hdr.style.setProperty('--ggen-header-cover-w',hw+'px');
 hdr.style.setProperty('--ggen-header-cover-h',hh+'px');
-/* Layout lock: keep header from shrinking under reserved PEP/CP chrome; never below current paint. */
 if(force||hdr.dataset.ggenLayoutLocked!=='1'){
 hdr.style.minHeight=hh+'px';
 hdr.dataset.ggenLayoutLocked='1';
@@ -5659,7 +5661,7 @@ hdr.style.minHeight=hh+'px';
 }
 }
 }
-/** Lock header min-height + cover paint to current box (reserved bonus/stack already sized for PEP on). */
+/** Grow-only header min-height (layout). Does not freeze cover paint while open. */
 function lockDetailHeaderLayoutForPep(){
 const m=document.getElementById('detailModal');
 const mc=document.getElementById('modalContent');
@@ -5671,14 +5673,12 @@ const prev=parseInt(hdr.style.minHeight,10)||0;
 const lockH=Math.max(hh,prev);
 hdr.style.minHeight=lockH+'px';
 hdr.dataset.ggenLayoutLocked='1';
-hdr.style.setProperty('--ggen-header-cover-w',Math.max(1,hdr.offsetWidth|0)+'px');
-hdr.style.setProperty('--ggen-header-cover-h',lockH+'px');
 }
+/** After open/settle: lock layout height only — cover stays 100% while browsing the dossier. */
 function scheduleLockDetailCoverPaintBoxes(){
 requestAnimationFrame(()=>{
 requestAnimationFrame(()=>{
 try{lockDetailHeaderLayoutForPep()}catch(_){}
-try{lockDetailCoverPaintBoxes({force:true})}catch(_){}
 });
 });
 }
@@ -9695,6 +9695,7 @@ if(_detailUnitPilotMovCpGate(d))S.conditionalPassiveActive=true;
 updateDetailDynamicSections(S.currentDetailType,{keepToggles:true,softBody:true});
 _detailSoftSyncPilotEpToggleDom();
 syncPilotCondHighlights();
+try{lockDetailHeaderLayoutForPep()}catch(_){}
 };
 if(c&&d&&d.has_pilot_cond_passive&&d.recommend_character&&d.recommend_character.id){
 void ensurePilotCondCharData(d,true).then(()=>finish()).catch(()=>finish());
@@ -9793,6 +9794,7 @@ invalidateDetailRankingCachesForPerspectiveChange();
 updateDetailDynamicSections(S.currentDetailType,{keepToggles:true,softBody:true});
 try{_detailSoftSyncPilotEpToggleDom()}catch(_){}
 syncNpcUnitConditionHighlights();
+try{lockDetailHeaderLayoutForPep()}catch(_){}
 }
 function setCharSuperchargedExTier(i){
 const d=S.currentDetailData,arr=d&&d.ex_supercharged_tiers;
@@ -9801,6 +9803,7 @@ const n=arr.length;
 S.charSuperchargedExTier=Math.max(0,Math.min(Number(i)||0,n-1));
 updateDetailDynamicSections('character',{keepToggles:true,softBody:true});
 try{_detailSoftSyncPilotEpToggleDom()}catch(_){}
+try{lockDetailHeaderLayoutForPep()}catch(_){}
 }
 function renderStageRestrictionItem(it){
 const o=it&&typeof it==='object'?it:{};

@@ -2135,8 +2135,9 @@ body.nav-tabs-overlay-freeze .app-header .nav-tabs-shell{
   content:'';
   position:absolute;
   top:0;left:0;
-  width:var(--ggen-header-cover-w,100%);
-  height:var(--ggen-header-cover-h,100%);
+  /* Always fill the header while open — locked px here caused CP/PEP black bars when chrome grew. */
+  width:100%;
+  height:100%;
   z-index:0;
   pointer-events:none;
   background-color:#0a0e17;
@@ -2144,7 +2145,7 @@ body.nav-tabs-overlay-freeze .app-header .nav-tabs-shell{
   background-size:cover;
   background-position:center 42%;
 }
-/* Exit morph: never fall back to % box — locked px keep garage/office crop stable while scale runs. */
+/* Exit morph only: freeze cover to px so scale does not reflow garage/office crop. */
 #detailModal .modal-content.is-detail-morph-exit .detail-header.unit-detail-header::before,
 #detailModal .modal-content.is-detail-morph-exit .detail-header.char-detail-header::before,
 #detailModal .modal-content.is-detail-morph-exit .detail-header.supporter-detail-header::before,
