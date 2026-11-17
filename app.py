@@ -398,6 +398,23 @@ def _human_gate_set_cookie(resp):
     return resp
 
 
+def _human_gate_issue_challenge_token():
+    """Short-lived signed proof embedded in gate HTML (cookie-independent fallback)."""
+    return _human_gate_serializer().dumps({'c': 1})
+
+
+def _human_gate_challenge_token_ok(tok):
+    tok = (tok or '').strip()
+    if not tok:
+        return False
+    try:
+        from itsdangerous import BadSignature, SignatureExpired
+        data = _human_gate_serializer().loads(tok, max_age=_GGEN_HUMAN_CHAL_MAX_AGE)
+        return isinstance(data, dict) and int(data.get('c') or 0) == 1
+    except Exception:
+        return False
+
+
 def _human_gate_set_challenge_cookie(resp):
     """Allow /api/human_gate/verify when privacy browsers strip Origin/Sec-Fetch."""
     resp.set_cookie(
@@ -412,8 +429,64 @@ def _human_gate_set_challenge_cookie(resp):
     return resp
 
 
+def _human_gate_clear_challenge_cookie(resp):
+    try:
+        resp.set_cookie(
+            _GGEN_HUMAN_CHAL_COOKIE,
+            '',
+            max_age=0,
+            expires=0,
+            samesite='Lax',
+            secure=_human_gate_cookie_secure_flag(),
+            httponly=True,
+            path='/',
+        )
+    except Exception:
+        pass
+    return resp
+
+
 def _human_gate_challenge_ok():
-    return (request.cookies.get(_GGEN_HUMAN_CHAL_COOKIE) or '').strip() == '1'
+    """True if HTML issued a challenge cookie, or client sent the signed page token."""
+    if (request.cookies.get(_GGEN_HUMAN_CHAL_COOKIE) or '').strip() == '1':
+        return True
+    hdr = (request.headers.get('X-GGen-Hg-Chal') or '').strip()
+    if _human_gate_challenge_token_ok(hdr):
+        return True
+    try:
+        body = request.get_json(silent=True) or {}
+    except Exception:
+        body = {}
+    if isinstance(body, dict) and _human_gate_challenge_token_ok(body.get('chal')):
+        return True
+    return False
+
+
+def _human_gate_prepare_html_response(resp):
+    """When the gate is required: no shared HTML cache + challenge cookie.
+
+    Called from ``after_request`` for every ``text/html`` 200 so new pages cannot
+    forget challenge cookies / ``Vary: Cookie``. Shared public caches that strip
+    Set-Cookie + privacy browsers that strip Origin/Sec-Fetch used to 403 verify
+    on /collections /tm /dm /game-news; do not reintroduce that class.
+    """
+    if not _human_gate_enabled():
+        return resp
+    try:
+        need = bool(not _human_gate_cookie_ok() or _human_gate_force_show())
+    except Exception:
+        need = True
+    # Always Vary on Cookie so a passed visitor and a first-timer never share HTML.
+    vary = (resp.headers.get('Vary') or '').strip()
+    if 'Cookie' not in vary:
+        resp.headers['Vary'] = (vary + ', Cookie').strip(', ').strip() or 'Cookie'
+    if need:
+        resp.headers['Cache-Control'] = 'private, no-store'
+        try:
+            _human_gate_set_challenge_cookie(resp)
+        except Exception as e:
+            print(f'human_gate: set challenge cookie failed: {e}')
+    return resp
 
 
 # —— Human-gate visitor counter (passed verifications) ——
@@ -851,6 +924,7 @@ def _inject_public_origin():
         'dc_allowed_hosts': _dc_allowed_hosts(),
         'human_gate_enabled': gate_on,
         'human_gate_required': gate_need,
+        'human_gate_chal_token': (_human_gate_issue_challenge_token() if gate_need else ''),
         'human_gate_deco_url': gate_deco or '/static/images/UI/UI_ULT_Deco_LVUpBG.webp',
         'human_gate_wallet_url': gate_wallet or '/static/images/UI/IMG_Common_Logo_ETERNALBASE.webp',
         'human_gate_haro': gate_haro,
@@ -1124,26 +1198,26 @@ def _apply_seo_and_static_cache_headers(response):
         response.headers.setdefault('X-GGen-Canary', _GGEN_PROVENANCE_CANARY)
     # Soft site cookie on HTML — helps privacy browsers that strip Sec-Fetch/Referer
     # still call same-origin APIs after the first page load. Not a secret.
+    # Human-gate challenge + no shared cache when the popup is required — every
+    # HTML page (not only routes that remember to call prepare).
     try:
         ctype = (response.headers.get('Content-Type') or '').split(';')[0].strip().lower()
-        if (
-            response.status_code == 200
-            and ctype == 'text/html'
-            and (request.cookies.get(_GGEN_SITE_COOKIE) or '') != '1'
-        ):
-            secure = bool(
-                (os.environ.get('RAILWAY_ENVIRONMENT') or '').strip()
-                or (request.is_secure if hasattr(request, 'is_secure') else False)
-            )
-            response.set_cookie(
-                _GGEN_SITE_COOKIE,
-                '1',
-                max_age=60 * 60 * 24 * 30,
-                samesite='Lax',
-                secure=secure,
-                httponly=False,
-                path='/',
-            )
+        if response.status_code == 200 and ctype == 'text/html':
+            if (request.cookies.get(_GGEN_SITE_COOKIE) or '') != '1':
+                secure = bool(
+                    (os.environ.get('RAILWAY_ENVIRONMENT') or '').strip()
+                    or (request.is_secure if hasattr(request, 'is_secure') else False)
+                )
+                response.set_cookie(
+                    _GGEN_SITE_COOKIE,
+                    '1',
+                    max_age=60 * 60 * 24 * 30,
+                    samesite='Lax',
+                    secure=secure,
+                    httponly=False,
+                    path='/',
+                )
+            _human_gate_prepare_html_response(response)
     except Exception:
         pass
     # Bundles/fonts/images are not pages — keep Google off /static (CDN for game art; allowlisted fonts stay same-origin for UI).
@@ -21850,14 +21924,9 @@ def _serve_index():
         page_description=page_description,
     ))
     # Human-gate HTML depends on cookie — never publicly cache a required/skip mix.
+    # Challenge cookie / Vary are applied in after_request for all HTML.
     if _human_gate_enabled():
         r.headers['Cache-Control'] = 'private, no-store'
-        r.headers['Vary'] = 'Cookie'
-        try:
-            if not _human_gate_cookie_ok() or _human_gate_force_show():
-                _human_gate_set_challenge_cookie(r)
-        except Exception as e:
-            print(f'human_gate: set challenge cookie failed: {e}')
     elif INDEX_HTML_CACHE_CONTROL:
         r.headers['Cache-Control'] = INDEX_HTML_CACHE_CONTROL
     else:
@@ -22069,6 +22138,7 @@ def api_human_gate_verify():
     r.headers['Cache-Control'] = 'no-store'
     try:
         _human_gate_set_cookie(r)
+        _human_gate_clear_challenge_cookie(r)
     except Exception as e:
         print(f'human_gate: set pass cookie failed: {e}')
     return r
@@ -23150,6 +23220,7 @@ def collections_page():
         font_cdn=FONT_CDN or '',
     ))
     # Short HTML cache so Special Design CSS/JS deploys are not stuck on phones
+    # (overridden to private no-store in after_request while the gate is required).
     r.headers['Cache-Control'] = 'public, max-age=60, must-revalidate'
     return r
 

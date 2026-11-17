@@ -1,6 +1,8 @@
-{# First-visit human gate — pick Gold Haro → Eternal Base wallet. Env: GGEN_HUMAN_GATE. #}
+{# First-visit human gate — pick Gold Haro → Eternal Base wallet. Env: GGEN_HUMAN_GATE.
+   Challenge cookie + private cache while required: applied globally in after_request
+   for every text/html response — new pages only need this include for the popup UI. #}
 {% if human_gate_enabled and human_gate_required %}
-<div class="human-gate-overlay active" id="humanGateOverlay" role="dialog" aria-modal="true" aria-labelledby="humanGateTitle" aria-describedby="humanGateWelcome humanGateHint">
+<div class="human-gate-overlay active" id="humanGateOverlay" role="dialog" aria-modal="true" aria-labelledby="humanGateTitle" aria-describedby="humanGateWelcome humanGateHint" data-chal="{{ human_gate_chal_token|default('') }}">
   <div class="human-gate-card" onclick="event.stopPropagation()" style="--human-gate-deco:url('{{ human_gate_deco_url }}')">
     <div class="human-gate-card-deco" aria-hidden="true"></div>
     <div class="human-gate-card-frame" aria-hidden="true"></div>
@@ -214,6 +216,28 @@
     resetHaros();
     if(st){st.hidden=false;st.textContent=msg||copy.fail}
   }
+  function chalTok(){
+    try{return (ov.getAttribute('data-chal')||'').trim()}catch(_){return ''}
+  }
+  function postVerify(signal){
+    var tok=chalTok();
+    var headers={'Accept':'application/json','Content-Type':'application/json'};
+    if(tok)headers['X-GGen-Hg-Chal']=tok;
+    return fetch('/api/human_gate/verify',{
+      method:'POST',
+      credentials:'same-origin',
+      headers:headers,
+      body:JSON.stringify({pick:'gold',chal:tok||undefined}),
+      cache:'no-store',
+      signal:signal
+    }).then(function(r){
+      if(!r.ok)throw new Error('http '+r.status);
+      return r.json();
+    }).then(function(d){
+      if(d&&d.ok===false)throw new Error(d.error||'denied');
+      return d;
+    });
+  }
   function verify(){
     if(st){st.hidden=false;st.textContent='…'}
     var ctrl=null;
@@ -224,18 +248,12 @@
         try{ctrl.abort()}catch(_){}
       },15000);
     }
-    fetch('/api/human_gate/verify',{
-      method:'POST',
-      credentials:'same-origin',
-      headers:{'Accept':'application/json','Content-Type':'application/json'},
-      body:JSON.stringify({pick:'gold'}),
-      cache:'no-store',
-      signal:ctrl?ctrl.signal:undefined
-    }).then(function(r){
-      if(!r.ok)throw new Error('http '+r.status);
-      return r.json();
+    /* One automatic retry: cold cookie jar / flaky privacy strip of Origin. */
+    postVerify(ctrl?ctrl.signal:undefined).catch(function(){
+      return new Promise(function(res){window.setTimeout(res,350)}).then(function(){
+        return postVerify(ctrl?ctrl.signal:undefined);
+      });
     }).then(function(d){
-      if(d&&d.ok===false)throw new Error(d.error||'denied');
       if(d&&typeof d.passed!=='undefined')setVisitors(d.passed);
       done();
     }).catch(function(){
