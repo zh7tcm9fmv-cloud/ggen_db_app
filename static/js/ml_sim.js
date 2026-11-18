@@ -355,7 +355,9 @@
   }
 
   /* Survives minify — proves chip-face helper is the loaded bundle (bump when chip path changes). */
-  var MLS_CHIP_FACE_MARK = '__MLS_CHIP_THUM_V6__';
+  var MLS_CHIP_FACE_MARK = '__MLS_CHIP_THUM_V8__';
+  /** FX URL → usable spark (false = black plate / skip forever this session). */
+  var mlsFxUsableCache = Object.create(null);
 
   /**
    * Formation / turn-order / board-HP chip face — ALWAYS Trait/thum.
@@ -531,38 +533,31 @@
 
   function mlsKomaWarmKit(kit) {
     var facings = ['front', 'back', 'left', 'right'];
-    var actions;
-    var i, a, f, fr, img, meta, maxFr;
+    var i, f, img, pref, url;
     if (!kit || typeof Image === 'undefined') return;
-    actions = Object.keys(kit.strips || { weapon1: 1 });
+    /*
+     * Standby only. Weapon/EX/MAP strips are not played on tokens anymore —
+     * preloading every strip×facing flooded the CDN and starved READY→GO.
+     */
     for (i = 0; i < facings.length; i++) {
       f = facings[i];
+      url = mlsKomaStandbyUrl(kit, f);
+      if (!url) continue;
       img = new Image();
       img.decoding = 'async';
-      img.src = mlsKomaStandbyUrl(kit, f);
+      img.src = url;
     }
-    actions.forEach(function (action) {
-      meta = kit.strips[action] || {};
-      maxFr = Math.min(meta.frames | 0, (meta.maxPlay | 0) > 0 ? (meta.maxPlay | 0) : (meta.frames | 0));
-      (meta.facings || facings).forEach(function (ff) {
-        for (fr = 1; fr <= maxFr; fr++) {
-          img = new Image();
-          img.decoding = 'async';
-          img.src = mlsKomaFrameUrl(kit, action, ff, fr);
-        }
-      });
-    });
-    ['impactFx', 'muzzleFx', 'meleeImpactFx', 'exImpactFx'].forEach(function (key) {
-      var pref = kit[key];
-      var nKey = key.replace('Fx', 'Frames');
-      var n = kit[nKey] | 0;
-      if (!pref || !n) return;
-      for (fr = 1; fr <= n; fr++) {
+    /* One light FX frame (probe/play will skip black plates). */
+    pref = kit.exImpactFx || kit.meleeImpactFx || kit.impactFx || '';
+    if (pref) {
+      url = mlsKomaFxUrl(pref, 1);
+      if (url) {
         img = new Image();
+        img.crossOrigin = 'anonymous';
         img.decoding = 'async';
-        img.src = mlsKomaFxUrl(pref, fr);
+        img.src = url;
       }
-    });
+    }
   }
 
   function mlsKomaPlayFlipbook(imgEl, urls, frameMs, onDone) {
@@ -665,37 +660,80 @@
   }
 
   /**
-   * Reject opaque black-plate FX (Unity exports with a solid black matte).
-   * Screen-blend can hide pure black, but plates still flash a dark square — skip those.
+   * Reject opaque black-plate FX (Unity matte / *_dissolve plates).
+   * Good sparks: transparent outside the ink (dark≈0 of canvas).
+   * Bad plates: solid black square + bright flare in the middle — still reject.
+   * Fail closed on CORS/taint.
    */
   function mlsKomaFxIsUsableSpark(img) {
-    var c, ctx, w, h, data, i, a, lum, dark, lit, opaque;
+    var c, ctx, w, h, data, i, a, lum, dark, lit, bright, opaque, total, src, cached;
+    var low = '';
+    src = (img && (img.currentSrc || img.src)) || '';
+    if (src && Object.prototype.hasOwnProperty.call(mlsFxUsableCache, src)) {
+      return mlsFxUsableCache[src];
+    }
+    low = String(src).toLowerCase();
+    /* Dissolve mattes are always black-plate exports. */
+    if (low.indexOf('_dissolve') >= 0) {
+      if (src) mlsFxUsableCache[src] = false;
+      return false;
+    }
     try {
-      if (!img || !(img.naturalWidth | 0) || !(img.naturalHeight | 0)) return false;
-      w = Math.min(48, img.naturalWidth | 0);
-      h = Math.min(48, img.naturalHeight | 0);
+      if (!img || !(img.naturalWidth | 0) || !(img.naturalHeight | 0)) {
+        if (src) mlsFxUsableCache[src] = false;
+        return false;
+      }
+      w = Math.min(64, img.naturalWidth | 0);
+      h = Math.min(64, img.naturalHeight | 0);
+      total = w * h;
       c = document.createElement('canvas');
       c.width = w;
       c.height = h;
       ctx = c.getContext('2d', { willReadFrequently: true });
-      if (!ctx) return true;
+      if (!ctx || total <= 0) {
+        if (src) mlsFxUsableCache[src] = false;
+        return false;
+      }
+      ctx.clearRect(0, 0, w, h);
       ctx.drawImage(img, 0, 0, w, h);
       data = ctx.getImageData(0, 0, w, h).data;
       dark = 0;
       lit = 0;
+      bright = 0;
       for (i = 0; i < data.length; i += 4) {
         a = data[i + 3] | 0;
-        if (a < 12) continue;
+        if (a < 18) continue;
         lum = ((data[i] | 0) + (data[i + 1] | 0) + (data[i + 2] | 0)) / 3;
-        if (lum < 22) dark += 1;
-        else lit += 1;
+        if (lum < 36) dark += 1;
+        else {
+          lit += 1;
+          if (lum >= 70) bright += 1;
+        }
       }
       opaque = dark + lit;
-      if (opaque < 16) return false;
-      /* Keep only if there is real bright FX ink (not a black rectangle). */
-      return lit >= 12 && (lit / opaque) >= 0.06;
+      /*
+       * Black square with a white flare still has bright center pixels — reject by
+       * how much of the whole frame is opaque black, not by “has any bright ink”.
+       * Measured: good sparks dark/tot≈0.00; black plates / dissolve ≈0.85–0.90.
+       */
+      if (opaque < 20) {
+        if (src) mlsFxUsableCache[src] = false;
+        return false;
+      }
+      if ((dark / total) >= 0.12) {
+        if (src) mlsFxUsableCache[src] = false;
+        return false;
+      }
+      if ((opaque / total) >= 0.72 && dark >= lit) {
+        if (src) mlsFxUsableCache[src] = false;
+        return false;
+      }
+      cached = lit >= 18 && bright >= 8 && (dark / total) < 0.08;
+      if (src) mlsFxUsableCache[src] = cached;
+      return cached;
     } catch (eProbe) {
-      return true;
+      if (src) mlsFxUsableCache[src] = false;
+      return false;
     }
   }
 
@@ -705,15 +743,20 @@
     var frameMs;
     var n = Math.max(1, frames | 0);
     var holdMs;
+    var firstUrl;
     if (!layer || !prefix) return;
     urls = mlsKomaFxUrls(prefix, n);
     if (!urls.length) return;
+    firstUrl = urls[0];
+    if (firstUrl && mlsFxUsableCache[firstUrl] === false) return;
     el = document.createElement('img');
     el.className = 'mls-koma-fx' +
       (isEx ? ' is-ex' : '') +
       (crit ? ' is-crit' : '');
     el.alt = '';
     el.decoding = 'async';
+    /* Needed so the black-plate probe can read pixels from IMAGE_CDN. */
+    el.crossOrigin = 'anonymous';
     el.style.left = x + 'px';
     el.style.top = y + 'px';
     el.style.visibility = 'hidden';
@@ -741,10 +784,12 @@
         alt = thumbUrl('/static/images/Master League/Simulator/fx/' + prefix + '_1.webp');
         if (alt) {
           el.onload = function () { el.onload = null; startPlay(); };
+          el.crossOrigin = 'anonymous';
           el.src = alt;
           return;
         }
       }
+      if (firstUrl) mlsFxUsableCache[firstUrl] = false;
       reject();
     };
     el.onload = function () {
@@ -752,7 +797,7 @@
       startPlay();
     };
     layer.appendChild(el);
-    el.src = urls[0];
+    el.src = firstUrl;
   }
 
   /**
