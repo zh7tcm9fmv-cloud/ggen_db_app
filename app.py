@@ -12637,7 +12637,21 @@ def create_weapon_status_map(d):
                 impact_max = int(impact_max or 0)
             except (TypeError, ValueError):
                 impact_max = 0
-            lookup[sid] = {'range_min': int(item.get('RangeMin') or item.get('rangeMin') or 0), 'range_max': int(item.get('RangeMax') or item.get('rangeMax') or 0), 'power': int(item.get('Power') or item.get('power') or 0), 'en': int(item.get('En') or item.get('en') or 0), 'hit_rate': int(item.get('HitRate') or item.get('hitRate') or 0), 'critical_rate': int(item.get('CriticalRate') or item.get('criticalRate') or 0), 'override_correction_id': normalize_id(item.get('OverrideWeaponStatusChangePatternSetId') or item.get('overrideWeaponStatusChangePatternSetId')), 'trait_correction_id': normalize_id(item.get('OverrideWeaponTraitChangePatternSetId') or item.get('overrideWeaponTraitChangePatternSetId')), 'growth_pattern_id': normalize_id(item.get('WeaponLevelGrowthPatternSetId') or item.get('weaponLevelGrowthPatternSetId')), 'map_coords': co, 'shooting_coords': sc, 'is_dash': id2, 'map_can_use_after_move': bool(map_after), 'map_impact_point_max_select_count': max(0, impact_max)}
+            auto_thresh = item.get('MapWeaponAutoUsageAttackTargetThreshold')
+            if auto_thresh is None:
+                auto_thresh = item.get('mapWeaponAutoUsageAttackTargetThreshold')
+            try:
+                auto_thresh = int(auto_thresh or 0)
+            except (TypeError, ValueError):
+                auto_thresh = 0
+            ml_auto_thresh = item.get('MasterLeagueMapWeaponAutoUsageAttackTargetThreshold')
+            if ml_auto_thresh is None:
+                ml_auto_thresh = item.get('masterLeagueMapWeaponAutoUsageAttackTargetThreshold')
+            try:
+                ml_auto_thresh = int(ml_auto_thresh or 0)
+            except (TypeError, ValueError):
+                ml_auto_thresh = 0
+            lookup[sid] = {'range_min': int(item.get('RangeMin') or item.get('rangeMin') or 0), 'range_max': int(item.get('RangeMax') or item.get('rangeMax') or 0), 'power': int(item.get('Power') or item.get('power') or 0), 'en': int(item.get('En') or item.get('en') or 0), 'hit_rate': int(item.get('HitRate') or item.get('hitRate') or 0), 'critical_rate': int(item.get('CriticalRate') or item.get('criticalRate') or 0), 'override_correction_id': normalize_id(item.get('OverrideWeaponStatusChangePatternSetId') or item.get('overrideWeaponStatusChangePatternSetId')), 'trait_correction_id': normalize_id(item.get('OverrideWeaponTraitChangePatternSetId') or item.get('overrideWeaponTraitChangePatternSetId')), 'growth_pattern_id': normalize_id(item.get('WeaponLevelGrowthPatternSetId') or item.get('weaponLevelGrowthPatternSetId')), 'map_coords': co, 'shooting_coords': sc, 'is_dash': id2, 'map_can_use_after_move': bool(map_after), 'map_impact_point_max_select_count': max(0, impact_max), 'map_auto_usage_attack_target_threshold': max(0, auto_thresh), 'ml_map_auto_usage_attack_target_threshold': max(0, ml_auto_thresh)}
     return lookup
 
 # Same as get_large_unit_cells / OccupiedAreaId 2 on stages: expand +x and +y from pivot.
@@ -12993,7 +13007,7 @@ def resolve_weapon_stats(wm, wsm, wcm, wtm, wcam, gpm, wtcm, wtdm, wid='', lang_
     mwid = wm.get('main_weapon_id','0'); csid = wm.get('capability_set_id','0')
     tt = wm.get('tension_type','0'); wt = wm.get('weapon_type','1')
     zl = [{'level':i,'power':0,'en':0,'accuracy':0,'critical':0,'ammo':0,'traits':[]} for i in range(1,6)]
-    dr = {'range_min':0,'range_max':0,'power':0,'en':0,'accuracy':0,'critical':0,'ammo':0,'traits':[],'levels':zl,'usage_restrictions':[],'map_coords':[],'shooting_coords':[],'is_dash':False,'map_dash_dual_wide':False,'map_dash_dual_end_coords':[],'map_single_pou':False}
+    dr = {'range_min':0,'range_max':0,'power':0,'en':0,'accuracy':0,'critical':0,'ammo':0,'traits':[],'levels':zl,'usage_restrictions':[],'map_coords':[],'shooting_coords':[],'is_dash':False,'map_dash_dual_wide':False,'map_dash_dual_end_coords':[],'map_single_pou':False,'map_can_use_after_move':False,'map_impact_point_max_select_count':0,'map_auto_usage_attack_target_threshold':0,'ml_map_auto_usage_attack_target_threshold':0}
     wid_norm = normalize_id(wid) if wid else '0'
     wsid = normalize_id(wm.get('weapon_status_id') or '0')
     if wsid == '0':
@@ -13139,7 +13153,18 @@ def resolve_weapon_stats(wm, wsm, wcm, wtm, wcam, gpm, wtcm, wtdm, wid='', lang_
         if map_dash_dual_wide:
             isd = True
     l5 = levels[4] if len(levels) >= 5 else levels[-1] if levels else {}
-    return {'range_min':rn,'range_max':rx,'power':l5.get('power',0),'en':l5.get('en',0),'accuracy':l5.get('accuracy',0),'critical':l5.get('critical',0),'ammo':l5.get('ammo',0),'traits':l5.get('traits',[]),'levels':levels,'usage_restrictions':rest,'map_coords':mc,'shooting_coords':scc,'is_dash':isd,'map_dash_dual_wide': map_dash_dual_wide,'map_dash_dual_end_coords': map_dash_dual_end_coords,'map_single_pou': map_single_pou}
+    return {
+        'range_min': rn, 'range_max': rx, 'power': l5.get('power', 0), 'en': l5.get('en', 0),
+        'accuracy': l5.get('accuracy', 0), 'critical': l5.get('critical', 0), 'ammo': l5.get('ammo', 0),
+        'traits': l5.get('traits', []), 'levels': levels, 'usage_restrictions': rest,
+        'map_coords': mc, 'shooting_coords': scc, 'is_dash': isd,
+        'map_dash_dual_wide': map_dash_dual_wide, 'map_dash_dual_end_coords': map_dash_dual_end_coords,
+        'map_single_pou': map_single_pou,
+        'map_can_use_after_move': bool(after_move_map),
+        'map_impact_point_max_select_count': int(ws.get('map_impact_point_max_select_count', 0) or 0),
+        'map_auto_usage_attack_target_threshold': int(ws.get('map_auto_usage_attack_target_threshold', 0) or 0),
+        'ml_map_auto_usage_attack_target_threshold': int(ws.get('ml_map_auto_usage_attack_target_threshold', 0) or 0),
+    }
 
 def get_ability_name_for_search(ab_id, abil_name_map, abil_link_map):
     if not ab_id or normalize_id(ab_id) == '0':
@@ -20236,7 +20261,26 @@ def resolve_npc_unit_weapons(wsid, uid, ubr, lc, extra_ex_icon_candidates=None):
         is_dash = bool(ws.get('is_dash', False))
         if oer and not osr:
             is_dash = False
-        weapons.append({'id': wid, 'name': wn, 'attribute': attr_label, 'attribute_id': ai, 'weapon_type': wt, 'attack_types': at, 'levels': levels, 'min_range': min_r, 'max_range': max_r, 'usage_restrictions': ws.get('usage_restrictions', []), 'sort': w.get('sort_order', 0), 'icon': ic['icon'], 'overlay': ic['overlay'], 'is_ex': ic['is_ex'], 'is_map': ic['is_map'], 'map_supply': bool(map_supply), 'icon_color': icc, 'ssp_icon_color': icc, 'map_range_type': wm.get('map_range_type', '0'), 'map_coords': mc, 'shooting_coords': sc, 'is_dash': is_dash, 'map_dash_dual_wide': ws.get('map_dash_dual_wide', False), 'map_dash_dual_end_coords': [dict(c) for c in (ws.get('map_dash_dual_end_coords') or [])], 'map_single_pou': ws.get('map_single_pou', False), 'is_ssp_weapon': False, 'ssp_icon': '', 'ssp_power_bonus': 0, 'ssp_ammo_bonus': 0, 'ssp_range_bonus': 0, 'ssp_traits': [], 'is_preemptive': ip})
+        weapons.append({
+            'id': wid, 'name': wn, 'attribute': attr_label, 'attribute_id': ai,
+            'weapon_type': wt, 'attack_types': at, 'levels': levels,
+            'min_range': min_r, 'max_range': max_r,
+            'usage_restrictions': ws.get('usage_restrictions', []),
+            'sort': w.get('sort_order', 0), 'icon': ic['icon'], 'overlay': ic['overlay'],
+            'is_ex': ic['is_ex'], 'is_map': ic['is_map'], 'map_supply': bool(map_supply),
+            'icon_color': icc, 'ssp_icon_color': icc,
+            'map_range_type': wm.get('map_range_type', '0'),
+            'map_coords': mc, 'shooting_coords': sc, 'is_dash': is_dash,
+            'map_dash_dual_wide': ws.get('map_dash_dual_wide', False),
+            'map_dash_dual_end_coords': [dict(c) for c in (ws.get('map_dash_dual_end_coords') or [])],
+            'map_single_pou': ws.get('map_single_pou', False),
+            'map_can_use_after_move': bool(ws.get('map_can_use_after_move', False)),
+            'map_impact_point_max_select_count': int(ws.get('map_impact_point_max_select_count', 0) or 0),
+            'map_auto_usage_attack_target_threshold': int(ws.get('map_auto_usage_attack_target_threshold', 0) or 0),
+            'ml_map_auto_usage_attack_target_threshold': int(ws.get('ml_map_auto_usage_attack_target_threshold', 0) or 0),
+            'is_ssp_weapon': False, 'ssp_icon': '', 'ssp_power_bonus': 0,
+            'ssp_ammo_bonus': 0, 'ssp_range_bonus': 0, 'ssp_traits': [], 'is_preemptive': ip,
+        })
     weapons.sort(key=lambda x: (0 if x['weapon_type'] == '3' else 1, x['sort']))
     return weapons
 
@@ -36064,6 +36108,41 @@ def api_ml_sim_unlock():
     return jsonify({'ok': True, 'password_required': True})
 
 
+_MLS_KOMA_CATALOG_CACHE = None
+_MLS_KOMA_CATALOG_MTIME = None
+
+
+def _load_mls_koma_catalog():
+    """Published UR IngameKoma catalog (strips + impact FX prefixes)."""
+    global _MLS_KOMA_CATALOG_CACHE, _MLS_KOMA_CATALOG_MTIME
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                        'data', 'published', 'mls_koma_catalog_v1.json')
+    try:
+        mtime = os.path.getmtime(path)
+    except OSError:
+        return {'version': 1, 'byUnitId': {}, 'unit_count': 0, 'koma_count': 0}
+    if _MLS_KOMA_CATALOG_CACHE is not None and _MLS_KOMA_CATALOG_MTIME == mtime:
+        return _MLS_KOMA_CATALOG_CACHE
+    try:
+        with open(path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+    except Exception:
+        data = {'version': 1, 'byUnitId': {}, 'unit_count': 0, 'koma_count': 0}
+    _MLS_KOMA_CATALOG_CACHE = data if isinstance(data, dict) else {}
+    _MLS_KOMA_CATALOG_MTIME = mtime
+    return _MLS_KOMA_CATALOG_CACHE
+
+
+@app.route('/api/ml_sim/koma_catalog')
+def api_ml_sim_koma_catalog():
+    """IngameKoma strip/FX catalog for all UR kits (CDN Simulator assets)."""
+    data = _load_mls_koma_catalog()
+    ck = 'mls_koma_catalog_v1_%s' % (
+        int(_MLS_KOMA_CATALOG_MTIME or 0),
+    )
+    return jsonify_cacheable(data, ck, public=True, max_age=3600)
+
+
 def _lr_schedule_id_sort_key(sid):
     """Numeric schedule ids descending (newer gasha ids first); non-numeric last."""
     s = normalize_id(sid)
@@ -40855,7 +40934,31 @@ def get_unit(unit_id):
                             break
                     if not siu:
                         siu = portrait or ''
-                weapons.append({'id': wid, 'name': wn, 'attribute': attr_label, 'attribute_id': ai, 'weapon_type': wt, 'attack_attribute': str(wm.get('attack_attribute', '0') or '0'), 'attack_types': at, 'levels': levels, 'power': pw, 'min_range': ws['range_min'], 'max_range': ws['range_max'], 'en_cost': en, 'accuracy': acc, 'critical': crit, 'ammo': am, 'traits': trl, 'usage_restrictions': ws['usage_restrictions'], 'sort': wp['sort'], 'icon': ic['icon'], 'overlay': ic['overlay'], 'is_ex': ic['is_ex'], 'is_map': ic['is_map'], 'map_supply': bool(map_supply), 'icon_color': icc, 'ssp_icon_color': sicc, 'map_range_type': wm.get('map_range_type', '0'), 'map_coords': ws.get('map_coords', []), 'shooting_coords': ws.get('shooting_coords', []), 'is_dash': ws.get('is_dash', False), 'map_dash_dual_wide': ws.get('map_dash_dual_wide', False), 'map_dash_dual_end_coords': ws.get('map_dash_dual_end_coords', []), 'map_single_pou': ws.get('map_single_pou', False), 'is_ssp_weapon': isw, 'is_ult_weapon': is_ult_wpn, 'ssp_icon': siu, 'ssp_power_bonus': ssp_power, 'ssp_ammo_bonus': ssp_ammo, 'ssp_range_bonus': ssp_range, 'ssp_traits': sat, 'is_preemptive': ip})
+                weapons.append({
+                    'id': wid, 'name': wn, 'attribute': attr_label, 'attribute_id': ai,
+                    'weapon_type': wt, 'attack_attribute': str(wm.get('attack_attribute', '0') or '0'),
+                    'attack_types': at, 'levels': levels, 'power': pw,
+                    'min_range': ws['range_min'], 'max_range': ws['range_max'],
+                    'en_cost': en, 'accuracy': acc, 'critical': crit, 'ammo': am,
+                    'traits': trl, 'usage_restrictions': ws['usage_restrictions'],
+                    'sort': wp['sort'], 'icon': ic['icon'], 'overlay': ic['overlay'],
+                    'is_ex': ic['is_ex'], 'is_map': ic['is_map'], 'map_supply': bool(map_supply),
+                    'icon_color': icc, 'ssp_icon_color': sicc,
+                    'map_range_type': wm.get('map_range_type', '0'),
+                    'map_coords': ws.get('map_coords', []),
+                    'shooting_coords': ws.get('shooting_coords', []),
+                    'is_dash': ws.get('is_dash', False),
+                    'map_dash_dual_wide': ws.get('map_dash_dual_wide', False),
+                    'map_dash_dual_end_coords': ws.get('map_dash_dual_end_coords', []),
+                    'map_single_pou': ws.get('map_single_pou', False),
+                    'map_can_use_after_move': bool(ws.get('map_can_use_after_move', False)),
+                    'map_impact_point_max_select_count': int(ws.get('map_impact_point_max_select_count', 0) or 0),
+                    'map_auto_usage_attack_target_threshold': int(ws.get('map_auto_usage_attack_target_threshold', 0) or 0),
+                    'ml_map_auto_usage_attack_target_threshold': int(ws.get('ml_map_auto_usage_attack_target_threshold', 0) or 0),
+                    'is_ssp_weapon': isw, 'is_ult_weapon': is_ult_wpn, 'ssp_icon': siu,
+                    'ssp_power_bonus': ssp_power, 'ssp_ammo_bonus': ssp_ammo,
+                    'ssp_range_bonus': ssp_range, 'ssp_traits': sat, 'is_preemptive': ip,
+                })
             weapons.sort(key=lambda w: (0 if w['weapon_type']=='3' else 1, w['sort']))
         sicons = []
         if info.get('is_ultimate', False): sicons.append(ULT_ICON)

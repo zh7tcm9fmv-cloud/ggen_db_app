@@ -16,7 +16,7 @@ html[data-ui-lang="TW"],html[data-ui-lang="HK"]{--font-body:'Noto Sans JP','UDSh
 /* KR: system Hangul (Malgun / Apple SD Gothic) — no multi-MB KR font egress from Railway. */
 html[data-ui-lang="KR"],html[data-ui-lang="HR"]{--font-body:'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR','RobotoMediumNumbers',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--font-tag-ui:var(--font-body);--font-brand:'FOTK Yoon Gothic 780 JP',var(--font-body)}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html{color-scheme:dark;scroll-behavior:smooth;-webkit-text-size-adjust:100%;overflow-x:clip;background-color:var(--bg-primary)}
+html{color-scheme:dark;scroll-behavior:smooth;-webkit-text-size-adjust:100%;overflow-x:clip;background-color:var(--bg-primary);scrollbar-gutter:stable}
 button,a,.nav-tab,.page-btn,.role-filter-btn,.role-filter-dd-btn,.rarity-filter-btn,.tag-unit-item{cursor:pointer;-webkit-tap-highlight-color:rgba(0,212,255,0.2)}
 body{font-family:var(--font-body);background:var(--bg-primary);color:var(--text-primary);line-height:1.6;min-height:100vh;min-height:100dvh;overflow-x:visible;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 button,input,select,textarea,optgroup{font-family:inherit}
@@ -257,7 +257,8 @@ a.nav-tab:any-link:hover:not(.active),a.nav-tab:visited:hover:not(.active){color
 .main-content{max-width:1600px;margin:0 auto;padding:20px 24px 40px;flex:1;min-width:0;width:100%}
 .tab-panel{display:none;position:relative;min-height:calc(100vh - 200px)}.tab-panel.active{display:block}
 .tab-panel::before{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;background-size:cover;background-position:center;background-repeat:no-repeat;opacity:0.15;border-radius:var(--radius-lg)}
-/* Detail open/exit: freeze browse plate box so scrollbar pad unlock does not reframe cover under the toolbar. */
+/* Detail open/exit: freeze browse plate box so lock/unlock does not reframe cover under the toolbar.
+   Do NOT hide the plate (opacity:0) during detail — restoring it on exit is the toolbar flash. */
 .tab-panel[data-ggen-panel-cover-locked="1"]::before{
   inset:auto;
   top:0;
@@ -266,14 +267,7 @@ a.nav-tab:any-link:hover:not(.active),a.nav-tab:visited:hover:not(.active){color
   height:var(--ggen-panel-cover-h,100%);
   background-size:cover;
   background-position:center;
-}
-/* While detail (or scroll-lock) covers browse, hide the plate — morph/dim still shows the toolbar
-   area, and cover reflow there reads as “bg painted on list-toolbar”. */
-body.detail-modal-open .tab-panel::before,
-html.page-scroll-lock .tab-panel::before,
-body.detail-close-settling .tab-panel::before,
-html.detail-close-scroll-hold .tab-panel::before{
-  opacity:0!important;
+  /* No opacity/transition changes — plate stays at rest 0.15 through open/exit. */
   transition:none!important;
 }
 #panel-characters::before,#panel-supporters::before{background-image:url('/static/images/Background/obg_022_office.webp')}
@@ -1426,7 +1420,7 @@ html.cmp-bar-open.search-recall-open .scroll-top-fab,html.cmp-bar-open.search-re
 .er-stage-blackout-icon{font-size:56px;line-height:1;margin-bottom:16px;opacity:.9;filter:grayscale(.2)}
 .er-stage-blackout-title{font-size:18px;font-weight:800;color:var(--text-secondary);letter-spacing:.04em;margin-bottom:8px}
 .er-stage-redacted-cell{color:var(--text-muted);font-style:italic}
-.list-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+.list-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px;flex-wrap:wrap;position:relative;z-index:1}
 .list-toolbar-left{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.list-toolbar-right{display:flex;align-items:center;gap:12px}
 .tm-browse-shortcut{
   position:relative;
@@ -1882,30 +1876,27 @@ body.detail-modal-open .bg-pattern{
 #detailModal.modal-overlay.active{
   pointer-events:auto!important;
 }
-/* Esc close: morph over normal dimmed browse; opaque WASH only for unlock frames, then fade.
-   Do not arm opaque wash during morph — that left an empty black screen for the whole exit.
+/* Esc close: morph/unlock over normal dimmed browse — never blank the page with opaque wash.
    Never pointer-events:none on the active overlay — that let unit cards be clicked behind. */
 body.detail-close-settling #detailModal.modal-overlay.active{
   animation:none!important;
   pointer-events:auto!important;
 }
+/* Legacy wash classes (kept for mid-exit safety) — do not force a black frame on exit. */
 body.detail-close-settling #detailModal.modal-overlay.active.is-detail-wash:not(.is-detail-wash-out){
-  background:#05070c!important;
+  background:rgba(0,0,0,.82)!important;
   opacity:1!important;
   transition:none!important;
 }
-/* After morph-exit finishes — hide empty shell before unlock. */
 body.detail-close-settling #detailModal.modal-overlay.active.is-detail-wash-empty .modal-content,
 body.detail-close-settling #detailModal.modal-overlay.active.is-detail-wash-empty #detailInner{
   visibility:hidden!important;
   opacity:0!important;
   pointer-events:none!important;
 }
-/* Must beat .is-detail-wash opacity:1!important or exit wash sticks black (blank browse). */
 body.detail-close-settling #detailModal.modal-overlay.active.is-detail-wash-out{
-  background:#05070c!important;
-  opacity:0!important;
-  transition:opacity 120ms ease!important;
+  background:rgba(0,0,0,.82)!important;
+  transition:opacity 100ms ease!important;
   animation:none!important;
 }
 body.detail-close-settling #detailModal.modal-overlay{

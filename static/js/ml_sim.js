@@ -223,6 +223,374 @@
   }
 
   /**
+   * /mls IngameKoma — all UR kits from published catalog
+   * (data/published/mls_koma_catalog_v1.json → /api/ml_sim/koma_catalog).
+   * Assets: images/Master League/Simulator/{koma,fx}/ on IMAGE_CDN.
+   * stripsBySlot: weapons[] index → IngameKoma action (weapon1/2/3 / et01 / map).
+   */
+  var MLS_KOMA_BY_UNIT = Object.create(null);
+  var mlsKomaCatalogReady = null;
+
+  function mlsKomaApplyCatalog(data) {
+    var map = (data && data.byUnitId) || {};
+    var id;
+    MLS_KOMA_BY_UNIT = Object.create(null);
+    for (id in map) {
+      if (Object.prototype.hasOwnProperty.call(map, id)) {
+        MLS_KOMA_BY_UNIT[String(id)] = map[id];
+      }
+    }
+  }
+
+  function ensureMlsKomaCatalog() {
+    if (mlsKomaCatalogReady) return mlsKomaCatalogReady;
+    mlsKomaCatalogReady = fetch('/api/ml_sim/koma_catalog', { credentials: 'same-origin' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) {
+        if (d && d.byUnitId) mlsKomaApplyCatalog(d);
+        return !!MLS_KOMA_BY_UNIT && Object.keys(MLS_KOMA_BY_UNIT).length > 0;
+      })
+      .catch(function () { return false; });
+    return mlsKomaCatalogReady;
+  }
+
+  function mlsKomaKit(unitId) {
+    return MLS_KOMA_BY_UNIT[String(unitId || '')] || null;
+  }
+
+  /** Map live weapons[] → strip actions (MAP / EX / weapon1…). */
+  function mlsKomaBindWeaponSlots(kit, weapons) {
+    var pool;
+    var wi;
+    var slots;
+    var i;
+    var w;
+    if (!kit) return kit;
+    pool = ['weapon1', 'weapon2', 'weapon3', 'weapon4'].filter(function (a) {
+      return !!(kit.strips && kit.strips[a]);
+    });
+    wi = 0;
+    slots = [];
+    for (i = 0; i < (weapons || []).length; i++) {
+      w = weapons[i];
+      if (w && (w.is_map || w.is_map_weapon) && kit.strips && kit.strips.map) {
+        slots.push('map');
+      } else if (w && w.is_ex && kit.strips && kit.strips.et01) {
+        slots.push('et01');
+      } else if (pool[wi]) {
+        slots.push(pool[wi++]);
+      } else if (kit.strips && kit.strips.et01 && w && w.is_ex) {
+        slots.push('et01');
+      } else {
+        slots.push(pool[0] || 'weapon1');
+      }
+    }
+    /* Keep catalog hand-tuned order when present and length matches. */
+    if (kit.stripsBySlot && kit.stripsBySlot.length === slots.length &&
+        (String(kit.komaId) === 'g2170u02150' || String(kit.komaId) === 'g2170u00650')) {
+      return kit;
+    }
+    kit.stripsBySlot = slots;
+    return kit;
+  }
+
+  function mlsKomaPad2(n) {
+    n = n | 0;
+    return n < 10 ? ('0' + n) : String(n);
+  }
+
+  function mlsKomaFacingFromDir(dir) {
+    dir = dir | 0;
+    if (dir === 1) return 'right';
+    if (dir === 3) return 'left';
+    if (dir === 2) return 'back';
+    return 'front';
+  }
+
+  /** Map-space delta (to − from) → IngameKoma facing name. */
+  function mlsKomaFacingFromDelta(dx, dy) {
+    dx = dx || 0;
+    dy = dy || 0;
+    if (Math.abs(dx) >= Math.abs(dy)) return dx >= 0 ? 'right' : 'left';
+    /* map +Y paints toward top of board → back */
+    return dy > 0 ? 'back' : 'front';
+  }
+
+  function mlsKomaFrameUrl(kit, action, facing, frame) {
+    var base;
+    if (!kit || !kit.komaId) return '';
+    facing = facing || 'front';
+    action = action || 'standby';
+    base = '/static/images/Master League/Simulator/koma/' + kit.komaId + '/' +
+      kit.komaId + '_' + action + '_' + facing;
+    if (frame != null && (frame | 0) > 0) {
+      return thumbUrl(base + '_' + mlsKomaPad2(frame) + '.webp');
+    }
+    return thumbUrl(base + '.webp');
+  }
+
+  function mlsKomaStandbyUrl(kit, facing) {
+    if (!kit) return '';
+    return mlsKomaFrameUrl(kit, 'standby', facing, kit.standbyFrame | 0);
+  }
+
+  function mlsKomaFxUrl(prefix, frame) {
+    if (!prefix) return '';
+    return thumbUrl('/static/images/Master League/Simulator/fx/' +
+      prefix + '_' + (frame | 0) + '.webp');
+  }
+
+  function mlsKomaStripForWeapon(kit, wpn) {
+    var slot;
+    var action;
+    var meta;
+    if (!kit) return { action: 'weapon1', frames: 3, facings: null, maxPlay: 0 };
+    slot = wpn && wpn._mlsSlot != null ? (wpn._mlsSlot | 0) : -1;
+    if (slot < 0 && wpn && wpn.is_ex) action = 'et01';
+    else if (slot < 0 && wpn && (wpn.is_map || wpn.is_map_weapon)) action = 'map';
+    else if (kit.stripsBySlot && slot >= 0 && kit.stripsBySlot[slot]) action = kit.stripsBySlot[slot];
+    else action = 'weapon1';
+    if (!(kit.strips && kit.strips[action]) && action === 'map') action = 'weapon3';
+    if (!(kit.strips && kit.strips[action])) action = 'weapon1';
+    meta = (kit.strips && kit.strips[action]) || { frames: 3 };
+    return {
+      action: action,
+      frames: meta.frames | 0,
+      facings: meta.facings || null,
+      maxPlay: meta.maxPlay | 0
+    };
+  }
+
+  function mlsKomaFacingForStrip(strip, facing, unit) {
+    var f = facing || mlsKomaFacingFromDir(unit && unit.direction);
+    var allowed = strip && strip.facings;
+    var mapLR;
+    if (!allowed || !allowed.length) return f;
+    if (allowed.indexOf(f) >= 0) return f;
+    /* Some EX strips use L/R instead of left/right. */
+    mapLR = { left: 'L', right: 'R', L: 'left', R: 'right' };
+    if (mapLR[f] && allowed.indexOf(mapLR[f]) >= 0) return mapLR[f];
+    if (unit && unit.side === 'enemy') {
+      if (allowed.indexOf('right') >= 0) return 'right';
+      if (allowed.indexOf('R') >= 0) return 'R';
+      return allowed[0];
+    }
+    if (allowed.indexOf('left') >= 0) return 'left';
+    if (allowed.indexOf('L') >= 0) return 'L';
+    return allowed[0];
+  }
+
+  function mlsKomaFxForWeapon(kit, wpn, ranged) {
+    /* Impact only on the target cell — no attacker muzzle (black/opaque frames + wrong seat). */
+    if (!kit) return { impactFx: '', impactFrames: 0, muzzleFx: '', muzzleFrames: 0, isEx: false };
+    if (wpn && wpn.is_ex && kit.exImpactFx) {
+      return {
+        impactFx: kit.exImpactFx,
+        impactFrames: kit.exImpactFrames | 0,
+        muzzleFx: '',
+        muzzleFrames: 0,
+        isEx: true
+      };
+    }
+    if (ranged || (wpn && (wpn.is_map || wpn.is_map_weapon))) {
+      return {
+        impactFx: kit.impactFx || '',
+        impactFrames: kit.impactFrames | 0,
+        muzzleFx: '',
+        muzzleFrames: 0,
+        isEx: false
+      };
+    }
+    return {
+      impactFx: kit.meleeImpactFx || kit.impactFx || '',
+      impactFrames: (kit.meleeImpactFrames || kit.impactFrames) | 0,
+      muzzleFx: '',
+      muzzleFrames: 0,
+      isEx: !!(wpn && wpn.is_ex)
+    };
+  }
+
+  function mlsKomaWarmKit(kit) {
+    var facings = ['front', 'back', 'left', 'right'];
+    var actions;
+    var i, a, f, fr, img, meta, maxFr;
+    if (!kit || typeof Image === 'undefined') return;
+    actions = Object.keys(kit.strips || { weapon1: 1 });
+    for (i = 0; i < facings.length; i++) {
+      f = facings[i];
+      img = new Image();
+      img.decoding = 'async';
+      img.src = mlsKomaStandbyUrl(kit, f);
+    }
+    actions.forEach(function (action) {
+      meta = kit.strips[action] || {};
+      maxFr = Math.min(meta.frames | 0, (meta.maxPlay | 0) > 0 ? (meta.maxPlay | 0) : (meta.frames | 0));
+      (meta.facings || facings).forEach(function (ff) {
+        for (fr = 1; fr <= maxFr; fr++) {
+          img = new Image();
+          img.decoding = 'async';
+          img.src = mlsKomaFrameUrl(kit, action, ff, fr);
+        }
+      });
+    });
+    ['impactFx', 'muzzleFx', 'meleeImpactFx', 'exImpactFx'].forEach(function (key) {
+      var pref = kit[key];
+      var nKey = key.replace('Fx', 'Frames');
+      var n = kit[nKey] | 0;
+      if (!pref || !n) return;
+      for (fr = 1; fr <= n; fr++) {
+        img = new Image();
+        img.decoding = 'async';
+        img.src = mlsKomaFxUrl(pref, fr);
+      }
+    });
+  }
+
+  function mlsKomaPlayFlipbook(imgEl, urls, frameMs, onDone) {
+    var i = 0;
+    var t;
+    function tick() {
+      if (!imgEl || !imgEl.parentNode) {
+        if (onDone) onDone();
+        return;
+      }
+      if (i >= urls.length) {
+        if (onDone) onDone();
+        return;
+      }
+      imgEl.src = urls[i++];
+      t = setTimeout(tick, frameMs);
+    }
+    if (!urls || !urls.length) {
+      if (onDone) onDone();
+      return;
+    }
+    tick();
+    return function cancel() {
+      try { clearTimeout(t); } catch (eC) { /* ignore */ }
+    };
+  }
+
+  function mlsKomaAttackFacing(linkEvt, unit) {
+    var dx, dy;
+    if (linkEvt && linkEvt.from && linkEvt.to) {
+      dx = (linkEvt.to.x | 0) - (linkEvt.from.x | 0);
+      dy = (linkEvt.to.y | 0) - (linkEvt.from.y | 0);
+      if (dx || dy) return mlsKomaFacingFromDelta(dx, dy);
+    }
+    return mlsKomaFacingFromDir(unit && unit.direction);
+  }
+
+  /** Map +Y = board north (paints toward top) → IngameKoma `back`. */
+  function mlsKomaFacingToward(fromPos, toPos) {
+    if (!fromPos || !toPos) return 'front';
+    return mlsKomaFacingFromDelta(
+      (toPos.x | 0) - (fromPos.x | 0),
+      (toPos.y | 0) - (fromPos.y | 0)
+    );
+  }
+
+  /**
+   * Point a koma token at `facing` (standby plate). Updates actor.thum so sync
+   * keeps the same art. Weapon flipbooks still optional / separate.
+   */
+  function mlsKomaApplyTokenFacing(unit, tokenEl, facing) {
+    var kit;
+    var face;
+    var url;
+    var img;
+    if (!unit || !unit.komaKit) return;
+    kit = unit.komaKit;
+    face = facing || mlsKomaFacingFromDir(unit.direction);
+    /* Standby plates use front/back/left/right (not L/R EX-only tokens). */
+    if (face === 'L') face = 'left';
+    if (face === 'R') face = 'right';
+    url = mlsKomaStandbyUrl(kit, face);
+    if (!url) return;
+    unit.komaFacing = face;
+    unit.thum = url;
+    img = tokenEl && tokenEl.querySelector && tokenEl.querySelector('.mls-token-thum');
+    if (img) img.src = url;
+  }
+
+  /** Face attacker → target and defender → attacker for this engage. */
+  function mlsKomaFaceCombatants(linkEvt, layer, atkId, tgtId) {
+    var atkUnit;
+    var tgtUnit;
+    var atkEl;
+    var tgtEl;
+    var atkFace;
+    var tgtFace;
+    if (!linkEvt || !linkEvt.from || !linkEvt.to) return;
+    atkUnit = mlsKomaUnitByTokenKey(atkId);
+    tgtUnit = mlsKomaUnitByTokenKey(tgtId);
+    atkEl = layer && layer.querySelector('[data-token-key="' + String(atkId) + '"]');
+    tgtEl = layer && layer.querySelector('[data-token-key="' + String(tgtId) + '"]');
+    atkFace = mlsKomaFacingToward(linkEvt.from, linkEvt.to);
+    tgtFace = mlsKomaFacingToward(linkEvt.to, linkEvt.from);
+    if (atkUnit && atkUnit.komaKit) mlsKomaApplyTokenFacing(atkUnit, atkEl, atkFace);
+    if (tgtUnit && tgtUnit.komaKit) mlsKomaApplyTokenFacing(tgtUnit, tgtEl, tgtFace);
+  }
+
+  /**
+   * Face the shooter toward the target (standby art). Full weapon-strip playback
+   * stays optional — hit FX still come from playRangedFire / playAttackFx.
+   */
+  function mlsKomaPlayWeaponOnToken(atkEl, unit, facing, wpn, onDone) {
+    mlsKomaApplyTokenFacing(unit, atkEl, facing);
+    if (onDone) onDone();
+  }
+
+  function mlsKomaSpawnFxStrip(layer, x, y, prefix, frames, crit, isEx) {
+    var el;
+    var urls = [];
+    var fr;
+    var frameMs;
+    if (!layer || !prefix || !(frames | 0)) return;
+    for (fr = 1; fr <= (frames | 0); fr++) urls.push(mlsKomaFxUrl(prefix, fr));
+    el = document.createElement('img');
+    el.className = 'mls-koma-fx' +
+      (isEx ? ' is-ex' : '') +
+      (crit ? ' is-crit' : '');
+    el.alt = '';
+    el.decoding = 'async';
+    el.style.left = x + 'px';
+    el.style.top = y + 'px';
+    el.src = urls[0];
+    layer.appendChild(el);
+    frameMs = Math.max(22, Math.round(32 / battlePaceMul()));
+    mlsKomaPlayFlipbook(el, urls, frameMs, function () {
+      if (el.parentNode) el.parentNode.removeChild(el);
+    });
+  }
+
+  /**
+   * Re-bind gated koma kit from unit id (cloneArmy / snapshots drop unknown fields).
+   * Keeps weapon-frame src mid-anim; otherwise forces standby for the facing.
+   */
+  function mlsKomaAttachActor(u) {
+    var kit;
+    var cur;
+    if (!u) return u;
+    kit = mlsKomaKit(u.id);
+    if (kit) {
+      try { kit = JSON.parse(JSON.stringify(kit)); } catch (eClone) { kit = kit; }
+      mlsKomaBindWeaponSlots(kit, u.weapons);
+    }
+    u.komaKit = kit;
+    if (!kit) return u;
+    if (!u.komaFacing) u.komaFacing = mlsKomaFacingFromDir(u.direction);
+    /* Never store IngameKoma paths as portraitThum — board HP strip needs Trait thumbs. */
+    if (!u.portraitThum || String(u.portraitThum).indexOf('Simulator/koma') >= 0) {
+      u.portraitThum = thumbUrl('/static/images/Trait/thum/thum_' + kit.komaId + '.webp');
+    }
+    cur = String(u.thum || '');
+    if (/_(weapon\d+|et01|map)_/.test(cur) && cur.indexOf('Simulator') >= 0) return u;
+    u.thum = mlsKomaStandbyUrl(kit, u.komaFacing);
+    return u;
+  }
+
+  /**
    * MLS formation cards use Supporters/sb_* (detail portrait), not Trait/thum chips.
    * List/picker rows ship Trait/thum — rewrite so ally/enemy cards stay consistent.
    */
@@ -3568,6 +3936,8 @@
 
   function renderPickerRows(rows) {
     var host = document.getElementById('mlsPickerList');
+    var searchEl;
+    var typedQ;
     if (!host) return;
     var kind = pickerCtx && pickerCtx.kind || 'unit';
     var side = pickerCtx && pickerCtx.side || 'ally';
@@ -3577,6 +3947,9 @@
     var usedSsr = kind === 'option' ? usedSsrOpIds(side, idx) : {};
     var usedUnits = kind === 'unit' ? usedUnitIds(side, idx) : {};
     var usedChars = kind === 'character' ? usedCharIds(side, idx) : {};
+    /* Typed name/id search bypasses Boost: Tag — empty browse still uses the chips. */
+    searchEl = document.getElementById('mlsPickerSearch');
+    typedQ = searchEl ? String(searchEl.value || '').trim() : '';
     var list = (rows || []).filter(function (u) {
       if (!u || !u.id) return false;
       /* Ally pickers only — enemy can always pick any kit. */
@@ -3594,7 +3967,7 @@
       /* Same side: one copy of each unit / pilot (enemy↔ally may still match). */
       if (kind === 'unit' && usedUnits[String(u.id)]) return false;
       if (kind === 'character' && usedChars[String(u.id)]) return false;
-      if (kind === 'unit' && !rowMatchesSelectedSeasonTags(u)) return false;
+      if (kind === 'unit' && !typedQ && !rowMatchesSelectedSeasonTags(u)) return false;
       return true;
     });
     if (kind === 'unit') list = sortPickerRowsByRarityId(list);
@@ -4980,18 +5353,23 @@
   function weaponsOf(ud, statMode, ultAltLv) {
     var ultOn = unitUltAltActive(ud, ultAltLv);
     var sspOn = statMode === 'ssp';
-    return ((ud && ud.weapons) || []).filter(function (w) {
+    return ((ud && ud.weapons) || []).map(function (w, idx) {
+      return { w: w, idx: idx };
+    }).filter(function (pair) {
+      var w = pair.w;
       if (!w) return false;
       /* Match /cal _dcNonMapWeapons: ult weapons only when ULT Alt is on. */
       if (w.is_ult_weapon && !ultOn) return false;
       /* Custom Core weapons only while the unit is in SSP. */
       if ((w.is_ssp_weapon || w.ssp_only) && !sspOn) return false;
       return true;
-    }).map(function (w) {
+    }).map(function (pair) {
+      var w = pair.w;
       var levels = w.levels || [];
       var lv = levels.length ? levels[levels.length - 1] : {};
       return {
         raw: w,
+        _mlsSlot: pair.idx | 0,
         name: w.name || (w.is_ex ? 'EX' : 'Weapon'),
         icon: w.icon || w.ssp_icon || '',
         icon_color: w.icon_color || w.ssp_icon_color || '',
@@ -5015,6 +5393,9 @@
         shooting_coords: (w.shooting_coords || []).slice(),
         map_range_type: String(w.map_range_type != null ? w.map_range_type : '0'),
         map_impact_point_max_select_count: w.map_impact_point_max_select_count | 0,
+        map_can_use_after_move: !!w.map_can_use_after_move,
+        map_auto_usage_attack_target_threshold: w.map_auto_usage_attack_target_threshold | 0,
+        ml_map_auto_usage_attack_target_threshold: w.ml_map_auto_usage_attack_target_threshold | 0,
         map_single_pou: !!w.map_single_pou,
         is_dash: !!(w.is_dash || String(w.map_range_type) === '4' || w.map_dash_dual_wide),
         map_dash_dual_wide: !!w.map_dash_dual_wide,
@@ -5619,7 +6000,15 @@
       actor.ghostHp = actor.hp | 0;
       actor.hp = Math.min(maxHp, Math.max(0, actor.hp | 0) + amt);
       if (r.once) actor._hpFallRestoreUsed[r.key] = true;
-      if (isRevive && (actor.hp | 0) > 0) revived = true;
+      if (isRevive && (actor.hp | 0) > 0) {
+        revived = true;
+        /*
+         * Same class as Escape morph: form was destroyed for the KO log / MP,
+         * but not a defeat for kill-CS / Auto-CS — only Guaranteed CS continues.
+         */
+        actor._revivedThisEngagement = true;
+        actor.lingerKo = false;
+      }
       if (typeof snapshotLine === 'function') {
         snapshotLine(
           'T' + turn + ' HP restore' + (r.once ? ' (once)' : '') + ': ' + actor.name +
@@ -6335,30 +6724,47 @@
   }
 
   /**
-   * Crown icons above the portrait: unit skill + Guaranteed CS + active Inflict statuses.
+   * Crown icons: Guaranteed CS + Inflict stay centered above tension.
+   * Unit skill sits on the koma top corner (ally right / enemy left) — separate node.
    */
   function topMarksHtml(u) {
     var skill = skillMarkHtml(u);
     var gcs = guaranteedCsMarkHtml(u);
     var status = statusDebuffMarksHtml(u);
-    if (!skill && !gcs && !status) return '';
-    return '<div class="mls-token-top-marks">' + skill + gcs + status + '</div>';
+    var html = skill || '';
+    if (gcs || status) html += '<div class="mls-token-top-marks">' + gcs + status + '</div>';
+    return html;
   }
 
   function clearOrphanTopMarks(el) {
-    Array.prototype.forEach.call(el.querySelectorAll('.mls-token-skill-mark, .mls-token-gcs-mark, .mls-token-status-mark'), function (n) {
+    Array.prototype.forEach.call(el.querySelectorAll('.mls-token-gcs-mark, .mls-token-status-mark'), function (n) {
       if (n.parentNode && !n.parentNode.classList.contains('mls-token-top-marks')) {
         n.parentNode.removeChild(n);
       }
+    });
+    /* Skill mark belongs on the token itself — drop copies left inside the crown wrap. */
+    Array.prototype.forEach.call(el.querySelectorAll('.mls-token-top-marks .mls-token-skill-mark'), function (n) {
+      if (n.parentNode) n.parentNode.removeChild(n);
     });
   }
 
   function removeEmptyTopMarksWrap(el) {
     var wrap = el && el.querySelector('.mls-token-top-marks');
     if (!wrap) return;
-    if (!wrap.querySelector('.mls-token-skill-mark, .mls-token-gcs-mark, .mls-token-status-mark')) {
+    if (!wrap.querySelector('.mls-token-gcs-mark, .mls-token-status-mark')) {
       if (wrap.parentNode) wrap.parentNode.removeChild(wrap);
     }
+  }
+
+  function syncSkillMarkEl(el, u) {
+    var html = skillMarkHtml(u);
+    var slot = el && el.querySelector('.mls-token-skill-mark');
+    if (!html) {
+      if (slot && slot.parentNode) slot.parentNode.removeChild(slot);
+      return;
+    }
+    if (slot) slot.outerHTML = html;
+    else el.insertAdjacentHTML('afterbegin', html);
   }
 
   /** Fade Guaranteed CS crown away the moment stock hits 0 (Guaranteed fire — not kill-CS). */
@@ -6385,21 +6791,21 @@
    * still has stock, and fade it out immediately when Guaranteed stock is spent.
    */
   function syncTopMarksEl(el, u) {
-    var wrap, skillHtml, statusHtml, gcsHtml, wantGcs, gcsMark, skillSlot, statusHost;
+    var wrap, statusHtml, gcsHtml, wantGcs, gcsMark, statusHost;
     if (!el) return;
     clearOrphanTopMarks(el);
+    syncSkillMarkEl(el, u);
     wrap = el.querySelector('.mls-token-top-marks');
-    skillHtml = skillMarkHtml(u);
     statusHtml = statusDebuffMarksHtml(u);
     gcsHtml = guaranteedCsMarkHtml(u);
     wantGcs = guaranteedCsStillWanted(u);
     gcsMark = wrap && wrap.querySelector('.mls-token-gcs-mark');
 
-    if (!skillHtml && !statusHtml && !wantGcs && !(gcsMark && gcsMark.classList.contains('is-fading'))) {
+    if (!statusHtml && !wantGcs && !(gcsMark && gcsMark.classList.contains('is-fading'))) {
       if (gcsMark && !gcsMark.classList.contains('is-fading')) {
         beginGuaranteedCsMarkFade(el, gcsMark);
-        /* Keep wrap while fade runs — skill/status already empty. */
-        Array.prototype.forEach.call(wrap.querySelectorAll('.mls-token-skill-mark, .mls-token-status-mark'), function (n) {
+        /* Keep wrap while fade runs — status already empty. */
+        Array.prototype.forEach.call(wrap.querySelectorAll('.mls-token-status-mark'), function (n) {
           if (n.parentNode) n.parentNode.removeChild(n);
         });
         return;
@@ -6411,14 +6817,6 @@
     if (!wrap) {
       el.insertAdjacentHTML('afterbegin', '<div class="mls-token-top-marks"></div>');
       wrap = el.querySelector('.mls-token-top-marks');
-    }
-
-    skillSlot = wrap.querySelector('.mls-token-skill-mark');
-    if (skillHtml) {
-      if (skillSlot) skillSlot.outerHTML = skillHtml;
-      else wrap.insertAdjacentHTML('afterbegin', skillHtml);
-    } else if (skillSlot && skillSlot.parentNode) {
-      skillSlot.parentNode.removeChild(skillSlot);
     }
 
     /* Guaranteed CS: show while stock remains; fade the same node the instant stock is spent. */
@@ -6445,11 +6843,6 @@
     if (statusHtml) wrap.insertAdjacentHTML('beforeend', statusHtml);
 
     removeEmptyTopMarksWrap(el);
-  }
-
-  /** @deprecated use syncTopMarksEl */
-  function syncSkillMarkEl(el, u) {
-    syncTopMarksEl(el, u);
   }
 
   function floatIconUrl(ev) {
@@ -7437,6 +7830,10 @@
     var cs = charStats(loaded.char, cMode);
     var id = String(loaded.unit && loaded.unit.id || '');
     var facing = sideFacing(side);
+    var komaKit = mlsKomaKit(id);
+    var komaFacing = mlsKomaFacingFromDir(facing);
+    var portraitThum = thumbUrl((loaded.unit && (loaded.unit.thum || loaded.unit.portrait)) ||
+      (slotMeta && slotMeta.thum) || '');
     var mob = sheet.mob;
     var fieldTerr = String((seasonMeta && seasonMeta.terrain_primary) || '');
     var baseMove = sheet.move || us.move;
@@ -7444,6 +7841,11 @@
     var move = applyTerrainMove(baseMove, loaded.unit, fieldTerr);
     var hp = sheet.hp;
     var en = sheet.en;
+    var actorWeapons = weaponsOf(loaded.unit, uMode, altLv);
+    if (komaKit) {
+      try { komaKit = JSON.parse(JSON.stringify(komaKit)); } catch (eK) { /* keep */ }
+      mlsKomaBindWeaponSlots(komaKit, actorWeapons);
+    }
     var actor = {
       side: side,
       n: cell.n,
@@ -7453,9 +7855,12 @@
       homeY: cell.y,
       id: id,
       name: (loaded.unit && loaded.unit.name) || (slotMeta && slotMeta.name) || id,
-      /* Prefer live unit detail art — slot thumbs can lag / mismatch Escape partners. */
-      thum: thumbUrl((loaded.unit && (loaded.unit.thum || loaded.unit.portrait)) ||
-        (slotMeta && slotMeta.thum) || ''),
+      /* Prefer live unit detail art — slot thumbs can lag / mismatch Escape partners.
+       * UR koma kits swap battle-token art to IngameKoma standby (portrait kept). */
+      thum: komaKit ? mlsKomaStandbyUrl(komaKit, komaFacing) : portraitThum,
+      portraitThum: portraitThum,
+      komaKit: komaKit,
+      komaFacing: komaFacing,
       roleIcon: thumbUrl((slotMeta && slotMeta.roleIcon) || ''),
       lb: loaded.lb | 0,
       hp: hp,
@@ -7473,7 +7878,7 @@
       occupancyMode: unitOccupancyMode(loaded.unit, fieldTerr),
       reaction: cs.reaction,
       mp: 0,
-      weapons: weaponsOf(loaded.unit, uMode, altLv),
+      weapons: actorWeapons,
       unit: battleUnit,
       ultAltLv: altLv,
       ultAltSkillId: altSkill,
@@ -7966,6 +8371,7 @@
     return '<div class="mls-token' + (u.isLarge ? ' is-large' : '') + ' ' + (u.side === 'ally' ? 'ally' : 'enemy') +
       (u.active ? ' is-active' : '') +
       (u.hp <= 0 ? (u.lingerKo ? ' is-ko-linger' : ' is-dead') : '') + markCls +
+      (u.komaKit ? ' is-koma' : '') +
       '" data-token-key="' + esc(tokenKey(u)) + '" data-unit-id="' + esc(u.id) +
       '" data-side="' + esc(u.side || '') + '" data-slot-idx="' + (u.slotIdx | 0) +
       '" title="' + esc(moveTip) + '" aria-label="Drag to set start cell" style="' + posStyle + coverStyle + '">' +
@@ -8061,15 +8467,17 @@
   }
 
   function fitMapCell(win) {
-    var scroll = document.querySelector('#mlsViewBattle .mls-map-scroll');
+    /* Fit into the board viewport only — HP strip is a sibling below, not over tiles. */
+    var box = document.querySelector('#mlsViewBattle .mls-map-viewport') ||
+      document.querySelector('#mlsViewBattle .mls-map-scroll');
     var host = document.getElementById('mlsBoard');
     var availW, availH, cell;
-    if (!scroll || !host) return mapCellPx;
+    if (!box || !host) return mapCellPx;
     if (lockedMapCellPx > 0) {
       cell = lockedMapCellPx;
     } else {
-      availW = Math.max(160, scroll.clientWidth - 12);
-      availH = Math.max(160, scroll.clientHeight - 12);
+      availW = Math.max(160, box.clientWidth - 12);
+      availH = Math.max(160, box.clientHeight - 12);
       cell = Math.floor(Math.min(availW / Math.max(1, win.cols), availH / Math.max(1, win.rows)));
       cell = Math.max(26, Math.min(72, cell));
       lockedMapCellPx = cell;
@@ -8428,6 +8836,7 @@
         (fx.hit ? ' is-hit' : '') + (fx.crit ? ' is-crit-flash' : '') +
         (stillCovering ? ' is-covering' : '') +
         ((u.sheltered && !stillCovering) ? ' is-sheltered' : '') +
+        (u.komaKit ? ' is-koma' : '') +
         /* Keep in-flight attack motion classes — className rewrite was killing recoil mid-shot. */
         (el.classList.contains('is-ranged-fire') ? ' is-ranged-fire' : '') +
         (el.classList.contains('is-lunge') ? ' is-lunge' : '') +
@@ -8440,9 +8849,10 @@
       if (String(el.getAttribute('data-unit-id') || '') !== String(u.id)) {
         el.setAttribute('data-unit-id', String(u.id));
       }
-      /* Always refresh portrait — stale/empty src was leaving blank thumbs after racey paints. */
+      /* Always refresh portrait — stale/empty src was leaving blank thumbs after racey paints.
+       * Skip while gated koma weapon flipbook owns the img. */
       thumEl = el.querySelector('.mls-token-thum');
-      if (u.thum) {
+      if (u.thum && el.getAttribute('data-koma-busy') !== '1') {
         if (!thumEl) {
           frameEl = el.querySelector('.mls-token-frame');
           if (frameEl) {
@@ -8525,18 +8935,43 @@
     }
   }
 
-  /** Impact ring at cell — Takayu impact flash without afterimage clones. */
-  function spawnImpactBurst(host, win, cellPos, side, crit) {
+  function mlsKomaUnitByTokenKey(key) {
+    var i;
+    var list = (lastAlly || []).concat(lastEnemy || []);
+    key = String(key || '');
+    for (i = 0; i < list.length; i++) {
+      if (list[i] && tokenKey(list[i]) === key) return list[i];
+    }
+    return null;
+  }
+
+  /** Impact ring at cell — Takayu impact flash without afterimage clones.
+   *  Gated koma kits swap in spark flipbook when kit + weapon FX pack is passed. */
+  function spawnImpactBurst(host, win, cellPos, side, crit, komaKit, fxPack) {
     var layer = host && host.querySelector('.mls-fx-layer');
     var cell = mapCellPx || 40;
     var burst;
+    var x;
+    var y;
+    var pref;
+    var frames;
+    var isEx;
     if (!layer || !cellPos) return;
+    x = (((cellPos.x - win.minX) + 0.5) * cell);
+    y = (((win.maxY - cellPos.y) + 0.5) * cell);
+    pref = (fxPack && fxPack.impactFx) || (komaKit && komaKit.impactFx) || '';
+    frames = (fxPack && fxPack.impactFrames) || (komaKit && komaKit.impactFrames) || 0;
+    isEx = !!(fxPack && fxPack.isEx);
+    if (pref && frames) {
+      mlsKomaSpawnFxStrip(layer, x, y, pref, frames, crit, isEx);
+      return;
+    }
     burst = document.createElement('div');
     burst.className = 'mls-impact-burst' +
       (side === 'enemy' ? ' is-enemy' : ' is-ally') +
       (crit ? ' is-crit' : '');
-    burst.style.left = (((cellPos.x - win.minX) + 0.5) * cell) + 'px';
-    burst.style.top = (((win.maxY - cellPos.y) + 0.5) * cell) + 'px';
+    burst.style.left = x + 'px';
+    burst.style.top = y + 'px';
     layer.appendChild(burst);
     /* Same iOS insert→keyframe timing as damage floats. */
     void burst.offsetWidth;
@@ -8547,14 +8982,19 @@
   }
 
   /** Ranged fire: muzzle + recoil + traveling shot, then impact (damage float stays Takayu). */
-  function playRangedFire(host, win, linkEvt, layer, atkId) {
+  function playRangedFire(host, win, linkEvt, layer, atkId, tgtId) {
     var cell = mapCellPx || 40;
     var fxLayer = host && host.querySelector('.mls-fx-layer');
     var side = linkEvt.side === 'enemy' ? 'enemy' : 'ally';
     var crit = !!(linkEvt && linkEvt.crit);
+    var atkUnit = mlsKomaUnitByTokenKey(atkId);
+    var kit = atkUnit && atkUnit.komaKit;
+    var wpn = linkEvt && linkEvt.weapon;
+    var fxPack = kit ? mlsKomaFxForWeapon(kit, wpn, true) : null;
+    var face;
     var x1, y1, x2, y2, dx, dy, dist, ang, flightMs, atkEl, rx, ry, muzzle, trail, shot;
     if (!fxLayer || !linkEvt.from || !linkEvt.to) {
-      spawnImpactBurst(host, win, linkEvt && linkEvt.to, side, crit);
+      spawnImpactBurst(host, win, linkEvt && linkEvt.to, side, crit, kit, fxPack);
       return;
     }
     x1 = ((linkEvt.from.x - win.minX) + 0.5) * cell;
@@ -8585,16 +9025,28 @@
       }, 80);
     }
 
-    muzzle = document.createElement('div');
-    muzzle.className = 'mls-muzzle-flash is-' + side + (crit ? ' is-crit' : '');
-    muzzle.style.left = x1 + 'px';
-    muzzle.style.top = y1 + 'px';
-    fxLayer.appendChild(muzzle);
-    void muzzle.offsetWidth;
-    muzzle.classList.add('is-play');
+    if (kit && atkUnit) {
+      /* Attacker faces target; defender faces attacker (4-way standby). */
+      mlsKomaFaceCombatants(linkEvt, layer, atkId, tgtId || linkEvt.toId);
+      face = mlsKomaAttackFacing(linkEvt, atkUnit);
+      mlsKomaPlayWeaponOnToken(atkEl, atkUnit, face, wpn);
+      /* Hit FX only on target (see spawnImpactBurst after flight) — no muzzle on shooter. */
+    } else {
+      muzzle = document.createElement('div');
+      muzzle.className = 'mls-muzzle-flash is-' + side + (crit ? ' is-crit' : '');
+      muzzle.style.left = x1 + 'px';
+      muzzle.style.top = y1 + 'px';
+      fxLayer.appendChild(muzzle);
+      void muzzle.offsetWidth;
+      muzzle.classList.add('is-play');
+      setTimeout(function () {
+        if (muzzle.parentNode) muzzle.parentNode.removeChild(muzzle);
+      }, 260);
+    }
 
     trail = document.createElement('div');
-    trail.className = 'mls-ranged-trail is-' + side + (crit ? ' is-crit' : '');
+    trail.className = 'mls-ranged-trail is-' + side + (crit ? ' is-crit' : '') +
+      (kit ? ' is-koma-beam' : '');
     trail.style.left = x1 + 'px';
     trail.style.top = y1 + 'px';
     trail.style.width = Math.max(1, dist) + 'px';
@@ -8605,7 +9057,8 @@
     trail.classList.add('is-on');
 
     shot = document.createElement('div');
-    shot.className = 'mls-ranged-shot is-' + side + (crit ? ' is-crit' : '');
+    shot.className = 'mls-ranged-shot is-' + side + (crit ? ' is-crit' : '') +
+      (kit ? ' is-koma-beam' : '');
     shot.style.left = x1 + 'px';
     shot.style.top = y1 + 'px';
     shot.style.transform = 'translate3d(0,0,0)';
@@ -8636,9 +9089,6 @@
     }
 
     setTimeout(function () {
-      if (muzzle.parentNode) muzzle.parentNode.removeChild(muzzle);
-    }, 260);
-    setTimeout(function () {
       if (trail.parentNode) {
         trail.classList.add('is-fade');
         setTimeout(function () {
@@ -8646,7 +9096,7 @@
         }, 120);
       }
       if (shot.parentNode) shot.parentNode.removeChild(shot);
-      spawnImpactBurst(host, win, linkEvt.to, side, crit);
+      spawnImpactBurst(host, win, linkEvt.to, side, crit, kit, fxPack);
     }, flightMs + 16);
   }
 
@@ -8656,6 +9106,11 @@
    */
   function playAttackFx(host, win, linkEvt, layer, atkId, tgtId) {
     var atkEl, tgtEl, lx, ly, holdMs, crit;
+    var atkUnit = mlsKomaUnitByTokenKey(atkId);
+    var kit = atkUnit && atkUnit.komaKit;
+    var wpn = linkEvt && linkEvt.weapon;
+    var fxPack = kit ? mlsKomaFxForWeapon(kit, wpn, !!(linkEvt && linkEvt.ranged)) : null;
+    var face;
     crit = !!(linkEvt && linkEvt.crit);
     /* MAP target resolve: impact + hit-stop only — shooter already fired once. */
     if (linkEvt && linkEvt.kind === 'map-hit') {
@@ -8668,16 +9123,19 @@
           if (tgtEl.parentNode) tgtEl.classList.remove('is-hit-stop');
         }, Math.round((crit ? 280 : 220) / battlePaceMul()));
       }
-      spawnImpactBurst(host, win, linkEvt.to, linkEvt.side, crit);
+      spawnImpactBurst(host, win, linkEvt.to, linkEvt.side, crit, kit, fxPack);
       return;
     }
     if (linkEvt.ranged) {
-      playRangedFire(host, win, linkEvt, layer, atkId);
+      playRangedFire(host, win, linkEvt, layer, atkId, tgtId);
       return;
     }
     atkEl = layer && layer.querySelector('[data-token-key="' + String(atkId) + '"]');
     tgtEl = layer && layer.querySelector('[data-token-key="' + String(tgtId) + '"]');
     if (atkEl && !atkEl.classList.contains('is-covering')) {
+      mlsKomaFaceCombatants(linkEvt, layer, atkId, tgtId);
+      face = mlsKomaAttackFacing(linkEvt, atkUnit);
+      if (kit && atkUnit) mlsKomaPlayWeaponOnToken(atkEl, atkUnit, face, wpn);
       lx = ((linkEvt.to.x - linkEvt.from.x) * 0.22 * mapCellPx);
       ly = ((linkEvt.from.y - linkEvt.to.y) * 0.22 * mapCellPx);
       atkEl.classList.add('is-lunge');
@@ -8706,7 +9164,145 @@
         if (tgtEl.parentNode) tgtEl.classList.remove('is-hit-stop');
       }, Math.round((crit ? 280 : 220) / battlePaceMul()));
     }
-    spawnImpactBurst(host, win, linkEvt.to, linkEvt.side, crit);
+    spawnImpactBurst(host, win, linkEvt.to, linkEvt.side, crit, kit, fxPack);
+  }
+
+  function boardHpFaceUrl(u) {
+    var face;
+    var kid;
+    if (!u) return '';
+    face = String(u.portraitThum || '');
+    /* Prefer list portrait thumb — koma battle art is for the map token only. */
+    if (face && face.indexOf('Simulator/koma') < 0) return thumbUrl(face);
+    face = String(u.thum || '');
+    if (face && face.indexOf('Simulator/koma') < 0) return thumbUrl(face);
+    kid = u.komaKit && u.komaKit.komaId;
+    if (kid) return thumbUrl('/static/images/Trait/thum/thum_' + kid + '.webp');
+    return thumbUrl(u.thum || '');
+  }
+
+  function boardHpUnitHtml(u) {
+    var maxHp = Math.max(1, u.maxHp | 0);
+    var hp = Math.max(0, u.hp | 0);
+    var ghostRaw = u.ghostHp != null ? (u.ghostHp | 0) : hp;
+    var healing = hp > ghostRaw;
+    var pct = Math.max(0, Math.min(100, Math.round(100 * hp / maxHp)));
+    var ghostPct = Math.max(0, Math.min(100, Math.round(100 * (healing ? hp : Math.max(hp, ghostRaw)) / maxHp)));
+    var face = boardHpFaceUrl(u);
+    var dead = hp <= 0 && !u.lingerKo;
+    var slotNo = ((u.slotIdx | 0) + 1);
+    return '<div class="mls-board-hp-unit ' + (u.side === 'ally' ? 'ally' : 'enemy') +
+      (u.active ? ' is-active' : '') +
+      (dead || (hp <= 0 && u.lingerKo) ? ' is-dead' : '') +
+      (healing ? ' is-healing' : '') +
+      '" data-token-key="' + esc(tokenKey(u)) + '" data-slot="' + slotNo +
+      '" title="' + esc((u.name || '') + ' #' + slotNo) + '">' +
+      '<span class="mls-board-hp-slot" aria-hidden="true">' + slotNo + '</span>' +
+      (face
+        ? '<img class="mls-board-hp-thum" src="' + esc(face) + '" alt="" width="28" height="28" decoding="async">'
+        : '<span class="mls-board-hp-thum" aria-hidden="true"></span>') +
+      '<span class="mls-board-hp-meta">' +
+      '<span class="mls-board-hp-meter" aria-hidden="true">' +
+      '<i class="mls-hp-ghost" style="transform:scaleX(' + (ghostPct / 100) + ')"></i>' +
+      '<i class="mls-hp-cur" style="transform:scaleX(' + (pct / 100) + ')"></i>' +
+      '</span>' +
+      '<span class="mls-board-hp-num">' + fmtNum(hp) +
+      ((u.shieldBarrier | 0) > 0
+        ? '<span class="mls-board-hp-barrier"> +' + fmtNum(u.shieldBarrier | 0) + '</span>'
+        : '') +
+      '</span></span></div>';
+  }
+
+  function syncBoardHpHud(animate) {
+    var host = document.getElementById('mlsBoardHp');
+    var enemies;
+    var allies;
+    var html;
+    var units;
+    var i;
+    var u;
+    var el;
+    var meter;
+    var cur;
+    var ghost;
+    var num;
+    var maxHp;
+    var hp;
+    var ghostRaw;
+    var healing;
+    var pct;
+    var ghostPct;
+    if (!host) return;
+    function bySlotAsc(a, b) {
+      return ((a && a.slotIdx) | 0) - ((b && b.slotIdx) | 0);
+    }
+    enemies = (lastEnemy || []).filter(Boolean).slice().sort(bySlotAsc);
+    allies = (lastAlly || []).filter(Boolean).slice().sort(bySlotAsc);
+    if (!enemies.length && !allies.length) {
+      host.hidden = true;
+      host.innerHTML = '';
+      return;
+    }
+    host.hidden = false;
+    if (!host.querySelector('.mls-board-hp-side')) {
+      host.innerHTML =
+        '<div class="mls-board-hp-side is-enemy" data-side="enemy"></div>' +
+        '<div class="mls-board-hp-side is-ally" data-side="ally"></div>';
+    }
+    function fillSide(side, list) {
+      var box = host.querySelector('.mls-board-hp-side.is-' + side);
+      var sig;
+      if (!box) return;
+      /* Include slotIdx so 1→5 order rebuilds if roster order changes. */
+      sig = list.map(function (x) {
+        return (x.slotIdx | 0) + ':' + tokenKey(x) + ':' + boardHpFaceUrl(x);
+      }).join('|');
+      if (box.getAttribute('data-sig') !== sig) {
+        box.setAttribute('data-sig', sig);
+        box.innerHTML = list.map(boardHpUnitHtml).join('');
+      }
+    }
+    fillSide('enemy', enemies);
+    fillSide('ally', allies);
+    units = enemies.concat(allies);
+    for (i = 0; i < units.length; i++) {
+      u = units[i];
+      el = host.querySelector('.mls-board-hp-unit[data-token-key="' + tokenKey(u) + '"]');
+      if (!el) continue;
+      maxHp = Math.max(1, u.maxHp | 0);
+      hp = Math.max(0, u.hp | 0);
+      ghostRaw = u.ghostHp != null ? (u.ghostHp | 0) : hp;
+      healing = hp > ghostRaw;
+      pct = Math.max(0, Math.min(100, Math.round(100 * hp / maxHp)));
+      ghostPct = Math.max(0, Math.min(100, Math.round(100 * (healing ? hp : Math.max(hp, ghostRaw)) / maxHp)));
+      el.classList.toggle('is-active', !!u.active);
+      el.classList.toggle('is-dead', hp <= 0);
+      el.classList.toggle('is-healing', !!healing);
+      meter = el.querySelector('.mls-board-hp-meter');
+      cur = el.querySelector('.mls-hp-cur');
+      ghost = el.querySelector('.mls-hp-ghost');
+      num = el.querySelector('.mls-board-hp-num');
+      if (cur) {
+        if (healing && animate) {
+          cur.style.transition = 'none';
+          cur.style.transform = 'scaleX(' + (Math.max(0, Math.min(100, Math.round(100 * ghostRaw / maxHp))) / 100) + ')';
+          void cur.offsetWidth;
+          cur.style.transition = '';
+          cur.style.transform = 'scaleX(' + (pct / 100) + ')';
+        } else {
+          cur.style.transition = '';
+          cur.style.transform = 'scaleX(' + (pct / 100) + ')';
+        }
+      }
+      if (ghost) ghost.style.transform = 'scaleX(' + (ghostPct / 100) + ')';
+      if (num) {
+        num.innerHTML = fmtNum(hp) +
+          ((u.shieldBarrier | 0) > 0
+            ? '<span class="mls-board-hp-barrier"> +' + fmtNum(u.shieldBarrier | 0) + '</span>'
+            : '');
+      }
+      if (meter) { /* keep for lint */ }
+    }
   }
 
   function paintBoard(floatEvt, linkEvt, animate) {
@@ -8729,6 +9325,7 @@
       refreshCellTints(host, mapCells);
     }
     syncTokens(host, win, floatEvt, linkEvt, !!animate);
+    syncBoardHpHud(!!animate);
     if (floatEvt && (floatEvt.text || floatEvt.badge || floatEvt.icon || floatEvt.csIcon)) {
       /* Ranged: hold the damage number until the shot lands (matches fire → impact). */
       var floatDelay = 0;
@@ -9086,6 +9683,7 @@
         id: (base && base.id) || u.id,
         name: (base && base.name) || u.name,
         thum: (base && base.thum) || u.thum,
+        portraitThum: u.portraitThum || '',
         roleIcon: u.roleIcon, lb: u.lb,
         hp: maxHp, maxHp: maxHp, ghostHp: maxHp,
         maxEn: maxEn, currentEn: maxEn,
@@ -9106,6 +9704,7 @@
         weapons: wpnSrc.map(function (w) {
           return {
             raw: w.raw, name: w.name, icon: w.icon || '', icon_color: w.icon_color || '',
+            _mlsSlot: w._mlsSlot != null ? (w._mlsSlot | 0) : -1,
             min_range: w.min_range, max_range: w.max_range, power: w.power,
             en: w.en | 0, en_cost: w.en_cost | 0, ammo: w.ammo | 0, accuracy: w.accuracy | 0, critical: w.critical | 0,
             is_ex: !!w.is_ex, is_ssp_weapon: !!w.is_ssp_weapon,
@@ -9114,6 +9713,9 @@
             map_coords: (w.map_coords || []).slice(), shooting_coords: (w.shooting_coords || []).slice(),
             map_range_type: String(w.map_range_type != null ? w.map_range_type : '0'),
             map_impact_point_max_select_count: w.map_impact_point_max_select_count | 0,
+            map_can_use_after_move: !!w.map_can_use_after_move,
+            map_auto_usage_attack_target_threshold: w.map_auto_usage_attack_target_threshold | 0,
+            ml_map_auto_usage_attack_target_threshold: w.ml_map_auto_usage_attack_target_threshold | 0,
             map_single_pou: !!w.map_single_pou,
             is_dash: !!(w.is_dash || String(w.map_range_type) === '4' || w.map_dash_dual_wide),
             map_dash_dual_wide: !!w.map_dash_dual_wide,
@@ -9172,7 +9774,7 @@
       if ((u.mp | 0) > startMp) startMp = u.mp | 0;
       cloned.mp = Math.max(0, Math.min(12, startMp));
       cloned.tension = Math.min(100, Math.round((cloned.mp / 12) * 100));
-      return cloned;
+      return mlsKomaAttachActor(cloned);
     });
   }
 
@@ -9841,6 +10443,15 @@
           crit: !!crit,
           fromId: linkActorId(attacker),
           toId: linkActorId(defender),
+          /* Gated koma: pick strip/FX from the live weapon (EX → et01, MAP → map, …). */
+          weapon: wpn ? {
+            name: wpn.name || '',
+            _mlsSlot: wpn._mlsSlot != null ? (wpn._mlsSlot | 0) : -1,
+            is_ex: !!wpn.is_ex,
+            is_map: !!(wpn.is_map || wpn.is_map_weapon),
+            is_map_weapon: !!(wpn.is_map || wpn.is_map_weapon),
+            attribute: wpn.attribute || ''
+          } : null,
           supportId: (hitOpts.isDefenderSupportDefend || (supportUnit && supportUnit === defender))
             ? linkActorId(defender)
             : (supportUnit && supportUnit !== defender ? linkActorId(supportUnit) : null),
@@ -9904,8 +10515,8 @@
       }
       /*
        * In-game: if the *active* unit is KO’d (e.g. counter) then revives / Escapes,
-       * their action ends — no further move / Chance Step / attack this phase.
-       * Escape is the same class as revive here.
+       * their normal action ends — no further move / kill-CS / Auto-CS / attack.
+       * Guaranteed CS may still spend (same class as Escape canceling kill-CS only).
        */
       if ((revived || escaped) && hpAfterHit <= 0 && (defender.hp | 0) > 0 && defender.active) {
         defender._endActionAfterRevive = true;
@@ -9915,8 +10526,8 @@
       bumpCondStacksAfterHit(attacker, defender);
       /* LANG + MLS: land hit → attacker +1; take hit → −1; SD net +2.
          Kill bonus after revive check so a revived target is not a 完全撃破.
-         Escape: pre-escape form destroyed for MP/tension, but NOT for Chance Step
-         (only Guaranteed CS continues after Escape — see killedForCs). */
+         Escape / lethal revive: form destroyed for MP/tension, but NOT for Chance Step
+         (only Guaranteed CS continues — see killedForCs / _revivedThisEngagement). */
       applyMpDelta(attacker, 1);
       if (hitOpts.isDefenderSupportDefend) applyMpDelta(defender, 2);
       else if (!alreadyDown) applyMpDelta(defender, -1);
@@ -10021,11 +10632,12 @@
         u.skillEnCostDownPct = 0;
         /* SP recovers at the start of this unit’s action (not saved for a later turn). */
         u.currentSp = u.sp | 0;
-        /* Fresh engagement — clear prior KO / Escape flags so revive from last fight does not linger. */
+        /* Fresh engagement — clear prior KO / Escape / revive flags so they do not linger. */
         allies.concat(enemies).forEach(function (x) {
           if (x) {
             x._koThisEngagement = false;
             x._escapedThisEngagement = false;
+            x._revivedThisEngagement = false;
           }
         });
         /* Re-apply terrain Move each action (▲ → floor half). Keeps S17 Neo Zeong at 2. */
@@ -10185,9 +10797,12 @@
         while (u.hp > 0 && living(foes).length && engageGuard++ < 24) {
           var mapPlan, combat, qi, q, qj, waveLabel, waveKind, defAct, coverUnit, origTarget, saLim, laterCounter;
           var checkedPreWall, gotExtra, hitAny, stillCovering;
-          /* Per-engage: Escape “form destroyed” only counts for this combat’s CS check. */
+          /* Per-engage: Escape / revive “form destroyed” only counts for this combat’s CS check. */
           allies.concat(enemies).forEach(function (x) {
-            if (x) x._escapedThisEngagement = false;
+            if (x) {
+              x._escapedThisEngagement = false;
+              x._revivedThisEngagement = false;
+            }
           });
           allUnits = allies.concat(enemies);
           engage = R.pickEngage(u, foes, allUnits, bounds, battleDamage);
@@ -10305,8 +10920,9 @@
              * Guaranteed Chance Step still applies (end of any non-wait action).
              * Weapon “CS on hit” traits still spend the phase budget when present.
              * AI: evaluateMapWeapon skips MAP when EX/best normal already kills the engage
-             * target (current tile or after move; Defend/Shield matter for EX only).
-             * MAP itself bypasses Defend/Shield — plan KO uses raw damage.
+             * (no Support Defense cover); when EX cannot finish, MAP fires if the ML
+             * auto-usage threshold is met and engage is in shape (chip MAP OK).
+             * MAP itself bypasses Defend/Shield.
              */
             if ((u.hp | 0) > 0 && living(foes).length) {
               if (hitAny && !u._weaponCsGrantedThisAction &&
@@ -10640,20 +11256,20 @@
           });
 
           /*
-           * Active unit KO’d then revived / Escaped (counter → Char/Zeong / Escape):
-           * action ends. No further move / Chance Step / attack this phase.
+           * Active unit KO’d then revived / Escaped (counter → Char/Zeong / 00 Raiser / Escape):
+           * normal action ends (no further move / kill-CS / Auto-CS / attack).
+           * Guaranteed CS may still spend once, then the phase ends.
            */
-          if (u._endActionAfterRevive) {
-            u.chanceStepsLeft = 0;
-            u.unconditionalCSStock = 0;
+          var endAfterRevive = !!u._endActionAfterRevive;
+          if (endAfterRevive) {
             u._endActionAfterRevive = false;
+            u.autoCsLeft = 0;
             snapshotLine(
               'T' + turn + ' ' + u.name +
               (u._escapeUsed ? ' escaped' : ' revived') +
-              ' — action ends (no further move / CS / attack)',
+              ' — action ends (Guaranteed CS only)',
               null, null, 'skill'
             );
-            break;
           }
 
           gotExtra = false;
@@ -10672,17 +11288,22 @@
             var defForCs = combat.actualDefender || target;
             /*
              * Normal Chance Step: enemy defeated (HP ≤ 0).
-             * Escape Function morph keeps that unit alive — NOT a defeat for kill-CS
-             * (Wing Zero 1219000150 vs FA Hyaku-Shiki Kai 1115000350).
-             * Guaranteed CS below still fires without a KO — major difference.
+             * Escape Function / lethal HP-fall revive keep the unit alive — NOT a defeat
+             * for kill-CS (Wing Zero Escape; Setsuna / 00 Raiser Final Battle Type EX
+             * 1370005950 revive; Char/Zeong). Guaranteed CS still fires without a KO.
              */
             function defeatedForKillCs(unit) {
               if (!unit) return false;
-              if (unit._escapedThisEngagement) return false;
+              if (unit._escapedThisEngagement || unit._revivedThisEngagement) return false;
               return (unit.hp | 0) <= 0;
             }
-            var killedForCs = defeatedForKillCs(defForCs) || defeatedForKillCs(target);
-            if (u.lastActionHit && !u._weaponCsGrantedThisAction &&
+            function killCsCancelled() {
+              return !!(defForCs && (defForCs._escapedThisEngagement || defForCs._revivedThisEngagement)) ||
+                !!(target && (target._escapedThisEngagement || target._revivedThisEngagement));
+            }
+            var killedForCs = !endAfterRevive &&
+              (defeatedForKillCs(defForCs) || defeatedForKillCs(target));
+            if (!endAfterRevive && u.lastActionHit && !u._weaponCsGrantedThisAction &&
                 (u.chanceStepsLeft | 0) > 0 &&
                 R.weaponGrantsUnconditionalCsOnHit(engage.weapon)) {
               /* Weapon on-hit CS still spends the phase Bonus Action budget. */
@@ -10707,7 +11328,7 @@
             } else if ((u.unconditionalCSStock | 0) > 0 && (u.chanceStepsLeft | 0) > 0) {
               /*
                * Guaranteed Chance Step: end of any action (no KO required) — including
-               * after Escape morphs that cancel normal kill-CS.
+               * after Escape / lethal revive that cancel normal kill-CS / Auto-CS.
                * Count was raised on acquire; spend chanceStepsLeft + stock here.
                */
               u.unconditionalCSStock--;
@@ -10720,9 +11341,11 @@
                 { kind: 'chance-step', fromId: linkActorId(u), toId: linkActorId(u), from: { x: u.x, y: u.y }, to: { x: u.x, y: u.y }, csIcon: true, gcsSpent: true, gcsIcon: true },
                 'skill'
               );
-            } else if ((u.autoCsLeft | 0) > 0 && (u.chanceStepsLeft | 0) > 0 &&
+            } else if (!endAfterRevive && !killCsCancelled() &&
+                (u.autoCsLeft | 0) > 0 && (u.chanceStepsLeft | 0) > 0 &&
                 R.grantsAutoCsAfterCombat && R.grantsAutoCsAfterCombat(u)) {
-              /* Auto-CS (Mao Ex-S, …): force the existing CS if alive after combat; not +1 budget. */
+              /* Auto-CS (Mao Ex-S, …): force the existing CS if alive after combat; not +1 budget.
+               * Skipped after Escape / lethal revive — same cancel class as kill-CS. */
               u.autoCsLeft = (u.autoCsLeft | 0) - 1;
               u.chanceStepsLeft = (u.chanceStepsLeft | 0) - 1;
               gotExtra = true;
@@ -10737,6 +11360,8 @@
           }
           if (gotExtra) {
             u.badge = 'CS';
+            /* After self-revive/escape, Guaranteed CS is the last bonus — then stop. */
+            if (endAfterRevive) break;
             continue;
           }
           break;
@@ -10849,6 +11474,8 @@
       }
       if (s.saLimit != null) u.saLimit = s.saLimit | 0;
       if (s.sdLimit != null) u.sdLimit = s.sdLimit | 0;
+      /* Snapshots only store thum string — reattach gated koma kit + standby art. */
+      mlsKomaAttachActor(u);
     }
     snap.ally.forEach(function (s, i) { applyOne(allies, s, i); });
     snap.enemy.forEach(function (s, i) { applyOne(enemies, s, i); });
@@ -10947,6 +11574,7 @@
     (allies || []).concat(enemies || []).forEach(function (actor) {
       if (!actor) return;
       if (actor.thum) add(thumbUrl(actor.thum));
+      if (actor.komaKit) mlsKomaWarmKit(actor.komaKit);
       list = (actor.pilotSkills && actor.pilotSkills.list) || [];
       for (i = 0; i < list.length; i++) {
         sk = list[i];
@@ -11539,7 +12167,11 @@
   function loadMlsContent() {
     roster = loadRoster();
     preloadBannerArt();
-    return fetchJson('/api/master_league?lang=' + encodeURIComponent(lang()))
+    return ensureMlsKomaCatalog()
+      .catch(function () { return false; })
+      .then(function () {
+        return fetchJson('/api/master_league?lang=' + encodeURIComponent(lang()));
+      })
       .then(function (d) {
         seasons = d.seasons || [];
         fillSeasonSelect();

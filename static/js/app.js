@@ -2226,9 +2226,11 @@ _pinBrowseListScrollY(keepY,{ms:280});
 const bringRow=function(){
 if(S._browseScrollRestoreGen!==restoreGen)return;
 try{
-if(keepY!=null&&keepY>=8){
+if(keepY!=null){
 _applyPageScrollY(keepY);
-if(_readPageScrollY()<8&&type&&id){
+/* Near-top (toolbar/leading in view): never scrollIntoView the card.
+   That centered the row (scrollY spike) then pin snapped back → toolbar flash. */
+if(keepY>=8&&_readPageScrollY()<8&&type&&id){
 const el=_findBrowseDetailEl(type,id);
 if(el){try{el.scrollIntoView({block:'center',behavior:'instant'})}catch(_){el.scrollIntoView({block:'center',behavior:'auto'})}}
 }
@@ -2319,18 +2321,22 @@ document.documentElement.classList.add('page-scroll-lock-sb');
 }
 }catch(_){}
 }
+function _relockBrowsePanelCoverPaint(){
+/* After unlock layout settles: re-measure while plate stays visible (no opacity pop). */
+try{_lockBrowsePanelCoverPaint()}catch(_){}
+try{
+requestAnimationFrame(function(){
+try{_clearBrowsePanelCoverPaint()}catch(_){}
+});
+}catch(_){try{_clearBrowsePanelCoverPaint()}catch(_2){}}
+}
 function _clearDetailCloseScrollHold(){
 try{
 document.documentElement.classList.remove('detail-close-scroll-hold');
 document.documentElement.classList.remove('is-scrolling');
 }catch(_){}
 _clearPageScrollLockScrollbarPad();
-/* After gutter is real again, drop frozen panel plate so cover can track layout. */
-try{
-requestAnimationFrame(function(){
-requestAnimationFrame(function(){try{_clearBrowsePanelCoverPaint()}catch(_){}});
-});
-}catch(_){try{_clearBrowsePanelCoverPaint()}catch(_2){}}
+_relockBrowsePanelCoverPaint();
 }
 function _cancelDetailCloseScrollHoldTimer(){
 if(S._detailCloseScrollHoldTimer){
@@ -2338,7 +2344,7 @@ try{clearTimeout(S._detailCloseScrollHoldTimer)}catch(_){}
 S._detailCloseScrollHoldTimer=null;
 }
 }
-/** After overlay is gone: keep overflow+gutter held until scroll pin settles so the page bar does not pop mid-exit. */
+/** After instant exit: drop hold once body is unfixed; plate stays painted (size re-lock only). */
 function _scheduleReleaseDetailCloseScrollHold(){
 _cancelDetailCloseScrollHoldTimer();
 S._detailCloseScrollHoldTimer=setTimeout(function(){
@@ -2347,7 +2353,7 @@ _clearDetailCloseScrollHold();
 _clearDetailCloseSettling();
 try{_unfreezeBrowseListGrids()}catch(_){}
 try{updateScrollTopFabVisibility()}catch(_){}
-},90);
+},0);
 }
 function applyBackgroundScrollLock(){
 _cancelDetailCloseScrollHoldTimer();
@@ -2356,8 +2362,7 @@ if(typeof S._pageScrollLock!=='number')S._pageScrollLock=0;
 if(S._pageScrollLock===0){
 /* Remember nav hide/show before lock — unlock scroll must not flip it. */
 try{if(window.GgenNavTabsAutoHide&&typeof GgenNavTabsAutoHide.snapshotForOverlay==='function')GgenNavTabsAutoHide.snapshotForOverlay()}catch(_){}
-/* Freeze panel office/garage plate at pre-lock size, then pad — otherwise enter
-   detail reframes cover under .list-toolbar (grid lives inside that flex wrap). */
+/* Freeze panel plate size at pre-lock box — keep opacity; hiding it caused exit toolbar flash. */
 try{_lockBrowsePanelCoverPaint()}catch(_){}
 /* Measure before overflow:hidden — missing scrollbar widens auto-fill browse grids. */
 const sb=_scrollbarGapPx();
@@ -2403,7 +2408,10 @@ try{if(window.GgenNavTabsAutoHide&&typeof GgenNavTabsAutoHide.prepareUnlock==='f
 document.documentElement.classList.add('ggen-scroll-pin');
 if(holdScrollbar)_armDetailCloseScrollHold();
 document.documentElement.classList.remove('page-scroll-lock');
-if(!holdScrollbar){_clearPageScrollLockScrollbarPad();try{_clearBrowsePanelCoverPaint()}catch(_){}}
+if(!holdScrollbar){
+_clearPageScrollLockScrollbarPad();
+_relockBrowsePanelCoverPaint();
+}
 try{document.documentElement.style.removeProperty('--page-scroll-lock-top')}catch(_){}
 _clearBrowseScrollPinListener();
 if(typeof y==='number'){
@@ -5787,7 +5795,7 @@ if(m&&S._detailExitHandler)m.removeEventListener('transitionend',S._detailExitHa
 S._detailExitHandler=null;
 }
 /**
- * Finish after unlock ran under opaque wash and wash fade completed.
+ * Instant detail exit finish — drop overlay, restore browse Y, no fade/wash/morph.
  */
 function _finishDetailOverlayGone(force){
 if(S._detailExitDone&&!force){
@@ -5803,97 +5811,34 @@ _clearDetailExitListeners();
 try{destroyDetailPortraitHolo()}catch(_){}
 try{_killDetailModalMotion(document.getElementById('modalContent'))}catch(_){}
 _dropDetailOverlayDom();
-/* Safety: deferred history.back → applyBrowseRouteFromLocation can re-arm
-   prepareUnlock after afterMorph already released — clear stuck nav freeze. */
 try{if(window.GgenNavTabsAutoHide&&typeof GgenNavTabsAutoHide.releaseOverlayFreeze==='function')GgenNavTabsAutoHide.releaseOverlayFreeze({forceTopReveal:true})}catch(_){}
-/* Mid-exit / interrupted wash must not leave settling on — that paints a dead blank. */
 try{_clearDetailCloseSettling()}catch(_){}
+/* Keep gutter + plate stable after instant drop so toolbar does not flash; no visible motion. */
 _scheduleReleaseDetailCloseScrollHold();
 updateScrollTopFabVisibility();
 syncDetailBrowseNavUi();
 }
-function _fadeDetailExitWashThenFinish(m){
-if(!m){_finishDetailOverlayGone();return}
-const done=function(ev){
-if(ev&&ev.target!==m)return;
-if(ev&&ev.propertyName&&ev.propertyName!=='opacity')return;
-_finishDetailOverlayGone();
-};
-try{if(S._detailExitHandler)m.removeEventListener('transitionend',S._detailExitHandler)}catch(_){}
-S._detailExitHandler=done;
-try{m.addEventListener('transitionend',done)}catch(_){}
-try{
-/* Drop is-detail-wash first — its opacity:1!important beats wash-out / inline and
-   leaves a stuck black frame (looks like a blank /new return). */
-m.classList.remove('is-detail-wash');
-m.classList.add('is-detail-wash-out');
-/* Force transition after opaque settle paint. */
-void m.offsetWidth;
-m.style.transition='opacity 80ms ease';
-m.style.opacity='0';
-}catch(_){}
-if(S._detailExitWashFailsafe){try{clearTimeout(S._detailExitWashFailsafe)}catch(_){}}
-S._detailExitWashFailsafe=setTimeout(function(){S._detailExitWashFailsafe=null;_finishDetailOverlayGone()},180);
-}
 /**
- * Takayu collapse-away exit, then unlock under the still-dimmed overlay (no empty black wash).
- * Clearing the dossier mid-exit caused stutter; collapse already hides it cleanly.
+ * Simple exit: unlock + restore scroll + drop overlay in one turn.
+ * No morph, fade, blank wash, or delayed dim.
  */
 function _revealBrowseAfterDetailClose(){
 if(S._detailExitPhase==='exiting')return;
 S._detailExitPhase='exiting';
 S._detailExitDone=0;
+S._detailExitLayoutSettled=false;
 _clearDetailExitListeners();
-const m=document.getElementById('detailModal');
-const mc=document.getElementById('modalContent');
-if(!m||!m.classList.contains('active')){
-_unlockBrowseUnderDetailShell();
-_runDeferredDetailHistory();
-try{if(window.GgenNavTabsAutoHide&&typeof GgenNavTabsAutoHide.releaseOverlayFreeze==='function')GgenNavTabsAutoHide.releaseOverlayFreeze({forceTopReveal:true})}catch(_){}
-try{if(typeof window.__ggenResumeBrandFonts==='function')window.__ggenResumeBrandFonts()}catch(_){}
-try{syncListTheadStickyTop()}catch(_){}
-_finishDetailOverlayGone();
-return;
-}
 try{if(window.GgenNavTabsAutoHide&&typeof GgenNavTabsAutoHide.prepareUnlock==='function')GgenNavTabsAutoHide.prepareUnlock()}catch(_){}
-let morphDone=0;
-const afterMorph=function(){
-if(morphDone)return;
-if(S._detailExitDone||S._detailExitPhase!=='exiting')return;
-morphDone=1;
-if(S._detailExitMorphFailsafe){try{clearTimeout(S._detailExitMorphFailsafe)}catch(_){}S._detailExitMorphFailsafe=null}
 _unlockBrowseUnderDetailShell();
 _runDeferredDetailHistory();
 try{if(window.GgenNavTabsAutoHide&&typeof GgenNavTabsAutoHide.releaseOverlayFreeze==='function')GgenNavTabsAutoHide.releaseOverlayFreeze({forceTopReveal:true})}catch(_){}
 try{if(typeof window.__ggenResumeBrandFonts==='function')window.__ggenResumeBrandFonts()}catch(_){}
 try{syncListTheadStickyTop()}catch(_){}
-try{
-m.classList.remove('is-detail-wash','is-detail-wash-empty');
-m.classList.add('is-detail-wash-out');
-m.style.transition='opacity 120ms var(--motion-ease-exit,cubic-bezier(.3,0,1,1))';
-m.style.opacity='0';
-}catch(_){}
-S._detailRevealRaf=requestAnimationFrame(function(){
-S._detailRevealRaf=0;
-_finishDetailOverlayGone();
-});
-};
-playDetailModalMorphExit(mc,afterMorph);
-S._detailExitMorphFailsafe=setTimeout(function(){S._detailExitMorphFailsafe=null;afterMorph()},560);
-S._detailExitHardTimer=setTimeout(function(){
-S._detailExitHardTimer=null;
-if(S._detailExitDone)return;
-try{_unlockBrowseUnderDetailShell()}catch(_){}
-try{_runDeferredDetailHistory()}catch(_){}
-try{_finishDetailOverlayGone(true)}catch(_){}
-},900);
+_finishDetailOverlayGone(true);
 }
 function _scheduleRevealBrowseAfterDetailClose(){
-if(S._detailRevealRaf){try{cancelAnimationFrame(S._detailRevealRaf)}catch(_){}S._detailRevealRaf=0}
-S._detailRevealRaf=requestAnimationFrame(function(){
-S._detailRevealRaf=0;
+/* Same turn as close — no rAF delay that leaves a dim frame. */
 _revealBrowseAfterDetailClose();
-});
 }
 function closeModalDomOnly(opts){
 opts=opts||{};
@@ -6034,11 +5979,9 @@ S._historyModalPushed=false;
 const hadBrowseReturn=!!S._detailBrowseReturn;
 const stateY=(ev&&ev.state&&typeof ev.state.ggenScrollY==='number')?ev.state.ggenScrollY:null;
 const dmOpen=!!(document.getElementById('detailModal')&&document.getElementById('detailModal').classList.contains('active'));
-/* Browser Back from detail: same unlock-under-shell + fade as Esc.
-   Skip if Esc exit already in flight (history is deferred until finish). */
+/* Browser Back from detail: same instant exit as Esc (no fade/wash). */
 if(dmOpen&&S._detailExitPhase!=='exiting'){
 _resetDetailExitFlags();
-if(!S._detailCloseCover)_armDetailCloseSettling();
 S._detailExitScrollSnap=S._detailBrowseReturn?Object.assign({},S._detailBrowseReturn):_readPersistedBrowseScrollReturn();
 S._detailExitScrollY=(typeof stateY==='number')?stateY:_browseListScrollYSaved();
 S._detailExitType=S.currentDetailType||(S._detailExitScrollSnap&&S._detailExitScrollSnap.type)||null;
@@ -7305,7 +7248,8 @@ return;
 const scrollSnap=S._detailBrowseReturn?Object.assign({},S._detailBrowseReturn):_readPersistedBrowseScrollReturn();
 const scrollY=_browseListScrollYSaved();
 _resetDetailExitFlags();
-_armDetailCloseSettling();
+S._detailExitPhase='exiting';
+S._detailExitDone=0;
 S._detailExitScrollSnap=scrollSnap||null;
 S._detailExitScrollY=(typeof scrollY==='number')?scrollY:null;
 S._detailExitType=S.currentDetailType||(scrollSnap&&scrollSnap.type)||null;
@@ -7320,8 +7264,55 @@ let browsePath=S.currentTab==='ranking'?'/rk':(MAIN_TAB_PATH_SHORT[S.currentTab]
 if(S.currentTab==='stages')browsePath=stagesBrowsePathForSource(S.stages.source||'eternal');
 S._detailExitBrowsePath=browsePath;
 }
-closeModalDomOnly({keepCover:true,deferUnlock:true});
-_scheduleRevealBrowseAfterDetailClose();
+/* Instant exit: same browse as before — no morph / fade / blank wash. */
+try{destroyDetailPortraitHolo()}catch(_){}
+try{const ae=document.activeElement;if(ae&&ae!==document.body&&ae!==document.documentElement&&typeof ae.blur==='function')ae.blur()}catch(_){}
+try{if(window.GgenNavTabsAutoHide&&typeof GgenNavTabsAutoHide.prepareUnlock==='function')GgenNavTabsAutoHide.prepareUnlock()}catch(_){}
+if(scrollSnap){
+S._detailBrowseReturn=scrollSnap;
+if(typeof scrollSnap.y==='number')S._browseListScrollY=scrollSnap.y;
+}else if(typeof scrollY==='number'){
+S._browseListScrollY=scrollY;
+}
+/* Drop overlay, unlock — plate stays painted (size-locked); no opacity hide/show. */
+_dropDetailOverlayDom();
+try{clearDetailCoverPaintLock()}catch(_){}
+const chrome=document.getElementById('modalDetailChrome');
+if(chrome)chrome.classList.remove('modal-detail-chrome--scrolled');
+S.currentDetailData=null;
+S.currentDetailType=null;
+S.conditionalPassiveActive=false;
+S.pilotConditionalPassiveActive=false;
+S.pilotCondCharData=null;
+S._pilotCondCharFetchId=null;S._pilotCondCharInflight=null;
+S._pilotCondPrefetchUnitId=null;
+S.pilotCondStackCount=0;
+S.unitCondStackCount=0;
+S.unitHpAtkTierIndex=0;
+S.unitDamageTakenDefStacks=0;
+S.charSuperchargedExTier=0;
+S.spActive=false;
+S.sspActive=false;
+S.ultAltActive=false;
+S.stageMapExpanded=false;
+S.stageMapReinforcementOnly=false;
+S.stageMapSpawnOrderVisible=false;
+S._stageDetailUiRestore=null;
+if(window.GgenUnitBestPilots&&typeof GgenUnitBestPilots.onDetailClose==='function')GgenUnitBestPilots.onDetailClose();
+if(window.GgenSpInvestment&&typeof GgenSpInvestment.onAppDetailClosed==='function')GgenSpInvestment.onAppDetailClosed();
+releaseBackgroundScrollLock({holdScrollbar:true});
+try{restoreDetailBrowseScroll(typeof scrollY==='number'?scrollY:undefined)}catch(_){}
+S._detailExitScrollSnap=null;
+S._detailExitScrollY=null;
+_runDeferredDetailHistory();
+try{if(window.GgenNavTabsAutoHide&&typeof GgenNavTabsAutoHide.releaseOverlayFreeze==='function')GgenNavTabsAutoHide.releaseOverlayFreeze({forceTopReveal:true})}catch(_){}
+try{if(typeof window.__ggenResumeBrandFonts==='function')window.__ggenResumeBrandFonts()}catch(_){}
+try{syncListTheadStickyTop()}catch(_){}
+S._detailExitDone=1;
+S._detailExitPhase=null;
+_scheduleReleaseDetailCloseScrollHold();
+syncDetailBrowseNavUi();
+updateScrollTopFabVisibility();
 }
 function closeModalOverlay(e){if(e.target===e.currentTarget)closeModal()}
 /* While detail is open, never let browse/header receive clicks through the dimmed shell. */

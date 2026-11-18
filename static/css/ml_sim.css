@@ -1584,10 +1584,161 @@ body.mls-is-slot-dragging .mls-slot-list {
   overflow: hidden;
   height: min(62vh, 560px);
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
   padding: 6px;
   box-sizing: border-box;
+  gap: 6px;
+}
+/* Board + READY/endcard — fills leftover height above the HP strip. */
+.mls-map-viewport {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+/* HP strip inside map-scroll, under the board — slot order 1→5, no tile overlap. */
+.mls-board-hp {
+  position: relative;
+  flex: 0 0 auto;
+  z-index: 2;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 0;
+  padding: 0 2px;
+  pointer-events: none;
+  min-height: 0;
+}
+.mls-board-hp[hidden] { display: none !important; }
+.mls-board-hp-side {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-width: 48%;
+}
+.mls-board-hp-side.is-enemy {
+  justify-content: flex-start;
+}
+.mls-board-hp-side.is-ally {
+  justify-content: flex-end;
+  margin-left: auto;
+}
+.mls-board-hp-unit {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 6px 3px 3px;
+  background: rgba(2, 8, 20, 0.88);
+  border: 1px solid rgba(0, 212, 255, 0.35);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+  min-width: 0;
+}
+.mls-board-hp-side.is-enemy .mls-board-hp-unit {
+  border-color: rgba(255, 77, 109, 0.45);
+  flex-direction: row-reverse;
+}
+.mls-board-hp-slot {
+  flex: 0 0 auto;
+  font-family: Teko, var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--text-muted);
+  min-width: 0.7em;
+  text-align: center;
+}
+.mls-board-hp-side.is-enemy .mls-board-hp-slot {
+  color: rgba(255, 160, 180, 0.85);
+}
+.mls-board-hp-side.is-ally .mls-board-hp-slot {
+  color: rgba(120, 220, 255, 0.9);
+}
+.mls-board-hp-thum {
+  width: 28px;
+  height: 28px;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  flex: 0 0 auto;
+  border-radius: 2px;
+  background: rgba(0, 0, 0, 0.35);
+}
+.mls-board-hp-meter {
+  position: relative;
+  width: 52px;
+  height: 6px;
+  background: rgba(0, 0, 0, 0.72);
+  border-radius: 1px;
+  overflow: hidden;
+  flex: 0 0 auto;
+}
+.mls-board-hp-meter > i {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  transform-origin: left center;
+  display: block;
+}
+.mls-board-hp-meter > i.mls-hp-cur {
+  background: var(--accent-cyan);
+}
+.mls-board-hp-side.is-enemy .mls-board-hp-meter > i.mls-hp-cur {
+  background: var(--accent-red, #ff4d6d);
+}
+.mls-board-hp-meter > i.mls-hp-ghost {
+  background: rgba(255, 255, 255, 0.4);
+}
+.mls-board-hp-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.mls-board-hp-num {
+  font-size: 10px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #fff;
+  text-shadow: 0 1px 2px #000;
+  line-height: 1;
+  white-space: nowrap;
+}
+.mls-board-hp-barrier {
+  font-size: 9px;
+  color: var(--accent-cyan);
+  line-height: 1;
+}
+.mls-board-hp-unit.is-dead {
+  opacity: 0.42;
+  filter: grayscale(0.85);
+}
+.mls-board-hp-unit.is-active {
+  border-color: rgba(255, 220, 100, 0.85);
+  box-shadow: 0 0 0 1px rgba(255, 200, 60, 0.35), 0 2px 8px rgba(0, 0, 0, 0.45);
+}
+/* HP lives on board-bottom strip — hide per-token bars/numbers. */
+.mls-token .mls-token-hp,
+.mls-token .mls-token-hpvals {
+  display: none !important;
+}
+@media (max-width: 820px) {
+  .mls-map-scroll { gap: 4px; }
+  .mls-board-hp { gap: 8px; padding: 0; }
+  .mls-board-hp-thum { width: 24px; height: 24px; }
+  .mls-board-hp-meter { width: 40px; }
+  .mls-board-hp-num { font-size: 9px; }
 }
 /* Battle focus: taller map. Section tabs + brand row collapse on battle view
    (nav_tabs_auto_hide pin); reveal only after aggressive scroll-up. */
@@ -1672,7 +1823,13 @@ body.mls-battle-focus .lang-dropdown.active {
     display: none !important;
   }
 }
-/* Live turn counter — top-left on the map (opposite turn-order strip). */
+/* Live turn counter — top-left of the map viewport (above HP strip). */
+.mls-map-viewport > .mls-turn-hud {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  z-index: 14;
+}
 .mls-turn-hud {
   position: absolute;
   top: 8px;
@@ -2261,6 +2418,88 @@ body.mls-is-map-dragging .mls-map {
   margin-left: -8px;
   margin-top: -8px;
 }
+/*
+ * Gated IngameKoma test (Griepe / Hydra):
+ * Native canvases differ (wide vs tall) — normalize by HEIGHT so both read the same
+ * standing size, then plant feet on the tile (sprite hangs past the cell border).
+ * No portrait cell chrome — koma stands on the map tile only.
+ */
+.mls-token.is-koma .mls-token-frame {
+  overflow: visible;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+.mls-board.is-fighting .mls-token.is-koma .mls-token-frame,
+.mls-shell.is-fighting .mls-token.is-koma .mls-token-frame,
+.mls-board.is-fighting .mls-token.is-koma.is-attacker .mls-token-frame,
+.mls-shell.is-fighting .mls-token.is-koma.is-attacker .mls-token-frame,
+.mls-board.is-fighting .mls-token.is-koma.is-target .mls-token-frame,
+.mls-shell.is-fighting .mls-token.is-koma.is-target .mls-token-frame,
+.mls-board.is-fighting .mls-token.is-koma.is-covering .mls-token-frame,
+.mls-shell.is-fighting .mls-token.is-koma.is-covering .mls-token-frame {
+  box-shadow: none !important;
+}
+.mls-token.is-koma .mls-token-thum {
+  position: absolute;
+  left: 50%;
+  bottom: -18%;
+  transform: translateX(-50%);
+  width: auto;
+  height: 152%;
+  max-width: none;
+  max-height: none;
+  object-fit: contain;
+  object-position: center bottom;
+  image-rendering: auto;
+}
+.mls-ranged-shot.is-koma-beam {
+  width: 18px;
+  height: 10px;
+  margin-left: -9px;
+  margin-top: -5px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #fff 0%, #7af0ff 45%, #3cf 100%);
+  box-shadow: 0 0 14px rgba(0, 220, 255, 0.95), 0 0 28px rgba(80, 180, 255, 0.55);
+}
+.mls-ranged-shot.is-koma-beam.is-enemy {
+  background: linear-gradient(90deg, #fff 0%, #ff9ab0 45%, #ff5a7a 100%);
+}
+.mls-ranged-trail.is-koma-beam {
+  height: 3px;
+  opacity: 0.85;
+}
+.mls-koma-fx {
+  position: absolute;
+  width: 72px;
+  height: 72px;
+  margin-left: -36px;
+  margin-top: -36px;
+  object-fit: contain;
+  pointer-events: none;
+  z-index: 12;
+  image-rendering: auto;
+  /* Drop opaque black plates some Unity exports still carry. */
+  mix-blend-mode: screen;
+}
+.mls-koma-fx.is-ex {
+  width: 96px;
+  height: 96px;
+  margin-left: -48px;
+  margin-top: -48px;
+}
+.mls-koma-fx.is-crit {
+  width: 88px;
+  height: 88px;
+  margin-left: -44px;
+  margin-top: -44px;
+}
+.mls-koma-fx.is-ex.is-crit {
+  width: 112px;
+  height: 112px;
+  margin-left: -56px;
+  margin-top: -56px;
+}
 .mls-token.is-ranged-fire {
   z-index: 7;
 }
@@ -2666,13 +2905,14 @@ body.mls-is-map-dragging .mls-map {
   .mls-token-hp > i.mls-hp-ghost,
   .mls-token-hp.is-healing > i.mls-hp-cur { transition: none; }
 }
-/* Crown icons above portrait: unit skill + Guaranteed CS stock, side by side. */
+/* Crown icons: skill / GCS / Inflict — sit ABOVE tension (same band as aura). */
 .mls-token-top-marks {
   position: absolute;
-  top: -6px;
+  top: auto;
   left: 50%;
+  bottom: calc(100% + 26px);
   transform: translateX(-50%);
-  z-index: 6;
+  z-index: 11;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -2681,7 +2921,24 @@ body.mls-is-map-dragging .mls-map {
   pointer-events: none;
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.85));
 }
-.mls-token-skill-mark,
+/* Unit skill — top corner of the koma (ally: viewer-right, enemy: viewer-left). */
+.mls-token-skill-mark {
+  position: absolute;
+  top: -2px;
+  z-index: 12;
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.85));
+}
+.mls-token.ally .mls-token-skill-mark {
+  right: -2px;
+  left: auto;
+}
+.mls-token.enemy .mls-token-skill-mark {
+  left: -2px;
+  right: auto;
+}
 .mls-token-gcs-mark,
 .mls-token-status-mark {
   position: relative;
@@ -2849,10 +3106,11 @@ body.mls-is-map-dragging .mls-map {
 }
 .mls-token-badge {
   position: absolute;
-  top: -8px;
+  top: auto;
   left: 50%;
+  bottom: calc(100% + 26px);
   transform: translateX(-50%);
-  z-index: 4;
+  z-index: 10;
   font-family: Teko, var(--font-body);
   font-size: 10px;
   font-weight: 700;
@@ -2866,12 +3124,7 @@ body.mls-is-map-dragging .mls-map {
   border: none;
   text-shadow: 0 1px 3px #000, 0 0 6px rgba(0, 0, 0, 0.8);
 }
-/* Sticky crown icons own the top; temporary chips (CS / SD) sit just under them. */
-.mls-token:has(.mls-token-top-marks) .mls-token-badge,
-.mls-token:has(.mls-token-skill-mark) .mls-token-badge,
-.mls-token:has(.mls-token-gcs-mark) .mls-token-badge {
-  top: 16px;
-}
+/* Temporary announce chips share the upper band with crowns; skill sticky uses crown. */
 .mls-token:has(.mls-token-top-marks) .mls-token-badge.is-skill,
 .mls-token:has(.mls-token-skill-mark) .mls-token-badge.is-skill {
   display: none;
@@ -2901,13 +3154,16 @@ body.mls-is-map-dragging .mls-map {
   font-size: 9px;
   letter-spacing: 0.04em;
 }
-/* Vigor: absolutely above the thumb — never flex-shrink the portrait. Ally + enemy. */
-/* Cond:Area debuff icon (trait) floats above the head — above vigor wording. */
+/*
+ * Head chrome (top → bottom):
+ *   debuff / aura / crown  →  tension (Max/High)  →  S.ATK / S.DEF stock
+ * Never let Cond:Area / Inflict sit on the Assist icons.
+ */
 .mls-aura-debuffs {
   position: absolute;
   left: 50%;
-  bottom: calc(100% + 13px);
-  z-index: 10;
+  bottom: calc(100% + 26px);
+  z-index: 11;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -2927,7 +3183,7 @@ body.mls-is-map-dragging .mls-map {
 .mls-vigor {
   position: absolute;
   left: 50%;
-  bottom: calc(100% + 1px);
+  bottom: calc(100% + 14px);
   z-index: 9;
   display: flex;
   flex-direction: column;
@@ -3099,17 +3355,20 @@ body.mls-is-map-dragging .mls-map {
   pointer-events: none;
 }
 /* Role type + pilot face omitted on battle tokens (formation-only). */
-/* /st map-unit-support-badge style — remaining SA / SD this turn */
+/* S.ATK / S.DEF stock — under tension, centered above the portrait. */
 .mls-support-stock-row {
   position: absolute;
-  top: 3px;
-  right: 3px;
+  top: auto;
+  right: auto;
+  left: 50%;
+  bottom: calc(100% + 1px);
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
-  justify-content: flex-end;
-  gap: 1px;
-  z-index: 4;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  z-index: 8;
+  transform: translateX(-50%);
   pointer-events: none;
 }
 .mls-support-stock {

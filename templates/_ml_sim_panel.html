@@ -175,28 +175,33 @@
     </div>
     <div class="mls-map-stage">
       <div class="mls-map-scroll">
-        <div class="mls-map" id="mlsBoard" aria-label="Master League battle map"></div>
-        <!-- READY / endcard live inside the map box (not over turn-order strip). -->
-        <div class="mls-banner" id="mlsBanner" hidden aria-hidden="true">
-          <div class="mls-banner-inner">
-            <span class="mls-banner-line">READY?</span>
-            <img class="mls-banner-cutin" src="{% if image_cdn %}{{ image_cdn }}/images/Master%20League/ml_skip_character_cutin_bromide_300010.webp{% else %}/static/images/Master%20League/ml_skip_character_cutin_bromide_300010.webp{% endif %}" alt="" width="220" height="80" decoding="async">
+        <div class="mls-map-viewport">
+          <div class="mls-map" id="mlsBoard" aria-label="Master League battle map"></div>
+          <!-- TURN sits on the board box top-left — clear of the HP strip below. -->
+          <div class="mls-turn-hud" id="mlsTurnHud" hidden aria-live="polite">
+            <span class="mls-turn-hud-lbl" data-mls-i18n="mls_turn">TURN</span>
+            <span class="mls-turn-hud-num" id="mlsTurnHudNum">1</span>
+            <span class="mls-turn-hud-sep">/</span>
+            <span class="mls-turn-hud-max" id="mlsTurnHudMax">5</span>
+          </div>
+          <!-- READY / endcard live inside the map box (not over turn-order strip). -->
+          <div class="mls-banner" id="mlsBanner" hidden aria-hidden="true">
+            <div class="mls-banner-inner">
+              <span class="mls-banner-line">READY?</span>
+              <img class="mls-banner-cutin" src="{% if image_cdn %}{{ image_cdn }}/images/Master%20League/ml_skip_character_cutin_bromide_300010.webp{% else %}/static/images/Master%20League/ml_skip_character_cutin_bromide_300010.webp{% endif %}" alt="" width="220" height="80" decoding="async">
+            </div>
+          </div>
+          <div class="mls-endcard" id="mlsEndCard" hidden aria-hidden="true" role="status">
+            <div class="mls-endcard-spark" aria-hidden="true"></div>
+            <div class="mls-endcard-title" id="mlsEndTitle"></div>
+            <div class="mls-endcard-rule" aria-hidden="true"></div>
+            <div class="mls-endcard-sub" id="mlsEndSub"></div>
+            <div class="mls-endcard-letters" id="mlsEndLetters" aria-hidden="true"></div>
+            <button type="button" class="mls-endcard-retry" id="mlsEndRetry" hidden data-mls-i18n="mls_try_again">TRY AGAIN</button>
           </div>
         </div>
-        <div class="mls-endcard" id="mlsEndCard" hidden aria-hidden="true" role="status">
-          <div class="mls-endcard-spark" aria-hidden="true"></div>
-          <div class="mls-endcard-title" id="mlsEndTitle"></div>
-          <div class="mls-endcard-rule" aria-hidden="true"></div>
-          <div class="mls-endcard-sub" id="mlsEndSub"></div>
-          <div class="mls-endcard-letters" id="mlsEndLetters" aria-hidden="true"></div>
-          <button type="button" class="mls-endcard-retry" id="mlsEndRetry" hidden data-mls-i18n="mls_try_again">TRY AGAIN</button>
-        </div>
-      </div>
-      <div class="mls-turn-hud" id="mlsTurnHud" hidden aria-live="polite">
-        <span class="mls-turn-hud-lbl" data-mls-i18n="mls_turn">TURN</span>
-        <span class="mls-turn-hud-num" id="mlsTurnHudNum">1</span>
-        <span class="mls-turn-hud-sep">/</span>
-        <span class="mls-turn-hud-max" id="mlsTurnHudMax">5</span>
+        <!-- Inside map-scroll, below the board — does not overlay tiles. -->
+        <div class="mls-board-hp" id="mlsBoardHp" hidden aria-label="Unit HP"></div>
       </div>
       <aside class="mls-map-turn-order" aria-label="Turn order">
         <div class="mls-lbl-row mls-map-turn-order-head">

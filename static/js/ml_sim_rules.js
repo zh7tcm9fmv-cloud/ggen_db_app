@@ -2143,9 +2143,17 @@
 
   /** Effect cells for one designated impact tile (map_coords are impact-relative). */
   function impactMapEffectCells(impactUnit, weapon, facingSide) {
+    return impactMapEffectCellsAt(
+      { x: impactUnit.x | 0, y: impactUnit.y | 0 },
+      weapon,
+      facingSide
+    );
+  }
+
+  function impactMapEffectCellsAt(cell, weapon, facingSide) {
     var pivot = {
-      x: impactUnit.x | 0,
-      y: impactUnit.y | 0,
+      x: (cell && cell.x) | 0,
+      y: (cell && cell.y) | 0,
       size: 1,
       side: facingSide,
       direction: facingSide === 'ally' ? 3 : 1
@@ -2156,9 +2164,85 @@
   }
 
   /**
+   * Type-2 impact designates (Strike Noir EX = 2 spots).
+   * Prefer distinct living units; if maxSel is still open and a large (2×2) unit
+   * is the only option in range, place extra spots on other footprint cells of
+   * that same unit (in-game: dual-fire the same 2×2).
+   * Returns [{ unit, x, y }, ...] length ≤ maxSel, or null if engage not covered.
+   */
+  function pickImpactMapDesignates(simPos, foes, engage, maxSel, mn, mx) {
+    var living;
+    var byUnit;
+    var designates;
+    var usedCell;
+    var i;
+    var j;
+    var entry;
+    var ed;
+    var fp;
+    var key;
+    var already;
+    maxSel = Math.max(1, maxSel | 0);
+    if (!simPos || !engage) return null;
+    living = alive(foes);
+    byUnit = [];
+    for (i = 0; i < living.length; i++) {
+      entry = living[i];
+      ed = distance(simPos, entry);
+      if (ed < mn || ed > mx) continue;
+      fp = footprintCellsAt(
+        entry.x | 0, entry.y | 0, unitSize(entry), entry.side, entry.direction
+      );
+      byUnit.push({ unit: entry, cells: fp.slice() });
+    }
+    if (!byUnit.some(function (x) { return x.unit === engage; })) return null;
+
+    byUnit.sort(function (a, b) {
+      if (a.unit === engage && b.unit !== engage) return -1;
+      if (b.unit === engage && a.unit !== engage) return 1;
+      return (a.unit.hp | 0) - (b.unit.hp | 0);
+    });
+
+    designates = [];
+    usedCell = Object.create(null);
+
+    function tryAdd(unitEntry, cell) {
+      if (!unitEntry || !cell || designates.length >= maxSel) return false;
+      key = (cell.x | 0) + ',' + (cell.y | 0);
+      if (usedCell[key]) return false;
+      usedCell[key] = 1;
+      designates.push({
+        unit: unitEntry.unit,
+        x: cell.x | 0,
+        y: cell.y | 0
+      });
+      return true;
+    }
+
+    /* Pass 1 — one spot per unit (engage first). */
+    for (i = 0; i < byUnit.length && designates.length < maxSel; i++) {
+      tryAdd(byUnit[i], byUnit[i].cells[0]);
+    }
+    /*
+     * Pass 2 — fill leftover selects on large footprints already hit
+     * (lone 2×2 → both Strike Noir designates on that unit).
+     */
+    for (i = 0; i < byUnit.length && designates.length < maxSel; i++) {
+      entry = byUnit[i];
+      if (!entry.cells || entry.cells.length < 2) continue;
+      already = designates.some(function (d) { return d.unit === entry.unit; });
+      if (!already) continue;
+      for (j = 0; j < entry.cells.length && designates.length < maxSel; j++) {
+        tryAdd(entry, entry.cells[j]);
+      }
+    }
+    return designates.length ? designates : null;
+  }
+
+  /**
    * Non-MAP (EX) kill planning vs AI Defend ×0.8 / Shield ×0.6 / Evade.
-   * MAP never offers that menu — plan MAP KO with raw damageOf only.
-   * Lethal EX that forces Evade still counts as “prefer EX” (skip MAP).
+   * MAP never offers that menu — plan MAP damage with raw damageOf only.
+   * Evade is not a kill (EX did not finish) — do not skip MAP for it.
    */
   function damageAfterAiDefense(actor, defender, weapon, damageOf) {
     var raw;
@@ -2194,10 +2278,10 @@
     return damageAfterAiDefense(actor, defender, weapon, damageOf).dmg | 0;
   }
 
-  /** Guaranteed KO through Defend/Shield, or lethal→Evade (EX-gate). */
-  function killsUnderAiDefense(actor, defender, weapon, damageOf, forExGate) {
+  /** Guaranteed KO through Defend/Shield. Evade never counts as a finish. */
+  function killsUnderAiDefense(actor, defender, weapon, damageOf) {
     var info = damageAfterAiDefense(actor, defender, weapon, damageOf);
-    if (info.act === 'evade') return !!forExGate;
+    if (info.act === 'evade') return false;
     return ((defender.hp | 0) - (info.dmg | 0)) <= 0;
   }
 
@@ -2208,7 +2292,10 @@
       : (weapon.power | 0);
   }
 
-  /** True when best non-MAP (current tile or after a normal move) finishes engage. */
+  /**
+   * True when best non-MAP (current tile or after a normal move) finishes engage.
+   * Support Defense cover means the hit lands on the guard — engage is not finished.
+   */
   function nonMapKillsEngage(actor, target, allUnits, bounds, damageOf) {
     var nonMap;
     var probe;
@@ -2221,9 +2308,14 @@
     var maxR;
     var dest;
     var movedProbe;
+    var cover;
+    var hitDef;
     if (!actor || !target || (target.hp | 0) <= 0) return false;
     nonMap = (actor.weapons || []).filter(function (x) { return !isMapWeapon(x); });
     if (!nonMap.length) return false;
+    /* SD redirects the swing — EX cannot “finish engage” while a guard will step in. */
+    cover = pickSupportDefender(target, sameSideUnits(target, allUnits || [], []));
+    if (cover) return false;
 
     function anyLethalFrom(fromPos) {
       list = weaponsInRange(
@@ -2238,7 +2330,8 @@
       );
       for (i = 0; i < list.length; i++) {
         wpn = list[i];
-        if (killsUnderAiDefense(actor, target, wpn, damageOf, true)) return true;
+        hitDef = target;
+        if (killsUnderAiDefense(actor, hitDef, wpn, damageOf)) return true;
       }
       return false;
     }
@@ -2265,15 +2358,39 @@
    * MLS MAP interrupt (EX-first — MAP is rare in live ML):
    *   1. Prefer EX / highest non-MAP first — never open with MAP when that shot
    *      (from current tile or after a normal move) kills the engage target under
-   *      AI Defend/Shield (even if MAP would multi-kill).
-   *   2. Only then use MAP when ALL of:
-   *        - engage survives best non-MAP
-   *        - MAP shape hits 2+ living enemies including the engage target
-   *        - raw MAP damage kills that engage target (Defend/Shield never apply to MAP)
-   *      (No chip-MAP; killing only a side foe is not enough.)
+   *      AI Defend/Shield with no Support Defense cover.
+   *   2. Only then use MAP when BOTH:
+   *        - engage survives best non-MAP (EX cannot finish — includes SD cover)
+   *        - living enemies in the MAP shape ≥ MasterLeague auto-usage threshold
+   *          (Altron / Strike Noir EX = 1; falls back to 2 when MD omitted)
+   *      Engage must be in the MAP shape. MAP KO is preferred when ranking, but
+   *      not required — chip MAP is correct when EX also cannot finish.
    * Dash MAP (type 4, e.g. V2AB Wings of Light / 光之翼): fire from the current
    * tile (no pre-move); land at `dashTo` after hits resolve.
+   * After-move impact MAP (type 2, Altron / Strike Noir): step into range, then
+   * designate up to MapWeaponImpactPointMaxSelectCount spots. Strike Noir (2)
+   * may place both spots on one large unit when no second foe is in range.
    */
+  function mapAutoUsageMinTargets(wpn) {
+    var raw = wpn && wpn.raw ? wpn.raw : wpn;
+    var ml = (wpn && wpn.ml_map_auto_usage_attack_target_threshold) | 0;
+    var auto = (wpn && wpn.map_auto_usage_attack_target_threshold) | 0;
+    if (ml <= 0 && raw) ml = raw.ml_map_auto_usage_attack_target_threshold | 0;
+    if (auto <= 0 && raw) auto = raw.map_auto_usage_attack_target_threshold | 0;
+    /* MLS always prefers the Master League threshold when present. */
+    if (ml > 0) return ml;
+    if (auto > 0) return auto;
+    return 2;
+  }
+
+  function mapWeaponCanUseAfterMove(wpn) {
+    var raw = wpn && wpn.raw ? wpn.raw : wpn;
+    if (wpn && wpn.map_can_use_after_move) return true;
+    if (raw && raw.map_can_use_after_move) return true;
+    /* Text gate is the opposite (before-move only) — absence means after-move OK. */
+    return !isMoveBeforeOnly(wpn);
+  }
+
   function evaluateMapWeapon(actor, target, foes, allUnits, bounds, damageOf) {
     var candidates = getValidWeapons(actor, null, false).filter(isMapWeapon);
     var best = null;
@@ -2281,7 +2398,7 @@
     var cells, inArea, maxSel, minNeed, mapKills, totalDmg, i, mt, mDmg;
     var better, mapDmgOnEngage, engageKilled;
     var impactMode, isDash, dashTo, dest, picked, key, seen, cellList, j, ec;
-    var fireActor;
+    var fireActor, afterMoveOk;
 
     /* Gate: if EX/best normal KO's engage (here or after move), skip all MAP. */
     if (nonMapKillsEngage(actor, target, allUnits, bounds, damageOf)) return null;
@@ -2298,7 +2415,10 @@
       mx = wpn.max_range != null ? wpn.max_range | 0 : 5;
       maxSel = mapImpactSelectCount(wpn);
       impactMode = isImpactMapWeapon(wpn);
+      /* Type-2 with MD count 0 → single designate (Altron EW EX). */
+      if (impactMode && maxSel <= 0) maxSel = 1;
       isDash = isDashMapWeapon(wpn);
+      afterMoveOk = mapWeaponCanUseAfterMove(wpn);
       dashTo = null;
       rawDist = distance(actor, target);
       needMove = !isDash && (rawDist > mx || rawDist < mn);
@@ -2310,12 +2430,12 @@
       };
       /*
        * Dash MAP: attack IS the path — fire from the current tile only.
-       * Impact multi-spot (after-move): even if already in range of the engage
-       * target, step up when that puts a 2nd designate in range.
+       * After-move impact (Altron / Strike Noir): walk to maximize foes in
+       * minR..maxR (even for single-spot / ML threshold 1).
        */
       if (isDash) {
         needMove = false;
-      } else if (impactMode && !isMoveBeforeOnly(wpn) && maxSel >= 2) {
+      } else if (impactMode && afterMoveOk) {
         dest = getBestImpactMapDestination(actor, target, foes, actor.move | 0, mn, mx, allUnits, bounds);
         if (dest && distance({ x: dest.x, y: dest.y, size: simPos.size }, target) >= mn &&
             distance({ x: dest.x, y: dest.y, size: simPos.size }, target) <= mx) {
@@ -2343,27 +2463,19 @@
 
       if (impactMode) {
         /*
-         * Type 2: pick up to N enemies in weapon range; effect pattern sits on each
-         * impact (map_coords often just {0,0} = that tile). After-move kits (Altron /
-         * Strike Noir EX) walk forward then snipe 2 spots.
+         * Type 2: designate up to N impact tiles (Strike Noir = 2). Prefer distinct
+         * units; leftover selects can land on other footprint cells of the same
+         * large unit so a lone 2×2 still eats both shots.
          */
-        inArea = alive(foes).filter(function (e) {
-          var ed = distance(simPos, e);
-          return ed >= mn && ed <= mx;
-        });
-        if (!inArea.some(function (e) { return e === target; })) continue;
-        picked = inArea.slice().sort(function (a, b) {
-          if (a === target && b !== target) return -1;
-          if (b === target && a !== target) return 1;
-          return (a.hp | 0) - (b.hp | 0);
-        });
-        if (maxSel > 0) picked = picked.slice(0, maxSel);
-        else picked = picked.slice(0, 1);
-        inArea = picked;
+        picked = pickImpactMapDesignates(simPos, foes, target, maxSel, mn, mx);
+        if (!picked || !picked.length) continue;
+        inArea = [];
         cells = [];
         seen = Object.create(null);
-        for (i = 0; i < inArea.length; i++) {
-          cellList = impactMapEffectCells(inArea[i], wpn, actor.side);
+        for (i = 0; i < picked.length; i++) {
+          /* One applyHit per designate — same unit may appear twice. */
+          inArea.push(picked[i].unit);
+          cellList = impactMapEffectCellsAt(picked[i], wpn, actor.side);
           for (j = 0; j < cellList.length; j++) {
             ec = cellList[j];
             key = (ec.x | 0) + ',' + (ec.y | 0);
@@ -2391,30 +2503,58 @@
         }
       }
 
-      /* Always 2+ living enemies in the shape, including engage (MAP is rare vs EX). */
-      minNeed = 2;
-      if (inArea.length < minNeed) continue;
-      if (!inArea.some(function (e) { return e === target; })) continue;
+      /* ML auto-usage threshold counts distinct living units, not designates. */
+      minNeed = mapAutoUsageMinTargets(wpn);
+      (function () {
+        var uniq = [];
+        var ui;
+        for (ui = 0; ui < inArea.length; ui++) {
+          if (uniq.indexOf(inArea[ui]) < 0) uniq.push(inArea[ui]);
+        }
+        if (uniq.length < minNeed) {
+          inArea = null;
+          return;
+        }
+        if (uniq.indexOf(target) < 0) inArea = null;
+      })();
+      if (!inArea) continue;
 
       mapKills = 0;
       totalDmg = 0;
       mapDmgOnEngage = 0;
-      for (i = 0; i < inArea.length; i++) {
-        mt = inArea[i];
-        /* MAP bypasses Defend/Shield — plan with full damage. */
-        mDmg = rawWeaponDamage(actor, mt, wpn, damageOf);
-        totalDmg += mDmg;
-        if (mt === target) mapDmgOnEngage = mDmg;
-        if ((mt.hp | 0) - mDmg <= 0) mapKills++;
-      }
+      /* Stack multi-designate damage per unit (dual shot on one 2×2). */
+      (function () {
+        var dmgAcc = [];
+        var di;
+        var found;
+        var ai;
+        for (i = 0; i < inArea.length; i++) {
+          mt = inArea[i];
+          mDmg = rawWeaponDamage(actor, mt, wpn, damageOf);
+          totalDmg += mDmg;
+          if (mt === target) mapDmgOnEngage += mDmg;
+          found = false;
+          for (di = 0; di < dmgAcc.length; di++) {
+            if (dmgAcc[di].u === mt) {
+              dmgAcc[di].d += mDmg;
+              found = true;
+              break;
+            }
+          }
+          if (!found) dmgAcc.push({ u: mt, d: mDmg });
+        }
+        for (ai = 0; ai < dmgAcc.length; ai++) {
+          if (((dmgAcc[ai].u.hp | 0) - (dmgAcc[ai].d | 0)) <= 0) mapKills++;
+        }
+      })();
       engageKilled = (target.hp | 0) - mapDmgOnEngage <= 0;
       /*
        * Engage already known to survive best non-MAP (gate above).
-       * MAP only if raw damage KO's that same engage target
-       * (not side-only kills / chip).
+       * Threshold + engage-in-shape already enforced — allow chip MAP when EX
+       * also cannot finish (Altron / Strike Noir vs SD tanks). Prefer MAP that
+       * KO's engage, then more kills / damage, when ranking candidates.
        */
-      better = !!engageKilled;
-      if (!better) continue;
+      if (mapDmgOnEngage <= 0) continue;
 
       if (isDash) {
         fireActor = {
@@ -2424,8 +2564,15 @@
         dashTo = resolveDashLandCell(fireActor, wpn, allUnits, bounds);
       }
 
-      if (!best || mapKills > best.mapKills || (mapKills === best.mapKills && totalDmg > best.totalDmg) ||
-          (mapKills === best.mapKills && totalDmg === best.totalDmg && inArea.length > (best.targets || []).length)) {
+      better = !best ||
+        (engageKilled && !best.engageKilled) ||
+        (engageKilled === !!best.engageKilled && (
+          mapKills > best.mapKills ||
+          (mapKills === best.mapKills && totalDmg > best.totalDmg) ||
+          (mapKills === best.mapKills && totalDmg === best.totalDmg &&
+            inArea.length > (best.targets || []).length)
+        ));
+      if (better) {
         best = {
           weapon: wpn,
           targets: inArea,
@@ -2434,6 +2581,7 @@
           dashTo: dashTo,
           mapKills: mapKills,
           totalDmg: totalDmg,
+          engageKilled: !!engageKilled,
           enCost: cost,
           freeAmmo: free
         };
