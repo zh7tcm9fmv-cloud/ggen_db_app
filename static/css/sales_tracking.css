@@ -95,8 +95,6 @@
 .trk-live-rank.is-null{font-size:1.1rem;opacity:.75}
 .trk-live-meta{font-size:.7rem;color:rgba(210,225,245,.85);margin-top:auto;padding-top:6px;border-top:1px solid rgba(160,190,230,.22)}
 .trk-live-card.is-top1{border-color:rgba(232,197,106,.55);box-shadow:0 0 16px rgba(232,197,106,.14)}
-.trk-live-card.is-gem-warn{border-color:rgba(255,92,122,.55)}
-.trk-live-card.is-gem-warn .trk-live-meta{color:#ffb4c0}
 .trk-live-card[data-code="hk"]{--trk-bar:var(--trk-cyan)}
 .trk-live-card[data-code="mo"]{--trk-bar:var(--trk-gold)}
 .trk-live-card[data-code="tw"]{--trk-bar:var(--trk-orange)}

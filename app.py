@@ -34663,8 +34663,21 @@ def _option_part_condition_line_from_tags(tags, lc, target_types=None):
 
 # TraitTypeIndex used by DC / Team Builder option-part combat math (sheet + weapon power).
 # Only combat-relevant OP types we apply in-sim today (expand when DR/crit OPs are wired).
+# Option-part TraitTypeIndex → MS sheet stats (pct vs flat). Defense must be here so
+# Composite Equipment AD / Limiter OFF DEF lines reach sim_effects (not ATK-only).
 _OP_SIM_STAT_PCT_TTI = {
     7: 'Attack',
+    9: 'Defense',
+    11: 'Mobility',
+    31: 'HP',
+    33: 'EN',
+}
+_OP_SIM_STAT_FLAT_TTI = {
+    8: 'Attack',
+    10: 'Defense',
+    12: 'Mobility',
+    32: 'HP',
+    34: 'EN',
 }
 _OP_SIM_WEAPON_POWER_TTI = 78
 _OP_SIM_DMG_TAKEN_DOWN_TTI = 14
@@ -34691,6 +34704,9 @@ def _build_option_part_sim_effects(item, lc, ld, variant_tag_id=''):
         if tti in _OP_SIM_STAT_PCT_TTI:
             kind = 'stat_pct'
             stat = _OP_SIM_STAT_PCT_TTI[tti]
+        elif tti in _OP_SIM_STAT_FLAT_TTI:
+            kind = 'stat_flat'
+            stat = _OP_SIM_STAT_FLAT_TTI[tti]
         elif tti == _OP_SIM_WEAPON_POWER_TTI:
             kind = 'weapon_power_pct'
             twc = normalize_id(tdata.get('target_weapon_condition_id') or '0')

@@ -30,8 +30,7 @@
       navTracking: 'Tracking',
       back: 'Back',
       hoverWas: 'was',
-      hoverNow: 'now',
-      gemWarn: 'Game-i not #1 — don’t claim gem #1 yet'
+      hoverNow: 'now'
     },
     TW: {
       eyebrow: '即時 · 商店銷售',
@@ -60,8 +59,7 @@
       navTracking: '追蹤',
       back: '返回',
       hoverWas: '前次',
-      hoverNow: '當下',
-      gemWarn: 'Game-i 非第 1 — 先別宣稱寶石第 1'
+      hoverNow: '當下'
     },
     HK: {
       eyebrow: '即時 · 商店銷售',
@@ -90,8 +88,7 @@
       navTracking: '追蹤',
       back: '返回',
       hoverWas: '前次',
-      hoverNow: '當下',
-      gemWarn: 'Game-i 唔係第 1 — 唔好即認寶石第 1'
+      hoverNow: '當下'
     },
     JA: {
       eyebrow: 'ライブ · セールス',
@@ -120,8 +117,7 @@
       navTracking: '追跡',
       back: '戻る',
       hoverWas: '直前',
-      hoverNow: '現在',
-      gemWarn: 'Game-iが1位でない — ダイヤ1位と断定しない'
+      hoverNow: '現在'
     }
   };
   T.KR = Object.assign({}, T.EN);
@@ -268,13 +264,13 @@
       var stand = standingOf(row);
       var rank = stand ? stand.rank : null;
       var isTop = rank === 1 && stand && stand.src === 'apple';
-      var gemDisagree = isTop && row.gamei_today != null && row.gamei_today !== 1;
       var label = countryLabel(c);
       var rankTxt = stand ? '#' + stand.rank : t('out');
       var metaBits = [];
       /*
        * Game-i standings past Apple RSS are first-class (big #N on the card).
        * Do not label those as “Apple out of chart” — that read as an error.
+       * Meta stays factual ranks only (no “don’t claim gem #1” coaching copy).
        */
       if (row.rank != null && row.gamei_today != null) {
         metaBits = [t('apple'), t('gamei') + ' #' + row.gamei_today];
@@ -285,13 +281,11 @@
       } else if (rank == null && row.t) {
         metaBits.push(t('updated') + ' ' + fmtTime(row.t));
       }
-      if (gemDisagree) metaBits.push(t('gemWarn'));
       var meta = metaBits.join(' · ');
       var haro = haroUrl(stand && stand.src === 'apple' ? rank : null);
       html +=
         '<article class="trk-live-card' +
         (isTop ? ' is-top1' : '') +
-        (gemDisagree ? ' is-gem-warn' : '') +
         '" data-code="' +
         code +
         '"' +

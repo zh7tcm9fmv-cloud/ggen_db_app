@@ -18146,6 +18146,13 @@ if(ab&&ab.name)bits.push(String(ab.name));
 (Array.isArray(ab&&ab.details)?ab.details:[]).forEach(d=>{bits.push(typeof d==='string'?d:((d&&d.text)||''));});
 return bits.join('\n');
 }
+function _dcAbilityBlobIsWhenAttackingCombat(blob){
+const t=String(blob||'');
+if(/when\s+attacking/i.test(t))return true;
+/* JA / TW / HK Cond:Combat attack-action lines */
+if(/攻撃する(?:時|とき)/.test(t)||/攻撃時/.test(t)||/攻擊時/.test(t)||/進行攻擊時/.test(t))return true;
+return false;
+}
 function _dcUnitWhenAttackingCombatBonuses(ud){
 let atkPct=0,defPct=0,found=false;
 ((ud&&ud.abilities)||[]).forEach(ab=>{
@@ -18153,18 +18160,26 @@ const name=String((ab&&ab.name)||'');
 if(!/\(\s*(?:Cond|Cnd):\s*Combat\s*\)/i.test(name))return;
 if(/\(\s*(?:Cond|Cnd):\s*Combat\s*-\s*Count\s*\)/i.test(name))return;
 const blob=_dcAbilityDetailBlob(ab).replace(/\s+/g,' ');
-if(!/when\s+attacking/i.test(blob))return;
+if(!_dcAbilityBlobIsWhenAttackingCombat(blob))return;
 found=true;
-let m=blob.match(/increase\s+ATK\s+by\s+(\d+)\s*%[\s\S]{0,40}?DEF\s+by\s+(\d+)\s*%/i);
+/* EN: “increase own ATK by 15%” / “increase ATK and DEF by N%” / split ATK+DEF lines */
+let m=blob.match(/increase\s+(?:own\s+)?ATK\s+and\s+DEF\s+by\s+(\d+)\s*%/i);
+if(m){atkPct=Math.max(atkPct,parseInt(m[1],10)||0);defPct=Math.max(defPct,parseInt(m[1],10)||0);return;}
+m=blob.match(/increase\s+(?:own\s+)?ATK\s+by\s+(\d+)\s*%[\s\S]{0,80}?DEF\s+by\s+(\d+)\s*%/i);
 if(m){atkPct=Math.max(atkPct,parseInt(m[1],10)||0);defPct=Math.max(defPct,parseInt(m[2],10)||0);return;}
-m=blob.match(/increase\s+ATK\s+by\s+(\d+)\s*%/i);if(m)atkPct=Math.max(atkPct,parseInt(m[1],10)||0);
-m=blob.match(/increase\s+DEF\s+by\s+(\d+)\s*%/i);if(m)defPct=Math.max(defPct,parseInt(m[1],10)||0);
+m=blob.match(/increase\s+(?:own\s+)?ATK\s+by\s+(\d+)\s*%/i);if(m)atkPct=Math.max(atkPct,parseInt(m[1],10)||0);
+m=blob.match(/increase\s+(?:own\s+)?DEF\s+by\s+(\d+)\s*%/i);if(m)defPct=Math.max(defPct,parseInt(m[1],10)||0);
 m=blob.match(/攻撃力が(\d+)%上昇[\s\S]{0,40}?防御力が(\d+)%上昇/);
 if(m){atkPct=Math.max(atkPct,parseInt(m[1],10)||0);defPct=Math.max(defPct,parseInt(m[2],10)||0);return;}
+m=blob.match(/攻撃力が(\d+)%上昇/);if(m)atkPct=Math.max(atkPct,parseInt(m[1],10)||0);
+m=blob.match(/防御力が(\d+)%上昇/);if(m)defPct=Math.max(defPct,parseInt(m[1],10)||0);
 m=blob.match(/攻擊力提升(\d+)%[\s\S]{0,40}?防禦力提升(\d+)%/);
-if(m){atkPct=Math.max(atkPct,parseInt(m[1],10)||0);defPct=Math.max(defPct,parseInt(m[2],10)||0);}
+if(m){atkPct=Math.max(atkPct,parseInt(m[1],10)||0);defPct=Math.max(defPct,parseInt(m[2],10)||0);return;}
+m=blob.match(/攻擊力提升(\d+)%/);if(m)atkPct=Math.max(atkPct,parseInt(m[1],10)||0);
+m=blob.match(/防禦力提升(\d+)%/);if(m)defPct=Math.max(defPct,parseInt(m[1],10)||0);
 });
-return found?{atkPct:atkPct|0,defPct:defPct|0}:null;
+if(!found||(!(atkPct|0)&&!(defPct|0)))return null;
+return{atkPct:atkPct|0,defPct:defPct|0};
 }
 /** True when the unit’s only Cond: sheet delta is when-attacking Cond:Combat (e.g. Avalanche Astraea Type-F'). */
 function _dcUnitCpIsOnlyWhenAttackingCombat(ud){
@@ -18179,7 +18194,7 @@ return condAbs.every(ab=>{
 const name=String((ab&&ab.name)||'');
 if(!/\(\s*(?:Cond|Cnd):\s*Combat\s*\)/i.test(name))return false;
 if(/\(\s*(?:Cond|Cnd):\s*Combat\s*-\s*Count\s*\)/i.test(name))return false;
-return/when\s+attacking/i.test(_dcAbilityDetailBlob(ab));
+return _dcAbilityBlobIsWhenAttackingCombat(_dcAbilityDetailBlob(ab));
 });
 }
 /** Defender never gets when-attacking Cond:Combat; Counter / Support Attack / Support Counter exclude it. */
@@ -18189,6 +18204,45 @@ if(!_dcUnitWhenAttackingCombatBonuses(ud))return false;
 if(opts.asDefender)return true;
 if(opts.isCounterOrSupport)return true;
 return false;
+}
+/** Add/remove Cond:Combat when-attacking % on sheet rows (same floor(base×(100+passive%)/100) growth as CP). */
+function _dcNudgeMsStatPassivePct(stats,statName,deltaPct){
+if(!stats||!deltaPct)return stats;
+return stats.map(s=>{
+if(!s||s.name!==statName)return s;
+const base=s.base|0;
+const passivePct=(s.passive_pct|0)+deltaPct;
+const tot=Math.floor(base*(100+passivePct)/100);
+return Object.assign({},s,{passive_pct:passivePct,total:tot,bonus:tot-base});
+});
+}
+function _dcApplyWhenAttackingCombatSheetDelta(stats,bonuses,sign){
+if(!stats||!bonuses)return stats;
+const s=sign<0?-1:1;
+let out=stats;
+const ap=(bonuses.atkPct|0)*s;
+const dp=(bonuses.defPct|0)*s;
+if(ap)out=_dcNudgeMsStatPassivePct(out,'Attack',ap);
+if(dp)out=_dcNudgeMsStatPassivePct(out,'Defense',dp);
+return out;
+}
+/**
+ * Cond:Combat when-attacking ATK/DEF is attack-action gated (MapBattleActionTypes=Attack), not Vigor/HP CP.
+ * Apply it on normal attacks even when the CP chip is off for other Cond: lines; strip it on Counter / Support.
+ */
+function _dcResolveAtkUnitStatsWithWhenAttackingCombat(ud,stats,statsNoCp,atkCpOn,opts){
+opts=opts||{};
+const isCounterOrSupport=!!opts.isCounterOrSupport;
+let out=_dcApplyUnitCondStatAdjustments(stats,statsNoCp,ud,atkCpOn);
+const bon=_dcUnitWhenAttackingCombatBonuses(ud);
+if(!bon)return out;
+if(isCounterOrSupport){
+/* Mixed Cond: units keep full with_cond when CP on — strip the when-attacking Combat slice. */
+if(atkCpOn&&!_dcUnitCpIsOnlyWhenAttackingCombat(ud))out=_dcApplyWhenAttackingCombatSheetDelta(out,bon,-1);
+return out;
+}
+if(!atkCpOn)out=_dcApplyWhenAttackingCombatSheetDelta(out,bon,1);
+return out;
 }
 function _dcApplyUnitCondStatAdjustments(stats,statsNoCond,ud,cpOn){
 if(!ud||!stats||!stats.length)return stats;
@@ -19188,7 +19242,7 @@ const statKeyNo=_dcGetUnitStatKeyForCp(false);
 const td=(lb&&lb[tier])||(ud.stats&&{stats_no_cond:ud.stats});
 let stats=td?td[statKey]||td.stats_no_cond:[];
 const statsNoCpBase=td?td[statKeyNo]||td.stats_no_cond:[];
-stats=_dcApplyUnitCondStatAdjustments(stats,statsNoCpBase,ud,!!S.dc.unitCondPassive);
+stats=_dcResolveAtkUnitStatsWithWhenAttackingCombat(ud,stats,statsNoCpBase,!!S.dc.unitCondPassive,{isCounterOrSupport:!!(S.dc.atkCounterOwnAtk||S.dc.supportCounterAtk)});
 let lbBlock='';
 if(lb&&lb.length>1&&!ud.is_ultimate){
 const cur=cmpLbPipsAtTier(tier);
@@ -19350,7 +19404,7 @@ const statKeyNo=_dcGetUnitStatKeyForCp(false);
 const td=(lb&&lb[tier])||(ud.stats&&{stats_no_cond:ud.stats});
 let stats=td?td[statKey]||td.stats_no_cond:[];
 const statsNoCpBase=td?td[statKeyNo]||td.stats_no_cond:[];
-stats=_dcApplyUnitCondStatAdjustments(stats,statsNoCpBase,ud,!!S.dc.unitCondPassive);
+stats=_dcResolveAtkUnitStatsWithWhenAttackingCombat(ud,stats,statsNoCpBase,!!S.dc.unitCondPassive,{isCounterOrSupport:!!(S.dc.atkCounterOwnAtk||S.dc.supportCounterAtk)});
 const uEff=_dcGetModifiedAttackerUnitStatsForPanel(stats);
 const atkS=uEff.unitAtk;
 const exSq=_dcEffectiveExSquadAtkPct();
@@ -22522,15 +22576,16 @@ const opPct={Attack:0,HP:0,Defense:0,Mobility:0,Move:0,EN:0};
 const effects=_dcOptionPartSimEffects(op);
 if(effects.length){
 effects.forEach(eff=>{
-if(!eff||eff.kind!=='stat_pct')return;
+if(!eff)return;
 const st=eff.stat||'Attack';
-if(opPct[st]==null)return;
+if(opPct[st]==null&&opFlat[st]==null)return;
 if(_dcOpEffectHasWeaponRangeGate(eff))return;
 const tt=eff.cond_target||'';
 if(_dcOpCondTargetIsCombat(tt))return;
 if(!_dcOpCondTargetIsOwner(tt))return;
 if((eff.cond_unit_tag_ids||[]).length&&!_dcOpCondTagsMatchEntity(eff,atkUnitData))return;
-opPct[st]+=(eff.value|0);
+if(eff.kind==='stat_pct')opPct[st]+=(eff.value|0);
+else if(eff.kind==='stat_flat')opFlat[st]+=(eff.value|0);
 });
 return;
 }
@@ -23527,14 +23582,15 @@ const ud=S.dc.atkUnitData,cd=S.dc.atkCharData,npc=S.dc.defNpc;
 if(!ud||!cd||!npc)return null;
 const lb=ud.lb_data;const maxTier=lb?lb.length-1:0;const tier=Math.min(S.dc.lbTier,maxTier);
 /* Cond:Combat “When attacking” excludes Counter / Support Attack / Support Counter. */
+const isCounterOrSupport=!!(S.dc.atkCounterOwnAtk||S.dc.supportCounterAtk);
 let atkCpOn=!!S.dc.unitCondPassive;
-if(atkCpOn&&_dcShouldSuppressWhenAttackingCombatCp(ud,{isCounterOrSupport:!!(S.dc.atkCounterOwnAtk||S.dc.supportCounterAtk)})&&_dcUnitCpIsOnlyWhenAttackingCombat(ud))atkCpOn=false;
+if(atkCpOn&&_dcShouldSuppressWhenAttackingCombatCp(ud,{isCounterOrSupport})&&_dcUnitCpIsOnlyWhenAttackingCombat(ud))atkCpOn=false;
 const statKey=_dcGetUnitStatKeyForCp?_dcGetUnitStatKeyForCp(atkCpOn):_dcGetUnitStatKey();
 const statKeyNo=_dcGetUnitStatKeyForCp(false);
 const td=(lb&&lb[tier])||(ud.stats&&{stats_no_cond:ud.stats});
 let atkUnitStats=td?(td[statKey]||td.stats_no_cond):[];
 const statsNoCp=td?(td[statKeyNo]||td.stats_no_cond):[];
-atkUnitStats=_dcApplyUnitCondStatAdjustments(atkUnitStats,statsNoCp,ud,atkCpOn);
+atkUnitStats=_dcResolveAtkUnitStatsWithWhenAttackingCombat(ud,atkUnitStats,statsNoCp,atkCpOn,{isCounterOrSupport});
 const atkCharStats=_dcGetCharStats();
 const wpns=_dcNonMapWeapons(ud);
 if(!wpns.length)return null;
