@@ -14277,7 +14277,7 @@ if(_dcSlotNeedsAutoFit(S.dc.atkSlots[S.dc.atkSlotIndex|0]))_dcScheduleAutoFitOpt
 function initDmgCalc(){
 S._dcAtkPresetBackup=null;S._dcAtkManualPackBackup=null;S._dcDefPresetNpcBackup=null;S._dcDefDbBackup=null;S._dcDefCustomPackBackup=null;
 S.dc.atkUnit=null;S.dc.atkChar=null;S.dc.atkUnitData=null;S.dc.atkCharData=null;S.dc.lbTier=3;
-S.dc.defNpc=null;S.dc.defTargetMode='preset';S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defLbTier=3;S.dc.defUnitCondPassive=false;S.dc.defCharCondPassive=false;S.dc.defUnitSkillActive=false;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.wpnTraitPowPct=null;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.exSquadAtkPct=0;S.dc.exSquadAtkPctExplicitZero=false;S.dc.squadCondPct=0;S.dc.squadCondAtkPct=0;S.dc.squadCondDefPct=0;S.dc.bigRangZeonSquadBuff=false;S.dc.defNpcMapBonusesOn=true;S.dc.atkCounterOwnAtk=false;S.dc.supportCounterAtk=false;S.dc._supportCounterAtkPct=0;S.dc.applyAdvantageEnemyTag=true;S.dc.applyZeonEnemyTag=true;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.unitCondStackCount=0;S.dc.unitHpAtkTierIndex=0;S.dc.unitDamageTakenDefStacks=0;S.dc.dcSuperchargedExTier=0;S.dc._dcSuperchargedExManual=false;S.dc.optionParts=[];S.dc.supporters=[];S.dc.defOptionParts=[];S.dc.defSupporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._wpnCritDmgUp=0;S.dc._integratedWpnCritDmgUp=0;S.dc._vigorCondThreshold=null;S.dc._activeSkills={};S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false;S.dc.masterLeagueBuff=false;S.dc.grandOffensiveBuff=false;S.dc.multiPctCompare=false;S.dc._dcAutoFitGen=0;S.dc._supportCntAtkPairSnapBySlot={};
+S.dc.defNpc=null;S.dc.defTargetMode='preset';S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defLbTier=3;S.dc.defUnitCondPassive=false;S.dc.defCharCondPassive=false;S.dc.defUnitSkillActive=false;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.wpnTraitPowPct=null;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.exSquadAtkPct=0;S.dc.exSquadAtkPctExplicitZero=false;S.dc.squadCondPct=0;S.dc.squadCondAtkPct=0;S.dc.squadCondDefPct=0;S.dc.bigRangZeonSquadBuff=false;S.dc.defNpcMapBonusesOn=true;S.dc.atkCounterOwnAtk=false;S.dc.supportCounterAtk=false;S.dc._supportCounterAtkPct=0;S.dc.applyAdvantageEnemyTag=true;S.dc.applyZeonEnemyTag=true;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.unitCondStackCount=0;S.dc.unitHpAtkTierIndex=0;S.dc.unitDamageTakenDefStacks=0;S.dc.dcSuperchargedExTier=0;S.dc._dcSuperchargedExManual=false;S.dc._unitWhenAttackingCombatCpUserOff=false;S.dc.optionParts=[];S.dc.supporters=[];S.dc.defOptionParts=[];S.dc.defSupporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._wpnCritDmgUp=0;S.dc._integratedWpnCritDmgUp=0;S.dc._vigorCondThreshold=null;S.dc._activeSkills={};S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false;S.dc.masterLeagueBuff=false;S.dc.grandOffensiveBuff=false;S.dc.multiPctCompare=false;S.dc._dcAutoFitGen=0;S.dc._supportCntAtkPairSnapBySlot={};
 renderDcDefDbPicks();
 const _drp=document.getElementById('dcDefModePreset'),_drc=document.getElementById('dcDefModeCustom'),_ddb=document.getElementById('dcDefModeDatabase'),_dpw=document.getElementById('dcDefPresetWrap'),_dcw=document.getElementById('dcDefCustomWrap'),_ddbw=document.getElementById('dcDefDatabaseWrap');
 if(_drp)_drp.checked=true;if(_drc)_drc.checked=false;if(_ddb)_ddb.checked=false;if(_dpw)_dpw.style.display='';if(_dcw)_dcw.style.display='none';if(_ddbw)_ddbw.style.display='none';
@@ -14607,6 +14607,8 @@ Reaction:cb.Reaction||0
 tags:cd.tags||[]
 }
 };
+S.dc._unitWhenAttackingCombatCpUserOff=false;
+_dcMaybeAutoEnableWhenAttackingCombatCp();
 renderDcDefDbPicks();
 renderDcDefOptionParts();
 renderDcDefSupporters();
@@ -14706,6 +14708,8 @@ if(mode==='custom'){
 S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defOptionParts=[];S.dc.defSupporters=[];S.dc.defUnitSkillActive=false;
 if(S._dcDefCustomPackBackup)_dcFillManualDefDomFromPack(S._dcDefCustomPackBackup);
 S.dc.defNpc=_dcBuildManualDefNpcFromDom();
+S.dc._unitWhenAttackingCombatCpUserOff=false;
+_dcMaybeAutoEnableWhenAttackingCombatCp();
 renderDcDefStats();
 onDcParamChange();
 }else if(mode==='database'){
@@ -14741,6 +14745,7 @@ else{renderDcDefStats();onDcParamChange()}
 function syncDcManualDefFromInputs(){
 if((S.dc.defTargetMode||'preset')!=='custom')return;
 S.dc.defNpc=_dcBuildManualDefNpcFromDom();
+if(S.dc.defNpc&&!S.dc._unitWhenAttackingCombatCpUserOff)_dcMaybeAutoEnableWhenAttackingCombatCp();
 renderDcDefStats();
 onDcParamChange();
 }
@@ -18227,8 +18232,8 @@ if(dp)out=_dcNudgeMsStatPassivePct(out,'Defense',dp);
 return out;
 }
 /**
- * Cond:Combat when-attacking ATK/DEF is attack-action gated (MapBattleActionTypes=Attack), not Vigor/HP CP.
- * Apply it on normal attacks even when the CP chip is off for other Cond: lines; strip it on Counter / Support.
+ * Cond:Combat when-attacking ATK/DEF rides the CP chip (auto-on when a defender is picked).
+ * Counter / Support Attack / Support Counter must never keep that slice — strip it from with_cond.
  */
 function _dcResolveAtkUnitStatsWithWhenAttackingCombat(ud,stats,statsNoCp,atkCpOn,opts){
 opts=opts||{};
@@ -18236,13 +18241,29 @@ const isCounterOrSupport=!!opts.isCounterOrSupport;
 let out=_dcApplyUnitCondStatAdjustments(stats,statsNoCp,ud,atkCpOn);
 const bon=_dcUnitWhenAttackingCombatBonuses(ud);
 if(!bon)return out;
-if(isCounterOrSupport){
-/* Mixed Cond: units keep full with_cond when CP on — strip the when-attacking Combat slice. */
-if(atkCpOn&&!_dcUnitCpIsOnlyWhenAttackingCombat(ud))out=_dcApplyWhenAttackingCombatSheetDelta(out,bon,-1);
+if(isCounterOrSupport&&atkCpOn){
+/* only-combat units already forced atkCpOn=false above; mixed Cond: units need an explicit strip. */
+out=_dcApplyWhenAttackingCombatSheetDelta(out,bon,-1);
+}
 return out;
 }
-if(!atkCpOn)out=_dcApplyWhenAttackingCombatSheetDelta(out,bon,1);
-return out;
+/** When-attacking Cond:Combat should default CP on once a defender exists; user can turn the chip off. */
+function _dcMaybeAutoEnableWhenAttackingCombatCp(){
+const ud=S.dc&&S.dc.atkUnitData;
+if(!ud||ud._manual)return false;
+if(!_dcUnitWhenAttackingCombatBonuses(ud))return false;
+if(!S.dc.defNpc)return false;
+if(S.dc._unitWhenAttackingCombatCpUserOff)return false;
+if(S.dc.unitCondPassive)return false;
+S.dc.unitCondPassive=true;
+try{_dcInitUnitCondControls(ud)}catch(_){}
+/* Keep multi-attacker slot + CP chip in sync — defender pick used to flip state without re-painting the attacker card. */
+try{
+const si=Math.min(Math.max(S.dc.atkSlotIndex|0,0),DC_ATK_SLOT_COUNT-1);
+if(S.dc.atkSlots&&S.dc.atkSlots[si])S.dc.atkSlots[si].unitCondPassive=true;
+}catch(_){}
+try{renderDcAtkUnit()}catch(_){}
+return true;
 }
 function _dcApplyUnitCondStatAdjustments(stats,statsNoCond,ud,cpOn){
 if(!ud||!stats||!stats.length)return stats;
@@ -18425,6 +18446,11 @@ return true;
 function _dcSyncUnitCondPassiveFromVigor(){
 const ud=S.dc.atkUnitData;
 if(!ud||ud._manual)return;
+/* When-attacking Cond:Combat is defender-gated, not Vigor — don't let High Vigor turn CP off. */
+if(_dcUnitWhenAttackingCombatBonuses(ud)&&S.dc.defNpc){
+S.dc.unitCondPassive=!S.dc._unitWhenAttackingCombatCpUserOff;
+return;
+}
 if(_dcShouldAutoUnitCondPassive(ud)){
 S.dc.unitCondPassive=true;
 return;
@@ -19503,6 +19529,8 @@ if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses(true);else 
 }
 function setDcUnitCondPassive(on){
 S.dc.unitCondPassive=!!on;
+if(_dcUnitWhenAttackingCombatBonuses(S.dc.atkUnitData)&&S.dc.defNpc)S.dc._unitWhenAttackingCombatCpUserOff=!on;
+else S.dc._unitWhenAttackingCombatCpUserOff=false;
 if(!on){S.dc.unitCondStackCount=0;S.dc.unitHpAtkTierIndex=0;S.dc.unitDamageTakenDefStacks=0}
 else if(S.dc.atkUnitData)_dcInitUnitCondControls(S.dc.atkUnitData);
 _dcSyncLinkedUnitCpAndSupportCounter('cp');
@@ -21094,6 +21122,11 @@ if(S.dc.defNpc&&S.dc.defNpc.npc_id!=null&&String(S.dc.defNpc.npc_id)!==''){
 const want=String(S.dc.defNpc.npc_id);
 for(let j=0;j<sel.options.length;j++){if(sel.options[j].value===want){sel.selectedIndex=j;break}}
 }
+}
+/* New defender → re-arm when-attacking Cond:Combat CP (user can turn the chip off again). */
+if(S.dc.defNpc){
+S.dc._unitWhenAttackingCombatCpUserOff=false;
+_dcMaybeAutoEnableWhenAttackingCombatCp();
 }
 /* Keep attacker vigor — switching preset defender must not call _dcAutoSetVigor(). */
 renderDcDefStats();if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses(true);else onDcParamChange();

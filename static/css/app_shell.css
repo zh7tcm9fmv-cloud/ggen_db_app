@@ -7909,7 +7909,8 @@ button.stage-fea-diff-tab.diff-pill:focus-visible{
 
 /* —— Human gate (first-visit verification; LVUp deco on card only) —— */
 .human-gate-overlay{
-  position:fixed;inset:0;z-index:620;display:none;align-items:center;justify-content:center;
+  /* Above cmp picker (600) and promo/chrome stacks (~5000) so deep-link /u gate stays tappable. */
+  position:fixed;inset:0;z-index:5200;display:none;align-items:center;justify-content:center;
   padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(20px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));
   background:rgba(5,8,15,.88);pointer-events:none;isolation:isolate;
 }
@@ -8082,13 +8083,15 @@ button.stage-fea-diff-tab.diff-pill:focus-visible{
   margin:10px 0 0;font-size:13px;color:var(--text-muted);min-height:1.2em;
 }
 html.human-gate-open,html.human-gate-open body{overflow:hidden!important}
-/* Gate is z-index 620; detail is 300. Still kill detail hits — deep-link /u open under the
+/* Gate is z-index 5200; detail is 300. Still kill detail hits — deep-link /u open under the
    gate left an active #detailModal that could confuse taps / focus (owner report Nov 2026). */
 body.human-gate-open .app-header,
 body.human-gate-open main.main-content,
 body.human-gate-open #detailModal,
 body.human-gate-open .whats-new-overlay,
-body.human-gate-open .search-spotlight-overlay{
+body.human-gate-open .search-spotlight-overlay,
+body.human-gate-open .kofi-promo-overlay,
+body.human-gate-open .promo-popup-overlay{
   pointer-events:none!important
 }
-body.human-gate-open #humanGateOverlay{pointer-events:auto!important}
+body.human-gate-open #humanGateOverlay{pointer-events:auto!important;z-index:5200!important}

@@ -33,15 +33,27 @@
   var st=document.getElementById('humanGateStatus');
   if(!ov||!tray)return;
   try{document.documentElement.classList.add('human-gate-open');document.body.classList.add('human-gate-open')}catch(_){}
-  /* If a unit/char deep-link opened detail under the gate, park it so Haro taps are unambiguous. */
+  /* Deep-link /u /c often opens #detailModal *after* this script — park immediately and keep parking while the gate is up so Haro taps are not stolen. */
+  function parkDetailUnderGate(){
+    try{
+      var dm=document.getElementById('detailModal');
+      if(!dm)return;
+      if(dm.classList.contains('active')){
+        dm.setAttribute('data-hg-parked','1');
+        dm.classList.remove('active');
+        document.body.classList.remove('detail-modal-open');
+      }
+    }catch(_){}
+  }
+  parkDetailUnderGate();
+  var parkMo=null;
   try{
-    var dm=document.getElementById('detailModal');
-    if(dm&&dm.classList.contains('active')){
-      dm.setAttribute('data-hg-parked','1');
-      dm.classList.remove('active');
-      document.body.classList.remove('detail-modal-open');
-    }
-  }catch(_){}
+    parkMo=new MutationObserver(function(){
+      if(ov.classList.contains('active'))parkDetailUnderGate();
+    });
+    var dm0=document.getElementById('detailModal');
+    if(dm0)parkMo.observe(dm0,{attributes:true,attributeFilter:['class']});
+  }catch(_){parkMo=null}
   var HARO={
     bronze:{{ human_gate_haro.bronze|tojson }},
     silver:{{ human_gate_haro.silver|tojson }},
@@ -195,8 +207,18 @@
     tray.appendChild(btn);
   });
   function done(){
+    try{if(parkMo)parkMo.disconnect()}catch(_){}
     try{ov.classList.remove('active');ov.setAttribute('aria-hidden','true')}catch(_){}
     try{document.documentElement.classList.remove('human-gate-open');document.body.classList.remove('human-gate-open')}catch(_){}
+    /* Restore deep-link detail that was parked under the gate. */
+    try{
+      var dm=document.getElementById('detailModal');
+      if(dm&&dm.getAttribute('data-hg-parked')==='1'){
+        dm.removeAttribute('data-hg-parked');
+        dm.classList.add('active');
+        document.body.classList.add('detail-modal-open');
+      }
+    }catch(_){}
   }
   function resetHaros(){
     /* After a failed verify, gold used to stay .is-collect (opacity 0) — user could not retry. */
