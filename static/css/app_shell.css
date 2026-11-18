@@ -8095,3 +8095,71 @@ body.human-gate-open .promo-popup-overlay{
   pointer-events:none!important
 }
 body.human-gate-open #humanGateOverlay{pointer-events:auto!important;z-index:5200!important}
+
+/* Full-detail portrait silhouette (unit / char only). Never supporters / browse thumbs.
+ * Locked offset: 14px right / 4px up (owner-tuned). */
+.portrait-sil{
+  overflow:visible;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  isolation:isolate;
+  position:relative;
+}
+.modal-content.unit-detail .detail-header.unit-detail-header:has(.portrait-sil),
+.modal-content.char-detail .detail-header.char-detail-header:has(.portrait-sil){
+  overflow:visible;
+}
+.portrait-sil .detail-portrait-silhouette,
+.portrait-sil img.detail-portrait,
+.portrait-sil .detail-portrait-placeholder{
+  border:0!important;
+  background:transparent!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  /* Outer ~6% feather — unit/char stay opaque */
+  -webkit-mask-image:
+    linear-gradient(to right,transparent 0%,#000 6%,#000 94%,transparent 100%),
+    linear-gradient(to bottom,transparent 0%,#000 5%,#000 92%,transparent 100%);
+  -webkit-mask-composite:source-in;
+  mask-image:
+    linear-gradient(to right,transparent 0%,#000 6%,#000 94%,transparent 100%),
+    linear-gradient(to bottom,transparent 0%,#000 5%,#000 92%,transparent 100%);
+  mask-composite:intersect;
+}
+.portrait-sil .detail-portrait-silhouette{
+  position:absolute;
+  left:0;
+  top:0;
+  width:100%;
+  height:100%;
+  max-width:none;
+  object-fit:contain;
+  object-position:center calc(50% + var(--portrait-optical-y));
+  filter:brightness(0) invert(.06);
+  opacity:.88;
+  /* Trial: darker + further (was 14px/-4px @ .62) */
+  transform:translate(28px, -6px);
+  z-index:0;
+  pointer-events:none;
+}
+.portrait-sil img.detail-portrait,
+.portrait-sil .detail-portrait-placeholder{
+  position:relative;
+  z-index:1;
+}
+.portrait-sil .unit-holo-card__tilt,
+.portrait-sil .unit-holo-card__stage{
+  overflow:visible!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+.portrait-sil > .border-glow-edge{
+  display:none!important;
+}
+
+
+
