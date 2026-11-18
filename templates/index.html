@@ -813,8 +813,10 @@ window.__GGEN_LAZY__=(function(){
   }
   function loadJs(key, bump){
     var src=withV(js[key], bump);
-    if(!src||cache['j:'+key])return cache['j:'+key]||Promise.resolve();
-    cache['j:'+key]=new Promise(function(resolve,reject){
+    /* Include bump in cache key so a new app_js_version reloads ml_sim / rules after deploy. */
+    var ck='j:'+key+(bump!=null?':'+bump:':'+v);
+    if(!src||cache[ck])return cache[ck]||Promise.resolve();
+    cache[ck]=new Promise(function(resolve,reject){
       var s=document.createElement('script');
       s.src=src;
       s.async=true;
@@ -822,7 +824,7 @@ window.__GGEN_LAZY__=(function(){
       s.onerror=function(){reject(new Error('lazy '+key))};
       document.body.appendChild(s);
     });
-    return cache['j:'+key];
+    return cache[ck];
   }
   function ensureEsim(){
     if(window.ESimulator)return Promise.resolve(window.ESimulator);
@@ -862,12 +864,16 @@ window.__GGEN_LAZY__=(function(){
     return Promise.all([loadCss('gacha_sim'), loadJs('gacha_sim')]).then(function(){return window.GgenGachaSim||null});
   }
   function ensureMlSim(){
-    if(window.GgenMlSim){markMlsSkinReady();return Promise.resolve(window.GgenMlSim)}
+    /* Stale SPA sessions can keep a pre-Trait-chip ml_sim; require current chipFaceMark. */
+    if(window.GgenMlSim && window.GgenMlSim.chipFaceMark==='__MLS_CHIP_THUM_V6__'){
+      markMlsSkinReady();
+      return Promise.resolve(window.GgenMlSim);
+    }
     /* Reveal shell only after CSS is in the cascade — don't wait on ml_sim.js. */
     return Promise.all([loadCss('ml_sim'), loadCss('master_league')])
       .then(afterStylesApplied)
       .then(function(){markMlsSkinReady();return loadJs('ml_sim_rules')})
-      .then(function(){return loadJs('ml_sim')})
+      .then(function(){return loadJs('ml_sim', String(v)+'-chip6')})
       .then(function(){return window.GgenMlSim||null});
   }
   function ensureSalesTracking(){

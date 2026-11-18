@@ -334,10 +334,126 @@
     return mlsKomaFrameUrl(kit, 'standby', facing, kit.standbyFrame | 0);
   }
 
+  /** Extract g****u**** / g****w**** resource id from a media URL if present. */
+  function mlsFaceResourceIdFromUrl(url) {
+    var s = String(url || '');
+    var m = s.match(/\/koma\/(g[\w]+)(?:\/|$)/i);
+    if (m) return m[1];
+    m = s.match(/(?:thum_|ub_|sb_)(g[\w]+)\./i);
+    if (m) return m[1];
+    m = s.match(/\/(g[\w]+)_standby_/i);
+    if (m) return m[1];
+    /* Filename plates: k1250u01250_standby_right.webp → g1250u01250 */
+    m = s.match(/(?:^|\/)k([\w]+)_standby_/i);
+    if (m) return 'g' + m[1];
+    return '';
+  }
+
+  function mlsIsKomaUrl(url) {
+    var s = String(url || '');
+    return /Simulator\/koma|\/koma\/|ingamekoma|_standby_/i.test(s);
+  }
+
+  /* Survives minify — proves chip-face helper is the loaded bundle (bump when chip path changes). */
+  var MLS_CHIP_FACE_MARK = '__MLS_CHIP_THUM_V6__';
+
+  /**
+   * Formation / turn-order / board-HP chip face — ALWAYS Trait/thum.
+   * Map tokens keep IngameKoma via u.thum; chips never paint standby plates.
+   */
+  function mlsPortraitFaceUrl(u) {
+    var face;
+    var kid;
+    if (!u) return '';
+    kid = (u.komaKit && u.komaKit.komaId) || '';
+    if (!kid) kid = mlsFaceResourceIdFromUrl(u.portraitThum) || mlsFaceResourceIdFromUrl(u.thum);
+    if (!kid && u.id) {
+      try {
+        var kit = mlsKomaKit(u.id);
+        if (kit && kit.komaId) kid = kit.komaId;
+      } catch (eKid) { /* ignore */ }
+    }
+    if (kid) return thumbUrl('/static/images/Trait/thum/thum_' + kid + '.webp');
+    face = String(u.portraitThum || '');
+    if (face && !mlsIsKomaUrl(face)) {
+      return thumbUrl(face);
+    }
+    face = String(u.thum || '');
+    if (face && !mlsIsKomaUrl(face)) {
+      return thumbUrl(face);
+    }
+    return '';
+  }
+
+  function mlsBindKomaImgFallback(img, u) {
+    var fb;
+    if (!img) return;
+    fb = mlsPortraitFaceUrl(u);
+    if (fb && String(img.getAttribute('src') || '').indexOf('Simulator/koma') >= 0 && fb !== img.getAttribute('src')) {
+      img.setAttribute('data-mls-face-fallback', fb);
+      img.onerror = function () {
+        try {
+          if (typeof global.GgenMlSim !== 'undefined' && GgenMlSim.onKomaImgError) {
+            GgenMlSim.onKomaImgError(img);
+          }
+        } catch (eErr) { /* ignore */ }
+      };
+    } else {
+      img.removeAttribute('data-mls-face-fallback');
+      img.onerror = null;
+    }
+  }
+
+  function onKomaImgError(img) {
+    var fb;
+    if (!img) return;
+    fb = img.getAttribute('data-mls-face-fallback') || '';
+    img.onerror = null;
+    img.removeAttribute('data-mls-face-fallback');
+    if (fb) img.src = fb;
+  }
+
+  function mlsKomaTokenImgHtml(u) {
+    var src = u && u.thum ? String(u.thum) : '';
+    var fb;
+    var fbAttr = '';
+    if (!src) return '';
+    fb = mlsPortraitFaceUrl(u);
+    if (fb && src.indexOf('Simulator/koma') >= 0 && fb !== src) {
+      fbAttr = ' data-mls-face-fallback="' + esc(fb) +
+        '" onerror="window.GgenMlSim&&GgenMlSim.onKomaImgError&&window.GgenMlSim.onKomaImgError(this)"';
+    }
+    return '<img class="mls-token-thum" src="' + esc(src) + '" alt="' + esc((u && u.name) || '') +
+      '" loading="eager" decoding="async" fetchpriority="high"' + fbAttr + '>';
+  }
+
   function mlsKomaFxUrl(prefix, frame) {
+    var fr;
     if (!prefix) return '';
+    fr = frame | 0;
+    /* Most single-frame exports are prefix.webp (no _1). Multi-frame strips use _1.._N. */
+    if (fr <= 1) {
+      return thumbUrl('/static/images/Master League/Simulator/fx/' + prefix + '.webp');
+    }
     return thumbUrl('/static/images/Master League/Simulator/fx/' +
-      prefix + '_' + (frame | 0) + '.webp');
+      prefix + '_' + fr + '.webp');
+  }
+
+  /** Build FX flipbook URLs (bare prefix.webp for 1-frame; _1.._N for multi). */
+  function mlsKomaFxUrls(prefix, frames) {
+    var n = Math.max(1, frames | 0);
+    var urls = [];
+    var fr;
+    if (!prefix) return urls;
+    if (n <= 1) {
+      /* Disk almost always ships prefix.webp for single-frame sparks. */
+      urls.push(thumbUrl('/static/images/Master League/Simulator/fx/' + prefix + '.webp'));
+      return urls;
+    }
+    for (fr = 1; fr <= n; fr++) {
+      urls.push(thumbUrl('/static/images/Master League/Simulator/fx/' + prefix + '_' + fr + '.webp'));
+    }
+    return urls;
   }
 
   function mlsKomaStripForWeapon(kit, wpn) {
@@ -346,9 +462,12 @@
     var meta;
     if (!kit) return { action: 'weapon1', frames: 3, facings: null, maxPlay: 0 };
     slot = wpn && wpn._mlsSlot != null ? (wpn._mlsSlot | 0) : -1;
-    if (slot < 0 && wpn && wpn.is_ex) action = 'et01';
-    else if (slot < 0 && wpn && (wpn.is_map || wpn.is_map_weapon)) action = 'map';
+    /* EX / MAP always prefer dedicated strips when present — even if _mlsSlot is set. */
+    if (wpn && wpn.is_ex && kit.strips && kit.strips.et01) action = 'et01';
+    else if (wpn && (wpn.is_map || wpn.is_map_weapon) && kit.strips && kit.strips.map) action = 'map';
     else if (kit.stripsBySlot && slot >= 0 && kit.stripsBySlot[slot]) action = kit.stripsBySlot[slot];
+    else if (wpn && wpn.is_ex) action = 'et01';
+    else if (wpn && (wpn.is_map || wpn.is_map_weapon)) action = 'map';
     else action = 'weapon1';
     if (!(kit.strips && kit.strips[action]) && action === 'map') action = 'weapon3';
     if (!(kit.strips && kit.strips[action])) action = 'weapon1';
@@ -510,7 +629,10 @@
     unit.komaFacing = face;
     unit.thum = url;
     img = tokenEl && tokenEl.querySelector && tokenEl.querySelector('.mls-token-thum');
-    if (img) img.src = url;
+    if (img) {
+      img.src = url;
+      mlsBindKomaImgFallback(img, unit);
+    }
   }
 
   /** Face attacker → target and defender → attacker for this engage. */
@@ -533,21 +655,59 @@
   }
 
   /**
-   * Face the shooter toward the target (standby art). Full weapon-strip playback
-   * stays optional — hit FX still come from playRangedFire / playAttackFx.
+   * Face the shooter at the target (standby only). Hit FX are separate —
+   * owner wants impact sparks, not weapon-strip flipbooks on the token.
    */
   function mlsKomaPlayWeaponOnToken(atkEl, unit, facing, wpn, onDone) {
     mlsKomaApplyTokenFacing(unit, atkEl, facing);
     if (onDone) onDone();
+    return 0;
+  }
+
+  /**
+   * Reject opaque black-plate FX (Unity exports with a solid black matte).
+   * Screen-blend can hide pure black, but plates still flash a dark square — skip those.
+   */
+  function mlsKomaFxIsUsableSpark(img) {
+    var c, ctx, w, h, data, i, a, lum, dark, lit, opaque;
+    try {
+      if (!img || !(img.naturalWidth | 0) || !(img.naturalHeight | 0)) return false;
+      w = Math.min(48, img.naturalWidth | 0);
+      h = Math.min(48, img.naturalHeight | 0);
+      c = document.createElement('canvas');
+      c.width = w;
+      c.height = h;
+      ctx = c.getContext('2d', { willReadFrequently: true });
+      if (!ctx) return true;
+      ctx.drawImage(img, 0, 0, w, h);
+      data = ctx.getImageData(0, 0, w, h).data;
+      dark = 0;
+      lit = 0;
+      for (i = 0; i < data.length; i += 4) {
+        a = data[i + 3] | 0;
+        if (a < 12) continue;
+        lum = ((data[i] | 0) + (data[i + 1] | 0) + (data[i + 2] | 0)) / 3;
+        if (lum < 22) dark += 1;
+        else lit += 1;
+      }
+      opaque = dark + lit;
+      if (opaque < 16) return false;
+      /* Keep only if there is real bright FX ink (not a black rectangle). */
+      return lit >= 12 && (lit / opaque) >= 0.06;
+    } catch (eProbe) {
+      return true;
+    }
   }
 
   function mlsKomaSpawnFxStrip(layer, x, y, prefix, frames, crit, isEx) {
     var el;
-    var urls = [];
-    var fr;
+    var urls;
     var frameMs;
-    if (!layer || !prefix || !(frames | 0)) return;
-    for (fr = 1; fr <= (frames | 0); fr++) urls.push(mlsKomaFxUrl(prefix, fr));
+    var n = Math.max(1, frames | 0);
+    var holdMs;
+    if (!layer || !prefix) return;
+    urls = mlsKomaFxUrls(prefix, n);
+    if (!urls.length) return;
     el = document.createElement('img');
     el.className = 'mls-koma-fx' +
       (isEx ? ' is-ex' : '') +
@@ -556,12 +716,43 @@
     el.decoding = 'async';
     el.style.left = x + 'px';
     el.style.top = y + 'px';
-    el.src = urls[0];
-    layer.appendChild(el);
-    frameMs = Math.max(22, Math.round(32 / battlePaceMul()));
-    mlsKomaPlayFlipbook(el, urls, frameMs, function () {
+    el.style.visibility = 'hidden';
+    function reject() {
       if (el.parentNode) el.parentNode.removeChild(el);
-    });
+    }
+    function startPlay() {
+      if (!mlsKomaFxIsUsableSpark(el)) {
+        reject();
+        return;
+      }
+      el.style.visibility = '';
+      if (urls.length <= 1) {
+        holdMs = Math.max(220, Math.round(380 / battlePaceMul()));
+        setTimeout(reject, holdMs);
+        return;
+      }
+      frameMs = Math.max(22, Math.round(32 / battlePaceMul()));
+      mlsKomaPlayFlipbook(el, urls, frameMs, reject);
+    }
+    el.onerror = function () {
+      var alt;
+      el.onerror = null;
+      if (n <= 1 && String(el.getAttribute('src') || '').indexOf('_1.webp') < 0) {
+        alt = thumbUrl('/static/images/Master League/Simulator/fx/' + prefix + '_1.webp');
+        if (alt) {
+          el.onload = function () { el.onload = null; startPlay(); };
+          el.src = alt;
+          return;
+        }
+      }
+      reject();
+    };
+    el.onload = function () {
+      el.onload = null;
+      startPlay();
+    };
+    layer.appendChild(el);
+    el.src = urls[0];
   }
 
   /**
@@ -580,10 +771,8 @@
     u.komaKit = kit;
     if (!kit) return u;
     if (!u.komaFacing) u.komaFacing = mlsKomaFacingFromDir(u.direction);
-    /* Never store IngameKoma paths as portraitThum — board HP strip needs Trait thumbs. */
-    if (!u.portraitThum || String(u.portraitThum).indexOf('Simulator/koma') >= 0) {
-      u.portraitThum = thumbUrl('/static/images/Trait/thum/thum_' + kit.komaId + '.webp');
-    }
+    /* Chips always Trait/thum — overwrite ub_/koma leftovers so order HUD never paints standby. */
+    u.portraitThum = thumbUrl('/static/images/Trait/thum/thum_' + kit.komaId + '.webp');
     cur = String(u.thum || '');
     if (/_(weapon\d+|et01|map)_/.test(cur) && cur.indexOf('Simulator') >= 0) return u;
     u.thum = mlsKomaStandbyUrl(kit, u.komaFacing);
@@ -7845,6 +8034,8 @@
     if (komaKit) {
       try { komaKit = JSON.parse(JSON.stringify(komaKit)); } catch (eK) { /* keep */ }
       mlsKomaBindWeaponSlots(komaKit, actorWeapons);
+      /* Order / HP chips stay Trait/thum; map token uses standby below. */
+      portraitThum = thumbUrl('/static/images/Trait/thum/thum_' + komaKit.komaId + '.webp');
     }
     var actor = {
       side: side,
@@ -8380,10 +8571,7 @@
       auraDebuffHtml(u) +
       vigorHudHtml(u) +
       '<div class="mls-token-frame">' +
-      (u.thum
-        ? '<img class="mls-token-thum" src="' + esc(u.thum) + '" alt="' + esc(u.name) +
-          '" loading="eager" decoding="async" fetchpriority="high">'
-        : '') +
+      mlsKomaTokenImgHtml(u) +
       '</div>' +
       supportStockHtml(u) +
       '<div class="mls-token-hp" aria-hidden="true">' +
@@ -8855,16 +9043,11 @@
       if (u.thum && el.getAttribute('data-koma-busy') !== '1') {
         if (!thumEl) {
           frameEl = el.querySelector('.mls-token-frame');
-          if (frameEl) {
-            frameEl.insertAdjacentHTML(
-              'afterbegin',
-              '<img class="mls-token-thum" src="' + esc(u.thum) + '" alt="' + esc(u.name || '') +
-                '" loading="eager" decoding="async" fetchpriority="high">'
-            );
-          }
+          if (frameEl) frameEl.insertAdjacentHTML('afterbegin', mlsKomaTokenImgHtml(u));
         } else {
           if (thumEl.getAttribute('src') !== u.thum) thumEl.src = u.thum;
           if (thumEl.alt !== (u.name || '')) thumEl.alt = u.name || '';
+          mlsBindKomaImgFallback(thumEl, u);
         }
       }
       syncTopMarksEl(el, u);
@@ -9164,21 +9347,13 @@
         if (tgtEl.parentNode) tgtEl.classList.remove('is-hit-stop');
       }, Math.round((crit ? 280 : 220) / battlePaceMul()));
     }
+    /* Hit FX only (no weapon-strip flipbook) — sparks on the target cell. */
     spawnImpactBurst(host, win, linkEvt.to, linkEvt.side, crit, kit, fxPack);
   }
 
   function boardHpFaceUrl(u) {
-    var face;
-    var kid;
-    if (!u) return '';
-    face = String(u.portraitThum || '');
-    /* Prefer list portrait thumb — koma battle art is for the map token only. */
-    if (face && face.indexOf('Simulator/koma') < 0) return thumbUrl(face);
-    face = String(u.thum || '');
-    if (face && face.indexOf('Simulator/koma') < 0) return thumbUrl(face);
-    kid = u.komaKit && u.komaKit.komaId;
-    if (kid) return thumbUrl('/static/images/Trait/thum/thum_' + kid + '.webp');
-    return thumbUrl(u.thum || '');
+    /* Same as order chips — never fall through to Simulator/koma standby. */
+    return mlsPortraitFaceUrl(u);
   }
 
   function boardHpUnitHtml(u) {
@@ -9191,6 +9366,8 @@
     var face = boardHpFaceUrl(u);
     var dead = hp <= 0 && !u.lingerKo;
     var slotNo = ((u.slotIdx | 0) + 1);
+    if (face && mlsIsKomaUrl(face)) face = mlsPortraitFaceUrl(u);
+    if (face && mlsIsKomaUrl(face)) face = '';
     return '<div class="mls-board-hp-unit ' + (u.side === 'ally' ? 'ally' : 'enemy') +
       (u.active ? ' is-active' : '') +
       (dead || (hp <= 0 && u.lingerKo) ? ' is-dead' : '') +
@@ -9199,7 +9376,7 @@
       '" title="' + esc((u.name || '') + ' #' + slotNo) + '">' +
       '<span class="mls-board-hp-slot" aria-hidden="true">' + slotNo + '</span>' +
       (face
-        ? '<img class="mls-board-hp-thum" src="' + esc(face) + '" alt="" width="28" height="28" decoding="async">'
+        ? '<img class="mls-board-hp-thum" data-mls-face="trait" src="' + esc(face) + '" alt="" width="28" height="28" decoding="async">'
         : '<span class="mls-board-hp-thum" aria-hidden="true"></span>') +
       '<span class="mls-board-hp-meta">' +
       '<span class="mls-board-hp-meter" aria-hidden="true">' +
@@ -9651,7 +9828,7 @@
           '" title="Mobility ' + mobPart + ' + Reaction ' + reactPart + ' = ' + spd + '">' +
           '<span class="mls-tl-n">' + nShown + '</span>' +
           '<span class="mls-tl-body">' +
-          (u.thum ? '<img src="' + esc(u.thum) + '" alt="">' : '') +
+          mlsTlChipFaceHtml(u) +
           '<span class="mls-tl-meta">' +
           '<span class="mls-tl-name">' + esc(nm || '—') + '</span>' +
           '<span class="mls-tl-spd">' + spd + '</span>' +
@@ -9661,6 +9838,26 @@
       html = parts.join('');
     }
     commitTimeline(html);
+  }
+
+  /** Turn-order / formation chip <img> — Trait/thum only (never map koma standby). */
+  function mlsTlChipFaceHtml(u) {
+    var face = mlsPortraitFaceUrl(u);
+    if (!face || mlsIsKomaUrl(face)) {
+      face = '';
+      if (u && u.komaKit && u.komaKit.komaId) {
+        face = thumbUrl('/static/images/Trait/thum/thum_' + u.komaKit.komaId + '.webp');
+      } else if (u && u.id) {
+        try {
+          var kit = mlsKomaKit(u.id);
+          if (kit && kit.komaId) {
+            face = thumbUrl('/static/images/Trait/thum/thum_' + kit.komaId + '.webp');
+          }
+        } catch (eFace) { /* ignore */ }
+      }
+    }
+    if (!face || mlsIsKomaUrl(face)) return '';
+    return '<img class="mls-tl-face" data-mls-face="trait" src="' + esc(face) + '" alt="">';
   }
 
   function cloneArmy(list) {
@@ -13551,5 +13748,13 @@
     }).catch(function (e) { log(String(e && e.message || e)); });
   }
 
-  global.GgenMlSim = { onTabShown: onTabShown, onTabHidden: onTabHidden, applyLang: applyLang };
+  global.GgenMlSim = {
+    onTabShown: onTabShown,
+    onTabHidden: onTabHidden,
+    applyLang: applyLang,
+    onKomaImgError: onKomaImgError,
+    /* Chip face helper — Trait/thum only (never IngameKoma). */
+    chipFaceUrl: mlsPortraitFaceUrl,
+    chipFaceMark: MLS_CHIP_FACE_MARK
+  };
 })(window);

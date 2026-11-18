@@ -2471,10 +2471,10 @@ body.mls-is-map-dragging .mls-map {
 }
 .mls-koma-fx {
   position: absolute;
-  width: 72px;
-  height: 72px;
-  margin-left: -36px;
-  margin-top: -36px;
+  width: 88px;
+  height: 88px;
+  margin-left: -44px;
+  margin-top: -44px;
   object-fit: contain;
   pointer-events: none;
   z-index: 12;
@@ -2483,10 +2483,10 @@ body.mls-is-map-dragging .mls-map {
   mix-blend-mode: screen;
 }
 .mls-koma-fx.is-ex {
-  width: 96px;
-  height: 96px;
-  margin-left: -48px;
-  margin-top: -48px;
+  width: 120px;
+  height: 120px;
+  margin-left: -60px;
+  margin-top: -60px;
 }
 .mls-koma-fx.is-crit {
   width: 88px;
@@ -3141,6 +3141,24 @@ body.mls-is-map-dragging .mls-map {
 .mls-token-badge.is-chip.is-cs { color: #e8d6ff; }
 .mls-token-badge.is-chip.is-map { color: #9fe8ff; }
 .mls-token-badge.is-chip.is-skill { color: #e8d6ff; }
+/* Live S.ATK / S.DEF announce — same corner as stock, protrude past the cell. */
+.mls-token-badge.is-chip.is-satk,
+.mls-token-badge.is-chip.is-sdef {
+  top: auto;
+  bottom: -6px;
+  transform: none;
+  z-index: 15;
+}
+.mls-token.ally .mls-token-badge.is-chip.is-satk,
+.mls-token.ally .mls-token-badge.is-chip.is-sdef {
+  left: auto;
+  right: -6px;
+}
+.mls-token.enemy .mls-token-badge.is-chip.is-satk,
+.mls-token.enemy .mls-token-badge.is-chip.is-sdef {
+  right: auto;
+  left: -6px;
+}
 .mls-token-badge.is-chip img {
   width: 14px;
   height: 14px;
@@ -3156,7 +3174,8 @@ body.mls-is-map-dragging .mls-map {
 }
 /*
  * Head chrome (top → bottom):
- *   debuff / aura / crown  →  tension (Max/High)  →  S.ATK / S.DEF stock
+ *   debuff / aura / crown  →  tension (Max/High)
+ * S.ATK / S.DEF stock: ally bottom-right · enemy bottom-left (may protrude past the cell).
  * Never let Cond:Area / Inflict sit on the Assist icons.
  */
 .mls-aura-debuffs {
@@ -3355,21 +3374,28 @@ body.mls-is-map-dragging .mls-map {
   pointer-events: none;
 }
 /* Role type + pilot face omitted on battle tokens (formation-only). */
-/* S.ATK / S.DEF stock — under tension, centered above the portrait. */
+/* S.ATK / S.DEF stock — ally bottom-right · enemy bottom-left; may protrude past the cell. */
 .mls-support-stock-row {
   position: absolute;
   top: auto;
-  right: auto;
-  left: 50%;
-  bottom: calc(100% + 1px);
+  bottom: -5px;
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-end;
   gap: 2px;
-  z-index: 8;
-  transform: translateX(-50%);
+  z-index: 14;
+  transform: none;
   pointer-events: none;
+}
+.mls-token.ally .mls-support-stock-row {
+  left: auto;
+  right: -5px;
+  align-items: flex-end;
+}
+.mls-token.enemy .mls-support-stock-row {
+  right: auto;
+  left: -5px;
+  align-items: flex-start;
 }
 .mls-support-stock {
   display: inline-flex;

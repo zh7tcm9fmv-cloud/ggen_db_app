@@ -6,6 +6,25 @@ const IMAGE_CDN = (function(){
     if (low.startsWith('file:') || low.startsWith('filesystem:') || /^[a-zA-Z]:[\\/]/.test(raw) || raw.startsWith('\\\\')) return '';
     return raw;
 })();
+/* jsDelivr tracks git; GitHub Pages often lags / omits large Master League/Simulator trees. */
+const IMAGE_CDN_JSDELIVR = 'https://cdn.jsdelivr.net/gh/zh7tcm9fmv-cloud/ggen_db_images@main';
+function _imageCdnBaseForRel(relUnderImages){
+    const base = IMAGE_CDN;
+    if (!base) return '';
+    const rel = String(relUnderImages || '').replace(/^\/+/, '').replace(/Master%20League/gi, 'Master League');
+    if (/github\.io\/ggen_db_images/i.test(base) && /^Master League\/Simulator\//i.test(rel)) {
+        return IMAGE_CDN_JSDELIVR;
+    }
+    return base;
+}
+/** Absolute github.io Simulator URLs → jsDelivr (Pages lags big koma/FX trees). */
+function _rewriteGithubIoSimulatorToJsdelivr(url){
+    const s = String(url || '');
+    if (!s) return s;
+    const m = s.match(/^https?:\/\/zh7tcm9fmv-cloud\.github\.io\/ggen_db_images\/images\/(Master(?:%20| )League\/Simulator\/.+)$/i);
+    if (!m) return s;
+    return IMAGE_CDN_JSDELIVR + '/images/' + m[1].replace(/ /g, '%20');
+}
 const VIDEO_CDN = (function(){
     const raw = String(window.__GGEN_VIDEO_CDN__ || '').replace(/\/+$/, '');
     if (!raw) return '';
@@ -48,13 +67,16 @@ function imgUrl(path) {
     const hit = _imgUrlCache.get(path);
     if (hit !== undefined) return hit;
     let out;
-    if (path.startsWith('http://') || path.startsWith('https://')) out = path;
-    else if (!path.startsWith('/static/images/')) {
+    if (path.startsWith('http://') || path.startsWith('https://')) {
+        out = _rewriteGithubIoSimulatorToJsdelivr(path);
+    } else if (!path.startsWith('/static/images/')) {
         out = path.startsWith('/') ? path : '';
     } else {
         const gamePath = path.replace(/\.(png|jpg|jpeg)(\?|#|$)/i, '.webp$2');
-        if (IMAGE_CDN && GAME_IMAGES_USE_CDN && !_isBlockedMediaUrl(IMAGE_CDN)) out = IMAGE_CDN + '/images/' + gamePath.substring('/static/images/'.length);
-        else out = gamePath;
+        if (IMAGE_CDN && GAME_IMAGES_USE_CDN && !_isBlockedMediaUrl(IMAGE_CDN)) {
+            const rel = gamePath.substring('/static/images/'.length);
+            out = _imageCdnBaseForRel(rel) + '/images/' + rel;
+        } else out = gamePath;
     }
     if (_isBlockedMediaUrl(out)) out = '';
     if (out && (out.indexOf('#') >= 0 || out.indexOf(' ') >= 0)) {

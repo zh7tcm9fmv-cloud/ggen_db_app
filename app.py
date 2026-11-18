@@ -1619,6 +1619,22 @@ def _prefer_webp_game_path(path):
     return re.sub(r'\.(png|jpe?g)(?=($|[?#]))', '.webp', path, flags=re.I)
 
 
+def _image_cdn_base_for_rel(rel_under_images: str) -> str:
+    """Pick CDN host for a path under images/.
+
+    GitHub Pages often lags (or soft-drops) large ``Master League/Simulator`` trees
+    after big koma/FX pushes, while jsDelivr tracks git immediately. When IMAGE_CDN
+    is github.io, route Simulator assets to the jsDelivr mirror.
+    """
+    base = (IMAGE_CDN or '').rstrip('/')
+    if not base:
+        return ''
+    rel = (rel_under_images or '').lstrip('/').replace('Master%20League', 'Master League')
+    if 'github.io/ggen_db_images' in base.lower() and rel.startswith('Master League/Simulator/'):
+        return _DEFAULT_IMAGE_CDN.rstrip('/')
+    return base
+
+
 def game_image_public_url(path):
     """Resolve /static/images/* to an absolute CDN URL when IMAGE_CDN and GAME_IMAGES_USE_CDN are set."""
     if not path or not isinstance(path, str) or _is_blocked_media_url(path):
@@ -1627,7 +1643,8 @@ def game_image_public_url(path):
         return path
     path = _prefer_webp_game_path(path)
     if IMAGE_CDN and GAME_IMAGES_USE_CDN and not _is_blocked_media_url(IMAGE_CDN):
-        return IMAGE_CDN.rstrip('/') + '/images/' + path[len('/static/images/'):]
+        rel = path[len('/static/images/'):]
+        return _image_cdn_base_for_rel(rel) + '/images/' + rel
     return path
 
 # Load the image map
@@ -1695,7 +1712,7 @@ _RAILWAY_SAME_ORIGIN_FONTS = frozenset({
 def static_game_images_cdn_offload(filename):
     """Offload CSS/hardcoded /static/images/* to IMAGE_CDN (same asset; Railway stops paying image bytes)."""
     if IMAGE_CDN and GAME_IMAGES_USE_CDN and not _is_blocked_media_url(IMAGE_CDN):
-        dest = IMAGE_CDN.rstrip('/') + '/images/' + filename
+        dest = _image_cdn_base_for_rel(filename) + '/images/' + filename
         qs = request.query_string.decode('utf-8', 'ignore') if request.query_string else ''
         if qs:
             dest = dest + '?' + qs
