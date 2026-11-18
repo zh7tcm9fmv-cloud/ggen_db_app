@@ -2359,12 +2359,15 @@
    *   1. Prefer EX / highest non-MAP first — never open with MAP when that shot
    *      (from current tile or after a normal move) kills the engage target under
    *      AI Defend/Shield with no Support Defense cover.
-   *   2. Only then use MAP when BOTH:
+   *   2. Only then use MAP when ALL of:
    *        - engage survives best non-MAP (EX cannot finish — includes SD cover)
    *        - living enemies in the MAP shape ≥ MasterLeague auto-usage threshold
    *          (Altron / Strike Noir EX = 1; falls back to 2 when MD omitted)
-   *      Engage must be in the MAP shape. MAP KO is preferred when ranking, but
-   *      not required — chip MAP is correct when EX also cannot finish.
+   *        - engage is in the MAP shape
+   *        - raw MAP damage KOs the engage (no chip-MAP — WZC Twin Buster /
+   *          F90 Barrage at high CP must not open just to nick full-HP tanks)
+   *      Ranking among legal MAP plans: more kills → more total damage → more
+   *      units in shape. Killing only a side foe (engage lives) never qualifies.
    * Dash MAP (type 4, e.g. V2AB Wings of Light / 光之翼): fire from the current
    * tile (no pre-move); land at `dashTo` after hits resolve.
    * After-move impact MAP (type 2, Altron / Strike Noir): step into range, then
@@ -2550,11 +2553,10 @@
       engageKilled = (target.hp | 0) - mapDmgOnEngage <= 0;
       /*
        * Engage already known to survive best non-MAP (gate above).
-       * Threshold + engage-in-shape already enforced — allow chip MAP when EX
-       * also cannot finish (Altron / Strike Noir vs SD tanks). Prefer MAP that
-       * KO's engage, then more kills / damage, when ranking candidates.
+       * Threshold + engage-in-shape already enforced — still require MAP to KO
+       * the engage (no chip). Side-foe-only kills do not qualify.
        */
-      if (mapDmgOnEngage <= 0) continue;
+      if (!engageKilled) continue;
 
       if (isDash) {
         fireActor = {
@@ -2565,13 +2567,10 @@
       }
 
       better = !best ||
-        (engageKilled && !best.engageKilled) ||
-        (engageKilled === !!best.engageKilled && (
-          mapKills > best.mapKills ||
-          (mapKills === best.mapKills && totalDmg > best.totalDmg) ||
-          (mapKills === best.mapKills && totalDmg === best.totalDmg &&
-            inArea.length > (best.targets || []).length)
-        ));
+        mapKills > best.mapKills ||
+        (mapKills === best.mapKills && totalDmg > best.totalDmg) ||
+        (mapKills === best.mapKills && totalDmg === best.totalDmg &&
+          inArea.length > (best.targets || []).length);
       if (better) {
         best = {
           weapon: wpn,
@@ -2581,7 +2580,7 @@
           dashTo: dashTo,
           mapKills: mapKills,
           totalDmg: totalDmg,
-          engageKilled: !!engageKilled,
+          engageKilled: true,
           enCost: cost,
           freeAmmo: free
         };

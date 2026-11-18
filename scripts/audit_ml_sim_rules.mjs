@@ -442,10 +442,11 @@ assert(rules.checkHit(parryAtk, Object.assign({}, parryDef, { usedParryCount: 0,
   assert(!mapPlanChip, 'F90 Barrage MAP skipped vs Barrage EX on chip (AoE sum must not win), got ' +
     (mapPlanChip && mapPlanChip.weapon && mapPlanChip.weapon.name));
 
-  /* Soft foes: EX kills engage → never open with MAP even if MAP would multi-kill (V2AB Wings lesson). */
+  /* Soft foes: EX kills engage → never open with MAP even if MAP would multi-kill (V2AB Wings lesson).
+   * HP must be high enough to pick Defend (not Evade); audit damageOf ignores defend flags so raw EX still KOs. */
   const softFoes = [
-    { id: 's2', hp: 4000, x: 8, y: 9, size: 1, side: 'enemy' },
-    { id: 's4', hp: 4000, x: 8, y: 7, size: 1, side: 'enemy' }
+    { id: 's2', hp: 5500, x: 8, y: 9, size: 1, side: 'enemy' },
+    { id: 's4', hp: 5500, x: 8, y: 7, size: 1, side: 'enemy' }
   ];
   const mapPlanSoft = rules.evaluateMapWeapon(
     f90, softFoes[1], softFoes, [f90].concat(softFoes), lineBounds, (a, d, w) => w.power | 0
@@ -505,16 +506,48 @@ assert(rules.checkHit(parryAtk, Object.assign({}, parryDef, { usedParryCount: 0,
     'MAP opens on raw KO (Shield ignored on MAP), got ' +
     (mapPlanShield && mapPlanShield.weapon && mapPlanShield.weapon.name));
 
-  /* Strong EX finishes engage (Defend/Shield/Evade on EX path) → still prefer EX over MAP. */
+  /* Strong EX finishes engage under Shield (unit.mechanisms + HP picks Shield, not Evade) → prefer EX. */
   const strongEx = Object.assign({}, barrageEx, { power: 150000 });
   const wingEx = Object.assign({}, f90, { weapons: [rollingMap, strongEx] });
+  const shieldEngageExFirst = [
+    {
+      id: 'sh2e', hp: 95000, x: 8, y: 9, size: 1, side: 'enemy',
+      unit: { mechanisms: [{ mechanism_type_key: 'ShieldDefense', name: 'Shield Defense' }] }
+    },
+    {
+      id: 'sh4e', hp: 95000, x: 8, y: 7, size: 1, side: 'enemy',
+      unit: { mechanisms: [{ mechanism_type_key: 'ShieldDefense', name: 'Shield Defense' }] }
+    }
+  ];
   const mapPlanExFirst = rules.evaluateMapWeapon(
-    wingEx, shieldEngage[1], shieldEngage, [wingEx].concat(shieldEngage), lineBounds,
+    wingEx, shieldEngageExFirst[1], shieldEngageExFirst, [wingEx].concat(shieldEngageExFirst), lineBounds,
     (a, d, w) => w.power | 0
   );
   assert(!mapPlanExFirst,
     'MAP skipped when Twin Buster–class EX finishes engage (prefer EX), got ' +
     (mapPlanExFirst && mapPlanExFirst.weapon && mapPlanExFirst.weapon.name));
+
+  /* WZC Twin Buster–class: EX cannot finish full-HP tanks and MAP only chips → no MAP. */
+  const twinBuster = Object.assign({}, barrageMap, {
+    name: 'Twin Buster Rifle', power: 4320, min_range: 1, max_range: 6
+  });
+  twinBuster.raw = Object.assign({}, barrageMap.raw, { map_coords: barrageMap.map_coords });
+  const weakExWz = Object.assign({}, barrageEx, { power: 6720 });
+  const wzc = Object.assign({}, f90, {
+    name: 'Wing Gundam Zero (EW)',
+    weapons: [twinBuster, weakExWz]
+  });
+  const highCpFoes = [
+    { id: 'h2', hp: 180000, x: 8, y: 9, size: 1, side: 'enemy' },
+    { id: 'h4', hp: 150000, x: 8, y: 7, size: 1, side: 'enemy' }
+  ];
+  const mapPlanWzChip = rules.evaluateMapWeapon(
+    wzc, highCpFoes[1], highCpFoes, [wzc].concat(highCpFoes), lineBounds,
+    (a, d, w) => w.power | 0
+  );
+  assert(!mapPlanWzChip,
+    'WZC Twin Buster MAP skipped on high-CP chip (EX+MAP cannot KO engage), got ' +
+    (mapPlanWzChip && mapPlanWzChip.weapon && mapPlanWzChip.weapon.name));
 }
 
 /* V2AB Wings of Light — dash MAP (type 4): land at far shooting_coord; skip when EX kills. */
@@ -542,9 +575,10 @@ assert(rules.checkHit(parryAtk, Object.assign({}, parryDef, { usedParryCount: 0,
     hp: 50000, maxHp: 50000, currentEn: 200, maxEn: 200, mp: 0,
     weapons: [wings, barrageEx]
   };
+  /* HP picks Defend vs EX 7200 (not Evade); audit damageOf ignores defend → EX still KOs. */
   const soft = [
-    { id: 'e2', hp: 4000, x: 10, y: 7, size: 1, side: 'enemy' },
-    { id: 'e4', hp: 4000, x: 9, y: 7, size: 1, side: 'enemy' }
+    { id: 'e2', hp: 6000, x: 10, y: 7, size: 1, side: 'enemy' },
+    { id: 'e4', hp: 6000, x: 9, y: 7, size: 1, side: 'enemy' }
   ];
   const bounds = { minX: 0, maxX: 20, minY: 0, maxY: 20 };
   /* Facing left (dir 3): local (0,y) → world x = 12 - y. Soft anchors at x=10,9 on the dash path. */
@@ -561,13 +595,18 @@ assert(rules.checkHit(parryAtk, Object.assign({}, parryDef, { usedParryCount: 0,
 
   const weakEx = Object.assign({}, barrageEx, { power: 3000 });
   const v2Weak = Object.assign({}, v2, { weapons: [wings, weakEx] });
+  /* Lower HP so Wings MAP KOs engage; EX 3000 still cannot finish through Defend. */
+  const softMap = [
+    { id: 'e2m', hp: 4000, x: 10, y: 7, size: 1, side: 'enemy' },
+    { id: 'e4m', hp: 4000, x: 9, y: 7, size: 1, side: 'enemy' }
+  ];
   const mapWings = rules.evaluateMapWeapon(
-    v2Weak, soft[0], soft, [v2Weak].concat(soft), bounds, (a, d, w) => w.power | 0
+    v2Weak, softMap[0], softMap, [v2Weak].concat(softMap), bounds, (a, d, w) => w.power | 0
   );
   assert(mapWings && mapWings.weapon && mapWings.weapon.name === 'Wings of Light',
     'V2AB Wings used when EX cannot kill, MAP kills engage, 2+ on path, got ' +
     (mapWings && mapWings.weapon && mapWings.weapon.name));
-  assert(mapWings.dashTo && mapWings.dashTo.x === 8 && mapWings.dashTo.y === 7,
+  assert(mapWings && mapWings.dashTo && mapWings.dashTo.x === 8 && mapWings.dashTo.y === 7,
     'V2AB Wings plan includes dashTo (8,7), got ' + JSON.stringify(mapWings && mapWings.dashTo));
 }
 

@@ -3,7 +3,8 @@
 
 html .modal-content.char-detail:not(.detail-ranking-view) .detail-portrait-stack > .detail-portrait-wrap,
 html .modal-content.unit-detail:not(.detail-ranking-view) .detail-portrait-stack > .detail-portrait-wrap{
-  width:400px;
+  /* Same proportion as iPad Pro 13" (400px on a ~1000px sheet). Narrower iPads scale with the modal. */
+  width:min(400px,42cqw);
   max-width:100%;
 }
 
@@ -23,15 +24,8 @@ html .modal-content.unit-detail:not(.detail-ranking-view) .detail-header .detail
   box-shadow:none;
 }
 
-@media(max-width:1024px){
-  html .modal-content.char-detail:not(.detail-ranking-view) .detail-portrait-stack > .detail-portrait-wrap,
-  html .modal-content.unit-detail:not(.detail-ranking-view) .detail-portrait-stack > .detail-portrait-wrap{
-    width:320px;
-  }
-}
-
-@media(max-width:768px){
-  /* Keep in lockstep with app_shell mobile hero (centered, not full-bleed). */
+@media(max-width:700px){
+  /* Phone hero only. iPad Mini / Air / Pro keep the Pro 13" side-by-side portrait. */
   html .modal-content.char-detail:not(.detail-ranking-view) .detail-portrait-stack > .detail-portrait-wrap,
   html .modal-content.unit-detail:not(.detail-ranking-view) .detail-portrait-stack > .detail-portrait-wrap{
     width:min(240px,72vw);
@@ -39,7 +33,5 @@ html .modal-content.unit-detail:not(.detail-ranking-view) .detail-header .detail
     margin-left:auto;
     margin-right:auto;
   }
-  /* Do NOT set --stage here. This file loads after app_shell and was pinning
-     phone/mini koma to the old ~108px size. Stage sizes live in app_shell only
-     (phone ≤768, mini 600–768, Air ≥769). */
+  /* Do NOT set --stage here. Stage sizes live in app_shell (phone ≤700). */
 }

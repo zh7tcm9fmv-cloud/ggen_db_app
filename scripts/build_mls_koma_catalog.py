@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Build data/published/mls_koma_catalog_v1.json from Simulator koma/fx + UR export manifest.
+Build data/published/mls_koma_catalog_v1.json from Simulator koma/fx + export manifest.
 
-Scans local ggen_db_images checkout (or --sim). Used by /mls to enable IngameKoma for all UR kits.
+Scans local ggen_db_images checkout (or --sim). Maps every master unit whose
+KomaResourceId has a Simulator/koma/{id}/ folder (all rarities — not UR-only).
+UR_EXPORT_MANIFEST still supplies FX refs / overrides when present.
 """
 from __future__ import annotations
 
@@ -42,12 +44,11 @@ AVOID_FX = (
 )
 
 
-def load_ur_units() -> dict[str, list[str]]:
+def load_units_by_koma() -> dict[str, list[str]]:
+    """komaId → unit ids for every rarity that has a KomaResourceId."""
     rows = json.loads(MASTER.read_text(encoding="utf-8"))
     by: dict[str, list[str]] = defaultdict(list)
     for r in rows:
-        if str(r.get("RarityTypeIndex")) != "5":
-            continue
         kid = str(r.get("KomaResourceId") or "").strip()
         if not kid:
             continue
@@ -280,7 +281,7 @@ def main() -> int:
         man_units = (json.loads(man_path.read_text(encoding="utf-8")).get("units") or {})
 
     fx_prefixes = index_fx_prefixes(fx_root)
-    ur_by_koma = load_ur_units()
+    units_by_koma = load_units_by_koma()
 
     by_unit: dict[str, dict] = {}
     by_koma: dict[str, dict] = {}
@@ -315,7 +316,7 @@ def main() -> int:
             "exImpactFrames": ex_n,
         }
         by_koma[kid] = kit
-        unit_ids = ur_by_koma.get(kid) or list((man_units.get(kid) or {}).get("unit_ids") or [])
+        unit_ids = units_by_koma.get(kid) or list((man_units.get(kid) or {}).get("unit_ids") or [])
         for uid in unit_ids:
             entry = dict(kit)
             ov = OVERRIDES.get(str(uid))
@@ -325,7 +326,7 @@ def main() -> int:
 
     catalog = {
         "version": 1,
-        "purpose": "MLS IngameKoma catalog for all UR kits",
+        "purpose": "MLS IngameKoma catalog for all rarities with Simulator/koma assets",
         "cdn_folder": "images/Master League/Simulator",
         "unit_count": len(by_unit),
         "koma_count": len(by_koma),
@@ -337,8 +338,8 @@ def main() -> int:
     pretty = args.out.with_name(args.out.stem + "_pretty.json")
     pretty.write_text(json.dumps(catalog, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(f"Wrote {args.out}  units={len(by_unit)} koma={len(by_koma)} fx_prefixes={len(fx_prefixes)}")
-    # spot checks
-    for uid in ("1217002150", "1217000650", "1001000150"):
+    # spot checks — UR + SSR (AGE-1 Flat) must resolve after all-rarity rebuild
+    for uid in ("1217002150", "1217000650", "1001000150", "1400008110"):
         k = by_unit.get(uid)
         if not k:
             print(" missing", uid)

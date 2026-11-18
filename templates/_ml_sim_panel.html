@@ -214,11 +214,21 @@
         <div class="mls-timeline mls-timeline--map" id="mlsTimeline"></div>
       </aside>
     </div>
+    <div class="mls-transport" id="mlsTransport" hidden>
+      <button type="button" class="mls-transport-play" id="mlsTransportPlay" disabled aria-label="Play" title="Play / Pause">
+        <span class="mls-transport-play-ic" aria-hidden="true">▶</span>
+      </button>
+      <span class="mls-transport-time" id="mlsTransportTime">0:00 / 0:00</span>
+      <input type="range" class="mls-transport-scrub" id="mlsTransportScrub"
+        min="0" max="0" value="0" step="1" disabled
+        aria-label="Battle playback position">
+      <button type="button" class="mls-btn mls-transport-speed" id="mlsSpeed" title="Playback speed">1×</button>
+    </div>
     <div class="mls-controls">
       <div class="mls-controls-main">
         <button type="button" class="mls-btn primary mls-sim-start" id="mlsFight" data-mls-i18n="mls_sim_start">SIMULATION START</button>
-        <button type="button" class="mls-btn" id="mlsPause" disabled data-mls-i18n="mls_pause">PAUSE</button>
-        <button type="button" class="mls-btn" id="mlsSpeed" title="Playback speed">1×</button>
+        <!-- Play/Pause is on #mlsTransport; keep mlsPause in DOM for any legacy handlers but hidden. -->
+        <button type="button" class="mls-btn" id="mlsPause" hidden disabled aria-hidden="true" tabindex="-1" data-mls-i18n="mls_pause">PAUSE</button>
         <button type="button" class="mls-btn" id="mlsSkip" disabled data-mls-i18n="mls_skip">SKIP</button>
         <button type="button" class="mls-btn" id="mlsReset" title="Reset battle map to formation start" data-mls-i18n="mls_reset">RESET</button>
         <button type="button" class="mls-btn" id="mlsBackForm">← Formation</button>

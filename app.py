@@ -36130,7 +36130,7 @@ _MLS_KOMA_CATALOG_MTIME = None
 
 
 def _load_mls_koma_catalog():
-    """Published UR IngameKoma catalog (strips + impact FX prefixes)."""
+    """Published IngameKoma catalog (strips + impact FX; all rarities with CDN koma)."""
     global _MLS_KOMA_CATALOG_CACHE, _MLS_KOMA_CATALOG_MTIME
     path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                         'data', 'published', 'mls_koma_catalog_v1.json')
@@ -36152,7 +36152,7 @@ def _load_mls_koma_catalog():
 
 @app.route('/api/ml_sim/koma_catalog')
 def api_ml_sim_koma_catalog():
-    """IngameKoma strip/FX catalog for all UR kits (CDN Simulator assets)."""
+    """IngameKoma strip/FX catalog for kits with Simulator/koma on CDN (all rarities)."""
     data = _load_mls_koma_catalog()
     ck = 'mls_koma_catalog_v1_%s' % (
         int(_MLS_KOMA_CATALOG_MTIME or 0),

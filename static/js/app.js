@@ -7129,17 +7129,10 @@ try{updateModalDetailChromeScroll()}catch(_){}
 }
 function adjustDetailModalLayout(){
 const mc=document.getElementById('modalContent');
-if(!mc||!mc.classList.contains('modal-content'))return;
-const chrome=document.getElementById('modalDetailChrome');
-const closeBtn=chrome&&chrome.querySelector('.modal-close--chrome');
-const deskRec=mc.querySelector('.detail-rec-shortcut--desktop .detail-rec-link-card');
-let collision=false;
-if(closeBtn&&deskRec&&deskRec.offsetParent!==null){
-const cr=closeBtn.getBoundingClientRect();
-const rr=deskRec.getBoundingClientRect();
-collision=cr.bottom>rr.top+2&&cr.right>rr.left+8&&cr.left<rr.right-8;
-}
-mc.classList.toggle('modal-content--rec-collision',collision);
+if(!mc)return;
+/* Recommend card stays in the desktop header slot. A close-button overlap
+   test hid that slot and never remeasured, so the card stuck in the mobile slot. */
+if(mc.classList.contains('modal-content--rec-collision'))mc.classList.remove('modal-content--rec-collision');
 }
 function syncModalDetailChrome(){
 const chrome=document.getElementById('modalDetailChrome');
@@ -7164,13 +7157,7 @@ mc.classList.toggle('modal-content--has-entity-id',!!eid);
 chrome.classList.remove('modal-detail-chrome--scrolled');
 if(typeof initDetailModalChromeScroll==='function')initDetailModalChromeScroll();
 requestAnimationFrame(updateModalDetailChromeScroll);
-if(typeof ResizeObserver!=='undefined'){
-if(!S._detailModalLayoutObs){
-S._detailModalLayoutObs=new ResizeObserver(()=>adjustDetailModalLayout());
-S._detailModalLayoutObs.observe(mc);
-}
-}else adjustDetailModalLayout();
-requestAnimationFrame(adjustDetailModalLayout);
+adjustDetailModalLayout();
 }
 
 /** Detail enter morph disabled (owner: remove until a snappier recipe lands). */
@@ -9825,7 +9812,7 @@ if(rt==='1'&&sid){
 const oc=`event.stopPropagation();openSeriesModal('${escJs(sid)}','units','${escJs(name)}')`;
 if(iconRaw){
 const src=imgUrlWebp(imgUrlPreferCdn(iconRaw));
-return`<button type="button" class="series-icon-hitbox stage-sortie-series-hitbox" onclick="${oc}" title="${tip}" aria-label="${escAttr(name)}"><img class="series-icon-img stage-sortie-series-logo" src="${src}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none';var fb=this.nextElementSibling;if(fb)fb.style.display='inline-flex'"><span class="series-text-fallback series-icon-clickable" style="display:none">${esc(name)}</span></button>`;
+return`<button type="button" class="series-icon-hitbox stage-sortie-series-hitbox" onclick="${oc}" title="${tip}" aria-label="${escAttr(name)}"><img class="series-icon-img stage-sortie-series-logo"${seriesIconDimAttr(iconRaw)} src="${src}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none';var fb=this.nextElementSibling;if(fb)fb.style.display='inline-flex'"><span class="series-text-fallback series-icon-clickable" style="display:none">${esc(name)}</span></button>`;
 }
 return createTagHtml({id:sid,name,type:'series'},{preferredTarget:'units'});
 }
@@ -12133,7 +12120,14 @@ function ensureStageNpcCompactHoverBound(){
   // Hover/sticky pop is map-only; NPC details tiles use the map roster for brief info.
   ensureStageMapNpcHoverBound();
 }
-function renderSeries(s,listTab){if(!s||!s.length)return'';const clk=listTab==='characters'||listTab==='units';const tip=esc(t('search_series_click'));return`<div class="detail-series-row">${s.map(x=>{const rawId=x.id!=null?String(x.id).trim():'';if(!clk){if(x.icon)return`<img class="series-icon-img" src="${imgUrl(x.icon)}" alt="${esc(x.name)}" title="${esc(x.name)}" loading="lazy" onerror="this.outerHTML='<span class=\\'series-text-fallback\\'>${esc(x.name)}</span>'">`;return`<span class="series-text-fallback" title="${esc(x.name)}">${esc(x.name)}</span>`}if(!rawId){if(x.icon)return`<img class="series-icon-img" src="${imgUrl(x.icon)}" alt="${esc(x.name)}" title="${esc(x.name)}" loading="lazy" onerror="this.outerHTML='<span class=\\'series-text-fallback\\'>${esc(x.name)}</span>'">`;return`<span class="series-text-fallback">${esc(x.name)}</span>`}const inner=x.icon?`<img class="series-icon-img series-icon-clickable" src="${imgUrl(x.icon)}" alt="${esc(x.name)}" loading="lazy" onerror="this.style.display='none';var fb=this.nextElementSibling;if(fb)fb.style.display='inline-flex'"><span class="series-text-fallback series-icon-clickable" style="display:none">${esc(x.name)}</span>`:`<span class="series-text-fallback series-icon-clickable">${esc(x.name)}</span>`;return`<button type="button" class="series-icon-hitbox" data-series-id="${escAttr(rawId)}" data-list-tab="${escAttr(listTab)}" data-series-name="${escAttr(x.name||'')}" title="${tip}" aria-label="${tip}">${inner}</button>`}).join('')}</div>`}
+/* Series logo pixel size — header plate must not rescale when the file decodes. */
+const SERIES_LOGO_PX={"0010":[353,298],"0030":[599,298],"0050":[436,298],"0070":[646,298],"0080":[700,282],"0090":[659,291],"0110":[700,253],"0120":[700,285],"0130":[700,263],"0170":[700,258],"0210":[667,298],"0220":[700,296],"0230":[700,294],"0240":[502,292],"0260":[700,290],"0290":[532,294],"0310":[700,236],"0320":[661,211],"0440":[672,255],"0550":[700,179],"0600":[615,292],"0630":[433,298],"0670":[700,280],"0680":[531,296],"0690":[700,276],"0700":[700,286],"0800":[624,298],"0810":[632,298],"0820":[700,298],"0830":[700,283],"0840":[633,298],"0850":[501,298],"0950":[700,298],"0980":[700,291],"0990":[653,298],"1000":[631,293],"1010":[700,263],"1100":[630,298],"1140":[535,298],"1150":[700,253],"1250":[700,279],"1330":[535,298],"1390":[498,297],"1440":[691,298],"1500":[700,271],"1540":[565,298],"1550":[344,298],"1570":[685,240],"1590":[470,298],"1620":[533,298],"1630":[454,298],"1660":[700,295],"1750":[445,298],"2000":[700,293],"2100":[624,298],"2110":[417,298],"2120":[655,298],"2170":[530,298],"2190":[410,293],"2300":[508,298],"2400":[673,276],"3000":[695,298],"3040":[669,298],"3050":[598,298],"3060":[577,298],"3070":[605,298],"3080":[601,298],"3100":[700,298],"3300":[700,294],"3330":[555,298],"3360":[700,298],"3390":[698,298],"3420":[550,298],"3500":[700,291],"3700":[700,248],"3750":[700,244],"3760":[700,247],"3780":[700,244],"3790":[700,242],"3821":[700,235],"4000":[700,267],"4010":[700,251],"4080":[700,281],"4090":[700,280],"4200":[700,279],"4300":[537,298],"4310":[550,298],"4330":[547,298],"4340":[387,298],"5000":[700,298],"5010":[700,280],"5100":[699,227],"6000":[503,298],"6040":[383,298],"6500":[700,282],"7000":[692,292],"7050":[374,298],"7051":[598,298],"7052":[599,283],"7053":[560,298],"7090":[418,285],"7250":[632,298],"7280":[465,298],"7300":[635,250],"7500":[564,298],"7600":[356,298],"7610":[569,298],"7630":[700,229],"7640":[615,298],"7710":[434,298],"7790":[621,298],"7950":[674,232],"8500":[506,298]};
+function seriesIconDimAttr(icon){
+const m=String(icon||'').match(/logo_l_series_(\d+)\./);
+const d=m&&SERIES_LOGO_PX[m[1]];
+return d?' width="'+d[0]+'" height="'+d[1]+'"':'';
+}
+function renderSeries(s,listTab){if(!s||!s.length)return'';const clk=listTab==='characters'||listTab==='units';const tip=esc(t('search_series_click'));return`<div class="detail-series-row">${s.map(x=>{const rawId=x.id!=null?String(x.id).trim():'';if(!clk){if(x.icon)return`<img class="series-icon-img"${seriesIconDimAttr(x.icon)} src="${imgUrl(x.icon)}" alt="${esc(x.name)}" title="${esc(x.name)}" loading="lazy" onerror="this.outerHTML='<span class=\\'series-text-fallback\\'>${esc(x.name)}</span>'">`;return`<span class="series-text-fallback" title="${esc(x.name)}">${esc(x.name)}</span>`}if(!rawId){if(x.icon)return`<img class="series-icon-img"${seriesIconDimAttr(x.icon)} src="${imgUrl(x.icon)}" alt="${esc(x.name)}" title="${esc(x.name)}" loading="lazy" onerror="this.outerHTML='<span class=\\'series-text-fallback\\'>${esc(x.name)}</span>'">`;return`<span class="series-text-fallback">${esc(x.name)}</span>`}const inner=x.icon?`<img class="series-icon-img series-icon-clickable"${seriesIconDimAttr(x.icon)} src="${imgUrl(x.icon)}" alt="${esc(x.name)}" loading="lazy" onerror="this.style.display='none';var fb=this.nextElementSibling;if(fb)fb.style.display='inline-flex'"><span class="series-text-fallback series-icon-clickable" style="display:none">${esc(x.name)}</span>`:`<span class="series-text-fallback series-icon-clickable">${esc(x.name)}</span>`;return`<button type="button" class="series-icon-hitbox" data-series-id="${escAttr(rawId)}" data-list-tab="${escAttr(listTab)}" data-series-name="${escAttr(x.name||'')}" title="${tip}" aria-label="${tip}">${inner}</button>`}).join('')}</div>`}
 
 
 function tagCompositeVariant(type){

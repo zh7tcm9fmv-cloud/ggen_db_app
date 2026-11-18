@@ -33,6 +33,13 @@
   var paused = false;
   var skipAll = false;
   var pauseWait = null;
+  /* Wake current sleep early (seek / scrub / pause toggle). */
+  var fightWake = null;
+  /* Pending scrub index into steps (0 = start, N = after steps[N-1]). */
+  var fightSeekTo = null;
+  var transportScrubbing = false;
+  var playSession = null;
+  var lastPlayResult = null;
   var speedMul = 1;
   /* MLS wait(ms/speed): 1× should feel readable. Was 320; owner asked ~50% slower (desktop). */
   var STEP_MS = 640;
@@ -223,10 +230,11 @@
   }
 
   /**
-   * /mls IngameKoma — all UR kits from published catalog
+   * /mls IngameKoma — published catalog (all rarities with Simulator/koma)
    * (data/published/mls_koma_catalog_v1.json → /api/ml_sim/koma_catalog).
    * Assets: images/Master League/Simulator/{koma,fx}/ on IMAGE_CDN.
    * stripsBySlot: weapons[] index → IngameKoma action (weapon1/2/3 / et01 / map).
+   * Catalog miss → standby-only kit from unit.koma_resource_id (same CDN path).
    */
   var MLS_KOMA_BY_UNIT = Object.create(null);
   var mlsKomaCatalogReady = null;
@@ -256,6 +264,40 @@
 
   function mlsKomaKit(unitId) {
     return MLS_KOMA_BY_UNIT[String(unitId || '')] || null;
+  }
+
+  /**
+   * Standby-only kit when the published catalog has no row (SSR/SR/R/… with CDN koma).
+   * Board tokens still show IngameKoma; weapon/EX strips stay empty → existing FX fallback.
+   */
+  function mlsKomaStandbyOnlyKit(komaId) {
+    var kid = String(komaId || '').trim();
+    if (!kid) return null;
+    return {
+      komaId: kid,
+      standbyFrame: 0,
+      strips: {},
+      stripsBySlot: [],
+      impactFx: '',
+      impactFrames: 0,
+      meleeImpactFx: '',
+      meleeImpactFrames: 0,
+      exImpactFx: '',
+      exImpactFrames: 0,
+      standbyOnly: true
+    };
+  }
+
+  /** Catalog kit, else standby from unit.koma_resource_id / thum URL resource id. */
+  function mlsKomaResolveKit(unitId, unitData) {
+    var kit = mlsKomaKit(unitId);
+    var kid;
+    var src;
+    if (kit) return kit;
+    src = unitData || {};
+    kid = String(src.koma_resource_id || src.komaResourceId || '').trim();
+    if (!kid) kid = mlsFaceResourceIdFromUrl(src.thum || src.portrait || src.portraitThum || '');
+    return mlsKomaStandbyOnlyKit(kid);
   }
 
   /** Map live weapons[] → strip actions (MAP / EX / weapon1…). */
@@ -801,17 +843,18 @@
   }
 
   /**
-   * Re-bind gated koma kit from unit id (cloneArmy / snapshots drop unknown fields).
+   * Re-bind koma kit from unit id (cloneArmy / snapshots drop unknown fields).
+   * Catalog UR kits + standby-only for other rarities with koma_resource_id.
    * Keeps weapon-frame src mid-anim; otherwise forces standby for the facing.
    */
   function mlsKomaAttachActor(u) {
     var kit;
     var cur;
     if (!u) return u;
-    kit = mlsKomaKit(u.id);
+    kit = mlsKomaResolveKit(u.id, u.unit || u);
     if (kit) {
       try { kit = JSON.parse(JSON.stringify(kit)); } catch (eClone) { kit = kit; }
-      mlsKomaBindWeaponSlots(kit, u.weapons);
+      if (!kit.standbyOnly) mlsKomaBindWeaponSlots(kit, u.weapons);
     }
     u.komaKit = kit;
     if (!kit) return u;
@@ -858,15 +901,38 @@
     if (el) el.textContent = text;
   }
 
+  function wakeFightSleep() {
+    var w = fightWake;
+    var p = pauseWait;
+    fightWake = null;
+    pauseWait = null;
+    if (w) w();
+    else if (p) p();
+  }
+
   function sleep(ms) {
     return new Promise(function (resolve) {
-      var left = ms;
+      var timer = null;
+      var left = Math.max(0, ms | 0);
+      function finish() {
+        fightWake = null;
+        if (timer) {
+          try { clearTimeout(timer); } catch (eT) {}
+          timer = null;
+        }
+        resolve();
+      }
       function tick() {
-        if (skipAll) { resolve(); return; }
-        if (!paused) {
-          setTimeout(resolve, left);
+        if (skipAll || fightSeekTo != null) {
+          finish();
           return;
         }
+        if (!paused && !transportScrubbing) {
+          fightWake = finish;
+          timer = setTimeout(finish, left);
+          return;
+        }
+        fightWake = finish;
         pauseWait = function () {
           pauseWait = null;
           tick();
@@ -888,7 +954,7 @@
     return Math.max(1, speedMul);
   }
 
-  function stepDelay(kind) {
+  function stepDelayNominal(kind) {
     var base = STEP_MS;
     if (kind === 'move') base = MOVE_MS;
     if (kind === 'skill' || kind === 'support-def') base = Math.round(STEP_MS * 1.45);
@@ -896,14 +962,47 @@
     if (kind === 'weapon') base = Math.round(STEP_MS * 0.52);
     /* EN/ammo cost line — keep readable but don’t pad a full step before fire. */
     if (kind === 'cost') base = Math.round(STEP_MS * 0.28);
-    /* MAP: weapon popup → effect range → each target hit (no re-fire). */
-    if (kind === 'map-aoe') base = Math.round(STEP_MS * 0.9);
+    /* MAP / supporter AoE: weapon/skill popup → effect range → per-target resolve. */
+    if (kind === 'map-aoe' || kind === 'supp-aoe') base = Math.round(STEP_MS * 0.9);
     if (kind === 'map-hit') base = Math.round(STEP_MS * 0.72);
     if (kind === 'attack' || kind === 'counter') base = Math.round(STEP_MS * 1.05);
     /* Match shelter/cover CSS ease (~380ms) so return finishes before the next beat. */
     if (kind === 'cover-return') base = Math.round(STEP_MS * 0.72);
     if (kind === 'turn') base = Math.round(STEP_MS * 1.6);
-    return Math.max(50, Math.round(base / battlePaceMul()));
+    return Math.max(50, Math.round(base));
+  }
+
+  function stepDelay(kind) {
+    return Math.max(50, Math.round(stepDelayNominal(kind) / battlePaceMul()));
+  }
+
+  function stepHoldNominal(step) {
+    return (step && step.link && step.link.coverTo && step.float) ? 160 : 0;
+  }
+
+  function formatPlayClock(ms) {
+    var s = Math.max(0, Math.floor((ms || 0) / 1000));
+    var m = (s / 60) | 0;
+    s = s % 60;
+    return m + ':' + (s < 10 ? '0' : '') + s;
+  }
+
+  function playbackTimeAt(steps, shown) {
+    var t = 0;
+    var i;
+    var step;
+    var paceKind;
+    var n = Math.max(0, Math.min((steps && steps.length) || 0, shown | 0));
+    for (i = 0; i < n; i++) {
+      step = steps[i];
+      paceKind = (step && (step.pace || (step.link && step.link.kind))) || 'step';
+      t += stepDelayNominal(paceKind) + stepHoldNominal(step);
+    }
+    return t;
+  }
+
+  function playbackDurationMs(steps) {
+    return playbackTimeAt(steps, (steps && steps.length) || 0);
   }
 
   /** Ranged bolt / float hold — scales with speed so phones stay readable, not laggy. */
@@ -5299,7 +5398,10 @@
     var cUrl = charId ? ('/api/character/' + encodeURIComponent(charId) + '?lang=' + encodeURIComponent(lang())) : '';
     return Promise.all([
       fetchJson(uUrl),
-      cUrl ? fetchJson(cUrl) : Promise.resolve(null)
+      /* Soft-fail pilot fetch — a 404 must not drop the whole unit from Battle. */
+      cUrl
+        ? fetchJson(cUrl).catch(function () { return null; })
+        : Promise.resolve(null)
     ]).then(function (pair) {
       return { unit: pair[0], char: pair[1], lb: lb | 0 };
     });
@@ -5452,6 +5554,7 @@
      * Counter / Support Counter in the engagement that dropped the prior form.
      */
     actor._koThisEngagement = true;
+    stampHpFallRestores(actor);
 
     if (typeof snapshotLine === 'function') {
       snapshotLine(
@@ -6055,15 +6158,12 @@
     return found ? { hpPct: hpPct, enPct: enPct } : null;
   }
 
-  /** Unit ids on an ability detail's condition chips (Setsuna/Char revive gates). */
-  function abilityDetailUnitIds(ab, detailIdx) {
-    var out = [];
-    var details, d, conds, i, c, id;
-    details = Array.isArray(ab && ab.details) ? ab.details : [];
-    d = details[detailIdx];
-    if (!d || typeof d === 'string') return out;
-    conds = [].concat(d.conditions || []);
-    (Array.isArray(d.condition_groups) ? d.condition_groups : []).forEach(function (g) {
+  /** Collect unit-id chips from a conditions list (+ nested condition_groups). */
+  function collectUnitIdsFromConds(condsIn, groupsIn, out) {
+    var conds = [].concat(condsIn || []);
+    var seen = out._seen || (out._seen = Object.create(null));
+    var i, c, id;
+    (Array.isArray(groupsIn) ? groupsIn : []).forEach(function (g) {
       conds = conds.concat((g && g.conditions) || []);
     });
     for (i = 0; i < conds.length; i++) {
@@ -6071,10 +6171,54 @@
       if (!c) continue;
       if (String(c.type || '') === 'unit' || String(c.source || '') === 'unit_ids') {
         id = String(c.id || '');
-        if (id && id !== '0') out.push(id);
+        if (id && id !== '0' && !seen[id]) {
+          seen[id] = 1;
+          out.push(id);
+        }
       }
     }
     return out;
+  }
+
+  /**
+   * Unit ids for a revive/HP-fall detail.
+   * Detail chips first; also ability-root conditions (some cards only stamp there).
+   */
+  function abilityDetailUnitIds(ab, detailIdx) {
+    var out = [];
+    var details, d;
+    details = Array.isArray(ab && ab.details) ? ab.details : [];
+    d = details[detailIdx];
+    if (d && typeof d !== 'string') {
+      collectUnitIdsFromConds(d.conditions, d.condition_groups, out);
+    }
+    /* Ability-level chips — covers string-only details / missing per-chunk conds. */
+    collectUnitIdsFromConds(ab && ab.conditions, ab && ab.condition_groups, out);
+    delete out._seen;
+    return out;
+  }
+
+  /** Actor unit id + main form id (transform / Escape parent). */
+  function actorUnitIdSet(actor) {
+    var set = Object.create(null);
+    var ud = actor && actor.unit;
+    var id;
+    id = String((ud && ud.id) || (actor && actor.id) || '');
+    if (id && id !== '0') set[id] = 1;
+    id = String((ud && (ud.main_unit_id || ud.mainUnitId)) || '');
+    if (id && id !== '0') set[id] = 1;
+    return set;
+  }
+
+  /** Char dossier recommend unit id (Guel↔Darilbalde, Char↔Zeong, …). */
+  function actorCharRecommendUnitId(actor) {
+    var cd = actor && actor.char;
+    var rec;
+    if (!cd) return '';
+    rec = cd.recommend_unit;
+    if (rec && rec.id) return String(rec.id);
+    if (cd.recommend_unit_id) return String(cd.recommend_unit_id);
+    return '';
   }
 
   /**
@@ -6154,19 +6298,40 @@
     return b.indexOf(a) >= 0 || a.indexOf(b) >= 0;
   }
 
-  /** Apply revive row: Master unit-id chips win; else localized "piloting …" name. */
+  /**
+   * Apply revive row:
+   * 1) Master unit-id chips (detail or ability) vs actor unit / main_unit_id
+   * 2) Localized "piloting …" name
+   * 3) Recommend-pair fallback — piloting clause lost chips/name match, but this
+   *    pilot’s recommend unit is the MS under them (Char↔Zeong, Guel↔Darilbalde).
+   */
   function hpFallRestoreApplies(actor, row) {
-    var uid, ids, i;
+    var ids, i, idSet, recUid, recChar, pilotId;
     if (!row) return false;
     ids = row.unitIds || [];
+    idSet = actorUnitIdSet(actor);
     if (ids.length) {
-      uid = String((actor && actor.unit && actor.unit.id) || (actor && actor.id) || '');
       for (i = 0; i < ids.length; i++) {
-        if (String(ids[i]) === uid) return true;
+        if (idSet[String(ids[i])]) return true;
       }
-      return false;
+      /*
+       * Chips present but no id hit — do NOT hard-fail.
+       * Stale/wrong chips used to skip name + recommend fallback and KO with no
+       * revive and no miss hint while Pilot: Guel still showed on Formation.
+       */
+    } else if (!row.unitName) {
+      /* Ungated HP-fall line (no unit chip / piloting clause). */
+      return true;
     }
-    return unitNameMatchesFilter(actor, row.unitName);
+    if (row.unitName && unitNameMatchesFilter(actor, row.unitName)) return true;
+    /* Pilot → recommend unit (Char↔Zeong, Guel↔Darilbalde, …). */
+    recUid = actorCharRecommendUnitId(actor);
+    if (recUid && idSet[recUid]) return true;
+    /* Inverse: this MS lists this pilot as recommend_character. */
+    recChar = actor && actor.unit && actor.unit.recommend_character;
+    pilotId = actor && actor.char && actor.char.id != null ? String(actor.char.id) : '';
+    if (recChar && recChar.id && pilotId && String(recChar.id) === pilotId) return true;
+    return false;
   }
 
   function applyTurnStartRestore(actor, turn, snapshotLine) {
@@ -6206,10 +6371,57 @@
      A hit that skips the band and goes straight to 0% does NOT trigger — not a revive.
    * Returns true only when a lethal (0% threshold) restore brought HP back above 0.
    */
+  /** Stamp at makeActor / clone — mid-fight must not depend on a stripped char blob. */
+  function stampHpFallRestores(actor) {
+    if (!actor) return actor;
+    actor._hpFallRestores = parseHpFallRestores(actor);
+    return actor;
+  }
+
+  function actorHpFallRestoreList(actor) {
+    if (actor && Array.isArray(actor._hpFallRestores) && actor._hpFallRestores.length) {
+      return actor._hpFallRestores;
+    }
+    return parseHpFallRestores(actor);
+  }
+
+  /**
+   * When a KO did not revive: explain recommend-pilot gates (Guel↔Darilbalde class).
+   * Empty string = nothing to say (no gated revive on this kit / pilot).
+   */
+  function reviveMissHint(actor) {
+    var list, i, r, rec, recId, pilotId, hadLethal;
+    rec = actor && actor.unit && actor.unit.recommend_character;
+    recId = rec && rec.id ? String(rec.id) : '';
+    pilotId = actor && actor.char && actor.char.id ? String(actor.char.id) : '';
+    list = actorHpFallRestoreList(actor);
+    if (!list.length) {
+      /* Recommend pilot on board but EX restore rows missing — real parse/load bug. */
+      if (recId && pilotId && recId === pilotId) return ' [revive miss]';
+      if (recId && (!pilotId || recId !== pilotId)) {
+        return ' [no revive — needs pilot ' + (rec.name || recId) + ']';
+      }
+      return '';
+    }
+    hadLethal = false;
+    for (i = 0; i < list.length; i++) {
+      r = list[i];
+      if ((r.threshold | 0) > 0) continue;
+      hadLethal = true;
+      if (hpFallRestoreApplies(actor, r)) return ' [revive miss]';
+    }
+    if (rec && rec.name && (!pilotId || recId !== pilotId)) {
+      return ' [no revive — needs pilot ' + rec.name + ']';
+    }
+    /* Lethal row on sheet but gates failed — never stay silent on KO. */
+    if (hadLethal) return ' [revive miss]';
+    return '';
+  }
+
   function applyHpFallRestores(actor, hpBefore, turn, snapshotLine) {
     var list, pctBefore, pctAfter, maxHp, revived, i, r, crossed, amt, isRevive;
     if (!actor) return false;
-    list = parseHpFallRestores(actor);
+    list = actorHpFallRestoreList(actor);
     if (!list.length) return false;
     maxHp = Math.max(1, actor.maxHp | 0);
     pctBefore = Math.max(0, Math.min(100, Math.round(100 * (hpBefore | 0) / maxHp)));
@@ -8064,7 +8276,7 @@
     var cs = charStats(loaded.char, cMode);
     var id = String(loaded.unit && loaded.unit.id || '');
     var facing = sideFacing(side);
-    var komaKit = mlsKomaKit(id);
+    var komaKit = mlsKomaResolveKit(id, loaded.unit);
     var komaFacing = mlsKomaFacingFromDir(facing);
     var portraitThum = thumbUrl((loaded.unit && (loaded.unit.thum || loaded.unit.portrait)) ||
       (slotMeta && slotMeta.thum) || '');
@@ -8078,7 +8290,7 @@
     var actorWeapons = weaponsOf(loaded.unit, uMode, altLv);
     if (komaKit) {
       try { komaKit = JSON.parse(JSON.stringify(komaKit)); } catch (eK) { /* keep */ }
-      mlsKomaBindWeaponSlots(komaKit, actorWeapons);
+      if (!komaKit.standbyOnly) mlsKomaBindWeaponSlots(komaKit, actorWeapons);
       /* Order / HP chips stay Trait/thum; map token uses standby below. */
       portraitThum = thumbUrl('/static/images/Trait/thum/thum_' + komaKit.komaId + '.webp');
     }
@@ -8092,7 +8304,7 @@
       id: id,
       name: (loaded.unit && loaded.unit.name) || (slotMeta && slotMeta.name) || id,
       /* Prefer live unit detail art — slot thumbs can lag / mismatch Escape partners.
-       * UR koma kits swap battle-token art to IngameKoma standby (portrait kept). */
+       * Catalog / standby koma kits swap battle-token art to IngameKoma (portrait kept). */
       thum: komaKit ? mlsKomaStandbyUrl(komaKit, komaFacing) : portraitThum,
       portraitThum: portraitThum,
       komaKit: komaKit,
@@ -8176,6 +8388,7 @@
     /* /cal + MLS: battle-start MP from pilot/unit passives (after unit+char attached). */
     actor.mp = (R && R.startingMpBonus) ? (R.startingMpBonus(actor) | 0) : 0;
     syncMpDisplay(actor);
+    stampHpFallRestores(actor);
     return actor;
   }
 
@@ -8304,12 +8517,53 @@
     };
   }
 
-  /** Fresh bbox around spawns + current unit footprints (pad 1). */
+  /**
+   * Mid X between enemy + ally spawn columns (LINE one-col or standard multi-col).
+   * Camera L/R padding is mirrored around this so a one-sided 2×2 does not skew the board.
+   */
+  function midfieldXFromSpawns() {
+    var enemySum = 0;
+    var enemyN = 0;
+    var allySum = 0;
+    var allyN = 0;
+    (board && board.sides || []).forEach(function (s) {
+      var ps = s.player_side | 0;
+      (s.cells || []).forEach(function (c) {
+        if (ps === 2) {
+          enemySum += c.x | 0;
+          enemyN++;
+        } else if (ps === 1) {
+          allySum += c.x | 0;
+          allyN++;
+        }
+      });
+    });
+    if (!enemyN || !allyN) return null;
+    return (enemySum / enemyN + allySum / allyN) / 2;
+  }
+
+  /** Expand the thinner X edge so empty cells left of midfield match the right. */
+  function balanceMapWindowX(minX, maxX, mid) {
+    var left;
+    var right;
+    var half;
+    if (mid == null || !isFinite(mid)) mid = (minX + maxX) / 2;
+    left = mid - minX;
+    right = maxX - mid;
+    half = Math.max(left, right);
+    return {
+      minX: Math.floor(mid - half),
+      maxX: Math.ceil(mid + half)
+    };
+  }
+
+  /** Fresh bbox around spawns + current unit footprints (pad 1), X-mirrored about midfield. */
   function computeMapWindowFresh() {
     var cells = [];
     var m = mapMeta();
     var mapW = m.width | 0;
     var mapH = m.height | 0;
+    var bx;
     (board && board.sides || []).forEach(function (s) {
       (s.cells || []).forEach(function (c) { cells.push(c); });
     });
@@ -8337,7 +8591,9 @@
     });
     /* Tight camera around the fight — not the empty full map (avoids scroll / tiny tokens). */
     minX -= 1; maxX += 1; minY -= 1; maxY += 1;
-    return finishMapWindow(minX, maxX, minY, maxY, mapW, mapH);
+    /* 2×2 expands outward (−x enemy / +x ally) — mirror empty cols so LINE + standard stay even. */
+    bx = balanceMapWindowX(minX, maxX, midfieldXFromSpawns());
+    return finishMapWindow(bx.minX, bx.maxX, minY, maxY, mapW, mapH);
   }
 
   /**
@@ -8346,7 +8602,7 @@
    */
   function computeMapWindow() {
     var fresh = computeMapWindowFresh();
-    var m, mapW, mapH;
+    var m, mapW, mapH, bx;
     if (!lockedMapWindow) {
       lockedMapWindow = fresh;
       return lockedMapWindow;
@@ -8356,9 +8612,14 @@
       m = mapMeta();
       mapW = m.width | 0;
       mapH = m.height | 0;
-      lockedMapWindow = finishMapWindow(
+      bx = balanceMapWindowX(
         Math.min(lockedMapWindow.minX, fresh.minX),
         Math.max(lockedMapWindow.maxX, fresh.maxX),
+        midfieldXFromSpawns()
+      );
+      lockedMapWindow = finishMapWindow(
+        bx.minX,
+        bx.maxX,
         Math.min(lockedMapWindow.minY, fresh.minY),
         Math.max(lockedMapWindow.maxY, fresh.maxY),
         mapW, mapH
@@ -8831,19 +9092,28 @@
     host.setAttribute('data-layout', win.minX + ':' + win.maxX + ':' + win.minY + ':' + win.maxY);
   }
 
-  function refreshCellTints(host, mapCells) {
+  /**
+   * Paint MAP / supporter effect-range cells.
+   * aoeKind: 'map' (red) | 'heal' (green) | 'en' (yellow).
+   */
+  function refreshCellTints(host, mapCells, aoeKind) {
     var tints = buildSpawnTints();
     var mapSet = {};
+    var kind = aoeKind || 'map';
+    var aoeCls = '';
     _areaAuraState = null;
     (mapCells || []).forEach(function (c) {
       if (c) mapSet[(c.x | 0) + ',' + (c.y | 0)] = 1;
     });
+    if (kind === 'heal') aoeCls = ' is-supp-aoe is-supp-heal';
+    else if (kind === 'en') aoeCls = ' is-supp-aoe is-supp-en';
+    else aoeCls = ' is-map-aoe';
     Array.prototype.forEach.call(host.querySelectorAll('.mls-cell'), function (el) {
       var key = el.getAttribute('data-xy') || '';
       var cls = tints.spawn[key] || '';
       var ft = tints.footTint[key] || '';
       var nextCellCls = 'mls-cell' + (cls ? ' ' + cls : '') + (ft ? ' ' + ft : '') +
-        cellAuraClass(key) + (mapSet[key] ? ' is-map-aoe' : '');
+        cellAuraClass(key) + (mapSet[key] ? aoeCls : '');
       if (el.className !== nextCellCls) el.className = nextCellCls;
     });
   }
@@ -9158,7 +9428,8 @@
     if (doAnim && linkEvt && linkEvt.from && linkEvt.to &&
         linkEvt.kind !== 'support-def' && linkEvt.kind !== 'cover-return' &&
         linkEvt.kind !== 'chance-step' && linkEvt.kind !== 'move' &&
-        linkEvt.kind !== 'map-weapon' && linkEvt.kind !== 'map-aoe') {
+        linkEvt.kind !== 'map-weapon' && linkEvt.kind !== 'map-aoe' &&
+        linkEvt.kind !== 'supp-aoe') {
       playAttackFx(host, win, linkEvt, layer, atkId, tgtId);
     }
   }
@@ -9536,15 +9807,15 @@
     mapOrigin = { minX: win.minX, minY: win.minY };
     _areaAuraState = null;
     mapCells = (linkEvt && linkEvt.cells &&
-      (linkEvt.kind === 'map-aoe' || linkEvt.kind === 'map-hit'))
+      (linkEvt.kind === 'map-aoe' || linkEvt.kind === 'map-hit' || linkEvt.kind === 'supp-aoe'))
       ? linkEvt.cells : null;
     fitMapCell(win);
     applyMapBackground(host, win);
     if (host.getAttribute('data-layout') !== layoutKey || !host.querySelector('.mls-token-layer')) {
       rebuildCellGrid(host, win);
-      if (mapCells) refreshCellTints(host, mapCells);
+      if (mapCells) refreshCellTints(host, mapCells, linkEvt && linkEvt.aoeKind);
     } else {
-      refreshCellTints(host, mapCells);
+      refreshCellTints(host, mapCells, linkEvt && linkEvt.aoeKind);
     }
     syncTokens(host, win, floatEvt, linkEvt, !!animate);
     syncBoardHpHud(!!animate);
@@ -9576,6 +9847,7 @@
     var sideCls = '';
     isParry = !!(ev.cls && String(ev.cls).indexOf('mls-float--parry') >= 0);
     isDmg = !!(ev.cls && String(ev.cls).indexOf('mls-float--heal') < 0 &&
+      String(ev.cls).indexOf('mls-float--en') < 0 &&
       String(ev.cls).indexOf('mls-float--skill') < 0 &&
       String(ev.cls).indexOf('mls-float--support') < 0 &&
       !isParry);
@@ -9653,6 +9925,8 @@
   var timelineLeavingKeys = Object.create(null);
   var timelinePrevActiveKey = '';
   var timelineLeaveTimers = Object.create(null);
+  /* Seek rebuild: drop KO chips immediately (no fade timers). */
+  var timelineSeekMode = false;
 
   function unitTlKey(u) {
     if (!u) return '';
@@ -9714,8 +9988,26 @@
     return true;
   }
 
+  function dropTimelineKeyNow(key) {
+    var idx;
+    if (!key || !timelinePhaseKeys) return;
+    delete timelineLeavingKeys[key];
+    if (timelineLeaveTimers[key]) {
+      try { clearTimeout(timelineLeaveTimers[key]); } catch (eDrop) {}
+      delete timelineLeaveTimers[key];
+    }
+    idx = timelinePhaseKeys.indexOf(key);
+    if (idx >= 0) {
+      timelinePhaseKeys = timelinePhaseKeys.slice(0, idx).concat(timelinePhaseKeys.slice(idx + 1));
+    }
+  }
+
   function scheduleTimelineKeyLeave(key) {
     if (!key || timelineLeaveTimers[key]) return;
+    if (timelineSeekMode) {
+      dropTimelineKeyNow(key);
+      return;
+    }
     timelineLeavingKeys[key] = true;
     /* Match .mls-tl-chip.is-leaving (~280ms), then drop the chip entirely. */
     timelineLeaveTimers[key] = setTimeout(function () {
@@ -9894,7 +10186,7 @@
         face = thumbUrl('/static/images/Trait/thum/thum_' + u.komaKit.komaId + '.webp');
       } else if (u && u.id) {
         try {
-          var kit = mlsKomaKit(u.id);
+          var kit = mlsKomaResolveKit(u.id, u.unit || u);
           if (kit && kit.komaId) {
             face = thumbUrl('/static/images/Trait/thum/thum_' + kit.komaId + '.webp');
           }
@@ -10009,13 +10301,16 @@
         badgeText: '',
         badgeIcon: '',
         skillMarkIcon: '',
-        skillMarkText: ''
+        skillMarkText: '',
+        _hpFallRestoreUsed: {},
+        _hpFallRestores: Array.isArray(u._hpFallRestores) ? u._hpFallRestores.slice() : null
       };
       startMp = (Rclone && Rclone.startingMpBonus) ? (Rclone.startingMpBonus(cloned) | 0) : 0;
       /* Prefer live board MP when already seeded (makeActor); never wipe Affinity/etc. to 0. */
       if ((u.mp | 0) > startMp) startMp = u.mp | 0;
       cloned.mp = Math.max(0, Math.min(12, startMp));
       cloned.tension = Math.min(100, Math.round((cloned.mp / 12) * 100));
+      if (!cloned._hpFallRestores || !cloned._hpFallRestores.length) stampHpFallRestores(cloned);
       return mlsKomaAttachActor(cloned);
     });
   }
@@ -10262,64 +10557,150 @@
       }
       return dmg;
     }
-    /* MLS evaluateSupportSkill: once per side, only HP recovery, only if an ally in
-       EffectRange is at or below the ML auto threshold (tier 2 = 50%). Not at battle start. */
+    /** Manhattan diamond cells for supporter EffectRange (MAP-style range paint). */
+    function supportEffectCells(origin, maxR) {
+      var cells = [];
+      var ax = origin.x | 0;
+      var ay = origin.y | 0;
+      var r = Math.max(0, maxR | 0);
+      var x, y, dx, dy;
+      var b = pathBounds();
+      for (dy = -r; dy <= r; dy++) {
+        for (dx = -r; dx <= r; dx++) {
+          if (Math.abs(dx) + Math.abs(dy) > r) continue;
+          x = ax + dx;
+          y = ay + dy;
+          if (x < b.minX || x > b.maxX || y < b.minY || y > b.maxY) continue;
+          cells.push({ x: x, y: y });
+        }
+      }
+      return cells;
+    }
+
+    /**
+     * MLS evaluateSupportSkill: once per side. HP or EN recovery when allies in
+     * EffectRange meet the ML auto threshold (tier 2 = 50%). Not at battle start.
+     * Playback paints MAP-style range: green = heal, yellow = EN restore.
+     */
     function evaluateSupportSkill(actor, friends) {
-      var sup, skills, hpSkill, maxR, pct, inRange, wounded, healPct, i, ally, amt, text;
+      var sup, skills, skill, kind, maxR, pct, inRange, needy, restorePct, i, ally, amt, text;
+      var hm, cells, aoeKind, floatCls, logVerb;
       if (!actor || supportUsed[actor.side]) return;
       if ((turn | 0) < 1) return;
       sup = sideSupportData[actor.side] || actor.supporter;
       if (!sup) return;
       skills = sup.active_skills || [];
-      hpSkill = null;
+      skill = null;
+      kind = '';
       for (i = 0; i < skills.length; i++) {
         text = String((skills[i].desc || '') + ' ' + (skills[i].name || ''));
-        if (/Restore\s+HP|HPを?\d|HPが.*回復|回復.*HP/i.test(text)) { hpSkill = skills[i]; break; }
+        if (/Restore\s+HP|HPを?\d|HPが.*回復|回復.*HP|Restore\s+own\s+HP/i.test(text) &&
+            !/Restore\s+EN|ENを|EN回復|EN恢復/i.test(text)) {
+          skill = skills[i];
+          kind = 'heal';
+          break;
+        }
+        if (/Restore\s+EN|ENを?\d|ENが.*回復|回復.*EN|EN Restoration|EN回復|EN恢復/i.test(text)) {
+          skill = skills[i];
+          kind = 'en';
+          break;
+        }
+        /* Hybrid "HP and EN" → heal paint (HP is the primary MAP-like beat). */
+        if (/Restore\s+HP\s+and\s+EN|HP(?:と|及|和)EN|HP and EN/i.test(text)) {
+          skill = skills[i];
+          kind = 'heal';
+          break;
+        }
       }
-      if (!hpSkill) return;
-      if ((hpSkill.ml_passed_turn | 0) > (turn | 0)) return;
-      maxR = (hpSkill.effect_range_max | 0) > 0 ? (hpSkill.effect_range_max | 0) : 4;
+      if (!skill || !kind) return;
+      if ((skill.ml_passed_turn | 0) > (turn | 0)) return;
+      maxR = (skill.effect_range_max | 0) > 0 ? (skill.effect_range_max | 0) : 4;
       pct = 0.5;
-      if ((hpSkill.ml_hp_tier | 0) >= 3) pct = 0.75;
-      else if ((hpSkill.ml_hp_tier | 0) <= 1) pct = 0.25;
+      if ((skill.ml_hp_tier | 0) >= 3) pct = 0.75;
+      else if ((skill.ml_hp_tier | 0) <= 1) pct = 0.25;
       inRange = (friends || []).filter(function (a) {
         return a && a.hp > 0 && R.distance(actor, a) <= maxR;
       });
-      wounded = inRange.filter(function (a) {
-        return (a.maxHp | 0) > 0 && (a.hp / a.maxHp) <= pct + 1e-6;
-      });
-      if (wounded.length < Math.max(1, hpSkill.ml_threshold | 0)) return;
-      healPct = 0;
-      text = String(hpSkill.desc || '');
-      var hm = text.match(/(\d+)\s*%/);
-      if (hm) healPct = (parseInt(hm[1], 10) || 0) / 100;
-      if (healPct <= 0) return;
+      if (kind === 'en') {
+        needy = inRange.filter(function (a) {
+          return (a.maxEn | 0) > 0 && ((a.currentEn | 0) / (a.maxEn | 0)) <= pct + 1e-6;
+        });
+      } else {
+        needy = inRange.filter(function (a) {
+          return (a.maxHp | 0) > 0 && (a.hp / a.maxHp) <= pct + 1e-6;
+        });
+      }
+      if (needy.length < Math.max(1, skill.ml_threshold | 0)) return;
+      restorePct = 0;
+      text = String(skill.desc || '');
+      hm = text.match(/(\d+)\s*%/);
+      if (hm) restorePct = (parseInt(hm[1], 10) || 0) / 100;
+      if (restorePct <= 0) return;
       supportUsed[actor.side] = true;
+      aoeKind = kind === 'en' ? 'en' : 'heal';
+      floatCls = kind === 'en' ? 'mls-float--en' : 'mls-float--heal';
+      logVerb = kind === 'en' ? 'EN restore' : 'heal';
+      cells = supportEffectCells(actor, maxR);
       snapshotLine(
-        'T' + turn + ' Supporter: ' + (sup.name || 'Supporter') + ' activates 「' + (hpSkill.name || 'HP') + '」 (' + Math.round(healPct * 100) + '%)',
+        'T' + turn + ' Supporter: ' + (sup.name || 'Supporter') + ' activates 「' +
+          (skill.name || (kind === 'en' ? 'EN' : 'HP')) + '」 (' + Math.round(restorePct * 100) + '%)',
         {
           x: actor.x, y: actor.y,
-          text: String(hpSkill.name || 'SUPPORT').slice(0, 18),
-          skillName: String(hpSkill.name || 'SUPPORT').slice(0, 18),
+          text: String(skill.name || 'SUPPORT').slice(0, 18),
+          skillName: String(skill.name || 'SUPPORT').slice(0, 18),
           badge: 'SKILL',
-          icon: hpSkill.icon || '',
+          icon: skill.icon || '',
           cls: 'mls-float--skill'
         },
         null,
         'skill'
       );
+      snapshotLine(
+        'T' + turn + ' Supporter effect range: ' + (sup.name || 'Supporter') +
+          ' (' + cells.length + ' cell' + (cells.length === 1 ? '' : 's') + ')',
+        null,
+        {
+          kind: 'supp-aoe',
+          aoeKind: aoeKind,
+          fromId: linkActorId(actor),
+          toId: linkActorId(actor),
+          from: { x: actor.x | 0, y: actor.y | 0 },
+          to: { x: actor.x | 0, y: actor.y | 0 },
+          cells: cells
+        },
+        'supp-aoe'
+      );
       for (i = 0; i < inRange.length; i++) {
         ally = inRange[i];
-        amt = Math.floor((ally.maxHp | 0) * healPct);
-        if (amt <= 0) continue;
-        ally.ghostHp = ally.hp;
-        ally.hp = Math.min(ally.maxHp | 0, (ally.hp | 0) + amt);
-        snapshotLine(
-          'T' + turn + ' Supporter heal: ' + ally.name + ' +' + amt + ' HP',
-          { x: ally.x, y: ally.y, text: '+' + fmtNum(amt), cls: 'mls-float--heal' },
-          null,
-          'skill'
-        );
+        if (kind === 'en') {
+          amt = Math.floor((ally.maxEn | 0) * restorePct);
+          if (amt <= 0) continue;
+          ally.currentEn = Math.min(ally.maxEn | 0, (ally.currentEn | 0) + amt);
+          snapshotLine(
+            'T' + turn + ' Supporter ' + logVerb + ': ' + ally.name + ' +' + amt + ' EN',
+            { x: ally.x, y: ally.y, text: '+' + fmtNum(amt) + ' EN', cls: floatCls },
+            null,
+            'skill'
+          );
+        } else {
+          amt = Math.floor((ally.maxHp | 0) * restorePct);
+          if (amt <= 0) continue;
+          ally.ghostHp = ally.hp;
+          ally.hp = Math.min(ally.maxHp | 0, (ally.hp | 0) + amt);
+          /* Hybrid text may also restore EN. */
+          if (/HP\s+and\s+EN|HP(?:と|及|和)EN/i.test(String(skill.desc || ''))) {
+            var enAmt = Math.floor((ally.maxEn | 0) * restorePct);
+            if (enAmt > 0) {
+              ally.currentEn = Math.min(ally.maxEn | 0, (ally.currentEn | 0) + enAmt);
+            }
+          }
+          snapshotLine(
+            'T' + turn + ' Supporter ' + logVerb + ': ' + ally.name + ' +' + amt + ' HP',
+            { x: ally.x, y: ally.y, text: '+' + fmtNum(amt), cls: floatCls },
+            null,
+            'skill'
+          );
+        }
       }
     }
     function snapshotLine(text, floatEvt, linkEvt, pace) {
@@ -10755,6 +11136,13 @@
       if (!revived && hpAfterHit <= 0 && (defender.hp | 0) <= 0) {
         escaped = tryEscapeTransform(defender, turn, snapshotLine);
       }
+      /* KO with no revive: spell out recommend-pilot gate (Darilbalde needs Guel, …). */
+      if (hpAfterHit <= 0 && !alreadyDown && !revived && !escaped) {
+        var missHint = reviveMissHint(defender);
+        if (missHint) {
+          snapshotLine('T' + turn + ' ' + defender.name + missHint, null, null, 'step');
+        }
+      }
       /*
        * In-game: if the *active* unit is KO’d (e.g. counter) then revives / Escapes,
        * their normal action ends — no further move / kill-CS / Auto-CS / attack.
@@ -11162,9 +11550,9 @@
              * Guaranteed Chance Step still applies (end of any non-wait action).
              * Weapon “CS on hit” traits still spend the phase budget when present.
              * AI: evaluateMapWeapon skips MAP when EX/best normal already kills the engage
-             * (no Support Defense cover); when EX cannot finish, MAP fires if the ML
-             * auto-usage threshold is met and engage is in shape (chip MAP OK).
-             * MAP itself bypasses Defend/Shield.
+             * (no Support Defense cover); when EX cannot finish, MAP fires only if the ML
+             * auto-usage threshold is met, engage is in shape, and raw MAP KOs engage
+             * (no chip-MAP). MAP itself bypasses Defend/Shield.
              */
             if ((u.hp | 0) > 0 && living(foes).length) {
               if (hitAny && !u._weaponCsGrantedThisAction &&
@@ -12259,6 +12647,181 @@
     });
   }
 
+  function syncTransportPlayBtn() {
+    var playBtn = document.getElementById('mlsTransportPlay');
+    var atEnd = false;
+    var stepsLen = 0;
+    if (playSession && playSession.result && playSession.result.steps) {
+      stepsLen = playSession.result.steps.length | 0;
+      atEnd = (playSession.shown | 0) >= stepsLen && stepsLen > 0;
+    } else if (lastPlayResult && lastPlayResult.steps) {
+      stepsLen = lastPlayResult.steps.length | 0;
+    }
+    if (!playBtn) return;
+    playBtn.classList.toggle('is-paused', !fightBusy || paused || atEnd);
+    playBtn.setAttribute('aria-label', (!fightBusy || paused || atEnd) ? 'Play' : 'Pause');
+    playBtn.title = (!fightBusy || paused || atEnd) ? 'Play' : 'Pause';
+  }
+
+  function updateTransportChrome(shown, total, result) {
+    var timeEl = document.getElementById('mlsTransportTime');
+    var scrub = document.getElementById('mlsTransportScrub');
+    var steps = (result && result.steps) || [];
+    var n = Math.max(0, Math.min(steps.length, shown | 0));
+    var max = Math.max(0, total | 0);
+    if (timeEl) {
+      timeEl.textContent = formatPlayClock(playbackTimeAt(steps, n)) +
+        ' / ' + formatPlayClock(playbackDurationMs(steps));
+    }
+    if (scrub) {
+      scrub.max = String(max);
+      if (!transportScrubbing) scrub.value = String(n);
+    }
+    syncTransportPlayBtn();
+  }
+
+  function setTransportVisible(show, result) {
+    var bar = document.getElementById('mlsTransport');
+    var scrub = document.getElementById('mlsTransportScrub');
+    var playBtn = document.getElementById('mlsTransportPlay');
+    var steps = (result && result.steps) || [];
+    var n = steps.length | 0;
+    if (bar) {
+      if (show) {
+        bar.hidden = false;
+        bar.removeAttribute('hidden');
+      } else {
+        bar.hidden = true;
+        bar.setAttribute('hidden', '');
+      }
+    }
+    if (scrub) {
+      scrub.disabled = !show || n <= 0;
+      scrub.min = '0';
+      scrub.max = String(n);
+      if (!show) scrub.value = '0';
+    }
+    if (playBtn) playBtn.disabled = !show || n <= 0;
+    if (show && result) updateTransportChrome(0, n, result);
+    else if (!show) {
+      var timeEl = document.getElementById('mlsTransportTime');
+      if (timeEl) timeEl.textContent = '0:00 / 0:00';
+      syncTransportPlayBtn();
+    }
+  }
+
+  /**
+   * Absolute rebuild to playback index shown (0 = formation start).
+   * Used for scrub / skip-to-end; live play advances incrementally.
+   */
+  function applyPlaybackShown(session, shown, opts) {
+    var result = session.result;
+    var steps = (result && result.steps) || [];
+    var n = Math.max(0, Math.min(steps.length, shown | 0));
+    var allies = cloneArmy(session.startAlly);
+    var enemies = cloneArmy(session.startEnemy);
+    var logLines = [];
+    var shownTurn = 0;
+    var turnLimit = (board && board.limit_turns) || 5;
+    var hudCap = (result.turns | 0) > 0 ? (result.turns | 0) : turnLimit;
+    var quiet = !!(opts && opts.quiet);
+    var i;
+    var step;
+    var paceKind;
+    var stepTurn;
+    timelineSeekMode = true;
+    try {
+      clearTimelinePhase();
+      lockTimelinePhase(allies, enemies);
+      for (i = 0; i < n; i++) {
+        step = steps[i];
+        paceKind = (step && (step.pace || (step.link && step.link.kind))) || 'step';
+        stepTurn = step.turn | 0;
+        applySnapshot(allies, enemies, step);
+        syncLiveTurnOrder(allies, enemies, step);
+        if (stepTurn > 0 && stepTurn !== shownTurn) {
+          shownTurn = Math.min(stepTurn, hudCap);
+        }
+        if (step.text) {
+          logLines.push(step.text);
+          if (logLines.length > 60) logLines = logLines.slice(-48);
+        }
+      }
+    } finally {
+      timelineSeekMode = false;
+    }
+    session.allies = allies;
+    session.enemies = enemies;
+    session.shown = n;
+    session.logLines = logLines;
+    session.shownTurn = shownTurn;
+    lastAlly = allies;
+    lastEnemy = enemies;
+    if (shownTurn > 0) setTurnHud(shownTurn, turnLimit, { tick: false });
+    else setTurnHud(1, turnLimit, { tick: false });
+    log(logLines.join('\n'));
+    step = n > 0 ? steps[n - 1] : null;
+    paintBoard(
+      (!quiet && step && !skipAll) ? step.float : null,
+      (!quiet && step && !skipAll) ? step.link : null,
+      !quiet && !skipAll
+    );
+    paintTimeline({ battleOnly: true });
+    updateTransportChrome(n, steps.length, result);
+    return n;
+  }
+
+  function requestPlaybackSeek(idx) {
+    var steps;
+    var n;
+    var base = playSession && playSession.result ? playSession.result : lastPlayResult;
+    if (!base) return;
+    steps = base.steps || [];
+    n = Math.max(0, Math.min(steps.length, idx | 0));
+    /* Live play loop will apply on next wake. */
+    if (fightBusy && playSession && playSession.result === base) {
+      fightSeekTo = n;
+      wakeFightSleep();
+      return;
+    }
+    if (!playSession || playSession.result !== base) {
+      playSession = {
+        result: base,
+        startAlly: cloneArmy(base.allies),
+        startEnemy: cloneArmy(base.enemies),
+        allies: null,
+        enemies: null,
+        shown: 0,
+        logLines: [],
+        shownTurn: 0
+      };
+    }
+    applyPlaybackShown(playSession, n, { quiet: !!transportScrubbing });
+  }
+
+  function togglePlaybackPause() {
+    var scrub;
+    var startAt = 0;
+    if (fightBusy && playSession) {
+      paused = !paused;
+      setFightControls(true);
+      syncTransportPlayBtn();
+      if (!paused) wakeFightSleep();
+      return;
+    }
+    if (!lastPlayResult || fightBusy) return;
+    scrub = document.getElementById('mlsTransportScrub');
+    startAt = scrub ? (scrub.value | 0) : 0;
+    if (startAt >= ((lastPlayResult.steps && lastPlayResult.steps.length) || 0)) startAt = 0;
+    hideEndCard();
+    skipAll = false;
+    paused = false;
+    fightBusy = true;
+    playbackFxBusy = true;
+    setFightControls(true);
+    playFight(lastPlayResult, startAt);
+  }
+
   function setFightControls(busy) {
     var start = document.getElementById('mlsFight');
     var pause = document.getElementById('mlsPause');
@@ -12277,16 +12840,18 @@
         } catch (eBlur) { /* ignore */ }
       }
     }
+    /* Play/Pause lives on #mlsTransport — hide the old PAUSE/RESUME control. */
     if (pause) {
-      pause.disabled = !busy;
-      pause.style.display = busy ? '' : 'none';
-      pause.textContent = paused ? mlsT('mls_resume', 'RESUME') : mlsT('mls_pause', 'PAUSE');
+      pause.disabled = true;
+      pause.style.display = 'none';
+      pause.setAttribute('hidden', '');
     }
     if (skip) skip.disabled = !busy;
     if (reset) reset.disabled = !!busy;
     if (boardEl) boardEl.classList.toggle('is-fighting', !!busy);
     if (shell) shell.classList.toggle('is-fighting', !!busy);
     try { document.body.classList.toggle('mls-is-fighting', !!busy); } catch (eFight) {}
+    syncTransportPlayBtn();
   }
 
   function onResetBattle() {
@@ -12294,10 +12859,17 @@
       hideEndCard();
       hideTurnHud();
       fightBusy = false;
+      playbackFxBusy = false;
       paused = false;
       skipAll = false;
       pauseWait = null;
+      fightWake = null;
+      fightSeekTo = null;
+      transportScrubbing = false;
+      playSession = null;
+      lastPlayResult = null;
       clearTimelinePhase();
+      setTransportVisible(false);
       setFightControls(false);
       clearMapCameraLock();
       return loadArmies().then(function () {
@@ -12311,7 +12883,7 @@
     if (fightBusy) {
       skipAll = true;
       paused = false;
-      if (pauseWait) pauseWait();
+      wakeFightSleep();
       return new Promise(function (resolve) {
         var n = 0;
         var t = setInterval(function () {
@@ -12536,6 +13108,9 @@
     /* Arm busy before setView so its idle loadArmies cannot race and blank thumbs. */
     skipAll = false;
     paused = false;
+    fightSeekTo = null;
+    transportScrubbing = false;
+    playSession = null;
     fightBusy = true;
     playbackFxBusy = true;
     setFightControls(true);
@@ -12601,7 +13176,11 @@
       playbackFxBusy = false;
       paused = false;
       skipAll = false;
+      fightSeekTo = null;
+      transportScrubbing = false;
+      playSession = null;
       clearTimelinePhase();
+      setTransportVisible(false);
       setFightControls(false);
       if (e && (e.code === 'mls-empty' || e.code === 'mls-missing-pilot')) {
         if (e.code === 'mls-missing-pilot') markMissingPilotSlots(e.missing || []);
@@ -12639,81 +13218,122 @@
     hud.classList.remove('is-tick');
   }
 
-  function playFight(result) {
-    var allies = cloneArmy(result.allies);
-    var enemies = cloneArmy(result.enemies);
+  /**
+   * Play absolute step snapshots. startAt = scrub index (0 = formation start).
+   * Transport: Play/Pause + scrub only (no ±skip buttons).
+   */
+  function playFight(result, startAt) {
+    var steps = (result && result.steps) || [];
     var turnLimit = (board && board.limit_turns) || 5;
-    var shownTurn = 0;
-    lastAlly = allies;
-    lastEnemy = enemies;
+    var session = {
+      result: result,
+      startAlly: cloneArmy(result.allies),
+      startEnemy: cloneArmy(result.enemies),
+      allies: null,
+      enemies: null,
+      shown: 0,
+      logLines: [],
+      shownTurn: 0
+    };
+    var from = Math.max(0, Math.min(steps.length, startAt | 0));
+    playSession = session;
+    lastPlayResult = result;
+    fightSeekTo = null;
     hideEndCard();
-    lockTimelinePhase(allies, enemies);
-    /*
-     * cloneArmy restores home cells + full HP — repaint start thumbs instead of
-     * blanking the layer (that removed portraits between READY and the first beat).
-     */
-    paintBoard();
-    paintTimeline({ battleOnly: true });
-    setTurnHud(1, turnLimit, { tick: false });
-    var logLines = [];
-    var i = 0;
+    setTransportVisible(true, result);
+    applyPlaybackShown(session, from, { quiet: from === 0 });
+    paused = false;
+    skipAll = false;
+    syncTransportPlayBtn();
     return new Promise(function (resolve) {
+      function finishPlay() {
+        var allies = session.allies || [];
+        var enemies = session.enemies || [];
+        allies.forEach(function (u) { u.active = false; });
+        enemies.forEach(function (u) { u.active = false; });
+        if ((result.turns | 0) > 0) setTurnHud(result.turns | 0, turnLimit, { tick: false });
+        clearTimelinePhase();
+        paintBoard();
+        paintTimeline();
+        updateTransportChrome(steps.length, steps.length, result);
+        playbackFxBusy = false;
+        scheduleOptimizerWarmSilent(0);
+        showEndCard(result).then(function () {
+          fightBusy = false;
+          paused = false;
+          skipAll = false;
+          fightSeekTo = null;
+          setFightControls(false);
+          syncTransportPlayBtn();
+          resolve();
+        });
+      }
+
       function next() {
-        if (i >= result.steps.length) {
-          allies.forEach(function (u) { u.active = false; });
-          enemies.forEach(function (u) { u.active = false; });
-          /* End board: keep HUD on the last fought turn (not a phantom next turn). */
-          if ((result.turns | 0) > 0) setTurnHud(result.turns | 0, turnLimit, { tick: false });
-          clearTimelinePhase();
-          paintBoard();
-          paintTimeline();
-          /* FX are done — warm now, while the end card is up. Do not wait out the card. */
-          playbackFxBusy = false;
-          scheduleOptimizerWarmSilent(0);
-          /* Never wait on optimizer — endcard must not stall on bg search. */
-          showEndCard(result).then(function () {
-            fightBusy = false;
-            paused = false;
-            skipAll = false;
-            setFightControls(false);
-            resolve();
-          });
+        var step;
+        var paceKind;
+        var stepTurn;
+        var hudCap;
+        var orderDirty;
+        var hold;
+        var allies;
+        var enemies;
+        var logLines;
+        var shownTurn;
+        if (playSession !== session) {
+          resolve();
           return;
         }
-        var step = result.steps[i++];
-        var paceKind = step.pace || (step.link && step.link.kind) || 'step';
-        var stepTurn = step.turn | 0;
-        var hudCap = (result.turns | 0) > 0 ? (result.turns | 0) : turnLimit;
+        if (fightSeekTo != null) {
+          applyPlaybackShown(session, fightSeekTo, { quiet: !!transportScrubbing });
+          fightSeekTo = null;
+        }
+        if (skipAll) {
+          applyPlaybackShown(session, steps.length, { quiet: true });
+          finishPlay();
+          return;
+        }
+        if (session.shown >= steps.length) {
+          finishPlay();
+          return;
+        }
+        if (paused || transportScrubbing) {
+          sleep(60000).then(next);
+          return;
+        }
+        allies = session.allies;
+        enemies = session.enemies;
+        logLines = session.logLines || [];
+        shownTurn = session.shownTurn | 0;
+        step = steps[session.shown];
+        session.shown += 1;
+        paceKind = step.pace || (step.link && step.link.kind) || 'step';
+        stepTurn = step.turn | 0;
+        hudCap = (result.turns | 0) > 0 ? (result.turns | 0) : turnLimit;
         applySnapshot(allies, enemies, step);
-        /* Live queue: turn rebuild / rotate survivors to bottom / fade KO’d chips. */
-        var orderDirty = syncLiveTurnOrder(allies, enemies, step);
+        orderDirty = syncLiveTurnOrder(allies, enemies, step);
         if (stepTurn > 0 && stepTurn !== shownTurn) {
-          /* Never flash TURN N+1 after a fight that ended on turn N. */
           shownTurn = Math.min(stepTurn, hudCap);
+          session.shownTurn = shownTurn;
           setTurnHud(shownTurn, turnLimit, { tick: paceKind === 'turn' || shownTurn > 1 });
         }
         if (step.text) {
           logLines.push(step.text);
           if (logLines.length > 60) logLines = logLines.slice(-48);
+          session.logLines = logLines;
           log(logLines.join('\n'));
         }
-        paintBoard(skipAll ? null : step.float, skipAll ? null : step.link, !skipAll);
-        /*
-         * Battle strip only. Always on order changes; otherwise light cadence so
-         * active highlight stays in sync without thrashing every float.
-         */
-        if (skipAll || orderDirty || paceKind === 'turn' || paceKind === 'attack' ||
+        lastAlly = allies;
+        lastEnemy = enemies;
+        paintBoard(step.float, step.link, true);
+        if (orderDirty || paceKind === 'turn' || paceKind === 'attack' ||
             paceKind === 'counter' || paceKind === 'skill' ||
-            paceKind === 'map-aoe' || paceKind === 'map-hit' || paceKind === 'weapon' ||
-            i === result.steps.length || (i % 3) === 0) {
+            paceKind === 'map-aoe' || paceKind === 'supp-aoe' || paceKind === 'map-hit' || paceKind === 'weapon' ||
+            session.shown === steps.length || (session.shown % 3) === 0) {
           paintTimeline({ battleOnly: true });
         }
-        if (skipAll) {
-          next();
-          return;
-        }
-        /* Brief beat on the SD hit float, then cover-return plays immediately after. */
-        var hold = (step.link && step.link.coverTo && step.float)
+        updateTransportChrome(session.shown, steps.length, result);
+        hold = (step.link && step.link.coverTo && step.float)
           ? Math.round(160 / battlePaceMul())
           : 0;
         sleep(stepDelay(paceKind) + hold).then(next);
@@ -13582,15 +14202,43 @@
     });
     document.getElementById('mlsPause') && document.getElementById('mlsPause').addEventListener('click', function () {
       if (!fightBusy) return;
-      paused = !paused;
-      setFightControls(true);
-      if (!paused && pauseWait) pauseWait();
+      togglePlaybackPause();
     });
+    document.getElementById('mlsTransportPlay') && document.getElementById('mlsTransportPlay').addEventListener('click', function () {
+      togglePlaybackPause();
+    });
+    (function bindTransportScrub() {
+      var scrub = document.getElementById('mlsTransportScrub');
+      if (!scrub) return;
+      function beginScrub() {
+        transportScrubbing = true;
+        wakeFightSleep();
+      }
+      function endScrub() {
+        if (!transportScrubbing) return;
+        transportScrubbing = false;
+        requestPlaybackSeek(scrub.value | 0);
+        if (fightBusy && !paused) wakeFightSleep();
+      }
+      scrub.addEventListener('pointerdown', beginScrub);
+      scrub.addEventListener('mousedown', beginScrub);
+      scrub.addEventListener('touchstart', beginScrub, { passive: true });
+      scrub.addEventListener('input', function () {
+        transportScrubbing = true;
+        requestPlaybackSeek(scrub.value | 0);
+      });
+      scrub.addEventListener('change', endScrub);
+      scrub.addEventListener('pointerup', endScrub);
+      scrub.addEventListener('mouseup', endScrub);
+      scrub.addEventListener('touchend', endScrub);
+      scrub.addEventListener('pointercancel', endScrub);
+    })();
     document.getElementById('mlsSkip') && document.getElementById('mlsSkip').addEventListener('click', function () {
       if (!fightBusy) return;
       skipAll = true;
       paused = false;
-      if (pauseWait) pauseWait();
+      transportScrubbing = false;
+      wakeFightSleep();
     });
     document.getElementById('mlsReset') && document.getElementById('mlsReset').addEventListener('click', function () {
       onResetBattle();
@@ -13775,8 +14423,6 @@
     if (!fightBusy) {
       var start = document.getElementById('mlsFight');
       if (start) start.textContent = mlsT('mls_sim_start', 'SIMULATION START');
-      var pause = document.getElementById('mlsPause');
-      if (pause) pause.textContent = paused ? mlsT('mls_resume', 'RESUME') : mlsT('mls_pause', 'PAUSE');
     }
   }
 
@@ -13800,6 +14446,9 @@
     onKomaImgError: onKomaImgError,
     /* Chip face helper — Trait/thum only (never IngameKoma). */
     chipFaceUrl: mlsPortraitFaceUrl,
-    chipFaceMark: MLS_CHIP_FACE_MARK
+    chipFaceMark: MLS_CHIP_FACE_MARK,
+    /* Revive / HP-fall gate — for audit_mls_hp_fall_revive + fixtures. */
+    parseHpFallRestores: parseHpFallRestores,
+    hpFallRestoreApplies: hpFallRestoreApplies
   };
 })(window);

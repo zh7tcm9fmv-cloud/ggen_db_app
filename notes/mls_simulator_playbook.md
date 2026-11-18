@@ -130,9 +130,9 @@ HUD labels on the map: **S. Attack** / **S. Defense** (not SD/SA abbreviations).
 - **Guaranteed Chance Step +N** (無条件…+N回): real count increase — bump `chanceStepsLeft` on acquire, then no-KO fire spends that raised budget (Uso UR EX: base 2 + Guaranteed +1 → 4 actions). Auto-CS still only forces an existing slot.
 
 MAP AI (EX-first — MAP is rare in live ML):
-1. Prefer EX / highest non-MAP first — **never** open with MAP when that shot (from the current tile **or after a normal move into range**) kills the engage target under AI Defend/Shield (even if MAP would multi-kill; V2AB Wings of Light / 光之翼).
-2. Only then use MAP when the engage foe survives EX **and** the MAP shape has **2+** living enemies **including** that engage target **and** raw MAP damage **kills** that engage target.
-3. No chip-MAP; killing only a side foe is not enough.
+1. Prefer EX / highest non-MAP first — **never** open with MAP when that shot (from the current tile **or after a normal move into range**) kills the engage target under AI Defend/Shield (even if MAP would multi-kill; V2AB Wings of Light / 光之翼). Support Defense cover on the engage also blocks “EX finishes.”
+2. Only then use MAP when the engage foe survives EX **and** the MAP shape has living enemies ≥ Master League auto-usage threshold (**2** typical; some EX MAP = **1**) **including** that engage target **and** raw MAP damage **kills** that engage target.
+3. **No chip-MAP** — full-HP tanks (e.g. WZC Twin Buster on high CP) must not open with MAP just to nick. Killing only a side foe is not enough.
 4. **MAP bypasses Defend / Shield / Evade picks** — targets never get that menu (same class as no SD / no counter). Resolve and plan use full damage; Parry help already blocks MAP.
 
 Dash / Moving-Attack MAP (`MapWeaponRangeTypeIndex` 4): fire from the start tile (no pre-move into range); after hits resolve, land at the far `shooting_coords` cell (`dashTo`).
@@ -164,6 +164,20 @@ Fallback if pilot JSON missing or cal unavailable: weapon power only (weaker fid
 
 ---
 
+## HP-fall revive / threshold restore (class gate)
+
+Pilot EX lines like “When piloting **X** and HP falls to 0%… restores own HP by N% (once)” (Char↔Zeong, Guel↔Darilbalde, Setsuna↔00 Raiser, …) and mid-fight threshold heals (Shinn/Impulse 50%, …) are parsed in `ml_sim.js` (`parseHpFallRestores` / `hpFallRestoreApplies`).
+
+**Apply order:** unit-id chips (detail **or** ability root) → localized piloting name → **recommend-unit fallback** when the pilot’s `recommend_unit` is the MS under them (chips/name miss must not silently drop the pair).
+
+**Audit (run after MasterData / ability text changes):**
+
+```text
+python scripts/audit_mls_hp_fall_revive.py
+```
+
+---
+
 ## What we intentionally do **not** simulate (yet)
 
 Say these clearly when users compare to the app:
@@ -172,6 +186,7 @@ Say these clearly when users compare to the app:
 - Player micro-control (manual move, weapon choice, defend/evade)  
 - General **Transform / Rearm** and Mechanisms beyond Shield (**Escape Function is implemented** — `tryEscapeTransform` / `transform_partner_id`, once per battle)  
 - Lock On vs Sway interactions (Sway handled; Parry is implemented for unit ability kits)  
+- Cond:HP **Apply Sway (Unit Ability)** auto-arm (pilot Skill Sway only)  
 - Full Unit Skill activation UI mid-battle  
 - Live Master League **score table** (`rankedPoints` exists in rules but is not the optimizer score)  
 - Server-authoritative ML matchmaking / ranking / MLS-style Ranked Match UI
