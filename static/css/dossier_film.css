@@ -28,8 +28,8 @@ html .modal-content.unit-detail:not(.detail-ranking-view) .detail-header .detail
   /* Phone hero only. iPad Mini / Air / Pro keep the Pro 13" side-by-side portrait. */
   html .modal-content.char-detail:not(.detail-ranking-view) .detail-portrait-stack > .detail-portrait-wrap,
   html .modal-content.unit-detail:not(.detail-ranking-view) .detail-portrait-stack > .detail-portrait-wrap{
-    width:min(240px,72vw);
-    max-width:min(240px,72vw);
+    width:min(360px,90vw);
+    max-width:min(360px,90vw);
     margin-left:auto;
     margin-right:auto;
   }

@@ -820,7 +820,9 @@ html[data-ui-lang="HK"] .tm-rail-group-ch{
 }
 .tm-lim-badge .limited-ur-badge-text,
 .tm-ft .limited-ur-badge-text{
-  font-size:5px;letter-spacing:.04em;font-weight:900;
+  font-size:5.5px;letter-spacing:0;font-weight:900;
+  max-width:92%;padding:0 1%;
+  overflow:visible;text-overflow:clip;
   text-transform:none; /* keep JA/TW/HK 期間限定 readable */
 }
 .tm-ft-hit{position:absolute;inset:0;z-index:4}

@@ -1026,24 +1026,24 @@ a.nav-tab:any-link:hover:not(.active),a.nav-tab:visited:hover:not(.active){color
 #panel-banner_timeline .bt-table .bt-strip .lr-card.bt-lr-tile--limited.bt-lr-tile--exchangeable{padding-top:6px!important}
 /* Match ~thumb width (featured tiles use ~74px thumbs) — 148px made the ribbon look huge locally. */
 #panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--limited > .bt-limited-topbar .limited-ur-badge{
-  width:min(100%,82px);
+  width:min(100%,90px);
   max-width:100%;
-  overflow:hidden;
+  overflow:visible;
   filter:drop-shadow(0 1px 3px rgba(0,0,0,.55));
   container-type:inline-size;
 }
 #panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--limited > .bt-limited-topbar .limited-ur-badge-text{
-  font-size:clamp(6px,9.5cqi,8px);
+  font-size:clamp(6.5px,10cqi,8.5px);
   font-weight:900;
   letter-spacing:0;
   text-transform:none;
   color:#fff;
   text-shadow:0 1px 2px rgba(0,0,0,.95);
-  line-height:1;
-  max-width:70%;
+  line-height:1.15;
+  max-width:88%;
   padding:0 2%;
   white-space:nowrap;
-  overflow:hidden;
+  overflow:visible;
   text-overflow:clip;
 }
 /* CJK: 期間限定 */
@@ -1060,7 +1060,9 @@ html[data-ui-lang="HK"] #panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--li
   font-size:clamp(6.5px,10cqi,8.5px);
   letter-spacing:0;
   font-weight:800;
-  max-width:72%;
+  max-width:92%;
+  overflow:visible;
+  text-overflow:clip;
 }
 #panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--limited:hover{border-color:transparent!important;box-shadow:0 6px 22px rgba(0,212,255,.14),0 4px 20px rgba(168,85,247,.25),inset 0 1px 0 rgba(255,255,255,.1)!important}
 #panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--limited.bt-lr-tile--lt-supporter:hover{box-shadow:0 6px 22px rgba(0,212,255,.16),0 4px 20px rgba(201,169,98,.22),inset 0 1px 0 rgba(255,255,255,.1)!important}
@@ -1146,15 +1148,17 @@ html[data-ui-lang="HK"] #panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--li
   margin:0 0 2px!important;
 }
 #panel-banner_timeline .bt-table .bt-strip .lr-card.bt-lr-tile--limited > .bt-limited-topbar .limited-ur-badge{
-  width:min(100%,82px);
-  overflow:hidden;
+  width:min(100%,90px);
+  overflow:visible;
   container-type:inline-size;
 }
 #panel-banner_timeline .bt-table .bt-strip .lr-card.bt-lr-tile--limited > .bt-limited-topbar .limited-ur-badge-text{
-  font-size:clamp(6px,9.5cqi,8px);
-  max-width:70%;
+  font-size:clamp(6.5px,10cqi,8.5px);
+  max-width:88%;
   letter-spacing:0;
   text-transform:none;
+  overflow:visible;
+  text-overflow:clip;
 }
 html[data-ui-lang="JA"] #panel-banner_timeline .bt-table .bt-strip .lr-card.bt-lr-tile--limited > .bt-limited-topbar .limited-ur-badge,
 html[data-ui-lang="JP"] #panel-banner_timeline .bt-table .bt-strip .lr-card.bt-lr-tile--limited > .bt-limited-topbar .limited-ur-badge,
@@ -2404,35 +2408,44 @@ a.seo-entity-link{color:inherit;text-decoration:none;font:inherit;cursor:pointer
 /* Official Limited UR gacha label (UI_Gasha_Label_UR_Base) + localized text overlay */
 .limited-ur-badge{display:inline-grid;place-items:center;position:relative;vertical-align:middle;line-height:0;max-width:100%;overflow:visible}
 .limited-ur-badge-base{display:block;width:100%;height:auto;grid-area:1/1;pointer-events:none;user-select:none}
-.limited-ur-badge-text{grid-area:1/1;z-index:1;display:block;max-width:78%;padding:0 6%;box-sizing:border-box;font-family:inherit;font-weight:800;letter-spacing:.04em;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.95),0 2px 6px rgba(0,0,0,.85),0 0 3px rgba(0,0,0,.9),0 0 8px rgba(0,0,0,.55);text-align:center;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+/* Never ellipsis/clip the label — pointed ribbon + overflow:hidden ate “Limited” (and CJK) ink. */
+.limited-ur-badge-text{grid-area:1/1;z-index:1;display:block;max-width:86%;padding:0 2%;box-sizing:border-box;font-family:var(--font-body);font-weight:800;letter-spacing:.02em;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.95),0 2px 6px rgba(0,0,0,.85),0 0 3px rgba(0,0,0,.9),0 0 8px rgba(0,0,0,.55);text-align:center;line-height:1.2;white-space:nowrap;overflow:visible;text-overflow:clip;pointer-events:none;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 .limited-ur-badge--detail{width:min(200px,72vw);overflow:visible}
-/* Detail banner: iOS Safari clips glyph ink + text-shadow when overflow:hidden + tight line-height sit on the plate. */
+/* Detail banner: keep overflow visible — iOS Safari clips glyph ink + text-shadow otherwise. */
 .limited-ur-badge--detail .limited-ur-badge-text{
-  max-width:70%;
-  padding:0 7%;
+  max-width:84%;
+  padding:0 3%;
   font-size:clamp(10px,2.55vw,13px);
-  line-height:1;
+  line-height:1.15;
+  letter-spacing:.02em;
   overflow:visible;
   text-overflow:clip;
   text-shadow:0 1px 2px rgba(0,0,0,.95),0 1px 4px rgba(0,0,0,.75);
 }
-.limited-ur-badge--chip{width:118px}
-.limited-ur-badge--chip .limited-ur-badge-text{font-size:11px;font-weight:800;letter-spacing:.05em}
-.limited-ur-badge--toolbar{width:96px}
-.limited-ur-badge--toolbar .limited-ur-badge-text{font-size:9px;letter-spacing:.04em}
+.limited-ur-badge--chip{width:124px}
+.limited-ur-badge--chip .limited-ur-badge-text{font-size:11px;font-weight:800;letter-spacing:.03em;max-width:88%}
+.limited-ur-badge--toolbar{width:104px}
+.limited-ur-badge--toolbar .limited-ur-badge-text{font-size:9px;letter-spacing:.02em;max-width:88%}
 .limited-ur-badge--tile{width:100%;max-width:100%}
-.limited-ur-badge--tile .limited-ur-badge-text{font-size:9px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.limited-ur-badge--tile .limited-ur-badge-text{font-size:8.5px;font-weight:900;letter-spacing:.02em;text-transform:uppercase;max-width:90%;overflow:visible;text-overflow:clip}
 .detail-limited-banner-wrap{margin-top:10px;margin-bottom:4px;display:inline-block;width:fit-content;max-width:100%;overflow:visible}
 /* Limited badge over detail portrait HUD — top center, scales with portrait width */
 .detail-portrait-wrap{position:relative}
 .detail-portrait-wrap>.detail-limited-banner--on-portrait{
   position:absolute;top:5px;left:50%;transform:translateX(-50%);
-  z-index:4;margin:0;width:min(48%,104px);max-width:calc(100% - 8px);
+  z-index:4;margin:0;width:min(56%,120px);max-width:calc(100% - 8px);
   pointer-events:none;display:flex;justify-content:center;align-items:center;
   overflow:visible;
 }
-.detail-portrait-wrap>.detail-limited-banner--on-portrait .limited-ur-badge{width:100%;max-width:100%}
-.detail-portrait-wrap>.detail-limited-banner--on-portrait .limited-ur-badge-text{font-size:clamp(7px,2.2vw,9px);letter-spacing:.04em}
+.detail-portrait-wrap>.detail-limited-banner--on-portrait .limited-ur-badge{width:100%;max-width:100%;overflow:visible}
+.detail-portrait-wrap>.detail-limited-banner--on-portrait .limited-ur-badge-text{
+  font-size:clamp(8px,2.35vw,10px);
+  letter-spacing:.02em;
+  max-width:86%;
+  padding:0 2%;
+  overflow:visible;
+  text-overflow:clip;
+}
 .modal-content.unit-detail .unit-detail-head-main>.detail-limited-banner-wrap,
 .modal-content.char-detail .char-detail-head-main>.detail-limited-banner-wrap{display:none}
 /* Limited badge over recommend thumb — sit on top rim so it doesn’t cover the face */
@@ -2643,8 +2656,8 @@ html[data-ui-lang="KR"] .detail-rec-link-card .detail-rec-limited-wrap--on-thumb
   flex-direction:column!important;
   align-items:stretch!important;
   text-align:left!important;
-  gap:12px!important;
-  padding:44px 14px 14px!important;
+  gap:8px!important;
+  padding:28px 14px 12px!important;
   overflow:visible!important;
 }
 .modal-content.char-detail:not(.detail-ranking-view) .detail-portrait-stack,
@@ -2659,20 +2672,32 @@ html[data-ui-lang="KR"] .detail-rec-link-card .detail-rec-limited-wrap--on-thumb
   flex-shrink:0;
   overflow:visible!important;
   box-sizing:border-box;
+  /* Pull hero up under sticky chrome — saves vertical scroll. */
+  margin-top:-6px;
 }
-/* Centered phone hero. iPads keep the side-by-side Pro portrait. */
+/* Centered phone hero — fill the hangar; leave a slim side gutter for silhouette. */
 .modal-content.char-detail:not(.detail-ranking-view) .detail-portrait-stack>.detail-portrait-wrap,
 .modal-content.unit-detail:not(.detail-ranking-view) .detail-portrait-stack>.detail-portrait-wrap,
 .modal-content.char-detail:not(.detail-ranking-view) .detail-portrait-wrap,
 .modal-content.unit-detail:not(.detail-ranking-view) .detail-portrait-wrap{
-  width:min(240px,72vw)!important;
-  max-width:min(240px,72vw)!important;
+  width:min(360px,90vw)!important;
+  max-width:min(360px,90vw)!important;
   margin-left:auto!important;
   margin-right:auto!important;
   height:auto!important;
   overflow:visible!important;
   flex-shrink:0;
   box-sizing:border-box;
+}
+/* Unit wrap pads for LB/video chrome on desktop — on phone that shrinks the art
+   vs character. Keep bottom room for overlay buttons only. */
+.modal-content.unit-detail:not(.detail-ranking-view) .unit-portrait-wrap{
+  padding-left:0!important;
+  padding-right:0!important;
+  padding-top:0!important;
+}
+.modal-content.unit-detail:not(.detail-ranking-view) .detail-portrait-stack:not(:has(#unitLbVideoBtnSlot .unit-lb-video-btn)):not(:has(#unitLbVideoBtnSlot .unit-gacha-pull-video-btn)) .unit-portrait-wrap{
+  padding-bottom:0!important;
 }
 .modal-content.char-detail:not(.detail-ranking-view) .detail-portrait,
 .modal-content.unit-detail:not(.detail-ranking-view) .detail-portrait,
@@ -2750,7 +2775,7 @@ html[data-ui-lang="KR"] .detail-rec-link-card .detail-rec-limited-wrap--on-thumb
 .modal-content.char-detail:not(.detail-ranking-view) .detail-portrait-wrap>.detail-limited-banner--on-portrait,
 .modal-content.unit-detail:not(.detail-ranking-view) .detail-portrait-wrap>.detail-limited-banner--on-portrait{
   top:4px;
-  width:min(92%,128px);
+  width:min(94%,136px);
   max-width:calc(100% - 2px);
   z-index:8;
 }
@@ -2762,15 +2787,16 @@ html[data-ui-lang="KR"] .detail-rec-link-card .detail-rec-limited-wrap--on-thumb
 }
 .modal-content.char-detail:not(.detail-ranking-view) .detail-portrait-wrap>.detail-limited-banner--on-portrait .limited-ur-badge-text,
 .modal-content.unit-detail:not(.detail-ranking-view) .detail-portrait-wrap>.detail-limited-banner--on-portrait .limited-ur-badge-text{
-  font-size:clamp(8px,2.6vw,10px);
-  max-width:74%;
+  font-size:clamp(8.5px,2.7vw,11px);
+  max-width:88%;
+  padding:0 2%;
   overflow:visible;
   text-overflow:clip;
-  letter-spacing:.03em;
+  letter-spacing:.02em;
 }
 .modal-content--has-chrome.char-detail:not(.detail-ranking-view) .detail-header,
 .modal-content--has-chrome.unit-detail:not(.detail-ranking-view) .detail-header{
-  padding-top:18px!important;
+  padding-top:8px!important;
 }
 .modal-content.char-detail:not(.detail-ranking-view) .detail-header>.detail-rank-toggle-slot,.modal-content.unit-detail:not(.detail-ranking-view) .detail-header>.detail-rank-toggle-slot{left:14px;bottom:14px}
 .modal-content.char-detail:not(.detail-ranking-view) .char-detail-head-main .detail-meta,.modal-content.char-detail:not(.detail-ranking-view) .char-detail-head-main .detail-role-label{justify-content:flex-start;text-align:left}
@@ -4722,7 +4748,7 @@ button.stage-map-roster-thumb:disabled{
 .loading-overlay{display:flex;align-items:center;justify-content:center;padding:60px 20px}.spinner{width:50px;height:50px;border:4px solid var(--border-color);border-top-color:var(--accent-cyan);border-radius:50%;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.empty-state{text-align:center;padding:48px 24px;color:var(--text-muted);max-width:28rem;margin-left:auto;margin-right:auto}.empty-state-icon{font-size:40px;margin-bottom:10px;opacity:.85;line-height:1}.empty-state-text{font-size:16px;font-weight:600;color:var(--text-secondary);line-height:1.5}
 .tag-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:400;display:none;align-items:center;justify-content:center;padding:20px}.tag-modal-overlay.active{display:flex}.tag-modal-content{background:var(--bg-modal);border:1px solid var(--border-color);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);max-width:800px;width:100%;max-height:85vh;display:flex;flex-direction:column;position:relative;overflow:hidden}.tag-modal-header{padding:18px 24px;border-bottom:1px solid var(--border-color);background:rgba(0,0,0,.3);display:flex;flex-direction:column;gap:12px}.tag-modal-title-row{display:flex;justify-content:space-between;align-items:center;width:100%}.tag-modal-title{font-size:22px;font-weight:700;color:var(--accent-cyan);display:flex;align-items:center;gap:10px;flex-wrap:wrap}.tag-modal-nav{display:flex;gap:10px}.tag-nav-btn{padding:8px 16px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:var(--radius-sm);color:var(--text-secondary);font-size:14px;font-weight:600;cursor:pointer;transition:var(--transition)}.tag-nav-btn:hover{color:var(--text-primary);border-color:var(--accent-blue)}.tag-nav-btn.active{background:rgba(0,212,255,.1);color:var(--accent-cyan);border-color:var(--accent-cyan)}.tag-modal-body{padding:20px 24px;overflow-y:auto;background:var(--bg-secondary);flex:1}.tag-rarity-filter{display:flex;gap:8px;margin-bottom:20px;background:var(--bg-card);padding:10px;border-radius:var(--radius-sm);border:1px solid var(--border-color);overflow-x:auto}.tag-rarity-btn{background:transparent;border:1px solid transparent;padding:4px 10px;border-radius:20px;cursor:pointer;font-weight:bold;font-size:14px;color:var(--text-secondary);transition:var(--transition);white-space:nowrap}.tag-rarity-btn:hover{color:var(--text-primary);background:rgba(255,255,255,.05)}.tag-rarity-btn.active{background:var(--accent-blue);color:#fff;border-color:var(--accent-blue)}.tag-role-group{margin-bottom:24px}.tag-role-group:last-child{margin-bottom:0}.tag-role-title{font-size:16px;font-weight:700;color:var(--text-secondary);border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:6px;margin-bottom:12px;display:flex;align-items:center;gap:8px}.tag-role-title img{height:20px}.tag-unit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:12px}.tag-unit-item{display:flex;flex-direction:column;align-items:center;cursor:pointer;padding:8px;border-radius:var(--radius-sm);border:1px solid transparent;transition:var(--transition);text-align:center}.tag-unit-item:hover{background:var(--bg-card-hover);border-color:var(--border-accent);transform:translateY(-2px)}.tag-unit-icon-wrapper{position:relative;width:64px;height:64px;margin-bottom:6px;display:flex;align-items:center;justify-content:center;margin:0 auto}.tag-unit-icon-wrapper .tmb-inner{position:absolute;top:4px;left:6px;right:6px;width:auto;height:auto;max-width:calc(100% - 12px);max-height:calc(100% - 10px);object-fit:contain;border-radius:4px;background:var(--bg-input);z-index:1}.tag-unit-icon-wrapper .tmb-frame{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;object-fit:contain;object-position:center bottom;z-index:2;transform:translateY(3px);transform-origin:center bottom}.tag-unit-item--ex-pair{position:relative;border-color:transparent;background:rgba(13,19,33,0.55);overflow:visible}.tag-unit-item--ex-pair::before{content:'';position:absolute;inset:-2px;border-radius:calc(var(--radius-sm) + 2px);padding:2px;background:linear-gradient(120deg,rgba(0,212,255,.95),rgba(34,211,238,.75),rgba(56,189,248,.9),rgba(0,212,255,.95));background-size:200% 200%;animation:tag-affinity-ex-pair-cyan 2.8s ease-in-out infinite;z-index:0;-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}.tag-unit-item--ex-pair>*{position:relative;z-index:1}.tag-unit-item--ex-pair:hover{transform:translateY(-2px);box-shadow:0 0 16px rgba(0,212,255,.42)}@keyframes tag-affinity-ex-pair-cyan{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}.ability-detail-block--ex-pair-highlight{box-shadow:0 0 0 2px rgba(0,212,255,.78),0 0 18px rgba(0,212,255,.32);border-radius:var(--radius-sm);animation:npc-card-highlight-pulse-cyan 1.15s ease-in-out 4}.tag-composite--affinity-ex-pair{box-shadow:0 0 0 2px rgba(0,212,255,.78),0 0 12px rgba(0,212,255,.32);border-color:var(--accent-cyan);border-radius:var(--radius-sm)}.detail-rec-link-card--affinity-ex-pair{box-shadow:0 0 0 2px rgba(0,212,255,.78),0 0 18px rgba(0,212,255,.32);animation:npc-card-highlight-pulse-cyan 1.15s ease-in-out 4}
 @media(max-width:1024px){.modal-content{max-width:100%}}
-@media(max-width:700px){.detail-header{flex-direction:column;align-items:center;text-align:center;gap:16px;padding:44px 16px 16px}.detail-portrait-wrap{width:200px;max-width:60vw;height:auto}.detail-portrait,.detail-portrait-placeholder{width:100%;max-width:200px;height:auto;aspect-ratio:3/4}.detail-portrait-placeholder{font-size:56px}.detail-name{font-size:22px}.detail-series-row,.detail-tags-row,.header-terrain-row{justify-content:center}.detail-rarity-icon{height:36px}.detail-role-label img{height:28px}.series-icon-img{height:40px;max-width:100%}}
+@media(max-width:700px){.detail-header{flex-direction:column;align-items:center;text-align:center;gap:8px;padding:28px 16px 12px}.detail-portrait-wrap{width:min(360px,90vw);max-width:min(360px,90vw);height:auto}.detail-portrait,.detail-portrait-placeholder{width:100%;max-width:100%;height:auto;aspect-ratio:3/4}.detail-portrait-placeholder{font-size:56px}.detail-name{font-size:22px}.detail-series-row,.detail-tags-row,.header-terrain-row{justify-content:center}.detail-rarity-icon{height:36px}.detail-role-label img{height:28px}.series-icon-img{height:40px;max-width:100%}}
 @media(max-width:768px){.supporter-detail-header .detail-title-area,.supporter-title-area{overflow:visible !important;flex:0 1 auto !important}.supporter-detail-header{overflow:visible !important}#detailModal .modal-content{--modal-detail-gutter:12px;border-top-left-radius:0;border-top-right-radius:0;max-height:calc(100vh - 8px - env(safe-area-inset-bottom,0px));max-height:calc(100dvh - 8px - env(safe-area-inset-bottom,0px))}
 /* Flush detail modal under the status bar so scrolled art cannot peek into the
    old 8px overlay gutter above sticky #modalDetailChrome. Safe-area is on the
@@ -7746,12 +7772,18 @@ button.stage-fea-diff-tab.diff-pill:focus-visible{
   .name-text,
   .modal-top-label,
   .modal-entity-id,
-  .limited-ur-badge-text,
   .detail-rec-link-name,
   .skill-summary,
   .unit-terrain-item>span:not(.unit-terrain-lv-wrap)
 ){
   overflow:hidden;
+}
+/* Limited badge label must stay unclipped (pointed plate + text-shadow). */
+#detailModal .limited-ur-badge,
+#detailModal .limited-ur-badge-text,
+.limited-ur-badge-text{
+  overflow:visible!important;
+  text-overflow:clip;
 }
 
 /* —— Human gate (first-visit verification; LVUp deco on card only) —— */

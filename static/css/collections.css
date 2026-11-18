@@ -460,10 +460,10 @@ body.collections-page .bg-pattern::after{
   display:inline-flex;align-items:center;justify-content:center;
   max-width:none;padding:0;background:transparent;box-shadow:none;
 }
-.collections-stat-lim-banner .limited-ur-badge--chip{width:108px}
+.collections-stat-lim-banner .limited-ur-badge--chip{width:120px}
 .collections-stat-lim-banner .limited-ur-badge-text{
-  font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;
-  max-width:86%;overflow:visible;text-overflow:clip;
+  font-size:11px;font-weight:800;letter-spacing:.02em;text-transform:uppercase;
+  max-width:90%;overflow:visible;text-overflow:clip;
 }
 .collections-stat-v{
   margin-top:6px;font-size:clamp(18px,2.1vw,22px);font-weight:800;font-variant-numeric:tabular-nums;line-height:1.15;
@@ -1021,10 +1021,10 @@ body.collections-page .bg-pattern::after{
 }
 .col-card-lim .limited-ur-badge{width:100%;max-width:100%}
 .col-card-lim .limited-ur-badge-text{
-  font-size:10px;font-weight:900;letter-spacing:.04em;
+  font-size:10px;font-weight:900;letter-spacing:.02em;
   text-transform:uppercase;color:#fff;
   text-shadow:0 1px 2px rgba(0,0,0,.95),0 2px 6px rgba(0,0,0,.85),0 0 3px rgba(0,0,0,.9),0 0 8px rgba(0,0,0,.55);
-  line-height:1.1;max-width:90%;overflow:visible;text-overflow:clip;
+  line-height:1.15;max-width:92%;overflow:visible;text-overflow:clip;
 }
 /* Grade icons — bottom-center of thumb, may extrude; name sits below with gap */
 .col-card-lb-icons{
