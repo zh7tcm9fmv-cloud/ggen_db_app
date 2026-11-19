@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="en" data-ui-lang="EN">
+<html lang="{{ seo_html_lang or 'en' }}" data-ui-lang="{{ seo_lang or 'EN' }}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Investment Priority - GGen Eternal Database</title>
-<meta name="description" content="Investment Priority guide for SD Gundam G Generation ETERNAL — GGen Eternal Database.">
+<title>{{ page_title }}</title>
+<meta name="description" content="{{ page_description }}">
 <meta property="og:type" content="website">
 <meta property="og:url" content="{{ public_origin }}/ip">
 <meta property="og:site_name" content="GGen Eternal Database">
-<meta property="og:title" content="Investment Priority — GGen Eternal Database">
-<meta property="og:description" content="Investment Priority guide for SD Gundam G Generation ETERNAL — GGen Eternal Database.">
+<meta property="og:title" content="{{ page_title }}">
+<meta property="og:description" content="{{ page_description }}">
 <meta property="og:image" content="{{ og_image_url }}">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="512">
@@ -23,7 +23,10 @@
 <meta name="robots" content="noindex, nofollow">
 {% else %}
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="{{ public_origin }}/ip">
+<link rel="canonical" href="{{ page_canonical_href or (public_origin + '/ip') }}">
+{% for alt in seo_alternates or [] %}
+<link rel="alternate" hreflang="{{ alt.hreflang }}" href="{{ alt.href }}">
+{% endfor %}
 {% endif %}
 <style>
 @font-face{font-family:'RobotoMediumNumbers';src:url('{{ url_for('static', filename='font/roboto_medium_numbers.ttf') }}?v={{ app_js_version }}') format('truetype');font-weight:normal;font-style:normal;font-display:swap}

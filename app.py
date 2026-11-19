@@ -910,8 +910,21 @@ def _inject_public_origin():
             passed_n = int((_human_gate_stats_get(hydrate=False) or {}).get('passed') or 0)
         except Exception:
             passed_n = 0
+    try:
+        seo_pack = _seo_pack()
+    except Exception:
+        seo_pack = {
+            'page_title': 'GGen Eternal Database',
+            'page_description': 'GGen Eternal Database — units, pilots, supporters, stages, and tools for SD Gundam G Generation ETERNAL.',
+            'page_canonical': '/',
+            'page_canonical_href': origin + '/',
+            'seo_alternates': [],
+            'seo_html_lang': 'en',
+            'seo_lang': 'EN',
+        }
     return {
         'public_origin': origin,
+        **seo_pack,
         'og_image_url': origin + '/static/og/site-logo.png?v=20260910',
         # Available on every template so deploy auto-reload + ?v= cache-bust work
         # without each route having to pass app_js_version explicitly.
@@ -22063,15 +22076,16 @@ def sort_rows(rows, sort_by, sort_dir, valid_sorts, default_sort='rarity', sort_
 # ═══════════════════════════════════════════════════════
 
 def _serve_index():
-    # Resolved at request time (see _page_canonical_path near SPA routing).
+    # EN by default; ?lang=TW|HK switches title + description. Hubs like /tracking stay themselves.
     try:
-        page_canonical = _page_canonical_path()
+        seo_pack = _seo_pack()
     except Exception:
-        page_canonical = '/'
-    try:
-        page_title, page_description = _spa_seo_meta(page_canonical)
-    except Exception:
-        page_title, page_description = _SPA_SEO_DEFAULT
+        seo_pack = {
+            'page_title': _SPA_SEO_DEFAULT[0],
+            'page_description': _SPA_SEO_DEFAULT[1],
+            'page_canonical': '/',
+            'page_canonical_href': _public_site_origin() + '/',
+        }
     r = make_response(render_template(
         'index.html',
         image_cdn=IMAGE_CDN or '',
@@ -22086,9 +22100,7 @@ def _serve_index():
         app_js_bundle=_app_js_served_bundle_name(),
         holo_js_bundle=_holo_js_served_bundle_name(),
         kofi_page_url=KOFI_PAGE_URL,
-        page_canonical=page_canonical,
-        page_title=page_title,
-        page_description=page_description,
+        **seo_pack,
     ))
     # Human-gate HTML depends on cookie — never publicly cache a required/skip mix.
     # Challenge cookie / Vary are applied in after_request for all HTML.
@@ -22101,7 +22113,7 @@ def _serve_index():
         r.headers['Pragma'] = 'no-cache'
         r.headers['Expires'] = '0'
     try:
-        abs_canon = _public_site_origin() + (page_canonical or '/')
+        abs_canon = seo_pack.get('page_canonical_href') or (_public_site_origin() + (seo_pack.get('page_canonical') or '/'))
         # Gunicorn / HTTP/1.1 header values must be latin-1; non-ASCII here causes
         # "Invalid HTTP Header" when crawlers echo Link back on the next request.
         if abs_canon.isascii() and '<' not in abs_canon and '>' not in abs_canon:
@@ -41235,128 +41247,52 @@ def _page_canonical_path():
     return '/'
 
 
-_SPA_SEO_DEFAULT = (
-    'GGen Eternal Database',
-    'GGen Eternal Database — the most up-to-date reference for SD Gundam G Generation ETERNAL. '
-    'Units, pilots, supporters, stages, and tools with all the essential information you need.',
-)
+import seo_pages as _seo_pages
 
-# Unique titles/descriptions per short path so Google stops collapsing tabs into `/`.
-_SPA_SEO_BY_PATH = {
-    '/': _SPA_SEO_DEFAULT,
-    '/c': (
-        'Characters — GGen Eternal Database',
-        'Browse playable pilots and characters in SD Gundam G Generation ETERNAL — stats, skills, abilities, and series.',
-    ),
-    '/u': (
-        'Units — GGen Eternal Database',
-        'Browse mobile suits and units in SD Gundam G Generation ETERNAL — weapons, traits, terrain, and synergy tools.',
-    ),
-    '/s': (
-        'Supporters — GGen Eternal Database',
-        'Browse supporters in SD Gundam G Generation ETERNAL — leader skills, actives, and tags.',
-    ),
-    '/st': (
-        'Eternal Road Stages — GGen Eternal Database',
-        'Eternal Road stage list for SD Gundam G Generation ETERNAL — rewards, enemies, and clear info.',
-    ),
-    '/gtower': (
-        'GTower Stages — GGen Eternal Database',
-        'GTower floors and rewards for SD Gundam G Generation ETERNAL.',
-    ),
-    '/challenge': (
-        'Challenge Stages — GGen Eternal Database',
-        'Challenge series stages for SD Gundam G Generation ETERNAL.',
-    ),
-    '/go': (
-        'Grand Offensive — GGen Eternal Database',
-        'Grand Offensive Score Attack stages for SD Gundam G Generation ETERNAL.',
-    ),
-    '/special': (
-        'Special Stages — GGen Eternal Database',
-        'Special stages for SD Gundam G Generation ETERNAL.',
-    ),
-    '/collab': (
-        'Collaboration Stages — GGen Eternal Database',
-        'Collaboration stages for SD Gundam G Generation ETERNAL.',
-    ),
-    '/op': (
-        'Option Parts — GGen Eternal Database',
-        'Option parts (Modifications) for SD Gundam G Generation ETERNAL — effects and browse filters.',
-    ),
-    '/cal': (
-        'Damage Simulator — GGen Eternal Database',
-        'Damage Calculator for SD Gundam G Generation ETERNAL — simulate unit and pilot combos against ER and Score Attack stages.',
-    ),
-    '/tb': (
-        'Team Builder — GGen Eternal Database',
-        'Team Builder for SD Gundam G Generation ETERNAL — assemble squads with units, pilots, and option parts.',
-    ),
-    '/tl': (
-        'Unit Assembly — GGen Eternal Database',
-        'Banner / Unit Assembly timeline for SD Gundam G Generation ETERNAL — drop rates and featured kits.',
-    ),
-    '/ml': (
-        'Master League — GGen Eternal Database',
-        'Master League tools and showcase for SD Gundam G Generation ETERNAL.',
-    ),
-    '/mls': (
-        'Master League Simulator — GGen Eternal Database',
-        'Master League formation, turn battle, and search for SD Gundam G Generation ETERNAL. Season 18 LINE spawns.',
-    ),
-    '/estscore': (
-        'MAX SS Pt Estimate — GGen Eternal Database',
-        'Master League MAX SS / Event Estimated Score calculator for SD Gundam G Generation ETERNAL.',
-    ),
-    '/rk': (
-        'Ranking — GGen Eternal Database',
-        'Character and unit ranking lists for SD Gundam G Generation ETERNAL.',
-    ),
-    '/new': (
-        'Latest Release — GGen Eternal Database',
-        'Latest release units and characters for SD Gundam G Generation ETERNAL.',
-    ),
-    '/esim': (
-        'E-Simulator — GGen Eternal Database',
-        'E-Simulator for SD Gundam G Generation ETERNAL stage runs.',
-    ),
-    '/gacha-sim': (
-        'Gacha Simulator — GGen Eternal Database',
-        'Unit Assembly gacha simulator for SD Gundam G Generation ETERNAL — official proportion tables.',
-    ),
-    '/roadmap': (
-        '1.5 Anniversary Calendar — GGen Eternal Database',
-        '1.5 anniversary calendar and roadmap for SD Gundam G Generation ETERNAL.',
-    ),
-}
+_SPA_SEO_DEFAULT = _seo_pages.default_meta('EN')
+
+def _seo_name_locale_order(lang):
+    """LANG_DATA keys. KR UI reads the HR pack. HK falls back to TW, then EN."""
+    lang = _seo_pages.normalize_lang(lang)
+    key = 'HR' if lang == 'KR' else lang
+    order = []
+    for lc in (key, 'TW' if lang == 'HK' else '', 'EN', DEFAULT_LANG):
+        if lc and lc not in order:
+            order.append(lc)
+    return order
 
 
-def _seo_entity_display_name(kind, eid):
-    """Best-effort EN display name for detail URLs (empty if master not ready)."""
+def _seo_entity_display_name(kind, eid, lang='EN'):
+    """Display name for detail URLs (empty if master not ready). HK falls back to TW, then EN."""
     eid = normalize_id(eid)
     if not eid:
         return ''
+    order = _seo_name_locale_order(lang)
     try:
-        ld = LANG_DATA.get(DEFAULT_LANG) or LANG_DATA.get('EN') or {}
-    except Exception:
-        return ''
-    try:
-        if kind == 'unit':
-            lid = (ld.get('unit_id_map') or {}).get(eid) or eid
-            return str((ld.get('unit_text_map') or {}).get(lid, '') or '').strip()
-        if kind == 'character':
-            lid = (ld.get('char_id_map') or {}).get(eid) or eid
-            return str((ld.get('char_text_map') or {}).get(lid, '') or '').strip()
-        if kind == 'supporter':
-            lid = (ld.get('supporter_id_map') or {}).get(eid) or eid
-            return str((ld.get('supporter_text_map') or {}).get(lid, '') or '').strip()
-        if kind == 'option_part':
-            # Option-part names live in several maps depending on pack; keep generic if missing.
-            for mk in ('option_part_text_map', 'mod_text_map', 'equipment_text_map'):
-                m = ld.get(mk) or {}
-                if eid in m:
-                    return str(m.get(eid) or '').strip()
-            return ''
+        for lc in order:
+            ld = LANG_DATA.get(lc) or {}
+            if not ld:
+                continue
+            if kind == 'unit':
+                lid = (ld.get('unit_id_map') or {}).get(eid) or eid
+                name = str((ld.get('unit_text_map') or {}).get(lid, '') or '').strip()
+            elif kind == 'character':
+                lid = (ld.get('char_id_map') or {}).get(eid) or eid
+                name = str((ld.get('char_text_map') or {}).get(lid, '') or '').strip()
+            elif kind == 'supporter':
+                lid = (ld.get('supporter_id_map') or {}).get(eid) or eid
+                name = str((ld.get('supporter_text_map') or {}).get(lid, '') or '').strip()
+            elif kind == 'option_part':
+                name = ''
+                for mk in ('option_part_text_map', 'mod_text_map', 'equipment_text_map'):
+                    m = ld.get(mk) or {}
+                    if eid in m and str(m.get(eid) or '').strip():
+                        name = str(m.get(eid) or '').strip()
+                        break
+            else:
+                name = ''
+            if name:
+                return name
     except Exception:
         return ''
     return ''
@@ -41444,13 +41380,14 @@ def _seo_public_stage_ids():
     return ids
 
 
-def _seo_series_name(kind, eid):
+def _seo_series_name(kind, eid, lang='EN'):
+    lang = _seo_name_locale_order(lang)[0]
     try:
         if kind == 'unit':
-            series = resolve_series(unit_ser_map.get(eid, ''), 'EN')
+            series = resolve_series(unit_ser_map.get(eid, ''), lang)
         elif kind == 'character':
-            ld = LANG_DATA.get('EN') or {}
-            series = resolve_series((ld.get('char_ser_map') or {}).get(eid, ''), 'EN')
+            ld = LANG_DATA.get(lang) or LANG_DATA.get('EN') or {}
+            series = resolve_series((ld.get('char_ser_map') or {}).get(eid, ''), lang)
         else:
             series = []
     except Exception:
@@ -41472,50 +41409,98 @@ def _seo_rarity_letter(kind, eid):
     return RARITY_MAP.get(str(info.get('rarity') or ''), '')
 
 
-def _seo_stage_display_name(eid):
+def _seo_stage_display_name(eid, lang='EN'):
     eid = normalize_id(eid)
-    ld = LANG_DATA.get(DEFAULT_LANG) or LANG_DATA.get('EN') or {}
+    order = _seo_name_locale_order(lang)
     est = (eternal_stage_map or {}).get(eid) or {}
-    if est:
-        nm = str((ld.get('stage_text_map') or {}).get(est.get('stage_name_lang_id', ''), '') or '').strip()
-        if nm:
-            return nm
-    try:
-        ssc = (scenario_stage_map or {}).get(eid) or {}
-        if ssc:
-            nm = str(resolve_scenario_stage_name(ld, ssc.get('title_name_lang_id', '0'), eid) or '').strip()
-            if nm and not nm.lower().startswith('unknown'):
+    ssc = (scenario_stage_map or {}).get(eid) or {}
+    for lc in order:
+        ld = LANG_DATA.get(lc) or {}
+        if not ld:
+            continue
+        if est:
+            nm = str((ld.get('stage_text_map') or {}).get(est.get('stage_name_lang_id', ''), '') or '').strip()
+            if nm:
                 return nm
-    except Exception:
-        pass
+        try:
+            if ssc:
+                nm = str(resolve_scenario_stage_name(ld, ssc.get('title_name_lang_id', '0'), eid) or '').strip()
+                if nm and not nm.lower().startswith('unknown'):
+                    return nm
+        except Exception:
+            pass
     return ''
 
 
-def _seo_entity_paragraph(kind, eid, name, label):
-    """One sentence: official name, rarity, and series when master has them."""
-    rarity = _seo_rarity_letter(kind, eid)
-    series = _seo_series_name(kind, eid)
-    kind_word = label.lower()
-    if kind == 'stage':
-        stage_name = name or _seo_stage_display_name(eid)
-        if stage_name:
-            return f'{stage_name} is a stage in SD Gundam G Generation ETERNAL.'
-        return f'Stage {eid} in SD Gundam G Generation ETERNAL.'
-    if not name:
-        return f'{label} {eid} in SD Gundam G Generation ETERNAL — GGen Eternal Database.'
-    rarity_bit = f'{rarity} ' if rarity else ''
-    if series:
-        return f'{name} is a {rarity_bit}{kind_word} from {series} in SD Gundam G Generation ETERNAL.'
-    if rarity:
-        return f'{name} is a {rarity} {kind_word} in SD Gundam G Generation ETERNAL.'
-    return f'{name} is a {kind_word} in SD Gundam G Generation ETERNAL.'
-
-
-def _spa_seo_meta(canon_path):
-    """Return (title, description) for the SPA shell at ``canon_path``."""
+def _seo_normalize_path(canon_path):
     path = (canon_path or '/').replace('\\', '/')
+    if not path.startswith('/'):
+        path = '/' + path
     if path != '/' and path.endswith('/'):
         path = path.rstrip('/') or '/'
+    return path
+
+
+def _seo_request_lang():
+    try:
+        raw = request.args.get('lang') or ''
+    except RuntimeError:
+        raw = ''
+    return _seo_pages.normalize_lang(raw)
+
+
+def _seo_abs_url(path, lang='EN'):
+    base = _public_site_origin().rstrip('/') + _seo_normalize_path(path)
+    lang = _seo_pages.normalize_lang(lang)
+    if lang != 'EN':
+        return base + '?lang=' + lang
+    return base
+
+
+def _seo_alternates(path):
+    path = _seo_normalize_path(path)
+    out = []
+    for hreflang, lang in _seo_pages.HREFLANG:
+        out.append({'hreflang': hreflang, 'href': _seo_abs_url(path, lang)})
+    return out
+
+
+def _seo_pack(canon_path=None, lang=None):
+    """Title, description, canonical, and hreflang for the current HTML response."""
+    if canon_path is None:
+        try:
+            raw = _seo_normalize_path(request.path or '/')
+        except RuntimeError:
+            raw = '/'
+        try:
+            canon_path = _page_canonical_path()
+        except Exception:
+            canon_path = raw
+        canon_path = _seo_normalize_path(canon_path)
+        # Non-SPA hubs (/tm, /about, …) are not tab paths; don't collapse them to `/`.
+        if canon_path == '/' and raw != '/' and _seo_pages.hub_meta(raw, 'EN'):
+            canon_path = raw
+    path = _seo_normalize_path(canon_path)
+    if lang is None:
+        lang = _seo_request_lang()
+    else:
+        lang = _seo_pages.normalize_lang(lang)
+    title, desc = _spa_seo_meta(path, lang)
+    return {
+        'page_title': title,
+        'page_description': desc,
+        'page_canonical': path,
+        'page_canonical_href': _seo_abs_url(path, lang),
+        'seo_alternates': _seo_alternates(path),
+        'seo_html_lang': _seo_pages.html_lang(lang),
+        'seo_lang': lang,
+    }
+
+
+def _spa_seo_meta(canon_path, lang='EN'):
+    """Return (title, description) for an indexed path in EN, TW, or HK."""
+    path = _seo_normalize_path(canon_path)
+    lang = _seo_pages.normalize_lang(lang)
     parts = [p for p in path.split('/') if p]
     if len(parts) == 2:
         prefix, eid = parts[0].lower(), parts[1]
@@ -41528,25 +41513,18 @@ def _spa_seo_meta(canon_path):
             'pt': 'option_part',
         }.get(prefix)
         if prefix == 'gacha-sim':
-            return (
-                f'Gacha {eid} — GGen Eternal Database',
-                f'Unit Assembly simulator pool {eid} for SD Gundam G Generation ETERNAL.',
-            )
+            return _seo_pages.gacha_pool_meta(lang, eid)
         if kind:
-            name = _seo_entity_display_name(kind, eid)
-            label = {'unit': 'Unit', 'character': 'Character', 'supporter': 'Supporter', 'stage': 'Stage', 'option_part': 'Option Part'}[kind]
+            name = _seo_entity_display_name(kind, eid, lang)
             if kind == 'stage' and not name:
-                name = _seo_stage_display_name(eid)
-            if name:
-                return (
-                    f'{name} — {label} | GGen Eternal Database',
-                    _seo_entity_paragraph(kind, eid, name, label),
-                )
-            return (
-                f'{label} {eid} — GGen Eternal Database',
-                f'{label} {eid} in SD Gundam G Generation ETERNAL — GGen Eternal Database.',
-            )
-    return _SPA_SEO_BY_PATH.get(path, _SPA_SEO_DEFAULT)
+                name = _seo_stage_display_name(eid, lang)
+            rarity = _seo_rarity_letter(kind, eid)
+            series = _seo_series_name(kind, eid, lang)
+            return _seo_pages.entity_meta(lang, kind, name, rarity, series, eid)
+    hub = _seo_pages.hub_meta(path, lang)
+    if hub:
+        return hub
+    return _seo_pages.default_meta(lang)
 
 
 def _not_found_page():
@@ -41625,10 +41603,21 @@ _SEO_SITEMAP_CACHE = {}
 _SEO_SITEMAP_LOCK = threading.Lock()
 _SEO_SITEMAP_URL_CAP = 40000
 _SEO_PAGE_PATHS = (
-    '/', '/ip', '/collections', '/game-news', '/tm', '/dm', '/tracking', '/about', '/contact', '/privacy-policy',
+    '/', '/ip', '/collections', '/game-news', '/tm', '/dm', '/tracking', '/about', '/feedback', '/privacy-policy',
     '/c', '/u', '/s', '/st', '/gtower', '/challenge', '/go', '/special', '/collab',
     '/cal', '/tb', '/tl', '/ml', '/estscore', '/rk', '/op', '/new', '/esim', '/gacha-sim',
 )
+
+
+def _seo_url_alternates_xml(loc):
+    """hreflang siblings. ``loc`` is the EN canonical (no query)."""
+    bits = []
+    for hreflang, lang in _seo_pages.HREFLANG:
+        href = loc if lang == 'EN' else (loc + '?lang=' + lang)
+        bits.append(
+            f'<xhtml:link rel="alternate" hreflang="{hreflang}" href="{_seo_xml_text(href)}"/>'
+        )
+    return ''.join(bits)
 
 
 def _seo_urlset_xml(locs, priority='0.6'):
@@ -41637,11 +41626,13 @@ def _seo_urlset_xml(locs, priority='0.6'):
     for loc in locs:
         chunks.append(
             f'<url><loc>{_seo_xml_text(loc)}</loc><lastmod>{today}</lastmod>'
-            f'<changefreq>weekly</changefreq><priority>{priority}</priority></url>'
+            f'<changefreq>weekly</changefreq><priority>{priority}</priority>'
+            f'{_seo_url_alternates_xml(loc)}</url>'
         )
     return (
         '<?xml version="1.0" encoding="UTF-8"?>'
-        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" '
+        'xmlns:xhtml="http://www.w3.org/1999/xhtml">'
         + ''.join(chunks)
         + '</urlset>'
     )

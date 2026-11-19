@@ -1,27 +1,33 @@
 <!DOCTYPE html>
-<html lang="en" class="dm-page" data-ui-lang="EN">
+<html lang="{{ seo_html_lang or 'en' }}" class="dm-page" data-ui-lang="{{ seo_lang or 'EN' }}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>
 (function(){
   try{
-    var l=String(localStorage.getItem('ggen_lang')||'EN').trim().toUpperCase();
+    var qLang='';
+    try{qLang=String(new URLSearchParams(location.search||'').get('lang')||'')}catch(_){}
+    var l=String(qLang||localStorage.getItem('ggen_lang')||'EN').trim().toUpperCase();
     if(l==='JP')l='JA';
-    if(l!=='EN'&&l!=='TW'&&l!=='HK'&&l!=='JA')l='EN';
+    if(l==='HR')l='KR';
+    if(l!=='EN'&&l!=='TW'&&l!=='HK'&&l!=='JA'&&l!=='KR')l='EN';
     document.documentElement.setAttribute('data-ui-lang',l);
-    document.documentElement.lang=l==='JA'?'ja':(l==='TW'||l==='HK')?'zh-Hant':'en';
+    document.documentElement.lang=l==='JA'?'ja':l==='KR'?'ko':(l==='TW'||l==='HK')?'zh-Hant':'en';
   }catch(_){}
 })();
 </script>
-<title>Debuff Matrix — GGen Eternal Database</title>
-<meta name="description" content="Debuff Matrix — lineage tags + supporters (like Tag Matrix) × Inflict weapon debuffs: DEF Down, power downs, Reduce Enemy DEF (this attack), and more.">
-<link rel="canonical" href="{{ public_origin }}/dm">
+<title>{{ page_title }}</title>
+<meta name="description" content="{{ page_description }}">
+<link rel="canonical" href="{{ page_canonical_href or (public_origin + '/dm') }}">
+{% for alt in seo_alternates or [] %}
+<link rel="alternate" hreflang="{{ alt.hreflang }}" href="{{ alt.href }}">
+{% endfor %}
 <meta property="og:type" content="website">
 <meta property="og:url" content="{{ public_origin }}/dm">
 <meta property="og:site_name" content="GGen Eternal Database">
-<meta property="og:title" content="Debuff Matrix — GGen Eternal Database">
-<meta property="og:description" content="Weapon-effect debuff matrix — supporters + tags on the left, Inflict debuff types as columns.">
+<meta property="og:title" content="{{ page_title }}">
+<meta property="og:description" content="{{ page_description }}">
 <meta property="og:image" content="{{ og_image_url }}">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="512">

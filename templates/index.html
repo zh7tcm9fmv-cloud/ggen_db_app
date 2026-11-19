@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 {% macro ui_close_icon() %}<span class="ui-close-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" focusable="false"><path d="M6.25 6.25l11.5 11.5M17.75 6.25L6.25 17.75" stroke="currentColor" stroke-width="2.25" stroke-linecap="round"/></svg></span>{% endmacro %}
-<html lang="en" data-ggen-content-notices="manual">
+<html lang="{{ seo_html_lang or 'en' }}" data-ggen-content-notices="manual">
 <head>
-<!-- Apply saved UI lang before CSS so brand font stacks + preload match first paint. -->
+<!-- Apply saved UI lang before CSS so brand font stacks + preload match first paint.
+     ?lang= on indexed URLs wins so TW/HK/JA/KR meta pages keep their language. -->
 <script>
 (function(){
   try{
-    var l=String(localStorage.getItem('ggen_lang')||'EN').trim().toUpperCase();
+    var qLang='';
+    try{qLang=String(new URLSearchParams(location.search||'').get('lang')||'')}catch(_){}
+    var l=String(qLang||localStorage.getItem('ggen_lang')||'EN').trim().toUpperCase();
     if(l==='JP')l='JA';
     if(l==='KR')l='HR';
     if(l!=='EN'&&l!=='TW'&&l!=='HK'&&l!=='JA'&&l!=='HR')l='EN';
@@ -176,13 +179,16 @@
 <meta http-equiv="Pragma" content="no-cache">
 <title>{{ page_title or 'GGen Eternal Database' }}</title>
 <meta name="robots" content="index, follow">
-<meta name="description" content="{{ page_description or 'GGen Eternal Database — the most up-to-date reference for SD Gundam G Generation ETERNAL.' }}">
-<link rel="canonical" href="{{ public_origin }}{{ page_canonical or '/' }}">
+<meta name="description" content="{{ page_description }}">
+<link rel="canonical" href="{{ page_canonical_href or (public_origin + (page_canonical or '/')) }}">
+{% for alt in seo_alternates or [] %}
+<link rel="alternate" hreflang="{{ alt.hreflang }}" href="{{ alt.href }}">
+{% endfor %}
 <meta property="og:type" content="website">
-<meta property="og:url" content="{{ public_origin }}{{ page_canonical or '/' }}">
+<meta property="og:url" content="{{ page_canonical_href or (public_origin + (page_canonical or '/')) }}">
 <meta property="og:site_name" content="GGen Eternal Database">
 <meta property="og:title" content="{{ page_title or 'GGen Eternal Database' }}">
-<meta property="og:description" content="{{ page_description or 'The most up-to-date SD Gundam G Generation ETERNAL database — units, pilots, supporters, stages, and every essential detail in one place.' }}">
+<meta property="og:description" content="{{ page_description }}">
 <meta property="og:image" content="{{ og_image_url }}">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="512">
@@ -190,7 +196,7 @@
 <meta property="og:image:alt" content="GGen Eternal Database">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="{{ page_title or 'GGen Eternal Database' }}">
-<meta name="twitter:description" content="{{ page_description or 'The most up-to-date SD Gundam G Generation ETERNAL database — units, pilots, supporters, stages, and every essential detail in one place.' }}">
+<meta name="twitter:description" content="{{ page_description }}">
 <meta name="twitter:image" content="{{ og_image_url }}">
 <link rel="icon" type="image/webp" href="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Gallery_Comics_Logo_Eternalbase.webp{% else %}/static/images/UI/UI_Gallery_Comics_Logo_Eternalbase.webp{% endif %}">
 <link rel="apple-touch-icon" href="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Gallery_Comics_Logo_Eternalbase.webp{% else %}/static/images/UI/UI_Gallery_Comics_Logo_Eternalbase.webp{% endif %}">

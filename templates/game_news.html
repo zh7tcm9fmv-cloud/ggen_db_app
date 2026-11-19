@@ -1,29 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ seo_html_lang or 'en' }}">
 <head>
 <script>
 (function(){
   try{
-    var l=String(localStorage.getItem('ggen_lang')||'EN').trim().toUpperCase();
+    var qLang='';
+    try{qLang=String(new URLSearchParams(location.search||'').get('lang')||'')}catch(_){}
+    var l=String(qLang||localStorage.getItem('ggen_lang')||'EN').trim().toUpperCase();
     if(l==='JP')l='JA';
-    if(l!=='EN'&&l!=='TW'&&l!=='HK'&&l!=='JA')l='EN';
+    if(l==='HR')l='KR';
+    if(l!=='EN'&&l!=='TW'&&l!=='HK'&&l!=='JA'&&l!=='KR')l='EN';
     document.documentElement.setAttribute('data-ui-lang',l);
-    document.documentElement.lang=l==='JA'?'ja':(l==='TW'||l==='HK')?'zh-Hant':'en';
+    document.documentElement.lang=l==='JA'?'ja':l==='KR'?'ko':(l==='TW'||l==='HK')?'zh-Hant':'en';
   }catch(_){}
 })();
 </script>
 {% include '_gtm.html' %}
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Game News — GGen Eternal Database</title>
+<title>{{ page_title }}</title>
 <meta name="robots" content="index, follow">
-<meta name="description" content="Official SD Gundam G Generation ETERNAL game news — GGen Eternal Database.">
-<link rel="canonical" href="{{ public_origin }}/game-news">
+<meta name="description" content="{{ page_description }}">
+<link rel="canonical" href="{{ page_canonical_href or (public_origin + '/game-news') }}">
+{% for alt in seo_alternates or [] %}
+<link rel="alternate" hreflang="{{ alt.hreflang }}" href="{{ alt.href }}">
+{% endfor %}
 <meta property="og:type" content="website">
 <meta property="og:url" content="{{ public_origin }}/game-news">
 <meta property="og:site_name" content="GGen Eternal Database">
-<meta property="og:title" content="Game News — GGen Eternal Database">
-<meta property="og:description" content="Official SD Gundam G Generation ETERNAL game news — GGen Eternal Database.">
+<meta property="og:title" content="{{ page_title }}">
+<meta property="og:description" content="{{ page_description }}">
 <meta property="og:image" content="{{ og_image_url }}">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="512">

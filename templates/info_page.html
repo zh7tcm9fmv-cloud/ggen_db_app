@@ -1,15 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ seo_html_lang or 'en' }}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{% block title %}GGen Eternal Database{% endblock %}</title>
+<title>{% block title %}{{ page_title }}{% endblock %}</title>
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="{{ public_origin }}{{ canonical_path or request.path }}">
+<meta name="description" content="{{ page_description }}">
+<link rel="canonical" href="{{ page_canonical_href or (public_origin + (canonical_path or request.path)) }}">
+{% for alt in seo_alternates or [] %}
+<link rel="alternate" hreflang="{{ alt.hreflang }}" href="{{ alt.href }}">
+{% endfor %}
 <meta property="og:type" content="website">
-<meta property="og:url" content="{{ public_origin }}{{ canonical_path or request.path }}">
+<meta property="og:url" content="{{ page_canonical_href or (public_origin + (canonical_path or request.path)) }}">
 <meta property="og:site_name" content="GGen Eternal Database">
-<meta property="og:title" content="{% block og_title %}GGen Eternal Database{% endblock %}">
+<meta property="og:title" content="{% block og_title %}{{ page_title }}{% endblock %}">
+<meta property="og:description" content="{{ page_description }}">
+<meta name="twitter:title" content="{{ page_title }}">
+<meta name="twitter:description" content="{{ page_description }}">
 <meta property="og:image" content="{{ og_image_url }}">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="512">

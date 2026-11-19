@@ -14,9 +14,12 @@
   }catch(_){}
 })();
 </script>
-<title>Sales Rank Tracking — GGen Eternal Database</title>
-<meta name="description" content="Live App Store top-grossing ranks for SD Gundam G Generation Eternal by country during Unit Assembly release windows.">
-<link rel="canonical" href="{{ public_origin }}/tracking">
+<title>{{ page_title }}</title>
+<meta name="description" content="{{ page_description }}">
+<link rel="canonical" href="{{ page_canonical_href or (public_origin + '/tracking') }}">
+{% for alt in seo_alternates or [] %}
+<link rel="alternate" hreflang="{{ alt.hreflang }}" href="{{ alt.href }}">
+{% endfor %}
 <link rel="icon" type="image/webp" href="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Gallery_Comics_Logo_Eternalbase.webp{% else %}/static/images/UI/UI_Gallery_Comics_Logo_Eternalbase.webp{% endif %}">
 {% include '_gtm.html' %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/app_shell.css') }}?v={{ app_js_version }}">

@@ -1,16 +1,19 @@
 <!DOCTYPE html>
-<html lang="en" data-ui-lang="EN" data-ggen-content-notices="manual">
+<html lang="{{ seo_html_lang or 'en' }}" data-ui-lang="{{ seo_lang or 'EN' }}" data-ggen-content-notices="manual">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Hangar Collection — GGen Eternal Database</title>
-<meta name="description" content="Track UR unit and supporter possession — GGen Eternal Database.">
-<link rel="canonical" href="{{ public_origin }}/collections">
+<title>{{ page_title }}</title>
+<meta name="description" content="{{ page_description }}">
+<link rel="canonical" href="{{ page_canonical_href or (public_origin + '/collections') }}">
+{% for alt in seo_alternates or [] %}
+<link rel="alternate" hreflang="{{ alt.hreflang }}" href="{{ alt.href }}">
+{% endfor %}
 <meta property="og:type" content="website">
 <meta property="og:url" content="{{ public_origin }}/collections">
 <meta property="og:site_name" content="GGen Eternal Database">
-<meta property="og:title" content="Hangar Collection — GGen Eternal Database">
-<meta property="og:description" content="Track UR unit and supporter possession — GGen Eternal Database.">
+<meta property="og:title" content="{{ page_title }}">
+<meta property="og:description" content="{{ page_description }}">
 <meta property="og:image" content="{{ og_image_url }}">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="512">
