@@ -6452,8 +6452,8 @@
       if (isRevive && (actor.hp | 0) > 0) {
         revived = true;
         /*
-         * Same class as Escape morph: form was destroyed for the KO log / MP,
-         * but not a defeat for kill-CS / Auto-CS — only Guaranteed CS continues.
+         * Same class as Escape morph: KO still grants destroy MP/tension to the attacker,
+         * but is not a defeat for kill-CS / Auto-CS — only Guaranteed CS continues.
          */
         actor._revivedThisEngagement = true;
         actor.lingerKo = false;
@@ -11163,16 +11163,19 @@
       }
       /* Cond:Combat-Count / Cond:Damage taken — stacks rise after a landed hit (next strike uses them). */
       bumpCondStacksAfterHit(attacker, defender);
-      /* LANG + MLS: land hit → attacker +1; take hit → −1; SD net +2.
-         Kill bonus after revive check so a revived target is not a 完全撃破.
-         Escape / lethal revive: form destroyed for MP/tension, but NOT for Chance Step
-         (only Guaranteed CS continues — see killedForCs / _revivedThisEngagement). */
+      /*
+       * LANG + MLS: land hit → attacker +1; take hit → −1; SD net +2.
+       * Destroy tension (+4 / SA+1): HP hit 0 counts even if lethal revive / Escape
+       * brings them back — form was destroyed for MP (V2AB/Uso → Supercharged → GCS).
+       * Kill-CS / Auto-CS still cancelled by _revivedThisEngagement / escape flags;
+       * only Guaranteed CS continues without a “defeat.”
+       */
       applyMpDelta(attacker, 1);
       if (hitOpts.isDefenderSupportDefend) applyMpDelta(defender, 2);
       else if (!alreadyDown) applyMpDelta(defender, -1);
-      if (hpAfterHit <= 0 && !revived) {
+      if (hpAfterHit <= 0) {
         if (!alreadyDown) {
-          /* First killing blow: Support Counter +1, normal/Counter +4. */
+          /* First killing blow: Support Counter +1, normal/Counter +4 (revive/escape OK). */
           applyMpDelta(attacker, hitOpts.isSupport ? 1 : 4);
           /*
            * Shared destroy: when Support Counter KOs the active attacker and no Counter wave
@@ -12856,6 +12859,7 @@
     var start = document.getElementById('mlsFight');
     var pause = document.getElementById('mlsPause');
     var skip = document.getElementById('mlsSkip');
+    var skipTransport = document.getElementById('mlsSkipTransport');
     var reset = document.getElementById('mlsReset');
     var boardEl = document.getElementById('mlsBoard');
     var shell = document.querySelector('#panel-ml_sim .mls-shell');
@@ -12877,11 +12881,32 @@
       pause.setAttribute('hidden', '');
     }
     if (skip) skip.disabled = !busy;
+    if (skipTransport) {
+      skipTransport.disabled = !busy;
+      if (busy) {
+        skipTransport.hidden = false;
+        skipTransport.removeAttribute('hidden');
+      } else {
+        skipTransport.hidden = true;
+        skipTransport.setAttribute('hidden', '');
+      }
+    }
     if (reset) reset.disabled = !!busy;
     if (boardEl) boardEl.classList.toggle('is-fighting', !!busy);
     if (shell) shell.classList.toggle('is-fighting', !!busy);
     try { document.body.classList.toggle('mls-is-fighting', !!busy); } catch (eFight) {}
     syncTransportPlayBtn();
+    /*
+     * Mobile playback CSS grows .mls-map-scroll — unlock cell size so fitMapCell
+     * scales the board up (ResizeObserver also fires; this covers the first frame).
+     */
+    if (viewName === 'battle' && board) {
+      requestAnimationFrame(function () {
+        lockedMapCellPx = 0;
+        try { paintBoard(); } catch (ePaint) { /* ignore */ }
+        if (busy) scrollMlsBattleIntoView({ preferMap: true, instant: true });
+      });
+    }
   }
 
   function onResetBattle() {
@@ -14263,13 +14288,16 @@
       scrub.addEventListener('touchend', endScrub);
       scrub.addEventListener('pointercancel', endScrub);
     })();
-    document.getElementById('mlsSkip') && document.getElementById('mlsSkip').addEventListener('click', function () {
+    function onMlsSkipClick() {
       if (!fightBusy) return;
       skipAll = true;
       paused = false;
       transportScrubbing = false;
       wakeFightSleep();
-    });
+    }
+    document.getElementById('mlsSkip') && document.getElementById('mlsSkip').addEventListener('click', onMlsSkipClick);
+    document.getElementById('mlsSkipTransport') &&
+      document.getElementById('mlsSkipTransport').addEventListener('click', onMlsSkipClick);
     document.getElementById('mlsReset') && document.getElementById('mlsReset').addEventListener('click', function () {
       onResetBattle();
     });

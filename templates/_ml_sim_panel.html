@@ -203,6 +203,19 @@
         <!-- Inside map-scroll, below the board — does not overlay tiles. -->
         <div class="mls-board-hp" id="mlsBoardHp" hidden aria-label="Unit HP"></div>
       </div>
+      <!-- Under the map (before turn order on mobile) so play/scrub stay on-screen. -->
+      <div class="mls-transport" id="mlsTransport" hidden>
+        <button type="button" class="mls-transport-play" id="mlsTransportPlay" disabled aria-label="Play" title="Play / Pause">
+          <span class="mls-transport-play-ic" aria-hidden="true">▶</span>
+        </button>
+        <span class="mls-transport-time" id="mlsTransportTime">0:00 / 0:00</span>
+        <input type="range" class="mls-transport-scrub" id="mlsTransportScrub"
+          min="0" max="0" value="0" step="1" disabled
+          aria-label="Battle playback position">
+        <button type="button" class="mls-btn mls-transport-speed" id="mlsSpeed" title="Playback speed">1×</button>
+        <!-- Mobile playback: controls row is hidden — Skip stays reachable here. -->
+        <button type="button" class="mls-btn mls-transport-skip" id="mlsSkipTransport" disabled hidden data-mls-i18n="mls_skip">SKIP</button>
+      </div>
       <aside class="mls-map-turn-order" aria-label="Turn order">
         <div class="mls-lbl-row mls-map-turn-order-head">
           <div class="mls-lbl" data-mls-i18n="mls_turn_order">TURN ORDER</div>
@@ -213,16 +226,6 @@
         </div>
         <div class="mls-timeline mls-timeline--map" id="mlsTimeline"></div>
       </aside>
-    </div>
-    <div class="mls-transport" id="mlsTransport" hidden>
-      <button type="button" class="mls-transport-play" id="mlsTransportPlay" disabled aria-label="Play" title="Play / Pause">
-        <span class="mls-transport-play-ic" aria-hidden="true">▶</span>
-      </button>
-      <span class="mls-transport-time" id="mlsTransportTime">0:00 / 0:00</span>
-      <input type="range" class="mls-transport-scrub" id="mlsTransportScrub"
-        min="0" max="0" value="0" step="1" disabled
-        aria-label="Battle playback position">
-      <button type="button" class="mls-btn mls-transport-speed" id="mlsSpeed" title="Playback speed">1×</button>
     </div>
     <div class="mls-controls">
       <div class="mls-controls-main">

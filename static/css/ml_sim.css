@@ -1560,11 +1560,12 @@ body.mls-is-slot-dragging .mls-slot-list {
   margin-right: auto;
 }
 
-/* Battle map — map + turn order side-by-side (no overlay covering spawn cells). */
+/* Battle map — map | turn order; transport under map (full width on desktop). */
 .mls-map-stage {
   position: relative;
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 136px;
+  grid-template-rows: auto auto;
   align-items: stretch;
   border: 1px solid var(--mls-rim-cyan, rgba(0, 212, 255, 0.42));
   border-radius: 0;
@@ -1579,7 +1580,8 @@ body.mls-is-slot-dragging .mls-slot-list {
 }
 .mls-map-scroll {
   position: relative; /* READY / endcard clipped to battle map box */
-  flex: 1 1 auto;
+  grid-column: 1;
+  grid-row: 1;
   min-width: 0;
   overflow: hidden;
   height: min(62vh, 560px);
@@ -1733,17 +1735,94 @@ body.mls-is-slot-dragging .mls-slot-list {
 .mls-token .mls-token-hpvals {
   display: none !important;
 }
+/* Phone: HP was wrapping into 5 tall rows and eating the board + transport. */
 @media (max-width: 820px) {
-  .mls-map-scroll { gap: 4px; }
-  .mls-board-hp { gap: 8px; padding: 0; }
-  .mls-board-hp-thum { width: 24px; height: 24px; }
-  .mls-board-hp-meter { width: 40px; }
-  .mls-board-hp-num { font-size: 9px; }
+  .mls-map-scroll { gap: 3px; padding: 4px; }
+  .mls-board-hp {
+    gap: 4px;
+    padding: 0;
+    align-items: stretch;
+  }
+  .mls-board-hp-side {
+    flex: 1 1 0;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 2px;
+    max-width: none;
+    min-width: 0;
+  }
+  .mls-board-hp-side.is-ally { margin-left: 0; }
+  .mls-board-hp-unit {
+    width: 100%;
+    box-sizing: border-box;
+    gap: 3px;
+    padding: 1px 4px 1px 2px;
+  }
+  .mls-board-hp-slot { font-size: 9px; min-width: 0.65em; }
+  .mls-board-hp-thum { width: 16px; height: 16px; }
+  .mls-board-hp-meta {
+    flex: 1 1 auto;
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+  }
+  .mls-board-hp-meter {
+    width: auto;
+    flex: 1 1 auto;
+    min-width: 24px;
+    height: 4px;
+  }
+  .mls-board-hp-num { font-size: 8px; flex: 0 0 auto; }
+  .mls-board-hp-barrier { font-size: 7px; }
 }
 /* Battle focus: taller map. Section tabs + brand row collapse on battle view
    (nav_tabs_auto_hide pin); reveal only after aggressive scroll-up. */
 body.mls-battle-focus .mls-map-scroll {
   height: min(70vh, 640px);
+}
+/* Phone battle-focus (idle / pre-fight): room for Start + transport peek. */
+@media (max-width: 820px) {
+  body.mls-battle-focus .mls-map-scroll {
+    height: min(50vh, 440px);
+  }
+}
+@media (max-width: 560px) {
+  body.mls-battle-focus .mls-map-scroll {
+    height: min(46vh, 380px);
+  }
+}
+/*
+ * Mobile playback: board is the product. Hide Start/Optimizer/log chrome and
+ * grow the map so fitMapCell scales tokens up (ResizeObserver re-fits).
+ */
+@media (max-width: 820px) {
+  body.mls-is-fighting #mlsViewBattle .mls-map-tools,
+  body.mls-is-fighting #mlsViewBattle .mls-controls,
+  body.mls-is-fighting #mlsViewBattle .mls-battle-meta {
+    display: none !important;
+  }
+  body.mls-is-fighting .mls-map-scroll,
+  body.mls-is-fighting.mls-battle-focus .mls-map-scroll {
+    height: min(64vh, 560px);
+    min-height: 280px;
+  }
+  body.mls-is-fighting .mls-map-turn-order {
+    max-height: min(14vh, 112px);
+  }
+  body.mls-is-fighting .mls-transport-skip:not([hidden]) {
+    display: inline-flex;
+  }
+}
+@media (max-width: 560px) {
+  body.mls-is-fighting .mls-map-scroll,
+  body.mls-is-fighting.mls-battle-focus .mls-map-scroll {
+    height: min(70vh, 620px);
+    min-height: 300px;
+  }
+  body.mls-is-fighting .mls-map-turn-order {
+    max-height: min(12vh, 96px);
+  }
 }
 body.mls-battle-focus #mlsShell {
   scroll-margin-top: 0;
@@ -1906,14 +1985,17 @@ body.mls-battle-focus .lang-dropdown.active {
  */
 .mls-map-turn-order {
   position: relative;
-  flex: 0 0 136px;
+  grid-column: 2;
+  grid-row: 1;
   width: 136px;
   z-index: 5;
   display: flex;
   flex-direction: column;
   gap: 3px;
-  height: min(62vh, 560px);
+  height: auto;
+  min-height: 0;
   max-height: none;
+  align-self: stretch;
   padding: 6px 5px 7px;
   box-sizing: border-box;
   border: none;
@@ -2003,23 +2085,30 @@ body.mls-battle-focus .lang-dropdown.active {
   line-height: 1.3;
   color: var(--text-muted);
 }
-/* Narrow: turn order stacks under the map. */
+/* Narrow: map → transport → turn order (play/scrub before the long list). */
 @media (max-width: 820px) {
   .mls-map-stage {
-    flex-direction: column;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto auto;
     overflow: hidden;
   }
   .mls-map-scroll {
-    flex: 1 1 auto;
+    grid-column: 1;
+    grid-row: 1;
     width: 100%;
-    height: min(52vh, 480px);
-    min-height: 220px;
+    height: min(48vh, 420px);
+    min-height: 200px;
+  }
+  .mls-map-stage > .mls-transport {
+    grid-column: 1;
+    grid-row: 2;
   }
   .mls-map-turn-order {
-    flex: 0 1 auto;
+    grid-column: 1;
+    grid-row: 3;
     width: 100%;
     height: auto;
-    max-height: min(42vh, 280px);
+    max-height: min(28vh, 200px);
     gap: 2px;
     padding: 6px 8px 8px;
     border-left: none;
@@ -2063,10 +2152,10 @@ body.mls-battle-focus .lang-dropdown.active {
 }
 @media (max-width: 560px) {
   .mls-map-scroll {
-    height: min(46vh, 400px);
+    height: min(44vh, 360px);
   }
   .mls-map-turn-order {
-    max-height: min(38vh, 240px);
+    max-height: min(24vh, 168px);
     padding: 5px 6px 6px;
   }
   .mls-timeline--map .mls-tl-chip {
@@ -3865,7 +3954,14 @@ body.mls-is-map-dragging .mls-map {
   82%, 100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 /* End card motion stays on under Reduce Motion so iOS matches desktop. */
-/* YouTube-style playback transport (play/pause + scrub). */
+/* YouTube-style playback transport (play/pause + scrub) — under the map. */
+.mls-map-stage > .mls-transport {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  margin-top: 0;
+  border: none;
+  border-top: 1px solid rgba(0, 212, 255, 0.28);
+}
 .mls-transport {
   display: flex;
   flex-wrap: nowrap;
@@ -3874,7 +3970,7 @@ body.mls-is-map-dragging .mls-map {
   margin-top: 10px;
   padding: 8px 10px;
   min-width: 0;
-  background: rgba(2, 8, 20, 0.72);
+  background: rgba(2, 8, 20, 0.92);
   border: 1px solid rgba(0, 212, 255, 0.28);
   box-sizing: border-box;
 }
@@ -3942,6 +4038,16 @@ body.mls-is-map-dragging .mls-map {
   padding-left: 8px;
   padding-right: 8px;
 }
+.mls-transport-skip {
+  display: none;
+  flex: 0 0 auto;
+  min-width: 52px;
+  padding-left: 8px;
+  padding-right: 8px;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+.mls-transport-skip[hidden] { display: none !important; }
 .mls-controls {
   display: flex;
   flex-wrap: wrap;
@@ -3959,10 +4065,15 @@ body.mls-is-map-dragging .mls-map {
 }
 @media (max-width: 820px) {
   .mls-transport {
-    gap: 8px;
-    padding: 6px 8px;
+    gap: 6px;
+    padding: 5px 8px;
   }
-  .mls-transport-time { min-width: 4.8em; font-size: 13px; }
+  .mls-transport-play {
+    width: 32px;
+    height: 32px;
+  }
+  .mls-transport-time { min-width: 4.4em; font-size: 12px; }
+  .mls-transport-scrub { height: 24px; min-width: 64px; }
 }
 .mls-sim-start {
   min-width: 168px;
