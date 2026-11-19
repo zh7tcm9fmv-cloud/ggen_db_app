@@ -2293,13 +2293,12 @@
   }
 
   /**
-   * True when best non-MAP (current tile or after a normal move) finishes engage.
-   * Support Defense cover means the hit lands on the guard — engage is not finished.
+   * Best non-MAP expected damage on engage (current tile or after a normal move).
+   * Support Defense cover → 0 (EX would hit the guard, not engage).
    */
-  function nonMapKillsEngage(actor, target, allUnits, bounds, damageOf) {
+  function bestNonMapDamageOnEngage(actor, target, allUnits, bounds, damageOf) {
     var nonMap;
     var probe;
-    var list;
     var i;
     var wpn;
     var wi;
@@ -2307,37 +2306,37 @@
     var minR;
     var maxR;
     var dest;
-    var movedProbe;
     var cover;
-    var hitDef;
-    if (!actor || !target || (target.hp | 0) <= 0) return false;
+    var best;
+    var dmg;
+    if (!actor || !target || (target.hp | 0) <= 0) return 0;
     nonMap = (actor.weapons || []).filter(function (x) { return !isMapWeapon(x); });
-    if (!nonMap.length) return false;
-    /* SD redirects the swing — EX cannot “finish engage” while a guard will step in. */
+    if (!nonMap.length) return 0;
+    /* SD redirects the swing — EX cannot land on engage. */
     cover = pickSupportDefender(target, sameSideUnits(target, allUnits || [], []));
-    if (cover) return false;
+    if (cover) return 0;
 
-    function anyLethalFrom(fromPos) {
-      list = weaponsInRange(
-        {
-          weapons: nonMap,
-          x: fromPos.x | 0,
-          y: fromPos.y | 0,
-          size: unitSize(actor),
-          side: actor.side
-        },
+    function usableNonMapFrom(fromPos) {
+      var localBest = 0;
+      var dist = distance(
+        { x: fromPos.x | 0, y: fromPos.y | 0, size: unitSize(actor) },
         target
       );
-      for (i = 0; i < list.length; i++) {
-        wpn = list[i];
-        hitDef = target;
-        if (killsUnderAiDefense(actor, hitDef, wpn, damageOf)) return true;
+      var valid = getValidWeapons(
+        Object.assign({}, actor, { x: fromPos.x | 0, y: fromPos.y | 0 }),
+        dist,
+        false
+      ).filter(function (x) { return !isMapWeapon(x); });
+      for (i = 0; i < valid.length; i++) {
+        wpn = valid[i];
+        dmg = expectedDamageWithAiDefense(actor, target, wpn, damageOf) | 0;
+        if (dmg > localBest) localBest = dmg;
       }
-      return false;
+      return localBest;
     }
 
     probe = { x: actor.x | 0, y: actor.y | 0 };
-    if (anyLethalFrom(probe)) return true;
+    best = usableNonMapFrom(probe);
 
     minR = 99;
     maxR = 0;
@@ -2347,11 +2346,28 @@
       minR = Math.min(minR, w.min_range != null ? w.min_range | 0 : 1);
       maxR = Math.max(maxR, w.max_range != null ? w.max_range | 0 : 5);
     }
-    if (maxR < minR || maxR <= 0) return false;
-    dest = getBestMoveDestination(actor, target, actor.move | 0, minR, maxR, allUnits, bounds);
-    if (!dest || !dest.moved) return false;
-    movedProbe = { x: dest.x | 0, y: dest.y | 0 };
-    return anyLethalFrom(movedProbe);
+    if (maxR >= minR && maxR > 0) {
+      dest = getBestMoveDestination(actor, target, actor.move | 0, minR, maxR, allUnits, bounds);
+      if (dest && dest.moved) {
+        dmg = usableNonMapFrom({ x: dest.x | 0, y: dest.y | 0 });
+        if (dmg > best) best = dmg;
+      }
+    }
+    return best | 0;
+  }
+
+  /**
+   * True when best non-MAP (current tile or after a normal move) finishes engage.
+   * Support Defense cover means the hit lands on the guard — engage is not finished.
+   */
+  function nonMapKillsEngage(actor, target, allUnits, bounds, damageOf) {
+    var cover;
+    var best;
+    if (!actor || !target || (target.hp | 0) <= 0) return false;
+    cover = pickSupportDefender(target, sameSideUnits(target, allUnits || [], []));
+    if (cover) return false;
+    best = bestNonMapDamageOnEngage(actor, target, allUnits, bounds, damageOf) | 0;
+    return best > 0 && best >= (target.hp | 0);
   }
 
   /**
@@ -2557,6 +2573,15 @@
        * the engage (no chip). Side-foe-only kills do not qualify.
        */
       if (!engageKilled) continue;
+      /*
+       * EX-first damage: if Twin Buster EX (etc.) already out-damages this MAP on
+       * the engage from here or after a move, keep EX — do not open with a weaker
+       * Rolling Buster MAP (WZC screenshot: MAP 62k while EX hits much harder).
+       */
+      if ((bestNonMapDamageOnEngage(actor, target, allUnits, bounds, damageOf) | 0) >=
+          (mapDmgOnEngage | 0)) {
+        continue;
+      }
 
       if (isDash) {
         fireActor = {
@@ -2847,8 +2872,14 @@
   function weaponAtkTypeKeys(weapon) {
     var raw = weapon && weapon.raw ? weapon.raw : weapon;
     var out = [];
-    var types = (raw && raw.attack_types) || [];
+    var types = (raw && raw.attack_types) || (weapon && weapon.attack_types) || [];
     var i, t;
+    /*
+     * API often ships a single type as an object ({ key: 'ranged' }), not [obj].
+     * Treating that as an array left .length undefined → empty keys → Cond:Area
+     * never matched Rolling Buster / Buster Rifle / most non-EX weapons.
+     */
+    if (types && !Array.isArray(types)) types = [types];
     for (i = 0; i < types.length; i++) {
       t = types[i];
       if (!t) continue;
@@ -3256,6 +3287,8 @@
     hasShieldMechanism: hasShieldMechanism,
     isMoveBeforeOnly: isMoveBeforeOnly,
     areaWeaponPowerAuraPct: areaWeaponPowerAuraPct,
+    bestNonMapDamageOnEngage: bestNonMapDamageOnEngage,
+    weaponAtkTypeKeys: weaponAtkTypeKeys,
     rankWeaponsByDamage: rankWeaponsByDamage,
     effectMatchesWeapon: effectMatchesWeapon,
     evaluateExPhase: evaluateExPhase,

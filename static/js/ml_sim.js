@@ -5740,7 +5740,11 @@
         map_dash_dual_wide: !!w.map_dash_dual_wide,
         map_dash_dual_end_coords: (w.map_dash_dual_end_coords || []).slice(),
         attribute: w.attribute || '',
-        weapon_type: w.weapon_type || ''
+        weapon_type: w.weapon_type || '',
+        /* Keep single-object attack_types as a 1-array so Cond:Area matching works. */
+        attack_types: Array.isArray(w.attack_types)
+          ? w.attack_types.slice()
+          : (w.attack_types ? [w.attack_types] : [])
       };
     });
   }
