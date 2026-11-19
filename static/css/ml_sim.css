@@ -3352,7 +3352,7 @@ body.mls-is-map-dragging .mls-map {
 .mls-token.is-active:not(.is-covering) {
   transform: scale(1.12);
 }
-/* KO linger — grey-out only (no fade). Stays until Counter finishes, then is-dead fades once. */
+/* KO linger — grey-out only (no fade). Stays until Counter finishes / S.Def walks home. */
 .mls-token.is-ko-linger {
   opacity: 1;
   filter: grayscale(1) brightness(0.62);
@@ -3360,25 +3360,45 @@ body.mls-is-map-dragging .mls-map {
   z-index: 3;
   transition: filter 0.2s ease;
 }
-/* KO — fade out then leave the map (no lingering greyscale corpses). */
+/*
+ * KO dissolve — distinctive HP→0 exit (flash → shrink → fade).
+ * transform here is the death scale; cover translate is cleared in markTokenGone first.
+ */
 .mls-token.is-dead {
   opacity: 0;
-  filter: grayscale(1) brightness(0.55);
-  transform: scale(0.86);
+  filter: grayscale(1) brightness(1.35) saturate(0.2);
+  transform: scale(0.72) translate3d(0, 6px, 0) !important;
   pointer-events: none;
-  transition:
-    opacity 0.48s var(--motion-ease-exit, cubic-bezier(0.3, 0, 1, 1)),
-    filter 0.48s ease,
-    transform 0.48s var(--motion-ease-exit, cubic-bezier(0.3, 0, 1, 1));
+  animation: mls-ko-dissolve 0.62s var(--motion-ease-exit, cubic-bezier(0.3, 0, 1, 1)) forwards;
   z-index: 1;
+}
+@keyframes mls-ko-dissolve {
+  0% {
+    opacity: 1;
+    filter: grayscale(0.35) brightness(1.55) saturate(0.45);
+    transform: scale(1.06) translate3d(0, 0, 0);
+  }
+  28% {
+    opacity: 0.92;
+    filter: grayscale(0.7) brightness(1.25) saturate(0.25);
+    transform: scale(1.02) translate3d(0, 1px, 0);
+  }
+  100% {
+    opacity: 0;
+    filter: grayscale(1) brightness(0.45) saturate(0.1);
+    transform: scale(0.72) translate3d(0, 6px, 0);
+  }
 }
 .mls-token.is-gone {
   display: none !important;
 }
 @media (prefers-reduced-motion: reduce) {
   .mls-token.is-dead {
-    transition: opacity 0.15s ease !important;
+    animation: none !important;
+    transition: opacity 0.18s ease !important;
+    opacity: 0;
     transform: none !important;
+    filter: grayscale(1) brightness(0.55);
   }
 }
 .mls-token-frame {

@@ -968,6 +968,8 @@
     if (kind === 'attack' || kind === 'counter') base = Math.round(STEP_MS * 1.05);
     /* Match shelter/cover CSS ease (~380ms) so return finishes before the next beat. */
     if (kind === 'cover-return') base = Math.round(STEP_MS * 0.72);
+    /* HP→0 dissolve — long enough for return-home + KO fade to read. */
+    if (kind === 'ko-fade') base = Math.round(STEP_MS * 1.15);
     if (kind === 'turn') base = Math.round(STEP_MS * 1.6);
     return Math.max(50, Math.round(base));
   }
@@ -6386,36 +6388,33 @@
   }
 
   /**
-   * When a KO did not revive: explain recommend-pilot gates (Guel↔Darilbalde class).
-   * Empty string = nothing to say (no gated revive on this kit / pilot).
+   * When a KO did not revive: explain only real revive gates.
+   * Empty string = no lethal HP-fall restore on this kit (Neo Zeong EX, …) — never invent miss.
+   * Recommend-pilot alone is NOT a revive signal (that falsely tagged every recommend pair).
    */
   function reviveMissHint(actor) {
-    var list, i, r, rec, recId, pilotId, hadLethal;
+    var list, i, r, rec, recId, pilotId, hadLethal, gateOk;
     rec = actor && actor.unit && actor.unit.recommend_character;
     recId = rec && rec.id ? String(rec.id) : '';
     pilotId = actor && actor.char && actor.char.id ? String(actor.char.id) : '';
     list = actorHpFallRestoreList(actor);
-    if (!list.length) {
-      /* Recommend pilot on board but EX restore rows missing — real parse/load bug. */
-      if (recId && pilotId && recId === pilotId) return ' [revive miss]';
-      if (recId && (!pilotId || recId !== pilotId)) {
-        return ' [no revive — needs pilot ' + (rec.name || recId) + ']';
-      }
-      return '';
-    }
+    if (!list.length) return '';
     hadLethal = false;
+    gateOk = false;
     for (i = 0; i < list.length; i++) {
       r = list[i];
       if ((r.threshold | 0) > 0) continue;
       hadLethal = true;
-      if (hpFallRestoreApplies(actor, r)) return ' [revive miss]';
+      if (hpFallRestoreApplies(actor, r)) gateOk = true;
     }
-    if (rec && rec.name && (!pilotId || recId !== pilotId)) {
+    if (!hadLethal) return '';
+    /* Lethal row exists but wrong pilot — Char↔Zeong / Guel↔Darilbalde class. */
+    if (!gateOk && rec && rec.name && (!pilotId || recId !== pilotId)) {
       return ' [no revive — needs pilot ' + rec.name + ']';
     }
-    /* Lethal row on sheet but gates failed — never stay silent on KO. */
-    if (hadLethal) return ' [revive miss]';
-    return '';
+    /* Lethal row + gates OK but restore did not fire (already used / band skip). */
+    if (gateOk) return ' [revive miss]';
+    return ' [revive miss]';
   }
 
   function applyHpFallRestores(actor, hpBefore, turn, snapshotLine) {
@@ -9189,17 +9188,22 @@
     easeTokenTransform(el, 'translate3d(0,0,0)', !!animate && !skipAll, stepDelay('cover-return'));
   }
 
-  /** KO tokens fade out then leave the map (no lingering greyscale corpses). */
+  /** KO tokens dissolve then leave the map (no lingering greyscale corpses). */
   function markTokenGone(el) {
     if (!el || el._mlsGone) return;
     el._mlsGone = true;
+    /* Finish any SD walk-home before dissolve so death reads on the home cell. */
+    el.classList.remove('is-active', 'is-attacker', 'is-target', 'is-covering', 'is-hit', 'is-ko-linger');
+    el.style.removeProperty('--mls-cover-x');
+    el.style.removeProperty('--mls-cover-y');
+    el.style.setProperty('transform', 'translate3d(0,0,0)', 'important');
+    void el.offsetWidth;
     el.classList.add('is-dead');
-    el.classList.remove('is-active', 'is-attacker', 'is-target', 'is-covering', 'is-hit');
     setTimeout(function () {
       if (!el.parentNode) return;
       el.classList.add('is-gone');
       el.setAttribute('aria-hidden', 'true');
-    }, skipAll ? 0 : Math.max(180, Math.round(420 / battlePaceMul())));
+    }, skipAll ? 0 : Math.max(280, Math.round(620 / battlePaceMul())));
   }
 
   function syncTokens(host, win, floatEvt, linkEvt, animate) {
@@ -9339,6 +9343,7 @@
         (fx.hit ? ' is-hit' : '') + (fx.crit ? ' is-crit-flash' : '') +
         (stillCovering ? ' is-covering' : '') +
         ((u.sheltered && !stillCovering) ? ' is-sheltered' : '') +
+        (u.lingerKo && (u.hp | 0) <= 0 ? ' is-ko-linger' : '') +
         (u.komaKit ? ' is-koma' : '') +
         /* Keep in-flight attack motion classes — className rewrite was killing recoil mid-shot. */
         (el.classList.contains('is-ranged-fire') ? ' is-ranged-fire' : '') +
@@ -11707,6 +11712,12 @@
               }
             }
             if ((q.attacker.hp | 0) <= 0) continue;
+            /* S.Def already walked home + defeated — do not keep hitting the corpse. */
+            if (q.defender && (q.defender.hp | 0) <= 0 && q.defender._koThisEngagement &&
+                !q.defender.lingerKo &&
+                (q.defender === combat.bestGuard || q.defender === combat.counterGuard)) {
+              continue;
+            }
 
             coverUnit = null;
             origTarget = q.originalTarget ||
@@ -11841,17 +11852,32 @@
             });
 
             /* After SD’s last needed hit — or immediately if SD died — home + clear shelter. */
-            if (coverUnit && coverUnit === q.defender && coverUnit.covering) {
-              stillCovering = false;
-              if ((coverUnit.hp | 0) > 0 || coverUnit.lingerKo) {
-                for (qj = qi + 1; qj < combat.queue.length; qj++) {
-                  if (combat.queue[qj].defender === coverUnit) {
-                    stillCovering = true;
-                    break;
+            if (coverUnit && coverUnit === q.defender) {
+              var sdDied = (coverUnit.hp | 0) <= 0 && !!coverUnit._koThisEngagement;
+              if (coverUnit.covering) {
+                stillCovering = false;
+                /* Dead SD never stays on the cover cell for later waves — walk home now. */
+                if (!sdDied && (coverUnit.hp | 0) > 0) {
+                  for (qj = qi + 1; qj < combat.queue.length; qj++) {
+                    if (combat.queue[qj].defender === coverUnit) {
+                      stillCovering = true;
+                      break;
+                    }
                   }
                 }
+                if (!stillCovering) releaseCover(coverUnit, origTarget);
               }
-              if (!stillCovering) releaseCover(coverUnit, origTarget);
+              /*
+               * S.Def KO: fade on the home cell right after cover-return (not wait for
+               * Counter / whole engagement). Remaining queue hits skip this corpse.
+               */
+              if (sdDied && coverUnit.lingerKo) {
+                coverUnit.lingerKo = false;
+                snapshotLine(
+                  'T' + turn + ' Defeated: ' + coverUnit.name,
+                  null, null, 'ko-fade'
+                );
+              }
             }
           }
 
@@ -11871,7 +11897,7 @@
             if (faded.length) {
               snapshotLine(
                 'T' + turn + ' Defeated: ' + faded.join(', '),
-                null, null, 'step'
+                null, null, 'ko-fade'
               );
             }
           })();
