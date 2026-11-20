@@ -406,7 +406,7 @@
   }
 
   /* Survives minify — proves chip-face helper is the loaded bundle (bump when chip path changes). */
-  var MLS_CHIP_FACE_MARK = '__MLS_CHIP_THUM_V9__';
+  var MLS_CHIP_FACE_MARK = '__MLS_CHIP_THUM_V10__';
   /** FX URL → usable spark (false = black plate / skip forever this session). */
   var mlsFxUsableCache = Object.create(null);
 
@@ -441,7 +441,49 @@
   /**
    * Height-lock makes tall/narrow standby plates read smaller than wide SD peers.
    * Boost by canvas aspect (worldwide — not per unit id). Cap so MAs stay sane.
+   *
+   * Also plant feet: standby plates vary in transparent bottom pad (Sazabi EX right
+   * ~10% vs median ~5.5%). object-position:bottom plants the bitmap edge, not ink,
+   * so extra pad + aspect boost reads as “hovering”. Nudge down by the excess.
    */
+  function mlsKomaMeasureBottomPadFrac(img) {
+    var nw = img.naturalWidth | 0;
+    var nh = img.naturalHeight | 0;
+    var canvas;
+    var ctx;
+    var data;
+    var x;
+    var y;
+    var row;
+    var padBot;
+    if (!nw || !nh) return null;
+    try {
+      canvas = document.createElement('canvas');
+      canvas.width = nw;
+      canvas.height = nh;
+      ctx = canvas.getContext('2d', { willReadFrequently: true });
+      if (!ctx) return null;
+      ctx.drawImage(img, 0, 0);
+      data = ctx.getImageData(0, 0, nw, nh).data;
+    } catch (err) {
+      /* Cross-origin without CORS — skip foot nudge, keep aspect boost only. */
+      return null;
+    }
+    padBot = nh;
+    for (y = nh - 1; y >= 0; y--) {
+      row = y * nw * 4;
+      for (x = 0; x < nw; x++) {
+        if (data[row + x * 4 + 3] > 8) {
+          padBot = nh - 1 - y;
+          y = -1;
+          break;
+        }
+      }
+    }
+    if (padBot >= nh) return null;
+    return padBot / nh;
+  }
+
   function mlsKomaApplyAspectBoost(img) {
     var src;
     function apply() {
@@ -449,8 +491,18 @@
       var nh = img.naturalHeight | 0;
       var aspect;
       var boost;
+      var padFrac;
+      var nudge;
+      var boostNudge;
+      /* CSS .mls-token.is-koma .mls-token-thum height — keep in sync. */
+      var komaH = 1.58;
+      var refPad = 0.05;
+      /* Ink feet target: slightly below the cell floor (peers hang ~8–12%). */
+      var targetFeet = -0.10;
+      var baseBottom = -0.24;
       if (!nw || !nh) {
         img.style.removeProperty('--mls-koma-boost');
+        img.style.removeProperty('--mls-koma-foot-nudge');
         return;
       }
       aspect = nw / nh;
@@ -461,15 +513,53 @@
       }
       if (boost > 1.02) img.style.setProperty('--mls-koma-boost', boost.toFixed(3));
       else img.style.removeProperty('--mls-koma-boost');
+
+      padFrac = mlsKomaMeasureBottomPadFrac(img);
+      if (padFrac == null) {
+        /* CORS-tainted decode — still plant tall/boosted plates (Sazabi-class). */
+        if (boost > 1.02) {
+          padFrac = Math.max(0.09, 0.12 - aspect * 0.04);
+        } else {
+          img.style.removeProperty('--mls-koma-foot-nudge');
+          return;
+        }
+      }
+      /*
+       * feetFrac ≈ baseBottom + padFrac*komaH*boost  (as fraction of token).
+       * Extra bottom % lowers the sprite until feetFrac ≈ targetFeet.
+       */
+      nudge = Math.max(0, (baseBottom + padFrac * komaH * boost - targetFeet) * 100);
+      /* Tall boost grows upward from a padded origin — add a floor so hover can’t remain. */
+      boostNudge = boost > 1.02 ? (boost - 1) * 55 : 0;
+      nudge = Math.max(nudge, boostNudge);
+      if (nudge > 0.5) img.style.setProperty('--mls-koma-foot-nudge', Math.min(36, nudge).toFixed(2) + '%');
+      else img.style.removeProperty('--mls-koma-foot-nudge');
+    }
+    function arm() {
+      if (img.complete && (img.naturalWidth | 0)) apply();
+      else img.addEventListener('load', apply, { once: true });
     }
     if (!img) return;
     src = String(img.getAttribute('src') || '');
     if (src.indexOf('Simulator/koma') < 0 && src.indexOf('/koma/') < 0) {
       img.style.removeProperty('--mls-koma-boost');
+      img.style.removeProperty('--mls-koma-foot-nudge');
       return;
     }
-    if (img.complete && (img.naturalWidth | 0)) apply();
-    else img.addEventListener('load', apply, { once: true });
+    /* CORS so getImageData can read CDN koma; reload once if already decoded opaque. */
+    try {
+      if (img.getAttribute('crossorigin') !== 'anonymous') {
+        img.setAttribute('crossorigin', 'anonymous');
+        if (img.complete && (img.naturalWidth | 0) && !img.dataset.mlsCorsReload) {
+          img.dataset.mlsCorsReload = '1';
+          img.addEventListener('load', apply, { once: true });
+          /* Re-assign absolute src so the browser refetches with CORS mode. */
+          img.src = img.currentSrc || img.src || src;
+          return;
+        }
+      }
+    } catch (eCors) { /* ignore */ }
+    arm();
   }
 
   function mlsBindKomaImgFallback(img, u) {
@@ -512,7 +602,7 @@
         '" onerror="window.GgenMlSim&&GgenMlSim.onKomaImgError&&window.GgenMlSim.onKomaImgError(this)"';
     }
     return '<img class="mls-token-thum" src="' + esc(src) + '" alt="' + esc((u && u.name) || '') +
-      '" loading="eager" decoding="async" fetchpriority="high"' + fbAttr + '>';
+      '" loading="eager" decoding="async" fetchpriority="high" crossorigin="anonymous"' + fbAttr + '>';
   }
 
   function mlsKomaFxUrl(prefix, frame) {
@@ -9491,6 +9581,9 @@
             thumEl = frameEl.querySelector('.mls-token-thum');
           }
         } else {
+          try {
+            if (!thumEl.crossOrigin) thumEl.crossOrigin = 'anonymous';
+          } catch (eCorsTok) { /* ignore */ }
           if (thumEl.getAttribute('src') !== u.thum) thumEl.src = u.thum;
           if (thumEl.alt !== (u.name || '')) thumEl.alt = u.name || '';
         }

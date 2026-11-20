@@ -2538,6 +2538,8 @@ body.mls-is-map-dragging .mls-map {
  * then plant feet on the tile (sprite hangs past the cell border).
  * Tall/narrow plates (e.g. Unicorn Destroy Awakened) get --mls-koma-boost from JS so
  * they do not look undersized vs wider SD peers under height-lock.
+ * Extra transparent bottom pad (e.g. Sazabi EX standby_right) gets --mls-koma-foot-nudge
+ * so ink feet match the typical ground line instead of hovering.
  * No portrait cell chrome — koma stands on the map tile only.
  */
 .mls-token.is-koma .mls-token-frame {
@@ -2559,11 +2561,12 @@ body.mls-is-map-dragging .mls-map {
 .mls-token.is-koma .mls-token-thum {
   position: absolute;
   left: 50%;
-  bottom: -18%;
+  /* Hang past the tile; --mls-koma-foot-nudge lowers plates with fat bottom pad / tall boost. */
+  bottom: calc(-24% - var(--mls-koma-foot-nudge, 0%));
   transform: translateX(-50%) scale(var(--mls-koma-boost, 1));
   transform-origin: center bottom;
   width: auto;
-  height: 152%;
+  height: 158%;
   max-width: none;
   max-height: none;
   object-fit: contain;
