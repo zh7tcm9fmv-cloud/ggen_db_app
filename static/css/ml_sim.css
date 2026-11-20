@@ -2533,9 +2533,11 @@ body.mls-is-map-dragging .mls-map {
   margin-top: -8px;
 }
 /*
- * Gated IngameKoma test (Griepe / Hydra):
- * Native canvases differ (wide vs tall) — normalize by HEIGHT so both read the same
- * standing size, then plant feet on the tile (sprite hangs past the cell border).
+ * IngameKoma map tokens:
+ * Native canvases differ (wide vs tall) — normalize by HEIGHT so standing size matches,
+ * then plant feet on the tile (sprite hangs past the cell border).
+ * Tall/narrow plates (e.g. Unicorn Destroy Awakened) get --mls-koma-boost from JS so
+ * they do not look undersized vs wider SD peers under height-lock.
  * No portrait cell chrome — koma stands on the map tile only.
  */
 .mls-token.is-koma .mls-token-frame {
@@ -2558,7 +2560,8 @@ body.mls-is-map-dragging .mls-map {
   position: absolute;
   left: 50%;
   bottom: -18%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) scale(var(--mls-koma-boost, 1));
+  transform-origin: center bottom;
   width: auto;
   height: 152%;
   max-width: none;
@@ -3042,7 +3045,7 @@ body.mls-is-map-dragging .mls-map {
   pointer-events: none;
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.85));
 }
-/* Unit skill — top corner of the koma (ally: viewer-right, enemy: viewer-left). */
+/* Unit skill — top corner (ally: viewer-right, enemy: viewer-left). */
 .mls-token-skill-mark {
   position: absolute;
   top: -2px;
@@ -3058,6 +3061,23 @@ body.mls-is-map-dragging .mls-map {
 }
 .mls-token.enemy .mls-token-skill-mark {
   left: -2px;
+  right: auto;
+}
+/*
+ * IngameKoma is taller than the cell — keep the skill glyph outside the tile
+ * so it sits beside/above the sprite instead of covering the torso.
+ */
+.mls-token.is-koma .mls-token-skill-mark {
+  top: -12%;
+  width: 20px;
+  height: 20px;
+}
+.mls-token.is-koma.ally .mls-token-skill-mark {
+  right: -22px;
+  left: auto;
+}
+.mls-token.is-koma.enemy .mls-token-skill-mark {
+  left: -22px;
   right: auto;
 }
 .mls-token-gcs-mark,
@@ -4121,6 +4141,11 @@ body.mls-is-map-dragging .mls-map {
  */
 .mls-btn.primary.mls-sim-start--board {
   --mls-earth: clamp(148px, min(46vw, 52vh, 42vmin), 300px);
+  /* Equal Haro ↔ label ↔ rope spacing (beam top ≈ 0.36×earth). */
+  --mls-sim-vgap: calc(var(--mls-earth) * 0.022);
+  --mls-sim-beam-top: calc(var(--mls-earth) * 0.36);
+  /* Haro WebPs are 864×512 with ~5–15% transparent pad under the sphere. */
+  --mls-sim-haro-pad-bot: 0.10;
   position: absolute;
   left: 50%;
   top: 46%;
@@ -4192,12 +4217,57 @@ body.mls-is-map-dragging .mls-map {
     drop-shadow(0 0 9px rgba(255, 40, 180, 0.42));
   pointer-events: none;
 }
-.mls-sim-start-label {
+.mls-sim-start-stack {
   position: absolute;
   left: 50%;
-  bottom: calc(var(--mls-earth) * 0.38);
-  z-index: 4;
+  bottom: calc(var(--mls-sim-beam-top) + var(--mls-sim-vgap));
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--mls-sim-vgap);
   transform: translateX(-50%);
+  pointer-events: none;
+}
+.mls-sim-start-haro {
+  position: relative;
+  flex: 0 0 auto;
+  /* Match asset AR (864×512) — square box letterboxed empty space under the sphere. */
+  width: calc(var(--mls-earth) * 0.78);
+  max-width: 234px;
+  height: auto;
+  aspect-ratio: 864 / 512;
+  margin: 0;
+  /* Pull sphere down by transparent pad under painted Haro so flex gap = visual gap. */
+  margin-bottom: calc(var(--mls-earth) * 0.78 * 512 / 864 * var(--mls-sim-haro-pad-bot) * -1);
+  transform: translate3d(0, 0, 0);
+  transform-origin: center bottom;
+  object-fit: contain;
+  object-position: center center;
+  pointer-events: none;
+  filter: drop-shadow(0 3px 10px rgba(0, 0, 0, 0.6));
+  /* Same attention-bounce recipe as .ui-notice-flare-img (2.6s hop + idle). */
+  animation: mls-sim-haro-attention-bounce var(--ui-notice-bounce-dur, 2.6s) linear infinite;
+}
+@keyframes mls-sim-haro-attention-bounce {
+  0% { transform: translate3d(0, 0, 0); }
+  6% { transform: translate3d(0, -10px, 0); }
+  12% { transform: translate3d(0, 0, 0); }
+  17% { transform: translate3d(0, -5px, 0); }
+  22% { transform: translate3d(0, 0, 0); }
+  26% { transform: translate3d(0, -2px, 0); }
+  30%, 100% { transform: translate3d(0, 0, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mls-sim-start-haro {
+    animation: none;
+  }
+}
+.mls-sim-start-label {
+  position: relative;
+  flex: 0 0 auto;
+  margin: 0;
+  line-height: 1;
   font-family: Teko, var(--font-body);
   font-weight: 600;
   font-size: clamp(0.95rem, calc(var(--mls-earth) * 0.078), 1.45rem);

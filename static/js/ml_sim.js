@@ -40,6 +40,12 @@
   var transportScrubbing = false;
   var playSession = null;
   var lastPlayResult = null;
+  /*
+   * After the first Start (or Reset), keep the earth Start overlay off so the map
+   * stays free for home-cell drag. Re-run via transport Play → onFight().
+   * Cleared on season change so a fresh board can show Start again.
+   */
+  var suppressSimStart = false;
   /* Bumped on each playFight so a late end-card settle cannot clear a Replay run. */
   var playGen = 0;
   var speedMul = 1;
@@ -62,7 +68,8 @@
    * Live and optimizer use SEPARATE LCG states — background warm must never reset
    * the live seed mid-compute (that made “1T wipe” labels disagree with Start).
    * Optimizer ranks with forceNoCrit + forceConnect (hits land, no crit).
-   * A 1T label is only that sure line. Evade/crit seeds that also 1T are called RNG.
+   * “1T wipe” is only when that sure line AND the Start twin (same seed, natural
+   * hits/crits — no forceConnect) also wipe in T1. Other seeds are RNG flavor only.
    */
   var rngLocked = false;
   var rngState = 1;
@@ -431,6 +438,40 @@
     return '';
   }
 
+  /**
+   * Height-lock makes tall/narrow standby plates read smaller than wide SD peers.
+   * Boost by canvas aspect (worldwide — not per unit id). Cap so MAs stay sane.
+   */
+  function mlsKomaApplyAspectBoost(img) {
+    var src;
+    function apply() {
+      var nw = img.naturalWidth | 0;
+      var nh = img.naturalHeight | 0;
+      var aspect;
+      var boost;
+      if (!nw || !nh) {
+        img.style.removeProperty('--mls-koma-boost');
+        return;
+      }
+      aspect = nw / nh;
+      if (aspect > 0 && aspect < 1) {
+        boost = Math.min(1.28, 1.06 / aspect);
+      } else {
+        boost = 1;
+      }
+      if (boost > 1.02) img.style.setProperty('--mls-koma-boost', boost.toFixed(3));
+      else img.style.removeProperty('--mls-koma-boost');
+    }
+    if (!img) return;
+    src = String(img.getAttribute('src') || '');
+    if (src.indexOf('Simulator/koma') < 0 && src.indexOf('/koma/') < 0) {
+      img.style.removeProperty('--mls-koma-boost');
+      return;
+    }
+    if (img.complete && (img.naturalWidth | 0)) apply();
+    else img.addEventListener('load', apply, { once: true });
+  }
+
   function mlsBindKomaImgFallback(img, u) {
     var fb;
     if (!img) return;
@@ -448,6 +489,7 @@
       img.removeAttribute('data-mls-face-fallback');
       img.onerror = null;
     }
+    mlsKomaApplyAspectBoost(img);
   }
 
   function onKomaImgError(img) {
@@ -1320,6 +1362,11 @@
           pct = (acc.opPct && acc.opPct[labels[k][0]]) | 0;
           flat = (acc.opFlat && acc.opFlat[labels[k][0]]) | 0;
           lab = labels[k][1];
+          try {
+            if (typeof global.tStat === 'function') {
+              lab = global.tStat(labels[k][1], 'unit') || global.tStat(labels[k][0], 'unit') || lab;
+            }
+          } catch (eStat) { /* keep EN abbr */ }
           if (pct) bits.push(lab + ' +' + pct + '%');
           if (flat) bits.push(lab + ' +' + flat);
         }
@@ -2256,6 +2303,23 @@
     return (global.S && global.S.lang) || 'EN';
   }
 
+  /** API / MasterData pack code — JP→JA, KR→HR (same as app validate_lang_code). */
+  function apiLang() {
+    var L = String(lang() || 'EN').toUpperCase();
+    if (L === 'JP') return 'JA';
+    if (L === 'KR') return 'HR';
+    return L || 'EN';
+  }
+
+  /** Drop caches that embed localized names (supporters, Escape partners, /cal memo). */
+  function clearLangSensitiveCaches() {
+    escapeUnitCache = Object.create(null);
+    clearLeaderApplyCaches();
+    clearSessionCalMemo();
+    clearFightResultCache();
+    timelinePaintSig = '';
+  }
+
   function seasonLabel(s) {
     var tags = (s.boost_tags || []).map(function (t) { return t.name; }).filter(Boolean);
     var env = s.terrain_primary || '—';
@@ -2290,9 +2354,13 @@
   }
 
   function formationLabel() {
-    if (board && board.formation === 'line') return 'LINE';
-    if (board && board.formation) return String(board.formation).toUpperCase();
-    return 'STANDARD';
+    if (board && board.formation === 'line') return mlsT('mls_form_line', 'Line');
+    if (board && board.formation) {
+      var raw = String(board.formation);
+      if (/^standard$/i.test(raw)) return mlsT('mls_form_standard', 'Standard');
+      return raw;
+    }
+    return mlsT('mls_form_standard', 'Standard');
   }
 
   function turnsLabel() {
@@ -2336,9 +2404,13 @@
     host.innerHTML =
       cardHtml +
       '<div class="mls-preset-meta">' +
-      '<div class="mls-preset-item"><span class="mls-lbl">FORMATION</span><strong id="mlsFormLabel">' +
+      '<div class="mls-preset-item"><span class="mls-lbl">' +
+      esc(mlsT('mls_preset_formation', 'Formation')) +
+      '</span><strong id="mlsFormLabel">' +
       esc(form) + '</strong></div>' +
-      '<div class="mls-preset-item"><span class="mls-lbl">TURNS</span><strong id="mlsTurns">' +
+      '<div class="mls-preset-item"><span class="mls-lbl">' +
+      esc(mlsT('mls_turns', 'Turns')) +
+      '</span><strong id="mlsTurns">' +
       esc(turns) + '</strong></div>' +
       '</div>';
   }
@@ -2573,12 +2645,14 @@
         '<span class="mls-supp-name-row">' +
         '<span class="name">' + esc(sup.name || sup.id) + '</span>' +
         '<button type="button" class="mls-mini-btn danger" data-mls-clear-supp="' + side +
-        '" title="Clear supporter" aria-label="Clear supporter">Clear</button>' +
+        '" title="' + esc(mlsT('mls_clear_supporter', 'Clear supporter')) +
+        '" aria-label="' + esc(mlsT('mls_clear_supporter', 'Clear supporter')) + '">' +
+        esc(mlsT('mls_clear', 'Clear')) + '</button>' +
         '</span>' +
         '<span class="sub mls-sub-icons">' + catIc + rarIc +
         (unowned
-          ? '<span class="mls-sub-hint">not in Collections</span>'
-          : '<span class="mls-sub-hint">tag-boosted picks</span>') +
+          ? '<span class="mls-sub-hint">' + esc(mlsT('mls_not_in_collections', 'not in Collections')) + '</span>'
+          : '<span class="mls-sub-hint">' + esc(mlsT('mls_tag_boosted_picks', 'tag-boosted picks')) + '</span>') +
         '</span>' +
         '<span class="mls-supp-lb">' + lbButtonsHtml(side, 0, lb, 'sup') + '</span>' +
         '</span></div>';
@@ -2598,7 +2672,7 @@
   }
 
   function leaderCacheKey(side, unitId, charId) {
-    return String(side || '') + ':' + String(unitId || '') + ':' + String(charId || '');
+    return apiLang() + ':' + String(side || '') + ':' + String(unitId || '') + ':' + String(charId || '');
   }
 
   function clearLeaderApplyCaches(side) {
@@ -2633,7 +2707,7 @@
     }
     lb = ent.lb != null ? (ent.lb | 0) : 3;
     url = '/api/supporter/' + encodeURIComponent(ent.id) +
-      '?lang=' + encodeURIComponent(lang()) + '&level=100&lb_tier=' + lb +
+      '?lang=' + encodeURIComponent(apiLang()) + '&level=100&lb_tier=' + lb +
       '&for_unit_id=' + encodeURIComponent(String(unitId));
     if (charId) url += '&for_char_id=' + encodeURIComponent(String(charId));
     return fetchJson(url).then(function (d) {
@@ -2749,18 +2823,22 @@
           '<span class="sub mls-sub-icons" title="Tap to change unit · hold then drag to reorder">' +
           rarityIconHtml(sl.rarity) +
           roleIconHtml(sl.roleIcon || sl.roleId) +
-          (unowned ? '<span class="mls-unowned-tag">not in Collections</span>' : '') +
+          (unowned ? '<span class="mls-unowned-tag">' + esc(mlsT('mls_not_in_collections', 'not in Collections')) + '</span>' : '') +
           '</span></span>' +
           slotNumBadgeHtml(i + 1) + '</button>' +
           '<div class="mls-slot-tools">' +
           '<button type="button" class="mls-mini-btn mls-pilot-btn" data-mls-pick-pilot="' +
-          side + ':' + i + '" title="Change pilot">' +
-          (sl.charName ? ('Pilot: ' + esc(sl.charName)) : 'Set pilot') +
+          side + ':' + i + '" title="' + esc(mlsT('mls_pick_pilot', 'Pick pilot')) + '">' +
+          (sl.charName
+            ? esc(mlsT('mls_pilot_colon', 'Pilot: {name}').replace('{name}', sl.charName))
+            : esc(mlsT('mls_set_pilot', 'Set pilot'))) +
           '</button>' +
           charSpButtonHtml(sl, side, i) +
           '<span class="mls-supp-lb">' + lbButtonsHtml(side, i, lb, 'unit') + '</span>' +
           '<button type="button" class="mls-mini-btn danger" data-mls-clear-unit="' +
-          side + ':' + i + '" title="Remove unit (blank this slot)" aria-label="Clear unit">Clear</button>' +
+          side + ':' + i + '" title="' + esc(mlsT('mls_clear_unit', 'Clear unit')) +
+          '" aria-label="' + esc(mlsT('mls_clear_unit', 'Clear unit')) + '">' +
+          esc(mlsT('mls_clear', 'Clear')) + '</button>' +
           statModeButtonsHtml(sl, side, i) +
           ultAltControlsHtml(sl, side, i) +
           opHtml +
@@ -3927,10 +4005,13 @@
        * That stale paint was wiping unit thumbs under READY / GO!!.
        */
       if (fightBusy) return;
+      /* Sync Start / transport — e.g. season changed while on Formation, then open Battle. */
+      setFightControls(false);
       loadArmies().then(function () {
         if (fightBusy || viewName !== 'battle') return;
         paintBoard();
         paintTimeline();
+        setFightControls(false);
         requestAnimationFrame(function () {
           scrollMlsBattleIntoView();
           syncMlsBattleChrome(true);
@@ -4191,11 +4272,11 @@
       if (pickerFilter.role) filt += '&role=' + encodeURIComponent(pickerFilter.role);
     }
     if (kind === 'supporter') {
-      url = '/api/supporters?lang=' + encodeURIComponent(lang()) +
+      url = '/api/supporters?lang=' + encodeURIComponent(apiLang()) +
         '&per_page=40&page=1&sort=rarity&dir=desc' +
         (query ? ('&q=' + encodeURIComponent(query)) : '') + filt;
     } else if (kind === 'character') {
-      url = '/api/characters?lang=' + encodeURIComponent(lang()) +
+      url = '/api/characters?lang=' + encodeURIComponent(apiLang()) +
         '&per_page=40&page=1&sort=rarity&dir=desc' +
         (query ? ('&q=' + encodeURIComponent(query)) : '') + filt;
     } else if (kind === 'option') {
@@ -4208,7 +4289,7 @@
           return pickerRows;
         });
       }
-      url = '/api/option_parts?lang=' + encodeURIComponent(lang()) +
+      url = '/api/option_parts?lang=' + encodeURIComponent(apiLang()) +
         '&per_page=80&page=1&sort=rarity&dir=desc&rarity=ALL&effect=ALL' +
         (uidOp ? ('&unit_id=' + encodeURIComponent(uidOp)) : '') +
         (query ? ('&q=' + encodeURIComponent(query)) : '');
@@ -4217,7 +4298,7 @@
       var boost = (sup && sup.id) ? ('&tb_boost_supporter=' + encodeURIComponent(sup.id)) : '';
       var sqParts = seasonBoostQueryParts();
       var hasSeason = !!(sqParts.lineage || sqParts.series);
-      var base = '/api/units?lang=' + encodeURIComponent(lang()) +
+      var base = '/api/units?lang=' + encodeURIComponent(apiLang()) +
         '&per_page=200&page=1&sort=rarity&dir=desc&exclude_escape_alt=1' + filt;
       /*
        * Empty unit pick base list:
@@ -4484,14 +4565,14 @@
     if (ent && ent.id) {
       var lb = ent.lb != null ? (ent.lb | 0) : 3;
       var q = '/api/supporter/' + encodeURIComponent(ent.id) +
-        '?lang=' + encodeURIComponent(lang()) + '&level=100&lb_tier=' + lb +
+        '?lang=' + encodeURIComponent(apiLang()) + '&level=100&lb_tier=' + lb +
         '&for_unit_id=' + encodeURIComponent(sl.unitId) +
         (sl.charId ? ('&for_char_id=' + encodeURIComponent(sl.charId)) : '');
       supP = fetchJson(q).catch(function () { return null; });
     }
     var rowsP = typeof ensure === 'function'
       ? ensure(sl.unitId)
-      : fetch('/api/option_parts?lang=' + encodeURIComponent(lang()) +
+      : fetch('/api/option_parts?lang=' + encodeURIComponent(apiLang()) +
           '&page=1&per_page=100&sort=rarity&dir=desc&rarity=ALL&effect=ALL&unit_id=' +
           encodeURIComponent(sl.unitId), { credentials: 'same-origin' })
           .then(function (r) { return r.json(); })
@@ -4616,7 +4697,7 @@
       return fillP.then(function () {
         var cid = slot.charId;
         var charP = cid
-          ? fetchJson('/api/character/' + encodeURIComponent(cid) + '?lang=' + encodeURIComponent(lang())).catch(function () { return null; })
+          ? fetchJson('/api/character/' + encodeURIComponent(cid) + '?lang=' + encodeURIComponent(apiLang())).catch(function () { return null; })
           : Promise.resolve(null);
         return charP.then(function (cd) {
           if (cd && !cd.error) {
@@ -4871,7 +4952,7 @@
   }
 
   function fetchSupporterUnitPool(suppId) {
-    var base = '/api/units?lang=' + encodeURIComponent(lang()) +
+    var base = '/api/units?lang=' + encodeURIComponent(apiLang()) +
       '&per_page=200&page=1&sort=rarity&dir=desc&exclude_escape_alt=1';
     if (suppId) {
       return fetchUnitPickerJson(base + '&tb_boost_supporter=' + encodeURIComponent(String(suppId)));
@@ -4882,7 +4963,7 @@
   }
 
   function fetchSupporterPool() {
-    return fetch('/api/supporters?lang=' + encodeURIComponent(lang()) +
+    return fetch('/api/supporters?lang=' + encodeURIComponent(apiLang()) +
       '&per_page=200&page=1&sort=rarity&dir=desc', { credentials: 'same-origin' })
       .then(function (r) {
         if (!r.ok) throw new Error('supporters ' + r.status);
@@ -4895,7 +4976,7 @@
     var key = String(roleId || '');
     var url;
     if (_urPilotByRoleCache[key]) return _urPilotByRoleCache[key];
-    url = '/api/characters?lang=' + encodeURIComponent(lang()) +
+    url = '/api/characters?lang=' + encodeURIComponent(apiLang()) +
       '&per_page=120&page=1&sort=rarity&dir=desc&rarity=' + encodeURIComponent('UR,LT,ULT');
     if (key === '1' || key === '2' || key === '3') {
       url += '&role=' + encodeURIComponent(key);
@@ -5292,7 +5373,7 @@
         var ent = S.tb.supBySide[j.si];
         var lb = Math.min(3, Math.max(0, ent.lbTier | 0));
         var q = '/api/supporter/' + encodeURIComponent(ent.id) +
-          '?lang=' + encodeURIComponent(lang()) + '&level=100&lb_tier=' + lb +
+          '?lang=' + encodeURIComponent(apiLang()) + '&level=100&lb_tier=' + lb +
           '&for_unit_id=' + encodeURIComponent(j.sl.unitId) +
           (j.sl.charId ? ('&for_char_id=' + encodeURIComponent(j.sl.charId)) : '');
         return fetchJson(q).then(function (d) {
@@ -5399,8 +5480,8 @@
   }
 
   function loadPair(unitId, charId, lb) {
-    var uUrl = '/api/unit/' + encodeURIComponent(unitId) + '?lang=' + encodeURIComponent(lang());
-    var cUrl = charId ? ('/api/character/' + encodeURIComponent(charId) + '?lang=' + encodeURIComponent(lang())) : '';
+    var uUrl = '/api/unit/' + encodeURIComponent(unitId) + '?lang=' + encodeURIComponent(apiLang());
+    var cUrl = charId ? ('/api/character/' + encodeURIComponent(charId) + '?lang=' + encodeURIComponent(apiLang())) : '';
     return Promise.all([
       fetchJson(uUrl),
       /* Soft-fail pilot fetch — a 404 must not drop the whole unit from Battle. */
@@ -5491,11 +5572,12 @@
     pid = ud.transform_partner_id;
     if (pid == null || pid === '') return Promise.resolve(null);
     pid = String(pid);
-    if (escapeUnitCache[pid]) return Promise.resolve(escapeUnitCache[pid]);
-    return fetchJson('/api/unit/' + encodeURIComponent(pid) + '?lang=' + encodeURIComponent(lang()))
+    var cacheKey = apiLang() + ':' + pid;
+    if (escapeUnitCache[cacheKey]) return Promise.resolve(escapeUnitCache[cacheKey]);
+    return fetchJson('/api/unit/' + encodeURIComponent(pid) + '?lang=' + encodeURIComponent(apiLang()))
       .then(function (d) {
-        if (d && !d.error) escapeUnitCache[pid] = d;
-        return escapeUnitCache[pid] || null;
+        if (d && !d.error) escapeUnitCache[cacheKey] = d;
+        return escapeUnitCache[cacheKey] || null;
       })
       .catch(function () { return null; });
   }
@@ -5511,7 +5593,7 @@
     if (!unitHasEscapeMechanism(ud)) return false;
     pid = ud.transform_partner_id;
     if (pid == null || pid === '') return false;
-    alt = escapeUnitCache[String(pid)];
+    alt = escapeUnitCache[apiLang() + ':' + String(pid)] || escapeUnitCache[String(pid)];
     if (!alt) return false;
     if (unitTerrainOnlyDash(alt)) return false;
 
@@ -5712,7 +5794,7 @@
       return {
         raw: w,
         _mlsSlot: pair.idx | 0,
-        name: w.name || (w.is_ex ? 'EX' : 'Weapon'),
+        name: w.name || (w.is_ex ? 'EX' : mlsT('mls_weapon', 'Weapon')),
         icon: w.icon || w.ssp_icon || '',
         icon_color: w.icon_color || w.ssp_icon_color || '',
         min_range: w.min_range != null ? w.min_range | 0 : 1,
@@ -8422,7 +8504,7 @@
 
   function loadOptionPart(id) {
     if (!id) return Promise.resolve(null);
-    return fetchJson('/api/option_part/' + encodeURIComponent(id) + '?lang=' + encodeURIComponent(lang()))
+    return fetchJson('/api/option_part/' + encodeURIComponent(id) + '?lang=' + encodeURIComponent(apiLang()))
       .then(function (d) { return d && !d.error ? d : null; })
       .catch(function () { return null; });
   }
@@ -8435,7 +8517,7 @@
     }
     var lb = ent.lb != null ? (ent.lb | 0) : 3;
     var url = '/api/supporter/' + encodeURIComponent(ent.id) +
-      '?lang=' + encodeURIComponent(lang()) + '&level=100&lb_tier=' + lb;
+      '?lang=' + encodeURIComponent(apiLang()) + '&level=100&lb_tier=' + lb;
     return fetchJson(url).then(function (d) {
       if (!d || d.error) {
         sideSupportData[side] = null;
@@ -9296,6 +9378,9 @@
         /* Linger KO stays on the map until Counter finishes; otherwise never spawn a corpse. */
         if ((u.hp | 0) <= 0 && !u.lingerKo) return;
         layer.insertAdjacentHTML('beforeend', unitTokenHtml(u, cellPctBox(win, origin.x, origin.y, span, span), mark, fx));
+        el = layer.querySelector('[data-token-key="' + key + '"]');
+        thumEl = el && el.querySelector('.mls-token-thum');
+        if (thumEl) mlsBindKomaImgFallback(thumEl, u);
         return;
       }
 
@@ -9401,12 +9486,15 @@
       if (u.thum && el.getAttribute('data-koma-busy') !== '1') {
         if (!thumEl) {
           frameEl = el.querySelector('.mls-token-frame');
-          if (frameEl) frameEl.insertAdjacentHTML('afterbegin', mlsKomaTokenImgHtml(u));
+          if (frameEl) {
+            frameEl.insertAdjacentHTML('afterbegin', mlsKomaTokenImgHtml(u));
+            thumEl = frameEl.querySelector('.mls-token-thum');
+          }
         } else {
           if (thumEl.getAttribute('src') !== u.thum) thumEl.src = u.thum;
           if (thumEl.alt !== (u.name || '')) thumEl.alt = u.name || '';
-          mlsBindKomaImgFallback(thumEl, u);
         }
+        if (thumEl) mlsBindKomaImgFallback(thumEl, u);
       }
       syncTopMarksEl(el, u);
 
@@ -9906,7 +9994,7 @@
       el.className += ' is-chip-float';
       el.innerHTML =
         (icon ? floatChipIconHtml(ev) : '') +
-        '<span class="mls-float-lab">' + esc(lab || 'PARRY') + '</span>' +
+        '<span class="mls-float-lab">' + esc(lab || mlsT('mls_float_parry', 'PARRY')) + '</span>' +
         '<span class="mls-float-parry-zero">' + esc(ev.sub != null ? String(ev.sub) : '0') + '</span>';
       ring = document.createElement('div');
       ring.className = 'mls-parry-ring';
@@ -10192,7 +10280,8 @@
         var mobPart = u.mobility | 0;
         var reactPart = u.reaction | 0;
         var spd = spdFn(u);
-        var nm = String(u.name || '').replace(/\s*\(EX\)\s*$/i, '').slice(0, 14);
+        /* CSS .mls-tl-name ellipsis — do not hard-slice (breaks CJK + long EN). */
+        var nm = String(u.name || '').replace(/\s*\(EX\)\s*$/i, '');
         var key = u._tlKey || unitTlKey(u);
         var leaving = !!timelineLeavingKeys[key];
         var dead = (u.hp | 0) <= 0 || leaving;
@@ -10957,7 +11046,7 @@
           missFloat = {
             x: defender.x, y: defender.y,
             unitId: defender.id,
-            text: 'PARRY', sub: '0',
+            text: mlsT('mls_float_parry', 'PARRY'), sub: '0',
             icon: '/static/images/Trait/' +
               String((defender.parryKit && defender.parryKit.icon) || 'trait_11760100').replace(/\.webp$/i, '') +
               '.webp',
@@ -10966,7 +11055,11 @@
         } else {
           missFloat = {
             x: defender.x, y: defender.y,
-            text: missWhy === 'Sway' ? 'SWAY' : 'MISS',
+            text: missWhy === 'Sway'
+              ? mlsT('mls_float_sway', 'SWAY')
+              : (missWhy === 'Evade Way'
+                ? mlsT('mls_float_evade_way', 'EVADE WAY')
+                : mlsT('mls_float_miss', 'MISS')),
             cls: 'mls-float--heal'
           };
         }
@@ -12847,9 +12940,19 @@
       scrub.max = String(n);
       if (!show) scrub.value = '0';
     }
-    if (playBtn) playBtn.disabled = !show || n <= 0;
+    /* After Reset: allow Play with empty scrub so it can arm a fresh fight. */
+    if (playBtn) playBtn.disabled = !show || (n <= 0 && !suppressSimStart);
     if (show && result) updateTransportChrome(0, n, result);
-    else if (!show) {
+    else if (show && !result) {
+      var timeElShow = document.getElementById('mlsTransportTime');
+      if (timeElShow) timeElShow.textContent = '0:00 / 0:00';
+      if (scrub) {
+        scrub.disabled = true;
+        scrub.value = '0';
+        scrub.max = '0';
+      }
+      syncTransportPlayBtn();
+    } else if (!show) {
       var timeEl = document.getElementById('mlsTransportTime');
       if (timeEl) timeEl.textContent = '0:00 / 0:00';
       syncTransportPlayBtn();
@@ -12948,6 +13051,11 @@
   function togglePlaybackPause() {
     var scrub;
     var startAt = 0;
+    /* Post-Reset / reposition: no cached fight — Play arms a fresh SIMULATION START. */
+    if (!fightBusy && !lastPlayResult) {
+      onFight();
+      return;
+    }
     /* Ended sim → Replay from the start (official ML replay control). */
     if (playbackAtEnd() && lastPlayResult) {
       hideEndCard();
@@ -13113,6 +13221,23 @@
     canvas._mlsEarthArm = arm;
     loadEarthTexture(thumbUrl(earthPath), true, true);
   }
+  var MLS_SIM_START_HARO = [
+    '/static/images/Master League/gold_haro.webp',
+    '/static/images/Master League/haro.webp',
+    '/static/images/Master League/haro2.webp',
+    '/static/images/Master League/silver_Haro.webp',
+    '/static/images/Master League/titanium_haro.webp'
+  ];
+  function ensureSimStartHaro(forceNew) {
+    var img = document.getElementById('mlsFightHaro');
+    if (!img) return;
+    var needPick = !!forceNew || !img.getAttribute('src') || img.hasAttribute('hidden');
+    if (needPick) {
+      var pick = MLS_SIM_START_HARO[(Math.random() * MLS_SIM_START_HARO.length) | 0] || MLS_SIM_START_HARO[0];
+      img.src = thumbUrl(pick);
+    }
+    img.removeAttribute('hidden');
+  }
   function setFightControls(busy) {
     var start = document.getElementById('mlsFight');
     var pause = document.getElementById('mlsPause');
@@ -13121,8 +13246,8 @@
     var boardEl = document.getElementById('mlsBoard');
     var shell = document.querySelector('#panel-ml_sim .mls-shell');
     var viewport = document.querySelector('#panel-ml_sim .mls-map-viewport');
-    /* Start only until the first playback — after that use Replay on transport. */
-    var showStart = !!(start && !busy && !lastPlayResult);
+    /* Start overlay only before the first run — Reset keeps it off for map drag. */
+    var showStart = !!(start && !busy && !lastPlayResult && !suppressSimStart);
     if (start) {
       var startLab = document.getElementById('mlsFightLabel');
       if (startLab) {
@@ -13132,14 +13257,24 @@
       }
       start.style.display = showStart ? '' : 'none';
       if (showStart) {
+        var haroWasHidden = false;
+        try {
+          var haroEl = document.getElementById('mlsFightHaro');
+          haroWasHidden = !!(haroEl && (haroEl.hasAttribute('hidden') || !haroEl.getAttribute('src')));
+        } catch (eHaro) { /* ignore */ }
         start.removeAttribute('hidden');
         start.disabled = false;
         start.removeAttribute('disabled');
         start.setAttribute('aria-hidden', 'false');
+        ensureSimStartHaro(haroWasHidden);
       } else {
         start.setAttribute('hidden', '');
         start.disabled = true;
         start.setAttribute('aria-hidden', 'true');
+        try {
+          var haroHide = document.getElementById('mlsFightHaro');
+          if (haroHide) haroHide.setAttribute('hidden', '');
+        } catch (eHaroHide) { /* ignore */ }
       }
       start.classList.toggle('is-running', !!busy);
       if (showStart) ensureEarthGlobe();
@@ -13178,7 +13313,8 @@
    * Kill in-flight playback immediately (season swap / hard reset).
    * Bumps playGen so a late playFight tick cannot paint the old fight on a new board.
    */
-  function abortPlaybackImmediate() {
+  function abortPlaybackImmediate(opts) {
+    var keepTransport = !!(opts && opts.keepTransport);
     playGen += 1;
     skipAll = true;
     paused = false;
@@ -13195,20 +13331,24 @@
     lastPlayResult = null;
     skipAll = false;
     clearTimelinePhase();
-    setTransportVisible(false);
+    if (keepTransport) setTransportVisible(true, null);
+    else setTransportVisible(false);
     setFightControls(false);
     clearMapCameraLock();
   }
 
   function onResetBattle() {
     function doReset() {
-      abortPlaybackImmediate();
+      /* Keep Start overlay off + transport Play so homes can be dragged, then re-sim. */
+      suppressSimStart = true;
+      abortPlaybackImmediate({ keepTransport: true });
+      clearFightResultCache();
       return loadArmies().then(function () {
         paintBoard();
         paintTimeline();
         var logEl = document.getElementById('mlsLog');
         if (logEl) logEl.textContent = '';
-        log('Board reset to formation start.');
+        log('Board reset to formation start — drag units to adjust, then Play.');
       });
     }
     if (fightBusy) {
@@ -13315,7 +13455,7 @@
     return ensureMlsKomaCatalog()
       .catch(function () { return false; })
       .then(function () {
-        return fetchJson('/api/master_league?lang=' + encodeURIComponent(lang()));
+        return fetchJson('/api/master_league?lang=' + encodeURIComponent(apiLang()));
       })
       .then(function (d) {
         seasons = d.seasons || [];
@@ -13449,6 +13589,7 @@
     transportScrubbing = false;
     playSession = null;
     lastPlayResult = null;
+    suppressSimStart = true;
     fightBusy = true;
     playbackFxBusy = true;
     setFightControls(true);
@@ -13905,6 +14046,7 @@
           needsCritFor1T: !!bestScore.needsCritFor1T,
           turn1Alive: (bestScore.turn1Alive || []).slice(),
           rng1T: bestScore.rng1T | 0,
+          start1T: !!bestScore.start1T,
           graded: !!bestScore.graded
         }
       };
@@ -13928,11 +14070,14 @@
       rankedT1 = bestScore.turn1EnemyHp | 0;
       clearFightResultCache();
       /*
-       * Label from a sure line only: attacks connect, no crits.
-       * Warm already sampled RNG seeds — click applies that, no second search.
+       * Labels: sure line (forceConnect, no crit) ranks T1 wipe potential.
+       * “1T wipe” only if Start twin also 1Ts — same OPTIMIZER_SEED, natural hits/crits
+       * (what SIMULATION START actually runs). Other seeds are RNG flavor only.
        */
-      function publishRank(rng1T) {
+      function publishRank(rng1T, start1T) {
         var aliveTxt, spotMoves, advice;
+        start1T = !!start1T;
+        bestScore.start1T = start1T;
         bestScore.needsCritFor1T = rankedT1 > 0 && rng1T > 0;
         if (lastAiSearchCache && lastAiSearchCache.bestScore) {
           lastAiSearchCache.bestScore.needsCritFor1T = !!bestScore.needsCritFor1T;
@@ -13940,10 +14085,11 @@
           lastAiSearchCache.bestScore.turns = bestScore.turns | 0;
           lastAiSearchCache.bestScore.win = !!bestScore.win;
           lastAiSearchCache.bestScore.rng1T = rng1T | 0;
+          lastAiSearchCache.bestScore.start1T = start1T;
           lastAiSearchCache.bestScore.graded = true;
         }
         aliveTxt = (bestScore.turn1Alive || []).join(', ');
-        if (bestScore.win && rankedT1 === 0 && rng1T === 4) {
+        if (bestScore.win && rankedT1 === 0 && start1T) {
           status = (same ? 'Already optimal · ' : 'Applied · ') + '1T wipe';
         } else if (bestScore.win && rankedT1 === 0) {
           status = (same ? 'Already optimal · ' : 'Applied · ') +
@@ -13974,6 +14120,8 @@
         if (rankedT1 > 0 && aliveTxt) {
           advice = ' After turn 1 still up: ' + aliveTxt +
             '. More S.Attack into those (or strip their S.Def) — this is not a 1T wipe.';
+        } else if (rankedT1 === 0 && !start1T) {
+          advice = ' Sure-line is 1T with forced hits; Start seed can miss — not a promised 1T wipe.';
         }
         setAiStatus(status);
         outResult.status = status;
@@ -13989,14 +14137,16 @@
         setAiProgress(0, 0);
         return outResult;
       }
-      if (bestScore.graded) return publishRank(bestScore.rng1T | 0);
       setAiStatus('Checking…');
       return loadArmies({ keepCalMemo: true }).then(function () {
-        var sure, rng1T, si, rngRes;
+        var sure, startTwin, rng1T, si, rngRes, start1T;
         sure = null;
+        startTwin = null;
         rng1T = 0;
+        start1T = false;
         try {
           if (lastAlly.length && lastEnemy.length) {
+            /* Sure line — same flags the search ranked with. */
             beginOptSeededFight(OPTIMIZER_SEED);
             sure = fightSteps(cloneArmy(lastAlly), cloneArmy(lastEnemy), {
               scoreOnly: true,
@@ -14004,6 +14154,16 @@
               forceConnect: true
             });
             endOptSeededFight();
+            /*
+             * Start twin — identical seed + natural hit/crit stream as computeFightAsync.
+             * This is the only gate for a promised “1T wipe” label.
+             */
+            beginOptSeededFight(OPTIMIZER_SEED);
+            startTwin = fightSteps(cloneArmy(lastAlly), cloneArmy(lastEnemy), {
+              scoreOnly: true
+            });
+            endOptSeededFight();
+            start1T = !!(startTwin && startTwin.win && (startTwin.turn1EnemyHp | 0) === 0);
             for (si = 0; si < 4; si++) {
               beginOptSeededFight((OPTIMIZER_SEED + 1 + si * 997) >>> 0);
               rngRes = fightSteps(cloneArmy(lastAlly), cloneArmy(lastEnemy), {
@@ -14016,6 +14176,7 @@
           }
         } catch (eSure) {
           sure = null;
+          start1T = false;
         } finally {
           endOptSeededFight();
         }
@@ -14026,7 +14187,10 @@
           bestScore.turn1EnemyHp = rankedT1;
           bestScore.turn1Alive = sure.turn1Alive || [];
         }
-        return publishRank(rng1T);
+        bestScore.rng1T = rng1T | 0;
+        bestScore.start1T = start1T;
+        bestScore.graded = true;
+        return publishRank(rng1T, start1T);
       });
     }
 
@@ -14186,31 +14350,44 @@
       }
 
       /**
-       * After the sure-line search, sample 4 real hit/crit seeds on the winner only.
-       * Yields so the end card keeps painting. Click then skips this work.
+       * After the sure-line search: Start twin (OPTIMIZER_SEED, natural) + 4 other seeds.
+       * “1T wipe” on click requires start1T. Yields so the end card keeps painting.
        */
       function gradeRngSeeds() {
         var n = 0;
         var i = 0;
+        var startOk = false;
+        var didStart = false;
         if (!background || !best || !bestScore) return Promise.resolve();
         function step() {
           var res;
-          if (i >= 4) {
+          if (didStart && i >= 4) {
             bestScore.rng1T = n;
+            bestScore.start1T = startOk;
             bestScore.graded = true;
             return Promise.resolve();
           }
           return new Promise(function (resolve) { setTimeout(resolve, 0); }).then(function () {
             if (playbackFxBusy || liveComputeBusy) return idleGap(80).then(step);
-            i += 1;
             try {
-              beginOptSeededFight((OPTIMIZER_SEED + i * 997) >>> 0);
-              res = fightSteps(alliesForPerm(best), cloneArmy(baseEnemy), {
-                scoreOnly: true,
-                forceNoCrit: false,
-                dmgMemo: sharedDmgMemo
-              });
-              if (res && res.win && (res.turn1EnemyHp | 0) === 0) n += 1;
+              if (!didStart) {
+                beginOptSeededFight(OPTIMIZER_SEED);
+                res = fightSteps(alliesForPerm(best), cloneArmy(baseEnemy), {
+                  scoreOnly: true,
+                  dmgMemo: sharedDmgMemo
+                });
+                startOk = !!(res && res.win && (res.turn1EnemyHp | 0) === 0);
+                didStart = true;
+              } else {
+                i += 1;
+                beginOptSeededFight((OPTIMIZER_SEED + i * 997) >>> 0);
+                res = fightSteps(alliesForPerm(best), cloneArmy(baseEnemy), {
+                  scoreOnly: true,
+                  forceNoCrit: false,
+                  dmgMemo: sharedDmgMemo
+                });
+                if (res && res.win && (res.turn1EnemyHp | 0) === 0) n += 1;
+              }
             } catch (eGrade) { /* seed optional */ }
             endOptSeededFight();
             return step();
@@ -14253,6 +14430,9 @@
      * same-season board refresh or it can kill an in-flight SIMULATION START.
      */
     if (seasonChanged) {
+      /* New season → show SIMULATION START again (Reset only suppresses within a season). */
+      suppressSimStart = false;
+      clearFightResultCache();
       abortPlaybackImmediate();
     }
     roster.eventId = id;
@@ -14260,7 +14440,7 @@
     seasonMeta = findSeason(id);
     clearMapCameraLock();
     paintPreset();
-    return fetchJson('/api/master_league/sim_board?event_id=' + encodeURIComponent(id) + '&lang=' + encodeURIComponent(lang()))
+    return fetchJson('/api/master_league/sim_board?event_id=' + encodeURIComponent(id) + '&lang=' + encodeURIComponent(apiLang()))
       .then(function (data) {
         board = data;
         scrubInvalidMapHomeOverrides();
@@ -14269,10 +14449,14 @@
         paintForceSlots();
         if (viewName === 'battle') {
           return loadArmies().then(function () {
+            if (fightBusy || viewName !== 'battle') return;
             paintBoard();
             paintTimeline();
+            /* Re-assert Start overlay after season swap (async paint can race abort). */
+            if (seasonChanged && !suppressSimStart) setFightControls(false);
           });
         }
+        if (seasonChanged && !suppressSimStart && !fightBusy) setFightControls(false);
       });
   }
 
@@ -14640,7 +14824,7 @@
       if (ent && ent.id) {
         jobs.push(
           fetchJson('/api/supporter/' + encodeURIComponent(ent.id) +
-            '?lang=' + encodeURIComponent(lang()) +
+            '?lang=' + encodeURIComponent(apiLang()) +
             '&level=100&lb_tier=' + (ent.lb != null ? (ent.lb | 0) : 3)
           ).then(function (d) {
             if (!d || d.error) return null;
@@ -14691,16 +14875,15 @@
             if (ud && !(sl.unitTags && sl.unitTags.length)) {
               sl.unitTags = unitTagsFromEntity(ud);
             }
-            if (sl.optionPartId &&
-                (!sl.optionPartName || !sl.optionPartThum || !sl.optionPartDetails ||
-                  !(sl.optionPartSimEffects || []).length)) {
+            /* Always refetch OP on hydrate so LANG switches refresh name/details
+             * (roster cache keeps ids; English names must not stick after JA/TW). */
+            if (sl.optionPartId) {
               return loadOptionPart(sl.optionPartId).then(function (op) {
                 if (op) assignOptionPartToSlot(sl, op);
                 return null;
               });
             }
-            if (!sl.optionPartId) return autoPickOpForSlot(side, idx, ud, cd);
-            return null;
+            return autoPickOpForSlot(side, idx, ud, cd);
           }).catch(function () { return null; })
         );
       });
@@ -14733,7 +14916,24 @@
     return fallback != null ? fallback : key;
   }
 
-  function applyLang() {
+  /**
+   * Locale switch: clear name caches + rebuild seasons / slots / armies so timeline,
+   * weapons, and playback floats use the current LANG pack (EN/JA/TW/HK/…).
+   */
+  function onLangChange() {
+    clearLangSensitiveCaches();
+    applyLangChrome();
+    if (!mlsUnlocked) return Promise.resolve();
+    if (fightBusy) {
+      try { abortPlaybackImmediate(); } catch (eAbort) { /* ignore */ }
+      suppressSimStart = false;
+    }
+    return loadMlsContent().catch(function (e) {
+      log(String(e && e.message || e));
+    });
+  }
+
+  function applyLangChrome() {
     var shell = document.getElementById('mlsShell') || document.querySelector('.mls-shell');
     var root = shell && shell.parentElement ? shell.parentElement : document;
     root.querySelectorAll('[data-mls-i18n]').forEach(function (el) {
@@ -14795,15 +14995,20 @@
     }
   }
 
+  function applyLang() {
+    applyLangChrome();
+  }
+
   function onTabShown() {
     bind();
     bindGate();
     syncAuraToggleUi();
     syncOrderToggleUi();
-    applyLang();
+    applyLangChrome();
     syncMlsBattleChrome(viewName === 'battle');
     return ensureMlsUnlocked().then(function (ok) {
       if (!ok) return null;
+      clearLangSensitiveCaches();
       return loadMlsContent();
     }).catch(function (e) { log(String(e && e.message || e)); });
   }
@@ -14812,6 +15017,7 @@
     onTabShown: onTabShown,
     onTabHidden: onTabHidden,
     applyLang: applyLang,
+    onLangChange: onLangChange,
     onKomaImgError: onKomaImgError,
     /* Chip face helper — Trait/thum only (never IngameKoma). */
     chipFaceUrl: mlsPortraitFaceUrl,
