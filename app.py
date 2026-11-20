@@ -220,11 +220,21 @@ def _hostname_from_origin_or_host(value):
 # Local Flask stays open by default so build scripts keep working.
 # ---------------------------------------------------------------------------
 _GGEN_SITE_COOKIE = 'ggen_site'
-# First-visit human gate (click + signed cookie). Not Cloudflare — stops non-JS scrapers only.
+# First-visit human gate (click + signed cookie). Not Cloudflare — HTML/UX friction only.
+# Catalog/API mirror protection is `_ggen_api_mirror_guard` (browser signals + high RPM),
+# not this cookie. Requiring ggen_human on fat APIs would 403 boot fetches until Haro
+# and make the first visit feel empty after the gate clears (worse UX; still bypassable).
 _GGEN_HUMAN_COOKIE = 'ggen_human'
 _GGEN_HUMAN_CHAL_COOKIE = 'ggen_hg_chal'  # short-lived; set with gate HTML for verify POST
 _GGEN_HUMAN_MAX_AGE = 60 * 60 * 24 * 30  # 30 days
 _GGEN_HUMAN_CHAL_MAX_AGE = 60 * 60  # 1 hour
+_HUMAN_GATE_VERIFY_RL_LOCK = threading.Lock()
+_HUMAN_GATE_VERIFY_RL = {}
+try:
+    _HUMAN_GATE_VERIFY_RL_MAX = max(6, min(120, int(os.environ.get('GGEN_HUMAN_GATE_VERIFY_RPM', '30') or '30')))
+except Exception:
+    _HUMAN_GATE_VERIFY_RL_MAX = 30
+_HUMAN_GATE_VERIFY_RL_WINDOW = 60.0
 _GGEN_PROVENANCE_CANARY = (
     (os.environ.get('GGEN_PROVENANCE_CANARY') or '').strip()
     or hashlib.sha256(b'ggendb-eternal-database-provenance-v1').hexdigest()[:20]
@@ -246,6 +256,14 @@ _GGEN_API_GUARD_PROTECTED_PREFIXES = (
     '/api/collections',
     '/api/meta_synergy',
     '/api/msy_',
+    # Master League + Simulator boards/catalog (same mirror friction as browse APIs).
+    '/api/master_league',
+    '/api/ml_sim',
+    # Owned feature APIs (gacha sim pool, sales tracking, stages, browse filter meta).
+    '/api/gacha_sim',
+    '/api/sales_rank_tracking',
+    '/api/stages',
+    '/api/browse_filters',
 )
 _GGEN_API_GUARD_EXEMPT_EXACT = frozenset({
     '/health',
@@ -735,6 +753,34 @@ def _api_guard_rate_ok(ip):
         return True
 
 
+def _human_gate_verify_client_ip():
+    try:
+        ip = (request.headers.get('X-Forwarded-For') or '').split(',')[0].strip()
+        if not ip:
+            ip = (request.remote_addr or '').strip()
+    except Exception:
+        ip = ''
+    return ip
+
+
+def _human_gate_verify_rate_ok(ip):
+    """Tight ceiling on /api/human_gate/verify — real users click once; scripts inflate stats."""
+    if not ip:
+        return True
+    now = time.time()
+    with _HUMAN_GATE_VERIFY_RL_LOCK:
+        arr = [t for t in (_HUMAN_GATE_VERIFY_RL.get(ip) or []) if (now - t) < _HUMAN_GATE_VERIFY_RL_WINDOW]
+        if len(arr) >= _HUMAN_GATE_VERIFY_RL_MAX:
+            _HUMAN_GATE_VERIFY_RL[ip] = arr
+            return False
+        arr.append(now)
+        _HUMAN_GATE_VERIFY_RL[ip] = arr
+        if len(_HUMAN_GATE_VERIFY_RL) > 4096:
+            for k in list(_HUMAN_GATE_VERIFY_RL.keys())[:512]:
+                _HUMAN_GATE_VERIFY_RL.pop(k, None)
+        return True
+
+
 # Known AI / LLM crawler User-Agents (training scrapers + agent fetchers).
 # Blocks bots — not a human using ChatGPT offline. Real browsers never send these.
 _GGEN_AI_CRAWLER_UA_NEEDLES = (
@@ -744,9 +790,13 @@ _GGEN_AI_CRAWLER_UA_NEEDLES = (
     'oai-searchbot',
     'claudebot',
     'claude-web',
+    'claude-searchbot',
+    'claude-user',
     'anthropic-ai',
     'google-extended',
     'bytespider',
+    'doubaobot',
+    'tiktokspider',
     'ccbot',
     'perplexitybot',
     'perplexity-user',
@@ -767,6 +817,21 @@ _GGEN_AI_CRAWLER_UA_NEEDLES = (
     'nocoiabot',
     'scrapy',
     'petalbot',
+    'pangubot',
+    # China / Asia AI + assistant fetchers (training / user-fetch UAs).
+    'deepseekbot',
+    'kimibot',
+    'kimi-searchbot',
+    'kimi-user',
+    'erniebot',
+    'yiyanbot',
+    'qwenbot',
+    'tongyibot',
+    'hyspider',
+    'glmbot',
+    'chatglm-spider',
+    'yisouspider',
+    'manus-user',
 )
 
 
@@ -932,6 +997,7 @@ def _inject_public_origin():
         'holo_js_bundle': _holo_js_served_bundle_name(),
         'ml_sim_js_bundle': _ml_sim_js_served_bundle_name(),
         'ml_sim_rules_js_bundle': _ml_sim_rules_js_served_bundle_name(),
+        'gacha_sim_js_bundle': _gacha_sim_js_served_bundle_name(),
         'msy_dc_engine_js_bundle': _msy_dc_engine_js_served_bundle_name(),
         'msy_dc_worker_js_bundle': _msy_dc_worker_js_served_bundle_name(),
         'dc_allowed_hosts': _dc_allowed_hosts(),
@@ -1006,12 +1072,32 @@ def _prefer_min_js(src_name, min_name):
     return src_name
 
 
+def _prefer_feature_js(src_name, min_name, pack_name=None):
+    """Local/debug: .min or source. Railway: prefer opaque .pack.js when present."""
+    root = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'js')
+    if (
+        pack_name
+        and _ggen_block_js_source_enabled()
+        and os.path.isfile(os.path.join(root, pack_name))
+    ):
+        return pack_name
+    if os.path.isfile(os.path.join(root, min_name)):
+        return min_name
+    return src_name
+
+
 def _ml_sim_js_served_bundle_name():
     return _prefer_min_js('ml_sim.js', 'ml_sim.min.js')
 
 
 def _ml_sim_rules_js_served_bundle_name():
-    return _prefer_min_js('ml_sim_rules.js', 'ml_sim_rules.min.js')
+    return _prefer_feature_js(
+        'ml_sim_rules.js', 'ml_sim_rules.min.js', 'ml_sim_rules.pack.js'
+    )
+
+
+def _gacha_sim_js_served_bundle_name():
+    return _prefer_feature_js('gacha_sim.js', 'gacha_sim.min.js', 'gacha_sim.pack.js')
 
 
 def _msy_dc_engine_js_served_bundle_name():
@@ -1028,6 +1114,7 @@ _GGEN_JS_SOURCE_BLOCK = frozenset({
     'js/unit_holo_card.js',
     'js/ml_sim.js',
     'js/ml_sim_rules.js',
+    'js/gacha_sim.js',
     'js/msy_dc_engine.js',
     'js/msy_dc_worker.js',
 })
@@ -1045,20 +1132,33 @@ def _ggen_block_js_source_enabled():
     )
 
 
+# When a .pack.js twin exists, also 404 the readable .min on Railway (serve pack only).
+_GGEN_JS_MIN_BLOCK_WHEN_PACKED = frozenset({
+    'js/ml_sim_rules.min.js',
+    'js/gacha_sim.min.js',
+})
+
+
 @app.before_request
 def _ggen_block_js_source_on_prod():
-    """On Railway, 404 unminified /cal + /mls engines when the .min bundle exists."""
+    """On Railway, 404 unminified engines when .min exists; 404 .min when .pack exists."""
     if not _ggen_block_js_source_enabled():
         return None
     path = request.path or ''
     if not path.startswith('/static/'):
         return None
     rel = path[len('/static/'):].lstrip('/')
+    root = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'js')
+    if rel in _GGEN_JS_MIN_BLOCK_WHEN_PACKED:
+        leaf = os.path.basename(rel)
+        pack_leaf = leaf.replace('.min.js', '.pack.js')
+        if pack_leaf and os.path.isfile(os.path.join(root, pack_leaf)):
+            abort(404)
+        return None
     if rel not in _GGEN_JS_SOURCE_BLOCK:
         return None
     leaf = os.path.basename(rel)
     min_leaf = leaf[:-3] + '.min.js' if leaf.endswith('.js') else ''
-    root = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'js')
     if min_leaf and os.path.isfile(os.path.join(root, min_leaf)):
         abort(404)
     return None
@@ -1073,6 +1173,9 @@ def _app_js_bundle_version_tag():
         ('js', 'unit_holo_card.js'),
         ('js', _ml_sim_js_served_bundle_name()),
         ('js', _ml_sim_rules_js_served_bundle_name()),
+        ('js', _gacha_sim_js_served_bundle_name()),
+        ('js', 'ml_sim_rules.pack.js'),
+        ('js', 'gacha_sim.pack.js'),
         ('js', _msy_dc_engine_js_served_bundle_name()),
         ('js', _msy_dc_worker_js_served_bundle_name()),
         ('js', 'unit_best_pilots.js'),
@@ -22297,6 +22400,17 @@ def api_human_gate_verify():
         r = make_response(jsonify({'ok': False, 'error': 'browser_required'}), 403)
         r.headers['Cache-Control'] = 'no-store'
         return r
+    if not _api_guard_client_is_local():
+        vip = _human_gate_verify_client_ip()
+        if vip and not _human_gate_verify_rate_ok(vip):
+            r = make_response(jsonify({
+                'ok': False,
+                'error': 'rate_limited',
+                'message': 'Too many attempts. Try again shortly.',
+            }), 429)
+            r.headers['Retry-After'] = '30'
+            r.headers['Cache-Control'] = 'no-store'
+            return r
     already = False
     try:
         already = bool(_human_gate_cookie_ok())

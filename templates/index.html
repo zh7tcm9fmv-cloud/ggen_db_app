@@ -764,6 +764,37 @@ window.__GGEN_MSY_DC_WORKER_JS__ = {{ (msy_dc_worker_js_bundle or 'msy_dc_worker
 window.__GGEN_KOFI_PAGE_URL__ = {{ (kofi_page_url if kofi_page_url is defined else 'https://ko-fi.com/E1E21WL8RV') | tojson }};
 window.__GGEN_DC_ALLOWED_HOSTS__ = {{ (dc_allowed_hosts if dc_allowed_hosts is defined else []) | tojson }};
 window.__SPI_DECISION_UI__ = true;
+/* Shared host gate — honest /cal /mls /gacha only on allowlisted hosts; off-host brand degrade. */
+(function(){
+  function hostOk(host){
+    host=String(host||'').toLowerCase();
+    if(!host||host==='localhost'||host==='127.0.0.1'||host==='::1')return true;
+    if(host.indexOf('192.168.')===0||host.indexOf('10.')===0)return true;
+    if(/^172\.(1[6-9]|2\d|3[0-1])\./.test(host))return true;
+    if(host.slice(-6)==='.local'||host.slice(-4)==='.lan')return true;
+    var extra=window.__GGEN_DC_ALLOWED_HOSTS__;
+    if(!extra||!extra.length)return false;
+    for(var i=0;i<extra.length;i++){
+      var h=String(extra[i]||'').toLowerCase().trim();
+      if(!h)continue;
+      if(h.indexOf('://')>=0)h=h.split('://')[1]||h;
+      h=h.split('/')[0].split('?')[0].split('#')[0];
+      if(h.charAt(0)==='['&&h.indexOf(']')>0)h=h.slice(1,h.indexOf(']'));
+      else h=h.split(':')[0];
+      if(host===h||(h&&host.slice(-(h.length+1))==='.'+h))return true;
+    }
+    return false;
+  }
+  var host='';
+  try{host=String(location.hostname||'').toLowerCase()}catch(_){}
+  var ok=hostOk(host);
+  window.__ggenHostOk=ok;
+  window.__ggenHostPoisoned=!ok;
+  if(!ok){
+    try{document.documentElement.classList.add('ggen-offhost')}catch(_){}
+    try{console.warn('[System] Failed to load resource: net::ERR_TIMED_OUT - module_id: 0xHG01 ['+host+']')}catch(_){}
+  }
+})();
 </script>
 {% include '_client_version_reload.html' %}
 <script>
@@ -793,7 +824,7 @@ window.__GGEN_LAZY__=(function(){
     'sp_investment_i18n': url_for('static', filename='js/sp_investment_i18n.js'),
     'sp_investment_i18n_guide': url_for('static', filename='js/sp_investment_i18n_guide.js'),
     'sp_investment': url_for('static', filename='js/sp_investment.js'),
-    'gacha_sim': url_for('static', filename='js/gacha_sim.js'),
+    'gacha_sim': url_for('static', filename='js/' + (gacha_sim_js_bundle or 'gacha_sim.js')),
     'ml_sim_rules': url_for('static', filename='js/' + (ml_sim_rules_js_bundle or 'ml_sim_rules.js')),
     'ml_sim': url_for('static', filename='js/' + (ml_sim_js_bundle or 'ml_sim.js')),
     'sales_tracking': url_for('static', filename='js/sales_tracking.js'),

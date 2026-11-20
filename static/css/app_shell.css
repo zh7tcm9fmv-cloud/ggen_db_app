@@ -8040,5 +8040,38 @@ body.human-gate-open #humanGateOverlay{pointer-events:auto!important;z-index:520
   display:none!important;
 }
 
+/* Off-host brand degrade — stolen clones on foreign hosts look unofficial. */
+html.ggen-offhost .site-brand-title,
+html.ggen-offhost .brand-title,
+html.ggen-offhost .header-brand{
+  filter:grayscale(1) brightness(.85);
+  opacity:.72;
+}
+html.ggen-offhost::before{
+  content:"Unofficial mirror — open the official GGen Eternal Database";
+  position:fixed;
+  left:0;
+  right:0;
+  top:0;
+  z-index:2147483000;
+  padding:8px 12px;
+  text-align:center;
+  font:600 12px/1.35 Teko,system-ui,sans-serif;
+  letter-spacing:.04em;
+  color:#0a1628;
+  background:linear-gradient(90deg,#ffd400,#00d9ff);
+  pointer-events:none;
+}
+html.ggen-offhost body{
+  padding-top:36px;
+}
+html.ggen-offhost #panel-mls,
+html.ggen-offhost #panel-gacha_sim,
+html.ggen-offhost #panel-investment_priority,
+html.ggen-offhost #dcPanel,
+html.ggen-offhost .dc-panel{
+  filter:saturate(.35) contrast(.92);
+}
+
 
 

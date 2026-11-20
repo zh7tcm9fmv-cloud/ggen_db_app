@@ -23587,7 +23587,8 @@ if(!host||host==='localhost'||host==='127.0.0.1'||host==='::1')return true;
 if(host.startsWith('192.168.')||host.startsWith('10.'))return true;
 if(/^172\.(1[6-9]|2\d|3[0-1])\./.test(host))return true;
 if(host.endsWith('.local')||host.endsWith('.lan'))return true;
-if(host.endsWith('.up.railway.app'))return true;
+/* No blanket *.up.railway.app — forks would get honest /cal. Allowlist is
+ * window.__GGEN_DC_ALLOWED_HOSTS__ (canonical origin + this request host + env). */
 const extra=(typeof window!=='undefined'&&window.__GGEN_DC_ALLOWED_HOSTS__)||null;
 if(Array.isArray(extra)){
 for(let i=0;i<extra.length;i++){

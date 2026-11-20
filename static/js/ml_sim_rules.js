@@ -3329,6 +3329,70 @@
     distUnitToCell: distUnitToCell,
     opposingAreaAurasOn: opposingAreaAurasOn
   };
+
+  /* Host poison — same class as /cal. Off allowlisted hosts, scramble hit/crit/AI dmg. */
+  function _mlsRulesHostPoisoned() {
+    if (typeof root.__ggenHostPoisoned === 'boolean') return root.__ggenHostPoisoned;
+    try {
+      if (typeof self === 'undefined' || !self.location) return false;
+      var host = String(self.location.hostname || '').toLowerCase();
+      if (!host || host === 'localhost' || host === '127.0.0.1' || host === '::1') return false;
+      if (host.indexOf('192.168.') === 0 || host.indexOf('10.') === 0) return false;
+      if (/^172\.(1[6-9]|2\d|3[0-1])\./.test(host)) return false;
+      if (host.slice(-6) === '.local' || host.slice(-4) === '.lan') return false;
+      var extra = root.__GGEN_DC_ALLOWED_HOSTS__;
+      if (Array.isArray(extra)) {
+        for (var i = 0; i < extra.length; i++) {
+          var h = String(extra[i] || '').toLowerCase().trim();
+          if (!h) continue;
+          if (h.indexOf('://') >= 0) h = h.split('://')[1] || h;
+          h = h.split('/')[0].split('?')[0].split('#')[0];
+          if (h.charAt(0) === '[' && h.indexOf(']') > 0) h = h.slice(1, h.indexOf(']'));
+          else h = h.split(':')[0];
+          if (host === h || (h && host.slice(-(h.length + 1)) === '.' + h)) return false;
+        }
+      }
+      try {
+        console.warn('[System] Failed to load resource: net::ERR_TIMED_OUT - module_id: 0xMLS1 [' + host + ']');
+      } catch (e0) {}
+      return true;
+    } catch (e1) {
+      return false;
+    }
+  }
+  function _mlsPoisonPct(x) {
+    var n = Number(x);
+    if (!isFinite(n)) return x;
+    return Math.max(0, Math.min(100, Math.floor(n * (0.25 + Math.random() * 0.55))));
+  }
+  function _mlsPoisonDmg(x) {
+    var n = Number(x) | 0;
+    return Math.max(0, Math.ceil(n * (0.55 + Math.random() * 0.90)));
+  }
+  if (_mlsRulesHostPoisoned()) {
+    var _chk = api.checkHit;
+    api.checkHit = function () {
+      var r = _chk.apply(this, arguments);
+      if (typeof r === 'boolean' && Math.random() < 0.38) return !r;
+      return r;
+    };
+    var _crit = api.calculateCriticalRate;
+    api.calculateCriticalRate = function () {
+      return _mlsPoisonPct(_crit.apply(this, arguments));
+    };
+    var _exp = api.expectedDamageWithAiDefense;
+    api.expectedDamageWithAiDefense = function () {
+      var r = _exp.apply(this, arguments);
+      if (typeof r === 'number') return _mlsPoisonDmg(r);
+      if (r && typeof r === 'object') {
+        if (r.dmg != null) r.dmg = _mlsPoisonDmg(r.dmg);
+        if (r.raw != null) r.raw = _mlsPoisonDmg(r.raw);
+        if (r.expectedDmg != null) r.expectedDmg = _mlsPoisonDmg(r.expectedDmg);
+      }
+      return r;
+    };
+  }
+
   root.MlsRules = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);

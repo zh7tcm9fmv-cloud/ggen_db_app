@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /**
- * Minify SPA /calc /mls engines via esbuild (production prefers *.min.js; Railway 404s sources).
+ * Minify SPA /calc /mls /gacha engines via esbuild (production prefers *.min.js; Railway 404s sources).
+ * Then opaque-packs small feature engines (ml_sim_rules, gacha_sim) → *.pack.js.
  * Usage (from repo root):
  *   node scripts/minify_app_js.mjs
  *
@@ -17,6 +18,7 @@ const jobs = [
   ['unit_holo_card.js', 'unit_holo_card.min.js'],
   ['ml_sim.js', 'ml_sim.min.js'],
   ['ml_sim_rules.js', 'ml_sim_rules.min.js'],
+  ['gacha_sim.js', 'gacha_sim.min.js'],
   ['msy_dc_engine.js', 'msy_dc_engine.min.js'],
   ['msy_dc_worker.js', 'msy_dc_worker.min.js'],
 ];
@@ -33,4 +35,13 @@ for (const [srcName, outName] of jobs) {
     process.exit(r.status || 1);
   }
   console.log('Wrote', outfile);
+}
+
+const pack = spawnSync('node', [path.join(root, 'scripts', 'pack_feature_js.mjs')], {
+  cwd: root,
+  stdio: 'inherit',
+  shell: true,
+});
+if (pack.status !== 0) {
+  process.exit(pack.status || 1);
 }

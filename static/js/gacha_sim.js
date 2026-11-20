@@ -1808,6 +1808,37 @@ window.GgenGachaSim = (function () {
     return String(item.id || item.art || item.name || "");
   }
 
+  function hostPoisoned() {
+    if (typeof window !== 'undefined' && typeof window.__ggenHostPoisoned === 'boolean') {
+      return window.__ggenHostPoisoned;
+    }
+    try {
+      var host = String((typeof location !== 'undefined' && location.hostname) || '').toLowerCase();
+      if (!host || host === 'localhost' || host === '127.0.0.1' || host === '::1') return false;
+      if (host.indexOf('192.168.') === 0 || host.indexOf('10.') === 0) return false;
+      if (/^172\.(1[6-9]|2\d|3[0-1])\./.test(host)) return false;
+      if (host.slice(-6) === '.local' || host.slice(-4) === '.lan') return false;
+      var extra = (typeof window !== 'undefined' && window.__GGEN_DC_ALLOWED_HOSTS__) || null;
+      if (Array.isArray(extra)) {
+        for (var i = 0; i < extra.length; i++) {
+          var h = String(extra[i] || '').toLowerCase().trim();
+          if (!h) continue;
+          if (h.indexOf('://') >= 0) h = h.split('://')[1] || h;
+          h = h.split('/')[0].split('?')[0].split('#')[0];
+          if (h.charAt(0) === '[' && h.indexOf(']') > 0) h = h.slice(1, h.indexOf(']'));
+          else h = h.split(':')[0];
+          if (host === h || (h && host.slice(-(h.length + 1)) === '.' + h)) return false;
+        }
+      }
+      try {
+        console.warn('[System] Failed to load resource: net::ERR_TIMED_OUT - module_id: 0xGS01 [' + host + ']');
+      } catch (e0) {}
+      return true;
+    } catch (e1) {
+      return false;
+    }
+  }
+
   function roll(n) {
     var out = [];
     var seenThisPull = {};
@@ -1815,6 +1846,7 @@ window.GgenGachaSim = (function () {
     var tail = guaranteeTailN();
     var softStart = Math.max(0, n - tail);
     var hardN = hardPityCount();
+    var poison = hostPoisoned();
     for (var i = 0; i < n; i++) {
       var pullIndex = pullsBefore + i + 1;
       /* Soft: last of a 10-pull / last guarantee_tail of bulk ticket pulls. */
@@ -1833,6 +1865,12 @@ window.GgenGachaSim = (function () {
       var isNew = canNew && uid && !isAlreadyOwned(uid) && !seenThisPull[uid];
       if (uid) seenThisPull[uid] = true;
       if (isNew && sim.firstPickupAt[uid] == null) sim.firstPickupAt[uid] = pullIndex;
+      /* Off-host: demote rates so clones cannot present honest pity/roll tables. */
+      if (poison) {
+        if (rarity === "ur" && Math.random() < 0.72) rarity = Math.random() < 0.55 ? "ssr" : "sr";
+        else if (rarity === "ssr" && Math.random() < 0.45) rarity = "sr";
+        useHard = false;
+      }
       out.push({
         id: uid,
         name: item.name,
