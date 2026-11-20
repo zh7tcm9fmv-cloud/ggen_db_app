@@ -12990,7 +12990,12 @@
       if (canvas._mlsEarthArm) canvas._mlsEarthArm();
       return;
     }
-    canvas.setAttribute('data-earth', '1');
+    /* Avoid parallel CDN loads while the first CORS decode is in flight. */
+    if (canvas.getAttribute('data-earth') === 'loading') {
+      earthGlobeOn = true;
+      return;
+    }
+    canvas.setAttribute('data-earth', 'loading');
     earthGlobeOn = true;
     if (canvas.width < 320) {
       canvas.width = 320;
@@ -13000,9 +13005,7 @@
     var mobileSpin = !!(window.matchMedia && window.matchMedia('(max-width: 820px), (pointer: coarse)').matches);
     /* Mobile keeps a slow spin even when OS reduce-motion is on. */
     var reduce = reducePref && !mobileSpin;
-    var img = new Image();
-    img.decoding = 'async';
-    img.src = thumbUrl('/static/images/Master League/tex_bg_earth01_v1_300010.webp');
+    var earthPath = '/static/images/Master League/tex_bg_earth01_v1_300010.webp';
     var src = null;
     var sw = 0;
     var sh = 0;
@@ -13059,20 +13062,56 @@
       if (!earthGlobeOn || !src) return;
       if (!raf) raf = requestAnimationFrame(tick);
     }
-    img.onload = function () {
-      sw = img.naturalWidth;
-      sh = img.naturalHeight;
-      if (!sw || !sh) return;
+    function bindEarthPixels(el) {
+      sw = el.naturalWidth | 0;
+      sh = el.naturalHeight | 0;
+      if (!sw || !sh) return false;
       var scratch = document.createElement('canvas');
       scratch.width = sw;
       scratch.height = sh;
       var sctx = scratch.getContext('2d', { willReadFrequently: true });
-      sctx.drawImage(img, 0, 0);
-      src = sctx.getImageData(0, 0, sw, sh).data;
-      arm();
-    };
-    if (img.complete && img.naturalWidth) img.onload();
+      try {
+        sctx.drawImage(el, 0, 0);
+        src = sctx.getImageData(0, 0, sw, sh).data;
+      } catch (err) {
+        /* Cross-origin CDN without CORS → tainted canvas; caller may retry. */
+        src = null;
+        return false;
+      }
+      return !!src;
+    }
+    function loadEarthTexture(url, useCors, allowFallback) {
+      var img = new Image();
+      /*
+       * Live IMAGE_CDN is cross-origin. Without anonymous CORS, drawImage works
+       * but getImageData throws — blank sphere (rope + label only).
+       */
+      if (useCors) img.crossOrigin = 'anonymous';
+      img.decoding = 'async';
+      img.onload = function () {
+        if (!bindEarthPixels(img)) {
+          if (allowFallback) {
+            loadEarthTexture(earthPath, false, false);
+            return;
+          }
+          canvas.removeAttribute('data-earth');
+          return;
+        }
+        canvas.setAttribute('data-earth', '1');
+        earthGlobeOn = true;
+        arm();
+      };
+      img.onerror = function () {
+        if (allowFallback) {
+          loadEarthTexture(earthPath, false, false);
+          return;
+        }
+        canvas.removeAttribute('data-earth');
+      };
+      img.src = url;
+    }
     canvas._mlsEarthArm = arm;
+    loadEarthTexture(thumbUrl(earthPath), true, true);
   }
   function setFightControls(busy) {
     var start = document.getElementById('mlsFight');
