@@ -3759,7 +3759,7 @@
 
   /**
    * Battle view: taller map chrome. Collapse section tabs immediately on Open battle map
-   * (pinned through scroll-into-view). Reveal only via aggressive scroll-up
+   * (pinned through scroll-into-view). Reveal at page top or via strong scroll-up
    * (nav_tabs_auto_hide) — do not remove .app-header.
    */
   function syncMlsBattleChrome(on) {

@@ -38,12 +38,12 @@
        Possession % uses a separate compact sticky bar in collections.js. */
     var col = isCollectionsPage();
     var mls = isMlsBattleFocus();
-    var aggressive = col || mls;
     if (shortLandscape) {
-      return { HIDE_AFTER: 4, REVEAL_UP: aggressive ? 240 : 160, TOP_SHOW: 16 };
+      /* MLS mid-page: same flick as browse; collections stay pickier. Top always reveals. */
+      return { HIDE_AFTER: 4, REVEAL_UP: col ? 240 : 160, TOP_SHOW: 16 };
     }
-    /* Normal browse: strong flick (~280px) OR absolute top. Collections/MLS stay pickier. */
-    return { HIDE_AFTER: 10, REVEAL_UP: aggressive ? 420 : 280, TOP_SHOW: 40 };
+    /* Normal browse / MLS mid-page: ~280px flick. Collections stay pickier. */
+    return { HIDE_AFTER: 10, REVEAL_UP: col ? 420 : 280, TOP_SHOW: 40 };
   }
 
   function pageScrollY() {
@@ -91,6 +91,27 @@
       pinnedCollapsed = true;
     }
     if (!want) pinnedCollapsed = false;
+    /*
+     * MLS: after Open-battle settle, if we are still at page top (cannot scroll
+     * further up), expand chrome — otherwise nav stays stuck collapsed at y≈0.
+     */
+    if (want && mls) {
+      setTimeout(function () {
+        try {
+          if (!isMlsBattleFocus() || !pinnedCollapsed) return;
+          var tt = thresholds();
+          if (pageScrollY() <= tt.TOP_SHOW) {
+            pinnedCollapsed = false;
+            if (document.body.classList.contains('nav-tabs-collapsed')) {
+              document.body.classList.remove('nav-tabs-collapsed');
+              if (typeof global.scheduleSyncListTheadStickyTop === 'function') {
+                global.scheduleSyncListTheadStickyTop();
+              }
+            }
+          }
+        } catch (_) {}
+      }, 950);
+    }
     if (already) return;
     if (typeof global.scheduleSyncListTheadStickyTop === 'function') {
       global.scheduleSyncListTheadStickyTop();
@@ -258,7 +279,17 @@
     }
 
     function revealAtTop(y, t, mls, dy) {
-      /* MLS battle: stay collapsed at top until aggressive upward scroll. */
+      /*
+       * True / near page top: always show nav — including MLS battle focus.
+       * Mid-page MLS still needs aggressive REVEAL_UP (you cannot accumulate
+       * upward dy once rubber-banded at y≈0, which left /mls stuck collapsed).
+       */
+      if (y <= t.TOP_SHOW) {
+        upAccum = 0;
+        pinnedCollapsed = false;
+        setNavTabsCollapsed(false);
+        return;
+      }
       if (mls && (pinnedCollapsed || document.body.classList.contains('nav-tabs-collapsed'))) {
         if (dy < 0) {
           upAccum += -dy;
@@ -283,7 +314,7 @@
         }
         return;
       }
-      /* True top (or normal browse TOP_SHOW): always show nav tabs. */
+      /* Normal browse TOP_SHOW: always show nav tabs. */
       pinnedCollapsed = false;
       setNavTabsCollapsed(false);
     }
@@ -298,24 +329,21 @@
       }
       var t = thresholds();
       var mls = isMlsBattleFocus();
-      /* Soft ignore after hide/reveal must NOT block "scrolled all the way to top"
-         — that was why nav stayed collapsed at y≈0. */
-      if (!mls && y <= t.TOP_SHOW) {
+      /* Soft ignore must NOT block "scrolled all the way to top" — except hold
+         MLS pin through Open-battle scroll-into-view debounce (~900ms). */
+      if (y <= t.TOP_SHOW) {
         var dyTop = y - lastY;
         lastY = y;
+        if (mls && pinnedCollapsed && softIgnored()) return;
         revealAtTop(y, t, mls, dyTop);
         return;
       }
       if (softIgnored()) return;
       var dy = y - lastY;
       lastY = y;
-      /* Collections: leave synthetic top → unpin. MLS battle: keep pin through
-         scroll-into-view mid-page; only aggressive REVEAL_UP (or leave battle) clears. */
+      /* Collections: leave synthetic top → unpin. MLS battle: keep pin mid-page
+         until aggressive REVEAL_UP (or leave battle / return to top). */
       if (!mls && y > t.TOP_SHOW + 64) pinnedCollapsed = false;
-      if (y <= t.TOP_SHOW) {
-        revealAtTop(y, t, mls, dy);
-        return;
-      }
       if (dy > 0) {
         upAccum = 0;
         if (dy >= t.HIDE_AFTER || y > t.TOP_SHOW + 24) setNavTabsCollapsed(true);
@@ -363,8 +391,9 @@
         var y = pageScrollY();
         var t = thresholds();
         var mls = isMlsBattleFocus();
-        /* Top reveal ignores soft post-hide debounce. */
-        if (fingerUp < -28 && y <= t.TOP_SHOW && !mls) {
+        /* Top reveal ignores soft post-hide debounce (MLS included — cannot
+           pull content further up once already at y≈0). */
+        if (fingerUp < -28 && y <= t.TOP_SHOW) {
           upAccum = 0;
           pinnedCollapsed = false;
           setNavTabsCollapsed(false);
