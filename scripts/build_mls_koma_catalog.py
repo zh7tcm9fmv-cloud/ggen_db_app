@@ -333,11 +333,20 @@ def main() -> int:
         "byUnitId": by_unit,
     }
     args.out.parent.mkdir(parents=True, exist_ok=True)
-    args.out.write_text(json.dumps(catalog, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
+    raw = json.dumps(catalog, ensure_ascii=False, separators=(",", ":")) + "\n"
+    args.out.write_text(raw, encoding="utf-8")
+    # Published gzip twin — /api/ml_sim/koma_catalog serves bytes without re-jsonify.
+    import gzip
+
+    gz_path = args.out.with_suffix(args.out.suffix + ".gz")
+    gz_path.write_bytes(gzip.compress(raw.encode("utf-8"), compresslevel=7))
     # also pretty for debugging
     pretty = args.out.with_name(args.out.stem + "_pretty.json")
     pretty.write_text(json.dumps(catalog, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    print(f"Wrote {args.out}  units={len(by_unit)} koma={len(by_koma)} fx_prefixes={len(fx_prefixes)}")
+    print(
+        f"Wrote {args.out} + {gz_path.name}  units={len(by_unit)} koma={len(by_koma)} "
+        f"fx_prefixes={len(fx_prefixes)}"
+    )
     # spot checks — UR + SSR (AGE-1 Flat) must resolve after all-rarity rebuild
     for uid in ("1217002150", "1217000650", "1001000150", "1400008110"):
         k = by_unit.get(uid)

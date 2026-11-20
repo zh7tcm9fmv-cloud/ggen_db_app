@@ -27282,7 +27282,9 @@ def api_gacha_sim_pool():
             except Exception:
                 pass
         data = _gacha_sim_enrich_pity(data)
-        return jsonify_cacheable(data, f'gacha_sim_pool:{lang}:pity1:{os.path.getmtime(path)}', public=True, max_age=600)
+        return jsonify_preserialized(
+            data, f'gacha_sim_pool:{lang}:pity1:{os.path.getmtime(path)}', public=True, max_age=600
+        )
 
     pub_dir = os.path.join(_APP_ROOT, 'data', 'published', 'gacha_sim')
     pub_path = os.path.join(pub_dir, f'pool_{gasha_id}_{lang}.json')
@@ -27292,7 +27294,7 @@ def api_gacha_sim_pool():
             with open(pub_path, 'r', encoding='utf-8') as f:
                 data = json.load(f)
             data = _gacha_sim_enrich_pity(data)
-            return jsonify_cacheable(
+            return jsonify_preserialized(
                 data,
                 f'gacha_sim_pool:{gasha_id}:{lang}:pity1:{os.path.getmtime(pub_path)}',
                 public=True,
@@ -27305,7 +27307,7 @@ def api_gacha_sim_pool():
             with open(pub_path_legacy, 'r', encoding='utf-8') as f:
                 data = json.load(f)
             data = _gacha_sim_enrich_pity(data)
-            return jsonify_cacheable(
+            return jsonify_preserialized(
                 data,
                 f'gacha_sim_pool:{gasha_id}:EN:pity1:{os.path.getmtime(pub_path_legacy)}',
                 public=True,
@@ -27317,7 +27319,7 @@ def api_gacha_sim_pool():
     cache_key = f'{gasha_id}:{lang}'
     cached = _GACHA_SIM_POOL_CACHE.get(cache_key)
     if cached is not None:
-        return jsonify_cacheable(
+        return jsonify_preserialized(
             _gacha_sim_enrich_pity(cached),
             f'gacha_sim_pool:mem:pity1:{cache_key}',
             public=True,
@@ -27332,7 +27334,7 @@ def api_gacha_sim_pool():
             if str(data.get('gasha_id') or '') == gasha_id:
                 data = _gacha_sim_enrich_pity(data)
                 _GACHA_SIM_POOL_CACHE[cache_key] = data
-                return jsonify_cacheable(
+                return jsonify_preserialized(
                     data, f'gacha_sim_pool:{gasha_id}:default:pity1', public=True, max_age=600
                 )
         except Exception:
@@ -27354,7 +27356,9 @@ def api_gacha_sim_pool():
                 json.dump(data, f, ensure_ascii=False)
         except Exception:
             pass
-        return jsonify_cacheable(data, f'gacha_sim_pool:built:pity1:{cache_key}', public=True, max_age=300)
+        return jsonify_preserialized(
+            data, f'gacha_sim_pool:built:pity1:{cache_key}', public=True, max_age=300
+        )
     except Exception as e:
         return jsonify({'error': 'pool_build_failed', 'detail': str(e), 'gasha_id': gasha_id, 'lang': lang}), 500
 
@@ -36278,12 +36282,27 @@ def _load_mls_koma_catalog():
 
 @app.route('/api/ml_sim/koma_catalog')
 def api_ml_sim_koma_catalog():
-    """IngameKoma strip/FX catalog for kits with Simulator/koma on CDN (all rarities)."""
+    """IngameKoma strip/FX catalog for kits with Simulator/koma on CDN (all rarities).
+
+    Prefer published ``.json.gz`` bytes (no re-jsonify under GIL); same JSON as before.
+    """
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                        'data', 'published', 'mls_koma_catalog_v1.json')
+    gz_path = path + '.gz'
+    try:
+        mtime = os.path.getmtime(gz_path if os.path.isfile(gz_path) else path)
+    except OSError:
+        mtime = 0
+    ck = 'mls_koma_catalog_v1_%s' % int(mtime or 0)
+    if os.path.isfile(gz_path):
+        pub = _serve_published_gzip_json(gz_path, ck, max_age=3600, public=True)
+        if pub is not None:
+            return pub
+    early = try_serve_preserialized(ck, public=True, max_age=3600)
+    if early is not None:
+        return early
     data = _load_mls_koma_catalog()
-    ck = 'mls_koma_catalog_v1_%s' % (
-        int(_MLS_KOMA_CATALOG_MTIME or 0),
-    )
-    return jsonify_cacheable(data, ck, public=True, max_age=3600)
+    return jsonify_preserialized(data, ck, public=True, max_age=3600, convert_images=False)
 
 
 def _lr_schedule_id_sort_key(sid):
@@ -37394,9 +37413,12 @@ def api_master_league_sim_board():
     if event_id == '0':
         event_id = '300021'
     ck = f'ml_sim_board_v4_{lc}_{event_id}'
+    early = try_serve_preserialized(ck, public=True, max_age=3600)
+    if early is not None:
+        return early
     cached = get_cached_response(ck)
     if cached:
-        return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
+        return jsonify_preserialized(cached, ck, public=True, max_age=3600, convert_images=True)
     events = extract_data_list(load_json(_ml_master_file(lc, 'm_league_event.json')))
     ev = None
     for row in events:
@@ -37445,7 +37467,7 @@ def api_master_league_sim_board():
         'grid': dep.get('grid'),
     }
     set_cached_response(ck, payload)
-    return jsonify_cacheable(payload, ck, public=True, max_age=3600, convert_images=True)
+    return jsonify_preserialized(payload, ck, public=True, max_age=3600, convert_images=True)
 
 
 @app.route('/api/master_league')
@@ -37462,13 +37484,21 @@ def api_master_league():
     ck = f'master_league_v31_{lc}'
     if force_event_id:
         ck_detail = f'{ck}_ev_{force_event_id}'
+        early = try_serve_preserialized(ck_detail, public=True, max_age=3600)
+        if early is not None:
+            return early
         cached_detail = get_cached_response(ck_detail)
         if cached_detail:
-            return jsonify_cacheable(cached_detail, ck_detail, public=True, max_age=3600, convert_images=True)
+            return jsonify_preserialized(
+                cached_detail, ck_detail, public=True, max_age=3600, convert_images=True
+            )
     else:
+        early = try_serve_preserialized(ck, public=True, max_age=3600)
+        if early is not None:
+            return early
         cached = get_cached_response(ck)
         if cached:
-            return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
+            return jsonify_preserialized(cached, ck, public=True, max_age=3600, convert_images=True)
 
     ld = get_lang_data(lc)
     lineage_lookup = (ld or {}).get('lineage_lookup') or {}
@@ -37832,9 +37862,11 @@ def api_master_league():
         detail = {'lang': lc, 'event_id': force_event_id, 'season': season}
         ck_detail = f'{ck}_ev_{force_event_id}'
         set_cached_response(ck_detail, detail)
-        return jsonify_cacheable(detail, ck_detail, public=True, max_age=3600, convert_images=True)
+        return jsonify_preserialized(
+            detail, ck_detail, public=True, max_age=3600, convert_images=True
+        )
     set_cached_response(ck, out)
-    return jsonify_cacheable(out, ck, public=True, max_age=3600, convert_images=True)
+    return jsonify_preserialized(out, ck, public=True, max_age=3600, convert_images=True)
 
 
 _LEGACY_BANNER_POOL_VOTES_FILE = os.path.join(app_dir, 'data', 'banner_pool_votes.json')
