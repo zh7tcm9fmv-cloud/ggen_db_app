@@ -4044,21 +4044,45 @@ body.mls-is-map-dragging .mls-map {
   filter: none;
 }
 .mls-transport-play:disabled { cursor: wait; }
+/*
+ * Play/pause must NOT be Unicode (▶ / ❚❚). On live JA/TW/HK, Noto/ShinGo substitute
+ * those glyphs with tall fullwidth-ish marks → “distorted” transport icon.
+ * CSS bars + clip-path triangle stay the same in every locale.
+ */
 .mls-transport-play-ic {
+  position: relative;
   display: block;
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
   font-size: 0;
   line-height: 0;
 }
-.mls-transport-play-ic::before {
-  content: '❚❚';
-  font-size: 12px;
-  line-height: 1;
-  letter-spacing: -0.08em;
+.mls-transport-play-ic::before,
+.mls-transport-play-ic::after {
+  content: '';
+  position: absolute;
+  top: 1px;
+  bottom: 1px;
+  width: 4px;
+  border-radius: 1px;
+  background: currentColor;
 }
+.mls-transport-play-ic::before { left: 2px; }
+.mls-transport-play-ic::after { right: 2px; }
 .mls-transport-play.is-paused .mls-transport-play-ic::before {
-  content: '▶';
-  font-size: 14px;
-  letter-spacing: 0;
+  top: 1px;
+  bottom: 1px;
+  left: 3px;
+  right: auto;
+  width: 10px;
+  border-radius: 0;
+  background: currentColor;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+.mls-transport-play.is-paused .mls-transport-play-ic::after {
+  content: none;
+  display: none;
 }
 .mls-transport-play-replay {
   display: none;

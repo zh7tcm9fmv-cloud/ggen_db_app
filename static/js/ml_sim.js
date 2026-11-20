@@ -406,7 +406,7 @@
   }
 
   /* Survives minify — proves chip-face helper is the loaded bundle (bump when chip path changes). */
-  var MLS_CHIP_FACE_MARK = '__MLS_CHIP_THUM_V10__';
+  var MLS_CHIP_FACE_MARK = '__MLS_CHIP_THUM_V11__';
   /** FX URL → usable spark (false = black plate / skip forever this session). */
   var mlsFxUsableCache = Object.create(null);
 
