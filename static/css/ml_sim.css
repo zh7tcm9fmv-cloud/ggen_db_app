@@ -4174,6 +4174,8 @@ body.mls-is-map-dragging .mls-map {
   width: var(--mls-earth);
   height: var(--mls-earth);
   border-radius: 50%;
+  /* Haro + label sit in this wrap — never clip them to the circle. */
+  overflow: visible;
   pointer-events: none;
 }
 .mls-sim-earth {
@@ -4232,10 +4234,11 @@ body.mls-is-map-dragging .mls-map {
 .mls-sim-start-haro {
   position: relative;
   flex: 0 0 auto;
-  /* Match asset AR (864×512) — square box letterboxed empty space under the sphere. */
+  /* Match asset AR (864×512) — explicit height so live flex never collapses to 0×0. */
   width: calc(var(--mls-earth) * 0.78);
   max-width: 234px;
-  height: auto;
+  height: calc(var(--mls-earth) * 0.78 * 512 / 864);
+  max-height: calc(234px * 512 / 864);
   aspect-ratio: 864 / 512;
   margin: 0;
   /* Pull sphere down by transparent pad under painted Haro so flex gap = visual gap. */
@@ -4248,6 +4251,12 @@ body.mls-is-map-dragging .mls-map {
   filter: drop-shadow(0 3px 10px rgba(0, 0, 0, 0.6));
   /* Same attention-bounce recipe as .ui-notice-flare-img (2.6s hop + idle). */
   animation: mls-sim-haro-attention-bounce var(--ui-notice-bounce-dur, 2.6s) linear infinite;
+}
+.mls-sim-start-haro[hidden] {
+  display: none !important;
+}
+.mls-btn.primary.mls-sim-start--board:not([hidden]) .mls-sim-start-haro:not([hidden]) {
+  display: block;
 }
 @keyframes mls-sim-haro-attention-bounce {
   0% { transform: translate3d(0, 0, 0); }

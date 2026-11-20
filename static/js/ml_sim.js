@@ -406,7 +406,7 @@
   }
 
   /* Survives minify — proves chip-face helper is the loaded bundle (bump when chip path changes). */
-  var MLS_CHIP_FACE_MARK = '__MLS_CHIP_THUM_V8__';
+  var MLS_CHIP_FACE_MARK = '__MLS_CHIP_THUM_V9__';
   /** FX URL → usable spark (false = black plate / skip forever this session). */
   var mlsFxUsableCache = Object.create(null);
 
@@ -13231,12 +13231,16 @@
   function ensureSimStartHaro(forceNew) {
     var img = document.getElementById('mlsFightHaro');
     if (!img) return;
-    var needPick = !!forceNew || !img.getAttribute('src') || img.hasAttribute('hidden');
+    var cur = String(img.getAttribute('src') || img.src || '');
+    var needPick = !!forceNew || !cur || img.hasAttribute('hidden') || img.hidden;
     if (needPick) {
       var pick = MLS_SIM_START_HARO[(Math.random() * MLS_SIM_START_HARO.length) | 0] || MLS_SIM_START_HARO[0];
-      img.src = thumbUrl(pick);
+      var url = thumbUrl(pick);
+      if (url) img.src = url;
     }
+    img.hidden = false;
     img.removeAttribute('hidden');
+    if (img.style && img.style.display === 'none') img.style.display = '';
   }
   function setFightControls(busy) {
     var start = document.getElementById('mlsFight');

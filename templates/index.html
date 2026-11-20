@@ -901,8 +901,8 @@ window.__GGEN_LAZY__=(function(){
     return Promise.all([loadCss('gacha_sim'), loadJs('gacha_sim')]).then(function(){return window.GgenGachaSim||null});
   }
   function ensureMlSim(){
-    /* Stale SPA sessions can keep a pre-Trait-chip ml_sim; require current chipFaceMark. */
-    if(window.GgenMlSim && window.GgenMlSim.chipFaceMark==='__MLS_CHIP_THUM_V8__'){
+    /* Stale SPA sessions can keep a pre-Haro / pre-Trait-chip ml_sim; require current mark. */
+    if(window.GgenMlSim && window.GgenMlSim.chipFaceMark==='__MLS_CHIP_THUM_V9__'){
       markMlsSkinReady();
       return Promise.resolve(window.GgenMlSim);
     }
@@ -910,7 +910,7 @@ window.__GGEN_LAZY__=(function(){
     return Promise.all([loadCss('ml_sim'), loadCss('master_league')])
       .then(afterStylesApplied)
       .then(function(){markMlsSkinReady();return loadJs('ml_sim_rules')})
-      .then(function(){return loadJs('ml_sim', String(v)+'-chip8')})
+      .then(function(){return loadJs('ml_sim', String(v)+'-haro1')})
       .then(function(){return window.GgenMlSim||null});
   }
   function ensureSalesTracking(){
