@@ -167,7 +167,8 @@
   </section>
 
   <section class="mls-view" id="mlsViewBattle" data-view="battle" hidden>
-    <div class="mls-map-tools">
+    <!-- Shown only when a Cond:Area aura kit is deployed (e.g. Neo Zeong EX). -->
+    <div class="mls-map-tools" hidden>
       <label class="mls-check mls-aura-toggle" title="Aura Debuff — hide Cond:Area map tiles only (e.g. Neo Zeong EX). Unit debuff icons stay on. Not MAP attack range.">
         <input type="checkbox" id="mlsAuraToggle" checked>
         <span data-mls-i18n="mls_aura_debuff">Aura Debuff</span>
@@ -199,22 +200,37 @@
             <div class="mls-endcard-letters" id="mlsEndLetters" aria-hidden="true"></div>
             <button type="button" class="mls-endcard-retry" id="mlsEndRetry" hidden data-mls-i18n="mls_try_again">TRY AGAIN</button>
           </div>
+          <!-- Centered on the board — hidden while playback runs. -->
+          <button type="button" class="mls-btn primary mls-sim-start mls-sim-start--board" id="mlsFight" aria-labelledby="mlsFightLabel">
+            <span class="mls-sim-earth-wrap" aria-hidden="true">
+              <canvas class="mls-sim-earth" id="mlsEarthCanvas" width="160" height="160"></canvas>
+              <span class="mls-sim-earth-sun"></span>
+              <span class="mls-sim-earth-ring"></span>
+              <span class="mls-sim-start-label" id="mlsFightLabel" data-mls-i18n="mls_sim_start">SIMULATION START</span>
+              <span class="mls-sim-beam"></span>
+            </span>
+          </button>
         </div>
         <!-- Inside map-scroll, below the board — does not overlay tiles. -->
         <div class="mls-board-hp" id="mlsBoardHp" hidden aria-label="Unit HP"></div>
       </div>
-      <!-- Under the map (before turn order on mobile) so play/scrub stay on-screen. -->
+      <!-- Play · Skip · Reset · scrub — under the map (before turn order on mobile). -->
       <div class="mls-transport" id="mlsTransport" hidden>
         <button type="button" class="mls-transport-play" id="mlsTransportPlay" disabled aria-label="Play" title="Play / Pause">
-          <span class="mls-transport-play-ic" aria-hidden="true">▶</span>
+          <span class="mls-transport-play-ic" aria-hidden="true"></span>
+          <img class="mls-transport-play-replay" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Event_ML_Replay_icon.webp{% else %}/static/images/UI/UI_Event_ML_Replay_icon.webp{% endif %}" alt="" width="20" height="20" decoding="async" aria-hidden="true">
         </button>
+        <button type="button" class="mls-transport-icon-btn mls-transport-skip" id="mlsSkip" disabled data-mls-i18n-title="mls_skip" title="SKIP" aria-label="SKIP">
+          <img src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Adv_ButtonIcon_Skip.webp{% else %}/static/images/UI/UI_Adv_ButtonIcon_Skip.webp{% endif %}" alt="" width="52" height="14" decoding="async" aria-hidden="true" onerror="this.onerror=null;this.src='/static/images/UI/UI_Adv_ButtonIcon_Skip.webp'">
+        </button>
+        <button type="button" class="mls-transport-icon-btn mls-transport-reset" id="mlsReset" disabled title="Reset battle map to formation start" data-mls-i18n-title="mls_reset" aria-label="RESET">
+          <img src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Battle_Button_Reset_Base.webp{% else %}/static/images/UI/UI_Battle_Button_Reset_Base.webp{% endif %}" alt="" width="18" height="22" decoding="async" aria-hidden="true" onerror="this.onerror=null;this.src='/static/images/UI/UI_Battle_Button_Reset_Base.webp'">
+        </button>
+        <button type="button" class="mls-btn mls-transport-speed" id="mlsSpeed" title="Playback speed">1×</button>
         <span class="mls-transport-time" id="mlsTransportTime">0:00 / 0:00</span>
         <input type="range" class="mls-transport-scrub" id="mlsTransportScrub"
           min="0" max="0" value="0" step="1" disabled
           aria-label="Battle playback position">
-        <button type="button" class="mls-btn mls-transport-speed" id="mlsSpeed" title="Playback speed">1×</button>
-        <!-- Mobile playback: controls row is hidden — Skip stays reachable here. -->
-        <button type="button" class="mls-btn mls-transport-skip" id="mlsSkipTransport" disabled hidden data-mls-i18n="mls_skip">SKIP</button>
       </div>
       <aside class="mls-map-turn-order" aria-label="Turn order">
         <div class="mls-lbl-row mls-map-turn-order-head">
@@ -228,14 +244,8 @@
       </aside>
     </div>
     <div class="mls-controls">
-      <div class="mls-controls-main">
-        <button type="button" class="mls-btn primary mls-sim-start" id="mlsFight" data-mls-i18n="mls_sim_start">SIMULATION START</button>
-        <!-- Play/Pause is on #mlsTransport; keep mlsPause in DOM for any legacy handlers but hidden. -->
-        <button type="button" class="mls-btn" id="mlsPause" hidden disabled aria-hidden="true" tabindex="-1" data-mls-i18n="mls_pause">PAUSE</button>
-        <button type="button" class="mls-btn" id="mlsSkip" disabled data-mls-i18n="mls_skip">SKIP</button>
-        <button type="button" class="mls-btn" id="mlsReset" title="Reset battle map to formation start" data-mls-i18n="mls_reset">RESET</button>
-        <button type="button" class="mls-btn" id="mlsBackForm">← Formation</button>
-      </div>
+      <!-- Start is centered on the board; Skip/Reset live on #mlsTransport. -->
+      <button type="button" class="mls-btn" id="mlsPause" hidden disabled aria-hidden="true" tabindex="-1" data-mls-i18n="mls_pause">PAUSE</button>
       <div class="mls-ai-cluster">
         <button type="button" class="mls-btn mls-ai-search" id="mlsAiSearch" title="Try ally LINE slot orders; keep the fastest clear">
           <img class="mls-ai-search-ic" src="{% if image_cdn %}{{ image_cdn }}/images/Popup/win_g2100n00400_01.webp{% else %}/static/images/Popup/win_g2100n00400_01.webp{% endif %}" alt="" width="28" height="28" decoding="async" loading="lazy">

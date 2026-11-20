@@ -111554,7 +111554,7 @@
   {
     "MapNpcId": 217000100502000001,
     "Number": 0,
-    "UnitId": 1210001400,
+    "UnitId": 1217000800,
     "Level": 1,
     "Hp": 32078,
     "En": 628,
@@ -111565,7 +111565,7 @@
     "Movement": 4,
     "SfsUnitId": 0,
     "MapNpcUnitAbilitySetId": 0,
-    "MapNpcUnitWeaponSetId": 10000001210001401
+    "MapNpcUnitWeaponSetId": 12170011217000801
   },
   {
     "MapNpcId": 217000100502000002,
@@ -111842,7 +111842,7 @@
   {
     "MapNpcId": 217000100502000019,
     "Number": 0,
-    "UnitId": 1210001400,
+    "UnitId": 1217000800,
     "Level": 1,
     "Hp": 32078,
     "En": 628,
@@ -111853,7 +111853,7 @@
     "Movement": 4,
     "SfsUnitId": 0,
     "MapNpcUnitAbilitySetId": 0,
-    "MapNpcUnitWeaponSetId": 10000001210001401
+    "MapNpcUnitWeaponSetId": 12170011217000801
   },
   {
     "MapNpcId": 217000100502000020,
@@ -117132,7 +117132,7 @@
     "Mobility": 3795,
     "Movement": 5,
     "SfsUnitId": 0,
-    "MapNpcUnitAbilitySetId": 22170601217000601,
+    "MapNpcUnitAbilitySetId": 0,
     "MapNpcUnitWeaponSetId": 12170601217000601
   },
   {
@@ -117356,7 +117356,7 @@
     "Mobility": 5698,
     "Movement": 5,
     "SfsUnitId": 0,
-    "MapNpcUnitAbilitySetId": 22170601217000601,
+    "MapNpcUnitAbilitySetId": 0,
     "MapNpcUnitWeaponSetId": 12170601217000601
   },
   {
@@ -117644,7 +117644,7 @@
     "Mobility": 9381,
     "Movement": 5,
     "SfsUnitId": 0,
-    "MapNpcUnitAbilitySetId": 22170601217000601,
+    "MapNpcUnitAbilitySetId": 0,
     "MapNpcUnitWeaponSetId": 12170601217000601
   },
   {
@@ -117932,7 +117932,7 @@
     "Mobility": 9381,
     "Movement": 5,
     "SfsUnitId": 0,
-    "MapNpcUnitAbilitySetId": 22170601217000601,
+    "MapNpcUnitAbilitySetId": 0,
     "MapNpcUnitWeaponSetId": 12170601217000601
   },
   {

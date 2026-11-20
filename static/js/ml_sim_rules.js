@@ -155,7 +155,8 @@
     var bags, i, t, m, hpM, hpRatio, add;
     if (actor && actor.activeSkills) {
       actor.activeSkills.forEach(function (s) {
-        if (!s || !/Range\s*Boost|レンジブースト|射程/i.test(String(s.name || ''))) return;
+        /* EN ships both “Range Boost” and “Boost Range”. */
+        if (!s || !/Range\s*Boost|Boost\s*Range|レンジブースト|射程ブースト/i.test(String(s.name || ''))) return;
         m = String(s.effect || s.name || '').match(/(\d+)/);
         rangeUp += m ? (parseInt(m[1], 10) || 1) : 1;
       });
@@ -876,6 +877,7 @@
         : String(s.details || s.effect || '');
       list.push({
         key: key,
+        id: s && s.id != null ? String(s.id) : '',
         name: s.name || key,
         sp: cost,
         icon: (s && (s.icon || s.icon_url || s.thum)) || '',
@@ -1379,15 +1381,22 @@
     return false;
   }
 
-  /** MLS determineDefenseAction */
-  function determineDefenseAction(defender, expectedDmg, hasCounter, hasPreemptiveCounter) {
+  /**
+   * MLS determineDefenseAction.
+   * Prefer Counter whenever a non-MAP weapon reaches the attacker (even if the
+   * incoming hit is lethal) — Shield/Defend are for when you cannot counter.
+   * Absolute Hit: Evade never works, so do not pick it.
+   */
+  function determineDefenseAction(defender, expectedDmg, hasCounter, hasPreemptiveCounter, opts) {
     var cut;
+    var absHit = !!(opts && opts.absoluteHit);
     if (hasPreemptiveCounter) return 'none';
-    if (hasCounter && (defender.hp | 0) > (expectedDmg | 0)) return 'none';
+    if (hasCounter) return 'none';
     cut = hasShieldMechanism(defender) ? 0.6 : 0.8;
     if ((defender.hp | 0) > Math.floor((expectedDmg | 0) * cut)) {
       return hasShieldMechanism(defender) ? 'shield' : 'defend';
     }
+    if (absHit) return 'none';
     return 'evade';
   }
 
@@ -2294,9 +2303,10 @@
 
   /**
    * Best non-MAP expected damage on engage (current tile or after a normal move).
-   * Support Defense cover → 0 (EX would hit the guard, not engage).
+   * Support Defense cover → 0 unless opts.ignoreCover (class-B MAP vs EX choice
+   * must still see Twin Buster EX — SD intercepts the swing, it does not make WZC open with MAP).
    */
-  function bestNonMapDamageOnEngage(actor, target, allUnits, bounds, damageOf) {
+  function bestNonMapDamageOnEngage(actor, target, allUnits, bounds, damageOf, opts) {
     var nonMap;
     var probe;
     var i;
@@ -2312,9 +2322,11 @@
     if (!actor || !target || (target.hp | 0) <= 0) return 0;
     nonMap = (actor.weapons || []).filter(function (x) { return !isMapWeapon(x); });
     if (!nonMap.length) return 0;
-    /* SD redirects the swing — EX cannot land on engage. */
-    cover = pickSupportDefender(target, sameSideUnits(target, allUnits || [], []));
-    if (cover) return 0;
+    /* SD redirects the swing. Class B passes ignoreCover so EX still counts. */
+    if (!(opts && opts.ignoreCover)) {
+      cover = pickSupportDefender(target, sameSideUnits(target, allUnits || [], []));
+      if (cover) return 0;
+    }
 
     function usableNonMapFrom(fromPos) {
       var localBest = 0;
@@ -2360,35 +2372,37 @@
    * True when best non-MAP (current tile or after a normal move) finishes engage.
    * Support Defense cover means the hit lands on the guard — engage is not finished.
    */
-  function nonMapKillsEngage(actor, target, allUnits, bounds, damageOf) {
+  function nonMapKillsEngage(actor, target, allUnits, bounds, damageOf, opts) {
     var cover;
     var best;
     if (!actor || !target || (target.hp | 0) <= 0) return false;
-    cover = pickSupportDefender(target, sameSideUnits(target, allUnits || [], []));
-    if (cover) return false;
-    best = bestNonMapDamageOnEngage(actor, target, allUnits, bounds, damageOf) | 0;
+    if (!(opts && opts.ignoreCover)) {
+      cover = pickSupportDefender(target, sameSideUnits(target, allUnits || [], []));
+      if (cover) return false;
+    }
+    best = bestNonMapDamageOnEngage(actor, target, allUnits, bounds, damageOf, opts) | 0;
     return best > 0 && best >= (target.hp | 0);
   }
 
   /**
-   * MLS MAP interrupt (EX-first — MAP is rare in live ML):
-   *   1. Prefer EX / highest non-MAP first — never open with MAP when that shot
-   *      (from current tile or after a normal move) kills the engage target under
-   *      AI Defend/Shield with no Support Defense cover.
-   *   2. Only then use MAP when ALL of:
-   *        - engage survives best non-MAP (EX cannot finish — includes SD cover)
-   *        - living enemies in the MAP shape ≥ MasterLeague auto-usage threshold
-   *          (Altron / Strike Noir EX = 1; falls back to 2 when MD omitted)
-   *        - engage is in the MAP shape
-   *        - raw MAP damage KOs the engage (no chip-MAP — WZC Twin Buster /
-   *          F90 Barrage at high CP must not open just to nick full-HP tanks)
-   *      Ranking among legal MAP plans: more kills → more total damage → more
-   *      units in shape. Killing only a side foe (engage lives) never qualifies.
-   * Dash MAP (type 4, e.g. V2AB Wings of Light / 光之翼): fire from the current
-   * tile (no pre-move); land at `dashTo` after hits resolve.
-   * After-move impact MAP (type 2, Altron / Strike Noir): step into range, then
-   * designate up to MapWeaponImpactPointMaxSelectCount spots. Strike Noir (2)
-   * may place both spots on one large unit when no second foe is in range.
+   * MLS MAP interrupt — two classes:
+   *
+   * A) Opening after-move impact MAP (type 2 + can-use-after-move):
+   *    Altron Dragon Fang / Strike Noir Shorty — live high-CP ML opens with these
+   *    (Absolute Hit + debuff / dual designate), NOT EX-first. Fire when ML
+   *    auto-usage threshold is met and engage is in shape. Do not require a KO
+   *    and do not skip because EX could finish or out-damage.
+   *
+   * B) Fixed AoE / other MAP (e.g. WZC Rolling Buster type 1, thr ≥ 2):
+   *    EX-first — compare EX on the engage even if Support Defense would intercept
+   *    (SD does not switch WZC onto MAP). Skip MAP when EX kills engage or EX
+   *    damage ≥ MAP. Otherwise require threshold + engage in shape + raw MAP KO.
+   *
+   * Ranking among legal MAP plans: more kills → more total damage → more units
+   * in shape. Side-foe-only kills never qualify for class B.
+   *
+   * Dash MAP (type 4, e.g. V2AB Wings of Light): fire from current tile; land at
+   * `dashTo` after hits. Uses class B gates unless it is also impact+after-move.
    */
   function mapAutoUsageMinTargets(wpn) {
     var raw = wpn && wpn.raw ? wpn.raw : wpn;
@@ -2410,6 +2424,11 @@
     return !isMoveBeforeOnly(wpn);
   }
 
+  /** Type-2 after-move impact — Altron / Strike Noir openers (not EX-first). */
+  function isOpeningImpactMap(wpn) {
+    return isImpactMapWeapon(wpn) && mapWeaponCanUseAfterMove(wpn);
+  }
+
   function evaluateMapWeapon(actor, target, foes, allUnits, bounds, damageOf) {
     var candidates = getValidWeapons(actor, null, false).filter(isMapWeapon);
     var best = null;
@@ -2417,10 +2436,11 @@
     var cells, inArea, maxSel, minNeed, mapKills, totalDmg, i, mt, mDmg;
     var better, mapDmgOnEngage, engageKilled;
     var impactMode, isDash, dashTo, dest, picked, key, seen, cellList, j, ec;
-    var fireActor, afterMoveOk;
-
-    /* Gate: if EX/best normal KO's engage (here or after move), skip all MAP. */
-    if (nonMapKillsEngage(actor, target, allUnits, bounds, damageOf)) return null;
+    var fireActor, afterMoveOk, openingImpact;
+    /* Class B scores EX on the engage itself — SD cover must not zero that comparison. */
+    var exChoiceOpts = { ignoreCover: true };
+    var nonMapFinishes = nonMapKillsEngage(actor, target, allUnits, bounds, damageOf, exChoiceOpts);
+    var nonMapDmgBest = null;
 
     for (ci = 0; ci < candidates.length; ci++) {
       wpn = candidates[ci];
@@ -2438,6 +2458,12 @@
       if (impactMode && maxSel <= 0) maxSel = 1;
       isDash = isDashMapWeapon(wpn);
       afterMoveOk = mapWeaponCanUseAfterMove(wpn);
+      openingImpact = isOpeningImpactMap(wpn);
+      /*
+       * Class B (WZC Rolling Buster…): skip MAP entirely when EX already finishes.
+       * Class A (Altron / Strike Noir impact openers): still allow MAP.
+       */
+      if (!openingImpact && nonMapFinishes) continue;
       dashTo = null;
       rawDist = distance(actor, target);
       needMove = !isDash && (rawDist > mx || rawDist < mn);
@@ -2567,20 +2593,18 @@
         }
       })();
       engageKilled = (target.hp | 0) - mapDmgOnEngage <= 0;
-      /*
-       * Engage already known to survive best non-MAP (gate above).
-       * Threshold + engage-in-shape already enforced — still require MAP to KO
-       * the engage (no chip). Side-foe-only kills do not qualify.
-       */
-      if (!engageKilled) continue;
-      /*
-       * EX-first damage: if Twin Buster EX (etc.) already out-damages this MAP on
-       * the engage from here or after a move, keep EX — do not open with a weaker
-       * Rolling Buster MAP (WZC screenshot: MAP 62k while EX hits much harder).
-       */
-      if ((bestNonMapDamageOnEngage(actor, target, allUnits, bounds, damageOf) | 0) >=
-          (mapDmgOnEngage | 0)) {
-        continue;
+      if (!openingImpact) {
+        /*
+         * Class B: require MAP KO on engage (no chip-MAP) and MAP must beat best
+         * non-MAP damage on engage (WZC Rolling Buster vs Twin Buster EX).
+         */
+        if (!engageKilled) continue;
+        if (nonMapDmgBest == null) {
+          nonMapDmgBest = bestNonMapDamageOnEngage(
+            actor, target, allUnits, bounds, damageOf, exChoiceOpts
+          ) | 0;
+        }
+        if ((nonMapDmgBest | 0) >= (mapDmgOnEngage | 0)) continue;
       }
 
       if (isDash) {
@@ -2691,7 +2715,13 @@
       for (i = 0; i < saCands.length; i++) tempExpected += saCands[i].dmg | 0;
       counterWpns = getValidWeapons(target, dist, false).filter(function (w) { return !isMapWeapon(w); });
       hasPreCounter = counterWpns.some(function (w) { return isPreemptiveWeapon(target, w); });
-      tempDefAction = determineDefenseAction(target, tempExpected, counterWpns.length > 0, hasPreCounter);
+      tempDefAction = determineDefenseAction(
+        target,
+        tempExpected,
+        counterWpns.length > 0,
+        hasPreCounter,
+        { absoluteHit: isAbsoluteHitWeapon(weapon) }
+      );
     }
 
     predictedHp = actualDefender.hp | 0;

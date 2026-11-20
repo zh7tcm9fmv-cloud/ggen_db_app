@@ -2871,5 +2871,44 @@
     "ActiveControlTypeIndex": 0,
     "DisplayScheduleId": 0,
     "GashaFooterLabelId": 0
+  },
+  {
+    "Id": 261130040301,
+    "GashaId": 2611300403,
+    "SlotNumber": 2,
+    "SortOrderInSlot": 1,
+    "GashaEntryDetailId": 261130040301,
+    "IsUrGuaranteed": false,
+    "IsResultSaved": false,
+    "ScheduleId": 0,
+    "ActiveControlTypeIndex": 0,
+    "DisplayScheduleId": 0,
+    "GashaFooterLabelId": 0
+  },
+  {
+    "Id": 261130040302,
+    "GashaId": 2611300403,
+    "SlotNumber": 1,
+    "SortOrderInSlot": 1,
+    "GashaEntryDetailId": 261130040302,
+    "IsUrGuaranteed": false,
+    "IsResultSaved": false,
+    "ScheduleId": 0,
+    "ActiveControlTypeIndex": 0,
+    "DisplayScheduleId": 0,
+    "GashaFooterLabelId": 0
+  },
+  {
+    "Id": 261130040303,
+    "GashaId": 2611300403,
+    "SlotNumber": 3,
+    "SortOrderInSlot": 1,
+    "GashaEntryDetailId": 261130040303,
+    "IsUrGuaranteed": false,
+    "IsResultSaved": false,
+    "ScheduleId": 0,
+    "ActiveControlTypeIndex": 0,
+    "DisplayScheduleId": 0,
+    "GashaFooterLabelId": 0
   }
 ]

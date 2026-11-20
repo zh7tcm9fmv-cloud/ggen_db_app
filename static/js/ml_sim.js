@@ -40,6 +40,8 @@
   var transportScrubbing = false;
   var playSession = null;
   var lastPlayResult = null;
+  /* Bumped on each playFight so a late end-card settle cannot clear a Replay run. */
+  var playGen = 0;
   var speedMul = 1;
   /* MLS wait(ms/speed): 1× should feel readable. Was 320; owner asked ~50% slower (desktop). */
   var STEP_MS = 640;
@@ -3910,6 +3912,7 @@
     syncMlsBattleChrome(name === 'battle');
     if (name !== 'battle' && !fightBusy) hideTurnHud();
     if (name === 'battle') {
+      ensureEarthGlobe();
       preloadBannerArt();
       requestAnimationFrame(function () {
         requestAnimationFrame(function () {
@@ -6697,7 +6700,7 @@
       'applyAdvantageEnemyTag', 'applyZeonEnemyTag', 'charStatMode', 'atkCounterOwnAtk', 'grandOffensiveBuff',
       'ultAltActive', 'defUltAltActive', 'supportDefenseActive', 'defInitialNullStock',
       'dtuBeam', 'dtuPhysical', 'dtuSpecial', 'defDebuffPct', '_mlsFightCalc', '_mlsAtkEnRatio',
-      '_mlsAtkDebuffPct'
+      '_mlsAtkDebuffPct', '_allowMapWeapon', '_pilotSkills', '_activeSkills'
     ];
     snap = {};
     keys.forEach(function (k) { snap[k] = dc[k]; });
@@ -6762,8 +6765,8 @@
       dc.unitDamageTakenDefStacks = liveDamageTakenDefStacks(attacker);
       dc.dcSuperchargedExTier = liveSuperchargedExTier(attacker);
       dc._dcSuperchargedExManual = true;
-      /* Unit skill (1 turn) ATK/DEF/MOB — active while skillDmgPct buffs linger. */
-      turnBuffOn = !!(attacker.turnBuffActive || ((attacker.skillDmgPct | 0) > 0 && attacker.usedSkillThisTurn));
+      /* Unit skill (1 turn) ATK/DEF/MOB — NOT pilot Melee/Shooting/Attack Burst. */
+      turnBuffOn = !!attacker.turnBuffActive;
       dc.unitTurnBuffAtk = turnBuffOn;
       dc.unitTurnBuffDef = !!defender.turnBuffActive;
       /* Leave 0 so /cal auto-parses defender pilot DTD + OP incoming DTD. */
@@ -6830,14 +6833,18 @@
       dc.finalWpnPow = 0;
       /* SSP → Custom Core / ssp_only weapons + sheets (ML maxed-kit default). */
       dc.unitStatMode = attacker.unitStatMode || preferredUnitStatMode(attacker.unit);
-      if (weapon && (weapon.is_map || weapon.is_map_weapon) && attacker.unit && attacker.unit.weapons) {
-        weapons = attacker.unit.weapons;
-      } else {
-        weapons = (typeof global._dcNonMapWeapons === 'function')
-          ? global._dcNonMapWeapons(attacker.unit)
-          : weaponsOf(attacker.unit, attacker.unitStatMode, attacker.ultAltLv)
-              .filter(function (w) { return !w.is_map; }).map(function (w) { return w.raw; });
-      }
+      /*
+       * /cal calculateDamage always resolves weapons via _dcNonMapWeapons (MAP stripped).
+       * For MAP hits, flip _allowMapWeapon so the same helper includes this MAP row —
+       * otherwise wpnIdx 0 silently becomes Twin Beam Trident (inflated MAP damage).
+       */
+      dc._allowMapWeapon = !!(weapon && (weapon.is_map || weapon.is_map_weapon));
+      weapons = (typeof global._dcNonMapWeapons === 'function')
+        ? global._dcNonMapWeapons(attacker.unit)
+        : weaponsOf(attacker.unit, attacker.unitStatMode, attacker.ultAltLv)
+            .filter(function (w) {
+              return dc._allowMapWeapon || !(w.is_map || w.is_map_weapon);
+            }).map(function (w) { return w.raw; });
       idx = weapons.indexOf(weapon.raw);
       if (idx < 0 && weapon && weapon.raw && weapon.raw.id) {
         for (var wi = 0; wi < weapons.length; wi++) {
@@ -6856,12 +6863,17 @@
       if (typeof global._dcParseWeaponTraits === 'function' && weapon && weapon.raw) {
         try { wCrit = (global._dcParseWeaponTraits(weapon.raw, dc.wpnLv).critDmgUp | 0); } catch (eW) { wCrit = 0; }
       }
+      /* Pilot active skills (Melee Boost → Melee %, Attack Burst → Damage Dealt via dmgIncrease). */
+      dc._pilotSkills = (attacker.char && attacker.char.skills) || [];
+      dc._activeSkills = attacker.activeSkillsOn && typeof attacker.activeSkillsOn === 'object'
+        ? Object.assign({}, attacker.activeSkillsOn)
+        : {};
       if (typeof global._dcDerivePilotDmgCritForSlotContext === 'function' && attacker.char) {
         pilotBon = global._dcDerivePilotDmgCritForSlotContext({
           atkCharData: attacker.char,
           atkUnitData: attacker.unit,
           charStatMode: attacker.charStatMode || preferredCharStatMode(attacker.char),
-          _activeSkills: {}
+          _activeSkills: dc._activeSkills
         }, wCrit) || { dmgIncrease: 0, critDmgUp: wCrit };
         dc.dmgIncrease = (skillAndDebuffDmgPct(attacker, weapon) | 0) + (pilotBon.dmgIncrease | 0);
         dc.critDmgUp = pilotBon.critDmgUp | 0;
@@ -7467,25 +7479,18 @@
   function skillAndDebuffDmgPct(attacker, weapon) {
     var bonus = 0;
     var down = 0;
-    var by, ranged, i, d, now;
+    var by, i, d, now;
     if (!attacker) return 0;
-    ranged = weaponIsRanged(weapon);
-    /* Stack different skill effects (Attack Burst + Ranged Boost both apply). */
+    /*
+     * Only Attack Burst is Damage Dealt %.
+     * Melee / Shooting / Awaken Boost are pilot-stat % — applied via /cal
+     * _activeSkills (same as /cal checkboxes), not dmgIncrease.
+     */
     by = attacker.skillDmgBonus || null;
     if (by) {
       bonus += by.attack_burst | 0;
-      bonus += by.awaken_boost | 0;
-      if (ranged) bonus += by.shooting_boost | 0;
-      else bonus += by.melee_boost | 0;
-    } else if (attacker.skillDmgPct) {
-      /* Legacy single-slot path. */
-      if (attacker.skillDmgKind === 'attack_burst' || attacker.skillDmgKind === 'awaken_boost') {
-        bonus += attacker.skillDmgPct | 0;
-      } else if (attacker.skillDmgKind === 'shooting_boost' && ranged) {
-        bonus += attacker.skillDmgPct | 0;
-      } else if (attacker.skillDmgKind === 'melee_boost' && !ranged) {
-        bonus += attacker.skillDmgPct | 0;
-      }
+    } else if (attacker.skillDmgPct && attacker.skillDmgKind === 'attack_burst') {
+      bonus += attacker.skillDmgPct | 0;
     }
     now = attacker._simTurn | 0;
     for (i = 0; i < (attacker.debuffs || []).length; i++) {
@@ -7944,9 +7949,29 @@
     refreshAuraPaint();
   }
 
+  /** True when any deployed kit has Cond:Area WP aura (Neo Zeong EX–class). */
+  function boardHasAreaAura() {
+    var R = rules();
+    if (!R || !R.listAreaAuras) return false;
+    return lastAlly.concat(lastEnemy).some(function (u) {
+      return !!(u && R.listAreaAuras(u).length);
+    });
+  }
+
   function syncAuraToggleUi() {
     var el = document.getElementById('mlsAuraToggle');
+    var tools = document.querySelector('#mlsViewBattle .mls-map-tools');
+    var show = boardHasAreaAura();
     if (el) el.checked = auraVisible();
+    if (tools) {
+      if (show) {
+        tools.hidden = false;
+        tools.removeAttribute('hidden');
+      } else {
+        tools.hidden = true;
+        tools.setAttribute('hidden', '');
+      }
+    }
   }
 
   function refreshAuraPaint() {
@@ -8492,6 +8517,7 @@
       refreshActorSheetFromSquad(lastEnemy);
       paintTimeline();
       paintForceSlots();
+      syncAuraToggleUi();
     });
   }
 
@@ -8999,6 +9025,7 @@
       'linear-gradient(90deg, rgba(120,180,255,0.12) 1px, transparent 1px)';
     var wash = 'linear-gradient(180deg, rgba(2,8,20,0.22), rgba(2,8,20,0.55))';
     var url, mapW, mapH, fullW, fullH, offX, offY, posX, posY, cacheKey;
+    if (!host) return;
     if (!bg) {
       mapBgCacheKey = '';
       host.classList.remove('has-bg');
@@ -9200,7 +9227,14 @@
     el.classList.remove('is-active', 'is-attacker', 'is-target', 'is-covering', 'is-hit', 'is-ko-linger');
     el.style.removeProperty('--mls-cover-x');
     el.style.removeProperty('--mls-cover-y');
-    el.style.setProperty('transform', 'translate3d(0,0,0)', 'important');
+    /*
+     * Do not leave an inline transform !important — WebKit will not run
+     * mls-ko-dissolve transform keyframes over it (mobile looked like a snap-hide).
+     */
+    el.style.removeProperty('transform');
+    el.style.setProperty('transform', 'translate3d(0,0,0)');
+    void el.offsetWidth;
+    el.style.removeProperty('transform');
     void el.offsetWidth;
     el.classList.add('is-dead');
     setTimeout(function () {
@@ -10587,13 +10621,36 @@
     }
 
     /**
+     * LANG help: Support Skills / サポートスキル / 支援技能.
+     * Official names often start with “(Cond: Unit Count) …” — strip that for HUD
+     * so the float does not read as “Cond: Unit Count”.
+     */
+    function supportSkillKindLabel() {
+      var L = String(lang() || 'EN').toUpperCase();
+      if (L === 'JA' || L === 'JP') return 'サポートスキル';
+      if (L === 'TW' || L === 'HK') return '支援技能';
+      return mlsT('mls_support_skill', 'Support Skill');
+    }
+    function supportSkillEffectLabel(raw) {
+      var s = String(raw || '').trim();
+      /* Avoid /u regex — strip leading (Cond:…) / fullwidth （…） wrappers. */
+      var cleaned = s
+        .replace(/^\(\s*Cond\s*:[^)]*\)\s*/i, '')
+        .replace(/^[（(]\s*條件\s*[：:][^）)]*[）)]\s*/, '')
+        .replace(/^[（(]\s*条件\s*[：:][^）)]*[）)]\s*/, '')
+        .replace(/^【[^】]*】\s*/, '')
+        .trim();
+      return cleaned || s || supportSkillKindLabel();
+    }
+
+    /**
      * MLS evaluateSupportSkill: once per side. HP or EN recovery when allies in
      * EffectRange meet the ML auto threshold (tier 2 = 50%). Not at battle start.
      * Playback paints MAP-style range: green = heal, yellow = EN restore.
      */
     function evaluateSupportSkill(actor, friends) {
       var sup, skills, skill, kind, maxR, pct, inRange, needy, restorePct, i, ally, amt, text;
-      var hm, cells, aoeKind, floatCls, logVerb;
+      var hm, cells, aoeKind, floatCls, logVerb, kindLbl, effectLbl, chipLbl, skillIcon;
       if (!actor || supportUsed[actor.side]) return;
       if ((turn | 0) < 1) return;
       sup = sideSupportData[actor.side] || actor.supporter;
@@ -10649,23 +10706,32 @@
       aoeKind = kind === 'en' ? 'en' : 'heal';
       floatCls = kind === 'en' ? 'mls-float--en' : 'mls-float--heal';
       logVerb = kind === 'en' ? 'EN restore' : 'heal';
+      kindLbl = supportSkillKindLabel();
+      effectLbl = supportSkillEffectLabel(skill.name || (kind === 'en' ? 'EN' : 'HP'));
+      /* Chip: icon + “Support Skill · HP Restoration” (not truncated Cond: prefix). */
+      chipLbl = kindLbl + ' · ' + effectLbl;
+      if (chipLbl.length > 28) chipLbl = effectLbl;
+      skillIcon = skill.icon || skill.thum || skill.image || '';
       cells = supportEffectCells(actor, maxR);
+      actor.badge = 'SKILL';
+      actor.badgeText = kindLbl;
+      actor.badgeIcon = skillIcon;
       snapshotLine(
-        'T' + turn + ' Supporter: ' + (sup.name || 'Supporter') + ' activates 「' +
-          (skill.name || (kind === 'en' ? 'EN' : 'HP')) + '」 (' + Math.round(restorePct * 100) + '%)',
+        'T' + turn + ' ' + kindLbl + ': ' + (sup.name || 'Supporter') + ' 「' +
+          effectLbl + '」 (' + Math.round(restorePct * 100) + '%)',
         {
           x: actor.x, y: actor.y,
-          text: String(skill.name || 'SUPPORT').slice(0, 18),
-          skillName: String(skill.name || 'SUPPORT').slice(0, 18),
+          text: chipLbl,
+          skillName: chipLbl,
           badge: 'SKILL',
-          icon: skill.icon || '',
+          icon: skillIcon,
           cls: 'mls-float--skill'
         },
         null,
         'skill'
       );
       snapshotLine(
-        'T' + turn + ' Supporter effect range: ' + (sup.name || 'Supporter') +
+        'T' + turn + ' ' + kindLbl + ' effect range: ' + (sup.name || 'Supporter') +
           ' (' + cells.length + ' cell' + (cells.length === 1 ? '' : 's') + ')',
         null,
         {
@@ -10686,7 +10752,7 @@
           if (amt <= 0) continue;
           ally.currentEn = Math.min(ally.maxEn | 0, (ally.currentEn | 0) + amt);
           snapshotLine(
-            'T' + turn + ' Supporter ' + logVerb + ': ' + ally.name + ' +' + amt + ' EN',
+            'T' + turn + ' ' + kindLbl + ' ' + logVerb + ': ' + ally.name + ' +' + amt + ' EN',
             { x: ally.x, y: ally.y, text: '+' + fmtNum(amt) + ' EN', cls: floatCls },
             null,
             'skill'
@@ -10704,7 +10770,7 @@
             }
           }
           snapshotLine(
-            'T' + turn + ' Supporter ' + logVerb + ': ' + ally.name + ' +' + amt + ' HP',
+            'T' + turn + ' ' + kindLbl + ' ' + logVerb + ': ' + ally.name + ' +' + amt + ' HP',
             { x: ally.x, y: ally.y, text: '+' + fmtNum(amt), cls: floatCls },
             null,
             'skill'
@@ -11011,7 +11077,7 @@
         })) note += ' + DR';
         note += ']';
       } else if (defAction === 'defend' || defAction === 'shield') {
-        /* MLS determineDefenseAction — self-defend when a counter would get them killed. */
+        /* MLS AI Defend/Shield — only when the defender cannot counter. */
         note = defAction === 'shield' ? ' [AI Shield ×0.6]' : ' [AI Defend ×0.8]';
         if (abilityDamageTakenDownPct(defender.unit, wpn, {
           distance: (R && R.distance) ? R.distance(attacker, defender) : null,
@@ -11040,11 +11106,13 @@
       /*
        * Arm grey-out linger BEFORE the KO snapshot — otherwise playback fades the token
        * on the KO step, then brings it back for Counter (fade → revive → fade).
+       * MAP never counters — do not linger; dissolve on this hit immediately.
        */
       var hpAfterHit = defender.hp | 0;
       if (hpAfterHit <= 0) {
         defender._koThisEngagement = true;
-        defender.lingerKo = true;
+        if (kind !== 'MAP') defender.lingerKo = true;
+        else defender.lingerKo = false;
       }
       /* Log hit at post-damage HP (before revive) so KO reads correctly, then restore.
        * Float = incoming damage (barrier is extra HP — still show the hit number). */
@@ -11157,9 +11225,9 @@
        * their normal action ends — no further move / kill-CS / Auto-CS / attack.
        * Guaranteed CS may still spend (same class as Escape canceling kill-CS only).
        */
-      if ((revived || escaped) && hpAfterHit <= 0 && (defender.hp | 0) > 0 && defender.active) {
-        defender._endActionAfterRevive = true;
+      if ((revived || escaped) && hpAfterHit <= 0 && (defender.hp | 0) > 0) {
         defender.lingerKo = false;
+        if (defender.active) defender._endActionAfterRevive = true;
       }
       /* Cond:Combat-Count / Cond:Damage taken — stacks rise after a landed hit (next strike uses them). */
       bumpCondStacksAfterHit(attacker, defender);
@@ -11271,6 +11339,7 @@
         u.skillDmgPct = 0;
         u.skillDmgKind = '';
         u.skillDmgBonus = {};
+        u.activeSkillsOn = {};
         u.skillEnCostDownPct = 0;
         /* SP recovers at the start of this unit’s action (not saved for a later turn). */
         u.currentSp = u.sp | 0;
@@ -11373,15 +11442,24 @@
               applyMpDelta(u, mpGain);
             } else if (skill.key === 'attack_burst' || skill.key === 'melee_boost' ||
                 skill.key === 'shooting_boost' || skill.key === 'awaken_boost') {
-              /* First % in the effect = damage (Ranged/Melee/Attack); EN cut is separate. */
+              /*
+               * /cal parity:
+               *   Attack Burst → Damage Dealt % (dmgIncrease)
+               *   Melee / Shooting / Awaken Boost → pilot Melee/Ranged/Awaken % via _activeSkills
+               * Do NOT set turnBuffActive (that is unit-skill ATK/DEF/MOB only).
+               */
               spct = String(skill.effect || skill.name || '').match(/(\d+)\s*%/);
               var dmgPct = spct ? (parseInt(spct[1], 10) || 0) : 10;
-              u.skillDmgBonus = u.skillDmgBonus || {};
-              u.skillDmgBonus[skill.key] = Math.max(u.skillDmgBonus[skill.key] | 0, dmgPct);
-              u.skillDmgPct = (u.skillDmgBonus.attack_burst | 0) + (u.skillDmgBonus.awaken_boost | 0) +
-                (u.skillDmgBonus.shooting_boost | 0) + (u.skillDmgBonus.melee_boost | 0);
-              u.skillDmgKind = skill.key;
-              u.turnBuffActive = true;
+              if (skill.id) {
+                u.activeSkillsOn = u.activeSkillsOn || {};
+                u.activeSkillsOn[String(skill.id)] = true;
+              }
+              if (skill.key === 'attack_burst') {
+                u.skillDmgBonus = u.skillDmgBonus || {};
+                u.skillDmgBonus.attack_burst = Math.max(u.skillDmgBonus.attack_burst | 0, dmgPct);
+                u.skillDmgPct = u.skillDmgBonus.attack_burst | 0;
+                u.skillDmgKind = 'attack_burst';
+              }
               if (skill.key === 'shooting_boost' || skill.key === 'melee_boost') {
                 var enM = String(skill.effect || '').match(
                   /EN\s*consumption.*?(\d+)\s*%|消費EN.*?(\d+)\s*%|weapons?\s*EN.*?(\d+)\s*%/i
@@ -11523,6 +11601,21 @@
               });
               if (res && !res.miss) hitAny = true;
             });
+            /* MAP never waits on Counter — clear any stray linger and dissolve KOs now. */
+            (function clearMapLingerKos() {
+              var faded = [];
+              allies.concat(enemies).forEach(function (x) {
+                if (!x || !x.lingerKo) return;
+                x.lingerKo = false;
+                if ((x.hp | 0) <= 0) faded.push(x.name);
+              });
+              if (faded.length) {
+                snapshotLine(
+                  'T' + turn + ' Defeated: ' + faded.join(', '),
+                  null, null, 'ko-fade'
+                );
+              }
+            })();
             /* Dash / Moving-Attack MAP (type 4): land at the far end of shooting_coords. */
             if (mapPlan.dashTo && (u.hp | 0) > 0) {
               oldX = u.x; oldY = u.y;
@@ -11561,10 +11654,9 @@
              * - Auto-Chance Step does not activate after MAP Weapons.
              * Guaranteed Chance Step still applies (end of any non-wait action).
              * Weapon “CS on hit” traits still spend the phase budget when present.
-             * AI: evaluateMapWeapon skips MAP when EX/best normal already kills the engage
-             * (no Support Defense cover); when EX cannot finish, MAP fires only if the ML
-             * auto-usage threshold is met, engage is in shape, and raw MAP KOs engage
-             * (no chip-MAP). MAP itself bypasses Defend/Shield.
+             * AI: after-move impact MAP (Altron / Strike Noir) opens when ML threshold
+             * + engage-in-shape — not EX-first. Other MAP (WZC Rolling Buster) stays
+             * EX-first / KO-on-engage. MAP itself bypasses Defend/Shield.
              */
             if ((u.hp | 0) > 0 && living(foes).length) {
               if (hitAny && !u._weaponCsGrantedThisAction &&
@@ -12680,20 +12772,41 @@
     });
   }
 
-  function syncTransportPlayBtn() {
-    var playBtn = document.getElementById('mlsTransportPlay');
-    var atEnd = false;
+  function playbackAtEnd() {
     var stepsLen = 0;
+    var scrub;
     if (playSession && playSession.result && playSession.result.steps) {
       stepsLen = playSession.result.steps.length | 0;
-      atEnd = (playSession.shown | 0) >= stepsLen && stepsLen > 0;
-    } else if (lastPlayResult && lastPlayResult.steps) {
-      stepsLen = lastPlayResult.steps.length | 0;
+      return stepsLen > 0 && (playSession.shown | 0) >= stepsLen;
     }
+    if (lastPlayResult && lastPlayResult.steps) {
+      stepsLen = lastPlayResult.steps.length | 0;
+      if (stepsLen <= 0) return false;
+      scrub = document.getElementById('mlsTransportScrub');
+      if (scrub) return (scrub.value | 0) >= stepsLen;
+      return !fightBusy;
+    }
+    return false;
+  }
+
+  function syncTransportPlayBtn() {
+    var playBtn = document.getElementById('mlsTransportPlay');
+    var atEnd = playbackAtEnd();
+    var lab;
+    var replayImg;
     if (!playBtn) return;
-    playBtn.classList.toggle('is-paused', !fightBusy || paused || atEnd);
-    playBtn.setAttribute('aria-label', (!fightBusy || paused || atEnd) ? 'Play' : 'Pause');
-    playBtn.title = (!fightBusy || paused || atEnd) ? 'Play' : 'Pause';
+    playBtn.classList.toggle('is-replay', atEnd);
+    playBtn.classList.toggle('is-paused', !atEnd && (!fightBusy || paused));
+    if (atEnd) lab = mlsT('mls_replay', 'Replay');
+    else if (!fightBusy || paused) lab = mlsT('mls_play', 'Play');
+    else lab = mlsT('mls_pause', 'PAUSE');
+    playBtn.setAttribute('aria-label', lab);
+    playBtn.title = lab;
+    replayImg = playBtn.querySelector('.mls-transport-play-replay');
+    if (replayImg && !replayImg.getAttribute('data-mls-src')) {
+      replayImg.setAttribute('data-mls-src', '1');
+      replayImg.src = thumbUrl('/static/images/UI/UI_Event_ML_Replay_icon.webp');
+    }
   }
 
   function updateTransportChrome(shown, total, result) {
@@ -12835,6 +12948,19 @@
   function togglePlaybackPause() {
     var scrub;
     var startAt = 0;
+    /* Ended sim → Replay from the start (official ML replay control). */
+    if (playbackAtEnd() && lastPlayResult) {
+      hideEndCard();
+      skipAll = false;
+      paused = false;
+      fightSeekTo = null;
+      transportScrubbing = false;
+      fightBusy = true;
+      playbackFxBusy = true;
+      setFightControls(true);
+      playFight(lastPlayResult, 0);
+      return;
+    }
     if (fightBusy && playSession) {
       paused = !paused;
       setFightControls(true);
@@ -12855,20 +12981,131 @@
     playFight(lastPlayResult, startAt);
   }
 
+  var earthGlobeOn = false;
+  function ensureEarthGlobe() {
+    var canvas = document.getElementById('mlsEarthCanvas');
+    if (!canvas) return;
+    if (canvas.getAttribute('data-earth') === '1') {
+      earthGlobeOn = true;
+      if (canvas._mlsEarthArm) canvas._mlsEarthArm();
+      return;
+    }
+    canvas.setAttribute('data-earth', '1');
+    earthGlobeOn = true;
+    if (canvas.width < 320) {
+      canvas.width = 320;
+      canvas.height = 320;
+    }
+    var reducePref = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    var mobileSpin = !!(window.matchMedia && window.matchMedia('(max-width: 820px), (pointer: coarse)').matches);
+    /* Mobile keeps a slow spin even when OS reduce-motion is on. */
+    var reduce = reducePref && !mobileSpin;
+    var img = new Image();
+    img.decoding = 'async';
+    img.src = thumbUrl('/static/images/Master League/tex_bg_earth01_v1_300010.webp');
+    var src = null;
+    var sw = 0;
+    var sh = 0;
+    var ang = 0.55;
+    var last = 0;
+    var raf = 0;
+    function paint() {
+      var ctx = canvas.getContext('2d');
+      var w = canvas.width;
+      var h = canvas.height;
+      var frame = ctx.createImageData(w, h);
+      var out = frame.data;
+      var i, x, y, nx, ny, nz, r2, lat, lon, u, v, sx, sy, si, shade, k;
+      for (y = 0; y < h; y++) {
+        ny = 1 - ((y + 0.5) / h) * 2;
+        for (x = 0; x < w; x++) {
+          nx = ((x + 0.5) / w) * 2 - 1;
+          r2 = nx * nx + ny * ny;
+          i = (y * w + x) * 4;
+          if (r2 > 1) continue;
+          nz = Math.sqrt(1 - r2);
+          lat = Math.asin(ny);
+          lon = Math.atan2(nx, nz) + ang;
+          u = lon / (Math.PI * 2);
+          u = u - Math.floor(u);
+          v = 0.5 - lat / Math.PI;
+          sx = Math.min(sw - 1, Math.max(0, (u * sw) | 0));
+          sy = Math.min(sh - 1, Math.max(0, (v * sh) | 0));
+          si = (sy * sw + sx) * 4;
+          /* Flat front light — no left/right shade bias. */
+          shade = 0.74 + 0.1 * nz;
+          for (k = 0; k < 3; k++) out[i + k] = Math.min(255, (src[si + k] * shade) | 0);
+          out[i + 3] = 255;
+        }
+      }
+      ctx.putImageData(frame, 0, 0);
+    }
+    function tick(ts) {
+      raf = 0;
+      var start = document.getElementById('mlsFight');
+      var shown = earthGlobeOn && start && !start.hidden && start.style.display !== 'none' && viewName === 'battle';
+      if (!shown || !src) {
+        earthGlobeOn = false;
+        return;
+      }
+      if (!last) last = ts;
+      if (!reduce) ang -= Math.min(0.05, (ts - last) / 1000) * (Math.PI * 2 / 105);
+      last = ts;
+      paint();
+      if (reduce) return;
+      raf = requestAnimationFrame(tick);
+    }
+    function arm() {
+      if (!earthGlobeOn || !src) return;
+      if (!raf) raf = requestAnimationFrame(tick);
+    }
+    img.onload = function () {
+      sw = img.naturalWidth;
+      sh = img.naturalHeight;
+      if (!sw || !sh) return;
+      var scratch = document.createElement('canvas');
+      scratch.width = sw;
+      scratch.height = sh;
+      var sctx = scratch.getContext('2d', { willReadFrequently: true });
+      sctx.drawImage(img, 0, 0);
+      src = sctx.getImageData(0, 0, sw, sh).data;
+      arm();
+    };
+    if (img.complete && img.naturalWidth) img.onload();
+    canvas._mlsEarthArm = arm;
+  }
   function setFightControls(busy) {
     var start = document.getElementById('mlsFight');
     var pause = document.getElementById('mlsPause');
     var skip = document.getElementById('mlsSkip');
-    var skipTransport = document.getElementById('mlsSkipTransport');
     var reset = document.getElementById('mlsReset');
     var boardEl = document.getElementById('mlsBoard');
     var shell = document.querySelector('#panel-ml_sim .mls-shell');
+    var viewport = document.querySelector('#panel-ml_sim .mls-map-viewport');
+    /* Start only until the first playback — after that use Replay on transport. */
+    var showStart = !!(start && !busy && !lastPlayResult);
     if (start) {
-      start.disabled = !!busy;
-      start.textContent = busy ? mlsT('mls_sim_running', 'RUNNING…') : mlsT('mls_sim_start', 'SIMULATION START');
-      start.style.display = busy ? 'none' : '';
+      var startLab = document.getElementById('mlsFightLabel');
+      if (startLab) {
+        startLab.textContent = busy
+          ? mlsT('mls_sim_running', 'RUNNING…')
+          : mlsT('mls_sim_start', 'SIMULATION START');
+      }
+      start.style.display = showStart ? '' : 'none';
+      if (showStart) {
+        start.removeAttribute('hidden');
+        start.disabled = false;
+        start.removeAttribute('disabled');
+        start.setAttribute('aria-hidden', 'false');
+      } else {
+        start.setAttribute('hidden', '');
+        start.disabled = true;
+        start.setAttribute('aria-hidden', 'true');
+      }
+      start.classList.toggle('is-running', !!busy);
+      if (showStart) ensureEarthGlobe();
       /* Hiding a focused Start can yank the page scroll — blur first. */
-      if (busy) {
+      if (!showStart) {
         try {
           if (document.activeElement === start) start.blur();
         } catch (eBlur) { /* ignore */ }
@@ -12881,52 +13118,52 @@
       pause.setAttribute('hidden', '');
     }
     if (skip) skip.disabled = !busy;
-    if (skipTransport) {
-      skipTransport.disabled = !busy;
-      if (busy) {
-        skipTransport.hidden = false;
-        skipTransport.removeAttribute('hidden');
-      } else {
-        skipTransport.hidden = true;
-        skipTransport.setAttribute('hidden', '');
-      }
-    }
     if (reset) reset.disabled = !!busy;
-    if (boardEl) boardEl.classList.toggle('is-fighting', !!busy);
+    if (boardEl) {
+      boardEl.classList.toggle('is-fighting', !!busy);
+      boardEl.classList.toggle('is-sim-start', showStart);
+    }
+    if (viewport) viewport.classList.toggle('is-sim-start', showStart);
     if (shell) shell.classList.toggle('is-fighting', !!busy);
     try { document.body.classList.toggle('mls-is-fighting', !!busy); } catch (eFight) {}
     syncTransportPlayBtn();
-    /*
-     * Mobile playback CSS grows .mls-map-scroll — unlock cell size so fitMapCell
-     * scales the board up (ResizeObserver also fires; this covers the first frame).
-     */
-    if (viewName === 'battle' && board) {
+    /* Board size is stable on mobile — only re-pin scroll when playback starts. */
+    if (busy && viewName === 'battle') {
       requestAnimationFrame(function () {
-        lockedMapCellPx = 0;
-        try { paintBoard(); } catch (ePaint) { /* ignore */ }
-        if (busy) scrollMlsBattleIntoView({ preferMap: true, instant: true });
+        scrollMlsBattleIntoView({ preferMap: true, instant: true });
       });
     }
   }
 
+  /**
+   * Kill in-flight playback immediately (season swap / hard reset).
+   * Bumps playGen so a late playFight tick cannot paint the old fight on a new board.
+   */
+  function abortPlaybackImmediate() {
+    playGen += 1;
+    skipAll = true;
+    paused = false;
+    try { wakeFightSleep(); } catch (eWake) { /* ignore */ }
+    hideEndCard();
+    hideTurnHud();
+    fightBusy = false;
+    playbackFxBusy = false;
+    pauseWait = null;
+    fightWake = null;
+    fightSeekTo = null;
+    transportScrubbing = false;
+    playSession = null;
+    lastPlayResult = null;
+    skipAll = false;
+    clearTimelinePhase();
+    setTransportVisible(false);
+    setFightControls(false);
+    clearMapCameraLock();
+  }
+
   function onResetBattle() {
     function doReset() {
-      hideEndCard();
-      hideTurnHud();
-      fightBusy = false;
-      playbackFxBusy = false;
-      paused = false;
-      skipAll = false;
-      pauseWait = null;
-      fightWake = null;
-      fightSeekTo = null;
-      transportScrubbing = false;
-      playSession = null;
-      lastPlayResult = null;
-      clearTimelinePhase();
-      setTransportVisible(false);
-      setFightControls(false);
-      clearMapCameraLock();
+      abortPlaybackImmediate();
       return loadArmies().then(function () {
         paintBoard();
         paintTimeline();
@@ -13150,7 +13387,13 @@
 
   function onFight() {
     var missing;
-    if (fightBusy) return Promise.resolve();
+    /*
+     * If a prior run left fightBusy stuck while Start is still showing, a silent
+     * return looks like “playback won’t start.” Clear and continue.
+     */
+    if (fightBusy) {
+      abortPlaybackImmediate();
+    }
     enforceAllSideUniques({ silent: false });
     missing = slotsMissingPilot();
     if (missing.length) {
@@ -13166,6 +13409,7 @@
     fightSeekTo = null;
     transportScrubbing = false;
     playSession = null;
+    lastPlayResult = null;
     fightBusy = true;
     playbackFxBusy = true;
     setFightControls(true);
@@ -13234,9 +13478,12 @@
       fightSeekTo = null;
       transportScrubbing = false;
       playSession = null;
+      lastPlayResult = null;
       clearTimelinePhase();
       setTransportVisible(false);
       setFightControls(false);
+      /* Refresh map so a failed Start cannot leave a stale army paint. */
+      try { paintBoard(); paintTimeline(); } catch (ePaint) { /* ignore */ }
       if (e && (e.code === 'mls-empty' || e.code === 'mls-missing-pilot')) {
         if (e.code === 'mls-missing-pilot') markMissingPilotSlots(e.missing || []);
         setView('formation');
@@ -13280,6 +13527,7 @@
   function playFight(result, startAt) {
     var steps = (result && result.steps) || [];
     var turnLimit = (board && board.limit_turns) || 5;
+    var myGen = ++playGen;
     var session = {
       result: result,
       startAlly: cloneArmy(result.allies),
@@ -13293,8 +13541,11 @@
     var from = Math.max(0, Math.min(steps.length, startAt | 0));
     playSession = session;
     lastPlayResult = result;
+    fightBusy = true;
+    playbackFxBusy = true;
     fightSeekTo = null;
     hideEndCard();
+    setFightControls(true);
     setTransportVisible(true, result);
     applyPlaybackShown(session, from, { quiet: from === 0 });
     paused = false;
@@ -13304,6 +13555,10 @@
       function finishPlay() {
         var allies = session.allies || [];
         var enemies = session.enemies || [];
+        if (myGen !== playGen) {
+          resolve();
+          return;
+        }
         allies.forEach(function (u) { u.active = false; });
         enemies.forEach(function (u) { u.active = false; });
         if ((result.turns | 0) > 0) setTurnHud(result.turns | 0, turnLimit, { tick: false });
@@ -13314,6 +13569,10 @@
         playbackFxBusy = false;
         scheduleOptimizerWarmSilent(0);
         showEndCard(result).then(function () {
+          if (myGen !== playGen) {
+            resolve();
+            return;
+          }
           fightBusy = false;
           paused = false;
           skipAll = false;
@@ -13940,13 +14199,22 @@
   function loadBoardForEvent(eventId) {
     var id = String(eventId || DEFAULT_EVENT);
     var prevId = String(roster.eventId || '');
+    var seasonChanged = !!(prevId && prevId !== id);
     /*
      * Map-drag homes are absolute cells for the current board. Keeping them across a
      * season switch parks both sides on the wrong formation (user report: swap then
      * change season → both sides’ starts look wrong).
      */
-    if (prevId && prevId !== id) {
+    if (seasonChanged) {
       clearMapHomeOverrides();
+    }
+    /*
+     * Mid-playback season change was painting the new map with the old fight army /
+     * wrong formation. Abort only when the season actually changes — do not abort a
+     * same-season board refresh or it can kill an in-flight SIMULATION START.
+     */
+    if (seasonChanged) {
+      abortPlaybackImmediate();
     }
     roster.eventId = id;
     saveRoster();
@@ -13961,7 +14229,10 @@
         paintPreset();
         paintForceSlots();
         if (viewName === 'battle') {
-          return loadArmies().then(paintBoard);
+          return loadArmies().then(function () {
+            paintBoard();
+            paintTimeline();
+          });
         }
       });
   }
@@ -14034,9 +14305,6 @@
       setView('battle');
     });
     bindMapTokenDrag();
-    document.getElementById('mlsBackForm') && document.getElementById('mlsBackForm').addEventListener('click', function () {
-      setView('formation');
-    });
     document.getElementById('mlsClearRoster') && document.getElementById('mlsClearRoster').addEventListener('click', function () {
       roster.enemy = emptyForce();
       roster.ally = emptyForce();
@@ -14296,8 +14564,6 @@
       wakeFightSleep();
     }
     document.getElementById('mlsSkip') && document.getElementById('mlsSkip').addEventListener('click', onMlsSkipClick);
-    document.getElementById('mlsSkipTransport') &&
-      document.getElementById('mlsSkipTransport').addEventListener('click', onMlsSkipClick);
     document.getElementById('mlsReset') && document.getElementById('mlsReset').addEventListener('click', function () {
       onResetBattle();
     });
@@ -14467,8 +14733,14 @@
       );
       lab.setAttribute('title', tip);
     })();
-    var backForm = document.getElementById('mlsBackForm');
-    if (backForm) backForm.textContent = '← ' + mlsT('mls_tab_formation', 'Formation');
+    root.querySelectorAll('[data-mls-i18n-title]').forEach(function (el) {
+      var key = el.getAttribute('data-mls-i18n-title');
+      var val;
+      if (!key) return;
+      val = mlsT(key, el.getAttribute('title') || key);
+      el.setAttribute('title', val);
+      el.setAttribute('aria-label', val);
+    });
     var brandLink = document.querySelector('.mls-brand-link');
     if (brandLink) {
       var mlName = mlsT('tab_master_league', 'Master League');
@@ -14479,8 +14751,8 @@
     var seasonSel = document.getElementById('mlsSeasonSelect');
     if (seasonSel) seasonSel.setAttribute('aria-label', mlsT('mls_season', 'Season'));
     if (!fightBusy) {
-      var start = document.getElementById('mlsFight');
-      if (start) start.textContent = mlsT('mls_sim_start', 'SIMULATION START');
+      var startLab = document.getElementById('mlsFightLabel');
+      if (startLab) startLab.textContent = mlsT('mls_sim_start', 'SIMULATION START');
     }
   }
 

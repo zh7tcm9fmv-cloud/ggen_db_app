@@ -466,5 +466,17 @@
     "ScheduleId": 2611153101,
     "SubtitleLanguageId": 0,
     "AuthorNameLanguageId": 0
+  },
+  {
+    "Id": 9002400010001,
+    "ComicSeriesId": 90024,
+    "PartNameLanguageId": 350209002400010001,
+    "TitleLanguageId": 350309002400010001,
+    "Priority": 999,
+    "ComicReleaseConditionTypeIndex": 0,
+    "TargetValue": 0,
+    "ScheduleId": 2611303103,
+    "SubtitleLanguageId": 0,
+    "AuthorNameLanguageId": 0
   }
 ]

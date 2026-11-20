@@ -3238,5 +3238,101 @@
     "SortOrder": 4,
     "ResourceId": "",
     "ItemGroupingGashaId": 0
+  },
+  {
+    "Id": 261130040301,
+    "GashaPointExchangeId": 2611300403,
+    "GashaContentDetailId": 0,
+    "GashaPointExchangeItemTypeIndex": 1,
+    "TargetId": 11003000250,
+    "Point": 200,
+    "Limit": 0,
+    "SortOrder": 2,
+    "ResourceId": "",
+    "ItemGroupingGashaId": 0
+  },
+  {
+    "Id": 261130040302,
+    "GashaPointExchangeId": 2611300403,
+    "GashaContentDetailId": 0,
+    "GashaPointExchangeItemTypeIndex": 1,
+    "TargetId": 11230003950,
+    "Point": 200,
+    "Limit": 0,
+    "SortOrder": 1,
+    "ResourceId": "",
+    "ItemGroupingGashaId": 0
+  },
+  {
+    "Id": 261130040303,
+    "GashaPointExchangeId": 2611300403,
+    "GashaContentDetailId": 0,
+    "GashaPointExchangeItemTypeIndex": 1,
+    "TargetId": 11001001610,
+    "Point": 40,
+    "Limit": 0,
+    "SortOrder": 5,
+    "ResourceId": "",
+    "ItemGroupingGashaId": 0
+  },
+  {
+    "Id": 261130040304,
+    "GashaPointExchangeId": 2611300403,
+    "GashaContentDetailId": 0,
+    "GashaPointExchangeItemTypeIndex": 1,
+    "TargetId": 11082000110,
+    "Point": 40,
+    "Limit": 0,
+    "SortOrder": 6,
+    "ResourceId": "",
+    "ItemGroupingGashaId": 0
+  },
+  {
+    "Id": 261130040305,
+    "GashaPointExchangeId": 2611300403,
+    "GashaContentDetailId": 0,
+    "GashaPointExchangeItemTypeIndex": 1,
+    "TargetId": 11431001310,
+    "Point": 40,
+    "Limit": 0,
+    "SortOrder": 7,
+    "ResourceId": "",
+    "ItemGroupingGashaId": 0
+  },
+  {
+    "Id": 261130040306,
+    "GashaPointExchangeId": 2611300403,
+    "GashaContentDetailId": 0,
+    "GashaPointExchangeItemTypeIndex": 1,
+    "TargetId": 21370000450,
+    "Point": 300,
+    "Limit": 1,
+    "SortOrder": 3,
+    "ResourceId": "",
+    "ItemGroupingGashaId": 0
+  },
+  {
+    "Id": 261130040307,
+    "GashaPointExchangeId": 2611300403,
+    "GashaContentDetailId": 0,
+    "GashaPointExchangeItemTypeIndex": 1,
+    "TargetId": 21210000350,
+    "Point": 300,
+    "Limit": 1,
+    "SortOrder": 4,
+    "ResourceId": "",
+    "ItemGroupingGashaId": 0
+  },
+  {
+    "Id": 261130040308,
+    "GashaPointExchangeId": 2611300403,
+    "GashaContentDetailId": 0,
+    "GashaPointExchangeItemTypeIndex": 1,
+    "TargetId": 21230000250,
+    "Point": 60,
+    "Limit": 0,
+    "SortOrder": 8,
+    "ResourceId": "",
+    "ItemGroupingGashaId": 0
   }
 ]

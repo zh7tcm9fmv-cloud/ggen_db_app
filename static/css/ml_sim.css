@@ -119,6 +119,10 @@
   gap: 10px;
   margin-bottom: 6px;
 }
+.mls-map-tools[hidden] {
+  display: none !important;
+  margin: 0;
+}
 .mls-aura-toggle {
   margin-right: 0;
   cursor: pointer;
@@ -1572,8 +1576,8 @@ body.mls-is-slot-dragging .mls-slot-list {
   clip-path: var(--mls-chamfer, polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px));
   overflow: hidden;
   background:
-    linear-gradient(180deg, rgba(0, 40, 80, 0.35) 0%, transparent 18%),
-    #020814;
+    linear-gradient(180deg, rgba(2, 8, 20, 0.28) 0%, rgba(2, 8, 20, 0.42) 100%),
+    url('/static/images/Master%20League/tex_bg_space01_v1_ML_300010.webp') center / cover no-repeat;
   box-shadow:
     inset 0 0 0 1px rgba(255, 215, 0, 0.14),
     0 10px 28px rgba(0, 0, 0, 0.45);
@@ -1781,42 +1785,26 @@ body.mls-is-slot-dragging .mls-slot-list {
 body.mls-battle-focus .mls-map-scroll {
   height: min(70vh, 640px);
 }
-/* Phone battle-focus (idle / pre-fight): room for Start + transport peek. */
-@media (max-width: 820px) {
-  body.mls-battle-focus .mls-map-scroll {
-    height: min(50vh, 440px);
-  }
-}
-@media (max-width: 560px) {
-  body.mls-battle-focus .mls-map-scroll {
-    height: min(46vh, 380px);
-  }
-}
 /*
- * Mobile playback: board is the product. Hide Start/Optimizer/log chrome and
- * grow the map so fitMapCell scales tokens up (ResizeObserver re-fits).
+ * Mobile battle map stays one size (playback-sized) — do not grow/shrink on Start.
+ * Playback only hides Start / Optimizer / log so those rows do not compete for scroll.
  */
 @media (max-width: 820px) {
+  body.mls-battle-focus .mls-map-scroll {
+    height: min(64vh, 560px);
+    min-height: 280px;
+  }
   body.mls-is-fighting #mlsViewBattle .mls-map-tools,
   body.mls-is-fighting #mlsViewBattle .mls-controls,
   body.mls-is-fighting #mlsViewBattle .mls-battle-meta {
     display: none !important;
   }
-  body.mls-is-fighting .mls-map-scroll,
-  body.mls-is-fighting.mls-battle-focus .mls-map-scroll {
-    height: min(64vh, 560px);
-    min-height: 280px;
-  }
   body.mls-is-fighting .mls-map-turn-order {
     max-height: min(14vh, 112px);
   }
-  body.mls-is-fighting .mls-transport-skip:not([hidden]) {
-    display: inline-flex;
-  }
 }
 @media (max-width: 560px) {
-  body.mls-is-fighting .mls-map-scroll,
-  body.mls-is-fighting.mls-battle-focus .mls-map-scroll {
+  body.mls-battle-focus .mls-map-scroll {
     height: min(70vh, 620px);
     min-height: 300px;
   }
@@ -2096,8 +2084,8 @@ body.mls-battle-focus .lang-dropdown.active {
     grid-column: 1;
     grid-row: 1;
     width: 100%;
-    height: min(48vh, 420px);
-    min-height: 200px;
+    height: min(64vh, 560px);
+    min-height: 280px;
   }
   .mls-map-stage > .mls-transport {
     grid-column: 1;
@@ -2152,7 +2140,8 @@ body.mls-battle-focus .lang-dropdown.active {
 }
 @media (max-width: 560px) {
   .mls-map-scroll {
-    height: min(44vh, 360px);
+    height: min(70vh, 620px);
+    min-height: 300px;
   }
   .mls-map-turn-order {
     max-height: min(24vh, 168px);
@@ -2377,12 +2366,24 @@ body.mls-is-map-dragging .mls-map {
 /*
  * iOS/mobile: filter:drop-shadow on every token + per-step layout = sluggish fights.
  * During playback, use cheap frame glows (box-shadow) instead.
+ * Keep KO linger / dissolve filters — stripping them made deaths look broken on phones
+ * (no grey-out, dissolve keyframes never painted).
  */
 @media (pointer: coarse), (max-width: 820px) {
-  .mls-board.is-fighting .mls-token,
-  .mls-shell.is-fighting .mls-token {
+  .mls-board.is-fighting .mls-token:not(.is-dead):not(.is-ko-linger),
+  .mls-shell.is-fighting .mls-token:not(.is-dead):not(.is-ko-linger) {
     filter: none !important;
     transition: transform var(--mls-move-ms) var(--mls-move-ease), opacity 0.18s ease;
+  }
+  .mls-board.is-fighting .mls-token.is-ko-linger,
+  .mls-shell.is-fighting .mls-token.is-ko-linger {
+    filter: grayscale(1) brightness(0.62) !important;
+    transition: filter 0.2s ease, opacity 0.18s ease;
+  }
+  .mls-board.is-fighting .mls-token.is-dead,
+  .mls-shell.is-fighting .mls-token.is-dead {
+    /* Dissolve owns opacity / filter / transform — do not fight keyframes. */
+    transition: none !important;
   }
   .mls-board.is-fighting .mls-token .mls-token-frame,
   .mls-shell.is-fighting .mls-token .mls-token-frame {
@@ -2400,8 +2401,8 @@ body.mls-is-map-dragging .mls-map {
   .mls-shell.is-fighting .mls-token.is-covering .mls-token-frame {
     box-shadow: 0 0 0 2px rgba(0, 200, 255, 0.85), 0 0 14px rgba(0, 200, 255, 0.5);
   }
-  .mls-board.is-fighting .mls-token.is-active:not(.is-covering),
-  .mls-shell.is-fighting .mls-token.is-active:not(.is-covering) {
+  .mls-board.is-fighting .mls-token.is-active:not(.is-covering):not(.is-dead):not(.is-ko-linger),
+  .mls-shell.is-fighting .mls-token.is-active:not(.is-covering):not(.is-dead):not(.is-ko-linger) {
     filter: none !important;
   }
   .mls-board.is-fighting .mls-cell.is-area-aura::before,
@@ -3450,44 +3451,41 @@ body.mls-is-map-dragging .mls-map {
   transition: filter 0.2s ease;
 }
 /*
- * KO dissolve — distinctive HP→0 exit (flash → shrink → fade).
- * transform here is the death scale; cover translate is cleared in markTokenGone first.
+ * KO dissolve — grey flash → smooth fade (no shrink).
+ * Scale-down read as “wrong” vs a clean death fade on mobile/desktop.
  */
 .mls-token.is-dead {
   opacity: 0;
-  filter: grayscale(1) brightness(1.35) saturate(0.2);
-  transform: scale(0.72) translate3d(0, 6px, 0) !important;
+  filter: grayscale(1) brightness(0.55);
+  transform: translate3d(0, 0, 0) !important;
   pointer-events: none;
-  animation: mls-ko-dissolve 0.62s var(--motion-ease-exit, cubic-bezier(0.3, 0, 1, 1)) forwards;
+  animation: mls-ko-dissolve 0.58s var(--motion-ease-exit, cubic-bezier(0.3, 0, 1, 1)) forwards;
   z-index: 1;
 }
 @keyframes mls-ko-dissolve {
   0% {
     opacity: 1;
-    filter: grayscale(0.35) brightness(1.55) saturate(0.45);
-    transform: scale(1.06) translate3d(0, 0, 0);
+    filter: grayscale(0.45) brightness(1.35) saturate(0.4);
   }
-  28% {
-    opacity: 0.92;
-    filter: grayscale(0.7) brightness(1.25) saturate(0.25);
-    transform: scale(1.02) translate3d(0, 1px, 0);
+  35% {
+    opacity: 0.85;
+    filter: grayscale(0.85) brightness(0.85) saturate(0.2);
   }
   100% {
     opacity: 0;
-    filter: grayscale(1) brightness(0.45) saturate(0.1);
-    transform: scale(0.72) translate3d(0, 6px, 0);
+    filter: grayscale(1) brightness(0.45) saturate(0.05);
   }
 }
 .mls-token.is-gone {
   display: none !important;
 }
+/*
+ * Keep KO dissolve under Reduce Motion (same class as muzzle / hit-stop).
+ * iOS often has it on; killing this left only an instant hide vs desktop grey→fade.
+ */
 @media (prefers-reduced-motion: reduce) {
   .mls-token.is-dead {
-    animation: none !important;
-    transition: opacity 0.18s ease !important;
-    opacity: 0;
-    transform: none !important;
-    filter: grayscale(1) brightness(0.55);
+    animation: mls-ko-dissolve 0.58s var(--motion-ease-exit, cubic-bezier(0.3, 0, 1, 1)) forwards !important;
   }
 }
 .mls-token-frame {
@@ -3968,34 +3966,61 @@ body.mls-is-map-dragging .mls-map {
   align-items: center;
   gap: 10px;
   margin-top: 10px;
-  padding: 8px 10px;
+  padding: 6px 10px;
   min-width: 0;
   background: rgba(2, 8, 20, 0.92);
   border: 1px solid rgba(0, 212, 255, 0.28);
   box-sizing: border-box;
 }
 .mls-transport[hidden] { display: none !important; }
-.mls-transport-play {
+/*
+ * Transport actions — frameless icon strip (one bar, not tiled boxes).
+ * Bar chrome stays on #mlsTransport; Play / Skip / Reset / Speed are bare controls.
+ */
+.mls-transport-play,
+.mls-transport-icon-btn,
+.mls-transport-speed {
   flex: 0 0 auto;
-  width: 36px;
   height: 36px;
   padding: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(0, 212, 255, 0.45);
-  background: rgba(0, 40, 70, 0.85);
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  clip-path: none;
   color: var(--accent-cyan, #00d4ff);
   cursor: pointer;
+  box-sizing: border-box;
+  transition: color 0.14s ease, opacity 0.14s ease, filter 0.14s ease;
+}
+.mls-transport-play {
+  width: 36px;
   font-size: 14px;
   line-height: 1;
 }
 .mls-transport-play:hover:not(:disabled),
-.mls-transport-play:focus-visible {
-  border-color: var(--accent-cyan, #00d4ff);
-  box-shadow: 0 0 0 1px rgba(0, 212, 255, 0.35);
+.mls-transport-icon-btn:hover:not(:disabled),
+.mls-transport-speed:hover:not(:disabled) {
+  color: #fff;
+  filter: brightness(1.12);
 }
-.mls-transport-play:disabled { opacity: 0.45; cursor: wait; }
+.mls-transport-play:focus-visible,
+.mls-transport-icon-btn:focus-visible,
+.mls-transport-speed:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--chrome-focus-ring, rgba(0, 212, 255, 0.55));
+}
+.mls-transport-play:disabled,
+.mls-transport-icon-btn:disabled,
+.mls-transport-speed:disabled {
+  opacity: 0.4;
+  cursor: default;
+  filter: none;
+}
+.mls-transport-play:disabled { cursor: wait; }
 .mls-transport-play-ic {
   display: block;
   font-size: 0;
@@ -4012,8 +4037,65 @@ body.mls-is-map-dragging .mls-map {
   font-size: 14px;
   letter-spacing: 0;
 }
+.mls-transport-play-replay {
+  display: none;
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  pointer-events: none;
+}
+.mls-transport-play.is-replay .mls-transport-play-ic {
+  display: none;
+}
+.mls-transport-play.is-replay .mls-transport-play-replay {
+  display: block;
+}
+.mls-transport-icon-btn {
+  width: 36px;
+}
+.mls-transport-icon-btn img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  pointer-events: none;
+  display: block;
+}
+/* Pull Play→Speed into one tight cluster before the clock. */
+.mls-transport-play,
+.mls-transport-icon-btn,
+.mls-transport-speed {
+  margin-right: -2px;
+}
+.mls-transport-speed,
+.mls-btn.mls-transport-speed {
+  margin-right: 0;
+  min-width: 36px;
+  padding: 0 6px;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  clip-path: none;
+  font-family: Teko, var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-transform: none;
+}
+.mls-btn.mls-transport-speed:hover,
+.mls-btn.mls-transport-speed:focus-visible {
+  background: transparent;
+  box-shadow: none;
+  color: #fff;
+  filter: brightness(1.12);
+}
+.mls-btn.mls-transport-speed:focus-visible {
+  box-shadow: 0 0 0 2px var(--chrome-focus-ring, rgba(0, 212, 255, 0.55));
+}
 .mls-transport-time {
   flex: 0 0 auto;
+  margin-left: 6px;
   font-family: Teko, var(--font-body);
   font-size: 14px;
   letter-spacing: 0.04em;
@@ -4024,7 +4106,7 @@ body.mls-is-map-dragging .mls-map {
 }
 .mls-transport-scrub {
   flex: 1 1 auto;
-  min-width: 80px;
+  min-width: 48px;
   height: 28px;
   margin: 0;
   cursor: pointer;
@@ -4032,29 +4114,174 @@ body.mls-is-map-dragging .mls-map {
   background: transparent;
 }
 .mls-transport-scrub:disabled { cursor: default; opacity: 0.5; }
-.mls-transport-speed {
-  flex: 0 0 auto;
-  min-width: 44px;
-  padding-left: 8px;
-  padding-right: 8px;
+/*
+ * SIMULATION START — Master League hub.
+ * tex_bg_earth01 is the equirectangular Earth_Main map; the canvas projects it
+ * onto a sphere. Ring + sunlight sit on top. One front rope wraps the lower edge.
+ */
+.mls-btn.primary.mls-sim-start--board {
+  --mls-earth: clamp(148px, min(46vw, 52vh, 42vmin), 300px);
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  z-index: 30;
+  margin: 0;
+  padding: 0;
+  width: auto;
+  min-width: 0;
+  max-width: min(100%, calc(100vw - 48px));
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  color: #eafcff;
+  background: transparent;
+  border: 0;
+  clip-path: none;
+  box-shadow: none;
+  text-shadow: none;
+  transform: translate(-50%, -50%);
+  transition: transform var(--motion-dur-quick, 120ms) var(--motion-ease-standard, cubic-bezier(0.2, 0, 0, 1));
 }
-.mls-transport-skip {
+.mls-sim-earth-wrap {
+  position: relative;
+  width: var(--mls-earth);
+  height: var(--mls-earth);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.mls-sim-earth {
+  z-index: 1;
+  position: absolute;
+  inset: 8px;
+  width: calc(100% - 16px);
+  height: calc(100% - 16px);
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: 0 0 18px rgba(20, 40, 80, 0.45);
+  pointer-events: none;
+}
+.mls-sim-earth-sun,
+.mls-sim-earth-ring {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.mls-sim-earth-sun {
   display: none;
-  flex: 0 0 auto;
-  min-width: 52px;
-  padding-left: 8px;
-  padding-right: 8px;
-  font-size: 12px;
-  letter-spacing: 0.04em;
 }
-.mls-transport-skip[hidden] { display: none !important; }
+.mls-sim-earth-ring {
+  display: none;
+}
+.mls-sim-beam {
+  z-index: 3;
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--mls-earth) * 0.193);
+  width: calc(var(--mls-earth) * 1.16);
+  height: calc(var(--mls-earth) * 0.167);
+  transform: translateX(-50%);
+  background:
+    url('/static/images/Master%20League/BeamRope_Front_Half_ML_Top_300010.webp') center / 100% 100% no-repeat;
+  filter:
+    brightness(1.28) contrast(1.18) saturate(1.28)
+    drop-shadow(0 0 4px rgba(255, 80, 220, 0.7))
+    drop-shadow(0 0 9px rgba(255, 40, 180, 0.42));
+  pointer-events: none;
+}
+.mls-sim-start-label {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--mls-earth) * 0.38);
+  z-index: 4;
+  transform: translateX(-50%);
+  font-family: Teko, var(--font-body);
+  font-weight: 600;
+  font-size: clamp(0.95rem, calc(var(--mls-earth) * 0.078), 1.45rem);
+  letter-spacing: clamp(0.1em, 0.45vw, 0.16em);
+  text-transform: uppercase;
+  color: #d7f6ff;
+  text-shadow: 0 0 12px rgba(0, 180, 255, 0.65), 0 1px 0 rgba(0, 0, 0, 0.8);
+  white-space: nowrap;
+  pointer-events: none;
+}
+/* Board soft-blur while Start is up — scoped to the map, not the whole page. */
+.mls-map-viewport.is-sim-start #mlsBoard {
+  filter: blur(3.5px);
+  transition: filter var(--motion-dur-standard, 220ms) var(--motion-ease-standard, cubic-bezier(0.2, 0, 0, 1));
+}
+.mls-map-viewport.is-sim-start::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 25;
+  background: rgba(2, 8, 20, 0.38);
+  pointer-events: none;
+}
+.mls-btn.primary.mls-sim-start--board:hover .mls-sim-earth,
+.mls-btn.primary.mls-sim-start--board:focus-visible .mls-sim-earth {
+  box-shadow:
+    0 0 0 1px rgba(210, 240, 255, 0.7),
+    0 0 36px rgba(0, 212, 255, 0.55),
+    inset 0 0 18px rgba(0, 0, 0, 0.28);
+}
+.mls-btn.primary.mls-sim-start--board:hover,
+.mls-btn.primary.mls-sim-start--board:focus-visible {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  transform: translate(-50%, calc(-50% - 2px));
+  filter: none;
+  outline: none;
+}
+.mls-btn.primary.mls-sim-start--board:active {
+  transform: translate(-50%, -50%) scale(0.98);
+  box-shadow: none;
+  filter: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .mls-btn.primary.mls-sim-start--board,
+  .mls-btn.primary.mls-sim-start--board:hover,
+  .mls-btn.primary.mls-sim-start--board:focus-visible,
+  .mls-btn.primary.mls-sim-start--board:active {
+    transition: none;
+    transform: translate(-50%, -50%);
+  }
+  .mls-map-viewport.is-sim-start #mlsBoard {
+    filter: none;
+    opacity: 0.55;
+  }
+}
+body.mls-is-fighting .mls-sim-start--board,
+.mls-sim-start--board[hidden] {
+  display: none !important;
+}
+/* Skip asset is a wide 157×40 plate — give it room so SKIP text stays readable. */
+.mls-transport-skip {
+  width: auto;
+  min-width: 56px;
+  padding: 0 7px;
+}
+.mls-transport-skip img {
+  width: 52px;
+  height: 14px;
+  object-fit: contain;
+}
+.mls-transport-reset img {
+  width: 18px;
+  height: 22px;
+  object-fit: contain;
+}
 .mls-controls {
   display: flex;
   flex-wrap: wrap;
   gap: 10px 12px;
   margin-top: 10px;
   align-items: flex-start;
-  justify-content: space-between;
+  justify-content: flex-end;
 }
 .mls-controls-main {
   display: flex;
@@ -4065,15 +4292,56 @@ body.mls-is-map-dragging .mls-map {
 }
 @media (max-width: 820px) {
   .mls-transport {
-    gap: 6px;
-    padding: 5px 8px;
+    gap: 5px;
+    padding: 5px 6px;
   }
-  .mls-transport-play {
+  .mls-transport-play,
+  .mls-transport-icon-btn,
+  .mls-transport-speed {
     width: 32px;
     height: 32px;
   }
-  .mls-transport-time { min-width: 4.4em; font-size: 12px; }
-  .mls-transport-scrub { height: 24px; min-width: 64px; }
+  .mls-transport-speed {
+    min-width: 32px;
+    padding: 0 4px;
+    font-size: 13px;
+  }
+  .mls-transport-icon-btn img {
+    width: 18px;
+    height: 18px;
+  }
+  .mls-transport-skip {
+    width: auto;
+    min-width: 50px;
+    padding: 0 5px;
+  }
+  .mls-transport-skip img {
+    width: 44px;
+    height: 12px;
+  }
+  .mls-transport-reset img {
+    width: 15px;
+    height: 18px;
+  }
+  .mls-transport-time { min-width: 4.2em; font-size: 12px; }
+  .mls-transport-scrub { height: 24px; min-width: 40px; }
+  .mls-sim-start--board {
+    --mls-earth: clamp(132px, min(58vw, 40vh, 48vmin), 240px);
+    min-width: 0;
+    width: max-content;
+    max-width: calc(100% - 16px);
+    padding-left: 0;
+    padding-right: 0;
+    top: 48%;
+  }
+  .mls-map-viewport.is-sim-start #mlsBoard {
+    filter: blur(2.5px);
+  }
+}
+@media (max-width: 520px), (max-height: 640px) {
+  .mls-sim-start--board {
+    --mls-earth: clamp(120px, min(62vw, 36vh, 52vmin), 200px);
+  }
 }
 .mls-sim-start {
   min-width: 168px;
