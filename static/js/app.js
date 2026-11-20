@@ -3543,8 +3543,8 @@ function mlDeployCellKey(x,y){return String(x)+','+String(y)}
  * Deploy preview 2×2 from MD home (X,Y):
  * — lateral: behind facing (enemy Right→−x, ally Left→+x), same as /mls
  *   or toward opponent (standard slots 2 & 3 only)
- * — LINE: south (−y); digit bottom-front
- * — standard: all slots north (+y); slots 2 & 3 toward opponent (not behind); digit on MD
+ * — Y: always north (+y) from MD (LINE + standard); digit on MD
+ *   Ally LINE slot 5 @ (12,15) → (12,15)(13,15)(12,16)(13,16)
  */
 function mlDeployFootprintCells(force,x,y,direction,expandY,lateralMode){
 const dir=direction!=null?(direction|0):(force==='ally'?3:1);
@@ -3562,7 +3562,17 @@ return cut.replace(/[:：]\s*$/,'').trim()||'Stage';
 function mlRenderDeploymentBoard(season){
 const dep=season&&season.deployment;const sides=(dep&&dep.sides)||[];
 if(!sides.length)return'';
-const isLine=String((dep&&dep.formation)||'').toLowerCase()==='line';
+/* Geometry first: multi-column ally spawns = standard (never trust a stale "line" flag). */
+let isLine=String((dep&&dep.formation)||'').toLowerCase()==='line';
+(function(){
+const allySide=(sides||[]).find(function(s){return(s.player_side|0)===1});
+const ac=(allySide&&allySide.cells)||[];
+if(ac.length>=2){
+const x0=ac[0].x|0;
+if(ac.some(function(c){return(c.x|0)!==x0;}))isLine=false;
+else isLine=true;
+}
+})();
 const units=[];
 const fpById=Object.create(null);
 sides.forEach(function(side){
@@ -3570,17 +3580,17 @@ const ps=side.player_side|0;const force=ps===1?'ally':(ps===2?'enemy':null);if(!
 const direction=side.direction;
 (side.cells||[]).forEach(function(c){
 const px=c.x|0,py=c.y|0,n=c.n|0;
-/* LINE: all slots behind + south (−y), digit bottom-front.
- * Standard: north (+y); 1/4/5 behind, 2 & 3 toward opponent; digit on MD. */
+/* LINE + standard: north (+y) from MD; digit on MD.
+ * Lateral: 1/4/5 behind facing; standard 2 & 3 toward opponent. */
 const stdTowardOpp=!isLine&&(n===2||n===3);
-const expandY=isLine?-1:1;
+const expandY=1;
 const lateral=stdTowardOpp?'toward':'behind';
 const fp=mlDeployFootprintCells(force,px,py,direction,expandY,lateral);
 const fpId=force+'-'+String(n);
 const fpSet=Object.create(null);
 fp.forEach(function(cell){fpSet[mlDeployCellKey(cell.x,cell.y)]=1});
 fpById[fpId]=fp;
-const nx=px,ny=isLine?(py-1):py;
+const nx=px,ny=py;
 units.push({force:force,n:n,direction:direction|0,posType:c.type|0,fp:fp,fpSet:fpSet,fpId:fpId,px:px,py:py,nx:nx,ny:ny});
 });
 });

@@ -20,28 +20,10 @@
     return u.isLarge ? 2 : 1;
   }
 
-  /** MLS getDistance — orthogonal gap between footprints (NOT Chebyshev). */
-  function distance(u1, u2) {
-    var s1 = unitSize(u1);
-    var s2 = unitSize(u2);
-    var x1 = u1.x | 0;
-    var y1 = u1.y | 0;
-    var x2 = u2.x | 0;
-    var y2 = u2.y | 0;
-    var xDist = Math.max(0, x1 - (x2 + s2 - 1), x2 - (x1 + s1 - 1));
-    var yDist = Math.max(0, y1 - (y2 + s2 - 1), y2 - (y1 + s1 - 1));
-    return xDist + yDist;
-  }
-
-  function checkOverlap(x1, y1, size1, x2, y2, size2) {
-    return x1 <= x2 + size2 - 1 && x1 + size1 - 1 >= x2 &&
-      y1 <= y2 + size2 - 1 && y1 + size1 - 1 >= y2;
-  }
-
   /**
-   * 2×2 expands behind facing (same as ml_sim footprintCells):
-   * dir 1 Right → −x; dir 3 Left → +x; plus one cell down (−y).
-   * AABB checkOverlap grows +y and misses the real −y lobe — do not use it for landing.
+   * 2×2 expands behind facing + north (+y) by default (dir 1 Right → −x; dir 3 Left → +x).
+   * When `hint` carries fpDx/fpDy (stamped from Master League deploy / formation), use those —
+   * standard slots 2 & 3 flip lateral toward midfield. Y is always +1 from MD spawn.
    */
   function footprintDx(side, direction) {
     var dir = direction != null ? (direction | 0) : (side === 'ally' ? 3 : 1);
@@ -50,18 +32,84 @@
     return side === 'ally' ? 1 : -1;
   }
 
-  function footprintCellsAt(x, y, size, side, direction) {
+  function footprintCellsAt(x, y, size, side, direction, hint) {
     var dx;
+    var dy;
+    var n;
     x = x | 0;
     y = y | 0;
     if (!(size > 1)) return [{ x: x, y: y }];
-    dx = footprintDx(side, direction);
+    if (hint && hint.fpDx != null) {
+      dx = hint.fpDx | 0;
+    } else {
+      dx = footprintDx(side, direction);
+      /* Same toward-midfield flip as ml_sim mlsFootprintAxes when stamp missing. */
+      n = hint && (hint.n | 0);
+      if (hint && hint.isLine === false && (n === 2 || n === 3)) dx = -dx;
+    }
+    if (hint && hint.fpDy != null) dy = hint.fpDy | 0;
+    else dy = 1;
     return [
       { x: x, y: y },
       { x: x + dx, y: y },
-      { x: x, y: y - 1 },
-      { x: x + dx, y: y - 1 }
+      { x: x, y: y + dy },
+      { x: x + dx, y: y + dy }
     ];
+  }
+
+  /** Axis-aligned bounds of the real footprint (honors fpDx toward midfield). */
+  function footprintBounds(u) {
+    var cells = footprintCellsAt(
+      u.x | 0, u.y | 0, unitSize(u), u.side, u.direction, u
+    );
+    var minX = cells[0].x | 0;
+    var maxX = minX;
+    var minY = cells[0].y | 0;
+    var maxY = minY;
+    var i;
+    var c;
+    for (i = 1; i < cells.length; i++) {
+      c = cells[i];
+      if ((c.x | 0) < minX) minX = c.x | 0;
+      if ((c.x | 0) > maxX) maxX = c.x | 0;
+      if ((c.y | 0) < minY) minY = c.y | 0;
+      if ((c.y | 0) > maxY) maxY = c.y | 0;
+    }
+    return { minX: minX, maxX: maxX, minY: minY, maxY: maxY };
+  }
+
+  /**
+   * Probe a unit’s footprint at another MD anchor (reachable-cell distance checks).
+   * Keeps fpDx/fpDy so standard slots 2 & 3 stay toward midfield after a move.
+   */
+  function withFootprintAt(u, x, y) {
+    if (!u) return { x: x | 0, y: y | 0, size: 1 };
+    return {
+      x: x | 0,
+      y: y | 0,
+      size: unitSize(u),
+      isLarge: unitSize(u) > 1,
+      side: u.side,
+      direction: u.direction,
+      fpDx: u.fpDx,
+      fpDy: u.fpDy,
+      n: u.n,
+      isLine: u.isLine
+    };
+  }
+
+  /** MLS getDistance — orthogonal gap between real footprints (NOT Chebyshev). */
+  function distance(u1, u2) {
+    var b1 = footprintBounds(u1);
+    var b2 = footprintBounds(u2);
+    var xDist = Math.max(0, b1.minX - b2.maxX, b2.minX - b1.maxX);
+    var yDist = Math.max(0, b1.minY - b2.maxY, b2.minY - b1.maxY);
+    return xDist + yDist;
+  }
+
+  function checkOverlap(x1, y1, size1, x2, y2, size2) {
+    return x1 <= x2 + size2 - 1 && x1 + size1 - 1 >= x2 &&
+      y1 <= y2 + size2 - 1 && y1 + size1 - 1 >= y2;
   }
 
   function footprintsOverlap(cellsA, cellsB) {
@@ -78,11 +126,11 @@
   }
 
   /** True if a unit of `size` at (x,y) would share a cell with `other`. */
-  function wouldOverlapUnit(x, y, size, side, direction, other) {
+  function wouldOverlapUnit(x, y, size, side, direction, other, selfHint) {
     if (!other) return false;
     return footprintsOverlap(
-      footprintCellsAt(x, y, size, side, direction),
-      footprintCellsAt(other.x | 0, other.y | 0, unitSize(other), other.side, other.direction)
+      footprintCellsAt(x, y, size, side, direction, selfHint),
+      footprintCellsAt(other.x | 0, other.y | 0, unitSize(other), other.side, other.direction, other)
     );
   }
 
@@ -237,7 +285,7 @@
       for (i = 0; i < (allUnits || []).length; i++) {
         u = allUnits[i];
         if (!u || (u.hp | 0) <= 0 || u === actor) continue;
-        if (wouldOverlapUnit(x, y, size, actor.side, actor.direction, u)) return true;
+        if (wouldOverlapUnit(x, y, size, actor.side, actor.direction, u, actor)) return true;
       }
       return false;
     }
@@ -248,7 +296,7 @@
         u = allUnits[i];
         if (!u || (u.hp | 0) <= 0 || u === actor) continue;
         if (u.side === actor.side) continue;
-        if (wouldOverlapUnit(x, y, size, actor.side, actor.direction, u)) return true;
+        if (wouldOverlapUnit(x, y, size, actor.side, actor.direction, u, actor)) return true;
       }
       return false;
     }
@@ -263,7 +311,7 @@
         nx = curr.x + dirs[t][0];
         ny = curr.y + dirs[t][1];
         /* Bounds against real facing footprint (not AABB +y). */
-        if (!footprintCellsAt(nx, ny, size, actor.side, actor.direction).every(function (c) {
+        if (!footprintCellsAt(nx, ny, size, actor.side, actor.direction, actor).every(function (c) {
           return c.x >= bounds.minX && c.x <= bounds.maxX &&
             c.y >= bounds.minY && c.y <= bounds.maxY;
         })) continue;
@@ -299,8 +347,9 @@
   function getBestMoveDestination(actor, target, maxMove, minR, maxR, allUnits, bounds) {
     var size = unitSize(actor);
     var start = { x: actor.x | 0, y: actor.y | 0 };
-    var startDist = distance({ x: start.x, y: start.y, size: size }, target);
-    var reachable, bestCell, bestScore, bestSteps, i, cell, d, score, tSize, tCx, tCy, aCx, aCy, bCx, bCy, eA, eB;
+    var startDist = distance(withFootprintAt(actor, start.x, start.y), target);
+    var reachable, bestCell, bestScore, bestSteps, i, cell, d, score, tCx, tCy, aCx, aCy, bCx, bCy, eA, eB;
+    var tb;
 
     if (startDist >= minR && startDist <= maxR) {
       return { x: start.x, y: start.y, path: [], moved: false };
@@ -310,13 +359,13 @@
     bestCell = start;
     bestScore = Infinity;
     bestSteps = Infinity;
-    tSize = unitSize(target);
-    tCx = (target.x | 0) + (tSize - 1) / 2;
-    tCy = (target.y | 0) + (tSize - 1) / 2;
+    tb = footprintBounds(target);
+    tCx = (tb.minX + tb.maxX) / 2;
+    tCy = (tb.minY + tb.maxY) / 2;
 
     for (i = 0; i < reachable.length; i++) {
       cell = reachable[i];
-      d = distance({ x: cell.x, y: cell.y, size: size }, target);
+      d = distance(withFootprintAt(actor, cell.x, cell.y), target);
       if (d >= minR && d <= maxR) score = 0;
       else if (d < minR) score = minR - d;
       else score = d - maxR;
@@ -388,7 +437,7 @@
         ideal = Infinity;
         for (i = 0; i < cells.length; i++) {
           cell = cells[i];
-          d = distance({ x: cell.x, y: cell.y, size: unitSize(attacker) }, enemy);
+          d = distance(withFootprintAt(attacker, cell.x, cell.y), enemy);
           if (d >= mn && d <= mxEff) {
             can = true;
             if (d < ideal) ideal = d;
@@ -1958,7 +2007,7 @@
 
   /**
    * World cells for MAP weapon from master map_coords + facing.
-   * 2×2 kits: visual footprint grows −y from the placement anchor (see footprintCellsAt),
+   * 2×2 kits: visual footprint grows +y from the placement anchor (see footprintCellsAt),
    * while facing-right (dir 1) MLS mapping sends local +x → +y. Mirror that axis for
    * large units so the overlay starts on the drawn body (e.g. Neue Ziel EX → cells
    * beside the portrait, not one tile above).
@@ -1980,16 +2029,16 @@
   }
 
   function unitOverlapsCells(unit, cells) {
-    var size = unitSize(unit);
-    var ux = unit.x | 0;
-    var uy = unit.y | 0;
-    var i, c, x, y;
-    for (i = 0; i < cells.length; i++) {
+    var fp = footprintCellsAt(
+      unit.x | 0, unit.y | 0, unitSize(unit), unit.side, unit.direction, unit
+    );
+    var i, j, c, p;
+    for (i = 0; i < (cells || []).length; i++) {
       c = cells[i];
-      for (x = ux; x < ux + size; x++) {
-        for (y = uy; y < uy + size; y++) {
-          if (c.x === x && c.y === y) return true;
-        }
+      if (!c) continue;
+      for (j = 0; j < fp.length; j++) {
+        p = fp[j];
+        if ((c.x | 0) === (p.x | 0) && (c.y | 0) === (p.y | 0)) return true;
       }
     }
     return false;
@@ -2069,7 +2118,7 @@
     for (i = locals.length - 1; i >= 0; i--) {
       loc = locals[i];
       world = mapLocalToWorld(actor, loc.x | 0, loc.y | 0);
-      ok = footprintCellsAt(world.x, world.y, size, actor.side, actor.direction).every(function (c) {
+      ok = footprintCellsAt(world.x, world.y, size, actor.side, actor.direction, actor).every(function (c) {
         return c.x >= (bounds.minX | 0) && c.x <= (bounds.maxX | 0) &&
           c.y >= (bounds.minY | 0) && c.y <= (bounds.maxY | 0);
       });
@@ -2077,7 +2126,7 @@
       for (j = 0; j < (allUnits || []).length; j++) {
         u = allUnits[j];
         if (!u || (u.hp | 0) <= 0 || u === actor) continue;
-        if (wouldOverlapUnit(world.x, world.y, size, actor.side, actor.direction, u)) {
+        if (wouldOverlapUnit(world.x, world.y, size, actor.side, actor.direction, u, actor)) {
           ok = false;
           break;
         }
@@ -2107,8 +2156,7 @@
    * other foes as possible also fall in minR..maxR (pick off N spots).
    */
   function getBestImpactMapDestination(actor, target, foes, maxMove, minR, maxR, allUnits, bounds) {
-    var size = unitSize(actor);
-    var start = { x: actor.x | 0, y: actor.y | 0, size: size };
+    var start = withFootprintAt(actor, actor.x, actor.y);
     var reachable, i, cell, d, score, inCount, best, pos;
     var livingFoes = alive(foes);
 
@@ -2132,7 +2180,7 @@
     }
     for (i = 0; i < reachable.length; i++) {
       cell = reachable[i];
-      pos = { x: cell.x | 0, y: cell.y | 0, size: size };
+      pos = withFootprintAt(actor, cell.x, cell.y);
       d = distance(pos, target);
       if (d < minR || d > maxR) continue;
       inCount = countInRange(pos);
@@ -2200,7 +2248,7 @@
       ed = distance(simPos, entry);
       if (ed < mn || ed > mx) continue;
       fp = footprintCellsAt(
-        entry.x | 0, entry.y | 0, unitSize(entry), entry.side, entry.direction
+        entry.x | 0, entry.y | 0, unitSize(entry), entry.side, entry.direction, entry
       );
       byUnit.push({ unit: entry, cells: fp.slice() });
     }
@@ -2330,10 +2378,7 @@
 
     function usableNonMapFrom(fromPos) {
       var localBest = 0;
-      var dist = distance(
-        { x: fromPos.x | 0, y: fromPos.y | 0, size: unitSize(actor) },
-        target
-      );
+      var dist = distance(withFootprintAt(actor, fromPos.x, fromPos.y), target);
       var valid = getValidWeapons(
         Object.assign({}, actor, { x: fromPos.x | 0, y: fromPos.y | 0 }),
         dist,
@@ -2469,10 +2514,7 @@
       needMove = !isDash && (rawDist > mx || rawDist < mn);
       if (isMoveBeforeOnly(wpn) && needMove) continue;
 
-      simPos = {
-        x: actor.x | 0, y: actor.y | 0, size: unitSize(actor),
-        side: actor.side, direction: actor.direction
-      };
+      simPos = withFootprintAt(actor, actor.x, actor.y);
       /*
        * Dash MAP: attack IS the path — fire from the current tile only.
        * After-move impact (Altron / Strike Noir): walk to maximize foes in
@@ -2482,8 +2524,8 @@
         needMove = false;
       } else if (impactMode && afterMoveOk) {
         dest = getBestImpactMapDestination(actor, target, foes, actor.move | 0, mn, mx, allUnits, bounds);
-        if (dest && distance({ x: dest.x, y: dest.y, size: simPos.size }, target) >= mn &&
-            distance({ x: dest.x, y: dest.y, size: simPos.size }, target) <= mx) {
+        if (dest && distance(withFootprintAt(actor, dest.x, dest.y), target) >= mn &&
+            distance(withFootprintAt(actor, dest.x, dest.y), target) <= mx) {
           var stayCount = 0;
           alive(foes).forEach(function (e) {
             var ed = distance(simPos, e);

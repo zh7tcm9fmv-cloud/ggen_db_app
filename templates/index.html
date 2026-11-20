@@ -901,16 +901,16 @@ window.__GGEN_LAZY__=(function(){
     return Promise.all([loadCss('gacha_sim'), loadJs('gacha_sim')]).then(function(){return window.GgenGachaSim||null});
   }
   function ensureMlSim(){
-    /* Stale SPA sessions can keep a pre-play-icon / pre-foot-plant ml_sim; require current mark. */
-    if(window.GgenMlSim && window.GgenMlSim.chipFaceMark==='__MLS_CHIP_THUM_V11__'){
+    /* Stale SPA sessions can keep a pre-koma-fit / pre-play-icon ml_sim; require current mark. */
+    if(window.GgenMlSim && window.GgenMlSim.chipFaceMark==='__MLS_CHIP_THUM_V12__'){
       markMlsSkinReady();
       return Promise.resolve(window.GgenMlSim);
     }
     /* Reveal shell only after CSS is in the cascade — don't wait on ml_sim.js. */
-    return Promise.all([loadCss('ml_sim', String(v)+'-playic1'), loadCss('master_league')])
+    return Promise.all([loadCss('ml_sim', String(v)+'-stdfp2'), loadCss('master_league')])
       .then(afterStylesApplied)
       .then(function(){markMlsSkinReady();return loadJs('ml_sim_rules')})
-      .then(function(){return loadJs('ml_sim', String(v)+'-playic1')})
+      .then(function(){return loadJs('ml_sim', String(v)+'-stdfp2')})
       .then(function(){return window.GgenMlSim||null});
   }
   function ensureSalesTracking(){

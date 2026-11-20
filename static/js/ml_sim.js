@@ -406,7 +406,7 @@
   }
 
   /* Survives minify — proves chip-face helper is the loaded bundle (bump when chip path changes). */
-  var MLS_CHIP_FACE_MARK = '__MLS_CHIP_THUM_V11__';
+  var MLS_CHIP_FACE_MARK = '__MLS_CHIP_THUM_V12__';
   /** FX URL → usable spark (false = black plate / skip forever this session). */
   var mlsFxUsableCache = Object.create(null);
 
@@ -438,15 +438,21 @@
     return '';
   }
 
+  /** Drop legacy vars before re-applying fit + balance. */
+  function mlsKomaClearFitVars(img) {
+    if (!img || !img.style) return;
+    img.style.removeProperty('--mls-koma-fit');
+    img.style.removeProperty('--mls-koma-shift-x');
+    img.style.removeProperty('--mls-koma-foot-nudge');
+    img.style.removeProperty('--mls-koma-boost');
+  }
+
   /**
-   * Height-lock makes tall/narrow standby plates read smaller than wide SD peers.
-   * Boost by canvas aspect (worldwide — not per unit id). Cap so MAs stay sane.
-   *
-   * Also plant feet: standby plates vary in transparent bottom pad (Sazabi EX right
-   * ~10% vs median ~5.5%). object-position:bottom plants the bitmap edge, not ink,
-   * so extra pad + aspect boost reads as “hovering”. Nudge down by the excess.
+   * Worldwide ink measure (never per unit id).
+   * Returns painted bbox height + mass-weighted center X.
+   * crossorigin is set on the <img> from first paint — do not reload src here.
    */
-  function mlsKomaMeasureBottomPadFrac(img) {
+  function mlsKomaMeasureInk(img) {
     var nw = img.naturalWidth | 0;
     var nh = img.naturalHeight | 0;
     var canvas;
@@ -454,8 +460,11 @@
     var data;
     var x;
     var y;
-    var row;
-    var padBot;
+    var a;
+    var minY;
+    var maxY;
+    var sumX = 0;
+    var count = 0;
     if (!nw || !nh) return null;
     try {
       canvas = document.createElement('canvas');
@@ -466,105 +475,88 @@
       ctx.drawImage(img, 0, 0);
       data = ctx.getImageData(0, 0, nw, nh).data;
     } catch (err) {
-      /* Cross-origin without CORS — skip foot nudge, keep aspect boost only. */
       return null;
     }
-    padBot = nh;
-    for (y = nh - 1; y >= 0; y--) {
-      row = y * nw * 4;
+    minY = nh;
+    maxY = -1;
+    for (y = 0; y < nh; y++) {
       for (x = 0; x < nw; x++) {
-        if (data[row + x * 4 + 3] > 8) {
-          padBot = nh - 1 - y;
-          y = -1;
-          break;
+        a = data[(y * nw + x) * 4 + 3];
+        if (a > 8) {
+          if (y < minY) minY = y;
+          if (y > maxY) maxY = y;
+          sumX += x;
+          count++;
         }
       }
     }
-    if (padBot >= nh) return null;
-    return padBot / nh;
+    if (count < 20 || maxY < minY) return null;
+    return {
+      nh: nh,
+      inkH: maxY - minY + 1,
+      cx: (sumX / count) / nw
+    };
   }
 
-  function mlsKomaApplyAspectBoost(img) {
-    var src;
+  /**
+   * Equalize painted standing height (Destiny was ~98% canvas fill, Astray ~92%,
+   * sparse plates lower — same CSS 152% looked uneven). Also nudge backside mass
+   * toward the front. No per-id special cases.
+   */
+  function mlsKomaApplyStandingFit(img, u) {
+    var ink;
+    var hFill;
+    var boxCells;
+    var targetCells;
+    var fit;
+    var shift;
+    var facing;
+    var frontIsLeft;
+    var tok;
     function apply() {
-      var nw = img.naturalWidth | 0;
-      var nh = img.naturalHeight | 0;
-      var aspect;
-      var boost;
-      var padFrac;
-      var nudge;
-      var boostNudge;
-      /* CSS .mls-token.is-koma .mls-token-thum height — keep in sync. */
-      var komaH = 1.58;
-      var refPad = 0.05;
-      /* Ink feet target: slightly below the cell floor (peers hang ~8–12%). */
-      var targetFeet = -0.10;
-      var baseBottom = -0.24;
-      if (!nw || !nh) {
-        img.style.removeProperty('--mls-koma-boost');
-        img.style.removeProperty('--mls-koma-foot-nudge');
-        return;
-      }
-      aspect = nw / nh;
-      if (aspect > 0 && aspect < 1) {
-        boost = Math.min(1.28, 1.06 / aspect);
-      } else {
-        boost = 1;
-      }
-      if (boost > 1.02) img.style.setProperty('--mls-koma-boost', boost.toFixed(3));
-      else img.style.removeProperty('--mls-koma-boost');
-
-      padFrac = mlsKomaMeasureBottomPadFrac(img);
-      if (padFrac == null) {
-        /* CORS-tainted decode — still plant tall/boosted plates (Sazabi-class). */
-        if (boost > 1.02) {
-          padFrac = Math.max(0.09, 0.12 - aspect * 0.04);
-        } else {
-          img.style.removeProperty('--mls-koma-foot-nudge');
-          return;
+      mlsKomaClearFitVars(img);
+      if (!(img.naturalWidth | 0)) return;
+      ink = mlsKomaMeasureInk(img);
+      tok = img.closest && img.closest('.mls-token');
+      /* CSS height 152% of token: 1×1 → 1.52 cells; 2×2 → 3.04 cells. */
+      boxCells = (tok && tok.classList.contains('is-large')) ? (2 * 1.52) : 1.52;
+      /* Shared painted height in cell units (2×2 keeps a larger standing size). */
+      targetCells = (tok && tok.classList.contains('is-large')) ? 2.55 : 1.38;
+      if (ink && ink.inkH && ink.nh) {
+        hFill = ink.inkH / ink.nh;
+        fit = targetCells / (boxCells * hFill);
+        if (!(fit > 0) || !isFinite(fit)) fit = 1;
+        fit = Math.max(0.78, Math.min(1.22, fit));
+        if (Math.abs(fit - 1) > 0.02) {
+          img.style.setProperty('--mls-koma-fit', fit.toFixed(3));
         }
+        shift = (0.5 - ink.cx) * 140;
+      } else {
+        facing = (u && u.komaFacing) || mlsKomaFacingFromDir(u && u.direction);
+        frontIsLeft = facing === 'left' || facing === 'L';
+        shift = frontIsLeft ? -16 : 16;
       }
-      /*
-       * feetFrac ≈ baseBottom + padFrac*komaH*boost  (as fraction of token).
-       * Extra bottom % lowers the sprite until feetFrac ≈ targetFeet.
-       */
-      nudge = Math.max(0, (baseBottom + padFrac * komaH * boost - targetFeet) * 100);
-      /* Tall boost grows upward from a padded origin — add a floor so hover can’t remain. */
-      boostNudge = boost > 1.02 ? (boost - 1) * 55 : 0;
-      nudge = Math.max(nudge, boostNudge);
-      if (nudge > 0.5) img.style.setProperty('--mls-koma-foot-nudge', Math.min(36, nudge).toFixed(2) + '%');
-      else img.style.removeProperty('--mls-koma-foot-nudge');
-    }
-    function arm() {
-      if (img.complete && (img.naturalWidth | 0)) apply();
-      else img.addEventListener('load', apply, { once: true });
+      if (Math.abs(shift) >= 1.5) {
+        img.style.setProperty(
+          '--mls-koma-shift-x',
+          Math.max(-24, Math.min(24, shift)).toFixed(2) + '%'
+        );
+      }
     }
     if (!img) return;
-    src = String(img.getAttribute('src') || '');
-    if (src.indexOf('Simulator/koma') < 0 && src.indexOf('/koma/') < 0) {
-      img.style.removeProperty('--mls-koma-boost');
-      img.style.removeProperty('--mls-koma-foot-nudge');
+    if (String(img.getAttribute('src') || '').indexOf('Simulator/koma') < 0 &&
+        String(img.getAttribute('src') || '').indexOf('/koma/') < 0) {
+      mlsKomaClearFitVars(img);
       return;
     }
-    /* CORS so getImageData can read CDN koma; reload once if already decoded opaque. */
-    try {
-      if (img.getAttribute('crossorigin') !== 'anonymous') {
-        img.setAttribute('crossorigin', 'anonymous');
-        if (img.complete && (img.naturalWidth | 0) && !img.dataset.mlsCorsReload) {
-          img.dataset.mlsCorsReload = '1';
-          img.addEventListener('load', apply, { once: true });
-          /* Re-assign absolute src so the browser refetches with CORS mode. */
-          img.src = img.currentSrc || img.src || src;
-          return;
-        }
-      }
-    } catch (eCors) { /* ignore */ }
-    arm();
+    if (img.complete && (img.naturalWidth | 0)) apply();
+    else img.addEventListener('load', apply, { once: true });
   }
 
   function mlsBindKomaImgFallback(img, u) {
     var fb;
     if (!img) return;
+    mlsKomaClearFitVars(img);
     fb = mlsPortraitFaceUrl(u);
     if (fb && String(img.getAttribute('src') || '').indexOf('Simulator/koma') >= 0 && fb !== img.getAttribute('src')) {
       img.setAttribute('data-mls-face-fallback', fb);
@@ -579,16 +571,22 @@
       img.removeAttribute('data-mls-face-fallback');
       img.onerror = null;
     }
-    mlsKomaApplyAspectBoost(img);
+    mlsKomaApplyStandingFit(img, u);
   }
 
   function onKomaImgError(img) {
     var fb;
+    var tok;
     if (!img) return;
     fb = img.getAttribute('data-mls-face-fallback') || '';
     img.onerror = null;
     img.removeAttribute('data-mls-face-fallback');
-    if (fb) img.src = fb;
+    mlsKomaClearFitVars(img);
+    if (!fb) return;
+    img.src = fb;
+    /* Portrait fallback must not keep koma height/plant CSS (reads as giant bust). */
+    tok = img.closest && img.closest('.mls-token');
+    if (tok) tok.classList.remove('is-koma');
   }
 
   function mlsKomaTokenImgHtml(u) {
@@ -601,6 +599,7 @@
       fbAttr = ' data-mls-face-fallback="' + esc(fb) +
         '" onerror="window.GgenMlSim&&GgenMlSim.onKomaImgError&&window.GgenMlSim.onKomaImgError(this)"';
     }
+    /* crossorigin from first paint — needed for backside balance measure (no late reload). */
     return '<img class="mls-token-thum" src="' + esc(src) + '" alt="' + esc((u && u.name) || '') +
       '" loading="eager" decoding="async" fetchpriority="high" crossorigin="anonymous"' + fbAttr + '>';
   }
@@ -2547,6 +2546,56 @@
     return side === 'ally' ? 1 : -1;
   }
 
+  /**
+   * LINE = one spawn column per side. Standard = staggered X (slots 2/3 closer to mid).
+   * Trust geometry over board.formation — a stale "line" flag on multi-col spawns was
+   * skipping the toward-midfield flip and parking 2×2 on the wrong cells.
+   */
+  function mlsIsLineFormation() {
+    var ally;
+    var x0;
+    var i;
+    if (!board) return false;
+    ally = sideCells(1);
+    if (ally.length >= 2) {
+      x0 = ally[0].x | 0;
+      for (i = 1; i < ally.length; i++) {
+        if ((ally[i].x | 0) !== x0) return false; /* multi-column → standard */
+      }
+      return true; /* single ally column → LINE */
+    }
+    if (String(board.formation || '').toLowerCase() === 'line') return true;
+    return (board.set_id | 0) === 3;
+  }
+
+  /**
+   * Same axes as Master League deploy board (`mlDeployFootprintCells` in app.js):
+   * — Y: always north (+y) from MD spawn (LINE slot 5 → cells y,y+1 e.g. 15+16)
+   * — lateral: behind facing; standard slots 2 & 3 toward midfield
+   * Owner cells (standard):
+   *   ally 2 @ (14,9)  → (13,9)(14,9)(13,10)(14,10)
+   *   ally 3 @ (14,13) → (13,13)(14,13)(13,14)(14,14)
+   *   enemy 2 @ (6,9)  → (6,9)(7,9)(6,10)(7,10)
+   *   enemy 3 @ (6,13) → (6,13)(7,13)(6,14)(7,14)
+   */
+  function mlsFootprintAxes(side, direction, slotN) {
+    var dx = footprintDx(side, direction);
+    var isLine = mlsIsLineFormation();
+    var n = slotN | 0;
+    if (!isLine && (n === 2 || n === 3)) dx = -dx;
+    return { dx: dx, dy: 1 };
+  }
+
+  function stampUnitFootprintAxes(u) {
+    var axes;
+    if (!u) return;
+    axes = mlsFootprintAxes(u.side, u.direction, u.n);
+    u.fpDx = axes.dx;
+    u.fpDy = axes.dy;
+    /* Rules engine uses this when fpDx is missing on a probe. */
+    u.isLine = mlsIsLineFormation();
+  }
+
   /* Same grade pips as detail / collections (UI_Common_Icon_Grade_M_*). */
   var MLS_LB_ICONS = {
     None: '/static/images/UI/UI_Common_Icon_Grade_M_None.webp',
@@ -3076,8 +3125,11 @@
         x: u.homeX != null ? u.homeX : u.x,
         y: u.homeY != null ? u.homeY : u.y,
         side: u.side,
+        n: u.n,
         isLarge: !!u.isLarge,
-        direction: u.direction
+        direction: u.direction,
+        fpDx: u.fpDx,
+        fpDy: u.fpDy
       };
       cells = footprintCells(probe);
       hit = cells.some(function (c) {
@@ -3108,8 +3160,11 @@
       x: nx,
       y: ny,
       side: u.side,
+      n: u.n,
       isLarge: !!u.isLarge,
-      direction: u.direction
+      direction: u.direction,
+      fpDx: u.fpDx,
+      fpDy: u.fpDy
     };
     cells = footprintCells(probe);
     allies = {};
@@ -3153,8 +3208,11 @@
       x: nx | 0,
       y: ny | 0,
       side: u.side,
+      n: u.n,
       isLarge: !!u.isLarge,
-      direction: u.direction
+      direction: u.direction,
+      fpDx: u.fpDx,
+      fpDy: u.fpDy
     };
     cells = footprintCells(probe);
     cls = !verdict || !verdict.ok
@@ -8053,22 +8111,30 @@
   }
 
   /**
-   * 2×2 footprint (HangerLab Neo Zeong / MasterData DirectionTypeIndex):
-   * expands behind facing — enemy faces right → −x; ally faces left → +x;
-   * + one cell down (−y). Spawn cell is the inward (front) corner.
-   * LINE Y spacing is every 2 cells so adjacent 2×2s tile without overlap.
+   * 2×2 footprint — matches Master League deploy / owner cell picks:
+   * expand behind facing + north (+y) from MD spawn.
+   * Ally LINE slot 5 @ (12,15) → (12,15)(13,15)(12,16)(13,16).
    */
   function footprintCells(u) {
     var x = u.x | 0;
     var y = u.y | 0;
     var dx;
+    var dy;
+    var axes;
     if (!u.isLarge) return [{ x: x, y: y }];
-    dx = footprintDx(u.side, u.direction);
+    /* Always recompute from current formation geometry — never trust a stale fpDx
+     * stamped while board.formation was wrong (standard 2/3 must flip toward mid). */
+    axes = mlsFootprintAxes(u.side, u.direction, u.n);
+    dx = axes.dx;
+    dy = axes.dy;
+    u.fpDx = dx;
+    u.fpDy = dy;
+    u.isLine = !!mlsIsLineFormation();
     return [
       { x: x, y: y },
       { x: x + dx, y: y },
-      { x: x, y: y - 1 },
-      { x: x + dx, y: y - 1 }
+      { x: x, y: y + dy },
+      { x: x + dx, y: y + dy }
     ];
   }
 
@@ -8083,7 +8149,7 @@
     return { x: minX, y: maxY };
   }
 
-  /** Manhattan to nearest footprint cell (2×2 Neo Zeong expands −y / facing). */
+  /** Manhattan to nearest footprint cell (2×2 expands +y / facing). */
   function distFootprintToCell(u, x, y) {
     var best = 1e9;
     var d;
@@ -8536,6 +8602,9 @@
       isLarge: unitIsLarge(loaded.unit),
       size: unitIsLarge(loaded.unit) ? 2 : 1,
       direction: facing,
+      /* Stamped after make — never leave fpDx=0 (collapses 2×2 to one column). */
+      fpDx: null,
+      fpDy: null,
       unitStatMode: uMode,
       charStatMode: cMode,
       owned: owned[id] != null,
@@ -8589,6 +8658,7 @@
     actor.mp = (R && R.startingMpBonus) ? (R.startingMpBonus(actor) | 0) : 0;
     syncMpDisplay(actor);
     stampHpFallRestores(actor);
+    stampUnitFootprintAxes(actor);
     return actor;
   }
 
@@ -8682,6 +8752,8 @@
       lastEnemy = pair[1];
       /* Default rebuild drops warm /cal; optimizer passes keepCalMemo after a prior sim. */
       if (!keepCalMemo) clearSessionCalMemo();
+      /* Drop stale camera (extra pad rows / pre-2×2-reserve locks) so cell size stays stable. */
+      if (!fightBusy) clearMapCameraLock();
       stampSquadBuffs(lastAlly);
       stampSquadBuffs(lastEnemy);
       /* Squad ATK/DEF % + Cond:HP/EN must land on maxHp/EN before battle (match /mls bottom sheet). */
@@ -8758,7 +8830,11 @@
     };
   }
 
-  /** Fresh bbox around spawns + current unit footprints (pad 1), X-mirrored about midfield. */
+  /**
+   * Fresh bbox around spawns + footprints, X-mirrored about midfield.
+   * Always reserve every spawn’s 2×2 (behind + north) so putting a large kit on a
+   * slot does not grow the camera / shrink cell size mid-session.
+   */
   function computeMapWindowFresh() {
     var cells = [];
     var m = mapMeta();
@@ -8766,7 +8842,20 @@
     var mapH = m.height | 0;
     var bx;
     (board && board.sides || []).forEach(function (s) {
-      (s.cells || []).forEach(function (c) { cells.push(c); });
+      var force = (s.player_side | 0) === 1 ? 'ally' : ((s.player_side | 0) === 2 ? 'enemy' : null);
+      var dir = s.direction;
+      (s.cells || []).forEach(function (c) {
+        var axes;
+        var x = c.x | 0;
+        var y = c.y | 0;
+        cells.push(c);
+        if (!force) return;
+        /* Pre-reserve 2×2 for every slot (same axes as footprintCells). */
+        axes = mlsFootprintAxes(force, dir, c.n);
+        cells.push({ x: x + axes.dx, y: y });
+        cells.push({ x: x, y: y + axes.dy });
+        cells.push({ x: x + axes.dx, y: y + axes.dy });
+      });
     });
     lastAlly.concat(lastEnemy).forEach(function (u) {
       if (!u) return;
@@ -8790,7 +8879,7 @@
       if (c.y < minY) minY = c.y;
       if (c.y > maxY) maxY = c.y;
     });
-    /* Tight camera around the fight — not the empty full map (avoids scroll / tiny tokens). */
+    /* Tight camera — pad 1 only (no extra LINE rows that shrink the map). */
     minX -= 1; maxX += 1; minY -= 1; maxY += 1;
     /* 2×2 expands outward (−x enemy / +x ally) — mirror empty cols so LINE + standard stay even. */
     bx = balanceMapWindowX(minX, maxX, midfieldXFromSpawns());
@@ -9252,8 +9341,11 @@
           x: u.homeX != null ? u.homeX : u.x,
           y: u.homeY != null ? u.homeY : u.y,
           side: u.side,
+          n: u.n,
           isLarge: true,
-          direction: u.direction
+          direction: u.direction,
+          fpDx: u.fpDx,
+          fpDy: u.fpDy
         };
         footprintCells(home).forEach(function (c) {
           var k = c.x + ',' + c.y;
@@ -9433,8 +9525,12 @@
 
     lastAlly.concat(lastEnemy).forEach(function (u) {
       var key = tokenKey(u);
-      var origin = footprintOrigin(u);
-      var span = u.isLarge ? 2 : 1;
+      var origin;
+      var span;
+      /* Re-stamp every paint so formation axes cannot go stale after season swap. */
+      stampUnitFootprintAxes(u);
+      origin = footprintOrigin(u);
+      span = u.isLarge ? 2 : 1;
       var mark = '';
       var fx = { badge: '', hit: false, crit: !!(floatEvt && floatEvt.crit && tgtId && key === String(tgtId)) };
       var el, cover, shelter, nextTf, badge, badgeEl, hpCur, hpGhost, hpNum, hpWrap;
@@ -9581,9 +9677,6 @@
             thumEl = frameEl.querySelector('.mls-token-thum');
           }
         } else {
-          try {
-            if (!thumEl.crossOrigin) thumEl.crossOrigin = 'anonymous';
-          } catch (eCorsTok) { /* ignore */ }
           if (thumEl.getAttribute('src') !== u.thum) thumEl.src = u.thum;
           if (thumEl.alt !== (u.name || '')) thumEl.alt = u.name || '';
         }
@@ -10536,6 +10629,7 @@
       cloned.mp = Math.max(0, Math.min(12, startMp));
       cloned.tension = Math.min(100, Math.round((cloned.mp / 12) * 100));
       if (!cloned._hpFallRestores || !cloned._hpFallRestores.length) stampHpFallRestores(cloned);
+      stampUnitFootprintAxes(cloned);
       return mlsKomaAttachActor(cloned);
     });
   }

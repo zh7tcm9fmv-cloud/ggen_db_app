@@ -1279,6 +1279,7 @@ body.mls-is-slot-dragging .mls-slot-list {
   margin: 0;
   padding: 0;
   border-radius: 4px;
+  overflow: hidden;
   -webkit-user-select: none;
   user-select: none;
   -webkit-touch-callout: none;
@@ -1286,6 +1287,15 @@ body.mls-is-slot-dragging .mls-slot-list {
   will-change: transform;
   transform: translate3d(-9999px, -9999px, 0);
   transform-origin: center center;
+}
+/* Map-token drag: never paint Neo Zeong (etc.) at intrinsic 512px. */
+.mls-drag-ghost > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center center;
+  pointer-events: none;
 }
 .mls-drag-ghost--card {
   box-sizing: border-box;
@@ -2534,12 +2544,9 @@ body.mls-is-map-dragging .mls-map {
 }
 /*
  * IngameKoma map tokens:
- * Native canvases differ (wide vs tall) — normalize by HEIGHT so standing size matches,
- * then plant feet on the tile (sprite hangs past the cell border).
- * Tall/narrow plates (e.g. Unicorn Destroy Awakened) get --mls-koma-boost from JS so
- * they do not look undersized vs wider SD peers under height-lock.
- * Extra transparent bottom pad (e.g. Sazabi EX standby_right) gets --mls-koma-foot-nudge
- * so ink feet match the typical ground line instead of hovering.
+ * Base height 152% of the token box; JS sets --mls-koma-fit from ink bbox so painted
+ * standing height matches worldwide (tight crops like Destiny shrink; padded plates grow).
+ * --mls-koma-shift-x balances backside-heavy art toward the front.
  * No portrait cell chrome — koma stands on the map tile only.
  */
 .mls-token.is-koma .mls-token-frame {
@@ -2561,16 +2568,18 @@ body.mls-is-map-dragging .mls-map {
 .mls-token.is-koma .mls-token-thum {
   position: absolute;
   left: 50%;
-  /* Hang past the tile; --mls-koma-foot-nudge lowers plates with fat bottom pad / tall boost. */
-  bottom: calc(-24% - var(--mls-koma-foot-nudge, 0%));
-  transform: translateX(-50%) scale(var(--mls-koma-boost, 1));
-  transform-origin: center bottom;
+  top: 50%;
+  right: auto;
+  bottom: auto;
+  transform: translate(calc(-50% + var(--mls-koma-shift-x, 0%)), -50%)
+    scale(var(--mls-koma-fit, 1));
+  transform-origin: center center;
   width: auto;
-  height: 158%;
+  height: 152%;
   max-width: none;
-  max-height: none;
+  max-height: 152%;
   object-fit: contain;
-  object-position: center bottom;
+  object-position: center center;
   image-rendering: auto;
 }
 .mls-ranged-shot.is-koma-beam {
