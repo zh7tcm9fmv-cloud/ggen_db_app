@@ -63,6 +63,8 @@
   /* Freeze camera + cell size after first battle paint — unit moves/KOs must not keep re-fitting smaller. */
   var lockedMapWindow = null;
   var lockedMapCellPx = 0;
+  /* Playback: keep the opening rows/cell size. Moves must not grow or refit the board. */
+  var mapCameraFrozen = false;
   /*
    * Shared OPTIMIZER_SEED for Formation Optimizer + live Start (same stream family).
    * Live and optimizer use SEPARATE LCG states — background warm must never reset
@@ -407,7 +409,12 @@
 
   /* Survives minify — proves chip-face helper is the loaded bundle (bump when chip path changes). */
   var MLS_CHIP_FACE_MARK = '__MLS_CHIP_THUM_V12__';
-  /** FX URL → usable spark (false = black plate / skip forever this session). */
+  /**
+   * FX URL → play mode for this session:
+   *   'spark'    = transparent ink (normal blend)
+   *   'additive' = Unity black-plate additive (mix-blend-mode: screen)
+   *   false      = dissolve / empty / unusable (skip)
+   */
   var mlsFxUsableCache = Object.create(null);
 
   /**
@@ -734,7 +741,7 @@
       img.decoding = 'async';
       img.src = url;
     }
-    /* One light FX frame (probe/play will skip black plates). */
+    /* One light FX frame (probe classifies spark vs additive). */
     pref = kit.exImpactFx || kit.meleeImpactFx || kit.impactFx || '';
     if (pref) {
       url = mlsKomaFxUrl(pref, 1);
@@ -847,20 +854,21 @@
   }
 
   /**
-   * Reject opaque black-plate FX (Unity matte / *_dissolve plates).
-   * Good sparks: transparent outside the ink (dark≈0 of canvas).
-   * Bad plates: solid black square + bright flare in the middle — still reject.
-   * Fail closed on CORS/taint.
+   * Classify impact FX for playback:
+   *   'spark'    — transparent outside the ink (normal blend)
+   *   'additive' — opaque black plate + glow (screen blend drops the black)
+   *   false      — dissolve mattes / empty / no usable ink
+   * CORS/taint → treat as additive so kit FX still play (screen is safe).
    */
-  function mlsKomaFxIsUsableSpark(img) {
-    var c, ctx, w, h, data, i, a, lum, dark, lit, bright, opaque, total, src, cached;
+  function mlsKomaFxPlayMode(img) {
+    var c, ctx, w, h, data, i, a, lum, dark, lit, bright, opaque, total, src, mode;
     var low = '';
     src = (img && (img.currentSrc || img.src)) || '';
     if (src && Object.prototype.hasOwnProperty.call(mlsFxUsableCache, src)) {
       return mlsFxUsableCache[src];
     }
     low = String(src).toLowerCase();
-    /* Dissolve mattes are always black-plate exports. */
+    /* Dissolve mattes are greyscale masks — never paint them as hit FX. */
     if (low.indexOf('_dissolve') >= 0) {
       if (src) mlsFxUsableCache[src] = false;
       return false;
@@ -898,29 +906,29 @@
         }
       }
       opaque = dark + lit;
+      /* No ink at all. */
+      if (opaque < 12 || bright < 4) {
+        if (src) mlsFxUsableCache[src] = false;
+        return false;
+      }
       /*
-       * Black square with a white flare still has bright center pixels — reject by
-       * how much of the whole frame is opaque black, not by “has any bright ink”.
-       * Measured: good sparks dark/tot≈0.00; black plates / dissolve ≈0.85–0.90.
+       * Measured (Simulator/fx):
+       *   good sparks dark/tot≈0.00 + clear corners
+       *   additive black plates dark/tot≈0.40–0.70 + opaque fill
+       *   dissolve mattes dark/tot≈0.85–0.90 (also caught by name)
        */
-      if (opaque < 20) {
-        if (src) mlsFxUsableCache[src] = false;
-        return false;
+      if ((dark / total) >= 0.12 || ((opaque / total) >= 0.72 && dark >= lit)) {
+        mode = 'additive';
+      } else {
+        mode = 'spark';
       }
-      if ((dark / total) >= 0.12) {
-        if (src) mlsFxUsableCache[src] = false;
-        return false;
-      }
-      if ((opaque / total) >= 0.72 && dark >= lit) {
-        if (src) mlsFxUsableCache[src] = false;
-        return false;
-      }
-      cached = lit >= 18 && bright >= 8 && (dark / total) < 0.08;
-      if (src) mlsFxUsableCache[src] = cached;
-      return cached;
+      if (src) mlsFxUsableCache[src] = mode;
+      return mode;
     } catch (eProbe) {
-      if (src) mlsFxUsableCache[src] = false;
-      return false;
+      /* Tainted canvas — still show FX; screen drops black plates. */
+      mode = 'additive';
+      if (src) mlsFxUsableCache[src] = mode;
+      return mode;
     }
   }
 
@@ -931,6 +939,7 @@
     var n = Math.max(1, frames | 0);
     var holdMs;
     var firstUrl;
+    var mode;
     if (!layer || !prefix) return;
     urls = mlsKomaFxUrls(prefix, n);
     if (!urls.length) return;
@@ -951,10 +960,13 @@
       if (el.parentNode) el.parentNode.removeChild(el);
     }
     function startPlay() {
-      if (!mlsKomaFxIsUsableSpark(el)) {
+      mode = mlsKomaFxPlayMode(el);
+      if (!mode) {
         reject();
         return;
       }
+      if (mode === 'additive') el.classList.add('is-additive');
+      else el.classList.remove('is-additive');
       el.style.visibility = '';
       if (urls.length <= 1) {
         holdMs = Math.max(220, Math.round(380 / battlePaceMul()));
@@ -8855,6 +8867,7 @@
 
   function clearMapCameraLock() {
     var host;
+    mapCameraFrozen = false;
     lockedMapWindow = null;
     lockedMapCellPx = 0;
     mapBgCacheKey = '';
@@ -8978,9 +8991,16 @@
    * Stable battle camera: lock after first paint, expand if units leave the box,
    * never shrink when units move / die / swap (that was the “map keeps shrinking” bug).
    */
+  function freezeMapCamera() {
+    if (!lockedMapWindow) computeMapWindow();
+    mapCameraFrozen = true;
+  }
+
   function computeMapWindow() {
     var fresh = computeMapWindowFresh();
     var m, mapW, mapH, bx;
+    /* Fight playback keeps the opening frame — no row/col grow, no cell refit. */
+    if (mapCameraFrozen && lockedMapWindow) return lockedMapWindow;
     if (!lockedMapWindow) {
       lockedMapWindow = fresh;
       return lockedMapWindow;
@@ -10936,7 +10956,8 @@
       Rlocal = rules();
       /* Same post-/cal order as strikeDamage (aura, then ability DR, FG, EX). */
       auraPct = 0;
-      if (Rlocal && Rlocal.areaWeaponPowerAuraPct) {
+      /* MAP/EX pick sets _mlsIgnoreAreaAura — live AI ignores Cond:Area for that choice. */
+      if (!(attacker && attacker._mlsIgnoreAreaAura) && Rlocal && Rlocal.areaWeaponPowerAuraPct) {
         auraPct = Rlocal.areaWeaponPowerAuraPct(attacker, rosterBuf, weapon) | 0;
         if (auraPct) dmg = Math.max(0, Math.ceil(dmg * (100 + auraPct) / 100));
       }
@@ -14003,6 +14024,7 @@
     fightBusy = true;
     playbackFxBusy = true;
     fightSeekTo = null;
+    freezeMapCamera();
     hideEndCard();
     setFightControls(true);
     setTransportVisible(true, result);
@@ -14353,9 +14375,10 @@
        * “1T wipe” only if Start twin also 1Ts — same OPTIMIZER_SEED, natural hits/crits
        * (what SIMULATION START actually runs). Other seeds are RNG flavor only.
        */
-      function publishRank(rng1T, start1T) {
-        var aliveTxt, spotMoves, advice;
+      function publishRank(rng1T, start1T, startTurns) {
+        var aliveTxt, spotMoves, advice, startBit;
         start1T = !!start1T;
+        startBit = (startTurns | 0) > 0 ? (' · Start seed ' + (startTurns | 0) + 'T') : '';
         bestScore.start1T = start1T;
         bestScore.needsCritFor1T = rankedT1 > 0 && rng1T > 0;
         if (lastAiSearchCache && lastAiSearchCache.bestScore) {
@@ -14369,21 +14392,21 @@
         }
         aliveTxt = (bestScore.turn1Alive || []).join(', ');
         if (bestScore.win && rankedT1 === 0 && start1T) {
-          status = (same ? 'Already optimal · ' : 'Applied · ') + '1T wipe';
+          status = (same ? 'Already optimal · ' : 'Applied · ') + '1T wipe' + startBit;
         } else if (bestScore.win && rankedT1 === 0) {
           status = (same ? 'Already optimal · ' : 'Applied · ') +
-            '1T if hits connect (' + rng1T + '/4 RNG seeds) — not promised on Start';
+            '1T if hits connect (' + rng1T + '/4 RNG seeds) — not promised on Start' + startBit;
         } else if (bestScore.needsCritFor1T) {
           status = (same ? 'Order kept · ' : 'Applied · ') +
-            'win in ' + bestScore.turns + 'T — 1T only with RNG (' + rng1T + '/4), not the result';
+            'win in ' + bestScore.turns + 'T — 1T only with RNG (' + rng1T + '/4), not the result' + startBit;
         } else if (same && bestScore.win) {
-          status = 'Already optimal · win in ' + bestScore.turns + 'T';
+          status = 'Already optimal · win in ' + bestScore.turns + 'T' + startBit;
         } else if (bestScore.win) {
-          status = 'Applied · win in ' + bestScore.turns + 'T';
+          status = 'Applied · win in ' + bestScore.turns + 'T' + startBit;
         } else if (same) {
-          status = 'Already optimal';
+          status = 'Already optimal' + startBit;
         } else {
-          status = 'Applied · best survive ' + bestScore.turns + 'T';
+          status = 'Applied · best survive ' + bestScore.turns + 'T' + startBit;
         }
         spotMoves = [];
         if (!same) {
@@ -14469,7 +14492,7 @@
         bestScore.rng1T = rng1T | 0;
         bestScore.start1T = start1T;
         bestScore.graded = true;
-        return publishRank(rng1T, start1T);
+        return publishRank(rng1T, start1T, startTwin && startTwin.turns);
       });
     }
 
@@ -14752,6 +14775,8 @@
       function onMapFit() {
         var sc, w, h;
         if (viewName !== 'battle' || !board) return;
+        /* Playback owns the cell size — a taller focus box must not refit rows mid-fight. */
+        if (fightBusy || mapCameraFrozen) return;
         sc = document.querySelector('#mlsViewBattle .mls-map-scroll');
         if (!sc) return;
         w = sc.clientWidth | 0;

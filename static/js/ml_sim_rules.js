@@ -2350,9 +2350,29 @@
   }
 
   /**
+   * Live ML weapon / MAP pick ignores Cond:Area WP auras (Neo Zeong etc.).
+   * Actual applyHit still applies aura — decision math must not.
+   */
+  function withDamageIgnoringAreaAura(damageOf) {
+    if (typeof damageOf !== 'function') return damageOf;
+    return function (actor, defender, weapon) {
+      var prev = actor && actor._mlsIgnoreAreaAura;
+      var dmg;
+      if (actor) actor._mlsIgnoreAreaAura = true;
+      try {
+        dmg = damageOf(actor, defender, weapon) | 0;
+      } finally {
+        if (actor) actor._mlsIgnoreAreaAura = prev;
+      }
+      return dmg;
+    };
+  }
+
+  /**
    * Best non-MAP expected damage on engage (current tile or after a normal move).
    * Support Defense cover → 0 unless opts.ignoreCover (class-B MAP vs EX choice
    * must still see Twin Buster EX — SD intercepts the swing, it does not make WZC open with MAP).
+   * Cond:Area WP is ignored here (live ML highest-damage / MAP pick).
    */
   function bestNonMapDamageOnEngage(actor, target, allUnits, bounds, damageOf, opts) {
     var nonMap;
@@ -2367,6 +2387,7 @@
     var cover;
     var best;
     var dmg;
+    var damageOfDecision = withDamageIgnoringAreaAura(damageOf);
     if (!actor || !target || (target.hp | 0) <= 0) return 0;
     nonMap = (actor.weapons || []).filter(function (x) { return !isMapWeapon(x); });
     if (!nonMap.length) return 0;
@@ -2386,7 +2407,7 @@
       ).filter(function (x) { return !isMapWeapon(x); });
       for (i = 0; i < valid.length; i++) {
         wpn = valid[i];
-        dmg = expectedDamageWithAiDefense(actor, target, wpn, damageOf) | 0;
+        dmg = expectedDamageWithAiDefense(actor, target, wpn, damageOfDecision) | 0;
         if (dmg > localBest) localBest = dmg;
       }
       return localBest;
@@ -2442,6 +2463,7 @@
    *    EX-first — compare EX on the engage even if Support Defense would intercept
    *    (SD does not switch WZC onto MAP). Skip MAP when EX kills engage or EX
    *    damage ≥ MAP. Otherwise require threshold + engage in shape + raw MAP KO.
+   *    Decision damage ignores Cond:Area WP auras (live ML); applyHit still applies them.
    *
    * Ranking among legal MAP plans: more kills → more total damage → more units
    * in shape. Side-foe-only kills never qualify for class B.
@@ -2482,9 +2504,11 @@
     var better, mapDmgOnEngage, engageKilled;
     var impactMode, isDash, dashTo, dest, picked, key, seen, cellList, j, ec;
     var fireActor, afterMoveOk, openingImpact;
+    /* Live ML: MAP/EX pick ignores Cond:Area WP; applyHit still applies aura. */
+    var damageOfDecision = withDamageIgnoringAreaAura(damageOf);
     /* Class B scores EX on the engage itself — SD cover must not zero that comparison. */
     var exChoiceOpts = { ignoreCover: true };
-    var nonMapFinishes = nonMapKillsEngage(actor, target, allUnits, bounds, damageOf, exChoiceOpts);
+    var nonMapFinishes = nonMapKillsEngage(actor, target, allUnits, bounds, damageOfDecision, exChoiceOpts);
     var nonMapDmgBest = null;
 
     for (ci = 0; ci < candidates.length; ci++) {
@@ -2617,7 +2641,8 @@
         var ai;
         for (i = 0; i < inArea.length; i++) {
           mt = inArea[i];
-          mDmg = rawWeaponDamage(actor, mt, wpn, damageOf);
+          /* Decision: raw MAP vs HP (no Cond:Area). Rush-into-aura chip after fire is OK. */
+          mDmg = rawWeaponDamage(actor, mt, wpn, damageOfDecision);
           totalDmg += mDmg;
           if (mt === target) mapDmgOnEngage += mDmg;
           found = false;
@@ -2639,11 +2664,12 @@
         /*
          * Class B: require MAP KO on engage (no chip-MAP) and MAP must beat best
          * non-MAP damage on engage (WZC Rolling Buster vs Twin Buster EX).
+         * KO / EX compare ignore Cond:Area + SD cover (live ML pick).
          */
         if (!engageKilled) continue;
         if (nonMapDmgBest == null) {
           nonMapDmgBest = bestNonMapDamageOnEngage(
-            actor, target, allUnits, bounds, damageOf, exChoiceOpts
+            actor, target, allUnits, bounds, damageOfDecision, exChoiceOpts
           ) | 0;
         }
         if ((nonMapDmgBest | 0) >= (mapDmgOnEngage | 0)) continue;

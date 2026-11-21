@@ -2608,7 +2608,11 @@ body.mls-is-map-dragging .mls-map {
   pointer-events: none;
   z-index: 12;
   image-rendering: auto;
-  /* Drop opaque black plates some Unity exports still carry. */
+  /* Transparent sparks stay normal; black additive plates get .is-additive. */
+  mix-blend-mode: normal;
+}
+/* Unity additive FX: opaque black empty + glow — screen drops the black. */
+.mls-koma-fx.is-additive {
   mix-blend-mode: screen;
 }
 .mls-koma-fx.is-ex {

@@ -548,6 +548,71 @@ assert(rules.checkHit(parryAtk, Object.assign({}, parryDef, { usedParryCount: 0,
   assert(!mapPlanWzChip,
     'WZC Twin Buster MAP skipped on high-CP chip (EX+MAP cannot KO engage), got ' +
     (mapPlanWzChip && mapPlanWzChip.weapon && mapPlanWzChip.weapon.name));
+
+  /*
+   * Live ML: MAP pick ignores Cond:Area WP. Raw 200k KOs 180k even if fire tile
+   * would take Neo Zeong −35% (130k chip on apply). Decision still opens MAP.
+   */
+  const rollingAfter = Object.assign({}, barrageMap, {
+    name: 'Rolling Buster Rifle',
+    power: 200000,
+    usage_restrictions: [],
+    map_can_use_after_move: true,
+    attribute: 'Beam'
+  });
+  rollingAfter.raw = Object.assign({}, barrageMap.raw, {
+    map_coords: barrageMap.map_coords,
+    map_can_use_after_move: true,
+    attribute: 'Beam',
+    attack_types: [{ key: 'ranged' }]
+  });
+  const weakExAura = Object.assign({}, barrageEx, {
+    power: 5000,
+    attribute: 'Beam',
+    raw: { attribute: 'Beam', attack_types: [{ key: 'ranged' }] }
+  });
+  const wzcAura = Object.assign({}, f90, {
+    id: 'wzc_aura',
+    name: 'Wing Gundam Zero (EW) (EX)',
+    x: 14, y: 7, startX: 14, startY: 7, move: 5,
+    weapons: [rollingAfter, weakExAura]
+  });
+  const nzEngage = {
+    id: 'nz', name: 'Neo Zeong (EX)', hp: 180000, x: 8, y: 7, size: 1, side: 'enemy',
+    unit: {
+      abilities: [{
+        sim_effects: [{
+          kind: 'weapon_power_pct', is_area_aura: true, value: -20,
+          range_min: 1, range_max: 4, weapon_attrs: ['beam', 'physical'],
+          attack_types: ['ranged']
+        }]
+      }]
+    },
+    char: {
+      abilities: [{ sim_effects: [{ kind: 'aura_buff_value_addition', value: -15 }] }]
+    }
+  };
+  const auraFoes = [
+    nzEngage,
+    { id: 'gottr', hp: 200000, x: 8, y: 9, size: 1, side: 'enemy' }
+  ];
+  const auraAll = [wzcAura].concat(auraFoes);
+  const mapPlanAuraIgnore = rules.evaluateMapWeapon(
+    wzcAura, nzEngage, auraFoes, auraAll, lineBounds,
+    function (a, d, w) {
+      var dmg = w.power | 0;
+      /* Mimic battleDamage: apply aura unless decision flag is set. */
+      if (!(a && a._mlsIgnoreAreaAura)) {
+        var pct = rules.areaWeaponPowerAuraPct(a, auraAll, w) | 0;
+        if (pct) dmg = Math.max(0, Math.ceil(dmg * (100 + pct) / 100));
+      }
+      return dmg;
+    }
+  );
+  assert(mapPlanAuraIgnore && mapPlanAuraIgnore.weapon &&
+    mapPlanAuraIgnore.weapon.name === 'Rolling Buster Rifle',
+    'WZC Rolling Buster MAP opens on raw KO even under Cond:Area (aura ignored for pick), got ' +
+    (mapPlanAuraIgnore && mapPlanAuraIgnore.weapon && mapPlanAuraIgnore.weapon.name));
 }
 
 /* V2AB Wings of Light — dash MAP (type 4): land at far shooting_coord; skip when EX kills. */
