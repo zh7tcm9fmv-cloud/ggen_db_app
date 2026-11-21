@@ -463,6 +463,8 @@
     var a;
     var minY;
     var maxY;
+    var minX;
+    var maxX;
     var sumX = 0;
     var count = 0;
     if (!nw || !nh) return null;
@@ -479,54 +481,64 @@
     }
     minY = nh;
     maxY = -1;
+    minX = nw;
+    maxX = -1;
     for (y = 0; y < nh; y++) {
       for (x = 0; x < nw; x++) {
         a = data[(y * nw + x) * 4 + 3];
         if (a > 8) {
           if (y < minY) minY = y;
           if (y > maxY) maxY = y;
+          if (x < minX) minX = x;
+          if (x > maxX) maxX = x;
           sumX += x;
           count++;
         }
       }
     }
-    if (count < 20 || maxY < minY) return null;
+    if (count < 20 || maxY < minY || maxX < minX) return null;
     return {
       nh: nh,
+      nw: nw,
       inkH: maxY - minY + 1,
+      inkW: maxX - minX + 1,
+      count: count,
       cx: (sumX / count) / nw
     };
   }
 
   /**
-   * Equalize painted standing height (Destiny was ~98% canvas fill, Astray ~92%,
-   * sparse plates lower — same CSS 152% looked uneven). Also nudge backside mass
-   * toward the front. No per-id special cases.
+   * Match painted amount, not the canvas box. A solid plate (Gouf, early Gundam)
+   * was being scaled up to the same longer side as a thin one, so it read larger.
+   * Opaque area pulls the heavy plates down and the thin ones up. Extreme plates
+   * only move part way. Also nudge backside mass toward the front. No per-id cases.
    */
   function mlsKomaApplyStandingFit(img, u) {
     var ink;
-    var hFill;
     var boxCells;
-    var targetCells;
+    var area;
+    var targetArea;
     var fit;
     var shift;
     var facing;
     var frontIsLeft;
     var tok;
+    var large;
     function apply() {
       mlsKomaClearFitVars(img);
       if (!(img.naturalWidth | 0)) return;
       ink = mlsKomaMeasureInk(img);
       tok = img.closest && img.closest('.mls-token');
+      large = !!(tok && tok.classList.contains('is-large'));
       /* CSS height 152% of token: 1×1 → 1.52 cells; 2×2 → 3.04 cells. */
-      boxCells = (tok && tok.classList.contains('is-large')) ? (2 * 1.52) : 1.52;
-      /* Shared painted height in cell units (2×2 keeps a larger standing size). */
-      targetCells = (tok && tok.classList.contains('is-large')) ? 2.55 : 1.38;
-      if (ink && ink.inkH && ink.nh) {
-        hFill = ink.inkH / ink.nh;
-        fit = targetCells / (boxCells * hFill);
+      boxCells = large ? (2 * 1.52) : 1.52;
+      /* Median 1×1 opaque area is ~0.85 cell². Sit just under that so solid plates shrink. */
+      targetArea = large ? 3.2 : 0.8;
+      if (ink && ink.count && ink.nh) {
+        area = boxCells * boxCells * ink.count / (ink.nh * ink.nh);
+        fit = Math.sqrt(targetArea / Math.max(area, 0.05));
         if (!(fit > 0) || !isFinite(fit)) fit = 1;
-        fit = Math.max(0.78, Math.min(1.22, fit));
+        fit = Math.max(0.72, Math.min(1.22, fit));
         if (Math.abs(fit - 1) > 0.02) {
           img.style.setProperty('--mls-koma-fit', fit.toFixed(3));
         }
@@ -2586,10 +2598,42 @@
     return { dx: dx, dy: 1 };
   }
 
+  /** Position number of the spawn square at (x,y), or 0 if that cell is not a spawn. */
+  function mlsSpawnNumberAt(side, x, y) {
+    var cells = side === 'ally' ? allyCells() : (side === 'enemy' ? enemyCells() : []);
+    var i;
+    var c;
+    x |= 0;
+    y |= 0;
+    for (i = 0; i < cells.length; i++) {
+      c = cells[i];
+      if (c && (c.x | 0) === x && (c.y | 0) === y) return c.n | 0;
+    }
+    return 0;
+  }
+
+  /**
+   * Standard 2 & 3 flip toward midfield based on the spawn square under the unit,
+   * not the roster slot it was picked in. Dragging Neo from slot 5 onto spawn 3
+   * must still expand forward; using the old slot number kept the backward block
+   * (ally 3 → 15,13 / 15,14) and made spawn 2 overlap the unit on 15,10.
+   */
+  function mlsFootprintSlotN(u) {
+    var n;
+    if (!u) return 0;
+    n = mlsSpawnNumberAt(u.side, u.x, u.y);
+    if (n) return n;
+    if (u.homeX != null || u.homeY != null) {
+      n = mlsSpawnNumberAt(u.side, u.homeX, u.homeY);
+      if (n) return n;
+    }
+    return u.n | 0;
+  }
+
   function stampUnitFootprintAxes(u) {
     var axes;
     if (!u) return;
-    axes = mlsFootprintAxes(u.side, u.direction, u.n);
+    axes = mlsFootprintAxes(u.side, u.direction, mlsFootprintSlotN(u));
     u.fpDx = axes.dx;
     u.fpDy = axes.dy;
     /* Rules engine uses this when fpDx is missing on a probe. */
@@ -3034,6 +3078,46 @@
   }
 
   /** True when (x,y) is one of this side’s board spawn origins (LINE / standard / whatever the season ships). */
+  /** Four cells a 2×2 occupies when its spawn origin is this MD square. */
+  function mlsSpawnFootprintOf(side, cell) {
+    var axes = mlsFootprintAxes(side, sideFacing(side), cell.n);
+    var x = cell.x | 0;
+    var y = cell.y | 0;
+    return [
+      { x: x, y: y },
+      { x: x + axes.dx, y: y },
+      { x: x, y: y + axes.dy },
+      { x: x + axes.dx, y: y + axes.dy }
+    ];
+  }
+
+  /**
+   * 2×2 drop: releasing on any of a position's four cells lands on that spawn.
+   * Exact origins win if a footprint cell is shared.
+   */
+  function mlsLargeDropOrigin(side, x, y) {
+    var cells = side === 'ally' ? allyCells() : enemyCells();
+    var i;
+    var c;
+    var fp;
+    var j;
+    x |= 0;
+    y |= 0;
+    for (i = 0; i < cells.length; i++) {
+      c = cells[i];
+      if (c && (c.x | 0) === x && (c.y | 0) === y) return { x: x, y: y };
+    }
+    for (i = 0; i < cells.length; i++) {
+      c = cells[i];
+      if (!c) continue;
+      fp = mlsSpawnFootprintOf(side, c);
+      for (j = 0; j < fp.length; j++) {
+        if ((fp[j].x | 0) === x && (fp[j].y | 0) === y) return { x: c.x | 0, y: c.y | 0 };
+      }
+    }
+    return null;
+  }
+
   function isSideSpawnOrigin(side, x, y) {
     var cells = side === 'ally' ? allyCells() : enemyCells();
     var i, c;
@@ -3395,8 +3479,13 @@
 
     function updateHover(clientX, clientY) {
       var cell;
+      var origin;
       if (ghost) ghost.style.pointerEvents = 'none';
       cell = clientToMapCell(clientX, clientY);
+      if (cell && dragU && dragU.isLarge) {
+        origin = mlsLargeDropOrigin(dragU.side, cell.x, cell.y);
+        cell = origin;
+      }
       hoverCell = cell;
       hoverVerdict = cell && dragU ? evaluateMapPlace(dragU, cell.x, cell.y) : null;
       if (cell && dragU) paintMapDropHints(dragU, cell.x, cell.y, hoverVerdict);
@@ -8122,9 +8211,8 @@
     var dy;
     var axes;
     if (!u.isLarge) return [{ x: x, y: y }];
-    /* Always recompute from current formation geometry — never trust a stale fpDx
-     * stamped while board.formation was wrong (standard 2/3 must flip toward mid). */
-    axes = mlsFootprintAxes(u.side, u.direction, u.n);
+    /* Always recompute from the spawn square under the unit (standard 2/3 flip). */
+    axes = mlsFootprintAxes(u.side, u.direction, mlsFootprintSlotN(u));
     dx = axes.dx;
     dy = axes.dy;
     u.fpDx = dx;
