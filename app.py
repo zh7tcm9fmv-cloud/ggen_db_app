@@ -11367,6 +11367,80 @@ def create_capturable_stages_by_unit(capturable_by_stage):
             })
     return by_unit
 
+
+# RewardType_Unit — Story Event stage-drop capture slot (not m_capturable_unit).
+_REWARD_TYPE_UNIT = '3'
+
+
+def _capturable_stages_add(by_unit, uid, sid, *, is_pickup=False, is_secret_battle_pickup=False):
+    uid = normalize_id(uid)
+    sid = normalize_id(sid)
+    if uid == '0' or sid == '0':
+        return
+    rows = by_unit.setdefault(uid, [])
+    for row in rows:
+        if normalize_id(row.get('stage_id')) == sid:
+            if is_pickup:
+                row['is_pickup'] = True
+            if is_secret_battle_pickup:
+                row['is_secret_battle_pickup'] = True
+            return
+    rows.append({
+        'stage_id': sid,
+        'is_pickup': bool(is_pickup),
+        'is_secret_battle_pickup': bool(is_secret_battle_pickup),
+    })
+
+
+def enrich_capturable_stages_from_stage_drop_units(
+    by_unit,
+    *,
+    stage_rows,
+    drop_by_set,
+    drop_content_by_set,
+    reward_by_id,
+    reward_ids_by_set,
+):
+    """Merge Story Event capture units from stage drop tables.
+
+    Challenge Main: ``m_capturable_unit`` (rates + stage-select pickup).
+    Story Event (e.g. G-Unit): no capturable_unit rows — the capturable kit is the
+    **Unit** reward inside ``m_stage.StageDropSetId`` → drop content → reward set
+    (G-Unit uses content slot …04). Do **not** use map ``CannotCapture`` or
+    acquisition-method StoryEvent alone — those mark non-capture fodder / clear paths.
+    """
+    out = {k: list(v) for k, v in (by_unit or {}).items()}
+    stages_by_drop_set = {}
+    for item in extract_data_list(stage_rows or []):
+        if not isinstance(item, dict):
+            continue
+        sid = normalize_id(item.get('Id') or item.get('id'))
+        dsid = normalize_id(item.get('StageDropSetId') or item.get('stageDropSetId'))
+        if sid == '0' or dsid == '0':
+            continue
+        stages_by_drop_set.setdefault(dsid, []).append(sid)
+
+    for dsid, stage_ids in stages_by_drop_set.items():
+        for drop_row in (drop_by_set or {}).get(dsid) or []:
+            cset = normalize_id(drop_row.get('content_set_id'))
+            if cset == '0':
+                continue
+            for crow in (drop_content_by_set or {}).get(cset) or []:
+                rsid = normalize_id(crow.get('reward_set_id'))
+                if rsid == '0':
+                    continue
+                reward_ids = list((reward_ids_by_set or {}).get(rsid) or [])
+                if not reward_ids and (reward_by_id or {}).get(rsid):
+                    reward_ids = [rsid]
+                for rid in reward_ids:
+                    rr = (reward_by_id or {}).get(normalize_id(rid)) or {}
+                    if normalize_id(rr.get('reward_type_index')) != _REWARD_TYPE_UNIT:
+                        continue
+                    uid = normalize_id(rr.get('target_id'))
+                    for sid in stage_ids:
+                        _capturable_stages_add(out, uid, sid)
+    return out
+
 def create_main_stage_challenge_npc_unit_override_by_stage(d):
     """MainStageChallengeId -> MapNpcId -> [unit rows] (same shape as map_npc_unit_lookup values)."""
     by_stage = {}
@@ -11850,6 +11924,11 @@ def create_map_npc_lookup(d):
             _iip = item.get('isInitiallyPlaced')
         # Missing flag means "starts on map" in client data; only explicit false marks reinforcements.
         _placed = True if _iip is None else bool(_iip)
+        # CannotCapture=false → unit may be captured in battle (Story Event / maps).
+        # Opposite of m_capturable_unit (Challenge pickup rates); both matter for /develop.
+        _cc = item.get('CannotCapture')
+        if _cc is None:
+            _cc = item.get('cannotCapture')
         entry = {
             'id': nid,
             'map_stage_id': msid,
@@ -11859,6 +11938,7 @@ def create_map_npc_lookup(d):
             'battle_side_type': bst,
             'is_initially_placed': _placed,
             'step_order': safe_int(item.get('StepOrder') or item.get('stepOrder'), 0),
+            'cannot_capture': bool(_cc) if _cc is not None else False,
             'is_story_event_boss': bool(item.get('IsStoryEventBoss') or item.get('isStoryEventBoss')),
             'npc_unique_name': str(item.get('NpcUniqueName') or item.get('npcUniqueName') or '').lower(),
             'map_npc_buff_id': normalize_id(item.get('MapNpcBuffId') or item.get('mapNpcBuffId')),
@@ -15435,6 +15515,15 @@ unit_acquisition_by_id = _index_acq_rows(unit_acquisition_method_data, ('UnitId'
 character_acquisition_by_id = _index_acq_rows(character_acquisition_method_data, ('CharacterId', 'characterId'))
 item_acquisition_by_id = _index_acq_rows(item_acquisition_method_data, ('ItemId', 'itemId'))
 option_parts_acquisition_by_id = _index_acq_rows(option_parts_acquisition_method_data, ('OptionPartsId', 'optionPartsId'))
+# /develop capturable: Challenge m_capturable_unit + Story Event stage-drop Unit rewards
+capturable_stages_by_unit = enrich_capturable_stages_from_stage_drop_units(
+    capturable_stages_by_unit,
+    stage_rows=stage_master_data,
+    drop_by_set=stage_drop_by_set,
+    drop_content_by_set=stage_drop_content_by_set,
+    reward_by_id=reward_map,
+    reward_ids_by_set=reward_set_content_ids_by_set,
+)
 _invasion_stage_group_by_extend_id = {}
 _invasion_extend_levels_by_group = {}
 for _ierow in extract_data_list(invasion_event_stage_extend_data or []):
@@ -25510,6 +25599,13 @@ _DEV_CAPTURE_TITLE = {
     'TW': '奪取',
     'HK': '奪取',
 }
+# Board legend under the green capture marker (not the help section title).
+_DEV_CAPTURE_LEGEND = {
+    'EN': 'Capturable Unit',
+    'JA': '鹵獲ユニット',
+    'TW': '可奪取單位',
+    'HK': '可奪取單位',
+}
 _DEV_CAPTURE_PICKUP = {
     'EN': 'Featured',
     'JA': 'Pickup',
@@ -25870,6 +25966,8 @@ def _dev_series_payload(series_id, lc):
     ui['bulk_note'] = _DEV_BULK_NOTE.get(lc) or _DEV_BULK_NOTE['EN']
     ui['bulk_note_single'] = _DEV_BULK_NOTE.get(lc) or _DEV_BULK_NOTE['EN']
     ui['capture_title'] = _DEV_CAPTURE_TITLE.get(lc) or _DEV_CAPTURE_TITLE['EN']
+    ui['capture_legend'] = _DEV_CAPTURE_LEGEND.get(lc) or _DEV_CAPTURE_LEGEND['EN']
+    ui['capture_icon'] = game_image_public_url('/static/images/UI/UI_Common_Icon_Capturable.webp')
     ui['capture_pickup'] = _DEV_CAPTURE_PICKUP.get(lc) or _DEV_CAPTURE_PICKUP['EN']
     ui['capture_secret_battle'] = _DEV_CAPTURE_SECRET_BATTLE.get(lc) or _DEV_CAPTURE_SECRET_BATTLE['EN']
     ui['capture_hard'] = _DEV_CAPTURE_HARD.get(lc) or _DEV_CAPTURE_HARD['EN']

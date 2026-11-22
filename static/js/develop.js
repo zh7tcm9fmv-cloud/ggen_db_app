@@ -640,8 +640,14 @@
   /** Capturable marker — EventExchangeItem shape, green-tinted (no official capture-unit icon). */
   var CAPTURE_ICON_PATH = '/static/images/UI/UI_Common_Icon_Capturable.webp';
 
+  function captureLegendLabel() {
+    var pack = ui();
+    return pack.capture_legend || pack.capture_title || 'Capturable Unit';
+  }
+
   function captureIconSrc() {
-    var src = CAPTURE_ICON_PATH;
+    var pack = ui();
+    var src = pack.capture_icon || CAPTURE_ICON_PATH;
     try {
       if (typeof window.imgUrlPreferCdn === 'function') src = window.imgUrlPreferCdn(src) || src;
       else if (typeof window.imgUrl === 'function') src = window.imgUrl(src) || src;
@@ -649,10 +655,23 @@
     return src;
   }
 
+  function syncCaptureLegend() {
+    var legend = $('devCaptureLegend');
+    var icon = $('devCaptureLegendIcon');
+    var label = $('devCaptureLegendLabel');
+    var text = captureLegendLabel();
+    if (label) label.textContent = text;
+    if (legend) legend.setAttribute('aria-label', text);
+    if (icon) {
+      var src = captureIconSrc();
+      if (icon.getAttribute('src') !== src) icon.src = src;
+    }
+  }
+
   function mkCaptureIcon(title) {
     var wrap = document.createElement('span');
     wrap.className = 'dev-capture-flare';
-    wrap.title = title || 'Capturing Units';
+    wrap.title = title || captureLegendLabel();
     var img = document.createElement('img');
     img.className = 'dev-capture-flare-icon';
     img.alt = '';
@@ -1601,7 +1620,7 @@
       if (!unknown && unit.role_icon) badgeRow.appendChild(mkImg('dev-badge', unit.role_icon));
       if (badgeRow.childNodes.length) badges.appendChild(badgeRow);
       if (capturable) {
-        badges.appendChild(mkCaptureIcon(pack.capture_title || 'Capturing Units'));
+        badges.appendChild(mkCaptureIcon(pack.capture_legend || pack.capture_title || 'Capturable Unit'));
       }
       if (badges.childNodes.length) btn.appendChild(badges);
 
@@ -2113,9 +2132,15 @@
     if (map && map.series_id) seriesId = String(map.series_id);
     persistDevelopView();
     syncSeriesBtn();
+    syncCaptureLegend();
     applyBoardChrome();
     renderTabs();
     renderBoard();
+    try {
+      if (window.GgenNavTabsAutoHide && typeof window.GgenNavTabsAutoHide.syncDevelop === 'function') {
+        window.GgenNavTabsAutoHide.syncDevelop();
+      }
+    } catch (_) {}
   }
 
   function pushDevelopPath(sid) {

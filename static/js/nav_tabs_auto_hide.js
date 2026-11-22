@@ -20,6 +20,76 @@
     return !!(b && (b.classList.contains('tm-page') || b.classList.contains('dm-page')));
   }
 
+  /** /develop scrolls the document — drive tab hide from #devBoard geometry
+   *  (not scroll-delta), so we don't thrash hide/reveal mid-gesture. */
+  function isDevelopTab() {
+    try {
+      if (document.body && document.body.classList.contains('dev-page')) return true;
+      var panel = document.getElementById('panel-develop');
+      return !!(panel && panel.classList.contains('active'));
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function applyDevelopNavCollapsed(want) {
+    if (isMatrixBoardPage() || overlayUnlockFreeze) return;
+    if (keepNavStatic()) return;
+    want = !!want;
+    var already = document.body.classList.contains('nav-tabs-collapsed') === want;
+    if (already) return;
+    document.body.classList.toggle('nav-tabs-collapsed', want);
+    /* Short ignore — geometry is the source of truth, not dy accumulation. */
+    bumpIgnore(160);
+    pinnedCollapsed = false;
+    upAccum = 0;
+    try {
+      if (typeof global.scheduleSyncListTheadStickyTop === 'function') {
+        global.scheduleSyncListTheadStickyTop();
+      }
+    } catch (_) {}
+  }
+
+  /**
+   * Hide site tab bar once #devBoard reaches the sticky brand row.
+   * Always show again at absolute page top (board often sits mid-viewport there).
+   * @returns {boolean} true when develop handled the scroll (skip dy logic)
+   */
+  function syncDevelopNavByBoard() {
+    if (!isDevelopTab()) return false;
+    if (
+      document.documentElement.classList.contains('page-scroll-lock') ||
+      document.body.classList.contains('detail-modal-open') ||
+      document.body.classList.contains('search-spotlight-open') ||
+      document.body.classList.contains('nav-tabs-overlay-freeze')
+    ) {
+      return true;
+    }
+    var y = pageScrollY();
+    /* Page top — always restore tabs (do not use board mid-viewport as hide). */
+    if (y <= 8) {
+      applyDevelopNavCollapsed(false);
+      return true;
+    }
+    var board = document.getElementById('devBoard');
+    if (!board) return true;
+    var brand = document.querySelector('.app-header .header-brand');
+    var header = document.querySelector('.app-header');
+    var line = 64;
+    try {
+      if (brand) line = brand.getBoundingClientRect().bottom;
+      else if (header) line = header.getBoundingClientRect().top + 56;
+    } catch (_) {}
+    var boardTop = board.getBoundingClientRect().top;
+    /* Hide when the board has scrolled up to the brand; hysteresis on reveal. */
+    var hideLine = line + 12;
+    var showLine = line + 110;
+    var collapsed = document.body.classList.contains('nav-tabs-collapsed');
+    var wantHide = collapsed ? boardTop <= showLine : boardTop <= hideLine;
+    applyDevelopNavCollapsed(wantHide);
+    return true;
+  }
+
   function isCollectionsPage() {
     return !!(document.body && document.body.classList.contains('collections-page'));
   }
@@ -97,8 +167,9 @@
   function setNavTabsCollapsed(collapsed) {
     /* /tm and /dm use their own board-scroll chrome hide */
     if (isMatrixBoardPage()) return;
+    /* /develop: geometry sync owns collapse — ignore dy-driven calls. */
+    if (isDevelopTab()) return;
     if (keepNavStatic()) collapsed = false;
-    /* /develop: hide tabs on scroll-down (board is page-scrolled; no snap lock). */
     if (overlayUnlockFreeze) return;
     var want = !!collapsed;
     var already = document.body.classList.contains('nav-tabs-collapsed') === want;
@@ -349,6 +420,7 @@
 
     function onScroll(ev) {
       if (isNestedScrollerScroll(ev)) return;
+      if (syncDevelopNavByBoard()) return;
       var phoneChrome = keepNavStatic();
       if (phoneChrome) {
         if (document.body.classList.contains('nav-tabs-collapsed')) {
@@ -448,6 +520,7 @@
       'touchmove',
       function (ev) {
         if (touchY0 == null || hardLocked()) return;
+        if (syncDevelopNavByBoard()) return;
         var cy = null;
         try {
           cy = ev.touches && ev.touches[0] ? ev.touches[0].clientY : null;
@@ -514,6 +587,7 @@
     prepareUnlock: prepareUnlock,
     restoreAfterOverlay: restoreAfterOverlay,
     releaseOverlayFreeze: releaseOverlayFreeze,
+    syncDevelop: syncDevelopNavByBoard,
   };
   global.setNavTabsCollapsed = setNavTabsCollapsed;
   global.initNavTabsAutoHide = initNavTabsAutoHide;
