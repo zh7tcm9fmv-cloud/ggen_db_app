@@ -2,13 +2,29 @@
   var CELL_FALLBACK = 96;
   var LS_SERIES = 'ggen_develop_series_id';
   var LS_DIAGRAM = 'ggen_develop_diagram';
-  var state = { series: [], map: null, diagram: 0, selected: null, cell: CELL_FALLBACK };
+  var state = { series: [], map: null, diagram: 0, selected: null, detailUnitId: null, cell: CELL_FALLBACK };
   var seriesId = String(window.__DEV_SERIES__ || '4000');
   var boundDismiss = false;
   var hoverCapable = false;
   try {
     hoverCapable = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   } catch (_) {}
+  /* Hover popup: delay-clear so the pointer can move onto the card and scroll long capture lists. */
+  var hoverClearTimer = null;
+  var hoverDetailBound = false;
+  /* Mobile / coarse pointer: pan · swipe · pinch the board at readable cell size. */
+  var boardView = { x: 0, y: 0, scale: 1, key: '' };
+  var panMetrics = { w: 0, h: 0 };
+  var gestureBound = false;
+  var gesture = null;
+
+  function isTouchBoard() {
+    try {
+      return window.matchMedia('(max-width: 820px), ((hover: none) and (pointer: coarse))').matches;
+    } catch (_) {
+      return false;
+    }
+  }
 
   function recallSeriesId() {
     try {
@@ -51,7 +67,7 @@
     /* sv= busts stale public max-age=3600 develop JSON (e.g. series_name "320"). */
     var q = (path.indexOf('?') >= 0 ? '&' : '?')
       + 'lang=' + encodeURIComponent(lang())
-      + '&sv=dev19';
+      + '&sv=dev24';
     return fetch(path + q, {
       headers: { Accept: 'application/json' },
       cache: 'no-store',
@@ -140,13 +156,15 @@
   }
 
   /**
-   * Size the MD grid so the full tree fits the frame WIDTH (no sideways scroll).
-   * Page may still scroll vertically. leftReserve = switcher column.
+   * Size the MD grid.
+   * Desktop: fit WIDTH (bake into cell size — no CSS scale).
+   * Touch / narrow: keep readable cells; pan · pinch handles overflow.
    */
-  function layoutMetrics(scroll, maxC, maxR, leftReserve) {
+  function layoutMetrics(scroll, maxC, maxR, leftReserve, opts) {
     var cols = maxC + 1;
     var rows = maxR + 1;
     var left = Math.max(0, leftReserve | 0);
+    var touchPan = !!(opts && opts.touchPan);
     /* Frame width — never scroll.clientWidth (overflow:visible inflates with the board). */
     var frame = null;
     try {
@@ -157,6 +175,7 @@
     var CELL_MAX = 78;
     var CELL_SOFT_MIN = 52;
     var CELL_HARD_MIN = 28;
+    var CELL_TOUCH = 56;
 
     function packFor(cell) {
       var koma = Math.round(Math.min(Math.max(cell * 1.68, Math.min(108, cell * 1.7)), cell * 1.82));
@@ -177,6 +196,16 @@
       };
     }
 
+    if (touchPan) {
+      /* Readable units — board may be wider/taller than the viewport. */
+      var tCell = CELL_TOUCH;
+      if (cols <= 6) {
+        var roomy = Math.floor((availW - left - 12) / Math.max(cols, 1));
+        if (roomy >= 52) tCell = Math.min(CELL_MAX, Math.max(CELL_TOUCH, roomy));
+      }
+      return packFor(tCell);
+    }
+
     /* Width-first: size cells from remaining width after the switcher. */
     var cell = Math.floor((availW - left - 10) / Math.max(cols, 1));
     if (cell > CELL_MAX) cell = CELL_MAX;
@@ -193,6 +222,171 @@
       m = packFor(cell);
     }
     return m;
+  }
+
+  function clampBoardView(vw, vh, boardW, boardH) {
+    var s = boardView.scale;
+    if (!(s > 0)) s = 1;
+    var worldW = boardW * s;
+    var worldH = boardH * s;
+    if (worldW <= vw) boardView.x = (vw - worldW) / 2;
+    else boardView.x = Math.min(0, Math.max(vw - worldW, boardView.x));
+    if (worldH <= vh) boardView.y = (vh - worldH) / 2;
+    else boardView.y = Math.min(0, Math.max(vh - worldH, boardView.y));
+  }
+
+  function applyBoardView(board) {
+    if (!board) return;
+    board.style.transformOrigin = '0 0';
+    board.style.transform = 'translate3d('
+      + boardView.x.toFixed(2) + 'px,'
+      + boardView.y.toFixed(2) + 'px,0) scale('
+      + boardView.scale + ')';
+  }
+
+  function clearSelectedNodeFromDock(anchorEl) {
+    if (!anchorEl || !isTouchBoard()) return;
+    var scroll = $('devScroll');
+    var board = $('devBoard');
+    var box = $('devDetail');
+    if (!scroll || !board || !box || box.hidden) return;
+    if (!scroll.classList.contains('is-panable')) return;
+    var nr = anchorEl.getBoundingClientRect();
+    var br = box.getBoundingClientRect();
+    var overlap = nr.bottom - br.top;
+    if (!(overlap > 8)) return;
+    boardView.y -= (overlap + 16);
+    clampBoardView(scroll.clientWidth || 0, scroll.clientHeight || 0, panMetrics.w, panMetrics.h);
+    applyBoardView(board);
+  }
+
+  function resetBoardView(scroll, boardW, boardH) {
+    var vw = Math.max(1, (scroll && scroll.clientWidth) || 1);
+    var vh = Math.max(1, (scroll && scroll.clientHeight) || 1);
+    var fit = Math.min(vw / Math.max(boardW, 1), vh / Math.max(boardH, 1));
+    /* Start readable (1×). Only zoom out when the board already fits. */
+    boardView.scale = fit >= 1 ? Math.min(1.15, fit) : 1;
+    boardView.x = 0;
+    boardView.y = 0;
+    clampBoardView(vw, vh, boardW, boardH);
+  }
+
+  function touchDist(a, b) {
+    var dx = a.clientX - b.clientX;
+    var dy = a.clientY - b.clientY;
+    return Math.hypot(dx, dy) || 1;
+  }
+
+  function touchMid(a, b) {
+    return {
+      x: (a.clientX + b.clientX) / 2,
+      y: (a.clientY + b.clientY) / 2,
+    };
+  }
+
+  function ensureBoardGestures(scroll) {
+    if (gestureBound || !scroll) return;
+    gestureBound = true;
+    var suppressClick = false;
+
+    function minScale() {
+      var vw = Math.max(1, scroll.clientWidth || 1);
+      var vh = Math.max(1, scroll.clientHeight || 1);
+      var fit = Math.min(vw / Math.max(panMetrics.w, 1), vh / Math.max(panMetrics.h, 1));
+      return Math.max(0.28, Math.min(1, fit * 0.92));
+    }
+
+    function onTouchStart(e) {
+      if (!scroll.classList.contains('is-panable')) return;
+      if (!e.touches || !e.touches.length) return;
+      var board = $('devBoard');
+      if (!board) return;
+      scroll.classList.add('is-panning');
+      if (e.touches.length >= 2) {
+        var mid = touchMid(e.touches[0], e.touches[1]);
+        var rect = scroll.getBoundingClientRect();
+        gesture = {
+          mode: 'pinch',
+          dist0: touchDist(e.touches[0], e.touches[1]),
+          scale0: boardView.scale,
+          midX: mid.x - rect.left,
+          midY: mid.y - rect.top,
+          x0: boardView.x,
+          y0: boardView.y,
+          moved: true,
+        };
+      } else {
+        gesture = {
+          mode: 'pan',
+          x0: boardView.x,
+          y0: boardView.y,
+          px: e.touches[0].clientX,
+          py: e.touches[0].clientY,
+          moved: false,
+        };
+      }
+    }
+
+    function onTouchMove(e) {
+      if (!gesture || !scroll.classList.contains('is-panable')) return;
+      var board = $('devBoard');
+      if (!board) return;
+      if (gesture.mode === 'pinch' && e.touches && e.touches.length >= 2) {
+        try { e.preventDefault(); } catch (_) {}
+        var dist = touchDist(e.touches[0], e.touches[1]);
+        var next = gesture.scale0 * (dist / (gesture.dist0 || 1));
+        next = Math.max(minScale(), Math.min(2.8, next));
+        var mid = touchMid(e.touches[0], e.touches[1]);
+        var rect = scroll.getBoundingClientRect();
+        var mx = mid.x - rect.left;
+        var my = mid.y - rect.top;
+        /* Keep the pinch midpoint locked to the same board point. */
+        var worldX = (gesture.midX - gesture.x0) / (gesture.scale0 || 1);
+        var worldY = (gesture.midY - gesture.y0) / (gesture.scale0 || 1);
+        boardView.scale = next;
+        boardView.x = mx - worldX * next;
+        boardView.y = my - worldY * next;
+        clampBoardView(scroll.clientWidth, scroll.clientHeight, panMetrics.w, panMetrics.h);
+        applyBoardView(board);
+        return;
+      }
+      if (gesture.mode === 'pan' && e.touches && e.touches.length === 1) {
+        var dx = e.touches[0].clientX - gesture.px;
+        var dy = e.touches[0].clientY - gesture.py;
+        if (!gesture.moved && Math.hypot(dx, dy) < 4) return;
+        gesture.moved = true;
+        try { e.preventDefault(); } catch (_) {}
+        boardView.x = gesture.x0 + dx;
+        boardView.y = gesture.y0 + dy;
+        clampBoardView(scroll.clientWidth, scroll.clientHeight, panMetrics.w, panMetrics.h);
+        applyBoardView(board);
+      }
+    }
+
+    function onTouchEnd(e) {
+      if (!gesture) return;
+      if (e.touches && e.touches.length >= 1) {
+        /* Still fingers down — re-arm from remaining touches. */
+        var wasMoved = !!gesture.moved;
+        onTouchStart(e);
+        if (gesture) gesture.moved = wasMoved || !!gesture.moved;
+        return;
+      }
+      if (gesture.moved) suppressClick = true;
+      gesture = null;
+      scroll.classList.remove('is-panning');
+    }
+
+    scroll.addEventListener('touchstart', onTouchStart, { passive: true });
+    scroll.addEventListener('touchmove', onTouchMove, { passive: false });
+    scroll.addEventListener('touchend', onTouchEnd, { passive: true });
+    scroll.addEventListener('touchcancel', onTouchEnd, { passive: true });
+    scroll.addEventListener('click', function (e) {
+      if (!suppressClick) return;
+      suppressClick = false;
+      e.preventDefault();
+      e.stopPropagation();
+    }, true);
   }
 
   function ptKey(x, y) {
@@ -307,7 +501,8 @@
     var arrows = [];
     var endBuckets = Object.create(null);
     var jointTipDone = Object.create(null);
-    var radius = Math.max(18, cell * 0.42);
+    /* Cap fillet to cell — tiny cells + huge radius made ULT short hops look broken. */
+    var radius = Math.max(8, Math.min(cell * 0.42, cell * 0.48));
 
     (routes || []).forEach(function (rt, ri) {
       var cells = rt.cells || [];
@@ -442,6 +637,32 @@
     return img;
   }
 
+  /** Capturable marker — EventExchangeItem shape, green-tinted (no official capture-unit icon). */
+  var CAPTURE_ICON_PATH = '/static/images/UI/UI_Common_Icon_Capturable.webp';
+
+  function captureIconSrc() {
+    var src = CAPTURE_ICON_PATH;
+    try {
+      if (typeof window.imgUrlPreferCdn === 'function') src = window.imgUrlPreferCdn(src) || src;
+      else if (typeof window.imgUrl === 'function') src = window.imgUrl(src) || src;
+    } catch (_) {}
+    return src;
+  }
+
+  function mkCaptureIcon(title) {
+    var wrap = document.createElement('span');
+    wrap.className = 'dev-capture-flare';
+    wrap.title = title || 'Capturing Units';
+    var img = document.createElement('img');
+    img.className = 'dev-capture-flare-icon';
+    img.alt = '';
+    img.decoding = 'async';
+    img.draggable = false;
+    img.src = captureIconSrc();
+    wrap.appendChild(img);
+    return wrap;
+  }
+
   function currentDiagram() {
     var map = state.map;
     return (map && map.diagrams && map.diagrams[state.diagram]) || null;
@@ -464,10 +685,59 @@
     }
   }
 
+  function cancelHoverClear() {
+    if (hoverClearTimer != null) {
+      clearTimeout(hoverClearTimer);
+      hoverClearTimer = null;
+    }
+  }
+
   function clearHoverDetail() {
+    cancelHoverClear();
     if (state.selected != null) return;
     setNodeHighlight(null, true);
     renderDetail(null, null);
+  }
+
+  function scheduleHoverClear() {
+    if (state.selected != null) return;
+    cancelHoverClear();
+    hoverClearTimer = setTimeout(function () {
+      hoverClearTimer = null;
+      clearHoverDetail();
+    }, 160);
+  }
+
+  function bindHoverDetailBridge() {
+    if (hoverDetailBound || !hoverCapable) return;
+    hoverDetailBound = true;
+    var detail = $('devDetail');
+    if (!detail) return;
+    detail.addEventListener('pointerenter', function () {
+      cancelHoverClear();
+    });
+    detail.addEventListener('pointerleave', function () {
+      scheduleHoverClear();
+    });
+    /*
+      Floating detail wheel must never chain to the page (that toggles nav hide
+      and resizes the board). Always consume + scroll the card itself.
+    */
+    detail.addEventListener('wheel', function (e) {
+      if (detail.hidden || detail.classList.contains('is-sheet')) return;
+      e.preventDefault();
+      e.stopPropagation();
+      detail.scrollTop += e.deltaY;
+    }, { passive: false });
+  }
+
+  /** While hovering a node, wheel scrolls the open detail card (long capture lists). */
+  function forwardWheelToDetail(e) {
+    var box = $('devDetail');
+    if (!box || box.hidden || box.classList.contains('is-sheet')) return;
+    e.preventDefault();
+    e.stopPropagation();
+    box.scrollTop += e.deltaY;
   }
 
   function closeUnitSheet() {
@@ -476,12 +746,14 @@
     var closeBtn = $('devDetailClose');
     var openFull = $('devDetailOpenFullWrap');
     if (box) {
-      box.classList.remove('is-open', 'is-sheet', 'is-floating');
+      box.classList.remove('is-open', 'is-sheet', 'is-floating', 'is-mobile-dock');
       box.hidden = true;
       box.setAttribute('hidden', '');
       box.style.left = '';
       box.style.top = '';
       box.style.right = '';
+      box.style.bottom = '';
+      box.style.width = '';
       box.style.position = '';
     }
     if (backdrop) {
@@ -502,9 +774,27 @@
 
   function clearSelection() {
     state.selected = null;
+    state.detailUnitId = null;
     setNodeHighlight(null, false);
     closeUnitSheet();
     renderDetail(null, null);
+  }
+
+  function openUnitDetailPage(unit) {
+    if (!unit || unit.unknown) return false;
+    var id = unit.id || state.detailUnitId || '';
+    if (id && typeof window.openDetail === 'function') {
+      try {
+        window.openDetail('unit', id);
+        return true;
+      } catch (_) {}
+    }
+    var href = unit.href || (id ? ('/u/' + id) : '');
+    if (href && href !== '#') {
+      window.location.href = href;
+      return true;
+    }
+    return false;
   }
 
   function showPieceDetail(piece, opts) {
@@ -531,35 +821,97 @@
     box.classList.add('is-floating');
     box.classList.remove('is-sheet', 'is-open');
     box.style.position = 'absolute';
+    /*
+      Touch pinned: dock to the bottom of the frame so the ogk stays tappable
+      for a second tap (floating near the node covered it).
+    */
+    if (opts.mode === 'dock' || (opts.pin && !hoverCapable)) {
+      box.classList.add('is-mobile-dock');
+      box.style.left = '8px';
+      box.style.right = '8px';
+      box.style.top = 'auto';
+      box.style.bottom = '8px';
+      box.style.width = 'auto';
+      box.style.maxHeight = '';
+      return;
+    }
+    box.classList.remove('is-mobile-dock');
+
+    var pad = 8;
     var fr = frame.getBoundingClientRect();
+    /* Intersect board frame with the visible viewport so the popup never clips off-screen. */
+    var viewTop = Math.max(fr.top, 0);
+    var viewLeft = Math.max(fr.left, 0);
+    var viewRight = Math.min(fr.right, window.innerWidth || fr.right);
+    var viewBottom = Math.min(fr.bottom, window.innerHeight || fr.bottom);
+    var availW = Math.max(120, viewRight - viewLeft);
+    var availH = Math.max(160, viewBottom - viewTop);
+    /* Use almost the full visible height so long capture stage lists fit without scroll. */
+    var maxH = Math.max(160, availH - pad * 2);
+
+    box.style.maxWidth = Math.min(340, availW - pad * 2) + 'px';
+    box.style.width = '';
+    box.style.maxHeight = Math.round(maxH) + 'px';
+    box.style.left = pad + 'px';
+    box.style.top = pad + 'px';
+    box.style.right = 'auto';
+    box.style.bottom = 'auto';
+
     var bw = box.offsetWidth || 280;
-    var bh = box.offsetHeight || 160;
+    /* Natural height capped by maxH — prefer showing full content. */
+    var naturalH = Math.max(box.scrollHeight || 0, box.offsetHeight || 0);
+    var bh = Math.min(naturalH, maxH);
+
+    var minX = Math.max(pad, viewLeft - fr.left + pad);
+    var minY = Math.max(pad, viewTop - fr.top + pad);
+    var maxX = Math.min(fr.width - bw - pad, viewRight - fr.left - bw - pad);
+    var maxY = Math.min(fr.height - bh - pad, viewBottom - fr.top - bh - pad);
+
     var x;
     var y;
-    if (opts.mode === 'cursor' && opts.clientX != null) {
+    var cursorMode = opts.mode === 'cursor' && opts.clientX != null;
+    if (cursorMode) {
       x = opts.clientX - fr.left + 14;
       y = opts.clientY - fr.top + 14;
+      if (x + bw + pad > fr.width) x = opts.clientX - fr.left - bw - 14;
+      if (y + bh + pad > fr.height) y = opts.clientY - fr.top - bh - 14;
     } else if (opts.anchorEl) {
-      // Mobile: 45° upper-right of the ogk node.
       var ar = opts.anchorEl.getBoundingClientRect();
       var ox = ar.left - fr.left + ar.width * 0.5;
-      var oy = ar.top - fr.top + ar.height * 0.5;
-      var dist = Math.max(ar.width, ar.height) * 0.72;
-      x = ox + dist * Math.cos(Math.PI / 4);
-      y = oy - dist * Math.sin(Math.PI / 4) - bh * 0.25;
+      var gap = Math.max(10, Math.max(ar.width, ar.height) * 0.35);
+      x = ox + gap;
+      if (x + bw + pad > fr.width) x = ox - gap - bw;
+      /* Tall capture lists: pin to top of visible area so max height is usable. */
+      if (bh >= maxH * 0.7 || naturalH > maxH * 0.55) {
+        y = minY;
+      } else {
+        var oy = ar.top - fr.top + ar.height * 0.5;
+        y = oy - bh * 0.2;
+        if (y < minY) y = minY;
+        if (y + bh + pad > fr.height) y = Math.max(minY, fr.height - bh - pad);
+      }
     } else {
-      x = 12;
-      y = 12;
+      x = minX;
+      y = minY;
     }
-    var maxX = Math.max(8, fr.width - bw - 8);
-    var maxY = Math.max(8, fr.height - bh - 8);
-    if (x > maxX) x = Math.max(8, opts.clientX != null ? (opts.clientX - fr.left - bw - 14) : maxX);
-    if (y > maxY) y = maxY;
-    if (x < 8) x = 8;
-    if (y < 8) y = 8;
+
+    if (maxX < minX) {
+      x = minX;
+    } else {
+      if (x > maxX) x = maxX;
+      if (x < minX) x = minX;
+    }
+    if (maxY < minY) {
+      y = minY;
+    } else {
+      if (y > maxY) y = maxY;
+      if (y < minY) y = minY;
+    }
+
     box.style.left = Math.round(x) + 'px';
     box.style.top = Math.round(y) + 'px';
     box.style.right = 'auto';
+    box.style.bottom = 'auto';
   }
 
   function openUnitSheet(box) {
@@ -602,6 +954,7 @@
     var box = $('devDetail');
     if (!box) return;
     if (!piece) {
+      state.detailUnitId = null;
       if (!opts.keepSheet) closeUnitSheet();
       else {
         box.hidden = true;
@@ -615,6 +968,7 @@
     var unit = piece.unit || {};
     var pack = ui();
     var unknown = !!unit.unknown;
+    state.detailUnitId = (!unknown && unit.id) ? String(unit.id) : null;
     $('devDetailName').textContent = unknown
       ? '???'
       : (unit.name || unit.id || '');
@@ -684,8 +1038,25 @@
     if (asSheet) openUnitSheet(box);
     else placeDetailPopup(box, opts);
 
+    /* After bottom-dock, nudge the pan so the selected ogk is not under the card. */
+    if (!asSheet && (opts.mode === 'dock' || (opts.pin && !hoverCapable)) && opts.anchorEl) {
+      requestAnimationFrame(function () {
+        clearSelectedNodeFromDock(opts.anchorEl);
+      });
+    }
+
     var matTitle = $('devMatTitle');
-    if (matTitle) matTitle.textContent = pack.materials_title || 'Required Materials';
+    if (matTitle) {
+      matTitle.textContent = pack.materials_title || 'Required Materials';
+      /* Secret nodes: hide develop mats (spoilers); capture stages still shown. */
+      if (unknown) {
+        matTitle.hidden = true;
+        matTitle.setAttribute('hidden', '');
+      } else {
+        matTitle.hidden = false;
+        matTitle.removeAttribute('hidden');
+      }
+    }
 
     // Capital (m_unit.DevelopCapital) — always first under Required Materials.
     var capitalAmt = unknown ? 0 : Number(piece.capital || 0);
@@ -764,13 +1135,18 @@
       el.style.display = 'none';
     }
     hideLegacyCap($('devDetailCapital'));
-    fillMatsList($('devMats'), unknown ? [] : piece.materials, capitalAmt);
+    var matsEl = $('devMats');
+    if (unknown) {
+      if (matsEl) matsEl.innerHTML = '';
+    } else {
+      fillMatsList(matsEl, piece.materials, capitalAmt);
+    }
 
     // Bulk Development = MD path total (this step + all prior units on the lineage).
     var bulkTitle = $('devBulkTitle');
     var bulkNote = $('devBulkNote');
     var bulk = unknown ? [] : (piece.bulk_materials || []);
-    var bulkHas = bulk.length > 0;
+    var bulkHas = !unknown && bulk.length > 0;
     var bulkSteps = unknown ? 0 : Number(piece.bulk_steps || 0);
     if (bulkTitle) {
       bulkTitle.textContent = pack.bulk_title || 'Bulk Development';
@@ -805,11 +1181,114 @@
       var bMats = $('devBulkMats');
       if (bMats) bMats.innerHTML = '';
     }
-    // Re-place after content sized (thum/capital rows).
-    if (asSheet) {
-      /* sheet already opened */
-    } else {
+
+    // Capturable stages (m_capturable_unit) — include secret/unknown develop nodes.
+    var capTitle = $('devCaptureTitle');
+    var capList = $('devCaptureStages');
+    var capStages = Array.isArray(piece.capture_stages) ? piece.capture_stages : [];
+    var capHas = !!(piece.capturable || capStages.length);
+    if (capTitle) {
+      capTitle.replaceChildren();
+      if (capHas) {
+        var capTitleIcon = document.createElement('img');
+        capTitleIcon.className = 'dev-capture-title-icon';
+        capTitleIcon.alt = '';
+        capTitleIcon.decoding = 'async';
+        capTitleIcon.draggable = false;
+        capTitleIcon.src = captureIconSrc();
+        capTitle.appendChild(capTitleIcon);
+        capTitle.appendChild(document.createTextNode(pack.capture_title || 'Capturing Units'));
+        capTitle.hidden = false;
+        capTitle.removeAttribute('hidden');
+      } else {
+        capTitle.textContent = pack.capture_title || 'Capturing Units';
+        capTitle.hidden = true;
+        capTitle.setAttribute('hidden', '');
+      }
+    }
+    if (capList) {
+      capList.innerHTML = '';
+      if (capHas) {
+        capList.hidden = false;
+        capList.removeAttribute('hidden');
+        capStages.forEach(function (st) {
+          if (!st) return;
+          var li = document.createElement('li');
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'dev-capture-row';
+          var sid = String(st.stage_id || '');
+          btn.setAttribute('data-stage-id', sid);
+          var nameEl = document.createElement('span');
+          nameEl.className = 'dev-capture-row-name';
+          nameEl.textContent = st.name || sid;
+          btn.appendChild(nameEl);
+          var metaParts = [];
+          if (st.series_name) metaParts.push(String(st.series_name));
+          if (st.stage_number != null && Number(st.stage_number) > 0) {
+            metaParts.push('#' + String(st.stage_number));
+          }
+          if (metaParts.length) {
+            var metaEl = document.createElement('span');
+            metaEl.className = 'dev-capture-row-meta';
+            metaEl.textContent = metaParts.join(' · ');
+            btn.appendChild(metaEl);
+          }
+          var tags = document.createElement('span');
+          tags.className = 'dev-capture-tags';
+          var anyTag = false;
+          if (st.is_pickup) {
+            var tPick = document.createElement('span');
+            tPick.className = 'dev-capture-tag';
+            tPick.textContent = pack.capture_pickup || 'Featured';
+            tags.appendChild(tPick);
+            anyTag = true;
+          }
+          if (st.is_hard) {
+            var tHard = document.createElement('span');
+            tHard.className = 'dev-capture-tag is-hard';
+            tHard.textContent = pack.capture_hard || 'HARD';
+            tags.appendChild(tHard);
+            anyTag = true;
+          }
+          if (st.is_secret_battle_pickup || st.has_secret_battle) {
+            var tSec = document.createElement('span');
+            tSec.className = 'dev-capture-tag is-secret';
+            tSec.textContent = pack.capture_secret_battle || 'Secret battle';
+            tags.appendChild(tSec);
+            anyTag = true;
+          }
+          if (st.is_story_event) {
+            var tStory = document.createElement('span');
+            tStory.className = 'dev-capture-tag is-story';
+            tStory.textContent = pack.capture_story_event || 'Story Event';
+            tags.appendChild(tStory);
+            anyTag = true;
+          }
+          if (anyTag) btn.appendChild(tags);
+          btn.addEventListener('click', function (ev) {
+            ev.preventDefault();
+            ev.stopPropagation();
+            if (!sid) return;
+            if (typeof window.openDetail === 'function') {
+              try { window.openDetail('stage', sid); } catch (_) {}
+            }
+          });
+          li.appendChild(btn);
+          capList.appendChild(li);
+        });
+      } else {
+        capList.hidden = true;
+        capList.setAttribute('hidden', '');
+      }
+    }
+
+    // Re-place after content sized (mats / capture rows / images).
+    if (!asSheet) {
       placeDetailPopup(box, opts);
+      requestAnimationFrame(function () {
+        placeDetailPopup(box, opts);
+      });
     }
   }
 
@@ -838,6 +1317,18 @@
       e.stopPropagation();
       clearSelection();
     });
+    /* Thum / “Open unit page” → same unit dossier as desktop (SPA openDetail). */
+    function onOpenUnit(e) {
+      var id = state.detailUnitId;
+      if (!id) return;
+      e.preventDefault();
+      e.stopPropagation();
+      openUnitDetailPage({ id: id, href: '/u/' + id });
+    }
+    var link = $('devDetailLink');
+    var openFull = $('devDetailOpenFull');
+    if (link) link.addEventListener('click', onOpenUnit);
+    if (openFull) openFull.addEventListener('click', onOpenUnit);
   }
 
   function renderBoard() {
@@ -849,6 +1340,7 @@
     board.innerHTML = '';
     if (!diagram) return;
     bindDismissOnce();
+    bindHoverDetailBridge();
 
     var maxC = 0;
     var maxR = 0;
@@ -864,12 +1356,20 @@
     });
 
     var isUlt = !!(diagram && diagram.ultimate);
+    var touchPan = isTouchBoard();
     var bar = $('devDiagramBar');
     var barW = (bar && !bar.hidden) ? (bar.offsetWidth || 0) : 0;
-    /* Budget tab column for cell fit, then center the tree in the remaining region
-       so compact boards are not glued to the switcher. */
-    var tabW = (bar && !bar.hidden) ? Math.ceil((barW || 218) + 6) : 0;
-    var metrics = layoutMetrics(scroll, maxC, maxR, tabW);
+    /*
+      Desktop: budget full switcher width, then center the tree in the remainder.
+      Touch: compact tabs overlay the board — only a thin gutter so units stay large.
+    */
+    var tabW = 0;
+    if (bar && !bar.hidden) {
+      tabW = touchPan
+        ? Math.ceil(Math.min(barW || 118, 124) + 4)
+        : Math.ceil((barW || 218) + 6);
+    }
+    var metrics = layoutMetrics(scroll, maxC, maxR, tabW, { touchPan: touchPan });
     var cell = metrics.cell;
     var pad = metrics.pad || Math.round(metrics.koma * 0.55);
     var padR = (metrics.padR != null) ? metrics.padR : pad;
@@ -880,13 +1380,14 @@
       : Math.max(220, ((scroll.closest && scroll.closest('.dev-board-frame')) || scroll).clientWidth - 4);
     var contentW = (maxC + 1) * cell + padR;
     var regionW = Math.max(160, availW - tabW);
-    var extraL = Math.max(0, Math.floor((regionW - contentW) / 2));
+    var extraL = touchPan ? 0 : Math.max(0, Math.floor((regionW - contentW) / 2));
     var padL = tabW + extraL;
     state.cell = cell;
     if (main) {
       main.style.setProperty('--dev-cell', cell + 'px');
       main.style.setProperty('--dev-koma', metrics.koma + 'px');
       main.style.setProperty('--dev-base', String(metrics.baseFrac || 0.52));
+      main.classList.toggle('is-touch-board', touchPan);
     }
 
     function cellX(col) { return padL + col * cell + cell / 2; }
@@ -896,28 +1397,25 @@
     var h = padT + padB + (maxR + 1) * cell;
     board.style.width = w + 'px';
     board.style.height = h + 'px';
-    board.style.transform = '';
-    board.style.transformOrigin = '';
     board.style.marginBottom = '';
     board.style.marginRight = '';
-    /* Last resort: uniform scale so wide trees never need sideways scroll. */
-    if (w > availW + 1 && availW > 0) {
-      var fit = availW / w;
-      board.style.transform = 'scale(' + fit + ')';
-      board.style.transformOrigin = 'top left';
-      board.style.marginRight = ((w * fit) - w) + 'px';
-      board.style.marginBottom = ((h * fit) - h) + 'px';
-    }
+    if (availW > 0) lastLayoutFrameW = Math.round(availW + 4);
     var frameEl = (scroll.closest && scroll.closest('.dev-board-frame')) || scroll.parentElement;
     var frameH = (frameEl && frameEl.clientHeight) || 0;
-    var centerY = frameH > 0 && h < frameH - 12;
+    var centerY = !touchPan && frameH > 0 && h < frameH - 12;
     scroll.classList.remove('is-board-center');
     scroll.classList.toggle('is-board-center-y', !!centerY);
     scroll.classList.toggle('is-ult-board', !!isUlt);
-    scroll.classList.remove('is-panable', 'is-panning');
+    scroll.classList.toggle('is-panable', touchPan);
+    scroll.classList.remove('is-panning');
     try {
       scroll.scrollLeft = 0;
     } catch (_) {}
+    if (!touchPan) {
+      board.style.transform = '';
+      board.style.transformOrigin = '';
+      boardView.key = '';
+    }
 
     var wiresLayer = document.createElement('div');
     wiresLayer.className = 'dev-wires-layer';
@@ -935,13 +1433,14 @@
       pieceKeys[p.col + ',' + p.row] = 1;
       pieceAt[p.col + ',' + p.row] = p;
     });
-    // Dock to the compact base rim (not the full ogk box).
+    // Dock to the compact base rim — must stay < ~0.4 cell so short ULT hops don't collapse.
     var basePx = metrics.koma * (metrics.baseFrac || 0.52);
-    var dockR = Math.max(22, basePx * 0.5);
+    var dockR = Math.min(cell * 0.36, Math.max(8, basePx * 0.42));
     var draws = routeWireDraws(diagram.routes, cellX, cellY, cell, pieceKeys, dockR, pieceAt);
     var lineSrc = ui().line || '';
     var defs = '';
-    if (lineSrc) {
+    /* Skip patterned stroke on touch — extra image paint + blend is costly on phones. */
+    if (lineSrc && !touchPan) {
       defs = '<defs><pattern id="devLinePattern" patternUnits="userSpaceOnUse" width="8" height="46">'
         + '<image href="' + String(lineSrc).replace(/"/g, '') + '" x="2" y="0" width="4" height="46" '
         + 'preserveAspectRatio="none"/></pattern></defs>';
@@ -950,22 +1449,13 @@
     var over = '';
     var tex = '';
     var core = '';
-    /* SMIL dash flow — survives parent board transform:scale (CSS anim can freeze). */
-    var reduceMotion = false;
-    try {
-      reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    } catch (_) {}
-    var coreAnim = reduceMotion
-      ? ''
-      : '<animate attributeName="stroke-dashoffset" from="0" to="-18" dur="1.8s" repeatCount="indefinite"/>';
+    /* CSS dash flow only (see .dev-wire-core). No SMIL — dual drivers fought and jerked. */
     draws.forEach(function (draw) {
       if (!draw || !draw.d) return;
       glow += '<path class="dev-wire-glow" d="' + draw.d + '"/>';
       over += '<path class="dev-wire" d="' + draw.d + '"/>';
-      if (lineSrc) tex += '<path class="dev-wire-tex" d="' + draw.d + '"/>';
-      core += coreAnim
-        ? ('<path class="dev-wire-core" d="' + draw.d + '">' + coreAnim + '</path>')
-        : ('<path class="dev-wire-core" d="' + draw.d + '"/>');
+      if (lineSrc && !touchPan) tex += '<path class="dev-wire-tex" d="' + draw.d + '"/>';
+      core += '<path class="dev-wire-core" d="' + draw.d + '"/>';
     });
     svg.innerHTML = defs + glow + over + tex + core;
     wiresLayer.appendChild(svg);
@@ -1056,7 +1546,8 @@
       if (rar === 'UR' && (pack.ur_ring || pack.ring_anim_glow_ur)) {
         var urRing = mkImg('dev-base-rarity-ring is-ur' + (urStage === 2 ? ' is-ur2' : ''), pack.ur_ring || pack.ring_anim_glow_ur);
         base.appendChild(urRing);
-        if (urStage === 2 && pack.ring_anim_glow_ur) {
+        /* Skip second UR2 glow layer on touch — halves animated ring paint on phones. */
+        if (!touchPan && urStage === 2 && pack.ring_anim_glow_ur) {
           var urGlow = mkImg('dev-base-rarity-ring is-ur is-ur2-glow', pack.ring_anim_glow_ur);
           base.appendChild(urGlow);
         }
@@ -1077,6 +1568,9 @@
       }
       if (komaSrc) {
         var komaImg = mkImg('dev-koma' + (unknown || !unit.image ? ' is-secret' : ''), komaSrc);
+        if (touchPan) {
+          try { komaImg.loading = 'lazy'; } catch (_) {}
+        }
         var ogkScale = Number(unit.ogk_scale);
         if (!unknown && unit.image && ogkScale > 0 && Math.abs(ogkScale - 1) > 0.02) {
           komaImg.style.setProperty('--ogk-norm', String(ogkScale));
@@ -1096,71 +1590,110 @@
 
       btn.appendChild(art);
 
+      var capturable = !!(p.capturable || (p.capture_stages && p.capture_stages.length));
+      if (capturable) btn.classList.add('is-capturable');
+
       var badges = document.createElement('span');
       badges.className = 'dev-badges';
-      if (!unknown && unit.rarity_icon) badges.appendChild(mkImg('dev-badge', unit.rarity_icon));
-      if (!unknown && unit.role_icon) badges.appendChild(mkImg('dev-badge', unit.role_icon));
+      var badgeRow = document.createElement('span');
+      badgeRow.className = 'dev-badges-row';
+      if (!unknown && unit.rarity_icon) badgeRow.appendChild(mkImg('dev-badge', unit.rarity_icon));
+      if (!unknown && unit.role_icon) badgeRow.appendChild(mkImg('dev-badge', unit.role_icon));
+      if (badgeRow.childNodes.length) badges.appendChild(badgeRow);
+      if (capturable) {
+        badges.appendChild(mkCaptureIcon(pack.capture_title || 'Capturing Units'));
+      }
       if (badges.childNodes.length) btn.appendChild(badges);
 
       function goUnitPage() {
-        var id = unit.id || '';
-        if (id && typeof window.openDetail === 'function') {
-          try {
-            window.openDetail('unit', id);
-            return;
-          } catch (_) {}
-        }
-        var href = unit.href || (id ? ('/u/' + id) : '');
-        if (href) window.location.href = href;
+        openUnitDetailPage(unit);
       }
-      if (unknown) {
+      function openCaptureOrClear() {
+        if (capturable) {
+          showPieceDetail(p, {
+            pin: true,
+            mode: hoverCapable ? 'anchor' : 'dock',
+            anchorEl: btn,
+          });
+          state.selected = p.id;
+          return;
+        }
+        clearSelection();
+      }
+      if (unknown && !capturable) {
         btn.addEventListener('click', function (e) {
           e.stopPropagation();
           clearSelection();
         });
+      } else if (unknown && capturable) {
+        /* Secret node that is still capturable — show stage list, keep identity hidden. */
+        if (hoverCapable) {
+          btn.addEventListener('pointerenter', function () {
+            if (state.selected != null) return;
+            cancelHoverClear();
+            showPieceDetail(p, {
+              pin: false,
+              mode: 'anchor',
+              anchorEl: btn,
+            });
+          });
+          btn.addEventListener('pointerleave', function () {
+            scheduleHoverClear();
+          });
+          btn.addEventListener('wheel', forwardWheelToDetail, { passive: false });
+        }
+        btn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          e.preventDefault();
+          openCaptureOrClear();
+        });
       } else if (hoverCapable) {
-        btn.addEventListener('pointerenter', function (e) {
+        btn.addEventListener('pointerenter', function () {
           if (state.selected != null) return;
+          cancelHoverClear();
+          /* Anchor (not cursor-follow) so the card stays put and can be scrolled / entered. */
           showPieceDetail(p, {
             pin: false,
-            mode: 'cursor',
-            clientX: e.clientX,
-            clientY: e.clientY,
-            anchorEl: btn,
-          });
-        });
-        btn.addEventListener('pointermove', function (e) {
-          if (state.selected != null) return;
-          var box = $('devDetail');
-          if (!box || box.hidden || box.classList.contains('is-sheet')) return;
-          placeDetailPopup(box, {
-            mode: 'cursor',
-            clientX: e.clientX,
-            clientY: e.clientY,
+            mode: 'anchor',
             anchorEl: btn,
           });
         });
         btn.addEventListener('pointerleave', function () {
-          clearHoverDetail();
+          scheduleHoverClear();
         });
+        btn.addEventListener('wheel', forwardWheelToDetail, { passive: false });
         btn.addEventListener('focus', function () {
           if (state.selected != null) return;
+          cancelHoverClear();
           showPieceDetail(p, { pin: false, mode: 'anchor', anchorEl: btn });
         });
         btn.addEventListener('blur', function () {
-          clearHoverDetail();
+          scheduleHoverClear();
         });
-        // Click ogk → unit detail page; hover still shows develop materials.
+        // Desktop: hover = develop mats; click ogk → unit detail page.
         btn.addEventListener('click', function (e) {
           e.stopPropagation();
           e.preventDefault();
           goUnitPage();
         });
       } else {
+        /*
+          Touch: 1st tap = pin + develop materials (floating; board stays tappable);
+          2nd tap on the same ogk = unit detail page (thum does the same).
+          Avoid full-screen sheet/backdrop — it ate the second ogk tap.
+        */
         btn.addEventListener('click', function (e) {
           e.stopPropagation();
           e.preventDefault();
-          goUnitPage();
+          if (state.selected != null && String(state.selected) === String(p.id)) {
+            goUnitPage();
+            return;
+          }
+          showPieceDetail(p, {
+            pin: true,
+            mode: 'dock',
+            anchorEl: btn,
+          });
         });
       }
       board.appendChild(btn);
@@ -1170,11 +1703,26 @@
     if (state.selected) sel = pieceById(diagram, state.selected);
     if (sel) {
       var selBtn = board.querySelector('.dev-node[data-piece-id="' + String(sel.id) + '"]');
-      renderDetail(diagram, sel, { mode: hoverCapable ? 'cursor' : 'anchor', anchorEl: selBtn });
+      renderDetail(diagram, sel, hoverCapable
+        ? { mode: 'cursor', anchorEl: selBtn }
+        : { pin: true, mode: 'dock', anchorEl: selBtn });
     } else {
       renderDetail(diagram, null);
     }
     clearDevelopScrollExperiments();
+
+    if (touchPan) {
+      panMetrics = { w: w, h: h };
+      var viewKey = seriesId + ':' + state.diagram + ':' + w + 'x' + h;
+      if (boardView.key !== viewKey) {
+        boardView.key = viewKey;
+        resetBoardView(scroll, w, h);
+      } else {
+        clampBoardView(scroll.clientWidth || 0, scroll.clientHeight || 0, w, h);
+      }
+      applyBoardView(board);
+      ensureBoardGestures(scroll);
+    }
   }
 
   function diagramTabBannerUrl(diagram, ordinal) {
@@ -1259,10 +1807,11 @@
     host.hidden = false;
     host.removeAttribute('hidden');
     host.setAttribute('aria-hidden', 'false');
-    /* Inline size — survives abspos % collapse / stale develop.css */
-    host.style.width = '218px';
-    host.style.maxWidth = 'calc(100% - 12px)';
+    /* Width from CSS (218 desktop / ~108–118 mobile) — do not inline-lock 218. */
+    host.style.removeProperty('width');
+    host.style.removeProperty('max-width');
     host.style.boxSizing = 'border-box';
+    host.classList.toggle('is-compact', isTouchBoard());
 
     var tabs = document.createElement('div');
     tabs.className = 'dev-diagram-tabs';
@@ -1287,9 +1836,8 @@
       btn.dataset.diagramIndex = String(i);
       var label = (d && (d.name || d.id)) || ('Diagram ' + (i + 1));
       btn.title = label;
+      /* Size from CSS (desktop 83 / mobile compact) — do not inline-lock height. */
       btn.style.width = '100%';
-      btn.style.height = '83px';
-      btn.style.minHeight = '83px';
       btn.style.boxSizing = 'border-box';
       var isUltTab = !!(d && d.ultimate);
       var banner = preferImgUrl(diagramTabBannerUrl(d, isUltTab ? 0 : normalOrd));
@@ -1590,26 +2138,42 @@
   }
 
   var resizeTimer = 0;
-  function onResize() {
+  var lastLayoutFrameW = 0;
+  function onResize(force) {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(function () {
-      if (state.map) renderBoard();
-    }, 120);
+      if (!state.map) return;
+      /*
+        Only rebuild when the frame WIDTH changes. Nav-tab collapse on scroll
+        toggles body class / vertical chrome — that used to re-render the board
+        and restart every route-line animation (felt like jerking on mobile).
+      */
+      var frame = document.querySelector('#panel-develop .dev-board-frame')
+        || document.querySelector('.dev-board-frame');
+      var w = frame ? Math.round(frame.clientWidth || 0) : 0;
+      if (!force && w > 0 && Math.abs(w - lastLayoutFrameW) < 2) {
+        /* Height-only (nav collapse): re-clamp pan, do not rebuild wires. */
+        if (isTouchBoard()) {
+          var sc = $('devScroll');
+          var bd = $('devBoard');
+          if (sc && bd && sc.classList.contains('is-panable') && panMetrics.w) {
+            clampBoardView(sc.clientWidth || 0, sc.clientHeight || 0, panMetrics.w, panMetrics.h);
+            applyBoardView(bd);
+          }
+        }
+        return;
+      }
+      if (w > 0) lastLayoutFrameW = w;
+      renderBoard();
+    }, 160);
   }
 
   var pickerBound = false;
   var resizeBound = false;
   var headerChromeBound = false;
   var panelObserver = null;
+  var frameRo = null;
   var booted = false;
-
-  function isDevelopDesktop() {
-    try {
-      return window.matchMedia('(min-width: 821px)').matches;
-    } catch (_) {
-      return false;
-    }
-  }
 
   function isDevelopActive() {
     var pan = $('panel-develop');
@@ -1625,14 +2189,27 @@
     if (!resizeBound) {
       resizeBound = true;
       window.addEventListener('resize', function () {
-        onResize();
+        onResize(false);
       });
-      /* Nav tab collapse changes usable height — reflow the board. */
       try {
-        var mo = new MutationObserver(function () {
-          if (isDevelopActive() && state.map) onResize();
+        window.addEventListener('orientationchange', function () {
+          onResize(true);
         });
-        mo.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+      } catch (_) {}
+      /* Width-only reflow — ignore nav collapse / height chrome while scrolling. */
+      try {
+        if (typeof ResizeObserver === 'function') {
+          frameRo = new ResizeObserver(function (entries) {
+            if (!isDevelopActive() || !state.map) return;
+            var entry = entries && entries[0];
+            var w = entry && entry.contentRect ? Math.round(entry.contentRect.width) : 0;
+            if (w > 0 && Math.abs(w - lastLayoutFrameW) < 2) return;
+            onResize(false);
+          });
+          var frame = document.querySelector('#panel-develop .dev-board-frame')
+            || document.querySelector('.dev-board-frame');
+          if (frame) frameRo.observe(frame);
+        }
       } catch (_) {}
     }
     if (!pickerBound) {
@@ -1679,7 +2256,7 @@
       booted = true;
       requestAnimationFrame(function () {
         clearDevelopScrollExperiments();
-        onResize();
+        onResize(true);
         if (openPicker) openSeriesPanel();
         else closeSeriesPanel();
       });
@@ -1695,7 +2272,7 @@
       return boot(opts || {}).then(function () {
         requestAnimationFrame(function () {
           clearDevelopScrollExperiments();
-          onResize();
+          onResize(true);
         });
       });
     },

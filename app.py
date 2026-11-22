@@ -11181,6 +11181,11 @@ def create_main_stage_challenge_map(d):
             'first_clear_reward_set_id': normalize_id(item.get('FirstClearRewardSetId') or item.get('firstClearRewardSetId')),
             'secret_clear_reward_set_id': normalize_id(item.get('SecretClearRewardSetId') or item.get('secretClearRewardSetId')),
             'recommended_combat_power': safe_int(item.get('RecommendedCombatPower') or item.get('recommendedCombatPower'), 0),
+            'secret_battle_recommended_combat_power': safe_int(
+                item.get('SecretBattleRecommendedCombatPower')
+                or item.get('secretBattleRecommendedCombatPower'),
+                0,
+            ),
             'schedule_id': normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0'),
         }
     return lookup
@@ -11337,10 +11342,30 @@ def create_capturable_units_by_stage(d):
         lookup.setdefault(sid, []).append({
             'main_unit_id': uid,
             'is_pickup': bool(item.get('IsStageSelectPickupCaptureUnit') or item.get('isStageSelectPickupCaptureUnit')),
+            'is_secret_battle_pickup': bool(
+                item.get('IsSecretBattlePickupCaptureUnit')
+                or item.get('isSecretBattlePickupCaptureUnit')
+            ),
             'default_capture_rate_permil': safe_int(item.get('DefaultCaptureRatePermil') or item.get('defaultCaptureRatePermil'), 0),
             'leader_killed_capture_rate_permil': safe_int(item.get('LeaderKilledCaptureRatePermil') or item.get('leaderKilledCaptureRatePermil'), 0),
         })
     return lookup
+
+
+def create_capturable_stages_by_unit(capturable_by_stage):
+    """Inverse of capturable_units_by_stage: unit_id → [{stage_id, is_pickup, …}]."""
+    by_unit = {}
+    for sid, rows in (capturable_by_stage or {}).items():
+        for cu in rows or []:
+            uid = normalize_id(cu.get('main_unit_id'))
+            if uid == '0':
+                continue
+            by_unit.setdefault(uid, []).append({
+                'stage_id': normalize_id(sid),
+                'is_pickup': bool(cu.get('is_pickup')),
+                'is_secret_battle_pickup': bool(cu.get('is_secret_battle_pickup')),
+            })
+    return by_unit
 
 def create_main_stage_challenge_npc_unit_override_by_stage(d):
     """MainStageChallengeId -> MapNpcId -> [unit rows] (same shape as map_npc_unit_lookup values)."""
@@ -14309,6 +14334,7 @@ main_stage_series_challenge_map = create_main_stage_series_challenge_map(main_st
 main_stage_challenge_map = create_main_stage_challenge_map(main_stage_challenge_data) if main_stage_challenge_data else {}
 main_scenario_stage_challenge_map = create_main_scenario_stage_challenge_map(main_scenario_stage_challenge_data) if main_scenario_stage_challenge_data else {}
 capturable_units_by_stage = create_capturable_units_by_stage(capturable_unit_data) if capturable_unit_data else {}
+capturable_stages_by_unit = create_capturable_stages_by_unit(capturable_units_by_stage)
 main_stage_series_challenge_layout_map = create_main_stage_series_challenge_layout_map(main_stage_series_challenge_layout_data) if main_stage_series_challenge_layout_data else {}
 main_stage_challenge_npc_unit_override_by_stage = create_main_stage_challenge_npc_unit_override_by_stage(main_stage_challenge_npc_unit_override_data) if main_stage_challenge_npc_unit_override_data else {}
 main_stage_challenge_npc_character_override_by_stage = create_main_stage_challenge_npc_character_override_by_stage(main_stage_challenge_npc_character_override_data) if main_stage_challenge_npc_character_override_data else {}
@@ -25472,11 +25498,110 @@ _DEV_BULK_TITLE = {
     'HK': 'Bulk Development',
 }
 _DEV_BULK_NOTE = {
-    'EN': 'Path total',
-    'JA': 'Path total',
-    'TW': 'Path total',
-    'HK': 'Path total',
+    'EN': 'Path total (develop + level-ups)',
+    'JA': 'Path total (develop + level-ups)',
+    'TW': 'Path total (develop + level-ups)',
+    'HK': 'Path total (develop + level-ups)',
 }
+# Help title: EN Capturing Units · JA 鹵獲 · TW/HK 奪取 (m_help 170200000001071071)
+_DEV_CAPTURE_TITLE = {
+    'EN': 'Capturing Units',
+    'JA': '鹵獲',
+    'TW': '奪取',
+    'HK': '奪取',
+}
+_DEV_CAPTURE_PICKUP = {
+    'EN': 'Featured',
+    'JA': 'Pickup',
+    'TW': '精選',
+    'HK': '精選',
+}
+_DEV_CAPTURE_SECRET_BATTLE = {
+    'EN': 'Secret battle',
+    'JA': 'シークレットバトル',
+    'TW': '隱藏戰鬥',
+    'HK': '隱藏戰鬥',
+}
+_DEV_CAPTURE_HARD = {
+    'EN': 'HARD',
+    'JA': 'HARD',
+    'TW': 'HARD',
+    'HK': 'HARD',
+}
+_DEV_CAPTURE_STORY_EVENT = {
+    'EN': 'Story Event',
+    'JA': 'ストーリーイベント',
+    'TW': '故事事件',
+    'HK': '故事事件',
+}
+# Unit Upgrade Data (ItemTypeIndex 5) — EffectValue = EXP. Used by client bulk
+# develop to raise each parent from piece InitialLevel → route RequiredLevel.
+_DEV_UNIT_UPGRADE_DATA = (
+    ('110000000003', 5000),  # SSR
+    ('110000000002', 1000),  # SR
+    ('110000000001', 200),   # R
+)
+_DEV_UNIT_UPGRADE_IDS = frozenset(x[0] for x in _DEV_UNIT_UPGRADE_DATA)
+_DEV_UNIT_LEVEL_EXP_CACHE = None
+
+
+def _dev_unit_level_exp_map():
+    """Cumulative EXP to reach each unit level (m_unit_level_info / set 1)."""
+    global _DEV_UNIT_LEVEL_EXP_CACHE
+    if _DEV_UNIT_LEVEL_EXP_CACHE is not None:
+        return _DEV_UNIT_LEVEL_EXP_CACHE
+    out = {1: 0}
+    try:
+        rows = load_json(os.path.join(BASE_DIR, 'm_unit_level_info.json')) or []
+        if not isinstance(rows, list):
+            rows = extract_data_list(rows) or []
+        for row in rows:
+            if not isinstance(row, dict):
+                continue
+            lv = safe_int(row.get('Level') or row.get('level'), 0)
+            if lv > 0:
+                out[lv] = safe_int(row.get('Exp') or row.get('exp'), 0)
+    except Exception:
+        pass
+    _DEV_UNIT_LEVEL_EXP_CACHE = out
+    return out
+
+
+def _dev_need_exp(from_level, to_level):
+    """EXP to raise a unit from from_level to to_level (0 if already high enough)."""
+    if to_level <= from_level:
+        return 0
+    exp_map = _dev_unit_level_exp_map()
+    hi = exp_map.get(int(to_level))
+    lo = exp_map.get(int(from_level), 0)
+    if hi is None:
+        # Fallback: nearest known level ≤ target
+        known = [lv for lv in exp_map if lv <= int(to_level)]
+        hi = exp_map[max(known)] if known else 0
+    return max(0, int(hi) - int(lo or 0))
+
+
+def _dev_pack_upgrade_data(need_exp):
+    """Greedy Unit Upgrade Data counts covering need_exp (client bulk estimate)."""
+    need = max(0, int(need_exp or 0))
+    if need <= 0:
+        return {}
+    out = {}
+    for item_id, chunk in _DEV_UNIT_UPGRADE_DATA:
+        if need <= 0:
+            break
+        if chunk >= 5000 or chunk >= 1000:
+            n = need // chunk
+        else:
+            n = (need + chunk - 1) // chunk  # ceil for R chips
+        if n > 0:
+            out[item_id] = out.get(item_id, 0) + n
+            need -= n * chunk
+    if need > 0:
+        # Should not happen with R=200 ceil, but keep one more R.
+        rid = _DEV_UNIT_UPGRADE_DATA[-1][0]
+        out[rid] = out.get(rid, 0) + 1
+    return out
 
 
 def _dev_item_icon(item_id):
@@ -25537,6 +25662,64 @@ def _ogk_board_scale(static_path):
             scale = 1.0
     _OGK_BOARD_SCALE_CACHE[key] = round(scale, 3)
     return _OGK_BOARD_SCALE_CACHE[key]
+
+
+def _dev_capture_stages_for_unit(uid, lc):
+    """Stages where this unit can be captured (m_capturable_unit). Includes secret develop nodes."""
+    uid = normalize_id(uid)
+    if uid == '0':
+        return []
+    rows = (capturable_stages_by_unit or {}).get(uid) or []
+    if not rows:
+        return []
+    ld = get_lang_data(lc)
+    out = []
+    seen = set()
+    for row in rows:
+        sid = normalize_id(row.get('stage_id'))
+        if sid == '0' or sid in seen:
+            continue
+        seen.add(sid)
+        ch = (main_scenario_stage_challenge_map or {}).get(sid) or {}
+        ssc = (scenario_stage_map or {}).get(sid) or {}
+        sm = (stage_map or {}).get(sid) or {}
+        mc = (main_stage_challenge_map or {}).get(sid) or {}
+        name = resolve_scenario_stage_name(ld, ssc.get('title_name_lang_id', '0'), sid)
+        if not name or name.startswith('Unknown'):
+            alt = resolve_stage_name_from_lang_m_stage(ld, sm.get('stage_name_lang_id', '0'), sid)
+            if alt and not alt.startswith('Unknown'):
+                name = alt
+        sn = safe_int(ch.get('stage_number'), safe_int(ssc.get('stage_number'), 0))
+        series_id = normalize_id(ch.get('main_stage_series_challenge_id', '0'))
+        series_name = resolve_challenge_series_name(ld, series_id) if series_id != '0' else ''
+        # Story Event / chronicle: scenario series LANG when not a Challenge Main stage.
+        if not series_name:
+            series_name = _resolve_scenario_series_name(
+                ssc.get('scenario_stage_series_id'), ld
+            ) or ''
+        is_hard = _challenge_stage_is_hard(ssc.get('thumbnail_resource_id'))
+        has_secret_battle = safe_int(mc.get('secret_battle_recommended_combat_power'), 0) > 0
+        is_story_event = bool(ssc) and series_id == '0'
+        out.append({
+            'stage_id': sid,
+            'name': name or sid,
+            'stage_number': sn if sn > 0 else None,
+            'series_name': series_name,
+            'is_hard': is_hard,
+            'is_pickup': bool(row.get('is_pickup')),
+            'is_secret_battle_pickup': bool(row.get('is_secret_battle_pickup')),
+            'has_secret_battle': has_secret_battle,
+            'is_story_event': is_story_event,
+        })
+    # Pickup first, then series/stage number, then name
+    out.sort(key=lambda r: (
+        0 if r.get('is_pickup') else 1,
+        str(r.get('series_name') or ''),
+        safe_int(r.get('stage_number'), 0),
+        str(r.get('name') or ''),
+        str(r.get('stage_id') or ''),
+    ))
+    return out
 
 
 def _dev_unit_card(uid, lc):
@@ -25686,6 +25869,11 @@ def _dev_series_payload(series_id, lc):
     ui['bulk_title'] = _DEV_BULK_TITLE.get(lc) or _DEV_BULK_TITLE['EN']
     ui['bulk_note'] = _DEV_BULK_NOTE.get(lc) or _DEV_BULK_NOTE['EN']
     ui['bulk_note_single'] = _DEV_BULK_NOTE.get(lc) or _DEV_BULK_NOTE['EN']
+    ui['capture_title'] = _DEV_CAPTURE_TITLE.get(lc) or _DEV_CAPTURE_TITLE['EN']
+    ui['capture_pickup'] = _DEV_CAPTURE_PICKUP.get(lc) or _DEV_CAPTURE_PICKUP['EN']
+    ui['capture_secret_battle'] = _DEV_CAPTURE_SECRET_BATTLE.get(lc) or _DEV_CAPTURE_SECRET_BATTLE['EN']
+    ui['capture_hard'] = _DEV_CAPTURE_HARD.get(lc) or _DEV_CAPTURE_HARD['EN']
+    ui['capture_story_event'] = _DEV_CAPTURE_STORY_EVENT.get(lc) or _DEV_CAPTURE_STORY_EVENT['EN']
     capital_icon = ui['capital_icon']
     capital_label = ui['capital_label']
     diagrams = []
@@ -25723,6 +25911,8 @@ def _dev_series_payload(series_id, lc):
                     'count': m['count'],
                     'icon': _dev_item_icon(iid),
                 })
+            # Capture stages even for secret/unknown develop nodes (unit id still known).
+            capture_stages = _dev_capture_stages_for_unit(uid, lc)
             piece = {
                 'id': pid,
                 'row': safe_int(prow.get('RowNumber') or prow.get('rowNumber'), 0),
@@ -25734,6 +25924,8 @@ def _dev_series_payload(series_id, lc):
                 'capital': capital,
                 'materials': mats,
                 'bulk_materials': [],
+                'capturable': bool(capture_stages),
+                'capture_stages': capture_stages,
             }
             pieces_out.append(piece)
             piece_by_id[pid] = piece
@@ -25759,6 +25951,13 @@ def _dev_series_payload(series_id, lc):
                 })
                 parents_of.setdefault(end, []).append(pid)
 
+        # start_id -> list of (end_id, required_level) for level-up costing
+        children_of = {}
+        for rt in routes_out:
+            children_of.setdefault(rt['start_id'], []).append(
+                (rt['end_id'], safe_int(rt.get('required_level'), 0))
+            )
+
         def _mat_cost(piece):
             total = {}
             for m in piece.get('materials') or []:
@@ -25769,7 +25968,12 @@ def _dev_series_payload(series_id, lc):
             return total
 
         def _path_cost(end_pid, prefer_parents):
-            """Sum materials along one lineage (self + recursive parents)."""
+            """Sum develop materials along one lineage (self + recursive parents).
+
+            multi=True → joint AND (all parents). Else OR: follow prefer_parents[cur]
+            when set, otherwise parents[0] (caller should enumerate OR choices).
+            """
+            prefer_parents = prefer_parents or {}
             seen = set()
             stack = [end_pid]
             acc = {}
@@ -25787,27 +25991,113 @@ def _dev_series_payload(series_id, lc):
                 if child.get('multi'):
                     stack.extend(pars)
                 else:
-                    # Alternate parents: follow preferred parent when set, else first.
-                    pick = prefer_parents.get(cur) if prefer_parents else None
+                    pick = prefer_parents.get(cur)
                     stack.append(pick if pick in pars else pars[0])
             return acc, seen
 
+        def _ancestor_or_choices(end_pid):
+            """OR-branch pieces in the ancestor cone (explore all parents for discovery)."""
+            seen = set()
+            stack = [end_pid]
+            choices = []  # (piece_id, parents_list)
+            while stack:
+                cur = stack.pop()
+                if cur in seen or cur not in piece_by_id:
+                    continue
+                seen.add(cur)
+                pars = parents_of.get(cur) or []
+                if not pars:
+                    continue
+                child = piece_by_id[cur]
+                if child.get('multi'):
+                    stack.extend(pars)
+                elif len(pars) == 1:
+                    stack.append(pars[0])
+                else:
+                    choices.append((cur, list(pars)))
+                    stack.extend(pars)  # discover OR options under every parent
+            return choices
+
+        def _levelup_cost_for_path(seen, end_pid):
+            """
+            Client bulk also levels each parent from piece InitialLevel up to the
+            route RequiredLevel before the next develop (Unit Upgrade Data).
+            """
+            acc = {}
+            if not seen:
+                return acc
+            for start_id in seen:
+                if start_id == end_pid:
+                    continue
+                piece = piece_by_id.get(start_id) or {}
+                start_lv = safe_int(piece.get('level'), 1) or 1
+                max_req = 0
+                for child_id, req_lv in children_of.get(start_id) or []:
+                    if child_id in seen and req_lv > max_req:
+                        max_req = req_lv
+                need = _dev_need_exp(start_lv, max_req)
+                if need <= 0:
+                    continue
+                for mid, cnt in _dev_pack_upgrade_data(need).items():
+                    acc[mid] = acc.get(mid, 0) + cnt
+            return acc
+
         def _bulk_for(piece):
-            """Client UnitBulkDevelopment totals for one develop path to this piece."""
+            """Client UnitBulkDevelopment totals: develop mats + level-up Upgrade Data.
+
+            Joint (multi) parents are always required. Alternate (OR) parents —
+            including mid-path forks like Prototype Stark Jegan — pick the
+            combination that minimizes Capital+items+level-ups (shared ancestors
+            counted once). Never depend on route insertion order.
+            """
             pid = piece['id']
-            pars = parents_of.get(pid) or []
-            if piece.get('multi') or len(pars) <= 1:
-                cost, seen = _path_cost(pid, None)
+
+            def _combined(prefer):
+                develop, seen = _path_cost(pid, prefer)
+                levelup = _levelup_cost_for_path(seen, pid)
+                merged = dict(develop)
+                for mid, cnt in levelup.items():
+                    merged[mid] = merged.get(mid, 0) + cnt
+                return merged, seen
+
+            or_nodes = _ancestor_or_choices(pid)
+            best = None
+            if not or_nodes:
+                cost, seen = _combined({})
+                best = (sum(cost.values()), cost, seen)
             else:
-                # Alternate: cheapest total Capital+items among parent lineages.
-                best = None
-                for p in pars:
-                    cost, seen = _path_cost(pid, {pid: p})
-                    score = sum(cost.values())
-                    if best is None or score < best[0]:
-                        best = (score, cost, seen)
-                cost = best[1] if best else {}
-                seen = best[2] if best else set()
+                # Cap enumeration; diagrams are small (typically ≤2 OR nodes).
+                from itertools import product
+                parent_lists = [pars for _, pars in or_nodes]
+                # Hard cap ~4096 combos
+                total_combos = 1
+                for pars in parent_lists:
+                    total_combos *= max(1, len(pars))
+                if total_combos > 4096:
+                    # Fallback: fix each OR node independently to its cheaper
+                    # single-parent path (order-independent greedy).
+                    prefer = {}
+                    for node_id, pars in or_nodes:
+                        local_best = None
+                        for p in pars:
+                            c, s = _combined({**prefer, node_id: p})
+                            sc = sum(c.values())
+                            if local_best is None or sc < local_best[0]:
+                                local_best = (sc, p)
+                        prefer[node_id] = local_best[1]
+                    cost, seen = _combined(prefer)
+                    best = (sum(cost.values()), cost, seen)
+                else:
+                    for picks in product(*parent_lists):
+                        prefer = {
+                            or_nodes[i][0]: picks[i] for i in range(len(or_nodes))
+                        }
+                        cost, seen = _combined(prefer)
+                        score = sum(cost.values())
+                        if best is None or score < best[0]:
+                            best = (score, cost, seen)
+            cost = best[1] if best else {}
+            seen = best[2] if best else set()
             out = []
             # Capital first, then other items with icons/names from this piece's mats or resolve.
             name_icon = {}
@@ -25838,6 +26128,7 @@ def _dev_series_payload(series_id, lc):
                     'name': src.get('name') or _dev_item_name(mid, lc),
                     'count': cnt,
                     'icon': icon,
+                    'is_levelup': mid in _DEV_UNIT_UPGRADE_IDS,
                 })
             return out, len(seen)
 
@@ -41240,7 +41531,14 @@ def get_stage(stage_id):
             is_challenge_stage or is_collaboration_stage or is_chronicle_stage
         ) else 0
         rec_cp = mc_cp if mc_cp > 0 else sm.get('recommended_cp', 0)
-        capturable_units = resolve_challenge_capturable_units(stage_id, lc) if is_challenge_stage else []
+        # Capturable from m_capturable_unit — Challenge Main + Story Event (chronicle)
+        # + collaboration lite scenario stages (not Eternal-only).
+        _cap_stage_ok = (
+            is_challenge_stage or is_chronicle_stage or is_collaboration_stage
+        )
+        capturable_units = (
+            resolve_challenge_capturable_units(stage_id, lc) if _cap_stage_ok else []
+        )
         challenge_series_name = resolve_challenge_series_name(ld, est.get('challenge_series_id', '0')) if is_challenge_stage else ''
         _challenge_series_id = normalize_id(est.get('challenge_series_id', '0')) if is_challenge_stage else '0'
         challenge_series_layout = (main_stage_series_challenge_layout_map or {}).get(_challenge_series_id, {}) if is_challenge_stage else {}

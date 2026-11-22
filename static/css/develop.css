@@ -677,6 +677,93 @@ body.dev-series-panel-open{
   .dev-series-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px 12px}
   .dev-series-card{max-width:156px}
 }
+/* Phone / narrow — compact switcher + pan/pinch viewport */
+@media(max-width:820px){
+  .dev-diagram-float{
+    width:min(118px,calc(100% - 10px));
+    top:6px;
+    left:4px;
+    z-index:30;
+  }
+  .dev-diagram-tabs{gap:3px}
+  .dev-diagram-tab{
+    height:40px;
+    min-height:40px;
+    max-height:40px;
+    font-size:9px;
+    aspect-ratio:auto;
+    filter:saturate(.95) brightness(.95);
+  }
+  .dev-diagram-tab-label{padding:1px 6px;gap:0}
+  .dev-diagram-tab-main{font-size:9px;line-height:1.05}
+  .dev-diagram-tab-sub{font-size:8px}
+  .dev-diagram-tab-logo{width:82%;height:72%}
+  .dev-diagram-tab:hover,
+  .dev-diagram-tab:focus-visible{
+    filter:saturate(1.05) brightness(1.05)
+      drop-shadow(0 0 2px rgba(0,212,255,.45));
+  }
+  /* Lighter active glow — multi-layer drops were expensive on mobile GPUs */
+  .dev-diagram-tab.is-active{
+    filter:saturate(1.1) brightness(1.08)
+      drop-shadow(0 0 1px rgba(0,230,255,.95))
+      drop-shadow(0 0 4px rgba(0,180,255,.55));
+  }
+  .dev-diagram-tab.is-ult.is-active{
+    filter:saturate(1.1) brightness(1.08)
+      drop-shadow(0 0 1px rgba(255,220,80,.95))
+      drop-shadow(0 0 4px rgba(255,180,0,.5));
+  }
+  .dev-diagram-tab.is-active .dev-diagram-tab-plate{inset:1px}
+
+  #panel-develop .dev-board-frame{
+    height:calc(100dvh - 148px);
+    min-height:300px;
+    max-height:none;
+    overflow:hidden;
+  }
+  #panel-develop .dev-board-scroll{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:auto !important;
+    min-height:0 !important;
+    max-height:none !important;
+    overflow:hidden !important;
+    touch-action:none;
+    overscroll-behavior:none;
+  }
+  #panel-develop .dev-board-scroll.is-board-center-y{
+    display:block;
+    align-items:stretch;
+    justify-content:flex-start;
+    min-height:0;
+  }
+  #panel-develop .dev-board-scroll.is-panable .dev-board{
+    will-change:transform;
+  }
+  /* Static dashes under pan/zoom — CSS dash anim + transform janks on phones */
+  #panel-develop .dev-board-scroll.is-panable .dev-wire-core{
+    animation:none;
+  }
+  #panel-develop .dev-board-scroll.is-panning .dev-base-rarity-ring{
+    animation:none;
+  }
+  /* Standalone /develop.html (no #panel-develop) */
+  body.dev-page .dev-board-frame{
+    height:calc(100dvh - 148px);
+    min-height:300px;
+    max-height:none;
+    overflow:hidden;
+  }
+  body.dev-page .dev-board-scroll{
+    position:absolute;
+    inset:0;
+    overflow:hidden !important;
+    touch-action:none;
+  }
+  body.dev-page .dev-board-scroll.is-panable .dev-wire-core{animation:none}
+}
 @media(max-width:640px){
   .dev-series-panel-card{
     height:calc(100dvh - 8px);
@@ -690,8 +777,8 @@ body.dev-series-panel-open{
   .dev-series-card{max-width:140px}
   .dev-series-pick{max-width:min(100%,92vw);flex-basis:min(100%,92vw)}
   .dev-series-btn-art{width:72px;height:36px}
-  .dev-diagram-float{width:min(190px,calc(100% - 16px))}
-  .dev-diagram-tab{height:72px;min-height:72px;font-size:10px;padding:0 8px}
+  .dev-diagram-float{width:min(108px,calc(100% - 8px))}
+  .dev-diagram-tab{height:36px;min-height:36px;max-height:36px;font-size:8px}
 }
 .dev-layout{
   flex:1;
@@ -793,6 +880,8 @@ body.dev-series-panel-open{
   inset:0;
   z-index:0;
   pointer-events:none;
+  /* Keep dash paint off the scroll/layout invalidation path */
+  contain:layout style;
 }
 .dev-arrows-layer{
   position:absolute;
@@ -831,8 +920,9 @@ body.dev-series-panel-open{
   stroke-linecap:round;
   stroke-linejoin:round;
   opacity:.98;
-  stroke-dasharray:7 11;
-  animation:dev-wire-pulse 1.8s linear infinite;
+  /* 8+12=20 — slightly longer period reads smoother on phone refresh rates */
+  stroke-dasharray:8 12;
+  animation:dev-wire-pulse 2s linear infinite;
 }
 /* Optional image-stroke accent using Straight_Enable cross-section */
 .dev-wires path.dev-wire-tex{
@@ -847,7 +937,7 @@ body.dev-series-panel-open{
 /* Negative offset = flow along path direction (parent → child only). */
 @keyframes dev-wire-pulse{
   from{stroke-dashoffset:0}
-  to{stroke-dashoffset:-18}
+  to{stroke-dashoffset:-20}
 }
 .dev-node.is-unknown{
   cursor:default;
@@ -1161,11 +1251,18 @@ body.dev-series-panel-open{
   bottom:4%;
   transform:translate(-50%,70%);
   display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:1px;
+  z-index:5;
+  pointer-events:none;
+}
+.dev-badges-row{
+  display:flex;
   align-items:center;
   justify-content:center;
   gap:3px;
-  z-index:5;
-  pointer-events:none;
 }
 .dev-badge{
   width:18px;
@@ -1173,12 +1270,28 @@ body.dev-series-panel-open{
   object-fit:contain;
   filter:drop-shadow(0 1px 2px rgba(0,0,0,.55));
 }
+/* Capturable = non-develop source (m_capturable_unit). Green EventExchangeItem. */
+.dev-capture-flare{
+  display:block;
+  width:16px;
+  height:16px;
+  line-height:0;
+  margin-top:2px;
+}
+.dev-capture-flare-icon{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+  filter:drop-shadow(0 0 3px rgba(80,255,120,.55));
+}
+.dev-node.is-capturable .dev-capture-flare{display:block}
 .dev-detail{
   position:absolute;
   top:10px;
   left:10px;
   width:min(300px,calc(100% - 20px));
-  max-height:min(82%,calc(100% - 20px));
+  max-height:min(92%,calc(100% - 12px));
   overflow:auto;
   background:rgba(10,18,36,.96);
   border:1px solid rgba(0,212,255,.45);
@@ -1190,7 +1303,24 @@ body.dev-series-panel-open{
 }
 .dev-detail.is-floating{
   right:auto;
-  max-width:min(320px,calc(100% - 16px));
+  max-width:min(340px,calc(100% - 12px));
+  /* JS sets max-height to ~full visible board so capture stage lists rarely need scroll. */
+  overflow:auto;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+}
+/* Touch: bottom dock — keeps ogk free for a second tap to open unit page */
+.dev-detail.is-floating.is-mobile-dock{
+  left:8px;
+  right:8px;
+  top:auto;
+  bottom:8px;
+  width:auto;
+  max-width:none;
+  max-height:min(46%,42dvh);
+  z-index:25;
+  border-radius:var(--radius-md) var(--radius-md) var(--radius-sm) var(--radius-sm);
+  box-shadow:0 -8px 28px rgba(0,0,0,.5);
 }
 .dev-detail.is-sheet{
   position:fixed;
@@ -1330,6 +1460,88 @@ body.dev-series-panel-open{
 }
 .dev-bulk-note[hidden]{display:none !important}
 #devBulkMats{margin-top:4px}
+.dev-capture-title{
+  margin-top:16px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.dev-capture-title[hidden]{display:none !important}
+.dev-capture-title-icon{
+  width:18px;
+  height:18px;
+  object-fit:contain;
+  flex:0 0 auto;
+  filter:drop-shadow(0 0 3px rgba(80,255,120,.45));
+}
+.dev-capture-list{
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+.dev-capture-list[hidden]{display:none !important}
+.dev-capture-row{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:2px;
+  margin:6px 0;
+  padding:6px 8px;
+  border:1px solid rgba(0,212,255,.22);
+  border-radius:var(--radius-sm);
+  background:rgba(0,212,255,.06);
+  cursor:pointer;
+  text-align:left;
+  width:100%;
+  font:inherit;
+  color:inherit;
+}
+.dev-capture-row:hover,
+.dev-capture-row:focus-visible{
+  border-color:var(--chrome-hover-ring, rgba(0,212,255,.55));
+  outline:none;
+}
+.dev-capture-row-name{
+  font-size:12px;
+  color:var(--text-primary);
+  line-height:1.25;
+  font-weight:600;
+}
+.dev-capture-row-meta{
+  font-size:11px;
+  color:var(--text-muted);
+  line-height:1.25;
+}
+.dev-capture-tags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:4px;
+  margin-top:2px;
+}
+.dev-capture-tag{
+  font-size:10px;
+  letter-spacing:.02em;
+  padding:1px 5px;
+  border-radius:3px;
+  border:1px solid rgba(0,212,255,.35);
+  color:var(--accent-cyan);
+  background:rgba(0,212,255,.1);
+}
+.dev-capture-tag.is-hard{
+  border-color:rgba(255,157,0,.45);
+  color:var(--accent-orange);
+  background:rgba(255,157,0,.1);
+}
+.dev-capture-tag.is-secret{
+  border-color:rgba(180,140,255,.45);
+  color:var(--accent-purple, #b48cff);
+  background:rgba(180,140,255,.1);
+}
+.dev-capture-tag.is-story{
+  border-color:rgba(255,212,0,.4);
+  color:var(--accent-gold);
+  background:rgba(255,212,0,.1);
+}
 .dev-detail a{color:var(--accent-cyan)}
 .dev-detail ul{
   margin:0;
@@ -1355,7 +1567,9 @@ body.dev-series-panel-open{
   flex:0 0 auto;
 }
 @media(max-width:720px){
-  .dev-main{--dev-cell:84px;--dev-koma:148px;--dev-base:0.52;padding:8px}
+  .dev-main{--dev-cell:56px;--dev-koma:96px;--dev-base:0.52;padding:6px 4px 8px}
+  .dev-main.is-touch-board{padding-bottom:4px}
+  .dev-toolbar{gap:8px;margin-bottom:6px}
   .dev-detail:not(.is-sheet){
     position:absolute;
     width:min(260px,calc(100% - 16px));
