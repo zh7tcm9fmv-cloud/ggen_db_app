@@ -1,0 +1,1721 @@
+(function () {
+  var CELL_FALLBACK = 96;
+  var LS_SERIES = 'ggen_develop_series_id';
+  var LS_DIAGRAM = 'ggen_develop_diagram';
+  var state = { series: [], map: null, diagram: 0, selected: null, cell: CELL_FALLBACK };
+  var seriesId = String(window.__DEV_SERIES__ || '4000');
+  var boundDismiss = false;
+  var hoverCapable = false;
+  try {
+    hoverCapable = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  } catch (_) {}
+
+  function recallSeriesId() {
+    try {
+      var v = String(localStorage.getItem(LS_SERIES) || '').trim();
+      return v || '';
+    } catch (_) {
+      return '';
+    }
+  }
+
+  function recallDiagramIndex(forSeriesId) {
+    try {
+      if (String(localStorage.getItem(LS_SERIES) || '') !== String(forSeriesId || '')) return 0;
+      var n = parseInt(localStorage.getItem(LS_DIAGRAM) || '0', 10);
+      return isFinite(n) && n > 0 ? n : 0;
+    } catch (_) {
+      return 0;
+    }
+  }
+
+  function persistDevelopView() {
+    try {
+      if (seriesId) localStorage.setItem(LS_SERIES, String(seriesId));
+      localStorage.setItem(LS_DIAGRAM, String(state.diagram | 0));
+    } catch (_) {}
+  }
+
+  function lang() {
+    try {
+      var l = String(localStorage.getItem('ggen_lang') || 'EN').toUpperCase();
+      if (l === 'JP') l = 'JA';
+      if (l === 'EN' || l === 'JA' || l === 'TW' || l === 'HK') return l;
+    } catch (_) {}
+    return 'EN';
+  }
+
+  function $(id) { return document.getElementById(id); }
+
+  function api(path) {
+    /* sv= busts stale public max-age=3600 develop JSON (e.g. series_name "320"). */
+    var q = (path.indexOf('?') >= 0 ? '&' : '?')
+      + 'lang=' + encodeURIComponent(lang())
+      + '&sv=dev19';
+    return fetch(path + q, {
+      headers: { Accept: 'application/json' },
+      cache: 'no-store',
+    }).then(function (r) {
+      if (!r.ok) throw new Error(String(r.status));
+      return r.json();
+    });
+  }
+
+  function ui() {
+    return (state.map && state.map.ui) || {};
+  }
+
+  function cssUrl(u) {
+    if (!u) return 'none';
+    var src = String(u);
+    try {
+      if (typeof window.imgUrlPreferCdn === 'function') src = window.imgUrlPreferCdn(src) || src;
+      else if (typeof window.imgUrl === 'function') src = window.imgUrl(src) || src;
+    } catch (_) {}
+    return 'url("' + src.replace(/\\/g, '\\\\').replace(/"/g, '\\"') + '")';
+  }
+
+  /** Strip leftover lock / inline hacks from earlier scroll experiments. */
+  function clearDevelopScrollExperiments() {
+    try { document.documentElement.classList.remove('develop-scroll-lock'); } catch (_) {}
+    try { if (document.body) document.body.classList.remove('develop-diagram-focus'); } catch (_) {}
+    var frame = document.querySelector('#panel-develop .dev-board-frame') || document.querySelector('.dev-board-frame');
+    var scroll = $('devScroll');
+    [frame, scroll].forEach(function (el) {
+      if (!el || !el.style) return;
+      try {
+        el.style.removeProperty('overflow');
+        el.style.removeProperty('max-height');
+        el.style.removeProperty('min-height');
+        el.style.removeProperty('height');
+      } catch (_) {}
+    });
+  }
+
+  function ensurePatternOverlay(scroll, pack) {
+    if (!scroll) return;
+    var ov = $('devPatternOverlay');
+    if (!ov) {
+      ov = document.createElement('div');
+      ov.id = 'devPatternOverlay';
+      ov.setAttribute('aria-hidden', 'true');
+      scroll.insertBefore(ov, scroll.firstChild);
+    }
+    /* Inline styles — survives stale develop.css cache in Simple Browser.
+       Dots a bit stronger so the plate reads as DevelopTree, not a flat wash. */
+    ov.style.cssText = [
+      'position:absolute',
+      'inset:0',
+      'z-index:0',
+      'pointer-events:none',
+      'opacity:0.16',
+      'background-image:' + cssUrl(pack.pt_treebg) + ',' + cssUrl(pack.pt_dots),
+      'background-size:180px 180px,96px 96px',
+      'background-position:0 0,12px 8px',
+      'background-repeat:repeat,repeat'
+    ].join(';');
+  }
+
+  function applyBoardChrome() {
+    var scroll = $('devScroll');
+    if (!scroll) return;
+    var pack = ui();
+    // RareBoss cover (not tiled DevelopTree_BG_Base); Dots/TreeBG via overlay.
+    scroll.style.setProperty('--dev-bg-base', cssUrl(pack.bg_base));
+    scroll.style.setProperty('--dev-pt-dots', cssUrl(pack.pt_dots));
+    scroll.style.setProperty('--dev-pt-treebg', cssUrl(pack.pt_treebg));
+    scroll.style.setProperty('--dev-text-bg', cssUrl(pack.text_bg));
+    scroll.style.backgroundImage = cssUrl(pack.bg_base);
+    scroll.style.backgroundSize = 'cover';
+    scroll.style.backgroundPosition = 'center center';
+    scroll.style.backgroundRepeat = 'no-repeat';
+    scroll.style.backgroundColor = '#071622';
+    ensurePatternOverlay(scroll, pack);
+    clearDevelopScrollExperiments();
+    var vig = $('devVignette');
+    if (vig) {
+      vig.style.setProperty('--dev-bg-vignette', 'none');
+      vig.hidden = true;
+    }
+  }
+
+  /**
+   * Size the MD grid so the full tree fits the frame WIDTH (no sideways scroll).
+   * Page may still scroll vertically. leftReserve = switcher column.
+   */
+  function layoutMetrics(scroll, maxC, maxR, leftReserve) {
+    var cols = maxC + 1;
+    var rows = maxR + 1;
+    var left = Math.max(0, leftReserve | 0);
+    /* Frame width — never scroll.clientWidth (overflow:visible inflates with the board). */
+    var frame = null;
+    try {
+      frame = scroll && (scroll.closest ? scroll.closest('.dev-board-frame') : null);
+    } catch (_) {}
+    if (!frame && scroll && scroll.parentElement) frame = scroll.parentElement;
+    var availW = Math.max(220, ((frame && frame.clientWidth) || (scroll && scroll.clientWidth) || 640) - 4);
+    var CELL_MAX = 78;
+    var CELL_SOFT_MIN = 52;
+    var CELL_HARD_MIN = 28;
+
+    function packFor(cell) {
+      var koma = Math.round(Math.min(Math.max(cell * 1.68, Math.min(108, cell * 1.7)), cell * 1.82));
+      var pad = Math.round(koma * 0.72);
+      var padL = left > 0 ? left : pad;
+      /* Tight right edge — reclaim width for columns */
+      var padR = Math.max(10, Math.min(pad, Math.round(pad * 0.4)));
+      return {
+        cell: cell,
+        koma: koma,
+        pad: pad,
+        padL: padL,
+        padR: padR,
+        baseFrac: 0.52,
+        boardW: padL + padR + cols * cell,
+        boardH: pad * 2 + rows * cell,
+        availW: availW
+      };
+    }
+
+    /* Width-first: size cells from remaining width after the switcher. */
+    var cell = Math.floor((availW - left - 10) / Math.max(cols, 1));
+    if (cell > CELL_MAX) cell = CELL_MAX;
+    if (cell < CELL_HARD_MIN) cell = CELL_HARD_MIN;
+
+    /* Soft min only when the wider cells still fit the frame. */
+    if (cell < CELL_SOFT_MIN && packFor(CELL_SOFT_MIN).boardW <= availW) {
+      cell = CELL_SOFT_MIN;
+    }
+
+    var m = packFor(cell);
+    while (m.boardW > availW && cell > CELL_HARD_MIN) {
+      cell -= 1;
+      m = packFor(cell);
+    }
+    return m;
+  }
+
+  function ptKey(x, y) {
+    return Math.round(x) + ',' + Math.round(y);
+  }
+
+  function segKey(x1, y1, x2, y2) {
+    var a = ptKey(x1, y1);
+    var b = ptKey(x2, y2);
+    return a < b ? a + '|' + b : b + '|' + a;
+  }
+
+  /**
+   * Soft-filleted ortho pipe along route cells (in-game DevelopTree).
+   * Follows grid corridors: horizontal/vertical runs + wide rounded shoulders.
+   * No start→end skewered cubic; no sharp 90° corners.
+   */
+  function softFilletOrtho(pts, radius) {
+    var cleaned = [];
+    (pts || []).forEach(function (pt) {
+      if (!pt) return;
+      if (!cleaned.length) {
+        cleaned.push({ x: pt.x, y: pt.y });
+        return;
+      }
+      var prev = cleaned[cleaned.length - 1];
+      if (Math.hypot(pt.x - prev.x, pt.y - prev.y) > 0.75) {
+        cleaned.push({ x: pt.x, y: pt.y });
+      }
+    });
+    // Collapse collinear middle points so fillets only sit on real turns.
+    var p = [];
+    cleaned.forEach(function (pt, i) {
+      if (i === 0 || i === cleaned.length - 1) {
+        p.push(pt);
+        return;
+      }
+      var a = cleaned[i - 1];
+      var c = cleaned[i + 1];
+      var cross = (pt.x - a.x) * (c.y - pt.y) - (pt.y - a.y) * (c.x - pt.x);
+      if (Math.abs(cross) > 0.5) p.push(pt);
+    });
+    if (p.length < 2) return '';
+    if (p.length === 2) {
+      return 'M ' + p[0].x + ' ' + p[0].y + ' L ' + p[1].x + ' ' + p[1].y;
+    }
+    var d = 'M ' + p[0].x + ' ' + p[0].y;
+    for (var i = 1; i < p.length - 1; i++) {
+      var a = p[i - 1];
+      var b = p[i];
+      var c = p[i + 1];
+      var v1x = b.x - a.x;
+      var v1y = b.y - a.y;
+      var v2x = c.x - b.x;
+      var v2y = c.y - b.y;
+      var len1 = Math.hypot(v1x, v1y) || 1;
+      var len2 = Math.hypot(v2x, v2y) || 1;
+      // In-game shoulders are wide but stay inside each leg (~half cell+).
+      var r = Math.min(radius, len1 * 0.48, len2 * 0.48);
+      if (r < 4) {
+        d += ' L ' + b.x + ' ' + b.y;
+        continue;
+      }
+      var u1x = v1x / len1;
+      var u1y = v1y / len1;
+      var u2x = v2x / len2;
+      var u2y = v2y / len2;
+      var enterX = b.x - u1x * r;
+      var enterY = b.y - u1y * r;
+      var leaveX = b.x + u2x * r;
+      var leaveY = b.y + u2y * r;
+      d += ' L ' + enterX + ' ' + enterY;
+      // Cubic fillet: handles along each leg → soft shoulder, still LTR/forward.
+      var h = r * 0.55;
+      d += ' C '
+        + (enterX + u1x * h) + ' ' + (enterY + u1y * h) + ' '
+        + (leaveX - u2x * h) + ' ' + (leaveY - u2y * h) + ' '
+        + leaveX + ' ' + leaveY;
+    }
+    d += ' L ' + p[p.length - 1].x + ' ' + p[p.length - 1].y;
+    return d;
+  }
+
+  function shrinkPolylineEnds(pts, dockR) {
+    if (!pts || pts.length < 2) return pts || [];
+    var out = pts.map(function (pt) { return { x: pt.x, y: pt.y }; });
+    var a = out[0];
+    var b = out[1];
+    var len = Math.hypot(b.x - a.x, b.y - a.y) || 1;
+    var pull = Math.min(dockR, Math.max(0, len * 0.42));
+    out[0] = { x: a.x + ((b.x - a.x) / len) * pull, y: a.y + ((b.y - a.y) / len) * pull };
+    var c = out[out.length - 2];
+    var d = out[out.length - 1];
+    len = Math.hypot(d.x - c.x, d.y - c.y) || 1;
+    pull = Math.min(dockR, Math.max(0, len * 0.42));
+    out[out.length - 1] = {
+      x: d.x - ((d.x - c.x) / len) * pull,
+      y: d.y - ((d.y - c.y) / len) * pull,
+    };
+    return out;
+  }
+
+  /**
+   * In-game wire rules:
+   * - Stroke follows route.cells (ortho corridors), soft-filleted corners
+   * - Fan-in (multi=false): N spaced tips + N arrows
+   * - Joint (multi=true): N strokes → same tip + 1 arrow
+   * - Fork-out: shared stem cells then branch (MD already encodes the fan)
+   */
+  function routeWireDraws(routes, cellX, cellY, cell, pieceKeys, dockR, pieceAt) {
+    var out = [];
+    var arrows = [];
+    var endBuckets = Object.create(null);
+    var jointTipDone = Object.create(null);
+    var radius = Math.max(18, cell * 0.42);
+
+    (routes || []).forEach(function (rt, ri) {
+      var cells = rt.cells || [];
+      if (cells.length < 2) return;
+      var end = cells[cells.length - 1];
+      var ek = end.col + ',' + end.row;
+      if (!endBuckets[ek]) endBuckets[ek] = [];
+      endBuckets[ek].push(ri);
+    });
+
+    function endMode(endKey) {
+      var n = (endBuckets[endKey] || []).length;
+      if (n <= 1) return 'single';
+      var piece = pieceAt && pieceAt[endKey];
+      if (piece && piece.multi) return 'joint';
+      return 'fan';
+    }
+
+    // Fan-in (multi=false, N parents): N separate tips near the rim (in-game).
+    // Keep same-row approaches at tip offset 0 so Spallow→Assault stays flat;
+    // other parents fan above/below with a tight gap.
+    var fanSlot = Object.create(null);
+    Object.keys(endBuckets).forEach(function (ek) {
+      if (endMode(ek) !== 'fan') return;
+      var list = (endBuckets[ek] || []).slice();
+      if (list.length <= 1) return;
+      list.sort(function (a, b) {
+        var ca = ((routes[a] || {}).cells || [])[0] || {};
+        var cb = ((routes[b] || {}).cells || [])[0] || {};
+        return cellY(ca.row) - cellY(cb.row);
+      });
+      var endCell = ((routes[list[0]] || {}).cells || []);
+      endCell = endCell[endCell.length - 1] || {};
+      var endRow = endCell.row;
+      var gap = Math.max(11, Math.min(18, cell * 0.16));
+      list.forEach(function (ri, slot) {
+        fanSlot[ri] = (slot - (list.length - 1) / 2) * gap;
+      });
+      var zeroRi = null;
+      list.forEach(function (ri) {
+        var cells = (routes[ri] || {}).cells || [];
+        var start = cells[0] || {};
+        if (start.row === endRow && zeroRi == null) zeroRi = ri;
+      });
+      if (zeroRi != null && fanSlot[zeroRi] != null) {
+        var adj = fanSlot[zeroRi];
+        list.forEach(function (ri) { fanSlot[ri] -= adj; });
+      }
+    });
+
+    (routes || []).forEach(function (rt, ri) {
+      var cells = rt.cells || [];
+      if (cells.length < 2) return;
+      var end = cells[cells.length - 1];
+      var ek = end.col + ',' + end.row;
+      var mode = endMode(ek);
+      var pts = cells.map(function (c) {
+        return { x: cellX(c.col), y: cellY(c.row) };
+      });
+      if (mode === 'fan' && fanSlot[ri] != null && Math.abs(fanSlot[ri]) > 0.5) {
+        var tipOff = fanSlot[ri];
+        var baseEndY = pts[pts.length - 1].y;
+        pts[pts.length - 1].y = baseEndY + tipOff;
+        // Only the final horizontal stub rides tipY (corridor stays on MD row).
+        for (var j = pts.length - 2; j >= 0; j--) {
+          if (Math.abs(pts[j].y - baseEndY) > 1.25) break;
+          if (Math.abs(pts[j].x - pts[j + 1].x) < 1.25) break;
+          // Short stub only — stop after one horizontal predecessor.
+          pts[j].y = baseEndY + tipOff;
+          break;
+        }
+      }
+      // Undocked end = cell center (base sits here); keep for arrow placement.
+      var endCx = pts[pts.length - 1].x;
+      var endCy = pts[pts.length - 1].y;
+      var preDock = pts.length >= 2 ? pts[pts.length - 2] : pts[0];
+      pts = shrinkPolylineEnds(pts, dockR);
+      var d = softFilletOrtho(pts, radius);
+      if (d) out.push({ d: d, arrow: null });
+      var last = pts[pts.length - 1];
+      var prev = pts[pts.length - 2] || last;
+      var tipArrow = {
+        x0: prev.x + (last.x - prev.x) * 0.55,
+        y0: prev.y + (last.y - prev.y) * 0.55,
+        x1: last.x,
+        y1: last.y,
+        endCx: endCx,
+        endCy: endCy,
+        fromX: preDock.x,
+        fromY: preDock.y,
+      };
+      if (mode === 'joint') {
+        if (!jointTipDone[ek]) {
+          jointTipDone[ek] = 1;
+          arrows.push(tipArrow);
+        }
+      } else {
+        arrows.push(tipArrow);
+      }
+    });
+
+    arrows.forEach(function (a) {
+      out.push({ d: null, arrow: a });
+    });
+    return out;
+  }
+
+  function pieceById(diagram, id) {
+    var list = diagram.pieces || [];
+    for (var i = 0; i < list.length; i++) if (String(list[i].id) === String(id)) return list[i];
+    return null;
+  }
+
+  function rarityKey(rarity) {
+    return String(rarity || '').toUpperCase();
+  }
+
+  function frameFor(mapKey, rarity) {
+    var pack = ui();
+    var bucket = pack[mapKey] || {};
+    var key = rarityKey(rarity);
+    return bucket[key] || bucket.N || '';
+  }
+
+  function mkImg(cls, src) {
+    var img = document.createElement('img');
+    img.className = cls;
+    img.alt = '';
+    img.decoding = 'async';
+    img.draggable = false;
+    img.src = src;
+    return img;
+  }
+
+  function currentDiagram() {
+    var map = state.map;
+    return (map && map.diagrams && map.diagrams[state.diagram]) || null;
+  }
+
+  function setNodeHighlight(pieceId, hoverOnly) {
+    var board = $('devBoard');
+    if (!board) return;
+    var nodes = board.querySelectorAll('.dev-node');
+    for (var i = 0; i < nodes.length; i++) {
+      var n = nodes[i];
+      var id = n.getAttribute('data-piece-id');
+      var on = pieceId != null && String(id) === String(pieceId);
+      if (hoverOnly) {
+        n.classList.toggle('is-hover', on);
+      } else {
+        n.classList.toggle('is-selected', on);
+        if (!on) n.classList.remove('is-hover');
+      }
+    }
+  }
+
+  function clearHoverDetail() {
+    if (state.selected != null) return;
+    setNodeHighlight(null, true);
+    renderDetail(null, null);
+  }
+
+  function closeUnitSheet() {
+    var box = $('devDetail');
+    var backdrop = $('devSheetBackdrop');
+    var closeBtn = $('devDetailClose');
+    var openFull = $('devDetailOpenFullWrap');
+    if (box) {
+      box.classList.remove('is-open', 'is-sheet', 'is-floating');
+      box.hidden = true;
+      box.setAttribute('hidden', '');
+      box.style.left = '';
+      box.style.top = '';
+      box.style.right = '';
+      box.style.position = '';
+    }
+    if (backdrop) {
+      backdrop.classList.remove('is-open');
+      backdrop.hidden = true;
+      backdrop.setAttribute('hidden', '');
+      backdrop.setAttribute('aria-hidden', 'true');
+    }
+    if (closeBtn) {
+      closeBtn.hidden = true;
+      closeBtn.setAttribute('hidden', '');
+    }
+    if (openFull) {
+      openFull.hidden = true;
+      openFull.setAttribute('hidden', '');
+    }
+  }
+
+  function clearSelection() {
+    state.selected = null;
+    setNodeHighlight(null, false);
+    closeUnitSheet();
+    renderDetail(null, null);
+  }
+
+  function showPieceDetail(piece, opts) {
+    opts = opts || {};
+    var diagram = currentDiagram();
+    if (!piece) {
+      clearSelection();
+      return;
+    }
+    if (opts.pin) {
+      state.selected = piece.id;
+      setNodeHighlight(piece.id, false);
+    } else if (hoverCapable) {
+      if (state.selected != null) return;
+      setNodeHighlight(piece.id, true);
+    }
+    renderDetail(diagram, piece, opts);
+  }
+
+  function placeDetailPopup(box, opts) {
+    opts = opts || {};
+    var frame = document.querySelector('.dev-board-frame');
+    if (!box || !frame) return;
+    box.classList.add('is-floating');
+    box.classList.remove('is-sheet', 'is-open');
+    box.style.position = 'absolute';
+    var fr = frame.getBoundingClientRect();
+    var bw = box.offsetWidth || 280;
+    var bh = box.offsetHeight || 160;
+    var x;
+    var y;
+    if (opts.mode === 'cursor' && opts.clientX != null) {
+      x = opts.clientX - fr.left + 14;
+      y = opts.clientY - fr.top + 14;
+    } else if (opts.anchorEl) {
+      // Mobile: 45° upper-right of the ogk node.
+      var ar = opts.anchorEl.getBoundingClientRect();
+      var ox = ar.left - fr.left + ar.width * 0.5;
+      var oy = ar.top - fr.top + ar.height * 0.5;
+      var dist = Math.max(ar.width, ar.height) * 0.72;
+      x = ox + dist * Math.cos(Math.PI / 4);
+      y = oy - dist * Math.sin(Math.PI / 4) - bh * 0.25;
+    } else {
+      x = 12;
+      y = 12;
+    }
+    var maxX = Math.max(8, fr.width - bw - 8);
+    var maxY = Math.max(8, fr.height - bh - 8);
+    if (x > maxX) x = Math.max(8, opts.clientX != null ? (opts.clientX - fr.left - bw - 14) : maxX);
+    if (y > maxY) y = maxY;
+    if (x < 8) x = 8;
+    if (y < 8) y = 8;
+    box.style.left = Math.round(x) + 'px';
+    box.style.top = Math.round(y) + 'px';
+    box.style.right = 'auto';
+  }
+
+  function openUnitSheet(box) {
+    var backdrop = $('devSheetBackdrop');
+    var closeBtn = $('devDetailClose');
+    var openFull = $('devDetailOpenFullWrap');
+    if (!box) return;
+    box.classList.remove('is-floating');
+    box.classList.add('is-sheet');
+    box.style.left = '';
+    box.style.top = '';
+    box.style.right = '';
+    box.style.position = '';
+    box.hidden = false;
+    box.removeAttribute('hidden');
+    if (closeBtn) {
+      closeBtn.hidden = false;
+      closeBtn.removeAttribute('hidden');
+    }
+    if (openFull) {
+      openFull.hidden = false;
+      openFull.removeAttribute('hidden');
+    }
+    if (backdrop) {
+      backdrop.hidden = false;
+      backdrop.removeAttribute('hidden');
+      backdrop.setAttribute('aria-hidden', 'false');
+      // Next frame so enter transition runs.
+      requestAnimationFrame(function () {
+        box.classList.add('is-open');
+        backdrop.classList.add('is-open');
+      });
+    } else {
+      requestAnimationFrame(function () { box.classList.add('is-open'); });
+    }
+  }
+
+  function renderDetail(diagram, piece, opts) {
+    opts = opts || {};
+    var box = $('devDetail');
+    if (!box) return;
+    if (!piece) {
+      if (!opts.keepSheet) closeUnitSheet();
+      else {
+        box.hidden = true;
+        box.classList.remove('is-floating');
+      }
+      return;
+    }
+    var asSheet = !!opts.sheet;
+    box.hidden = false;
+    box.removeAttribute('hidden');
+    var unit = piece.unit || {};
+    var pack = ui();
+    var unknown = !!unit.unknown;
+    $('devDetailName').textContent = unknown
+      ? '???'
+      : (unit.name || unit.id || '');
+
+    var rarImg = $('devDetailRarity');
+    if (rarImg) {
+      if (!unknown && unit.rarity_icon) {
+        rarImg.hidden = false;
+        rarImg.removeAttribute('hidden');
+        rarImg.src = unit.rarity_icon;
+        rarImg.alt = unit.rarity || '';
+      } else {
+        rarImg.hidden = true;
+        rarImg.setAttribute('hidden', '');
+        rarImg.removeAttribute('src');
+        rarImg.alt = '';
+      }
+    }
+    var metaText = $('devDetailMetaText');
+    if (metaText) {
+      metaText.textContent = unknown
+        ? ''
+        : ['Lv ' + (piece.level || 0), unit.role || '', unit.id || '']
+          .filter(Boolean).join(' · ');
+    }
+
+    var link = $('devDetailLink');
+    var thum = $('devDetailThum');
+    var openFullA = $('devDetailOpenFull');
+    var href = (!unknown && (unit.href || unit.id)) ? (unit.href || ('/u/' + unit.id)) : '#';
+    if (link) {
+      link.href = href;
+      link.title = unit.name || '';
+      if (unknown || href === '#') link.removeAttribute('href');
+      else link.href = href;
+    }
+    if (openFullA) {
+      if (unknown || href === '#') {
+        openFullA.removeAttribute('href');
+        openFullA.setAttribute('aria-disabled', 'true');
+      } else {
+        openFullA.href = href;
+        openFullA.removeAttribute('aria-disabled');
+      }
+    }
+    if (thum) {
+      // List thum first; unknown → Secret_Reward placeholder (never map ogk).
+      var src = '';
+      if (unknown) src = pack.secret_icon || '';
+      else src = unit.thum || '';
+      if (src) {
+        thum.hidden = false;
+        thum.removeAttribute('hidden');
+        thum.style.display = 'block';
+        thum.alt = unit.name || '';
+        if (thum.getAttribute('src') !== src) thum.src = src;
+        thum.onerror = function () {
+          var fallback = pack.secret_icon || '';
+          if (fallback && thum.getAttribute('src') !== fallback) thum.src = fallback;
+        };
+      } else {
+        thum.hidden = true;
+        thum.setAttribute('hidden', '');
+        thum.removeAttribute('src');
+      }
+    }
+    if (asSheet) openUnitSheet(box);
+    else placeDetailPopup(box, opts);
+
+    var matTitle = $('devMatTitle');
+    if (matTitle) matTitle.textContent = pack.materials_title || 'Required Materials';
+
+    // Capital (m_unit.DevelopCapital) — always first under Required Materials.
+    var capitalAmt = unknown ? 0 : Number(piece.capital || 0);
+    var capitalIcon = pack.capital_icon || '';
+    var capitalLabel = pack.capital_label || 'Capital';
+    if (!capitalAmt && !unknown && piece.materials) {
+      for (var ci = 0; ci < piece.materials.length; ci++) {
+        var cm = piece.materials[ci];
+        if (cm && (cm.is_capital || String(cm.item_id) === 'capital')) {
+          capitalAmt = Number(cm.count || 0);
+          if (cm.icon) capitalIcon = cm.icon;
+          if (cm.name) capitalLabel = cm.name;
+          break;
+        }
+      }
+    }
+    function appendMatChip(parent, iconSrc, label, amount) {
+      if (!parent) return;
+      var row = document.createElement(parent.tagName === 'UL' ? 'li' : 'div');
+      row.className = 'dev-mat-row';
+      var icon = mkImg('dev-mat-icon', iconSrc || '');
+      icon.width = 22;
+      icon.height = 22;
+      icon.setAttribute('width', '22');
+      icon.setAttribute('height', '22');
+      if (!iconSrc) {
+        icon.classList.add('is-missing');
+      } else {
+        icon.onerror = function () {
+          icon.classList.add('is-missing');
+        };
+      }
+      row.appendChild(icon);
+      var lbl = document.createElement('span');
+      lbl.className = 'dev-mat-label';
+      var n = Number(amount || 0);
+      lbl.textContent = label + ' × ' + (n ? n.toLocaleString() : String(amount || ''));
+      row.appendChild(lbl);
+      parent.appendChild(row);
+    }
+    /** One cell: Capital + item mats as the same list rows (no separate capital box). */
+    function fillMatsList(listEl, materials, stepCapital) {
+      if (!listEl) return { capAmt: 0, listLen: 0 };
+      var capAmt = Number(stepCapital || 0);
+      var capIconSrc = capitalIcon;
+      var capName = capitalLabel;
+      var list = [];
+      (materials || []).forEach(function (m) {
+        if (!m) return;
+        if (m.is_capital || String(m.item_id) === 'capital') {
+          if (!capAmt) capAmt = Number(m.count || 0);
+          if (m.icon) capIconSrc = m.icon;
+          if (m.name) capName = m.name;
+          return;
+        }
+        list.push(m);
+      });
+      listEl.innerHTML = '';
+      if (capAmt > 0) appendMatChip(listEl, capIconSrc, capName, capAmt);
+      list.forEach(function (m) {
+        appendMatChip(listEl, m.icon || '', m.name || m.item_id, m.count);
+      });
+      if (!list.length && capAmt <= 0) {
+        var empty = document.createElement(listEl.tagName === 'UL' ? 'li' : 'div');
+        empty.className = 'dev-mat-row';
+        empty.textContent = '—';
+        listEl.appendChild(empty);
+      }
+      return { capAmt: capAmt, listLen: list.length };
+    }
+    function hideLegacyCap(el) {
+      if (!el) return;
+      el.innerHTML = '';
+      el.hidden = true;
+      el.setAttribute('hidden', '');
+      el.style.display = 'none';
+    }
+    hideLegacyCap($('devDetailCapital'));
+    fillMatsList($('devMats'), unknown ? [] : piece.materials, capitalAmt);
+
+    // Bulk Development = MD path total (this step + all prior units on the lineage).
+    var bulkTitle = $('devBulkTitle');
+    var bulkNote = $('devBulkNote');
+    var bulk = unknown ? [] : (piece.bulk_materials || []);
+    var bulkHas = bulk.length > 0;
+    var bulkSteps = unknown ? 0 : Number(piece.bulk_steps || 0);
+    if (bulkTitle) {
+      bulkTitle.textContent = pack.bulk_title || 'Bulk Development';
+      if (bulkHas) {
+        bulkTitle.hidden = false;
+        bulkTitle.removeAttribute('hidden');
+      } else {
+        bulkTitle.hidden = true;
+        bulkTitle.setAttribute('hidden', '');
+      }
+    }
+    if (bulkNote) {
+      if (bulkHas && bulkSteps > 1) {
+        bulkNote.hidden = false;
+        bulkNote.removeAttribute('hidden');
+        var noteBase = pack.bulk_note || 'Path total';
+        bulkNote.textContent = noteBase + ' · ' + bulkSteps + ' units';
+      } else if (bulkHas) {
+        bulkNote.hidden = false;
+        bulkNote.removeAttribute('hidden');
+        bulkNote.textContent = pack.bulk_note_single || pack.bulk_note || 'Path total';
+      } else {
+        bulkNote.hidden = true;
+        bulkNote.setAttribute('hidden', '');
+        bulkNote.textContent = '';
+      }
+    }
+    hideLegacyCap($('devDetailBulkCapital'));
+    if (bulkHas) {
+      fillMatsList($('devBulkMats'), bulk, 0);
+    } else {
+      var bMats = $('devBulkMats');
+      if (bMats) bMats.innerHTML = '';
+    }
+    // Re-place after content sized (thum/capital rows).
+    if (asSheet) {
+      /* sheet already opened */
+    } else {
+      placeDetailPopup(box, opts);
+    }
+  }
+
+  function bindDismissOnce() {
+    if (boundDismiss) return;
+    boundDismiss = true;
+    var scroll = $('devScroll');
+    var board = $('devBoard');
+    var detail = $('devDetail');
+    var backdrop = $('devSheetBackdrop');
+    var closeBtn = $('devDetailClose');
+    if (detail) {
+      detail.addEventListener('click', function (e) { e.stopPropagation(); });
+      detail.addEventListener('pointerdown', function (e) { e.stopPropagation(); });
+    }
+    function onEmpty(e) {
+      var t = e.target;
+      if (t && t.closest && t.closest('.dev-node')) return;
+      if (t && t.closest && t.closest('.dev-detail')) return;
+      clearSelection();
+    }
+    if (scroll) scroll.addEventListener('click', onEmpty);
+    if (board) board.addEventListener('click', onEmpty);
+    if (backdrop) backdrop.addEventListener('click', function () { clearSelection(); });
+    if (closeBtn) closeBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      clearSelection();
+    });
+  }
+
+  function renderBoard() {
+    var map = state.map;
+    var diagram = (map && map.diagrams && map.diagrams[state.diagram]) || null;
+    var board = $('devBoard');
+    var scroll = $('devScroll');
+    var main = document.querySelector('.dev-main');
+    board.innerHTML = '';
+    if (!diagram) return;
+    bindDismissOnce();
+
+    var maxC = 0;
+    var maxR = 0;
+    (diagram.pieces || []).forEach(function (p) {
+      if (p.col > maxC) maxC = p.col;
+      if (p.row > maxR) maxR = p.row;
+    });
+    (diagram.routes || []).forEach(function (rt) {
+      (rt.cells || []).forEach(function (c) {
+        if (c.col > maxC) maxC = c.col;
+        if (c.row > maxR) maxR = c.row;
+      });
+    });
+
+    var isUlt = !!(diagram && diagram.ultimate);
+    var bar = $('devDiagramBar');
+    var barW = (bar && !bar.hidden) ? (bar.offsetWidth || 0) : 0;
+    /* Budget tab column for cell fit, then center the tree in the remaining region
+       so compact boards are not glued to the switcher. */
+    var tabW = (bar && !bar.hidden) ? Math.ceil((barW || 218) + 6) : 0;
+    var metrics = layoutMetrics(scroll, maxC, maxR, tabW);
+    var cell = metrics.cell;
+    var pad = metrics.pad || Math.round(metrics.koma * 0.55);
+    var padR = (metrics.padR != null) ? metrics.padR : pad;
+    var padT = pad;
+    var padB = pad;
+    var availW = (metrics.availW != null)
+      ? metrics.availW
+      : Math.max(220, ((scroll.closest && scroll.closest('.dev-board-frame')) || scroll).clientWidth - 4);
+    var contentW = (maxC + 1) * cell + padR;
+    var regionW = Math.max(160, availW - tabW);
+    var extraL = Math.max(0, Math.floor((regionW - contentW) / 2));
+    var padL = tabW + extraL;
+    state.cell = cell;
+    if (main) {
+      main.style.setProperty('--dev-cell', cell + 'px');
+      main.style.setProperty('--dev-koma', metrics.koma + 'px');
+      main.style.setProperty('--dev-base', String(metrics.baseFrac || 0.52));
+    }
+
+    function cellX(col) { return padL + col * cell + cell / 2; }
+    function cellY(row) { return padT + row * cell + cell / 2; }
+
+    var w = padL + padR + (maxC + 1) * cell;
+    var h = padT + padB + (maxR + 1) * cell;
+    board.style.width = w + 'px';
+    board.style.height = h + 'px';
+    board.style.transform = '';
+    board.style.transformOrigin = '';
+    board.style.marginBottom = '';
+    board.style.marginRight = '';
+    /* Last resort: uniform scale so wide trees never need sideways scroll. */
+    if (w > availW + 1 && availW > 0) {
+      var fit = availW / w;
+      board.style.transform = 'scale(' + fit + ')';
+      board.style.transformOrigin = 'top left';
+      board.style.marginRight = ((w * fit) - w) + 'px';
+      board.style.marginBottom = ((h * fit) - h) + 'px';
+    }
+    var frameEl = (scroll.closest && scroll.closest('.dev-board-frame')) || scroll.parentElement;
+    var frameH = (frameEl && frameEl.clientHeight) || 0;
+    var centerY = frameH > 0 && h < frameH - 12;
+    scroll.classList.remove('is-board-center');
+    scroll.classList.toggle('is-board-center-y', !!centerY);
+    scroll.classList.toggle('is-ult-board', !!isUlt);
+    scroll.classList.remove('is-panable', 'is-panning');
+    try {
+      scroll.scrollLeft = 0;
+    } catch (_) {}
+
+    var wiresLayer = document.createElement('div');
+    wiresLayer.className = 'dev-wires-layer';
+    wiresLayer.setAttribute('aria-hidden', 'true');
+
+    var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('class', 'dev-wires');
+    svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
+    svg.setAttribute('width', String(w));
+    svg.setAttribute('height', String(h));
+
+    var pieceKeys = Object.create(null);
+    var pieceAt = Object.create(null);
+    (diagram.pieces || []).forEach(function (p) {
+      pieceKeys[p.col + ',' + p.row] = 1;
+      pieceAt[p.col + ',' + p.row] = p;
+    });
+    // Dock to the compact base rim (not the full ogk box).
+    var basePx = metrics.koma * (metrics.baseFrac || 0.52);
+    var dockR = Math.max(22, basePx * 0.5);
+    var draws = routeWireDraws(diagram.routes, cellX, cellY, cell, pieceKeys, dockR, pieceAt);
+    var lineSrc = ui().line || '';
+    var defs = '';
+    if (lineSrc) {
+      defs = '<defs><pattern id="devLinePattern" patternUnits="userSpaceOnUse" width="8" height="46">'
+        + '<image href="' + String(lineSrc).replace(/"/g, '') + '" x="2" y="0" width="4" height="46" '
+        + 'preserveAspectRatio="none"/></pattern></defs>';
+    }
+    var glow = '';
+    var over = '';
+    var tex = '';
+    var core = '';
+    /* SMIL dash flow — survives parent board transform:scale (CSS anim can freeze). */
+    var reduceMotion = false;
+    try {
+      reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    } catch (_) {}
+    var coreAnim = reduceMotion
+      ? ''
+      : '<animate attributeName="stroke-dashoffset" from="0" to="-18" dur="1.8s" repeatCount="indefinite"/>';
+    draws.forEach(function (draw) {
+      if (!draw || !draw.d) return;
+      glow += '<path class="dev-wire-glow" d="' + draw.d + '"/>';
+      over += '<path class="dev-wire" d="' + draw.d + '"/>';
+      if (lineSrc) tex += '<path class="dev-wire-tex" d="' + draw.d + '"/>';
+      core += coreAnim
+        ? ('<path class="dev-wire-core" d="' + draw.d + '">' + coreAnim + '</path>')
+        : ('<path class="dev-wire-core" d="' + draw.d + '"/>');
+    });
+    svg.innerHTML = defs + glow + over + tex + core;
+    wiresLayer.appendChild(svg);
+
+    board.appendChild(wiresLayer);
+
+    // Tip = UI_Deverop_Route_Arrow_Normal_Posi — own layer above nodes so
+    // SSR/UR rings + large ogk never bury the arrow (all rarities).
+    var arrowSrc = ui().route_arrow || ui().arrow || '';
+    var arrowsLayer = document.createElement('div');
+    arrowsLayer.className = 'dev-arrows-layer';
+    arrowsLayer.setAttribute('aria-hidden', 'true');
+    if (arrowSrc) {
+      draws.forEach(function (draw) {
+        var a = draw.arrow;
+        if (!a) return;
+        // Aim from approach → unit cell center; tip sits just outside the base rim.
+        var ex = a.endCx != null ? a.endCx : a.x1;
+        var ey = a.endCy != null ? a.endCy : a.y1;
+        var fx = a.fromX != null ? a.fromX : a.x0;
+        var fy = a.fromY != null ? a.fromY : a.y0;
+        var dx = ex - fx;
+        var dy = ey - fy;
+        var dist = Math.hypot(dx, dy) || 1;
+        var ux = dx / dist;
+        var uy = dy / dist;
+        // Barely touching: place arrow center so glyph tip sits on Enable rim (~11px half-icon).
+        var gap = Math.max(basePx * 0.5 + 10, 22);
+        var ax = ex - ux * gap;
+        var ay = ey - uy * gap;
+        // Keep arrow on ortho pipe centerline.
+        if (Math.abs(dy) <= Math.abs(dx) * 0.25) ay = ey;
+        if (Math.abs(dx) <= Math.abs(dy) * 0.25) ax = ex;
+        var img = mkImg('dev-route-arrow', arrowSrc);
+        img.style.left = ax + 'px';
+        img.style.top = ay + 'px';
+        img.style.transform = 'translate(-50%,-50%) rotate(' + (Math.atan2(dy, dx) * 180 / Math.PI) + 'deg)';
+        arrowsLayer.appendChild(img);
+      });
+    }
+    board.appendChild(arrowsLayer);
+
+    var pack = ui();
+    (diagram.pieces || []).forEach(function (p) {
+      var unit = p.unit || {};
+      var selected = state.selected && String(state.selected) === String(p.id);
+      var urStage = Number(unit.ur_stage || 0);
+      var unknown = !!unit.unknown;
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'dev-node'
+        + (unit.rarity === 'UR' ? ' is-ur' : '')
+        + (urStage === 2 ? ' is-ur2' : '')
+        + (urStage === 1 ? ' is-ur1' : '')
+        + (unknown ? ' is-unknown' : '')
+        + (p.multi ? ' is-multi' : '')
+        + (selected ? ' is-selected' : '');
+      btn.setAttribute('data-piece-id', String(p.id));
+      btn.setAttribute('aria-label', unknown ? '???' : (unit.name || unit.id || 'unit'));
+      btn.style.left = cellX(p.col) + 'px';
+      btn.style.top = cellY(p.row) + 'px';
+      btn.title = unknown ? '???' : (unit.name || '');
+
+      var art = document.createElement('span');
+      art.className = 'dev-node-art';
+
+      var rar = rarityKey(unit.rarity);
+      var base = document.createElement('span');
+      base.className = 'dev-base' + (urStage === 2 ? ' is-ur2' : '');
+      if (rar) base.setAttribute('data-rarity', rar);
+      // Glow = Enable_Blur only (never Disable_Blur).
+      var blurUrl = frameFor('frames_blur', unit.rarity);
+      if (blurUrl) base.appendChild(mkImg('dev-base-blur', blurUrl));
+      var disk = document.createElement('span');
+      disk.className = 'dev-base-disk';
+      if (pack.frame_core) disk.appendChild(mkImg('dev-base-core', pack.frame_core));
+      // Base plate = rarity Enable (KomaFrame_*_Enable) — never Disable.
+      var enableUrl = frameFor('frames', unit.rarity) || pack.frame_none || '';
+      if (enableUrl) {
+        disk.appendChild(mkImg('dev-base-enable', enableUrl));
+      } else {
+        disk.classList.add('is-fallback');
+      }
+      base.appendChild(disk);
+
+      // SSR/UR: Enable_ring sits outside the rarity frame and pulses gently.
+      // UR2 (final ULT) gets a second brighter glow layer.
+      if (rar === 'UR' && (pack.ur_ring || pack.ring_anim_glow_ur)) {
+        var urRing = mkImg('dev-base-rarity-ring is-ur' + (urStage === 2 ? ' is-ur2' : ''), pack.ur_ring || pack.ring_anim_glow_ur);
+        base.appendChild(urRing);
+        if (urStage === 2 && pack.ring_anim_glow_ur) {
+          var urGlow = mkImg('dev-base-rarity-ring is-ur is-ur2-glow', pack.ring_anim_glow_ur);
+          base.appendChild(urGlow);
+        }
+      } else if (rar === 'SSR' && (pack.ssr_ring || pack.ring_anim_glow)) {
+        var ssrRing = mkImg('dev-base-rarity-ring is-ssr', pack.ssr_ring || pack.ring_anim_glow);
+        base.appendChild(ssrRing);
+      }
+      art.appendChild(base);
+
+      // Unknowns: Secret_Reward only — never a wrong ogk, never detail popup.
+      var komaSrc = unknown
+        ? (pack.secret_icon || '')
+        : (unit.image || '');
+      if (!komaSrc && pack.secret_icon) {
+        komaSrc = pack.secret_icon;
+        unknown = true;
+        btn.classList.add('is-unknown');
+      }
+      if (komaSrc) {
+        var komaImg = mkImg('dev-koma' + (unknown || !unit.image ? ' is-secret' : ''), komaSrc);
+        var ogkScale = Number(unit.ogk_scale);
+        if (!unknown && unit.image && ogkScale > 0 && Math.abs(ogkScale - 1) > 0.02) {
+          komaImg.style.setProperty('--ogk-norm', String(ogkScale));
+        }
+        if (!unknown && unit.image) {
+          komaImg.onerror = function () {
+            var secret = pack.secret_icon || '';
+            if (!secret) return;
+            komaImg.classList.add('is-secret');
+            komaImg.style.removeProperty('--ogk-norm');
+            komaImg.src = secret;
+            btn.classList.add('is-unknown');
+          };
+        }
+        art.appendChild(komaImg);
+      }
+
+      btn.appendChild(art);
+
+      var badges = document.createElement('span');
+      badges.className = 'dev-badges';
+      if (!unknown && unit.rarity_icon) badges.appendChild(mkImg('dev-badge', unit.rarity_icon));
+      if (!unknown && unit.role_icon) badges.appendChild(mkImg('dev-badge', unit.role_icon));
+      if (badges.childNodes.length) btn.appendChild(badges);
+
+      function goUnitPage() {
+        var id = unit.id || '';
+        if (id && typeof window.openDetail === 'function') {
+          try {
+            window.openDetail('unit', id);
+            return;
+          } catch (_) {}
+        }
+        var href = unit.href || (id ? ('/u/' + id) : '');
+        if (href) window.location.href = href;
+      }
+      if (unknown) {
+        btn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          clearSelection();
+        });
+      } else if (hoverCapable) {
+        btn.addEventListener('pointerenter', function (e) {
+          if (state.selected != null) return;
+          showPieceDetail(p, {
+            pin: false,
+            mode: 'cursor',
+            clientX: e.clientX,
+            clientY: e.clientY,
+            anchorEl: btn,
+          });
+        });
+        btn.addEventListener('pointermove', function (e) {
+          if (state.selected != null) return;
+          var box = $('devDetail');
+          if (!box || box.hidden || box.classList.contains('is-sheet')) return;
+          placeDetailPopup(box, {
+            mode: 'cursor',
+            clientX: e.clientX,
+            clientY: e.clientY,
+            anchorEl: btn,
+          });
+        });
+        btn.addEventListener('pointerleave', function () {
+          clearHoverDetail();
+        });
+        btn.addEventListener('focus', function () {
+          if (state.selected != null) return;
+          showPieceDetail(p, { pin: false, mode: 'anchor', anchorEl: btn });
+        });
+        btn.addEventListener('blur', function () {
+          clearHoverDetail();
+        });
+        // Click ogk → unit detail page; hover still shows develop materials.
+        btn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          e.preventDefault();
+          goUnitPage();
+        });
+      } else {
+        btn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          e.preventDefault();
+          goUnitPage();
+        });
+      }
+      board.appendChild(btn);
+    });
+
+    var sel = null;
+    if (state.selected) sel = pieceById(diagram, state.selected);
+    if (sel) {
+      var selBtn = board.querySelector('.dev-node[data-piece-id="' + String(sel.id) + '"]');
+      renderDetail(diagram, sel, { mode: hoverCapable ? 'cursor' : 'anchor', anchorEl: selBtn });
+    } else {
+      renderDetail(diagram, null);
+    }
+    clearDevelopScrollExperiments();
+  }
+
+  function diagramTabBannerUrl(diagram, ordinal) {
+    var pack = ui() || {};
+    if (diagram && diagram.ultimate) {
+      return pack.tab_banner_ult || '';
+    }
+    var list = pack.tab_banners || [];
+    if (!list.length) return '';
+    var idx = Math.max(0, Math.min(list.length - 1, ordinal | 0));
+    return list[idx] || list[0] || '';
+  }
+
+  function preferImgUrl(src) {
+    if (!src) return '';
+    try {
+      if (typeof window.imgUrlPreferCdn === 'function') return window.imgUrlPreferCdn(src) || src;
+      if (typeof window.imgUrl === 'function') return window.imgUrl(src) || src;
+    } catch (_) {}
+    return src;
+  }
+
+  /** Split "Title [Faction]" so the bracket line sits on its own row. */
+  function splitDiagramTabLabel(label) {
+    var raw = String(label || '');
+    var m = raw.match(/^(.*?)(\[[^\]]+\])\s*$/);
+    if (!m) return { main: raw, sub: '' };
+    return { main: String(m[1] || '').trim(), sub: String(m[2] || '').trim() };
+  }
+
+  function fillDiagramTabLabel(span, label) {
+    var parts = splitDiagramTabLabel(label);
+    span.textContent = '';
+    var main = document.createElement('span');
+    main.className = 'dev-diagram-tab-main';
+    main.textContent = parts.main || label;
+    span.appendChild(main);
+    if (parts.sub) {
+      var sub = document.createElement('span');
+      sub.className = 'dev-diagram-tab-sub';
+      sub.textContent = parts.sub;
+      span.appendChild(sub);
+    }
+  }
+
+  function ensureDiagramBar() {
+    var host = $('devDiagramBar');
+    if (host) return host;
+    var frame = document.querySelector('#panel-develop .dev-board-frame') || document.querySelector('.dev-board-frame');
+    if (!frame) return null;
+    host = document.createElement('div');
+    host.className = 'dev-diagram-float';
+    host.id = 'devDiagramBar';
+    frame.insertBefore(host, frame.firstChild);
+    return host;
+  }
+
+  function renderTabs() {
+    // Always show faction/diagram tab chrome (even for a single diagram).
+    var legacy = $('devTabs');
+    if (legacy) {
+      legacy.innerHTML = '';
+      legacy.hidden = true;
+      legacy.setAttribute('hidden', '');
+    }
+    var host = ensureDiagramBar();
+    if (!host) return;
+    host.innerHTML = '';
+    var map = state.map || {};
+    var diagrams = map.diagrams || [];
+    var row = seriesById(map.series_id || seriesId);
+    var logo = preferImgUrl((map && map.logo) || (row && row.logo) || '');
+    var pack = ui() || {};
+    var tab0 = preferImgUrl((pack.tab_banners && pack.tab_banners[0]) || '');
+
+    if (!diagrams.length) {
+      host.hidden = true;
+      host.setAttribute('hidden', '');
+      return;
+    }
+
+    host.hidden = false;
+    host.removeAttribute('hidden');
+    host.setAttribute('aria-hidden', 'false');
+    /* Inline size — survives abspos % collapse / stale develop.css */
+    host.style.width = '218px';
+    host.style.maxWidth = 'calc(100% - 12px)';
+    host.style.boxSizing = 'border-box';
+
+    var tabs = document.createElement('div');
+    tabs.className = 'dev-diagram-tabs';
+    tabs.setAttribute('role', 'tablist');
+    tabs.setAttribute('aria-label', 'Diagram');
+    tabs.style.width = '100%';
+    var normalOrd = 0;
+    var factionCount = 0;
+    diagrams.forEach(function (d) {
+      if (!(d && d.ultimate)) factionCount += 1;
+    });
+    /* In-game: multi-faction trees = words on every tab; single-faction = logo on
+       the normal tab(s), words on Ultimate. */
+    var multiFaction = factionCount > 1;
+    diagrams.forEach(function (d, i) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'dev-diagram-tab' + (i === state.diagram ? ' is-active' : '');
+      if (d && d.ultimate) btn.classList.add('is-ult');
+      btn.setAttribute('role', 'tab');
+      btn.setAttribute('aria-selected', i === state.diagram ? 'true' : 'false');
+      btn.dataset.diagramIndex = String(i);
+      var label = (d && (d.name || d.id)) || ('Diagram ' + (i + 1));
+      btn.title = label;
+      btn.style.width = '100%';
+      btn.style.height = '83px';
+      btn.style.minHeight = '83px';
+      btn.style.boxSizing = 'border-box';
+      var isUltTab = !!(d && d.ultimate);
+      var banner = preferImgUrl(diagramTabBannerUrl(d, isUltTab ? 0 : normalOrd));
+      if (!isUltTab) normalOrd += 1;
+      if (banner) {
+        btn.style.setProperty('--dev-tab-banner', 'url("' + String(banner).replace(/\\/g, '\\\\').replace(/"/g, '\\"') + '")');
+      }
+      /* Plate carries banner + clip; ::before behind it = chamfer border rim */
+      var plate = document.createElement('span');
+      plate.className = 'dev-diagram-tab-plate';
+      plate.setAttribute('aria-hidden', 'true');
+      btn.appendChild(plate);
+      var useLogo = !!(logo && !multiFaction && !isUltTab);
+      if (useLogo) {
+        btn.classList.add('has-series-logo', 'is-logo-plate');
+        var logoImg = document.createElement('img');
+        logoImg.className = 'dev-diagram-tab-logo';
+        logoImg.alt = '';
+        logoImg.decoding = 'async';
+        logoImg.draggable = false;
+        logoImg.src = logo;
+        btn.appendChild(logoImg);
+      }
+      var span = document.createElement('span');
+      span.className = 'dev-diagram-tab-label';
+      fillDiagramTabLabel(span, label);
+      btn.appendChild(span);
+      btn.addEventListener('click', function () {
+        if (state.diagram === i) return;
+        state.diagram = i;
+        state.selected = null;
+        persistDevelopView();
+        renderTabs();
+        renderBoard();
+      });
+      tabs.appendChild(btn);
+    });
+    host.appendChild(tabs);
+  }
+
+  function seriesById(id) {
+    var list = state.series || [];
+    for (var i = 0; i < list.length; i++) {
+      if (String(list[i].id) === String(id)) return list[i];
+    }
+    return null;
+  }
+
+  function mkBannerImg(cls, src) {
+    var img = document.createElement('img');
+    img.className = cls;
+    img.alt = '';
+    img.decoding = 'async';
+    img.draggable = false;
+    // Panel opens from off-screen (translateY); lazy often never fires → blank cards.
+    img.loading = 'eager';
+    img.src = src;
+    return img;
+  }
+
+  function buildSeriesBannerEl(row, compact) {
+    var wrap = document.createElement('span');
+    wrap.className = 'dev-series-banner';
+    var kind = (row && row.banner_kind) || 'logo';
+    var logoSrc = (row && row.logo) || '';
+    if (kind === 'story' && row.banner) {
+      wrap.classList.add('is-story');
+      wrap.appendChild(mkBannerImg('dev-series-banner-full', row.banner));
+      return wrap;
+    }
+    if ((kind === 'composite' || kind === 'logo') && (row.banner_base || row.banner_unit || logoSrc)) {
+      if (row.banner_base || row.banner_unit) {
+        wrap.classList.add('is-composite');
+        if (row.banner_base) {
+          wrap.appendChild(mkBannerImg('dev-series-banner-base', row.banner_base));
+        }
+        if (row.banner_unit) {
+          wrap.appendChild(mkBannerImg('dev-series-banner-unit', row.banner_unit));
+        }
+      } else {
+        wrap.classList.add('is-logo-only');
+      }
+      if (logoSrc) {
+        wrap.appendChild(mkBannerImg('dev-series-banner-logo', logoSrc));
+      }
+      return wrap;
+    }
+    wrap.classList.add('is-logo-only');
+    if (logoSrc) {
+      wrap.appendChild(mkBannerImg('dev-series-banner-logo', logoSrc));
+    }
+    return wrap;
+  }
+
+  function syncSeriesBtn() {
+    var row = seriesById(seriesId);
+    var art = $('devSeriesBtnArt');
+    var nameEl = $('devSeriesBtnName');
+    var countEl = $('devSeriesBtnCount');
+    var titleName = (state.map && state.map.series_name) || (row && row.name) || seriesId;
+    if (nameEl) nameEl.textContent = titleName;
+    if (countEl) {
+      var n = row && row.diagrams != null ? row.diagrams : '';
+      countEl.textContent = n !== '' ? (n + ' diagram' + (n === 1 ? '' : 's')) : '';
+    }
+    if (art) {
+      art.innerHTML = '';
+      if (row) art.appendChild(buildSeriesBannerEl(row, true));
+    }
+  }
+
+  function seriesQueryMatch(row, q) {
+    if (!q) return true;
+    var hay = ((row.name || '') + ' ' + (row.id || '')).toLowerCase();
+    return hay.indexOf(q) >= 0;
+  }
+
+  function renderSeriesGrid(filterText) {
+    var host = $('devSeriesGrid');
+    if (!host) return;
+    host.innerHTML = '';
+    var q = String(filterText || '').trim().toLowerCase();
+    var shown = 0;
+    (state.series || []).forEach(function (s) {
+      if (!seriesQueryMatch(s, q)) return;
+      shown += 1;
+      var card = document.createElement('button');
+      card.type = 'button';
+      var kind = String(s.banner_kind || 'logo');
+      card.className = 'dev-series-card'
+        + (kind === 'story' ? ' is-story' : '')
+        + (kind === 'composite' || kind === 'logo' ? ' is-composite' : '')
+        + (String(s.id) === String(seriesId) ? ' is-active' : '');
+      card.setAttribute('role', 'option');
+      card.setAttribute('aria-selected', String(s.id) === String(seriesId) ? 'true' : 'false');
+      card.dataset.seriesId = String(s.id);
+      card.setAttribute('aria-label', s.name || String(s.id));
+      card.title = s.name || String(s.id);
+      var art = document.createElement('span');
+      art.className = 'dev-series-card-art';
+      art.appendChild(buildSeriesBannerEl(s, false));
+      card.appendChild(art);
+      card.addEventListener('click', function () {
+        closeSeriesPanel();
+        if (String(s.id) === String(seriesId)) {
+          persistDevelopView();
+          return;
+        }
+        loadSeries(s.id, true);
+      });
+      host.appendChild(card);
+    });
+    /* Native reflow: denser / roomier grid from filter hit count. */
+    host.dataset.resultCount = String(shown);
+    host.classList.toggle('is-filtered', !!q);
+    host.classList.toggle('is-sparse', shown > 0 && shown <= 8);
+  }
+
+  function resetSeriesGridScroll() {
+    var grid = $('devSeriesGrid');
+    if (grid) grid.scrollTop = 0;
+    var card = document.querySelector('#devSeriesPanel .dev-series-panel-card');
+    if (card) card.scrollTop = 0;
+  }
+
+  function openSeriesPanel() {
+    var panel = $('devSeriesPanel');
+    var btn = $('devSeriesBtn');
+    var search = $('devSeriesSearch');
+    if (!panel) return;
+    try {
+      if (document.body) document.body.classList.add('dev-series-panel-open');
+    } catch (_) {}
+    panel.hidden = false;
+    panel.removeAttribute('hidden');
+    panel.setAttribute('aria-hidden', 'false');
+    if (btn) btn.setAttribute('aria-expanded', 'true');
+    if (search) search.value = '';
+    renderSeriesGrid('');
+    resetSeriesGridScroll();
+    requestAnimationFrame(function () {
+      panel.classList.add('is-open');
+      resetSeriesGridScroll();
+      if (search) {
+        try { search.focus({ preventScroll: true }); } catch (_) {
+          try { search.focus(); } catch (_) {}
+        }
+      }
+      requestAnimationFrame(resetSeriesGridScroll);
+    });
+  }
+
+  function closeSeriesPanel() {
+    var panel = $('devSeriesPanel');
+    var btn = $('devSeriesBtn');
+    if (!panel) return;
+    panel.classList.remove('is-open');
+    panel.setAttribute('aria-hidden', 'true');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+    try {
+      if (document.body) document.body.classList.remove('dev-series-panel-open');
+    } catch (_) {}
+    persistDevelopView();
+    window.setTimeout(function () {
+      if (!panel.classList.contains('is-open')) {
+        panel.hidden = true;
+        panel.setAttribute('hidden', '');
+      }
+    }, 340);
+  }
+
+  function bindSeriesPicker() {
+    var btn = $('devSeriesBtn');
+    var panel = $('devSeriesPanel');
+    var backdrop = $('devSeriesPanelBackdrop');
+    var closeBtn = $('devSeriesPanelClose');
+    var search = $('devSeriesSearch');
+    var title = $('devSeriesPanelTitle');
+    var lbl = $('devSeriesLbl');
+    if (title && lbl) title.textContent = lbl.textContent || 'Series';
+    if (btn) {
+      btn.addEventListener('click', function () {
+        if (panel && !panel.hidden && panel.classList.contains('is-open')) closeSeriesPanel();
+        else openSeriesPanel();
+      });
+    }
+    if (backdrop) backdrop.addEventListener('click', closeSeriesPanel);
+    if (closeBtn) closeBtn.addEventListener('click', closeSeriesPanel);
+    if (search) {
+      search.addEventListener('input', function () {
+        renderSeriesGrid(search.value);
+        resetSeriesGridScroll();
+        requestAnimationFrame(resetSeriesGridScroll);
+      });
+    }
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        if (panel && !panel.hidden) {
+          closeSeriesPanel();
+          e.preventDefault();
+          return;
+        }
+        if (state.selected != null) {
+          clearSelection();
+          e.preventDefault();
+        }
+      }
+    });
+  }
+
+  function applyMap(map) {
+    state.map = map;
+    var diagrams = (map && map.diagrams) || [];
+    var restored = recallDiagramIndex(map && map.series_id);
+    state.diagram = Math.max(0, Math.min(restored, Math.max(diagrams.length - 1, 0)));
+    state.selected = null;
+    closeUnitSheet();
+    $('devKicker').textContent = map.title || 'Development Diagram';
+    var resolvedName = String((map && map.series_name) || '').trim();
+    if (resolvedName && resolvedName !== String(map.series_id || '')) {
+      var row = seriesById(map.series_id);
+      if (row) row.name = resolvedName;
+    }
+    $('devSeriesName').textContent = resolvedName || map.series_id;
+    document.title = (map.title || 'Development Diagram') + ' — ' + (resolvedName || map.series_id || '');
+    var logo = $('devLogo');
+    if (map.logo) {
+      logo.hidden = false;
+      logo.src = map.logo;
+    } else {
+      logo.hidden = true;
+    }
+    if (map && map.series_id) seriesId = String(map.series_id);
+    persistDevelopView();
+    syncSeriesBtn();
+    applyBoardChrome();
+    renderTabs();
+    renderBoard();
+  }
+
+  function pushDevelopPath(sid) {
+    var path = '/develop/' + encodeURIComponent(String(sid || seriesId || '4000'));
+    if (typeof window.pushHistoryToBrowsePath === 'function') {
+      try {
+        window.pushHistoryToBrowsePath(path);
+        return;
+      } catch (_) {}
+    }
+    if (history && history.pushState) {
+      history.pushState({ series: String(sid || seriesId) }, '', path);
+    }
+  }
+
+  function loadSeries(id, push) {
+    seriesId = String(id || '4000');
+    if (push) pushDevelopPath(seriesId);
+    return api('/api/develop/' + encodeURIComponent(seriesId)).then(applyMap);
+  }
+
+  var resizeTimer = 0;
+  function onResize() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () {
+      if (state.map) renderBoard();
+    }, 120);
+  }
+
+  var pickerBound = false;
+  var resizeBound = false;
+  var headerChromeBound = false;
+  var panelObserver = null;
+  var booted = false;
+
+  function isDevelopDesktop() {
+    try {
+      return window.matchMedia('(min-width: 821px)').matches;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function isDevelopActive() {
+    var pan = $('panel-develop');
+    if (pan) return pan.classList.contains('active');
+    return !!document.body && document.body.classList.contains('dev-page');
+  }
+
+  function clearDevelopHeaderChrome() {
+    clearDevelopScrollExperiments();
+  }
+
+  function ensureChromeBound() {
+    if (!resizeBound) {
+      resizeBound = true;
+      window.addEventListener('resize', function () {
+        onResize();
+      });
+      /* Nav tab collapse changes usable height — reflow the board. */
+      try {
+        var mo = new MutationObserver(function () {
+          if (isDevelopActive() && state.map) onResize();
+        });
+        mo.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+      } catch (_) {}
+    }
+    if (!pickerBound) {
+      pickerBound = true;
+      bindSeriesPicker();
+    }
+    if (!headerChromeBound) {
+      headerChromeBound = true;
+      clearDevelopScrollExperiments();
+    }
+  }
+
+  function boot(opts) {
+    opts = opts || {};
+    ensureChromeBound();
+    clearDevelopScrollExperiments();
+    var pathMatch = String(location.pathname || '').match(/\/develop\/([^/]+)/);
+    var pathSeries = pathMatch && pathMatch[1] ? String(pathMatch[1]) : '';
+    var remembered = recallSeriesId();
+    /* Prefer: explicit opts → URL → last viewed → server default. */
+    if (opts.seriesId) seriesId = String(opts.seriesId);
+    else if (pathSeries) seriesId = pathSeries;
+    else if (remembered) seriesId = remembered;
+    else if (window.__DEV_SERIES__) seriesId = String(window.__DEV_SERIES__);
+    /*
+      Series picker: only on a true first visit (no URL series, no memory),
+      or when caller forces it. Returning to /develop restores the last tree.
+    */
+    var openPicker = false;
+    if (opts.openSeriesPanel === true) openPicker = true;
+    else if (opts.openSeriesPanel === false) openPicker = false;
+    else openPicker = !(pathSeries || remembered || opts.seriesId);
+    var needSeriesList = !(state.series && state.series.length);
+    var p = needSeriesList
+      ? api('/api/develop/series').then(function (pack) {
+          state.series = pack.series || [];
+          syncSeriesBtn();
+        })
+      : Promise.resolve();
+    return p.then(function () {
+      syncSeriesBtn();
+      return loadSeries(seriesId, false);
+    }).then(function () {
+      booted = true;
+      requestAnimationFrame(function () {
+        clearDevelopScrollExperiments();
+        onResize();
+        if (openPicker) openSeriesPanel();
+        else closeSeriesPanel();
+      });
+    }).catch(function (err) {
+      var el = $('devSeriesName');
+      if (el) el.textContent = 'Failed to load (' + (err && err.message ? err.message : err) + ')';
+    });
+  }
+
+  window.GgenDevelop = {
+    onTabShown: function (opts) {
+      clearDevelopScrollExperiments();
+      return boot(opts || {}).then(function () {
+        requestAnimationFrame(function () {
+          clearDevelopScrollExperiments();
+          onResize();
+        });
+      });
+    },
+    onTabHidden: function () {
+      clearDevelopScrollExperiments();
+    },
+    applySeries: function (sid) {
+      if (!sid) return boot();
+      seriesId = String(sid);
+      if (!booted) return boot({ seriesId: sid });
+      return loadSeries(sid, false);
+    },
+    syncHeaderChrome: clearDevelopScrollExperiments,
+    _ready: false,
+  };
+
+  // Standalone /develop.html only (no SPA panel).
+  var embedded = !!document.getElementById('panel-develop');
+  if (!embedded) {
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { boot(); });
+    else boot();
+  }
+})();

@@ -1,0 +1,76 @@
+{# Development Diagram — embedded SPA tab panel (same chrome as /c /u /s). #}
+<div class="dev-main" id="devMain">
+  <div class="dev-toolbar">
+    <div class="dev-title-block">
+      <img id="devLogo" class="dev-logo" alt="" hidden>
+      <div>
+        <p class="dev-kicker" id="devKicker">Development Diagram</p>
+        <h1 id="devSeriesName">…</h1>
+      </div>
+    </div>
+    <div class="dev-series-pick">
+      <span id="devSeriesLbl">Series</span>
+      <button type="button" id="devSeriesBtn" class="dev-series-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="devSeriesPanel">
+        <span class="dev-series-btn-art" id="devSeriesBtnArt" aria-hidden="true"></span>
+        <span class="dev-series-btn-meta">
+          <span id="devSeriesBtnName">…</span>
+          <span id="devSeriesBtnCount" class="dev-series-btn-count"></span>
+        </span>
+        <span class="dev-series-btn-chevron" aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+  <div class="dev-tabs" id="devTabs" role="tablist" hidden></div>
+  <div class="dev-layout">
+    <div class="dev-board-frame">
+      <!-- Outside #devScroll so flex board-centering cannot swallow the plate -->
+      <div class="dev-diagram-float" id="devDiagramBar" hidden></div>
+      <div class="dev-board-scroll" id="devScroll">
+        <div class="dev-board" id="devBoard"></div>
+      </div>
+      <div class="dev-board-vignette" id="devVignette" aria-hidden="true"></div>
+      <aside class="dev-detail" id="devDetail" hidden>
+        <div class="dev-detail-head">
+          <a id="devDetailLink" class="dev-detail-thum-link" href="/u" title="Open unit">
+            <img id="devDetailThum" class="dev-detail-thum" alt="">
+          </a>
+          <div class="dev-detail-copy">
+            <h2 id="devDetailName"></h2>
+            <p class="dev-detail-meta" id="devDetailMeta">
+              <img id="devDetailRarity" class="dev-detail-rarity" alt="" hidden>
+              <span id="devDetailMetaText"></span>
+            </p>
+          </div>
+          <button type="button" class="dev-detail-close" id="devDetailClose" hidden aria-label="Close">×</button>
+        </div>
+        <h3 id="devMatTitle">Required Materials</h3>
+        <div class="dev-detail-capital" id="devDetailCapital" hidden></div>
+        <ul id="devMats"></ul>
+        <h3 id="devBulkTitle" class="dev-bulk-title" hidden>Bulk Development</h3>
+        <p id="devBulkNote" class="dev-bulk-note" hidden></p>
+        <div class="dev-detail-capital" id="devDetailBulkCapital" hidden></div>
+        <ul id="devBulkMats"></ul>
+        <p class="dev-detail-open-full" id="devDetailOpenFullWrap" hidden>
+          <a id="devDetailOpenFull" href="/u">Open unit page</a>
+        </p>
+      </aside>
+    </div>
+  </div>
+</div>
+
+<div class="dev-sheet-backdrop" id="devSheetBackdrop" hidden aria-hidden="true"></div>
+
+<div class="dev-series-panel" id="devSeriesPanel" hidden aria-hidden="true">
+  <div class="dev-series-panel-backdrop" id="devSeriesPanelBackdrop"></div>
+  <div class="dev-series-panel-card" role="dialog" aria-modal="true" aria-labelledby="devSeriesPanelTitle">
+    <div class="dev-series-panel-head">
+      <h2 id="devSeriesPanelTitle">Series</h2>
+      <button type="button" class="dev-series-panel-close" id="devSeriesPanelClose" aria-label="Close">×</button>
+    </div>
+    <label class="dev-series-search-wrap">
+      <span class="visually-hidden">Search series</span>
+      <input type="search" id="devSeriesSearch" class="dev-series-search" placeholder="Search series…" autocomplete="off" spellcheck="false">
+    </label>
+    <div class="dev-series-grid" id="devSeriesGrid" role="listbox" aria-label="Series"></div>
+  </div>
+</div>

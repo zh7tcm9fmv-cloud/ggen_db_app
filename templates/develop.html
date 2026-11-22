@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" class="dev-page" data-ui-lang="EN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Development Diagram</title>
+<meta name="description" content="Unit Development Diagram — develop routes from MasterData.">
+<link rel="canonical" href="{{ public_origin }}/develop/{{ develop_series_id }}">
+<link rel="icon" type="image/webp" href="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Gallery_Comics_Logo_Eternalbase.webp{% else %}/static/images/UI/UI_Gallery_Comics_Logo_Eternalbase.webp{% endif %}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/app_shell_bundle.min.css') }}?v={{ app_js_version }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/develop.css') }}?v={{ app_js_version }}">
+{% if image_cdn %}
+<link rel="preconnect" href="{{ image_cdn }}" crossorigin>
+{% endif %}
+{% include '_defer_brand_fonts.html' %}
+</head>
+<body class="app-shell dev-page">
+<div class="bg-pattern" aria-hidden="true"></div>
+<header class="app-header">
+  <div class="header-inner">
+    <a class="header-brand" href="/">
+      <div class="brand-logo"><img alt="GGen Eternal Database" width="42" height="42" fetchpriority="high" decoding="async" src="{% if image_cdn %}{{ image_cdn }}/images/UI/IMG_Common_Logo_ETERNALBASE.webp{% else %}/static/images/UI/IMG_Common_Logo_ETERNALBASE.webp{% endif %}"></div>
+      <div class="brand-copy">
+        <div class="brand-title-row"><h1 class="brand-text"><span class="brand-word">GGEN</span> <span class="brand-word">ETERNAL</span> <span class="brand-word">DATABASE</span></h1></div>
+        <div class="brand-sub">SD Gundam G Generation</div>
+      </div>
+    </a>
+  </div>
+  <div class="nav-tabs-shell" id="navTabsShell">
+    <div class="nav-tabs" id="navTabs" aria-label="Section">
+      <a class="nav-tab" href="/c"><img class="nav-tab-icon" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_Tmb_PriorPilot_Icon.webp{% else %}/static/images/UI/UI_Common_Tmb_PriorPilot_Icon.webp{% endif %}" alt="" width="24" height="24" loading="lazy" decoding="async"><span class="nav-tab-label">Characters</span></a>
+      <a class="nav-tab" href="/u"><img class="nav-tab-icon" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_Icon_Bromide_MS.webp{% else %}/static/images/UI/UI_Common_Icon_Bromide_MS.webp{% endif %}" alt="" width="24" height="24" loading="lazy" decoding="async"><span class="nav-tab-label">Units</span></a>
+      <a class="nav-tab" href="/s"><img class="nav-tab-icon" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_Icon_Category_Supporter_Main.webp{% else %}/static/images/UI/UI_Common_Icon_Category_Supporter_Main.webp{% endif %}" alt="" width="24" height="24" loading="lazy" decoding="async"><span class="nav-tab-label">Supporters</span></a>
+      <span class="nav-tab active" id="navDevelopTab" aria-current="page"><img class="nav-tab-icon" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_BtnIcon_Map.webp{% else %}/static/images/UI/UI_Common_BtnIcon_Map.webp{% endif %}" alt="" width="24" height="24" loading="lazy" decoding="async"><span class="nav-tab-label">Develop</span></span>
+      <a class="nav-tab" href="/ip"><img class="nav-tab-icon" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_FooterIcon_Mypage_Nega.webp{% else %}/static/images/UI/UI_Common_FooterIcon_Mypage_Nega.webp{% endif %}" alt="" width="24" height="24" loading="lazy" decoding="async"><span class="nav-tab-label">Investment Priority</span></a>
+      <a class="nav-tab" href="/collections"><img class="nav-tab-icon" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_BtnIcon_Lock_posi.webp{% else %}/static/images/UI/UI_Common_BtnIcon_Lock_posi.webp{% endif %}" alt="" width="24" height="24" loading="lazy" decoding="async"><span class="nav-tab-label">Collections</span></a>
+      <a class="nav-tab" href="/tl"><img class="nav-tab-icon" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_FooterIcon_Gasha_Nega.webp{% else %}/static/images/UI/UI_Common_FooterIcon_Gasha_Nega.webp{% endif %}" alt="" width="24" height="24" loading="lazy" decoding="async"><span class="nav-tab-label">Unit Assembly</span></a>
+      <a class="nav-tab" href="/game-news"><img class="nav-tab-icon" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_MenuIcon_OfficialWebsite.webp{% else %}/static/images/UI/UI_Common_MenuIcon_OfficialWebsite.webp{% endif %}" alt="" width="24" height="24" loading="lazy" decoding="async"><span class="nav-tab-label">Game News</span></a>
+    </div>
+  </div>
+</header>
+{% include '_develop_panel.html' %}
+<script>
+window.__DEV_SERIES__={{ develop_series_id|default('4000')|tojson }};
+</script>
+<script src="{{ url_for('static', filename='js/develop.js') }}?v={{ app_js_version }}" defer></script>
+</body>
+</html>

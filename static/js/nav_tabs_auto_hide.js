@@ -100,6 +100,7 @@
     /* /tm and /dm use their own board-scroll chrome hide */
     if (isMatrixBoardPage()) return;
     if (keepNavStatic()) collapsed = false;
+    /* /develop: hide tabs on scroll-down (board is page-scrolled; no snap lock). */
     if (overlayUnlockFreeze) return;
     var want = !!collapsed;
     var already = document.body.classList.contains('nav-tabs-collapsed') === want;

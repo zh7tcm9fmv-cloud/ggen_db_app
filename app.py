@@ -11,7 +11,7 @@ try:
 except ImportError:
     pass
 
-from flask import Flask, render_template, jsonify, request, make_response, session, redirect, Response, stream_with_context, abort, send_from_directory
+from flask import Flask, render_template, jsonify, request, make_response, session, redirect, Response, stream_with_context, abort, send_from_directory, send_file
 from werkzeug.exceptions import NotFound
 from werkzeug.middleware.proxy_fix import ProxyFix
 from pathlib import Path
@@ -1211,6 +1211,8 @@ def _app_js_bundle_version_tag():
         ('css', 'ggen_15.css'),
         ('css', 'dossier_film.css'),
         ('css', 'ggen_teko.css'),
+        ('css', 'develop.css'),
+        ('js', 'develop.js'),
         ('css', 'tag_matrix.css'),
         ('css', 'tag_matrix_15.css'),
         ('css', 'debuff_matrix.css'),
@@ -1841,13 +1843,15 @@ def static_game_images_cdn_offload(filename):
     # freshly updated WebPs) over stale copies under app/static/images.
     name = (filename or '').replace('\\', '/').lstrip('/')
     if name and '..' not in name.split('/'):
+        parts = name.split('/')
         if _LOCAL_GGEN_IMAGES_ROOT:
-            local_path = os.path.join(_LOCAL_GGEN_IMAGES_ROOT, *name.split('/'))
+            local_path = os.path.join(_LOCAL_GGEN_IMAGES_ROOT, *parts)
             if os.path.isfile(local_path):
-                return send_from_directory(_LOCAL_GGEN_IMAGES_ROOT, filename)
-        app_path = os.path.join(STATIC_ROOT, 'images', *name.split('/'))
+                # Absolute path — nested Item/… works reliably on Windows.
+                return send_file(local_path)
+        app_path = os.path.join(STATIC_ROOT, 'images', *parts)
         if os.path.isfile(app_path):
-            return send_from_directory(os.path.join(STATIC_ROOT, 'images'), filename)
+            return send_from_directory(os.path.join(STATIC_ROOT, 'images'), name)
     return send_from_directory(os.path.join(STATIC_ROOT, 'images'), filename)
 
 
@@ -25336,6 +25340,704 @@ def _debuff_matrix_label(key, lc):
     return fb.get(lc) or fb.get('EN') or key
 
 
+_DEV_TREE_LOCK = threading.Lock()
+_DEV_TREE_INDEX = None
+_DEV_PAGE_TITLE = {
+    'EN': 'Development Diagram',
+    'JA': '開発経路図',
+    'TW': '開發路線圖',
+    'HK': '開發路線圖',
+}
+
+
+def _dev_tree_rows(name):
+    path = os.path.join(BASE_DIR, name)
+    data = load_json(path)
+    if data is None:
+        data = load_json(os.path.join(app_dir, 'data', 'EN', 'master', name))
+    return extract_data_list(data or [])
+
+
+def _dev_tree_index():
+    """Lazy indexes for Development Diagram (pieces, routes, materials)."""
+    global _DEV_TREE_INDEX
+    if _DEV_TREE_INDEX is not None:
+        return _DEV_TREE_INDEX
+    with _DEV_TREE_LOCK:
+        if _DEV_TREE_INDEX is not None:
+            return _DEV_TREE_INDEX
+        series_by_id = {}
+        for row in _dev_tree_rows('m_unit_development_series.json'):
+            if not isinstance(row, dict):
+                continue
+            sid = normalize_id(row.get('Id') or row.get('id'))
+            if sid != '0':
+                series_by_id[sid] = row
+        diagrams_by_series = {}
+        for row in extract_data_list(unit_development_diagram_data or []):
+            if not isinstance(row, dict):
+                continue
+            did = normalize_id(row.get('Id') or row.get('id'))
+            sid = normalize_id(row.get('UnitDevelopmentSeriesId') or row.get('unitDevelopmentSeriesId'))
+            if did == '0' or sid == '0':
+                continue
+            diagrams_by_series.setdefault(sid, []).append(row)
+        for sid, rows in diagrams_by_series.items():
+            rows.sort(key=lambda r: safe_int(r.get('SortOrder') or r.get('sortOrder'), 0))
+        pieces_by_diagram = {}
+        piece_by_id = {}
+        for row in _dev_tree_rows('m_unit_development_piece.json'):
+            if not isinstance(row, dict):
+                continue
+            pid = normalize_id(row.get('Id') or row.get('id'))
+            did = normalize_id(row.get('UnitDevelopmentDiagramId') or row.get('unitDevelopmentDiagramId'))
+            if pid == '0' or did == '0':
+                continue
+            piece_by_id[pid] = row
+            pieces_by_diagram.setdefault(did, []).append(row)
+        rules_by_route = {}
+        for row in _dev_tree_rows('m_unit_development_route_rule.json'):
+            if not isinstance(row, dict):
+                continue
+            rid = normalize_id(row.get('UnitDevelopmentRouteId') or row.get('unitDevelopmentRouteId'))
+            if rid == '0':
+                continue
+            rules_by_route.setdefault(rid, []).append(row)
+        for rid, rows in rules_by_route.items():
+            rows.sort(key=lambda r: safe_int(r.get('SortOrder') or r.get('sortOrder'), 0))
+        routes_by_start = {}
+        for row in _dev_tree_rows('m_unit_development_route.json'):
+            if not isinstance(row, dict):
+                continue
+            start = normalize_id(row.get('StartUnitDevelopmentPieceId') or row.get('startUnitDevelopmentPieceId'))
+            if start == '0':
+                continue
+            routes_by_start.setdefault(start, []).append(row)
+        mats_by_set = {}
+        for row in _dev_tree_rows('m_unit_development_material.json'):
+            if not isinstance(row, dict):
+                continue
+            sid = normalize_id(row.get('DevelopMaterialSetId') or row.get('developMaterialSetId'))
+            iid = normalize_id(row.get('ItemId') or row.get('itemId'))
+            if sid == '0' or iid == '0':
+                continue
+            mats_by_set.setdefault(sid, []).append({
+                'item_id': iid,
+                'count': safe_int(row.get('ConsumeCount') or row.get('consumeCount'), 0),
+            })
+        # m_unit.DevelopCapital + DevelopMaterialSetId (Capital = in-game currency).
+        economy_by_unit = {}
+        for row in extract_data_list(unit_master_data or []):
+            if not isinstance(row, dict):
+                continue
+            uid = normalize_id(row.get('Id') or row.get('id'))
+            if uid == '0':
+                continue
+            economy_by_unit[uid] = {
+                'capital': safe_int(row.get('DevelopCapital') or row.get('developCapital'), 0),
+                'mat_set': normalize_id(row.get('DevelopMaterialSetId') or row.get('developMaterialSetId') or '0'),
+            }
+        _DEV_TREE_INDEX = {
+            'series_by_id': series_by_id,
+            'diagrams_by_series': diagrams_by_series,
+            'pieces_by_diagram': pieces_by_diagram,
+            'piece_by_id': piece_by_id,
+            'rules_by_route': rules_by_route,
+            'routes_by_start': routes_by_start,
+            'mats_by_set': mats_by_set,
+            'economy_by_unit': economy_by_unit,
+        }
+        return _DEV_TREE_INDEX
+
+
+_DEV_CAPITAL_LABEL = {
+    'EN': 'Capital',
+    'JA': 'CAPITAL',
+    'TW': 'CAPITAL',
+    'HK': 'CAPITAL',
+}
+# Section title — EN help uses "Materials"; user-facing "Required Materials".
+# JA/TW/HK from develop help subsections (素材アイテム / 材料道具).
+_DEV_MATS_TITLE = {
+    'EN': 'Required Materials',
+    'JA': '素材アイテム',
+    'TW': '材料道具',
+    'HK': '材料道具',
+}
+# Client feature UnitBulkDevelopment — title string not in LANG pack; EN feature name.
+_DEV_BULK_TITLE = {
+    'EN': 'Bulk Development',
+    'JA': 'Bulk Development',
+    'TW': 'Bulk Development',
+    'HK': 'Bulk Development',
+}
+_DEV_BULK_NOTE = {
+    'EN': 'Path total',
+    'JA': 'Path total',
+    'TW': 'Path total',
+    'HK': 'Path total',
+}
+
+
+def _dev_item_icon(item_id):
+    """Development / journal item icon via m_item.ResourceId (e.g. devm_1018)."""
+    rid = _resolve_item_icon_resource_id(item_id)
+    return _game_item_icon_url(rid) if rid else ''
+
+
+_OGK_BOARD_SCALE_CACHE = {}
+
+
+def _ogk_local_disk_path(static_path):
+    """Resolve /static/images/ogk/… to app static or local ggen_db_images checkout."""
+    if not static_path or not isinstance(static_path, str):
+        return ''
+    if not static_path.startswith('/static/images/'):
+        return ''
+    rel = static_path[len('/static/'):].replace('\\', '/').lstrip('/')
+    parts = rel.split('/')
+    app_path = os.path.join(STATIC_ROOT, *parts)
+    if os.path.isfile(app_path):
+        return app_path
+    if _LOCAL_GGEN_IMAGES_ROOT and parts and parts[0] == 'images':
+        local = os.path.join(_LOCAL_GGEN_IMAGES_ROOT, *parts[1:])
+        if os.path.isfile(local):
+            return local
+    return ''
+
+
+def _ogk_board_scale(static_path):
+    """Normalize develop-board ogk size across tight-crop vs padded 512 canvases.
+
+    object-fit:contain in a fixed box makes full-bleed Leo ogk look huge and
+    padded 512 Geminass look tiny. Scale so content ≈ target fill of the box.
+    """
+    key = str(static_path or '')
+    if key in _OGK_BOARD_SCALE_CACHE:
+        return _OGK_BOARD_SCALE_CACHE[key]
+    scale = 1.0
+    disk = _ogk_local_disk_path(key)
+    if disk:
+        try:
+            from PIL import Image
+            with Image.open(disk) as im:
+                im = im.convert('RGBA')
+                w, h = im.size
+                bbox = im.split()[-1].getbbox()
+            if bbox and w > 0 and h > 0:
+                cw = max(1, bbox[2] - bbox[0])
+                ch = max(1, bbox[3] - bbox[1])
+                # Fraction of the fitted box the opaque content occupies.
+                fill = max(cw / float(w), ch / float(h))
+                target = 0.72
+                if fill > 0.05:
+                    scale = target / fill
+                scale = max(0.52, min(1.38, scale))
+        except Exception:
+            scale = 1.0
+    _OGK_BOARD_SCALE_CACHE[key] = round(scale, 3)
+    return _OGK_BOARD_SCALE_CACHE[key]
+
+
+def _dev_unit_card(uid, lc):
+    uid = normalize_id(uid)
+    ld = get_lang_data(lc)
+    info = (unit_info_map or {}).get(uid) or {}
+    known = bool(info)
+    lid = (ld.get('unit_id_map') or {}).get(uid, '')
+    name = str((ld.get('unit_text_map') or {}).get(lid, '') or '').strip() if lid else ''
+    if not name:
+        name = uid if known else ''
+    rarity_i = normalize_id(info.get('rarity') or '1')
+    role_i = normalize_id(info.get('role') or '0')
+    koma = _unit_koma_model_public_path(info.get('koma_resource_id') or '')
+    # Only keep ogk when the asset is actually servable — missing files must not
+    # fall through to a wrong/placeholder sprite on the develop board.
+    if koma and not (_image_path_servable(koma) or _static_images_path_on_disk(koma)):
+        koma = ''
+    img = game_image_public_url(koma) if koma else ''
+    ogk_scale = _ogk_board_scale(koma) if koma else 1.0
+    # Detail popup = Trait/thum list icon only — never ub_/portrait or map ogk.
+    rids = info.get('resource_ids') or []
+    thumb_rel = _find_trait_thum_list_asset(rids, uid)
+    if thumb_rel and not (
+        _image_path_servable(thumb_rel) or _static_images_path_on_disk(thumb_rel)
+    ):
+        thumb_rel = ''
+    thum = game_image_public_url(thumb_rel) if thumb_rel else ''
+    rar_icon = RARITY_ICON_MAP.get(rarity_i, '')
+    role_icon = ROLE_ICON_MAP.get(role_i, '')
+    is_ultimate = bool(info.get('is_ultimate'))
+    # ULT: …02 = stage 2 (final), …01 = stage 1; other suffixes = not a UR stage.
+    ur_stage = 0
+    if is_ultimate and rarity_i == '5':
+        if str(uid).endswith('02'):
+            ur_stage = 2
+        elif str(uid).endswith('01'):
+            ur_stage = 1
+    shell = uid in (unit_schedule_shell_ids or ())
+    unknown = (not known) or shell or (not img and not thum)
+    if unknown:
+        # Secret placeholder only — never ship a wrong ogk/thum for unknowns.
+        img = ''
+        thum = ''
+        name = ''
+        ogk_scale = 1.0
+    return {
+        'id': uid,
+        'name': name,
+        'rarity': RARITY_MAP.get(rarity_i, '') if known and not unknown else '',
+        'rarity_icon': game_image_public_url(rar_icon) if rar_icon and known and not unknown else '',
+        'role': resolve_role_label(role_i, lc) if known and not unknown and role_i != '0' else '',
+        'role_icon': game_image_public_url(role_icon) if role_icon and known and not unknown else '',
+        'image': img,
+        'ogk_scale': ogk_scale,
+        'thum': thum,
+        'href': f'/u/{uid}' if known and not unknown else '',
+        'is_ultimate': is_ultimate,
+        'ur_stage': ur_stage,
+        'unknown': unknown,
+    }
+
+
+def _dev_item_name(item_id, lc):
+    iid = normalize_id(item_id)
+    item = (item_info_map or {}).get(iid) or {}
+    nlid = normalize_id(item.get('name_lang_id'))
+    ld = get_lang_data(lc)
+    name = ''
+    if nlid != '0':
+        name = str((ld.get('item_text_map') or {}).get(nlid) or '').strip()
+    return name or iid
+
+
+def _dev_ui_asset(name):
+    """In-game Development UI under images/Development (CDN / local checkout)."""
+    rel = f'/static/images/Development/{name}'
+    return game_image_public_url(rel) or rel
+
+
+def _dev_bg_asset(folder, name):
+    """Board / pattern art under images/{folder} (CDN / local checkout)."""
+    rel = f'/static/images/{folder}/{name}'
+    return game_image_public_url(rel) or rel
+
+
+def _dev_ui_pack():
+    """Shared DevelopTree chrome (frames, pipes, nameplate, board BG)."""
+    rarities = ('N', 'R', 'SR', 'SSR', 'UR')
+    frames = {r: _dev_ui_asset(f'UI_DevelopTree_KomaFrame_{r}_Enable.webp') for r in rarities}
+    frames_blur = {r: _dev_ui_asset(f'UI_DevelopTree_KomaFrame_{r}_Enable_Blur.webp') for r in rarities}
+    frames_disable = {r: _dev_ui_asset(f'UI_DevelopTree_KomaFrame_{r}_Disable.webp') for r in rarities}
+    return {
+        # RareBoss story plate + DevelopTree pattern tiles (Dots / TreeBG)
+        'bg_base': _dev_bg_asset('Background', 'BG_Event_Story_RareBoss_Appear.webp'),
+        'bg_effect': _dev_ui_asset('UI_DevelopTree_BG_Effect.webp'),
+        'bg_light': _dev_ui_asset('UI_DevelopTree_BG_Light.webp'),
+        'bg_vignette': _dev_ui_asset('UI_DevelopTree_BG_Vignette.webp'),
+        'pt_treebg': _dev_ui_asset('PT_Develop_TreeBG.webp'),
+        'pt_dots': _dev_ui_asset('PT_Develop_Dots.webp'),
+        'text_bg': _dev_ui_asset('UI_Deverop_TextBG_Gradation.webp'),
+        'line': _dev_ui_asset('UI_DevelopTree_Line_Straight_Enable.webp'),
+        'arrow': _dev_ui_asset('UI_DevelopTree_Line_Arrow_Inable.webp'),
+        'route_arrow': _dev_ui_asset('UI_Deverop_Route_Arrow_Normal_Posi.webp'),
+        'route_line_fx': _dev_ui_asset('UI_Deverop_Route_Line_Normal_Posi_Effect.webp'),
+        'frames': frames,
+        'frames_blur': frames_blur,
+        'frames_disable': frames_disable,
+        'frame_none': _dev_ui_asset('UI_DevelopTree_KomaFrame_None.webp'),
+        'frame_core': _dev_ui_asset('UI_DevelopTree_KomaFrame_Core.webp'),
+        'ring_anim': _dev_ui_asset('UI_DevelopTree_KomaFrame_Ring_Anim.webp'),
+        'ring_anim_blur': _dev_ui_asset('UI_DevelopTree_KomaFrame_Ring_Anim_Blur.webp'),
+        'ring_anim_glow': _dev_ui_asset('UI_DevelopTree_KomaFrame_Ring_Anim_Glow.webp'),
+        'ring_anim_ur': _dev_ui_asset('UI_DevelopTree_KomaFrame_Ring_Anim_Ur.webp'),
+        'ring_anim_blur_ur': _dev_ui_asset('UI_DevelopTree_KomaFrame_Ring_Anim_Blur_Ur.webp'),
+        'ring_anim_glow_ur': _dev_ui_asset('UI_DevelopTree_KomaFrame_Ring_Anim_Glow_Ur.webp'),
+        'ssr_ring': _dev_ui_asset('UI_DevelopTree_KomaFrame_SSR_Enable_ring.webp'),
+        'ur_ring': _dev_ui_asset('UI_DevelopTree_KomaFrame_UR_Enable_ring.webp'),
+        'secret_icon': _dev_ui_asset('UI_DevelopTree_Icon_Secret_Reward.webp'),
+        # Diagram picker tab plates (1st–4th + ULT)
+        'tab_banners': [
+            _dev_development_asset('ui_developtree_tabbanner_01.webp'),
+            _dev_development_asset('ui_developtree_tabbanner_02.webp'),
+            _dev_development_asset('ui_developtree_tabbanner_03.webp'),
+            _dev_development_asset('ui_developtree_tabbanner_04.webp'),
+        ],
+        'tab_banner_ult': _dev_development_asset('ui_developtree_tabbanner_05.webp'),
+    }
+
+
+def _dev_series_payload(series_id, lc):
+    idx = _dev_tree_index()
+    sid = normalize_id(series_id)
+    series_row = (idx['series_by_id'] or {}).get(sid)
+    if not series_row:
+        return None
+    ld = get_lang_data(lc)
+    series_name = _dev_series_display_name(sid, lc, series_row)
+    logo = find_series_icon(sid) or ''
+    if logo:
+        logo = game_image_public_url(logo)
+    ui = _dev_ui_pack()
+    # Official currency name: EN Capital · JA/TW/HK CAPITAL (m_help / mission icons).
+    ui['capital_icon'] = game_image_public_url('/static/images/UI/UI_Common_Icon_Capital_S.webp')
+    ui['capital_label'] = _DEV_CAPITAL_LABEL.get(lc) or _DEV_CAPITAL_LABEL['EN']
+    ui['materials_title'] = _DEV_MATS_TITLE.get(lc) or _DEV_MATS_TITLE['EN']
+    ui['bulk_title'] = _DEV_BULK_TITLE.get(lc) or _DEV_BULK_TITLE['EN']
+    ui['bulk_note'] = _DEV_BULK_NOTE.get(lc) or _DEV_BULK_NOTE['EN']
+    ui['bulk_note_single'] = _DEV_BULK_NOTE.get(lc) or _DEV_BULK_NOTE['EN']
+    capital_icon = ui['capital_icon']
+    capital_label = ui['capital_label']
+    diagrams = []
+    for drow in (idx['diagrams_by_series'] or {}).get(sid) or []:
+        did = normalize_id(drow.get('Id') or drow.get('id'))
+        pieces_out = []
+        piece_ids = set()
+        piece_by_id = {}
+        parents_of = {}
+        for prow in (idx['pieces_by_diagram'] or {}).get(did) or []:
+            pid = normalize_id(prow.get('Id') or prow.get('id'))
+            piece_ids.add(pid)
+            uid = normalize_id(prow.get('UnitId') or prow.get('unitId'))
+            card = _dev_unit_card(uid, lc)
+            eco = (idx.get('economy_by_unit') or {}).get(uid) or {}
+            mat_set = normalize_id(eco.get('mat_set') or '0')
+            if mat_set == '0':
+                mat_set = uid
+            capital = safe_int(eco.get('capital'), 0)
+            mats = []
+            # Capital first (m_unit.DevelopCapital) — always part of required materials.
+            if capital > 0:
+                mats.append({
+                    'item_id': 'capital',
+                    'name': capital_label,
+                    'count': capital,
+                    'is_capital': True,
+                    'icon': capital_icon,
+                })
+            for m in (idx.get('mats_by_set') or {}).get(mat_set) or []:
+                iid = m['item_id']
+                mats.append({
+                    'item_id': iid,
+                    'name': _dev_item_name(iid, lc),
+                    'count': m['count'],
+                    'icon': _dev_item_icon(iid),
+                })
+            piece = {
+                'id': pid,
+                'row': safe_int(prow.get('RowNumber') or prow.get('rowNumber'), 0),
+                'col': safe_int(prow.get('ColNumber') or prow.get('colNumber'), 0),
+                'level': safe_int(prow.get('InitialLevel') or prow.get('initialLevel'), 0),
+                'multi': bool(prow.get('IsMultipleUnitDevelopment') or prow.get('isMultipleUnitDevelopment')),
+                'before_id': normalize_id(prow.get('BeforeUnitDevelopmentPieceId') or prow.get('beforeUnitDevelopmentPieceId')),
+                'unit': card,
+                'capital': capital,
+                'materials': mats,
+                'bulk_materials': [],
+            }
+            pieces_out.append(piece)
+            piece_by_id[pid] = piece
+        routes_out = []
+        for pid in piece_ids:
+            for rrow in (idx['routes_by_start'] or {}).get(pid) or []:
+                end = normalize_id(rrow.get('EndUnitDevelopmentPieceId') or rrow.get('endUnitDevelopmentPieceId'))
+                if end not in piece_ids:
+                    continue
+                rid = normalize_id(rrow.get('Id') or rrow.get('id'))
+                cells = []
+                for rule in (idx['rules_by_route'] or {}).get(rid) or []:
+                    cells.append({
+                        'row': safe_int(rule.get('RowNumber') or rule.get('rowNumber'), 0),
+                        'col': safe_int(rule.get('ColNumber') or rule.get('colNumber'), 0),
+                    })
+                routes_out.append({
+                    'id': rid,
+                    'start_id': pid,
+                    'end_id': end,
+                    'required_level': safe_int(rrow.get('RequiredLevel') or rrow.get('requiredLevel'), 0),
+                    'cells': cells,
+                })
+                parents_of.setdefault(end, []).append(pid)
+
+        def _mat_cost(piece):
+            total = {}
+            for m in piece.get('materials') or []:
+                mid = str(m.get('item_id') or '')
+                if not mid:
+                    continue
+                total[mid] = total.get(mid, 0) + safe_int(m.get('count'), 0)
+            return total
+
+        def _path_cost(end_pid, prefer_parents):
+            """Sum materials along one lineage (self + recursive parents)."""
+            seen = set()
+            stack = [end_pid]
+            acc = {}
+            while stack:
+                cur = stack.pop()
+                if cur in seen or cur not in piece_by_id:
+                    continue
+                seen.add(cur)
+                for mid, cnt in _mat_cost(piece_by_id[cur]).items():
+                    acc[mid] = acc.get(mid, 0) + cnt
+                pars = parents_of.get(cur) or []
+                if not pars:
+                    continue
+                child = piece_by_id[cur]
+                if child.get('multi'):
+                    stack.extend(pars)
+                else:
+                    # Alternate parents: follow preferred parent when set, else first.
+                    pick = prefer_parents.get(cur) if prefer_parents else None
+                    stack.append(pick if pick in pars else pars[0])
+            return acc, seen
+
+        def _bulk_for(piece):
+            """Client UnitBulkDevelopment totals for one develop path to this piece."""
+            pid = piece['id']
+            pars = parents_of.get(pid) or []
+            if piece.get('multi') or len(pars) <= 1:
+                cost, seen = _path_cost(pid, None)
+            else:
+                # Alternate: cheapest total Capital+items among parent lineages.
+                best = None
+                for p in pars:
+                    cost, seen = _path_cost(pid, {pid: p})
+                    score = sum(cost.values())
+                    if best is None or score < best[0]:
+                        best = (score, cost, seen)
+                cost = best[1] if best else {}
+                seen = best[2] if best else set()
+            out = []
+            # Capital first, then other items with icons/names from this piece's mats or resolve.
+            name_icon = {}
+            for m in piece.get('materials') or []:
+                name_icon[str(m.get('item_id'))] = m
+            # Also pull names/icons from ancestors on the chosen path
+            for apid in seen:
+                ap = piece_by_id.get(apid) or {}
+                for m in ap.get('materials') or []:
+                    mid = str(m.get('item_id'))
+                    if mid not in name_icon:
+                        name_icon[mid] = m
+            if 'capital' in cost and cost['capital'] > 0:
+                out.append({
+                    'item_id': 'capital',
+                    'name': capital_label,
+                    'count': cost['capital'],
+                    'is_capital': True,
+                    'icon': capital_icon,
+                })
+            for mid, cnt in sorted(cost.items(), key=lambda kv: (0 if kv[0] == 'capital' else 1, kv[0])):
+                if mid == 'capital' or cnt <= 0:
+                    continue
+                src = name_icon.get(mid) or {}
+                icon = src.get('icon') or _dev_item_icon(mid)
+                out.append({
+                    'item_id': mid,
+                    'name': src.get('name') or _dev_item_name(mid, lc),
+                    'count': cnt,
+                    'icon': icon,
+                })
+            return out, len(seen)
+
+        for piece in pieces_out:
+            bulk, steps = _bulk_for(piece)
+            piece['bulk_materials'] = bulk
+            piece['bulk_steps'] = steps
+
+        diagrams.append({
+            'id': did,
+            'name': _resolve_development_diagram_name(did, lc) or did,
+            'sort': safe_int(drow.get('SortOrder') or drow.get('sortOrder'), 0),
+            'ultimate': bool(drow.get('IsUltimateDevelopmentDiagram') or drow.get('isUltimateDevelopmentDiagram')),
+            'pieces': pieces_out,
+            'routes': routes_out,
+        })
+    sched = safe_int(
+        (series_row or {}).get('ScheduleId') or (series_row or {}).get('scheduleId'),
+        0,
+    )
+    return {
+        'series_id': sid,
+        'series_name': series_name or sid,
+        'logo': logo,
+        # ScheduleId marks limited story-event develop trees (banner + no faction tabs).
+        'story_event': sched > 0,
+        'ui': ui,
+        'koma_frame': (ui.get('frames') or {}).get('UR') or '',
+        'title': _DEV_PAGE_TITLE.get(lc) or _DEV_PAGE_TITLE['EN'],
+        'diagrams': diagrams,
+    }
+
+
+def _dev_series_pad(sid):
+    """Zero-pad series id for Development banner filenames (10 → 0010)."""
+    try:
+        return f'{int(normalize_id(sid)):04d}'
+    except (TypeError, ValueError):
+        return ''
+
+
+def _dev_development_asset(filename):
+    """Public URL for images/Development/{filename} when on disk or in image_index."""
+    if not filename:
+        return ''
+    rel = f'/static/images/Development/{filename}'
+    if _static_images_path_on_disk(rel):
+        return game_image_public_url(rel) or rel
+    files = IMAGE_INDEX.get('images/Development') or []
+    if filename in files:
+        return game_image_public_url(rel) or rel
+    return ''
+
+
+def _dev_series_display_name(sid, lc, series_row=None):
+    """Resolve develop series title from LANG (m_series, then scenario stage series).
+
+    Some develop trees (e.g. 320) only exist under ``m_scenario_stage_series`` LANG
+    (``130200000000000320`` → Thunderbolt December Sky), not short ``m_series`` ids.
+    """
+    sid = normalize_id(sid)
+    if not sid or sid == '0':
+        return ''
+    ld = get_lang_data(lc) or {}
+    snm = ld.get('series_name_map') or {}
+    name = str(snm.get(sid) or '').strip()
+    if not name:
+        for k, v in snm.items():
+            if str(k).endswith(sid) and str(v or '').strip():
+                name = str(v).strip()
+                break
+    if not name:
+        sssm = ld.get('scenario_stage_series_text_map') or {}
+        lang_id = normalize_id(f'130200000000{sid.zfill(6)}')
+        name = str(sssm.get(lang_id) or '').strip()
+        if not name:
+            for k, v in sssm.items():
+                ks = str(k)
+                if ks.endswith(sid.zfill(6)) or ks.endswith(sid):
+                    name = str(v or '').strip()
+                    if name:
+                        break
+    if not name and series_row:
+        for key in ('SeriesId', 'seriesId', 'ScenarioStageSeriesId', 'scenarioStageSeriesId'):
+            alt = normalize_id(series_row.get(key))
+            if alt and alt != '0' and alt != sid:
+                alt_name = _dev_series_display_name(alt, lc, None)
+                if alt_name:
+                    return alt_name
+    return name
+
+
+def _dev_series_banner(sid):
+    """Series picker art: prefer story-event full banner when present, else composite plate."""
+    pad = _dev_series_pad(sid)
+    logo = find_series_icon(sid) or ''
+    if logo:
+        logo = game_image_public_url(logo)
+    base = _dev_development_asset('UI_Develop_ListImage_Series_Base.webp')
+    unit_art = _dev_development_asset(f'development_banner_c_{pad}.webp') if pad else ''
+    story = _dev_development_asset(f'story_event_development_banner_c_{pad}.webp') if pad else ''
+    # Story-event title cards (full plate) win when the asset exists.
+    if story:
+        return {
+            'kind': 'story',
+            'banner': story,
+            'base': '',
+            'unit_art': '',
+            'logo': logo,
+        }
+    if base and unit_art:
+        return {
+            'kind': 'composite',
+            'banner': '',
+            'base': base,
+            'unit_art': unit_art,
+            'logo': logo,
+        }
+    return {
+        'kind': 'logo' if logo and not base else ('composite' if base else 'logo'),
+        'banner': '',
+        'base': base,
+        'unit_art': '',
+        'logo': logo,
+    }
+
+
+def _dev_series_list(lc):
+    idx = _dev_tree_index()
+    out = []
+    for sid, row in (idx['series_by_id'] or {}).items():
+        name = _dev_series_display_name(sid, lc, row)
+        n_diag = len((idx['diagrams_by_series'] or {}).get(sid) or [])
+        if n_diag <= 0:
+            continue
+        banner = _dev_series_banner(sid)
+        sched = safe_int(row.get('ScheduleId') or row.get('scheduleId'), 0)
+        out.append({
+            'id': sid,
+            'name': name or sid,
+            'diagrams': n_diag,
+            'visible': bool(row.get('IsVisibleTop') if row.get('IsVisibleTop') is not None else row.get('isVisibleTop')),
+            'story_event': sched > 0,
+            'banner_kind': banner.get('kind') or 'logo',
+            'banner': banner.get('banner') or '',
+            'banner_base': banner.get('base') or '',
+            'banner_unit': banner.get('unit_art') or '',
+            'logo': banner.get('logo') or '',
+        })
+    out.sort(key=lambda r: safe_int(r['id'], 0))
+    return out
+
+
+def _dev_lang():
+    lang = (request.args.get('lang') or 'EN').strip().upper()
+    if lang == 'JP':
+        lang = 'JA'
+    if lang not in ('EN', 'JA', 'TW', 'HK'):
+        lang = 'EN'
+    return lang
+
+
+@app.route('/develop')
+@app.route('/develop/')
+@app.route('/develop/<series_id>')
+def develop_page(series_id=None):
+    """Development Diagram — SPA tab (same shell as /c /u /s)."""
+    return _serve_index()
+
+
+@app.route('/api/develop/series')
+def api_develop_series():
+    lc = _dev_lang()
+    payload = {'lang': lc, 'title': _DEV_PAGE_TITLE.get(lc) or _DEV_PAGE_TITLE['EN'], 'series': _dev_series_list(lc)}
+    return jsonify_cacheable(
+        payload,
+        f'dev_series_{lc}_banners3',
+        public=True,
+        max_age=3600,
+        convert_images=True,
+    )
+
+
+@app.route('/api/develop/<series_id>')
+def api_develop_series_map(series_id):
+    lc = _dev_lang()
+    sid = normalize_id(series_id)
+    payload = _dev_series_payload(sid, lc)
+    if not payload:
+        return jsonify({'error': 'series_not_found', 'series_id': sid}), 404
+    payload['lang'] = lc
+    return jsonify_cacheable(
+        payload,
+        f'dev_map_{sid}_{lc}_ui19',
+        public=True,
+        max_age=3600,
+        convert_images=True,
+    )
+
+
 @app.route('/dm')
 @app.route('/dm/')
 @app.route('/debuff-matrix')
@@ -41317,6 +42019,7 @@ def get_unit(unit_id):
 # Client history short-paths (must stay in sync with parseBrowseShortPath in static/js/app.js).
 _SPA_TAB_PATHS = frozenset({
     'c', 'u', 's', 'new', 'tl', 'banners', 'st', 'esim', 'ml', 'mls', 'estscore', 'cal', 'tb', 'op', 'pt', 'rk', 'msy', 'ip',
+    'develop',
     'gacha-sim',
     'roadmap',
     # Stage category deep-links (Stages tab sources)
@@ -41324,6 +42027,7 @@ _SPA_TAB_PATHS = frozenset({
     'fea', 'fierce-enemy-assault',
 })
 _SPA_DETAIL_PREFIXES = frozenset({'u', 'c', 's', 'op', 'pt', 'es', 'item'})
+_SPA_DEVELOP_SERIES_RE = re.compile(r'^\d{1,10}$')
 # Entity detail ids are numeric MasterData ids. Reject glued CJK/junk
 # (e.g. /u/1017000510有這台最優先派) so we 404/301 instead of emitting a non-ASCII Link header
 # that crawlers echo back and Gunicorn rejects as "Invalid HTTP Header".
@@ -41359,6 +42063,8 @@ def _is_spa_client_path(path):
     if len(parts) == 2 and parts[0].lower() == 'gacha-sim' and parts[1]:
         # Pool ids are numeric / alphanumeric tokens — keep ASCII-only.
         return bool(re.fullmatch(r'[A-Za-z0-9_-]{1,64}', parts[1] or ''))
+    if len(parts) == 2 and parts[0].lower() == 'develop':
+        return bool(_SPA_DEVELOP_SERIES_RE.fullmatch(parts[1] or ''))
     if len(parts) == 2 and parts[0].lower() in _SPA_DETAIL_PREFIXES:
         return bool(_SPA_DETAIL_ID_RE.fullmatch(parts[1] or ''))
     return False
@@ -41753,6 +42459,7 @@ _SEO_PAGE_PATHS = (
     '/', '/ip', '/collections', '/game-news', '/tm', '/dm', '/tracking', '/about', '/feedback', '/privacy-policy',
     '/c', '/u', '/s', '/st', '/gtower', '/challenge', '/go', '/special', '/collab',
     '/cal', '/tb', '/tl', '/ml', '/estscore', '/rk', '/op', '/new', '/esim', '/gacha-sim',
+    '/develop',
 )
 
 

@@ -302,6 +302,7 @@
 <button class="nav-tab active" data-tab="characters" id="navCharTab" onclick="switchTab('characters')"><img class="nav-tab-icon" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_Tmb_PriorPilot_Icon.webp{% else %}/static/images/UI/UI_Common_Tmb_PriorPilot_Icon.webp{% endif %}" alt="" width="24" height="24" loading="lazy" decoding="async"><span class="nav-tab-label">Characters</span></button>
 <button class="nav-tab" data-tab="units" id="navUnitTab" onclick="switchTab('units')"><img class="nav-tab-icon" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_Icon_Bromide_MS.webp{% else %}/static/images/UI/UI_Common_Icon_Bromide_MS.webp{% endif %}" alt="" width="24" height="24" loading="lazy" decoding="async"><span class="nav-tab-label">Units</span></button>
 <button class="nav-tab" data-tab="supporters" id="navSuppTab" onclick="switchTab('supporters')"><img class="nav-tab-icon" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_Icon_Category_Supporter_Main.webp{% else %}/static/images/UI/UI_Common_Icon_Category_Supporter_Main.webp{% endif %}" alt="" width="24" height="24" loading="lazy" decoding="async"><span class="nav-tab-label">Supporters</span></button>
+<a class="nav-tab" href="/develop" data-tab="develop" id="navDevelopTab" role="tab" onclick="event.preventDefault();switchTab('develop')"><img class="nav-tab-icon" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_BtnIcon_Map.webp{% else %}/static/images/UI/UI_Common_BtnIcon_Map.webp{% endif %}" alt="" width="24" height="24" loading="lazy" decoding="async"><span class="nav-tab-label">Develop</span></a>
 <button class="nav-tab" data-tab="ranking" id="navRankingTab" onclick="switchTab('ranking')"><svg class="nav-tab-icon nav-tab-icon--svg" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="currentColor" d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path fill="currentColor" d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path fill="currentColor" d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M4 20h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span id="navRankingTabLabel" class="nav-tab-label"></span></button>
 <button class="nav-tab" data-tab="modifications" id="navModTab" onclick="switchTab('modifications')"><img class="nav-tab-icon" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_MenuIcon_Config.webp{% else %}/static/images/UI/UI_Common_MenuIcon_Config.webp{% endif %}" alt="" width="24" height="24" loading="lazy" decoding="async"><span class="nav-tab-label">Modifications</span></button>
 <button class="nav-tab" data-tab="stages" id="navStageTab" onclick="switchTab('stages')"><img class="nav-tab-icon" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_FooterIcon_Stage_Nega.webp{% else %}/static/images/UI/UI_Common_FooterIcon_Stage_Nega.webp{% endif %}" alt="" width="24" height="24" loading="lazy" decoding="async"><span class="nav-tab-label">Stages</span></button>
@@ -621,6 +622,7 @@
   {% with trk_embedded=true %}{% include '_sales_tracking_panel.html' %}{% endwith %}
 </div>
 <div class="tab-panel" id="panel-investment_priority">{% with spi_embedded=true %}{% include '_sp_investment_panel.html' %}{% endwith %}</div>
+<div class="tab-panel" id="panel-develop">{% include '_develop_panel.html' %}</div>
 </main>
 <footer class="site-footer-links" role="contentinfo">
 <section id="kofiSupporterWall" class="kofi-supporter-wall" hidden aria-hidden="true" aria-label="Supporter wall"></section>
@@ -809,6 +811,7 @@ window.__GGEN_LAZY__=(function(){
     'master_league': url_for('static', filename='css/master_league.css'),
     'craft_ui': url_for('static', filename='css/craft_ui.css'),
     'sp_investment': url_for('static', filename='css/sp_investment.css'),
+    'develop': url_for('static', filename='css/develop.css'),
     'gacha_sim': url_for('static', filename='css/gacha_sim.css'),
     'ml_sim': url_for('static', filename='css/ml_sim.css'),
     'sales_tracking': url_for('static', filename='css/sales_tracking.css')
@@ -824,6 +827,7 @@ window.__GGEN_LAZY__=(function(){
     'sp_investment_i18n': url_for('static', filename='js/sp_investment_i18n.js'),
     'sp_investment_i18n_guide': url_for('static', filename='js/sp_investment_i18n_guide.js'),
     'sp_investment': url_for('static', filename='js/sp_investment.js'),
+    'develop': url_for('static', filename='js/develop.js'),
     'gacha_sim': url_for('static', filename='js/' + (gacha_sim_js_bundle or 'gacha_sim.js')),
     'ml_sim_rules': url_for('static', filename='js/' + (ml_sim_rules_js_bundle or 'ml_sim_rules.js')),
     'ml_sim': url_for('static', filename='js/' + (ml_sim_js_bundle or 'ml_sim.js')),
@@ -895,6 +899,15 @@ window.__GGEN_LAZY__=(function(){
       loadJs('sp_investment_i18n_guide'),
       loadJs('sp_investment')
     ]).then(function(){return window.GgenSpInvestment||null});
+  }
+  function ensureDevelop(){
+    /* Bump when develop.css/js change so Simple Browser / long-cache cannot keep a stale lazy load. */
+    var devBump=String(v)+'-devfix34';
+    if(window.GgenDevelop&&window.GgenDevelop._assetBump===devBump)return Promise.resolve(window.GgenDevelop);
+    return Promise.all([loadCss('develop', devBump), loadJs('develop', devBump)]).then(function(){
+      if(window.GgenDevelop)window.GgenDevelop._assetBump=devBump;
+      return window.GgenDevelop||null;
+    });
   }
   function ensureGachaSim(){
     if(window.GgenGachaSim)return Promise.resolve(window.GgenGachaSim);
@@ -984,6 +997,7 @@ window.__GGEN_LAZY__=(function(){
     revealMlSkin:revealMlSkin,
     ensureCraftUiCss:ensureCraftUiCss,
     ensureSpInvestment:ensureSpInvestment,
+    ensureDevelop:ensureDevelop,
     ensureGachaSim:ensureGachaSim,
     ensureMlSim:ensureMlSim,
     markMlSkinReady:markMlSkinReady,
@@ -1009,6 +1023,9 @@ window.__GGEN_LAZY__=(function(){
     }else if(/^\/mls\/?$/i.test(p)&&typeof L.loadCss==='function'){
       L.loadCss('ml_sim');
       L.loadCss('master_league');
+    }
+    if(/^\/develop(\/|$)/i.test(p)&&typeof L.ensureDevelop==='function'){
+      L.ensureDevelop();
     }
   }catch(_){}
   /* Cached logos may finish before onload; still reveal mark + SIMULATOR text. */

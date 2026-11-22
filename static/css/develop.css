@@ -1,0 +1,1381 @@
+/* Development Diagram — in-game DevelopTree chrome */
+html.dev-page,body.dev-page{
+  height:100%;
+  min-height:100dvh;
+}
+body.dev-page{
+  display:flex;
+  flex-direction:column;
+}
+.dev-page .app-header{flex-shrink:0}
+.dev-main{
+  /* Dense MD grid: pieces sit on even cols/rows (~2 cells apart). */
+  --dev-cell:96px;
+  --dev-koma:168px; /* art box for large ogk; base is smaller inside */
+  --dev-base:0.52;  /* base diameter as fraction of koma box */
+  --dev-pipe:#b7dbff;
+  --dev-pipe-core:#f0f7ff;
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+  width:100%;
+  max-width:none;
+  margin:0;
+  padding:10px 12px 12px;
+  box-sizing:border-box;
+}
+.dev-toolbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:nowrap;
+  margin-bottom:8px;
+  flex-shrink:0;
+  min-width:0;
+}
+.dev-title-block{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-width:0;
+  flex:1 1 auto;
+  overflow:hidden;
+}
+.dev-logo{
+  width:72px;height:36px;object-fit:contain;
+  flex:0 0 auto;
+  border:1px solid rgba(0,212,255,.45);
+  border-radius:4px;
+  background:rgba(4,14,36,.72);
+  padding:2px 6px;
+  box-sizing:border-box;
+}
+.dev-kicker{
+  margin:0;
+  font-size:12px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--accent-cyan);
+  font-family:var(--font-hud,var(--font-body));
+}
+.dev-title-block h1{
+  margin:0;
+  font-size:15px;
+  font-weight:700;
+  color:var(--text-primary);
+  font-family:var(--font-body);
+  line-height:1.25;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.dev-series-pick{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  font-size:11px;
+  color:var(--text-muted);
+  min-width:0;
+  flex:0 1 380px;
+  max-width:min(380px,46vw);
+}
+.dev-series-btn{
+  appearance:none;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  width:100%;
+  min-width:0;
+  max-width:100%;
+  padding:3px 8px 3px 3px;
+  background:var(--bg-input,rgba(6,16,36,.92));
+  color:var(--text-primary);
+  border:1px solid var(--border-color);
+  border-radius:var(--radius-sm);
+  font:inherit;
+  cursor:pointer;
+  text-align:left;
+  transition:border-color var(--motion-dur-quick,120ms) var(--motion-ease-standard,ease),
+    box-shadow var(--motion-dur-quick,120ms) var(--motion-ease-standard,ease);
+}
+.dev-series-btn:hover,
+.dev-series-btn:focus-visible{
+  border-color:var(--accent-cyan);
+  box-shadow:0 0 0 2px var(--chrome-hover-ring,rgba(0,212,255,.35));
+  outline:none;
+}
+.dev-series-btn-art{
+  position:relative;
+  flex:0 0 auto;
+  width:88px;
+  height:44px; /* scaled plate — keep toolbar on one row */
+  border-radius:4px;
+  overflow:hidden;
+  border:1px solid rgba(0,212,255,.35);
+  background:rgba(4,14,36,.85);
+}
+.dev-series-btn-art .dev-series-banner.is-composite .dev-series-banner-base,
+.dev-series-btn-art .dev-series-banner.is-composite .dev-series-banner-unit{
+  object-fit:contain;
+  object-position:center center;
+}
+.dev-series-btn-meta{min-width:0;flex:1;display:flex;flex-direction:column;gap:2px}
+#devSeriesBtnName{
+  font-size:12px;
+  font-weight:600;
+  color:var(--text-primary);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  font-family:var(--font-body);
+}
+.dev-series-btn-count{font-size:10px;color:var(--text-muted)}
+.dev-series-btn-chevron{
+  flex:0 0 auto;
+  width:0;height:0;
+  border-left:5px solid transparent;
+  border-right:5px solid transparent;
+  border-top:6px solid var(--text-secondary);
+  opacity:.85;
+}
+/* Composite / story banner — all layers absolute inside a sized plate. */
+.dev-series-banner{
+  position:absolute;
+  inset:0;
+  display:block;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  background:#061428;
+  pointer-events:none;
+}
+.dev-series-banner > img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  max-width:none;
+  max-height:none;
+  object-fit:contain;
+  object-position:center center;
+  display:block;
+  pointer-events:none;
+}
+/* Story fallback only — same 320×160 plate; contain so art is not cropped */
+.dev-series-banner.is-story .dev-series-banner-full{
+  object-fit:contain;
+  object-position:center center;
+}
+.dev-series-banner.is-composite .dev-series-banner-base{z-index:0}
+/* development_banner_c_* is 320×160 — contain so the unit is never cropped */
+.dev-series-banner.is-composite .dev-series-banner-base,
+.dev-series-banner.is-composite .dev-series-banner-unit{
+  object-fit:contain;
+  object-position:center center;
+}
+.dev-series-banner.is-composite .dev-series-banner-unit{z-index:1}
+/*
+  Composite only — series logo (leave story banners alone).
+  Match Narrative (1440): vertically centered with breathing room.
+  Tall/square logos (e.g. 0010) fill a 72% box and clip — keep the slot shorter.
+*/
+.dev-series-banner.is-composite .dev-series-banner-logo{
+  z-index:2;
+  inset:auto;
+  /* Nudge inward so tall logos stay inside the banner plate */
+  left:11%;
+  top:50%;
+  width:34%;
+  height:48%;
+  max-width:34%;
+  max-height:48%;
+  transform:translateY(-50%);
+  object-fit:contain;
+  object-position:left center;
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,.55));
+}
+.dev-series-banner.is-story .dev-series-banner-logo{display:none}
+.dev-series-banner.is-logo-only .dev-series-banner-logo{
+  z-index:2;
+  inset:auto;
+  left:11%;
+  top:50%;
+  width:78%;
+  height:78%;
+  transform:translateY(-50%);
+  object-fit:contain;
+  object-position:center;
+  filter:none;
+}
+
+/* Series picker panel — anchored to TOP so search + grid stay put while typing */
+.dev-series-panel{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  pointer-events:none;
+  padding-top:max(8px,env(safe-area-inset-top,0px));
+}
+.dev-series-panel:not([hidden]){pointer-events:auto}
+.dev-series-panel-backdrop{
+  position:absolute;
+  inset:0;
+  background:rgba(0,8,20,.58);
+  opacity:0;
+  transition:opacity var(--motion-dur-modal,320ms) var(--motion-ease-standard,ease);
+}
+.dev-series-panel.is-open .dev-series-panel-backdrop{opacity:1}
+.dev-series-panel-card{
+  position:relative;
+  z-index:1;
+  width:min(1100px,100%);
+  /* Tall enough for the full series grid (~32 plates) — avoid inner scroll */
+  max-height:calc(100dvh - 12px);
+  height:calc(100dvh - 12px);
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  padding:14px 16px 16px;
+  background:rgba(8,16,34,.98);
+  border:1px solid rgba(0,212,255,.45);
+  border-radius:0 0 var(--radius-lg,12px) var(--radius-lg,12px);
+  box-shadow:0 12px 36px rgba(0,0,0,.5);
+  transform:translateY(-110%);
+  transition:transform var(--motion-dur-modal,320ms) var(--motion-ease-enter,cubic-bezier(0.05,0.7,0.1,1));
+  box-sizing:border-box;
+}
+.dev-series-panel.is-open .dev-series-panel-card{transform:translateY(0)}
+.dev-series-panel-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  flex-shrink:0;
+}
+.dev-series-panel-head h2{
+  margin:0;
+  font-size:16px;
+  color:var(--accent-cyan);
+  font-family:var(--font-hud,var(--font-body));
+  letter-spacing:.04em;
+  text-transform:uppercase;
+}
+.dev-series-panel-close,
+.dev-detail-close{
+  appearance:none;
+  border:1px solid rgba(0,212,255,.35);
+  background:rgba(0,212,255,.08);
+  color:var(--text-primary);
+  width:32px;height:32px;
+  border-radius:var(--radius-sm);
+  font-size:20px;
+  line-height:1;
+  cursor:pointer;
+  flex:0 0 auto;
+}
+.dev-series-panel-close:hover,
+.dev-detail-close:hover,
+.dev-series-panel-close:focus-visible,
+.dev-detail-close:focus-visible{
+  border-color:var(--accent-cyan);
+  outline:none;
+}
+.dev-series-search-wrap{display:block;flex-shrink:0}
+.dev-series-search{
+  width:100%;
+  box-sizing:border-box;
+  padding:8px 10px;
+  border:1px solid var(--border-color);
+  border-radius:var(--radius-sm);
+  background:var(--bg-input,rgba(4,14,36,.92));
+  color:var(--text-primary);
+  font:inherit;
+  font-size:14px;
+}
+.dev-series-search:focus-visible{
+  outline:none;
+  border-color:var(--accent-cyan);
+  box-shadow:0 0 0 2px var(--chrome-focus-ring,rgba(0,212,255,.35));
+}
+.dev-series-grid{
+  display:grid;
+  /* Even columns fill the panel — plates stay ≤168px centered in each cell */
+  grid-template-columns:repeat(auto-fill,minmax(152px,1fr));
+  justify-content:stretch;
+  justify-items:center;
+  gap:14px 16px;
+  overflow:visible;
+  padding:4px 2px 6px;
+  flex:1 1 auto;
+  min-height:0;
+  align-content:start;
+  align-items:start;
+  grid-auto-rows:auto;
+}
+/* Filtered / few hits — roomier columns so the panel doesn't look empty */
+.dev-series-grid.is-sparse{
+  grid-template-columns:repeat(auto-fill,minmax(168px,1fr));
+  gap:18px 20px;
+  align-content:start;
+}
+.dev-series-grid.is-filtered.is-sparse .dev-series-card{
+  max-width:188px;
+}
+.dev-series-card{
+  appearance:none;
+  border:1px solid rgba(0,212,255,.3);
+  background:#061428;
+  border-radius:var(--radius-sm);
+  padding:0;
+  margin:0;
+  cursor:pointer;
+  display:block;
+  position:relative;
+  z-index:0;
+  width:100%;
+  max-width:168px;
+  /* Match development_banner_c_* plate */
+  aspect-ratio:320 / 160;
+  height:auto;
+  max-height:none;
+  overflow:hidden;
+  isolation:isolate;
+  contain:layout paint;
+  text-align:left;
+  color:var(--text-primary);
+  transition:border-color var(--motion-dur-quick,120ms) var(--motion-ease-standard,ease),
+    box-shadow var(--motion-dur-quick,120ms) var(--motion-ease-standard,ease);
+}
+/* Composite plates fill the card; story-event banners keep full art (no crop). */
+.dev-series-card .dev-series-banner.is-composite .dev-series-banner-base,
+.dev-series-card .dev-series-banner.is-composite .dev-series-banner-unit{
+  object-fit:cover;
+  object-position:center center;
+}
+.dev-series-card .dev-series-banner.is-story .dev-series-banner-full{
+  object-fit:contain;
+  object-position:center center;
+  background:#061428;
+}
+@supports not (aspect-ratio:320 / 160){
+  .dev-series-card{
+    height:0;
+    padding-bottom:50%;
+  }
+}
+.dev-series-card:hover,
+.dev-series-card:focus-visible{
+  border-color:var(--accent-cyan);
+  box-shadow:0 0 0 2px var(--chrome-hover-ring,rgba(0,212,255,.35));
+  outline:none;
+  z-index:1;
+}
+.dev-series-card.is-active{
+  border-color:var(--accent-gold,#ffd700);
+  box-shadow:0 0 0 2px rgba(255,215,0,.28);
+  z-index:1;
+}
+.dev-series-card-art{
+  position:absolute;
+  inset:0;
+  display:block;
+  width:100%;
+  height:100%;
+  background:#061428;
+  overflow:hidden;
+}
+/*
+  SPA develop — natural document scroll (same feel as /c /tl).
+  Board grows with the diagram; the window is the only scroller.
+  No nested #devScroll, no document lock, no develop-driven header collapse
+  (that fought scrollHeight and felt broken).
+*/
+#panel-develop{
+  padding:0;
+  min-height:0;
+}
+#panel-develop.active{
+  display:block !important;
+}
+#panel-develop .dev-main{
+  display:none;
+  min-height:0;
+  max-height:none;
+  overflow:visible;
+}
+#panel-develop.active .dev-main{
+  display:flex;
+  flex-direction:column;
+  flex:none;
+  overflow:visible;
+}
+#panel-develop .dev-toolbar{flex:0 0 auto}
+#panel-develop .dev-layout{
+  display:block;
+  flex:none;
+  min-height:0;
+  overflow:visible;
+}
+#panel-develop .dev-board-frame{
+  display:block;
+  position:relative;
+  flex:none;
+  width:100%;
+  height:auto;
+  /* Tall enough that the page can scroll the diagram into view comfortably */
+  min-height:calc(100dvh - 168px);
+  max-height:none;
+  /* Clip horizontal bleed — board is width-fitted / scaled to the frame */
+  overflow-x:clip;
+  overflow-y:visible;
+}
+@supports not (overflow:clip){
+  #panel-develop .dev-board-frame{overflow-x:hidden;overflow-y:visible}
+}
+#panel-develop .dev-board-scroll{
+  position:relative;
+  flex:none;
+  width:100%;
+  max-width:100%;
+  height:auto;
+  min-height:inherit;
+  max-height:none;
+  overflow-x:hidden !important;
+  overflow-y:visible !important;
+  overscroll-behavior:auto;
+  box-sizing:border-box;
+}
+/* Instant scroll on develop — smooth + chrome layout fights feel laggy/snappy-wrong */
+html:has(#panel-develop.active){
+  scroll-behavior:auto;
+}
+body:has(#panel-develop.active) .main-content{
+  overflow:visible;
+  padding-top:12px;
+  padding-bottom:28px;
+  box-sizing:border-box;
+  height:auto;
+  max-height:none;
+}
+/* Series sheet open: freeze page behind the picker */
+body.dev-series-panel-open{
+  overflow:hidden !important;
+}
+/* Diagram tab banners — top-left of .dev-board-frame (above scroll/board) */
+.dev-tabs{display:none !important}
+.dev-board-frame{position:relative}
+.dev-diagram-float{
+  position:absolute;
+  top:8px;
+  left:6px;
+  z-index:20;
+  /* Explicit width — abspos + width:min(…,100%) was collapsing to a speck */
+  width:218px;
+  max-width:calc(100% - 12px);
+  box-sizing:border-box;
+  pointer-events:auto;
+}
+.dev-diagram-float:not([hidden]){
+  display:block;
+}
+.dev-diagram-float[hidden]{display:none !important}
+.dev-diagram-tabs{
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+  width:100%;
+  box-sizing:border-box;
+}
+/* Chamfer matches ui_developtree_tabbanner_* (TL + BR ~15px on 290×110) */
+.dev-diagram-tab{
+  --dev-tab-chamfer:polygon(
+    5.2% 0%,
+    100% 0%,
+    100% 86.4%,
+    94.8% 100%,
+    0% 100%,
+    0% 13.6%
+  );
+  appearance:none;
+  display:block;
+  position:relative;
+  width:100%;
+  /* ~75% of native 290×110 — fixed height so aspect-ratio can't collapse */
+  height:83px;
+  min-height:83px;
+  margin:0;
+  padding:0;
+  border:none;
+  border-radius:0;
+  box-sizing:border-box;
+  aspect-ratio:290 / 110;
+  /* No clip on the button — clip lives on plate so the rim can paint the TL diagonal */
+  background:transparent;
+  color:#f4f7ff;
+  font:inherit;
+  font-size:11px;
+  font-weight:700;
+  line-height:1.2;
+  letter-spacing:.01em;
+  cursor:pointer;
+  text-align:center;
+  overflow:visible;
+  filter:saturate(.92) brightness(.92);
+  transition:filter var(--motion-dur-quick,120ms) var(--motion-ease-standard,ease);
+}
+/* Full-size chamfer fill — active = cyan/gold border; plate sits 2px inset on top */
+.dev-diagram-tab::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  background:rgba(4,14,36,.92);
+  clip-path:var(--dev-tab-chamfer);
+}
+.dev-diagram-tab-plate{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  box-sizing:border-box;
+  clip-path:var(--dev-tab-chamfer);
+  background-color:rgba(4,14,36,.92);
+  background-image:var(--dev-tab-banner,none);
+  background-size:100% 100%;
+  background-position:center;
+  background-repeat:no-repeat;
+  overflow:hidden;
+  pointer-events:none;
+}
+/* Soft top/bottom vignette on tab banners (in-game plate wash) */
+.dev-diagram-tab-plate::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+  background:linear-gradient(
+    to bottom,
+    rgba(0,6,18,.62) 0%,
+    rgba(0,6,18,.18) 18%,
+    transparent 36%,
+    transparent 64%,
+    rgba(0,6,18,.18) 82%,
+    rgba(0,6,18,.62) 100%
+  );
+}
+.dev-diagram-tab-logo{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:78%;
+  height:68%;
+  object-fit:contain;
+  object-position:center center;
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,.65));
+  pointer-events:none;
+  z-index:2;
+}
+/* Logo-only plate (single-faction non-ULT) — hide words; logo centered */
+.dev-diagram-tab.is-logo-plate .dev-diagram-tab-label{
+  display:none;
+}
+.dev-diagram-tab-label{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:1px;
+  width:100%;
+  height:100%;
+  box-sizing:border-box;
+  padding:2px 14px;
+  text-shadow:0 1px 2px rgba(0,0,0,.85),0 0 8px rgba(0,0,0,.45);
+  overflow:hidden;
+  position:relative;
+  z-index:4;
+}
+.dev-diagram-tab-main,
+.dev-diagram-tab-sub{
+  display:block;
+  width:100%;
+  text-align:center;
+  line-height:1.12;
+  overflow:hidden;
+}
+.dev-diagram-tab-main{
+  word-break:break-word;
+  hyphens:auto;
+}
+.dev-diagram-tab-sub{
+  white-space:nowrap;
+  text-overflow:ellipsis;
+  font-size:0.95em;
+  opacity:.95;
+}
+.dev-diagram-tab:hover,
+.dev-diagram-tab:focus-visible{
+  filter:saturate(1.08) brightness(1.08)
+    drop-shadow(0 0 1px rgba(0,212,255,.7))
+    drop-shadow(0 0 3px rgba(0,212,255,.45));
+  outline:none;
+}
+/* Active: outer glow + 2px chamfer border (::before shows around inset plate) */
+.dev-diagram-tab.is-active{
+  filter:saturate(1.12) brightness(1.1)
+    drop-shadow(0 0 0.5px #fff)
+    drop-shadow(0 0 1px rgba(0,230,255,1))
+    drop-shadow(0 0 2px rgba(0,212,255,1))
+    drop-shadow(0 0 5px rgba(0,212,255,.95))
+    drop-shadow(0 0 10px rgba(0,180,255,.75))
+    drop-shadow(0 0 16px rgba(0,160,255,.45));
+}
+.dev-diagram-tab.is-active::before{
+  background:linear-gradient(
+    135deg,
+    rgba(220,250,255,1) 0%,
+    rgba(0,230,255,.98) 45%,
+    rgba(0,190,255,.92) 100%
+  );
+}
+.dev-diagram-tab.is-active .dev-diagram-tab-plate{
+  inset:2px;
+}
+.dev-diagram-tab.is-ult.is-active{
+  filter:saturate(1.12) brightness(1.1)
+    drop-shadow(0 0 0.5px #fff)
+    drop-shadow(0 0 1px rgba(255,230,120,1))
+    drop-shadow(0 0 2px rgba(255,215,0,1))
+    drop-shadow(0 0 5px rgba(255,200,0,.95))
+    drop-shadow(0 0 10px rgba(255,180,0,.7))
+    drop-shadow(0 0 16px rgba(255,160,0,.4));
+}
+.dev-diagram-tab.is-ult.is-active::before{
+  background:linear-gradient(
+    135deg,
+    rgba(255,248,210,1) 0%,
+    rgba(255,220,80,.98) 45%,
+    rgba(255,180,40,.92) 100%
+  );
+}
+/* Legacy select (if any) */
+.dev-diagram-select{display:none !important}
+.visually-hidden{
+  position:absolute!important;
+  width:1px;height:1px;
+  padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0,0,0,0);
+  white-space:nowrap;border:0;
+}
+@media(max-width:900px){
+  .dev-series-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px 12px}
+  .dev-series-card{max-width:156px}
+}
+@media(max-width:640px){
+  .dev-series-panel-card{
+    height:calc(100dvh - 8px);
+    max-height:calc(100dvh - 8px);
+  }
+  .dev-series-grid{
+    grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
+    gap:8px;
+    overflow:auto; /* short phones: allow grid scroll as last resort */
+  }
+  .dev-series-card{max-width:140px}
+  .dev-series-pick{max-width:min(100%,92vw);flex-basis:min(100%,92vw)}
+  .dev-series-btn-art{width:72px;height:36px}
+  .dev-diagram-float{width:min(190px,calc(100% - 16px))}
+  .dev-diagram-tab{height:72px;min-height:72px;font-size:10px;padding:0 8px}
+}
+.dev-layout{
+  flex:1;
+  min-height:0;
+  display:block;
+  width:100%;
+}
+.dev-board-frame{
+  position:relative;
+  width:100%;
+  height:100%;
+  min-height:min(72dvh,720px);
+  max-height:calc(100dvh - 168px);
+  border:1px solid rgba(120,190,255,.55);
+  border-radius:2px;
+  box-shadow:
+    inset 0 0 0 1px rgba(0,180,255,.18),
+    0 0 24px rgba(0,140,255,.12);
+  box-sizing:border-box;
+  overflow:hidden;
+}
+.dev-board-scroll{
+  position:relative;
+  width:100%;
+  height:100%;
+  min-height:inherit;
+  max-height:inherit;
+  overflow:auto;
+  overscroll-behavior:contain;
+  /* RareBoss cover only — pattern tiles sit on a faint ::before wash */
+  background-color:#071622;
+  background-image:var(--dev-bg-base,none);
+  background-size:cover;
+  background-position:center center;
+  background-repeat:no-repeat;
+  box-sizing:border-box;
+  cursor:default;
+}
+/* Dots + TreeBG over RareBoss — a bit more visible than the first wash */
+.dev-board-scroll::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  opacity:0.16;
+  background-image:
+    var(--dev-pt-treebg,none),
+    var(--dev-pt-dots,none);
+  background-size:
+    180px 180px,
+    96px 96px;
+  background-position:0 0,12px 8px;
+  background-repeat:repeat,repeat;
+}
+/* JS overlay owns patterns when present — avoid double wash */
+.dev-board-scroll:has(#devPatternOverlay)::before{display:none !important}
+#devPatternOverlay{position:absolute;inset:0;z-index:0;pointer-events:none}
+/* Few-unit diagrams: center the board in the frame (legacy full center) */
+.dev-board-scroll.is-board-center{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.dev-board-scroll.is-board-center .dev-board{
+  flex:0 0 auto;
+}
+/* Short trees: vertical center in the frame; horizontal centering is padL-based */
+.dev-board-scroll.is-board-center-y{
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  min-height:inherit;
+}
+.dev-board-scroll.is-board-center-y .dev-board{
+  flex:0 0 auto;
+}
+#panel-develop .dev-board-scroll.is-board-center-y{
+  min-height:calc(100dvh - 168px);
+}
+.dev-board-vignette{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:5;
+  background-image:none;
+  opacity:0;
+  display:none;
+}
+.dev-board{
+  position:relative;
+  min-height:240px;
+  z-index:1;
+  isolation:isolate;
+}
+/* Routes under koma; arrows above nodes so rarity rings never hide them. */
+.dev-wires-layer{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+}
+.dev-arrows-layer{
+  position:absolute;
+  inset:0;
+  z-index:30;
+  pointer-events:none;
+}
+.dev-wires{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  overflow:visible;
+}
+/* Neon pipe — thinner in-game profile + flow dash. */
+.dev-wires path.dev-wire-glow{
+  fill:none;
+  stroke:rgba(60,140,255,.28);
+  stroke-width:5;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.dev-wires path.dev-wire{
+  fill:none;
+  stroke:#5a9cff;
+  stroke-width:3;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  opacity:.96;
+}
+.dev-wires path.dev-wire-core{
+  fill:none;
+  stroke:#f2f8ff;
+  stroke-width:1.25;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  opacity:.98;
+  stroke-dasharray:7 11;
+  animation:dev-wire-pulse 1.8s linear infinite;
+}
+/* Optional image-stroke accent using Straight_Enable cross-section */
+.dev-wires path.dev-wire-tex{
+  fill:none;
+  stroke:url(#devLinePattern);
+  stroke-width:4;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  opacity:.45;
+  mix-blend-mode:screen;
+}
+/* Negative offset = flow along path direction (parent → child only). */
+@keyframes dev-wire-pulse{
+  from{stroke-dashoffset:0}
+  to{stroke-dashoffset:-18}
+}
+.dev-node.is-unknown{
+  cursor:default;
+}
+.dev-node.is-unknown .dev-base-enable{
+  opacity:.85;
+}
+@media (prefers-reduced-motion:reduce){
+  .dev-wires path.dev-wire-core{animation:none;stroke-dasharray:none}
+}
+.dev-route-arrow{
+  position:absolute;
+  width:22px;
+  height:22px;
+  margin:0;
+  padding:0;
+  border:0;
+  pointer-events:none;
+  transform:translate(-50%,-50%);
+  z-index:1;
+  object-fit:contain;
+  /* Stay readable over SSR/UR gold glow and blue pipes */
+  filter:
+    drop-shadow(0 0 2px rgba(0,0,0,.85))
+    drop-shadow(0 0 4px rgba(120,190,255,.75));
+}
+/*
+  Hit target = compact dev base only. Ogk art overflows the button box.
+*/
+.dev-node{
+  position:absolute;
+  width:calc(var(--dev-koma) * var(--dev-base, 0.52));
+  height:calc(var(--dev-koma) * var(--dev-base, 0.52));
+  margin:0;
+  padding:0;
+  border:0;
+  border-radius:50%;
+  background:transparent;
+  color:var(--text-primary);
+  cursor:pointer;
+  transform:translate(-50%,-50%);
+  text-align:center;
+  font:inherit;
+  z-index:20;
+  isolation:isolate;
+  overflow:visible;
+}
+.dev-node:focus{outline:none}
+.dev-node:focus-visible{
+  outline:none;
+}
+.dev-node:focus-visible .dev-base-disk,
+.dev-node.is-hover .dev-base-disk,
+.dev-node.is-selected .dev-base-disk{
+  filter:drop-shadow(-8px 10px 6px rgba(0,0,0,.45)) drop-shadow(0 0 10px rgba(0,212,255,.7));
+}
+.dev-node:focus-visible .dev-base[data-rarity="R"] .dev-base-disk,
+.dev-node.is-hover .dev-base[data-rarity="R"] .dev-base-disk,
+.dev-node.is-selected .dev-base[data-rarity="R"] .dev-base-disk{
+  filter:
+    drop-shadow(-6px 8px 4px rgba(0,0,0,.35))
+    drop-shadow(0 0 8px rgba(255,100,80,.75))
+    drop-shadow(0 0 10px rgba(0,212,255,.65));
+}
+.dev-node:focus-visible .dev-base[data-rarity="SR"] .dev-base-disk,
+.dev-node.is-hover .dev-base[data-rarity="SR"] .dev-base-disk,
+.dev-node.is-selected .dev-base[data-rarity="SR"] .dev-base-disk{
+  filter:
+    drop-shadow(-6px 8px 4px rgba(0,0,0,.35))
+    drop-shadow(0 0 8px rgba(90,230,255,.8))
+    drop-shadow(0 0 10px rgba(0,212,255,.65));
+}
+.dev-node-art{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:var(--dev-koma);
+  height:var(--dev-koma);
+  margin:0;
+  display:block;
+  overflow:visible;
+  z-index:2;
+  transform:translate(-50%,-58%);
+  pointer-events:none;
+}
+/*
+  In-game stack: compact rarity Enable ring + Core inside its hole;
+  large ogk stands on that plate (sprite taller/wider than the base).
+*/
+.dev-base{
+  position:absolute;
+  left:50%;
+  top:56%;
+  width:calc(var(--dev-koma) * var(--dev-base, 0.52));
+  height:calc(var(--dev-koma) * var(--dev-base, 0.52));
+  transform:translate(-50%,-50%) perspective(520px) rotateX(28deg);
+  transform-origin:50% 58%;
+  pointer-events:none;
+  z-index:1;
+  /* Filter stays on .dev-base-disk — parent filter clips Enable_ring pulse */
+  filter:none;
+  border-radius:0;
+  overflow:visible;
+}
+/*
+  R/SR Enable canvases have more transparent padding + thinner chrome than SSR,
+  and a pure black drop-shadow makes copper/cyan rings read like Disable.
+  Keep KomaFrame_*_Enable.webp; scale + rarity bloom so Enable looks lit.
+*/
+.dev-base-blur{
+  position:absolute;
+  width:128%;
+  height:128%;
+  left:-18%;
+  top:8%;
+  object-fit:contain;
+  z-index:0;
+  opacity:.96;
+}
+.dev-base[data-rarity="R"] .dev-base-blur,
+.dev-base[data-rarity="SR"] .dev-base-blur{
+  opacity:1;
+  mix-blend-mode:screen;
+  filter:brightness(1.85) saturate(1.35);
+}
+.dev-base-disk{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  filter:drop-shadow(-8px 10px 6px rgba(0,0,0,.5));
+}
+.dev-base[data-rarity="R"] .dev-base-disk{
+  filter:
+    drop-shadow(-5px 7px 3px rgba(0,0,0,.28))
+    drop-shadow(0 0 8px rgba(255,110,85,.85))
+    drop-shadow(0 0 16px rgba(220,55,45,.55));
+}
+.dev-base[data-rarity="SR"] .dev-base-disk{
+  filter:
+    drop-shadow(-5px 7px 3px rgba(0,0,0,.28))
+    drop-shadow(0 0 8px rgba(100,240,255,.9))
+    drop-shadow(0 0 16px rgba(50,190,230,.55));
+}
+/* SSR: brighter outer bloom than SR so the gold ring reads above cyan SR */
+.dev-base[data-rarity="SSR"] .dev-base-disk{
+  filter:
+    drop-shadow(-5px 7px 3px rgba(0,0,0,.28))
+    drop-shadow(0 0 10px rgba(255,220,120,.95))
+    drop-shadow(0 0 18px rgba(255,190,60,.7))
+    drop-shadow(0 0 28px rgba(255,160,40,.4));
+}
+/*
+  Inner hole of Enable is ~54% of outer radius (R_Enable).
+  Opaque plate + Core must stay inside that hole.
+*/
+.dev-base-disk::before{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:54%;
+  height:54%;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  background:radial-gradient(circle at 50% 38%,#2a4060 0%,#122038 55%,#070f1e 100%);
+  z-index:0;
+  box-shadow:inset 0 0 10px rgba(0,0,0,.5);
+}
+.dev-base-core{
+  position:absolute;
+  left:50%;
+  top:50%;
+  /* Core.webp sits inside Enable's ~54%-radius hole — never over the ring chrome */
+  width:54%;
+  height:auto;
+  max-width:54%;
+  transform:translate(-50%,-50%);
+  object-fit:contain;
+  z-index:1;
+  pointer-events:none;
+}
+.dev-base-enable{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  z-index:2;
+}
+/* R/SR Enable: pad compensation (~0.88 fill vs SSR ~0.97) + lift midtones */
+.dev-base[data-rarity="R"] .dev-base-enable,
+.dev-base[data-rarity="SR"] .dev-base-enable{
+  transform:scale(1.16);
+  transform-origin:50% 50%;
+  filter:brightness(1.48) saturate(1.25) contrast(1.08);
+}
+/* SSR/UR: keep KomaFrame_*_Enable as the plate (ring is ornament only, behind disk) */
+.dev-base[data-rarity="SSR"] .dev-base-enable{
+  transform:scale(1.06);
+  transform-origin:50% 50%;
+  filter:brightness(1.28) saturate(1.2) contrast(1.05);
+}
+.dev-base[data-rarity="UR"] .dev-base-enable{
+  transform:scale(1.06);
+  transform-origin:50% 50%;
+  filter:brightness(1.12) saturate(1.08);
+}
+.dev-base-disk.is-fallback{
+  box-shadow:0 0 0 2px rgba(90,160,255,.55), inset 0 0 12px rgba(0,40,80,.8);
+}
+/* OGK in a fixed box; --ogk-norm equalizes tight-crop vs padded 512 canvases */
+.dev-koma{
+  position:absolute;
+  left:50%;
+  top:40%;
+  width:100%;
+  height:100%;
+  transform:translate(-50%,-50%) scale(var(--ogk-norm, 1));
+  transform-origin:50% 55%;
+  object-fit:contain;
+  object-position:center center;
+  z-index:3;
+  filter:drop-shadow(-7px 9px 5px rgba(0,0,0,.55));
+  pointer-events:none;
+}
+/* SSR / UR Enable_ring — outside the rarity frame, gentle outward pulse */
+.dev-base-rarity-ring{
+  position:absolute;
+  inset:-22%;
+  width:144%;
+  height:144%;
+  left:-22%;
+  top:-22%;
+  object-fit:contain;
+  pointer-events:none;
+  z-index:0;
+  opacity:.88;
+  transform-origin:50% 50%;
+  animation:dev-rarity-pulse 2.6s ease-in-out infinite;
+  filter:drop-shadow(0 0 6px rgba(0,200,255,.35));
+}
+.dev-base-rarity-ring.is-ssr{
+  inset:-26%;
+  width:152%;
+  height:152%;
+  left:-26%;
+  top:-26%;
+  opacity:1;
+  filter:
+    drop-shadow(0 0 8px rgba(255,220,140,.85))
+    drop-shadow(0 0 16px rgba(255,190,70,.55))
+    drop-shadow(0 0 24px rgba(255,160,40,.35));
+  animation:dev-rarity-pulse-ssr 2.4s ease-in-out infinite;
+}
+.dev-base-rarity-ring.is-ur{
+  filter:drop-shadow(0 0 8px rgba(255,200,80,.4));
+}
+/* ULT UR stage 2 (…02 final) — stronger gold bloom vs UR1. */
+.dev-base.is-ur2 .dev-base-disk{
+  filter:drop-shadow(0 0 14px rgba(255,210,90,.55));
+}
+.dev-base-rarity-ring.is-ur2{
+  inset:-28%;
+  width:156%;
+  height:156%;
+  left:-28%;
+  top:-28%;
+  opacity:1;
+  filter:
+    drop-shadow(0 0 12px rgba(255,220,120,.75))
+    drop-shadow(0 0 22px rgba(255,180,40,.45));
+  animation:dev-rarity-pulse-ur2 2.2s ease-in-out infinite;
+}
+.dev-base-rarity-ring.is-ur2-glow{
+  inset:-36%;
+  width:172%;
+  height:172%;
+  left:-36%;
+  top:-36%;
+  opacity:.55;
+  mix-blend-mode:screen;
+  filter:drop-shadow(0 0 18px rgba(255,230,140,.85));
+  animation:dev-rarity-pulse-ur2 2.2s ease-in-out infinite reverse;
+}
+@keyframes dev-rarity-pulse{
+  0%,100%{transform:scale(1);opacity:.78}
+  50%{transform:scale(1.07);opacity:1}
+}
+@keyframes dev-rarity-pulse-ssr{
+  0%,100%{transform:scale(1);opacity:.85}
+  50%{transform:scale(1.12);opacity:1}
+}
+@keyframes dev-rarity-pulse-ur2{
+  0%,100%{transform:scale(1);opacity:.85}
+  50%{transform:scale(1.12);opacity:1}
+}
+@media (prefers-reduced-motion:reduce){
+  .dev-base-rarity-ring{animation:none;opacity:.9}
+  .dev-base-rarity-ring.is-ssr{animation:none;opacity:1}
+  .dev-base-rarity-ring.is-ur2-glow{animation:none;opacity:.5}
+}
+.dev-koma.is-secret{
+  width:58%;
+  height:58%;
+  object-fit:contain;
+  filter:none;
+}
+.dev-badges{
+  position:absolute;
+  left:50%;
+  bottom:4%;
+  transform:translate(-50%,70%);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
+  z-index:5;
+  pointer-events:none;
+}
+.dev-badge{
+  width:18px;
+  height:18px;
+  object-fit:contain;
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,.55));
+}
+.dev-detail{
+  position:absolute;
+  top:10px;
+  left:10px;
+  width:min(300px,calc(100% - 20px));
+  max-height:min(82%,calc(100% - 20px));
+  overflow:auto;
+  background:rgba(10,18,36,.96);
+  border:1px solid rgba(0,212,255,.45);
+  border-radius:var(--radius-md);
+  padding:12px;
+  z-index:8;
+  box-shadow:0 10px 28px rgba(0,0,0,.45);
+  pointer-events:auto;
+}
+.dev-detail.is-floating{
+  right:auto;
+  max-width:min(320px,calc(100% - 16px));
+}
+.dev-detail.is-sheet{
+  position:fixed;
+  left:50%;
+  right:auto;
+  top:auto;
+  bottom:0;
+  width:min(520px,100%);
+  max-width:100%;
+  max-height:min(72dvh,680px);
+  margin:0;
+  padding:14px 16px 20px;
+  border-radius:var(--radius-lg,12px) var(--radius-lg,12px) 0 0;
+  z-index:95;
+  transform:translate(-50%,110%);
+  transition:transform var(--motion-dur-modal,320ms) var(--motion-ease-enter,cubic-bezier(0.05,0.7,0.1,1));
+  box-shadow:0 -14px 40px rgba(0,0,0,.55);
+}
+.dev-detail.is-sheet.is-open{
+  transform:translate(-50%,0);
+}
+.dev-detail.is-sheet .dev-detail-close{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+.dev-detail:not(.is-sheet) .dev-detail-close,
+.dev-detail-close[hidden]{display:none !important}
+.dev-detail-open-full{
+  margin:14px 0 0;
+  font-size:13px;
+}
+.dev-detail-open-full[hidden]{display:none !important}
+.dev-detail-open-full a{
+  color:var(--accent-cyan);
+  text-decoration:none;
+  border-bottom:1px solid rgba(0,212,255,.4);
+}
+.dev-detail-open-full a:hover{border-bottom-color:var(--accent-cyan)}
+.dev-sheet-backdrop{
+  position:fixed;
+  inset:0;
+  z-index:90;
+  background:rgba(0,8,20,.55);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity var(--motion-dur-modal,320ms) var(--motion-ease-standard,ease);
+}
+.dev-sheet-backdrop.is-open{
+  opacity:1;
+  pointer-events:auto;
+}
+.dev-detail-head{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  margin-bottom:4px;
+}
+.dev-detail-thum-link{
+  flex:0 0 auto;
+  display:block;
+  width:72px;
+  height:72px;
+  border-radius:6px;
+  overflow:hidden;
+  border:1px solid rgba(0,212,255,.4);
+  background:rgba(4,14,36,.85);
+  box-shadow:0 2px 8px rgba(0,0,0,.35);
+}
+.dev-detail-thum-link:hover,
+.dev-detail-thum-link:focus-visible{
+  border-color:var(--accent-cyan);
+  box-shadow:0 0 0 2px var(--chrome-hover-ring,rgba(0,212,255,.35));
+}
+.dev-detail-thum{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center center;
+  background:rgba(0,20,40,.55);
+}
+.dev-detail-capital[hidden]{display:none !important}
+#devMats,
+#devBulkMats{
+  margin:8px 0 0;
+  padding:8px 10px;
+  list-style:none;
+  border:1px solid rgba(0,212,255,.35);
+  border-radius:var(--radius-sm);
+  background:rgba(0,40,72,.45);
+  box-sizing:border-box;
+}
+#devBulkMats{margin-top:6px}
+.dev-mat-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:5px 0;
+  padding:0;
+  list-style:none;
+}
+.dev-mat-row:first-child{margin-top:0}
+.dev-mat-row:last-child{margin-bottom:0}
+.dev-mat-icon{
+  width:22px !important;
+  height:22px !important;
+  min-width:22px;
+  min-height:22px;
+  object-fit:contain;
+  flex:0 0 22px;
+  display:block;
+  border-radius:4px;
+  background:rgba(0,30,55,.35);
+}
+.dev-mat-icon.is-missing{
+  background:rgba(80,100,130,.35);
+  border:1px solid rgba(120,160,200,.35);
+}
+.dev-mat-label{font-size:13px;color:var(--text-secondary);line-height:1.25}
+.dev-detail-capital .dev-mat-label,
+#devMats .dev-mat-label,
+#devBulkMats .dev-mat-label{
+  color:var(--text-primary);
+  font-weight:600;
+}
+.dev-detail-copy{min-width:0;flex:1}
+.dev-detail h2{margin:0 0 6px;font-size:16px;font-family:var(--font-body)}
+.dev-detail h3{margin:14px 0 6px;font-size:13px;color:var(--accent-cyan)}
+.dev-bulk-title{margin-top:16px}
+.dev-bulk-title[hidden]{display:none !important}
+.dev-bulk-note{
+  margin:0 0 6px;
+  font-size:11px;
+  color:var(--text-muted);
+  line-height:1.3;
+}
+.dev-bulk-note[hidden]{display:none !important}
+#devBulkMats{margin-top:4px}
+.dev-detail a{color:var(--accent-cyan)}
+.dev-detail ul{
+  margin:0;
+  padding-left:0;
+  list-style:none;
+  font-size:13px;
+  color:var(--text-secondary);
+}
+.dev-detail li{margin:3px 0}
+.dev-detail-meta{
+  margin:0;
+  color:var(--text-muted);
+  font-size:12px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex-wrap:wrap;
+}
+.dev-detail-rarity{
+  width:22px;
+  height:22px;
+  object-fit:contain;
+  flex:0 0 auto;
+}
+@media(max-width:720px){
+  .dev-main{--dev-cell:84px;--dev-koma:148px;--dev-base:0.52;padding:8px}
+  .dev-detail:not(.is-sheet){
+    position:absolute;
+    width:min(260px,calc(100% - 16px));
+    max-height:min(55%,calc(100% - 16px));
+    margin-top:0;
+  }
+  .dev-board-vignette{position:absolute;opacity:0}
+}
+@media (hover:hover) and (pointer:fine){
+  .dev-node{cursor:pointer}
+}
+@media (prefers-reduced-motion:reduce){
+  .dev-detail.is-sheet,
+  .dev-series-panel-card,
+  .dev-sheet-backdrop,
+  .dev-series-panel-backdrop{
+    transition:opacity var(--motion-dur-quick,120ms) var(--motion-ease-standard,ease) !important;
+  }
+  .dev-detail.is-sheet{transform:translate(-50%,0);opacity:0}
+  .dev-detail.is-sheet.is-open{opacity:1}
+  .dev-series-panel-card{transform:none;opacity:0}
+  .dev-series-panel.is-open .dev-series-panel-card{opacity:1}
+}
