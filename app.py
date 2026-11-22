@@ -25793,9 +25793,17 @@ def _dev_capture_stages_for_unit(uid, lc):
             series_name = _resolve_scenario_series_name(
                 ssc.get('scenario_stage_series_id'), ld
             ) or ''
-        is_hard = _challenge_stage_is_hard(ssc.get('thumbnail_resource_id'))
+        # HARD: Challenge Main lanes use thum_map_bg_* banners; other stages use
+        # StageDifficultyType Hard (=2). Do not apply the Challenge thumb heuristic to
+        # Recollection / Story Event normals that also use map-bg thumbs.
+        if ch:
+            is_hard = _challenge_stage_is_hard(ssc.get('thumbnail_resource_id'))
+        else:
+            is_hard = safe_int(ssc.get('stage_difficulty_type_index'), 1) == 2
         has_secret_battle = safe_int(mc.get('secret_battle_recommended_combat_power'), 0) > 0
-        is_story_event = bool(ssc) and series_id == '0'
+        # Story Event tag = StageType StoryEvent / StoryEventBoss only (not Main/Recollection).
+        stype = safe_int(sm.get('stage_type_index'), 0)
+        is_story_event = stype in (5, 6)
         out.append({
             'stage_id': sid,
             'name': name or sid,
@@ -25807,11 +25815,10 @@ def _dev_capture_stages_for_unit(uid, lc):
             'has_secret_battle': has_secret_battle,
             'is_story_event': is_story_event,
         })
-    # Pickup first, then series/stage number, then name
+    # Newest / highest stage number first (no Featured/pickup priority).
     out.sort(key=lambda r: (
-        0 if r.get('is_pickup') else 1,
         str(r.get('series_name') or ''),
-        safe_int(r.get('stage_number'), 0),
+        -safe_int(r.get('stage_number'), 0),
         str(r.get('name') or ''),
         str(r.get('stage_id') or ''),
     ))

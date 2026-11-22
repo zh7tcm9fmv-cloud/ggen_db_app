@@ -941,17 +941,17 @@ body.dev-series-panel-open{
   pointer-events:none;
   overflow:visible;
 }
-/* Neon pipe — thinner in-game profile + flow dash. */
+/* Neon pipe — bright white base (idle) + traveling highlight pulse. */
 .dev-wires path.dev-wire-glow{
   fill:none;
-  stroke:rgba(60,140,255,.28);
+  stroke:rgba(242,248,255,.22);
   stroke-width:5;
   stroke-linecap:round;
   stroke-linejoin:round;
 }
 .dev-wires path.dev-wire{
   fill:none;
-  stroke:#5a9cff;
+  stroke:#f2f8ff;
   stroke-width:3;
   stroke-linecap:round;
   stroke-linejoin:round;
@@ -959,14 +959,19 @@ body.dev-series-panel-open{
 }
 .dev-wires path.dev-wire-core{
   fill:none;
-  stroke:#f2f8ff;
-  stroke-width:1.25;
+  /* Cyan packet on white base — white-on-white was invisible after idle recolor. */
+  stroke:var(--accent-cyan,#00d4ff);
+  stroke-width:2.35;
   stroke-linecap:round;
   stroke-linejoin:round;
-  opacity:.98;
-  /* 8+12=20 — slightly longer period reads smoother on phone refresh rates */
-  stroke-dasharray:8 12;
-  animation:dev-wire-pulse 2s linear infinite;
+  opacity:1;
+  filter:drop-shadow(0 0 3px rgba(0,212,255,.85));
+  /*
+    Solid traveling bar + long rest: one pass parent → child, then pause
+    before the next pulse (period 400; hold leaves offset ≡ 0 for seamless loop).
+  */
+  stroke-dasharray:88 312;
+  animation:dev-wire-pulse 4.2s linear infinite;
 }
 /* Optional image-stroke accent using Straight_Enable cross-section */
 .dev-wires path.dev-wire-tex{
@@ -980,8 +985,9 @@ body.dev-series-panel-open{
 }
 /* Negative offset = flow along path direction (parent → child only). */
 @keyframes dev-wire-pulse{
-  from{stroke-dashoffset:0}
-  to{stroke-dashoffset:-20}
+  0%{stroke-dashoffset:0}
+  28%{stroke-dashoffset:-400} /* ~1.2s travel */
+  100%{stroke-dashoffset:-400} /* ~3s quiet gap */
 }
 .dev-node.is-unknown{
   cursor:default;
@@ -1353,8 +1359,15 @@ body.dev-series-panel-open{
   overscroll-behavior:contain;
   -webkit-overflow-scrolling:touch;
 }
+/* Desktop hover card: fixed to viewport so .dev-board-frame overflow cannot clip it. */
+.dev-detail.is-floating.is-viewport-fixed{
+  position:fixed;
+  z-index:40;
+  max-width:min(340px,calc(100vw - 16px));
+}
 /* Touch: bottom dock — keeps ogk free for a second tap to open unit page */
 .dev-detail.is-floating.is-mobile-dock{
+  position:absolute;
   left:8px;
   right:8px;
   top:auto;

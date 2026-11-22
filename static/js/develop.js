@@ -765,7 +765,7 @@
     var closeBtn = $('devDetailClose');
     var openFull = $('devDetailOpenFullWrap');
     if (box) {
-      box.classList.remove('is-open', 'is-sheet', 'is-floating', 'is-mobile-dock');
+      box.classList.remove('is-open', 'is-sheet', 'is-floating', 'is-mobile-dock', 'is-viewport-fixed');
       box.hidden = true;
       box.setAttribute('hidden', '');
       box.style.left = '';
@@ -773,6 +773,8 @@
       box.style.right = '';
       box.style.bottom = '';
       box.style.width = '';
+      box.style.maxWidth = '';
+      box.style.maxHeight = '';
       box.style.position = '';
     }
     if (backdrop) {
@@ -839,93 +841,110 @@
     if (!box || !frame) return;
     box.classList.add('is-floating');
     box.classList.remove('is-sheet', 'is-open');
-    box.style.position = 'absolute';
     /*
       Touch pinned: dock to the bottom of the frame so the ogk stays tappable
       for a second tap (floating near the node covered it).
     */
     if (opts.mode === 'dock' || (opts.pin && !hoverCapable)) {
       box.classList.add('is-mobile-dock');
+      box.classList.remove('is-viewport-fixed');
+      box.style.position = 'absolute';
       box.style.left = '8px';
       box.style.right = '8px';
       box.style.top = 'auto';
       box.style.bottom = '8px';
       box.style.width = 'auto';
       box.style.maxHeight = '';
+      box.style.maxWidth = '';
       return;
     }
     box.classList.remove('is-mobile-dock');
+    /* Fixed to the viewport — board-frame overflow:hidden must not clip the card. */
+    box.classList.add('is-viewport-fixed');
+    box.style.position = 'fixed';
 
     var pad = 8;
+    var vw = window.innerWidth || document.documentElement.clientWidth || 0;
+    var vh = window.innerHeight || document.documentElement.clientHeight || 0;
     var fr = frame.getBoundingClientRect();
-    /* Intersect board frame with the visible viewport so the popup never clips off-screen. */
-    var viewTop = Math.max(fr.top, 0);
-    var viewLeft = Math.max(fr.left, 0);
-    var viewRight = Math.min(fr.right, window.innerWidth || fr.right);
-    var viewBottom = Math.min(fr.bottom, window.innerHeight || fr.bottom);
+    /* Sticky .app-header (z-index 100) covers the top — never park the card under it. */
+    var headerEl = document.querySelector('.app-header');
+    var headerBottom = 0;
+    if (headerEl) {
+      try {
+        headerBottom = headerEl.getBoundingClientRect().bottom || 0;
+      } catch (_) {
+        headerBottom = 0;
+      }
+    }
+    var safeTop = Math.max(pad, headerBottom + pad);
+    var safeBottom = Math.max(safeTop + 160, vh - pad);
+    /* Prefer staying over the board, but stay inside the safe viewport band. */
+    var viewLeft = Math.max(pad, Math.min(fr.left, vw - pad));
+    var viewTop = Math.max(safeTop, Math.min(Math.max(fr.top, safeTop), safeBottom - pad));
+    var viewRight = Math.max(viewLeft + 120, Math.min(fr.right, vw - pad));
+    var viewBottom = Math.max(viewTop + 160, Math.min(fr.bottom, safeBottom));
+    /* If the frame is mostly off-screen, fall back to the safe viewport band. */
+    if (viewRight - viewLeft < 160 || viewBottom - viewTop < 180) {
+      viewLeft = pad;
+      viewTop = safeTop;
+      viewRight = vw - pad;
+      viewBottom = safeBottom;
+    }
     var availW = Math.max(120, viewRight - viewLeft);
     var availH = Math.max(160, viewBottom - viewTop);
-    /* Use almost the full visible height so long capture stage lists fit without scroll. */
-    var maxH = Math.max(160, availH - pad * 2);
+    var maxW = Math.min(340, availW);
+    var maxH = Math.max(160, availH);
 
-    box.style.maxWidth = Math.min(340, availW - pad * 2) + 'px';
+    box.style.maxWidth = Math.round(maxW) + 'px';
     box.style.width = '';
     box.style.maxHeight = Math.round(maxH) + 'px';
-    box.style.left = pad + 'px';
-    box.style.top = pad + 'px';
+    box.style.left = Math.round(viewLeft) + 'px';
+    box.style.top = Math.round(viewTop) + 'px';
     box.style.right = 'auto';
     box.style.bottom = 'auto';
 
-    var bw = box.offsetWidth || 280;
-    /* Natural height capped by maxH — prefer showing full content. */
+    var bw = Math.min(box.offsetWidth || maxW, maxW);
     var naturalH = Math.max(box.scrollHeight || 0, box.offsetHeight || 0);
     var bh = Math.min(naturalH, maxH);
 
-    var minX = Math.max(pad, viewLeft - fr.left + pad);
-    var minY = Math.max(pad, viewTop - fr.top + pad);
-    var maxX = Math.min(fr.width - bw - pad, viewRight - fr.left - bw - pad);
-    var maxY = Math.min(fr.height - bh - pad, viewBottom - fr.top - bh - pad);
+    var minX = viewLeft;
+    var minY = viewTop;
+    var maxX = viewRight - bw;
+    var maxY = viewBottom - bh;
+    if (maxX < minX) maxX = minX;
+    if (maxY < minY) maxY = minY;
 
-    var x;
-    var y;
+    var x = minX;
+    var y = minY;
+    var gap = 12;
     var cursorMode = opts.mode === 'cursor' && opts.clientX != null;
     if (cursorMode) {
-      x = opts.clientX - fr.left + 14;
-      y = opts.clientY - fr.top + 14;
-      if (x + bw + pad > fr.width) x = opts.clientX - fr.left - bw - 14;
-      if (y + bh + pad > fr.height) y = opts.clientY - fr.top - bh - 14;
+      x = opts.clientX + gap;
+      y = opts.clientY + gap;
+      if (x + bw > viewRight) x = opts.clientX - bw - gap;
+      if (y + bh > viewBottom) y = opts.clientY - bh - gap;
     } else if (opts.anchorEl) {
       var ar = opts.anchorEl.getBoundingClientRect();
-      var ox = ar.left - fr.left + ar.width * 0.5;
-      var gap = Math.max(10, Math.max(ar.width, ar.height) * 0.35);
-      x = ox + gap;
-      if (x + bw + pad > fr.width) x = ox - gap - bw;
-      /* Tall capture lists: pin to top of visible area so max height is usable. */
-      if (bh >= maxH * 0.7 || naturalH > maxH * 0.55) {
+      var cy = ar.top + ar.height * 0.5;
+      var nodeGap = Math.max(gap, Math.max(ar.width, ar.height) * 0.28);
+      /* Prefer right of node; flip left if needed. */
+      x = ar.right + nodeGap;
+      if (x + bw > viewRight) x = ar.left - nodeGap - bw;
+      /* Prefer align near node; if tall, pin just under the header so the title stays visible. */
+      if (bh >= maxH * 0.72 || naturalH > maxH * 0.6) {
         y = minY;
       } else {
-        var oy = ar.top - fr.top + ar.height * 0.5;
-        y = oy - bh * 0.2;
+        y = cy - bh * 0.25;
+        if (y + bh > viewBottom) y = viewBottom - bh;
         if (y < minY) y = minY;
-        if (y + bh + pad > fr.height) y = Math.max(minY, fr.height - bh - pad);
       }
-    } else {
-      x = minX;
-      y = minY;
     }
 
-    if (maxX < minX) {
-      x = minX;
-    } else {
-      if (x > maxX) x = maxX;
-      if (x < minX) x = minX;
-    }
-    if (maxY < minY) {
-      y = minY;
-    } else {
-      if (y > maxY) y = maxY;
-      if (y < minY) y = minY;
-    }
+    if (x > maxX) x = maxX;
+    if (x < minX) x = minX;
+    if (y > maxY) y = maxY;
+    if (y < minY) y = minY;
 
     box.style.left = Math.round(x) + 'px';
     box.style.top = Math.round(y) + 'px';
@@ -938,11 +957,15 @@
     var closeBtn = $('devDetailClose');
     var openFull = $('devDetailOpenFullWrap');
     if (!box) return;
-    box.classList.remove('is-floating');
+    box.classList.remove('is-floating', 'is-mobile-dock', 'is-viewport-fixed');
     box.classList.add('is-sheet');
     box.style.left = '';
     box.style.top = '';
     box.style.right = '';
+    box.style.bottom = '';
+    box.style.width = '';
+    box.style.maxWidth = '';
+    box.style.maxHeight = '';
     box.style.position = '';
     box.hidden = false;
     box.removeAttribute('hidden');
@@ -1256,13 +1279,7 @@
           var tags = document.createElement('span');
           tags.className = 'dev-capture-tags';
           var anyTag = false;
-          if (st.is_pickup) {
-            var tPick = document.createElement('span');
-            tPick.className = 'dev-capture-tag';
-            tPick.textContent = pack.capture_pickup || 'Featured';
-            tags.appendChild(tPick);
-            anyTag = true;
-          }
+          /* No Featured/pickup tag — IsStageSelectPickupCaptureUnit is not a useful UI signal. */
           if (st.is_hard) {
             var tHard = document.createElement('span');
             tHard.className = 'dev-capture-tag is-hard';
