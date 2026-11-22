@@ -21,6 +21,8 @@ html.ggen-15 .tm-toolbar{
   clip-path:var(--g15-chamfer,polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px));
   background:
     linear-gradient(135deg,rgba(0,217,255,.08),rgba(0,140,255,.04)),
+    rgba(8,18,36,.88); background:
+    linear-gradient(135deg in oklch,rgba(0,217,255,.08),rgba(0,140,255,.04)),
     rgba(8,18,36,.88);
   box-shadow:
     inset 0 0 0 1px rgba(0,217,255,.35),
@@ -47,7 +49,7 @@ html.ggen-15 .tm-chip{
 }
 html.ggen-15 .tm-chip.is-active,
 html.ggen-15 .tm-role-btn.is-active{
-  background:linear-gradient(95deg,rgba(0,217,255,.28),rgba(0,140,255,.18));
+  background:linear-gradient(95deg,rgba(0,217,255,.28),rgba(0,140,255,.18)); background:linear-gradient(95deg in oklch,rgba(0,217,255,.28),rgba(0,140,255,.18));
   border-color:#00d9ff;color:#fff;
 }
 html.ggen-15 .tm-toggle{
@@ -139,13 +141,13 @@ html.ggen-15[data-ui-lang="JP"] .tm-sticky-head > *{
 }
 html.ggen-15 .tm-head-supp{color:#86efac}
 html.ggen-15 .tm-head-role--1{
-  background:linear-gradient(180deg,rgba(255,80,80,.22),rgba(4,18,40,.97));
+  background:linear-gradient(180deg,rgba(255,80,80,.22),rgba(4,18,40,.97)); background:linear-gradient(180deg in oklch,rgba(255,80,80,.22),rgba(4,18,40,.97));
 }
 html.ggen-15 .tm-head-role--3{
-  background:linear-gradient(180deg,rgba(255,212,0,.2),rgba(4,18,40,.97));
+  background:linear-gradient(180deg,rgba(255,212,0,.2),rgba(4,18,40,.97)); background:linear-gradient(180deg in oklch,rgba(255,212,0,.2),rgba(4,18,40,.97));
 }
 html.ggen-15 .tm-head-role--2{
-  background:linear-gradient(180deg,rgba(0,217,255,.22),rgba(4,18,40,.97));
+  background:linear-gradient(180deg,rgba(0,217,255,.22),rgba(4,18,40,.97)); background:linear-gradient(180deg in oklch,rgba(0,217,255,.22),rgba(4,18,40,.97));
 }
 html.ggen-15 .tm-tag-name{
   font-family:var(--font-teko),Teko,sans-serif;

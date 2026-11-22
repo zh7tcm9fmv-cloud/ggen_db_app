@@ -1188,6 +1188,7 @@ def _app_js_bundle_version_tag():
         ('js', 'sp_investment_i18n_guide.js'),
         ('js', 'collections.js'),
         ('js', 'ggen_15.js'),
+        ('js', 'nav_tabs_auto_hide.js'),
         ('js', 'tag_matrix.js'),
         ('js', 'debuff_matrix.js'),
         ('js', 'gacha_sim.js'),

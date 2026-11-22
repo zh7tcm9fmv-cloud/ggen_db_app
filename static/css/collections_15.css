@@ -14,6 +14,9 @@
   background:
     radial-gradient(120% 70% at 50% -10%,rgba(0,217,255,.12),transparent 55%),
     radial-gradient(80% 50% at 100% 20%,rgba(0,140,255,.08),transparent 50%),
+    var(--bg-primary); background:
+    radial-gradient(in oklch, 120% 70% at 50% -10%,rgba(0,217,255,.12),transparent 55%),
+    radial-gradient(in oklch, 80% 50% at 100% 20%,rgba(0,140,255,.08),transparent 50%),
     var(--bg-primary);
 }
 
@@ -27,6 +30,8 @@
   border:1px solid rgba(0,217,255,.45);
   background:
     linear-gradient(95deg,rgba(0,217,255,.12),rgba(0,140,255,.06) 55%,transparent),
+    rgba(9,20,39,.92); background:
+    linear-gradient(95deg in oklch,rgba(0,217,255,.12),rgba(0,140,255,.06) 55%,transparent),
     rgba(9,20,39,.92);
   clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px));
   box-shadow:0 0 0 1px rgba(0,0,0,.35);
@@ -51,7 +56,7 @@
 }
 .collections-15-toggle:hover{background:rgba(0,217,255,.2);color:#fff}
 .collections-15-toggle.is-active{
-  background:linear-gradient(95deg,rgba(0,217,255,.35),rgba(0,140,255,.25));
+  background:linear-gradient(95deg,rgba(0,217,255,.35),rgba(0,140,255,.25)); background:linear-gradient(95deg in oklch,rgba(0,217,255,.35),rgba(0,140,255,.25));
   border-color:#00d9ff;color:#fff;
 }
 /* Special Design mark — same 1.5 chamfer chrome as Classic, scaled up */
@@ -67,7 +72,7 @@
   background:rgba(0,217,255,.2);
 }
 .collections-15-toggle--special.is-active{
-  background:linear-gradient(95deg,rgba(0,217,255,.35),rgba(0,140,255,.25));
+  background:linear-gradient(95deg,rgba(0,217,255,.35),rgba(0,140,255,.25)); background:linear-gradient(95deg in oklch,rgba(0,217,255,.35),rgba(0,140,255,.25));
   border-color:#00d9ff;
   box-shadow:none;
 }
@@ -170,7 +175,8 @@ html[data-ui-lang="HK"] .collections-page.collections-15 .collections-stat-lim-b
 .collections-page.collections-15 .collections-intro::after{
   content:"";display:block;flex:1 0 100%;margin-top:14px;height:2px;width:min(420px,100%);
   background:
-    linear-gradient(90deg,rgb(var(--g15-cyan)),rgb(var(--g15-blue)) 40%,transparent);
+    linear-gradient(90deg,rgb(var(--g15-cyan)),rgb(var(--g15-blue)) 40%,transparent); background:
+    linear-gradient(90deg in oklch,rgb(var(--g15-cyan)),rgb(var(--g15-blue)) 40%,transparent);
   clip-path:polygon(0 0,100% 0,calc(100% - 10px) 100%,0 100%);
 }
 /* Mobile: no inflated flex boxes; keep Teko title but content-sized */
@@ -213,6 +219,8 @@ html[data-ui-lang="HK"] .collections-page.collections-15 .collections-stat-lim-b
   border-color:rgba(0,217,255,.28);
   background:
     radial-gradient(120% 80% at 10% 0%,rgba(0,217,255,.08),transparent 55%),
+    rgba(9,20,39,.92); background:
+    radial-gradient(in oklch, 120% 80% at 10% 0%,rgba(0,217,255,.08),transparent 55%),
     rgba(9,20,39,.92);
 }
 .collections-page.collections-15 .collections-gauge::before,
@@ -261,7 +269,7 @@ html[data-ui-lang="HK"] .collections-page.collections-15 .collections-stat-lim-b
 }
 .collections-page.collections-15 .collections-type-tabs button.is-active,
 .collections-page.collections-15 .collections-role-tabs button.is-active{
-  background:linear-gradient(95deg,rgba(0,217,255,.28),rgba(0,140,255,.18));
+  background:linear-gradient(95deg,rgba(0,217,255,.28),rgba(0,140,255,.18)); background:linear-gradient(95deg in oklch,rgba(0,217,255,.28),rgba(0,140,255,.18));
   border-color:#00d9ff;color:#fff;
 }
 .collections-page.collections-15 .collections-type-tabs button:hover,
@@ -277,6 +285,8 @@ html[data-ui-lang="HK"] .collections-page.collections-15 .collections-stat-lim-b
   border:1px solid rgba(0,217,255,.4);
   background:
     radial-gradient(120% 80% at 0% 0%,rgba(0,217,255,.07),transparent 55%),
+    rgba(9,20,39,.92); background:
+    radial-gradient(in oklch, 120% 80% at 0% 0%,rgba(0,217,255,.07),transparent 55%),
     rgba(9,20,39,.92);
   box-shadow:none;
   padding:8px 8px 10px;
@@ -285,6 +295,8 @@ html[data-ui-lang="HK"] .collections-page.collections-15 .collections-stat-lim-b
   border-color:#00d9ff;
   background:
     radial-gradient(120% 80% at 0% 0%,rgba(0,217,255,.12),transparent 55%),
+    rgba(12,24,44,.96); background:
+    radial-gradient(in oklch, 120% 80% at 0% 0%,rgba(0,217,255,.12),transparent 55%),
     rgba(12,24,44,.96);
   /* No filter — filter + clip-path clips the HUD bottom on hover. */
 }

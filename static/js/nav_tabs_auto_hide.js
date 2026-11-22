@@ -71,9 +71,35 @@
     } catch (_) {}
   }
 
+  /** Phone portrait chrome stays put — collapsing the tab bar shifts the page on Android. */
+  function keepNavStatic() {
+    try {
+      return global.matchMedia('(max-width: 820px)').matches;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  /** Narrow phones: hide Special/Classic/calendar row on scroll-down (support chips stay). */
+  function setHeader15Collapsed(collapsed) {
+    if (!keepNavStatic()) {
+      try {
+        if (document.body) document.body.classList.remove('header-15-collapsed');
+      } catch (_) {}
+      return;
+    }
+    if (isMatrixBoardPage()) return;
+    if (overlayUnlockFreeze) return;
+    try {
+      if (!document.body) return;
+      document.body.classList.toggle('header-15-collapsed', !!collapsed);
+    } catch (_) {}
+  }
+
   function setNavTabsCollapsed(collapsed) {
     /* /tm and /dm use their own board-scroll chrome hide */
     if (isMatrixBoardPage()) return;
+    if (keepNavStatic()) collapsed = false;
     if (overlayUnlockFreeze) return;
     var want = !!collapsed;
     var already = document.body.classList.contains('nav-tabs-collapsed') === want;
@@ -184,6 +210,7 @@
           var t0 = thresholds();
           if (pageScrollY() <= t0.TOP_SHOW && !isMlsBattleFocus()) {
             pinnedCollapsed = false;
+            setHeader15Collapsed(false);
             if (document.body.classList.contains('nav-tabs-collapsed')) {
               document.body.classList.remove('nav-tabs-collapsed');
               if (typeof global.scheduleSyncListTheadStickyTop === 'function') {
@@ -205,6 +232,7 @@
       var t = thresholds();
       if (pageScrollY() <= t.TOP_SHOW && !isMlsBattleFocus()) {
         pinnedCollapsed = false;
+        setHeader15Collapsed(false);
         if (document.body.classList.contains('nav-tabs-collapsed')) {
           document.body.classList.remove('nav-tabs-collapsed');
           if (typeof global.scheduleSyncListTheadStickyTop === 'function') {
@@ -320,6 +348,13 @@
     }
 
     function onScroll() {
+      var phoneChrome = keepNavStatic();
+      if (phoneChrome) {
+        if (document.body.classList.contains('nav-tabs-collapsed')) {
+          pinnedCollapsed = false;
+          document.body.classList.remove('nav-tabs-collapsed');
+        }
+      }
       var y = pageScrollY();
       if (hardLocked()) {
         /* Keep lastY frozen while detail locks the page. Syncing to lock-time Y
@@ -334,6 +369,11 @@
       if (y <= t.TOP_SHOW) {
         var dyTop = y - lastY;
         lastY = y;
+        if (phoneChrome) {
+          upAccum = 0;
+          setHeader15Collapsed(false);
+          return;
+        }
         if (mls && pinnedCollapsed && softIgnored()) return;
         revealAtTop(y, t, mls, dyTop);
         return;
@@ -341,6 +381,22 @@
       if (softIgnored()) return;
       var dy = y - lastY;
       lastY = y;
+      if (phoneChrome) {
+        /* Support cluster only — same hide/reveal thresholds as desktop nav tabs. */
+        if (dy > 0) {
+          upAccum = 0;
+          if (dy >= t.HIDE_AFTER || y > t.TOP_SHOW + 24) setHeader15Collapsed(true);
+          return;
+        }
+        if (dy < 0) {
+          upAccum += -dy;
+          if (upAccum >= Math.min(t.REVEAL_UP, 120)) {
+            upAccum = 0;
+            setHeader15Collapsed(false);
+          }
+        }
+        return;
+      }
       /* Collections: leave synthetic top → unpin. MLS battle: keep pin mid-page
          until aggressive REVEAL_UP (or leave battle / return to top). */
       if (!mls && y > t.TOP_SHOW + 64) pinnedCollapsed = false;
@@ -397,21 +453,25 @@
           upAccum = 0;
           pinnedCollapsed = false;
           setNavTabsCollapsed(false);
+          setHeader15Collapsed(false);
           touchY0 = cy;
           return;
         }
         if (softIgnored()) return;
         if (fingerUp > 12 && y > t.TOP_SHOW) {
           upAccum = 0;
-          setNavTabsCollapsed(true);
+          if (keepNavStatic()) setHeader15Collapsed(true);
+          else setNavTabsCollapsed(true);
           touchY0 = cy;
         } else if (fingerUp < -28) {
           /* finger moves down → content scrolls up */
           upAccum += -fingerUp;
-          if (upAccum >= t.REVEAL_UP) {
+          var needUp = keepNavStatic() ? Math.min(t.REVEAL_UP, 120) : t.REVEAL_UP;
+          if (upAccum >= needUp) {
             upAccum = 0;
             pinnedCollapsed = false;
             setNavTabsCollapsed(false);
+            setHeader15Collapsed(false);
           }
           touchY0 = cy;
         }
@@ -431,6 +491,7 @@
         upAccum = 0;
         pinnedCollapsed = false;
         setNavTabsCollapsed(false);
+        setHeader15Collapsed(false);
       },
       { passive: true }
     );
@@ -439,6 +500,7 @@
   global.GgenNavTabsAutoHide = {
     init: initNavTabsAutoHide,
     setCollapsed: setNavTabsCollapsed,
+    setHeader15Collapsed: setHeader15Collapsed,
     snapshotForOverlay: snapshotForOverlay,
     prepareUnlock: prepareUnlock,
     restoreAfterOverlay: restoreAfterOverlay,

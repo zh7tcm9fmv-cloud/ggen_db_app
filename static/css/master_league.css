@@ -407,7 +407,8 @@
   box-shadow: none;
   overflow: hidden;
   background:
-    radial-gradient(ellipse 70% 90% at 50% 40%, #0c1424 0%, #060a12 55%, #030508 100%);
+    radial-gradient(ellipse 70% 90% at 50% 40%, #0c1424 0%, #060a12 55%, #030508 100%); background:
+    radial-gradient(ellipse 70% 90% at 50% 40% in oklch, #0c1424 0%, #060a12 55%, #030508 100%);
   clip-path: polygon(
     0% 0%,
     100% 0%,
@@ -426,6 +427,16 @@
   z-index: 0;
   background: linear-gradient(
     90deg,
+    rgba(196, 33, 38, 0.38) 0%,
+    rgba(196, 33, 38, 0.16) 18%,
+    rgba(196, 33, 38, 0.05) 36%,
+    transparent 48%,
+    transparent 52%,
+    rgba(13, 73, 193, 0.05) 64%,
+    rgba(13, 73, 193, 0.16) 82%,
+    rgba(13, 73, 193, 0.38) 100%
+  ); background: linear-gradient(
+    90deg in oklch,
     rgba(196, 33, 38, 0.38) 0%,
     rgba(196, 33, 38, 0.16) 18%,
     rgba(196, 33, 38, 0.05) 36%,
@@ -682,7 +693,8 @@ html[data-ui-lang="HR"] .ml-deploy-force-name {
   border-radius: 2px;
   overflow: hidden;
   background:
-    linear-gradient(180deg, rgba(118, 16, 26, 0.97) 0%, rgba(62, 8, 14, 0.98) 48%, rgba(34, 4, 9, 1) 100%);
+    linear-gradient(180deg, rgba(118, 16, 26, 0.97) 0%, rgba(62, 8, 14, 0.98) 48%, rgba(34, 4, 9, 1) 100%); background:
+    linear-gradient(180deg in oklch, rgba(118, 16, 26, 0.97) 0%, rgba(62, 8, 14, 0.98) 48%, rgba(34, 4, 9, 1) 100%);
   box-shadow:
     inset 0 0 0 1px rgba(196, 206, 220, 0.65),
     inset 0 0 0 4px rgba(28, 6, 10, 0.95),
@@ -723,7 +735,9 @@ html[data-ui-lang="HR"] .ml-deploy-force-name {
 .ml-boost-card--spark-bg::after {
   background:
     linear-gradient(180deg, rgba(8, 6, 14, 0.38) 0%, rgba(8, 6, 14, 0.1) 42%, rgba(8, 6, 14, 0.34) 100%),
-    linear-gradient(90deg, rgba(8, 6, 14, 0.48) 0%, rgba(8, 6, 14, 0.06) 20%, rgba(8, 6, 14, 0.06) 80%, rgba(8, 6, 14, 0.48) 100%);
+    linear-gradient(90deg, rgba(8, 6, 14, 0.48) 0%, rgba(8, 6, 14, 0.06) 20%, rgba(8, 6, 14, 0.06) 80%, rgba(8, 6, 14, 0.48) 100%); background:
+    linear-gradient(180deg in oklch, rgba(8, 6, 14, 0.38) 0%, rgba(8, 6, 14, 0.1) 42%, rgba(8, 6, 14, 0.34) 100%),
+    linear-gradient(90deg in oklch, rgba(8, 6, 14, 0.48) 0%, rgba(8, 6, 14, 0.06) 20%, rgba(8, 6, 14, 0.06) 80%, rgba(8, 6, 14, 0.48) 100%);
 }
 .ml-boost-card--spark-bg.ml-boost-card--portraits {
   background: #0a0610;
@@ -731,7 +745,9 @@ html[data-ui-lang="HR"] .ml-deploy-force-name {
 .ml-boost-card--spark-bg.ml-boost-card--portraits::after {
   background:
     radial-gradient(ellipse 46% 72% at 50% 44%, rgba(8, 6, 14, 0.62) 0%, rgba(8, 6, 14, 0.28) 42%, transparent 72%),
-    linear-gradient(90deg, rgba(8, 6, 14, 0.38) 0%, rgba(8, 6, 14, 0.03) 18%, transparent 50%, rgba(8, 6, 14, 0.03) 82%, rgba(8, 6, 14, 0.38) 100%);
+    linear-gradient(90deg, rgba(8, 6, 14, 0.38) 0%, rgba(8, 6, 14, 0.03) 18%, transparent 50%, rgba(8, 6, 14, 0.03) 82%, rgba(8, 6, 14, 0.38) 100%); background:
+    radial-gradient(ellipse 46% 72% at 50% 44% in oklch, rgba(8, 6, 14, 0.62) 0%, rgba(8, 6, 14, 0.28) 42%, transparent 72%),
+    linear-gradient(90deg in oklch, rgba(8, 6, 14, 0.38) 0%, rgba(8, 6, 14, 0.03) 18%, transparent 50%, rgba(8, 6, 14, 0.03) 82%, rgba(8, 6, 14, 0.38) 100%);
 }
 .ml-boost-card::after {
   content: '';
@@ -739,7 +755,9 @@ html[data-ui-lang="HR"] .ml-deploy-force-name {
   inset: 0;
   background:
     linear-gradient(90deg, rgba(18, 2, 5, 0.72) 0%, rgba(18, 2, 5, 0.08) 22%, rgba(18, 2, 5, 0.05) 50%, rgba(18, 2, 5, 0.08) 78%, rgba(18, 2, 5, 0.72) 100%),
-    radial-gradient(ellipse 55% 70% at 50% 42%, rgba(220, 45, 55, 0.28), transparent 70%);
+    radial-gradient(ellipse 55% 70% at 50% 42%, rgba(220, 45, 55, 0.28), transparent 70%); background:
+    linear-gradient(90deg in oklch, rgba(18, 2, 5, 0.72) 0%, rgba(18, 2, 5, 0.08) 22%, rgba(18, 2, 5, 0.05) 50%, rgba(18, 2, 5, 0.08) 78%, rgba(18, 2, 5, 0.72) 100%),
+    radial-gradient(ellipse 55% 70% at 50% 42% in oklch, rgba(220, 45, 55, 0.28), transparent 70%);
   pointer-events: none;
   z-index: 1;
 }
@@ -779,12 +797,16 @@ html[data-ui-lang="HR"] .ml-deploy-force-name {
 .ml-boost-card--portraits .ml-boost-portrait--left::after {
   background:
     linear-gradient(90deg, rgba(48, 4, 9, 0.08) 0%, transparent 38%, rgba(72, 8, 14, 0.42) 78%, rgba(48, 4, 9, 0.72) 100%),
-    linear-gradient(180deg, rgba(48, 4, 9, 0.18) 0%, transparent 28%, transparent 100%);
+    linear-gradient(180deg, rgba(48, 4, 9, 0.18) 0%, transparent 28%, transparent 100%); background:
+    linear-gradient(90deg in oklch, rgba(48, 4, 9, 0.08) 0%, transparent 38%, rgba(72, 8, 14, 0.42) 78%, rgba(48, 4, 9, 0.72) 100%),
+    linear-gradient(180deg in oklch, rgba(48, 4, 9, 0.18) 0%, transparent 28%, transparent 100%);
 }
 .ml-boost-card--portraits .ml-boost-portrait--right::after {
   background:
     linear-gradient(270deg, rgba(48, 4, 9, 0.08) 0%, transparent 38%, rgba(72, 8, 14, 0.42) 78%, rgba(48, 4, 9, 0.72) 100%),
-    linear-gradient(180deg, rgba(48, 4, 9, 0.18) 0%, transparent 28%, transparent 100%);
+    linear-gradient(180deg, rgba(48, 4, 9, 0.18) 0%, transparent 28%, transparent 100%); background:
+    linear-gradient(270deg in oklch, rgba(48, 4, 9, 0.08) 0%, transparent 38%, rgba(72, 8, 14, 0.42) 78%, rgba(48, 4, 9, 0.72) 100%),
+    linear-gradient(180deg in oklch, rgba(48, 4, 9, 0.18) 0%, transparent 28%, transparent 100%);
 }
 .ml-boost-card--portraits .ml-boost-portrait-img {
   position: relative;
@@ -1078,7 +1100,9 @@ html[data-ui-lang="HR"] .ml-deploy-force-name {
 .ml-boost-card--motif-bg::after {
   background:
     linear-gradient(90deg, rgba(6, 10, 20, 0.55) 0%, rgba(6, 10, 20, 0.08) 22%, rgba(6, 10, 20, 0.05) 50%, rgba(6, 10, 20, 0.08) 78%, rgba(6, 10, 20, 0.55) 100%),
-    linear-gradient(180deg, rgba(6, 10, 20, 0.2) 0%, transparent 35%, rgba(6, 10, 20, 0.35) 100%);
+    linear-gradient(180deg, rgba(6, 10, 20, 0.2) 0%, transparent 35%, rgba(6, 10, 20, 0.35) 100%); background:
+    linear-gradient(90deg in oklch, rgba(6, 10, 20, 0.55) 0%, rgba(6, 10, 20, 0.08) 22%, rgba(6, 10, 20, 0.05) 50%, rgba(6, 10, 20, 0.08) 78%, rgba(6, 10, 20, 0.55) 100%),
+    linear-gradient(180deg in oklch, rgba(6, 10, 20, 0.2) 0%, transparent 35%, rgba(6, 10, 20, 0.35) 100%);
 }
 .ml-boost-card--portraits.ml-boost-card--info-base .ml-boost-inner--info-base {
   width: min(560px, 100%);
@@ -1088,7 +1112,8 @@ html[data-ui-lang="HR"] .ml-deploy-force-name {
 }
 .ml-boost-card--portraits {
   background:
-    linear-gradient(180deg, rgba(118, 16, 26, 0.92) 0%, rgba(62, 8, 14, 0.94) 48%, rgba(34, 4, 9, 0.96) 100%);
+    linear-gradient(180deg, rgba(118, 16, 26, 0.92) 0%, rgba(62, 8, 14, 0.94) 48%, rgba(34, 4, 9, 0.96) 100%); background:
+    linear-gradient(180deg in oklch, rgba(118, 16, 26, 0.92) 0%, rgba(62, 8, 14, 0.94) 48%, rgba(34, 4, 9, 0.96) 100%);
 }
 .ml-boost-card--portraits::before {
   opacity: 0.18;
@@ -1097,7 +1122,10 @@ html[data-ui-lang="HR"] .ml-deploy-force-name {
   background:
     radial-gradient(ellipse 46% 72% at 50% 44%, rgba(28, 4, 8, 0.82) 0%, rgba(28, 4, 8, 0.55) 42%, transparent 72%),
     linear-gradient(90deg, rgba(18, 2, 5, 0.35) 0%, rgba(18, 2, 5, 0.02) 18%, transparent 50%, rgba(18, 2, 5, 0.02) 82%, rgba(18, 2, 5, 0.35) 100%),
-    radial-gradient(ellipse 38% 52% at 50% 40%, rgba(220, 45, 55, 0.12), transparent 64%);
+    radial-gradient(ellipse 38% 52% at 50% 40%, rgba(220, 45, 55, 0.12), transparent 64%); background:
+    radial-gradient(ellipse 46% 72% at 50% 44% in oklch, rgba(28, 4, 8, 0.82) 0%, rgba(28, 4, 8, 0.55) 42%, transparent 72%),
+    linear-gradient(90deg in oklch, rgba(18, 2, 5, 0.35) 0%, rgba(18, 2, 5, 0.02) 18%, transparent 50%, rgba(18, 2, 5, 0.02) 82%, rgba(18, 2, 5, 0.35) 100%),
+    radial-gradient(ellipse 38% 52% at 50% 40% in oklch, rgba(220, 45, 55, 0.12), transparent 64%);
   z-index: 2;
 }
 .ml-boost-card--portraits .ml-boost-inner {
@@ -1115,7 +1143,9 @@ html[data-ui-lang="HR"] .ml-deploy-force-name {
 .ml-boost-card.ml-boost-card--spark-bg.ml-boost-card--portraits::after {
   background:
     radial-gradient(ellipse 46% 72% at 50% 44%, rgba(8, 6, 14, 0.62) 0%, rgba(8, 6, 14, 0.28) 42%, transparent 72%),
-    linear-gradient(90deg, rgba(8, 6, 14, 0.38) 0%, rgba(8, 6, 14, 0.03) 18%, transparent 50%, rgba(8, 6, 14, 0.03) 82%, rgba(8, 6, 14, 0.38) 100%);
+    linear-gradient(90deg, rgba(8, 6, 14, 0.38) 0%, rgba(8, 6, 14, 0.03) 18%, transparent 50%, rgba(8, 6, 14, 0.03) 82%, rgba(8, 6, 14, 0.38) 100%); background:
+    radial-gradient(ellipse 46% 72% at 50% 44% in oklch, rgba(8, 6, 14, 0.62) 0%, rgba(8, 6, 14, 0.28) 42%, transparent 72%),
+    linear-gradient(90deg in oklch, rgba(8, 6, 14, 0.38) 0%, rgba(8, 6, 14, 0.03) 18%, transparent 50%, rgba(8, 6, 14, 0.03) 82%, rgba(8, 6, 14, 0.38) 100%);
 }
 .ml-boost-stage-row {
   display: flex;

@@ -335,7 +335,7 @@ input[type=range].ui-range.ui-range-snap::-moz-range-thumb{
   position:absolute;
   inset:0;
   border-radius:inherit;
-  background:linear-gradient(90deg,rgba(124,58,237,.95),rgba(196,181,253,.95));
+  background:linear-gradient(90deg,rgba(124,58,237,.95),rgba(196,181,253,.95)); background:linear-gradient(90deg in oklch,rgba(124,58,237,.95),rgba(196,181,253,.95));
   transform-origin:left center;
   transform:scaleX(var(--pep-ms-p,0));
   transition:transform var(--motion-dur-snap) var(--motion-ease-enter);
@@ -559,14 +559,14 @@ input[type=range].ui-range.ui-range-snap::-moz-range-thumb{
   border-radius:50%;
   pointer-events:none;
   z-index:2;
-  background:radial-gradient(circle,rgba(0,212,255,.45) 0%,rgba(0,212,255,.18) 42%,transparent 70%);
+  background:radial-gradient(circle,rgba(0,212,255,.45) 0%,rgba(0,212,255,.18) 42%,transparent 70%); background:radial-gradient(circle in oklch,rgba(0,212,255,.45) 0%,rgba(0,212,255,.18) 42%,transparent 70%);
   transform:scale(0);
   opacity:.85;
   animation:ggen-ripple-expand var(--motion-dur-ripple) var(--motion-ease-exit) forwards;
   will-change:transform,opacity;
 }
 .bt-vote-submit .ggen-ripple-wave{
-  background:radial-gradient(circle,rgba(255,255,255,.42) 0%,rgba(255,255,255,.12) 45%,transparent 70%);
+  background:radial-gradient(circle,rgba(255,255,255,.42) 0%,rgba(255,255,255,.12) 45%,transparent 70%); background:radial-gradient(circle in oklch,rgba(255,255,255,.42) 0%,rgba(255,255,255,.12) 45%,transparent 70%);
   z-index:2;
 }
 @keyframes ggen-ripple-expand{
@@ -596,6 +596,17 @@ input[type=range].ui-range.ui-range-snap::-moz-range-thumb{
   z-index:4;
   background:conic-gradient(
     from var(--ggen-spotlight-beam-angle),
+    transparent 0%,
+    transparent 58%,
+    rgba(0,212,255,.12) 64%,
+    rgba(0,212,255,.55) 69%,
+    rgba(201,169,98,.7) 72%,
+    rgba(0,212,255,.55) 75%,
+    rgba(0,212,255,.12) 80%,
+    transparent 86%,
+    transparent 100%
+  ); background:conic-gradient(
+    from var(--ggen-spotlight-beam-angle) in oklch,
     transparent 0%,
     transparent 58%,
     rgba(0,212,255,.12) 64%,
@@ -639,6 +650,17 @@ input[type=range].ui-range.ui-range-snap::-moz-range-thumb{
     rgba(0,212,255,.14) 80%,
     transparent 86%,
     transparent 100%
+  ); background:conic-gradient(
+    from var(--ggen-spotlight-beam-angle) in oklch,
+    transparent 0%,
+    transparent 58%,
+    rgba(0,212,255,.14) 64%,
+    rgba(0,212,255,.7) 69%,
+    rgba(201,169,98,.85) 72%,
+    rgba(0,212,255,.7) 75%,
+    rgba(0,212,255,.14) 80%,
+    transparent 86%,
+    transparent 100%
   );
   -webkit-mask:
     linear-gradient(#fff 0 0) content-box,
@@ -654,6 +676,17 @@ input[type=range].ui-range.ui-range-snap::-moz-range-thumb{
 .tm-browse-shortcut.dm-browse-shortcut.tm-browse-shortcut--beam::after{
   background:conic-gradient(
     from var(--ggen-spotlight-beam-angle),
+    transparent 0%,
+    transparent 58%,
+    rgba(234,179,8,.16) 64%,
+    rgba(234,179,8,.75) 69%,
+    rgba(0,212,255,.65) 72%,
+    rgba(234,179,8,.75) 75%,
+    rgba(234,179,8,.16) 80%,
+    transparent 86%,
+    transparent 100%
+  ); background:conic-gradient(
+    from var(--ggen-spotlight-beam-angle) in oklch,
     transparent 0%,
     transparent 58%,
     rgba(234,179,8,.16) 64%,
@@ -694,6 +727,73 @@ body:not(.tm-page):not(.dm-page).nav-tabs-overlay-freeze #navTabsShell{
   transition:none !important;
 }
 
+/* Phones (S25 Ultra / iPhone Pro Max class): tab bar stays. Collapsing it shifts the page. */
+@media (max-width: 820px) {
+  body:not(.tm-page):not(.dm-page).nav-tabs-collapsed #navTabsShell {
+    max-height: none !important;
+    min-height: 48px !important;
+    height: auto !important;
+    opacity: 1 !important;
+    transform: none !important;
+    pointer-events: auto !important;
+    margin: 0 !important;
+    padding: 6px var(--mobile-page-gutter, 16px) 0 !important;
+    border-bottom-width: 1px !important;
+  }
+
+  /*
+   * Special / Classic / calendar (#header15Slot) — hide on scroll-down.
+   * Alipay / Ko-fi / EN stay. Motion: takayu scroll-reveal (easeOutCubic + rise).
+   * Height collapses instantly (reclaim row); opacity/transform tween only.
+   */
+  .app-header .header-15-slot {
+    transform-origin: top center;
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    transition:
+      opacity 560ms cubic-bezier(0.33, 1, 0.68, 1),
+      transform 560ms cubic-bezier(0.33, 1, 0.68, 1);
+  }
+  body.header-15-collapsed .app-header .header-15-slot {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+    pointer-events: none;
+    max-height: 0 !important;
+    min-height: 0 !important;
+    height: 0 !important;
+    overflow: hidden;
+    margin: 0 !important;
+    padding: 0 !important;
+    gap: 0 !important;
+    flex: 0 0 0 !important;
+    width: 0 !important;
+    max-width: 0 !important;
+    border: 0;
+    transition:
+      opacity 320ms cubic-bezier(0.33, 1, 0.68, 1),
+      transform 320ms cubic-bezier(0.33, 1, 0.68, 1),
+      max-height 0ms linear,
+      height 0ms linear;
+  }
+  body.nav-tabs-overlay-freeze .app-header .header-15-slot {
+    transition: none !important;
+  }
+}
+
+/* Scroll-linked portrait drift — animation-timeline: view() (same idea as a view() parallax). */
+@supports (animation-timeline: view()) {
+  .spi-card .list-thumb-portrait-wrap .list-thumb-portrait {
+    transform-origin: center center;
+    animation: ggen-view-parallax linear both;
+    animation-timeline: view();
+    animation-range: cover 0% cover 100%;
+  }
+}
+@keyframes ggen-view-parallax {
+  from { transform: translate3d(0, -8%, 0) scale(1.12); }
+  to { transform: translate3d(0, 8%, 0) scale(1.12); }
+}
+
 @media (prefers-reduced-motion:reduce){
   /* Brand center-out hover: no stagger */
   .brand-text.ggen-tx-center-out .brand-char{
@@ -711,6 +811,17 @@ body:not(.tm-page):not(.dm-page).nav-tabs-overlay-freeze #navTabsShell{
     transition:none !important;
   }
   body:not(.tm-page):not(.dm-page).nav-tabs-collapsed #navTabsShell{
+    transform:none !important;
+  }
+  .app-header .header-15-slot{
+    transition:opacity 150ms ease !important;
+    transform:none !important;
+  }
+  body.header-15-collapsed .app-header .header-15-slot{
+    transform:none !important;
+  }
+  .spi-card .list-thumb-portrait-wrap .list-thumb-portrait{
+    animation:none !important;
     transform:none !important;
   }
   .whats-new-overlay{
@@ -867,6 +978,11 @@ body:not(.tm-page):not(.dm-page).nav-tabs-overlay-freeze #navTabsShell{
       rgba(0,212,255,.35),
       rgba(201,169,98,.25),
       rgba(0,212,255,.35)
+    )!important; background:linear-gradient(
+      135deg in oklch,
+      rgba(0,212,255,.35),
+      rgba(201,169,98,.25),
+      rgba(0,212,255,.35)
     )!important;
     opacity:.55!important;
   }
@@ -874,6 +990,11 @@ body:not(.tm-page):not(.dm-page).nav-tabs-overlay-freeze #navTabsShell{
     animation:none!important;
     background:linear-gradient(
       135deg,
+      rgba(0,212,255,.4),
+      rgba(201,169,98,.28),
+      rgba(0,212,255,.4)
+    )!important; background:linear-gradient(
+      135deg in oklch,
       rgba(0,212,255,.4),
       rgba(201,169,98,.28),
       rgba(0,212,255,.4)
@@ -886,10 +1007,15 @@ body:not(.tm-page):not(.dm-page).nav-tabs-overlay-freeze #navTabsShell{
       rgba(234,179,8,.45),
       rgba(0,212,255,.28),
       rgba(234,179,8,.45)
+    )!important; background:linear-gradient(
+      135deg in oklch,
+      rgba(234,179,8,.45),
+      rgba(0,212,255,.28),
+      rgba(234,179,8,.45)
     )!important;
   }
   #panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--limited > .bt-lim-beam{
-    background:linear-gradient(90deg,#00d4ff,#ffd400)!important;
+    background:linear-gradient(90deg,#00d4ff,#ffd400)!important; background:linear-gradient(90deg in oklch,#00d4ff,#ffd400)!important;
   }
   .modal-content:is(.unit-detail,.char-detail,.supporter-detail) .unit-holo-card__stage{
     transform:none!important;

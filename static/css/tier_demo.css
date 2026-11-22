@@ -22,7 +22,9 @@ body.tier-demo-page {
   min-height: 100vh;
   background-image:
     radial-gradient(ellipse 80% 50% at 50% -20%, rgba(56, 189, 248, 0.12), transparent),
-    radial-gradient(ellipse 60% 40% at 100% 0%, rgba(139, 92, 246, 0.08), transparent);
+    radial-gradient(ellipse 60% 40% at 100% 0%, rgba(139, 92, 246, 0.08), transparent); background-image:
+    radial-gradient(ellipse 80% 50% at 50% -20% in oklch, rgba(56, 189, 248, 0.12), transparent),
+    radial-gradient(ellipse 60% 40% at 100% 0% in oklch, rgba(139, 92, 246, 0.08), transparent);
 }
 
 .tier-demo-shell {
@@ -41,7 +43,7 @@ body.tier-demo-page {
   font-size: clamp(1.5rem, 4vw, 2rem);
   font-weight: 800;
   letter-spacing: -0.02em;
-  background: linear-gradient(90deg, #f8fafc, #38bdf8 55%, #a78bfa);
+  background: linear-gradient(90deg, #f8fafc, #38bdf8 55%, #a78bfa); background: linear-gradient(90deg in oklch, #f8fafc, #38bdf8 55%, #a78bfa);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -542,7 +544,7 @@ body.tier-demo-page {
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, #fbbf24, #f59e0b);
+  background: linear-gradient(90deg, #fbbf24, #f59e0b); background: linear-gradient(90deg in oklch, #fbbf24, #f59e0b);
 }
 
 .tier-axis-val {
@@ -584,7 +586,7 @@ body.tier-demo-page {
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, #38bdf8, #818cf8);
+  background: linear-gradient(90deg, #38bdf8, #818cf8); background: linear-gradient(90deg in oklch, #38bdf8, #818cf8);
 }
 
 .tier-sub-val {

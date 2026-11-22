@@ -49,6 +49,8 @@
   clip-path: var(--mls-chamfer, polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px));
   background:
     linear-gradient(180deg, rgba(0, 40, 70, 0.35), transparent 42%),
+    var(--bg-card, #10182a); background:
+    linear-gradient(180deg in oklch, rgba(0, 40, 70, 0.35), transparent 42%),
     var(--bg-card, #10182a);
   box-shadow:
     inset 0 0 0 1px rgba(255, 215, 0, 0.12),
@@ -218,6 +220,8 @@
   clip-path: var(--mls-chamfer-sm, polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px));
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 40%),
+    rgba(4, 12, 28, 0.88); background:
+    linear-gradient(180deg in oklch, rgba(255, 255, 255, 0.04), transparent 40%),
     rgba(4, 12, 28, 0.88);
   font-family: Teko, var(--font-body);
   font-weight: 600;
@@ -230,6 +234,8 @@
 .mls-btn:focus-visible {
   background:
     linear-gradient(180deg, rgba(0, 212, 255, 0.12), transparent 45%),
+    rgba(4, 12, 28, 0.95); background:
+    linear-gradient(180deg in oklch, rgba(0, 212, 255, 0.12), transparent 45%),
     rgba(4, 12, 28, 0.95);
   box-shadow: inset 0 0 0 1px rgba(255, 215, 0, 0.22);
   outline: none;
@@ -310,7 +316,7 @@
   padding: 8px 12px;
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
-  background: linear-gradient(180deg, rgba(0, 40, 70, 0.28), rgba(0, 12, 24, 0.48));
+  background: linear-gradient(180deg, rgba(0, 40, 70, 0.28), rgba(0, 12, 24, 0.48)); background: linear-gradient(180deg in oklch, rgba(0, 40, 70, 0.28), rgba(0, 12, 24, 0.48));
 }
 .mls-preset-item strong {
   font-size: 0.92rem;
@@ -836,6 +842,8 @@
   clip-path: var(--mls-chamfer, polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px));
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 28%),
+    var(--bg-card); background:
+    linear-gradient(180deg in oklch, rgba(255, 255, 255, 0.03), transparent 28%),
     var(--bg-card);
   overflow: hidden;
 }
@@ -1587,6 +1595,8 @@ body.mls-is-slot-dragging .mls-slot-list {
   overflow: hidden;
   background:
     linear-gradient(180deg, rgba(2, 8, 20, 0.28) 0%, rgba(2, 8, 20, 0.42) 100%),
+    url('/static/images/Master%20League/tex_bg_space01_v1_ML_300010.webp') center / cover no-repeat; background:
+    linear-gradient(180deg in oklch, rgba(2, 8, 20, 0.28) 0%, rgba(2, 8, 20, 0.42) 100%),
     url('/static/images/Master%20League/tex_bg_space01_v1_ML_300010.webp') center / cover no-repeat;
   box-shadow:
     inset 0 0 0 1px rgba(255, 215, 0, 0.14),
@@ -1920,7 +1930,8 @@ body.mls-battle-focus .lang-dropdown.active {
   border-radius: 0;
   clip-path: var(--mls-chamfer-sm, polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px));
   background:
-    linear-gradient(95deg, rgba(0, 40, 70, 0.92), rgba(2, 8, 20, 0.94));
+    linear-gradient(95deg, rgba(0, 40, 70, 0.92), rgba(2, 8, 20, 0.94)); background:
+    linear-gradient(95deg in oklch, rgba(0, 40, 70, 0.92), rgba(2, 8, 20, 0.94));
   box-shadow:
     inset 0 0 0 1px rgba(255, 215, 0, 0.16),
     0 4px 14px rgba(0, 0, 0, 0.4);
@@ -2002,6 +2013,8 @@ body.mls-battle-focus .lang-dropdown.active {
   clip-path: none;
   background:
     linear-gradient(180deg, rgba(0, 50, 80, 0.35) 0%, transparent 22%),
+    rgba(2, 8, 20, 0.96); background:
+    linear-gradient(180deg in oklch, rgba(0, 50, 80, 0.35) 0%, transparent 22%),
     rgba(2, 8, 20, 0.96);
   box-shadow: inset 1px 0 0 rgba(255, 215, 0, 0.1);
   pointer-events: auto;
@@ -2189,7 +2202,12 @@ body.mls-battle-focus .lang-dropdown.active {
     linear-gradient(90deg, rgba(120, 180, 255, 0.08) 1px, transparent 1px),
     radial-gradient(ellipse at 70% 110%, rgba(40, 90, 160, 0.45), transparent 55%),
     radial-gradient(ellipse at 20% 0%, rgba(20, 40, 90, 0.55), transparent 50%),
-    linear-gradient(180deg, #071428 0%, #020814 100%);
+    linear-gradient(180deg, #071428 0%, #020814 100%); background:
+    linear-gradient(in oklch, rgba(120, 180, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg in oklch, rgba(120, 180, 255, 0.08) 1px, transparent 1px),
+    radial-gradient(ellipse at 70% 110% in oklch, rgba(40, 90, 160, 0.45), transparent 55%),
+    radial-gradient(ellipse at 20% 0% in oklch, rgba(20, 40, 90, 0.55), transparent 50%),
+    linear-gradient(180deg in oklch, #071428 0%, #020814 100%);
   background-size:
     var(--mls-cell) var(--mls-cell),
     var(--mls-cell) var(--mls-cell),
@@ -2465,7 +2483,7 @@ body.mls-is-map-dragging .mls-map {
   pointer-events: none;
   z-index: 11;
   opacity: 0;
-  background: radial-gradient(circle, #fff 0%, rgba(255, 230, 120, 0.9) 35%, transparent 70%);
+  background: radial-gradient(circle, #fff 0%, rgba(255, 230, 120, 0.9) 35%, transparent 70%); background: radial-gradient(circle in oklch, #fff 0%, rgba(255, 230, 120, 0.9) 35%, transparent 70%);
   box-shadow: 0 0 14px rgba(255, 220, 100, 0.95);
 }
 /* Start on .is-play so iOS Safari runs the keyframe after insert (same as floats). */
@@ -2473,11 +2491,11 @@ body.mls-is-map-dragging .mls-map {
   animation: mlsMuzzleFlash 0.24s cubic-bezier(0.2, 0, 0, 1) both;
 }
 .mls-muzzle-flash.is-ally {
-  background: radial-gradient(circle, #fff 0%, rgba(120, 240, 255, 0.95) 40%, transparent 72%);
+  background: radial-gradient(circle, #fff 0%, rgba(120, 240, 255, 0.95) 40%, transparent 72%); background: radial-gradient(circle in oklch, #fff 0%, rgba(120, 240, 255, 0.95) 40%, transparent 72%);
   box-shadow: 0 0 14px rgba(0, 220, 255, 0.9);
 }
 .mls-muzzle-flash.is-enemy {
-  background: radial-gradient(circle, #fff 0%, rgba(255, 140, 160, 0.95) 40%, transparent 72%);
+  background: radial-gradient(circle, #fff 0%, rgba(255, 140, 160, 0.95) 40%, transparent 72%); background: radial-gradient(circle in oklch, #fff 0%, rgba(255, 140, 160, 0.95) 40%, transparent 72%);
   box-shadow: 0 0 14px rgba(255, 90, 120, 0.9);
 }
 .mls-muzzle-flash.is-crit {
@@ -2501,15 +2519,15 @@ body.mls-is-map-dragging .mls-map {
   z-index: 9;
   opacity: 0;
   transition: transform 0.14s ease-out, opacity 0.14s ease-out;
-  background: linear-gradient(90deg, rgba(255, 230, 140, 0.15), rgba(255, 240, 180, 0.85) 55%, #fff);
+  background: linear-gradient(90deg, rgba(255, 230, 140, 0.15), rgba(255, 240, 180, 0.85) 55%, #fff); background: linear-gradient(90deg in oklch, rgba(255, 230, 140, 0.15), rgba(255, 240, 180, 0.85) 55%, #fff);
   box-shadow: 0 0 8px rgba(255, 220, 100, 0.75);
 }
 .mls-ranged-trail.is-ally {
-  background: linear-gradient(90deg, rgba(0, 200, 255, 0.12), rgba(120, 240, 255, 0.85) 55%, #fff);
+  background: linear-gradient(90deg, rgba(0, 200, 255, 0.12), rgba(120, 240, 255, 0.85) 55%, #fff); background: linear-gradient(90deg in oklch, rgba(0, 200, 255, 0.12), rgba(120, 240, 255, 0.85) 55%, #fff);
   box-shadow: 0 0 6px rgba(0, 220, 255, 0.65);
 }
 .mls-ranged-trail.is-enemy {
-  background: linear-gradient(90deg, rgba(255, 80, 110, 0.12), rgba(255, 150, 170, 0.85) 55%, #fff);
+  background: linear-gradient(90deg, rgba(255, 80, 110, 0.12), rgba(255, 150, 170, 0.85) 55%, #fff); background: linear-gradient(90deg in oklch, rgba(255, 80, 110, 0.12), rgba(255, 150, 170, 0.85) 55%, #fff);
   box-shadow: 0 0 6px rgba(255, 90, 120, 0.65);
 }
 .mls-ranged-trail.is-crit { height: 4px; margin-top: -2px; }
@@ -2524,16 +2542,16 @@ body.mls-is-map-dragging .mls-map {
   border-radius: 50%;
   pointer-events: none;
   z-index: 11;
-  background: radial-gradient(circle, #fff 0%, #ffe066 55%, transparent 75%);
+  background: radial-gradient(circle, #fff 0%, #ffe066 55%, transparent 75%); background: radial-gradient(circle in oklch, #fff 0%, #ffe066 55%, transparent 75%);
   box-shadow: 0 0 12px rgba(255, 220, 100, 0.95), 0 0 22px rgba(255, 200, 60, 0.6);
   transform: translate3d(0, 0, 0);
 }
 .mls-ranged-shot.is-ally {
-  background: radial-gradient(circle, #fff 0%, #7af0ff 55%, transparent 75%);
+  background: radial-gradient(circle, #fff 0%, #7af0ff 55%, transparent 75%); background: radial-gradient(circle in oklch, #fff 0%, #7af0ff 55%, transparent 75%);
   box-shadow: 0 0 10px rgba(0, 220, 255, 0.95), 0 0 18px rgba(0, 180, 255, 0.5);
 }
 .mls-ranged-shot.is-enemy {
-  background: radial-gradient(circle, #fff 0%, #ff8a9a 55%, transparent 75%);
+  background: radial-gradient(circle, #fff 0%, #ff8a9a 55%, transparent 75%); background: radial-gradient(circle in oklch, #fff 0%, #ff8a9a 55%, transparent 75%);
   box-shadow: 0 0 10px rgba(255, 100, 130, 0.95), 0 0 18px rgba(255, 70, 100, 0.5);
 }
 .mls-ranged-shot.is-crit {
@@ -2588,11 +2606,11 @@ body.mls-is-map-dragging .mls-map {
   margin-left: -9px;
   margin-top: -5px;
   border-radius: 6px;
-  background: linear-gradient(90deg, #fff 0%, #7af0ff 45%, #3cf 100%);
+  background: linear-gradient(90deg, #fff 0%, #7af0ff 45%, #3cf 100%); background: linear-gradient(90deg in oklch, #fff 0%, #7af0ff 45%, #3cf 100%);
   box-shadow: 0 0 14px rgba(0, 220, 255, 0.95), 0 0 28px rgba(80, 180, 255, 0.55);
 }
 .mls-ranged-shot.is-koma-beam.is-enemy {
-  background: linear-gradient(90deg, #fff 0%, #ff9ab0 45%, #ff5a7a 100%);
+  background: linear-gradient(90deg, #fff 0%, #ff9ab0 45%, #ff5a7a 100%); background: linear-gradient(90deg in oklch, #fff 0%, #ff9ab0 45%, #ff5a7a 100%);
 }
 .mls-ranged-trail.is-koma-beam {
   height: 3px;
@@ -3693,7 +3711,7 @@ body.mls-is-map-dragging .mls-map {
   pointer-events: none;
   /* Above map tokens / lasers; --mls-move-ease lives on .mls-map only — do not var() it here. */
   z-index: 20;
-  background: linear-gradient(90deg, transparent, rgba(4, 12, 28, 0.45), transparent);
+  background: linear-gradient(90deg, transparent, rgba(4, 12, 28, 0.45), transparent); background: linear-gradient(90deg in oklch, transparent, rgba(4, 12, 28, 0.45), transparent);
 }
 .mls-banner[hidden] { display: none !important; }
 .mls-banner-inner {
@@ -3836,6 +3854,8 @@ body.mls-is-map-dragging .mls-map {
   pointer-events: auto;
   background:
     linear-gradient(180deg, rgba(0, 30, 55, 0.35) 0%, transparent 40%),
+    rgba(4, 10, 18, 0.62); background:
+    linear-gradient(180deg in oklch, rgba(0, 30, 55, 0.35) 0%, transparent 40%),
     rgba(4, 10, 18, 0.62);
   overflow: hidden;
 }
@@ -3866,14 +3886,14 @@ body.mls-is-map-dragging .mls-map {
 .mls-endcard-rule {
   width: 0;
   height: 2px;
-  background: linear-gradient(90deg, transparent, var(--accent-cyan, #00d4ff), var(--accent-gold, #ffd700), transparent);
+  background: linear-gradient(90deg, transparent, var(--accent-cyan, #00d4ff), var(--accent-gold, #ffd700), transparent); background: linear-gradient(90deg in oklch, transparent, var(--accent-cyan, #00d4ff), var(--accent-gold, #ffd700), transparent);
   transform-origin: center;
 }
 .mls-endcard.is-victory .mls-endcard-rule {
-  background: linear-gradient(90deg, transparent, var(--accent-cyan, #00d4ff), var(--accent-gold, #ffd700), transparent);
+  background: linear-gradient(90deg, transparent, var(--accent-cyan, #00d4ff), var(--accent-gold, #ffd700), transparent); background: linear-gradient(90deg in oklch, transparent, var(--accent-cyan, #00d4ff), var(--accent-gold, #ffd700), transparent);
 }
 .mls-endcard.is-draw .mls-endcard-rule {
-  background: linear-gradient(90deg, transparent, #7ad7ff, transparent);
+  background: linear-gradient(90deg, transparent, #7ad7ff, transparent); background: linear-gradient(90deg in oklch, transparent, #7ad7ff, transparent);
 }
 .mls-endcard-sub {
   font-family: Teko, var(--font-body);
@@ -3909,7 +3929,7 @@ body.mls-is-map-dragging .mls-map {
   font-weight: 700;
   text-transform: uppercase;
   color: #efe8da;
-  background: linear-gradient(95deg, rgba(255, 77, 109, 0.85), rgba(180, 40, 60, 0.9));
+  background: linear-gradient(95deg, rgba(255, 77, 109, 0.85), rgba(180, 40, 60, 0.9)); background: linear-gradient(95deg in oklch, rgba(255, 77, 109, 0.85), rgba(180, 40, 60, 0.9));
   cursor: pointer;
   opacity: 0;
   transform: translateY(8px);
@@ -3922,7 +3942,10 @@ body.mls-is-map-dragging .mls-map {
   background:
     radial-gradient(circle at 50% 42%, rgba(0, 212, 255, 0.2), transparent 44%),
     radial-gradient(circle at 32% 55%, rgba(255, 215, 0, 0.12), transparent 30%),
-    radial-gradient(circle at 68% 55%, rgba(0, 140, 255, 0.14), transparent 30%);
+    radial-gradient(circle at 68% 55%, rgba(0, 140, 255, 0.14), transparent 30%); background:
+    radial-gradient(circle at 50% 42% in oklch, rgba(0, 212, 255, 0.2), transparent 44%),
+    radial-gradient(circle at 32% 55% in oklch, rgba(255, 215, 0, 0.12), transparent 30%),
+    radial-gradient(circle at 68% 55% in oklch, rgba(0, 140, 255, 0.14), transparent 30%);
   opacity: 0;
 }
 .mls-endcard.is-victory.is-play .mls-endcard-title {
@@ -4543,7 +4566,7 @@ body.mls-is-fighting .mls-sim-start--board,
   border-radius: inherit;
   transform-origin: left center;
   transform: scaleX(var(--mls-ai-pct, 0));
-  background: linear-gradient(90deg, var(--accent-gold, #f0c14b), #ffe08a);
+  background: linear-gradient(90deg, var(--accent-gold, #f0c14b), #ffe08a); background: linear-gradient(90deg in oklch, var(--accent-gold, #f0c14b), #ffe08a);
   transition: transform 0.28s cubic-bezier(0.05, 0.7, 0.1, 1);
 }
 .mls-ai-progress.is-indeterminate .mls-ai-progress-fill {
@@ -4599,6 +4622,8 @@ body.mls-is-fighting .mls-sim-start--board,
   clip-path: var(--mls-chamfer, polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px));
   background:
     linear-gradient(180deg, rgba(0, 40, 80, 0.28) 0%, transparent 22%),
+    var(--bg-secondary); background:
+    linear-gradient(180deg in oklch, rgba(0, 40, 80, 0.28) 0%, transparent 22%),
     var(--bg-secondary);
   box-shadow: inset 0 0 0 1px rgba(255, 215, 0, 0.12);
   min-height: 120px;

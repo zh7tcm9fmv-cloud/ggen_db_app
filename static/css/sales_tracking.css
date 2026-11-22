@@ -17,14 +17,14 @@
 .trk-bg-top{
   top:0;height:min(420px,48vh);
   background-image:var(--trk-bg-top);background-position:top center;
-  -webkit-mask-image:linear-gradient(180deg,#000 42%,transparent 100%);
-  mask-image:linear-gradient(180deg,#000 42%,transparent 100%);
+  -webkit-mask-image:linear-gradient(180deg,#000 42%,transparent 100%); -webkit-mask-image:linear-gradient(180deg in oklch,#000 42%,transparent 100%);
+  mask-image:linear-gradient(180deg,#000 42%,transparent 100%); mask-image:linear-gradient(180deg in oklch,#000 42%,transparent 100%);
 }
 .trk-bg-bot{
   bottom:0;height:min(380px,44vh);
   background-image:var(--trk-bg-bot);background-position:bottom center;
-  -webkit-mask-image:linear-gradient(0deg,#000 40%,transparent 100%);
-  mask-image:linear-gradient(0deg,#000 40%,transparent 100%);
+  -webkit-mask-image:linear-gradient(0deg,#000 40%,transparent 100%); -webkit-mask-image:linear-gradient(0deg in oklch,#000 40%,transparent 100%);
+  mask-image:linear-gradient(0deg,#000 40%,transparent 100%); mask-image:linear-gradient(0deg in oklch,#000 40%,transparent 100%);
 }
 .trk-page > *:not(.trk-bg){position:relative;z-index:1}
 .trk-main{max-width:1100px;margin:0 auto;padding:18px 16px 64px;position:relative;z-index:1}
@@ -215,7 +215,7 @@ text.trk-x{
 .trk-legend-key{display:inline-flex;align-items:center;gap:6px;font-size:.72rem;color:var(--text-muted,#7a8fa8);margin-right:4px}
 .trk-legend-item{display:inline-flex;align-items:center;gap:6px;font-size:.8rem;color:var(--text-secondary,#9aadc4);cursor:pointer;user-select:none}
 .trk-legend-swatch{width:14px;height:3px;border-radius:2px;background:currentColor}
-.trk-legend-swatch--dash{background:repeating-linear-gradient(90deg,currentColor 0 3px,transparent 3px 6px);opacity:.75}
+.trk-legend-swatch--dash{background:repeating-linear-gradient(90deg,currentColor 0 3px,transparent 3px 6px); background:repeating-linear-gradient(90deg in oklch,currentColor 0 3px,transparent 3px 6px);opacity:.75}
 .trk-legend-item.is-off{opacity:.32}
 .trk-legend-item.is-oot:not(.is-off){opacity:.55}
 .trk-trail--gamei{pointer-events:none}

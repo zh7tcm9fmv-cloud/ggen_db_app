@@ -78,6 +78,7 @@ html.ggen-15[data-ui-lang="HK"]{
 .header-15-toggle:hover{background:rgba(0,217,255,.2);color:#fff}
 .header-15-toggle.is-active{
   background:linear-gradient(95deg,rgba(0,217,255,.35),rgba(0,140,255,.25));
+  background:linear-gradient(95deg in oklch,rgba(0,217,255,.4),rgba(0,140,255,.28));
   border-color:#00d9ff;color:#fff;
 }
 .header-15-toggle--special{
@@ -128,6 +129,13 @@ html.ggen-15[data-ui-lang="HK"]{
   border:0;
   background:linear-gradient(
     180deg,
+    transparent 8%,
+    rgba(0,217,255,.22) 28%,
+    rgba(0,217,255,.55) 50%,
+    rgba(0,217,255,.22) 72%,
+    transparent 92%
+  ); background:linear-gradient(
+    180deg in oklch,
     transparent 8%,
     rgba(0,217,255,.22) 28%,
     rgba(0,217,255,.55) 50%,
@@ -205,7 +213,7 @@ html.ggen-15 #detailModal .modal-content.roadmap-calendar-detail #detailInner,
 
 /* Soft full-bleed header — blends into page; quiet hex, no chamfer plate. */
 html.ggen-15 .app-header{
-  background:linear-gradient(180deg,rgba(10,14,23,.97) 0%,rgba(10,14,23,.95) 70%,rgba(10,14,23,.92) 100%);
+  background:linear-gradient(180deg,rgba(10,14,23,.97) 0%,rgba(10,14,23,.95) 70%,rgba(10,14,23,.92) 100%); background:linear-gradient(180deg in oklch,rgba(10,14,23,.97) 0%,rgba(10,14,23,.95) 70%,rgba(10,14,23,.92) 100%);
   border-bottom:none;
   box-shadow:none;
   /* no blur — GPU thrash with solid wash */
@@ -235,8 +243,8 @@ html.ggen-15 .app-header .header-inner::before{
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24.249' height='42' viewBox='0 0 24.249 42'%3E%3Cg fill='none' stroke-linejoin='round'%3E%3Cg stroke='%2300d9ff' stroke-width='1.5' opacity='.22'%3E%3Cpath d='M12.124 0L24.249 7v14L12.124 28 0 21V7z'/%3E%3Cpath d='M0 21L12.124 28v14L0 49l-12.124-7V28z'/%3E%3Cpath d='M24.249 21L36.373 28v14L24.249 49 12.124 42V28z'/%3E%3C/g%3E%3Cg stroke='%237af0ff' stroke-width='.6' opacity='.4'%3E%3Cpath d='M12.124 0L24.249 7v14L12.124 28 0 21V7z'/%3E%3Cpath d='M0 21L12.124 28v14L0 49l-12.124-7V28z'/%3E%3Cpath d='M24.249 21L36.373 28v14L24.249 49 12.124 42V28z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
   background-size:36px 62px;
   background-repeat:repeat;
-  -webkit-mask-image:linear-gradient(90deg,rgba(0,0,0,.45) 0%,rgba(0,0,0,.7) 35%,rgba(0,0,0,.55) 65%,rgba(0,0,0,.35) 100%);
-  mask-image:linear-gradient(90deg,rgba(0,0,0,.45) 0%,rgba(0,0,0,.7) 35%,rgba(0,0,0,.55) 65%,rgba(0,0,0,.35) 100%);
+  -webkit-mask-image:linear-gradient(90deg,rgba(0,0,0,.45) 0%,rgba(0,0,0,.7) 35%,rgba(0,0,0,.55) 65%,rgba(0,0,0,.35) 100%); -webkit-mask-image:linear-gradient(90deg in oklch,rgba(0,0,0,.45) 0%,rgba(0,0,0,.7) 35%,rgba(0,0,0,.55) 65%,rgba(0,0,0,.35) 100%);
+  mask-image:linear-gradient(90deg,rgba(0,0,0,.45) 0%,rgba(0,0,0,.7) 35%,rgba(0,0,0,.55) 65%,rgba(0,0,0,.35) 100%); mask-image:linear-gradient(90deg in oklch,rgba(0,0,0,.45) 0%,rgba(0,0,0,.7) 35%,rgba(0,0,0,.55) 65%,rgba(0,0,0,.35) 100%);
 }
 html.ggen-15 .app-header .header-inner > *{
   position:relative;z-index:2;
@@ -281,7 +289,7 @@ html.ggen-15 .app-header .brand-sub{
 html.ggen-15 #navTabsShell{
   position:relative;
   z-index:1;
-  background:linear-gradient(180deg,rgba(10,14,23,.25) 0%,transparent 100%);
+  background:linear-gradient(180deg,rgba(10,14,23,.25) 0%,transparent 100%); background:linear-gradient(180deg in oklch,rgba(10,14,23,.25) 0%,transparent 100%);
   border-bottom:1px solid rgba(42,54,84,.45);
 }
 html.ggen-15 #navTabs .nav-tab,
@@ -315,11 +323,11 @@ html.ggen-15 #navTabsShell .nav-tabs-edge-hint{
 }
 html.ggen-15 #navTabsShell .nav-tabs-edge-hint--right{
   right:0;justify-content:flex-end;padding:0 max(10px,env(safe-area-inset-right,0px)) 0 24px;
-  background:linear-gradient(90deg,transparent 0%,rgba(8,12,24,.78) 38%,rgba(8,12,24,.96) 100%);
+  background:linear-gradient(90deg,transparent 0%,rgba(8,12,24,.78) 38%,rgba(8,12,24,.96) 100%); background:linear-gradient(90deg in oklch,transparent 0%,rgba(8,12,24,.78) 38%,rgba(8,12,24,.96) 100%);
 }
 html.ggen-15 #navTabsShell .nav-tabs-edge-hint--left{
   left:0;justify-content:flex-start;padding:0 24px 0 max(10px,env(safe-area-inset-left,0px));
-  background:linear-gradient(270deg,transparent 0%,rgba(8,12,24,.78) 38%,rgba(8,12,24,.96) 100%);
+  background:linear-gradient(270deg,transparent 0%,rgba(8,12,24,.78) 38%,rgba(8,12,24,.96) 100%); background:linear-gradient(270deg in oklch,transparent 0%,rgba(8,12,24,.78) 38%,rgba(8,12,24,.96) 100%);
 }
 html.ggen-15 #navTabsShell.nav-tabs-shell--scroll-right .nav-tabs-edge-hint--right:not([hidden]){
   opacity:1;pointer-events:auto;
@@ -360,6 +368,7 @@ html.ggen-15 .tm-browse-shortcut{
   font-size:14px;font-weight:600;letter-spacing:.1em;
   border-color:rgba(0,217,255,.35);
   background:linear-gradient(95deg,rgba(0,217,255,.12),rgba(0,140,255,.06));
+  background:linear-gradient(95deg in oklch,rgba(0,217,255,.16),rgba(0,140,255,.1));
   color:#7af0ff;
   box-shadow:none;
 }
@@ -367,6 +376,7 @@ html.ggen-15 .tm-browse-shortcut:hover,
 html.ggen-15 .tm-browse-shortcut:focus-visible{
   border-color:#00d9ff;color:#fff;
   background:linear-gradient(95deg,rgba(0,217,255,.28),rgba(0,140,255,.16));
+  background:linear-gradient(95deg in oklch,rgba(0,217,255,.32),rgba(0,140,255,.2));
 }
 html.ggen-15[data-ui-lang="JA"] .tm-browse-shortcut-label,
 html.ggen-15[data-ui-lang="TW"] .tm-browse-shortcut-label,
@@ -395,6 +405,8 @@ html.ggen-15 .main-content .role-filter-dd-btn{
   font-size:15px;
   background:
     radial-gradient(120% 80% at 0% 0%,rgba(0,217,255,.08),transparent 55%),
+    var(--bg-input); background:
+    radial-gradient(in oklch, 120% 80% at 0% 0%,rgba(0,217,255,.08),transparent 55%),
     var(--bg-input);
 }
 html.ggen-15 .main-content .rarity-filter-btn:hover,
@@ -428,6 +440,8 @@ html.ggen-15 .main-content .list-grid-card{
   border:1px solid rgba(0,217,255,.42) !important;
   background:
     radial-gradient(120% 80% at 0% 0%,rgba(0,217,255,.07),transparent 55%),
+    rgba(9,20,39,.94) !important; background:
+    radial-gradient(in oklch, 120% 80% at 0% 0%,rgba(0,217,255,.07),transparent 55%),
     rgba(9,20,39,.94) !important;
   box-shadow:none !important;
 }
@@ -435,6 +449,8 @@ html.ggen-15 .main-content .list-grid-card:hover{
   border-color:#00d9ff !important;
   background:
     radial-gradient(120% 80% at 0% 0%,rgba(0,217,255,.12),transparent 55%),
+    rgba(12,24,44,.96) !important; background:
+    radial-gradient(in oklch, 120% 80% at 0% 0%,rgba(0,217,255,.12),transparent 55%),
     rgba(12,24,44,.96) !important;
   box-shadow:none !important;
 }
@@ -443,6 +459,8 @@ html.ggen-15 .main-content .list-grid-card.list-detail-active:hover{
   border-color:#00d9ff !important;
   background:
     radial-gradient(120% 80% at 0% 0%,rgba(0,217,255,.14),transparent 55%),
+    rgba(12,24,44,.98) !important; background:
+    radial-gradient(in oklch, 120% 80% at 0% 0%,rgba(0,217,255,.14),transparent 55%),
     rgba(12,24,44,.98) !important;
 }
 html.ggen-15 .main-content .list-grid-card:focus-visible{
@@ -483,6 +501,8 @@ html.ggen-15 #detailModal .modal-content{
   box-shadow:0 0 0 1px rgba(0,0,0,.4),0 0 40px rgba(0,217,255,.08);
   background:
     radial-gradient(80% 50% at 8% 0%,rgba(0,217,255,.08),transparent 50%),
+    var(--bg-modal,var(--bg-card,#0a1422)); background:
+    radial-gradient(in oklch, 80% 50% at 8% 0%,rgba(0,217,255,.08),transparent 50%),
     var(--bg-modal,var(--bg-card,#0a1422));
 }
 html.ggen-15 #detailModal .modal-content .detail-title{
@@ -538,6 +558,8 @@ html.ggen-15 .main-content .spi-card{
   border:1px solid rgba(0,217,255,.4);
   background:
     radial-gradient(120% 80% at 0% 0%,rgba(0,217,255,.07),transparent 55%),
+    var(--bg-card); background:
+    radial-gradient(in oklch, 120% 80% at 0% 0%,rgba(0,217,255,.07),transparent 55%),
     var(--bg-card);
   box-shadow:none;
 }
@@ -548,6 +570,8 @@ html.ggen-15 .main-content .spi-card.is-db-selected{
   border-color:#00d9ff;
   background:
     radial-gradient(120% 80% at 0% 0%,rgba(0,217,255,.12),transparent 55%),
+    var(--bg-card-hover); background:
+    radial-gradient(in oklch, 120% 80% at 0% 0%,rgba(0,217,255,.12),transparent 55%),
     var(--bg-card-hover);
 }
 html.ggen-15 .spi-card-name,
@@ -564,6 +588,8 @@ html.ggen-15 .main-content .lr-card:not(.bt-lr-tile--limited){
   border:1px solid rgba(0,217,255,.4);
   background:
     radial-gradient(120% 80% at 0% 0%,rgba(0,217,255,.07),transparent 55%),
+    var(--bg-card); background:
+    radial-gradient(in oklch, 120% 80% at 0% 0%,rgba(0,217,255,.07),transparent 55%),
     var(--bg-card);
   box-shadow:none;
 }
@@ -572,6 +598,8 @@ html.ggen-15 .main-content .lr-card:not(.bt-lr-tile--limited):hover{
   border-color:#00d9ff;
   background:
     radial-gradient(120% 80% at 0% 0%,rgba(0,217,255,.12),transparent 55%),
+    var(--bg-card-hover); background:
+    radial-gradient(in oklch, 120% 80% at 0% 0%,rgba(0,217,255,.12),transparent 55%),
     var(--bg-card-hover);
 }
 html.ggen-15 .spi-bucket-head h3,
@@ -642,23 +670,26 @@ html.ggen-15 .main-content .role-filter-dd-btn{
 }
 
 @media(max-width:768px){
-  /* Brand + support on row 1; Special/Classic on full-width row 2 — stops badge covering title */
+  /* Brand + icon support on row 1; Special/Classic on row 2 — no tall Alipay/Ko-fi stack */
   .app-header .header-inner:has(.header-15-slot){
     flex-wrap:wrap;
     align-items:center;
     row-gap:6px;
+    padding-top:6px;
+    padding-bottom:4px;
   }
   .app-header .header-inner:has(.header-15-slot) .header-brand{
     position:relative;
     z-index:3;
     flex:1 1 0;
     min-width:0;
-    max-width:calc(100% - 8px);
+    max-width:calc(100% - 96px);
   }
   .app-header .header-inner:has(.header-15-slot) .header-controls{
     order:2;
     margin-left:auto;
-    flex:0 1 auto;
+    flex:0 0 auto;
+    align-self:center;
   }
   .header-15-slot{
     order:3;
@@ -666,7 +697,7 @@ html.ggen-15 .main-content .role-filter-dd-btn{
     width:100%;
     max-width:100%;
     margin:0;
-    gap:8px;
+    gap:6px;
     justify-content:flex-start;
   }
   .header-15-toggle--special{

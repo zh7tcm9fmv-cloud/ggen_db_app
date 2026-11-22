@@ -17,7 +17,9 @@ body.spi-page .bg-pattern {
   background-color: var(--bg-primary);
   background-image:
     radial-gradient(ellipse at 20% 20%, rgba(74, 144, 217, 0.05) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 80%, rgba(0, 212, 255, 0.04) 0%, transparent 50%);
+    radial-gradient(ellipse at 80% 80%, rgba(0, 212, 255, 0.04) 0%, transparent 50%); background-image:
+    radial-gradient(ellipse at 20% 20% in oklch, rgba(74, 144, 217, 0.05) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80% in oklch, rgba(0, 212, 255, 0.04) 0%, transparent 50%);
 }
 
 .spi-app-header .header-brand { text-decoration: none; color: inherit; }
@@ -1031,7 +1033,7 @@ html.spi-modal-open body.spi-page {
 /* S = UR frame prism (purple→cyan→mint, matches UI_Common_Tmb_Long_Frame_UR);
    A = SSR gold; B = R blue; C = green; D = N; E = darker grey; + = same tone, flashier */
 .spi-chip.letter.letter-S {
-  background: linear-gradient(135deg, #9047bb, #5b81e8, #1dbdd9, #2ec8b4, #42cc9d);
+  background: linear-gradient(135deg, #9047bb, #5b81e8, #1dbdd9, #2ec8b4, #42cc9d); background: linear-gradient(135deg in oklch, #9047bb, #5b81e8, #1dbdd9, #2ec8b4, #42cc9d);
   color: #fff;
   box-shadow: 0 0 10px rgba(41, 179, 228, 0.45), 0 0 4px rgba(144, 71, 187, 0.4);
   text-shadow: 0 1px 2px rgba(10, 20, 40, 0.55), 0 0 6px rgba(176, 240, 240, 0.35);
@@ -1039,6 +1041,17 @@ html.spi-modal-open body.spi-page {
 .spi-chip.letter.letter-S-plus {
   background: linear-gradient(
     120deg,
+    #7a3aad 0%,
+    #9047bb 14%,
+    #5b81e8 32%,
+    #29b3e4 48%,
+    #b0f0f0 56%,
+    #1fc6ce 66%,
+    #2ec8b4 80%,
+    #42cc9d 90%,
+    #7a3aad 100%
+  ); background: linear-gradient(
+    120deg in oklch,
     #7a3aad 0%,
     #9047bb 14%,
     #5b81e8 32%,
@@ -1059,21 +1072,21 @@ html.spi-modal-open body.spi-page {
   text-shadow: 0 1px 2px rgba(10, 20, 40, 0.55), 0 0 8px rgba(176, 240, 240, 0.5);
 }
 .spi-chip.letter.letter-A {
-  background: linear-gradient(135deg, #ffd700, #ffed4a);
+  background: linear-gradient(135deg, #ffd700, #ffed4a); background: linear-gradient(135deg in oklch, #ffd700, #ffed4a);
 }
 .spi-chip.letter.letter-A-plus {
-  background: linear-gradient(135deg, #e6b800 0%, #ffd700 28%, #fff3a0 50%, #ffd700 72%, #e6b800 100%);
+  background: linear-gradient(135deg, #e6b800 0%, #ffd700 28%, #fff3a0 50%, #ffd700 72%, #e6b800 100%); background: linear-gradient(135deg in oklch, #e6b800 0%, #ffd700 28%, #fff3a0 50%, #ffd700 72%, #e6b800 100%);
   background-size: 200% 200%;
   animation: spiLetterShine 2.4s ease-in-out infinite;
   box-shadow: 0 0 12px rgba(255, 215, 0, 0.65), 0 0 3px rgba(255, 237, 74, 0.9);
   text-shadow: 0 0 6px rgba(255, 215, 0, 0.7);
 }
 .spi-chip.letter.letter-B {
-  background: linear-gradient(135deg, #2563eb, #60a5fa);
+  background: linear-gradient(135deg, #2563eb, #60a5fa); background: linear-gradient(135deg in oklch, #2563eb, #60a5fa);
   color: #fff;
 }
 .spi-chip.letter.letter-B-plus {
-  background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 30%, #bfdbfe 50%, #60a5fa 70%, #1d4ed8 100%);
+  background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 30%, #bfdbfe 50%, #60a5fa 70%, #1d4ed8 100%); background: linear-gradient(135deg in oklch, #1d4ed8 0%, #3b82f6 30%, #bfdbfe 50%, #60a5fa 70%, #1d4ed8 100%);
   background-size: 200% 200%;
   animation: spiLetterShine 2.4s ease-in-out infinite;
   color: #fff;
@@ -1081,15 +1094,15 @@ html.spi-modal-open body.spi-page {
   text-shadow: 0 0 6px rgba(191, 219, 254, 0.55);
 }
 .spi-chip.letter.letter-C {
-  background: linear-gradient(135deg, #16a34a, #4ade80);
+  background: linear-gradient(135deg, #16a34a, #4ade80); background: linear-gradient(135deg in oklch, #16a34a, #4ade80);
   color: #fff;
 }
 .spi-chip.letter.letter-D {
-  background: linear-gradient(135deg, #6b7280, #9ca3af);
+  background: linear-gradient(135deg, #6b7280, #9ca3af); background: linear-gradient(135deg in oklch, #6b7280, #9ca3af);
   color: #fff;
 }
 .spi-chip.letter.letter-E {
-  background: linear-gradient(135deg, #1f2937, #374151);
+  background: linear-gradient(135deg, #1f2937, #374151); background: linear-gradient(135deg in oklch, #1f2937, #374151);
   color: #d1d5db;
 }
 @keyframes spiLetterShine {
@@ -1164,13 +1177,24 @@ html.spi-modal-open body.spi-page {
   font-weight: 800;
 }
 .spi-letter-chip.letter-S {
-  background: linear-gradient(135deg, #9047bb, #5b81e8, #1dbdd9, #2ec8b4, #42cc9d);
+  background: linear-gradient(135deg, #9047bb, #5b81e8, #1dbdd9, #2ec8b4, #42cc9d); background: linear-gradient(135deg in oklch, #9047bb, #5b81e8, #1dbdd9, #2ec8b4, #42cc9d);
   color: #fff;
   text-shadow: 0 1px 2px rgba(10, 20, 40, 0.55);
 }
 .spi-letter-chip.letter-S-plus {
   background: linear-gradient(
     120deg,
+    #7a3aad,
+    #9047bb,
+    #5b81e8,
+    #29b3e4,
+    #b0f0f0,
+    #1fc6ce,
+    #2ec8b4,
+    #42cc9d,
+    #7a3aad
+  ); background: linear-gradient(
+    120deg in oklch,
     #7a3aad,
     #9047bb,
     #5b81e8,
@@ -1187,24 +1211,24 @@ html.spi-modal-open body.spi-page {
   box-shadow: 0 0 10px rgba(41, 179, 228, 0.45);
   text-shadow: 0 1px 2px rgba(10, 20, 40, 0.55);
 }
-.spi-letter-chip.letter-A { background: linear-gradient(135deg, #ffd700, #ffed4a); }
+.spi-letter-chip.letter-A { background: linear-gradient(135deg, #ffd700, #ffed4a); background: linear-gradient(135deg in oklch, #ffd700, #ffed4a); }
 .spi-letter-chip.letter-A-plus {
-  background: linear-gradient(135deg, #e6b800, #ffd700, #fff3a0, #ffd700, #e6b800);
+  background: linear-gradient(135deg, #e6b800, #ffd700, #fff3a0, #ffd700, #e6b800); background: linear-gradient(135deg in oklch, #e6b800, #ffd700, #fff3a0, #ffd700, #e6b800);
   background-size: 200% 200%;
   animation: spiLetterShine 2.4s ease-in-out infinite;
   box-shadow: 0 0 8px rgba(255, 215, 0, 0.55);
 }
-.spi-letter-chip.letter-B { background: linear-gradient(135deg, #2563eb, #60a5fa); color: #fff; }
+.spi-letter-chip.letter-B { background: linear-gradient(135deg, #2563eb, #60a5fa); background: linear-gradient(135deg in oklch, #2563eb, #60a5fa); color: #fff; }
 .spi-letter-chip.letter-B-plus {
-  background: linear-gradient(135deg, #1d4ed8, #3b82f6, #bfdbfe, #60a5fa, #1d4ed8);
+  background: linear-gradient(135deg, #1d4ed8, #3b82f6, #bfdbfe, #60a5fa, #1d4ed8); background: linear-gradient(135deg in oklch, #1d4ed8, #3b82f6, #bfdbfe, #60a5fa, #1d4ed8);
   background-size: 200% 200%;
   animation: spiLetterShine 2.4s ease-in-out infinite;
   color: #fff;
   box-shadow: 0 0 8px rgba(59, 130, 246, 0.55);
 }
-.spi-letter-chip.letter-C { background: linear-gradient(135deg, #16a34a, #4ade80); color: #fff; }
-.spi-letter-chip.letter-D { background: linear-gradient(135deg, #6b7280, #9ca3af); color: #fff; }
-.spi-letter-chip.letter-E { background: linear-gradient(135deg, #1f2937, #374151); color: #d1d5db; }
+.spi-letter-chip.letter-C { background: linear-gradient(135deg, #16a34a, #4ade80); background: linear-gradient(135deg in oklch, #16a34a, #4ade80); color: #fff; }
+.spi-letter-chip.letter-D { background: linear-gradient(135deg, #6b7280, #9ca3af); background: linear-gradient(135deg in oklch, #6b7280, #9ca3af); color: #fff; }
+.spi-letter-chip.letter-E { background: linear-gradient(135deg, #1f2937, #374151); background: linear-gradient(135deg in oklch, #1f2937, #374151); color: #d1d5db; }
 .spi-chip.score {
   color: var(--text-muted);
   font-weight: 600;
@@ -1393,8 +1417,8 @@ html.spi-modal-open body.spi-page {
   border-radius: inherit;
   min-width: 2px;
 }
-.spi-bar-pos { background: linear-gradient(90deg, #2ed573, #7CF5b0); }
-.spi-bar-neg { background: linear-gradient(90deg, #ff4757, #ff8a95); }
+.spi-bar-pos { background: linear-gradient(90deg, #2ed573, #7CF5b0); background: linear-gradient(90deg in oklch, #2ed573, #7CF5b0); }
+.spi-bar-neg { background: linear-gradient(90deg, #ff4757, #ff8a95); background: linear-gradient(90deg in oklch, #ff4757, #ff8a95); }
 .spi-bar-zero { background: rgba(148, 163, 184, 0.35); }
 .spi-modal-close {
   position: absolute;

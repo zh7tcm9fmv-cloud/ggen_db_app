@@ -27,7 +27,7 @@
   padding:8px;
   overflow:visible;
   max-width:min(420px,calc(100vw - 24px));
-  background:linear-gradient(165deg,rgba(26,34,54,.98),rgba(20,28,46,.98));
+  background:linear-gradient(165deg,rgba(26,34,54,.98),rgba(20,28,46,.98)); background:linear-gradient(165deg in oklch,rgba(26,34,54,.98),rgba(20,28,46,.98));
   border:1px solid rgba(0,212,255,.28);
   border-radius:var(--radius-lg);
   box-shadow:
@@ -66,7 +66,7 @@
   position:absolute;
   inset:0;
   z-index:0;
-  background:linear-gradient(165deg,rgba(26,34,54,.72),rgba(20,28,46,.82));
+  background:linear-gradient(165deg,rgba(26,34,54,.72),rgba(20,28,46,.82)); background:linear-gradient(165deg in oklch,rgba(26,34,54,.72),rgba(20,28,46,.82));
   pointer-events:none;
 }
 .kofi-donate-promo.is-visible:not(.is-entering) .kofi-donate-promo-panel{
@@ -149,7 +149,7 @@
   padding:0;
   border:1px solid rgba(255,255,255,.28);
   border-radius:8px;
-  background:linear-gradient(145deg,rgba(255,255,255,.16),rgba(0,212,255,.1));
+  background:linear-gradient(145deg,rgba(255,255,255,.16),rgba(0,212,255,.1)); background:linear-gradient(145deg in oklch,rgba(255,255,255,.16),rgba(0,212,255,.1));
   color:#fff;
   cursor:pointer;
   display:flex;
@@ -187,7 +187,7 @@
 }
 .kofi-donate-promo-close:hover{
   color:#fff;
-  background:linear-gradient(145deg,rgba(255,255,255,.22),rgba(0,212,255,.18));
+  background:linear-gradient(145deg,rgba(255,255,255,.22),rgba(0,212,255,.18)); background:linear-gradient(145deg in oklch,rgba(255,255,255,.22),rgba(0,212,255,.18));
   border-color:rgba(0,212,255,.42);
 }
 .kofi-donate-promo-close .ui-close-icon svg{

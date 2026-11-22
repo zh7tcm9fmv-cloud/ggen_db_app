@@ -36,7 +36,10 @@
   background-image:
     radial-gradient(ellipse 120% 80% at 12% -8%, rgba(74, 144, 217, 0.09) 0%, transparent 52%),
     radial-gradient(ellipse 90% 70% at 88% 108%, rgba(168, 85, 247, 0.07) 0%, transparent 48%),
-    radial-gradient(ellipse 60% 40% at 50% 50%, rgba(0, 212, 255, 0.025) 0%, transparent 70%);
+    radial-gradient(ellipse 60% 40% at 50% 50%, rgba(0, 212, 255, 0.025) 0%, transparent 70%); background-image:
+    radial-gradient(ellipse 120% 80% at 12% -8% in oklch, rgba(74, 144, 217, 0.09) 0%, transparent 52%),
+    radial-gradient(ellipse 90% 70% at 88% 108% in oklch, rgba(168, 85, 247, 0.07) 0%, transparent 48%),
+    radial-gradient(ellipse 60% 40% at 50% 50% in oklch, rgba(0, 212, 255, 0.025) 0%, transparent 70%);
 }
 
 
@@ -45,6 +48,10 @@
   background-color: rgba(17, 24, 39, 0.96);
   background-image: linear-gradient(
     180deg,
+    rgba(17, 24, 39, 0.98) 0%,
+    rgba(10, 14, 23, 0.96) 100%
+  ); background-image: linear-gradient(
+    180deg in oklch,
     rgba(17, 24, 39, 0.98) 0%,
     rgba(10, 14, 23, 0.96) 100%
   );
@@ -56,6 +63,10 @@
 .nav-tabs-shell {
   background: linear-gradient(
     180deg,
+    rgba(10, 14, 23, 0.55) 0%,
+    rgba(10, 14, 23, 0) 100%
+  ); background: linear-gradient(
+    180deg in oklch,
     rgba(10, 14, 23, 0.55) 0%,
     rgba(10, 14, 23, 0) 100%
   );
@@ -133,12 +144,20 @@
     180deg,
     rgba(17, 24, 39, 0.98) 0%,
     rgba(17, 24, 39, 0.92) 100%
+  ); background: linear-gradient(
+    180deg in oklch,
+    rgba(17, 24, 39, 0.98) 0%,
+    rgba(17, 24, 39, 0.92) 100%
   );
 }
 
 .data-table thead th {
   background: linear-gradient(
     180deg,
+    rgba(26, 34, 54, 0.98) 0%,
+    rgba(22, 30, 48, 0.96) 100%
+  ); background: linear-gradient(
+    180deg in oklch,
     rgba(26, 34, 54, 0.98) 0%,
     rgba(22, 30, 48, 0.96) 100%
   );
@@ -201,6 +220,10 @@
 .detail-body .detail-section > .section-title {
   background: linear-gradient(
     180deg,
+    rgba(16, 22, 36, 0.96) 0%,
+    rgba(13, 19, 33, 0.92) 100%
+  ); background: linear-gradient(
+    180deg in oklch,
     rgba(16, 22, 36, 0.96) 0%,
     rgba(13, 19, 33, 0.92) 100%
   );

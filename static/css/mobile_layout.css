@@ -74,41 +74,89 @@
   }
 
   .header-controls {
-    flex-shrink: 1;
+    flex: 0 0 auto;
+    flex-shrink: 0;
     min-width: 0;
-    max-width: 46%;
+    align-self: flex-start;
+    max-width: none;
   }
 
   .header-lang-col {
     min-width: 0;
     max-width: 100%;
+    gap: 0;
   }
 
+  .header-inner {
+    align-items: flex-start;
+    padding-top: 6px;
+    padding-bottom: 4px;
+  }
+
+  /* Icon + EN on one line — full “Support on …” labels wrap into a tall empty band. */
   .header-lang-kofi-row {
     max-width: 100%;
-    align-items: flex-start;
-    gap: 6px 8px;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
   }
 
   .header-support-btns {
-    flex-direction: column;
-    align-items: stretch;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-end;
     align-self: flex-start;
-    gap: 6px;
-    max-width: min(calc(100vw - 148px), 240px);
+    gap: 4px;
+    max-width: none;
     min-width: 0;
   }
 
   .header-lang-col .header-support-btns .alipayhk-header-btn,
   .header-lang-col .header-support-btns .kofi-header-link,
   .header-lang-col .header-support-btns .roadmap-header-link {
+    position: relative;
     justify-content: center;
-    white-space: normal;
+    align-items: center;
+    white-space: nowrap;
     text-align: center;
-    line-height: 1.2;
-    font-size: 10px;
-    padding: 4px 8px;
+    line-height: 1;
+    font-size: 0;
+    padding: 4px;
+    min-width: 28px;
     min-height: 28px;
+    width: 28px;
+    gap: 0;
+  }
+
+  .header-lang-col .header-support-btns .alipayhk-header-btn > span,
+  .header-lang-col .header-support-btns .kofi-header-link > span,
+  .header-lang-col .header-support-btns .roadmap-header-link > span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .header-lang-col .header-support-btns .alipayhk-header-ic,
+  .header-lang-col .header-support-btns .kofi-header-ic {
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+    min-height: 16px;
+  }
+
+  .header-lang-col .lang-btn {
+    min-height: 28px;
+    padding: 2px 8px;
+    flex-shrink: 0;
   }
 
   .nav-tabs-shell {
@@ -622,6 +670,36 @@
   }
 }
 
+/*
+ * Galaxy S25 Ultra CSS ~384px (and similar narrow phones): auto-fill + 152px min
+ * collapses to 1 col. Force 2-col like iPhone 17 Pro Max (~430).
+ * /u #unitGrid · /c #charGrid · /s #suppGrid · /op #modGrid
+ */
+@media (max-width: 430px) {
+  #charGrid.list-grid,
+  #unitGrid.list-grid,
+  #suppGrid.list-grid,
+  #modGrid.list-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  #charGrid .list-grid-card,
+  #unitGrid .list-grid-card,
+  #suppGrid .list-grid-card,
+  #modGrid .list-grid-card {
+    padding: 8px 6px;
+    gap: 6px;
+  }
+
+  #charGrid .list-grid-card-thumb .list-thumb-composite,
+  #unitGrid .list-grid-card-thumb .list-thumb-composite,
+  #suppGrid .list-grid-card-thumb .list-thumb-composite {
+    width: 56px !important;
+    height: 56px !important;
+  }
+}
+
 /* iOS width reference (~393px) */
 @media (max-width: 393px) {
   .brand-text {
@@ -632,25 +710,10 @@
     font-size: 10px;
     letter-spacing: 0.2px;
   }
-
-  .header-controls {
-    max-width: 48%;
-  }
 }
 
 /* Android width reference (~360px) — keep 16px margin / gutter per platform grid */
 @media (max-width: 360px) {
-  .header-support-btns {
-    max-width: min(calc(100vw - 132px), 188px);
-  }
-
-  .header-lang-col .header-support-btns .alipayhk-header-btn,
-  .header-lang-col .header-support-btns .kofi-header-link,
-  .header-lang-col .header-support-btns .roadmap-header-link {
-    font-size: 9px;
-    padding: 3px 6px;
-  }
-
   .nav-tab {
     padding: 10px 12px;
     font-size: 13px;
