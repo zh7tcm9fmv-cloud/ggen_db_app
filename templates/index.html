@@ -902,7 +902,7 @@ window.__GGEN_LAZY__=(function(){
   }
   function ensureDevelop(){
     /* Bump when develop.css/js change so Simple Browser / long-cache cannot keep a stale lazy load. */
-    var devBump=String(v)+'-devfix73';
+    var devBump=String(v)+'-devfix77';
     if(window.GgenDevelop&&window.GgenDevelop._assetBump===devBump)return Promise.resolve(window.GgenDevelop);
     return Promise.all([loadCss('develop', devBump), loadJs('develop', devBump)]).then(function(){
       if(window.GgenDevelop)window.GgenDevelop._assetBump=devBump;
