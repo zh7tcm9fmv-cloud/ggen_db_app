@@ -234,9 +234,10 @@ body.dev-page{
   position:relative;
   z-index:1;
   width:min(1100px,100%);
-  /* Tall enough for the full series grid (~32 plates) — avoid inner scroll */
+  /* Hug the banner grid — only grow to content; cap at viewport (then grid scrolls). */
+  height:auto;
   max-height:calc(100dvh - 12px);
-  height:calc(100dvh - 12px);
+  overflow:hidden;
   display:flex;
   flex-direction:column;
   gap:12px;
@@ -309,9 +310,11 @@ body.dev-page{
   justify-content:stretch;
   justify-items:center;
   gap:14px 16px;
-  overflow:visible;
+  overflow-x:hidden;
+  overflow-y:auto;
   padding:4px 2px 6px;
-  flex:1 1 auto;
+  /* Size to rows; shrink+scroll only when the card hits max-height */
+  flex:0 1 auto;
   min-height:0;
   align-content:start;
   align-items:start;
@@ -768,13 +771,12 @@ body.dev-series-panel-open{
 }
 @media(max-width:640px){
   .dev-series-panel-card{
-    height:calc(100dvh - 8px);
+    height:auto;
     max-height:calc(100dvh - 8px);
   }
   .dev-series-grid{
     grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
     gap:8px;
-    overflow:auto; /* short phones: allow grid scroll as last resort */
   }
   .dev-series-card{max-width:140px}
   .dev-series-pick{max-width:min(100%,92vw);flex-basis:min(100%,92vw)}

@@ -492,18 +492,18 @@ html.ggen-15 .main-content .data-table td{
   letter-spacing:0.01em;
 }
 
-/* Detail modals (all entity types) */
+/* Detail modals (all entity types) — solid shell first; cyan wash is decoration only.
+   Do not use background shorthand + oklch here: it wiped the opaque garage wash and
+   could leave the dossier looking see-through when alpha interpolation fails. */
 html.ggen-15 #detailModal .modal-content{
   position:relative;
   font-family:var(--font-body);
   border-radius:0 !important;
   border:1px solid rgba(0,217,255,.45);
   box-shadow:0 0 0 1px rgba(0,0,0,.4),0 0 40px rgba(0,217,255,.08);
-  background:
-    radial-gradient(80% 50% at 8% 0%,rgba(0,217,255,.08),transparent 50%),
-    var(--bg-modal,var(--bg-card,#0a1422)); background:
-    radial-gradient(in oklch, 80% 50% at 8% 0%,rgba(0,217,255,.08),transparent 50%),
-    var(--bg-modal,var(--bg-card,#0a1422));
+  background-color:var(--bg-modal,var(--bg-card,#141c2e));
+  background-image:radial-gradient(80% 50% at 8% 0%,rgba(0,217,255,.08),transparent 50%);
+  background-repeat:no-repeat;
 }
 html.ggen-15 #detailModal .modal-content .detail-title{
   /* Entity names (ν鋼彈) — body face; Teko lacks Greek. */
