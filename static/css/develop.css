@@ -912,11 +912,19 @@ body.dev-series-panel-open{
   display:none;
 }
 /* Capture marker legend — bottom-right of the board frame */
-.dev-capture-legend{
+.dev-capture-legend-stack{
   position:absolute;
   right:10px;
   bottom:10px;
   z-index:18;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:6px;
+  pointer-events:none;
+  max-width:min(240px,calc(100% - 20px));
+}
+.dev-capture-legend{
   display:inline-flex;
   align-items:center;
   gap:8px;
@@ -925,9 +933,12 @@ body.dev-series-panel-open{
   border-radius:var(--radius-sm);
   background:rgba(6,14,28,.82);
   box-shadow:0 4px 14px rgba(0,0,0,.35);
-  pointer-events:none;
-  max-width:min(220px,calc(100% - 20px));
+  max-width:100%;
   box-sizing:border-box;
+}
+.dev-capture-legend.is-hard{
+  border-color:rgba(255,70,70,.42);
+  box-shadow:0 4px 14px rgba(0,0,0,.35),0 0 10px rgba(255,40,40,.18);
 }
 .dev-capture-legend-icon{
   width:18px;
@@ -935,6 +946,44 @@ body.dev-series-panel-open{
   object-fit:contain;
   flex:0 0 auto;
   filter:drop-shadow(0 0 3px rgba(80,255,120,.45));
+}
+.dev-capture-legend-hard-mark{
+  position:relative;
+  display:inline-block;
+  width:22px;
+  height:22px;
+  flex:0 0 auto;
+  line-height:0;
+  vertical-align:middle;
+}
+/* Red target fills the mark; green is centered in the diamond hole. */
+.dev-capture-legend-hard-ring{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  margin:0;
+  object-fit:contain;
+  object-position:center;
+  display:block;
+  pointer-events:none;
+  z-index:1;
+  filter:drop-shadow(0 0 3px rgba(255,40,40,.65));
+}
+.dev-capture-legend-hard-mark .dev-capture-legend-icon{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:8px;
+  height:8px;
+  margin:0;
+  transform:translate(-50%,-50%);
+  object-fit:contain;
+  object-position:center;
+  display:block;
+  z-index:2;
+  flex:none;
+  filter:drop-shadow(0 0 2px rgba(80,255,120,.55));
 }
 .dev-capture-legend-label{
   font-size:12px;
@@ -945,14 +994,26 @@ body.dev-series-panel-open{
   overflow:hidden;
   text-overflow:ellipsis;
 }
+.dev-capture-legend.is-hard .dev-capture-legend-label{
+  color:#ffb0b0;
+  text-shadow:0 0 6px rgba(255,40,40,.55),0 0 1px rgba(255,80,80,.8);
+}
 @media (max-width:720px){
-  .dev-capture-legend{
+  .dev-capture-legend-stack{
     right:6px;
     bottom:6px;
+    gap:5px;
+  }
+  .dev-capture-legend{
     padding:5px 8px 5px 6px;
     gap:6px;
   }
   .dev-capture-legend-icon{width:16px;height:16px}
+  .dev-capture-legend-hard-mark{width:20px;height:20px}
+  .dev-capture-legend.is-hard .dev-capture-legend-hard-mark .dev-capture-legend-icon{
+    width:7px;
+    height:7px;
+  }
   .dev-capture-legend-label{font-size:11px}
 }
 .dev-board{
@@ -1390,20 +1451,56 @@ body.dev-series-panel-open{
   object-fit:contain;
   filter:drop-shadow(0 1px 2px rgba(0,0,0,.55));
 }
-/* Capturable = non-develop source (m_capturable_unit). Green EventExchangeItem. */
+/* Capturable = non-develop source (m_capturable_unit). Green EventExchangeItem.
+   Hard: mw_red_target2 diamond wraps the green marker. */
 .dev-capture-flare{
+  position:relative;
   display:block;
   width:16px;
   height:16px;
   line-height:0;
   margin-top:2px;
 }
+.dev-capture-flare.is-hard{
+  position:relative;
+  display:block;
+  width:22px;
+  height:22px;
+  margin-top:0;
+  line-height:0;
+}
 .dev-capture-flare-icon{
   width:100%;
   height:100%;
   object-fit:contain;
+  object-position:center;
   display:block;
+  position:relative;
+  z-index:1;
   filter:drop-shadow(0 0 3px rgba(80,255,120,.55));
+}
+.dev-capture-flare.is-hard .dev-capture-flare-hard-ring{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  margin:0;
+  object-fit:contain;
+  object-position:center;
+  display:block;
+  pointer-events:none;
+  z-index:1;
+  filter:drop-shadow(0 0 4px rgba(255,40,40,.7));
+}
+.dev-capture-flare.is-hard .dev-capture-flare-icon{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:8px;
+  height:8px;
+  margin:0;
+  transform:translate(-50%,-50%);
+  z-index:2;
 }
 .dev-node.is-capturable .dev-capture-flare{display:block}
 .dev-detail{
@@ -1594,12 +1691,51 @@ body.dev-series-panel-open{
   gap:8px;
 }
 .dev-capture-title[hidden]{display:none !important}
-.dev-capture-title-icon{
+.dev-capture-title-mark{
+  position:relative;
+  display:inline-block;
   width:18px;
   height:18px;
-  object-fit:contain;
   flex:0 0 auto;
+  line-height:0;
+  vertical-align:middle;
+}
+.dev-capture-title-mark.is-hard{
+  width:22px;
+  height:22px;
+}
+.dev-capture-title-icon{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center;
+  display:block;
+  position:relative;
+  z-index:1;
   filter:drop-shadow(0 0 3px rgba(80,255,120,.45));
+}
+.dev-capture-title-mark.is-hard .dev-capture-title-hard-ring{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  margin:0;
+  object-fit:contain;
+  object-position:center;
+  display:block;
+  pointer-events:none;
+  z-index:1;
+  filter:drop-shadow(0 0 4px rgba(255,40,40,.65));
+}
+.dev-capture-title-mark.is-hard .dev-capture-title-icon{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:8px;
+  height:8px;
+  margin:0;
+  transform:translate(-50%,-50%);
+  z-index:2;
 }
 .dev-capture-list{
   margin:0;
@@ -1655,9 +1791,14 @@ body.dev-series-panel-open{
   background:rgba(0,212,255,.1);
 }
 .dev-capture-tag.is-hard{
-  border-color:rgba(255,157,0,.45);
-  color:var(--accent-orange);
-  background:rgba(255,157,0,.1);
+  border-color:rgba(255,70,70,.55);
+  color:#ffb4b4;
+  background:rgba(255,40,40,.14);
+  text-shadow:
+    0 0 6px rgba(255,40,40,.85),
+    0 0 12px rgba(255,40,40,.55),
+    0 0 1px rgba(255,120,120,.9);
+  box-shadow:0 0 8px rgba(255,40,40,.28);
 }
 .dev-capture-tag.is-secret{
   border-color:rgba(180,140,255,.45);

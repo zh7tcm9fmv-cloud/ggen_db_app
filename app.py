@@ -25637,6 +25637,14 @@ _DEV_CAPTURE_LEGEND = {
     'HK': '可奪取單位',
     'HR': '노획 유닛',
 }
+# Board legend: green capture marker framed by red Hard target (mw_red_target2).
+_DEV_CAPTURE_HARD_LEGEND = {
+    'EN': 'Capturable (Hard)',
+    'JA': '鹵獲（HARD）',
+    'TW': '可奪取（HARD）',
+    'HK': '可奪取（HARD）',
+    'HR': '노획 (HARD)',
+}
 _DEV_CAPTURE_PICKUP = {
     'EN': 'Featured',
     'JA': 'Pickup',
@@ -26062,7 +26070,9 @@ def _dev_series_payload(series_id, lc):
     ui['series_search'] = _DEV_SERIES_SEARCH.get(lc) or _DEV_SERIES_SEARCH['EN']
     ui['capture_title'] = _DEV_CAPTURE_TITLE.get(lc) or _DEV_CAPTURE_TITLE['EN']
     ui['capture_legend'] = _DEV_CAPTURE_LEGEND.get(lc) or _DEV_CAPTURE_LEGEND['EN']
+    ui['capture_hard_legend'] = _DEV_CAPTURE_HARD_LEGEND.get(lc) or _DEV_CAPTURE_HARD_LEGEND['EN']
     ui['capture_icon'] = game_image_public_url('/static/images/UI/UI_Common_Icon_Capturable.webp')
+    ui['capture_hard_ring'] = game_image_public_url('/static/images/UI/mw_red_target2.webp')
     ui['capture_pickup'] = _DEV_CAPTURE_PICKUP.get(lc) or _DEV_CAPTURE_PICKUP['EN']
     ui['capture_secret_battle'] = _DEV_CAPTURE_SECRET_BATTLE.get(lc) or _DEV_CAPTURE_SECRET_BATTLE['EN']
     ui['capture_hard'] = _DEV_CAPTURE_HARD.get(lc) or _DEV_CAPTURE_HARD['EN']

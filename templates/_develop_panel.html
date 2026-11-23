@@ -29,10 +29,21 @@
         <div class="dev-board" id="devBoard"></div>
       </div>
       <div class="dev-board-vignette" id="devVignette" aria-hidden="true"></div>
-      <div class="dev-capture-legend" id="devCaptureLegend" aria-label="Capturable Unit">
-        <img id="devCaptureLegendIcon" class="dev-capture-legend-icon" alt="" decoding="async" draggable="false"
-             src="/static/images/UI/UI_Common_Icon_Capturable.webp">
-        <span id="devCaptureLegendLabel" class="dev-capture-legend-label">Capturable Unit</span>
+      <div class="dev-capture-legend-stack" id="devCaptureLegendStack" role="group" aria-label="Capturable Unit">
+        <div class="dev-capture-legend" id="devCaptureLegend" aria-label="Capturable Unit">
+          <img id="devCaptureLegendIcon" class="dev-capture-legend-icon" alt="" decoding="async" draggable="false"
+               src="/static/images/UI/UI_Common_Icon_Capturable.webp">
+          <span id="devCaptureLegendLabel" class="dev-capture-legend-label">Capturable Unit</span>
+        </div>
+        <div class="dev-capture-legend is-hard" id="devCaptureHardLegend" aria-label="Capturable (Hard)">
+          <span class="dev-capture-legend-hard-mark" aria-hidden="true">
+            <img id="devCaptureHardLegendRing" class="dev-capture-legend-hard-ring" alt="" decoding="async" draggable="false"
+                 src="/static/images/UI/mw_red_target2.webp">
+            <img id="devCaptureHardLegendIcon" class="dev-capture-legend-icon" alt="" decoding="async" draggable="false"
+                 src="/static/images/UI/UI_Common_Icon_Capturable.webp">
+          </span>
+          <span id="devCaptureHardLegendLabel" class="dev-capture-legend-label">Capturable (Hard)</span>
+        </div>
       </div>
       <aside class="dev-detail" id="devDetail" hidden>
         <div class="dev-detail-head">

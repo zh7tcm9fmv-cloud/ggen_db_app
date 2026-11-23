@@ -831,45 +831,91 @@
 
   /** Capturable marker — EventExchangeItem shape, green-tinted (no official capture-unit icon). */
   var CAPTURE_ICON_PATH = '/static/images/UI/UI_Common_Icon_Capturable.webp';
+  /** Hard-stage frame around the green capture marker (map-weapon red target). */
+  var CAPTURE_HARD_RING_PATH = '/static/images/UI/mw_red_target2.webp';
 
   function captureLegendLabel() {
     var pack = ui();
     return pack.capture_legend || pack.capture_title || 'Capturable Unit';
   }
 
+  function captureHardLegendLabel() {
+    var pack = ui();
+    return pack.capture_hard_legend || 'Capturable (Hard)';
+  }
+
+  function resolveDevUiImg(src, fallback) {
+    var out = src || fallback || '';
+    if (!out) return '';
+    try {
+      if (typeof window.imgUrlPreferCdn === 'function') out = window.imgUrlPreferCdn(out) || out;
+      else if (typeof window.imgUrl === 'function') out = window.imgUrl(out) || out;
+    } catch (_) {}
+    return out;
+  }
+
   function captureIconSrc() {
     var pack = ui();
-    var src = pack.capture_icon || CAPTURE_ICON_PATH;
-    try {
-      if (typeof window.imgUrlPreferCdn === 'function') src = window.imgUrlPreferCdn(src) || src;
-      else if (typeof window.imgUrl === 'function') src = window.imgUrl(src) || src;
-    } catch (_) {}
-    return src;
+    return resolveDevUiImg(pack.capture_icon, CAPTURE_ICON_PATH);
+  }
+
+  function captureHardRingSrc() {
+    var pack = ui();
+    return resolveDevUiImg(pack.capture_hard_ring, CAPTURE_HARD_RING_PATH);
+  }
+
+  function pieceHasHardCapture(piece) {
+    var stages = piece && Array.isArray(piece.capture_stages) ? piece.capture_stages : [];
+    for (var i = 0; i < stages.length; i++) {
+      if (stages[i] && stages[i].is_hard) return true;
+    }
+    return false;
   }
 
   function syncCaptureLegend() {
     var legend = $('devCaptureLegend');
     var icon = $('devCaptureLegendIcon');
     var label = $('devCaptureLegendLabel');
+    var hardLegend = $('devCaptureHardLegend');
+    var hardIcon = $('devCaptureHardLegendIcon');
+    var hardRing = $('devCaptureHardLegendRing');
+    var hardLabel = $('devCaptureHardLegendLabel');
+    var stack = $('devCaptureLegendStack');
     var text = captureLegendLabel();
+    var hardText = captureHardLegendLabel();
     if (label) label.textContent = text;
     if (legend) legend.setAttribute('aria-label', text);
-    if (icon) {
-      var src = captureIconSrc();
-      if (icon.getAttribute('src') !== src) icon.src = src;
-    }
+    if (hardLabel) hardLabel.textContent = hardText;
+    if (hardLegend) hardLegend.setAttribute('aria-label', hardText);
+    if (stack) stack.setAttribute('aria-label', text + ' · ' + hardText);
+    var src = captureIconSrc();
+    var ringSrc = captureHardRingSrc();
+    if (icon && icon.getAttribute('src') !== src) icon.src = src;
+    if (hardIcon && hardIcon.getAttribute('src') !== src) hardIcon.src = src;
+    if (hardRing && hardRing.getAttribute('src') !== ringSrc) hardRing.src = ringSrc;
   }
 
-  function mkCaptureIcon(title) {
+  function mkCaptureIcon(title, opts) {
+    var hard = !!(opts && opts.hard);
     var wrap = document.createElement('span');
-    wrap.className = 'dev-capture-flare';
-    wrap.title = title || captureLegendLabel();
+    wrap.className = 'dev-capture-flare' + (hard ? ' is-hard' : '');
+    wrap.title = title || (hard ? captureHardLegendLabel() : captureLegendLabel());
     var img = document.createElement('img');
     img.className = 'dev-capture-flare-icon';
     img.alt = '';
     img.decoding = 'async';
     img.draggable = false;
     img.src = captureIconSrc();
+    if (hard) {
+      /* Ring first, green on top — green sits in the diamond hole. */
+      var ring = document.createElement('img');
+      ring.className = 'dev-capture-flare-hard-ring';
+      ring.alt = '';
+      ring.decoding = 'async';
+      ring.draggable = false;
+      ring.src = captureHardRingSrc();
+      wrap.appendChild(ring);
+    }
     wrap.appendChild(img);
     return wrap;
   }
@@ -1422,16 +1468,29 @@
     var capList = $('devCaptureStages');
     var capStages = Array.isArray(piece.capture_stages) ? piece.capture_stages : [];
     var capHas = !!(piece.capturable || capStages.length);
+    var capHasHard = capHas && pieceHasHardCapture(piece);
     if (capTitle) {
       capTitle.replaceChildren();
       if (capHas) {
+        var capTitleMark = document.createElement('span');
+        capTitleMark.className = 'dev-capture-title-mark' + (capHasHard ? ' is-hard' : '');
         var capTitleIcon = document.createElement('img');
         capTitleIcon.className = 'dev-capture-title-icon';
         capTitleIcon.alt = '';
         capTitleIcon.decoding = 'async';
         capTitleIcon.draggable = false;
         capTitleIcon.src = captureIconSrc();
-        capTitle.appendChild(capTitleIcon);
+        if (capHasHard) {
+          var capTitleRing = document.createElement('img');
+          capTitleRing.className = 'dev-capture-title-hard-ring';
+          capTitleRing.alt = '';
+          capTitleRing.decoding = 'async';
+          capTitleRing.draggable = false;
+          capTitleRing.src = captureHardRingSrc();
+          capTitleMark.appendChild(capTitleRing);
+        }
+        capTitleMark.appendChild(capTitleIcon);
+        capTitle.appendChild(capTitleMark);
         capTitle.appendChild(document.createTextNode(pack.capture_title || 'Capturing Units'));
         capTitle.hidden = false;
         capTitle.removeAttribute('hidden');
@@ -1896,7 +1955,9 @@
       btn.appendChild(art);
 
       var capturable = !!(p.capturable || (p.capture_stages && p.capture_stages.length));
+      var capturableHard = capturable && pieceHasHardCapture(p);
       if (capturable) btn.classList.add('is-capturable');
+      if (capturableHard) btn.classList.add('is-capturable-hard');
 
       var badges = document.createElement('span');
       badges.className = 'dev-badges';
@@ -1906,7 +1967,10 @@
       if (!unknown && unit.role_icon) badgeRow.appendChild(mkImg('dev-badge', unit.role_icon));
       if (badgeRow.childNodes.length) badges.appendChild(badgeRow);
       if (capturable) {
-        badges.appendChild(mkCaptureIcon(pack.capture_legend || pack.capture_title || 'Capturable Unit'));
+        var capTitle = capturableHard
+          ? (pack.capture_hard_legend || captureHardLegendLabel())
+          : (pack.capture_legend || pack.capture_title || 'Capturable Unit');
+        badges.appendChild(mkCaptureIcon(capTitle, { hard: capturableHard }));
       }
       if (badges.childNodes.length) btn.appendChild(badges);
 
