@@ -117,35 +117,63 @@
       ov.setAttribute('aria-hidden', 'true');
       scroll.insertBefore(ov, scroll.firstChild);
     }
-    /* Inline styles — survives stale develop.css cache in Simple Browser.
-       Dots a bit stronger so the plate reads as DevelopTree, not a flat wash. */
+    /* Inline styles — survives stale develop.css cache in Simple Browser. */
     ov.style.cssText = [
       'position:absolute',
       'inset:0',
       'z-index:0',
       'pointer-events:none',
-      'opacity:0.16',
+      'opacity:0.26',
       'background-image:' + cssUrl(pack.pt_treebg) + ',' + cssUrl(pack.pt_dots),
-      'background-size:180px 180px,96px 96px',
-      'background-position:0 0,12px 8px',
+      /* TreeBG + Dots tiled smaller → denser field */
+      'background-size:100px 100px,56px 56px',
+      'background-position:0 0,8px 6px',
       'background-repeat:repeat,repeat'
     ].join(';');
+  }
+
+  /** Chronicle Diagram ↔ Complete — slow opacity crossfade on the frame (not the scroll). */
+  function ensureBgCrossfade(frame, pack) {
+    if (!frame) return;
+    var stack = $('devBgStack');
+    if (!stack) {
+      stack = document.createElement('div');
+      stack.id = 'devBgStack';
+      stack.className = 'dev-bg-stack';
+      stack.setAttribute('aria-hidden', 'true');
+      frame.insertBefore(stack, frame.firstChild);
+      var a = document.createElement('div');
+      a.className = 'dev-bg-layer dev-bg-layer--a';
+      var b = document.createElement('div');
+      b.className = 'dev-bg-layer dev-bg-layer--b';
+      stack.appendChild(a);
+      stack.appendChild(b);
+    }
+    var aEl = stack.querySelector('.dev-bg-layer--a');
+    var bEl = stack.querySelector('.dev-bg-layer--b');
+    var srcA = pack.bg_chronicle || pack.bg_base || '';
+    var srcB = pack.bg_chronicle_complete || srcA;
+    if (aEl) aEl.style.backgroundImage = cssUrl(srcA);
+    if (bEl) bEl.style.backgroundImage = cssUrl(srcB);
   }
 
   function applyBoardChrome() {
     var scroll = $('devScroll');
     if (!scroll) return;
     var pack = ui();
-    // RareBoss cover (not tiled DevelopTree_BG_Base); Dots/TreeBG via overlay.
-    scroll.style.setProperty('--dev-bg-base', cssUrl(pack.bg_base));
+    var frame = null;
+    try {
+      frame = scroll.closest ? scroll.closest('.dev-board-frame') : null;
+    } catch (_) {}
+    if (!frame && scroll.parentElement) frame = scroll.parentElement;
+    ensureBgCrossfade(frame, pack);
+    scroll.style.setProperty('--dev-bg-base', 'none');
     scroll.style.setProperty('--dev-pt-dots', cssUrl(pack.pt_dots));
     scroll.style.setProperty('--dev-pt-treebg', cssUrl(pack.pt_treebg));
     scroll.style.setProperty('--dev-text-bg', cssUrl(pack.text_bg));
-    scroll.style.backgroundImage = cssUrl(pack.bg_base);
-    scroll.style.backgroundSize = 'cover';
-    scroll.style.backgroundPosition = 'center center';
-    scroll.style.backgroundRepeat = 'no-repeat';
-    scroll.style.backgroundColor = '#071622';
+    /* Plates live on #devBgStack; scroll stays transparent over them. */
+    scroll.style.backgroundImage = 'none';
+    scroll.style.backgroundColor = 'transparent';
     ensurePatternOverlay(scroll, pack);
     clearDevelopScrollExperiments();
     var vig = $('devVignette');
@@ -1485,13 +1513,15 @@
     var over = '';
     var tex = '';
     var core = '';
-    /* CSS dash flow only (see .dev-wire-core). No SMIL — dual drivers fought and jerked. */
+    /* CSS comet only (soft + head). No SMIL — dual drivers fought and jerked. */
     draws.forEach(function (draw) {
       if (!draw || !draw.d) return;
-      glow += '<path class="dev-wire-glow" d="' + draw.d + '"/>';
+      glow += '<path class="dev-wire-glow" d="' + draw.d + '"/>'
+        + '<path class="dev-wire-glow-inner" d="' + draw.d + '"/>';
       over += '<path class="dev-wire" d="' + draw.d + '"/>';
       if (lineSrc && !touchPan) tex += '<path class="dev-wire-tex" d="' + draw.d + '"/>';
-      core += '<path class="dev-wire-core" d="' + draw.d + '"/>';
+      core += '<path class="dev-wire-core-soft" d="' + draw.d + '"/>'
+        + '<path class="dev-wire-core" d="' + draw.d + '"/>';
     });
     svg.innerHTML = defs + glow + over + tex + core;
     wiresLayer.appendChild(svg);

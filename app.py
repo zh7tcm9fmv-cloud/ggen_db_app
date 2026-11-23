@@ -25916,8 +25916,10 @@ def _dev_ui_pack():
     frames_blur = {r: _dev_ui_asset(f'UI_DevelopTree_KomaFrame_{r}_Enable_Blur.webp') for r in rarities}
     frames_disable = {r: _dev_ui_asset(f'UI_DevelopTree_KomaFrame_{r}_Disable.webp') for r in rarities}
     return {
-        # RareBoss story plate + DevelopTree pattern tiles (Dots / TreeBG)
-        'bg_base': _dev_bg_asset('Background', 'BG_Event_Story_RareBoss_Appear.webp'),
+        # Chronicle diagram plates (crossfade) + DevelopTree pattern tiles
+        'bg_base': _dev_ui_asset('Bg_Chronicle_Diagram.webp'),
+        'bg_chronicle': _dev_ui_asset('Bg_Chronicle_Diagram.webp'),
+        'bg_chronicle_complete': _dev_ui_asset('Bg_Chronicle_Diagram_Complete.webp'),
         'bg_effect': _dev_ui_asset('UI_DevelopTree_BG_Effect.webp'),
         'bg_light': _dev_ui_asset('UI_DevelopTree_BG_Light.webp'),
         'bg_vignette': _dev_ui_asset('UI_DevelopTree_BG_Vignette.webp'),

@@ -743,7 +743,8 @@ body.dev-series-panel-open{
     will-change:transform;
   }
   /* Static dashes under pan/zoom — CSS dash anim + transform janks on phones */
-  #panel-develop .dev-board-scroll.is-panable .dev-wire-core{
+  #panel-develop .dev-board-scroll.is-panable .dev-wire-core,
+  #panel-develop .dev-board-scroll.is-panable .dev-wire-core-soft{
     animation:none;
   }
   #panel-develop .dev-board-scroll.is-panning .dev-base-rarity-ring{
@@ -762,7 +763,8 @@ body.dev-series-panel-open{
     overflow:hidden !important;
     touch-action:none;
   }
-  body.dev-page .dev-board-scroll.is-panable .dev-wire-core{animation:none}
+  body.dev-page .dev-board-scroll.is-panable .dev-wire-core,
+  body.dev-page .dev-board-scroll.is-panable .dev-wire-core-soft{animation:none}
 }
 @media(max-width:640px){
   .dev-series-panel-card{
@@ -799,6 +801,46 @@ body.dev-series-panel-open{
     0 0 24px rgba(0,140,255,.12);
   box-sizing:border-box;
   overflow:hidden;
+  background-color:#071622;
+}
+/* Chronicle Diagram ↔ Complete — slow alternate fade (frame-fixed). */
+.dev-bg-stack{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  overflow:hidden;
+  border-radius:inherit;
+}
+.dev-bg-layer{
+  position:absolute;
+  inset:0;
+  background-size:cover;
+  background-position:center center;
+  background-repeat:no-repeat;
+}
+.dev-bg-layer--a{
+  opacity:1;
+  /* Near-subliminal: ~18s dissolve each way inside a ~72s loop */
+  animation:dev-bg-cross-a 72s linear infinite;
+}
+.dev-bg-layer--b{
+  opacity:0;
+  animation:dev-bg-cross-b 72s linear infinite;
+}
+@keyframes dev-bg-cross-a{
+  0%,32%{opacity:1}
+  50%,82%{opacity:0}
+  100%{opacity:1}
+}
+@keyframes dev-bg-cross-b{
+  0%,32%{opacity:0}
+  50%,82%{opacity:1}
+  100%{opacity:0}
+}
+@media (prefers-reduced-motion:reduce){
+  .dev-bg-layer--a{animation:none;opacity:1}
+  .dev-bg-layer--b{animation:none;opacity:0}
 }
 .dev-board-scroll{
   position:relative;
@@ -808,12 +850,9 @@ body.dev-series-panel-open{
   max-height:inherit;
   overflow:auto;
   overscroll-behavior:contain;
-  /* RareBoss cover only — pattern tiles sit on a faint ::before wash */
-  background-color:#071622;
-  background-image:var(--dev-bg-base,none);
-  background-size:cover;
-  background-position:center center;
-  background-repeat:no-repeat;
+  z-index:1;
+  background-color:transparent;
+  background-image:none;
   box-sizing:border-box;
   cursor:default;
 }
@@ -824,14 +863,14 @@ body.dev-series-panel-open{
   inset:0;
   z-index:0;
   pointer-events:none;
-  opacity:0.16;
+  opacity:0.26;
   background-image:
     var(--dev-pt-treebg,none),
     var(--dev-pt-dots,none);
   background-size:
-    180px 180px,
-    96px 96px;
-  background-position:0 0,12px 8px;
+    100px 100px,
+    56px 56px;
+  background-position:0 0,8px 6px;
   background-repeat:repeat,repeat;
 }
 /* JS overlay owns patterns when present — avoid double wash */
@@ -941,53 +980,69 @@ body.dev-series-panel-open{
   pointer-events:none;
   overflow:visible;
 }
-/* Neon pipe — bright white base (idle) + traveling highlight pulse. */
+/*
+  Tight line emission (kept) + clearer blue hue on halo / bead.
+*/
 .dev-wires path.dev-wire-glow{
   fill:none;
-  stroke:rgba(242,248,255,.22);
-  stroke-width:5;
+  stroke:rgba(40,130,255,.48);
+  stroke-width:4.5;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.dev-wires path.dev-wire-glow-inner{
+  fill:none;
+  stroke:rgba(90,175,255,.78);
+  stroke-width:2.35;
   stroke-linecap:round;
   stroke-linejoin:round;
 }
 .dev-wires path.dev-wire{
   fill:none;
-  stroke:#f2f8ff;
-  stroke-width:3;
-  stroke-linecap:round;
-  stroke-linejoin:round;
-  opacity:.96;
-}
-.dev-wires path.dev-wire-core{
-  fill:none;
-  /* Cyan packet on white base — white-on-white was invisible after idle recolor. */
-  stroke:var(--accent-cyan,#00d4ff);
-  stroke-width:2.35;
+  stroke:#d8ecff;
+  stroke-width:1.35;
   stroke-linecap:round;
   stroke-linejoin:round;
   opacity:1;
-  filter:drop-shadow(0 0 3px rgba(0,212,255,.85));
-  /*
-    Solid traveling bar + long rest: one pass parent → child, then pause
-    before the next pulse (period 400; hold leaves offset ≡ 0 for seamless loop).
-  */
-  stroke-dasharray:88 312;
-  animation:dev-wire-pulse 4.2s linear infinite;
+  filter:drop-shadow(0 0 1.5px rgba(70,160,255,.95));
 }
-/* Optional image-stroke accent using Straight_Enable cross-section */
+/*
+  Ball on the line: blue soft rim + bright cool-white bead.
+*/
+.dev-wires path.dev-wire-core-soft{
+  fill:none;
+  stroke:rgba(50,170,255,.62);
+  stroke-width:8;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  stroke-dasharray:0 400;
+  opacity:.92;
+  animation:dev-wire-pulse 3.5s cubic-bezier(.42,0,.2,1) infinite;
+}
+.dev-wires path.dev-wire-core{
+  fill:none;
+  stroke:#eaf6ff;
+  stroke-width:3.6;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  opacity:.95;
+  filter:drop-shadow(0 0 3px rgba(40,170,255,.85));
+  stroke-dasharray:0 400;
+  animation:dev-wire-pulse 3.5s cubic-bezier(.42,0,.2,1) infinite;
+}
+/* Optional faint Straight_Enable wash — keep subtle so it does not fight the ball */
 .dev-wires path.dev-wire-tex{
   fill:none;
   stroke:url(#devLinePattern);
-  stroke-width:4;
+  stroke-width:3;
   stroke-linecap:round;
   stroke-linejoin:round;
-  opacity:.45;
+  opacity:.18;
   mix-blend-mode:screen;
 }
-/* Negative offset = flow along path direction (parent → child only). */
 @keyframes dev-wire-pulse{
-  0%{stroke-dashoffset:0}
-  28%{stroke-dashoffset:-400} /* ~1.2s travel */
-  100%{stroke-dashoffset:-400} /* ~3s quiet gap */
+  from{stroke-dashoffset:0}
+  to{stroke-dashoffset:-400}
 }
 .dev-node.is-unknown{
   cursor:default;
@@ -996,7 +1051,8 @@ body.dev-series-panel-open{
   opacity:.85;
 }
 @media (prefers-reduced-motion:reduce){
-  .dev-wires path.dev-wire-core{animation:none;stroke-dasharray:none}
+  .dev-wires path.dev-wire-core,
+  .dev-wires path.dev-wire-core-soft{animation:none;stroke-dasharray:none}
 }
 .dev-route-arrow{
   position:absolute;
