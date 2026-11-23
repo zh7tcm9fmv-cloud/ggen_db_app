@@ -56,7 +56,8 @@
     try {
       var l = String(localStorage.getItem('ggen_lang') || 'EN').toUpperCase();
       if (l === 'JP') l = 'JA';
-      if (l === 'EN' || l === 'JA' || l === 'TW' || l === 'HK') return l;
+      if (l === 'KR') l = 'HR';
+      if (l === 'EN' || l === 'JA' || l === 'TW' || l === 'HK' || l === 'HR') return l;
     } catch (_) {}
     return 'EN';
   }
@@ -1233,7 +1234,8 @@
         bulkNote.hidden = false;
         bulkNote.removeAttribute('hidden');
         var noteBase = pack.bulk_note || 'Path total';
-        bulkNote.textContent = noteBase + ' · ' + bulkSteps + ' units';
+        var unitsWord = pack.bulk_units_word || 'units';
+        bulkNote.textContent = noteBase + ' · ' + bulkSteps + ' ' + unitsWord;
       } else if (bulkHas) {
         bulkNote.hidden = false;
         bulkNote.removeAttribute('hidden');
@@ -1811,12 +1813,43 @@
     return src;
   }
 
-  /** Split "Title [Faction]" so the bracket line sits on its own row. */
+  /**
+   * Split official diagram titles so the faction line sits on its own row.
+   * LANG uses a newline before [Faction] / 【陣營】 (EN/HR vs JA/TW/HK).
+   */
   function splitDiagramTabLabel(label) {
-    var raw = String(label || '');
-    var m = raw.match(/^(.*?)(\[[^\]]+\])\s*$/);
+    var raw = String(label || '').replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim();
+    var nl = raw.indexOf('\n');
+    if (nl >= 0) {
+      return {
+        main: raw.slice(0, nl).replace(/\s+/g, ' ').trim(),
+        sub: raw.slice(nl + 1).replace(/\s+/g, ' ').trim(),
+      };
+    }
+    var m = raw.match(/^(.*?)(\[[^\]]*\]|【[^】]*】)\s*$/);
     if (!m) return { main: raw, sub: '' };
     return { main: String(m[1] || '').trim(), sub: String(m[2] || '').trim() };
+  }
+
+  function applySeriesChrome(pack) {
+    pack = pack || {};
+    var seriesTitle = pack.series_title || '';
+    var seriesSearch = pack.series_search || '';
+    var lbl = $('devSeriesLbl');
+    var title = $('devSeriesPanelTitle');
+    var search = $('devSeriesSearch');
+    var grid = $('devSeriesGrid');
+    if (seriesTitle) {
+      if (lbl) lbl.textContent = seriesTitle;
+      if (title) title.textContent = seriesTitle;
+      if (grid) grid.setAttribute('aria-label', seriesTitle);
+    }
+    if (search && seriesSearch) {
+      search.placeholder = seriesSearch;
+      var wrap = search.closest('label');
+      var hidden = wrap && wrap.querySelector('.visually-hidden');
+      if (hidden) hidden.textContent = seriesSearch;
+    }
   }
 
   function fillDiagramTabLabel(span, label) {
@@ -2121,9 +2154,6 @@
     var backdrop = $('devSeriesPanelBackdrop');
     var closeBtn = $('devSeriesPanelClose');
     var search = $('devSeriesSearch');
-    var title = $('devSeriesPanelTitle');
-    var lbl = $('devSeriesLbl');
-    if (title && lbl) title.textContent = lbl.textContent || 'Series';
     if (btn) {
       btn.addEventListener('click', function () {
         if (panel && !panel.hidden && panel.classList.contains('is-open')) closeSeriesPanel();
@@ -2161,6 +2191,7 @@
     state.diagram = Math.max(0, Math.min(restored, Math.max(diagrams.length - 1, 0)));
     state.selected = null;
     closeUnitSheet();
+    applySeriesChrome(map && map.ui);
     $('devKicker').textContent = map.title || 'Development Diagram';
     var resolvedName = String((map && map.series_name) || '').trim();
     if (resolvedName && resolvedName !== String(map.series_id || '')) {
@@ -2318,6 +2349,11 @@
     var p = needSeriesList
       ? api('/api/develop/series').then(function (pack) {
           state.series = pack.series || [];
+          applySeriesChrome(pack);
+          if (pack.title) {
+            var kick = $('devKicker');
+            if (kick && !String(kick.textContent || '').trim()) kick.textContent = pack.title;
+          }
           syncSeriesBtn();
         })
       : Promise.resolve();

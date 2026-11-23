@@ -25462,6 +25462,7 @@ _DEV_PAGE_TITLE = {
     'JA': '開発経路図',
     'TW': '開發路線圖',
     'HK': '開發路線圖',
+    'HR': '개발 경로도',  # m_help 170200000001051021
 }
 
 
@@ -25570,34 +25571,63 @@ _DEV_CAPITAL_LABEL = {
     'JA': 'CAPITAL',
     'TW': 'CAPITAL',
     'HK': 'CAPITAL',
+    'HR': 'CAPITAL',  # HR missions keep Latin CAPITAL
 }
 # Section title — EN help uses "Materials"; user-facing "Required Materials".
-# JA/TW/HK from develop help subsections (素材アイテム / 材料道具).
+# JA/TW/HK from develop help subsections (素材アイテム / 材料道具). HR: 개발 재료 (tips).
 _DEV_MATS_TITLE = {
     'EN': 'Required Materials',
     'JA': '素材アイテム',
     'TW': '材料道具',
     'HK': '材料道具',
+    'HR': '개발 재료',
 }
-# Client feature UnitBulkDevelopment — title string not in LANG pack; EN feature name.
+# Client feature UnitBulkDevelopment — dialog title not in LANG pack.
+# Built from official Develop vocabulary (m_help Develop / 開発 / 開發 / 개발).
 _DEV_BULK_TITLE = {
     'EN': 'Bulk Development',
-    'JA': 'Bulk Development',
-    'TW': 'Bulk Development',
-    'HK': 'Bulk Development',
+    'JA': '一括開発',
+    'TW': '一括開發',
+    'HK': '一括開發',
+    'HR': '일괄 개발',
 }
 _DEV_BULK_NOTE = {
     'EN': 'Path total (develop + level-ups)',
-    'JA': 'Path total (develop + level-ups)',
-    'TW': 'Path total (develop + level-ups)',
-    'HK': 'Path total (develop + level-ups)',
+    'JA': '経路合計（開発＋レベルアップ）',
+    'TW': '路徑合計（開發＋等級提升）',
+    'HK': '路徑合計（開發＋等級提升）',
+    'HR': '경로 합계（개발＋레벨 업）',
 }
-# Help title: EN Capturing Units · JA 鹵獲 · TW/HK 奪取 (m_help 170200000001071071)
+# Suffix after bulk step count — LANG unit noun (ユニット / 單位 / 유닛).
+_DEV_BULK_UNITS_WORD = {
+    'EN': 'units',
+    'JA': 'ユニット',
+    'TW': '單位',
+    'HK': '單位',
+    'HR': '유닛',
+}
+# Series picker chrome — list_filter_series / Series browse wording.
+_DEV_SERIES_TITLE = {
+    'EN': 'Series',
+    'JA': 'シリーズ',
+    'TW': '系列',
+    'HK': '系列',
+    'HR': '시리즈',
+}
+_DEV_SERIES_SEARCH = {
+    'EN': 'Search series…',
+    'JA': 'シリーズを検索…',
+    'TW': '搜尋系列…',
+    'HK': '搜尋系列…',
+    'HR': '시리즈 검색…',
+}
+# Help title: EN Capturing Units · JA 鹵獲 · TW/HK 奪取 · HR 노획 (m_help 170200000001071071)
 _DEV_CAPTURE_TITLE = {
     'EN': 'Capturing Units',
     'JA': '鹵獲',
     'TW': '奪取',
     'HK': '奪取',
+    'HR': '노획',
 }
 # Board legend under the green capture marker (not the help section title).
 _DEV_CAPTURE_LEGEND = {
@@ -25605,30 +25635,35 @@ _DEV_CAPTURE_LEGEND = {
     'JA': '鹵獲ユニット',
     'TW': '可奪取單位',
     'HK': '可奪取單位',
+    'HR': '노획 유닛',
 }
 _DEV_CAPTURE_PICKUP = {
     'EN': 'Featured',
     'JA': 'Pickup',
     'TW': '精選',
     'HK': '精選',
+    'HR': '픽업',
 }
 _DEV_CAPTURE_SECRET_BATTLE = {
     'EN': 'Secret battle',
     'JA': 'シークレットバトル',
     'TW': '隱藏戰鬥',
     'HK': '隱藏戰鬥',
+    'HR': '시크릿 배틀',
 }
 _DEV_CAPTURE_HARD = {
     'EN': 'HARD',
     'JA': 'HARD',
     'TW': 'HARD',
     'HK': 'HARD',
+    'HR': 'HARD',
 }
 _DEV_CAPTURE_STORY_EVENT = {
     'EN': 'Story Event',
     'JA': 'ストーリーイベント',
     'TW': '故事事件',
     'HK': '故事事件',
+    'HR': '스토리 이벤트',
 }
 # Unit Upgrade Data (ItemTypeIndex 5) — EffectValue = EXP. Used by client bulk
 # develop to raise each parent from piece InitialLevel → route RequiredLevel.
@@ -25974,6 +26009,9 @@ def _dev_series_payload(series_id, lc):
     ui['bulk_title'] = _DEV_BULK_TITLE.get(lc) or _DEV_BULK_TITLE['EN']
     ui['bulk_note'] = _DEV_BULK_NOTE.get(lc) or _DEV_BULK_NOTE['EN']
     ui['bulk_note_single'] = _DEV_BULK_NOTE.get(lc) or _DEV_BULK_NOTE['EN']
+    ui['bulk_units_word'] = _DEV_BULK_UNITS_WORD.get(lc) or _DEV_BULK_UNITS_WORD['EN']
+    ui['series_title'] = _DEV_SERIES_TITLE.get(lc) or _DEV_SERIES_TITLE['EN']
+    ui['series_search'] = _DEV_SERIES_SEARCH.get(lc) or _DEV_SERIES_SEARCH['EN']
     ui['capture_title'] = _DEV_CAPTURE_TITLE.get(lc) or _DEV_CAPTURE_TITLE['EN']
     ui['capture_legend'] = _DEV_CAPTURE_LEGEND.get(lc) or _DEV_CAPTURE_LEGEND['EN']
     ui['capture_icon'] = game_image_public_url('/static/images/UI/UI_Common_Icon_Capturable.webp')
@@ -26393,7 +26431,9 @@ def _dev_lang():
     lang = (request.args.get('lang') or 'EN').strip().upper()
     if lang == 'JP':
         lang = 'JA'
-    if lang not in ('EN', 'JA', 'TW', 'HK'):
+    if lang == 'KR':
+        lang = 'HR'
+    if lang not in ('EN', 'JA', 'TW', 'HK', 'HR'):
         lang = 'EN'
     return lang
 
@@ -26409,10 +26449,16 @@ def develop_page(series_id=None):
 @app.route('/api/develop/series')
 def api_develop_series():
     lc = _dev_lang()
-    payload = {'lang': lc, 'title': _DEV_PAGE_TITLE.get(lc) or _DEV_PAGE_TITLE['EN'], 'series': _dev_series_list(lc)}
+    payload = {
+        'lang': lc,
+        'title': _DEV_PAGE_TITLE.get(lc) or _DEV_PAGE_TITLE['EN'],
+        'series_title': _DEV_SERIES_TITLE.get(lc) or _DEV_SERIES_TITLE['EN'],
+        'series_search': _DEV_SERIES_SEARCH.get(lc) or _DEV_SERIES_SEARCH['EN'],
+        'series': _dev_series_list(lc),
+    }
     return jsonify_cacheable(
         payload,
-        f'dev_series_{lc}_banners3',
+        f'dev_series_{lc}_banners4_i18n',
         public=True,
         max_age=3600,
         convert_images=True,
@@ -26429,7 +26475,7 @@ def api_develop_series_map(series_id):
     payload['lang'] = lc
     return jsonify_cacheable(
         payload,
-        f'dev_map_{sid}_{lc}_ui19',
+        f'dev_map_{sid}_{lc}_ui20_i18n',
         public=True,
         max_age=3600,
         convert_images=True,
@@ -35308,7 +35354,9 @@ def _resolve_development_diagram_name(diagram_id, lc):
     dlang = load_json(path) if path and os.path.isfile(path) else None
     namemap = create_lang_text_map(dlang) if dlang else {}
     name = str(namemap.get(lid) or '').strip()
-    return name.replace('\n', ' ').strip()
+    # Keep LANG newlines — official diagram titles are "Title\\n[Faction]" /
+    # "標題\\n【陣營】" so the client can put the bracket line on its own row.
+    return name
 
 
 def _quoted_lang_span(text):

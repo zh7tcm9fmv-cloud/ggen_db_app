@@ -617,8 +617,10 @@ body.dev-series-panel-open{
   hyphens:auto;
 }
 .dev-diagram-tab-sub{
-  white-space:nowrap;
-  text-overflow:ellipsis;
+  /* Own row for [Faction] / 【陣營】 — allow soft wrap on long CJK lines */
+  white-space:normal;
+  overflow-wrap:anywhere;
+  word-break:keep-all;
   font-size:0.95em;
   opacity:.95;
 }

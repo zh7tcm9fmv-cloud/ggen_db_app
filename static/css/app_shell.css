@@ -1937,12 +1937,12 @@ body.nav-tabs-overlay-freeze .app-header .nav-tabs-shell{
   isolation:isolate;
 }
 .modal-content.char-detail,.modal-content.supporter-detail{
-  /* Opaque wash — no oklch here: 8-digit hex + in oklch can drop alpha in Chrome and show the plate raw. */
-  background-image:linear-gradient(135deg,rgba(20,28,46,0.985),rgba(20,28,46,0.97)),url('/static/images/Background/obg_031.webp');
+  /* Keep original plate wash. No oklch duplicate — Chrome can drop alpha and flash the raw plate. */
+  background-image:linear-gradient(135deg,rgba(20,28,46,0.97),rgba(20,28,46,0.92)),url('/static/images/Background/obg_031.webp');
 }
 .modal-content.unit-detail,.modal-content.stage-detail,
 .modal-content.profile-title-detail,.modal-content.item-detail{
-  background-image:linear-gradient(135deg,rgba(20,28,46,0.985),rgba(20,28,46,0.97)),url('/static/images/Background/obg_012_garage.webp');
+  background-image:linear-gradient(135deg,rgba(20,28,46,0.97),rgba(20,28,46,0.92)),url('/static/images/Background/obg_012_garage.webp');
 }
 /* Kill legacy absolute cover layer if any cached CSS still expects it */
 .modal-content.char-detail::before,.modal-content.supporter-detail::before,
@@ -2091,14 +2091,14 @@ body.detail-close-settling #detailModal .detail-header.supporter-detail-header::
 }
 .modal-content.unit-detail:not(.detail-ranking-view) .detail-header.unit-detail-header::before,
 .modal-content.supporter-detail .detail-header.supporter-detail-header::before{
-  /* Fully opaque header plate — garage/office art was reading as a transparent hangar on live. */
+  /* Original garage plate wash (left open → right darker). No oklch — preserves alphas. */
   background-image:
-    linear-gradient(90deg,rgba(10,14,23,.98) 0%,rgba(10,14,23,.99) 42%,#0a0e17 100%),
+    linear-gradient(90deg,rgba(10,14,23,.22) 0%,rgba(10,14,23,.55) 42%,rgba(10,14,23,.82) 100%),
     url('/static/images/Background/obg_011_garage.webp');
 }
 .modal-content.char-detail:not(.detail-ranking-view) .detail-header.char-detail-header::before{
   background-image:
-    linear-gradient(90deg,rgba(10,14,23,.98) 0%,rgba(10,14,23,.99) 42%,#0a0e17 100%),
+    linear-gradient(90deg,rgba(10,14,23,.22) 0%,rgba(10,14,23,.55) 42%,rgba(10,14,23,.82) 100%),
     url('/static/images/Background/obg_021_office.webp');
 }
 .modal-content.unit-detail:not(.detail-ranking-view) .detail-header.unit-detail-header > *,
@@ -2115,7 +2115,7 @@ body.detail-close-settling #detailModal .detail-header.supporter-detail-header::
 .modal-content.unit-detail:not(.detail-ranking-view) .detail-header.unit-detail-header .detail-portrait-placeholder,
 .modal-content.char-detail:not(.detail-ranking-view) .detail-header.char-detail-header .detail-portrait,
 .modal-content.char-detail:not(.detail-ranking-view) .detail-header.char-detail-header .detail-portrait-placeholder{
-  background:rgba(13,19,33,.88);
+  background:rgba(10,14,23,.22);
   border-color:rgba(255,255,255,.12);
 }
 .modal-content.supporter-detail .detail-header.supporter-detail-header .unit-holo-card.is-holo-on{
@@ -2124,7 +2124,7 @@ body.detail-close-settling #detailModal .detail-header.supporter-detail-header::
 }
 .modal-content.unit-detail:not(.detail-ranking-view) .detail-header.unit-detail-header .unit-holo-card.is-holo-on,
 .modal-content.char-detail:not(.detail-ranking-view) .detail-header.char-detail-header .unit-holo-card.is-holo-on{
-  --card-bg:rgba(13,19,33,.88);
+  --card-bg:rgba(10,14,23,.22);
   --fill-opacity:0;
 }
 /* No face/portrait-background rainbow — those layers sat over the art (BG shows through) */
@@ -2873,9 +2873,9 @@ html[data-ui-lang="KR"] .detail-rec-link-card .detail-rec-limited-wrap--on-thumb
 .modal-content.char-detail:not(.detail-ranking-view) .detail-body .detail-section>.ability-list,.modal-content.unit-detail:not(.detail-ranking-view) .detail-body .detail-section>.ability-list,.modal-content.char-detail:not(.detail-ranking-view) .detail-body .detail-section>.weapon-list,.modal-content.unit-detail:not(.detail-ranking-view) .detail-body .detail-section>.weapon-list{padding:10px}
 }
 .detail-rec-link-card{display:flex;flex-direction:column;align-items:center;gap:0;flex-shrink:0;padding:14px 12px 16px;border-radius:var(--radius-md);border:1px solid var(--border-color);background:rgba(13,19,33,0.75);cursor:pointer;transition:var(--transition);max-width:min(184px,40vw);min-width:0;overflow:visible;box-sizing:border-box}.detail-rec-link-card:hover{border-color:var(--accent-cyan);background:rgba(0,212,255,0.08);box-shadow:0 0 0 1px rgba(0,212,255,0.2)}
-/* Header rec cards on opaque dossier plate */
+/* Header rec cards sit on garage/office plates — wash, don't brick over the bg */
 .modal-content:is(.unit-detail,.char-detail):not(.detail-ranking-view) .detail-header .detail-rec-link-card{
-  background:rgba(13,19,33,.88);
+  background:rgba(10,14,23,.22);
   border-color:rgba(255,255,255,.12);
 }
 .modal-content:is(.unit-detail,.char-detail):not(.detail-ranking-view) .detail-header .detail-rec-link-card:hover{
