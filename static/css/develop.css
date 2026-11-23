@@ -947,16 +947,16 @@ body.dev-series-panel-open{
   flex:0 0 auto;
   filter:drop-shadow(0 0 3px rgba(80,255,120,.45));
 }
+/* Hard legend: keep green at full legend size; enlarge red target around it. */
 .dev-capture-legend-hard-mark{
   position:relative;
   display:inline-block;
-  width:22px;
-  height:22px;
+  width:46px;
+  height:46px;
   flex:0 0 auto;
   line-height:0;
   vertical-align:middle;
 }
-/* Red target fills the mark; green is centered in the diamond hole. */
 .dev-capture-legend-hard-ring{
   position:absolute;
   inset:0;
@@ -974,8 +974,8 @@ body.dev-series-panel-open{
   position:absolute;
   left:50%;
   top:50%;
-  width:8px;
-  height:8px;
+  width:18px;
+  height:18px;
   margin:0;
   transform:translate(-50%,-50%);
   object-fit:contain;
@@ -983,7 +983,7 @@ body.dev-series-panel-open{
   display:block;
   z-index:2;
   flex:none;
-  filter:drop-shadow(0 0 2px rgba(80,255,120,.55));
+  filter:drop-shadow(0 0 3px rgba(80,255,120,.45));
 }
 .dev-capture-legend-label{
   font-size:12px;
@@ -1009,11 +1009,8 @@ body.dev-series-panel-open{
     gap:6px;
   }
   .dev-capture-legend-icon{width:16px;height:16px}
-  .dev-capture-legend-hard-mark{width:20px;height:20px}
-  .dev-capture-legend.is-hard .dev-capture-legend-hard-mark .dev-capture-legend-icon{
-    width:7px;
-    height:7px;
-  }
+  .dev-capture-legend-hard-mark{width:42px;height:42px}
+  .dev-capture-legend-hard-mark .dev-capture-legend-icon{width:16px;height:16px}
   .dev-capture-legend-label{font-size:11px}
 }
 .dev-board{
@@ -1461,11 +1458,12 @@ body.dev-series-panel-open{
   line-height:0;
   margin-top:2px;
 }
+/* Hard board badge: green stays 16px; red target grows to wrap it. */
 .dev-capture-flare.is-hard{
   position:relative;
   display:block;
-  width:22px;
-  height:22px;
+  width:42px;
+  height:42px;
   margin-top:0;
   line-height:0;
 }
@@ -1496,8 +1494,8 @@ body.dev-series-panel-open{
   position:absolute;
   left:50%;
   top:50%;
-  width:8px;
-  height:8px;
+  width:16px;
+  height:16px;
   margin:0;
   transform:translate(-50%,-50%);
   z-index:2;
@@ -1701,8 +1699,8 @@ body.dev-series-panel-open{
   vertical-align:middle;
 }
 .dev-capture-title-mark.is-hard{
-  width:22px;
-  height:22px;
+  width:46px;
+  height:46px;
 }
 .dev-capture-title-icon{
   width:100%;
@@ -1731,8 +1729,8 @@ body.dev-series-panel-open{
   position:absolute;
   left:50%;
   top:50%;
-  width:8px;
-  height:8px;
+  width:18px;
+  height:18px;
   margin:0;
   transform:translate(-50%,-50%);
   z-index:2;
