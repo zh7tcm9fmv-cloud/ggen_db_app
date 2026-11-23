@@ -2451,25 +2451,16 @@
   }
 
   /**
-   * MLS MAP interrupt — two classes:
+   * MLS MAP interrupt — owner / community rule (worldwide, Line + Standard):
+   *  1) EX (best non-MAP) cannot finish the engage target alone.
+   *  2) More than one living enemy in the MAP shape (≥ 2 distinct; MD thr if higher).
+   * MAP does NOT need to KO the engage (chip MAP OK). Cond:Area ignored for the
+   * pick (live ML); applyHit still applies aura.
    *
-   * A) Opening after-move impact MAP (type 2 + can-use-after-move):
-   *    Altron Dragon Fang / Strike Noir Shorty — live high-CP ML opens with these
-   *    (Absolute Hit + debuff / dual designate), NOT EX-first. Fire when ML
-   *    auto-usage threshold is met and engage is in shape. Do not require a KO
-   *    and do not skip because EX could finish or out-damage.
+   * After-move impact (type 2) may still walk to maximize foes in minR..maxR.
+   * Dash MAP (type 4): fire from current tile; land at `dashTo` after hits.
    *
-   * B) Fixed AoE / other MAP (e.g. WZC Rolling Buster type 1, thr ≥ 2):
-   *    EX-first — compare EX on the engage even if Support Defense would intercept
-   *    (SD does not switch WZC onto MAP). Skip MAP when EX kills engage or EX
-   *    damage ≥ MAP. Otherwise require threshold + engage in shape + raw MAP KO.
-   *    Decision damage ignores Cond:Area WP auras (live ML); applyHit still applies them.
-   *
-   * Ranking among legal MAP plans: more kills → more total damage → more units
-   * in shape. Side-foe-only kills never qualify for class B.
-   *
-   * Dash MAP (type 4, e.g. V2AB Wings of Light): fire from current tile; land at
-   * `dashTo` after hits. Uses class B gates unless it is also impact+after-move.
+   * Ranking among legal plans: more kills → more total damage → more units in shape.
    */
   function mapAutoUsageMinTargets(wpn) {
     var raw = wpn && wpn.raw ? wpn.raw : wpn;
@@ -2481,6 +2472,12 @@
     if (ml > 0) return ml;
     if (auto > 0) return auto;
     return 2;
+  }
+
+  /** At least 2 in shape (“more than one enemy”); honor higher MD thresholds. */
+  function mapOpenMinTargets(wpn) {
+    var need = mapAutoUsageMinTargets(wpn) | 0;
+    return need < 2 ? 2 : need;
   }
 
   function mapWeaponCanUseAfterMove(wpn) {
@@ -2503,13 +2500,14 @@
     var cells, inArea, maxSel, minNeed, mapKills, totalDmg, i, mt, mDmg;
     var better, mapDmgOnEngage, engageKilled;
     var impactMode, isDash, dashTo, dest, picked, key, seen, cellList, j, ec;
-    var fireActor, afterMoveOk, openingImpact;
+    var fireActor, afterMoveOk;
     /* Live ML: MAP/EX pick ignores Cond:Area WP; applyHit still applies aura. */
     var damageOfDecision = withDamageIgnoringAreaAura(damageOf);
-    /* Class B scores EX on the engage itself — SD cover must not zero that comparison. */
+    /* EX-can’t-kill uses engage itself — SD cover must not zero that check. */
     var exChoiceOpts = { ignoreCover: true };
     var nonMapFinishes = nonMapKillsEngage(actor, target, allUnits, bounds, damageOfDecision, exChoiceOpts);
-    var nonMapDmgBest = null;
+    /* Gate 1: EX alone finishes engage → never open MAP. */
+    if (nonMapFinishes) return null;
 
     for (ci = 0; ci < candidates.length; ci++) {
       wpn = candidates[ci];
@@ -2527,12 +2525,6 @@
       if (impactMode && maxSel <= 0) maxSel = 1;
       isDash = isDashMapWeapon(wpn);
       afterMoveOk = mapWeaponCanUseAfterMove(wpn);
-      openingImpact = isOpeningImpactMap(wpn);
-      /*
-       * Class B (WZC Rolling Buster…): skip MAP entirely when EX already finishes.
-       * Class A (Altron / Strike Noir impact openers): still allow MAP.
-       */
-      if (!openingImpact && nonMapFinishes) continue;
       dashTo = null;
       rawDist = distance(actor, target);
       needMove = !isDash && (rawDist > mx || rawDist < mn);
@@ -2614,8 +2606,8 @@
         }
       }
 
-      /* ML auto-usage threshold counts distinct living units, not designates. */
-      minNeed = mapAutoUsageMinTargets(wpn);
+      /* Gate 2: ≥2 distinct living units in shape (MD thr if higher); engage must be among them. */
+      minNeed = mapOpenMinTargets(wpn);
       (function () {
         var uniq = [];
         var ui;
@@ -2659,21 +2651,8 @@
           if (((dmgAcc[ai].u.hp | 0) - (dmgAcc[ai].d | 0)) <= 0) mapKills++;
         }
       })();
+      /* Chip MAP allowed — no engage-KO / EX-damage gate. */
       engageKilled = (target.hp | 0) - mapDmgOnEngage <= 0;
-      if (!openingImpact) {
-        /*
-         * Class B: require MAP KO on engage (no chip-MAP) and MAP must beat best
-         * non-MAP damage on engage (WZC Rolling Buster vs Twin Buster EX).
-         * KO / EX compare ignore Cond:Area + SD cover (live ML pick).
-         */
-        if (!engageKilled) continue;
-        if (nonMapDmgBest == null) {
-          nonMapDmgBest = bestNonMapDamageOnEngage(
-            actor, target, allUnits, bounds, damageOfDecision, exChoiceOpts
-          ) | 0;
-        }
-        if ((nonMapDmgBest | 0) >= (mapDmgOnEngage | 0)) continue;
-      }
 
       if (isDash) {
         fireActor = {
@@ -2697,7 +2676,7 @@
           dashTo: dashTo,
           mapKills: mapKills,
           totalDmg: totalDmg,
-          engageKilled: true,
+          engageKilled: !!engageKilled,
           enCost: cost,
           freeAmmo: free
         };

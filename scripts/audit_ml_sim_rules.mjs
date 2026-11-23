@@ -222,8 +222,8 @@ assert(rules.rankedPoints('attack', true, 1, true) === 30, 'upset doubles a win'
 const preW = { name: 'P', min_range: 1, max_range: 3, power: 100, en: 10, ammo: 0, is_preemptive: true, traits: ['Preemptive Strike'], raw: { is_preemptive: true } };
 assert(rules.isPreemptiveWeapon({}, preW) === true, 'preemptive flag');
 assert(rules.isAbsoluteHitWeapon({ traits: ['Absolute Hit'] }) === true, 'absolute hit');
-assert(rules.determineDefenseAction({ hp: 100, unit: { mechanisms: [] } }, 200, true, false) === 'evade', 'evade when defend still dies');
-assert(rules.determineDefenseAction({ hp: 100, unit: { mechanisms: ['シールド'] } }, 50, true, true) === 'none', 'preemptive counter skips defend');
+assert(rules.determineDefenseAction({ hp: 100, unit: { mechanisms: [] } }, 200, false, false) === 'evade', 'evade when defend still dies');
+assert(rules.determineDefenseAction({ hp: 100, unit: { mechanisms: ['シールド'] } }, 50, false, true) === 'none', 'preemptive counter skips defend');
 const enActor = { maxEn: 100, currentEn: 100, mp: 0, weapons: [], unit: { abilities: [] }, char: { abilities: [] } };
 assert(rules.getEffectiveEnCost(enActor, { en: 20 }, false) === 20, 'base EN cost');
 assert(Array.isArray(rules.getValidWeapons({ ...enActor, weapons: [preW], currentEn: 100, mp: 0 }, 2, false)), 'getValidWeapons');
@@ -403,8 +403,8 @@ assert(rules.checkHit(parryAtk, Object.assign({}, parryDef, { usedParryCount: 0,
   assert(saWave[0].attacker.mobility >= saWave[2].attacker.mobility, 'SA cap keeps highest mobility');
 }
 
-/* F90 A.D.S. Barrage (MAP type 3 cone) vs Barrage EX — chip MAP must not win on AoE sum alone.
- * LINE ally slot 4 (12,7) facing left; enemies on x=8 include (8,7)+(8,9) in the Barrage cone. */
+/* F90 A.D.S. Barrage — owner rule: EX cannot finish engage + ≥2 in MAP shape (chip OK).
+ * LINE ally slot 4 (12,7) facing left; cone covers (8,7)+(8,9). */
 {
   const barrageMap = {
     name: 'Barrage', power: 4560, min_range: 1, max_range: 4, en: 54, en_cost: 54, ammo: 1,
@@ -436,14 +436,15 @@ assert(rules.checkHit(parryAtk, Object.assign({}, parryDef, { usedParryCount: 0,
   ];
   const lineAll = [f90].concat(lineFoes);
   const lineBounds = { minX: 0, maxX: 20, minY: 0, maxY: 20 };
+  /* Chip MAP: EX 6120 cannot finish 70k; ≥2 in cone → MAP opens (no engage-KO gate). */
   const mapPlanChip = rules.evaluateMapWeapon(
     f90, lineFoes[2], lineFoes, lineAll, lineBounds, (a, d, w) => w.power | 0
   );
-  assert(!mapPlanChip, 'F90 Barrage MAP skipped vs Barrage EX on chip (AoE sum must not win), got ' +
+  assert(mapPlanChip && mapPlanChip.weapon && mapPlanChip.weapon.name === 'Barrage',
+    'F90 Barrage MAP used on chip when EX cannot kill + 2+ in cone, got ' +
     (mapPlanChip && mapPlanChip.weapon && mapPlanChip.weapon.name));
 
-  /* Soft foes: EX kills engage → never open with MAP even if MAP would multi-kill (V2AB Wings lesson).
-   * HP must be high enough to pick Defend (not Evade); audit damageOf ignores defend flags so raw EX still KOs. */
+  /* Soft foes: EX kills engage → never open with MAP even if MAP would multi-kill. */
   const softFoes = [
     { id: 's2', hp: 5500, x: 8, y: 9, size: 1, side: 'enemy' },
     { id: 's4', hp: 5500, x: 8, y: 7, size: 1, side: 'enemy' }
@@ -454,7 +455,7 @@ assert(rules.checkHit(parryAtk, Object.assign({}, parryDef, { usedParryCount: 0,
   assert(!mapPlanSoft, 'F90 Barrage MAP skipped when Barrage EX kills engage, got ' +
     (mapPlanSoft && mapPlanSoft.weapon && mapPlanSoft.weapon.name));
 
-  /* EX cannot kill, MAP KO's engage + 2+ in cone → MAP allowed. */
+  /* EX cannot kill + 2+ in cone → MAP (whether or not MAP KOs). */
   const midEx = {
     name: 'Barrage EX', power: 3000, min_range: 1, max_range: 5, en: 43, en_cost: 43, ammo: 0,
     is_map: false, is_ex: true, usage_restrictions: []
@@ -468,10 +469,27 @@ assert(rules.checkHit(parryAtk, Object.assign({}, parryDef, { usedParryCount: 0,
     f90Mid, midFoes[1], midFoes, [f90Mid].concat(midFoes), lineBounds, (a, d, w) => w.power | 0
   );
   assert(mapPlanMid && mapPlanMid.weapon && mapPlanMid.weapon.name === 'Barrage',
-    'F90 Barrage MAP used when EX cannot kill engage, MAP kills engage, 2+ in cone, got ' +
+    'F90 Barrage MAP used when EX cannot kill engage + 2+ in cone, got ' +
     (mapPlanMid && mapPlanMid.weapon && mapPlanMid.weapon.name));
 
-  /* Side-only MAP kill (engage survives MAP) → still prefer EX path (no MAP). */
+  /* Line = same gates as Standard (no thr+1). */
+  const f90Line = Object.assign({}, f90Mid, { isLine: true });
+  const mapPlanLine = rules.evaluateMapWeapon(
+    f90Line, midFoes[1], midFoes, [f90Line].concat(midFoes), lineBounds, (a, d, w) => w.power | 0
+  );
+  assert(mapPlanLine && mapPlanLine.weapon && mapPlanLine.weapon.name === 'Barrage',
+    'Line: same as Standard — MAP with 2 in cone when EX cannot kill, got ' +
+    (mapPlanLine && mapPlanLine.weapon && mapPlanLine.weapon.name));
+
+  /* Only one foe in cone → no MAP (need more than one). */
+  const soloFoe = [{ id: 'solo', hp: 4000, x: 8, y: 7, size: 1, side: 'enemy' }];
+  const mapPlanSolo = rules.evaluateMapWeapon(
+    f90Mid, soloFoe[0], soloFoe, [f90Mid].concat(soloFoe), lineBounds, (a, d, w) => w.power | 0
+  );
+  assert(!mapPlanSolo, 'MAP skipped with only 1 foe in shape, got ' +
+    (mapPlanSolo && mapPlanSolo.weapon && mapPlanSolo.weapon.name));
+
+  /* Engage survives MAP but 2+ in cone + EX cannot kill → MAP still opens. */
   const tankEngage = [
     { id: 't2', hp: 4000, x: 8, y: 9, size: 1, side: 'enemy' },
     { id: 't4', hp: 80000, x: 8, y: 7, size: 1, side: 'enemy' }
@@ -479,7 +497,8 @@ assert(rules.checkHit(parryAtk, Object.assign({}, parryDef, { usedParryCount: 0,
   const mapPlanSideOnly = rules.evaluateMapWeapon(
     f90Mid, tankEngage[1], tankEngage, [f90Mid].concat(tankEngage), lineBounds, (a, d, w) => w.power | 0
   );
-  assert(!mapPlanSideOnly, 'F90 Barrage MAP skipped when only a side foe dies (engage lives), got ' +
+  assert(mapPlanSideOnly && mapPlanSideOnly.weapon && mapPlanSideOnly.weapon.name === 'Barrage',
+    'MAP opens when engage lives (chip) if EX cannot kill + 2+ in cone, got ' +
     (mapPlanSideOnly && mapPlanSideOnly.weapon && mapPlanSideOnly.weapon.name));
 
   /* MAP bypasses Shield — raw KO still opens MAP even if Shield Defense is equipped. */
@@ -506,7 +525,7 @@ assert(rules.checkHit(parryAtk, Object.assign({}, parryDef, { usedParryCount: 0,
     'MAP opens on raw KO (Shield ignored on MAP), got ' +
     (mapPlanShield && mapPlanShield.weapon && mapPlanShield.weapon.name));
 
-  /* Strong EX finishes engage under Shield (unit.mechanisms + HP picks Shield, not Evade) → prefer EX. */
+  /* Strong EX finishes engage → no MAP. */
   const strongEx = Object.assign({}, barrageEx, { power: 150000 });
   const wingEx = Object.assign({}, f90, { weapons: [rollingMap, strongEx] });
   const shieldEngageExFirst = [
@@ -524,10 +543,10 @@ assert(rules.checkHit(parryAtk, Object.assign({}, parryDef, { usedParryCount: 0,
     (a, d, w) => w.power | 0
   );
   assert(!mapPlanExFirst,
-    'MAP skipped when Twin Buster–class EX finishes engage (prefer EX), got ' +
+    'MAP skipped when EX finishes engage, got ' +
     (mapPlanExFirst && mapPlanExFirst.weapon && mapPlanExFirst.weapon.name));
 
-  /* WZC Twin Buster–class: EX cannot finish full-HP tanks and MAP only chips → no MAP. */
+  /* WZC chip: EX cannot finish + 2+ in cone → MAP opens (no engage-KO gate). */
   const twinBuster = Object.assign({}, barrageMap, {
     name: 'Twin Buster Rifle', power: 4320, min_range: 1, max_range: 6
   });
@@ -545,8 +564,8 @@ assert(rules.checkHit(parryAtk, Object.assign({}, parryDef, { usedParryCount: 0,
     wzc, highCpFoes[1], highCpFoes, [wzc].concat(highCpFoes), lineBounds,
     (a, d, w) => w.power | 0
   );
-  assert(!mapPlanWzChip,
-    'WZC Twin Buster MAP skipped on high-CP chip (EX+MAP cannot KO engage), got ' +
+  assert(mapPlanWzChip && mapPlanWzChip.weapon && mapPlanWzChip.weapon.name === 'Twin Buster Rifle',
+    'WZC Twin Buster MAP opens on chip when EX cannot kill + 2+ in cone, got ' +
     (mapPlanWzChip && mapPlanWzChip.weapon && mapPlanWzChip.weapon.name));
 
   /*

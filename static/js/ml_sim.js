@@ -12044,8 +12044,8 @@
              * Guaranteed Chance Step still applies (end of any non-wait action).
              * Weapon “CS on hit” traits still spend the phase budget when present.
              * AI: after-move impact MAP (Altron / Strike Noir) opens when ML threshold
-             * + engage-in-shape — not EX-first. Other MAP (WZC Rolling Buster) stays
-             * EX-first / KO-on-engage. MAP itself bypasses Defend/Shield.
+             * + engage-in-shape. Worldwide MAP open: EX cannot finish engage + ≥2 in
+             * shape (chip OK; no engage-KO gate). MAP itself bypasses Defend/Shield.
              */
             if ((u.hp | 0) > 0 && living(foes).length) {
               if (hitAny && !u._weaponCsGrantedThisAction &&
