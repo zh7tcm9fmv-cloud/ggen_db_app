@@ -75,11 +75,14 @@
 
   function $(id) { return document.getElementById(id); }
 
+  /* Bump when ogk_scale / payload shape changes — also keyed into mapCache. */
+  var DEV_API_SV = 'dev26';
+
   function api(path) {
     /* sv= busts stale public max-age=3600 develop JSON (e.g. series_name "320"). */
     var q = (path.indexOf('?') >= 0 ? '&' : '?')
       + 'lang=' + encodeURIComponent(lang())
-      + '&sv=dev25';
+      + '&sv=' + encodeURIComponent(DEV_API_SV);
     return fetch(path + q, {
       headers: { Accept: 'application/json' },
       /* Allow HTTP cache — server already sends ETag + max-age=3600. */
@@ -90,7 +93,7 @@
   }
 
   function mapCacheKey(sid) {
-    return String(sid || '') + '|' + lang();
+    return String(sid || '') + '|' + lang() + '|' + DEV_API_SV;
   }
 
   function rememberMap(sid, map) {

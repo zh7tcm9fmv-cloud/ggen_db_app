@@ -25751,10 +25751,14 @@ def _dev_item_icon(item_id):
 
 _OGK_BOARD_SCALE_CACHE = {}
 _OGK_BOARD_SCALE_PUBLISHED = None  # filename -> float; Railway has no ogk on disk
-_OGK_ALPHA_THR = 24  # ignore soft glow fringe when measuring ink bbox
-_OGK_TARGET_FILL = 0.72
+_OGK_ALPHA_THR = 24  # ignore soft glow fringe when measuring ink
+# Area (ink mass) equalizes perceived size; bbox clamp keeps silhouette sane.
+# Bbox-only left dense SSR ogks looking ~50% heavier than SR on EW / mixed trees.
+_OGK_TARGET_AREA = 0.18
+_OGK_BBOX_MIN_EFF = 0.52
+_OGK_BBOX_MAX_EFF = 0.85
 _OGK_SCALE_MIN = 0.52
-_OGK_SCALE_MAX = 2.05  # padded 512 ink ~0.35–0.40 needs ~1.8–2.0
+_OGK_SCALE_MAX = 2.05  # padded 512 low-ink still needs ~2×
 
 
 def _ogk_local_disk_path(static_path):
@@ -25801,7 +25805,8 @@ def _load_ogk_board_scales_published():
 
 
 def _ogk_compute_board_scale_from_disk(disk):
-    """Ink-bbox fill → scale so content ≈ target fraction of the koma box."""
+    """Ink-area scale so ogks share perceived mass; bbox clamp for silhouette."""
+    import math
     from PIL import Image
     with Image.open(disk) as im:
         im = im.convert('RGBA')
@@ -25810,27 +25815,36 @@ def _ogk_compute_board_scale_from_disk(disk):
         # Soft drop-shadow / glow inflates raw getbbox — threshold to real ink.
         ink = alpha.point(lambda p: 255 if p >= _OGK_ALPHA_THR else 0)
         bbox = ink.getbbox() or alpha.getbbox()
+        hist = alpha.histogram()
+        ink_n = sum(hist[_OGK_ALPHA_THR:]) if hist else 0
     if not bbox or w <= 0 or h <= 0:
         return 1.0
+    canvas = float(w * h)
+    area_fill = (ink_n / canvas) if canvas else 0.0
     cw = max(1, bbox[2] - bbox[0])
     ch = max(1, bbox[3] - bbox[1])
-    # After object-fit:contain into a square, long-side fill ≈ max(cw,ch)/max(w,h).
-    fill = max(cw, ch) / float(max(w, h))
-    if fill <= 0.05:
+    bbox_fill = max(cw, ch) / float(max(w, h))
+    if area_fill <= 0.008 or bbox_fill <= 0.05:
         return 1.0
-    scale = _OGK_TARGET_FILL / fill
+    # Linear scale → area scales with scale²; match target ink mass in the box.
+    scale = math.sqrt(_OGK_TARGET_AREA / area_fill)
+    eff_bbox = bbox_fill * scale
+    if eff_bbox < _OGK_BBOX_MIN_EFF:
+        scale = _OGK_BBOX_MIN_EFF / bbox_fill
+    elif eff_bbox > _OGK_BBOX_MAX_EFF:
+        scale = _OGK_BBOX_MAX_EFF / bbox_fill
     return max(_OGK_SCALE_MIN, min(_OGK_SCALE_MAX, scale))
 
 
 def _ogk_board_scale(static_path):
-    """Normalize develop-board ogk size across tight-crop vs padded 512 canvases.
+    """Normalize develop-board ogk perceived size (ink mass + bbox clamp).
 
-    object-fit:contain in a fixed box makes full-bleed Leo ogk look huge and
-    padded 512 Geminass look tiny. Scale so content ≈ target fill of the box.
+    object-fit:contain makes full-bleed Leo ogk look huge and padded 512
+    Geminass look tiny. Bbox-only still left dense SSR art looking heavier
+    than SR on same-size 512 canvases (Endless Waltz). Scale from ink area
+    so visual mass matches; clamp silhouette via bbox.
 
-    G-UNIT is the main mixed tree (3× padded 512 + many tight crops); other
-    series are usually all-512 or all-tight so unevenness is invisible there.
-    Production: measure from disk when present, else published JSON.
+    Production: measure from disk when present, else published JSON (v3).
     """
     key = str(static_path or '')
     if key in _OGK_BOARD_SCALE_CACHE:
