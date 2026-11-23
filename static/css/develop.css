@@ -961,6 +961,16 @@ body.dev-series-panel-open{
   z-index:1;
   isolation:isolate;
 }
+/* Parked sibling diagrams stay in DOM (decoded ogk) — out of flow, not display:none */
+.dev-board.is-parked{
+  position:absolute;
+  left:0;
+  top:0;
+  visibility:hidden;
+  pointer-events:none;
+  z-index:-1;
+  min-height:0;
+}
 /* Routes under koma; arrows above nodes so rarity rings never hide them. */
 .dev-wires-layer{
   position:absolute;

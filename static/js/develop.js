@@ -17,6 +17,17 @@
   var panMetrics = { w: 0, h: 0 };
   var gestureBound = false;
   var gesture = null;
+  /*
+    Instant diagram switches: keep painted boards in-DOM (parked) so ogk/wires
+    are not torn down on every tab click. Keyed by series + frame layout.
+  */
+  var boardPark = Object.create(null);
+  var boardParkSeries = '';
+  var boardParkLayout = '';
+  var boardWarmTimer = 0;
+  var mapCache = Object.create(null);
+  var mapCacheOrder = [];
+  var MAP_CACHE_MAX = 12;
 
   function isTouchBoard() {
     try {
@@ -68,14 +79,166 @@
     /* sv= busts stale public max-age=3600 develop JSON (e.g. series_name "320"). */
     var q = (path.indexOf('?') >= 0 ? '&' : '?')
       + 'lang=' + encodeURIComponent(lang())
-      + '&sv=dev24';
+      + '&sv=dev25';
     return fetch(path + q, {
       headers: { Accept: 'application/json' },
-      cache: 'no-store',
+      /* Allow HTTP cache — server already sends ETag + max-age=3600. */
     }).then(function (r) {
       if (!r.ok) throw new Error(String(r.status));
       return r.json();
     });
+  }
+
+  function mapCacheKey(sid) {
+    return String(sid || '') + '|' + lang();
+  }
+
+  function rememberMap(sid, map) {
+    var key = mapCacheKey(sid);
+    if (!mapCache[key]) {
+      mapCacheOrder.push(key);
+      while (mapCacheOrder.length > MAP_CACHE_MAX) {
+        var drop = mapCacheOrder.shift();
+        if (drop) delete mapCache[drop];
+      }
+    }
+    mapCache[key] = map;
+  }
+
+  function clearBoardPark() {
+    if (boardWarmTimer) {
+      try { clearTimeout(boardWarmTimer); } catch (_) {}
+      boardWarmTimer = 0;
+    }
+    var scroll = $('devScroll');
+    Object.keys(boardPark).forEach(function (k) {
+      var entry = boardPark[k];
+      var el = entry && entry.el;
+      if (el && el.parentNode) {
+        try { el.parentNode.removeChild(el); } catch (_) {}
+      }
+    });
+    boardPark = Object.create(null);
+    boardParkSeries = '';
+    boardParkLayout = '';
+    if (scroll && !$('devBoard')) {
+      var fresh = document.createElement('div');
+      fresh.className = 'dev-board';
+      fresh.id = 'devBoard';
+      scroll.appendChild(fresh);
+    }
+  }
+
+  function demoteBoardEl(el) {
+    if (!el) return;
+    el.removeAttribute('id');
+    el.classList.add('is-parked');
+    el.setAttribute('aria-hidden', 'true');
+    try { el.style.transform = ''; } catch (_) {}
+  }
+
+  function promoteBoardEntry(entry) {
+    if (!entry || !entry.el) return null;
+    var scroll = $('devScroll');
+    var cur = $('devBoard');
+    if (cur && cur !== entry.el) demoteBoardEl(cur);
+    entry.el.id = 'devBoard';
+    entry.el.classList.remove('is-parked');
+    entry.el.removeAttribute('aria-hidden');
+    if (scroll && entry.el.parentNode !== scroll) {
+      scroll.appendChild(entry.el);
+    }
+    return entry.el;
+  }
+
+  function applyParkedBoardChrome(entry) {
+    var main = document.querySelector('.dev-main');
+    var scroll = $('devScroll');
+    if (main && entry) {
+      if (entry.cell) main.style.setProperty('--dev-cell', entry.cell + 'px');
+      if (entry.koma) main.style.setProperty('--dev-koma', entry.koma + 'px');
+      if (entry.baseFrac != null) main.style.setProperty('--dev-base', String(entry.baseFrac));
+      main.classList.toggle('is-touch-board', !!entry.touchPan);
+    }
+    if (scroll && entry) {
+      scroll.classList.remove('is-board-center');
+      scroll.classList.toggle('is-board-center-y', !!entry.centerY);
+      scroll.classList.toggle('is-ult-board', !!entry.isUlt);
+      scroll.classList.toggle('is-panable', !!entry.touchPan);
+      scroll.classList.remove('is-panning');
+      try { scroll.scrollLeft = 0; } catch (_) {}
+    }
+    if (entry) {
+      state.cell = entry.cell || state.cell;
+      panMetrics = { w: entry.w || 0, h: entry.h || 0 };
+    }
+  }
+
+  function scheduleWarmSiblingBoards() {
+    if (boardWarmTimer) {
+      try { clearTimeout(boardWarmTimer); } catch (_) {}
+      boardWarmTimer = 0;
+    }
+    var diagrams = (state.map && state.map.diagrams) || [];
+    if (diagrams.length <= 1) return;
+    boardWarmTimer = setTimeout(function () {
+      boardWarmTimer = 0;
+      if (!isDevelopActive() || !state.map) return;
+      var i;
+      for (i = 0; i < diagrams.length; i++) {
+        if (!boardPark[i]) {
+          warmDiagramBoard(i);
+          return;
+        }
+      }
+    }, 140);
+  }
+
+  function warmDiagramBoard(di) {
+    if (!isDevelopActive() || !state.map) return;
+    if (boardPark[di]) {
+      scheduleWarmSiblingBoards();
+      return;
+    }
+    var saved = state.diagram;
+    var savedSel = state.selected;
+    state.diagram = di;
+    state.selected = null;
+    try {
+      renderBoard({ parkOnly: true, skipWarm: true });
+    } catch (_) {}
+    state.diagram = saved;
+    state.selected = savedSel;
+    /* Restore the board the user is actually viewing. */
+    if (boardPark[saved]) {
+      promoteBoardEntry(boardPark[saved]);
+      applyParkedBoardChrome(boardPark[saved]);
+      finishParkedBoardInteraction(boardPark[saved]);
+    }
+    scheduleWarmSiblingBoards();
+  }
+
+  function finishParkedBoardInteraction(entry) {
+    var board = entry && entry.el;
+    var scroll = $('devScroll');
+    if (!board || !scroll) return;
+    clearDevelopScrollExperiments();
+    if (entry.touchPan) {
+      panMetrics = { w: entry.w || 0, h: entry.h || 0 };
+      var viewKey = seriesId + ':' + state.diagram + ':' + (entry.w || 0) + 'x' + (entry.h || 0);
+      if (boardView.key !== viewKey) {
+        boardView.key = viewKey;
+        resetBoardView(scroll, entry.w || 0, entry.h || 0);
+      } else {
+        clampBoardView(scroll.clientWidth || 0, scroll.clientHeight || 0, entry.w || 0, entry.h || 0);
+      }
+      applyBoardView(board);
+      ensureBoardGestures(scroll);
+    } else {
+      board.style.transform = '';
+      board.style.transformOrigin = '';
+      boardView.key = '';
+    }
   }
 
   function ui() {
@@ -1397,16 +1560,102 @@
     if (openFull) openFull.addEventListener('click', onOpenUnit);
   }
 
-  function renderBoard() {
+  function renderBoard(opts) {
+    opts = opts || {};
+    var parkOnly = !!opts.parkOnly;
+    var skipWarm = !!opts.skipWarm;
+    var forceRebuild = !!opts.force;
     var map = state.map;
-    var diagram = (map && map.diagrams && map.diagrams[state.diagram]) || null;
-    var board = $('devBoard');
+    var di = state.diagram | 0;
+    var diagram = (map && map.diagrams && map.diagrams[di]) || null;
     var scroll = $('devScroll');
     var main = document.querySelector('.dev-main');
-    board.innerHTML = '';
-    if (!diagram) return;
+    if (!scroll) return;
+    if (!diagram) {
+      var emptyBoard = $('devBoard');
+      if (emptyBoard && !parkOnly) emptyBoard.innerHTML = '';
+      return;
+    }
     bindDismissOnce();
     bindHoverDetailBridge();
+
+    var touchPan = isTouchBoard();
+    var bar = $('devDiagramBar');
+    var barW = (bar && !bar.hidden) ? (bar.offsetWidth || 0) : 0;
+    /*
+      Desktop: budget full switcher width, then center the tree in the remainder.
+      Touch: compact tabs overlay the board — only a thin gutter so units stay large.
+    */
+    var tabW = 0;
+    if (bar && !bar.hidden) {
+      tabW = touchPan
+        ? Math.ceil(Math.min(barW || 118, 124) + 4)
+        : Math.ceil((barW || 218) + 6);
+    }
+    var frameEl = (scroll.closest && scroll.closest('.dev-board-frame')) || scroll.parentElement;
+    var availWProbe = Math.max(220, (frameEl && frameEl.clientWidth ? frameEl.clientWidth : scroll.clientWidth) - 4);
+    var layoutSig = (touchPan ? 't' : 'd') + ':' + Math.round(availWProbe) + ':' + tabW;
+
+    if (!parkOnly && (boardParkSeries !== String(seriesId) || boardParkLayout !== layoutSig)) {
+      clearBoardPark();
+      boardParkSeries = String(seriesId);
+      boardParkLayout = layoutSig;
+    } else if (parkOnly && !boardParkSeries) {
+      boardParkSeries = String(seriesId);
+      boardParkLayout = layoutSig;
+    }
+
+    /* Instant path: promote an already-painted sibling diagram. */
+    if (!forceRebuild && !parkOnly && boardPark[di] && boardPark[di].el) {
+      var hit = boardPark[di];
+      promoteBoardEntry(hit);
+      applyParkedBoardChrome(hit);
+      try {
+        hit.el.querySelectorAll('.dev-node.is-selected').forEach(function (n) {
+          n.classList.remove('is-selected');
+        });
+      } catch (_) {}
+      renderDetail(diagram, null);
+      finishParkedBoardInteraction(hit);
+      if (!skipWarm) scheduleWarmSiblingBoards();
+      return;
+    }
+
+    var board;
+    if (parkOnly) {
+      board = document.createElement('div');
+      board.className = 'dev-board is-parked';
+      board.setAttribute('data-dev-di', String(di));
+      board.setAttribute('aria-hidden', 'true');
+      scroll.appendChild(board);
+    } else {
+      board = $('devBoard');
+      if (!board) {
+        board = document.createElement('div');
+        board.className = 'dev-board';
+        board.id = 'devBoard';
+        scroll.appendChild(board);
+      } else if (board.classList.contains('is-parked')) {
+        board = document.createElement('div');
+        board.className = 'dev-board';
+        board.id = 'devBoard';
+        scroll.appendChild(board);
+      } else {
+        var curDi = board.getAttribute('data-dev-di');
+        if (curDi != null && Number(curDi) !== di && boardPark[Number(curDi)] && boardPark[Number(curDi)].el === board) {
+          demoteBoardEl(board);
+          board = document.createElement('div');
+          board.className = 'dev-board';
+          board.id = 'devBoard';
+          scroll.appendChild(board);
+        }
+      }
+      board.innerHTML = '';
+      board.id = 'devBoard';
+      board.classList.remove('is-parked');
+      board.removeAttribute('aria-hidden');
+    }
+    board.setAttribute('data-dev-di', String(di));
 
     var maxC = 0;
     var maxR = 0;
@@ -1422,19 +1671,6 @@
     });
 
     var isUlt = !!(diagram && diagram.ultimate);
-    var touchPan = isTouchBoard();
-    var bar = $('devDiagramBar');
-    var barW = (bar && !bar.hidden) ? (bar.offsetWidth || 0) : 0;
-    /*
-      Desktop: budget full switcher width, then center the tree in the remainder.
-      Touch: compact tabs overlay the board — only a thin gutter so units stay large.
-    */
-    var tabW = 0;
-    if (bar && !bar.hidden) {
-      tabW = touchPan
-        ? Math.ceil(Math.min(barW || 118, 124) + 4)
-        : Math.ceil((barW || 218) + 6);
-    }
     var metrics = layoutMetrics(scroll, maxC, maxR, tabW, { touchPan: touchPan });
     var cell = metrics.cell;
     var pad = metrics.pad || Math.round(metrics.koma * 0.55);
@@ -1448,8 +1684,8 @@
     var regionW = Math.max(160, availW - tabW);
     var extraL = touchPan ? 0 : Math.max(0, Math.floor((regionW - contentW) / 2));
     var padL = tabW + extraL;
-    state.cell = cell;
-    if (main) {
+    if (!parkOnly) state.cell = cell;
+    if (main && !parkOnly) {
       main.style.setProperty('--dev-cell', cell + 'px');
       main.style.setProperty('--dev-koma', metrics.koma + 'px');
       main.style.setProperty('--dev-base', String(metrics.baseFrac || 0.52));
@@ -1465,22 +1701,23 @@
     board.style.height = h + 'px';
     board.style.marginBottom = '';
     board.style.marginRight = '';
-    if (availW > 0) lastLayoutFrameW = Math.round(availW + 4);
-    var frameEl = (scroll.closest && scroll.closest('.dev-board-frame')) || scroll.parentElement;
+    if (availW > 0 && !parkOnly) lastLayoutFrameW = Math.round(availW + 4);
     var frameH = (frameEl && frameEl.clientHeight) || 0;
     var centerY = !touchPan && frameH > 0 && h < frameH - 12;
-    scroll.classList.remove('is-board-center');
-    scroll.classList.toggle('is-board-center-y', !!centerY);
-    scroll.classList.toggle('is-ult-board', !!isUlt);
-    scroll.classList.toggle('is-panable', touchPan);
-    scroll.classList.remove('is-panning');
-    try {
-      scroll.scrollLeft = 0;
-    } catch (_) {}
-    if (!touchPan) {
-      board.style.transform = '';
-      board.style.transformOrigin = '';
-      boardView.key = '';
+    if (!parkOnly) {
+      scroll.classList.remove('is-board-center');
+      scroll.classList.toggle('is-board-center-y', !!centerY);
+      scroll.classList.toggle('is-ult-board', !!isUlt);
+      scroll.classList.toggle('is-panable', touchPan);
+      scroll.classList.remove('is-panning');
+      try {
+        scroll.scrollLeft = 0;
+      } catch (_) {}
+      if (!touchPan) {
+        board.style.transform = '';
+        board.style.transformOrigin = '';
+        boardView.key = '';
+      }
     }
 
     var wiresLayer = document.createElement('div');
@@ -1767,6 +2004,23 @@
       board.appendChild(btn);
     });
 
+    boardPark[di] = {
+      el: board,
+      cell: cell,
+      koma: metrics.koma,
+      baseFrac: metrics.baseFrac || 0.52,
+      w: w,
+      h: h,
+      centerY: !!centerY,
+      isUlt: !!isUlt,
+      touchPan: !!touchPan,
+    };
+
+    if (parkOnly) {
+      demoteBoardEl(board);
+      return;
+    }
+
     var sel = null;
     if (state.selected) sel = pieceById(diagram, state.selected);
     if (sel) {
@@ -1791,6 +2045,7 @@
       applyBoardView(board);
       ensureBoardGestures(scroll);
     }
+    if (!skipWarm) scheduleWarmSiblingBoards();
   }
 
   function diagramTabBannerUrl(diagram, ordinal) {
@@ -1966,15 +2221,52 @@
       btn.appendChild(span);
       btn.addEventListener('click', function () {
         if (state.diagram === i) return;
-        state.diagram = i;
-        state.selected = null;
-        persistDevelopView();
-        renderTabs();
-        renderBoard();
+        switchToDiagram(i);
       });
       tabs.appendChild(btn);
     });
     host.appendChild(tabs);
+  }
+
+  function syncDiagramTabActive() {
+    var host = $('devDiagramBar');
+    if (!host) return;
+    var tabs = host.querySelectorAll('.dev-diagram-tab');
+    var di = state.diagram | 0;
+    tabs.forEach(function (btn, i) {
+      var on = i === di;
+      btn.classList.toggle('is-active', on);
+      btn.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+  }
+
+  function switchToDiagram(i) {
+    var diagrams = (state.map && state.map.diagrams) || [];
+    if (i < 0 || i >= diagrams.length || i === state.diagram) return;
+    var cur = $('devBoard');
+    var curDi = state.diagram | 0;
+    if (cur && cur.getAttribute('data-dev-di') != null) {
+      if (!boardPark[curDi] || boardPark[curDi].el !== cur) {
+        boardPark[curDi] = boardPark[curDi] || {
+          el: cur,
+          cell: state.cell,
+          koma: null,
+          baseFrac: 0.52,
+          w: panMetrics.w || 0,
+          h: panMetrics.h || 0,
+          centerY: !!( $('devScroll') && $('devScroll').classList.contains('is-board-center-y') ),
+          isUlt: !!( $('devScroll') && $('devScroll').classList.contains('is-ult-board') ),
+          touchPan: isTouchBoard(),
+        };
+        boardPark[curDi].el = cur;
+      }
+      demoteBoardEl(cur);
+    }
+    state.diagram = i;
+    state.selected = null;
+    persistDevelopView();
+    syncDiagramTabActive();
+    renderBoard();
   }
 
   function seriesById(id) {
@@ -2185,6 +2477,7 @@
   }
 
   function applyMap(map) {
+    clearBoardPark();
     state.map = map;
     var diagrams = (map && map.diagrams) || [];
     var restored = recallDiagramIndex(map && map.series_id);
@@ -2237,7 +2530,16 @@
   function loadSeries(id, push) {
     seriesId = String(id || '4000');
     if (push) pushDevelopPath(seriesId);
-    return api('/api/develop/' + encodeURIComponent(seriesId)).then(applyMap);
+    var cached = mapCache[mapCacheKey(seriesId)];
+    if (cached) {
+      applyMap(cached);
+      return Promise.resolve(cached);
+    }
+    return api('/api/develop/' + encodeURIComponent(seriesId)).then(function (map) {
+      rememberMap(seriesId, map);
+      applyMap(map);
+      return map;
+    });
   }
 
   var resizeTimer = 0;
@@ -2267,7 +2569,9 @@
         return;
       }
       if (w > 0) lastLayoutFrameW = w;
-      renderBoard();
+      /* Width change invalidates cell layout — drop parked boards and rebuild. */
+      clearBoardPark();
+      renderBoard({ force: true });
     }, 160);
   }
 

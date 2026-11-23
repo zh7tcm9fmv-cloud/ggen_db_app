@@ -25742,6 +25742,11 @@ def _dev_item_icon(item_id):
 
 
 _OGK_BOARD_SCALE_CACHE = {}
+_OGK_BOARD_SCALE_PUBLISHED = None  # filename -> float; Railway has no ogk on disk
+_OGK_ALPHA_THR = 24  # ignore soft glow fringe when measuring ink bbox
+_OGK_TARGET_FILL = 0.72
+_OGK_SCALE_MIN = 0.52
+_OGK_SCALE_MAX = 2.05  # padded 512 ink ~0.35–0.40 needs ~1.8–2.0
 
 
 def _ogk_local_disk_path(static_path):
@@ -25762,11 +25767,62 @@ def _ogk_local_disk_path(static_path):
     return ''
 
 
+def _load_ogk_board_scales_published():
+    """Committed scales so production /develop matches local without ogk on disk."""
+    global _OGK_BOARD_SCALE_PUBLISHED
+    if _OGK_BOARD_SCALE_PUBLISHED is not None:
+        return _OGK_BOARD_SCALE_PUBLISHED
+    path = os.path.join(app_dir, 'data', 'published', 'ogk_board_scales.json')
+    out = {}
+    try:
+        with open(path, 'r', encoding='utf-8') as f:
+            raw = json.load(f)
+        scales = raw.get('scales') if isinstance(raw, dict) else None
+        if isinstance(scales, dict):
+            for name, sc in scales.items():
+                try:
+                    v = float(sc)
+                except (TypeError, ValueError):
+                    continue
+                if v > 0:
+                    out[str(name)] = round(v, 3)
+    except Exception:
+        out = {}
+    _OGK_BOARD_SCALE_PUBLISHED = out
+    return out
+
+
+def _ogk_compute_board_scale_from_disk(disk):
+    """Ink-bbox fill → scale so content ≈ target fraction of the koma box."""
+    from PIL import Image
+    with Image.open(disk) as im:
+        im = im.convert('RGBA')
+        w, h = im.size
+        alpha = im.split()[-1]
+        # Soft drop-shadow / glow inflates raw getbbox — threshold to real ink.
+        ink = alpha.point(lambda p: 255 if p >= _OGK_ALPHA_THR else 0)
+        bbox = ink.getbbox() or alpha.getbbox()
+    if not bbox or w <= 0 or h <= 0:
+        return 1.0
+    cw = max(1, bbox[2] - bbox[0])
+    ch = max(1, bbox[3] - bbox[1])
+    # After object-fit:contain into a square, long-side fill ≈ max(cw,ch)/max(w,h).
+    fill = max(cw, ch) / float(max(w, h))
+    if fill <= 0.05:
+        return 1.0
+    scale = _OGK_TARGET_FILL / fill
+    return max(_OGK_SCALE_MIN, min(_OGK_SCALE_MAX, scale))
+
+
 def _ogk_board_scale(static_path):
     """Normalize develop-board ogk size across tight-crop vs padded 512 canvases.
 
     object-fit:contain in a fixed box makes full-bleed Leo ogk look huge and
     padded 512 Geminass look tiny. Scale so content ≈ target fill of the box.
+
+    G-UNIT is the main mixed tree (3× padded 512 + many tight crops); other
+    series are usually all-512 or all-tight so unevenness is invisible there.
+    Production: measure from disk when present, else published JSON.
     """
     key = str(static_path or '')
     if key in _OGK_BOARD_SCALE_CACHE:
@@ -25775,23 +25831,15 @@ def _ogk_board_scale(static_path):
     disk = _ogk_local_disk_path(key)
     if disk:
         try:
-            from PIL import Image
-            with Image.open(disk) as im:
-                im = im.convert('RGBA')
-                w, h = im.size
-                bbox = im.split()[-1].getbbox()
-            if bbox and w > 0 and h > 0:
-                cw = max(1, bbox[2] - bbox[0])
-                ch = max(1, bbox[3] - bbox[1])
-                # Fraction of the fitted box the opaque content occupies.
-                fill = max(cw / float(w), ch / float(h))
-                target = 0.72
-                if fill > 0.05:
-                    scale = target / fill
-                scale = max(0.52, min(1.38, scale))
+            scale = _ogk_compute_board_scale_from_disk(disk)
         except Exception:
             scale = 1.0
-    _OGK_BOARD_SCALE_CACHE[key] = round(scale, 3)
+    else:
+        fname = key.replace('\\', '/').rstrip('/').split('/')[-1]
+        pub = _load_ogk_board_scales_published()
+        if fname in pub:
+            scale = pub[fname]
+    _OGK_BOARD_SCALE_CACHE[key] = round(float(scale), 3)
     return _OGK_BOARD_SCALE_CACHE[key]
 
 
