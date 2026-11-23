@@ -33605,6 +33605,7 @@ def unit_passes_browse_pool_filters(
     cond_active=False,
     pilot_cond_active=False,
     unit_skill_only=False,
+    transform_alt_only=False,
 ):
     """list_units inclusion with optional lineage/series/ability filter steps (for scoped browse dropdowns)."""
     if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
@@ -33627,7 +33628,10 @@ def unit_passes_browse_pool_filters(
     _muid = normalize_id(info.get('main_unit_id', uid))
     if _muid == '0':
         _muid = uid
-    if uid != _muid and not wide_seek:
+    if transform_alt_only:
+        if not _unit_is_transform_alternate(uid):
+            return False
+    elif uid != _muid and not wide_seek:
         return False
     if unit_skill_only and not (direct_seek or npc123_list) and not unit_has_unit_skills(uid):
         return False
@@ -33833,6 +33837,7 @@ def lineages_for_unit_browse_filtered(ld, lc, args):
     cond_active = args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
     pilot_cond_active = args.get('pilot_cond', '').strip().lower() in ('1', 'true', 'yes')
     unit_skill_only = args.get('unit_skill', '').strip().lower() in ('1', 'true', 'yes')
+    transform_alt_only = args.get('transform_alt', '').strip().lower() in ('1', 'true', 'yes')
     _cbu = browse_combo_from_unit_args(args)
     short_ids = set()
     for uid, info in unit_info_map.items():
@@ -33844,6 +33849,7 @@ def lineages_for_unit_browse_filtered(ld, lc, args):
             map_weapon_range_filter=map_weapon_range_filter,
             q_scope=_qsc, apply_lineage=False, apply_series=True, apply_ability=True, apply_terrain=True,
             cond_active=cond_active, pilot_cond_active=pilot_cond_active, unit_skill_only=unit_skill_only,
+            transform_alt_only=transform_alt_only,
             **_cbu,
         ):
             continue
@@ -33877,6 +33883,7 @@ def series_for_unit_browse_filtered(ld, lc, args):
     cond_active = args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
     pilot_cond_active = args.get('pilot_cond', '').strip().lower() in ('1', 'true', 'yes')
     unit_skill_only = args.get('unit_skill', '').strip().lower() in ('1', 'true', 'yes')
+    transform_alt_only = args.get('transform_alt', '').strip().lower() in ('1', 'true', 'yes')
     _cbu = browse_combo_from_unit_args(args)
     ssm = ld.get('ser_set_map', {})
     sl = ld.get('series_list', [])
@@ -33891,6 +33898,7 @@ def series_for_unit_browse_filtered(ld, lc, args):
             map_weapon_range_filter=map_weapon_range_filter,
             q_scope=_qsc, apply_lineage=True, apply_series=False, apply_ability=True, apply_terrain=True,
             cond_active=cond_active, pilot_cond_active=pilot_cond_active, unit_skill_only=unit_skill_only,
+            transform_alt_only=transform_alt_only,
             **_cbu,
         ):
             continue
@@ -34288,6 +34296,7 @@ def abilities_for_unit_browse_filtered(ld, lc, args):
     cond_active = args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
     pilot_cond_active = args.get('pilot_cond', '').strip().lower() in ('1', 'true', 'yes')
     unit_skill_only = args.get('unit_skill', '').strip().lower() in ('1', 'true', 'yes')
+    transform_alt_only = args.get('transform_alt', '').strip().lower() in ('1', 'true', 'yes')
     _cbu = browse_combo_from_unit_args(args)
     ldc = get_calc_lang_data()
     seen = {}
@@ -34303,6 +34312,7 @@ def abilities_for_unit_browse_filtered(ld, lc, args):
             map_weapon_range_filter=map_weapon_range_filter,
             q_scope=_qsc, apply_ability=False, apply_terrain=True,
             cond_active=cond_active, pilot_cond_active=pilot_cond_active, unit_skill_only=unit_skill_only,
+            transform_alt_only=transform_alt_only,
             **_cbu,
         ):
             continue
@@ -34637,6 +34647,7 @@ def list_units():
     cond_list = request.args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
     pilot_cond_list = request.args.get('pilot_cond', '').strip().lower() in ('1', 'true', 'yes')
     unit_skill_only = request.args.get('unit_skill', '').strip().lower() in ('1', 'true', 'yes')
+    transform_alt_only = request.args.get('transform_alt', '').strip().lower() in ('1', 'true', 'yes')
     source_arg = request.args.get('source', '').strip()
     source_filter = parse_list_source_filter(source_arg)
     source_ck = source_filter_cache_fragment(source_filter)
@@ -34707,8 +34718,10 @@ def list_units():
     # ul73: unit_skill=1 — only units with Unit Skills (base + max ALT ULT unlocks)
     # ul74: mov=3,4,5,6 official movement search filter
     # ul78: ability_effect=dr_any|dr_*|en_restore|hp_restore|cond_area
+    # ul79: transform_alt=1 — only in-game transform alternate forms (normally hidden on /u)
     uskill_ck = 'usk1' if unit_skill_only else 'usk0'
-    ck = f"ul78_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{uskill_ck}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{ability_effect_ck}_{terrain_ck}_{mov_ck}_{weapon_debuff_ck}_{weapon_attr_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_waop{_cbu['weapon_attr_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{esc_alt_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    talt_ck = 'talt1' if transform_alt_only else 'talt0'
+    ck = f"ul79_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{uskill_ck}_{talt_ck}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{ability_effect_ck}_{terrain_ck}_{mov_ck}_{weapon_debuff_ck}_{weapon_attr_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_waop{_cbu['weapon_attr_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{esc_alt_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached:
         return jsonify_preserialized(cached, ck, public=True, max_age=3600, convert_images=False)
@@ -34737,7 +34750,10 @@ def list_units():
         _muid = normalize_id(info.get('main_unit_id', uid))
         if _muid == '0':
             _muid = uid
-        if uid != _muid and not wide_seek:
+        if transform_alt_only:
+            if not _unit_is_transform_alternate(uid):
+                continue
+        elif uid != _muid and not wide_seek:
             continue
         # Escape Function post-evac kits are not starting forms in-game (MLS / formation pickers).
         if exclude_escape_alt and _unit_is_escape_function_alternate(uid):
@@ -34875,9 +34891,10 @@ def list_units():
         thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
         # Omit series / rarity_icon / recommend_character — unused by browse/ranking/TB list UI.
         # is_limited_time is on the row so Units can filter rarity locally (Soshage-style).
-        urow = {'id': uid, 'name': name, 'role': resolve_role_label(role_id, lc), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'special_icons': si, 'thum': thum or '', 'acquisition_icon': ai or '', 'is_ultimate': bool(info.get('is_ultimate', False)), 'is_limited_time': uid in LIMITED_TIME_UNIT_IDS, 'is_schedule_shell': entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')), 'tag_ids': lineage_tag_ids_for_browse_row(unit_lin_map, uid), 'ATK': fs.get('Attack', fs.get('ATK', 0)), 'DEF': fs.get('Defense', fs.get('DEF', 0)), 'MOB': fs.get('Mobility', fs.get('MOB', 0)), 'HP': fs.get('HP', 0), 'EN': fs.get('EN', 0), 'MOV': fs.get('Move', fs.get('MOV', 0))}
+        urow = {'id': uid, 'name': name, 'role': resolve_role_label(role_id, lc), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'special_icons': si, 'thum': thum or '', 'acquisition_icon': ai or '', 'is_ultimate': bool(info.get('is_ultimate', False)), 'is_limited_time': uid in LIMITED_TIME_UNIT_IDS, 'is_schedule_shell': entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')), 'is_transform_alternate': bool(transform_alt_only or _unit_is_transform_alternate(uid)), 'tag_ids': lineage_tag_ids_for_browse_row(unit_lin_map, uid), 'ATK': fs.get('Attack', fs.get('ATK', 0)), 'DEF': fs.get('Defense', fs.get('DEF', 0)), 'MOB': fs.get('Mobility', fs.get('MOB', 0)), 'HP': fs.get('HP', 0), 'EN': fs.get('EN', 0), 'MOV': fs.get('Move', fs.get('MOV', 0))}
         display_uid = uid
-        if not wide_seek:
+        # Transform-alt filter already lists the alt row — do not remap to another form.
+        if not wide_seek and not transform_alt_only:
             display_uid = _unit_browse_form_filter_display_id(
                 uid, info, ld, lc, stat_mode,
                 weapon_debuff_filter=weapon_debuff_filter,
@@ -42868,6 +42885,10 @@ def _spa_seo_meta(canon_path, lang='EN'):
         }.get(prefix)
         if prefix == 'gacha-sim':
             return _seo_pages.gacha_pool_meta(lang, eid)
+        if prefix == 'develop':
+            hub = _seo_pages.hub_meta('/develop', lang)
+            if hub:
+                return hub
         if kind:
             name = _seo_entity_display_name(kind, eid, lang)
             if kind == 'stage' and not name:
@@ -42875,6 +42896,10 @@ def _spa_seo_meta(canon_path, lang='EN'):
             rarity = _seo_rarity_letter(kind, eid)
             series = _seo_series_name(kind, eid, lang)
             return _seo_pages.entity_meta(lang, kind, name, rarity, series, eid)
+    if parts and parts[0].lower() == 'develop':
+        hub = _seo_pages.hub_meta('/develop', lang)
+        if hub:
+            return hub
     hub = _seo_pages.hub_meta(path, lang)
     if hub:
         return hub

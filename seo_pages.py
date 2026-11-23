@@ -184,6 +184,12 @@ _HUBS = {
         '銷售排行追蹤 — GGen Eternal Database',
         '《{game}》各國 App Store 暢銷排行，對照機體補給期間。',
     ),
+    '/develop': (
+        'Development Diagram — GGen Eternal Database',
+        'Development Diagram for SD Gundam G Generation ETERNAL — series develop routes, materials, capturable units, and Ultimate Units.',
+        '開發路線圖 — GGen Eternal Database',
+        '《{game}》開發路線圖：各系列開發路徑、開發材料、可捕獲單位與終極單位。',
+    ),
     '/about': (
         'About — GGen Eternal Database',
         'About GGen Eternal Database — a fan reference for SD Gundam G Generation ETERNAL units, pilots, and tools.',
@@ -310,6 +316,7 @@ _JA = {
     '/tm': ('タグ対応表 — GGen Eternal Database', '「{game}」タグ対応表：同じシリーズタグのサポーターとユニット。'),
     '/dm': ('マイナス効果対応表 — GGen Eternal Database', '「{game}」マイナス効果対応表：DEF低下など武装デバフを付与できる機体。'),
     '/tracking': ('セルラン追跡 — GGen Eternal Database', '「{game}」各国App Store売上順位。ピックアップガシャ期間と対照。'),
+    '/develop': ('開発経路図 — GGen Eternal Database', '「{game}」の開発経路図：シリーズ別の開発ルート、開発素材、捕獲可能ユニット、アルティメットユニット。'),
     '/about': ('このサイトについて — GGen Eternal Database', 'GGen Eternal Databaseについて：ファン制作の「{game}」ユニット・キャラクター・ツール資料。'),
     '/feedback': ('フィードバック — GGen Eternal Database', 'GGen Eternal Databaseの評価：ナビ、デザイン、内容、「{game}」向けツール。'),
     '/privacy-policy': ('プライバシーポリシー — GGen Eternal Database', 'GGen Eternal Databaseのプライバシーポリシー：解析、Cookie、この「{game}」資料サイトが保存する情報。'),
@@ -344,6 +351,7 @@ _KR = {
     '/tm': ('태그 매트릭스 — GGen Eternal Database', '「{game}」 태그 매트릭스: 같은 시리즈 태그의 서포터와 유닛.'),
     '/dm': ('디버프 매트릭스 — GGen Eternal Database', '「{game}」 디버프 매트릭스: 방어력 하락 등 무장 디버프를 거는 기체.'),
     '/tracking': ('세일즈 추적 — GGen Eternal Database', '「{game}」 국가별 App Store 매출 순위. 배너 기간과 대조.'),
+    '/develop': ('개발 경로도 — GGen Eternal Database', '「{game}」 개발 경로도: 시리즈별 개발 루트, 개발 재료, 포획 가능 유닛, 얼티밋 유닛.'),
     '/about': ('소개 — GGen Eternal Database', 'GGen Eternal Database 소개: 팬이 만든 「{game}」 유닛·캐릭터·도구 자료.'),
     '/feedback': ('피드백 — GGen Eternal Database', 'GGen Eternal Database 평가: 탐색, 디자인, 내용, 「{game}」 도구.'),
     '/privacy-policy': ('개인정보 처리방침 — GGen Eternal Database', 'GGen Eternal Database 개인정보 처리방침: 분석, 쿠키, 이 「{game}」 자료 사이트가 저장하는 정보.'),
