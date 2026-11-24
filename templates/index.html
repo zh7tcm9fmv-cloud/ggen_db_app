@@ -169,6 +169,27 @@
         }).catch(function(){return{ok:false,status:0,data:null}})
       };
     }
+    /* /game-news: preconnect + boot URL so the official iframe starts during HTML/CSS/JS download. */
+    if(/^\/game-news\/?$/i.test(path)){
+      var gnUrl=(l==='JP')
+        ? 'https://web.jp.eternal.channel.or.jp/ja/information/update.html'
+        : ('https://web.gl.eternal.channel.or.jp/'+(l==='TW'?'tw':l==='HK'?'hk':l==='KR'?'hr':'en')+'/information/update.html');
+      window.__GGEN_GAME_NEWS_BOOT_URL__=gnUrl;
+      function gnHint(rel,href){
+        try{
+          var el=document.createElement('link');
+          el.rel=rel;el.href=href;
+          if(rel==='preconnect')el.crossOrigin='anonymous';
+          document.head.appendChild(el);
+        }catch(_){}
+      }
+      gnHint('dns-prefetch','https://web.gl.eternal.channel.or.jp');
+      gnHint('preconnect','https://web.gl.eternal.channel.or.jp');
+      if(l==='JP'){
+        gnHint('dns-prefetch','https://web.jp.eternal.channel.or.jp');
+        gnHint('preconnect','https://web.jp.eternal.channel.or.jp');
+      }
+    }
   }catch(_){}
 })();
 </script>
@@ -313,7 +334,7 @@
 <a class="nav-tab" href="/tl" data-tab="banner_timeline" id="navBannerTimelineTab" role="tab" onclick="event.preventDefault();switchTab('banner_timeline')"><img class="nav-tab-icon" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_FooterIcon_Gasha_Nega.webp{% else %}/static/images/UI/UI_Common_FooterIcon_Gasha_Nega.webp{% endif %}" alt="" width="24" height="24" loading="lazy" decoding="async"><span class="nav-tab-label">Unit Assembly</span></a>
 <a class="nav-tab" href="/ip" data-tab="investment_priority" id="navInvestmentTab" role="tab" onclick="event.preventDefault();switchTab('investment_priority')"><img class="nav-tab-icon" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_FooterIcon_Mypage_Nega.webp{% else %}/static/images/UI/UI_Common_FooterIcon_Mypage_Nega.webp{% endif %}" alt="" width="24" height="24" loading="lazy" decoding="async"><span class="nav-tab-label">Investment Priority</span></a>
 <a class="nav-tab" href="/collections" id="navCollectionsTab"><img class="nav-tab-icon" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_BtnIcon_Lock_posi.webp{% else %}/static/images/UI/UI_Common_BtnIcon_Lock_posi.webp{% endif %}" alt="" width="24" height="24" loading="lazy" decoding="async"><span class="nav-tab-label">Collections</span></a>
-<a class="nav-tab" href="/game-news" id="navGameNewsTab"><img class="nav-tab-icon" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_MenuIcon_OfficialWebsite.webp{% else %}/static/images/UI/UI_Common_MenuIcon_OfficialWebsite.webp{% endif %}" alt="" width="24" height="24" loading="lazy" decoding="async"><span class="nav-tab-label">Game News</span></a>
+<a class="nav-tab" href="/game-news" data-tab="game_news" id="navGameNewsTab" role="tab" onclick="event.preventDefault();switchTab('game_news')"><img class="nav-tab-icon" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_MenuIcon_OfficialWebsite.webp{% else %}/static/images/UI/UI_Common_MenuIcon_OfficialWebsite.webp{% endif %}" alt="" width="24" height="24" loading="lazy" decoding="async"><span class="nav-tab-label">Game News</span></a>
 </div><button type="button" class="nav-tabs-edge-hint nav-tabs-edge-hint--right" id="navTabsEdgeHintRight" hidden aria-label="More tabs with notifications"><span class="nav-tabs-edge-flare-wrap ui-notice-anchor" id="navTabsEdgeFlareWrapRight" aria-hidden="true"></span><span class="nav-tabs-edge-chevron" aria-hidden="true">›</span></button></div>
 </header>
 <main class="main-content">
@@ -623,13 +644,14 @@
 </div>
 <div class="tab-panel" id="panel-investment_priority">{% with spi_embedded=true %}{% include '_sp_investment_panel.html' %}{% endwith %}</div>
 <div class="tab-panel" id="panel-develop">{% include '_develop_panel.html' %}</div>
+<div class="tab-panel" id="panel-game_news">{% include '_game_news_panel.html' %}</div>
 </main>
 <footer class="site-footer-links" role="contentinfo">
 <section id="kofiSupporterWall" class="kofi-supporter-wall" hidden aria-hidden="true" aria-label="Supporter wall"></section>
 <nav aria-label="Site information">
 <a href="/about">About</a>
 <span class="site-footer-sep" aria-hidden="true">·</span>
-<a href="/game-news">Game News</a>
+<a href="/game-news" onclick="event.preventDefault();switchTab('game_news')">Game News</a>
 <span class="site-footer-sep" aria-hidden="true">·</span>
 <a href="/privacy-policy">Privacy Policy</a>
 <span class="site-footer-sep" aria-hidden="true">·</span>

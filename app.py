@@ -30725,16 +30725,10 @@ def contact_page_su_redirect():
 
 
 @app.route('/game-news')
+@app.route('/game-news/')
 def game_news_page():
-    r = make_response(render_template(
-        'game_news.html',
-        image_cdn=IMAGE_CDN or '',
-        font_cdn=FONT_CDN or '',
-        game_images_use_cdn=GAME_IMAGES_USE_CDN,
-        app_js_version=_app_js_bundle_version_tag(),
-    ))
-    r.headers['Cache-Control'] = 'public, max-age=3600'
-    return r
+    """Official Game News — SPA tab (same shell as /c /u /s /develop)."""
+    return _serve_index()
 
 
 # Official site information feed (All tab) — same source as the embedded Game News iframe.
@@ -42562,6 +42556,7 @@ def get_unit(unit_id):
 _SPA_TAB_PATHS = frozenset({
     'c', 'u', 's', 'new', 'tl', 'banners', 'st', 'esim', 'ml', 'mls', 'estscore', 'cal', 'tb', 'op', 'pt', 'rk', 'msy', 'ip',
     'develop',
+    'game-news',
     'gacha-sim',
     'roadmap',
     # Stage category deep-links (Stages tab sources)

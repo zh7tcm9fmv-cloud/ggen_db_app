@@ -499,7 +499,13 @@
   }
 
   function isGameNewsPage() {
-    return !!document.getElementById('gameNewsNavCurrent');
+    if (document.getElementById('gameNewsNavCurrent')) return true;
+    try {
+      const p = (location.pathname || '').replace(/\/+$/, '') || '/';
+      if (p === '/game-news') return true;
+    } catch (_) {}
+    const panel = document.getElementById('panel-game_news');
+    return !!(panel && panel.classList.contains('active'));
   }
 
   function updateHomeAggregateNotice(show) {

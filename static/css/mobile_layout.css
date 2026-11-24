@@ -745,7 +745,7 @@
   }
 }
 
-/* Game News standalone page — mobile: avoid flex viewport trap; size iframe from layout */
+/* Game News — mobile: avoid flex viewport trap; size iframe from layout (SPA panel + legacy page) */
 @media (max-width: 768px) {
   body.game-news-page {
     height: auto;
@@ -762,32 +762,38 @@
     padding-bottom: max(12px, var(--safe-bottom));
   }
 
-  body.game-news-page .game-news-stage {
+  body.game-news-page .game-news-stage,
+  #panel-game_news .game-news-stage {
     flex: none;
     min-height: auto;
     overflow: visible;
   }
 
-  body.game-news-page .game-news-stage::before {
+  body.game-news-page .game-news-stage::before,
+  #panel-game_news .game-news-stage::before {
     transform: none;
   }
 
-  body.game-news-page .game-news-stage-inner {
+  body.game-news-page .game-news-stage-inner,
+  #panel-game_news .game-news-stage-inner {
     flex: none;
     min-height: auto;
     padding: 8px 10px 10px;
   }
 
-  body.game-news-page .game-news-toolbar {
+  body.game-news-page .game-news-toolbar,
+  #panel-game_news .game-news-toolbar {
     margin-bottom: 6px;
     flex-shrink: 0;
   }
 
-  body.game-news-page .game-news-toolbar h1 {
+  body.game-news-page .game-news-toolbar h1,
+  #panel-game_news .game-news-toolbar h1 {
     font-size: 1.1rem;
   }
 
-  body.game-news-page .game-news-frame-wrap {
+  body.game-news-page .game-news-frame-wrap,
+  #panel-game_news .game-news-frame-wrap {
     flex: none;
     min-height: auto;
     overflow: auto;
@@ -796,7 +802,8 @@
     touch-action: pan-y;
   }
 
-  body.game-news-page .game-news-frame-wrap iframe {
+  body.game-news-page .game-news-frame-wrap iframe,
+  #panel-game_news .game-news-frame-wrap iframe {
     width: 100%;
     height: 100%;
     min-height: 100%;

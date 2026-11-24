@@ -1,0 +1,26 @@
+{# Official Game News — embedded SPA tab (same chrome as /c /u /s /develop). #}
+<div class="game-news-stage" id="gameNewsStage">
+  <div class="game-news-stage-inner">
+    <div class="game-news-toolbar">
+      <h1 id="gameNewsPageTitle">Game News</h1>
+    </div>
+    <div class="game-news-frame-wrap">
+      <div id="gameNewsLoading" class="game-news-loading" style="display:none" aria-hidden="true" hidden>
+        <div class="spinner" aria-hidden="true"></div>
+      </div>
+      <iframe id="gameNewsFrame" class="game-news-frame" title="SD Gundam G Generation ETERNAL — update information" src="about:blank" referrerpolicy="no-referrer-when-downgrade" scrolling="yes"></iframe>
+    </div>
+  </div>
+</div>
+{# Cold /game-news: kick official iframe during HTML parse (before deferred app.js). #}
+<script>
+(function(){
+  try{
+    var u=window.__GGEN_GAME_NEWS_BOOT_URL__;
+    var ifr=document.getElementById('gameNewsFrame');
+    if(!u||!ifr)return;
+    ifr.src=u;
+    window.__GGEN_GAME_NEWS_EARLY_SRC__=u;
+  }catch(_){}
+})();
+</script>
