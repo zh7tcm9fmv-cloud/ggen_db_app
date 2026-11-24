@@ -5,12 +5,14 @@ alwaysApply: true
 
 # `/estscore` — ChallengeModeBonusValue watch (2.8+)
 
-## Wired (S18 / 2026-11-23)
+## Wired (S18 / 2026-11-23–24)
 
 - Live SS MAX add = **`floor(ChallengeModeBonusValue × 60 / 100)`** on top of `floor(CP×156/1000)+3010`.
 - Implemented in `static/js/app.js`: `ML_CHALLENGE_BONUS_MD` + `_mlChallengeBonusPts` → `_mlSlotPts` (CG **4** only; CG1–3 MD bonus rows are 0).
+- Band edges: MD `UpperLimit` = next `LowerLimit` → **`[lo, hi)`** exclusive upper (last band includes hi). Matches kypapa T7–T11 (270000 = +600, not +300).
 - CG4 ladders aliased from CG2; `mlCalcChallengeGroupId` allows **1–4** (S18 event 300021 = 4).
-- Canaries (community + us): 260–270 → ~+300; 270–280 → ~+600; zero-bonus bands ±4. Tracker: agent store `s18_challenge_cp_tracker.md`.
+- Canaries (community + us): 260–269999 → ~+300; 270–279999 → ~+600; zero-bonus bands ±4. Tracker: agent store `s18_challenge_cp_tracker.md`.
+- Do **not** switch base constant to sheet float `3011` — keep integer **3010**.
 
 ## Still watch on future dumps
 

@@ -1661,10 +1661,11 @@ button.ml-reward-chip {
   display: grid;
   /* RankFlag top-aligned with header; board beside + vertically centered to flag */
   grid-template-columns: minmax(0, 1fr) min(340px, 28vw);
-  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) auto;
   grid-template-areas:
     "top total"
-    "board total";
+    "board total"
+    "teach teach";
   align-items: start;
   column-gap: 24px;
   row-gap: 0;
@@ -1738,10 +1739,13 @@ button.ml-reward-chip {
   z-index: 1;
 }
 .ml-calc__board {
-  /* Span full RankFlag height so align-self:center matches the flag, not only the lower row */
+  /* Span header+board rows only — stop before teach row so BandGuide cannot resize CP slots */
   grid-column: 1;
-  grid-row: 1 / -1;
+  grid-row: 1 / 3;
   z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
   min-width: 0;
   max-width: 100%;
   align-self: center;
@@ -1898,7 +1902,12 @@ button.ml-reward-chip {
 }
 
 .ml-calc__board {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.ml-calc__board-slots {
+  width: 100%;
 }
 .ml-calc__rematch {
   position: absolute;
@@ -2431,10 +2440,15 @@ button.ml-reward-chip {
     grid-template-areas:
       "top"
       "total"
-      "board";
+      "board"
+      "teach";
     justify-items: stretch;
     row-gap: 10px;
     padding: 14px 12px 28px;
+  }
+  .ml-calc__teach-wrap {
+    grid-area: teach;
+    margin-top: 4px;
   }
   .ml-calc__top {
     grid-area: top;
@@ -2479,4 +2493,447 @@ button.ml-reward-chip {
     grid-column: 2;
     grid-row: 2;
   }
+}
+
+/* /estscore UX feats — live look (no feature-name chips) */
+.ml-calc-feat {
+  position: relative;
+  margin: 0;
+  min-width: 0;
+}
+.ml-calc-feat[hidden] {
+  display: none !important;
+}
+.ml-calc-feat-tag {
+  display: none !important;
+}
+.ml-calc-feat__val {
+  display: inline;
+  font-family: var(--font-body);
+  font-weight: 600;
+  line-height: 1.25;
+  color: rgba(249, 255, 254, 0.9);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.65);
+}
+.ml-calc-slot__pts-col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+/* TableBadge — corner Tn only */
+.ml-calc-feat--table-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 4;
+  margin: 0;
+  padding: 1px 6px 0;
+  border: 1px solid rgba(254, 247, 113, 0.45);
+  border-radius: 2px;
+  background: rgba(10, 4, 6, 0.72);
+  pointer-events: none;
+  line-height: 1.2;
+}
+.ml-calc-feat--table-badge .ml-calc-feat__val {
+  display: block;
+  font-family: Teko, var(--font-body);
+  font-size: clamp(12px, 11cqi, 18px);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+  color: #fef771;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.75);
+}
+.ml-calc-feat--bonus-split {
+  font-size: clamp(8px, 6cqi, 10px);
+  opacity: 0.92;
+}
+.ml-calc-feat--bonus-split .ml-calc-feat__val {
+  font-size: inherit;
+  font-variant-numeric: tabular-nums;
+  color: rgba(249, 255, 254, 0.78);
+}
+/* Teach stack: own grid row under slots+flag — never inside board-slots (keeps CP cards sized) */
+.ml-calc__teach-wrap {
+  grid-area: teach;
+  z-index: 3;
+  min-width: 0;
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ml-calc-teach {
+  display: block;
+  min-width: 0;
+  border: 1px solid rgba(0, 212, 255, 0.28);
+  border-radius: 2px;
+  background: rgba(6, 12, 24, 0.55);
+}
+.ml-calc-teach--mix {
+  border-color: rgba(254, 232, 109, 0.38);
+}
+.ml-calc-teach__summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 8px 12px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent-cyan, #00d4ff);
+  user-select: none;
+}
+.ml-calc-teach__summary::-webkit-details-marker {
+  display: none;
+}
+.ml-calc-teach__summary-lab::before {
+  content: '▸ ';
+  color: #fee86d;
+}
+.ml-calc-teach[open] .ml-calc-teach__summary-lab::before {
+  content: '▾ ';
+}
+.ml-calc-teach__body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 10px 10px;
+  min-width: 0;
+}
+.ml-calc-feat--band-guide {
+  padding: 8px 10px 10px;
+  border: 1px solid rgba(0, 212, 255, 0.28);
+  border-radius: 2px;
+  background: rgba(6, 12, 24, 0.62);
+  contain: layout style;
+  content-visibility: auto;
+}
+.ml-calc-band-guide__scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-top: 4px;
+  contain: content;
+}
+.ml-calc-band-guide__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: rgba(249, 255, 254, 0.9);
+}
+.ml-calc-band-guide__table th {
+  padding: 4px 8px;
+  border-bottom: 1px solid rgba(0, 212, 255, 0.35);
+  text-align: left;
+  font-weight: 700;
+  color: var(--accent-cyan, #00d4ff);
+  white-space: nowrap;
+}
+.ml-calc-band-guide__table td {
+  padding: 4px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  white-space: nowrap;
+}
+.ml-calc-band-guide__t {
+  font-weight: 800;
+  color: #fef771;
+  white-space: nowrap;
+}
+.ml-calc-band-guide__row.is-bonus .ml-calc-band-guide__bonus {
+  color: #fee86d;
+  font-weight: 700;
+}
+.ml-calc-band-guide__row.is-active {
+  background: rgba(0, 212, 255, 0.1);
+}
+.ml-calc-band-guide__row.is-climb-target {
+  box-shadow: inset 3px 0 0 #fee86d;
+  background: rgba(254, 232, 109, 0.08);
+}
+.ml-calc-feat--season-mix {
+  margin: 0;
+  padding: 4px 2px 2px;
+  border: 0;
+  background: transparent;
+  font-size: 12px;
+  line-height: 1.35;
+  contain: layout style;
+}
+.ml-calc-feat--season-mix .ml-calc-feat__val {
+  display: block;
+  font-size: inherit;
+  color: rgba(249, 255, 254, 0.88);
+}
+.ml-calc-mix__scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 0 8px;
+  contain: content;
+}
+.ml-calc-mix__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: rgba(249, 255, 254, 0.9);
+}
+.ml-calc-mix__table th {
+  padding: 5px 8px;
+  border-bottom: 1px solid rgba(254, 232, 109, 0.35);
+  text-align: left;
+  font-weight: 700;
+  color: #fef771;
+  white-space: nowrap;
+}
+.ml-calc-mix__table td {
+  padding: 5px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  white-space: nowrap;
+}
+.ml-calc-mix__board-cell {
+  position: relative;
+  white-space: nowrap;
+}
+.ml-calc-mix__slots {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+  vertical-align: middle;
+}
+.ml-calc-mix__slots--ordered {
+  gap: 8px;
+}
+.ml-calc-mix__slot {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.ml-calc-mix__slot-lab {
+  font-family: var(--font-body);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--text-muted);
+  line-height: 1;
+  white-space: nowrap;
+}
+.ml-calc-mix__slot.is-focus .ml-calc-mix__slot-lab {
+  color: var(--accent-gold);
+}
+.ml-calc-mix__slot.is-focus .ml-calc-tier-chip {
+  box-shadow: inset 0 0 0 1px rgba(255, 215, 0, 0.45);
+}
+/* Shared Tier chips — muted HUD tones, T11 Limited-pink → T1 grey */
+.ml-calc-tier-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;
+  padding: 2px 6px;
+  border-radius: 2px;
+  border: 1px solid transparent;
+  font-family: Teko, var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  line-height: 1.2;
+  color: #fff;
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.95),
+    0 0 3px rgba(0, 0, 0, 0.9),
+    0 0 6px rgba(0, 0, 0, 0.55);
+}
+/* Muted HUD ladder — low chroma, neighbors differ by hue; T11 strongest → T1 dullest */
+.ml-calc-tier-chip[data-ml-tier="1"] {
+  border-color: rgba(100, 108, 120, 0.35);
+  background: #2c313a;
+  color: #9aa3b0;
+  text-shadow: none;
+}
+.ml-calc-tier-chip[data-ml-tier="2"] {
+  border-color: rgba(110, 120, 135, 0.4);
+  background: #343b48;
+  color: #b0b8c6;
+  text-shadow: none;
+}
+.ml-calc-tier-chip[data-ml-tier="3"] {
+  border-color: rgba(90, 110, 140, 0.42);
+  background: #2f3a4c;
+  color: #c4ccd8;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55);
+}
+.ml-calc-tier-chip[data-ml-tier="4"] {
+  border-color: rgba(70, 110, 160, 0.45);
+  background: #2a3d58;
+}
+.ml-calc-tier-chip[data-ml-tier="5"] {
+  border-color: rgba(55, 130, 150, 0.48);
+  background: #1f4552;
+}
+.ml-calc-tier-chip[data-ml-tier="6"] {
+  border-color: rgba(70, 120, 100, 0.48);
+  background: #254839;
+}
+.ml-calc-tier-chip[data-ml-tier="7"] {
+  border-color: rgba(120, 95, 160, 0.5);
+  background: #3a2f55;
+}
+.ml-calc-tier-chip[data-ml-tier="8"] {
+  border-color: rgba(160, 110, 70, 0.5);
+  background: #4a3524;
+}
+.ml-calc-tier-chip[data-ml-tier="9"] {
+  border-color: rgba(170, 140, 70, 0.55);
+  background: #4a4028;
+}
+.ml-calc-tier-chip[data-ml-tier="10"] {
+  border-color: rgba(60, 140, 160, 0.55);
+  background: #1e4a55;
+}
+.ml-calc-tier-chip[data-ml-tier="11"] {
+  /* Limited pink — muted, single tone */
+  border-color: rgba(180, 90, 130, 0.55);
+  background: #4a2438;
+}
+.ml-calc-mix__haro {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-left: 6px;
+  vertical-align: middle;
+  object-fit: contain;
+}
+.ml-calc-mix__min {
+  color: #ff8f8f;
+  font-weight: 700;
+}
+.ml-calc-mix__max {
+  color: #7ec8ff;
+  font-weight: 700;
+}
+.ml-calc-mix__avg {
+  background: rgba(254, 232, 109, 0.14);
+  color: #fef771;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.ml-calc-mix__avg-n {
+  vertical-align: middle;
+}
+.ml-calc-mix__row.is-best {
+  background: rgba(254, 232, 109, 0.08);
+  box-shadow: inset 3px 0 0 #fee86d;
+}
+.ml-calc-mix__row.is-best .ml-calc-mix__board-lab {
+  color: #fef771;
+}
+.ml-calc-mix__p {
+  margin: 0 0 6px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: rgba(249, 255, 254, 0.86);
+}
+.ml-calc-mix__p--peak {
+  margin-bottom: 4px;
+  color: rgba(254, 232, 109, 0.95);
+}
+.ml-calc-mix__p--hint {
+  margin-top: 8px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  line-height: 1.4;
+  font-weight: 600;
+}
+.ml-calc-mix__p--note {
+  margin-bottom: 0;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(249, 255, 254, 0.55);
+}
+/* ClimbTeach — compact strip directly under CP slots (same board column width) */
+.ml-calc-feat--climb-teach {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+  width: 100%;
+  max-width: 100%;
+  margin: 4px 0 0;
+  padding: 6px 8px;
+  border: 1px solid rgba(254, 232, 109, 0.32);
+  border-radius: 2px;
+  background: rgba(20, 6, 8, 0.62);
+  box-sizing: border-box;
+}
+.ml-calc-feat--climb-teach[hidden] {
+  display: none !important;
+}
+.ml-calc-feat--climb-teach .ml-calc-feat__val {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  min-width: 0;
+}
+.ml-calc-feat__climb-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+  min-width: 0;
+  width: 100%;
+}
+.ml-calc-feat__climb-row--spend {
+  width: 100%;
+}
+.ml-calc-feat__climb-chip {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  padding: 2px 7px;
+  border-radius: 2px;
+  font-family: var(--font-body);
+  font-size: clamp(11px, 1.35vw, 13px);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+.ml-calc-feat__climb-chip--slot {
+  background: rgba(0, 212, 255, 0.12);
+  border: 1px solid rgba(0, 212, 255, 0.35);
+  color: var(--accent-cyan, #00d4ff);
+}
+.ml-calc-feat__climb-chip--aim {
+  background: rgba(254, 247, 113, 0.1);
+  border: 1px solid rgba(254, 247, 113, 0.4);
+  color: #fef771;
+  white-space: normal;
+}
+.ml-calc-feat__climb-note {
+  flex: 1 1 14rem;
+  margin: 0;
+  min-width: 0;
+  font-size: clamp(10px, 1.2vw, 12px);
+  font-weight: 600;
+  line-height: 1.35;
+  color: rgba(249, 255, 254, 0.78);
+}
+.ml-calc-feat__climb-note--spend {
+  flex: 1 1 100%;
+  color: rgba(249, 255, 254, 0.9);
+}
+.ml-calc-feat__climb-note--top {
+  flex: 1 1 100%;
+  color: rgba(254, 140, 140, 0.95);
 }
