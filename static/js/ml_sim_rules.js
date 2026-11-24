@@ -1466,6 +1466,30 @@
     return /絶対命中|Absolute\s*Hit|絕對命中|绝对命中|回避無効|Evasion\s*Invalid/i.test(weaponEffectBlob(weapon));
   }
 
+  /** EX and MAP ship a guaranteed-hit weapon effect (100%), same as Absolute Hit. */
+  function isGuaranteedHitWeapon(weapon) {
+    if (!weapon) return false;
+    if (isAbsoluteHitWeapon(weapon) || isMapWeapon(weapon)) return true;
+    return !!(weapon.is_ex || (weapon.raw && weapon.raw.is_ex));
+  }
+
+  /** Same math as app.js calculateAccuracy. MD 2500/5000/120/10. Flat modifiers. Evade ×0.8. No clamp. */
+  function calculateAccuracy(atkUnitMob, atkCharAtk, atkCharReaction, defUnitMob, defCharReaction, baseWeaponAcc, pen) {
+    var F = Math.floor, RU = Math.ceil, EXP = Math.exp;
+    var uMob, mdp, mobDiff, reaDiff, denMob, denRea, mobCorrection, inner;
+    pen = pen || {};
+    uMob = atkUnitMob | 0;
+    mdp = Math.max(0, pen.mobDownPct || 0);
+    if (mdp > 0) uMob = F(uMob * (100 - mdp) / 100);
+    mobDiff = RU((uMob / 10) - ((defUnitMob | 0) / 10));
+    reaDiff = (atkCharAtk | 0) - (defCharReaction | 0);
+    denMob = EXP((1 * (120 - uMob)) / 10000) + 1;
+    denRea = EXP((1 * (10 - (atkCharReaction | 0))) / 10000) + 1;
+    mobCorrection = F((((denMob * mobDiff) / 2500) + ((denRea * reaDiff) / 5000)) * 100);
+    inner = (baseWeaponAcc | 0) + mobCorrection + (pen.accUpDown || 0) - (pen.evaPct || 0) - (pen.accDownPct || 0);
+    return F(inner * (pen.evading ? 0.8 : 1));
+  }
+
   function weaponGrantsUnconditionalCsOnHit(weapon) {
     return /命中時にチャンスステップ|Chance\s*Step.*(on\s*hit|when\s*hit)|命中時.*額外行動|命中时.*额外行动/i.test(weaponEffectBlob(weapon));
   }
@@ -1779,8 +1803,7 @@
   function tryParry(attacker, defender, weapon) {
     var kit, left, roll;
     if (!defender || !weapon) return false;
-    if (isMapWeapon(weapon)) return false;
-    if (isAbsoluteHitWeapon(weapon)) return false;
+    if (isGuaranteedHitWeapon(weapon)) return false;
     if (attackerHasLockOn(attacker)) return false;
     kit = defender.parryKit || parseParryKit(defender);
     if (!kit) return false;
@@ -1798,18 +1821,18 @@
   }
 
   /**
-   * MLS checkHit — absolute hit; Parry; sway; evade formula when defenseAction==='evade';
-   * Otherwise always hits (defend / none / shield).
+   * MLS checkHit — EX / MAP / Absolute Hit are 100%.
+   * Evade otherwise uses calculateAccuracy (same as /cal). Defend / none / shield always hit.
    */
   function checkHit(attacker, defender, weapon, defenseAction, isDefenderSupportDefend) {
-    var mobAtk, mobDef, plAtk, defReact, x, hitRate, blob, m, isEx;
-    var charAtk, charDef, hasSway;
+    var mobAtk, mobDef, plAtk, defReact, hitRate, blob, m;
+    var charAtk, charDef, hasSway, atkReact, wAcc, mobDownAtk;
     if (attacker) attacker._lastMissReason = '';
     if (defender) {
       defender._lastMissReason = '';
       defender._parryJustTriggered = false;
     }
-    if (isAbsoluteHitWeapon(weapon)) return true;
+    if (isGuaranteedHitWeapon(weapon)) return true;
     /* LANG Parry — ability evade (not Defend action). Blocked by Abs Hit / Lock On / MAP. */
     if (tryParry(attacker, defender, weapon)) return false;
     /* MLS: Sway dodges only the original target, never a Support Defense cover, never vs Absolute Hit. */
@@ -1830,12 +1853,16 @@
 
     mobAtk = attacker.mobility | 0;
     mobDef = defender.mobility | 0;
-    /* Inflict Mobility Down % on the defender. */
+    mobDownAtk = 0;
     if (defender && defender.debuffs) {
       defender.debuffs.forEach(function (d) {
-        if (d && d.type === 'mob_dn' && (d.value | 0) > 0) {
-          mobDef = Math.max(0, Math.floor(mobDef * (100 - (d.value | 0)) / 100));
-        }
+        if (!d || !(d.value | 0)) return;
+        if (d.type === 'mob_dn') mobDef = Math.max(0, Math.floor(mobDef * (100 - (d.value | 0)) / 100));
+      });
+    }
+    if (attacker && attacker.debuffs) {
+      attacker.debuffs.forEach(function (d) {
+        if (d && d.type === 'mob_dn' && (d.value | 0) > 0) mobDownAtk = Math.min(100, Math.max(mobDownAtk, d.value | 0));
       });
     }
     charAtk = attacker.char && (attacker.char.stats || attacker.char.stats_with_ex) || [];
@@ -1850,23 +1877,27 @@
       }
       return 0;
     }
-    isEx = !!(weapon.is_ex || (weapon.name && /EX/i.test(weapon.name)));
     blob = weaponEffectBlob(weapon) + ' ' + String((weapon.raw && weapon.raw.attribute) || weapon.attribute || '');
-    if (isEx) {
-      plAtk = Math.max(st(charAtk, 'Melee'), st(charAtk, 'Ranged'), st(charAtk, 'Awaken'));
+    if (/覚醒|覺醒|Awaken/i.test(blob + String((weapon.raw && weapon.raw.attack_types) || ''))) {
+      plAtk = st(charAtk, 'Awaken');
     } else if (/格闘|Melee|physical.*melee/i.test(blob + String((weapon.raw && weapon.raw.attack_types) || ''))) {
       plAtk = st(charAtk, 'Melee');
     } else {
       plAtk = st(charAtk, 'Ranged');
     }
+    atkReact = st(charAtk, 'Reaction') || (attacker.reaction | 0);
     defReact = st(charDef, 'Reaction') || (defender.reaction | 0) || 1000;
-    x = 96.45 + (0.00732 * mobAtk - 0.00662 * mobDef) + (plAtk - defReact) / 25;
-    hitRate = x + hitBuffPct(attacker, 'hit') - hitBuffPct(defender, 'eva');
+    wAcc = 100;
+    if (weapon.accuracy != null) wAcc = weapon.accuracy | 0;
+    else if (weapon.raw && weapon.raw.accuracy != null) wAcc = weapon.raw.accuracy | 0;
+    hitRate = calculateAccuracy(mobAtk, plAtk, atkReact, mobDef, defReact, wAcc, {
+      mobDownPct: mobDownAtk,
+      accUpDown: hitBuffPct(attacker, 'hit'),
+      evaPct: hitBuffPct(defender, 'eva'),
+      evading: true
+    });
     m = normalizeFullwidth(weaponEffectBlob(weapon)).match(/命中率固定(\d+)%|Accuracy\s*fixed\s*(\d+)%/i);
     if (m) hitRate = parseInt(m[1] || m[2], 10) || 0;
-    if (weapon.accuracy != null) hitRate += ((weapon.accuracy | 0) - 100);
-    else if (weapon.raw && weapon.raw.accuracy != null) hitRate += ((weapon.raw.accuracy | 0) - 100);
-    if (hitRate < 0) hitRate = 0;
     if ((nextRandom() * 100) <= hitRate) return true;
     if (defender) {
       defender._lastMissReason = 'Evade ~' + Math.round(hitRate) + '%';
@@ -2310,7 +2341,7 @@
       ? (damageOf(actor, defender, weapon) | 0)
       : (weapon.power | 0);
     if (raw <= 0) return { dmg: 0, act: 'none' };
-    act = determineDefenseAction(defender, raw, false, false);
+    act = determineDefenseAction(defender, raw, false, false, { absoluteHit: isGuaranteedHitWeapon(weapon) });
     if (act === 'evade') return { dmg: 0, act: 'evade', raw: raw };
     if (act === 'defend' || act === 'shield') {
       if (typeof damageOf === 'function') {
@@ -2767,7 +2798,7 @@
         tempExpected,
         counterWpns.length > 0,
         hasPreCounter,
-        { absoluteHit: isAbsoluteHitWeapon(weapon) }
+        { absoluteHit: isGuaranteedHitWeapon(weapon) }
       );
     }
 
