@@ -692,6 +692,82 @@ assert(rules.checkHit(parryAtk, Object.assign({}, parryDef, { usedParryCount: 0,
     (mapWings && mapWings.weapon && mapWings.weapon.name));
   assert(mapWings && mapWings.dashTo && mapWings.dashTo.x === 8 && mapWings.dashTo.y === 7,
     'V2AB Wings plan includes dashTo (8,7), got ' + JSON.stringify(mapWings && mapWings.dashTo));
+
+  /* Dash MAP: refuse entirely when no free land cell along the path (all candidates blocked). */
+  const blockLands = [
+    { id: 'b8', hp: 1000, x: 8, y: 7, size: 1, side: 'enemy' },
+    { id: 'b11', hp: 1000, x: 11, y: 7, size: 1, side: 'enemy' }
+  ];
+  /* softMap already occupies 9,7 and 10,7 — together every dash land candidate is full. */
+  const softBlocked = softMap.concat(blockLands);
+  const noLand = rules.resolveDashLandCell(v2Weak, wings, [v2Weak].concat(softBlocked), bounds);
+  assert(!noLand, 'Dash land null when all path ends occupied, got ' + JSON.stringify(noLand));
+  const skipNoLand = rules.evaluateMapWeapon(
+    v2Weak, softMap[0], softMap, [v2Weak].concat(softBlocked), bounds, (a, d, w) => w.power | 0
+  );
+  assert(!skipNoLand || (skipNoLand.weapon && skipNoLand.weapon.name !== 'Wings of Light'),
+    'Dash MAP refused when landing blocked, got ' + (skipNoLand && skipNoLand.weapon && skipNoLand.weapon.name));
+
+  /* Dash MAP: refuse after the unit has already moved this action. */
+  const v2Moved = Object.assign({}, v2Weak, { x: 11, y: 7, startX: 12, startY: 7 });
+  const skipMoved = rules.evaluateMapWeapon(
+    v2Moved, softMap[0], softMap, [v2Moved].concat(softMap), bounds, (a, d, w) => w.power | 0
+  );
+  assert(!skipMoved || (skipMoved.weapon && skipMoved.weapon.name !== 'Wings of Light'),
+    'Dash MAP refused after move, got ' + (skipMoved && skipMoved.weapon && skipMoved.weapon.name));
+}
+
+/* S.Def: path + empty adjacent footprint — surrounded 1-cell guard cannot cover. */
+{
+  const tank = withLand({ id: 'tank', hp: 50000, x: 10, y: 10, size: 1, side: 'ally', move: 5 });
+  const guard = withLand({
+    id: 'g1', hp: 80000, x: 8, y: 10, size: 1, side: 'ally', move: 5,
+    usedSupportDefendCount: 0, battleSupportDefendedCount: 0,
+    unit: Object.assign({}, LAND_UNIT, { role: 'Durability' }),
+    char: { role: 'Durability', abilities: [{ name: 'SD', details: [{ text: 'Support Defense +1 time(s).', conditions: [] }] }] }
+  });
+  const bounds = { minX: 0, maxX: 20, minY: 0, maxY: 20 };
+  const openBoard = [tank, guard];
+  assert(rules.canSupportDefendReach(guard, tank, openBoard, bounds, 5),
+    'open board: 1-cell guard can reach adjacent land');
+  assert(rules.pickSupportDefender(tank, [guard, tank], openBoard, bounds) === guard,
+    'open board: pickSupportDefender returns guard');
+
+  /* Box the tank: all 4 orthogonal neighbors occupied → no land cell. */
+  const wall = [
+    { id: 'n', hp: 1000, x: 10, y: 9, size: 1, side: 'enemy' },
+    { id: 's', hp: 1000, x: 10, y: 11, size: 1, side: 'enemy' },
+    { id: 'w', hp: 1000, x: 9, y: 10, size: 1, side: 'enemy' },
+    { id: 'e', hp: 1000, x: 11, y: 10, size: 1, side: 'enemy' }
+  ];
+  const boxed = [tank, guard].concat(wall);
+  assert(!rules.canSupportDefendReach(guard, tank, boxed, bounds, 5),
+    'boxed tank: no empty adjacent land for S.Def');
+  assert(rules.pickSupportDefender(tank, [guard, tank], boxed, bounds) == null,
+    'boxed tank: pickSupportDefender null');
+
+  /* 2×2 Neo Zeong: needs 4 empty cells beside the ally. */
+  const nz = withLand({
+    id: 'nz2', hp: 90000, x: 4, y: 10, size: 2, side: 'ally', move: 6, direction: 3,
+    usedSupportDefendCount: 0, battleSupportDefendedCount: 0,
+    unit: Object.assign({}, LAND_UNIT, { id: '1125001550', role: 'Durability' }),
+    char: { role: 'Durability', abilities: [{ name: 'SD', details: [{ text: 'Support Defense +1 time(s).', conditions: [] }] }] }
+  });
+  const softAlly = withLand({ id: 'sa', hp: 40000, x: 8, y: 10, size: 1, side: 'ally', move: 3 });
+  const nzBoard = [nz, softAlly];
+  assert(rules.canSupportDefendReach(nz, softAlly, nzBoard, bounds, 6),
+    '2×2 NZ can S.Def when adjacent 4-cell stance is free');
+  /* Occupy every candidate 2×2 stance near softAlly by packing blockers around it. */
+  const ring = [];
+  for (let x = 6; x <= 10; x++) {
+    for (let y = 8; y <= 12; y++) {
+      if (x === 8 && y === 10) continue;
+      ring.push({ id: 'r' + x + '_' + y, hp: 1000, x: x, y: y, size: 1, side: 'enemy' });
+    }
+  }
+  const nzBoxed = [nz, softAlly].concat(ring);
+  assert(!rules.canSupportDefendReach(nz, softAlly, nzBoxed, bounds, 6),
+    '2×2 NZ cannot S.Def when no 4-cell empty land beside ally');
 }
 
 if (!process.exitCode) console.log('ml sim rules audit OK');

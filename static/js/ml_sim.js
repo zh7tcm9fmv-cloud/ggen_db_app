@@ -12111,7 +12111,7 @@
             break;
           }
 
-          combat = R.buildCombatQueue(u, target, engage.weapon, friends, foes, battleDamage);
+          combat = R.buildCombatQueue(u, target, engage.weapon, friends, foes, battleDamage, bounds);
           /*
            * In-game cover order (normal engagement):
            *   1) Defender-side S.Defense steps in for the incoming Attack (/ Support Attack)

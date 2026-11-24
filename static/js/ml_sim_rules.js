@@ -843,13 +843,112 @@
     return canEnterOccupancy(guard.unit, mode, field);
   }
 
+  function defaultSimBounds(bounds) {
+    return bounds || { minX: 0, maxX: 20, minY: 0, maxY: 20 };
+  }
+
   /**
-   * MLS guardCands: not self, remaining SD uses, Manhattan dist <= move + SD range bonus,
-   * terrain-enterable cover cell (LANG), highest HP. Returns null if nobody covers.
+   * True when guard’s full footprint at (ax,ay) is in-bounds and empty of every other unit
+   * (including the protected target). S.Def lands beside the ally — 2×2 needs 4 free cells.
    */
-  function pickSupportDefender(target, allies) {
+  function footprintClearForSupportDefend(guard, ax, ay, target, allUnits, bounds) {
+    var size = unitSize(guard);
+    var b = defaultSimBounds(bounds);
+    var cells;
+    var i;
+    var u;
+    if (!guard) return false;
+    cells = footprintCellsAt(ax | 0, ay | 0, size, guard.side, guard.direction, guard);
+    for (i = 0; i < cells.length; i++) {
+      if (cells[i].x < (b.minX | 0) || cells[i].x > (b.maxX | 0) ||
+          cells[i].y < (b.minY | 0) || cells[i].y > (b.maxY | 0)) {
+        return false;
+      }
+    }
+    for (i = 0; i < (allUnits || []).length; i++) {
+      u = allUnits[i];
+      if (!u || (u.hp | 0) <= 0 || u === guard) continue;
+      if (wouldOverlapUnit(ax | 0, ay | 0, size, guard.side, guard.direction, u, guard)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /**
+   * Legal S.Def land anchors: orthogonally adjacent to the protected unit (footprint
+   * distance === 1), full guard footprint empty, in-bounds.
+   */
+  function findSupportDefendLandAnchors(guard, target, allUnits, bounds) {
+    var size = unitSize(guard);
+    var b = defaultSimBounds(bounds);
+    var tb;
+    var ax;
+    var ay;
+    var out = [];
+    var seen = Object.create(null);
+    var key;
+    var probe;
+    if (!guard || !target) return out;
+    tb = footprintBounds(target);
+    for (ax = (tb.minX | 0) - size; ax <= (tb.maxX | 0) + 1; ax++) {
+      for (ay = (tb.minY | 0) - size; ay <= (tb.maxY | 0) + 1; ay++) {
+        if (ax < (b.minX | 0) || ay < (b.minY | 0)) continue;
+        probe = withFootprintAt(guard, ax, ay);
+        if (distance(probe, target) !== 1) continue;
+        if (!footprintClearForSupportDefend(guard, ax, ay, target, allUnits, b)) continue;
+        key = ax + ',' + ay;
+        if (seen[key]) continue;
+        seen[key] = 1;
+        out.push({ x: ax | 0, y: ay | 0 });
+      }
+    }
+    return out;
+  }
+
+  /**
+   * Guard can S.Def target only if a free adjacent land stance exists and is reachable
+   * within move + SD range (BFS; enemies block, allies passable to walk through).
+   */
+  function canSupportDefendReach(guard, target, allUnits, bounds, maxMove) {
+    var range = maxMove | 0;
+    var lands;
+    var reachable;
+    var reachSet;
+    var i;
+    var cell;
+    var key;
+    if (!guard || !target) return false;
+    if (!canSupportDefendOnTarget(guard, target)) return false;
+    if (distance(guard, target) > range) return false;
+    lands = findSupportDefendLandAnchors(guard, target, allUnits, bounds);
+    if (!lands.length) return false;
+    for (i = 0; i < lands.length; i++) {
+      if ((lands[i].x | 0) === (guard.x | 0) && (lands[i].y | 0) === (guard.y | 0)) {
+        return true;
+      }
+    }
+    reachable = getReachableCells(guard, range, allUnits, defaultSimBounds(bounds));
+    reachSet = Object.create(null);
+    for (i = 0; i < reachable.length; i++) {
+      cell = reachable[i];
+      reachSet[(cell.x | 0) + ',' + (cell.y | 0)] = 1;
+    }
+    for (i = 0; i < lands.length; i++) {
+      key = (lands[i].x | 0) + ',' + (lands[i].y | 0);
+      if (reachSet[key]) return true;
+    }
+    return false;
+  }
+
+  /**
+   * MLS guardCands: not self, remaining SD uses, path + empty land within move + SD range,
+   * terrain-enterable (LANG), highest HP. Returns null if nobody covers.
+   */
+  function pickSupportDefender(target, allies, allUnits, bounds) {
     var best = null;
     var maxHp = -1;
+    var board = allUnits || allies || [];
     if (!target) return null;
     alive(allies).forEach(function (a) {
       var limit, used, range;
@@ -861,7 +960,7 @@
       if (limit - used <= 0) return;
       if (!canSupportDefendOnTarget(a, target)) return;
       range = (a.move | 0) + (a.sdRangeBonus != null ? (a.sdRangeBonus | 0) : supportDefendRangeBonus(a));
-      if (distance(a, target) > range) return;
+      if (!canSupportDefendReach(a, target, board, bounds, range)) return;
       if ((a.hp | 0) > maxHp) {
         maxHp = a.hp | 0;
         best = a;
@@ -1383,9 +1482,10 @@
     return found;
   }
 
-  function pickCounterSupportDefender(actor, friends) {
+  function pickCounterSupportDefender(actor, friends, allUnits, bounds) {
     var best = null;
     var maxHp = -1;
+    var board = allUnits || friends || [];
     if (!actor) return null;
     alive(friends).forEach(function (a) {
       var limit, used, range;
@@ -1397,7 +1497,7 @@
       used = a.usedSupportDefendCount | 0;
       if (limit - used <= 0) return;
       range = (a.move | 0) + (a.sdRangeBonus != null ? (a.sdRangeBonus | 0) : supportDefendRangeBonus(a));
-      if (distance(a, actor) > range) return;
+      if (!canSupportDefendReach(a, actor, board, bounds, range)) return;
       if ((a.hp | 0) > maxHp) {
         maxHp = a.hp | 0;
         best = a;
@@ -2424,7 +2524,7 @@
     if (!nonMap.length) return 0;
     /* SD redirects the swing. Class B passes ignoreCover so EX still counts. */
     if (!(opts && opts.ignoreCover)) {
-      cover = pickSupportDefender(target, sameSideUnits(target, allUnits || [], []));
+      cover = pickSupportDefender(target, sameSideUnits(target, allUnits || [], []), allUnits, defaultSimBounds(null));
       if (cover) return 0;
     }
 
@@ -2474,7 +2574,7 @@
     var best;
     if (!actor || !target || (target.hp | 0) <= 0) return false;
     if (!(opts && opts.ignoreCover)) {
-      cover = pickSupportDefender(target, sameSideUnits(target, allUnits || [], []));
+      cover = pickSupportDefender(target, sameSideUnits(target, allUnits || [], []), allUnits, defaultSimBounds(null));
       if (cover) return false;
     }
     best = bestNonMapDamageOnEngage(actor, target, allUnits, bounds, damageOf, opts) | 0;
@@ -2560,6 +2660,8 @@
       rawDist = distance(actor, target);
       needMove = !isDash && (rawDist > mx || rawDist < mn);
       if (isMoveBeforeOnly(wpn) && needMove) continue;
+      /* Dash MAP: only from start-of-action tile (same class as move-before-only). */
+      if (isDash && actorHasMoved(actor)) continue;
 
       simPos = withFootprintAt(actor, actor.x, actor.y);
       /*
@@ -2691,6 +2793,8 @@
           side: actor.side, direction: actor.direction
         };
         dashTo = resolveDashLandCell(fireActor, wpn, allUnits, bounds);
+        /* No free land cell along the dash path → refuse Dash MAP entirely. */
+        if (!dashTo) continue;
       }
 
       better = !best ||
@@ -2734,13 +2838,15 @@
     return out;
   }
 
-  function buildCombatQueue(actor, target, weapon, friends, foes, damageOf) {
+  function buildCombatQueue(actor, target, weapon, friends, foes, damageOf, bounds) {
     var dist = distance(actor, target);
     var queue = [];
     var defenderAction = 'none';
     var actualDefender = target;
+    var board = (friends || []).concat(foes || []);
+    var b = defaultSimBounds(bounds);
     /* Cover only from the target’s own force — never the attacker’s (cross-side S.Def bug). */
-    var bestGuard = pickSupportDefender(target, sameSideUnits(target, friends, foes));
+    var bestGuard = pickSupportDefender(target, sameSideUnits(target, friends, foes), board, b);
     var tempExpected = 0;
     var tempDefAction = 'none';
     var isTargetCountering = true;
@@ -2839,7 +2945,7 @@
     }
 
     if (isTargetCountering) {
-      counterGuard = pickCounterSupportDefender(actor, sameSideUnits(actor, friends, foes));
+      counterGuard = pickCounterSupportDefender(actor, sameSideUnits(actor, friends, foes), board, b);
       if (counterGuard) {
         counterGuard.usedSupportDefendCount = (counterGuard.usedSupportDefendCount | 0) + 1;
         counterGuard.battleSupportDefendedCount = (counterGuard.battleSupportDefendedCount | 0) + 1;
@@ -3358,6 +3464,9 @@
     pickSupportAttacker: pickSupportAttacker,
     canCounterSupportDefend: canCounterSupportDefend,
     canSupportDefendOnTarget: canSupportDefendOnTarget,
+    canSupportDefendReach: canSupportDefendReach,
+    findSupportDefendLandAnchors: findSupportDefendLandAnchors,
+    footprintClearForSupportDefend: footprintClearForSupportDefend,
     unitOccupancyMode: unitOccupancyMode,
     terrainRowLevel: terrainRowLevel,
     buildPilotSkillKit: buildPilotSkillKit,
