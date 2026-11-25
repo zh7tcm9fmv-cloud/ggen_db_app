@@ -19677,7 +19677,8 @@
     "ip_3ff5b17ebdeca280b26bef74bef905ea:unit:1175001900:sp": "up",
     "ip_307d79745efe3fe582672af6ec52c410:unit:1175001900:sp": "up",
     "ip_437f16237c1491d2027b8c1b777e6cf6:unit:1336000200:sp": "down",
-    "ip_437f16237c1491d2027b8c1b777e6cf6:unit:1175004910:sp": "down"
+    "ip_437f16237c1491d2027b8c1b777e6cf6:unit:1175004910:sp": "down",
+    "ip_478a0657e639558c0eb690d01e0759b8:unit:1219000300:sp": "up"
   },
   "targets": {
     "unit:1155000700:sp": {
@@ -20377,7 +20378,7 @@
       "down": 5
     },
     "unit:1219000300:sp": {
-      "up": 30,
+      "up": 31,
       "down": 6
     },
     "unit:1125001100:ssp": {
