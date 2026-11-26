@@ -1,47 +1,12 @@
 {
   "v": 1,
-  "saved_ms": 1795683387978,
+  "saved_ms": 1795684001987,
   "meta": {
-    "last_ok_ms": 1795683328043,
-    "last_err": "gamei:<urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1028)>",
+    "last_ok_ms": 1795683943080,
+    "last_err": "",
     "started_ms": 1793557196594
   },
   "samples": [
-    {
-      "t": 1795337934252,
-      "countries": {
-        "hk": {
-          "overall": 35,
-          "games": 19,
-          "gamei_today": 35
-        },
-        "mo": {
-          "overall": 42,
-          "games": 28,
-          "gamei_today": null
-        },
-        "tw": {
-          "overall": null,
-          "games": null,
-          "gamei_today": 218
-        },
-        "jp": {
-          "overall": null,
-          "games": 74,
-          "gamei_today": 133
-        },
-        "sg": {
-          "overall": null,
-          "games": null,
-          "gamei_today": 472
-        },
-        "kr": {
-          "overall": null,
-          "games": null,
-          "gamei_today": 437
-        }
-      }
-    },
     {
       "t": 1795338547857,
       "countries": {
@@ -25834,6 +25799,41 @@
           "overall": null,
           "games": null,
           "gamei_today": null
+        }
+      }
+    },
+    {
+      "t": 1795683943080,
+      "countries": {
+        "hk": {
+          "overall": 65,
+          "games": 33,
+          "gamei_today": 65
+        },
+        "mo": {
+          "overall": 29,
+          "games": 19,
+          "gamei_today": null
+        },
+        "tw": {
+          "overall": null,
+          "games": null,
+          "gamei_today": 310
+        },
+        "jp": {
+          "overall": null,
+          "games": null,
+          "gamei_today": 209
+        },
+        "sg": {
+          "overall": null,
+          "games": null,
+          "gamei_today": 431
+        },
+        "kr": {
+          "overall": null,
+          "games": null,
+          "gamei_today": 463
         }
       }
     }
