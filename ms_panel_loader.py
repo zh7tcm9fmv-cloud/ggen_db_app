@@ -83,6 +83,8 @@ def _from_env_z() -> Optional[ModuleType]:
 
 
 def _from_github() -> Optional[ModuleType]:
+    import json
+
     tok = _token()
     if not tok:
         return None
@@ -91,26 +93,35 @@ def _from_github() -> Optional[ModuleType]:
     ref = (os.environ.get("GGEN_MS_PANEL_GITHUB_REF") or _DEFAULT_REF).strip() or "main"
     if not repo or "/" not in repo or not path:
         return None
-    # Contents API returns base64 for private repos (raw.githubusercontent often 404).
     api = f"https://api.github.com/repos/{repo}/contents/{path}?ref={ref}"
-    req = Request(
-        api,
-        headers={
-            "Authorization": f"Bearer {tok}",
-            "Accept": "application/vnd.github.raw",
-            "User-Agent": "ggen-db-panel-loader",
-            "X-GitHub-Api-Version": "2022-11-28",
-        },
-    )
+    headers = {
+        "Authorization": f"Bearer {tok}",
+        "User-Agent": "ggen-db-panel-loader",
+        "X-GitHub-Api-Version": "2022-11-28",
+    }
+    src: Optional[bytes] = None
+    # 1) Prefer JSON contents (works for private repos with Contents: Read).
     try:
+        req = Request(api, headers={**headers, "Accept": "application/vnd.github+json"})
         with urlopen(req, timeout=45) as resp:
-            src = resp.read()
-    except (HTTPError, URLError, TimeoutError, OSError):
-        return None
+            meta = json.loads(resp.read().decode("utf-8", "replace"))
+        if isinstance(meta, dict) and meta.get("encoding") == "base64" and meta.get("content"):
+            src = base64.b64decode("".join(str(meta["content"]).split()))
+    except (HTTPError, URLError, TimeoutError, OSError, ValueError, json.JSONDecodeError) as e:
+        print(f"WARNING: ms_panel github json fetch failed: {type(e).__name__}", flush=True)
+        src = None
+    # 2) Fallback: raw Accept (some tokens only allow this).
+    if not src:
+        try:
+            req = Request(api, headers={**headers, "Accept": "application/vnd.github.raw"})
+            with urlopen(req, timeout=45) as resp:
+                src = resp.read()
+        except (HTTPError, URLError, TimeoutError, OSError) as e:
+            print(f"WARNING: ms_panel github raw fetch failed: {type(e).__name__}", flush=True)
+            return None
     if not src or not src.strip():
         return None
     return _exec_source(src, f"github:{repo}/{path}@{ref}")
-
 
 def _stub() -> ModuleType:
     """No-op module so the app still boots if the secret is missing."""
@@ -140,13 +151,29 @@ def _stub() -> ModuleType:
     return mod
 
 
+_LOAD_SOURCE = "stub"
+
+
+def load_source() -> str:
+    return _LOAD_SOURCE
+
+
 def load_ms_panel() -> ModuleType:
-    for loader in (_from_local, _from_env_z, _from_github):
+    global _LOAD_SOURCE
+    for name, loader in (("local", _from_local), ("env_z", _from_env_z), ("github", _from_github)):
         try:
             mod = loader()
-        except Exception:
+        except Exception as e:
+            print(f"WARNING: ms_panel {name} load failed: {type(e).__name__}", flush=True)
             mod = None
         if mod is not None:
+            _LOAD_SOURCE = name
+            print(f"ms_panel loaded via {name}", flush=True)
             return mod
-    print("WARNING: ms_panel unavailable — panel CP APIs will return 0 (set private GitHub secret or local ms_panel.py)", flush=True)
+    _LOAD_SOURCE = "stub"
+    print(
+        "WARNING: ms_panel unavailable — panel CP APIs will return 0 "
+        "(need local ms_panel.py, GGEN_MS_PANEL_Z, or private GitHub token access to ggen_ms_panel)",
+        flush=True,
+    )
     return _stub()

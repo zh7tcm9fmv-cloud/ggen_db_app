@@ -48,7 +48,7 @@ from gasha_official_rates import (
     category_summary,
     drop_rates_for_gasha,
 )
-from ms_panel_loader import load_ms_panel
+from ms_panel_loader import load_ms_panel, load_source as ms_panel_load_source
 
 ms_panel = load_ms_panel()
 
@@ -14360,8 +14360,9 @@ trait_set_detail_resource_lookup = create_trait_set_detail_resource_lookup(trait
 trait_data_map = create_trait_data_map(trait_logic_data)
 try:
     ms_panel.bind(BASE_DIR)
-except Exception:
-    pass
+    print(f"ms_panel.bind ok source={ms_panel_load_source()}", flush=True)
+except Exception as _ms_panel_bind_err:
+    print(f"WARNING: ms_panel.bind failed: {type(_ms_panel_bind_err).__name__}: {_ms_panel_bind_err}", flush=True)
 twc_weapon_attr_keys_map = create_twc_weapon_attr_keys_map(trait_twc_weapon_data) if trait_twc_weapon_data else {}
 twc_attack_type_keys_map = create_twc_attack_type_keys_map(trait_twc_weapon_data) if trait_twc_weapon_data else {}
 trait_condition_weapon_filter_map = create_trait_condition_weapon_filter_map(trait_cond_data_r) if trait_cond_data_r else {}
@@ -42058,6 +42059,18 @@ def _panel_parse_wl(raw):
         except (TypeError, ValueError):
             out.append(5)
     return out or None
+
+
+@app.route('/api/panel/status')
+def api_panel_status():
+    """Opaque readiness only — never exposes formula/source body."""
+    src = ms_panel_load_source()
+    ready = False
+    try:
+        ready = bool(getattr(ms_panel, '_ready', False)) if src != 'stub' else False
+    except Exception:
+        ready = False
+    return jsonify({'ok': src != 'stub' and ready, 'source': src, 'bound': ready})
 
 
 @app.route('/api/panel/u/<unit_id>')
