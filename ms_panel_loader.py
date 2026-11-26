@@ -3,10 +3,10 @@
 
 Resolution order:
 1. Local ``ms_panel.py`` next to this file (dev checkout; gitignored).
-2. Env ``GGEN_MS_PANEL_Z`` — zlib+base64 of the module source (Railway secret).
-3. Private GitHub raw file via ``GGEN_BANNER_VOTES_GITHUB_TOKEN`` (or
+2. Private GitHub raw file via ``GGEN_BANNER_VOTES_GITHUB_TOKEN`` (or
    ``GGEN_MS_PANEL_GITHUB_TOKEN``) from
    ``GGEN_MS_PANEL_GITHUB_REPO`` / ``GGEN_MS_PANEL_GITHUB_PATH``.
+3. Env ``GGEN_MS_PANEL_Z`` — zlib+base64 of the module source (Railway secret fallback).
 
 Never log module source. Never serve this file over /static.
 """
@@ -160,7 +160,7 @@ def load_source() -> str:
 
 def load_ms_panel() -> ModuleType:
     global _LOAD_SOURCE
-    for name, loader in (("local", _from_local), ("env_z", _from_env_z), ("github", _from_github)):
+    for name, loader in (("local", _from_local), ("github", _from_github), ("env_z", _from_env_z)):
         try:
             mod = loader()
         except Exception as e:
