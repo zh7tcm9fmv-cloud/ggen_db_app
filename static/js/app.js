@@ -17879,7 +17879,11 @@ const byId={};server.forEach(a=>{if(a&&a.id)byId[a.id]=a});
 const gap=byId.gap||{have:total,need:Math.max(0,target-total),target};
 if(title)title.textContent=t('tb_max_cp_advice_title')||'';
 if(gapEl)gapEl.textContent=_tbFmtAdvice(t('tb_max_cp_advice_gap')||'',{n:fmtN(gap.need|0),have:fmtN(gap.have|0),target:fmtN(gap.target|0)});
-const showBoost=!!byId.boost_catalog_ssp&&String(data&&data.source||'')!=='catalog_ssp';
+// Next = catalog SSP search toward 500k. Show whenever owned Max CP is under target,
+// even if an older panel omitted boost_catalog_ssp. Hide after a catalog boost attempt.
+const src=String(data&&data.source||'');
+const alreadyCatalog=src==='catalog_ssp'||src==='minimal';
+const showBoost=total<target&&!alreadyCatalog;
 if(boost){boost.hidden=!showBoost;boost.disabled=false;boost.title=t('tb_max_cp_boost_tip')||''}
 if(boostLbl)boostLbl.textContent=t('tb_max_cp_boost')||'500,000';
 box.hidden=false;
