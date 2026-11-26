@@ -27002,6 +27002,30 @@ def _collections_share_normalize_bag(bag):
     return out
 
 
+def _collections_share_normalize_ult_alt(bag, units):
+    """Keep Ult Alteration LV 0/50/100 for unit ids present in the share bag."""
+    out = {}
+    if not isinstance(bag, dict) or not isinstance(units, dict):
+        return out
+    for k, v in bag.items():
+        kid = normalize_id(k)
+        if not kid or kid == '0' or kid not in units:
+            continue
+        try:
+            lv = int(v)
+        except (TypeError, ValueError):
+            continue
+        if lv >= 100:
+            out[kid] = 100
+        elif lv >= 50:
+            out[kid] = 50
+        else:
+            out[kid] = 0
+        if len(out) >= _COLLECTIONS_SHARE_MAX_IDS:
+            break
+    return out
+
+
 def _collections_share_normalize_payload(raw):
     if not isinstance(raw, dict):
         return None
@@ -27011,6 +27035,9 @@ def _collections_share_normalize_payload(raw):
         return None
     name = str(raw.get('n') or raw.get('name') or '').strip()[:32]
     out = {'v': 1, 'u': units, 's': supporters}
+    ua = _collections_share_normalize_ult_alt(raw.get('ua') or raw.get('ult_alt') or {}, units)
+    if ua:
+        out['ua'] = ua
     if name:
         out['n'] = name
     return out
@@ -28332,7 +28359,7 @@ def api_collections_census_stats():
 def api_collections_catalog():
     """Slim UR catalog for /collections (Units + Supporters; UR ULT paired …01/…02; no transform alts)."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f'collections_ur_v6_{lc}_{lr_schedule_cache_key_fragment()}'
+    ck = f'collections_ur_v7_{lc}_{lr_schedule_cache_key_fragment()}'
     cached = get_cached_response(ck)
     if cached:
         return jsonify_preserialized(cached, ck, public=True, max_age=3600, convert_images=False)
@@ -28367,6 +28394,8 @@ def api_collections_catalog():
         thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
         art = find_portrait(info.get('resource_ids', []), uid, 'images/unit_portraits') or thum
         is_ult = bool(info.get('is_ultimate', False))
+        # ULT Alteration only when m_unit_ult_custom_config has this form (same gate as /u).
+        has_ult_alt = bool(is_ult and (unit_ult_custom_config_by_unit or {}).get(normalize_id(uid)))
         units_raw.append({
             'id': uid,
             'name': name,
@@ -28377,6 +28406,7 @@ def api_collections_catalog():
             'art': art or '',
             'is_limited_time': uid in LIMITED_TIME_UNIT_IDS,
             'is_ultimate': is_ult,
+            'has_ult_alteration': has_ult_alt,
             'rarity': 'UR',
             'rarity_id': ri,
             'rarity_sort': RARITY_SORT.get(ri, 4),
@@ -28396,13 +28426,19 @@ def api_collections_catalog():
         members = sorted(ult_groups[gkey], key=lambda r: safe_int(r.get('id'), 0))
         base = dict(members[0])
         base['ult_variants'] = [
-            {'id': m['id'], 'thum': m.get('thum') or '', 'art': m.get('art') or ''}
+            {
+                'id': m['id'],
+                'thum': m.get('thum') or '',
+                'art': m.get('art') or '',
+                'has_ult_alteration': bool(m.get('has_ult_alteration')),
+            }
             for m in members
         ]
         # Card id = lowest variant (…01); ownership is stored on the selected variant id.
         base['id'] = members[0]['id']
         base['thum'] = members[0].get('thum') or ''
         base['art'] = members[0].get('art') or ''
+        base['has_ult_alteration'] = any(bool(m.get('has_ult_alteration')) for m in members)
         units.append(base)
     # Same default as browse lists: rarity desc, then numeric id.
     units = sort_rows(units, 'rarity', 'desc', {'name', 'role', 'rarity'})

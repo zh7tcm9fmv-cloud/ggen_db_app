@@ -121,6 +121,10 @@
       ult_incl: 'incl. ULT',
       ult_excl: 'excl. ULT',
       ult_toggle_aria: 'Include Ultimate Units in possession %',
+      ult_alt_off: 'Alt off',
+      ult_alt_50: 'Alt 50',
+      ult_alt_100: 'Alt 100',
+      ult_alt_cycle_aria: 'Cycle ULT Alteration (off / 50 / 100)',
       complete: 'COMPLETE',
       complete_max: 'MAX LIMIT BREAK',
       owned: 'Possessed',
@@ -265,6 +269,10 @@
       ult_incl: 'ULT含む',
       ult_excl: 'ULT除く',
       ult_toggle_aria: '所持率にアルティメットユニットを含める',
+      ult_alt_off: '改造なし',
+      ult_alt_50: '改造 LV50',
+      ult_alt_100: '改造 LV100',
+      ult_alt_cycle_aria: 'ULT改造レベルを切替（なし / 50 / 100）',
       complete: 'コンプリート',
       complete_max: '限界突破コンプリート',
       owned: '所持',
@@ -409,6 +417,10 @@
       ult_incl: '含ULT',
       ult_excl: '不含ULT',
       ult_toggle_aria: '持有率是否包含終極單位',
+      ult_alt_off: '無改造',
+      ult_alt_50: '改造 LV50',
+      ult_alt_100: '改造 LV100',
+      ult_alt_cycle_aria: '切換 ULT改造等級（無 / 50 / 100）',
       complete: '全收集',
       complete_max: '突破界限全滿',
       owned: '持有',
@@ -552,6 +564,10 @@
       ult_incl: '含ULT',
       ult_excl: '不含ULT',
       ult_toggle_aria: '持有率是否包含終極單位',
+      ult_alt_off: '無改造',
+      ult_alt_50: '改造 LV50',
+      ult_alt_100: '改造 LV100',
+      ult_alt_cycle_aria: '切換 ULT改造等級（無 / 50 / 100）',
       complete: '全收集',
       complete_max: '突破界限全滿',
       owned: '持有',
@@ -693,6 +709,10 @@
       ult_incl: 'ULT 포함',
       ult_excl: 'ULT 제외',
       ult_toggle_aria: '보유율에 얼티밋 유닛 포함',
+      ult_alt_off: 'Alt off',
+      ult_alt_50: 'Alt 50',
+      ult_alt_100: 'Alt 100',
+      ult_alt_cycle_aria: 'ULT Alteration (off / 50 / 100)',
       complete: 'COMPLETE',
       complete_max: '최대 한계돌파',
       owned: '보유',
@@ -881,14 +901,15 @@
   function loadOwned() {
     try {
       var raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return { units: {}, supporters: {} };
+      if (!raw) return { units: {}, supporters: {}, ult_alt: {} };
       var o = JSON.parse(raw);
       return {
         units: o.units || {},
-        supporters: o.supporters || {}
+        supporters: o.supporters || {},
+        ult_alt: o.ult_alt && typeof o.ult_alt === 'object' ? o.ult_alt : {}
       };
     } catch (_) {
-      return { units: {}, supporters: {} };
+      return { units: {}, supporters: {}, ult_alt: {} };
     }
   }
 
@@ -970,37 +991,111 @@
     return null;
   }
 
+  function variantHasUltAlteration(row, variantId) {
+    if (!row || !variantId) return false;
+    var sid = String(variantId);
+    var vars = row.ult_variants || [];
+    var i;
+    for (i = 0; i < vars.length; i++) {
+      if (String(vars[i].id) === sid) return !!vars[i].has_ult_alteration;
+    }
+    return !!row.has_ult_alteration;
+  }
+
+  function rowHasUltAlteration(row) {
+    if (!isUltRow(row)) return false;
+    var oid = getUltOwnedId(row);
+    if (oid) return variantHasUltAlteration(row, oid);
+    return !!row.has_ult_alteration;
+  }
+
   function setUltOwnedId(row, selectedId) {
     var ids = ultVariantIds(row);
     var sel = selectedId ? String(selectedId) : '';
+    if (!state.owned.ult_alt) state.owned.ult_alt = {};
     ids.forEach(function (id) {
       setLb(id, sel && id === sel ? 0 : -1);
+      if (!(sel && id === sel)) delete state.owned.ult_alt[String(id)];
     });
+    if (sel && variantHasUltAlteration(row, sel)) {
+      /* MLS-like: new own defaults to Alt 100; keep prior if already set (incl. off as explicit 0). */
+      if (!(String(sel) in state.owned.ult_alt)) state.owned.ult_alt[sel] = 100;
+    } else if (sel) {
+      delete state.owned.ult_alt[sel];
+    }
+    saveOwned();
+  }
+
+  function normUltAltLv(v) {
+    var n = parseInt(v, 10);
+    if (n >= 100) return 100;
+    if (n >= 50) return 50;
+    return 0;
+  }
+
+  function getUltAltLv(unitId) {
+    var bag = state.owned.ult_alt || {};
+    var key = String(unitId);
+    if (!(key in bag)) return 0;
+    return normUltAltLv(bag[key]);
+  }
+
+  function setUltAltLv(unitId, lv) {
+    if (!state.owned.ult_alt) state.owned.ult_alt = {};
+    var key = String(unitId);
+    var n = normUltAltLv(lv);
+    /* Persist 0 explicitly so “Alt off” survives vs missing → default 100 on own. */
+    state.owned.ult_alt[key] = n;
+    saveOwned();
+  }
+
+  function clearUltAlt(unitId) {
+    if (!state.owned.ult_alt) return;
+    delete state.owned.ult_alt[String(unitId)];
+  }
+
+  function cycleUltAlt(row) {
+    var oid = getUltOwnedId(row);
+    if (!oid || !variantHasUltAlteration(row, oid)) return;
+    var cur = getUltAltLv(oid);
+    /* off → 50 → 100 → off (MLS) */
+    if (cur < 50) setUltAltLv(oid, 50);
+    else if (cur < 100) setUltAltLv(oid, 100);
+    else setUltAltLv(oid, 0);
   }
 
   function cycleUlt(row) {
     var ids = ultVariantIds(row);
     if (!ids.length) return;
     var cur = getUltOwnedId(row);
+    var keepAlt = cur && variantHasUltAlteration(row, cur) ? getUltAltLv(cur) : null;
     var idx = cur ? ids.indexOf(cur) : -1;
     var next = idx + 1;
-    if (next >= ids.length) setUltOwnedId(row, null);
-    else setUltOwnedId(row, ids[next]);
+    if (next >= ids.length) {
+      setUltOwnedId(row, null);
+      return;
+    }
+    setUltOwnedId(row, ids[next]);
+    if (keepAlt != null && variantHasUltAlteration(row, ids[next])) setUltAltLv(ids[next], keepAlt);
   }
 
-  /** Possession / LB UI state — ULT has no Limit Break stars. */
+  /** Possession / LB UI state — ULT has no Limit Break stars; Alt off/50/100 when MD allows. */
   function rowState(row) {
     if (isUltRow(row)) {
       var oid = getUltOwnedId(row);
+      var canAlt = !!(oid && variantHasUltAlteration(row, oid));
+      var alt = canAlt ? getUltAltLv(oid) : 0;
       return {
         owned: !!oid,
         lb: oid ? 0 : -1,
         ultId: oid,
-        skipLb: true
+        skipLb: true,
+        ultAlt: alt,
+        hasUltAlt: canAlt
       };
     }
     var lb = getLb(row && row.id);
-    return { owned: lb >= 0, lb: lb, ultId: null, skipLb: false };
+    return { owned: lb >= 0, lb: lb, ultId: null, skipLb: false, ultAlt: 0, hasUltAlt: false };
   }
 
   function rowDisplayMedia(row) {
@@ -1021,12 +1116,37 @@
     return { thum: pick.thum || row.thum || '', art: pick.art || row.art || '' };
   }
 
+  function ultAltLabel(lv) {
+    if (lv >= 100) return t('ult_alt_100');
+    if (lv >= 50) return t('ult_alt_50');
+    return t('ult_alt_off');
+  }
+
   function rowTitleExtra(row, st) {
     if (isUltRow(row)) {
       if (!st.owned) return t('unowned');
+      if (st.hasUltAlt) return String(st.ultId || '') + ' · ' + ultAltLabel(st.ultAlt);
       return String(st.ultId || '');
     }
     return lbTitle(st.lb);
+  }
+
+  function ultAltBadgeHtml(st) {
+    if (!st || !st.owned || !st.skipLb || !st.hasUltAlt) return '';
+    var lbl = ultAltLabel(st.ultAlt);
+    var offCls = st.ultAlt < 50 ? ' is-off' : '';
+    /* Separate row under thumb (not overlaid) — easy to see / tap without nesting controls in the card button paint. */
+    return (
+      '<span class="col-ult-alt' +
+      offCls +
+      '" data-ult-alt="1" title="' +
+      esc(t('ult_alt_cycle_aria')) +
+      '" aria-label="' +
+      esc(t('ult_alt_cycle_aria') + ' — ' + lbl) +
+      '">' +
+      esc(lbl) +
+      '</span>'
+    );
   }
 
   function findRowByCardId(id) {
@@ -2978,6 +3098,7 @@
           thumbHtml(row, idx) +
           (st.skipLb ? '' : lbIconsHtml(st.lb)) +
           '</div>' +
+          ultAltBadgeHtml(st) +
           '<div class="col-card-name">' +
           esc(row.name) +
           '</div>' +
@@ -3045,7 +3166,7 @@
     var attempt = 0;
     while (attempt < 8) {
       attempt++;
-      var r = await fetch(url, { credentials: 'same-origin' });
+      var r = await fetch(url, { credentials: 'same-origin', cache: 'no-store' });
       if (r.status === 503) {
         var body = null;
         try {
@@ -3075,21 +3196,35 @@
     state.busy = true;
     var lang = encodeURIComponent(state.lang);
     try {
-      var data = await fetchJson('/api/collections/catalog?lang=' + lang);
+      var data = await fetchJson('/api/collections/catalog?lang=' + lang + '&cv=7');
       state.catalog = {
         units: data.units || [],
         supporters: data.supporters || []
       };
       /* ULT: keep at most one owned form id (…01 or …02); drop LB values on those ids. */
+      if (!state.owned.ult_alt) state.owned.ult_alt = {};
       (state.catalog.units || []).forEach(function (row) {
         if (!isUltRow(row)) return;
         var ids = ultVariantIds(row);
         var keep = getUltOwnedId(row);
         ids.forEach(function (vid) {
-          if (!keep) setLb(vid, -1);
-          else setLb(vid, vid === keep ? 0 : -1);
+          if (!keep) {
+            setLb(vid, -1);
+            delete state.owned.ult_alt[String(vid)];
+          } else if (vid === keep) {
+            setLb(vid, 0);
+            if (variantHasUltAlteration(row, vid)) {
+              if (!(String(vid) in state.owned.ult_alt)) state.owned.ult_alt[vid] = 100;
+            } else {
+              delete state.owned.ult_alt[String(vid)];
+            }
+          } else {
+            setLb(vid, -1);
+            delete state.owned.ult_alt[String(vid)];
+          }
         });
       });
+      saveOwned();
       if (status) {
         status.textContent = t('loaded', {
           units: state.catalog.units.length,
@@ -3195,6 +3330,15 @@
         var id = card.getAttribute('data-id');
         var row = findRowByCardId(id);
         if (row && isUltRow(row)) {
+          if (ev.target.closest('[data-ult-alt]')) {
+            ev.preventDefault();
+            ev.stopPropagation();
+            var stAlt = rowState(row);
+            if (!stAlt.owned || !stAlt.hasUltAlt) return;
+            cycleUltAlt(row);
+            refresh();
+            return;
+          }
           cycleUlt(row);
           refresh(); /* portrait may switch …01 ↔ …02 */
           return;
@@ -3258,6 +3402,7 @@
       clearAll.addEventListener('click', function () {
         if (!window.confirm(t('reset_confirm', { type: typeTitle() }))) return;
         state.owned[state.type] = {};
+        if (state.type === 'units') state.owned.ult_alt = {};
         saveOwned();
         refresh();
       });
@@ -5768,12 +5913,25 @@
       });
       return out;
     }
-    return {
+    function cleanUltAlt(bag, units) {
+      var out = {};
+      Object.keys(bag || {}).forEach(function (id) {
+        if (!(String(id) in (units || {}))) return;
+        /* Persist 0 = Alt off, 50, 100 */
+        out[String(id)] = normUltAltLv(bag[id]);
+      });
+      return out;
+    }
+    var u = clean(state.owned.units);
+    var ua = cleanUltAlt(state.owned.ult_alt, u);
+    var out = {
       v: 1,
-      u: clean(state.owned.units),
+      u: u,
       s: clean(state.owned.supporters),
       n: currentUsername() || undefined
     };
+    if (Object.keys(ua).length) out.ua = ua;
+    return out;
   }
 
   function readSaveSlots() {
@@ -5980,11 +6138,12 @@
     }
     var name = slot.name || t('default_save_name', { i: i + 1 });
     if (!window.confirm(t('load_slot_confirm', { name: name }))) return;
-    var payload = { v: 1, u: slot.data.u || {}, s: slot.data.s || {} };
+    var payload = { v: 1, u: slot.data.u || {}, s: slot.data.s || {}, ua: slot.data.ua || {} };
     var n = countOwnedInPayload(payload);
     state.owned = {
       units: Object.assign({}, payload.u || {}),
-      supporters: Object.assign({}, payload.s || {})
+      supporters: Object.assign({}, payload.s || {}),
+      ult_alt: Object.assign({}, payload.ua || {})
     };
     saveOwned();
     refresh();
@@ -6067,7 +6226,8 @@
     if (!window.confirm(t('share_import_confirm'))) return -1;
     state.owned = {
       units: Object.assign({}, payload.u || {}),
-      supporters: Object.assign({}, payload.s || {})
+      supporters: Object.assign({}, payload.s || {}),
+      ult_alt: Object.assign({}, payload.ua || {})
     };
     saveOwned();
     if (payload.n) saveUsername(payload.n);
@@ -6080,6 +6240,7 @@
       v: 1,
       u: payload.u || {},
       s: payload.s || {},
+      ua: payload.ua || undefined,
       n: payload.n || undefined
     });
     var b64 =
@@ -6115,6 +6276,7 @@
       v: 1,
       u: payload.u || {},
       s: payload.s || {},
+      ua: payload.ua || undefined,
       n: payload.n || undefined
     });
     try {

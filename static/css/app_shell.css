@@ -2773,12 +2773,20 @@ html[data-ui-lang="KR"] .detail-rec-link-card .detail-rec-limited-wrap--on-thumb
 .modal-content.unit-detail:not(.detail-ranking-view) .detail-header:not(:has(.detail-rec-shortcut--mobile .detail-rec-link-card)) .unit-detail-head-row{
   grid-column:1 / -1;
 }
-/* Series/tags share column 1 with head-main (not under rec chip) so logos flush-left with name */
+/* Series flush-left with name (col 1). Tags span full title width under name|rec —
+ * otherwise 3 equal cols beside the rec chip leave ~43px for the white value. */
 .modal-content.char-detail:not(.detail-ranking-view) .detail-series-row,
-.modal-content.char-detail:not(.detail-ranking-view) .detail-tags-row,
-.modal-content.unit-detail:not(.detail-ranking-view) .detail-series-row,
-.modal-content.unit-detail:not(.detail-ranking-view) .detail-tags-row{
+.modal-content.unit-detail:not(.detail-ranking-view) .detail-series-row{
   grid-column:1;
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  box-sizing:border-box;
+  justify-content:flex-start;
+}
+.modal-content.char-detail:not(.detail-ranking-view) .detail-tags-row,
+.modal-content.unit-detail:not(.detail-ranking-view) .detail-tags-row{
+  grid-column:1 / -1;
   width:100%;
   max-width:100%;
   min-width:0;
@@ -2988,7 +2996,8 @@ html[data-ui-lang="KR"] .detail-rec-link-card .detail-rec-limited-wrap--on-thumb
 .detail-tags-row:not(:has(> :not(.tag-composite))):has(> .tag-composite:nth-child(2)) > .tag-composite .tag-part-value--crawl .tag-part-value-text{
   text-align:left
 }
-/* Mobile: LB tier strip already width:100% — keep it locked to the tags sheet width */
+/* Mobile: LB tier strip already width:100% — keep it locked to the tags sheet width.
+ * Detail tags keep the same 3-col equal stretch sheet as desktop (do not flex-wrap). */
 @media(max-width:768px){
   .modal-content.unit-detail:not(.detail-ranking-view) .header-stats-wrapper .lb-control-row,
   .modal-content.char-detail:not(.detail-ranking-view) .header-stats-wrapper .lb-control-row{

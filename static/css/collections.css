@@ -1049,6 +1049,31 @@ body.collections-page .bg-pattern::after{
   padding:0;border:none;background:transparent;border-radius:0;
   pointer-events:none;
 }
+/* ULT Alteration LV chip under thumb — tap to cycle off → 50 → 100 (MD kits only) */
+.col-ult-alt{
+  display:inline-flex;align-items:center;justify-content:center;align-self:center;
+  min-width:4.5em;margin:-2px 0 0;padding:3px 8px;
+  border-radius:4px;
+  font-size:10px;font-weight:800;letter-spacing:.03em;line-height:1.2;
+  color:#0a1220;
+  background:linear-gradient(180deg,#ffe08a 0%,#f0b429 100%);
+  border:1px solid rgba(255,215,0,.85);
+  box-shadow:0 1px 3px rgba(0,0,0,.55);
+  pointer-events:auto;cursor:pointer;
+  user-select:none;
+  z-index:2;
+}
+.col-card--ult.is-unowned .col-ult-alt{display:none}
+.col-ult-alt.is-off{
+  color:#c8d0dc;
+  background:linear-gradient(180deg,#3a4558 0%,#2a3344 100%);
+  border-color:rgba(132,148,174,.55)
+}
+.col-ult-alt:hover,.col-ult-alt:focus-visible{
+  outline:none;
+  filter:brightness(1.08);
+  box-shadow:0 0 0 1px rgba(0,212,255,.55),0 1px 3px rgba(0,0,0,.55);
+}
 .col-card-lb-icons img{
   width:14px;height:14px;object-fit:contain;display:block;
   filter:drop-shadow(0 1px 2px rgba(0,0,0,.85));
