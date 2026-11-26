@@ -555,6 +555,14 @@
 <button type="button" id="tbBtnMaxCp" class="tb-btn-max-cp" onclick="tbFillMaxCpFromCollections()" title="Highest CP from Collections"><img class="tb-toolbar-ic tb-toolbar-ic--cp" src="{% if image_cdn %}{{ image_cdn }}/images/UI/Profile/profile_achievements_list_icon_enhance.webp{% else %}/static/images/UI/Profile/profile_achievements_list_icon_enhance.webp{% endif %}" alt="" width="20" height="14" loading="lazy" decoding="async" onerror="this.style.display='none'"><span id="tbBtnMaxCpLbl">Max CP</span></button>
 <div id="tbTeamPanelV" class="stat-card detail-panel-v-card tb-team-panel-v" hidden></div>
 </div>
+<aside id="tbMaxCpAdvice" class="tb-maxcp-advice" hidden>
+<div class="tb-maxcp-advice-head"><span id="tbMaxCpAdviceTitle" class="tb-maxcp-advice-title"></span><button type="button" class="tb-maxcp-advice-close" id="tbMaxCpAdviceClose" onclick="tbHideMaxCpAdvice()" aria-label="Close">×</button></div>
+<p id="tbMaxCpAdviceGap" class="tb-maxcp-advice-gap"></p>
+<button type="button" id="tbBtnMaxCpBoost" class="tb-maxcp-advice-next" onclick="tbBoostMaxCpToTarget()" hidden>
+<img class="tb-maxcp-advice-next-ic" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_LoginBonus_Reward_Next.webp{% else %}/static/images/UI/UI_LoginBonus_Reward_Next.webp{% endif %}" alt="" width="36" height="36" loading="lazy" decoding="async" onerror="this.style.display='none'">
+<span id="tbBtnMaxCpBoostLbl" class="tb-maxcp-advice-next-lbl">500,000</span>
+</button>
+</aside>
 <div class="tb-terrain-row"><span id="tbTerrainLbl">Terrain</span>
 <select id="tbTerrainSelect" onchange="onTbTerrainChange()"></select>
 </div>

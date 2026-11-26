@@ -42144,13 +42144,14 @@ def api_panel_f(unit_id):
         sid = safe_int(request.args.get('sid'), 0)
         slb = max(0, min(3, safe_int(request.args.get('slb'), 3)))
         slv = max(1, min(100, safe_int(request.args.get('slv'), 100)))
-        slot = ms_panel.vslot(uid, cid, lb=lb, mode=mode, op=op, wl=wl, ml=ml, rf=rf, sid=sid, slb=slb, slv=slv)
+        csp = str(request.args.get('cm') or '').strip().lower() in ('sp', '1', 'true', 'yes', 'on')
+        slot = ms_panel.vslot(uid, cid, lb=lb, mode=mode, op=op, wl=wl, ml=ml, rf=rf, sid=sid, slb=slb, slv=slv, csp=csp)
         scp = int(ms_panel.supp_table_cp(sid, slb) or 0) if sid else 0
         out = {'u': int(slot.get('u') or 0), 'p': int(slot.get('p') or 0), 'f': int(slot.get('f') or 0), 'scp': scp}
         wl_key = ','.join(str(x) for x in (wl or [])) or '-'
         return jsonify_cacheable(
             out,
-            f"pf_{uid_s}_{cid}_{lb}_{mode}_{op}_{wl_key}_{1 if ml else 0}_{rf}_{sid}_{slb}_{slv}",
+            f"pf_{uid_s}_{cid}_{lb}_{mode}_{op}_{wl_key}_{1 if ml else 0}_{rf}_{sid}_{slb}_{slv}_{1 if csp else 0}",
             public=False, max_age=60, private=True,
         )
     except Exception as e:
@@ -42165,11 +42166,12 @@ def api_panel_maxcp():
         units = body.get('units') or []
         supporters = body.get('supporters') or []
         n = max(1, min(2, safe_int(body.get('squads'), 2)))
+        catalog_ssp = bool(body.get('catalog_ssp') or body.get('boost') or False)
         if not isinstance(units, list) or not units:
             return jsonify({'error': 'units required'}), 400
         if not isinstance(supporters, list):
             supporters = []
-        result = ms_panel.maxcp_build(units, supporters, squads=n)
+        result = ms_panel.maxcp_build(units, supporters, squads=n, catalog_ssp=catalog_ssp)
         return jsonify(result)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
