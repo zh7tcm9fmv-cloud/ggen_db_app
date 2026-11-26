@@ -20,7 +20,16 @@ alwaysApply: true
 2. If live scale stops being 60%, stop and re-fit before changing the multiplier.
 3. Report on dump: call out CG bonus column populated vs still 0.
 
+## T11 (300,000+) rematch caution (ROI / ClimbTeach)
+
+Owner: once any slot is in the top band (**T11**, CP **300,000+**), Changing Opponent on that slot can rematch a **lower Combat Power** foe than the one you already have — that slot’s **Battle Score** and season **MAX SS Pt** can drop.
+
+- ROI cursor still points at the best *climbable* slot (T11 has `climbsLeft=0`, so it is never the target).
+- ClimbTeach must still show the red T11 caution when `boardHasTop`, **including** when there is no climb candidate (all T11 / rematches 0). Do **not** hide the strip in that case.
+- Copy keys: `ml_calc_feat_climb_note_top` (with an active climb elsewhere) · `ml_calc_feat_climb_note_top_hold` (no climb left). Terms from LANG/help: Change Opponent / 対戦相手変更 / 變更對戰對手; Combat Power / 戦闘力 / 戰鬥力; Battle Score / 対戦スコア / 對戰分數.
+
 ## Do not
 
 - Ship raw MD as the live add (overshoots ~40% vs S18 SS MAX).
 - Apply CG4 bonus table to older seasons (S17 sheet stays ~0 vs base even at ~295k).
+- Drop the T11 rematch caution when ROI has no climb target.
