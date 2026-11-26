@@ -1519,33 +1519,45 @@ body.collections-page .bg-pattern::after{
   padding:4px 8px;
   border-radius:var(--radius-sm);
   border:1px solid rgba(42,54,84,.85);
-  background:rgba(8,12,22,.55);
+  /* Opaque enough that card names under the sticky bar cannot ghost through */
+  background:rgba(10,14,24,.92);
+  isolation:isolate;
+  position:relative;z-index:1;
 }
 .collections-pct-sticky-chip-k{
   font-size:9px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;
-  color:var(--text-muted);line-height:1.15;
+  color:var(--text-muted);-webkit-text-fill-color:var(--text-muted);line-height:1.15;
   max-width:9.5em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
 }
 .collections-pct-sticky-chip-v{
   font-size:13px;font-weight:800;line-height:1.15;
-  color:var(--text-primary);font-variant-numeric:tabular-nums;
+  color:var(--text-primary);-webkit-text-fill-color:var(--text-primary);
+  font-variant-numeric:tabular-nums;
 }
 .collections-pct-sticky-chip-v em{
-  font-style:normal;font-weight:600;font-size:.78em;color:var(--text-muted);
+  font-style:normal;font-weight:600;font-size:.78em;
+  color:var(--text-muted);-webkit-text-fill-color:var(--text-muted);
 }
-.collections-pct-sticky-chip.is-accent .collections-pct-sticky-chip-v{color:var(--accent-cyan)}
+.collections-pct-sticky-chip.is-accent .collections-pct-sticky-chip-v{
+  color:var(--accent-cyan);-webkit-text-fill-color:var(--accent-cyan);
+}
 .collections-pct-sticky-chip.is-gold .collections-pct-sticky-chip-v,
-.collections-pct-sticky-chip.is-lb .collections-pct-sticky-chip-v{color:var(--accent-gold)}
-.collections-pct-sticky-chip.is-orange .collections-pct-sticky-chip-v{color:var(--accent-orange)}
-.collections-pct-sticky-chip.is-role-1 .collections-pct-sticky-chip-v{color:#f87171}
-.collections-pct-sticky-chip.is-role-3 .collections-pct-sticky-chip-v{color:#fde047}
-.collections-pct-sticky-chip.is-role-2 .collections-pct-sticky-chip-v{color:#93c5fd}
-.collections-pct-sticky-chip.is-skill-hp .collections-pct-sticky-chip-v{color:#6ee7b7}
-.collections-pct-sticky-chip.is-skill-en .collections-pct-sticky-chip-v{color:#facc15}
-.collections-pct-sticky-chip.is-skill-hybrid .collections-pct-sticky-chip-v{color:#d8b4fe}
+.collections-pct-sticky-chip.is-lb .collections-pct-sticky-chip-v{
+  color:var(--accent-gold);-webkit-text-fill-color:var(--accent-gold);
+}
+.collections-pct-sticky-chip.is-orange .collections-pct-sticky-chip-v{
+  color:var(--accent-orange);-webkit-text-fill-color:var(--accent-orange);
+}
+.collections-pct-sticky-chip.is-role-1 .collections-pct-sticky-chip-v{color:#f87171;-webkit-text-fill-color:#f87171}
+.collections-pct-sticky-chip.is-role-3 .collections-pct-sticky-chip-v{color:#fde047;-webkit-text-fill-color:#fde047}
+.collections-pct-sticky-chip.is-role-2 .collections-pct-sticky-chip-v{color:#93c5fd;-webkit-text-fill-color:#93c5fd}
+.collections-pct-sticky-chip.is-skill-hp .collections-pct-sticky-chip-v{color:#6ee7b7;-webkit-text-fill-color:#6ee7b7}
+.collections-pct-sticky-chip.is-skill-en .collections-pct-sticky-chip-v{color:#facc15;-webkit-text-fill-color:#facc15}
+.collections-pct-sticky-chip.is-skill-hybrid .collections-pct-sticky-chip-v{color:#d8b4fe;-webkit-text-fill-color:#d8b4fe}
 body.collections-page.collections-perfect .collections-pct-sticky-val{
   background:linear-gradient(90deg,var(--accent-gold),var(--accent-cyan)); background:linear-gradient(90deg in oklch,var(--accent-gold),var(--accent-cyan));
   -webkit-background-clip:text;background-clip:text;color:transparent;
+  -webkit-text-fill-color:transparent;
 }
 @media(min-width:721px){
   .collections-pct-sticky{
