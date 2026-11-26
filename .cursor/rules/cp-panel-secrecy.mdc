@@ -1,0 +1,26 @@
+# Panel Combat Power (CP) — top secrecy
+
+Owner spent a full day reverse-engineering in-game Combat Power. Community still has not published it. Treat as **proprietary site IP**.
+
+## Hard rule
+
+1. **Never** put the CP / panel fold math in client JS (`app.js`, TB, collections, ML sim, etc.). Browser only fetches opaque numbers from `/api/panel/*`.
+2. **Never** commit, push, or open-source `ms_panel.py` (or any rename/fork of that module) to the **public** `ggen_db_app` GitHub repo. It is gitignored.
+3. **Never** paste the formula, coefficients, letter buckets, or fold steps into public chats, Discord, Ko-fi posts, dump reports, commit messages, or PR descriptions.
+4. **Never** add comments/docs that restate the formula in shippable files. Keep `ms_panel.py` opaque; agents: do not explain internals in owner-facing replies unless the owner explicitly asks to audit secrecy.
+5. Deploy path: Railway loads the module via `ms_panel_loader.py` from (in order) local gitignored `ms_panel.py`, env `GGEN_MS_PANEL_Z`, or **private** GitHub repo `zh7tcm9fmv-cloud/ggen_ms_panel` using `GGEN_BANNER_VOTES_GITHUB_TOKEN` / `GGEN_MS_PANEL_GITHUB_TOKEN`. Never commit plaintext `ms_panel.py` to the public `ggen_db_app` remote.
+
+## What is OK to expose
+
+- API responses that return only final integers (`v`, `u`, `p`, `f`, `scp`, Max CP squad picks).
+- UI that displays those numbers (detail CP badge, `/tb` team CP, Max CP fills).
+
+## What is a different formula (not this secret)
+
+- `/estscore` SS Pt from a **known** CP input (`floor(CP×156/1000)+3010` + ChallengeModeBonus) — already public client math for Master League score estimation. That is **not** the unit/character Combat Power computation.
+
+## Checklist before any push involving panel/CP
+
+- [ ] `git status` does **not** list `ms_panel.py` as staged
+- [ ] No new client-side CP fold / coefficient tables
+- [ ] No formula text in commit message / PR body

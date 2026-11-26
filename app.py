@@ -48,6 +48,9 @@ from gasha_official_rates import (
     category_summary,
     drop_rates_for_gasha,
 )
+from ms_panel_loader import load_ms_panel
+
+ms_panel = load_ms_panel()
 
 
 # ---------------------------------------------------------------------------
@@ -1224,6 +1227,7 @@ def _app_js_bundle_version_tag():
     font_assets = (
         'font/roboto_medium_numbers.ttf',
         'font/FOTK-YoonGothic780_JP-brand.woff2',
+        'font/Teko-ML.woff2',
         'font/Teko-SemiBold.ttf',
         'font/Teko-Bold.ttf',
         'font/Teko-Regular.ttf',
@@ -1819,6 +1823,7 @@ if _LOCAL_GGEN_IMAGES_ROOT and not (IMAGE_CDN and GAME_IMAGES_USE_CDN):
 _RAILWAY_SAME_ORIGIN_FONTS = frozenset({
     'FOTK-YoonGothic780_JP-brand.woff2',
     'roboto_medium_numbers.ttf',
+    'Teko-ML.woff2',
     'Teko-Bold.ttf',
     'Teko-SemiBold.ttf',
     'Teko-Regular.ttf',
@@ -2482,14 +2487,33 @@ UNIT_SEARCH_NICKNAME_TOKEN_UNIT_IDS = {
     'devilgundam': frozenset({'1200002210', '1200002300', '1200005300'}),
     'nu': UNIT_SEARCH_NU_GUNDAM_UNIT_IDS,
 }
-# ScheduleId 9999990001 = stage/NPC shell rows in master (not obtainable in-game).
+# ScheduleId 9999990001 = stage/NPC shell, unless the row has a player acquisition route.
 SCHEDULE_ID_NONPLAYABLE_SHELL = '9999990001'
 # Browse shorthand: list every ScheduleId 9999990001 shell row (characters / units / supporters / modifications).
 NPC123_SEARCH_TOKEN = 'npc123'
 
 
-def entity_is_nonplayable_schedule_shell(schedule_id):
-    return normalize_id(schedule_id or '0') == SCHEDULE_ID_NONPLAYABLE_SHELL
+# Player routes that still use ScheduleId 9999990001 as "no dated window", not a stage shell.
+# Character route 3 is Other — that plus this schedule is the story-NPC bucket.
+_SCHEDULE_SHELL_PLAYER_ROUTES = {
+    'unit': frozenset({'1', '2', '3'}),       # Gasha, DevelopOrCapture, Event
+    'character': frozenset({'1', '2'}),       # Gasha, Scout
+    'supporter': frozenset({'1', '2'}),       # Gasha, Event
+}
+
+
+def entity_is_nonplayable_schedule_shell(schedule_id, acquisition_route=None, kind=None):
+    """True for ScheduleId 9999990001 stage/NPC shells.
+
+    Develop, gacha, scout, and event rows keep this schedule with no release date.
+    Those stay in the roster. Passing kind+route is what tells them apart.
+    """
+    if normalize_id(schedule_id or '0') != SCHEDULE_ID_NONPLAYABLE_SHELL:
+        return False
+    allowed = _SCHEDULE_SHELL_PLAYER_ROUTES.get(kind or '')
+    if not allowed or acquisition_route is None:
+        return True
+    return normalize_id(acquisition_route) not in allowed
 
 def jst_three_month_window_start_ms():
     """First instant of JST calendar month = (current month − 2), i.e. current + 2 prior months."""
@@ -14334,6 +14358,10 @@ for _sit in extract_data_list(schedule_master_data):
 trait_set_traits_map = create_trait_set_to_traits_map(trait_set_data)
 trait_set_detail_resource_lookup = create_trait_set_detail_resource_lookup(trait_set_detail_master) if trait_set_detail_master else {}
 trait_data_map = create_trait_data_map(trait_logic_data)
+try:
+    ms_panel.bind(BASE_DIR)
+except Exception:
+    pass
 twc_weapon_attr_keys_map = create_twc_weapon_attr_keys_map(trait_twc_weapon_data) if trait_twc_weapon_data else {}
 twc_attack_type_keys_map = create_twc_attack_type_keys_map(trait_twc_weapon_data) if trait_twc_weapon_data else {}
 trait_condition_weapon_filter_map = create_trait_condition_weapon_filter_map(trait_cond_data_r) if trait_cond_data_r else {}
@@ -15081,18 +15109,30 @@ def _build_char_list_playable_ids():
 _char_ability_playable_ids = _build_char_list_playable_ids()
 char_schedule_shell_ids = frozenset(
     cid for cid in _char_ability_playable_ids
-    if entity_is_nonplayable_schedule_shell(char_info_map.get(cid, {}).get('schedule_id', '0'))
+    if entity_is_nonplayable_schedule_shell(
+        char_info_map.get(cid, {}).get('schedule_id', '0'),
+        char_info_map.get(cid, {}).get('acquisition_route', '0'),
+        'character',
+    )
 )
 char_list_playable_ids = _char_ability_playable_ids - char_schedule_shell_ids
 
 unit_schedule_shell_ids = frozenset(
     uid for uid, info in unit_info_map.items()
-    if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0'))
+    if entity_is_nonplayable_schedule_shell(
+        info.get('schedule_id', '0'),
+        info.get('acquisition_route', '0'),
+        'unit',
+    )
 )
 
 supporter_schedule_shell_ids = frozenset(
     sid for sid, info in supporter_info_map.items()
-    if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0'))
+    if entity_is_nonplayable_schedule_shell(
+        info.get('schedule_id', '0'),
+        info.get('acquisition_route', '0'),
+        'supporter',
+    )
 )
 
 option_part_schedule_shell_ids = frozenset(
@@ -16239,8 +16279,8 @@ def _unit_qualifies_as_transform_partner(alt_id):
     if not info:
         return False
     sched = normalize_id(info.get('schedule_id', '0'))
-    # ScheduleId 0 is the normal default for playable alts; only exclude placeholder shells.
-    if sched == '9999990001':
+    # ScheduleId 0 is the normal default for playable alts; only exclude NPC shells.
+    if entity_is_nonplayable_schedule_shell(sched, info.get('acquisition_route', '0'), 'unit'):
         return False
     if uid in unit_list_playable_ids:
         return True
@@ -24712,7 +24752,7 @@ def _tag_matrix_playable_supporter_iter(ld, lc):
     for sid, info in supporter_info_map.items():
         if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
             continue
-        if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')):
+        if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0'), info.get('acquisition_route', '0'), 'supporter'):
             continue
         name = _matrix_supporter_display_name(sid, ld, lc)
         if not name:
@@ -27237,7 +27277,7 @@ def _collections_census_build_stats(entries, *, board='units', top_n=40):
             try:
                 if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
                     continue
-                if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')):
+                if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0'), info.get('acquisition_route', '0'), 'supporter'):
                     continue
             except Exception:
                 pass
@@ -27250,7 +27290,7 @@ def _collections_census_build_stats(entries, *, board='units', top_n=40):
             try:
                 if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
                     continue
-                if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')):
+                if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0'), info.get('acquisition_route', '0'), 'unit'):
                     continue
             except Exception:
                 pass
@@ -28305,7 +28345,7 @@ def api_collections_catalog():
         info = unit_info_map.get(uid) or {}
         if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
             continue
-        if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')):
+        if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0'), info.get('acquisition_route', '0'), 'unit'):
             continue
         # Include UR Ultimate kits so /tm+/dm “My collection” can sync ULT ownership.
         # Still skip transform alternates (duplicate roster rows).
@@ -28370,7 +28410,7 @@ def api_collections_catalog():
     for sid, info in supporter_info_map.items():
         if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
             continue
-        if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')):
+        if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0'), info.get('acquisition_route', '0'), 'supporter'):
             continue
         ri = info.get('rarity', '1')
         if RARITY_MAP.get(str(ri), 'N') != 'UR':
@@ -29131,9 +29171,15 @@ def _spi_entity_is_nonplayable_shell(eid, kind):
         return True
     if kind == 'character':
         info = char_info_map.get(eid) or {}
+        shell_kind = 'character'
     else:
         info = unit_info_map.get(eid) or {}
-    return entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0'))
+        shell_kind = 'unit'
+    return entity_is_nonplayable_schedule_shell(
+        info.get('schedule_id', '0'),
+        info.get('acquisition_route', '0'),
+        shell_kind,
+    )
 
 
 def _sp_investment_drop_nonplayable_rows(payload):
@@ -32966,7 +33012,7 @@ def character_passes_browse_pool_filters(
     id_seek = bool(sq and search_query_matches_entity_id(sq, cid))
     priv_seek = entity_privileged_npc_browse_seek(sq, cid, 'character', id_seek=id_seek)
     npc123_list = search_query_is_npc123_list_seek(sq)
-    if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')) and not priv_seek:
+    if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0'), info.get('acquisition_route', '0'), 'character') and not priv_seek:
         return False
     if role_id == '0' and not priv_seek:
         return False
@@ -33637,7 +33683,7 @@ def unit_passes_browse_pool_filters(
     priv_seek = entity_privileged_npc_browse_seek(sq, uid, 'unit')
     npc123_list = search_query_is_npc123_list_seek(sq)
     wide_seek = direct_seek or shell123_seek
-    if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')) and not priv_seek:
+    if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0'), info.get('acquisition_route', '0'), 'unit') and not priv_seek:
         return False
     if role_id == '0' and not priv_seek:
         return False
@@ -33954,7 +34000,7 @@ def supporter_passes_browse_pool_filters(sid, info, ld, lc, sq, rarity_filter, l
     lim = nsid in LIMITED_TIME_SUPPORTER_IDS
     id_seek = bool(sq and search_query_matches_entity_id(sq, sid))
     priv_seek = entity_privileged_npc_browse_seek(sq, sid, 'supporter')
-    if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')) and not priv_seek:
+    if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0'), info.get('acquisition_route', '0'), 'supporter') and not priv_seek:
         return False
     if apply_lineage and lineage_filter is not None:
         if not id_seek and not search_query_is_npc123_list_seek(sq) and not supporter_matches_lineage_filter(sid, lineage_filter, ld, lc, lineage_combine):
@@ -34528,7 +34574,7 @@ def list_characters():
         id_seek = bool(sq and search_query_matches_entity_id(sq, cid))
         priv_seek = entity_privileged_npc_browse_seek(sq, cid, 'character', id_seek=id_seek)
         npc123_list = search_query_is_npc123_list_seek(sq)
-        if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')) and not priv_seek:
+        if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0'), info.get('acquisition_route', '0'), 'character') and not priv_seek:
             continue
         # Role 0 = no combat role (NPC / story); reveal only with id search + unlocked password session.
         if role_id == '0' and not priv_seek:
@@ -34622,7 +34668,7 @@ def list_characters():
         # is_limited_time is on the row so Units/Characters can filter rarity locally.
         # recommend_unit_id: MLS Collections sync — hide pilots whose kit unit is unowned.
         _rec_uid = resolve_character_recommend_unit_id(cid)
-        row = {'id': cid, 'name': name, 'role': resolve_role_label(role_id, lc), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'thum': thum or '', 'acquisition_icon': acq_icon or '', 'is_limited_time': cid in LIMITED_TIME_CHARACTER_IDS, 'is_schedule_shell': entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')), 'tag_ids': lineage_tag_ids_for_browse_row(char_lin_map, cid), 'recommend_unit_id': _rec_uid if _rec_uid and _rec_uid != '0' else '', 'Ranged': totals.get('Ranged', 0), 'Melee': totals.get('Melee', 0), 'Awaken': totals.get('Awaken', 0), 'Defense': totals.get('Defense', 0), 'Reaction': totals.get('Reaction', 0), 'Ranged_base': base_src.get('Ranged', 0), 'Melee_base': base_src.get('Melee', 0), 'Awaken_base': base_src.get('Awaken', 0), 'Defense_base': base_src.get('Defense', 0), 'Reaction_base': base_src.get('Reaction', 0)}
+        row = {'id': cid, 'name': name, 'role': resolve_role_label(role_id, lc), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'thum': thum or '', 'acquisition_icon': acq_icon or '', 'is_limited_time': cid in LIMITED_TIME_CHARACTER_IDS, 'is_schedule_shell': entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0'), info.get('acquisition_route', '0'), 'character'), 'tag_ids': lineage_tag_ids_for_browse_row(char_lin_map, cid), 'recommend_unit_id': _rec_uid if _rec_uid and _rec_uid != '0' else '', 'Ranged': totals.get('Ranged', 0), 'Melee': totals.get('Melee', 0), 'Awaken': totals.get('Awaken', 0), 'Defense': totals.get('Defense', 0), 'Reaction': totals.get('Reaction', 0), 'Ranged_base': base_src.get('Ranged', 0), 'Melee_base': base_src.get('Melee', 0), 'Awaken_base': base_src.get('Awaken', 0), 'Defense_base': base_src.get('Defense', 0), 'Reaction_base': base_src.get('Reaction', 0)}
         if ranking_bulk:
             row['ib'] = char_instant_browse_facets(cid, info, ld, lc, include_sp=bool(sp_list))
         rows.append(row)
@@ -34739,7 +34785,7 @@ def list_units():
     # ul79: transform_alt=1 — only in-game transform alternate forms (normally hidden on /u)
     uskill_ck = 'usk1' if unit_skill_only else 'usk0'
     talt_ck = 'talt1' if transform_alt_only else 'talt0'
-    ck = f"ul79_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{uskill_ck}_{talt_ck}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{ability_effect_ck}_{terrain_ck}_{mov_ck}_{weapon_debuff_ck}_{weapon_attr_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_waop{_cbu['weapon_attr_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{esc_alt_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    ck = f"ul80_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{uskill_ck}_{talt_ck}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{ability_effect_ck}_{terrain_ck}_{mov_ck}_{weapon_debuff_ck}_{weapon_attr_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_waop{_cbu['weapon_attr_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{esc_alt_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached:
         return jsonify_preserialized(cached, ck, public=True, max_age=3600, convert_images=False)
@@ -34759,7 +34805,7 @@ def list_units():
         priv_seek = entity_privileged_npc_browse_seek(sq, uid, 'unit')
         npc123_list = search_query_is_npc123_list_seek(sq)
         wide_seek = direct_seek or shell123_seek
-        if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')) and not priv_seek:
+        if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0'), info.get('acquisition_route', '0'), 'unit') and not priv_seek:
             continue
         if role_id == '0' and not priv_seek:
             continue
@@ -34909,7 +34955,7 @@ def list_units():
         thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
         # Omit series / rarity_icon / recommend_character — unused by browse/ranking/TB list UI.
         # is_limited_time is on the row so Units can filter rarity locally (Soshage-style).
-        urow = {'id': uid, 'name': name, 'role': resolve_role_label(role_id, lc), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'special_icons': si, 'thum': thum or '', 'acquisition_icon': ai or '', 'is_ultimate': bool(info.get('is_ultimate', False)), 'is_limited_time': uid in LIMITED_TIME_UNIT_IDS, 'is_schedule_shell': entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')), 'is_transform_alternate': bool(transform_alt_only or _unit_is_transform_alternate(uid)), 'tag_ids': lineage_tag_ids_for_browse_row(unit_lin_map, uid), 'ATK': fs.get('Attack', fs.get('ATK', 0)), 'DEF': fs.get('Defense', fs.get('DEF', 0)), 'MOB': fs.get('Mobility', fs.get('MOB', 0)), 'HP': fs.get('HP', 0), 'EN': fs.get('EN', 0), 'MOV': fs.get('Move', fs.get('MOV', 0))}
+        urow = {'id': uid, 'name': name, 'role': resolve_role_label(role_id, lc), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'special_icons': si, 'thum': thum or '', 'acquisition_icon': ai or '', 'is_ultimate': bool(info.get('is_ultimate', False)), 'is_limited_time': uid in LIMITED_TIME_UNIT_IDS, 'is_schedule_shell': entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0'), info.get('acquisition_route', '0'), 'unit'), 'is_transform_alternate': bool(transform_alt_only or _unit_is_transform_alternate(uid)), 'tag_ids': lineage_tag_ids_for_browse_row(unit_lin_map, uid), 'ATK': fs.get('Attack', fs.get('ATK', 0)), 'DEF': fs.get('Defense', fs.get('DEF', 0)), 'MOB': fs.get('Mobility', fs.get('MOB', 0)), 'HP': fs.get('HP', 0), 'EN': fs.get('EN', 0), 'MOV': fs.get('Move', fs.get('MOV', 0))}
         display_uid = uid
         # Transform-alt filter already lists the alt row — do not remap to another form.
         if not wide_seek and not transform_alt_only:
@@ -37142,7 +37188,7 @@ def list_supporters():
             lim = nsid in LIMITED_TIME_SUPPORTER_IDS
             id_seek = bool(sq and search_query_matches_entity_id(sq, sid))
             priv_seek = entity_privileged_npc_browse_seek(sq, sid, 'supporter', id_seek=id_seek)
-            if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')) and not priv_seek:
+            if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0'), info.get('acquisition_route', '0'), 'supporter') and not priv_seek:
                 continue
             if lineage_filter is not None:
                 if not id_seek and not npc123_list and not supporter_matches_lineage_filter(sid, lineage_filter, ld, lc, lineage_combine_supp):
@@ -37197,7 +37243,7 @@ def list_supporters():
             acq = info.get('acquisition_route', '0')
             acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
             ask_kinds = sorted(supporter_official_skill_kinds_by_id.get(nsid, frozenset()))
-            rows.append({'id': sid, 'name': name, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri, 4), 'rarity_icon': RARITY_ICON_MAP.get(ri, ''), 'thum': thum or '', 'skill_tag_data': std, 'series_tag': sts, 'boost': cb, 'active_icon': aic, 'active_skill_kinds': ask_kinds, 'is_limited_time': lim, 'acquisition_route': acq, 'acquisition_icon': acq_icon or '', 'is_schedule_shell': entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0'))})
+            rows.append({'id': sid, 'name': name, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri, 4), 'rarity_icon': RARITY_ICON_MAP.get(ri, ''), 'thum': thum or '', 'skill_tag_data': std, 'series_tag': sts, 'boost': cb, 'active_icon': aic, 'active_skill_kinds': ask_kinds, 'is_limited_time': lim, 'acquisition_route': acq, 'acquisition_icon': acq_icon or '', 'is_schedule_shell': entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0'), info.get('acquisition_route', '0'), 'supporter')})
         rows = sort_rows(rows, sb, sd, {'name', 'rarity', 'series_tag', 'boost'})
         total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
         start = (page - 1) * pp; pr = rows[start:start + pp]
@@ -40578,7 +40624,7 @@ def build_supporter_detail_dict(supporter_id, lc, level=None, lb_tier=3, for_uid
         'max_level': max_level, 'acquisition_route': acq, 'acquisition_icon': acq_icon or '',
         'gacha_obtained_quote': gacha_quote or '', 'combat_power': combat_power,
         'leader_and_trait_cond_ids': leader_and_trait_cond_ids,
-        'is_schedule_shell': entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')),
+        'is_schedule_shell': entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0'), info.get('acquisition_route', '0'), 'supporter'),
     }
 
 
@@ -40656,7 +40702,7 @@ def dc_autofit_supporters():
             if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
                 continue
             nsid = normalize_id(sid)
-            if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')):
+            if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0'), info.get('acquisition_route', '0'), 'supporter'):
                 continue
             lid = ld.get('supporter_id_map', {}).get(sid, '')
             if not lid or not ld.get('supporter_text_map', {}).get(lid, ''):
@@ -41859,7 +41905,7 @@ def get_character(char_id):
         if not info: return jsonify({'error': f'Character {char_id} not found'}), 404
         if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
             return jsonify({'error': f'Character {char_id} not found'}), 404
-        is_shell = entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0'))
+        is_shell = entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0'), info.get('acquisition_route', '0'), 'character')
         if str(info.get('role', '0')) == '0' and not npc_password_unlocked() and not is_shell:
             return jsonify({'error': f'Character {char_id} not found'}), 404
         ri = info.get('rarity','1'); lid = ld['char_id_map'].get(char_id, ""); cn = ld['char_text_map'].get(lid, "Unknown") if lid else "Unknown"
@@ -41998,6 +42044,124 @@ def get_character(char_id):
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'error': str(e)}), 500
 
+
+def _panel_parse_wl(raw):
+    if raw is None or raw == '':
+        return None
+    out = []
+    for part in str(raw).split(','):
+        part = part.strip()
+        if not part:
+            continue
+        try:
+            out.append(max(1, min(5, int(part))))
+        except (TypeError, ValueError):
+            out.append(5)
+    return out or None
+
+
+@app.route('/api/panel/u/<unit_id>')
+def api_panel_u(unit_id):
+    try:
+        uid_s = normalize_id(unit_id)
+        if not uid_s or uid_s == '0' or uid_s not in unit_info_map:
+            return jsonify({'error': 'not found'}), 404
+        uid = safe_int(uid_s, 0)
+        if not uid:
+            return jsonify({'error': 'not found'}), 404
+        lb = safe_int(request.args.get('lb'), 3)
+        lb = max(0, min(3, lb))
+        m_raw = str(request.args.get('m') or '').strip().lower()
+        if m_raw in ('ssp', 'ss'):
+            mode = 'ssp'
+        elif m_raw in ('sp', '1', 's'):
+            mode = 'sp'
+        else:
+            mode = 'n'
+        op = safe_int(request.args.get('op'), 0)
+        wl = _panel_parse_wl(request.args.get('wl'))
+        wl_key = ','.join(str(x) for x in (wl or [])) or '-'
+        ml = str(request.args.get('ml') or '').strip().lower() in ('1', 'true', 'yes', 'on')
+        rf = safe_int(request.args.get('rf'), 10)
+        rf = max(1, min(20, rf))
+        v = int(ms_panel.vu(uid, lb=lb, mode=mode, op=op, wl=wl, ml=ml, rf=rf) or 0)
+        return jsonify_cacheable({'v': v}, f'pu_{uid_s}_{lb}_{mode}_{op}_{wl_key}_{1 if ml else 0}_{rf}', public=False, max_age=120, private=True)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/panel/c/<char_id>')
+def api_panel_c(char_id):
+    try:
+        cid_s = normalize_id(char_id)
+        if not cid_s or cid_s == '0' or cid_s not in char_info_map:
+            return jsonify({'error': 'not found'}), 404
+        cid = safe_int(cid_s, 0)
+        if not cid:
+            return jsonify({'error': 'not found'}), 404
+        v = int(ms_panel.vc(cid) or 0)
+        return jsonify_cacheable({'v': v}, f'pc_{cid_s}', public=False, max_age=300, private=True)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/panel/f/<unit_id>')
+def api_panel_f(unit_id):
+    """Team-board fused slot: {u,p,f}. Optional supporter via sid/slb/slv."""
+    try:
+        uid_s = normalize_id(unit_id)
+        if not uid_s or uid_s == '0' or uid_s not in unit_info_map:
+            return jsonify({'error': 'not found'}), 404
+        uid = safe_int(uid_s, 0)
+        cid = safe_int(request.args.get('c'), 0)
+        if not uid or not cid or normalize_id(cid) not in char_info_map:
+            return jsonify({'error': 'char required'}), 400
+        lb = max(0, min(3, safe_int(request.args.get('lb'), 3)))
+        m_raw = str(request.args.get('m') or '').strip().lower()
+        if m_raw in ('ssp', 'ss'):
+            mode = 'ssp'
+        elif m_raw in ('sp', '1', 's'):
+            mode = 'sp'
+        else:
+            mode = 'n'
+        op = safe_int(request.args.get('op'), 0)
+        wl = _panel_parse_wl(request.args.get('wl'))
+        ml = str(request.args.get('ml') or '').strip().lower() in ('1', 'true', 'yes', 'on')
+        rf = max(1, min(20, safe_int(request.args.get('rf'), 10)))
+        sid = safe_int(request.args.get('sid'), 0)
+        slb = max(0, min(3, safe_int(request.args.get('slb'), 3)))
+        slv = max(1, min(100, safe_int(request.args.get('slv'), 100)))
+        slot = ms_panel.vslot(uid, cid, lb=lb, mode=mode, op=op, wl=wl, ml=ml, rf=rf, sid=sid, slb=slb, slv=slv)
+        scp = int(ms_panel.supp_table_cp(sid, slb) or 0) if sid else 0
+        out = {'u': int(slot.get('u') or 0), 'p': int(slot.get('p') or 0), 'f': int(slot.get('f') or 0), 'scp': scp}
+        wl_key = ','.join(str(x) for x in (wl or [])) or '-'
+        return jsonify_cacheable(
+            out,
+            f"pf_{uid_s}_{cid}_{lb}_{mode}_{op}_{wl_key}_{1 if ml else 0}_{rf}_{sid}_{slb}_{slv}",
+            public=False, max_age=60, private=True,
+        )
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/panel/maxcp', methods=['POST'])
+def api_panel_maxcp():
+    """Build 2 Max CP squads (fused team board + supporter table CP)."""
+    try:
+        body = request.get_json(silent=True) or {}
+        units = body.get('units') or []
+        supporters = body.get('supporters') or []
+        n = max(1, min(2, safe_int(body.get('squads'), 2)))
+        if not isinstance(units, list) or not units:
+            return jsonify({'error': 'units required'}), 400
+        if not isinstance(supporters, list):
+            supporters = []
+        result = ms_panel.maxcp_build(units, supporters, squads=n)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
 @app.route('/api/unit/<unit_id>')
 def get_unit(unit_id):
     try:
@@ -42007,7 +42171,7 @@ def get_unit(unit_id):
         if stat_mode_arg not in ('normal', 'sp', 'ssp'):
             stat_mode_arg = 'normal'
         cond_for_ranking = request.args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
-        ck = f"u_{unit_id}_{lc}_ssp20_ult8_cpwr1_usk5_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_bp3_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        ck = f"u_{unit_id}_{lc}_ssp20_ult8_cpwr1_usk5_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_bp4_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         _cc = _detail_http_cache_kwargs()
         early = try_serve_preserialized(ck, **_cc)
         if early is not None:
@@ -42019,7 +42183,7 @@ def get_unit(unit_id):
         if not info: return jsonify({'error': f'Unit {unit_id} not found'}), 404
         if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
             return jsonify({'error': f'Unit {unit_id} not found'}), 404
-        is_shell = entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0'))
+        is_shell = entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0'), info.get('acquisition_route', '0'), 'unit')
         if str(info.get('role', '0')) == '0' and not npc_password_unlocked() and not is_shell:
             return jsonify({'error': f'Unit {unit_id} not found'}), 404
         if not unit_has_ms_ability_content(unit_id) and not npc_password_unlocked() and not is_shell:
@@ -42716,7 +42880,7 @@ def _seo_listed_ids(kind):
         info = (info_map or {}).get(eid) or {}
         sched = info.get('schedule_id', '0')
         try:
-            if entity_is_nonplayable_schedule_shell(sched):
+            if entity_is_nonplayable_schedule_shell(sched, info.get('acquisition_route', '0'), kind):
                 continue
             if entity_hidden_by_lr_schedule_lock(sched):
                 continue

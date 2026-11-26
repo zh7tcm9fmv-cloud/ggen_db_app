@@ -2,6 +2,15 @@ __pycache__/
 *.pyc
 .env
 venv/
+
+# Proprietary in-game Combat Power / panel fold — NEVER push to public GitHub.
+# Live: private repo zh7tcm9fmv-cloud/ggen_ms_panel via ms_panel_loader.py
+ms_panel.py
+ms_panel.pyc
+ms_panel.pyi
+**/ms_panel.py
+_ms_panel_z.b64
+ms_panel.py.z.b64
 .venv-paddle/
 .venv-got/
 .venv-surya/
