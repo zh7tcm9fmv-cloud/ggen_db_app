@@ -3000,42 +3000,6 @@ html[data-ui-lang="KR"] .detail-rec-link-card .detail-rec-limited-wrap--on-thumb
     width:100%;
     max-width:100%
   }
-  /*
-   * Equal 3-col tag sheet crushes the grey/white value bar on phones
-   * (icon+label ~52px fixed → value left with only a few glyphs).
-   * Wrap to natural chip widths so TAG/SERIES text stays readable.
-   */
-  .detail-tags-row:not(:has(> :not(.tag-composite))):has(> .tag-composite:nth-child(2)),
-  .detail-tags-row:not(:has(> :not(.tag-composite))):has(> .tag-composite:nth-child(2)):not(:has(> .tag-composite:nth-child(3))){
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:flex-start;
-    align-items:center;
-    justify-items:unset;
-    gap:6px;
-    width:100%;
-    max-width:100%
-  }
-  .detail-tags-row:not(:has(> :not(.tag-composite))):has(> .tag-composite:nth-child(2)) > .tag-composite{
-    width:auto;
-    max-width:100%;
-    min-width:0;
-    justify-self:unset;
-    grid-template-columns:var(--tag-icon-w) var(--tag-label-w) minmax(0,max-content)
-  }
-  .detail-tags-row:not(:has(> :not(.tag-composite))):has(> .tag-composite:nth-child(2)) > .tag-composite.tag-composite--type{
-    grid-template-columns:var(--tag-icon-w) minmax(0,max-content)
-  }
-  .detail-tags-row:not(:has(> :not(.tag-composite))):has(> .tag-composite:nth-child(2)) > .tag-composite .tag-part-value{
-    width:auto;
-    min-width:0;
-    max-width:min(70vw,16em);
-    justify-content:flex-start;
-    text-align:left
-  }
-  .detail-tags-row:not(:has(> :not(.tag-composite))):has(> .tag-composite:nth-child(2)) > .tag-composite .tag-part-value-text{
-    text-align:left
-  }
 }
 /* In-game Label plates — opaque crop 42×36 / 53×36; abut flush (no gap, no overlap) */
 .tag-composite{
