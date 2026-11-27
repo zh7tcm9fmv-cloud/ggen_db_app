@@ -7339,7 +7339,7 @@ display:flex;flex-direction:column;gap:12px;align-items:stretch;width:100%;min-w
 .tb-form-head-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
 .tb-form-title{font-weight:700;font-size:17px;margin:0;line-height:1.25}
 .tb-form-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.tb-form-code{font-size:13px;font-weight:700;letter-spacing:.12em;color:var(--accent-cyan);user-select:all}
+.tb-form-code{font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--accent-cyan);user-select:all;max-width:min(420px,52vw);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tb-form-code[hidden]{display:none!important}
 .tb-form-actions button{padding:6px 12px;border-radius:8px;border:1px solid var(--border-color);background:var(--bg-input,#0d1321);color:var(--text-primary);cursor:pointer;font-size:12px}
 .tb-form-actions button:hover{border-color:var(--accent-cyan)}

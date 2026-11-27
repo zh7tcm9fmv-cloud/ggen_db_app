@@ -27268,7 +27268,20 @@ def api_team_share_create():
             teams.pop(k, None)
     if not _collections_share_save(data):
         return jsonify({'error': 'save_failed'}), 500
-    return jsonify({'code': code})
+    # Short codes only travel local↔live when GitHub sync is on (banner-votes-data).
+    # Local default sync_mode=off → clients should prefer portable T2. codes.
+    durable = False
+    try:
+        durable = (
+            _collections_github_sync_mode() != 'off'
+            and bool(_collections_github_cfg(
+                'GGEN_COLLECTIONS_SHARE_GITHUB_PATH',
+                'data/published/collections_share_v1.json',
+            ))
+        )
+    except Exception:
+        durable = False
+    return jsonify({'code': code, 'durable': durable})
 
 
 @app.route('/api/team/share/<code>')
