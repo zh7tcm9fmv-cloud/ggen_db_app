@@ -26919,7 +26919,7 @@ _COLLECTIONS_SHARE_SHUTDOWN_SYNC_DONE = False
 
 
 def _collections_share_empty():
-    return {'v': 1, 'codes': {}, 'by_ip': {}}
+    return {'v': 1, 'codes': {}, 'by_ip': {}, 'teams': {}}
 
 
 def _collections_share_load(*, hydrate=True):
@@ -26938,7 +26938,8 @@ def _collections_share_load(*, hydrate=True):
                 raw = json.load(f)
             if isinstance(raw, dict) and isinstance(raw.get('codes'), dict):
                 by_ip = raw.get('by_ip') if isinstance(raw.get('by_ip'), dict) else {}
-                data = {'v': 1, 'codes': raw['codes'], 'by_ip': by_ip}
+                teams = raw.get('teams') if isinstance(raw.get('teams'), dict) else {}
+                data = {'v': 1, 'codes': raw['codes'], 'by_ip': by_ip, 'teams': teams}
         except FileNotFoundError:
             pass
         except Exception as e:
@@ -26965,6 +26966,7 @@ def _collections_share_save(data, *, sync_github=True):
             'v': 1,
             'codes': data.get('codes') or {},
             'by_ip': data.get('by_ip') or {},
+            'teams': data.get('teams') or {},
         }
         with open(tmp, 'w', encoding='utf-8') as f:
             json.dump(payload, f, ensure_ascii=False, separators=(',', ':'))
@@ -27147,6 +27149,150 @@ def api_collections_share_get(code):
     return jsonify({'code': raw, 'payload': payload})
 
 
+
+
+# --- Team Builder formation codes (same GitHub share file; no Railway volume) ---
+_TEAM_SHARE_MAX_ENTRIES = 4000
+
+
+def _team_share_normalize_slot(sl):
+    if sl is None:
+        return None
+    if not isinstance(sl, list) or not sl or len(sl) > 8:
+        return None
+    row = []
+    for i, part in enumerate(sl):
+        if i <= 2:
+            row.append(str(part or '')[:24])
+        else:
+            try:
+                row.append(int(part))
+            except (TypeError, ValueError):
+                row.append(0)
+    if not row[0]:
+        return None
+    return row
+
+
+def _team_share_normalize_payload(raw):
+    """Compact Team Builder snapshot (v2) stored with collections share (`teams`)."""
+    if not isinstance(raw, dict) or int(raw.get('v') or 0) != 2:
+        return None
+    q = raw.get('q')
+    if not isinstance(q, list) or len(q) != 2:
+        return None
+    out_q = []
+    for squad in q:
+        if not isinstance(squad, list) or len(squad) < 2:
+            return None
+        name = str(squad[0] or '')[:40]
+        slots = squad[1]
+        if not isinstance(slots, list) or len(slots) > 5:
+            return None
+        clean = []
+        for sl in slots:
+            if sl is None:
+                clean.append(None)
+                continue
+            row = _team_share_normalize_slot(sl)
+            if row is None:
+                return None
+            clean.append(row)
+        out_q.append([name, clean])
+    out = {'v': 2, 'q': out_q}
+    if raw.get('m'):
+        out['m'] = 1
+    if raw.get('g'):
+        out['g'] = 1
+    try:
+        terrain = int(raw.get('e') or 0)
+    except (TypeError, ValueError):
+        terrain = 0
+    if 0 < terrain <= 4:
+        out['e'] = terrain
+    sup_raw = raw.get('s')
+    if isinstance(sup_raw, list):
+        sup = []
+        for item in sup_raw[:2]:
+            if item is None or item == '':
+                sup.append(None)
+            elif isinstance(item, str):
+                sid = str(item)[:24]
+                sup.append(sid or None)
+            elif isinstance(item, list) and item:
+                sid = str(item[0] or '')[:24]
+                if not sid:
+                    sup.append(None)
+                    continue
+                packed = [sid]
+                for n in item[1:3]:
+                    try:
+                        packed.append(int(n))
+                    except (TypeError, ValueError):
+                        break
+                sup.append(packed)
+            else:
+                sup.append(None)
+        if any(x is not None for x in sup):
+            out['s'] = sup
+    has_unit = any(sl for squad in out_q for sl in squad[1])
+    if not has_unit and not out.get('s'):
+        return None
+    blob = json.dumps(out, separators=(',', ':'), ensure_ascii=False)
+    if len(blob) > 6000:
+        return None
+    return out
+
+
+@app.route('/api/team/share', methods=['POST'])
+def api_team_share_create():
+    """Mint a short formation code. Same GitHub share file as collections — no Railway volume."""
+    body = request.get_json(silent=True) or {}
+    payload = _team_share_normalize_payload(body.get('payload') or body)
+    if not payload:
+        return jsonify({'error': 'invalid_payload'}), 400
+    data = _collections_share_load()
+    codes = data.setdefault('codes', {})
+    teams = data.setdefault('teams', {})
+    import time as _time
+    now = int(_time.time())
+    try:
+        code = _collections_share_mint_code(set(codes) | set(teams))
+    except Exception as e:
+        return jsonify({'error': 'mint_failed', 'detail': str(e)}), 500
+    teams[code] = {'p': payload, 'ts': now}
+    if len(teams) > _TEAM_SHARE_MAX_ENTRIES:
+        items = sorted(teams.items(), key=lambda kv: int((kv[1] or {}).get('ts') or 0))
+        drop = len(teams) - _TEAM_SHARE_MAX_ENTRIES
+        for k, _row in items[:drop]:
+            teams.pop(k, None)
+    if not _collections_share_save(data):
+        return jsonify({'error': 'save_failed'}), 500
+    return jsonify({'code': code})
+
+
+@app.route('/api/team/share/<code>')
+def api_team_share_get(code):
+    """Resolve a short formation code to the compact Team Builder snapshot."""
+    raw = str(code or '').strip().upper().replace('-', '').replace(' ', '')
+    raw = raw.replace('O', '0').replace('I', '1').replace('L', '1')
+    if len(raw) not in (6, 8) or any(c not in _COLLECTIONS_SHARE_ALPHABET for c in raw):
+        return jsonify({'error': 'invalid_code'}), 400
+    data = _collections_share_load()
+    row = (data.get('teams') or {}).get(raw)
+    if not isinstance(row, dict) or not row.get('p'):
+        try:
+            _collections_share_hydrate_from_remote(force=True)
+            data = _collections_share_load(hydrate=False)
+            row = (data.get('teams') or {}).get(raw)
+        except Exception:
+            pass
+    if not isinstance(row, dict) or not row.get('p'):
+        return jsonify({'error': 'not_found'}), 404
+    payload = _team_share_normalize_payload(row.get('p'))
+    if not payload:
+        return jsonify({'error': 'not_found'}), 404
+    return jsonify({'code': raw, 'payload': payload})
 
 
 # --- Collections census (anonymous possession stats; client auto-submits on share/save) ---
@@ -27971,6 +28117,7 @@ def _collections_census_merge_entries(*snaps):
 def _collections_share_merge_snaps(*snaps):
     codes = {}
     by_ip = {}
+    teams = {}
     for snap in snaps:
         if not isinstance(snap, dict):
             continue
@@ -27994,7 +28141,15 @@ def _collections_share_merge_snaps(*snaps):
             # Prefer mapping that still exists in merged codes
             if code in codes:
                 by_ip[sid] = code
-    return {'v': 1, 'codes': codes, 'by_ip': by_ip}
+        for code, row in (snap.get('teams') or {}).items():
+            if not isinstance(row, dict) or not row.get('p'):
+                continue
+            code = str(code or '').strip().upper()
+            prev = teams.get(code)
+            ts = int(row.get('ts') or 0)
+            if prev is None or ts >= int(prev.get('ts') or 0):
+                teams[code] = {'p': row.get('p'), 'ts': ts}
+    return {'v': 1, 'codes': codes, 'by_ip': by_ip, 'teams': teams}
 
 
 def _collections_census_hydrate_from_remote(*, force=False):
@@ -28062,9 +28217,13 @@ def _collections_share_hydrate_from_remote(*, force=False):
         merged = _collections_share_merge_snaps(local, remote, bundled)
         local_n = len((local or {}).get('codes') or {})
         merged_n = len(merged.get('codes') or {})
-        if merged_n > local_n or (force and merged_n and merged_n != local_n):
+        local_t = len((local or {}).get('teams') or {})
+        merged_t = len(merged.get('teams') or {})
+        codes_changed = merged_n > local_n or (force and merged_n and merged_n != local_n)
+        teams_changed = merged_t > local_t or (force and merged_t and merged_t != local_t)
+        if codes_changed or teams_changed:
             _collections_share_save(merged, sync_github=False)
-            print(f'collections_share: hydrated codes={merged_n} (local was {local_n})')
+            print(f'collections_share: hydrated codes={merged_n} teams={merged_t} (local was {local_n}/{local_t})')
         _COLLECTIONS_SHARE_LAST_REMOTE_PULL = now
         _COLLECTIONS_SHARE_HYDRATED = True
 
@@ -28103,13 +28262,14 @@ def _collections_share_push_from_disk(*, reason='manual', force=False):
         return False
     if not isinstance(data, dict):
         return False
-    if not force and not (data.get('codes') or {}):
+    if not force and not (data.get('codes') or {}) and not (data.get('teams') or {}):
         return False
     return _collections_github_push(
         {
             'v': 1,
             'codes': data.get('codes') or {},
             'by_ip': data.get('by_ip') or {},
+            'teams': data.get('teams') or {},
         },
         'GGEN_COLLECTIONS_SHARE_GITHUB_PATH',
         'data/published/collections_share_v1.json',
@@ -42131,10 +42291,11 @@ def api_panel_u(unit_id):
         wl = _panel_parse_wl(request.args.get('wl'))
         wl_key = ','.join(str(x) for x in (wl or [])) or '-'
         ml = str(request.args.get('ml') or '').strip().lower() in ('1', 'true', 'yes', 'on')
+        go = str(request.args.get('go') or '').strip().lower() in ('1', 'true', 'yes', 'on')
         rf = safe_int(request.args.get('rf'), 10)
         rf = max(1, min(20, rf))
-        v = int(ms_panel.vu(uid, lb=lb, mode=mode, op=op, wl=wl, ml=ml, rf=rf) or 0)
-        return jsonify_cacheable({'v': v}, f'pu_{uid_s}_{lb}_{mode}_{op}_{wl_key}_{1 if ml else 0}_{rf}', public=False, max_age=120, private=True)
+        v = int(ms_panel.vu(uid, lb=lb, mode=mode, op=op, wl=wl, ml=ml, go=go, rf=rf) or 0)
+        return jsonify_cacheable({'v': v}, f'pu_{uid_s}_{lb}_{mode}_{op}_{wl_key}_{1 if ml else 0}_{1 if go else 0}_{rf}', public=False, max_age=120, private=True)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
@@ -42176,18 +42337,19 @@ def api_panel_f(unit_id):
         op = safe_int(request.args.get('op'), 0)
         wl = _panel_parse_wl(request.args.get('wl'))
         ml = str(request.args.get('ml') or '').strip().lower() in ('1', 'true', 'yes', 'on')
+        go = str(request.args.get('go') or '').strip().lower() in ('1', 'true', 'yes', 'on')
         rf = max(1, min(20, safe_int(request.args.get('rf'), 10)))
         sid = safe_int(request.args.get('sid'), 0)
         slb = max(0, min(3, safe_int(request.args.get('slb'), 3)))
         slv = max(1, min(100, safe_int(request.args.get('slv'), 100)))
         csp = str(request.args.get('cm') or '').strip().lower() in ('sp', '1', 'true', 'yes', 'on')
-        slot = ms_panel.vslot(uid, cid, lb=lb, mode=mode, op=op, wl=wl, ml=ml, rf=rf, sid=sid, slb=slb, slv=slv, csp=csp)
+        slot = ms_panel.vslot(uid, cid, lb=lb, mode=mode, op=op, wl=wl, ml=ml, go=go, rf=rf, sid=sid, slb=slb, slv=slv, csp=csp)
         scp = int(ms_panel.supp_table_cp(sid, slb) or 0) if sid else 0
         out = {'u': int(slot.get('u') or 0), 'p': int(slot.get('p') or 0), 'f': int(slot.get('f') or 0), 'scp': scp}
         wl_key = ','.join(str(x) for x in (wl or [])) or '-'
         return jsonify_cacheable(
             out,
-            f"pf_{uid_s}_{cid}_{lb}_{mode}_{op}_{wl_key}_{1 if ml else 0}_{rf}_{sid}_{slb}_{slv}_{1 if csp else 0}",
+            f"pf_{uid_s}_{cid}_{lb}_{mode}_{op}_{wl_key}_{1 if ml else 0}_{1 if go else 0}_{rf}_{sid}_{slb}_{slv}_{1 if csp else 0}",
             public=False, max_age=60, private=True,
         )
     except Exception as e:

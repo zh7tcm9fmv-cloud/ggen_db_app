@@ -549,8 +549,9 @@
 <div class="tb-head-actions">
 <button type="button" onclick="openTbFormationModal()"><span id="tbBtnFormation">Formation</span></button>
 <button type="button" onclick="tbStartRearrange()"><img class="tb-toolbar-ic" src="{% if image_cdn %}{{ image_cdn }}/images/UI/Sprite/UI_Common_BtnIcon_Reshuffling.webp{% else %}/static/images/UI/Sprite/UI_Common_BtnIcon_Reshuffling.webp{% endif %}" alt="" loading="lazy" onerror="this.style.display='none'"><span id="tbBtnRearrange">Rearrange</span></button>
-<div class="tb-sync-fan" id="tbSyncFan" data-fan-count="0">
-<button type="button" id="tbBtnSyncCollections" class="tb-btn-collections tb-sync-fan-trigger" onclick="tbToggleCollectionsSyncFan()" aria-pressed="false" aria-expanded="false" aria-haspopup="true" title="Sync with my collections"><img class="tb-toolbar-ic" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_BtnIcon_Lock_posi.webp{% else %}/static/images/UI/UI_Common_BtnIcon_Lock_posi.webp{% endif %}" alt="" height="16" loading="lazy" decoding="async" onerror="this.style.display='none'"><span id="tbBtnSyncCollectionsLbl">Sync</span></button>
+<div class="tb-sync-fan" id="tbSyncFan">
+<button type="button" id="tbBtnSyncCollections" class="tb-btn-collections tb-sync-fan-trigger" onclick="tbToggleCollectionsSyncFan()" aria-pressed="false" aria-expanded="false" aria-haspopup="true" aria-controls="tbSyncMenu" title="Sync with my collections"><img class="tb-toolbar-ic" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_BtnIcon_Lock_posi.webp{% else %}/static/images/UI/UI_Common_BtnIcon_Lock_posi.webp{% endif %}" alt="" height="16" loading="lazy" decoding="async" onerror="this.style.display='none'"><span id="tbBtnSyncCollectionsLbl">Sync</span></button>
+<div class="tb-sync-menu" id="tbSyncMenu" role="menu" aria-label="Saved collections"></div>
 </div>
 <button type="button" id="tbBtnMaxCp" class="tb-btn-max-cp" onclick="tbFillMaxCpFromCollections()" title="Highest CP from Collections"><img class="tb-toolbar-ic tb-toolbar-ic--cp" src="{% if image_cdn %}{{ image_cdn }}/images/UI/Profile/profile_achievements_list_icon_enhance.webp{% else %}/static/images/UI/Profile/profile_achievements_list_icon_enhance.webp{% endif %}" alt="" width="20" height="14" loading="lazy" decoding="async" onerror="this.style.display='none'"><span id="tbBtnMaxCpLbl">Max CP</span></button>
 <div id="tbTeamPanelV" class="stat-card detail-panel-v-card tb-team-panel-v" hidden></div>
@@ -633,7 +634,8 @@
 <div class="tb-form-head-row">
 <div id="tbFormModalTitle" class="tb-form-title">Formation</div>
 <div class="tb-form-actions">
-<button type="button" id="tbFormCopyLinkBtn" onclick="tbFormationCopyLink()">Copy link</button>
+<button type="button" id="tbFormCopyLinkBtn" onclick="tbFormationCopyLink()">Copy code</button>
+<span id="tbFormShareCode" class="tb-form-code" hidden></span>
 <button type="button" id="tbFormScreenshotBtn" onclick="tbFormationScreenshot()">Screenshot</button>
 </div>
 </div>

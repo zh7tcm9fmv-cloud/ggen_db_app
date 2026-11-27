@@ -702,7 +702,14 @@ body.collections-page .bg-pattern::after{
 .collections-code-field{
   display:flex;flex-direction:column;gap:4px;
   font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:.03em;
-  flex:0 1 168px;min-width:120px;max-width:200px;
+  flex:1 1 260px;min-width:min(240px,90vw);max-width:440px;
+}
+.collections-code-field > #colShareCodeLabel{
+  color:var(--accent-gold);font-size:13px;letter-spacing:.04em;
+}
+.collections-code-hint{
+  font-weight:600;letter-spacing:0;text-transform:none;line-height:1.35;
+  color:var(--text-secondary);max-width:36em;
 }
 .collections-code-field input{
   width:100%;padding:8px 10px;border-radius:var(--radius-sm);
