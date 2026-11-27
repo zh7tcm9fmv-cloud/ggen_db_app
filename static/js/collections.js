@@ -98,7 +98,7 @@
       import_share_code: 'Load',
       share_code_copied: 'Code ready — name this collection to keep the slot (Team Builder Sync / Max CP).',
       share_code_fail: 'Could not create share code.\n{err}',
-      share_import_ok: 'Imported {n} entries.',
+      share_import_ok: 'Imported {n} entries — save to a slot for Team Builder Sync / Max CP.',
       share_import_fail: 'Invalid or unknown share code.',
       share_import_confirm: 'Replace this browser’s Collections progress with the imported code?',
       share_save_name: 'Name this collection',
@@ -107,6 +107,8 @@
       share_save_skip: 'Not now',
       share_save_ok: 'Saved “{name}” to slot {i} · code {code}',
       share_save_need_name: 'Enter a collection name to save.',
+      share_save_overwrite_confirm:
+        'Slot “{name}” already has {old} entries. Replace with the current {neu} entries?',
       slot_empty: 'empty',
       slot_label: '{i}. {name}',
       username: 'Player name',
@@ -247,7 +249,7 @@
       import_share_code: '読み込む',
       share_code_copied: 'コードを用意しました — 名前を付けてスロットに保存（チームビルダー同期／最大戦闘力に必要）。',
       share_code_fail: '共有コードを作成できませんでした。\n{err}',
-      share_import_ok: '{n}件をインポートしました。',
+      share_import_ok: '{n}件をインポートしました — チームビルダー同期／最大戦闘力用にスロットへ保存してください。',
       share_import_fail: '無効または不明な共有コードです。',
       share_import_confirm: 'このブラウザのコレクション記録をインポート内容で置き換えますか？',
       share_save_name: 'コレクション名',
@@ -256,6 +258,8 @@
       share_save_skip: 'いまはしない',
       share_save_ok: '「{name}」をスロット {i} に保存 · コード {code}',
       share_save_need_name: '保存するにはコレクション名を入力してください。',
+      share_save_overwrite_confirm:
+        'スロット「{name}」には既に {old} 件あります。現在の {neu} 件で置き換えますか？',
       slot_empty: '空き',
       slot_label: '{i}. {name}',
       username: 'プレイヤー名',
@@ -396,7 +400,7 @@
       import_share_code: '讀取',
       share_code_copied: '代碼已準備 — 請命名後存入欄位（隊伍編組同步／最高戰鬥力需要）。',
       share_code_fail: '無法建立分享代碼。\n{err}',
-      share_import_ok: '已匯入 {n} 筆。',
+      share_import_ok: '已匯入 {n} 筆 — 請存入欄位，隊伍編組同步／最高戰鬥力才會用到。',
       share_import_fail: '無效或未知的分享代碼。',
       share_import_confirm: '要用匯入的代碼取代此瀏覽器的收藏進度嗎？',
       share_save_name: '為此收藏命名',
@@ -405,6 +409,7 @@
       share_save_skip: '暫時不要',
       share_save_ok: '已將「{name}」存入欄位 {i} · 代碼 {code}',
       share_save_need_name: '請輸入收藏名稱後再儲存。',
+      share_save_overwrite_confirm: '欄位「{name}」已有 {old} 筆。要用目前的 {neu} 筆取代嗎？',
       slot_empty: '空',
       slot_label: '{i}. {name}',
       username: '玩家名稱',
@@ -544,7 +549,7 @@
       import_share_code: '讀取',
       share_code_copied: '代碼已準備 — 請命名後存入欄位（隊伍編組同步／最高戰鬥力需要）。',
       share_code_fail: '無法建立分享代碼。\n{err}',
-      share_import_ok: '已匯入 {n} 筆。',
+      share_import_ok: '已匯入 {n} 筆 — 請存入欄位，隊伍編組同步／最高戰鬥力才會用到。',
       share_import_fail: '無效或未知的分享代碼。',
       share_import_confirm: '要用匯入的代碼取代此瀏覽器的收藏進度嗎？',
       share_save_name: '為此收藏命名',
@@ -553,6 +558,7 @@
       share_save_skip: '暫時不要',
       share_save_ok: '已將「{name}」存入欄位 {i} · 代碼 {code}',
       share_save_need_name: '請輸入收藏名稱後再儲存。',
+      share_save_overwrite_confirm: '欄位「{name}」已有 {old} 筆。要用目前的 {neu} 筆取代嗎？',
       slot_empty: '空',
       slot_label: '{i}. {name}',
       username: '玩家名稱',
@@ -691,7 +697,7 @@
       import_share_code: '불러오기',
       share_code_copied: '코드를 준비했습니다 — 이름을 붙여 슬롯에 저장（팀 빌더 동기화 / 최대 전투력에 필요）.',
       share_code_fail: '공유 코드를 만들지 못했습니다.\n{err}',
-      share_import_ok: '{n}건을 가져왔습니다.',
+      share_import_ok: '{n}건을 가져왔습니다 — 팀 빌더 동기화／최대 전투력용으로 슬롯에 저장하세요.',
       share_import_fail: '유효하지 않거나 알 수 없는 공유 코드입니다.',
       share_import_confirm: '이 브라우저의 컬렉션 진행도를 가져온 코드로 바꿀까요?',
       share_save_name: '이 컬렉션 이름',
@@ -700,6 +706,8 @@
       share_save_skip: '나중에',
       share_save_ok: '“{name}”을 슬롯 {i}에 저장 · 코드 {code}',
       share_save_need_name: '저장하려면 컬렉션 이름을 입력하세요.',
+      share_save_overwrite_confirm:
+        '슬롯 “{name}”에 이미 {old}건이 있습니다. 현재 {neu}건으로 바꿀까요?',
       slot_empty: '비어 있음',
       slot_label: '{i}. {name}',
       username: '플레이어 이름',
@@ -6068,6 +6076,14 @@
     }
   }
 
+  function slotOwnedCount(data) {
+    if (!data || typeof data !== 'object') return 0;
+    return (
+      Object.keys(data.u || data.units || {}).length +
+      Object.keys(data.s || data.supporters || {}).length
+    );
+  }
+
   function confirmShareSave() {
     var pending = state.pendingShare;
     if (!pending || !pending.payload) return;
@@ -6083,13 +6099,24 @@
     var idx = sel ? parseInt(sel.value, 10) : 0;
     if (!(idx >= 0 && idx < SAVE_SLOT_COUNT)) idx = 0;
     var slots = readSaveSlots();
+    var nextData = {
+      v: 1,
+      u: pending.payload.u || {},
+      s: pending.payload.s || {}
+    };
+    if (pending.payload.ua && typeof pending.payload.ua === 'object') {
+      nextData.ua = pending.payload.ua;
+    }
+    var prev = slots[idx] && slots[idx].data;
+    var oldN = slotOwnedCount(prev);
+    var newN = slotOwnedCount(nextData);
+    if (oldN > 0 && newN > 0 && oldN !== newN) {
+      var msg = t('share_save_overwrite_confirm', { name: name, old: oldN, neu: newN });
+      if (!window.confirm(msg)) return;
+    }
     slots[idx] = {
       name: name,
-      data: {
-        v: 1,
-        u: pending.payload.u || {},
-        s: pending.payload.s || {}
-      },
+      data: nextData,
       code: pending.code || ''
     };
     writeSaveSlots(slots);
@@ -6123,9 +6150,17 @@
       slots[i].name ||
       t('default_save_name', { i: i + 1 });
     var payload = ownedBagsForShare();
+    var nextData = { v: 1, u: payload.u || {}, s: payload.s || {} };
+    if (payload.ua && typeof payload.ua === 'object') nextData.ua = payload.ua;
+    var oldN = slotOwnedCount(slots[i].data);
+    var newN = slotOwnedCount(nextData);
+    if (oldN > 0 && newN > 0 && oldN !== newN) {
+      var msg = t('share_save_overwrite_confirm', { name: name, old: oldN, neu: newN });
+      if (!window.confirm(msg)) return;
+    }
     slots[i] = {
       name: name,
-      data: { v: 1, u: payload.u || {}, s: payload.s || {} },
+      data: nextData,
       code: slots[i].code || ''
     };
     writeSaveSlots(slots);
@@ -6421,10 +6456,12 @@
     var status = document.getElementById('colStatus');
     var input = document.getElementById('colShareCode');
     var raw = input ? input.value : '';
+    var shortCode = '';
     var payload = await decodeLongShareCode(raw);
     if (!payload) {
       var short = normalizeShortCode(raw);
       if (short.length === 6 || short.length === 8) {
+        shortCode = short;
         payload = await fetchShortSharePayload(short);
       }
     }
@@ -6440,6 +6477,14 @@
     }
     if (status) status.textContent = t('share_import_ok', { n: n });
     flashSuccessCheck();
+    // TB Sync / Max CP read saved slots only — force naming the imported bag now.
+    showShareSavePrompt(shortCode || '', {
+      v: 1,
+      u: payload.u || {},
+      s: payload.s || {},
+      ua: payload.ua || undefined,
+      n: payload.n || undefined
+    });
   }
 
   async function maybeImportShareCodeFromUrl() {
