@@ -8612,4 +8612,135 @@ html.ggen-offhost .dc-panel{
 }
 
 
+/* --------------------------------------------------------------------------
+   Unit / character header stats: aspect-native fit
+   iPad Mini / Air / Pro share the Pro 13 side-by-side dossier (phone ≤700
+   stacks separately). The 400px / 42cqw hero plus a max-content CP column
+   left a narrow title-area on shorter iPad sheets, and 30px/43px figures
+   (sized with vw) overflow-clipped mid-number. Scale type from the stats
+   container (maxima stay the existing 30px / 43px), let the hero yield a
+   title-area floor, and let CP shrink. Wide Pro 13 sheets keep auto-fit
+   packing; narrower ones lock to 3-col + CP instead of clipping or stacking.
+   -------------------------------------------------------------------------- */
+.header-stats-wrapper{
+  container-type:inline-size;
+  container-name:header-stats;
+}
+/* Stats figures use cqi from header-stats (the whole row: rail + grid + CP).
+   Do not make .stats-grid a container — that would shrink type on the Pro 13
+   sheet because the grid is only a fraction of the row. */
 
+/* Wide sheets keep auto-fit packing (Pro 13 landscape is 5+MOVE). When the
+   stats row is too narrow, auto-fit minmax(92px) collapses to a single
+   stacked column (iPad Air 11 portrait). Lock to 3 columns that can shrink
+   so the format stays HP/EN/ATTACK + CP, then DEFENSE/MOBILITY/MOVE. */
+@container header-stats (max-width:620px){
+  .modal-content.char-detail:not(.detail-ranking-view) .header-stats-wrapper .stats-grid,
+  .modal-content.unit-detail:not(.detail-ranking-view) .header-stats-wrapper .stats-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:clamp(4px,1.8cqi,10px);
+  }
+}
+
+/* Phone stays on the existing 2-column sheet (wins over the 3-col safety). */
+@media(max-width:480px){
+  .modal-content.char-detail:not(.detail-ranking-view) .header-stats-wrapper .stats-grid,
+  .modal-content.unit-detail:not(.detail-ranking-view) .header-stats-wrapper .stats-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:6px;
+  }
+}
+
+.header-stats-wrapper--with-rank,
+.header-stats-rank-row{
+  gap:clamp(6px,1.8cqi,12px);
+}
+
+/* CP may shrink; do not lock it to max-content / 9.5rem and starve the grid. */
+.header-stats-wrapper .detail-panel-v-host--aside-right{
+  flex:0 1 auto;
+  min-width:0;
+  max-width:min(11.5rem,38cqi);
+}
+.header-stats-wrapper .detail-panel-v-host--aside-right .detail-panel-v-card{
+  min-width:0;
+  width:auto;
+  max-width:100%;
+  padding:4px clamp(6px,1.6cqi,14px) 4px clamp(8px,1.8cqi,14px);
+}
+
+/* Type scales with the stats container; maxima match the existing Pro 13 sizes. */
+.header-stats-wrapper .stat-card-label{
+  font-size:clamp(9px,2.1cqi + 0.15rem,13px);
+  letter-spacing:clamp(.02em,.08cqi,.5px);
+}
+.header-stats-wrapper .stat-card-value{
+  font-size:clamp(15px,5.1cqi + 0.2rem,30px);
+}
+.header-stats-wrapper .stats-grid.stats-grid--val-mid .stat-card-value{
+  font-size:clamp(14px,4.8cqi + 0.2rem,30px);
+}
+.header-stats-wrapper .stats-grid.stats-grid--val-long .stat-card-value{
+  font-size:clamp(13px,4.5cqi + 0.15rem,26px);
+}
+.header-stats-wrapper .stats-grid.stats-grid--val-xl .stat-card-value{
+  font-size:clamp(12px,4.1cqi + 0.15rem,22px);
+}
+.header-stats-wrapper .stat-card-bonus{
+  font-size:clamp(11px,2.9cqi + 0.1rem,15px);
+}
+.header-stats-wrapper .detail-panel-v-host--aside-right .detail-panel-v-card .detail-panel-v-num.stat-card-value{
+  font-size:clamp(22px,7.1cqi + 0.35rem,43px);
+}
+.header-stats-wrapper .detail-panel-v-host--aside-right .detail-panel-v-label.stat-card-label{
+  font-size:clamp(10px,2.6cqi + 0.1rem,14px);
+}
+.header-stats-wrapper .conditional-toggle,
+.header-stats-wrapper .detail-cond-toggle-stack .toggle-label{
+  font-size:clamp(11px,2.9cqi + 0.1rem,14px);
+}
+.header-stats-wrapper .detail-cond-toggle-stack .toggle-clickable{
+  gap:clamp(4px,1.2cqi,8px);
+  max-width:100%;
+  min-width:0;
+}
+.header-stats-wrapper .detail-cond-toggle-stack .toggle-label{
+  white-space:nowrap;
+  min-width:0;
+}
+
+/* Mid-width iPad sheets: tighten the hero/title gap so more room stays with stats. */
+@container modal-detail (max-width:1100px){
+  .modal-content.char-detail:not(.detail-ranking-view) .detail-header,
+  .modal-content.unit-detail:not(.detail-ranking-view) .detail-header{
+    gap:clamp(12px,2.4cqi,28px);
+  }
+}
+
+/* iPad Mini portrait (~744px) sits in the 701–768 gap: the dossier already
+   uses the iPad side-by-side header, but max-width:768px rules still stretch
+   the Limit Break tier strip to 100% (phone style). Match Air / Pro (≥769). */
+@media (min-width:701px) and (max-width:768px){
+  .modal-content.char-detail:not(.detail-ranking-view) .header-stats-wrapper .lb-control-row,
+  .modal-content.unit-detail:not(.detail-ranking-view) .header-stats-wrapper .lb-control-row{
+    justify-content:flex-end;
+    width:auto;
+    max-width:100%;
+  }
+  .modal-content.char-detail:not(.detail-ranking-view) .header-stats-wrapper .lb-btn-group,
+  .modal-content.unit-detail:not(.detail-ranking-view) .header-stats-wrapper .lb-btn-group{
+    display:flex;
+    width:auto;
+    max-width:100%;
+  }
+  .modal-content.char-detail:not(.detail-ranking-view) .header-stats-wrapper .lb-icon-btn,
+  .modal-content.unit-detail:not(.detail-ranking-view) .header-stats-wrapper .lb-icon-btn{
+    padding:4px 8px;
+    gap:2px;
+  }
+  .modal-content.char-detail:not(.detail-ranking-view) .header-stats-wrapper .lb-icon-btn img,
+  .modal-content.unit-detail:not(.detail-ranking-view) .header-stats-wrapper .lb-icon-btn img{
+    width:16px;
+    height:16px;
+  }
+}

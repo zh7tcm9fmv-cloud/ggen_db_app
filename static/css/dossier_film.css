@@ -3,8 +3,11 @@
 
 html .modal-content.char-detail:not(.detail-ranking-view) .detail-portrait-stack > .detail-portrait-wrap,
 html .modal-content.unit-detail:not(.detail-ranking-view) .detail-portrait-stack > .detail-portrait-wrap{
-  /* Same proportion as iPad Pro 13" (400px on a ~1000px sheet). Narrower iPads scale with the modal. */
-  width:min(400px,42cqw);
+  /* Pro 13 (~1200px modal): 400px, same as before. On narrower iPad sheets the
+     hero also yields to a ~520px floor for the title/stats column so the
+     3-col + CP format still has room (42cqw alone only shrank below ~952px).
+     Phone ≤700 keeps its own stacked 90vw hero below. */
+  width:min(400px,42cqw,max(200px,calc(100cqw - 576px)));
   max-width:100%;
 }
 
